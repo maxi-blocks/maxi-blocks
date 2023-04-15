@@ -338,6 +338,7 @@ Array [
       "icon-stroke-general": 5,
       "icon-stroke-palette-color": 8,
       "icon-stroke-palette-opacity": 0.75,
+      "icon-stroke-palette-status": true,
       "icon-width-general": "11",
       "icon-width-unit-general": "%",
     },
@@ -472,7 +473,9 @@ Array [
       "  .maxi-button-block__button  .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
@@ -484,7 +487,9 @@ Array [
       "  .maxi-button-block__button  .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg path": Object {
@@ -504,7 +509,9 @@ Array [
       "  .maxi-button-block__button  .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
@@ -516,7 +523,9 @@ Array [
       "  .maxi-button-block__button  .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"])": Object {
@@ -534,13 +543,17 @@ Array [
       "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
         "general": Object {
           "breakpoint": null,
-          "styles": Object {},
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
+          },
         },
       },
       " > .maxi-background-displayer": Object {
@@ -598,11 +611,11 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}"`;
+exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}"`;
 
-exports[`Button Maxi hover simple actions Button icon 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}"`;
+exports[`Button Maxi hover simple actions Button icon 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}"`;
 
-exports[`Button Maxi hover simple actions Button icon 4`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}"`;
+exports[`Button Maxi hover simple actions Button icon 4`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}"`;
 
 exports[`Button Maxi hover simple actions Button margin/padding 1`] = `
 Array [

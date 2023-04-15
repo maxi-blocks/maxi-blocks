@@ -1367,6 +1367,8 @@ exports[`getIBDataItem Should return the IB setting 1`] = `
 Object {
   "attrGroupName": "boxShadow",
   "component": [Function],
+  "forceTempPalette": [Function],
+  "forceTempPalettePrefix": "box-shadow-",
   "helper": [Function],
   "hoverProp": "box-shadow-status-hover",
   "label": "Box shadow",
@@ -1380,10 +1382,6 @@ Object {
     "box-shadow-blur-unit",
     "box-shadow-spread",
     "box-shadow-spread-unit",
-    "box-shadow-palette-color",
-    "box-shadow-color",
-    "box-shadow-palette-status",
-    "box-shadow-palette-opacity",
   ],
   "sid": "bs",
 }

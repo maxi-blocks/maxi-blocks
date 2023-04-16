@@ -27,7 +27,8 @@ add_filter('should_load_remote_block_patterns', '__return_false');
 /* Enabled option */
 
 if (!get_option('maxi_pro')) {
-    add_option('maxi_pro', 'no');
+    $array = array('status' => 'no');
+    add_option('maxi_pro', json_encode($array));
 }
 
 function maxi_get_pro_status()

@@ -767,10 +767,11 @@ if (!class_exists('MaxiBlocks_API')):
         public function set_maxi_blocks_pro_status($data)
         {
             $this->write_log('==================');
-            $dataString = json_encode($data['data']);
+            $dataString = $data['data'];
+            $dataType = gettype($dataString);
             $this->write_log($dataString);
             $this->write_log('gettype(data)');
-            $this->write_log(gettype($data));
+            $this->write_log($dataType);
 
             if(get_option('maxi_pro')) {
                 $oldData = json_decode(get_option('maxi_pro'));

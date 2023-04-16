@@ -5,30 +5,62 @@ import './store';
  */
 import { select, dispatch } from '@wordpress/data';
 
-export const isProSubActive = () => {
-	const { status } = select('maxiBlocks/pro').receiveMaxiProStatus();
+export const getMaxiCookieKey = () => {
+	const cookie = document.cookie
+		.split(';')
+		.find(row => row.startsWith('maxi_blocks_key='))
+		?.split('=')[1];
 
-	if (status === 'yes') return true;
+	if (!cookie) return false;
+
+	const obj = JSON.parse(cookie);
+	const email = Object.keys(obj)[0];
+	const key = obj[email];
+
+	return { email, key };
+};
+
+const getProInfoByEmail = () => {
+	const cookie = getMaxiCookieKey();
+	if (!cookie) return false;
+	const { email, key } = cookie;
+
+	const pro = JSON.parse(select('maxiBlocks/pro').receiveMaxiProStatus());
+
+	return { address: pro?.[email], key };
+};
+
+export const isProSubActive = () => {
+	const { address, key } = getProInfoByEmail();
+
+	if (address && address?.key === key && address?.status === 'yes')
+		return true;
 	return false;
 };
 
 export const isProSubExpired = () => {
-	const { status } = select('maxiBlocks/pro').receiveMaxiProStatus();
+	const { address, key } = getProInfoByEmail();
 
-	if (status === 'expired') return true;
+	if (address && address?.key === key && address?.status === 'expired')
+		return true;
 	return false;
 };
 
 export const getUserName = () => {
-	const { name, email } = select('maxiBlocks/pro').receiveMaxiProStatus();
-	if (name && name !== '') return name;
-	return email;
+	const { address, key } = getProInfoByEmail();
+
+	if (address && address?.key === key) {
+		const name = address?.name;
+		if (name && name !== '') return name;
+		return address;
+	}
+	return false;
 };
 
 export const getUserEmail = () => {
-	const { email } = select('maxiBlocks/pro').receiveMaxiProStatus();
-	console.log('email getUserEmail', email);
-	if (email !== '') return email;
+	const { address, key } = getProInfoByEmail();
+
+	if (address && address?.key === key) return address;
 	return false;
 };
 
@@ -41,7 +73,7 @@ export async function authConnect(withRedirect = false, email = false) {
 		?.split('=')[1];
 
 	if (!cookieKey) {
-		const generateCookieKey = length => {
+		const generateCookieKey = (email, length) => {
 			let key = '';
 			const string =
 				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -51,9 +83,14 @@ export async function authConnect(withRedirect = false, email = false) {
 				key += string.charAt(Math.floor(Math.random() * stringLength));
 				i += 1;
 			}
-			return key;
+
+			const obj = { [email]: key };
+			console.log('email', email);
+			console.log('key', key);
+			console.log('obj', obj);
+			return JSON.stringify(obj);
 		};
-		cookieKey = generateCookieKey(20);
+		cookieKey = generateCookieKey(email, 20);
 		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000`;
 	}
 
@@ -61,48 +98,42 @@ export async function authConnect(withRedirect = false, email = false) {
 		withRedirect && window.open(url, '_blank')?.focus();
 	};
 
-	const emailActive = (name, info) => {
-		console.log('emailActive');
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'yes',
-			email,
-			name,
-			key: cookieKey,
-			info,
-		});
+	const processLocalActivation = (email, name, status) => {
+		console.log('processLocalActivation', status);
+		const key = JSON.parse(cookieKey)[email];
+		const newPro = {
+			[email]: {
+				status,
+				name,
+				key,
+			},
+		};
+		let obj = newPro;
+		const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+		if (typeof oldPro === 'string') {
+			const oldProObj = JSON.parse(oldPro);
+			if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
+		}
+
+		console.log('obj', obj);
+		const objString = JSON.stringify(obj);
+		console.log('objString', objString);
+
+		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 	};
-	const emailNotActive = (name, info) => {
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'no',
-			email,
-			name,
-			key: cookieKey,
-			info,
-		});
-	};
-	const emailExpired = (name, info) => {
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'expired',
-			email,
-			name,
-			key: cookieKey,
-			info,
-		});
-	};
-	const notActive = () => {
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'no',
-			name: '',
-			email: '',
-			info: '',
-			key: cookieKey,
-		});
+
+	const deactivateLocal = () => {
+		dispatch('maxiBlocks/pro').saveMaxiProStatus(
+			JSON.stringify({
+				status: 'no',
+			})
+		);
 	};
 
 	const useEmail = email || getUserEmail();
 
-	console.log('useEmail', useEmail);
-	console.log('getUserEmail', getUserEmail());
+	// console.log('useEmail', useEmail);
+	// console.log('getUserEmail', getUserEmail());
 
 	if (useEmail) {
 		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
@@ -127,45 +158,49 @@ export async function authConnect(withRedirect = false, email = false) {
 
 				response.json().then(data => {
 					if (data) {
+						console.log('data', data);
 						if (data.error) {
 							console.error(data.error);
-							notActive();
+							deactivateLocal();
 							return;
 						}
-						const date = data.expiration_date;
-						const { name, info, status } = data;
+						const date = data?.expiration_date;
+						const { name, status } = data;
 						console.log(`exp date: ${date}`);
 						console.log(`name: ${name}`);
-						console.log(`info: ${info}`);
 						console.log(`status: ${status}`);
 
 						if (status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
 							if (today > date) {
-								emailExpired(name, info);
+								processLocalActivation(
+									useEmail,
+									name,
+									'expired'
+								);
 								redirect();
 							} else {
 								console.log('not expired');
-								emailActive(name, info);
+								processLocalActivation(useEmail, name, 'yes');
 							}
 						}
 						if (
 							status === 'error' &&
 							data.message === 'already logged in'
 						) {
-							emailNotActive(name, info);
+							processLocalActivation(useEmail, name, 'no');
 						}
 					}
 					if (!data) {
 						// no email
-						notActive();
+						deactivateLocal();
 						redirect();
 					}
 				});
 			})
 			.catch(err => {
 				console.error('Fetch Error for the API call:', err);
-				notActive();
+				deactivateLocal();
 				redirect();
 			});
 	}

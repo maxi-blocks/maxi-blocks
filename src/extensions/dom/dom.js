@@ -258,7 +258,19 @@ wp.domReady(() => {
 
 	const { receiveMaxiProStatus } = resolveSelect('maxiBlocks/pro');
 	receiveMaxiProStatus().then(data => {
-		const { email } = data;
-		authConnect(false, email);
+		console.log('data dom');
+		console.log(data);
+		console.log(typeof data);
+		if (data?.status === 'no') authConnect(false);
+		if (typeof data === 'string') {
+			const dataObj = JSON.parse(data);
+			if (dataObj?.status === 'no') authConnect(false);
+			else
+				Object.keys(dataObj).forEach(email => {
+					console.log('email');
+					console.log(email);
+					authConnect(false, email);
+				});
+		}
 	});
 });

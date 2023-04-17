@@ -23,8 +23,13 @@ const getCleanDisplayIBAttributes = (blockAttributes, IBAttributes) => {
 		if (breakpoint === 'general') {
 			const cleanKey = key.replace('-general', '');
 
-			if (`${cleanKey}-xxl` in blockAttributes) {
-				delete mergedAttributes[`${cleanKey}-xxl`];
+			const xxlKey = `${cleanKey}-xxl`;
+
+			if (
+				xxlKey in blockAttributes &&
+				blockAttributes[xxlKey] !== mergedAttributes[xxlKey]
+			) {
+				delete mergedAttributes[xxlKey];
 			}
 		}
 	});

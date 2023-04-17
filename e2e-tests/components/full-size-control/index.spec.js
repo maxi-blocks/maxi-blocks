@@ -127,6 +127,8 @@ describe('FullSizeControl', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		// select 3 columns
+		await page.waitForSelector('.maxi-row-block__template button');
+		await page.waitForTimeout(100);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);

@@ -20,48 +20,88 @@ export const getMaxiCookieKey = () => {
 	return { email, key };
 };
 
+export const removeMaxiCookie = () => {
+	const cookie = document.cookie
+		.split(';')
+		.find(row => row.startsWith('maxi_blocks_key='))
+		?.split('=')[1];
+
+	if (cookie) {
+		document.cookie = `maxi_blocks_key=${cookie};max-age=0; Path=/wp-admin;Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+	}
+};
+
 const getProInfoByEmail = () => {
 	const cookie = getMaxiCookieKey();
 	if (!cookie) return false;
 	const { email, key } = cookie;
 
-	const pro = JSON.parse(select('maxiBlocks/pro').receiveMaxiProStatus());
+	const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (typeof pro === 'string') {
+		const proJson = JSON.parse(
+			select('maxiBlocks/pro').receiveMaxiProStatus()
+		);
 
-	return { address: pro?.[email], key };
+		const response = proJson?.[email];
+
+		if (response) return { email, info: response, key };
+	}
+	return false;
 };
 
 export const isProSubActive = () => {
-	const { address, key } = getProInfoByEmail();
+	const { info, key } = getProInfoByEmail();
 
-	if (address && address?.key === key && address?.status === 'yes')
-		return true;
+	if (info && info?.key === key && info?.status === 'yes') return true;
 	return false;
 };
 
 export const isProSubExpired = () => {
-	const { address, key } = getProInfoByEmail();
+	const { info, key } = getProInfoByEmail();
 
-	if (address && address?.key === key && address?.status === 'expired')
-		return true;
+	if (info && info?.key === key && info?.status === 'expired') return true;
 	return false;
 };
 
 export const getUserName = () => {
-	const { address, key } = getProInfoByEmail();
+	const { email, info, key } = getProInfoByEmail();
 
-	if (address && address?.key === key) {
-		const name = address?.name;
+	if (info && info?.key === key) {
+		const name = info?.name;
 		if (name && name !== '') return name;
-		return address;
+		return email;
 	}
 	return false;
 };
 
 export const getUserEmail = () => {
-	const { address, key } = getProInfoByEmail();
+	const { email, info, key } = getProInfoByEmail();
 
-	if (address && address?.key === key) return address;
+	if (info && info?.key === key) return email;
 	return false;
+};
+
+export const processLocalActivation = (email, name, status, key) => {
+	console.log('processLocalActivation', status);
+	const newPro = {
+		[email]: {
+			status,
+			name,
+			key,
+		},
+	};
+	let obj = newPro;
+	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (typeof oldPro === 'string') {
+		const oldProObj = JSON.parse(oldPro);
+		if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
+	}
+
+	console.log('obj', obj);
+	const objString = JSON.stringify(obj);
+	console.log('objString', objString);
+
+	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 };
 
 export async function authConnect(withRedirect = false, email = false) {
@@ -72,7 +112,9 @@ export async function authConnect(withRedirect = false, email = false) {
 		.find(row => row.startsWith('maxi_blocks_key='))
 		?.split('=')[1];
 
-	if (!cookieKey) {
+	if (!cookieKey && !email) return;
+
+	if (!cookieKey && email) {
 		const generateCookieKey = (email, length) => {
 			let key = '';
 			const string =
@@ -91,35 +133,11 @@ export async function authConnect(withRedirect = false, email = false) {
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
-		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000`;
+		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000;Path=/wp-admin;`;
 	}
 
 	const redirect = () => {
 		withRedirect && window.open(url, '_blank')?.focus();
-	};
-
-	const processLocalActivation = (email, name, status) => {
-		console.log('processLocalActivation', status);
-		const key = JSON.parse(cookieKey)[email];
-		const newPro = {
-			[email]: {
-				status,
-				name,
-				key,
-			},
-		};
-		let obj = newPro;
-		const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
-		if (typeof oldPro === 'string') {
-			const oldProObj = JSON.parse(oldPro);
-			if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
-		}
-
-		console.log('obj', obj);
-		const objString = JSON.stringify(obj);
-		console.log('objString', objString);
-
-		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 	};
 
 	const deactivateLocal = () => {
@@ -129,6 +147,8 @@ export async function authConnect(withRedirect = false, email = false) {
 			})
 		);
 	};
+
+	const key = JSON.parse(cookieKey)?.[email];
 
 	const useEmail = email || getUserEmail();
 
@@ -176,19 +196,25 @@ export async function authConnect(withRedirect = false, email = false) {
 								processLocalActivation(
 									useEmail,
 									name,
-									'expired'
+									'expired',
+									key
 								);
 								redirect();
 							} else {
 								console.log('not expired');
-								processLocalActivation(useEmail, name, 'yes');
+								processLocalActivation(
+									useEmail,
+									name,
+									'yes',
+									key
+								);
 							}
 						}
 						if (
 							status === 'error' &&
 							data.message === 'already logged in'
 						) {
-							processLocalActivation(useEmail, name, 'no');
+							processLocalActivation(useEmail, name, 'no', key);
 						}
 					}
 					if (!data) {
@@ -207,6 +233,11 @@ export async function authConnect(withRedirect = false, email = false) {
 }
 
 export const logOut = () => {
+	const { key } = getMaxiCookieKey();
+	const email = getUserEmail();
+	const name = getUserName();
+	processLocalActivation(email, name, 'no', key);
+	removeMaxiCookie();
 	const url = 'https://my.maxiblocks.com/log-out?plugin';
 	window.open(url, '_blank')?.focus();
 };

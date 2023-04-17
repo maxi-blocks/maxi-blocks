@@ -184,11 +184,11 @@ const MaxiModal = props => {
 
 	useEffect(() => {
 		setIsMaxiProActive(isProSubActive());
-	}, [isMaxiProActive]);
+	}, [type]);
 
 	useEffect(() => {
 		setIsMaxiProExpired(isProSubExpired());
-	}, [isMaxiProExpired]);
+	}, [type]);
 
 	console.log('isMaxiProActive', isMaxiProActive);
 	console.log('isMaxiProExpired', isMaxiProExpired);

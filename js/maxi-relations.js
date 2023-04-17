@@ -387,19 +387,11 @@ class Relation {
 
 		const getBreakpointValues = css => {
 			this.breakpoints.forEach(breakpoint => {
-				if (
-					Object.prototype.hasOwnProperty.call(css, breakpoint) &&
-					(breakpoint !== 'xxl' ||
-						Object.prototype.hasOwnProperty.call(css, 'xl'))
-				) {
+				if (Object.prototype.hasOwnProperty.call(css, breakpoint)) {
 					let { breakpoint: breakpointValue } = css[breakpoint];
 
 					breakpointValue =
 						breakpoint === 'general' ? '' : breakpointValue;
-					breakpointValue =
-						breakpoint === 'xxl'
-							? css.xl.breakpoint
-							: breakpointValue;
 
 					breakpointsObj[breakpoint] = breakpointValue;
 				}

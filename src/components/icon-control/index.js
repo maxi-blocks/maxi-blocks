@@ -195,6 +195,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				breakpoint={breakpoint}
 				isHover={isHover}
 				disableHeightFitContent={disableHeightFitContent}
+				isInteractionBuilder={isInteractionBuilder}
 			/>
 			{svgType !== 'Shape' && (
 				<SvgStrokeWidthControl

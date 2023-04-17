@@ -364,6 +364,9 @@
 		line-height: 1;
 		word-spacing: 4px;
 		font-weight: 500;
+		h5 {
+			word-spacing: 0;
+		}
 
 		&__help-button {
 			z-index: 9;
@@ -1632,7 +1635,6 @@
 				width: auto;
 				height: 31px;
 				padding: 6px 18px;
-				font-weight: 500;
 				background-color: #e9f3f7;
 				color: #081219;
 				border: 1px solid #2bafb7;
@@ -1658,11 +1660,20 @@
 				right: 11%;
 				input {
 					max-width: 220px;
-					margin-top: 9px;
-					margin-right: -3px;
+					margin-top: 8px;
+					margin-right: -5px;
 					padding: 1px 8px 2px !important;
 					border: 1px solid var(--maxi-grey-1-color) !important;
 					border-radius: 0 !important;
+				}
+				span {
+					position: absolute;
+					top: 85%;
+					padding: 5px;
+					color: var(--maxi-primary-color);
+					background: #fff;
+					font-style: italic;
+					font-size: 12px;
 				}
 			}
 		}

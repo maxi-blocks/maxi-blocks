@@ -34,7 +34,7 @@ const SvgWidthControl = props => {
 		customLabel = 'Width',
 		className,
 		disableHeightFitContent = false,
-		isInteractionBuilder,
+		isIB,
 	} = props;
 
 	const classes = classnames('maxi-svg-width-control', className);
@@ -120,7 +120,7 @@ const SvgWidthControl = props => {
 				isHover={isHover}
 				optionType='string'
 			/>
-			{!disableHeightFitContent && !isInteractionBuilder && (
+			{!disableHeightFitContent && !isIB && (
 				<ToggleSwitch
 					label={__('Set height to fit content', 'maxi-blocks')}
 					selected={heightFitContent}

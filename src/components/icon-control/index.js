@@ -248,7 +248,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							}
 						/>
 					)}
-					{!disablePosition && (
+					{!isInteractionBuilder && !disablePosition && (
 						<AxisPositionControl
 							label='Icon'
 							className='maxi-icon-control__position'

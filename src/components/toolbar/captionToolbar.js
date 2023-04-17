@@ -187,17 +187,6 @@ const CaptionToolbar = memo(
 							breakpoint={breakpoint}
 							isCaptionToolbar
 						/>
-						<TextBold
-							onChangeFormat={onChangeFormat}
-							getValue={getValue}
-							isCaptionToolbar
-							tooltipsHide={tooltipsHide}
-						/>
-						<TextItalic
-							onChangeFormat={onChangeFormat}
-							getValue={getValue}
-							isCaptionToolbar
-						/>
 					</div>
 				</Popover>
 			);

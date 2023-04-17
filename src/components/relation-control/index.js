@@ -33,12 +33,13 @@ import getIBStyles from '../../extensions/relations/getIBStyles';
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -165,7 +166,10 @@ const RelationControl = props => {
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
 		// Merging into empty object because lodash `merge` mutates first argument
-		const mergedAttributes = merge({}, blockAttributes, item.attributes);
+		const mergedAttributes = getCleanDisplayIBAttributes(
+			blockAttributes,
+			item.attributes
+		);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};

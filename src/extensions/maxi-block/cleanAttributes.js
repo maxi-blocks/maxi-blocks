@@ -388,6 +388,11 @@ const flatNewAttributes = (
 
 			if (shouldPreserveAttribute) result[key] = value;
 			else {
+				if (breakpoint === 'xxl' && value === generalAttr) {
+					result[key] = undefined;
+					return;
+				}
+
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -694,6 +699,7 @@ const cleanAttributes = ({
 			});
 
 			return (
+				!isNil(value) &&
 				value !== attributes[key] &&
 				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);

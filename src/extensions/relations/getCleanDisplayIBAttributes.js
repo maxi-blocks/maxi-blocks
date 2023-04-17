@@ -27,7 +27,8 @@ const getCleanDisplayIBAttributes = (blockAttributes, IBAttributes) => {
 
 			if (
 				xxlKey in blockAttributes &&
-				blockAttributes[xxlKey] !== mergedAttributes[xxlKey]
+				blockAttributes[xxlKey] !== mergedAttributes[xxlKey] &&
+				mergedAttributes[xxlKey] === mergedAttributes[key]
 			) {
 				delete mergedAttributes[xxlKey];
 			}

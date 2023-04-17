@@ -9,7 +9,7 @@ import getTempAttributes from './getTempAttributes';
 /**
  * External dependencies
  */
-import { isEqual, compact } from 'lodash';
+import { isEqual, compact, isNil } from 'lodash';
 
 const getCleanResponseIBAttributes = (
 	newAttributesObj,
@@ -67,6 +67,12 @@ const getCleanResponseIBAttributes = (
 			newXXLUndefinedAttrs.forEach(attr => {
 				if (filteredAttributesObj[attr] !== cleanAttributesObject[attr])
 					cleanAttributesObject[attr] = filteredAttributesObj[attr];
+				else if (
+					isNil(cleanAttributesObject[attr]) &&
+					cleanAttributesObject[attr.replace('xxl', 'general')]
+				)
+					cleanAttributesObject[attr] =
+						cleanAttributesObject[attr.replace('xxl', 'general')];
 			});
 		}
 	}

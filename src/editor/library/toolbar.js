@@ -402,7 +402,7 @@ const LibraryToolbar = props => {
 	);
 
 	const manageSessions = () => {
-		const url = 'https://my.maxiblocks.com/manage-sessions?plugin';
+		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
 		window.open(url, '_blank')?.focus();
 	};
 
@@ -536,10 +536,7 @@ const LibraryToolbar = props => {
 				<>
 					<div className='maxi-cloud-container__patterns__top-menu__input'>
 						<TextControl
-							placeholder={__(
-								'Input your Maxi email',
-								'maxi-blocks'
-							)}
+							placeholder={__('Pro user email', 'maxi-blocks')}
 							value={userEmail}
 							onChange={value => setUserEmail(value)}
 						/>
@@ -552,10 +549,10 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-						label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
+						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => onClickConnect(userEmail)}
 					>
-						{__('Connect to Maxi Pro Account', 'maxi-blocks')}
+						{__('Sign in', 'maxi-blocks')}
 					</Button>
 				</>
 			)}
@@ -593,7 +590,7 @@ const LibraryToolbar = props => {
 							}}
 						/>
 					)}
-					{isPro && !isBeta && !isMaxiProActive && !userName && (
+					{/* {isPro && !isBeta && !isMaxiProActive && !userName && (
 						<ToolbarButton
 							label={__('Go Pro', 'maxi-blocks')}
 							onClick={() =>
@@ -603,7 +600,7 @@ const LibraryToolbar = props => {
 								)
 							}
 						/>
-					)}
+					)} */}
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>
 			)}

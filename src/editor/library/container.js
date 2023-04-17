@@ -1099,7 +1099,7 @@ const LibraryContainer = props => {
 									return itemsReturn;
 								}}
 							/>
-							{!isMaxiProActive && !isBeta && !userName && (
+							{/* {!isMaxiProActive && !isBeta && !userName && (
 								<Button
 									type='button'
 									label='Go Pro'
@@ -1109,7 +1109,7 @@ const LibraryContainer = props => {
 								>
 									{__('Go Pro', 'maxi-blocks')}
 								</Button>
-							)}
+							)} */}
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
 							<CustomMenuSelect

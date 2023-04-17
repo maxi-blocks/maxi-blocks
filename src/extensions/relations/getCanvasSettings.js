@@ -127,7 +127,7 @@ const getCanvasSettings = ({ name }) => [
 				blockStyle,
 				ignoreMediaAttributes: true,
 			}),
-		styleAttrs: ['type', 'order'],
+		styleAttrs: ['type', 'order', 'id'],
 	},
 	{
 		sid: 'b',

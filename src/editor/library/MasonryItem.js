@@ -87,7 +87,6 @@ const MasonryItem = props => {
 								cost={cost}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
-								isMaxiProActive={isMaxiProActive}
 								isPro={isPro}
 								isBeta={isBeta}
 								onSelect={onSelect}

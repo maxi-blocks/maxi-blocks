@@ -15,7 +15,7 @@ import {
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import { setScreenSize } from '../styles';
-import { authConnect } from '../../editor/auth';
+import { authConnect, getMaxiCookieKey } from '../../editor/auth';
 
 /**
  * External dependencies
@@ -256,21 +256,18 @@ wp.domReady(() => {
 		}
 	});
 
-	const { receiveMaxiProStatus } = resolveSelect('maxiBlocks/pro');
-	receiveMaxiProStatus().then(data => {
-		console.log('data dom');
-		console.log(data);
-		console.log(typeof data);
-		if (data?.status === 'no') authConnect(false);
-		if (typeof data === 'string') {
-			const dataObj = JSON.parse(data);
-			if (dataObj?.status === 'no') authConnect(false);
-			else
-				Object.keys(dataObj).forEach(email => {
-					console.log('email');
-					console.log(email);
-					authConnect(false, email);
-				});
-		}
-	});
+	// authentication for maxi pro
+	const maxiCookie = getMaxiCookieKey();
+
+	if (maxiCookie) {
+		const { receiveMaxiProStatus } = resolveSelect('maxiBlocks/pro');
+		const { email } = maxiCookie;
+		receiveMaxiProStatus().then(data => {
+			if (typeof data === 'string') {
+				const dataObj = JSON.parse(data);
+				if (dataObj?.status === 'no') authConnect();
+				else authConnect(false, email);
+			}
+		});
+	}
 });

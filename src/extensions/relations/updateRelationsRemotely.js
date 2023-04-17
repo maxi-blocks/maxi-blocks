@@ -55,7 +55,11 @@ const updateRelationsRemotely = ({
 			const relationBGLayers = relationsAttributes['background-layers'];
 			const blockBGLayers = blockAttributes['background-layers'];
 
-			if (relationBGLayers.length !== blockBGLayers.length) {
+			if (
+				relationBGLayers &&
+				blockBGLayers &&
+				relationBGLayers.length !== blockBGLayers.length
+			) {
 				if (blockBGLayers.length === 0)
 					relationsAttributes['background-layers'] = [];
 				else {

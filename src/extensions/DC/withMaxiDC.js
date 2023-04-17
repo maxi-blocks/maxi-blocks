@@ -86,8 +86,12 @@ const withMaxiDC = createHigherOrderComponent(
 						let newContent = await getDCContent(
 							dynamicContentProps
 						);
+						const newContainsHTML =
+							postTaxonomyLinksStatus &&
+							type === 'posts' &&
+							['categories', 'tags'].includes(field);
 
-						if (!postTaxonomyLinksStatus) {
+						if (!newContainsHTML) {
 							newContent = sanitizeDCContent(newContent);
 						}
 
@@ -102,9 +106,8 @@ const withMaxiDC = createHigherOrderComponent(
 								...(updateLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),
-								...(postTaxonomyLinksStatus !==
-									containsHTML && {
-									'dc-contains-html': postTaxonomyLinksStatus,
+								...(newContainsHTML !== containsHTML && {
+									'dc-contains-html': newContainsHTML,
 								}),
 							});
 						}

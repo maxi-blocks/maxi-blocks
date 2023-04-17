@@ -130,6 +130,8 @@ wp.domReady(() => {
 		const blockContainer =
 			editorWrapper?.querySelector('.is-root-container');
 
+		if (!blockContainer) return;
+
 		const editorWidth = editorWrapper?.offsetWidth ?? null;
 
 		const fullWidthElement = document.createElement('div');

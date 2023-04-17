@@ -1,9 +1,15 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { getClientIdFromUniqueId } from '../attributes';
 import { handleSetAttributes } from '../maxi-block';
 import { replaceAttrKeyBreakpoint } from '../styles';
+import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
 
@@ -45,18 +51,20 @@ const getCleanResponseIBAttributes = (
 	 * will display the correct value. If not, as it is on the example, IB component will
 	 * display the value from the block attributes on XXL, which is 20.
 	 */
-	if (breakpoint !== 'general') {
-		const newUndefinedAttrs = compact(
-			Object.entries(cleanAttributesObject).map(([key, value]) => {
-				if (key.endsWith(`-${breakpoint}`) && value === undefined)
-					return key;
 
-				return null;
-			})
-		);
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-		if (newUndefinedAttrs.length) {
-			newUndefinedAttrs.forEach(attr => {
+	const newUndefinedAttrs = compact(
+		Object.entries(cleanAttributesObject).map(([key, value]) => {
+			if (value === undefined) return key;
+
+			return null;
+		})
+	);
+
+	if (newUndefinedAttrs.length) {
+		newUndefinedAttrs.forEach(attr => {
+			if (breakpoint !== 'general') {
 				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
 					cleanAttributesObject[attr] = newAttributesObj[attr];
 					return;
@@ -73,8 +81,21 @@ const getCleanResponseIBAttributes = (
 				)
 					cleanAttributesObject[attr] =
 						cleanAttributesObject[breakpointAttrKey];
-			});
-		}
+
+				const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+				if (baseBreakpoint !== attrBreakpoint)
+					delete cleanAttributesObject[attr];
+			}
+
+			const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+			if (
+				attrBreakpoint !== 'general' &&
+				baseBreakpoint !== attrBreakpoint
+			)
+				delete cleanAttributesObject[attr];
+		});
 	}
 
 	// These attributes are necessary for styling, not need to save in IB

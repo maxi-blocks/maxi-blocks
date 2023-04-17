@@ -220,6 +220,7 @@ const RelationControl = props => {
 							...obj,
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
+
 				const { cleanAttributesObject, tempAttributes } =
 					getCleanResponseIBAttributes(
 						newAttributesObj,
@@ -246,7 +247,10 @@ const RelationControl = props => {
 				});
 
 				onChangeRelation(relations, item.id, {
-					attributes: cleanAttributesObject,
+					attributes: {
+						...item.attributes,
+						...cleanAttributesObject,
+					},
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

@@ -1668,7 +1668,18 @@ describe('cleanAttributes', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
-	it('Should save both XXL and general attribute if XXL attribute is already set', () => {
+	it('Should save both XXL and general attribute if XXL attribute is already set, with default xxl attribute', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xxl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
 		const obj = {
 			newAttributes: {
 				'test-general': '5',
@@ -1677,7 +1688,9 @@ describe('cleanAttributes', () => {
 			attributes: {
 				'test-xxl': '4',
 			},
-			defaultAttributes: {},
+			defaultAttributes: {
+				'test-xxl': '100',
+			},
 		};
 
 		const result = cleanAttributes(obj);

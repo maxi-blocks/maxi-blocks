@@ -47,6 +47,37 @@ const updateRelationsRemotely = ({
 
 		const prefix = selectedSettings?.prefix || '';
 
+		const relationsAttributes = item.attributes || {};
+
+		// In case relation attributes contain background layers, check if there are the same
+		// amount of layers in the block attributes. If not, remove the relation attributes.
+		if (item.sid === 'bgl') {
+			const relationBGLayers = relationsAttributes['background-layers'];
+			const blockBGLayers = blockAttributes['background-layers'];
+
+			if (
+				relationBGLayers &&
+				blockBGLayers &&
+				relationBGLayers.length !== blockBGLayers.length
+			) {
+				if (blockBGLayers.length === 0)
+					relationsAttributes['background-layers'] = [];
+				else {
+					relationBGLayers.forEach(({ id }) => {
+						const index = blockBGLayers.findIndex(
+							({ id: blockId }) => blockId === id
+						);
+
+						if (index === -1)
+							relationsAttributes['background-layers'] =
+								relationsAttributes['background-layers'].filter(
+									({ id: relationId }) => relationId !== id
+								);
+					});
+				}
+			}
+		}
+
 		const { cleanAttributesObject, tempAttributes } =
 			getCleanResponseIBAttributes(
 				item.attributes,

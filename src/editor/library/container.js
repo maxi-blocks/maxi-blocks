@@ -399,8 +399,6 @@ const LibraryContainer = props => {
 		layerOrder,
 		isInserting,
 		onInsert,
-		isBeta,
-		userName,
 	} = props;
 
 	const {
@@ -1099,17 +1097,6 @@ const LibraryContainer = props => {
 									return itemsReturn;
 								}}
 							/>
-							{/* {!isMaxiProActive && !isBeta && !userName && (
-								<Button
-									type='button'
-									label='Go Pro'
-									className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-									href='https://maxiblocks.com/go/pro-library'
-									target='_blank'
-								>
-									{__('Go Pro', 'maxi-blocks')}
-								</Button>
-							)} */}
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
 							<CustomMenuSelect

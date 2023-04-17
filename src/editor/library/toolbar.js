@@ -492,7 +492,7 @@ const LibraryToolbar = props => {
 			{isMaxiProActive && userName && (
 				<div>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						{__('Signed in as: ', 'maxi-blocks')}
+						{__('Signed in: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
 					</h5>
 					<Button
@@ -532,7 +532,7 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{!isMaxiProActive && !userName && (
+			{type === 'patterns' && !isMaxiProActive && !userName && (
 				<>
 					<div className='maxi-cloud-container__patterns__top-menu__input'>
 						<TextControl
@@ -590,17 +590,6 @@ const LibraryToolbar = props => {
 							}}
 						/>
 					)}
-					{/* {isPro && !isBeta && !isMaxiProActive && !userName && (
-						<ToolbarButton
-							label={__('Go Pro', 'maxi-blocks')}
-							onClick={() =>
-								window.open(
-									'https://maxiblocks.com/go/pro-library',
-									'_blank'
-								)
-							}
-						/>
-					)} */}
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>
 			)}

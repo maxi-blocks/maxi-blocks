@@ -10,7 +10,7 @@ import getTempAttributes from './getTempAttributes';
 /**
  * External dependencies
  */
-import { isEqual, compact, isNil } from 'lodash';
+import { compact, isNil } from 'lodash';
 
 const getCleanResponseIBAttributes = (
 	newAttributesObj,
@@ -20,20 +20,9 @@ const getCleanResponseIBAttributes = (
 	breakpoint,
 	prefix
 ) => {
-	const filteredAttributesObj = Object.entries(newAttributesObj).reduce(
-		(acc, [key, value]) => {
-			const originalValue = blockAttributes[key];
-
-			if (!isEqual(originalValue, value)) acc[key] = value;
-
-			return acc;
-		},
-		{}
-	);
-
 	const cleanAttributesObject = getRelatedAttributes({
 		IBAttributes: handleSetAttributes({
-			obj: filteredAttributesObj,
+			obj: newAttributesObj,
 			attributes: blockAttributes,
 			clientId: getClientIdFromUniqueId(uniqueID),
 			onChange: response => response,
@@ -68,10 +57,8 @@ const getCleanResponseIBAttributes = (
 
 		if (newUndefinedAttrs.length) {
 			newUndefinedAttrs.forEach(attr => {
-				if (
-					filteredAttributesObj[attr] !== cleanAttributesObject[attr]
-				) {
-					cleanAttributesObject[attr] = filteredAttributesObj[attr];
+				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
+					cleanAttributesObject[attr] = newAttributesObj[attr];
 					return;
 				}
 

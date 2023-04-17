@@ -34,6 +34,8 @@ const updateRelationsRemotely = ({
 	const { uniqueID } = blockAttributes;
 
 	Object.values(relations).forEach(item => {
+		if (isEmpty(item.attributes)) return;
+
 		if (item.uniqueID !== uniqueID) {
 			newRelations.push(item);
 

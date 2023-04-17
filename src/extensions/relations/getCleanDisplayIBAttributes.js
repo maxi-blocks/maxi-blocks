@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
+import { replaceAttrKeyBreakpoint } from '../styles/utils';
 
 /**
  * External dependencies
@@ -21,17 +22,23 @@ const getCleanDisplayIBAttributes = (blockAttributes, IBAttributes) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		if (breakpoint === 'general') {
-			const cleanKey = key.replace('-general', '');
+			['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+				const breakpointAttrKey = replaceAttrKeyBreakpoint(
+					key,
+					breakpoint
+				);
 
-			const xxlKey = `${cleanKey}-xxl`;
+				if (!(breakpointAttrKey in blockAttributes)) return;
 
-			if (
-				xxlKey in blockAttributes &&
-				blockAttributes[xxlKey] !== mergedAttributes[xxlKey] &&
-				mergedAttributes[xxlKey] === mergedAttributes[key]
-			) {
-				delete mergedAttributes[xxlKey];
-			}
+				if (breakpoint === 'xxl') {
+					if (
+						blockAttributes[key] !==
+							mergedAttributes[breakpointAttrKey] &&
+						!(breakpointAttrKey in IBAttributes)
+					)
+						delete mergedAttributes[breakpointAttrKey];
+				}
+			});
 		}
 	});
 

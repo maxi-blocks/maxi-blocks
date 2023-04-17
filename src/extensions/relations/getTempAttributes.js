@@ -9,7 +9,7 @@ import {
 } from '../styles';
 
 const getTempAttributes = (
-	selectedSettingsObj,
+	selectedSettingsObj = {},
 	cleanAttributesObject,
 	blockAttributes,
 	breakpoint,

@@ -9,6 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,6 +24,7 @@ import {
 	isValidEmail,
 	getUserName,
 	logOut,
+	getMaxiCookieKey,
 } from '../auth';
 
 /**
@@ -190,9 +192,9 @@ const MaxiModal = props => {
 		setIsMaxiProExpired(isProSubExpired());
 	}, [type]);
 
-	console.log('isMaxiProActive', isMaxiProActive);
-	console.log('isMaxiProExpired', isMaxiProExpired);
-	console.log('userName', userName);
+	// console.log('isMaxiProActive', isMaxiProActive);
+	// console.log('isMaxiProExpired', isMaxiProExpired);
+	// console.log('userName', userName);
 
 	const onClickConnect = email => {
 		const isValid = isValidEmail(email);
@@ -205,6 +207,7 @@ const MaxiModal = props => {
 						console.log('user is back');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
+							setIsMaxiProExpired(isProSubExpired());
 							setUserName(getUserName());
 							console.log('set user name');
 							console.log('username', getUserName());
@@ -214,9 +217,38 @@ const MaxiModal = props => {
 			);
 
 			authConnect(true, email).then(() => {
-				setIsMaxiProActive(isProSubActive());
-				setIsMaxiProExpired(isProSubExpired());
-				setUserName(getUserName());
+				console.log('response from onClickConnect');
+				const { receiveMaxiProStatus } =
+					resolveSelect('maxiBlocks/pro');
+				receiveMaxiProStatus().then(data => {
+					if (typeof data === 'string') {
+						const proJson = JSON.parse(data);
+						console.log('proJson');
+						console.log(proJson);
+						const info = proJson[email];
+						const maxiCookie = getMaxiCookieKey();
+						if (info && maxiCookie) {
+							const { key } = maxiCookie;
+							console.log('key', key);
+							const { name } = info;
+							const isActive =
+								info &&
+								info?.key === key &&
+								info?.status === 'yes';
+							const isExpired =
+								info &&
+								info?.key === key &&
+								info?.status === 'expired';
+							setUserName(name);
+							setIsMaxiProActive(isActive);
+							setIsMaxiProExpired(isExpired);
+						}
+					}
+				});
+				// console.log('isProSubActive()', isProSubActive());
+				// console.log('isProSubExpired()', isProSubExpired());
+				// console.log('getUserName()', getUserName());
+				// console.log('===================================');
 			});
 		} else setShowNotValidEmail(true);
 	};

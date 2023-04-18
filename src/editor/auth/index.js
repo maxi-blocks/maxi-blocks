@@ -99,7 +99,6 @@ export const processLocalActivation = (email, name, status, key) => {
 
 	console.log('obj', obj);
 	const objString = JSON.stringify(obj);
-	console.log('objString', objString);
 
 	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 };
@@ -164,7 +163,7 @@ export async function authConnect(withRedirect = false, email = false) {
 				'Content-Type': 'application/json',
 				'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
 			},
-			body: JSON.stringify({ email: useEmail, cookie: cookieKey }),
+			body: JSON.stringify({ email: useEmail, cookie: key }),
 		};
 
 		fetch(fetchUrl, fetchOptions)

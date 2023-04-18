@@ -523,12 +523,20 @@ const LibraryToolbar = props => {
 						)}
 					</h5>
 					<Button
-						key='maxi-cloud-toolbar__button__sing-out'
+						key='maxi-cloud-toolbar__button__manage-sessions'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
 						label={__('Manage sessions', 'maxi-blocks')}
 						onClick={() => manageSessions()}
 					>
 						{__('Manage sessions', 'maxi-blocks')}
+					</Button>
+					<Button
+						key='maxi-cloud-toolbar__button__sing-out'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+						label={__('Sign out', 'maxi-blocks')}
+						onClick={onLogOut}
+					>
+						{__('Sign out', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}

@@ -288,6 +288,7 @@ const interactionBuilderSettings = {
 					{...props}
 					hideAlignment
 					disableCustomFormats
+					forceIndividualChanges
 				/>
 			),
 			helper: props =>

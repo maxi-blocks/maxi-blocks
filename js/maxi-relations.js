@@ -387,7 +387,18 @@ class Relation {
 
 		const getBreakpointValues = css => {
 			this.breakpoints.forEach(breakpoint => {
-				if (Object.prototype.hasOwnProperty.call(css, breakpoint)) {
+				const containsBreakpoint = Object.prototype.hasOwnProperty.call(
+					css,
+					breakpoint
+				);
+
+				if (!containsBreakpoint) return;
+
+				const hasStyles = css[breakpoint].styles.isArray
+					? css[breakpoint].styles.length > 0
+					: Object.keys(css[breakpoint].styles).length > 0;
+
+				if (hasStyles) {
 					let { breakpoint: breakpointValue } = css[breakpoint];
 
 					breakpointValue =

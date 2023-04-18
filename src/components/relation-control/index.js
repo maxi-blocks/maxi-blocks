@@ -29,6 +29,7 @@ import getIBOptionsFromBlockData from '../../extensions/relations/getIBOptionsFr
 import { getSelectedIBSettings } from '../../extensions/relations/utils';
 import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
 import getIBStyles from '../../extensions/relations/getIBStyles';
+import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
 
 /**
  * External dependencies
@@ -39,7 +40,6 @@ import { capitalize, cloneDeep, isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');

@@ -129,6 +129,19 @@ const updateRelationsRemotely = ({
 		updateBlockAttributes(blockTriggerClientId, {
 			relations: newRelations,
 		});
+
+		const getUniqueID = clientID =>
+			select('core/block-editor').getBlockAttributes(clientID).uniqueID;
+
+		// eslint-disable-next-line no-console
+		console.log(
+			`Relations updated for ${getUniqueID(
+				blockTriggerClientId
+			)} as a result of ${getUniqueID(
+				blockTargetClientId
+			)} change. The new 'relations' attribute is: `,
+			newRelations
+		);
 	}
 };
 

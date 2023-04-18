@@ -45,13 +45,13 @@ import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
+import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 
 /**
  * Style Component

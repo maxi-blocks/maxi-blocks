@@ -292,7 +292,7 @@ describe('getIBStyles', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
-	it('Should return the correct objext for Typography on a XXL baseBreakpoint and XL deviceType', () => {
+	it('Should return the correct object for Typography on a XXL baseBreakpoint and XL deviceType', () => {
 		const stylesObj = {
 			xl: {
 				'font-size': '20px',

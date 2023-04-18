@@ -15,7 +15,7 @@ import getIBStylesObj from './getIBStylesObj';
  * External dependencies
  */
 import { diff } from 'deep-object-diff';
-import { isEmpty } from 'lodash';
+import { isEmpty, merge } from 'lodash';
 
 const updateRelationsRemotely = ({
 	blockTriggerClientId,
@@ -87,17 +87,15 @@ const updateRelationsRemotely = ({
 				item.uniqueID,
 				selectedSettings,
 				breakpoint,
-				prefix
+				prefix,
+				item.sid
 			);
 
 		const styles = getIBStyles({
 			stylesObj: getIBStylesObj({
 				clientId: blockTargetClientId,
 				sid: item.sid,
-				attributes: {
-					...cleanAttributesObject,
-					...tempAttributes,
-				},
+				attributes: merge({}, cleanAttributesObject, tempAttributes),
 				blockAttributes,
 				breakpoint,
 			}),

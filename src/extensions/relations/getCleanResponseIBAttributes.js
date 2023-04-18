@@ -24,7 +24,8 @@ const getCleanResponseIBAttributes = (
 	uniqueID,
 	selectedSettingsObj,
 	breakpoint,
-	prefix
+	prefix,
+	sid
 ) => {
 	const cleanAttributesObject = getRelatedAttributes({
 		IBAttributes: handleSetAttributes({
@@ -36,6 +37,7 @@ const getCleanResponseIBAttributes = (
 		}),
 		props: blockAttributes,
 		relatedAttributes: selectedSettingsObj.relatedAttributes ?? [],
+		sid,
 	});
 
 	/**
@@ -104,7 +106,8 @@ const getCleanResponseIBAttributes = (
 		cleanAttributesObject,
 		blockAttributes,
 		breakpoint,
-		prefix
+		prefix,
+		sid
 	);
 
 	return {

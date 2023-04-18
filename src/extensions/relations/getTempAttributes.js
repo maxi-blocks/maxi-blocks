@@ -13,38 +13,67 @@ const getTempAttributes = (
 	cleanAttributesObject,
 	blockAttributes,
 	breakpoint,
-	prefix
+	prefix,
+	sid
 ) => {
 	const tempAttributes = {};
 
 	if (selectedSettingsObj.styleAttrs)
 		selectedSettingsObj.styleAttrs.forEach(attrKey => {
-			if (
-				attrKey in cleanAttributesObject ||
-				`${attrKey}-${breakpoint}` in cleanAttributesObject
-			)
-				return;
+			const getValue = (key, props, returnValue = false) => {
+				const attrsToCompare = props ?? blockAttributes;
 
-			let value = getLastBreakpointAttribute({
-				target: attrKey,
-				attributes: blockAttributes,
-				breakpoint,
-			});
+				if (
+					key in cleanAttributesObject ||
+					`${key}-${breakpoint}` in cleanAttributesObject
+				)
+					return null;
 
-			if (value)
-				tempAttributes[getAttributeKey(attrKey, null, '', breakpoint)] =
-					value;
-			else {
-				value = getAttributeValue({
-					target: attrKey,
-					props: blockAttributes,
-					prefix,
+				let value = getLastBreakpointAttribute({
+					target: key,
+					attributes: attrsToCompare,
+					breakpoint,
 				});
 
-				if (value)
-					tempAttributes[getAttributeKey(attrKey, null, prefix)] =
+				if (value && !returnValue)
+					tempAttributes[getAttributeKey(key, null, '', breakpoint)] =
 						value;
-			}
+				else if (value) return value;
+				else {
+					value = getAttributeValue({
+						target: key,
+						props: attrsToCompare,
+						prefix,
+					});
+
+					if (value && !returnValue)
+						tempAttributes[getAttributeKey(key, null, prefix)] =
+							value;
+					else if (value) return value;
+				}
+
+				return null;
+			};
+
+			if (sid && sid === 'bgl') {
+				if ('background-layers' in cleanAttributesObject) {
+					if (!('background-layers' in tempAttributes))
+						tempAttributes['background-layers'] = [];
+
+					cleanAttributesObject['background-layers'].forEach(
+						(layer, i) => {
+							tempAttributes['background-layers'][i] = {
+								...tempAttributes['background-layers'][i],
+								[attrKey]: getValue(
+									attrKey,
+									blockAttributes['background-layers'][i],
+									true
+								),
+							};
+						}
+					);
+				}
+			} else tempAttributes[attrKey] = getValue(attrKey);
 		});
 
 	// In some cases we need to force the adding of colours to the IB styles

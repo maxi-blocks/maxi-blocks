@@ -83,7 +83,7 @@ class MaxiBlocks_Local_Fonts
             $array[$key] = json_decode($value, true);
         }
 
-        $array = array_filter($array, $this->filterNull());
+        $array = array_filter($array, $this->filterNull);
 
         $array_all = array_merge_recursive(...$array);
 

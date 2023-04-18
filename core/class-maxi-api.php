@@ -755,34 +755,17 @@ if (!class_exists('MaxiBlocks_API')):
             return $pro;
         }
 
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public function set_maxi_blocks_pro_status($data)
         {
-            $this->write_log('==================');
             $dataString = $data['data'];
             $dataType = gettype($dataString);
-            $this->write_log($dataString);
-            $this->write_log('gettype(data)');
-            $this->write_log($dataType);
-
             if(get_option('maxi_pro')) {
                 $oldData = json_decode(get_option('maxi_pro'));
-                $this->write_log('$oldData');
-                $this->write_log($oldData);
-                $this->write_log(gettype($oldData));
+
             }
 
             if($dataString) {
                 update_option('maxi_pro', $dataString);
-                $this->write_log('updated');
                 return $dataString;
             }
             return false;

@@ -40,9 +40,17 @@ import Link from '../link';
 /**
  * TextLink
  */
+
 const LinkContent = props => {
-	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
-		props;
+	const {
+		onChange,
+		isList,
+		textLevel,
+		onClose,
+		blockStyle,
+		styleCard,
+		sendData,
+	} = props;
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
@@ -94,6 +102,7 @@ const LinkContent = props => {
 	}, [formatValue.start, formatValue.end]);
 
 	useEffect(() => {
+		sendData(linkValue);
 		if (isEmpty(linkValue.url) && Object.keys(linkValue).length > 1)
 			onClose();
 	}, [linkValue.url]);
@@ -271,19 +280,27 @@ const TextLink = props => {
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
-
+	const [data, setData] = useState(createLinkValue({}));
+	const sendData = data1 => {
+		setData(data1);
+	};
 	if (!dcStatus)
 		return (
 			<ToolbarPopover
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
-				className='toolbar-item__text-link'
+				className={
+					data.url !== ''
+						? 'toolbar-item__link--active toolbar-item__text-link'
+						: 'toolbar-item__text-link'
+				}
 			>
 				<ToolbarContext.Consumer>
 					{({ isOpen, onClose }) => {
 						if (isOpen)
 							return (
 								<LinkContent
+									sendData={sendData}
 									isOpen={isOpen}
 									onClose={onClose}
 									{...props}

@@ -130,12 +130,6 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('33');
 
-		// Icon position
-		await page.$eval(
-			'.maxi-tabs-control__button.maxi-tabs-control__button-bottom',
-			el => el.focus()
-		);
-
 		// Icon stroke color
 		let colorControls = await page.$$('.maxi-color-control');
 		await editColorControl({

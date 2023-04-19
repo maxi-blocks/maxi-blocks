@@ -424,6 +424,14 @@ class MaxiBlocks_Styles
 
                     @list($font, $font_weights, $font_styles) = $sc_fonts;
                 }
+
+                if (isset($font_data['weight']) && !in_array($font_data['weight'], $font_weights)) {
+                    $font_weights = [[...$font_weights, intval($font_data['weight'])]];
+                }
+
+                if (isset($font_data['style']) && !in_array($font_data['style'], $font_styles)) {
+                    $font_styles = [[...$font_styles, intval($font_data['style'])]];
+                }
             }
 
             if ($font) {
@@ -485,6 +493,10 @@ class MaxiBlocks_Styles
                                 $font_url,
                                 $font_data
                             );
+
+                            if (is_array($font_weight)) {
+                                $font_weight = implode('-', $font_weight);
+                            }
 
                             wp_enqueue_style(
                                 $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),

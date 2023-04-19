@@ -28,6 +28,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getIsHoverPreview from './getIsHoverPreview';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
@@ -52,7 +53,6 @@ import propsObjectCleaner from './propsObjectCleaner';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import getIsHoverPreview from './getIsHoverPreview';
 
 /**
  * Style Component

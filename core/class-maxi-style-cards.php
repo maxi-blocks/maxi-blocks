@@ -137,6 +137,10 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
+            if($GLOBALS['default_sc_styles_string']) {
+                return $GLOBALS['default_sc_styles_string'];
+            }
+            
             return false;
         }
 

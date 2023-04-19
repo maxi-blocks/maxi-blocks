@@ -159,9 +159,6 @@ class MaxiBlockComponent extends Component {
 		this.isReusable =
 			this.blockRef.current.parentNode.classList.contains('is-reusable');
 
-		// // Check if the block is in the preview iframe (for example on hover in block inserter)
-		// this.isHoverPreview = getIsHoverPreview(this.blockRef.current);
-
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(
 				this.blockRef.current,
@@ -670,7 +667,7 @@ class MaxiBlockComponent extends Component {
 			iframe ||
 			document;
 
-		if (!this.props.attributes.preview && !this.isHoverPreview)
+		if (!this.props.attributes.preview)
 			getEditorElement()
 				.getElementById(
 					getStylesWrapperId(this.props.attributes.uniqueID)

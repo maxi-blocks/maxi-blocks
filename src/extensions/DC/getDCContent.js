@@ -33,9 +33,11 @@ const getDCContent = async dataRequest => {
 		'dc-type': type,
 		'dc-field': field,
 		'dc-limit': limit,
+		'dc-delimiter-content': delimiter,
 		'dc-custom-date': isCustomDate,
 		'dc-format': format,
 		'dc-locale': locale,
+		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 	} = dataRequest;
 
 	let contentValue;
@@ -95,6 +97,31 @@ const getDCContent = async dataRequest => {
 
 			contentValue = parent[0].name;
 		}
+	}
+	if (['tags', 'categories'].includes(field)) {
+		const { getEntityRecord } = resolveSelect('core');
+		const idArray = contentValue;
+
+		const getItemContent = item =>
+			postTaxonomyLinksStatus
+				? `<a class="maxi-text-block--link"><span>${item.name}</span></a>`
+				: item.name;
+
+		const namesArray = await Promise.all(
+			idArray.map(async id => {
+				const taxonomyItem = await getEntityRecord(
+					'taxonomy',
+					nameDictionary[field],
+					id
+				);
+
+				return getItemContent(taxonomyItem);
+			})
+		);
+
+		contentValue = postTaxonomyLinksStatus
+			? `<span>${namesArray.join(`${delimiter} `)}</span>`
+			: namesArray.join(`${delimiter} `);
 	}
 
 	if (contentValue) return contentValue;

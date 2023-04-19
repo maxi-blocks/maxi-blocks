@@ -52,6 +52,7 @@ import propsObjectCleaner from './propsObjectCleaner';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import getIsHoverPreview from './getIsHoverPreview';
 
 /**
  * Style Component
@@ -129,7 +130,7 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
-		this.isHoverPreview = false;
+		this.isHoverPreview = getIsHoverPreview();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -158,10 +159,8 @@ class MaxiBlockComponent extends Component {
 		this.isReusable =
 			this.blockRef.current.parentNode.classList.contains('is-reusable');
 
-		// Check if the block is in the preview iframe (for example on hover in block inserter)
-		this.isHoverPreview = this.blockRef.current.ownerDocument
-			.querySelector('html')
-			.classList.contains('block-editor-block-preview__content-iframe');
+		// // Check if the block is in the preview iframe (for example on hover in block inserter)
+		// this.isHoverPreview = getIsHoverPreview(this.blockRef.current);
 
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(
@@ -519,7 +518,7 @@ class MaxiBlockComponent extends Component {
 				return wrapper;
 			};
 
-			const getPreviewWrapper = (element, onCreateWrapper) => {
+			const getPreviewWrapper = element => {
 				const elementHead = Array.from(
 					element.querySelectorAll('head')
 				).pop();
@@ -529,9 +528,12 @@ class MaxiBlockComponent extends Component {
 				).pop();
 
 				elementBody.classList.add('maxi-blocks--active');
+
+				const width =
+					elementBody.querySelector('.is-root-container').offsetWidth;
 				elementBody.setAttribute(
 					'maxi-blocks-responsive',
-					getWinBreakpoint(elementBody.offsetWidth)
+					getWinBreakpoint(width)
 				);
 
 				return getStylesWrapper(elementHead, () => {

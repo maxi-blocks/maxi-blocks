@@ -62,6 +62,7 @@ const StyleComponent = ({
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
+	isPreview = false,
 	isBreakpointChange,
 }) => {
 	const { breakpoints, currentBreakpoint } = useSelect(select => {
@@ -74,7 +75,7 @@ const StyleComponent = ({
 		return { breakpoints, currentBreakpoint };
 	});
 
-	if (isBreakpointChange) {
+	if (isBreakpointChange && !isPreview) {
 		const styleContent =
 			select('maxiBlocks/styles').getCSSCache(uniqueID)[
 				currentBreakpoint
@@ -95,12 +96,13 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	dispatch('maxiBlocks/styles').saveCSSCache(
-		uniqueID,
-		styles,
-		isIframe,
-		isSiteEditor
-	);
+	if (!isPreview)
+		dispatch('maxiBlocks/styles').saveCSSCache(
+			uniqueID,
+			styles,
+			isIframe,
+			isSiteEditor
+		);
 
 	return <style>{styleContent}</style>;
 };
@@ -126,7 +128,8 @@ class MaxiBlockComponent extends Component {
 		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		this.isPreviewBlock = !!getTemplatePartChooseList();
+		this.isTemplatePartPreview = !!getTemplatePartChooseList();
+		this.isHoverPreview = false;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -154,6 +157,11 @@ class MaxiBlockComponent extends Component {
 		// Check if the block is reusable
 		this.isReusable =
 			this.blockRef.current.parentNode.classList.contains('is-reusable');
+
+		// Check if the block is in the preview iframe (for example on hover in block inserter)
+		this.isHoverPreview = this.blockRef.current.ownerDocument
+			.querySelector('html')
+			.classList.contains('block-editor-block-preview__content-iframe');
 
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(
@@ -287,8 +295,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Return if it's a FSE preview block
-		if (this.isPreviewBlock) return;
+		// Return if it's a preview block
+		if (this.isTemplatePartPreview || this.isHoverPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -511,47 +519,53 @@ class MaxiBlockComponent extends Component {
 				return wrapper;
 			};
 
+			const getPreviewWrapper = (element, onCreateWrapper) => {
+				const elementHead = Array.from(
+					element.querySelectorAll('head')
+				).pop();
+
+				const elementBody = Array.from(
+					element.querySelectorAll('body')
+				).pop();
+
+				elementBody.classList.add('maxi-blocks--active');
+				elementBody.setAttribute(
+					'maxi-blocks-responsive',
+					getWinBreakpoint(elementBody.offsetWidth)
+				);
+
+				return getStylesWrapper(elementHead, () => {
+					if (
+						!element.getElementById(
+							'maxi-blocks-sc-vars-inline-css'
+						)
+					) {
+						const SC = select(
+							'maxiBlocks/style-cards'
+						).receiveMaxiActiveStyleCard();
+						if (SC) {
+							updateSCOnEditor(SC.value, null, element);
+						}
+					}
+				});
+			};
+
 			let wrapper;
 
 			const isSiteEditor = getIsSiteEditor();
-			if (isSiteEditor) {
+
+			if (this.isHoverPreview) {
+				wrapper = getPreviewWrapper(
+					this.blockRef.current.ownerDocument
+				);
+			} else if (isSiteEditor) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
 
-				if (this.isPreviewBlock) {
+				if (this.isTemplatePartPreview) {
 					const templateViewIframe = getTemplateViewIframe(uniqueID);
 					if (templateViewIframe) {
-						const iframeHead = Array.from(
-							templateViewIframe.querySelectorAll('head')
-						).pop();
-
-						const iframeBody = Array.from(
-							templateViewIframe.querySelectorAll('body')
-						).pop();
-
-						iframeBody.classList.add('maxi-blocks--active');
-						iframeBody.setAttribute(
-							'maxi-blocks-responsive',
-							getWinBreakpoint(iframeBody.offsetWidth)
-						);
-
-						wrapper = getStylesWrapper(iframeHead, () => {
-							if (
-								!templateViewIframe.getElementById(
-									'maxi-blocks-sc-vars-inline-css'
-								)
-							) {
-								const SC = select(
-									'maxiBlocks/style-cards'
-								).receiveMaxiActiveStyleCard();
-								if (SC) {
-									updateSCOnEditor(
-										SC.value,
-										templateViewIframe
-									);
-								}
-							}
-						});
+						wrapper = getPreviewWrapper(templateViewIframe);
 					}
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
@@ -567,32 +581,28 @@ class MaxiBlockComponent extends Component {
 			} else wrapper = getStylesWrapper(document.head);
 
 			if (wrapper) {
+				const styleComponent = (
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.props.deviceType}
+						blockBreakpoints={breakpoints}
+						isSiteEditor={isSiteEditor || this.isHoverPreview}
+						isBreakpointChange={isBreakpointChange}
+						isPreview={
+							this.isHoverPreview || this.isTemplatePartPreview
+						}
+					/>
+				);
+
 				// check if createRoot is available (since React 18)
 				if (typeof createRoot === 'function') {
 					if (isNil(this.rootSlot))
 						this.rootSlot = createRoot(wrapper);
-					this.rootSlot.render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-							isBreakpointChange={isBreakpointChange}
-						/>
-					);
+					this.rootSlot.render(styleComponent);
 				} else {
 					// for React 17 and below
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-						/>,
-						wrapper
-					);
+					render(styleComponent, wrapper);
 				}
 			}
 
@@ -658,14 +668,14 @@ class MaxiBlockComponent extends Component {
 			iframe ||
 			document;
 
-		if (!this.props.attributes.preview)
+		if (!this.props.attributes.preview && !this.isHoverPreview)
 			getEditorElement()
 				.getElementById(
 					getStylesWrapperId(this.props.attributes.uniqueID)
 				)
 				?.remove();
 
-		if (this.isReusable) {
+		if (this.isReusable && !this.isHoverPreview) {
 			this.widthObserver.disconnect();
 			getEditorElement()
 				.getElementById(

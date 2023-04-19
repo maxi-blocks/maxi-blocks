@@ -31,7 +31,7 @@ const getAlignmentFlexStyles = obj => {
 					};
 					break;
 				default:
-					return false;
+					break;
 			}
 	});
 

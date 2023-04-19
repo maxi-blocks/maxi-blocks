@@ -1668,6 +1668,30 @@ describe('cleanAttributes', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
+	it('Random test 17', () => {
+		const obj = {
+			newAttributes: {
+				'font-size-unit-general': 'em',
+				'font-size-unit-xxl': 'px',
+			},
+			attributes: {
+				'font-size-unit-general': 'px',
+				'font-size-unit-xxl': 'em',
+			},
+			defaultAttributes: {},
+			allowXXLOverGeneral: true,
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'font-size-unit-general': 'em',
+			'font-size-unit-xxl': 'px',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
 	it('On XXL baseBreakpoint and general breakpoint, when modifying a XXL attribute and there is a general attribute, if coincide, return undefined for XXL', () => {
 		select.mockImplementation(
 			jest.fn(() => {

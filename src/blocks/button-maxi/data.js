@@ -254,7 +254,7 @@ const interactionBuilderSettings = {
 					<IconControl
 						{...props}
 						svgType={svgType}
-						isInteractionBuilder
+						isIB
 						getIconWithColor={args =>
 							getIconWithColor(attributes, args)
 						}

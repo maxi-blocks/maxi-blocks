@@ -66,7 +66,7 @@ const handleSetAttributes = ({
 			attrExistOnBaseBreakpoint &&
 			defaultGeneralAttribute !== value
 		) {
-			response[attrLabelOnBaseBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = undefined;
 
 			return;
 		}

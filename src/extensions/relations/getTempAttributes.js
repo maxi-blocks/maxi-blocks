@@ -20,6 +20,10 @@ const getTempAttributes = (
 
 	if (selectedSettingsObj.styleAttrs)
 		selectedSettingsObj.styleAttrs.forEach(attrKey => {
+			/**
+			 * TODO: this piece of code is having a dual behavior: it's returning a value or setting a value.
+			 * Needs to be refactored to be more readable and maintainable.
+			 */
 			const getValue = (key, props, returnValue = false) => {
 				const attrsToCompare = props ?? blockAttributes;
 
@@ -73,7 +77,7 @@ const getTempAttributes = (
 						}
 					);
 				}
-			} else tempAttributes[attrKey] = getValue(attrKey);
+			} else getValue(attrKey);
 		});
 
 	// In some cases we need to force the adding of colours to the IB styles

@@ -228,7 +228,8 @@ const RelationControl = props => {
 						item.uniqueID,
 						selectedSettings,
 						deviceType,
-						prefix
+						prefix,
+						item.sid
 					);
 
 				const styles = getIBStyles({

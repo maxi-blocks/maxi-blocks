@@ -3,7 +3,7 @@
  */
 import getActiveStyleCard from '../getActiveStyleCard';
 import controls from './controls';
-import standardSC from '../../../../core/utils/defaultSC.json';
+import standardSC from '../../../../core/defaults/defaultSC.json';
 
 /**
  * External dependencies

@@ -546,23 +546,26 @@ class MaxiBlocks_Styles
         }
 
         if ($use_local_fonts) {
-            add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
-            function local_fonts_preload($html, $handle)
-            {
-                if (strpos($handle, 'maxi-font-') !== false) {
-                    $html = str_replace(
-                        "rel='stylesheet'",
-                        "rel='stylesheet preload'",
-                        $html
-                    );
-                    $html = str_replace(
-                        "media='all'",
-                        "as='style' crossorigin media='all'",
-                        $html
-                    );
-                }
-                return $html;
-            }
+            add_filter(
+                'style_loader_tag',
+                function ($html, $handle) {
+                    if (strpos($handle, 'maxi-font-') !== false) {
+                        $html = str_replace(
+                            "rel='stylesheet'",
+                            "rel='stylesheet preload'",
+                            $html
+                        );
+                        $html = str_replace(
+                            "media='all'",
+                            "as='style' crossorigin media='all'",
+                            $html
+                        );
+                    }
+                    return $html;
+                },
+                10,
+                2
+            );
         }
     }
 

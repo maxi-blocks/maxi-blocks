@@ -107,6 +107,16 @@ const dynamicContent = {
 	'dc-link-url': {
 		type: 'string',
 	},
+	'dc-post-taxonomy-links-status': {
+		type: 'boolean',
+	},
+	'dc-custom-delimiter-status': {
+		type: 'boolean',
+	},
+	'dc-delimiter-content': {
+		type: 'string',
+		default: '',
+	},
 	'dc-order': {
 		type: 'string',
 		default: 'desc',
@@ -114,6 +124,10 @@ const dynamicContent = {
 	'dc-accumulator': {
 		type: 'number',
 		default: 0,
+	},
+	'dc-contains-html': {
+		type: 'boolean',
+		default: false,
 	},
 };
 

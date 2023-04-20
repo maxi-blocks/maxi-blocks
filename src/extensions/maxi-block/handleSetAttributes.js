@@ -9,12 +9,12 @@ import { select } from '@wordpress/data';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import handleOnReset from '../attributes/handleOnReset';
+import cleanAttributes from './cleanAttributes';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import cleanAttributes from './cleanAttributes';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -26,6 +26,7 @@ const handleSetAttributes = ({
 	clientId = null,
 	defaultAttributes,
 	isStyleCard = false,
+	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
@@ -66,7 +67,7 @@ const handleSetAttributes = ({
 			attrExistOnBaseBreakpoint &&
 			defaultGeneralAttribute !== value
 		) {
-			response[attrLabelOnBaseBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = undefined;
 
 			return;
 		}
@@ -176,6 +177,7 @@ const handleSetAttributes = ({
 		attributes,
 		clientId,
 		defaultAttributes,
+		allowXXLOverGeneral,
 	});
 
 	return onChange(cleanedResponse);

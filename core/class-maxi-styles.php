@@ -411,6 +411,8 @@ class MaxiBlocks_Styles
 
         $use_local_fonts = (bool) get_option('local_fonts');
 
+        $loaded_fonts = [];
+
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
 
@@ -482,7 +484,36 @@ class MaxiBlocks_Styles
                     $font_url .= ':';
 
                     foreach ($font_weights as $font_weight) {
+                        if(!is_array($font_weight)) {
+                            $font_weight = [ $font_weight ];
+                        }
+
                         foreach ($font_styles as $font_style) {
+                            $already_loaded = false;
+
+                            if (in_array(
+                                [
+                                    'font' => $font,
+                                    'font_weight' => $font_weight,
+                                    'font_style' => $font_style,
+                                ],
+                                $loaded_fonts
+                            )) {
+                                $already_loaded = true;
+                            }
+
+                            foreach($font_weight as $weight) {
+                                foreach($loaded_fonts as $loaded_font) {
+                                    if(in_array($weight, $loaded_font['font_weight']) && $loaded_font['font'] === $font) {
+                                        $already_loaded = true;
+                                    }
+                                }
+                            }
+
+                            if ($already_loaded) {
+                                continue;
+                            }
+
                             $font_data = [
                                 'weight' => $font_weight,
                                 'style' => $font_style,
@@ -493,6 +524,12 @@ class MaxiBlocks_Styles
                                 $font_url,
                                 $font_data
                             );
+
+                            $loaded_fonts[] = [
+                                'font' => $font,
+                                'font_weight' => $font_weight,
+                                'font_style' => $font_style,
+                            ];
 
                             if (is_array($font_weight)) {
                                 $font_weight = implode('-', $font_weight);
@@ -509,23 +546,26 @@ class MaxiBlocks_Styles
         }
 
         if ($use_local_fonts) {
-            add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
-            function local_fonts_preload($html, $handle)
-            {
-                if (strpos($handle, 'maxi-font-') !== false) {
-                    $html = str_replace(
-                        "rel='stylesheet'",
-                        "rel='stylesheet preload'",
-                        $html
-                    );
-                    $html = str_replace(
-                        "media='all'",
-                        "as='style' crossorigin media='all'",
-                        $html
-                    );
-                }
-                return $html;
-            }
+            add_filter(
+                'style_loader_tag',
+                function ($html, $handle) {
+                    if (strpos($handle, 'maxi-font-') !== false) {
+                        $html = str_replace(
+                            "rel='stylesheet'",
+                            "rel='stylesheet preload'",
+                            $html
+                        );
+                        $html = str_replace(
+                            "media='all'",
+                            "as='style' crossorigin media='all'",
+                            $html
+                        );
+                    }
+                    return $html;
+                },
+                10,
+                2
+            );
         }
     }
 

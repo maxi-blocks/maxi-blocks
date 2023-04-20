@@ -227,8 +227,61 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 5 April 2023_
+_Updates: 20 April 2023_
 
+- Issue 4643 - fix php warnings
+- Issue 4748 - Font weight not working when font-family comes from SC
+- Issue 4720 - Fix reusable blocks editor crash
+- Translations pot file updates
+- Issue 4519 - Implement SC CSS served from JS instead static CSS
+- Issue 4695 - XXL and general attributes conflict on saving from XXL baseBreakpoint
+- Button Icon Position on IB
+- Issue 4515 - dc tags and cats
+- Issue 4434 - Implement 'handleSetAttributes' to IB
+- Issue 4724 - Hide button icon height fit content IB
+- Toolbar link ui
+- Fix blockMarginObserver
+- Bg layer on IB
+- Issue 4659 - Maxi toolbar hides secondary sidebar
+- Issue 4664 - Increase max number of Columns in a Row
+- Fixes transition migrator
+- Optimization - Remove main 'subscribe', remove 'marginValueCalculator' observer and introduce 'CSSCache' concept
+- Issue 4693 - Error on loading certain patterns
+- Issue:4653 Added background shape rotate scale flip settings
+- Issue 4636 - Image caption toolbar z index
+- Missing domain for translation texts
+- Issue 4673 - missing u in- olor
+- Issue 4675 - Border around the gradient colour picker
+- Fix button presets
+- Issue 4680 - Text font size limit in toolbar
+- Issue 4654 - accordion icon hover
+- Issue 4572 - Breadcrumbs disappear on Text Maxi
+- Issue 4662 - DC. Get by date and get alphabetical relations
+- Fix return for useEffect
+- Issue 4369 - FSE. 'home' slug support
+- Issue 4656 - fix pane header and content size settings
+- Issue 4650 - fix wrong css for non full width blocks
+- Image Maxi HoverPreview incongruence #4291
+- Issue 4630 - theme bugs
+- Issue 4467 - Toolbar settings cut off fix
+- Removing underline from links removes the link #4638
+- Issue 4307 - NC text element bugs
+- Issue 4612 - IB relation label substring
+- Fix Fatal error: Cannot redeclare filterNull()
+- Inherit border color for text-block
+- Issue 4507 - FSE. IB work fix on pattern inserting/block duplication/copy-paste
+- Issue 4322 - Font weight on family change
+- Issue - Fix button migrators
+- Issue 4233 - Button bottom gap remove
+- Disallowed template library for some blocks
+- Fixed Alignment bg color
+- Add 2 more custom css server errors to ignore
+- Issue 4610 minor button label spacing
+- Toolbar Background Color UI
+- Issue 4561 - load default font weight for sc fonts
+- Issue 4505 - Range tooltip position for long numbers
+- Fix Svg for  button icon border
+- Issue 3790 & 4222 - IB labels problem
 - Main Maxi block component optimization
 - Library loader
 - Issue 4514 - DC UI
@@ -258,7 +311,7 @@ _Updates: 5 April 2023_
 - Issue 4656 - fix pane header and content size settings
 - Issue 4369 - FSE. 'home' slug support
 - Fix return for useEffect
-- Issue 4662 – DC. Get by date and get alphabetical relations
+- Issue 4662 - DC. Get by date and get alphabetical relations
 - Issue 4572 - Breadcrumbs disappear on Text Maxi
 - Issue 4654 - accordion icon hover
 - Issue 4680 - Text font size limit in toolbar

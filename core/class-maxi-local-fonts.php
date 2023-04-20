@@ -86,6 +86,10 @@ class MaxiBlocks_Local_Fonts
 
         $array = array_filter($array, function ($arr) {$arr !== null && $arr !== false && $arr !== '';});
 
+        if (empty($array)) {
+            return false;
+        }
+
         $array_all = array_merge_recursive(...$array);
 
         return $array_all;

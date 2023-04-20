@@ -11,6 +11,7 @@ import { limitFields, limitTypes, renderedFields } from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
+import { getACFFieldContent } from './getACFData';
 
 /**
  * External dependencies
@@ -30,15 +31,23 @@ const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
 	const {
+		'dc-source': source,
 		'dc-type': type,
 		'dc-field': field,
 		'dc-limit': limit,
 		'dc-custom-date': isCustomDate,
 		'dc-format': format,
 		'dc-locale': locale,
+		'dc-acf-field': acfField,
 	} = dataRequest;
 
 	let contentValue;
+
+	if (source === 'acf') {
+		contentValue = await getACFFieldContent(acfField, data.id);
+
+		return contentValue;
+	}
 
 	if (
 		renderedFields.includes(field) &&

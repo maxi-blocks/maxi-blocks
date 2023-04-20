@@ -7,6 +7,10 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-source': {
+		type: 'string',
+		default: 'wp',
+	},
 	'dc-type': {
 		type: 'string',
 		default: 'posts',
@@ -114,6 +118,9 @@ const dynamicContent = {
 	'dc-accumulator': {
 		type: 'number',
 		default: 0,
+	},
+	'dc-acf-group': {
+		type: 'string',
 	},
 };
 

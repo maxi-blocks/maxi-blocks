@@ -13,7 +13,10 @@ import { SettingTabsControl } from '../../../../components';
 import Button from '../../../button';
 import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
-import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
+import {
+	excludeAttributes,
+	getOrganizedAttributes,
+} from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
 
@@ -143,12 +146,13 @@ const CopyPaste = props => {
 		copyStyles(blockAttributes);
 	};
 	const onPasteStyles = () => {
-		const styles = { ...copiedStyles };
+		// const styles = { ...copiedStyles };
 
-		if (copyPasteMapping._exclude)
-			copyPasteMapping._exclude.forEach(prop => {
-				if (styles[prop]) delete styles[prop];
-			});
+		// if (copyPasteMapping._exclude)
+		// 	copyPasteMapping._exclude.forEach(prop => {
+		// 		if (styles[prop]) delete styles[prop];
+		// 	});
+		const styles = excludeAttributes(copiedStyles, copyPasteMapping);
 
 		closeMoreSettings();
 

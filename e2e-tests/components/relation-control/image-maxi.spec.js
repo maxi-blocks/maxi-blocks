@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, saveDraft } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -43,6 +43,8 @@ describe('Image Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async (disableTransition = false) => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 

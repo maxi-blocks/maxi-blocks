@@ -98,6 +98,7 @@ const getImageInfo = url => {
 		jpeg: 'image/jpeg',
 		png: 'image/png',
 		gif: 'image/gif',
+		webp: 'image/webp',
 		// Add more mime types as needed
 	};
 
@@ -129,7 +130,9 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	if (!isEmpty(media))
 		return {
 			id: media[0].id,
-			url: media[0].media_details.sizes.full.source_url,
+			url:
+				media[0]?.media_details?.sizes?.full?.source_url ??
+				media[0].guid.rendered,
 		};
 
 	// In case the image is not found, let's fetch it from the Cloud server

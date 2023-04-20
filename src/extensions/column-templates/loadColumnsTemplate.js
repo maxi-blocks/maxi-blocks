@@ -70,19 +70,23 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	});
 };
 
-const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
+const loadColumnsTemplate = (templateName, clientId, breakpoint, numCol) => {
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks;
 	const isRowEmpty = !columnsBlockObjects.length;
 	// When inserting column, template should be loaded for general
 	const template = cloneDeep(
-		getColumnTemplate(templateName, isRowEmpty ? 'general' : breakpoint)
+		getColumnTemplate(
+			templateName,
+			isRowEmpty ? 'general' : breakpoint,
+			numCol
+		)
 	);
 
 	isRowEmpty
 		? loadTemplate(template, clientId)
-		: updateTemplate(template, columnsBlockObjects, clientId);
+		: updateTemplate(template, columnsBlockObjects, clientId, numCol);
 };
 
 export default loadColumnsTemplate;

@@ -20,14 +20,18 @@ const getColumnContent = (columns, breakpoint) => {
 	};
 };
 
-const getColumnTemplate = (templateName, breakpoint) => {
+const getColumnTemplate = (templateName, breakpoint, numCol) => {
 	let template = null;
 
 	Object.values(columnTemplates).forEach(colNum =>
 		Object.values(colNum).forEach(colRes => {
 			const res = find(colRes, e => e.name === templateName);
 
-			if (res) template = getColumnContent(res.sizes, breakpoint);
+			if (res)
+				template = getColumnContent(
+					res.sizes || Array(numCol).fill(1 / numCol),
+					breakpoint
+				);
 		})
 	);
 

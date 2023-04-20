@@ -182,7 +182,7 @@ const interactionBuilderSettings = {
 	block: [
 		{
 			sid: 'ic',
-			label: __('Icon colour'),
+			label: __('Icon colour', 'maxi-blocks'),
 			transitionTarget: [
 				transition.block.colour.target,
 				transition.block['colour two'].target,
@@ -262,6 +262,10 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getBackgroundStyles({ ...props, ...props.obj }).background,
 			target: ' .maxi-svg-icon-block__icon',
+			styleAttrs: [
+				'svg-background-active-media',
+				'svg-background-gradient-opacity',
+			],
 		},
 		{
 			sid: 'ib',

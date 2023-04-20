@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { RawHTML, Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
@@ -126,6 +126,7 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			'dc-status': dcStatus,
 			'dc-content': dcContent,
+			'dc-contains-html': dcContainsHTML,
 		} = attributes;
 
 		const className = 'maxi-text-block__content';
@@ -293,7 +294,13 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
+						<DCTagName className={className}>
+							{dcContainsHTML ? (
+								<RawHTML>{dcContent}</RawHTML>
+							) : (
+								dcContent
+							)}
+						</DCTagName>
 					)}
 					{!dcStatus && isList && (
 						<RichText

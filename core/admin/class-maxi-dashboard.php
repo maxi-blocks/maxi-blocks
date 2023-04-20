@@ -478,7 +478,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', self::$maxi_text_domain).'</p>';
             // $content .= $this->generate_setting($description, 'accessibility_option');
 
-            $content .= get_submit_button();
+            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -555,65 +555,65 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             //     'google_api_key_option',
             // );
 
-            // $content .= get_submit_button();
+            // $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
 
             // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Fonts and files', false);
+            // $content .= $this->generate_item_header('Fonts and files', false);
 
-            $description =
-                '<h4>' .
-                __('Serve Google fonts locally', self::$maxi_text_domain) .
-                '</h4>';
-            $description .=
-                '<p>' .
-                __(
-                    ' Local storage: Download, store and serve font files from a WordPress directory on your site. This method blocks Google’s tracking for web visitors. It can improve or degrade performance, depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.',
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
-            $description .=
-                '<p>' .
-                __(
-                    'Google servers: Serve Google font files directly from Google’s servers. It may impact
-            privacy (GDPR) if a web visitor’s IP address is revealed to Google.',
-                    self::$maxi_text_domain,
-                );
-            $description .=
-                '<i> ' . __('(Default)', self::$maxi_text_domain) . '</i></p>';
-            $content .= $this->generate_setting(
-                $description,
-                'local_fonts',
-                $this->local_fonts_upload(),
-            );
-            if ($font_uploads_dir_size > 0) {
-                $content .=
-                    '<p>' .
-                    __('Size of the local fonts:', 'maxi-blocks') .
-                    ' ' .
-                    $font_uploads_dir_size .
-                    __('MB', 'maxi-blocks') .
-                    '</p>';
+            // $description =
+            //     '<h4>' .
+            //     __('Serve Google fonts locally', self::$maxi_text_domain) .
+            //     '</h4>';
+            // $description .=
+            //     '<p>' .
+            //     __(
+            //         ' Local storage: Download, store and serve font files from a WordPress directory on your site. This method blocks Google’s tracking for web visitors. It can improve or degrade performance, depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
+            // $description .=
+            //     '<p>' .
+            //     __(
+            //         'Google servers: Serve Google font files directly from Google’s servers. It may impact
+            // privacy (GDPR) if a web visitor’s IP address is revealed to Google.',
+            //         self::$maxi_text_domain,
+            //     );
+            // $description .=
+            //     '<i> ' . __('(Default)', self::$maxi_text_domain) . '</i></p>';
+            // $content .= $this->generate_setting(
+            //     $description,
+            //     'local_fonts',
+            //     $this->local_fonts_upload(),
+            // );
+            // if ($font_uploads_dir_size > 0) {
+            //     $content .=
+            //         '<p>' .
+            //         __('Size of the local fonts:', 'maxi-blocks') .
+            //         ' ' .
+            //         $font_uploads_dir_size .
+            //         __('MB', 'maxi-blocks') .
+            //         '</p>';
 
-                if (!(bool) get_option('local_fonts')) {
-                    update_option('local_fonts_uploaded', false);
-                    $description =
-                        '<h4>' .
-                        __('Remove local fonts', 'maxi-blocks') .
-                        '</h4>';
-                    $content .= $this->generate_setting(
-                        $description,
-                        'remove_local_fonts',
-                        $this->remove_local_fonts(),
-                    );
-                }
-            }
+            //     if (!(bool) get_option('local_fonts')) {
+            //         update_option('local_fonts_uploaded', false);
+            //         $description =
+            //             '<h4>' .
+            //             __('Remove local fonts', 'maxi-blocks') .
+            //             '</h4>';
+            //         $content .= $this->generate_setting(
+            //             $description,
+            //             'remove_local_fonts',
+            //             $this->remove_local_fonts(),
+            //         );
+            //     }
+            // }
 
-            $content .= get_submit_button();
+            // $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
 
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header(
                 'Documentation & support',
@@ -636,7 +636,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read about Crisp GDPR terms', 'maxi-blocks') . '</a></p>';
 
             $content .= $this->generate_setting($description, 'support_chat');
-            $content .= get_submit_button();
+            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
 
             // $content .= '<p>'.__('For support please  ', self::$maxi_text_domain);
             // $content .= '<a href="" target="_blank"> '.__('post your question', self::$maxi_text_domain).'</a>';
@@ -814,7 +814,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
             // $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
             // $content .= $this->generate_breakpoint_inputs();
-            // $content .= get_submit_button();
+            // $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= '</div>'; // maxi-dashboard_main-content_accordion

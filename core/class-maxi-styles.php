@@ -409,7 +409,9 @@ class MaxiBlocks_Styles
             return;
         }
 
-        $use_local_fonts = (bool) get_option('local_fonts');
+        // Temporary disable local fonts
+        // $use_local_fonts = (bool) get_option('local_fonts');
+        $use_local_fonts = false;
 
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;

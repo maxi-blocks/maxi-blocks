@@ -142,6 +142,8 @@ Our resources will help you get started and master Maxi Blocks in no time:
 
 - **Dedicated support:** A support team available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
 
+- **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
+
 == Community & contributions ==
 
 Maxi Blocks is more than a plugin—it's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make Maxi Blocks even better:
@@ -316,51 +318,6 @@ _Updates: 20 April 2023_
 - Issue 4654 - accordion icon hover
 - Issue 4680 - Text font size limit in toolbar
 - Fix button presets
-
-
-_Updates: 28 March 2023_
-
-- Translations pot file
-- Issue 4406 - Modal items titles
-- Issue 4393 - Block indicators z-index
-- Issue 4124 - Column value on responsive resetting
-- Issue 4349 - Style cards test
-- Issue 4411 - Copy/paste UI
-- Issue 4416 - Baby toolbar z-index
-- Issue 4388 - svg-icon-maxi fit-height support
-- Issue 4392 - Scroll effects default values
-- Issue 4437 - Margin conflict on full width Containers
-- Transition migrator from old broken patterns
-- Issue 4419 - Show/hide fixes
-- Fix column outline after resetting
-- v1.0.0-RC1
-- Issue 4432 - fix IB relations dissapearing on switch to code editor
-- Issue 4368 - Replace bg shape image in copypasted block fix
-- Issue 4411 - Special paste UI
-- Issue 4447 - Only the last font weight from the page is loaded on frontend
-- Bump dns-packet from 5.3.1 to 5.4.0
-- Fix CustomCSS validations fake positives in tests
-- Lazy load and Suspense for blocks and inspectors
-- Update typesense node url
-- Issue 4468 - Popover arrow
-- Issue 4490 - Hides image dimension from toolbar
-- Issue 4464 - fix image disappearing on changing shape mask
-- Issue 4451 - Don't set unnecessary height for svg-icon-maxi
-- Issue 4359 - list markers
-- Issue 4499 - Paste part 3
-- Issue 4176 - image-maxi: canvas max-height fix
-- Issue 4360 - Correct column size styles on small devices
-- Issue 4411 - Special paste UI part 3
-- Issues 4487 & 4489 - Suspense Lazy load issues
-- Issue 3388 - DC
-- Issue 4394 - calculating margin value for different themes
-- Fix Maxi Blocks for WP 6.2 (beta 5) and 6.1.1
-- Bump webpack from 5.72.0 to 5.76.1
-- Issue 4510 button
-- Deal with version rollback for wp
-- Removes unused code in maxiBlockComponent.js
-- Add missing alt tag for parallax images
-- New block Loader
 
 == Upgrade Notice ==
 

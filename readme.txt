@@ -142,7 +142,7 @@ Our resources will help you get started and master Maxi Blocks in no time:
 
 - **Dedicated support:** A support team available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
 
-- **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
+- **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/wordpress-plugin-changelog).
 
 == Community & contributions ==
 

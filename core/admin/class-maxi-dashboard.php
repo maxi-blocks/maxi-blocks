@@ -772,21 +772,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '</p>';
 
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Beta 1.0', false);
+            // $content .= $this->generate_item_header('Beta 1.0', false);
 
-            $content .=
-                '<p>' .
-                __(
-                    'The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
 
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);

@@ -79,7 +79,7 @@
 		"@babel/plugin-transform-spread": "^7.18.9",
 		"@prettier/plugin-php": "^0.18.9",
 		"@wordpress/base-styles": "^4.7.0",
-		"@wordpress/e2e-test-utils": "^7.10.0",
+		"@wordpress/e2e-test-utils": "9.3.3",
 		"@wordpress/env": "^5.0.0",
 		"@wordpress/jest-preset-default": "^8.5.0",
 		"@wordpress/scripts": "^23.6.0",

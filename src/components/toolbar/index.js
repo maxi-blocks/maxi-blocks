@@ -170,6 +170,19 @@ const MaxiToolbar = memo(
 			setAnchorRef(ref.current);
 		}, [!!ref.current]);
 
+		// Hides original Gutenberg toolbar
+		useEffect(() => {
+			const originalToolbar = document.querySelector(
+				'.block-editor-block-contextual-toolbar'
+			);
+
+			if (originalToolbar) originalToolbar.style.display = 'none';
+
+			return () => {
+				if (originalToolbar) originalToolbar.style.display = 'block';
+			};
+		});
+
 		const breadcrumbStatus = () => {
 			const originalNestedBlocks = clientId
 				? getBlockParents(clientId)

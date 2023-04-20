@@ -121,7 +121,8 @@ const ResponsiveSelector = props => {
 			receiveMaxiBreakpoints,
 			receiveBaseBreakpoint,
 		} = select('maxiBlocks');
-		const { isListViewOpened, isInserterOpened } = select('core/edit-post');
+		const { isListViewOpened, isInserterOpened } =
+			select('core/edit-post') || select('core/edit-site');
 
 		const baseBreakpoint = receiveBaseBreakpoint();
 

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1
 Tested up to: 6.2
 Requires PHP: 7.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version (the “GPL”) and the Mozilla Public License, Version 2.0 (the “MPL”)
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

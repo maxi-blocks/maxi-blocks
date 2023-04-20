@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { cloneDeep, isNumber, isBoolean, isEmpty, isNil } from 'lodash';
+import getBreakpointFromAttribute from './getBreakpointFromAttribute';
 
 export const getIsValid = (val, cleaned = false) =>
 	(cleaned &&
@@ -90,3 +91,14 @@ export const getHoverAttributeKey = key =>
 
 // Accepts (possibly) hover attribute key and returns normal key.
 export const getNormalAttributeKey = hoverKey => hoverKey.replace(/-hover/, '');
+
+export const getAttrKeyWithoutBreakpoint = key => {
+	const breakpoint = getBreakpointFromAttribute(key);
+
+	const regex = new RegExp(`-${breakpoint}(?!.*-${breakpoint})`);
+
+	return key.replace(regex, '');
+};
+
+export const replaceAttrKeyBreakpoint = (key, breakpoint) =>
+	`${getAttrKeyWithoutBreakpoint(key)}-${breakpoint}`;

@@ -234,6 +234,15 @@ class MaxiBlocks_StyleCards
         $text_level_values = (object) $style_card_values->$text_level;
 
         $font = $text_level_values->{'font-family-general'};
+
+        /**
+         * Button case has an exception for font-family. If it's empty, it will use the
+         * font-family of the paragraph text level.
+         */
+        if ($text_level === 'button' && empty($font)) {
+            $font = $style_card_values->p['font-family-general'];
+        }
+
         $font_weights = [];
         $font_styles = [];
 

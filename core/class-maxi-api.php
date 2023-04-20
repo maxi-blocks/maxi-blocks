@@ -449,7 +449,7 @@ if (!class_exists('MaxiBlocks_API')):
             // Check if Maxi Blocks Theme is installed and active
             if (get_template() === 'maxi-theme') {
                 $template_part = $data['templatePart'];
-                $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
+                $is_template_part = isset($template_part) && strpos($template_part, 'maxi-theme//') !== false;
 
                 if ($is_template_part || $is_template) {
                     $template_name;
@@ -529,10 +529,14 @@ if (!class_exists('MaxiBlocks_API')):
 
                 if ($style_card !== '' && array_key_exists('_maxi_blocks_style_card', $style_card)) {
                     $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
-                    $new_style_card['_maxi_blocks_style_card_styles'] = $style_card['_maxi_blocks_style_card_styles'];
+                    if(array_key_exists('_maxi_blocks_style_card_styles', $style_card)) {
+                        $new_style_card['_maxi_blocks_style_card_styles'] = $style_card['_maxi_blocks_style_card_styles'];
+                    }
                 } else {
                     $new_style_card['_maxi_blocks_style_card'] = $data['sc_variables'];
-                    $new_style_card['_maxi_blocks_style_card_styles'] = $data['sc_styles'];
+                    if (array_key_exists('sc_styles', $data)) {
+                        $new_style_card['_maxi_blocks_style_card_styles'] = $data['sc_styles'];
+                    }
                 }
             }
 

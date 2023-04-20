@@ -28,6 +28,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getIsHoverPreview from './getIsHoverPreview';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
@@ -63,6 +64,7 @@ const StyleComponent = ({
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
+	isPreview = false,
 	isBreakpointChange,
 }) => {
 	const { breakpoints, currentBreakpoint } = useSelect(select => {
@@ -75,7 +77,7 @@ const StyleComponent = ({
 		return { breakpoints, currentBreakpoint };
 	});
 
-	if (isBreakpointChange) {
+	if (isBreakpointChange && !isPreview) {
 		const styleContent =
 			select('maxiBlocks/styles').getCSSCache(uniqueID)[
 				currentBreakpoint
@@ -96,12 +98,13 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	dispatch('maxiBlocks/styles').saveCSSCache(
-		uniqueID,
-		styles,
-		isIframe,
-		isSiteEditor
-	);
+	if (!isPreview)
+		dispatch('maxiBlocks/styles').saveCSSCache(
+			uniqueID,
+			styles,
+			isIframe,
+			isSiteEditor
+		);
 
 	return <style>{styleContent}</style>;
 };
@@ -127,7 +130,8 @@ class MaxiBlockComponent extends Component {
 		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		this.isPreviewBlock = !!getTemplatePartChooseList();
+		this.isTemplatePartPreview = !!getTemplatePartChooseList();
+		this.isHoverPreview = getIsHoverPreview();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -367,8 +371,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Return if it's a FSE preview block
-		if (this.isPreviewBlock) return;
+		// Return if it's a preview block
+		if (this.isTemplatePartPreview || this.isHoverPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -623,47 +627,56 @@ class MaxiBlockComponent extends Component {
 				return wrapper;
 			};
 
+			const getPreviewWrapper = element => {
+				const elementHead = Array.from(
+					element.querySelectorAll('head')
+				).pop();
+
+				const elementBody = Array.from(
+					element.querySelectorAll('body')
+				).pop();
+
+				elementBody.classList.add('maxi-blocks--active');
+
+				const width =
+					elementBody.querySelector('.is-root-container').offsetWidth;
+				elementBody.setAttribute(
+					'maxi-blocks-responsive',
+					getWinBreakpoint(width)
+				);
+
+				return getStylesWrapper(elementHead, () => {
+					if (
+						!element.getElementById(
+							'maxi-blocks-sc-vars-inline-css'
+						)
+					) {
+						const SC = select(
+							'maxiBlocks/style-cards'
+						).receiveMaxiActiveStyleCard();
+						if (SC) {
+							updateSCOnEditor(SC.value, null, element);
+						}
+					}
+				});
+			};
+
 			let wrapper;
 
 			const isSiteEditor = getIsSiteEditor();
-			if (isSiteEditor) {
+
+			if (this.isHoverPreview) {
+				wrapper = getPreviewWrapper(
+					this.blockRef.current.ownerDocument
+				);
+			} else if (isSiteEditor) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
 
-				if (this.isPreviewBlock) {
+				if (this.isTemplatePartPreview) {
 					const templateViewIframe = getTemplateViewIframe(uniqueID);
 					if (templateViewIframe) {
-						const iframeHead = Array.from(
-							templateViewIframe.querySelectorAll('head')
-						).pop();
-
-						const iframeBody = Array.from(
-							templateViewIframe.querySelectorAll('body')
-						).pop();
-
-						iframeBody.classList.add('maxi-blocks--active');
-						iframeBody.setAttribute(
-							'maxi-blocks-responsive',
-							getWinBreakpoint(iframeBody.offsetWidth)
-						);
-
-						wrapper = getStylesWrapper(iframeHead, () => {
-							if (
-								!templateViewIframe.getElementById(
-									'maxi-blocks-sc-vars-inline-css'
-								)
-							) {
-								const SC = select(
-									'maxiBlocks/style-cards'
-								).receiveMaxiActiveStyleCard();
-								if (SC) {
-									updateSCOnEditor(
-										SC.value,
-										templateViewIframe
-									);
-								}
-							}
-						});
+						wrapper = getPreviewWrapper(templateViewIframe);
 					}
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
@@ -679,32 +692,28 @@ class MaxiBlockComponent extends Component {
 			} else wrapper = getStylesWrapper(document.head);
 
 			if (wrapper) {
+				const styleComponent = (
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.props.deviceType}
+						blockBreakpoints={breakpoints}
+						isSiteEditor={isSiteEditor || this.isHoverPreview}
+						isBreakpointChange={isBreakpointChange}
+						isPreview={
+							this.isHoverPreview || this.isTemplatePartPreview
+						}
+					/>
+				);
+
 				// check if createRoot is available (since React 18)
 				if (typeof createRoot === 'function') {
 					if (isNil(this.rootSlot))
 						this.rootSlot = createRoot(wrapper);
-					this.rootSlot.render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-							isBreakpointChange={isBreakpointChange}
-						/>
-					);
+					this.rootSlot.render(styleComponent);
 				} else {
 					// for React 17 and below
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-						/>,
-						wrapper
-					);
+					render(styleComponent, wrapper);
 				}
 			}
 
@@ -777,7 +786,7 @@ class MaxiBlockComponent extends Component {
 				)
 				?.remove();
 
-		if (this.isReusable) {
+		if (this.isReusable && !this.isHoverPreview) {
 			this.widthObserver.disconnect();
 			getEditorElement()
 				.getElementById(

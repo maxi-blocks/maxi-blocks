@@ -216,7 +216,7 @@ wp.domReady(() => {
 
 			if (getIsTemplatePart()) {
 				const resizableBox = document.querySelector(
-					'.components-resizable-box__container'
+					'.edit-site-visual-editor .components-resizable-box__container'
 				);
 				const isTemplatesListOpened = getIsTemplatesListOpened();
 

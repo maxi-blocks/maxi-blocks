@@ -30,7 +30,13 @@ class MaxiBlocks_Local_Fonts
      */
     public function __construct()
     {
+        // Temporary disabled local fonts
         if ((bool) get_option('local_fonts')) {
+            update_option('local_fonts', false);
+        }
+
+        // if ((bool) get_option('local_fonts')) {
+        if (false) {
             $this->fontsUploadDir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $all_fonts = $this->getAllFontsDB();
 

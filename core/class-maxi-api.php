@@ -440,7 +440,9 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
-            if ((bool) get_option('local_fonts')) {
+            // Temporary disable local fonts
+            // if ((bool) get_option('local_fonts')) {
+            if (false) {
                 new MaxiBlocks_Local_Fonts();
             }
 

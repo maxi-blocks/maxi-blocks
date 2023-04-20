@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState, useCallback } from '@wordpress/element';
+import { useEffect, useState, useCallback, useMemo } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -25,6 +25,7 @@ import {
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
+import AcfSettingsControl from './acf-settings-control';
 
 /**
  * External dependencies
@@ -48,6 +49,7 @@ const DynamicContent = props => {
 
 	const {
 		'dc-status': status,
+		'dc-source': source,
 		'dc-type': type,
 		'dc-relation': relation,
 		'dc-id': id,
@@ -127,6 +129,24 @@ const DynamicContent = props => {
 		}
 	});
 
+	const sourceOptions = useMemo(() => {
+		const options = [
+			{
+				label: __('WordPress', 'maxi-blocks'),
+				value: 'wp',
+			},
+		];
+
+		if (typeof acf !== 'undefined') {
+			options.push({
+				label: __('ACF', 'maxi-blocks'),
+				value: 'acf',
+			});
+		}
+
+		return options;
+	}, []);
+
 	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
@@ -140,6 +160,35 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
+					{sourceOptions.length > 1 && (
+						<SelectControl
+							label={__('Source', 'maxi-blocks')}
+							value={source}
+							options={sourceOptions}
+							onChange={value => {
+								const validatedAttributes = validationsValues(
+									type,
+									field,
+									relation,
+									contentType,
+									value
+								);
+
+								changeProps({
+									'dc-source': value,
+									'dc-show': 'current',
+									'dc-error': '',
+									...validatedAttributes,
+								});
+							}}
+						/>
+					)}
+					{source === 'acf' && (
+						<AcfSettingsControl
+							changeProps={changeProps}
+							dynamicContent={dynamicContent}
+						/>
+					)}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
@@ -256,7 +305,8 @@ const DynamicContent = props => {
 									</>
 								)}
 
-							{(['settings'].includes(type) ||
+							{((source === 'wp' &&
+								['settings'].includes(type)) ||
 								(relation === 'by-id' && isFinite(id)) ||
 								(relation === 'author' &&
 									!isEmpty(postIdOptions)) ||

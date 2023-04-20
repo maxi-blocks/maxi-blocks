@@ -225,6 +225,41 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/acf/get-field-groups', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_field_groups'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acf/get-group-fields/(?P<id>\d+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_group_fields'],
+                'args' => [
+                    'id' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acf/get-field-value/(?P<field_id>\w+)/(?P<post_id>\d+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_field_value'],
+                'args' => [
+                    'id' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -719,6 +754,44 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $new_custom_data;
+        }
+
+        public function get_acf_field_groups()
+        {
+            $acf_field_groups = get_posts(array(
+                'post_type' => 'acf-field-group',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+            ));
+
+            $acf_field_groups = array_map(function ($acf_field_group) {
+                return array(
+                    'id' => $acf_field_group->ID,
+                    'title' => $acf_field_group->post_title,
+                );
+            }, $acf_field_groups);
+
+            return $acf_field_groups;
+        }
+
+        public function get_acf_group_fields($request)
+        {
+            $group_id = $request['id'];
+            $fields = acf_get_fields($group_id);
+
+            $fields = array_map(function ($field) {
+                return array(
+                    'id' => $field['key'],
+                    'title' => $field['label'],
+                );
+            }, $fields);
+
+            return $fields;
+        }
+
+        public function get_acf_field_value($request)
+        {
+            return get_field_object($request['field_id'], $request['post_id'])['value'];
         }
     }
 endif;

@@ -52,6 +52,7 @@ import propsObjectCleaner from './propsObjectCleaner';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import detectNewBlocks from '../dom/detectNewBlocks';
 
 /**
  * Style Component
@@ -328,6 +329,14 @@ class MaxiBlockComponent extends Component {
 			dispatch('maxiBlocks/styles').removeCSSCache(
 				this.props.attributes.uniqueID
 			);
+
+			if (this.props.parentColumnClientId)
+				detectNewBlocks(
+					this.props,
+					false,
+					this.props.blockPositionFromColumn,
+					this.props.parentColumnClientId
+				);
 		}
 
 		if (this.maxiBlockWillUnmount)

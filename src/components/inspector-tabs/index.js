@@ -18,6 +18,7 @@ export { default as opacity } from './inspector-opacity';
 export { default as overflow } from './inspector-overflow';
 export { default as position } from './inspector-position';
 export { default as relation } from './inspector-relation';
+export { default as repeater } from './inspector-repeater';
 export { default as responsive } from './inspector-responsive';
 export { default as responsiveInfoBox } from './inspector-responsive-info-box';
 export { default as scrollEffects } from './inspector-scroll-effects';

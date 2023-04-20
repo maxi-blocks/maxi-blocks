@@ -48,7 +48,7 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const { deviceType, columnRefClientId } = props;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -90,6 +90,10 @@ const Inspector = props => {
 											'horizontalAlign',
 										],
 									},
+									...inspectorTabs.repeater({
+										props,
+										columnRefClientId,
+									}),
 									...inspectorTabs.blockBackground({
 										props,
 									}),

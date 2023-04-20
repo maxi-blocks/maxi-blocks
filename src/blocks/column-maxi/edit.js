@@ -7,7 +7,7 @@ import { createRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import RowContext from '../row-maxi/context';
+import RowContext from '../row-maxi/rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';

@@ -4,15 +4,19 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import RowContext from './context';
+import RowContext from './rowContext';
+import RepeaterContext from './repeaterContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
+import { findBlockPosition } from '../../extensions/dom/detectNewBlocks';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -28,6 +32,8 @@ class edit extends MaxiBlockComponent {
 
 	state = {
 		displayHandlers: false,
+		blocks: {},
+		lastUpdatedBlockPosition: null,
 	};
 
 	columnsSize = {};
@@ -77,8 +83,57 @@ class edit extends MaxiBlockComponent {
 				</MaxiBlock>
 			);
 
+		// const handleRepeaterToggle = val => {
+		// 	if (val) {
+		// 		const firstColumnAttributes = select(
+		// 			'core/block-editor'
+		// 		).getBlockAttributes(this.columnsClientIds[0]);
+
+		// 		this.setState({
+		// 			blocks: {
+		// 				...this.state.blocks,
+		// 				[uniqueID]: {
+		// 					...this.state.blocks?.[uniqueID],
+		// 					...firstColumnAttributes,
+		// 				},
+		// 			},
+		// 		});
+		// 	}
+		// };
+
+		const getInnerBlocksPositions = () => {
+			const firstColumn = select('core/block-editor').getBlock(
+				this.columnsClientIds[0]
+			);
+
+			const innerBlocksPositions = new Map();
+
+			const goThroughInnerBlocks = innerBlocks => {
+				innerBlocks?.forEach(block => {
+					const { clientId, innerBlocks } = block;
+
+					innerBlocksPositions.set(
+						`${findBlockPosition(block, firstColumn)}`,
+						clientId
+					);
+
+					if (innerBlocks?.length) {
+						goThroughInnerBlocks(innerBlocks);
+					}
+				});
+			};
+
+			goThroughInnerBlocks(firstColumn?.innerBlocks);
+
+			return innerBlocksPositions;
+		};
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				columnRefClientId={this.columnsClientIds[0]}
+				{...this.props}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -119,28 +174,48 @@ class edit extends MaxiBlockComponent {
 					),
 				}}
 			>
-				<MaxiBlock
-					key={`maxi-row--${uniqueID}`}
-					ref={this.blockRef}
-					classes={emptyRowClass}
-					{...getMaxiBlockAttributes(this.props)}
-					useInnerBlocks
-					innerBlocksSettings={{
-						...(hasInnerBlocks && { templateLock: 'insert' }),
-						allowedBlocks: ALLOWED_BLOCKS,
-						orientation: 'horizontal',
-						renderAppender: !hasInnerBlocks
-							? () => (
-									<RowBlockTemplate
-										clientId={clientId}
-										maxiSetAttributes={maxiSetAttributes}
-										deviceType={deviceType}
-									/>
-							  )
-							: false,
+				<RepeaterContext.Provider
+					value={{
+						repeaterStatus: getAttributeValue({
+							target: 'repeater-status',
+							props: attributes,
+						}),
+						columnRefClientId: this.columnsClientIds[0],
+						innerBlocksPositions: getInnerBlocksPositions(),
+						lastUpdatedBlockPosition:
+							this.state.lastUpdatedBlockPosition,
+						setLastUpdatedBlockPosition: position => {
+							this.setState({
+								lastUpdatedBlockPosition: position,
+							});
+						},
 					}}
-					renderWrapperInserter={false}
-				/>
+				>
+					<MaxiBlock
+						key={`maxi-row--${uniqueID}`}
+						ref={this.blockRef}
+						classes={emptyRowClass}
+						{...getMaxiBlockAttributes(this.props)}
+						useInnerBlocks
+						innerBlocksSettings={{
+							...(hasInnerBlocks && { templateLock: 'insert' }),
+							allowedBlocks: ALLOWED_BLOCKS,
+							orientation: 'horizontal',
+							renderAppender: !hasInnerBlocks
+								? () => (
+										<RowBlockTemplate
+											clientId={clientId}
+											maxiSetAttributes={
+												maxiSetAttributes
+											}
+											deviceType={deviceType}
+										/>
+								  )
+								: false,
+						}}
+						renderWrapperInserter={false}
+					/>
+				</RepeaterContext.Provider>
 			</RowContext.Provider>,
 		];
 	}

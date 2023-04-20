@@ -22,6 +22,7 @@ const handleSetAttributes = ({
 	obj: { isReset, ...obj },
 	attributes,
 	onChange,
+	setColumnAttributes,
 	clientId = null,
 	defaultAttributes,
 	isStyleCard = false,

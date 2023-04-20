@@ -4,12 +4,15 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
+import detectNewBlocks from '../dom/detectNewBlocks';
 import { getCustomLabel } from '../maxi-block';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External Dependencies
@@ -50,6 +53,9 @@ const withAttributes = createHigherOrderComponent(
 		const { attributes, name: blockName, clientId } = props;
 		const { uniqueID } = attributes;
 
+		const repeaterContext = useContext(RepeaterContext);
+		const repeaterStatus = repeaterContext?.repeaterStatus;
+
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
@@ -59,6 +65,8 @@ const withAttributes = createHigherOrderComponent(
 					attributes.customLabel,
 					newUniqueID
 				);
+
+				if (repeaterStatus) detectNewBlocks(props);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

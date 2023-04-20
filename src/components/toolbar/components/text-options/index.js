@@ -247,7 +247,7 @@ const TextOptions = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 300,
+			max: 999,
 		},
 		em: {
 			min: 0,

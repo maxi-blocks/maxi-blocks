@@ -298,9 +298,11 @@ const getSCStyles = styleCard => {
 			});
 
 			// Button Maxi
-			const generalButtonSentences = getSentencesByBreakpoint('general', [
-				'button',
-			]);
+			const generalButtonSentences = getSentencesByBreakpoint(
+				breakpoint,
+				['button']
+			);
+
 			[
 				`${prefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
 				`${prefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,

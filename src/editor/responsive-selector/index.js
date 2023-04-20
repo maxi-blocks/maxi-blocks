@@ -108,12 +108,19 @@ const ResponsiveSelector = props => {
 	const { insertBlock } = useDispatch('core/block-editor');
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
-	const { deviceType, breakpoints, baseBreakpoint } = useSelect(select => {
+	const {
+		deviceType,
+		breakpoints,
+		baseBreakpoint,
+		isListViewOpened,
+		isInserterOpened,
+	} = useSelect(select => {
 		const {
 			receiveMaxiDeviceType,
 			receiveMaxiBreakpoints,
 			receiveBaseBreakpoint,
 		} = select('maxiBlocks');
+		const { isListViewOpened, isInserterOpened } = select('core/edit-post');
 
 		const baseBreakpoint = receiveBaseBreakpoint();
 
@@ -121,8 +128,22 @@ const ResponsiveSelector = props => {
 			deviceType: receiveMaxiDeviceType(),
 			breakpoints: receiveMaxiBreakpoints(),
 			baseBreakpoint,
+			isListViewOpened: isListViewOpened(),
+			isInserterOpened: isInserterOpened(),
 		};
 	});
+
+	useEffect(() => {
+		const secondSidebar = document.querySelector(
+			'.interface-interface-skeleton__secondary-sidebar'
+		);
+
+		if (secondSidebar && isOpen) secondSidebar.style.marginTop = '41px'; // the height Maxi topbar does
+
+		return () => {
+			if (secondSidebar) secondSidebar.style.marginTop = '0';
+		};
+	}, [isListViewOpened, isInserterOpened, isOpen]);
 
 	// TODO: check if it can be reduced to avoid the amount of resources used (MVP)
 	useEffect(() => {

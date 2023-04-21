@@ -33,17 +33,30 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		blocks: {},
-		lastUpdatedBlockPosition: null,
+		isInnerBlockWasUpdated: false,
 	};
+
+	isPositionWasSwapped = true;
 
 	columnsSize = {};
 
 	columnsClientIds = [];
 
+	shouldMaxiBlockUpdate() {
+		return this.state.isInnerBlockWasUpdated;
+	}
+
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
 				displayHandlers: false,
+				// isInnerBlockWasUpdated: false,
+			});
+		}
+
+		if (this.state.isInnerBlockWasUpdated) {
+			this.setState({
+				isInnerBlockWasUpdated: false,
 			});
 		}
 	}
@@ -182,11 +195,16 @@ class edit extends MaxiBlockComponent {
 						}),
 						columnRefClientId: this.columnsClientIds[0],
 						innerBlocksPositions: getInnerBlocksPositions(),
-						lastUpdatedBlockPosition:
-							this.state.lastUpdatedBlockPosition,
-						setLastUpdatedBlockPosition: position => {
+						isInnerBlockWasUpdated:
+							this.state.isInnerBlockWasUpdated,
+						isPositionWasSwapped: this.isPositionWasSwapped,
+						toggleIsPositionWasSwapped: () => {
+							this.isPositionWasSwapped =
+								!this.isPositionWasSwapped;
+						},
+						setIsInnerBlockWasUpdated: update => {
 							this.setState({
-								lastUpdatedBlockPosition: position,
+								isInnerBlockWasUpdated: update,
 							});
 						},
 					}}
@@ -214,6 +232,9 @@ class edit extends MaxiBlockComponent {
 								: false,
 						}}
 						renderWrapperInserter={false}
+						isInnerBlockWasUpdated={
+							this.state.isInnerBlockWasUpdated
+						}
 					/>
 				</RepeaterContext.Provider>
 			</RowContext.Provider>,

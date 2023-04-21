@@ -1,5 +1,6 @@
 import { dispatch, select } from '@wordpress/data';
 import { cloneBlock } from '@wordpress/blocks';
+import { isEqual } from 'lodash';
 
 const findBlockIndex = (clientId, block) =>
 	block?.innerBlocks.findIndex(
@@ -125,6 +126,99 @@ const detectNewBlocks = (
 									targetParent.innerBlocks[blockIndex]
 										?.clientId,
 									false
+								);
+							}
+						}
+					}
+				}
+			});
+		}
+	}
+};
+
+export const handleBlockMove = (rawBlock, prevPosition, nextPosition) => {
+	console.log('handleBlockMove call');
+	const { getBlock, getBlocks, getBlockParentsByBlockName } =
+		select('core/block-editor');
+
+	const block = getBlock(rawBlock.clientId);
+
+	// Check if a new block has been added
+	if (block) {
+		const parentRow = getBlock(
+			getBlockParentsByBlockName(
+				block.clientId,
+				'maxi-blocks/row-maxi'
+			)[0]
+		);
+
+		// Check if the selected block is a child of your custom row block
+		if (parentRow) {
+			// Get all child columns of your custom row block
+			const childColumns = getBlocks(parentRow.clientId);
+
+			// Get the index of the selected block within the initial column
+			const initialColumn = getBlock(
+				getBlockParentsByBlockName(
+					block.clientId,
+					'maxi-blocks/column-maxi'
+				)[0]
+			);
+
+			if (!initialColumn?.innerBlocks) {
+				return;
+			}
+
+			// const blockPosition = findBlockPosition(block, initialColumn);
+			// const blockIndex = blockPosition[blockPosition.length - 1];
+			const prevBlockIndex = prevPosition[prevPosition.length - 1];
+
+			// Iterate through all child columns and insert the same block
+			childColumns.forEach(column => {
+				// Skip the column where the block was originally added
+				if (column.clientId !== initialColumn.clientId) {
+					const nextTargetParent = findTargetParent(
+						nextPosition,
+						column
+					);
+
+					if (nextTargetParent) {
+						if (!isEqual(prevPosition, nextPosition)) {
+							// let's find the block to move
+							const blockToMove = getBlock(
+								nextTargetParent.innerBlocks[prevBlockIndex]
+									?.clientId
+							);
+
+							// let's compare if his current position is the same as the next position
+							const currentPosition = findBlockPosition(
+								blockToMove,
+								column
+							);
+
+							console.log(
+								'current and next',
+								currentPosition,
+								nextPosition
+							);
+
+							if (!isEqual(currentPosition, nextPosition)) {
+								const { moveBlockToPosition } =
+									dispatch('core/block-editor');
+
+								const prevTargetParent = findTargetParent(
+									prevPosition,
+									column
+								);
+
+								const nextBlockIndex =
+									nextPosition[nextPosition.length - 1];
+
+								moveBlockToPosition(
+									blockToMove.clientId,
+									prevTargetParent.clientId,
+									nextTargetParent.clientId,
+									nextBlockIndex
 								);
 							}
 						}

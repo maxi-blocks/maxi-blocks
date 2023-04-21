@@ -14,7 +14,7 @@ import cleanAttributes from './cleanAttributes';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -22,11 +22,11 @@ const handleSetAttributes = ({
 	obj: { isReset, ...obj },
 	attributes,
 	onChange,
-	setColumnAttributes,
 	clientId = null,
 	defaultAttributes,
 	isStyleCard = false,
 	allowXXLOverGeneral = false,
+	someAttributesChangedCallback = () => {},
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
@@ -179,6 +179,9 @@ const handleSetAttributes = ({
 		defaultAttributes,
 		allowXXLOverGeneral,
 	});
+
+	if (!isEmpty(cleanedResponse))
+		someAttributesChangedCallback(cleanedResponse);
 
 	return onChange(cleanedResponse);
 };

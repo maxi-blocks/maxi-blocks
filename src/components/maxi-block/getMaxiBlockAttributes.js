@@ -22,6 +22,8 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
+		parentColumnClientId,
+		setPrevBlockIndex,
 	} = props;
 	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
 		attributes;
@@ -176,6 +178,8 @@ const getMaxiBlockAttributes = props => {
 		hasSelectedChild,
 		// Necessary for the memo() of MaxiBlocks component
 		attributes,
+		parentColumnClientId,
+		setPrevBlockIndex,
 		...scroll,
 	};
 };

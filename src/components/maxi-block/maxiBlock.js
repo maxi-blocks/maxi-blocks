@@ -10,7 +10,7 @@ import {
 	useCallback,
 	useReducer,
 } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getIsHoverPreview } from '../../extensions/maxi-block';
+import { findBlockPosition } from '../../extensions/dom/detectNewBlocks';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -316,9 +317,21 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const { clientId, attributes, deviceType } = props;
+		const { clientId, attributes, deviceType, parentColumnClientId } =
+			props;
+		const { setPrevBlockIndex, ...contentProps } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
+
+		const { getBlock } = select('core/block-editor');
+
+		const blockPositionFromColumn =
+			parentColumnClientId &&
+			findBlockPosition({ clientId }, getBlock(parentColumnClientId));
+
+		useEffect(() => {
+			setPrevBlockIndex(blockPositionFromColumn);
+		}, [blockPositionFromColumn]);
 
 		const isHoverPreview = getIsHoverPreview();
 
@@ -352,7 +365,7 @@ const MaxiBlock = memo(
 				onMouseEnter={setHovered}
 				onMouseLeave={setHovered}
 				isHovered={isHovered}
-				{...props}
+				{...contentProps}
 			/>
 		);
 	}),

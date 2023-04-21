@@ -229,8 +229,9 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 20 April 2023_
+_Updates: 21 April 2023_
 
+- Remove drop tables on uninstall
 - Issue 4643 - fix php warnings
 - Issue 4748 - Font weight not working when font-family comes from SC
 - Issue 4720 - Fix reusable blocks editor crash

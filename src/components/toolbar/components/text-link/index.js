@@ -28,7 +28,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Icons
@@ -42,15 +42,8 @@ import Link from '../link';
  */
 
 const LinkContent = props => {
-	const {
-		onChange,
-		isList,
-		textLevel,
-		onClose,
-		blockStyle,
-		styleCard,
-		sendData,
-	} = props;
+	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
+		props;
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
@@ -102,7 +95,6 @@ const LinkContent = props => {
 	}, [formatValue.start, formatValue.end]);
 
 	useEffect(() => {
-		sendData(linkValue);
 		if (isEmpty(linkValue.url) && Object.keys(linkValue).length > 1)
 			onClose();
 	}, [linkValue.url]);
@@ -139,7 +131,10 @@ const LinkContent = props => {
 			formatValue,
 			attributes
 		);
-
+		const newLinkAttributes = createLinkAttributes({
+			...attributes,
+			linkValue,
+		});
 		const obj = applyLinkFormat({
 			formatValue: isWholeContent
 				? {
@@ -166,8 +161,7 @@ const LinkContent = props => {
 			end: updatedFormatValue.end,
 		});
 		delete obj.formatValue;
-
-		onChange(linkValue, obj);
+		onChange(newLinkAttributes, obj);
 	};
 
 	const removeLinkFormatHandle = () => {
@@ -277,20 +271,18 @@ const TextLink = props => {
 		blockName,
 		isCaptionToolbar = false,
 		'dc-status': dcStatus = false,
+		linkSettings,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
-	const [data, setData] = useState(createLinkValue({}));
-	const sendData = data1 => {
-		setData(data1);
-	};
+
 	if (!dcStatus)
 		return (
 			<ToolbarPopover
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={
-					data.url !== ''
+					!isNil(linkSettings) && !isEmpty(linkSettings.url)
 						? 'toolbar-item__link--active toolbar-item__text-link'
 						: 'toolbar-item__text-link'
 				}
@@ -300,7 +292,6 @@ const TextLink = props => {
 						if (isOpen)
 							return (
 								<LinkContent
-									sendData={sendData}
 									isOpen={isOpen}
 									onClose={onClose}
 									{...props}

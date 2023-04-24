@@ -170,6 +170,25 @@ const mediaAuthorFields = [
 	{ label: __('Avatar', 'maxi-blocks'), value: 'avatar' },
 ];
 
+const textACFFieldTypes = [
+	'text',
+	'textarea',
+	'number',
+	'email',
+	'url',
+	'password',
+	'range',
+	'date_picker',
+	'date_time_picker',
+	'time_picker',
+	'select',
+	'radio',
+];
+
+const mediaACFFieldTypes = ['image', 'oembed'];
+
+const buttonACFFieldTypes = textACFFieldTypes;
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsPagesFields,
@@ -196,6 +215,12 @@ export const fieldOptions = {
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
 	},
+};
+
+export const acfFieldTypes = {
+	text: textACFFieldTypes,
+	button: buttonACFFieldTypes,
+	image: mediaACFFieldTypes,
 };
 
 export const mediaFieldOptions = Object.values(fieldOptions.image).map(

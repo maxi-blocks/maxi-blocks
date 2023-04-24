@@ -22,7 +22,7 @@ const FontWeightControl = props => {
 	} = props;
 
 	const options = getWeightOptions(fontName);
-	const isFontWeightAvailable = options.some(
+	const isFontWeightAvailable = options?.some(
 		({ value }) => +value === +fontWeight
 	);
 

@@ -31,7 +31,7 @@ const breakpointResizer = ({
 		if (getIsSiteEditor()) {
 			if (getIsTemplatePart()) {
 				return document.querySelector(
-					'.components-resizable-box__container'
+					'.edit-site-visual-editor .components-resizable-box__container'
 				);
 			}
 			return document.querySelector('.edit-site-visual-editor');
@@ -144,6 +144,7 @@ const reducer = (
 				isGutenbergButton: action.isGutenbergButton,
 				changeSize: action.changeSize,
 			});
+
 			return {
 				...state,
 				deviceType: action.deviceType,

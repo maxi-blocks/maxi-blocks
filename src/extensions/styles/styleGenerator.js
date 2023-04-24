@@ -1,4 +1,12 @@
+/**
+ * WordPress dependencies
+ */
 import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import viewportUnitsProcessor from './viewportUnitsProcessor';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -89,7 +97,7 @@ const styleStringGenerator = (
 };
 
 const styleGenerator = (
-	styles,
+	rawStyles,
 	isIframe = false,
 	isSiteEditor = false,
 	breakpoint
@@ -99,6 +107,8 @@ const styleGenerator = (
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
+
+	const styles = viewportUnitsProcessor(rawStyles, currentBreakpoint); // replacing viewport units only for the editor
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {

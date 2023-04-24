@@ -33,6 +33,7 @@ const getBorderStyles = ({
 	isButton = false,
 	scValues = {},
 	borderColorProperty = 'border-color',
+	hasCommonUnit = false,
 }) => {
 	const response = {};
 
@@ -81,12 +82,18 @@ const getBorderStyles = ({
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
-		const getValueAndUnit = target => {
+		const getValueAndUnit = (key, axis) => {
+			const target = key + axis;
 			const currentValue =
 				obj[getAttributeKey(target, isHover, prefix, breakpoint)];
 			const currentUnit =
 				obj[
-					getAttributeKey(`${target}.u`, isHover, prefix, breakpoint)
+					getAttributeKey(
+						`${key}${hasCommonUnit ? '' : axis}.u`,
+						isHover,
+						prefix,
+						breakpoint
+					)
 				];
 
 			const hasCurrent = !isNil(currentValue) || !isNil(currentUnit);
@@ -105,7 +112,7 @@ const getBorderStyles = ({
 
 			const lastUnit =
 				getLastBreakpointAttribute({
-					target: `${target}.u`,
+					target: `${key}${hasCommonUnit ? '' : axis}.u`,
 					prefix,
 					breakpoint,
 					attributes: obj,
@@ -175,7 +182,7 @@ const getBorderStyles = ({
 				response[breakpoint][borderColorProperty] = borderColor;
 
 			widthKeys.forEach(axis => {
-				const val = getValueAndUnit(`bo_w${axis}`);
+				const val = getValueAndUnit('bo_w', axis);
 				const cssProperty = `border-${widthDictionary[axis]}-width`;
 				const prevVal = response[prevBreakpoint][cssProperty];
 
@@ -190,7 +197,7 @@ const getBorderStyles = ({
 
 		// Border radius doesn't need border style
 		radiusKeys.forEach(axis => {
-			const val = getValueAndUnit(`bo.ra${axis}`);
+			const val = getValueAndUnit('bo.ra', axis);
 			const cssProperty = `border-${radiusDictionary[axis]}-radius`;
 			const prevVal = response[prevBreakpoint][cssProperty];
 

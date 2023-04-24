@@ -20,6 +20,7 @@ import ToggleSwitch from '../toggle-switch';
  * External dependencies
  */
 import classnames from 'classnames';
+import getCleanKey from '../../extensions/attributes/getCleanKey';
 
 /**
  * Component
@@ -38,7 +39,9 @@ const SvgWidthControl = props => {
 
 	const classes = classnames('maxi-svg-width-control', className);
 
-	const widthAttrLabel = getAttributeKey('_w', isHover, prefix, breakpoint);
+	const widthAttrLabel = getCleanKey(
+		getAttributeKey('_w', isHover, prefix, breakpoint)
+	);
 	const width = getAttributesValue({
 		target: '_w',
 		props,
@@ -62,7 +65,7 @@ const SvgWidthControl = props => {
 		attributes: props,
 	});
 	const defaultWidthUnit = getDefaultAttribute(
-		getAttributeKey('_w-unit', isHover, prefix, breakpoint)
+		getAttributeKey('_w.u', isHover, prefix, breakpoint)
 	);
 
 	const heightFitContent = getLastBreakpointAttribute({
@@ -92,12 +95,8 @@ const SvgWidthControl = props => {
 				allowedUnits={['px', 'vw', '%']}
 				onChangeUnit={val => {
 					onChange({
-						[getAttributeKey(
-							'_w-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_w.u', isHover, prefix, breakpoint)]:
+							val,
 					});
 
 					if (resizableObject)
@@ -112,12 +111,8 @@ const SvgWidthControl = props => {
 					onChange({
 						[getAttributeKey('_w', isHover, prefix, breakpoint)]:
 							defaultWidth,
-						[getAttributeKey(
-							'_w-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: defaultWidthUnit,
+						[getAttributeKey('_w.u', isHover, prefix, breakpoint)]:
+							defaultWidthUnit,
 						isReset: true,
 					})
 				}
@@ -134,7 +129,7 @@ const SvgWidthControl = props => {
 						const contentPrefix = prefix === 'svg-' ? '' : prefix;
 
 						const icon = getAttributesValue({
-							target: 'content',
+							target: '_c',
 							isHover,
 							prefix: contentPrefix,
 							props,
@@ -147,11 +142,8 @@ const SvgWidthControl = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							[getAttributeKey(
-								'content',
-								isHover,
-								contentPrefix
-							)]: togglePreserveAspectRatio(icon, val),
+							[getAttributeKey('_c', isHover, contentPrefix)]:
+								togglePreserveAspectRatio(icon, val),
 						});
 					}}
 				/>

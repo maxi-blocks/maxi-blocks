@@ -7,7 +7,7 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 	let currentRepeatCount = 0;
 
 	return goThroughMaxiBlocks(block => {
-		if (block.attributes.uniqueID === uniqueIDToCompare) {
+		if (block.attributes._uid === uniqueIDToCompare) {
 			currentRepeatCount += 1;
 
 			if (currentRepeatCount > repeatCount) {

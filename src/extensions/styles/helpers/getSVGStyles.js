@@ -28,7 +28,7 @@ export const getSVGWidthStyles = ({
 	};
 
 	const svgType = getAttributeValue({
-		target: 'svgType',
+		target: '_st',
 		props: obj,
 		isHover,
 		prefix,
@@ -81,7 +81,7 @@ export const getSVGWidthStyles = ({
 		const iconStrokeWidth =
 			svgType !== 'Shape'
 				? getLastBreakpointAttribute({
-						target: 'stroke',
+						target: 'str',
 						prefix,
 						isHover,
 						breakpoint,
@@ -137,7 +137,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 		response[breakpoint] = {};
 
 		const iconStroke =
-			obj[getAttributeKey('stroke', isHover, prefix, breakpoint)];
+			obj[getAttributeKey('str', isHover, prefix, breakpoint)];
 
 		if (!isNil(iconStroke)) {
 			response[breakpoint]['stroke-width'] = iconStroke;
@@ -162,7 +162,7 @@ const getSVGPathFillStyles = (
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: `${prefix}fill-`, isHover });
+		getPaletteAttributes({ obj, prefix: `${prefix}f-`, isHover });
 
 	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
@@ -187,11 +187,7 @@ const getSVGPathStrokeStyles = (
 		label: 'SVG Path stroke',
 	};
 
-	if (
-		isHover &&
-		!useIconColor &&
-		!obj[getAttributeKey('typography-status-hover')]
-	) {
+	if (isHover && !useIconColor && !obj[getAttributeKey('t.sh')]) {
 		response.general = {};
 		response.general.stroke = '';
 
@@ -204,15 +200,15 @@ const getSVGPathStrokeStyles = (
 		let linePrefix = '';
 
 		switch (prefix) {
-			case 'icon-':
+			case 'i-':
 			case 'active-icon-':
 			case 'navigation-arrow-both-icon-':
 			case 'navigation-dot-icon-':
 			case 'active-navigation-dot-icon-':
-				linePrefix = `${prefix}stroke-`;
+				linePrefix = `${prefix}str-`;
 				break;
 			default:
-				linePrefix = `${prefix}line-`;
+				linePrefix = `${prefix}l-`;
 				break;
 		}
 

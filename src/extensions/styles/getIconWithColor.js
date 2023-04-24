@@ -14,12 +14,7 @@ import { isArray, isNil } from 'lodash';
 const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	const [blockStyle, iconOnly, iconInherit, iconContent] = getAttributesValue(
 		{
-			target: [
-				'_bs',
-				`${prefix}icon-only`,
-				`${prefix}icon-inherit`,
-				`${prefix}icon-content`,
-			],
+			target: ['_bs', `${prefix}i_on`, `${prefix}i_i`, `${prefix}i_c`],
 			props: attributes,
 		}
 	);
@@ -43,31 +38,29 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		if (
 			type === 'fill' ||
 			useIconColor ||
-			(isHover &&
-				!useIconColor &&
-				!attributes[getAttributeKey('typography-status-hover')])
+			(isHover && !useIconColor && !attributes[getAttributeKey('t.sh')])
 		) {
 			if (!paletteColor)
 				paletteColor = getAttributesValue({
-					target: `icon-${type}-palette-color`,
+					target: `i-${type === 'stroke' ? 'str' : 'f'}_pc`,
 					isHover,
 					props: attributes,
 				});
 			if (!paletteOpacity)
 				paletteOpacity = getAttributesValue({
-					target: `icon-${type}-palette-opacity`,
+					target: `i-${type === 'stroke' ? 'str' : 'f'}_po`,
 					isHover,
 					props: attributes,
 				});
 			if (!paletteStatus)
 				paletteStatus = getAttributesValue({
-					target: `icon-${type}-palette-status`,
+					target: `i-${type === 'stroke' ? 'str' : 'f'}_ps`,
 					isHover,
 					props: attributes,
 				});
 			if (!color)
 				color = getAttributesValue({
-					target: `icon-${type}-color`,
+					target: `i-${type === 'stroke' ? 'str' : 'f'}_cc`,
 					isHover,
 					props: attributes,
 				});

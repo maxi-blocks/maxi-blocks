@@ -20,14 +20,14 @@ import {
 	getGroupAttributes,
 } from '../../extensions/attributes';
 import { getIconWithColor } from '../../extensions/styles';
-import { customCss } from './data';
+
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, cloneDeep, without } from 'lodash';
+import { isEmpty, isNil, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -41,10 +41,9 @@ const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
 	const [iconOnly, iconContent] = getAttributesValue({
-		target: ['icon-only', 'icon-content'],
+		target: ['i_on', 'i_c'],
 		props: attributes,
 	});
-	const { selectors, categories } = customCss;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -133,32 +132,23 @@ const Inspector = props => {
 		});
 	};
 
-	const getCategoriesCss = () => {
-		const iconContent = getAttributesValue({
-			target: 'icon-content',
-			props: attributes,
-		});
-
-		return without(categories, isEmpty(iconContent) && 'icon');
-	};
-
 	const alignmentLabel = __('Button', 'maxi-blocks');
 	const textAlignmentLabel = __('Text', 'maxi-blocks');
 
 	useEffect(
 		() =>
 			maxiSetAttributes({
-				'icon-content': getIconWithColor(attributes),
+				ic: getIconWithColor(attributes),
 			}),
 		[
-			attributes['pac-general'],
-			attributes['pac-general-hover'],
-			attributes['pa-status-general'],
-			attributes['pa-status-general-hover'],
-			attributes['pao-general'],
-			attributes['pao-general-hover'],
-			attributes['c-general'],
-			attributes['c-general-hover'],
+			attributes['pc-general'],
+			attributes['pc-general.h'],
+			attributes['ps-general'],
+			attributes['ps-general.h'],
+			attributes['po-general'],
+			attributes['po-general.h'],
+			attributes['cc-general'],
+			attributes['cc-general.h'],
 		]
 	);
 

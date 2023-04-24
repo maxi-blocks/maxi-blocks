@@ -48,6 +48,11 @@ import {
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
 } from '../../icons';
+import {
+	axisDictionary,
+	radiusAxisDictionary,
+} from '../../extensions/attributes/constants';
+import getCleanKey from '../../extensions/attributes/getCleanKey';
 
 /**
  * Component
@@ -93,7 +98,7 @@ const AxisInput = props => {
 			max={minMaxSettings[currentUnit].max || 999}
 			step={minMaxSettings[currentUnit].step || 1}
 			onChangeUnit={val =>
-				onChangeUnit(val, singleTarget, breakpoint, '.u')
+				onChangeUnit(val, singleTarget, breakpoint, '', true)
 			}
 			unit={unit}
 			onReset={onReset}
@@ -128,6 +133,11 @@ const AxisContent = props => {
 		isHover,
 	});
 
+	const getLabel = type => {
+		const dictionary = { ...axisDictionary, ...radiusAxisDictionary };
+		return dictionary[type] || type;
+	};
+
 	return (
 		<div>
 			{(sync === 'all' || disableSync) && (
@@ -150,7 +160,9 @@ const AxisContent = props => {
 			{sync === 'axis' && !disableSync && (
 				<>
 					<AxisInput
-						label={`${inputsArray[0]} / ${inputsArray[2]}`}
+						label={`${getLabel(inputsArray[0])} / ${getLabel(
+							inputsArray[2]
+						)}`}
 						target={inputsArray[0]}
 						singleTarget='vertical'
 						getValue={getValue}
@@ -167,7 +179,9 @@ const AxisContent = props => {
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
-							label={`${inputsArray[3]} / ${inputsArray[1]}`}
+							label={`${getLabel(inputsArray[3])} / ${getLabel(
+								inputsArray[1]
+							)}`}
 							target={inputsArray[1]}
 							singleTarget='horizontal'
 							getValue={getValue}
@@ -188,7 +202,7 @@ const AxisContent = props => {
 			{sync === 'none' && !disableSync && (
 				<>
 					<AxisInput
-						label={inputsArray[0]}
+						label={getLabel(inputsArray[0])}
 						target={inputsArray[0]}
 						singleTarget={inputsArray[0]}
 						getValue={getValue}
@@ -205,7 +219,7 @@ const AxisContent = props => {
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
-							label={inputsArray[1]}
+							label={getLabel(inputsArray[1])}
 							target={inputsArray[1]}
 							singleTarget={inputsArray[1]}
 							getValue={getValue}
@@ -222,7 +236,7 @@ const AxisContent = props => {
 						/>
 					)}
 					<AxisInput
-						label={inputsArray[2]}
+						label={getLabel(inputsArray[2])}
 						target={inputsArray[2]}
 						singleTarget={inputsArray[2]}
 						getValue={getValue}
@@ -239,7 +253,7 @@ const AxisContent = props => {
 					/>
 					{!disableLeftRightMargin && (
 						<AxisInput
-							label={inputsArray[3]}
+							label={getLabel(inputsArray[3])}
 							target={inputsArray[3]}
 							singleTarget={inputsArray[3]}
 							getValue={getValue}
@@ -499,7 +513,7 @@ const AxisControl = props => {
 		return options;
 	};
 
-	const getKey = key => `${prefix}${target}${key}`;
+	const getKey = key => getCleanKey(`${prefix}${target}${key}`);
 
 	const getLastBreakpointValue = key => {
 		const inputValue = getLastBreakpointAttribute({
@@ -648,7 +662,13 @@ const AxisControl = props => {
 			isHover,
 		}) || 'px';
 
-	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
+	const onChangeValue = (
+		val,
+		singleTarget,
+		customBreakpoint,
+		prefix,
+		isUnit = false
+	) => {
 		let newValue = '';
 		if (optionType === 'number' && isNaN(val))
 			if (isEmpty(val)) newValue = val;
@@ -669,7 +689,10 @@ const AxisControl = props => {
 
 		let response = {};
 
-		const isAllChange = key => {
+		const isAllChange = keyStr => {
+			let key = keyStr;
+			if (isUnit && !key.includes('.u')) return false;
+			if (isUnit) key = key.replace('.u', '');
 			if (prefix) {
 				return (
 					key.includes(`${prefix}.t`) ||
@@ -687,27 +710,31 @@ const AxisControl = props => {
 			);
 		};
 
-		const isHorizontalChange = key => {
+		const isHorizontalChange = keyStr => {
+			let key = keyStr;
+			if (isUnit && !key.includes('.u')) return false;
+			if (isUnit) key = key.replace('.u', '');
 			if (prefix) {
 				return [`${prefix}.l`, `${prefix}.r`, '.bl', '.tr'].includes(
 					key
 				);
 			}
 			return (
-				['.l', '.r', '.bl', '.tr'].includes(key) &&
-				!key.includes('unit')
+				['.l', '.r', '.bl', '.tr'].includes(key) && !key.includes('.u')
 			);
 		};
 
-		const isVerticalChange = key => {
+		const isVerticalChange = keyStr => {
+			let key = keyStr;
+			if (isUnit && !key.includes('.u')) return false;
+			if (isUnit) key = key.replace('.u', '');
 			if (prefix) {
 				return [`${prefix}.t`, `${prefix}.b`, '.tl', '.br'].includes(
 					key
 				);
 			}
 			return (
-				['.t', '.b', '.tl', '.br'].includes(key) &&
-				!key.includes('unit')
+				['.t', '.b', '.tl', '.br'].includes(key) && !key.includes('.u')
 			);
 		};
 

@@ -33,7 +33,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber, capitalize } from 'lodash';
+import { isNumber } from 'lodash';
 
 /**
  * Icons
@@ -180,9 +180,9 @@ const BorderControl = props => {
 		const response = {};
 
 		Object.keys(axisDictionary).forEach(item => {
-			response[`border${capitalize(item)}Width`] =
+			response[getAttributeKey(`bo_w${item}`, isHover, prefix)] =
 				getLastBreakpointAttribute({
-					target: `bo_w.${item}`,
+					target: `bo_w${item}`,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -220,7 +220,7 @@ const BorderControl = props => {
 		const response = {};
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
-			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
+			response[`${key}-${breakpoint}${isHover ? '.h' : ''}`] = value;
 		});
 
 		onChange(response);

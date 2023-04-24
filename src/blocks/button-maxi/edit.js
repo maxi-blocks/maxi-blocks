@@ -97,14 +97,7 @@ class edit extends MaxiBlockComponent {
 			dcStatus,
 			dcContent,
 		] = getAttributesValue({
-			target: [
-				'_uid',
-				'icon-position',
-				'icon-only',
-				'icon-content',
-				'dc-status',
-				'dc-content',
-			],
+			target: ['_uid', 'i_pos', 'i_on', 'i_c', 'dc.s', 'dc_c'],
 			props: attributes,
 		});
 
@@ -127,27 +120,27 @@ class edit extends MaxiBlockComponent {
 				inlineStylesTargets={inlineStylesTargets}
 				scValues={scValues}
 			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-				copyPasteMapping={copyPasteMapping}
-				prefix='button-'
-				backgroundGlobalProps={{
-					target: 'background',
-					type: 'button',
-				}}
-				backgroundAdvancedOptions='button background'
-				propsToAvoid={['buttonContent', 'formatValue']}
-				inlineStylesTargets={inlineStylesTargets}
-				scValues={scValues}
-			/>,
+			// <Toolbar
+			// 	key={`toolbar-${uniqueID}`}
+			// 	ref={this.blockRef}
+			// 	{...this.props}
+			// 	copyPasteMapping={copyPasteMapping}
+			// 	prefix='button-'
+			// 	backgroundGlobalProps={{
+			// 		target: 'background',
+			// 		type: 'button',
+			// 	}}
+			// 	backgroundAdvancedOptions='button background'
+			// 	propsToAvoid={['buttonContent', 'formatValue']}
+			// 	inlineStylesTargets={inlineStylesTargets}
+			// 	scValues={scValues}
+			// />,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 				{...(iconOnly && {
-					'aria-label': getAreaLabel(attributes['icon-content']),
+					'aria-label': getAreaLabel(attributes.i_c),
 				})}
 			>
 				<div className={buttonClasses}>

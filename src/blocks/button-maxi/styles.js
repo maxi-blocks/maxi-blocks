@@ -26,6 +26,8 @@ import {
 } from '../../extensions/styles/helpers';
 import data from './data';
 
+const prefix = 'bt-';
+
 const getWrapperObject = props => {
 	const response = {
 		alignment: getAlignmentFlexStyles({
@@ -61,11 +63,13 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'margin'),
 			},
+			prefix,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
+			prefix,
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -128,9 +132,9 @@ const getNormalObject = props => {
 	const response = {
 		size: getSizeStyles(
 			{
-				...getGroupAttributes(props, 'size', false, 'button-'),
+				...getGroupAttributes(props, 'size', false, 'bt-'),
 			},
-			'button-'
+			'bt-'
 		),
 		border: getBorderStyles({
 			obj: {
@@ -138,7 +142,7 @@ const getNormalObject = props => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					false,
-					'button-'
+					'bt-'
 				),
 			},
 			blockStyle: props.blockStyle,
@@ -148,7 +152,7 @@ const getNormalObject = props => {
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'button-'),
+				...getGroupAttributes(props, 'boxShadow', false, 'bt-'),
 			},
 			blockStyle: props.blockStyle,
 			prefix: 'bt-',
@@ -161,7 +165,7 @@ const getNormalObject = props => {
 				props,
 				['background', 'backgroundColor', 'backgroundGradient'],
 				false,
-				'button-'
+				'bt-'
 			),
 			isButton: true,
 			blockStyle: props.blockStyle,
@@ -169,13 +173,13 @@ const getNormalObject = props => {
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'margin', false, 'button-'),
+				...getGroupAttributes(props, 'margin', false, 'bt-'),
 			},
 			prefix: 'bt-',
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'padding', false, 'button-'),
+				...getGroupAttributes(props, 'padding', false, 'bt-'),
 			},
 			prefix: 'bt-',
 		}),
@@ -199,7 +203,7 @@ const getHoverObject = (props, scValues) => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					true,
-					'button-'
+					'bt-'
 				),
 			},
 			isHover: true,
@@ -212,7 +216,7 @@ const getHoverObject = (props, scValues) => {
 			buttonBoxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true, 'button-'),
+					...getGroupAttributes(props, 'boxShadow', true, 'bt-'),
 				},
 				isHover: true,
 				prefix: 'bt-',
@@ -223,7 +227,7 @@ const getHoverObject = (props, scValues) => {
 				props,
 				['background', 'backgroundColor', 'backgroundGradient'],
 				true,
-				'button-'
+				'bt-'
 			),
 			isButton: true,
 			blockStyle: props.blockStyle,
@@ -270,7 +274,7 @@ const getHoverContentObject = (props, scValues) => {
 };
 
 const getStyles = (props, scValues, iconWidthHeightRatio) => {
-	const { uniqueID, blockStyle } = props;
+	const { _uid: uniqueID, _bs: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(

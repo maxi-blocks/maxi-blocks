@@ -12,7 +12,7 @@ const getIconSize = (
 	getSVGWidthStyles({
 		obj,
 		isHover,
-		prefix: `${prefix}icon-`,
+		prefix: `${prefix}i-`,
 		iconWidthHeightRatio,
 		disableHeight: false,
 	});

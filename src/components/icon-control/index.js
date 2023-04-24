@@ -69,19 +69,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 		inlineTarget,
 		prefix = '',
 	} = props;
-	const { iconOnly, iconInherit, iconContent, iconPosition } =
+	const [iconOnly, iconInherit, iconContent, iconPosition] =
 		getAttributesValue({
-			target: [
-				'icon-only',
-				'icon-inherit',
-				'icon-content',
-				'icon-position',
-			],
+			target: ['i_on', 'i_i', 'i_c', 'i_pos'],
 			props,
 			prefix,
 		});
 	const iconSpacing = getAttributesValue({
-		target: 'icon-spacing',
+		target: 'i_spa',
 		props,
 		prefix,
 		breakpoint,
@@ -165,7 +160,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 	};
 
 	const iconBackgroundActiveMedia = getLastBreakpointAttribute({
-		target: 'icon-background-active-media',
+		target: 'i-b_am',
 		prefix,
 		breakpoint,
 		attributes: props,
@@ -195,16 +190,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 								});
 
 								onChange({
-									[getAttributeKey(
-										'icon-only',
-										false,
-										prefix
-									)]: val,
-									[getAttributeKey(
-										'icon-content',
-										false,
-										prefix
-									)]: icon,
+									[getAttributeKey('i_on', false, prefix)]:
+										val,
+									[getAttributeKey('i_c', false, prefix)]:
+										icon,
 								});
 							}}
 						/>
@@ -214,7 +203,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				{...getGroupAttributes(props, 'icon', isHover, prefix)}
 				className='maxi-icon-control__width'
 				onChange={onChange}
-				prefix={`${prefix}icon-`}
+				prefix={`${prefix}i-`}
 				breakpoint={breakpoint}
 				isHover={isHover}
 				disableHeightFitContent={disableHeightFitContent}
@@ -234,7 +223,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					})}
 					className='maxi-icon-control__stroke-width'
 					onChange={obj => onChange(obj)}
-					prefix={`${prefix}icon-`}
+					prefix={`${prefix}i-`}
 					breakpoint={breakpoint}
 					isHover={isHover}
 					content={iconContent}
@@ -254,7 +243,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						onChangeValue={val => {
 							onChange({
 								[getAttributeKey(
-									'icon-spacing',
+									'i_spa',
 									false,
 									prefix,
 									breakpoint
@@ -264,13 +253,13 @@ const IconControlResponsiveSettings = withRTC(props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'icon-spacing',
+									'i_spa',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'icon-spacing',
+										'i_spa',
 										false,
 										prefix,
 										breakpoint
@@ -287,11 +276,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 							selected={iconPosition}
 							onChange={val => {
 								onChange({
-									[getAttributeKey(
-										'icon-position',
-										false,
-										prefix
-									)]: val,
+									[getAttributeKey('i_pos', false, prefix)]:
+										val,
 								});
 							}}
 							breakpoint={breakpoint}
@@ -314,10 +300,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[getAttributeKey('icon-inherit', false, prefix)]:
-								val,
-							[getAttributeKey('icon-content', false, prefix)]:
-								icon,
+							[getAttributeKey('i_i', false, prefix)]: val,
+							[getAttributeKey('i_c', false, prefix)]: icon,
 						});
 					}}
 				/>
@@ -340,26 +324,26 @@ const IconControlResponsiveSettings = withRTC(props => {
 							className='maxi-icon-styles-control--color'
 							avoidBreakpointForDefault
 							color={getAttributesValue({
-								target: 'icon-stroke-color',
+								target: 'i-str_cc',
 								props,
 								isHover,
 								prefix,
 							})}
-							prefix={`${prefix}icon-stroke-`}
+							prefix={`${prefix}i-str-`}
 							paletteColor={getAttributesValue({
-								target: 'icon-stroke-palette-color',
+								target: 'i-str_pc',
 								props,
 								isHover,
 								prefix,
 							})}
 							paletteOpacity={getAttributesValue({
-								target: 'icon-stroke-palette-opacity',
+								target: 'i-str_po',
 								props,
 								isHover,
 								prefix,
 							})}
 							paletteStatus={getAttributesValue({
-								target: 'icon-stroke-palette-status',
+								target: 'i-str_ps',
 								props,
 								isHover,
 								prefix,
@@ -390,27 +374,27 @@ const IconControlResponsiveSettings = withRTC(props => {
 									[getAttributeKey(
 										'_cc',
 										isHover,
-										`${prefix}icon-stroke-`
+										`${prefix}i-str-`
 									)]: color,
 									[getAttributeKey(
 										'_pc',
 										isHover,
-										`${prefix}icon-stroke-`
+										`${prefix}i-str-`
 									)]: paletteColor,
 									[getAttributeKey(
 										'_ps',
 										isHover,
-										`${prefix}icon-stroke-`
+										`${prefix}i-str-`
 									)]: paletteStatus,
 									[getAttributeKey(
 										'_po',
 										isHover,
-										`${prefix}icon-stroke-`
+										`${prefix}i-str-`
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'content',
+										'_cc',
 										isHover,
-										`${prefix}icon-`
+										`${prefix}i-str-`
 									)]: icon,
 								});
 							}}
@@ -444,7 +428,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						isHover,
 						prefix
 					)}
-					prefix={`${prefix}icon-`}
+					prefix={`${prefix}i-`}
 					onChange={onChange}
 					breakpoint={breakpoint}
 					clientId={clientId}
@@ -456,26 +440,26 @@ const IconControlResponsiveSettings = withRTC(props => {
 				<ColorControl
 					label={__('Icon fill', 'maxi-blocks')}
 					color={getAttributesValue({
-						target: 'icon-fill-color',
+						target: 'i-f_cc',
 						props,
 						isHover,
 						prefix,
 					})}
-					prefix={`${prefix}icon-fill-`}
+					prefix={`${prefix}i-f-`}
 					paletteColor={getAttributesValue({
-						target: 'icon-fill-palette-color',
+						target: 'i-f_pc',
 						props,
 						isHover,
 						prefix,
 					})}
 					paletteOpacity={getAttributesValue({
-						target: 'icon-fill-palette-opacity',
+						target: 'i-f_po',
 						props,
 						isHover,
 						prefix,
 					})}
 					paletteStatus={getAttributesValue({
-						target: 'icon-fill-palette-status',
+						target: 'i-f_ps',
 						props,
 						isHover,
 						prefix,
@@ -500,31 +484,16 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[getAttributeKey(
-								'_cc',
-								isHover,
-								`${prefix}icon-fill-`
-							)]: color,
-							[getAttributeKey(
-								'_pc',
-								isHover,
-								`${prefix}icon-fill-`
-							)]: paletteColor,
-							[getAttributeKey(
-								'_ps',
-								isHover,
-								`${prefix}icon-fill-`
-							)]: paletteStatus,
-							[getAttributeKey(
-								'_po',
-								isHover,
-								`${prefix}icon-fill-`
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'content',
-								isHover,
-								`${prefix}icon-`
-							)]: icon,
+							[getAttributeKey('_cc', isHover, `${prefix}i-f-`)]:
+								color,
+							[getAttributeKey('_pc', isHover, `${prefix}i-f-`)]:
+								paletteColor,
+							[getAttributeKey('_ps', isHover, `${prefix}i-f-`)]:
+								paletteStatus,
+							[getAttributeKey('_po', isHover, `${prefix}i-f-`)]:
+								paletteOpacity,
+							[getAttributeKey('_c', isHover, `${prefix}i-`)]:
+								icon,
 						});
 					}}
 					isHover={isHover}
@@ -544,11 +513,12 @@ const IconControlResponsiveSettings = withRTC(props => {
 						items={getBackgroundOptions()}
 						onChange={val => {
 							setIconBgActive(val);
+
 							onChange({
 								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									`${prefix}icon-`,
+									'b_am',
+									false,
+									`${prefix}i-`,
 									breakpoint
 								)]: val,
 							});
@@ -559,34 +529,34 @@ const IconControlResponsiveSettings = withRTC(props => {
 							<ColorControl
 								label={__('Icon background', 'maxi-blocks')}
 								paletteStatus={getLastBreakpointAttribute({
-									target: 'icon-background-palette-status',
+									target: 'i-bc_ps',
 									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
 								})}
 								paletteColor={getLastBreakpointAttribute({
-									target: 'icon-background-palette-color',
+									target: 'i-bc_pc',
 									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
 								})}
 								paletteOpacity={getLastBreakpointAttribute({
-									target: 'icon-background-palette-opacity',
+									target: 'i-bc_po',
 									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
 								})}
 								color={getLastBreakpointAttribute({
-									target: 'icon-background-color',
+									target: 'i-bc_cc',
 									breakpoint,
 									attributes: props,
 									isHover,
 									prefix,
 								})}
-								prefix={`${prefix}icon-background-`}
+								prefix={`${prefix}i-bc-`}
 								avoidBreakpointForDefault
 								onChangeInline={({ color }) =>
 									onChangeInline &&
@@ -606,27 +576,27 @@ const IconControlResponsiveSettings = withRTC(props => {
 									onChange(
 										{
 											[getAttributeKey(
-												'background-palette-status',
+												'bc_ps',
 												isHover,
-												`${prefix}icon-`,
+												`${prefix}i-`,
 												breakpoint
 											)]: paletteStatus,
 											[getAttributeKey(
-												'background-palette-color',
+												'bc_pc',
 												isHover,
-												`${prefix}icon-`,
+												`${prefix}i-`,
 												breakpoint
 											)]: paletteColor,
 											[getAttributeKey(
-												'background-palette-opacity',
+												'bc_po',
 												isHover,
-												`${prefix}icon-`,
+												`${prefix}i-`,
 												breakpoint
 											)]: paletteOpacity,
 											[getAttributeKey(
 												'bc_cc',
 												isHover,
-												`${prefix}icon-`,
+												`${prefix}i-`,
 												breakpoint
 											)]: color,
 										},
@@ -666,7 +636,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 								'maxi-blocks'
 							)}
 							breakpoint={breakpoint}
-							prefix={`${prefix}icon-background-`}
+							prefix={`${prefix}i-bg-`}
 							isHover={isHover}
 							onChange={onChange}
 						/>
@@ -680,10 +650,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 					label={__('Icon padding', 'maxi-blocks')}
 					onChange={onChange}
 					breakpoint={breakpoint}
-					target='icon-padding'
+					target='i_p'
 					disableAuto
 					optionType='string'
 					minMaxSettings={minMaxSettings}
+					enableAxisUnits
 				/>
 			)}
 		</>
@@ -708,12 +679,13 @@ const IconControl = props => {
 		prefix = '',
 	} = props;
 	const iconContent = getAttributesValue({
-		target: `${prefix}icon-content`,
+		target: 'i_c',
+		prefix,
 		props,
 	});
 
 	const heightFitContent = getLastBreakpointAttribute({
-		target: 'icon-width-fit-content',
+		target: 'i_wfc',
 		prefix,
 		breakpoint,
 		attributes: props,
@@ -754,12 +726,9 @@ const IconControl = props => {
 								icon = togglePreserveAspectRatio(icon, true);
 
 							onChange({
-								...obj,
-								[getAttributeKey(
-									'icon-content',
-									false,
-									prefix
-								)]: icon,
+								[getAttributeKey('_st', false, prefix)]:
+									newSvgType,
+								[getAttributeKey('i_c', false, prefix)]: icon,
 							});
 						}}
 						onRemove={obj => onChange(obj)}

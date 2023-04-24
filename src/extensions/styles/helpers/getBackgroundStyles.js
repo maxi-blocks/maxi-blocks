@@ -72,7 +72,7 @@ export const getColorBackgroundObject = ({
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj: props,
-			prefix: getAttributeKey('bc', false, prefix),
+			prefix: getAttributeKey('bc-', false, prefix),
 			isHover,
 			breakpoint,
 		});

@@ -25,7 +25,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getIconObject = (props, target, prefix = '', isIB) => {
 	const iconBackgroundActiveMediaGeneral = getAttributesValue({
-		target: 'icon-background-active-media',
+		target: 'i-b_am',
 		props,
 		prefix,
 		breakpoint: 'general',
@@ -46,10 +46,10 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					false,
 					'button-'
 				),
-				prefix: `${prefix}icon-`,
+				prefix: `${prefix}i-`,
 				blockStyle: props.blockStyle,
 				isIconInherit: getAttributesValue({
-					target: 'icon-inherit',
+					target: 'i_i',
 					props,
 					prefix,
 				}),
@@ -64,7 +64,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					false,
 					prefix
 				),
-				prefix: `${prefix}icon-`,
+				prefix: `${prefix}i-`,
 				blockStyle: props.blockStyle,
 				isIcon: true,
 			}),
@@ -75,7 +75,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 				obj: {
 					...getGroupAttributes(props, 'iconPadding', false, prefix),
 				},
-				prefix: `${prefix}icon-`,
+				prefix: `${prefix}i-`,
 			}),
 		border:
 			target === 'icon' &&
@@ -88,9 +88,10 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 						prefix
 					),
 				},
-				prefix: `${prefix}icon-`,
+				prefix: `${prefix}i-`,
 				blockStyle: props.blockStyle,
 				isIB,
+				hasCommonUnit: true,
 			}),
 	};
 
@@ -103,13 +104,13 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 		responsive[breakpoint] = {};
 
 		const iconSpacing = getAttributesValue({
-			target: 'icon-spacing',
+			target: 'i_spa',
 			props,
 			prefix,
 			breakpoint,
 		});
 		const [iconPosition, iconOnly] = getAttributesValue({
-			target: ['icon-position', 'icon-only'],
+			target: ['i_pos', 'i_on'],
 			props,
 			prefix,
 		});
@@ -122,7 +123,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
-									target: 'icon-spacing',
+									target: 'i_spa',
 									prefix,
 									breakpoint,
 									attributes: props,
@@ -134,7 +135,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
-									target: 'icon-spacing',
+									target: 'i_spa',
 									prefix,
 									breakpoint,
 									attributes: props,
@@ -150,13 +151,13 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 
 const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 	const [iconHoverStatus, iconInherit] = getAttributesValue({
-		target: ['icon-status-hover', 'icon-inherit'],
+		target: ['i.sh', 'i_i'],
 		props,
 		prefix,
 	});
 
 	const iconHoverActiveMedia = getAttributesValue({
-		target: 'icon-background-active-media',
+		target: 'i-b_am',
 		prefix,
 		isHover: true,
 		breakpoint: 'general',
@@ -195,7 +196,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 						true,
 						prefix
 					),
-					prefix: `${prefix}icon-`,
+					prefix: `${prefix}i-`,
 					blockStyle: props.blockStyle,
 					isIconInherit: iconInherit,
 					isHover: true,
@@ -212,7 +213,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 						true,
 						prefix
 					),
-					prefix: `${prefix}icon-`,
+					prefix: `${prefix}i-`,
 					isHover: true,
 					blockStyle: props.blockStyle,
 					isIcon: true,
@@ -230,7 +231,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 						prefix
 					),
 				},
-				prefix: `${prefix}icon-`,
+				prefix: `${prefix}i-`,
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
@@ -250,7 +251,7 @@ const getButtonIconStyles = ({
 	iconWidthHeightRatio,
 }) => {
 	const [iconInherit, iconHoverStatus, iconContent] = getAttributesValue({
-		target: ['icon-inherit', 'icon-status-hover', 'icon-content'],
+		target: ['i_i', 'i.sh', 'i_c'],
 		props: obj,
 		prefix,
 	});
@@ -268,7 +269,7 @@ const getButtonIconStyles = ({
 						obj,
 						target: normalTarget,
 						blockStyle,
-						prefix: `${prefix}icon-`,
+						prefix: `${prefix}i-`,
 						useIconColor,
 						iconType,
 					}),
@@ -321,7 +322,7 @@ const getButtonIconStyles = ({
 							obj,
 							target: hoverTarget,
 							blockStyle,
-							prefix: `${prefix}icon-`,
+							prefix: `${prefix}i-`,
 							useIconColor,
 							isHover: true,
 							iconType,

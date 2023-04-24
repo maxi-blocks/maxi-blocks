@@ -9,7 +9,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const prefix = 'button-';
+const prefix = 'bt-';
 const attributes = {
 	...attributesData.global,
 
@@ -26,11 +26,11 @@ const attributes = {
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		'icon-background-pa-status-general': {
+		'i-bc_ps-general': {
 			type: 'boolean',
 			default: true,
 		},
-		'icon-background-pac-general': {
+		'i-bc_pc-general': {
 			type: 'number',
 			default: 4,
 		},
@@ -46,7 +46,7 @@ const attributes = {
 	...attributesData.iconBorderRadiusHover,
 	...{
 		...attributesData.alignment,
-		'alignment-general': {
+		'_a-general': {
 			type: 'string',
 			default: 'center',
 		},
@@ -57,11 +57,11 @@ const attributes = {
 	},
 	...{
 		...attributesData.typography,
-		'line-height-unit-general': {
+		'_lhe.u-general': {
 			type: 'string',
 			default: '%',
 		},
-		'pac-general': {
+		'_pc-general': {
 			type: 'number',
 			default: 1,
 		},
@@ -71,13 +71,13 @@ const attributes = {
 		obj: attributesData.background,
 		prefix,
 		diffValAttr: {
-			[`${prefix}background-active-media-general`]: 'color',
+			[`${prefix}b_am-general`]: 'color',
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}background-pac-general`]: 4 },
+		diffValAttr: { [`${prefix}bc_pc-general`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,
@@ -94,7 +94,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.border, prefix }),
-		[`${prefix}border-pac-general`]: {
+		[`${prefix}bo-pac-general`]: {
 			type: 'number',
 			default: 4,
 		},
@@ -104,10 +104,10 @@ const attributes = {
 		obj: attributesData.borderRadius,
 		prefix,
 		diffValAttr: {
-			[`${prefix}border-radius-top-left-general`]: 10,
-			[`${prefix}border-radius-top-right-general`]: 10,
-			[`${prefix}border-radius-bottom-left-general`]: 10,
-			[`${prefix}border-radius-bottom-right-general`]: 10,
+			[`${prefix}bo.ra.tl-general`]: 10,
+			[`${prefix}bo.ra.tr-general`]: 10,
+			[`${prefix}bo.ra.bl-general`]: 10,
+			[`${prefix}bo.ra.br-general`]: 10,
 		},
 	}),
 	...prefixAttributesCreator({
@@ -125,7 +125,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
-		[`${prefix}box-shadow-pac-general`]: {
+		[`${prefix}bs-pac-general`]: {
 			type: 'number',
 			default: 4,
 		},
@@ -138,11 +138,11 @@ const attributes = {
 		obj: attributesData.padding,
 		prefix,
 		diffValAttr: {
-			'button-padding-sync-general': 'axis',
-			'button-padding-top-general': '15',
-			'button-padding-right-general': '36',
-			'button-padding-bottom-general': '15',
-			'button-padding-left-general': '36',
+			'bt_p.sy-general': 'axis',
+			'bt_p.t-general': '15',
+			'bt_p.r-general': '36',
+			'bt_p.b-general': '15',
+			'bt_p.l-general': '36',
 		},
 	}),
 

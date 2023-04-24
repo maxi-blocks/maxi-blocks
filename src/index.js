@@ -16,7 +16,7 @@ import './extensions';
 import './css';
 
 // Blocks
-// import './blocks/button-maxi/button-maxi';
+import './blocks/button-maxi/button-maxi';
 // import './blocks/cloud-maxi/cloud-maxi';
 // import './blocks/column-maxi/column-maxi';
 // import './blocks/container-maxi/container-maxi';

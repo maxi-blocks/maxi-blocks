@@ -47,10 +47,10 @@ export const icon = {
 				default: '%',
 				longLabel: 'icon-spacing-unit',
 			},
-			i_si: {
+			i_str: {
 				type: 'number',
 				default: 2,
-				longLabel: 'icon-size',
+				longLabel: 'icon-stroke',
 			},
 		},
 	}),

@@ -8,6 +8,7 @@ import getAttributesValue from '../../attributes/getAttributesValue';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getCleanKey from '../../attributes/getCleanKey';
 
 /**
  * General
@@ -33,7 +34,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 
 		['_m', '_p'].forEach(type =>
 			keyWords.forEach(key => {
-				const attributeName = `${prefix}${type}${key}`;
+				const attributeName = getCleanKey(`${prefix}${type}${key}`);
 
 				const [lastValue, lastUnit, value, unit] = [
 					target =>

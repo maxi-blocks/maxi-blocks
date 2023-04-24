@@ -18,7 +18,7 @@ const getAlignmentFlexStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		const value = getAttributesValue({
-			target: 'alignment',
+			target: '_a',
 			props: obj,
 			breakpoint,
 		});

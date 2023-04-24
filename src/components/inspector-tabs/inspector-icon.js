@@ -40,7 +40,8 @@ const icon = ({
 }) => {
 	const { attributes, deviceType } = props;
 	const iconContent = getAttributesValue({
-		target: `${prefix}icon-content`,
+		target: 'i_c',
+		prefix,
 		props: attributes,
 	});
 
@@ -53,7 +54,7 @@ const icon = ({
 		clientId,
 	} = props;
 	const [hoverStatus, blockStyle, svgType] = getAttributesValue({
-		target: [`${prefix}icon-status-hover`, '_bs', `${prefix}svgType`],
+		target: ['i.sh', '_bs', '_st'],
 		props: attributes,
 	});
 
@@ -78,6 +79,7 @@ const icon = ({
 	const groupAttributes = [
 		'icon',
 		'iconHover',
+		'iconBackground',
 		'iconBackgroundGradient',
 		'iconBackgroundColor',
 		'iconBorder',
@@ -135,11 +137,10 @@ const icon = ({
 									selected={hoverStatus}
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributesValue(
-												'icon-status',
-												true,
-												prefix
-											)]: val,
+											[getAttributesValue({
+												target: 'i.sh',
+												prefix,
+											})]: val,
 										})
 									}
 								/>

@@ -62,6 +62,7 @@ const getParsedObj = obj => {
 		'typography',
 		false,
 		'',
+		true,
 		true
 	);
 

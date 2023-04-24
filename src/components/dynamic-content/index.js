@@ -187,6 +187,7 @@ const DynamicContent = props => {
 						<AcfSettingsControl
 							changeProps={changeProps}
 							dynamicContent={dynamicContent}
+							contentType={contentType}
 						/>
 					)}
 					<SelectControl

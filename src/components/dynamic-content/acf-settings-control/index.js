@@ -11,9 +11,10 @@ import {
 	getACFFieldGroups,
 	getACFGroupFields,
 } from '../../../extensions/DC/getACFData';
+import { acfFieldTypes } from '../../../extensions/DC/constants';
 
 const AcfSettingsControl = props => {
-	const { dynamicContent, changeProps } = props;
+	const { dynamicContent, changeProps, contentType } = props;
 	const { 'dc-acf-group': group, 'dc-field': field } = dynamicContent;
 
 	const [groupOptions, setGroupOptions] = useState(null);
@@ -34,12 +35,16 @@ const AcfSettingsControl = props => {
 
 	useEffect(() => {
 		getACFGroupFields(group).then(fields => {
-			const options = fields.map(field => {
-				return {
-					label: field.title,
-					value: field.id,
-				};
-			});
+			const options = fields
+				.filter(field =>
+					acfFieldTypes[contentType].includes(field.type)
+				)
+				.map(field => {
+					return {
+						label: field.title,
+						value: field.id,
+					};
+				});
 
 			if (!options.find(option => option.value === field)) {
 				changeProps({

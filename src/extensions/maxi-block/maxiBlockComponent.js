@@ -335,7 +335,7 @@ class MaxiBlockComponent extends Component {
 			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
 
 			// IB
-			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
+			removeUnmountedBlockFromRelations(this.props.attributes._uid);
 		}
 
 		if (this.maxiBlockWillUnmount)

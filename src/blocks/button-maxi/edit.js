@@ -125,7 +125,7 @@ class edit extends MaxiBlockComponent {
 			// 	ref={this.blockRef}
 			// 	{...this.props}
 			// 	copyPasteMapping={copyPasteMapping}
-			// 	prefix='button-'
+			// 	prefix='bt-'
 			// 	backgroundGlobalProps={{
 			// 		target: 'background',
 			// 		type: 'button',

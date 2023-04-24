@@ -18,7 +18,7 @@ const getAlignmentTextStyles = (obj, type = 'text') => {
 
 	breakpoints.forEach(breakpoint => {
 		const value = getAttributesValue({
-			target: 'text-alignment',
+			target: '_ta',
 			props: obj,
 			breakpoint,
 		});

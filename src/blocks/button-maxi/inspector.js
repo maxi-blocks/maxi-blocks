@@ -20,14 +20,14 @@ import {
 	getGroupAttributes,
 } from '../../extensions/attributes';
 import { getIconWithColor } from '../../extensions/styles';
-
+import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, cloneDeep } from 'lodash';
+import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Icons
@@ -44,6 +44,7 @@ const Inspector = props => {
 		target: ['i_on', 'i_c'],
 		props: attributes,
 	});
+	const { categories, selectors } = customCss;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -130,6 +131,15 @@ const Inspector = props => {
 			...newDefaultPresets[`preset${number}`],
 			...(icon && { 'icon-content': icon }),
 		});
+	};
+
+	const getCategoriesCss = () => {
+		const iconContent = getAttributesValue({
+			target: 'icon-content',
+			props: attributes,
+		});
+
+		return without(categories, isEmpty(iconContent) && 'icon');
 	};
 
 	const alignmentLabel = __('Button', 'maxi-blocks');
@@ -278,101 +288,101 @@ const Inspector = props => {
 							/>
 						),
 					},
-					{
-						label: __('Canvas', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								isPrimary
-								items={[
-									...inspectorTabs.blockBackground({
-										props,
-									}),
-									...inspectorTabs.border({
-										props,
-									}),
-									...inspectorTabs.boxShadow({
-										props,
-									}),
-									...inspectorTabs.size({
-										props,
-										block: true,
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Advanced', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								isPrimary
-								items={[
-									deviceType === 'general' && {
-										...inspectorTabs.customClasses({
-											props,
-										}),
-									},
-									deviceType === 'general' && {
-										...inspectorTabs.anchor({
-											props,
-										}),
-									},
-									...inspectorTabs.customCss({
-										props,
-										breakpoint: deviceType,
-										selectors,
-										categories: getCategoriesCss(),
-									}),
-									...inspectorTabs.dc({
-										props,
-										contentType: 'button',
-									}),
-									...inspectorTabs.scrollEffects({
-										props,
-									}),
-									...inspectorTabs.transform({
-										props,
-										categories: getCategoriesCss(),
-										selectors,
-									}),
-									...inspectorTabs.transition({
-										props,
-										selectors,
-									}),
-									...inspectorTabs.display({
-										props,
-									}),
-									...inspectorTabs.opacity({
-										props,
-									}),
-									...inspectorTabs.position({
-										props,
-									}),
-									deviceType !== 'general' && {
-										...inspectorTabs.responsive({
-											props,
-										}),
-									},
-									...inspectorTabs.overflow({
-										props,
-									}),
-									...inspectorTabs.flex({
-										props,
-									}),
-									...inspectorTabs.zindex({
-										props,
-									}),
-									...inspectorTabs.relation({
-										props,
-										isButton: true,
-									}),
-								]}
-							/>
-						),
-					},
+					// {
+					// 	label: __('Canvas', 'maxi-blocks'),
+					// 	content: (
+					// 		<AccordionControl
+					// 			isPrimary
+					// 			items={[
+					// 				...inspectorTabs.blockBackground({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.border({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.boxShadow({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.size({
+					// 					props,
+					// 					block: true,
+					// 				}),
+					// 				...inspectorTabs.marginPadding({
+					// 					props,
+					// 				}),
+					// 			]}
+					// 		/>
+					// 	),
+					// },
+					// {
+					// 	label: __('Advanced', 'maxi-blocks'),
+					// 	content: (
+					// 		<AccordionControl
+					// 			isPrimary
+					// 			items={[
+					// 				deviceType === 'general' && {
+					// 					...inspectorTabs.customClasses({
+					// 						props,
+					// 					}),
+					// 				},
+					// 				deviceType === 'general' && {
+					// 					...inspectorTabs.anchor({
+					// 						props,
+					// 					}),
+					// 				},
+					// 				...inspectorTabs.customCss({
+					// 					props,
+					// 					breakpoint: deviceType,
+					// 					selectors,
+					// 					categories: getCategoriesCss(),
+					// 				}),
+					// 				...inspectorTabs.dc({
+					// 					props,
+					// 					contentType: 'button',
+					// 				}),
+					// 				...inspectorTabs.scrollEffects({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.transform({
+					// 					props,
+					// 					categories: getCategoriesCss(),
+					// 					selectors,
+					// 				}),
+					// 				// ...inspectorTabs.transition({
+					// 				// 	props,
+					// 				// 	selectors,
+					// 				// }),
+					// 				...inspectorTabs.display({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.opacity({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.position({
+					// 					props,
+					// 				}),
+					// 				deviceType !== 'general' && {
+					// 					...inspectorTabs.responsive({
+					// 						props,
+					// 					}),
+					// 				},
+					// 				...inspectorTabs.overflow({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.flex({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.zindex({
+					// 					props,
+					// 				}),
+					// 				...inspectorTabs.relation({
+					// 					props,
+					// 					isButton: true,
+					// 				}),
+					// 			]}
+					// 		/>
+					// 	),
+					// },
 				]}
 			/>
 		</InspectorControls>

@@ -1,10 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 
-const getBreakpoints = obj => {
-	const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+const getBreakpoints = async obj => {
+	const defaultBreakpoints = await resolveSelect(
+		'maxiBlocks'
+	).receiveMaxiBreakpoints();
 
 	return {
 		xxl: obj['breakpoints-xl'] || defaultBreakpoints.xl,

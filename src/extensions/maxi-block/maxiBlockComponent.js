@@ -71,15 +71,14 @@ const StyleComponent = ({
 	isSiteEditor = false,
 	isPreview = false,
 	isBreakpointChange,
+	currentBreakpoint,
 }) => {
-	const { breakpoints, currentBreakpoint } = useSelect(select => {
-		const { receiveMaxiBreakpoints, receiveMaxiDeviceType } =
-			select('maxiBlocks');
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
 		const breakpoints = receiveMaxiBreakpoints();
-		const currentBreakpoint = receiveMaxiDeviceType();
 
-		return { breakpoints, currentBreakpoint };
+		return { breakpoints };
 	});
 
 	const { saveCSSCache } = useDispatch('maxiBlocks/styles');

@@ -10,7 +10,13 @@
  * WordPress dependencies
  */
 import { Component, createRoot, render, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
+import {
+	dispatch,
+	resolveSelect,
+	select,
+	useDispatch,
+	useSelect,
+} from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -76,6 +82,8 @@ const StyleComponent = ({
 		return { breakpoints, currentBreakpoint };
 	});
 
+	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
+
 	if (isBreakpointChange && !isPreview) {
 		const styleContent =
 			select('maxiBlocks/styles').getCSSCache(uniqueID)[
@@ -97,13 +105,7 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	if (!isPreview)
-		dispatch('maxiBlocks/styles').saveCSSCache(
-			uniqueID,
-			styles,
-			isIframe,
-			isSiteEditor
-		);
+	if (!isPreview) saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };

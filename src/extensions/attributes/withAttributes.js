@@ -60,6 +60,11 @@ const withAttributes = createHigherOrderComponent(
 			// uniqueID
 			if (isNil(uniqueID)) {
 				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+				console.log(
+					'withAttributes. newUniqueID',
+					attributes.uniqueID,
+					newUniqueID
+				);
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { cloneBlock } from '@wordpress/blocks';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
@@ -14,6 +13,7 @@ import Button from '../../../button';
 import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import {
+	cleanInnerBlocks,
 	excludeAttributes,
 	getOrganizedAttributes,
 } from '../../../../extensions/copy-paste';
@@ -107,15 +107,6 @@ const CopyPaste = props => {
 	const [specialPaste, setSpecialPaste] = useState(
 		getDefaultSpecialPaste(organizedAttributes)
 	);
-
-	const cleanInnerBlocks = blocks =>
-		blocks.map(block => {
-			const newInnerBlocks = block.innerBlocks
-				? cleanInnerBlocks(block.innerBlocks)
-				: [];
-
-			return cloneBlock(block, null, newInnerBlocks);
-		});
 
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =

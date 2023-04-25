@@ -317,21 +317,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const { clientId, attributes, deviceType, parentColumnClientId } =
-			props;
-		const { setPrevBlockIndex, ...contentProps } = props;
+		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-
-		const { getBlock } = select('core/block-editor');
-
-		const blockPositionFromColumn =
-			parentColumnClientId &&
-			findBlockPosition({ clientId }, getBlock(parentColumnClientId));
-
-		useEffect(() => {
-			setPrevBlockIndex(blockPositionFromColumn);
-		}, [blockPositionFromColumn]);
 
 		const isHoverPreview = getIsHoverPreview();
 
@@ -365,7 +353,7 @@ const MaxiBlock = memo(
 				onMouseEnter={setHovered}
 				onMouseLeave={setHovered}
 				isHovered={isHovered}
-				{...contentProps}
+				{...props}
 			/>
 		);
 	}),

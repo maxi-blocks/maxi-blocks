@@ -387,19 +387,22 @@ class Relation {
 
 		const getBreakpointValues = css => {
 			this.breakpoints.forEach(breakpoint => {
-				if (
-					Object.prototype.hasOwnProperty.call(css, breakpoint) &&
-					(breakpoint !== 'xxl' ||
-						Object.prototype.hasOwnProperty.call(css, 'xl'))
-				) {
+				const containsBreakpoint = Object.prototype.hasOwnProperty.call(
+					css,
+					breakpoint
+				);
+
+				if (!containsBreakpoint) return;
+
+				const hasStyles = css[breakpoint].styles.isArray
+					? css[breakpoint].styles.length > 0
+					: Object.keys(css[breakpoint].styles).length > 0;
+
+				if (hasStyles) {
 					let { breakpoint: breakpointValue } = css[breakpoint];
 
 					breakpointValue =
 						breakpoint === 'general' ? '' : breakpointValue;
-					breakpointValue =
-						breakpoint === 'xxl'
-							? css.xl.breakpoint
-							: breakpointValue;
 
 					breakpointsObj[breakpoint] = breakpointValue;
 				}
@@ -690,7 +693,43 @@ class Relation {
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
-					if (this.effectsObjs[index][breakpoint]) {
+					let hasEffects = !!this.effectsObjs[index][breakpoint];
+					let effectsBreakpoint = breakpoint;
+
+					// Default effects will come for general breakpoint, but maybe
+					// creator has decided to affect to a concrete breakpoint, so there's
+					// no styles for general. The result is that we have styles for a concrete
+					// breakpoint and transitions for general. Need to set general transitions
+					// in that case or the transition will not work.
+					if (!hasEffects) {
+						const breakpointIndex =
+							this.breakpoints.indexOf(breakpoint);
+
+						const previousBreakpoints = this.breakpoints.slice(
+							0,
+							breakpointIndex
+						);
+
+						const prevEffectsBreakpoints =
+							previousBreakpoints.filter(
+								previousBreakpoint =>
+									this.effectsObjs[index][previousBreakpoint]
+							);
+						const prevEffectsBreakpoint = prevEffectsBreakpoints[0];
+						const prevBreakpointsHasStyles = !this.stylesObjs.some(
+							styleObj => prevEffectsBreakpoint in styleObj
+						);
+
+						if (
+							prevEffectsBreakpoints.length &&
+							prevBreakpointsHasStyles
+						)
+							hasEffects = true;
+
+						effectsBreakpoint = prevEffectsBreakpoint;
+					}
+
+					if (hasEffects) {
 						let currentStyleObj =
 							stylesObj[
 								this.getLastUsableBreakpoint(
@@ -770,7 +809,7 @@ class Relation {
 							};
 
 							const effectsObj =
-								this.effectsObjs[index][breakpoint];
+								this.effectsObjs[index][effectsBreakpoint];
 							const { split } = effectsObj;
 
 							if (split) {

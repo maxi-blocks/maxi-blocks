@@ -290,6 +290,7 @@ const interactionBuilderSettings = {
 			),
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			styleAttrs: ['clip-path-status'],
 		},
 		{
 			sid: 'imb',

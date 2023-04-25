@@ -894,6 +894,12 @@
 				}
 			}
 		}
+		&__patterns{
+			&__sidebar {
+				overflow-x: hidden;
+			}
+		}
+		&__patterns,
 		&__svg-shape,
 		&__sc,
 		&__svg-icon {

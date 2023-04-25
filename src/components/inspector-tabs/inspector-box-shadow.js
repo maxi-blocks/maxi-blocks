@@ -38,6 +38,7 @@ const boxShadow = ({
 	const [boxShadowStatusHover, boxShadowStatusActive] = getAttributesValue({
 		target: ['bs.sh', 'bs.sa'],
 		props: attributes,
+		prefix,
 	});
 
 	return {
@@ -136,9 +137,9 @@ const boxShadow = ({
 											attributes,
 											'boxShadow',
 											false,
-											`${prefix}active-`
+											`${prefix}a-`
 										)}
-										prefix={`${prefix}active-`}
+										prefix={`${prefix}a-`}
 										onChange={obj => maxiSetAttributes(obj)}
 										breakpoint={deviceType}
 										clientId={clientId}

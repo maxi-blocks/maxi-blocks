@@ -553,10 +553,10 @@ const TypographyControl = props => {
 				{!disableFontFamily && (
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
-						font={getValue('font-family')}
+						font={getValue('_ff')}
 						onChange={font => {
 							onChangeFormat({
-								[getAttributeKey('font-family', false, prefix)]:
+								[getAttributeKey('_ff', false, prefix)]:
 									font.value,
 								[getAttributeKey(
 									'font-options',
@@ -622,39 +622,31 @@ const TypographyControl = props => {
 					className='maxi-typography-control__size'
 					label={__('Font size', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('font-size-unit')}
-					defaultUnit={getDefault('font-size-unit')}
+					unit={getValue('_fs.u')}
+					defaultUnit={getDefault('_fs.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey('font-size-unit', false, prefix)]:
-								val,
+							[getAttributeKey('_fs.u', false, prefix)]: val,
 						});
 					}}
-					placeholder={getValue('font-size')}
-					value={getValue('font-size', !isStyleCards)}
-					defaultValue={getDefault('font-size')}
+					placeholder={getValue('_fs')}
+					value={getValue('_fs', !isStyleCards)}
+					defaultValue={getDefault('_fs')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[getAttributeKey('font-size', false, prefix)]: val,
+							[getAttributeKey('_fs', false, prefix)]: val,
 							...(unit && {
-								[getAttributeKey(
-									'font-size-unit',
-									false,
-									prefix
-								)]: unit,
+								[getAttributeKey('_fs.u', false, prefix)]: unit,
 							}),
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'font-size-unit',
-									false,
-									prefix
-								)]: getDefault('font-size-unit'),
-								[getAttributeKey('font-size', false, prefix)]:
-									getDefault('font-size'),
+								[getAttributeKey('_fs.u', false, prefix)]:
+									getDefault('_fs.u'),
+								[getAttributeKey('_fs', false, prefix)]:
+									getDefault('_fs'),
 							},
 							{ isReset: true }
 						)
@@ -666,43 +658,32 @@ const TypographyControl = props => {
 					className='maxi-typography-control__line-height'
 					label={__('Line height', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('line-height-unit') || ''}
-					defaultUnit={getDefault('line-height-unit')}
+					unit={getValue('_lhe.u') || ''}
+					defaultUnit={getDefault('_lhe.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey(
-								'line-height-unit',
-								false,
-								prefix
-							)]: val,
+							[getAttributeKey('_lhe.u', false, prefix)]: val,
 						});
 					}}
-					placeholder={getValue('line-height')}
-					value={getValue('line-height', !isStyleCards)}
-					defaultValue={getDefault('line-height')}
+					placeholder={getValue('_lhe')}
+					value={getValue('_lhe', !isStyleCards)}
+					defaultValue={getDefault('_lhe')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[getAttributeKey('line-height', false, prefix)]:
-								val,
+							[getAttributeKey('_lhe', false, prefix)]: val,
 							...(unit && {
-								[getAttributeKey(
-									'line-height-unit',
-									false,
-									prefix
-								)]: unit,
+								[getAttributeKey('_lhe.u', false, prefix)]:
+									unit,
 							}),
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'line-height-unit',
-									false,
-									prefix
-								)]: getDefault('line-height-unit'),
-								[getAttributeKey('line-height', false, prefix)]:
-									getDefault('line-height'),
+								[getAttributeKey('_lhe.u', false, prefix)]:
+									getDefault('_lhe.u'),
+								[getAttributeKey('_lhe', false, prefix)]:
+									getDefault('_lhe'),
 							},
 							{ isReset: true }
 						)
@@ -722,39 +703,28 @@ const TypographyControl = props => {
 					label={__('Letter spacing', 'maxi-blocks')}
 					enableUnit
 					allowedUnits={['px', 'em', 'vw']}
-					unit={getValue('letter-spacing-unit')}
-					defaultUnit={getDefault('letter-spacing-unit')}
+					unit={getValue('_ls.u')}
+					defaultUnit={getDefault('_ls.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey(
-								'letter-spacing-unit',
-								false,
-								prefix
-							)]: val,
+							[getAttributeKey('_ls.u', false, prefix)]: val,
 						});
 					}}
-					placeholder={getValue('letter-spacing')}
-					value={getValue('letter-spacing', !isStyleCards)}
-					defaultValue={getDefault('letter-spacing')}
+					placeholder={getValue('_ls')}
+					value={getValue('_ls', !isStyleCards)}
+					defaultValue={getDefault('_ls')}
 					onChangeValue={val => {
 						onChangeFormat({
-							[getAttributeKey('letter-spacing', false, prefix)]:
-								val,
+							[getAttributeKey('_ls', false, prefix)]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'letter-spacing-unit',
-									false,
-									prefix
-								)]: getDefault('letter-spacing-unit'),
-								[getAttributeKey(
-									'letter-spacing',
-									false,
-									prefix
-								)]: getDefault('letter-spacing'),
+								[getAttributeKey('_ls.u', false, prefix)]:
+									getDefault('_ls.u'),
+								[getAttributeKey('_ls', false, prefix)]:
+									getDefault('_ls'),
 							},
 							{ isReset: true }
 						)
@@ -770,30 +740,29 @@ const TypographyControl = props => {
 				<FontWeightControl
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('font-weight', false, prefix)]:
-								val,
+							[getAttributeKey('_fw', false, prefix)]: val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[getAttributeKey('font-weight', false, prefix)]:
-									getDefault('font-weight'),
+								[getAttributeKey('_fw', false, prefix)]:
+									getDefault('_fw'),
 							},
 							{ isReset: true }
 						);
 					}}
-					fontWeight={getValue('font-weight')}
-					defaultFontWeight={getDefault('font-weight')}
-					fontName={getValue('font-family')}
-					fontStyle={getValue('font-style')}
+					fontWeight={getValue('_fw')}
+					defaultFontWeight={getDefault('_fw')}
+					fontName={getValue('_ff')}
+					fontStyle={getValue('_fst')}
 					breakpoint={breakpoint}
 				/>
 				<SelectControl
 					label={__('Text transform', 'maxi-blocks')}
 					className='maxi-typography-control__transform'
-					value={getValue('text-transform')}
-					defaultValue={getDefault('text-transform')}
+					value={getValue('_ttr')}
+					defaultValue={getDefault('_ttr')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -814,18 +783,14 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('text-transform', false, prefix)]:
-								val,
+							[getAttributeKey('_ttr', false, prefix)]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'text-transform',
-									false,
-									prefix
-								)]: getDefault('text-transform'),
+								[getAttributeKey('_ttr', false, prefix)]:
+									getDefault('_ttr'),
 							},
 							{ isReset: true }
 						)
@@ -834,8 +799,8 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Style', 'maxi-blocks')}
 					className='maxi-typography-control__font-style'
-					value={getValue('font-style')}
-					defaultValue={getDefault('font-style')}
+					value={getValue('_fst')}
+					defaultValue={getDefault('_fst')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -852,14 +817,14 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('font-style', false, prefix)]: val,
+							[getAttributeKey('_fst', false, prefix)]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('font-style', false, prefix)]:
-									getDefault('font-style'),
+								[getAttributeKey('_fst', false, prefix)]:
+									getDefault('_fst'),
 							},
 							{ isReset: true }
 						)
@@ -868,8 +833,8 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text decoration', 'maxi-blocks')}
 					className='maxi-typography-control__decoration'
-					value={getValue('text-decoration')}
-					defaultValue={getDefault('text-decoration')}
+					value={getValue('_td')}
+					defaultValue={getDefault('_td')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -894,18 +859,14 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('text-decoration', false, prefix)]:
-								val,
+							[getAttributeKey('_td', false, prefix)]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'text-decoration',
-									false,
-									prefix
-								)]: getDefault('text-decoration'),
+								[getAttributeKey('_td', false, prefix)]:
+									getDefault('_td'),
 							},
 							{ isReset: true }
 						)
@@ -916,8 +877,8 @@ const TypographyControl = props => {
 						<SelectControl
 							label={__('Text orientation', 'maxi-blocks')}
 							className='maxi-typography-control__orientation'
-							value={getValue('text-orientation')}
-							defaultValue={getDefault('text-orientation')}
+							value={getValue('_to')}
+							defaultValue={getDefault('_to')}
 							options={[
 								{
 									label: __('None', 'maxi-blocks'),
@@ -939,11 +900,8 @@ const TypographyControl = props => {
 							onChange={val => {
 								onChangeFormat(
 									{
-										[getAttributeKey(
-											'text-orientation',
-											false,
-											prefix
-										)]: val,
+										[getAttributeKey('_to', false, prefix)]:
+											val,
 									},
 									{ forceDisableCustomFormats: true }
 								);
@@ -951,11 +909,8 @@ const TypographyControl = props => {
 							onReset={() =>
 								onChangeFormat(
 									{
-										[getAttributeKey(
-											'text-orientation',
-											false,
-											prefix
-										)]: getDefault('text-orientation'),
+										[getAttributeKey('_to', false, prefix)]:
+											getDefault('_to'),
 									},
 									{ isReset: true }
 								)
@@ -964,8 +919,8 @@ const TypographyControl = props => {
 						<SelectControl
 							label={__('Text direction', 'maxi-blocks')}
 							className='maxi-typography-control__direction'
-							value={getValue('text-direction')}
-							defaultValue={getDefault('text-direction')}
+							value={getValue('_td')}
+							defaultValue={getDefault('_td')}
 							options={[
 								{
 									label: __('Left to right', 'maxi-blocks'),
@@ -978,21 +933,15 @@ const TypographyControl = props => {
 							]}
 							onChange={val => {
 								onChangeFormat({
-									[getAttributeKey(
-										'text-direction',
-										false,
-										prefix
-									)]: val,
+									[getAttributeKey('_td', false, prefix)]:
+										val,
 								});
 							}}
 							onReset={() =>
 								onChangeFormat(
 									{
-										[getAttributeKey(
-											'text-direction',
-											false,
-											prefix
-										)]: getDefault('text-direction'),
+										[getAttributeKey('_td', false, prefix)]:
+											getDefault('_td'),
 									},
 									{ isReset: true }
 								)
@@ -1004,28 +953,23 @@ const TypographyControl = props => {
 					className='maxi-typography-control__text-indent'
 					label={__('Text indent', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('text-indent-unit')}
-					defaultUnit={getDefault('text-indent-unit')}
+					unit={getValue('_ti.u')}
+					defaultUnit={getDefault('_ti.u')}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'text-indent-unit',
-									false,
-									prefix
-								)]: val,
+								[getAttributeKey('_ti.u', false, prefix)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
 					}}
-					placeholder={getValue('text-indent')}
-					value={getValue('text-indent', !isStyleCards)}
-					defaultValue={getDefault('text-indent')}
+					placeholder={getValue('_ti')}
+					value={getValue('_ti', !isStyleCards)}
+					defaultValue={getDefault('_ti')}
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey('text-indent', false, prefix)]:
-									val,
+								[getAttributeKey('_ti', false, prefix)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1033,13 +977,10 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'text-indent-unit',
-									false,
-									prefix
-								)]: getDefault('text-indent-unit'),
-								[getAttributeKey('text-indent', false, prefix)]:
-									getDefault('text-indent'),
+								[getAttributeKey('_ti.u', false, prefix)]:
+									getDefault('_ti.u'),
+								[getAttributeKey('_ti', false, prefix)]:
+									getDefault('_ti'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
 						)
@@ -1067,8 +1008,8 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('White space', 'maxi-blocks')}
 					className='maxi-typography-control__white-space'
-					value={getValue('white-space')}
-					defaultValue={getDefault('white-space')}
+					value={getValue('_ws')}
+					defaultValue={getDefault('_ws')}
 					options={[
 						{
 							label: __('Normal', 'maxi-blocks'),
@@ -1097,15 +1038,14 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('white-space', false, prefix)]:
-								val,
+							[getAttributeKey('_ws', false, prefix)]: val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[getAttributeKey('white-space', false, prefix)]:
-									getDefault('white-space'),
+								[getAttributeKey('_ws', false, prefix)]:
+									getDefault('_ws'),
 							},
 							{ isReset: true }
 						);
@@ -1115,31 +1055,23 @@ const TypographyControl = props => {
 					className='maxi-typography-control__word-spacing'
 					label={__('Word Spacing', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('word-spacing-unit')}
-					defaultUnit={getDefault('word-spacing-unit')}
+					unit={getValue('_wsp.u')}
+					defaultUnit={getDefault('_wsp.u')}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'word-spacing-unit',
-									false,
-									prefix
-								)]: val,
+								[getAttributeKey('_wsp.u', false, prefix)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
 					}}
-					placeholder={getValue('word-spacing')}
-					value={getValue('word-spacing')}
-					defaultValue={getDefault('word-spacing', !isStyleCards)}
+					placeholder={getValue('_wsp')}
+					value={getValue('_wsp')}
+					defaultValue={getDefault('_wsp', !isStyleCards)}
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'word-spacing',
-									false,
-									prefix
-								)]: val,
+								[getAttributeKey('_wsp', false, prefix)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1147,16 +1079,10 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'word-spacing-unit',
-									false,
-									prefix
-								)]: getDefault('word-spacing-unit'),
-								[getAttributeKey(
-									'word-spacing',
-									false,
-									prefix
-								)]: getDefault('word-spacing'),
+								[getAttributeKey('_wsp.u', false, prefix)]:
+									getDefault('_wsp.u'),
+								[getAttributeKey('_wsp', false, prefix)]:
+									getDefault('_wsp'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
 						)
@@ -1186,31 +1112,25 @@ const TypographyControl = props => {
 						className='maxi-typography-control__bottom-gap'
 						label={__('Bottom gap', 'maxi-blocks')}
 						enableUnit
-						unit={getValue('bottom-gap-unit')}
-						defaultUnit={getDefault('bottom-gap-unit')}
+						unit={getValue('_bg.u')}
+						defaultUnit={getDefault('_bg.u')}
 						onChangeUnit={val => {
 							onChangeFormat(
 								{
-									[getAttributeKey(
-										'bottom-gap-unit',
-										false,
-										prefix
-									)]: val,
+									[getAttributeKey('_bg.u', false, prefix)]:
+										val,
 								},
 								{ forceDisableCustomFormats: true }
 							);
 						}}
-						placeholder={getValue('bottom-gap')}
-						value={getValue('bottom-gap')}
-						defaultValue={getDefault('bottom-gap', !isStyleCards)}
+						placeholder={getValue('_bg')}
+						value={getValue('_bg')}
+						defaultValue={getDefault('_bg', !isStyleCards)}
 						onChangeValue={val => {
 							onChangeFormat(
 								{
-									[getAttributeKey(
-										'bottom-gap',
-										false,
-										prefix
-									)]: val,
+									[getAttributeKey('_bg', false, prefix)]:
+										val,
 								},
 								{ forceDisableCustomFormats: true }
 							);
@@ -1218,16 +1138,10 @@ const TypographyControl = props => {
 						onReset={() =>
 							onChangeFormat(
 								{
-									[getAttributeKey(
-										'bottom-gap-unit',
-										false,
-										prefix
-									)]: getDefault('bottom-gap-unit'),
-									[getAttributeKey(
-										'bottom-gap',
-										false,
-										prefix
-									)]: getDefault('bottom-gap'),
+									[getAttributeKey('_bg.u', false, prefix)]:
+										getDefault('_bg.u'),
+									[getAttributeKey('_bg', false, prefix)]:
+										getDefault('_bg'),
 								},
 								{
 									forceDisableCustomFormats: true,
@@ -1261,17 +1175,14 @@ const TypographyControl = props => {
 						<hr />
 						<TextShadowControl
 							className='maxi-typography-control__text-shadow'
-							textShadow={getValue('text-shadow')}
+							textShadow={getValue('_tsh')}
 							onChangeInline={val =>
-								onChangeInlineValue({ 'text-shadow': val })
+								onChangeInlineValue({ _tsh: val })
 							}
 							onChange={val => {
 								onChangeFormat({
-									[getAttributeKey(
-										'text-shadow',
-										false,
-										prefix
-									)]: val,
+									[getAttributeKey('_tsh', false, prefix)]:
+										val,
 								});
 							}}
 							defaultColor={getLastBreakpointAttribute({

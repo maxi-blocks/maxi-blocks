@@ -154,16 +154,16 @@ class edit extends MaxiBlockComponent {
 							{!dcStatus && (
 								<RichText
 									className='maxi-button-block__content'
-									value={attributes.buttonContent}
+									value={attributes._bc}
 									identifier='content'
-									onChange={buttonContent => {
+									onChange={_bc => {
 										if (this.typingTimeout) {
 											clearTimeout(this.typingTimeout);
 										}
 
 										this.typingTimeout = setTimeout(() => {
 											maxiSetAttributes({
-												buttonContent,
+												_bc,
 											});
 										}, 100);
 									}}

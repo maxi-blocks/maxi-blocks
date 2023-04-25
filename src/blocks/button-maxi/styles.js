@@ -190,7 +190,7 @@ const getNormalObject = props => {
 
 const getHoverObject = (props, scValues) => {
 	const buttonBoxShadowStatusHover = getAttributesValue({
-		target: 'box-shadow-status',
+		target: 'bs.sh',
 		props,
 		isHover: true,
 		prefix: 'bt-',

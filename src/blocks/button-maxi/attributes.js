@@ -16,7 +16,7 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	buttonContent: {
+	_bc: {
 		type: 'string',
 	},
 	...attributesData.icon,

@@ -157,7 +157,7 @@ const ColorLayerContent = props => {
 					attributes: colorOptions,
 					isHover,
 				})}
-				prefix={`${prefix}bc`}
+				prefix={`${prefix}bc-`}
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
@@ -200,12 +200,12 @@ const ColorLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						`${prefix}bc`
+						`${prefix}bc-`
 					)}
 					{...colorOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix={`${prefix}bc`}
+					prefix={`${prefix}bc-`}
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC

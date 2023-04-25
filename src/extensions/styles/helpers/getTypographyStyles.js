@@ -33,7 +33,7 @@ const getTypographyStyles = ({
 }) => {
 	const response = {};
 
-	const hoverStatus = obj[getAttributeKey('typography-status', true, prefix)];
+	const hoverStatus = obj[getAttributeKey('t.sh', true, prefix)];
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
 		scValues;
 
@@ -135,89 +135,86 @@ const getTypographyStyles = ({
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
-			...(!isNil(getValue('font-family', breakpoint)) && {
-				'font-family': getValue('font-family', breakpoint),
+			...(!isNil(getValue('_ff', breakpoint)) && {
+				'font-family': getValue('_ff', breakpoint),
 			}),
 			...getColorString(breakpoint),
-			...(!isNil(getValue('font-size', breakpoint)) && {
-				'font-size': `${getValue(
-					'font-size',
+			...(!isNil(getValue('_fs', breakpoint)) && {
+				'font-size': `${getValue('_fs', breakpoint)}${getUnitValue(
+					'_fs.u',
 					breakpoint
-				)}${getUnitValue('font-size-unit', breakpoint)}`,
+				)}`,
 			}),
-			...(!isNil(getValue('line-height', breakpoint)) && {
-				'line-height': `${getValue('line-height', breakpoint)}${
-					getUnitValue('line-height-unit', breakpoint) || ''
+			...(!isNil(getValue('_lhe', breakpoint)) && {
+				'line-height': `${getValue('_lhe', breakpoint)}${
+					getUnitValue('_lhe.u', breakpoint) || ''
 				}`,
 			}),
-			...(!isNil(getValue('letter-spacing', breakpoint)) && {
-				'letter-spacing': `${getValue(
-					'letter-spacing',
+			...(!isNil(getValue('_ls', breakpoint)) && {
+				'letter-spacing': `${getValue('_ls', breakpoint)}${getUnitValue(
+					'_ls.u',
 					breakpoint
-				)}${getUnitValue('letter-spacing-unit', breakpoint)}`,
+				)}`,
 			}),
-			...(!isNil(getValue('font-weight', breakpoint)) && {
-				'font-weight': getValue('font-weight', breakpoint),
+			...(!isNil(getValue('_fw', breakpoint)) && {
+				'font-weight': getValue('_fw', breakpoint),
 			}),
-			...(!isNil(getValue('text-transform', breakpoint)) && {
-				'text-transform': getValue('text-transform', breakpoint),
+			...(!isNil(getValue('_ttr', breakpoint)) && {
+				'text-transform': getValue('_ttr', breakpoint),
 			}),
-			...(!isNil(getValue('font-style', breakpoint)) && {
-				'font-style': getValue('font-style', breakpoint),
+			...(!isNil(getValue('_fst', breakpoint)) && {
+				'font-style': getValue('_fst', breakpoint),
 			}),
-			...(!isNil(getValue('text-decoration', breakpoint)) && {
-				'text-decoration': getValue('text-decoration', breakpoint),
+			...(!isNil(getValue('_td', breakpoint)) && {
+				'text-decoration': getValue('_td', breakpoint),
 			}),
-			...(!isNil(getValue('text-indent', breakpoint)) && {
-				'text-indent': `${getValue(
-					'text-indent',
+			...(!isNil(getValue('_ti', breakpoint)) && {
+				'text-indent': `${getValue('_ti', breakpoint)}${getUnitValue(
+					'_ti.u',
 					breakpoint
-				)}${getUnitValue('text-indent-unit', breakpoint)}`,
+				)}`,
 			}),
-			...(!isNil(getValue('text-shadow', breakpoint)) && {
-				'text-shadow': getValue('text-shadow', breakpoint),
+			...(!isNil(getValue('_tsh', breakpoint)) && {
+				'text-shadow': getValue('_tsh', breakpoint),
 			}),
-			...(!isNil(getValue('vertical-align', breakpoint)) && {
-				'vertical-align': getValue('vertical-align', breakpoint),
+			...(!isNil(getValue('_va', breakpoint)) && {
+				'vertical-align': getValue('_va', breakpoint),
 			}),
-			...(!isNil(getValue('text-orientation', breakpoint)) && {
+			...(!isNil(getValue('_to', breakpoint)) && {
 				'writing-mode':
-					getValue('text-orientation', breakpoint) !== 'unset'
+					getValue('_to', breakpoint) !== 'unset'
 						? 'vertical-rl'
 						: 'unset',
-				'text-orientation': getValue('text-orientation', breakpoint),
+				'text-orientation': getValue('_to', breakpoint),
 			}),
-			...(!isNil(getValue('text-direction', breakpoint)) && {
-				direction: getValue('text-direction', breakpoint),
+			...(!isNil(getValue('_td', breakpoint)) && {
+				direction: getValue('_td', breakpoint),
 			}),
-			...(!isNil(getValue('white-space', breakpoint)) && {
-				'white-space': getValue('white-space', breakpoint),
+			...(!isNil(getValue('_ws', breakpoint)) && {
+				'white-space': getValue('_ws', breakpoint),
 			}),
-			...(!isNil(getValue('word-spacing', breakpoint)) && {
-				'word-spacing': `${getValue(
-					'word-spacing',
+			...(!isNil(getValue('_wsp', breakpoint)) && {
+				'word-spacing': `${getValue('_wsp', breakpoint)}${getUnitValue(
+					'_wsp.u',
 					breakpoint
-				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
+				)}`,
 			}),
-			...(!isNil(getValue('bottom-gap', breakpoint)) && {
-				'margin-bottom': `${getValue(
-					'bottom-gap',
+			...(!isNil(getValue('_bg', breakpoint)) && {
+				'margin-bottom': `${getValue('_bg', breakpoint)}${getUnitValue(
+					'_bg.u',
 					breakpoint
-				)}${getUnitValue('bottom-gap-unit', breakpoint)}`,
+				)}`,
 			}),
 			...(!isStyleCards && {
-				...(!isNil(getValue('text-orientation', breakpoint)) && {
+				...(!isNil(getValue('_to', breakpoint)) && {
 					'writing-mode':
-						getValue('text-orientation', breakpoint) !== 'unset'
+						getValue('_to', breakpoint) !== 'unset'
 							? 'vertical-rl'
 							: 'unset',
-					'text-orientation': getValue(
-						'text-orientation',
-						breakpoint
-					),
+					'text-orientation': getValue('_to', breakpoint),
 				}),
-				...(!isNil(getValue('text-direction', breakpoint)) && {
-					direction: getValue('text-direction', breakpoint),
+				...(!isNil(getValue('_td', breakpoint)) && {
+					direction: getValue('_td', breakpoint),
 				}),
 			}),
 		};

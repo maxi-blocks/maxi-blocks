@@ -23,7 +23,7 @@ import { getAttributesValue } from '../../extensions/attributes';
  */
 const save = props => {
 	const { attributes } = props;
-	const { buttonContent } = attributes;
+	const { _bc: buttonContent } = attributes;
 	const [
 		linkSettings,
 		iconOnly,

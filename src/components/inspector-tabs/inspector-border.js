@@ -39,6 +39,7 @@ const border = ({
 		getAttributesValue({
 			target: ['bo.sh', 'bo.sa', 'b_ly'],
 			props: attributes,
+			prefix,
 		});
 
 	const {
@@ -159,9 +160,9 @@ const border = ({
 												'borderRadius',
 											],
 											false,
-											`${prefix}active-`
+											`${prefix}a-`
 										)}
-										prefix={`${prefix}active-`}
+										prefix={`${prefix}a-`}
 										onChange={obj => maxiSetAttributes(obj)}
 										breakpoint={deviceType}
 										clientId={clientId}

@@ -47,7 +47,7 @@ const background = ({
 		getBounds,
 	} = props;
 	const [backgroundStatusHover, backgroundStatusActive] = getAttributesValue({
-		target: ['background-status-hover', 'background-status-active'],
+		target: ['b.sh', 'b.sa'],
 		props: attributes,
 		prefix,
 	});
@@ -120,7 +120,7 @@ const background = ({
 									onChange={val =>
 										maxiSetAttributes({
 											[getAttributeKey(
-												'background-status-hover',
+												'b.sh',
 												false,
 												prefix
 											)]: val,
@@ -149,11 +149,7 @@ const background = ({
 							</>
 						),
 						extraIndicators: [
-							getAttributeKey(
-								'background-status-hover',
-								false,
-								prefix
-							),
+							getAttributeKey('b.sh', false, prefix),
 						],
 					},
 					enableActiveState && {
@@ -170,7 +166,7 @@ const background = ({
 									onChange={val =>
 										maxiSetAttributes({
 											[getAttributeKey(
-												'background-status-active',
+												'b.sa',
 												false,
 												prefix
 											)]: val,
@@ -187,23 +183,19 @@ const background = ({
 												'backgroundGradient',
 											],
 											false,
-											`${prefix}active-`
+											`${prefix}a-`
 										)}
 										onChange={obj => {
 											maxiSetAttributes(obj);
 										}}
 										{...backgroundControlBasicProps}
-										prefix={`${prefix}active-`}
+										prefix={`${prefix}a-`}
 									/>
 								)}
 							</>
 						),
 						extraIndicators: [
-							getAttributeKey(
-								'background-status-active',
-								false,
-								prefix
-							),
+							getAttributeKey('b.sa', false, prefix),
 						],
 					},
 				]}

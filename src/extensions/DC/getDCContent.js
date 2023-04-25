@@ -39,14 +39,13 @@ const getDCContent = async dataRequest => {
 		'dc-custom-date': isCustomDate,
 		'dc-format': format,
 		'dc-locale': locale,
-		'dc-acf-field': acfField,
 		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 	} = dataRequest;
 
 	let contentValue;
 
 	if (source === 'acf') {
-		contentValue = await getACFFieldContent(acfField, data.id);
+		contentValue = await getACFFieldContent(field, data.id);
 
 		return contentValue;
 	}

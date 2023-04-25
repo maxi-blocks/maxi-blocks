@@ -191,7 +191,7 @@ const textACFFieldTypes = [
 	'radio',
 ];
 
-const mediaACFFieldTypes = ['image', 'oembed'];
+const mediaACFFieldTypes = ['image'];
 
 const buttonACFFieldTypes = textACFFieldTypes;
 

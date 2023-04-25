@@ -182,7 +182,7 @@ const handleSetAttributes = ({
 
 	if (!isEmpty(cleanedResponse))
 		someAttributesChangedCallback(cleanedResponse);
-
+	console.log('cleanedResponse', cleanedResponse);
 	return onChange(cleanedResponse);
 };
 

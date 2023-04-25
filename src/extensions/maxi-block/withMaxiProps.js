@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect, dispatch, useDispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import {
 	useCallback,
@@ -9,7 +9,6 @@ import {
 	useEffect,
 	useMemo,
 	useRef,
-	useState,
 } from '@wordpress/element';
 
 /**
@@ -30,6 +29,7 @@ import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+import { diff } from 'deep-object-diff';
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
@@ -52,6 +52,8 @@ const withMaxiProps = createHigherOrderComponent(
 				getBlockParentsByBlockName,
 			} = useSelect(select => select('core/block-editor'), []);
 
+			const { updateBlockAttributes } = useDispatch('core/block-editor');
+
 			const copyPasteMapping = getBlockData(name)?.copyPasteMapping;
 
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
@@ -63,32 +65,41 @@ const withMaxiProps = createHigherOrderComponent(
 					'maxi-blocks/column-maxi'
 				)?.[0];
 
+			const {
+				deviceType,
+				baseBreakpoint,
+				hasSelectedChild,
+				isTyping,
+				// TODO: ensure that on root clientid change it will be updated too
+				blockIndex,
+			} = useSelect(select => {
+				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
+					select('maxiBlocks');
+				const { hasSelectedInnerBlock, isTyping, getBlockIndex } =
+					select('core/block-editor');
+
+				return {
+					deviceType: receiveMaxiDeviceType(),
+					baseBreakpoint: receiveBaseBreakpoint(),
+					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
+					isTyping: isTyping(),
+					blockIndex: getBlockIndex(clientId),
+				};
+			});
+
 			const prevBlockPositionFromColumn = useRef();
 
-			const [blockPositionFromColumn, setBlockPositionFromColumn] =
-				useState(
-					parentColumnClientId &&
-						findBlockPosition(
-							ownProps,
-							getBlock(parentColumnClientId)
-						)
-				);
+			// TODO: optimize for non-repeater blocks
+			const blockPositionFromColumn = useMemo(() => {
+				if (parentColumnClientId) {
+					return findBlockPosition(
+						ownProps,
+						getBlock(parentColumnClientId)
+					);
+				}
 
-			const { deviceType, baseBreakpoint, hasSelectedChild, isTyping } =
-				useSelect(select => {
-					const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
-						select('maxiBlocks');
-					const { hasSelectedInnerBlock, isTyping, getBlockIndex } =
-						select('core/block-editor');
-
-					return {
-						deviceType: receiveMaxiDeviceType(),
-						baseBreakpoint: receiveBaseBreakpoint(),
-						hasSelectedChild: hasSelectedInnerBlock(clientId, true),
-						isTyping: isTyping(),
-						blockIndex: getBlockIndex(clientId),
-					};
-				});
+				return null;
+			}, [blockIndex, parentColumnClientId]);
 
 			useEffect(() => {
 				if (
@@ -97,22 +108,18 @@ const withMaxiProps = createHigherOrderComponent(
 						blockPositionFromColumn
 					)
 				) {
-					if (prevBlockPositionFromColumn.current) {
-						if (repeaterContext?.isPositionWasSwapped) {
-							console.log(
-								`position has changed ${ownProps.attributes.uniqueID}`,
-								prevBlockPositionFromColumn.current,
-								blockPositionFromColumn
-							);
+					if (
+						prevBlockPositionFromColumn.current &&
+						blockPositionFromColumn
+					) {
+						handleBlockMove(
+							ownProps,
+							prevBlockPositionFromColumn.current,
+							blockPositionFromColumn,
+							repeaterContext?.innerBlocksPositions
+						);
 
-							handleBlockMove(
-								ownProps,
-								prevBlockPositionFromColumn.current,
-								blockPositionFromColumn
-							);
-						} else {
-							repeaterContext?.toggleIsPositionWasSwapped();
-						}
+						repeaterContext?.setIsInnerBlockWasUpdated(true);
 					}
 
 					prevBlockPositionFromColumn.current =
@@ -127,18 +134,22 @@ const withMaxiProps = createHigherOrderComponent(
 							? repeaterContext?.columnRefClientId
 							: repeaterContext?.innerBlocksPositions.get(
 									`${blockPositionFromColumn}`
-							  );
+							  )?.clientId;
 
 					if (refClientId !== clientId) {
-						const newAttributes = {
+						const refAttributes = excludeAttributes(
+							getBlockAttributes(refClientId),
+							copyPasteMapping
+						);
+
+						const mergedAttributes = {
 							...rawAttributes,
-							...excludeAttributes(
-								getBlockAttributes(refClientId),
-								copyPasteMapping
-							),
+							...refAttributes,
 						};
 
-						return newAttributes;
+						if (!isEqual(rawAttributes, mergedAttributes)) {
+							return mergedAttributes;
+						}
 					}
 				}
 
@@ -152,31 +163,41 @@ const withMaxiProps = createHigherOrderComponent(
 						? repeaterContext?.columnRefClientId
 						: repeaterContext?.innerBlocksPositions.get(
 								`${blockPositionFromColumn}`
-						  );
-
-				// console.log(
-				// 	repeaterContext?.isInnerBlockWasUpdated,
-				// 	blockPositionFromColumn,
-				// 	ownProps.attributes.uniqueID
-				// );
+						  )?.clientId;
 
 				return handleSetAttributes({
 					obj,
 					attributes,
 					clientId,
-					onChange:
-						repeaterContext?.repeaterStatus &&
-						refClientId !== clientId
-							? newAttributes => {
-									dispatch(
-										'core/block-editor'
-									).updateBlockAttributes(
-										refClientId,
-										newAttributes
-									);
-							  }
-							: setAttributes,
-					someAttributesChangedCallback: obj => {
+					onChange: obj => {
+						if (
+							!repeaterContext?.repeaterStatus ||
+							refClientId === clientId
+						) {
+							setAttributes(obj);
+						}
+
+						const nonExcludedAttributes = excludeAttributes(
+							obj,
+							copyPasteMapping
+						);
+						const excludedAttributes = diff(
+							nonExcludedAttributes,
+							obj
+						);
+
+						if (!isEmpty(nonExcludedAttributes)) {
+							updateBlockAttributes(
+								refClientId,
+								nonExcludedAttributes
+							);
+						}
+
+						if (!isEmpty(excludedAttributes)) {
+							setAttributes(excludedAttributes);
+						}
+					},
+					someAttributesChangedCallback: () => {
 						repeaterContext?.setIsInnerBlockWasUpdated(true);
 					},
 				});
@@ -259,10 +280,6 @@ const withMaxiProps = createHigherOrderComponent(
 							)
 						}
 						hasSelectedChild={hasSelectedChild}
-						setPrevBlockIndex={setBlockPositionFromColumn}
-						// isInnerBlockWasUpdated={
-						// 	repeaterContext?.isInnerBlockWasUpdated
-						// }
 					/>
 					{/*
 						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.

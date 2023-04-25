@@ -36,8 +36,6 @@ class edit extends MaxiBlockComponent {
 		isInnerBlockWasUpdated: false,
 	};
 
-	isPositionWasSwapped = true;
-
 	columnsSize = {};
 
 	columnsClientIds = [];
@@ -96,39 +94,31 @@ class edit extends MaxiBlockComponent {
 				</MaxiBlock>
 			);
 
-		// const handleRepeaterToggle = val => {
-		// 	if (val) {
-		// 		const firstColumnAttributes = select(
-		// 			'core/block-editor'
-		// 		).getBlockAttributes(this.columnsClientIds[0]);
-
-		// 		this.setState({
-		// 			blocks: {
-		// 				...this.state.blocks,
-		// 				[uniqueID]: {
-		// 					...this.state.blocks?.[uniqueID],
-		// 					...firstColumnAttributes,
-		// 				},
-		// 			},
-		// 		});
-		// 	}
-		// };
-
 		const getInnerBlocksPositions = () => {
-			const firstColumn = select('core/block-editor').getBlock(
-				this.columnsClientIds[0]
-			);
-
 			const innerBlocksPositions = new Map();
 
-			const goThroughInnerBlocks = innerBlocks => {
+			const goThroughInnerBlocks = (
+				innerBlocks,
+				column,
+				isRootColumn = false
+			) => {
 				innerBlocks?.forEach(block => {
 					const { clientId, innerBlocks } = block;
 
-					innerBlocksPositions.set(
-						`${findBlockPosition(block, firstColumn)}`,
-						clientId
-					);
+					const blockPosition = `${findBlockPosition(block, column)}`;
+
+					innerBlocksPositions.set(blockPosition, {
+						...(isRootColumn
+							? {
+									clientId,
+							  }
+							: innerBlocksPositions.get(blockPosition)),
+						uniqueIDs: [
+							...(innerBlocksPositions.get(blockPosition)
+								?.uniqueIDs || []),
+							block.attributes.uniqueID,
+						],
+					});
 
 					if (innerBlocks?.length) {
 						goThroughInnerBlocks(innerBlocks);
@@ -136,7 +126,12 @@ class edit extends MaxiBlockComponent {
 				});
 			};
 
-			goThroughInnerBlocks(firstColumn?.innerBlocks);
+			this.columnsClientIds.forEach((columnClientId, index) => {
+				const column =
+					select('core/block-editor').getBlock(columnClientId);
+
+				goThroughInnerBlocks(column?.innerBlocks, column, index === 0);
+			});
 
 			return innerBlocksPositions;
 		};
@@ -197,11 +192,6 @@ class edit extends MaxiBlockComponent {
 						innerBlocksPositions: getInnerBlocksPositions(),
 						isInnerBlockWasUpdated:
 							this.state.isInnerBlockWasUpdated,
-						isPositionWasSwapped: this.isPositionWasSwapped,
-						toggleIsPositionWasSwapped: () => {
-							this.isPositionWasSwapped =
-								!this.isPositionWasSwapped;
-						},
 						setIsInnerBlockWasUpdated: update => {
 							this.setState({
 								isInnerBlockWasUpdated: update,
@@ -232,9 +222,6 @@ class edit extends MaxiBlockComponent {
 								: false,
 						}}
 						renderWrapperInserter={false}
-						isInnerBlockWasUpdated={
-							this.state.isInnerBlockWasUpdated
-						}
 					/>
 				</RepeaterContext.Provider>
 			</RowContext.Provider>,

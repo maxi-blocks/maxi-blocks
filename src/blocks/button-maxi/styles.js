@@ -41,14 +41,14 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isButton: true,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -104,7 +104,7 @@ const getHoverWrapperObject = props => {
 					true
 				),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isHover: true,
 			isButton: false, // yes, is button, but in this case is the wrapper 👍
 		}),
@@ -114,7 +114,7 @@ const getHoverWrapperObject = props => {
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				isHover: true,
 			}),
 		opacity:
@@ -145,7 +145,7 @@ const getNormalObject = props => {
 					'bt-'
 				),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isButton: true,
 			prefix: 'bt-',
 			scValues: props.scValues,
@@ -154,7 +154,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'bt-'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			prefix: 'bt-',
 		}),
 		textAlignment: getAlignmentTextStyles({
@@ -168,7 +168,7 @@ const getNormalObject = props => {
 				'bt-'
 			),
 			isButton: true,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			prefix: 'bt-',
 		}),
 		margin: getMarginPaddingStyles({
@@ -207,7 +207,7 @@ const getHoverObject = (props, scValues) => {
 				),
 			},
 			isHover: true,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isButton: true,
 			prefix: 'bt-',
 			scValues,
@@ -220,7 +220,7 @@ const getHoverObject = (props, scValues) => {
 				},
 				isHover: true,
 				prefix: 'bt-',
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -230,7 +230,7 @@ const getHoverObject = (props, scValues) => {
 				'bt-'
 			),
 			isButton: true,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isHover: true,
 			prefix: 'bt-',
 			scValues,
@@ -246,7 +246,7 @@ const getContentObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'typography'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			textLevel: 'button',
 		}),
 	};
@@ -261,7 +261,7 @@ const getHoverContentObject = (props, scValues) => {
 				...getGroupAttributes(props, 'typography', true),
 			},
 			isHover: true,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			textLevel: 'button',
 			normalTypography: {
 				...getGroupAttributes(props, 'typography'),

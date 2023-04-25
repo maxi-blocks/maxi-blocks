@@ -1,6 +1,6 @@
 <?php
 require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
-include MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 
 class MaxiBlocks_StyleCards
@@ -78,7 +78,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if($GLOBALS['default_sc_variables_string']) {
+            if(isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
 
@@ -103,7 +103,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$style || empty($style) || $style === ':root{--maxi-active-sc-color:0,0,0;}') { // ':root{--maxi-active-sc-color:0,0,0;}' is the default value
-            if($GLOBALS['default_sc_variables_string']) {
+            if(isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
         
@@ -118,7 +118,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -137,7 +137,7 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
             
@@ -157,7 +157,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$sc_variables || empty($sc_variables)) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 

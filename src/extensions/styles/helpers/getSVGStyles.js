@@ -137,7 +137,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 		response[breakpoint] = {};
 
 		const iconStroke =
-			obj[getAttributeKey('str', isHover, prefix, breakpoint)];
+			obj[getAttributeKey('_str', isHover, prefix, breakpoint)];
 
 		if (!isNil(iconStroke)) {
 			response[breakpoint]['stroke-width'] = iconStroke;

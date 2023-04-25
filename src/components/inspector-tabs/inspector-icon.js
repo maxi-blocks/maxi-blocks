@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import {
 	getAttributesValue,
+	getAttributeKey,
 	getGroupAttributes,
 } from '../../extensions/attributes';
 import { getIconWithColor } from '../../extensions/styles';
@@ -137,10 +138,11 @@ const icon = ({
 									selected={hoverStatus}
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributesValue({
-												target: 'i.sh',
-												prefix,
-											})]: val,
+											[getAttributeKey(
+												'i.sh',
+												false,
+												prefix
+											)]: val,
 										})
 									}
 								/>

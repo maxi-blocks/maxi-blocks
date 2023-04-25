@@ -43,6 +43,8 @@ const withMaxiDC = createHigherOrderComponent(
 				'dc-id': id,
 				'dc-custom-date': isCustomDate,
 				'dc-link-status': linkStatus,
+				'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
+				'dc-contains-html': containsHTML,
 			} = dynamicContentProps;
 
 			const fetchDcData = useCallback(async () => {
@@ -63,6 +65,13 @@ const withMaxiDC = createHigherOrderComponent(
 					const dcLink = await getDCLink(dynamicContentProps);
 					const isSameLink = dcLink === newLinkSettings.url;
 
+					if (
+						postTaxonomyLinksStatus !== !!newLinkSettings.disabled
+					) {
+						newLinkSettings.disabled = postTaxonomyLinksStatus;
+
+						updateLinkSettings = true;
+					}
 					if (!isSameLink && linkStatus && !isNil(dcLink)) {
 						newLinkSettings.url = dcLink;
 
@@ -74,9 +83,17 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 
 					if (!isImageMaxi) {
-						const newContent = sanitizeDCContent(
-							await getDCContent(dynamicContentProps)
+						let newContent = await getDCContent(
+							dynamicContentProps
 						);
+						const newContainsHTML =
+							postTaxonomyLinksStatus &&
+							type === 'posts' &&
+							['categories', 'tags'].includes(field);
+
+						if (!newContainsHTML) {
+							newContent = sanitizeDCContent(newContent);
+						}
 
 						if (newContent !== content) {
 							markNextChangeAsNotPersistent();
@@ -88,6 +105,9 @@ const withMaxiDC = createHigherOrderComponent(
 								}),
 								...(updateLinkSettings && {
 									linkSettings: newLinkSettings,
+								}),
+								...(newContainsHTML !== containsHTML && {
+									'dc-contains-html': newContainsHTML,
 								}),
 							});
 						}

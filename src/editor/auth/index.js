@@ -114,6 +114,7 @@ export const removeLocalActivation = email => {
 };
 
 export async function authConnect(withRedirect = false, email = false) {
+	console.log('authConnect', email);
 	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
 
 	let cookieKey = document.cookie
@@ -159,10 +160,10 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	const key = JSON.parse(cookieKey)?.[email];
 
-	const useEmail = email || getUserEmail();
+	const useEmail = email;
 
-	// console.log('useEmail', useEmail);
-	// console.log('getUserEmail', getUserEmail());
+	console.log('useEmail', useEmail);
+	console.log('getUserEmail', getUserEmail());
 
 	if (useEmail) {
 		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';

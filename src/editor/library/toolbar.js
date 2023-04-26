@@ -74,6 +74,8 @@ const LibraryToolbar = props => {
 
 	const [userEmail, setUserEmail] = useState('');
 
+	console.log('userEmail', userEmail);
+
 	console.log('isMaxiProExpired', isMaxiProExpired);
 	console.log('isMaxiProActive', isMaxiProActive);
 

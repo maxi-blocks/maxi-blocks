@@ -494,7 +494,7 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			{isMaxiProActive && userName && (
-				<div>
+				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
@@ -518,7 +518,7 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			{!isMaxiProActive && userName && !isMaxiProExpired && (
-				<div>
+				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						<span className={usernameClasses}>{userName}</span>
 						{__(
@@ -545,7 +545,7 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			{type === 'patterns' && !isMaxiProActive && !userName && (
-				<>
+				<div className='maxi-cloud-toolbar__sign-in'>
 					<div className='maxi-cloud-container__patterns__top-menu__input'>
 						<TextControl
 							placeholder={__('Pro user email', 'maxi-blocks')}
@@ -566,7 +566,7 @@ const LibraryToolbar = props => {
 					>
 						{__('Sign in', 'maxi-blocks')}
 					</Button>
-				</>
+				</div>
 			)}
 
 			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (

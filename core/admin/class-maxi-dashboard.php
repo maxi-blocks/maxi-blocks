@@ -838,9 +838,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
             $content .= '<div class="sign-up_button-wrap">';
             $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank" class="sign-up_button">'.__('Sign up', self::$maxi_text_domain).'</a>';
-            $content .= '<p>'.__('Already have an account? ', self::$maxi_text_domain);
-            $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Sign in', self::$maxi_text_domain).'</a>';
+            $content .= '<br/><br/><br/><p>'.__('Already have an account? ', self::$maxi_text_domain);
             $content .= '</p>';
+            $content .= '<p>Sign in from the template library like this.</p>';
+            $content .= '<img src="'.esc_url(MAXI_PLUGIN_URL_PATH).'img/how-to-login.jpg"/>';
             $content .= '</div>';
             $content .= '<ul class="not_loggedin-bottom-menu">';
             $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';

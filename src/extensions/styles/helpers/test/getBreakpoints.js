@@ -1,5 +1,12 @@
 import getBreakpoints from '../getBreakpoints';
-import '../../../store';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => ({
+			receiveMaxiBreakpoints: jest.fn(),
+		})),
+	};
+});
 
 describe('getBreakpoints', () => {
 	it('Get a correct breakpoint', () => {
@@ -12,6 +19,7 @@ describe('getBreakpoints', () => {
 			'breakpoints-xs': 500,
 		};
 		const result = getBreakpoints(object);
+
 		expect(result).toMatchSnapshot();
 	});
 });

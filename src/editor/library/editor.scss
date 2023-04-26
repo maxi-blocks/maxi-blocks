@@ -904,7 +904,7 @@
 				}
 			}
 		}
-		&__patterns{
+		&__patterns {
 			&__sidebar {
 				overflow-x: hidden;
 			}
@@ -1667,8 +1667,8 @@
 			&__input {
 				position: absolute;
 				right: 11%;
+				width: 300px;
 				input {
-					max-width: 220px;
 					margin-top: 8px;
 					margin-right: -5px;
 					padding: 1px 8px 2px !important;

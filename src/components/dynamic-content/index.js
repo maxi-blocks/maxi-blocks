@@ -52,14 +52,14 @@ const DynamicContent = props => {
 	const [status, type, relation, id, field, author, limit, error] =
 		getAttributesValue({
 			target: [
-				'dc-status',
-				'dc-type',
-				'dc-relation',
-				'dc-id',
-				'dc-field',
-				'dc-author',
-				'dc-limit',
-				'dc-error',
+				'dc.s',
+				'dc_ty',
+				'dc_rel',
+				'dc_id',
+				'dc_f',
+				'dc_au',
+				'dc_lim',
+				'dc_er',
 			],
 			props: dynamicContent,
 		});
@@ -97,7 +97,7 @@ const DynamicContent = props => {
 
 				const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'dc-author': id });
+				changeProps({ dc_au: id });
 			}
 		}
 
@@ -141,7 +141,7 @@ const DynamicContent = props => {
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
-				onChange={value => changeProps({ 'dc-status': value })}
+				onChange={value => changeProps({ 'dc.s': value })}
 			/>
 			{status && (
 				<>
@@ -157,9 +157,9 @@ const DynamicContent = props => {
 							);
 
 							changeProps({
-								'dc-type': value,
-								'dc-show': 'current',
-								'dc-error': '',
+								dc_ty: value,
+								dc_sho: 'current',
+								dc_er: '',
 								...dcFieldActual,
 							});
 						}}
@@ -175,9 +175,9 @@ const DynamicContent = props => {
 									options={relationOptions[contentType][type]}
 									onChange={value =>
 										changeProps({
-											'dc-relation': value,
-											'dc-show': 'current',
-											'dc-error': '',
+											dc_rel: value,
+											dc_sho: 'current',
+											dc_er: '',
 										})
 									}
 								/>
@@ -189,7 +189,7 @@ const DynamicContent = props => {
 									options={postAuthorOptions}
 									onChange={value =>
 										changeProps({
-											'dc-author': Number(value),
+											dc_au: Number(value),
 										})
 									}
 								/>
@@ -206,9 +206,9 @@ const DynamicContent = props => {
 										options={postIdOptions}
 										onChange={value =>
 											changeProps({
-												'dc-error': '',
-												'dc-show': 'current',
-												'dc-id': Number(value),
+												dc_er: '',
+												dc_sho: 'current',
+												dc_id: Number(value),
 											})
 										}
 									/>
@@ -226,7 +226,7 @@ const DynamicContent = props => {
 									options={fieldOptions[contentType][type]}
 									onChange={value =>
 										changeProps({
-											'dc-field': value,
+											dc_f: value,
 										})
 									}
 								/>
@@ -242,7 +242,7 @@ const DynamicContent = props => {
 										value={limit}
 										onChangeValue={value =>
 											changeProps({
-												'dc-limit': Number(value),
+												dc_lim: Number(value),
 											})
 										}
 										disableReset={limitOptions.disableReset}
@@ -252,10 +252,9 @@ const DynamicContent = props => {
 										}
 										onReset={() =>
 											changeProps({
-												'dc-limit':
-													getDefaultAttribute(
-														'dc-limit'
-													),
+												dc_lim: getDefaultAttribute(
+													'dc-lim'
+												),
 											})
 										}
 										min={limitOptions.min}

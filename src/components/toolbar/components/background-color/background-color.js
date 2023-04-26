@@ -47,7 +47,7 @@ const BackgroundColor = props => {
 		return null;
 
 	const activeMedia = getLastBreakpointAttribute({
-		target: 'background-active-media',
+		target: 'b_am',
 		prefix,
 		breakpoint,
 		attributes: props,
@@ -72,7 +72,7 @@ const BackgroundColor = props => {
 					onChange={val => {
 						onChange({
 							[getAttributeKey(
-								'background-active-media',
+								'b_am',
 								false,
 								prefix,
 								breakpoint
@@ -89,6 +89,7 @@ const BackgroundColor = props => {
 								false,
 								prefix
 							),
+							type: 'color',
 						}}
 						key={`background-color-layer--${clientId}`}
 						onChangeInline={onChangeInline}

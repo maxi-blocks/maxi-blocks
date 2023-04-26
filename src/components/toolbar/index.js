@@ -122,14 +122,14 @@ const MaxiToolbar = memo(
 		] = getAttributesValue({
 			target: [
 				'_bs',
-				'customLabel',
+				'_cl',
 				'_ioh',
 				'isList',
 				'_lse',
 				'textLevel',
 				'typeOfList',
 				'_uid',
-				'svgType',
+				'_st',
 			],
 			props: attributes,
 		});
@@ -194,7 +194,7 @@ const MaxiToolbar = memo(
 		);
 
 		const lineOrientation = getLastBreakpointAttribute(
-			'line-orientation',
+			'_lo',
 			breakpoint,
 			attributes
 		);
@@ -617,7 +617,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							blockName={name}
 							verticalAlign={getLastBreakpointAttribute({
-								target: 'justify-content',
+								target: '_js',
 								breakpoint,
 								attributes,
 							})}
@@ -654,32 +654,29 @@ const MaxiToolbar = memo(
 							{...getGroupAttributes(attributes, 'divider')}
 							lineOrientation={lineOrientation}
 							lineVertical={getLastBreakpointAttribute(
-								'line-vertical',
+								'_lv',
 								breakpoint,
 								attributes
 							)}
 							lineHorizontal={getLastBreakpointAttribute(
-								'line-horizontal',
+								'_lh',
 								breakpoint,
 								attributes
 							)}
 							blockName={name}
 							onChangeOrientation={lineOrientation =>
 								maxiSetAttributes({
-									[`line-orientation-${breakpoint}`]:
-										lineOrientation,
+									[`_lo-${breakpoint}`]: lineOrientation,
 								})
 							}
 							onChangeHorizontal={lineHorizontal =>
 								maxiSetAttributes({
-									[`line-horizontal-${breakpoint}`]:
-										lineHorizontal,
+									[`_lh-${breakpoint}`]: lineHorizontal,
 								})
 							}
 							onChangeVertical={lineVertical =>
 								maxiSetAttributes({
-									[`line-vertical-${breakpoint}`]:
-										lineVertical,
+									[`_lv-${breakpoint}`]: lineVertical,
 								})
 							}
 						/>

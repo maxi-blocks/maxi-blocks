@@ -120,21 +120,21 @@ class edit extends MaxiBlockComponent {
 				inlineStylesTargets={inlineStylesTargets}
 				scValues={scValues}
 			/>,
-			// <Toolbar
-			// 	key={`toolbar-${uniqueID}`}
-			// 	ref={this.blockRef}
-			// 	{...this.props}
-			// 	copyPasteMapping={copyPasteMapping}
-			// 	prefix='bt-'
-			// 	backgroundGlobalProps={{
-			// 		target: 'background',
-			// 		type: 'button',
-			// 	}}
-			// 	backgroundAdvancedOptions='button background'
-			// 	propsToAvoid={['buttonContent', 'formatValue']}
-			// 	inlineStylesTargets={inlineStylesTargets}
-			// 	scValues={scValues}
-			// />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+				copyPasteMapping={copyPasteMapping}
+				prefix='bt-'
+				backgroundGlobalProps={{
+					target: 'background',
+					type: 'button',
+				}}
+				backgroundAdvancedOptions='button background'
+				propsToAvoid={['_bc', 'formatValue']}
+				inlineStylesTargets={inlineStylesTargets}
+				scValues={scValues}
+			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}

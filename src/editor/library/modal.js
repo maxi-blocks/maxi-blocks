@@ -225,9 +225,11 @@ const MaxiModal = props => {
 						const info = proJson[email];
 						const maxiCookie = getMaxiCookieKey();
 						if (info && maxiCookie) {
+							console.log('info', info);
 							const { key } = maxiCookie;
-							console.log('key', key);
-							const { name } = info;
+							let name = info?.name;
+							if (!name || name !== '' || name !== '1')
+								name = email;
 							const isActive =
 								info &&
 								info?.key === key &&

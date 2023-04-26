@@ -116,7 +116,7 @@ class edit extends MaxiBlockComponent {
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				propsToAvoid={['buttonContent', 'formatValue']}
+				propsToAvoid={['_bc', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
 				scValues={scValues}
 			/>,
@@ -187,7 +187,7 @@ class edit extends MaxiBlockComponent {
 										: this.iconRef
 								}
 								{...this.props}
-								propsToAvoid={['buttonContent', 'formatValue']}
+								propsToAvoid={['_bc', 'formatValue']}
 							/>
 							<IconWrapper
 								ref={this.iconRef}

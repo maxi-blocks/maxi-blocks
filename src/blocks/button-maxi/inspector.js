@@ -52,32 +52,26 @@ const Inspector = props => {
 		if (
 			type === 'icon' &&
 			!isEmpty(iconContent) &&
-			iconContent !== defaultPresets[`preset${number}`]['icon-content']
+			iconContent !== defaultPresets[`preset${number}`].i_c
 		)
-			newDefaultPresets[`preset${number}`]['icon-content'] = iconContent;
+			newDefaultPresets[`preset${number}`].i_c = iconContent;
 
 		if (
-			!isNil(
-				defaultPresets[`preset${number}`][
-					'icon-border-style-general-hover'
-				]
-			) &&
-			defaultPresets[`preset${number}`][
-				'icon-border-style-general-hover'
-			] !== 'none'
+			!isNil(defaultPresets[`preset${number}`]['i-bo_s-general.h']) &&
+			defaultPresets[`preset${number}`]['i-bo_s-general.h'] !== 'none'
 		) {
 			const hoverAttr = getGroupAttributes(
 				{ ...newDefaultPresets[`preset${number}`] },
 				['border', 'borderWidth', 'borderRadius'],
 				true,
-				'icon-'
+				'i-'
 			);
 
 			const nonHoverAttr = getGroupAttributes(
 				{ ...newDefaultPresets[`preset${number}`] },
 				['border', 'borderWidth', 'borderRadius'],
 				false,
-				'icon-'
+				'i-'
 			);
 
 			Object.keys(hoverAttr).forEach(h => {
@@ -94,17 +88,17 @@ const Inspector = props => {
 		}
 
 		const {
-			'icon-stroke-pa-status': strokePaletteStatus,
-			'icon-stroke-pa-status-hover': strokePaletteHoverStatus,
-			'icon-content': rawIcon,
+			'i-str_ps': strokePaletteStatus,
+			'i-str_ps.h': strokePaletteHoverStatus,
+			i_c: rawIcon,
 		} = newDefaultPresets[`preset${number}`];
 
 		let icon = null;
 
 		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
 			const {
-				'icon-stroke-pac': strokePaletteColor,
-				'icon-stroke-pac-hover': strokePaletteHoverColor,
+				'i-str_pc': strokePaletteColor,
+				'i-str_pc.h': strokePaletteHoverColor,
 				'icon-inherit': rawIconInherit,
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
@@ -129,13 +123,13 @@ const Inspector = props => {
 
 		maxiSetAttributes({
 			...newDefaultPresets[`preset${number}`],
-			...(icon && { 'icon-content': icon }),
+			...(icon && { i_c: icon }),
 		});
 	};
 
 	const getCategoriesCss = () => {
 		const iconContent = getAttributesValue({
-			target: 'icon-content',
+			target: 'i_c',
 			props: attributes,
 		});
 

@@ -47,7 +47,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					'button-'
 				),
 				prefix: `${prefix}i-`,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				isIconInherit: getAttributesValue({
 					target: 'i_i',
 					props,
@@ -65,7 +65,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					prefix
 				),
 				prefix: `${prefix}i-`,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				isIcon: true,
 			}),
 		},
@@ -89,7 +89,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					),
 				},
 				prefix: `${prefix}i-`,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				isIB,
 				hasCommonUnit: true,
 			}),
@@ -176,7 +176,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 						prefix
 					),
 				},
-				props.blockStyle,
+				props._bs,
 				iconInherit,
 				true,
 				iconType
@@ -197,7 +197,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 						prefix
 					),
 					prefix: `${prefix}i-`,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					isIconInherit: iconInherit,
 					isHover: true,
 					isIcon: true,
@@ -215,7 +215,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 					),
 					prefix: `${prefix}i-`,
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					isIcon: true,
 				}),
 			},
@@ -232,7 +232,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 					),
 				},
 				prefix: `${prefix}i-`,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				isHover: true,
 			}),
 	};

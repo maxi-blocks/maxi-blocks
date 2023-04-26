@@ -94,7 +94,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.border, prefix }),
-		[`${prefix}bo-pac-general`]: {
+		[`${prefix}bo_pc-general`]: {
 			type: 'number',
 			default: 4,
 		},

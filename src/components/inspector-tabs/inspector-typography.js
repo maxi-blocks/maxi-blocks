@@ -115,7 +115,7 @@ const typography = ({
 										onChange={val =>
 											maxiSetAttributes({
 												[getAttributeKey(
-													'typography-status-hover',
+													't.sh',
 													false,
 													prefix
 												)]: val,

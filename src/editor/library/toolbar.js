@@ -406,6 +406,8 @@ const LibraryToolbar = props => {
 		window.open(url, '_blank')?.focus();
 	};
 
+	console.log(userName, 'userName in toolbar');
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -524,7 +526,7 @@ const LibraryToolbar = props => {
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__manage-sessions'
-						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
 						label={__('Manage sessions', 'maxi-blocks')}
 						onClick={() => manageSessions()}
 					>

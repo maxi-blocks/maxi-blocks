@@ -68,7 +68,7 @@ export const getUserName = () => {
 
 	if (info && info?.key === key) {
 		const name = info?.name;
-		if (name && name !== '') return name;
+		if (name && name !== '' && name !== '1') return name;
 		return email;
 	}
 	return false;
@@ -101,6 +101,16 @@ export const processLocalActivation = (email, name, status, key) => {
 	const objString = JSON.stringify(obj);
 
 	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+};
+
+export const removeLocalActivation = email => {
+	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (typeof oldPro === 'string') {
+		const oldProObj = JSON.parse(oldPro);
+		delete oldProObj[email];
+		const objString = JSON.stringify(oldProObj);
+		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+	}
 };
 
 export async function authConnect(withRedirect = false, email = false) {
@@ -214,6 +224,12 @@ export async function authConnect(withRedirect = false, email = false) {
 							data.message === 'already logged in'
 						) {
 							processLocalActivation(useEmail, name, 'no', key);
+						}
+						if (
+							status === 'error' &&
+							data.message === 'no such user'
+						) {
+							removeLocalActivation(useEmail);
 						}
 					}
 					if (!data) {

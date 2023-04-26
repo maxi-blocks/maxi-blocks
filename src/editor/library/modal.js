@@ -204,13 +204,10 @@ const MaxiModal = props => {
 				'visibilitychange',
 				function userIsBack() {
 					if (!document.hidden) {
-						console.log('user is back');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
 							setIsMaxiProExpired(isProSubExpired());
 							setUserName(getUserName());
-							console.log('set user name');
-							console.log('username', getUserName());
 						});
 					}
 				}

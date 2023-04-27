@@ -303,7 +303,7 @@ class MaxiBlocks_DynamicContent
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
 
-            $media_id = $image['id'];
+            $media_id = is_array($image) && $image['id'];
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
@@ -633,7 +633,7 @@ class MaxiBlocks_DynamicContent
         $post = $this->get_post($attributes);
         $acf_data = get_field_object($dc_field, $post->ID);
 
-        return $acf_data['value'];
+        return is_array($acf_data) && $acf_data['value'];
     }
 
     public function get_date($date, $attributes)

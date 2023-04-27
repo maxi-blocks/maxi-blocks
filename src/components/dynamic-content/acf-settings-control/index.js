@@ -13,6 +13,11 @@ import {
 } from '../../../extensions/DC/getACFData';
 import { acfFieldTypes } from '../../../extensions/DC/constants';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const AcfSettingsControl = props => {
 	const { dynamicContent, changeProps, contentType } = props;
 	const { 'dc-acf-group': group, 'dc-field': field } = dynamicContent;
@@ -29,7 +34,21 @@ const AcfSettingsControl = props => {
 				};
 			});
 
-			setGroupOptions(options);
+			if (!isEmpty(options)) {
+				if (!options.find(option => option.value === field))
+					changeProps({
+						'dc-acf-group': options[0].value,
+					});
+
+				setGroupOptions(options);
+			} else {
+				setGroupOptions([
+					{
+						label: 'No groups found',
+						value: '',
+					},
+				]);
+			}
 		});
 	}, []);
 
@@ -43,16 +62,36 @@ const AcfSettingsControl = props => {
 					return {
 						label: field.title,
 						value: field.id,
+						type: field.type,
 					};
 				});
 
-			if (!options.find(option => option.value === field)) {
-				changeProps({
-					'dc-field': options[0].value,
-				});
-			}
+			if (!isEmpty(options)) {
+				if (!options.find(option => option.value === field))
+					changeProps({
+						'dc-field': options[0].value,
+						'dc-acf-field-type': options[0].type,
+					});
 
-			setFieldsOptions(options);
+				setFieldsOptions(options);
+			} else {
+				// In case we receive fields but none of them are suitable for the current content type
+				if (!isEmpty(fields)) {
+					setFieldsOptions([
+						{
+							label: 'No suitable fields found',
+							value: '',
+						},
+					]);
+				}
+
+				setFieldsOptions([
+					{
+						label: 'No fields found',
+						value: '',
+					},
+				]);
+			}
 		});
 	}, [group]);
 
@@ -75,6 +114,9 @@ const AcfSettingsControl = props => {
 				onChange={value =>
 					changeProps({
 						'dc-field': value,
+						'dc-acf-field-type': fieldsOptions.find(
+							option => option.value === value
+						).type,
 					})
 				}
 			/>

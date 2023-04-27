@@ -46,10 +46,26 @@ if (!class_exists('MaxiBlocks_Core')):
             // Add All Images - Maxi Images filter to the media library
             add_action('wp_enqueue_media', function () {
                 if (term_exists('maxi-image', 'maxi-image-type')) {
-                    wp_enqueue_script('maxi-media-images-filter', plugin_dir_url(__DIR__) . 'js/mediaFilter.min.js', array( 'media-editor', 'media-views' ));
-                    wp_localize_script('maxi-media-images-filter', 'maxiImagesFilterTerms', array(
-                    'terms'     => get_terms('maxi-image-type', array( 'hide_empty' => false )),
-                ));
+                    wp_enqueue_script(
+                        'maxi-media-images-filter',
+                        plugin_dir_url(__DIR__) . 'js/mediaFilter.min.js',
+                        array(
+                            'media-editor',
+                            'media-views'
+                        ),
+                    );
+                    wp_localize_script(
+                        'maxi-media-images-filter',
+                        'maxiImagesFilterTerms',
+                        array(
+                            'terms' => get_terms(
+                                'maxi-image-type',
+                                array(
+                                    'hide_empty' => false
+                                )
+                            ),
+                        )
+                    );
                 }
             });
         }

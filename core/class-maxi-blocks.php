@@ -45,6 +45,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
+
+            // Experimental: allow StyleCards to affect native WP blocks nested on Maxi Blocks
+            if(get_option('maxi_sc_gutenberg_blocks')) {
+                add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
+            }
+
         }
 
         public function enqueue_blocks_assets()
@@ -140,6 +146,41 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 ],
                 $categories
             );
+        }
+
+        public function maxi_add_sc_native_blocks($block_content, $block, $instance)
+        {
+            if (str_contains($block['blockName'], 'core/') && isset($block_content) && !empty($block_content)) {
+                // We create a new DOMDocument object
+                $dom = new DOMDocument();
+                @$dom->loadHTML(mb_convert_encoding($block_content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                
+                // Using XPath to find the elements we want to change
+                $xpath = new DOMXPath($dom);
+                
+                // Look for all elements
+                $elements = $xpath->query('//*');
+                
+                foreach ($elements as $element) {
+                    $classes = $element->getAttribute('class');
+
+                    if(!str_contains('maxi-block', $classes)) {
+                        $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
+                    }
+
+                    if(!isset($classes) || empty($classes)) {
+                        $element->setAttribute('class', 'maxi-block--use-sc');
+                    }
+
+                }
+                
+                $block_content = $dom->saveHTML();
+            
+
+                return $block_content;
+            }
+
+            return $block_content;
         }
     }
 endif;

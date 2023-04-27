@@ -3,7 +3,6 @@
  */
 import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -73,20 +72,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, isSelected } = this.props;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-map--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.map_preview}
-						alt={__('Map block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector

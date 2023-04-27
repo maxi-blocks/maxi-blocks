@@ -160,8 +160,6 @@ const getSCStyles = styleCard => {
 					const targets = [
 						`${prefix} .maxi-${style}.maxi-block.maxi-text-block`,
 						`${prefix} .maxi-${style} .maxi-block.maxi-text-block`,
-						`${prefix} .maxi-${style}.maxi-image-block figcaption`,
-						`${prefix} .maxi-${style} .maxi-image-block figcaption`,
 						`${prefix} .maxi-${style}.maxi-map-block__popup__content`,
 						`${prefix} .maxi-${style} .maxi-map-block__popup__content`,
 						`${prefix} .maxi-${style} .maxi-pane-block .maxi-pane-block__header`,
@@ -275,6 +273,24 @@ const getSCStyles = styleCard => {
 
 					response += `${target} ${level} {${sentences?.join(' ')}}`;
 				});
+			});
+
+			// Image Maxi caption
+			[
+				`${prefix} .maxi-${style}.maxi-image-block figcaption`,
+				`${prefix} .maxi-${style} .maxi-image-block figcaption`,
+			].forEach(target => {
+				const sentences = [...breakpointLevelSentences.p];
+
+				// Remove margin-bottom sentences
+				const marginSentence = sentences?.find(
+					sentence => sentence?.indexOf('margin-bottom') > -1
+				);
+
+				if (marginSentence)
+					sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
+				response += `${target} {${sentences?.join(' ')}}`;
 			});
 
 			// Search Maxi

@@ -12,6 +12,7 @@ import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
+import getACFContentByType from './getACFContentByType';
 
 /**
  * External dependencies
@@ -40,6 +41,7 @@ const getDCContent = async dataRequest => {
 		'dc-format': format,
 		'dc-locale': locale,
 		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
+		'dc-acf-field-type': acfFieldType,
 	} = dataRequest;
 
 	let contentValue;
@@ -47,7 +49,7 @@ const getDCContent = async dataRequest => {
 	if (source === 'acf') {
 		contentValue = await getACFFieldContent(field, data.id);
 
-		return contentValue;
+		return getACFContentByType(contentValue, acfFieldType);
 	}
 
 	if (

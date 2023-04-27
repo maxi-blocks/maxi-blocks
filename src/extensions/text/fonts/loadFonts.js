@@ -68,8 +68,20 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = url => {
+				// Need to ensure the fontName contains quotes when it has space in the string.
+				// Also seems FF is more strict than Chrome, so need to ensure the fontName is
+				// ready depending the browser.
+				const isFirefox =
+					navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
+				const cleanFontName = (
+					fontName.includes(' ') && isFirefox
+						? `'${fontName}'`
+						: fontName
+				).replaceAll("''", "'");
+
 				const fontLoad = new FontFace(
-					fontName,
+					cleanFontName,
 					`url(${url})`,
 					fontDataNew
 				);

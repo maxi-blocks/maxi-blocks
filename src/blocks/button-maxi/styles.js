@@ -63,13 +63,11 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'margin'),
 			},
-			prefix,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
-			prefix,
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -90,7 +88,7 @@ const getWrapperObject = props => {
 
 const getHoverWrapperObject = props => {
 	const [boxShadowStatusHover, opacityStatusHover] = getAttributesValue({
-		target: ['box-shadow-status', '_o.s'],
+		target: ['bs.sh', '_o.s'],
 		props,
 		isHover: true,
 	});

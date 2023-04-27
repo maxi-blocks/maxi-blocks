@@ -158,13 +158,15 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.opacity,
-	...attributesData.opacityHover,
+	...attributesData.margin,
+	...attributesData.padding,
 
 	/**
 	 * Advanced
 	 */
 	...attributesData.dynamicContent,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{
@@ -179,12 +181,8 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.size,
-	...attributesData.margin,
-	...attributesData.padding,
 	...attributesData.customCss,
 	...attributesData.flex,
 };
-
-// console.log(attributes);
 
 export default attributes;

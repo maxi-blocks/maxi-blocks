@@ -69,7 +69,7 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 
 			const loadBackendFont = url => {
 				const fontLoad = new FontFace(
-					fontName,
+					`"${fontName}"`, // needs quotes when there's a space on the string
 					`url(${url})`,
 					fontDataNew
 				);

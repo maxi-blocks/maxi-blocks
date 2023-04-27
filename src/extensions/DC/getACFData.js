@@ -13,9 +13,11 @@ const getACFGroupFields = async group =>
 	});
 
 const getACFFieldContent = async (field, post) =>
-	apiFetch({
-		path: `/maxi-blocks/v1.0/acf/get-field-value/${field}/${post}`,
-		method: 'GET',
-	});
+	typeof acf !== 'undefined'
+		? apiFetch({
+				path: `/maxi-blocks/v1.0/acf/get-field-value/${field}/${post}`,
+				method: 'GET',
+		  })
+		: null;
 
 export { getACFFieldGroups, getACFGroupFields, getACFFieldContent };

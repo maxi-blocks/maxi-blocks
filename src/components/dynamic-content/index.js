@@ -164,6 +164,24 @@ const DynamicContent = props => {
 	}, []);
 
 	useEffect(() => {
+		if (source === 'acf' && typeof acf === 'undefined') {
+			const validatedAttributes = validationsValues(
+				type,
+				field,
+				relation,
+				contentType
+			);
+
+			changeProps({
+				'dc-source': 'wp',
+				'dc-show': 'current',
+				'dc-error': '',
+				...validatedAttributes,
+			});
+		}
+	}, []);
+
+	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
@@ -186,8 +204,7 @@ const DynamicContent = props => {
 									type,
 									field,
 									relation,
-									contentType,
-									value
+									contentType
 								);
 
 								changeProps({

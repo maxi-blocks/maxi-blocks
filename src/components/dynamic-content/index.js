@@ -322,29 +322,31 @@ const DynamicContent = props => {
 									</>
 								)}
 
-							{((source === 'wp' &&
-								['settings'].includes(type)) ||
-								(relation === 'by-id' && isFinite(id)) ||
-								(relation === 'author' &&
-									!isEmpty(postIdOptions)) ||
-								[
-									'date',
-									'modified',
-									'random',
-									'by-date',
-									'alphabetical',
-								].includes(relation)) && (
-								<SelectControl
-									label={__('Field', 'maxi-blocks')}
-									value={field}
-									options={fieldOptions[contentType][type]}
-									onChange={value =>
-										changeProps({
-											'dc-field': value,
-										})
-									}
-								/>
-							)}
+							{source === 'wp' &&
+								(['settings'].includes(type) ||
+									(relation === 'by-id' && isFinite(id)) ||
+									(relation === 'author' &&
+										!isEmpty(postIdOptions)) ||
+									[
+										'date',
+										'modified',
+										'random',
+										'by-date',
+										'alphabetical',
+									].includes(relation)) && (
+									<SelectControl
+										label={__('Field', 'maxi-blocks')}
+										value={field}
+										options={
+											fieldOptions[contentType][type]
+										}
+										onChange={value =>
+											changeProps({
+												'dc-field': value,
+											})
+										}
+									/>
+								)}
 							{limitTypes.includes(type) &&
 								limitFields.includes(field) &&
 								!error && (

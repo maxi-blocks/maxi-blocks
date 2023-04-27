@@ -117,6 +117,8 @@ const getSCVariablesObject = (
 			const obj = getParsedObj(SC[style][element]);
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
+					const isFontFamily = setting === 'font-family';
+
 					breakpoints.forEach(breakpoint => {
 						if (!cleanResponse)
 							response[
@@ -134,6 +136,24 @@ const getSCVariablesObject = (
 									`--maxi-${style}-${element}-${setting}-${breakpoint}`
 								] = value;
 						}
+
+						// Font family needs quotes for values that has space in middle
+						if (
+							isFontFamily &&
+							getIsValid(
+								response[
+									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+								],
+								true
+							)
+						)
+							response[
+								`--maxi-${style}-${element}-${setting}-${breakpoint}`
+							] = `"${
+								response[
+									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+								]
+							}"`.replaceAll('""', '"'); // Fix for values that already have quotes
 					});
 				});
 

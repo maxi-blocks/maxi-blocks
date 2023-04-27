@@ -132,7 +132,7 @@ const getTypographyStyles = ({
 	breakpoints.forEach(breakpoint => {
 		const typography = {
 			...(!isNil(getValue('font-family', breakpoint)) && {
-				'font-family': getValue('font-family', breakpoint),
+				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
 			...(!isNil(getValue('font-size', breakpoint)) && {

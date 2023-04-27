@@ -186,12 +186,12 @@ const getLayerCardTitle = props => {
 	const colorStr = getColorRGBAString({
 		firstVar: `color-${getAttributesValue({
 			target: '_pc',
-			prefix: 'background-svg-',
+			prefix: 'bsv-',
 			props: layer,
 		})}`,
 		opacity: getAttributesValue({
 			target: '_po',
-			prefix: 'background-svg-',
+			prefix: 'bsv-',
 			props: layer,
 		}),
 		blockStyle: getBlockStyle(clientId),
@@ -200,17 +200,17 @@ const getLayerCardTitle = props => {
 
 	const newSvgElement = getAttributesValue({
 		target: '_ps',
-		prefix: 'background-svg-',
+		prefix: 'bsv-',
 		props: layer,
 	})
 		? getAttributesValue({
 				target: 'SVGElement',
-				prefix: 'background-svg-',
+				prefix: 'bsv-',
 				props: layer,
 		  })?.replace(regexLineToChange, changeTo)
 		: getAttributesValue({
 				target: 'SVGElement',
-				prefix: 'background-svg-',
+				prefix: 'bsv-',
 				props: layer,
 		  });
 
@@ -249,7 +249,7 @@ const getLayerCardTitle = props => {
 
 				return {
 					background: getLastBreakpointAttribute({
-						target: 'background-color-custom-color',
+						target: 'bc_cc',
 						breakpoint,
 						attributes: layer,
 						isHover,
@@ -258,13 +258,13 @@ const getLayerCardTitle = props => {
 			}
 			case 'gradient': {
 				const bgGradient = getLastBreakpointAttribute({
-					target: 'background-gradient-content',
+					target: 'bg_c',
 					breakpoint,
 					attributes: layer,
 					isHover,
 				});
 				const bgGradientOpacity = getLastBreakpointAttribute({
-					target: 'background-gradient-opacity',
+					target: 'bg_o',
 					breakpoint,
 					attributes: layer,
 					isHover,
@@ -295,13 +295,13 @@ const getLayerCardTitle = props => {
 			}
 			case 'video': {
 				const bgFallbackUrl = getLastBreakpointAttribute({
-					target: 'background-video-fallbackURL',
+					target: 'bv_fu',
 					breakpoint,
 					attributes: layer,
 					isHover,
 				});
 				const bgVideoOpacity = getLastBreakpointAttribute({
-					target: 'background-video-opacity',
+					target: 'bv_o',
 					breakpoint,
 					attributes: layer,
 					isHover,
@@ -530,17 +530,17 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
-			...(!isHoverLayer
-				? {
-						_t: {
-							...transition,
-							transform: {
-								...transition.transform,
-								[`_${layer.id}`]: createTransitionObj(),
-							},
-						},
-				  }
-				: {}),
+			// ...(!isHoverLayer
+			// 	? {
+			// 			_t: {
+			// 				...transition,
+			// 				transform: {
+			// 					...transition.transform,
+			// 					[`_${layer.id}`]: createTransitionObj(),
+			// 				},
+			// 			},
+			// 	  }
+			// 	: {}),
 		});
 	};
 

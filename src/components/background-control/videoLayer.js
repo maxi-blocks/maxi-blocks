@@ -56,7 +56,7 @@ const VideoLayerContent = props => {
 					className='maxi-mediauploader-control__video-fallback'
 					placeholder={__('Background fallback')}
 					mediaID={getLastBreakpointAttribute({
-						target: 'bv_fi',
+						target: 'bv_mi',
 						breakpoint,
 						attributes: videoOptions,
 						isHover,
@@ -65,13 +65,13 @@ const VideoLayerContent = props => {
 					onSelectImage={val =>
 						onChange({
 							[getAttributeKey(
-								'bv_fi',
+								'bv_mi',
 								isHover,
 								prefix,
 								breakpoint
 							)]: val.id,
 							[getAttributeKey(
-								'bv_fu',
+								'bv_mu',
 								isHover,
 								prefix,
 								breakpoint
@@ -81,13 +81,13 @@ const VideoLayerContent = props => {
 					onRemoveImage={() =>
 						onChange({
 							[getAttributeKey(
-								'bv_fi',
+								'bv_mi',
 								isHover,
 								prefix,
 								breakpoint
 							)]: '',
 							[getAttributeKey(
-								'bv_fu',
+								'bv_mu',
 								isHover,
 								prefix,
 								breakpoint
@@ -223,22 +223,24 @@ const VideoLayer = props => {
 				</>
 			)}
 			<ResponsiveTabsControl breakpoint={breakpoint}>
-				<VideoLayerContent
-					videoOptions={videoOptions}
-					onChange={onChange}
-					isHover={isHover}
-					prefix={prefix}
-					isIB={isIB}
-					breakpoint={breakpoint}
-				/>
-				<SizeAndPositionLayerControl
-					prefix={prefix}
-					options={videoOptions}
-					onChange={onChange}
-					isHover={isHover}
-					isLayer
-					breakpoint={breakpoint}
-				/>
+				<>
+					<VideoLayerContent
+						videoOptions={videoOptions}
+						onChange={onChange}
+						isHover={isHover}
+						prefix={prefix}
+						isIB={isIB}
+						breakpoint={breakpoint}
+					/>
+					<SizeAndPositionLayerControl
+						prefix={prefix}
+						options={videoOptions}
+						onChange={onChange}
+						isHover={isHover}
+						isLayer
+						breakpoint={breakpoint}
+					/>
+				</>
 			</ResponsiveTabsControl>
 		</div>
 	);

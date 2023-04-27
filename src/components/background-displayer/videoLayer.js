@@ -25,15 +25,15 @@ const VideoLayer = props => {
 	const { videoOptions, wrapperRef, className, breakpoint } = props;
 
 	let videoUrl = getAttributesValue({
-		target: 'background-video-url',
-		props,
+		target: 'bv_mu',
+		props: videoOptions,
 	});
 
 	if (isNil(videoUrl)) return null;
 
 	const reduceBorder = getAttributesValue({
-		target: 'background-video-reduce-border',
-		props,
+		target: 'bv_rb',
+		props: videoOptions,
 	});
 
 	const style = {
@@ -72,19 +72,12 @@ const VideoLayer = props => {
 		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
 	}
 
-	const {
-		'background-video-loop': videoLoop,
-		'background-video-startTime': videoStartTime,
-		'background-video-endTime': videoEndTime,
-	} = getLastBreakpointAttribute({
-		target: [
-			'background-video-loop',
-			'background-video-startTime',
-			'background-video-endTime',
-		],
-		breakpoint,
-		attributes: videoOptions,
-	});
+	const [videoLoop, videoStartTime, videoEndTime] =
+		getLastBreakpointAttribute({
+			target: ['bv_loo', 'bv_sti', 'bv_et'],
+			breakpoint,
+			attributes: videoOptions,
+		});
 
 	const parsedVideo = parseVideo(videoUrl);
 

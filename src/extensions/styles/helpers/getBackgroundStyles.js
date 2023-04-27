@@ -461,7 +461,7 @@ export const getVideoBackgroundObject = ({
 
 	const [bgVideoOpacity, bgVideoClipPath, bgVideoFallbackUrl] =
 		getLastBreakpointAttribute({
-			target: ['bv_o', 'bv_cp', 'bv_fu'],
+			target: ['bv_o', 'bv_cp', 'bv_mu'],
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -905,7 +905,7 @@ const getBackgroundLayers = ({
 											layer,
 											'imageShape',
 											false,
-											'bsv'
+											'bsv-'
 										),
 										'bsv'
 									)

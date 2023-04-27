@@ -51,7 +51,22 @@ const ImageShapeResponsiveSettings = ({
 
 		const getDictionaryValue = value => dictionary[component][value];
 
-		const target = `${prefix}image-shape-${rawTarget}`;
+		const getShortTarget = target => {
+			switch (target) {
+				case 'scale':
+					return 'sc';
+				case 'rotate':
+					return 'rot';
+				case 'flip-x':
+					return 'fx';
+				case 'flip-y':
+					return 'fy';
+				default:
+					return '';
+			}
+		};
+
+		const target = `${prefix}is_${getShortTarget(rawTarget)}`;
 		const targetWithBreakpoint = `${target}-${breakpoint}`;
 
 		return {
@@ -161,7 +176,7 @@ const ImageShape = props => {
 									]}
 									onChange={val =>
 										onChange({
-											SVGElement: setSVGRatio(icon, val),
+											_se: setSVGRatio(icon, val),
 										})
 									}
 								/>
@@ -237,10 +252,7 @@ const ImageShape = props => {
 									]}
 									onChange={val =>
 										onChange({
-											SVGElement: setSVGPosition(
-												icon,
-												val
-											),
+											_se: setSVGPosition(icon, val),
 										})
 									}
 								/>

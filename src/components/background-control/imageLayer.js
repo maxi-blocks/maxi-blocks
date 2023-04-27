@@ -323,7 +323,7 @@ const ImageLayerSettings = props => {
 			}) === 'custom' && (
 				<>
 					<AdvancedNumberControl
-						label={__('Y-axis', 'maxi-blocks')}
+						label={__('X-axis', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: 'bi_pos_w.u',
@@ -378,7 +378,7 @@ const ImageLayerSettings = props => {
 						}
 					/>
 					<AdvancedNumberControl
-						label={__('X-axis', 'maxi-blocks')}
+						label={__('Y-axis', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: 'bi_pos_h.u',
@@ -594,12 +594,12 @@ const ImageLayerSettings = props => {
 						imageOptions,
 						'clipPath',
 						false,
-						'bi'
+						'bi-'
 					)}
 					{...imageOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix='bi'
+					prefix='bi-'
 					breakpoint={breakpoint}
 					getBounds={getBounds}
 					getBlockClipPath={getBlockClipPath}

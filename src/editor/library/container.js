@@ -600,7 +600,7 @@ const LibraryContainer = props => {
 	/** Shapes */
 	const onRequestInsertShape = (svgCode, svgType) => {
 		const {
-			uniqueID,
+			_uid: uniqueID,
 			mediaID,
 			mediaURL,
 			b_ly: bgLayers,
@@ -627,7 +627,7 @@ const LibraryContainer = props => {
 			if (type === 'bg-shape') {
 				const svgData = bgLayers.find(
 					layer => layer.order === layerOrder
-				)['background-svg-SVGData'];
+				).bsv_sd;
 				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()
@@ -650,8 +650,8 @@ const LibraryContainer = props => {
 				const resEl = injectImgSVG(svg, resData);
 
 				onSelect({
-					'background-svg-SVGElement': resEl.outerHTML,
-					'background-svg-SVGData': resData,
+					bsv_se: resEl.outerHTML,
+					bsv_sd: resData,
 				});
 
 				onRequestClose();

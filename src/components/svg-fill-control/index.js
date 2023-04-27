@@ -61,7 +61,7 @@ const ColorContent = ({
 				isHover,
 			})}
 			color={getLastBreakpointAttribute({
-				target: '_cc',
+				target: 'bsv_cc',
 				breakpoint,
 				attributes: value,
 				isHover,
@@ -73,15 +73,12 @@ const ColorContent = ({
 				color,
 			}) => {
 				SVGData[id][
-					getAttributeKey('_cc', isHover, false, breakpoint)
+					getAttributeKey('bsv_cc', isHover, false, breakpoint)
 				] = color;
 
 				onChange({
-					bsvSVGElement: injectImgSVG(
-						SVGOptions.bsvSVGElement,
-						SVGData
-					).outerHTML,
-					bsvSVGData: SVGData,
+					bsv_se: injectImgSVG(SVGOptions.bsv_se, SVGData).outerHTML,
+					bsv_sd: SVGData,
 					[getAttributeKey('bsv_ps', isHover, false, breakpoint)]:
 						paletteStatus,
 					[getAttributeKey('bsv_pc', isHover, false, breakpoint)]:
@@ -112,11 +109,11 @@ const SVGFillControl = props => {
 
 	const SVGElement = getAttributesValue({
 		target: 'bsv_se',
-		attributes: SVGOptions,
+		props: SVGOptions,
 	});
 
 	const SVGData = cloneDeep(
-		SVGOptions[getAttributeKey('bsv_sd', isHover)] || SVGOptions.bsvSVGData
+		SVGOptions[getAttributeKey('bsv_sd', isHover)] || SVGOptions.bsv_sd
 	);
 
 	const bgImage = Object.values(SVGData)[0]?.imageURL;
@@ -273,7 +270,7 @@ const SVGFillControl = props => {
 								}}
 								icon={SVGElement}
 								breakpoint={breakpoint}
-								prefix='bsv'
+								prefix='bsv-'
 								disableModal
 							/>
 						)}

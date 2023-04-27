@@ -114,22 +114,22 @@ export const rawBackgroundImage = {
 		default: 'center center',
 		longLabel: 'background-image-position',
 	},
-	'bi_pw.u': {
+	'bi_pos_w.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'background-image-position-width-unit',
 	},
-	bi_pw: {
+	bi_pos_w: {
 		type: 'number',
 		default: 0,
 		longLabel: 'background-image-position-width',
 	},
-	'bi_ph.u': {
+	'bi_pos_h.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'background-image-position-height-unit',
 	},
-	bi_ph: {
+	bi_pos_h: {
 		type: 'number',
 		default: 0,
 		longLabel: 'background-image-position-height',

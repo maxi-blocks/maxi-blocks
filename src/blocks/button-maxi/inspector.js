@@ -282,101 +282,101 @@ const Inspector = props => {
 							/>
 						),
 					},
-					// {
-					// 	label: __('Canvas', 'maxi-blocks'),
-					// 	content: (
-					// 		<AccordionControl
-					// 			isPrimary
-					// 			items={[
-					// 				...inspectorTabs.blockBackground({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.border({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.boxShadow({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.size({
-					// 					props,
-					// 					block: true,
-					// 				}),
-					// 				...inspectorTabs.marginPadding({
-					// 					props,
-					// 				}),
-					// 			]}
-					// 		/>
-					// 	),
-					// },
-					// {
-					// 	label: __('Advanced', 'maxi-blocks'),
-					// 	content: (
-					// 		<AccordionControl
-					// 			isPrimary
-					// 			items={[
-					// 				deviceType === 'general' && {
-					// 					...inspectorTabs.customClasses({
-					// 						props,
-					// 					}),
-					// 				},
-					// 				deviceType === 'general' && {
-					// 					...inspectorTabs.anchor({
-					// 						props,
-					// 					}),
-					// 				},
-					// 				...inspectorTabs.customCss({
-					// 					props,
-					// 					breakpoint: deviceType,
-					// 					selectors,
-					// 					categories: getCategoriesCss(),
-					// 				}),
-					// 				...inspectorTabs.dc({
-					// 					props,
-					// 					contentType: 'button',
-					// 				}),
-					// 				...inspectorTabs.scrollEffects({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.transform({
-					// 					props,
-					// 					categories: getCategoriesCss(),
-					// 					selectors,
-					// 				}),
-					// 				// ...inspectorTabs.transition({
-					// 				// 	props,
-					// 				// 	selectors,
-					// 				// }),
-					// 				...inspectorTabs.display({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.opacity({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.position({
-					// 					props,
-					// 				}),
-					// 				deviceType !== 'general' && {
-					// 					...inspectorTabs.responsive({
-					// 						props,
-					// 					}),
-					// 				},
-					// 				...inspectorTabs.overflow({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.flex({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.zindex({
-					// 					props,
-					// 				}),
-					// 				...inspectorTabs.relation({
-					// 					props,
-					// 					isButton: true,
-					// 				}),
-					// 			]}
-					// 		/>
-					// 	),
-					// },
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Advanced', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									deviceType === 'general' && {
+										...inspectorTabs.customClasses({
+											props,
+										}),
+									},
+									deviceType === 'general' && {
+										...inspectorTabs.anchor({
+											props,
+										}),
+									},
+									...inspectorTabs.customCss({
+										props,
+										breakpoint: deviceType,
+										selectors,
+										categories: getCategoriesCss(),
+									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'button',
+									}),
+									...inspectorTabs.scrollEffects({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+										categories: getCategoriesCss(),
+										selectors,
+									}),
+									// ...inspectorTabs.transition({
+									// 	props,
+									// 	selectors,
+									// }),
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
+									deviceType !== 'general' && {
+										...inspectorTabs.responsive({
+											props,
+										}),
+									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.flex({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
+										props,
+										isButton: true,
+									}),
+								]}
+							/>
+						),
+					},
 				]}
 			/>
 		</InspectorControls>

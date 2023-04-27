@@ -124,7 +124,7 @@ const BackgroundContent = props => {
 						/>
 					);
 				case 'shape': {
-					const svg = layer.bs_se;
+					const svg = layer.bsv_se;
 
 					return (
 						<RawHTML

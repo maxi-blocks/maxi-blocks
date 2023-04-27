@@ -148,7 +148,7 @@ const ClipPathControl = props => {
 	const classes = classnames('maxi-clip-path-control', className);
 
 	const clipPath = getLastBreakpointAttribute({
-		target: 'clip-path',
+		target: '_cp',
 		prefix,
 		breakpoint,
 		attributes: props,
@@ -158,14 +158,14 @@ const ClipPathControl = props => {
 	const hasClipPath =
 		isLayer || !isHover
 			? getLastBreakpointAttribute({
-					target: 'clip-path-status',
+					target: '_cp.s',
 					prefix,
 					breakpoint,
 					attributes: props,
 					isHover,
 			  })
 			: getAttributesValue({
-					target: 'clip-path-status',
+					target: '_cp.s',
 					isHover: true,
 					prefix,
 					props,
@@ -272,7 +272,7 @@ const ClipPathControl = props => {
 
 	const onChangeValue = val => {
 		onChange({
-			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+			[getAttributeKey('_cp', isHover, prefix, breakpoint)]: val,
 		});
 	};
 
@@ -296,8 +296,7 @@ const ClipPathControl = props => {
 
 	const onToggleClipPath = val => {
 		onChange({
-			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
-				val,
+			[getAttributeKey('_cp.s', isHover, prefix, breakpoint)]: val,
 		});
 	};
 
@@ -464,7 +463,7 @@ const ClipPathControl = props => {
 															deconstructCP(
 																getLastBreakpointAttribute(
 																	{
-																		target: 'clip-path',
+																		target: '_cp',
 																		prefix,
 																		breakpoint:
 																			higherBreakpoint ??

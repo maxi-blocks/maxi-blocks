@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select, useSelect } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -73,8 +73,6 @@ const LibraryToolbar = props => {
 	} = props;
 
 	const [userEmail, setUserEmail] = useState(false);
-
-	console.log('userName', userName);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -559,6 +557,13 @@ const LibraryToolbar = props => {
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
 							onClickConnect(userEmail);
+							// MVP
+							setTimeout(() => {
+								const button = document.querySelector(
+									'.components-button.maxi-cloud-container__patterns__top-menu__button-connect-pro'
+								);
+								button?.click();
+							}, '100');
 						}}
 					>
 						{__('Sign in', 'maxi-blocks')}

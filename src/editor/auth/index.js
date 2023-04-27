@@ -82,8 +82,6 @@ export const getUserEmail = () => {
 };
 
 export const processLocalActivation = (email, name, status, key) => {
-	console.log('processLocalActivation', status);
-	console.log('processLocalActivation name', name);
 	const newPro = {
 		[email]: {
 			status,
@@ -98,7 +96,6 @@ export const processLocalActivation = (email, name, status, key) => {
 		if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
 	}
 
-	console.log('obj', obj);
 	const objString = JSON.stringify(obj);
 
 	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
@@ -115,8 +112,7 @@ export const removeLocalActivation = email => {
 };
 
 export async function authConnect(withRedirect = false, email = false) {
-	console.log('authConnect', email);
-	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
+	const url = 'https://my.maxiblocks.com/login?plugin';
 
 	let cookieKey = document.cookie
 		.split(';')
@@ -138,9 +134,7 @@ export async function authConnect(withRedirect = false, email = false) {
 			}
 
 			const obj = { [email]: key };
-			console.log('email', email);
-			console.log('key', key);
-			console.log('obj', obj);
+
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
@@ -162,9 +156,6 @@ export async function authConnect(withRedirect = false, email = false) {
 	const key = JSON.parse(cookieKey)?.[email];
 
 	const useEmail = email;
-
-	console.log('useEmail', useEmail);
-	console.log('getUserEmail', getUserEmail());
 
 	if (useEmail) {
 		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
@@ -189,7 +180,6 @@ export async function authConnect(withRedirect = false, email = false) {
 
 				response.json().then(data => {
 					if (data) {
-						console.log('data', data);
 						if (data.error) {
 							console.error(data.error);
 							deactivateLocal();
@@ -197,9 +187,6 @@ export async function authConnect(withRedirect = false, email = false) {
 						}
 						const date = data?.expiration_date;
 						const { name, status } = data;
-						console.log(`exp date: ${date}`);
-						console.log(`name: ${name}`);
-						console.log(`status: ${status}`);
 
 						if (status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
@@ -212,7 +199,6 @@ export async function authConnect(withRedirect = false, email = false) {
 								);
 								redirect();
 							} else {
-								console.log('not expired');
 								processLocalActivation(
 									useEmail,
 									name,

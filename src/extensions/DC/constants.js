@@ -31,6 +31,8 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -39,6 +41,8 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
 ];
 
 const generalRelationOptionsCategories = [
@@ -85,6 +89,12 @@ const generalPostsPagesFields = [
 	{ label: __('Date', 'maxi-blocks'), value: 'date' },
 	{ label: __('Author', 'maxi-blocks'), value: 'author' },
 	// TODO: add URL
+];
+
+const generalPostsFields = [
+	...generalPostsPagesFields,
+	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
+	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
 const generalSettingsFields = [
@@ -168,7 +178,7 @@ const mediaAuthorFields = [
 
 export const fieldOptions = {
 	text: {
-		posts: generalPostsPagesFields,
+		posts: generalPostsFields,
 		pages: generalPostsPagesFields,
 		settings: generalSettingsFields,
 		media: generalMediaFields,
@@ -355,4 +365,15 @@ export const limitOptions = {
 	withInputField: false,
 	min: 0,
 	max: 9999,
+};
+
+export const orderByOptions = {
+	'by-date': [
+		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
+		{ label: __('Old/new', 'maxi-blocks'), value: 'asc' },
+	],
+	alphabetical: [
+		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
+		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
+	],
 };

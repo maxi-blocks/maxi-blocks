@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, saveDraft } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -44,6 +44,8 @@ describe('Text Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async (disableTransition = false) => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -88,7 +90,7 @@ describe('Text Maxi hover simple actions', () => {
 
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Alignment');
+		await selectControls[3].select('a');
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',
@@ -105,7 +107,7 @@ describe('Text Maxi hover simple actions', () => {
 	// Needs #3767 to be fixed
 	it.skip('Typography', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Typography');
+		await selectControls[3].select('ty');
 
 		await page.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-family',

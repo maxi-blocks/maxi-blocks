@@ -28,6 +28,7 @@ import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 import { isPlainObject } from 'lodash';
 
 const getTransformControl = ({ categories, selectors }) => ({
+	sid: 't',
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
 	hoverProp: (attributes, relationAttributes) =>
@@ -57,10 +58,17 @@ const getTransformControl = ({ categories, selectors }) => ({
 			props.obj,
 			getTransformSelectors(selectors, props.blockAttributes)
 		),
+	styleAttrs: [
+		'transform-scale',
+		'transform-translate',
+		'transform-rotate',
+		'transform-origin',
+	],
 });
 
 const getAdvancedSettings = ({ customCss }) => [
 	{
+		sid: 'o',
 		label: __('Opacity', 'maxi-blocks'),
 		hoverProp: 'opacity-status-hover',
 		attrGroupName: 'opacity',
@@ -77,6 +85,7 @@ const getAdvancedSettings = ({ customCss }) => [
 		helper: props => getOpacityStyles(props.obj),
 	},
 	{
+		sid: 'p',
 		label: __('Position', 'maxi-blocks'),
 		attrGroupName: 'position',
 		component: props => <PositionControl {...props} />,

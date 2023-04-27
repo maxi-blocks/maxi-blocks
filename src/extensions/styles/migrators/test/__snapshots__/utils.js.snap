@@ -1363,17 +1363,31 @@ Object {
 }
 `;
 
-exports[`getTransitionSetting Should return the IB setting 1`] = `
+exports[`getIBDataItem Should return the IB setting 1`] = `
 Object {
   "attrGroupName": "boxShadow",
   "component": [Function],
+  "forceTempPalette": [Function],
+  "forceTempPalettePrefix": "box-shadow-",
   "helper": [Function],
   "hoverProp": "box-shadow-status-hover",
   "label": "Box shadow",
+  "relatedAttributes": Array [
+    "box-shadow-inset",
+    "box-shadow-horizontal",
+    "box-shadow-horizontal-unit",
+    "box-shadow-vertical",
+    "box-shadow-vertical-unit",
+    "box-shadow-blur",
+    "box-shadow-blur-unit",
+    "box-shadow-spread",
+    "box-shadow-spread-unit",
+  ],
+  "sid": "bs",
 }
 `;
 
-exports[`getTransitionSetting Should return the IB setting, which has transitionTarget 1`] = `
+exports[`getIBDataItem Should return the IB setting, which has transitionTarget 1`] = `
 Object {
   "attrGroupName": Array [
     "icon",
@@ -1390,6 +1404,42 @@ Object {
   "helper": [Function],
   "hoverProp": "icon-status-hover",
   "label": "Button icon",
+  "sid": "bi",
+  "styleAttrs": Array [
+    "icon-content",
+    "icon-background-active-media",
+  ],
+  "transitionTarget": Array [
+    "  .maxi-button-block__icon svg > *:not(g)",
+    " .maxi-button-block__icon svg",
+    " .maxi-button-block__icon",
+    " .maxi-button-block__icon",
+  ],
+}
+`;
+
+exports[`getIBDataItem Should support sid 1`] = `
+Object {
+  "attrGroupName": Array [
+    "icon",
+    "iconBackground",
+    "iconBackgroundGradient",
+    "iconBackgroundColor",
+    "iconBorder",
+    "iconBorderWidth",
+    "iconBorderRadius",
+    "iconPadding",
+    "typography",
+  ],
+  "component": [Function],
+  "helper": [Function],
+  "hoverProp": "icon-status-hover",
+  "label": "Button icon",
+  "sid": "bi",
+  "styleAttrs": Array [
+    "icon-content",
+    "icon-background-active-media",
+  ],
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg > *:not(g)",
     " .maxi-button-block__icon svg",

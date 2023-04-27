@@ -247,15 +247,15 @@ const TextOptions = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 99,
+			max: 999,
 		},
 		em: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		vw: {
 			min: 0,
-			max: 99,
+			max: 100,
 		},
 		'%': {
 			min: 0,

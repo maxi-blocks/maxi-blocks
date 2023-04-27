@@ -64,12 +64,12 @@ const HoverEffectControl = props => {
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
-	const effectNone = () => {
+	const setEffectNone = () => {
 		onChange({
 			'hover-type': 'none',
 		});
 		document
-			.getElementsByClassName('maxi-image-block__image')[0]
+			.querySelector(`#block-${clientId} .maxi-image-block__image`)
 			.removeAttribute('style');
 	};
 
@@ -78,7 +78,7 @@ const HoverEffectControl = props => {
 			'hover-preview': false,
 		});
 		document
-			.getElementsByClassName('maxi-image-block__image')[0]
+			.querySelector(`#block-${clientId} .maxi-image-block__image`)
 			.removeAttribute('style');
 	};
 
@@ -95,7 +95,7 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => {
 					val === 'none'
-						? effectNone()
+						? setEffectNone()
 						: onChange({
 								'hover-type': val,
 								'hover-transition-duration': 0.5,
@@ -458,6 +458,7 @@ const HoverEffectControl = props => {
 							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
+							showBottomGap
 							blockStyle={blockStyle}
 							clientId={clientId}
 							globalProps={{

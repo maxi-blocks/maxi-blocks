@@ -10,6 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -121,4 +122,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

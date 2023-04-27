@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, saveDraft } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -43,6 +43,8 @@ describe('Image Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async (disableTransition = false) => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -84,7 +86,7 @@ describe('Image Maxi hover simple actions', () => {
 
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Alignment');
+		await selectControls[3].select('a');
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',

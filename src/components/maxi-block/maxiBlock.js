@@ -9,7 +9,6 @@ import {
 	memo,
 	useCallback,
 	useReducer,
-	useRef,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -20,7 +19,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { marginValueCalculator } from '../../extensions/dom';
+import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -56,7 +55,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 
 	const isFullWidth = getValue('full-width') === 'full';
 
-	if (!isFullWidth) return {};
+	if (!isFullWidth) return '';
 
 	// Margin
 	const marginRight = getValue('margin-right') || 0;
@@ -320,25 +319,20 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const getMarginValue = useRef(marginValueCalculator());
 
-		useEffect(() => {
-			return () => {
-				getMarginValue.current(true);
-			};
-		}, []);
+		const isHoverPreview = getIsHoverPreview();
+
+		const marginValue = !isHoverPreview
+			? select('maxiBlocks/styles').getBlockMarginValue()
+			: 0;
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
 		const { isFirstOnHierarchy } = attributes;
-		const styleStr = getBlockStyle(
-			attributes,
-			deviceType,
-			getMarginValue.current()
-		);
+		const styleStr = getBlockStyle(attributes, deviceType, marginValue);
 
 		useEffect(() => {
-			if (isFirstOnHierarchy) {
+			if (isFirstOnHierarchy && styleStr) {
 				const style = document.createElement('style');
 				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
 				ref.current.ownerDocument.head.appendChild(style);
@@ -347,6 +341,8 @@ const MaxiBlock = memo(
 					style.remove();
 				};
 			}
+
+			return () => {};
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (

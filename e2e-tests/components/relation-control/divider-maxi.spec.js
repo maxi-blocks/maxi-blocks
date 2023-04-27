@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	pressKeyWithModifier,
 	selectBlockByClientId,
+	saveDraft,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -54,6 +55,8 @@ describe('Divider Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async () => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -94,7 +97,7 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Divider shadow', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Divider box shadow');
+		await selectControls[3].select('dbs');
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -150,7 +153,7 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Line settings', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Line settings');
+		await selectControls[3].select('dls');
 
 		// Select second default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>

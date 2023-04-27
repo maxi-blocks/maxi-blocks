@@ -1,8 +1,13 @@
 .maxi-toolbar__popover {
-	z-index: 9999999;
+	z-index: 9999998;
 
+	&-caption,
 	&--icon {
-		z-index: 9999998;
+		z-index: 9999997;
+
+		&:hover {
+			z-index: 9999999;
+		}
 	}
 
 	.toolbar-more-indicator {
@@ -554,7 +559,6 @@ body .toolbar-item__popover {
 	}
 
 	.maxi-tabs-control {
-		width: 100%;
 		&__button {
 			background: transparent;
 			color: #141516;

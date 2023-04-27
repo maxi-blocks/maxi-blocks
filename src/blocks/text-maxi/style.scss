@@ -1,4 +1,7 @@
 body.maxi-blocks--active .maxi-text-block {
+	& * {
+		border-color: inherit;
+	}
 	a.maxi-text-block--link {
 		&:visited span {
 			color: inherit !important;
@@ -13,9 +16,11 @@ body.maxi-blocks--active .maxi-text-block {
 			list-style-type: none;
 			counter-reset: li;
 			margin: 0;
+			padding: revert;
 
 			li {
 				counter-increment: li;
+				margin: revert;
 
 				&::before {
 					content: '';

@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	pressKeyWithModifier,
 	selectBlockByClientId,
+	saveDraft,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -58,6 +59,8 @@ describe('Column Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async () => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -98,7 +101,7 @@ describe('Column Maxi hover simple actions', () => {
 	it('Column size', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Column settings');
+		await selectControls[3].select('cs');
 
 		// Column size
 		await page.waitForSelector(

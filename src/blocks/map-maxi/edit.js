@@ -72,16 +72,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const { googleApiKey } = this.state;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
-
-		const getApiKey = () => {
-			if (!googleApiKey) {
-				this.setState({ googleApiKey });
-			}
-
-			return this.state.googleApiKey;
-		};
 
 		if (attributes.preview)
 			return (
@@ -101,7 +92,7 @@ class edit extends MaxiBlockComponent {
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				apiKey={getApiKey()}
+				apiKey={this.state.googleApiKey}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -117,7 +108,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<MapContent
 					{...this.props}
-					apiKey={getApiKey()}
+					apiKey={this.state.googleApiKey}
 					isFirstClick={this.state.isFirstClick}
 					isGoogleMaps={mapProvider === 'googlemaps'}
 					isSelected={isSelected}

@@ -83,6 +83,7 @@ export const getUserEmail = () => {
 
 export const processLocalActivation = (email, name, status, key) => {
 	console.log('processLocalActivation', status);
+	console.log('processLocalActivation name', name);
 	const newPro = {
 		[email]: {
 			status,

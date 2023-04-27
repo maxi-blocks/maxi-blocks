@@ -9,7 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -198,12 +198,14 @@ const MaxiModal = props => {
 
 	const onClickConnect = email => {
 		const isValid = isValidEmail(email);
+		console.log('email in connect', email);
 		if (isValid) {
 			setShowNotValidEmail(false);
 			document.addEventListener(
 				'visibilitychange',
 				function userIsBack() {
 					if (!document.hidden) {
+						console.log('!document.hidden');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
 							setIsMaxiProExpired(isProSubExpired());
@@ -213,10 +215,12 @@ const MaxiModal = props => {
 				}
 			);
 
-			authConnect(true, email).then(() => {
+			authConnect(true, email).then(response => {
+				console.log(response);
 				console.log('response from onClickConnect');
 				const { receiveMaxiProStatus } =
 					resolveSelect('maxiBlocks/pro');
+
 				receiveMaxiProStatus().then(data => {
 					if (typeof data === 'string') {
 						const proJson = JSON.parse(data);
@@ -225,7 +229,6 @@ const MaxiModal = props => {
 						const info = proJson[email];
 						const maxiCookie = getMaxiCookieKey();
 						if (info && maxiCookie) {
-							console.log('info', info);
 							const { key } = maxiCookie;
 							let name = info?.name;
 							if (!name || name !== '' || name !== '1')
@@ -238,7 +241,9 @@ const MaxiModal = props => {
 								info &&
 								info?.key === key &&
 								info?.status === 'expired';
+							console.log('name in auth', name);
 							setUserName(name);
+							console.log('username in auth', userName);
 							setIsMaxiProActive(isActive);
 							setIsMaxiProExpired(isExpired);
 						}

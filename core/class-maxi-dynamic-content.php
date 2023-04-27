@@ -153,6 +153,9 @@ class MaxiBlocks_DynamicContent
         'dc-acf-group' => [
             'type' => 'string',
         ],
+        'dc-acf-field-type' => [
+            'type' => 'string',
+        ],
     ];
 
     /**
@@ -631,13 +634,26 @@ class MaxiBlocks_DynamicContent
 
         @list(
             'dc-field' => $dc_field,
+            'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
         $acf_data = get_field_object($dc_field, $post->ID);
+        $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
+        $content = null;
 
-        return is_array($acf_data) && $acf_data['value'];
+        switch ($dc_acf_field_type) {
+            case 'select':
+            case 'checkbox':
+            case 'radio':
+                $content = is_array($acf_value) ? $acf_value['label'] : $acf_value;
+                break;
+            default:
+                $content = $acf_value;
+        }
+
+        return $content;
     }
 
     public function get_date($date, $attributes)

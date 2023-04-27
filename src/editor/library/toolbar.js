@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -72,7 +72,13 @@ const LibraryToolbar = props => {
 		showNotValidEmail,
 	} = props;
 
-	const [userEmail, setUserEmail] = useState('');
+	const [userEmail, setUserEmail] = useState(false);
+	const [newEmail, setNewEmail] = useState(false);
+	const [trigger, setTrigger] = useState(false);
+
+	useEffect(() => {
+		if (trigger) setUserEmail(newEmail);
+	}, [trigger]);
 
 	console.log('userEmail', userEmail);
 
@@ -493,11 +499,13 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			{isMaxiProActive && userName && (
+			{isMaxiProActive && userEmail && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
-						<span className={usernameClasses}>{userName}</span>
+						<span className={usernameClasses}>
+							{userName || userEmail}
+						</span>
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
@@ -509,18 +517,22 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{!isMaxiProActive && userName && isMaxiProExpired && (
+			{!isMaxiProActive && userEmail && isMaxiProExpired && (
 				<div>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Expired: ', 'maxi-blocks')}
-						<span className={usernameClasses}>{userName}</span>
+						<span className={usernameClasses}>
+							{userName || userEmail}
+						</span>
 					</h5>
 				</div>
 			)}
-			{!isMaxiProActive && userName && !isMaxiProExpired && (
+			{!isMaxiProActive && userEmail && !isMaxiProExpired && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						<span className={usernameClasses}>{userName}</span>
+						<span className={usernameClasses}>
+							{userName || userEmail}
+						</span>
 						{__(
 							", you're already signed in on another device",
 							'maxi-blocks'
@@ -544,13 +556,13 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{type === 'patterns' && !isMaxiProActive && !userName && (
+			{type === 'patterns' && !isMaxiProActive && !userEmail && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<div className='maxi-cloud-container__patterns__top-menu__input'>
 						<TextControl
 							placeholder={__('Pro user email', 'maxi-blocks')}
-							value={userEmail}
-							onChange={value => setUserEmail(value)}
+							value={newEmail}
+							onChange={value => setNewEmail(value)}
 						/>
 						{showNotValidEmail && (
 							<span>
@@ -562,7 +574,11 @@ const LibraryToolbar = props => {
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
-						onClick={() => onClickConnect(userEmail)}
+						onClick={() => {
+							setTrigger(true);
+							console.log(userEmail);
+							onClickConnect(userEmail);
+						}}
 					>
 						{__('Sign in', 'maxi-blocks')}
 					</Button>

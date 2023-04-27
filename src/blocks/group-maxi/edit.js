@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies.
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -40,20 +35,6 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 					].indexOf(blockName) === -1
-			);
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-group--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.group_preview}
-						alt={__('Group block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
 			);
 
 		return [

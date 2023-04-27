@@ -132,6 +132,9 @@ const dynamicContent = {
 	'dc-acf-group': {
 		type: 'string',
 	},
+	'dc-acf-field-type': {
+		type: 'string',
+	},
 	'dc-contains-html': {
 		type: 'boolean',
 		default: false,

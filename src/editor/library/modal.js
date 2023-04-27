@@ -9,7 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -192,20 +192,14 @@ const MaxiModal = props => {
 		setIsMaxiProExpired(isProSubExpired());
 	}, [type]);
 
-	// console.log('isMaxiProActive', isMaxiProActive);
-	// console.log('isMaxiProExpired', isMaxiProExpired);
-	// console.log('userName', userName);
-
 	const onClickConnect = email => {
 		const isValid = isValidEmail(email);
-		console.log('email in connect', email);
 		if (isValid) {
 			setShowNotValidEmail(false);
 			document.addEventListener(
 				'visibilitychange',
 				function userIsBack() {
 					if (!document.hidden) {
-						console.log('!document.hidden');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
 							setIsMaxiProExpired(isProSubExpired());
@@ -216,16 +210,12 @@ const MaxiModal = props => {
 			);
 
 			authConnect(true, email).then(response => {
-				console.log(response);
-				console.log('response from onClickConnect');
 				const { receiveMaxiProStatus } =
 					resolveSelect('maxiBlocks/pro');
 
 				receiveMaxiProStatus().then(data => {
 					if (typeof data === 'string') {
 						const proJson = JSON.parse(data);
-						console.log('proJson');
-						console.log(proJson);
 						const info = proJson[email];
 						const maxiCookie = getMaxiCookieKey();
 						if (info && maxiCookie) {
@@ -241,18 +231,12 @@ const MaxiModal = props => {
 								info &&
 								info?.key === key &&
 								info?.status === 'expired';
-							console.log('name in auth', name);
 							setUserName(name);
-							console.log('username in auth', userName);
 							setIsMaxiProActive(isActive);
 							setIsMaxiProExpired(isExpired);
 						}
 					}
 				});
-				// console.log('isProSubActive()', isProSubActive());
-				// console.log('isProSubExpired()', isProSubExpired());
-				// console.log('getUserName()', getUserName());
-				// console.log('===================================');
 			});
 		} else setShowNotValidEmail(true);
 	};

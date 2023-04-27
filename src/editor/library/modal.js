@@ -9,6 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,6 +17,15 @@ import {
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
+import {
+	authConnect,
+	isProSubActive,
+	isProSubExpired,
+	isValidEmail,
+	getUserName,
+	logOut,
+	getMaxiCookieKey,
+} from '../auth';
 
 /**
  * External dependencies
@@ -169,13 +179,72 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(false);
-	const [userName, setUserName] = useState('');
+	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
+	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
+	const [userName, setUserName] = useState(getUserName());
+	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
-	const onClickConnect = () => {};
+	useEffect(() => {
+		setIsMaxiProActive(isProSubActive());
+	}, [type]);
+
+	useEffect(() => {
+		setIsMaxiProExpired(isProSubExpired());
+	}, [type]);
+
+	const onClickConnect = email => {
+		const isValid = isValidEmail(email);
+		if (isValid) {
+			setShowNotValidEmail(false);
+			document.addEventListener(
+				'visibilitychange',
+				function userIsBack() {
+					if (!document.hidden) {
+						authConnect(false, email).then(() => {
+							setIsMaxiProActive(isProSubActive());
+							setIsMaxiProExpired(isProSubExpired());
+							setUserName(getUserName());
+						});
+					}
+				}
+			);
+
+			authConnect(true, email).then(response => {
+				const { receiveMaxiProStatus } =
+					resolveSelect('maxiBlocks/pro');
+
+				receiveMaxiProStatus().then(data => {
+					if (typeof data === 'string') {
+						const proJson = JSON.parse(data);
+						const info = proJson[email];
+						const maxiCookie = getMaxiCookieKey();
+						if (info && maxiCookie) {
+							const { key } = maxiCookie;
+							let name = info?.name;
+							if (!name || name !== '' || name !== '1')
+								name = email;
+							const isActive =
+								info &&
+								info?.key === key &&
+								info?.status === 'yes';
+							const isExpired =
+								info &&
+								info?.key === key &&
+								info?.status === 'expired';
+							setUserName(name);
+							setIsMaxiProActive(isActive);
+							setIsMaxiProExpired(isExpired);
+						}
+					}
+				});
+			});
+		} else setShowNotValidEmail(true);
+	};
 
 	const onLogOut = () => {
+		logOut();
 		setIsMaxiProActive(false);
+		setIsMaxiProExpired(false);
 		setUserName('');
 	};
 
@@ -320,7 +389,9 @@ const MaxiModal = props => {
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
 								isMaxiProActive={isMaxiProActive}
+								isMaxiProExpired={isMaxiProExpired}
 								onClickConnect={onClickConnect}
+								showNotValidEmail={showNotValidEmail}
 								userName={userName}
 								onLogOut={onLogOut}
 								layerOrder={layerOrder}
@@ -431,7 +502,9 @@ const MaxiModal = props => {
 							gutenbergCode={gutenbergCode}
 							isSwapChecked={isSwapChecked}
 							isMaxiProActive={isMaxiProActive}
+							isMaxiProExpired={isMaxiProExpired}
 							onClickConnect={onClickConnect}
+							showNotValidEmail={showNotValidEmail}
 							userName={userName}
 							onLogOut={onLogOut}
 						/>

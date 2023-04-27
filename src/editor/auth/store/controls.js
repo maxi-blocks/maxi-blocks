@@ -8,16 +8,14 @@ import apiFetch from '@wordpress/api-fetch';
  */
 const controls = {
 	async RECEIVE_PRO_STATUS() {
-		return apiFetch({ path: '/maxi-blocks/v1.0/pro/' }).then(data =>
-			JSON.parse(data)
-		);
+		return apiFetch({ path: '/maxi-blocks/v1.0/pro/' });
 	},
 	async SAVE_PRO_STATUS(data) {
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/pro/',
 			method: 'POST',
 			data: {
-				data: JSON.stringify(data),
+				data,
 			},
 		}).catch(err => {
 			console.error('Error saving pro data. Code error: ', err);

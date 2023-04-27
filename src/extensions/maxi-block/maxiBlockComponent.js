@@ -34,7 +34,6 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
-import getIsHoverPreview from './getIsHoverPreview';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
@@ -69,7 +68,6 @@ const StyleComponent = ({
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
-	isPreview = false,
 	isBreakpointChange,
 	currentBreakpoint,
 }) => {
@@ -83,7 +81,7 @@ const StyleComponent = ({
 
 	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
 
-	if (isBreakpointChange && !isPreview) {
+	if (isBreakpointChange) {
 		const styleContent =
 			select('maxiBlocks/styles').getCSSCache(uniqueID)[
 				currentBreakpoint
@@ -104,7 +102,7 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	if (!isPreview) saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
+	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -131,7 +129,6 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
-		this.isHoverPreview = getIsHoverPreview();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -372,7 +369,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		// Return if it's a preview block
-		if (this.isTemplatePartPreview || this.isHoverPreview) return;
+		if (this.isTemplatePartPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -657,11 +654,7 @@ class MaxiBlockComponent extends Component {
 
 			const isSiteEditor = getIsSiteEditor();
 
-			if (this.isHoverPreview) {
-				wrapper = getPreviewWrapper(
-					this.blockRef.current.ownerDocument
-				);
-			} else if (isSiteEditor) {
+			if (isSiteEditor) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
 
@@ -690,11 +683,9 @@ class MaxiBlockComponent extends Component {
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor || this.isHoverPreview}
+						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
-						isPreview={
-							this.isHoverPreview || this.isTemplatePartPreview
-						}
+						isPreview={this.isTemplatePartPreview}
 					/>
 				);
 
@@ -764,21 +755,27 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		const getEditorElement = () =>
+		const editorElement =
 			templateViewIframe ||
 			siteEditorIframe ||
 			previewIframe ||
 			iframe ||
 			document;
 
-		getEditorElement()
-			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+		if (
+			!editorElement ||
+			typeof editorElement?.getElementById !== 'function'
+		)
+			return;
+
+		editorElement
+			?.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
 			?.remove();
 
-		if (this.isReusable && !this.isHoverPreview) {
+		if (this.isReusable) {
 			this.widthObserver.disconnect();
-			getEditorElement()
-				.getElementById(
+			editorElement
+				?.getElementById(
 					`maxi-block-size-checker-${this.props.clientId}`
 				)
 				?.remove();

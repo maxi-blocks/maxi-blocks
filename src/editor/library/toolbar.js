@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select, useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +18,8 @@ import {
 	smallMode,
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
-import { Button } from '../../components';
+import { Button, TextControl } from '../../components';
+import { isValidEmail } from '../auth';
 
 /**
  * External dependencies
@@ -56,7 +58,8 @@ const LibraryToolbar = props => {
 		title = '',
 		cost = '',
 		toneUrl,
-		isMaxiProActive = false,
+		isMaxiProActive,
+		isMaxiProExpired,
 		isPro,
 		isBeta,
 		gutenbergCode,
@@ -65,7 +68,11 @@ const LibraryToolbar = props => {
 		onChangeTone,
 		userName,
 		onLogOut,
+		onClickConnect,
+		showNotValidEmail,
 	} = props;
+
+	const [userEmail, setUserEmail] = useState(false);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -386,6 +393,16 @@ const LibraryToolbar = props => {
 		};
 	});
 
+	const usernameClasses = classnames(
+		'maxi-username',
+		isValidEmail(userName) && 'maxi-username__hide'
+	);
+
+	const manageSessions = () => {
+		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
+		window.open(url, '_blank')?.focus();
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -469,22 +486,12 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			{/* {!isMaxiProActive && (
-				<Button
-					key='maxi-cloud-toolbar__button__connect'
-					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-					label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
-					onClick={onClickConnect}
-				>
-					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
-				</Button>
-			)} */}
-			{isMaxiProActive && (
-				<div>
-					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
-						'Signed in as:',
-						'maxi-blocks'
-					)} ${userName}`}</h5>
+			{isMaxiProActive && userName && (
+				<div className='maxi-cloud-toolbar__sign-in'>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						{__('Signed in: ', 'maxi-blocks')}
+						<span className={usernameClasses}>{userName}</span>
+					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
@@ -495,6 +502,75 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
+			{!isMaxiProActive && userName && isMaxiProExpired && (
+				<div>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						{__('Expired: ', 'maxi-blocks')}
+						<span className={usernameClasses}>{userName}</span>
+					</h5>
+				</div>
+			)}
+			{!isMaxiProActive && userName && !isMaxiProExpired && (
+				<div className='maxi-cloud-toolbar__sign-in'>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						<span className={usernameClasses}>{userName}</span>
+						{__(
+							", you're already signed in on another device",
+							'maxi-blocks'
+						)}
+					</h5>
+					<Button
+						key='maxi-cloud-toolbar__button__manage-sessions'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
+						label={__('Manage sessions', 'maxi-blocks')}
+						onClick={() => manageSessions()}
+					>
+						{__('Manage sessions', 'maxi-blocks')}
+					</Button>
+					<Button
+						key='maxi-cloud-toolbar__button__sing-out'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+						label={__('Sign out', 'maxi-blocks')}
+						onClick={onLogOut}
+					>
+						{__('Sign out', 'maxi-blocks')}
+					</Button>
+				</div>
+			)}
+			{type === 'patterns' && !isMaxiProActive && !userName && (
+				<div className='maxi-cloud-toolbar__sign-in'>
+					<div className='maxi-cloud-container__patterns__top-menu__input'>
+						<TextControl
+							placeholder={__('Pro user email', 'maxi-blocks')}
+							value={userEmail}
+							onChange={value => setUserEmail(value)}
+						/>
+						{showNotValidEmail && (
+							<span>
+								{__('The email is not valid', 'maxi-blocks')}
+							</span>
+						)}
+					</div>
+					<Button
+						key='maxi-cloud-toolbar__button__connect'
+						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+						label={__('Sign in', 'maxi-blocks')}
+						onClick={() => {
+							onClickConnect(userEmail);
+							// MVP
+							setTimeout(() => {
+								const button = document.querySelector(
+									'.components-button.maxi-cloud-container__patterns__top-menu__button-connect-pro'
+								);
+								button?.click();
+							}, '100');
+						}}
+					>
+						{__('Sign in', 'maxi-blocks')}
+					</Button>
+				</div>
+			)}
+
 			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
 				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 					{help}
@@ -526,17 +602,6 @@ const LibraryToolbar = props => {
 									clientId
 								);
 							}}
-						/>
-					)}
-					{isPro && !isBeta && !isMaxiProActive && (
-						<ToolbarButton
-							label={__('Go Pro', 'maxi-blocks')}
-							onClick={() =>
-								window.open(
-									'https://maxiblocks.com/go/pro-library',
-									'_blank'
-								)
-							}
 						/>
 					)}
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />

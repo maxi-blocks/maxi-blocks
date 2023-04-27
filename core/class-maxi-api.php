@@ -243,6 +243,13 @@ if (!class_exists('MaxiBlocks_API')):
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
+                'args' => [
+                    'data' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
             ]);
         }
 
@@ -767,13 +774,17 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function set_maxi_blocks_pro_status($data)
         {
-            $dataString = json_encode($data);
+            $dataString = $data['data'];
+            $dataType = gettype($dataString);
+            if(get_option('maxi_pro')) {
+                $oldData = json_decode(get_option('maxi_pro'));
+
+            }
 
             if($dataString) {
                 update_option('maxi_pro', $dataString);
                 return $dataString;
             }
-
             return false;
         }
     }

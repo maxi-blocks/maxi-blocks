@@ -841,7 +841,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<br/><br/><br/><p>'.__('Already have an account? ', self::$maxi_text_domain);
             $content .= '</p>';
             $content .= '<p>Sign in from the template library like this.</p>';
-            $content .= '<img src="'.esc_url(MAXI_PLUGIN_URL_PATH).'img/how-to-login.jpg"/>';
+            $content .= '<p>Step 1. Launch template library from the page edit screen.</p>';
+            $content .= '<img class="maxi-dashboard-how-to-image" src="'.esc_url(MAXI_PLUGIN_URL_PATH).'img/how-to-log-in-1.png"/>';
+            $content .= '<p>Step 2. Add email and sign in.</p>';
+            $content .= '<img class="maxi-dashboard-how-to-image" src="'.esc_url(MAXI_PLUGIN_URL_PATH).'img/how-to-log-in-2.png"/>';
             $content .= '</div>';
             $content .= '<ul class="not_loggedin-bottom-menu">';
             $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';

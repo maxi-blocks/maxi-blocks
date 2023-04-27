@@ -625,6 +625,10 @@ class MaxiBlocks_DynamicContent
 
     public function get_acf_content($attributes)
     {
+        if (!function_exists('get_field_object')) {
+            return '';
+        }
+
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,

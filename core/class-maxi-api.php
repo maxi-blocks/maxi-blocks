@@ -773,6 +773,10 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_acf_field_groups()
         {
+            if (!class_exists('ACF')) {
+                return [];
+            }
+
             $acf_field_groups = get_posts(array(
                 'post_type' => 'acf-field-group',
                 'posts_per_page' => -1,
@@ -791,6 +795,10 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_acf_group_fields($request)
         {
+            if (!class_exists('ACF')) {
+                return [];
+            }
+
             $group_id = $request['id'];
             $fields = acf_get_fields($group_id);
 
@@ -798,6 +806,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return array(
                     'id' => $field['key'],
                     'title' => $field['label'],
+                    'type' => $field['type'],
                 );
             }, $fields);
 
@@ -806,6 +815,10 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_acf_field_value($request)
         {
+            if (!class_exists('ACF')) {
+                return null;
+            }
+
             return get_field_object($request['field_id'], $request['post_id'])['value'];
         }
     }

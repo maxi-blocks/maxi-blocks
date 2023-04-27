@@ -6,12 +6,14 @@ import { times, compact } from 'lodash';
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = styleCard => {
+const getSCStyles = (styleCard, isBackend = false) => {
 	let response = '';
 	const prefix = 'body.maxi-blocks--active';
+	const nativeWPPrefix = isBackend ? 'wp-block' : 'maxi-block--use-sc';
 
 	const styles = ['light', 'dark'];
-	const levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+	const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+	const levels = ['p', ...headings];
 	const elements = ['button', ...levels, 'icon', 'divider', 'link'];
 	const breakpoints = {
 		xxl: 1921,
@@ -183,6 +185,13 @@ const getSCStyles = styleCard => {
 							' '
 						)}}`;
 					});
+					// WP Native blocks
+					response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix} {${sentences?.join(
+						' '
+					)}}`;
+					response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type {${sentences?.join(
+						' '
+					)}}`;
 
 					if (marginSentence) {
 						// margin-bottom for Text Maxi
@@ -211,6 +220,8 @@ const getSCStyles = styleCard => {
 			[
 				`${prefix} .maxi-${style}.maxi-block.maxi-text-block li`,
 				`${prefix} .maxi-${style} .maxi-block.maxi-text-block li`,
+				// WP native blocks
+				`${prefix} .maxi-${style} li.${nativeWPPrefix}`,
 			].forEach(target => {
 				const sentences = [...breakpointLevelSentences.p];
 
@@ -227,12 +238,15 @@ const getSCStyles = styleCard => {
 
 			// Text Maxi when has link
 			const textMaxiLinkPrefix = `${prefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__ content`;
+			const WPNativeLinkPrefix = `${prefix} .maxi-${style} .${nativeWPPrefix} a`;
 
-			response += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
-			response += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
-			response += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
-			response += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
-			response += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+			[textMaxiLinkPrefix, WPNativeLinkPrefix].forEach(prefix => {
+				response += `${prefix} { color: var(--maxi-${style}-link); }`;
+				response += `${prefix}:hover { color: var(--maxi-${style}-link-hover); }`;
+				response += `${prefix}:focus { color: var(--maxi-${style}-link-hover); }`;
+				response += `${prefix}:active { color: var(--maxi-${style}-link-active); }`;
+				response += `${prefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+			});
 
 			[
 				`${prefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
@@ -306,6 +320,8 @@ const getSCStyles = styleCard => {
 			[
 				`${prefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
 				`${prefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,
+				// WP native blocks
+				`${prefix} .maxi-${style} button.${nativeWPPrefix}`,
 			].forEach(target => {
 				const sentences = [...generalButtonSentences.button];
 
@@ -324,6 +340,24 @@ const getSCStyles = styleCard => {
 
 				response += `${target} {${sentences?.join(' ')}}`;
 			});
+
+			// WP native blocks colors
+			// General color
+			response += `${prefix} .maxi-${style} .${nativeWPPrefix} {
+				color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
+			}`;
+
+			// Headings color
+			headings.forEach(heading => {
+				response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix} {
+					color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
+				}`;
+			});
+
+			// Button color
+			response += `${prefix} .maxi-${style} .wp-element-button.${nativeWPPrefix} {
+				background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
+			}`;
 		};
 
 		// General

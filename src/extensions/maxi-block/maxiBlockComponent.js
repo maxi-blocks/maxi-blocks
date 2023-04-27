@@ -10,7 +10,13 @@
  * WordPress dependencies
  */
 import { Component, createRoot, render, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
+import {
+	dispatch,
+	resolveSelect,
+	select,
+	useDispatch,
+	useSelect,
+} from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -65,16 +71,17 @@ const StyleComponent = ({
 	isSiteEditor = false,
 	isPreview = false,
 	isBreakpointChange,
+	currentBreakpoint,
 }) => {
-	const { breakpoints, currentBreakpoint } = useSelect(select => {
-		const { receiveMaxiBreakpoints, receiveMaxiDeviceType } =
-			select('maxiBlocks');
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
 		const breakpoints = receiveMaxiBreakpoints();
-		const currentBreakpoint = receiveMaxiDeviceType();
 
-		return { breakpoints, currentBreakpoint };
+		return { breakpoints };
 	});
+
+	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
 
 	if (isBreakpointChange && !isPreview) {
 		const styleContent =
@@ -97,13 +104,7 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	if (!isPreview)
-		dispatch('maxiBlocks/styles').saveCSSCache(
-			uniqueID,
-			styles,
-			isIframe,
-			isSiteEditor
-		);
+	if (!isPreview) saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };

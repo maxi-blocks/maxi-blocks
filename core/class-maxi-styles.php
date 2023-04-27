@@ -128,6 +128,13 @@ class MaxiBlocks_Styles
         }
     }
 
+    public function get_template_name()
+    {
+        $template_name = wp_get_theme()->stylesheet ?? get_template();
+
+        return $template_name;
+    }
+
     public function get_template_parts($content)
     {
         if ($content && array_key_exists('template_parts', $content)) {
@@ -142,7 +149,7 @@ class MaxiBlocks_Styles
          * so it doesn't have template parts. In this case, we need to get default
          * template parts (header and footer).
          */
-        $theme_name = get_template();
+        $theme_name = $this->get_template_name();
         return [
             $theme_name . '//header',
             $theme_name . '//footer',
@@ -172,7 +179,7 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts, $name);
             }
-        } elseif (get_template() === 'maxi-theme' && $is_template_part) {
+        } elseif ($this->get_template_name() === 'maxi-theme' && $is_template_part) {
             do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
 
@@ -204,7 +211,7 @@ class MaxiBlocks_Styles
         }
 
         $template_slug = get_page_template_slug();
-        $template_id = get_template() . '//';
+        $template_id = $this->get_template_name() . '//';
 
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
@@ -724,10 +731,10 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         if (class_exists('MaxiBlocks_API')) {
-            $home_id =  get_template() . '//' . 'home';
+            $home_id =  $this->get_template_name() . '//' . 'home';
             $home_content = $this->get_content(true, $home_id);
 
-            $front_page_id = get_template() . '//' . 'front-page';
+            $front_page_id = $this->get_template_name() . '//' . 'front-page';
 
             $api = new MaxiBlocks_API();
 

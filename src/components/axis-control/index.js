@@ -792,7 +792,11 @@ const AxisControl = props => {
 					...(prefix
 						? {
 								[getAttributeKey(
-									getKey(`${singleTarget}${prefix}`),
+									getKey(
+										`${singleTarget}${prefix}${
+											isUnit ? '.u' : ''
+										}`
+									),
 									isHover,
 									false,
 									customBreakpoint ?? breakpoint
@@ -800,7 +804,9 @@ const AxisControl = props => {
 						  }
 						: {
 								[getAttributeKey(
-									getKey(`${singleTarget}`),
+									getKey(
+										`${singleTarget}${isUnit ? '.u' : ''}`
+									),
 									isHover,
 									false,
 									customBreakpoint ?? breakpoint

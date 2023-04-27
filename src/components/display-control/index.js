@@ -67,7 +67,7 @@ const DisplayControl = props => {
 
 	const getValue = () => {
 		if (
-			getAttributesValue({ target: `_d-${breakpoint}` }, props) === 'none'
+			getAttributesValue({ target: `_d-${breakpoint}`, props }) === 'none'
 		)
 			return 'none';
 
@@ -120,7 +120,7 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('_d', null, null, breakpoint)]:
+						[getAttributeKey('_d', false, '', breakpoint)]:
 							!isEmpty(val) ? val : null,
 					})
 				}

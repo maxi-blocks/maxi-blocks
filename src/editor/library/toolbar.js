@@ -514,10 +514,7 @@ const LibraryToolbar = props => {
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						<span className={usernameClasses}>{userName}</span>
-						{__(
-							", you're already signed in on another device",
-							'maxi-blocks'
-						)}
+						{__(', Already signed in', 'maxi-blocks')}
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__manage-sessions'

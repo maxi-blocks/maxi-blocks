@@ -486,7 +486,7 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			{isMaxiProActive && userName && (
+			{type === 'patterns' && isMaxiProActive && userName && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
@@ -590,7 +590,7 @@ const LibraryToolbar = props => {
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
-					{(!isPro || isBeta || isMaxiProActive) && (
+					{(isBeta || isMaxiProActive) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
 							onClick={async () => {

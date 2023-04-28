@@ -239,7 +239,7 @@ class MaxiBlocks_StyleCards
          * Button case has an exception for font-family. If it's empty, it will use the
          * font-family of the paragraph text level.
          */
-        if ($text_level === 'button' && empty($font)) {
+        if ($text_level === 'button' && (empty($font) || str_contains($font, 'undefined'))) {
             $font = $style_card_values->p['font-family-general'];
         }
 

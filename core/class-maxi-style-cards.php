@@ -47,6 +47,11 @@ class MaxiBlocks_StyleCards
 
         $styles = $this->get_style_card_styles();
 
+        // MVP: ensure no margin-bottom for button
+        if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+            $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+        }
+
         // SC styles
         if ($styles) {
             wp_register_style('maxi-blocks-sc-styles', false);

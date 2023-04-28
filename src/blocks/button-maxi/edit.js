@@ -108,20 +108,6 @@ class edit extends MaxiBlockComponent {
 			boxShadow: '.maxi-button-block__button',
 		};
 
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-button--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.button_preview}
-						alt={__('Button block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

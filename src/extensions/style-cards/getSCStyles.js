@@ -325,7 +325,19 @@ const getSCStyles = styleCard => {
 			].forEach(target => {
 				const sentences = [...generalButtonSentences.button];
 
-				// In case button 'font-family' doesn't exist, add the 'p' font-family
+				// Set font-family paragpraph variable as backup for the button font-family variables
+				sentences.forEach((sentence, i) => {
+					if (sentence?.includes('font-family')) {
+						const pVar = sentence
+							.replace('font-family: ', '')
+							.replace('button', 'p')
+							.replace(';', '');
+						const newSentence = sentence.replace(')', `, ${pVar})`);
+
+						sentences[i] = newSentence;
+					}
+				});
+
 				if (
 					!sentences?.some(sentence =>
 						sentence?.includes('font-family')
@@ -337,6 +349,14 @@ const getSCStyles = styleCard => {
 
 					sentences?.push(pFontFamilyVar);
 				}
+
+				// Remove margin-bottom sentences
+				const marginSentence = sentences?.find(
+					sentence => sentence?.indexOf('margin-bottom') > -1
+				);
+
+				if (marginSentence)
+					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
 				response += `${target} {${sentences?.join(' ')}}`;
 			});

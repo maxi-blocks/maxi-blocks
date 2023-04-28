@@ -240,7 +240,6 @@ _Updates: 28 April 2023_
 * Fix block previews in list view (document view)
 * Implement Maxi Preview HOC
 * Fix error on loading styles
-* Implement wait in period for new styles prototype
 * Fix font-family with spaces
 * Fix PHP issues
 

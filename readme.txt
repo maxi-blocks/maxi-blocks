@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1
 Tested up to: 6.2
 Requires PHP: 7.1
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version (the “GPL”) and the Mozilla Public License, Version 2.0 (the “MPL”)
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -228,6 +228,21 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 28 April 2023_
+
+* Enable pro library sign up, sign in and downloads
+* Fix style card variables and styles for Button Maxi
+* Add template support for child themes
+* Fix infinite scroll in template library (below 768 height)
+* Remove text 'tone' from light and dark filters
+* Navigation fixes in FSE Full site editing
+* Fix block previews in list view (document view)
+* Implement Maxi Preview HOC
+* Fix error on loading styles
+* Implement wait in period for new styles prototype
+* Fix font-family with spaces
+* Fix PHP issues
 
 _Updates: 21 April 2023_
 

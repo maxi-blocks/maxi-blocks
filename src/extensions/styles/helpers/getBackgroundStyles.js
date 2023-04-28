@@ -528,6 +528,7 @@ const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
 	prefix = '',
+	setSameWidthAndHeight = false,
 	...props
 }) => {
 	const response = {
@@ -551,7 +552,8 @@ const getWrapperObject = ({
 				isHover,
 			});
 
-			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+			if (!(setSameWidthAndHeight && size === 'height'))
+				response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
 		}
 	});
 
@@ -877,6 +879,7 @@ const getBackgroundLayers = ({
 								breakpoint,
 								prefix: 'background-svg-',
 								isHover,
+								setSameWidthAndHeight: true,
 							}),
 							getDisplayStyles(
 								{
@@ -922,10 +925,12 @@ const getBackgroundLayers = ({
 									getGroupAttributes(
 										layer,
 										'imageShape',
-										false,
+										isHover,
 										'background-svg-'
 									),
-									'background-svg-'
+									'background-svg-',
+									false,
+									isHover
 								)
 							),
 						},

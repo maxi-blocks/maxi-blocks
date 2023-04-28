@@ -705,7 +705,7 @@ const LibraryContainer = props => {
 			if (type === 'accordion-icon-active') {
 				onSelect({
 					'active-icon-content': svgCode,
-					svgTypeActive: svgType,
+					'active-svgType': svgType,
 				});
 
 				onRequestClose();
@@ -1121,11 +1121,11 @@ const LibraryContainer = props => {
 											item => item.label === name
 										);
 										if (item) {
-											item.label = `${name} tone`;
+											item.label = name;
 											return item;
 										}
 										return {
-											label: `${name} tone`,
+											label: name,
 											value: name,
 											count: 0,
 											isRefined: false,

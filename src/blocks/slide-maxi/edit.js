@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 import { select } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -71,6 +70,7 @@ class edit extends MaxiBlockComponent {
 					[
 						'maxi-blocks/container-maxi',
 						'maxi-blocks/slide-maxi',
+						'maxi-blocks/maxi-cloud',
 					].indexOf(blockName) === -1
 			);
 
@@ -80,20 +80,6 @@ class edit extends MaxiBlockComponent {
 		const isActive =
 			this.context?.selected ===
 			select('core/block-editor').getBlockIndex(clientId);
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-slide--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.slide_preview}
-						alt={__('Slide block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

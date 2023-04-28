@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -109,20 +108,6 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const handleReset = () => this.resetNumberHelper();
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-number-counter--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.nc_preview}
-						alt={__('Number counter block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -299,51 +284,45 @@ const NumberCounter = attributes => {
 			showHandle={!circleStatus ? resizerProps.showHandle : false}
 		>
 			{!circleStatus && (
-				<svg
-					viewBox={`0 0 ${radius * 2 + stroke} ${
-						radius * 2 + stroke
-					}`}
-				>
-					<circle
-						className='maxi-number-counter__box__background'
-						strokeWidth={stroke}
-						fill='none'
-						cx={radius + stroke / 2}
-						cy={radius + stroke / 2}
-						r={radius}
-					/>
-					<circle
-						className='maxi-number-counter__box__circle'
-						strokeWidth={stroke}
-						fill='none'
-						cx={radius + stroke / 2}
-						cy={radius + stroke / 2}
-						r={radius}
-						strokeLinecap={
-							attributes['number-counter-rounded-status']
-								? 'round'
-								: ''
-						}
-						strokeDasharray={`${Math.ceil(
-							(count / 360) * circumference
-						)} ${circumference}`}
-					/>
-					<text
-						className='maxi-number-counter__box__text'
-						textAnchor='middle'
-						x='50%'
-						y='50%'
-						dy={`${round(fontSize / 4, 2)}px`}
+				<div className='maxi-number-counter__box__container'>
+					<svg
+						viewBox={`0 0 ${radius * 2 + stroke} ${
+							radius * 2 + stroke
+						}`}
 					>
+						<circle
+							className='maxi-number-counter__box__background'
+							strokeWidth={stroke}
+							fill='none'
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
+						/>
+						<circle
+							className='maxi-number-counter__box__circle'
+							strokeWidth={stroke}
+							fill='none'
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
+							strokeLinecap={
+								attributes['number-counter-rounded-status']
+									? 'round'
+									: ''
+							}
+							strokeDasharray={`${Math.ceil(
+								(count / 360) * circumference
+							)} ${circumference}`}
+						/>
+					</svg>
+					<span className='maxi-number-counter__box__text'>
 						{`${round((count / 360) * 100)}`}
-						{usePercentage && (
-							<tspan baselineShift='super'>%</tspan>
-						)}
-					</text>
-				</svg>
+						{usePercentage && <sup>%</sup>}
+					</span>
+				</div>
 			)}
 			{circleStatus && (
-				<span className='maxi-number-counter__box__text'>
+				<span className='maxi-number-counter__box__text circle-hidden'>
 					{`${round((count / 360) * 100)}`}
 					{usePercentage && <sup>%</sup>}
 				</span>

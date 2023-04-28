@@ -3,7 +3,6 @@
  */
 import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -72,36 +71,13 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const { googleApiKey } = this.state;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
-
-		const getApiKey = () => {
-			if (!googleApiKey) {
-				this.setState({ googleApiKey });
-			}
-
-			return this.state.googleApiKey;
-		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-map--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.map_preview}
-						alt={__('Map block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				apiKey={getApiKey()}
+				apiKey={this.state.googleApiKey}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -117,7 +93,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<MapContent
 					{...this.props}
-					apiKey={getApiKey()}
+					apiKey={this.state.googleApiKey}
 					isFirstClick={this.state.isFirstClick}
 					isGoogleMaps={mapProvider === 'googlemaps'}
 					isSelected={isSelected}

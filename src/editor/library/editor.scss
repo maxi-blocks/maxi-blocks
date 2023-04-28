@@ -294,6 +294,9 @@
 				padding: 0;
 				box-shadow: none;
 				min-width: 25px;
+				width: 25px;
+				height: 36px;
+
 				svg {
 					fill: #ff4a17;
 					width: 25px;
@@ -891,6 +894,12 @@
 				}
 			}
 		}
+		&__patterns{
+			&__sidebar {
+				overflow-x: hidden;
+			}
+		}
+		&__patterns,
 		&__svg-shape,
 		&__sc,
 		&__svg-icon {

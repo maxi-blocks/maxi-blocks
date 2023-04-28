@@ -14,7 +14,10 @@ const transitionDefault = {
 		},
 		'background / layer': {
 			title: 'Background / Layer',
-			target: ' > .maxi-background-displayer > div',
+			target: [
+				' > .maxi-background-displayer > div',
+				' > .maxi-background-displayer > div > svg',
+			],
 			property: false,
 			hoverProp: 'block-background-status-hover',
 		},

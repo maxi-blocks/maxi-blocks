@@ -24,10 +24,11 @@ import {
 	getSVGRatio,
 } from '../../extensions/svg';
 
-const ImageShapeResponsiveSettings = ({
+export const ImageShapeResponsiveSettings = ({
 	breakpoint,
 	prefix = '',
 	onChange,
+	isHover = false,
 	...attributes
 }) => {
 	const getLastShapeAttribute = target =>
@@ -35,6 +36,7 @@ const ImageShapeResponsiveSettings = ({
 			target,
 			breakpoint,
 			attributes,
+			isHover,
 		});
 
 	const getProps = (rawTarget, component = 'AdvancedNumberControl') => {
@@ -52,7 +54,9 @@ const ImageShapeResponsiveSettings = ({
 		const getDictionaryValue = value => dictionary[component][value];
 
 		const target = `${prefix}image-shape-${rawTarget}`;
-		const targetWithBreakpoint = `${target}-${breakpoint}`;
+		const targetWithBreakpoint = `${target}-${breakpoint}${
+			isHover ? '-hover' : ''
+		}`;
 
 		return {
 			[getDictionaryValue('value')]: getLastShapeAttribute(target) || '',
@@ -79,6 +83,7 @@ const ImageShapeResponsiveSettings = ({
 				min={0}
 				max={500}
 				step={1}
+				placeholder='100'
 				initial={100}
 				{...getProps('scale')}
 			/>

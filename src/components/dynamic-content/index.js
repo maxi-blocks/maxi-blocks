@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { useEffect, useState, useCallback } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
@@ -20,6 +20,7 @@ import {
 	limitOptions,
 	limitTypes,
 	limitFields,
+	orderByOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -30,11 +31,16 @@ import { getDefaultAttribute } from '../../extensions/styles';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
+import TextControl from '../text-control';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Dynamic Content
  */
-
 const DynamicContent = props => {
 	const {
 		className,
@@ -54,11 +60,23 @@ const DynamicContent = props => {
 		'dc-field': field,
 		'dc-author': author,
 		'dc-limit': limit,
+		'dc-delimiter-content': delimiter,
+		'dc-custom-delimiter-status': customDelimiterStatus,
+		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 		'dc-error': error,
+		'dc-order': order,
+		'dc-accumulator': accumulator,
 	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+
+	const delimiterOptions = [
+		{ label: __('None', 'maxi-blocks'), value: '' },
+		{ label: __('Comma', 'maxi-blocks'), value: ',' },
+		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
+		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
+	];
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -143,9 +161,10 @@ const DynamicContent = props => {
 						value={type}
 						options={typeOptions[contentType]}
 						onChange={value => {
-							const dcFieldActual = validationsValues(
+							const validatedAttributes = validationsValues(
 								value,
 								field,
+								relation,
 								contentType
 							);
 
@@ -153,7 +172,7 @@ const DynamicContent = props => {
 								'dc-type': value,
 								'dc-show': 'current',
 								'dc-error': '',
-								...dcFieldActual,
+								...validatedAttributes,
 							});
 						}}
 					/>
@@ -171,6 +190,14 @@ const DynamicContent = props => {
 											'dc-relation': value,
 											'dc-show': 'current',
 											'dc-error': '',
+											...([
+												'by-date',
+												'alphabetical',
+											].includes(value) && {
+												'dc-order':
+													orderByOptions[value][0]
+														.value,
+											}),
 										})
 									}
 								/>
@@ -206,13 +233,56 @@ const DynamicContent = props => {
 										}
 									/>
 								)}
+							{['posts', 'pages', 'media'].includes(type) &&
+								['by-date', 'alphabetical'].includes(
+									relation
+								) && (
+									<>
+										<SelectControl
+											label={__('Order', 'maxi-blocks')}
+											value={order}
+											options={orderByOptions[relation]}
+											onChange={value =>
+												changeProps({
+													'dc-order': value,
+												})
+											}
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Accumulator',
+												'maxi-blocks'
+											)}
+											value={accumulator}
+											onChangeValue={value =>
+												changeProps({
+													'dc-accumulator': value,
+												})
+											}
+											onReset={() =>
+												changeProps({
+													'dc-accumulator':
+														getDefaultAttribute(
+															'dc-accumulator'
+														),
+												})
+											}
+											disableRange
+										/>
+									</>
+								)}
+
 							{(['settings'].includes(type) ||
 								(relation === 'by-id' && isFinite(id)) ||
 								(relation === 'author' &&
 									!isEmpty(postIdOptions)) ||
-								['date', 'modified', 'random'].includes(
-									relation
-								)) && (
+								[
+									'date',
+									'modified',
+									'random',
+									'by-date',
+									'alphabetical',
+								].includes(relation)) && (
 								<SelectControl
 									label={__('Field', 'maxi-blocks')}
 									value={field}
@@ -264,6 +334,61 @@ const DynamicContent = props => {
 									onChange={obj => changeProps(obj)}
 									{...dynamicContent}
 								/>
+							)}
+							{['tags', 'categories'].includes(field) && !error && (
+								<>
+									<ToggleSwitch
+										label={__(
+											sprintf('Use %s links', field),
+											'maxi-blocks'
+										)}
+										selected={postTaxonomyLinksStatus}
+										onChange={value =>
+											changeProps({
+												'dc-post-taxonomy-links-status':
+													value,
+											})
+										}
+									/>
+									<SelectControl
+										label={__('Delimiter', 'maxi-blocks')}
+										value={
+											customDelimiterStatus
+												? 'custom'
+												: delimiter
+										}
+										options={delimiterOptions}
+										onChange={value => {
+											changeProps(
+												value === 'custom'
+													? {
+															'dc-custom-delimiter-status': true,
+													  }
+													: {
+															'dc-custom-delimiter-status': false,
+															'dc-delimiter-content':
+																value,
+													  }
+											);
+										}}
+									/>
+									{customDelimiterStatus && (
+										<TextControl
+											className='maxi-dynamic-content__custom-delimiter'
+											label={__(
+												'Custom delimiter',
+												'maxi-blocks'
+											)}
+											value={delimiter}
+											onChange={value =>
+												changeProps({
+													'dc-delimiter-content':
+														value,
+												})
+											}
+										/>
+									)}
+								</>
 							)}
 						</>
 					)}

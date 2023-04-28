@@ -120,9 +120,12 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { isTyping, getBlockParents } = useSelect(
-			select => select('core/block-editor'),
-			[]
+		const { getBlockParents } = useSelect(select =>
+			select('core/block-editor')
+		);
+
+		const isTyping = useSelect(select =>
+			select('core/block-editor').isTyping()
 		);
 
 		const { tooltipsHide } = useSelect(select => {
@@ -162,6 +165,19 @@ const MaxiToolbar = memo(
 		useEffect(() => {
 			setAnchorRef(ref.current);
 		}, [!!ref.current]);
+
+		// Hides original Gutenberg toolbar
+		useEffect(() => {
+			const originalToolbar = document.querySelector(
+				'.block-editor-block-contextual-toolbar'
+			);
+
+			if (originalToolbar) originalToolbar.style.display = 'none';
+
+			return () => {
+				if (originalToolbar) originalToolbar.style.display = 'block';
+			};
+		});
 
 		const breadcrumbStatus = () => {
 			const originalNestedBlocks = clientId
@@ -209,7 +225,7 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						{!isTyping() && (
+						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
 								{!isFirstOnHierarchy && (
 									<span

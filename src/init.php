@@ -31,6 +31,11 @@ if (!get_option('maxi_pro')) {
     add_option('maxi_pro', json_encode($array));
 }
 
+if (get_option('maxi_pro') === 'no') {
+    $array = array('status' => 'no');
+    update_option('maxi_pro', json_encode($array));
+}
+
 function maxi_get_pro_status()
 {
     echo esc_attr(get_option('maxi_pro'));

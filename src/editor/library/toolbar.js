@@ -513,8 +513,8 @@ const LibraryToolbar = props => {
 			{!isMaxiProActive && userName && !isMaxiProExpired && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						{__('Already signed in: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
-						{__(', Already signed in', 'maxi-blocks')}
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__manage-sessions'

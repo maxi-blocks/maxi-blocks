@@ -33,7 +33,7 @@ const getSCFontsData = obj => {
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
-			fontName = val;
+			fontName = val.replaceAll('"', '');
 			response[fontName] = response[fontName] ?? {
 				weight: [],
 				style: [],

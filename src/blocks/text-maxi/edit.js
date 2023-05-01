@@ -5,7 +5,6 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -199,20 +198,6 @@ class edit extends MaxiBlockComponent {
 			// on pressing backspace with the content empty 👍
 			// onRemove={onRemove}
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-text--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.text_preview}
-						alt={__('Text block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<textContext.Provider

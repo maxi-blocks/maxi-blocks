@@ -45,24 +45,28 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					target: `i-${type === 'stroke' ? 'str' : 'f'}_pc`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!paletteOpacity)
 				paletteOpacity = getAttributesValue({
 					target: `i-${type === 'stroke' ? 'str' : 'f'}_po`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!paletteStatus)
 				paletteStatus = getAttributesValue({
 					target: `i-${type === 'stroke' ? 'str' : 'f'}_ps`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!color)
 				color = getAttributesValue({
 					target: `i-${type === 'stroke' ? 'str' : 'f'}_cc`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 
 			lineColorStr = getColorRGBAString({
@@ -78,6 +82,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
+					prefix,
 				});
 			if (!paletteOpacity)
 				paletteOpacity = getAttributesValue({
@@ -85,6 +90,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
+					prefix,
 				});
 			if (!paletteStatus)
 				paletteStatus = getAttributesValue({
@@ -92,6 +98,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
+					prefix,
 				});
 			if (!color)
 				color = getAttributesValue({
@@ -99,6 +106,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
+					prefix,
 				});
 
 			lineColorStr = getColorRGBAString({

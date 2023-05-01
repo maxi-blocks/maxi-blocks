@@ -22,7 +22,7 @@ const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;
 
 	const bgStatus = getAttributesValue({
-		target: 'status',
+		target: '.s',
 		props,
 		isHover,
 		prefix: bgPrefix,
@@ -36,7 +36,7 @@ const TitleSettings = props => {
 				selected={bgStatus}
 				onChange={value =>
 					onChange({
-						[getAttributeKey('status', isHover, bgPrefix)]: value,
+						[getAttributeKey('.s', isHover, bgPrefix)]: value,
 					})
 				}
 			/>
@@ -117,12 +117,12 @@ const AccordionTitleSettings = props => {
 	const { onChange, breakpoint } = props;
 
 	const titleLevel = getAttributesValue({
-		target: 'titleLevel',
+		target: '_tl',
 		props,
 	});
 
-	const prefix = 'title-';
-	const bgPrefix = 'title-background-';
+	const prefix = 'ti-';
+	const bgPrefix = 'ti-b-';
 
 	return (
 		<>
@@ -130,7 +130,7 @@ const AccordionTitleSettings = props => {
 				<FontLevelControl
 					value={titleLevel}
 					onChange={obj => {
-						onChange({ titleLevel: obj.textLevel });
+						onChange({ _tl: obj.textLevel });
 					}}
 				/>
 			)}
@@ -154,18 +154,17 @@ const AccordionTitleSettings = props => {
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: 'title-typography-status-hover',
+										target: 'ti-t.sh',
 										props,
 									})}
 									onChange={val =>
 										onChange({
-											'title-typography-status-hover':
-												val,
+											'ti-t.sh': val,
 										})
 									}
 								/>
 								{getAttributesValue({
-									target: 'title-typography-status-hover',
+									target: 'ti-t.sh',
 									props,
 								}) && (
 									<TitleSettings
@@ -185,24 +184,23 @@ const AccordionTitleSettings = props => {
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
 									selected={getAttributesValue({
-										targt: 'title-typography-status-active',
+										target: 'ti-t.sa',
 										props,
 									})}
 									onChange={val =>
 										onChange({
-											'title-typography-status-active':
-												val,
+											'ti-t.sa': val,
 										})
 									}
 								/>
 								{getAttributesValue({
-									target: 'title-typography-status-active',
+									target: 'ti-t.sa',
 									props,
 								}) && (
 									<TitleSettings
 										{...props}
-										prefix={`active-${prefix}`}
-										bgPrefix={`active-${bgPrefix}`}
+										prefix={`a-${prefix}`}
+										bgPrefix={`a-${bgPrefix}`}
 									/>
 								)}
 							</>

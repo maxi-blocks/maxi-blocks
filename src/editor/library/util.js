@@ -132,7 +132,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 
 	const iconPaletteAttr = getPaletteAttributes({
 		obj: currentAttributes,
-		prefix: 'icon-',
+		prefix: 'i-',
 	});
 
 	const iconPaletteStatus = iconPaletteAttr.paletteStatus;
@@ -140,7 +140,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const iconColor = iconPaletteAttr.color;
 
 	const iconInherit = getAttributesValue({
-		target: 'icon-inherit',
+		target: 'i_i',
 		props: currentAttributes,
 	});
 

@@ -42,7 +42,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -51,7 +51,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -89,7 +89,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -106,7 +106,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -115,7 +115,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -130,32 +130,31 @@ const getHoverObject = props => {
 
 const getIconObject = (props, uniqueID) => {
 	const iconStatusHover = getAttributesValue({
-		target: 'icon-status',
+		target: 'i.sh',
 		props,
-		isHover: true,
 	});
 
 	const response = {
 		...getButtonIconStyles({
 			obj: props,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			target: ' .maxi-pane-block__icon',
 			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=false] .maxi-pane-block__header`,
 		}),
 		...(iconStatusHover &&
 			getButtonIconStyles({
 				obj: props,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				target: ' .maxi-pane-block__icon',
 				wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded] .maxi-pane-block__header`,
 				isHover: true,
 			})),
 		...getButtonIconStyles({
 			obj: props,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			target: ' .maxi-pane-block__icon',
 			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=true] .maxi-pane-block__header`,
-			prefix: 'active-',
+			prefix: 'a-',
 		}),
 	};
 	return response;
@@ -175,7 +174,7 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 		return getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		});
 
 	return null;
@@ -183,7 +182,7 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 
 const getPaneContentWrapperStyles = props => {
 	const animationDuration = getAttributesValue({
-		target: 'animationDuration',
+		target: '_ad',
 		props,
 	});
 
@@ -216,8 +215,8 @@ const getPaneTitleStyles = (props, prefix, isHover = false) => {
 			}),
 			isHover,
 			prefix,
-			blockStyle: props.blockStyle,
-			textLevel: props.titleLevel,
+			blockStyle: props._bs,
+			textLevel: props._tl,
 		}),
 	};
 
@@ -229,7 +228,7 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 
 	breakpoints.forEach(breakpoint => {
 		const bgStatus = getAttributesValue({
-			target: 'title-background-status',
+			target: 'ti-b.s',
 			props,
 			isHover,
 			prefix,
@@ -238,7 +237,7 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 			response[breakpoint] = {
 				'background-color': getColor({
 					props,
-					prefix: `${prefix}title-background-`,
+					prefix: `${prefix}ti-b-`,
 					isHover,
 					breakpoint,
 				}),
@@ -256,7 +255,7 @@ const getPaneHeaderObject = props => {
 				general: {
 					'flex-direction':
 						getAttributesValue({
-							target: 'icon-position',
+							target: 'i_pos',
 							props,
 						}) === 'right'
 							? 'row'
@@ -269,9 +268,9 @@ const getPaneHeaderObject = props => {
 				...getDividerStyles(
 					props,
 					'container',
-					props.blockStyle,
+					props._bs,
 					false,
-					'header-'
+					'he-'
 				),
 			},
 		},
@@ -280,16 +279,16 @@ const getPaneHeaderObject = props => {
 				...getDividerStyles(
 					props,
 					'line',
-					props.blockStyle,
+					props._bs,
 					false,
-					'header-',
+					'he-',
 					true
 				),
 			},
 		},
 		...(getAttributesValue({
-			target: 'line-status-active',
-			prefix: 'header-',
+			target: '_li.sa',
+			prefix: 'he-',
 			props,
 		}) && {
 			'[aria-expanded=true] .maxi-pane-block__header-line': {
@@ -297,17 +296,17 @@ const getPaneHeaderObject = props => {
 					...getDividerStyles(
 						props,
 						'line',
-						props.blockStyle,
+						props._bs,
 						false,
-						'header-active-',
+						'he-a-',
 						true
 					),
 				},
 			},
 		}),
 		...(getAttributesValue({
-			target: 'line-status',
-			prefix: 'header-',
+			target: '_li.sh',
+			prefix: 'he-',
 			isHover: true,
 			props,
 		}) && {
@@ -317,37 +316,37 @@ const getPaneHeaderObject = props => {
 						...getDividerStyles(
 							props,
 							'line',
-							props.blockStyle,
+							props._bs,
 							true,
-							'header-',
+							'he-',
 							true
 						),
 					},
 				},
 		}),
 		'[aria-expanded=true] .maxi-pane-block__header-content': {
-			paneHeaderActive: getPaneHeaderStyles(props, 'active-'),
+			paneHeaderActive: getPaneHeaderStyles(props, 'a-'),
 		},
 		'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content':
 			{
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
-		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
+		' .maxi-pane-block__title': getPaneTitleStyles(props, 'ti-'),
 		...(getAttributesValue({
-			target: 'title-typography-status-active',
+			target: 'ti-t.sa',
 			props,
 		}) && {
 			'[aria-expanded=true] .maxi-pane-block__title': getPaneTitleStyles(
 				props,
-				'active-title-'
+				'a-ti-'
 			),
 		}),
 		...(getAttributesValue({
-			target: 'title-typography-status-hover',
+			target: 'ti-t.sh',
 			props,
 		}) && {
 			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
-				getPaneTitleStyles(props, 'title-', true),
+				getPaneTitleStyles(props, 'ti-', true),
 		}),
 	};
 
@@ -356,7 +355,7 @@ const getPaneHeaderObject = props => {
 
 const getPaneContentObject = props => {
 	const accordionLayout = getAttributesValue({
-		target: 'accordionLayout',
+		target: '_acl',
 		props,
 	});
 
@@ -369,9 +368,9 @@ const getPaneContentObject = props => {
 					...getDividerStyles(
 						props,
 						'container',
-						props.blockStyle,
+						props._bs,
 						false,
-						'content-'
+						'c-'
 					),
 				},
 			},
@@ -380,16 +379,16 @@ const getPaneContentObject = props => {
 					...getDividerStyles(
 						props,
 						'line',
-						props.blockStyle,
+						props._bs,
 						false,
-						'content-',
+						'c-',
 						true
 					),
 				},
 			},
 			...(getAttributesValue({
-				target: 'line-status-active',
-				prefix: 'content-',
+				target: '_li.sa',
+				prefix: 'c-',
 				props,
 			}) && {
 				'[aria-expanded=true] .maxi-pane-block__content-line': {
@@ -397,17 +396,17 @@ const getPaneContentObject = props => {
 						...getDividerStyles(
 							props,
 							'line',
-							props.blockStyle,
+							props._bs,
 							false,
-							'content-active-',
+							'c-a-',
 							true
 						),
 					},
 				},
 			}),
 			...(getAttributesValue({
-				target: 'line-status',
-				prefix: 'content-',
+				target: '_li.s',
+				prefix: 'c-',
 				isHover: true,
 				props,
 			}) && {
@@ -417,9 +416,9 @@ const getPaneContentObject = props => {
 							...getDividerStyles(
 								props,
 								'line',
-								props.blockStyle,
+								props._bs,
 								true,
-								'content-',
+								'c-',
 								true
 							),
 						},
@@ -432,7 +431,8 @@ const getPaneContentObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
+
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
@@ -445,7 +445,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -459,7 +459,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getIconObject(props, uniqueID),
 			},

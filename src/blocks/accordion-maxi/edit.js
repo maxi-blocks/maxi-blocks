@@ -36,28 +36,28 @@ class edit extends MaxiBlockComponent {
 			accordion: {
 				[uniqueID]: {
 					paneIcon: getAttributesValue({
-						target: 'icon-content',
+						target: 'i_c',
 						props: attributes,
 					}),
 					paneIconActive: getAttributesValue({
-						target: 'icon-content',
-						prefix: 'active-',
+						target: 'i_c',
+						prefix: 'a-',
 						props: attributes,
 					}),
 					accordionLayout: getAttributesValue({
-						target: 'accordionLayout',
+						target: '_acl',
 						props: attributes,
 					}),
 					autoPaneClose: getAttributesValue({
-						target: 'autoPaneClose',
+						target: '_apc',
 						props: attributes,
 					}),
 					isCollapsible: getAttributesValue({
-						target: 'isCollapsible',
+						target: '_ico',
 						props: attributes,
 					}),
 					animationDuration: getAttributesValue({
-						target: 'animationDuration',
+						target: '_ad',
 						props: attributes,
 					}),
 				},
@@ -69,7 +69,7 @@ class edit extends MaxiBlockComponent {
 
 	openPane(paneId) {
 		const autoPaneClose = getAttributesValue({
-			target: 'autoPaneClose',
+			target: '_apc',
 			props: this.props.attributes,
 		});
 
@@ -107,15 +107,7 @@ class edit extends MaxiBlockComponent {
 			iconContent,
 			activeIconContent,
 		] = getAttributesValue({
-			target: [
-				'_uid',
-				'titleLevel',
-				'accordionLayout',
-				'isCollapsible',
-				'animationDuration',
-				'icon-content',
-				'active-icon-content',
-			],
+			target: ['_uid', '_tl', '_acl', '_ico', '_ad', 'i_c', 'a-i_c'],
 			props: attributes,
 		});
 

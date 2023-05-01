@@ -55,7 +55,7 @@ export const handleBlockMigrator = ({
 				// so, to avoid having multiple deprecation versions of each block and considering
 				// our migrators global (affect all blocks), we are saving the previous deprecation
 				// attributes and merging into a new object that will suffer the migration.
-				const { uniqueID } = originalAttributes;
+				const { _uid: uniqueID } = originalAttributes;
 
 				const prevAttr =
 					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
@@ -68,7 +68,7 @@ export const handleBlockMigrator = ({
 				const result = originalMigrate(newAttributes);
 
 				dispatch('maxiBlocks').saveDeprecatedBlock({
-					uniqueID,
+					_uid: uniqueID,
 					attributes: result,
 				});
 

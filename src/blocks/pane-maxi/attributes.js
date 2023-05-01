@@ -40,7 +40,7 @@ const attributes = {
 	 * Block styles
 	 */
 	title: { type: 'string' },
-	al: { type: 'string' },
+	_acl: { type: 'string', longLabel: 'accordionLayout' },
 	titleLevel: { type: 'string', default: 'h6' },
 	accordionUniqueId: { type: 'string' },
 
@@ -55,19 +55,19 @@ const attributes = {
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
-		'padding-top-general': {
+		'_p.t-general': {
 			type: 'string',
 			default: '25',
 		},
-		'padding-bottom-general': {
+		'_p.b-general': {
 			type: 'string',
 			default: '25',
 		},
-		'padding-left-general': {
+		'_p.l-general': {
 			type: 'string',
 			default: '25',
 		},
-		'padding-right-general': {
+		'_p.r-general': {
 			type: 'string',
 			default: '25',
 		},
@@ -78,7 +78,7 @@ const attributes = {
 	 */
 	...prefixAttributesCreator({
 		obj: mutualAttributes,
-		prefix: 'header-',
+		prefix: 'he-',
 	}),
 
 	/**
@@ -87,20 +87,20 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: {
 			...mutualAttributes,
-			'padding-top-general': {
+			'_p.t-general': {
 				type: 'string',
 				default: '25',
 			},
-			'padding-bottom-general': {
+			'_p.b-general': {
 				type: 'string',
 				default: '25',
 			},
-			'padding-sync-general': {
+			'_p.sy-general': {
 				type: 'string',
 				default: 'axis',
 			},
 		},
-		prefix: 'content-',
+		prefix: 'c-',
 	}),
 
 	/**

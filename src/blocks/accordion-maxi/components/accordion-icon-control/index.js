@@ -13,41 +13,79 @@ import {
 	IconControl,
 } from '../../../../components';
 import MaxiModal from '../../../../editor/library/modal';
-import { getAttributesValue } from '../../../../extensions/attributes';
+import {
+	getAttributeKey,
+	getAttributesValue,
+} from '../../../../extensions/attributes';
 import { getIconWithColor } from '../../../../extensions/styles';
 
 const AccordionIconSettings = props => {
-	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;
+	const { onChange, blockStyle, a_st: svgTypeActive, breakpoint } = props;
 
 	return (
 		<>
 			<AxisPositionControl
 				label={__('Icon', 'maxi-blocks')}
 				disableY
-				selected={getAttributesValue({ target: 'icon-position' })}
+				selected={getAttributesValue({ target: 'i_pos', props })}
 				breakpoint={breakpoint}
 				onChange={val =>
 					onChange({
-						'icon-position': val,
+						i_pos: val,
 					})
 				}
 			/>
 			<MaxiModal
 				type='accordion-icon'
 				style={blockStyle}
-				onSelect={obj => onChange(obj)}
+				onSelect={obj => {
+					const newSvgType = obj[getAttributeKey('_st', false, '')];
+
+					const icon = getIconWithColor(props, {
+						rawIcon: obj[getAttributeKey('i_c', false, '')],
+						type: [
+							newSvgType !== 'Shape' && 'stroke',
+							newSvgType !== 'Line' && 'fill',
+						].filter(Boolean),
+					});
+
+					onChange({
+						[getAttributeKey('_st', false, '')]: newSvgType,
+						[getAttributeKey('i_c', false, '')]: icon,
+					});
+				}}
 				onRemove={obj => onChange(obj)}
-				icon={getAttributesValue({ target: 'icon-content' })}
+				icon={getAttributesValue({ target: 'i_c', props })}
 				label='Icon'
 			/>
 			<MaxiModal
 				type='accordion-icon-active'
 				style={blockStyle}
-				onSelect={obj => onChange(obj)}
+				onSelect={obj => {
+					const newSvgType = obj[getAttributeKey('_st', false, 'a-')];
+
+					const icon = getIconWithColor(
+						props,
+						{
+							rawIcon: obj[getAttributeKey('i_c', false, 'a-')],
+							type: [
+								newSvgType !== 'Shape' && 'stroke',
+								newSvgType !== 'Line' && 'fill',
+							].filter(Boolean),
+						},
+						'a-'
+					);
+
+					onChange({
+						[getAttributeKey('_st', false, 'a-')]: newSvgType,
+						[getAttributeKey('i_c', false, 'a-')]: icon,
+					});
+				}}
 				onRemove={obj => onChange(obj)}
 				icon={getAttributesValue({
-					target: 'icon-content',
-					prefix: 'active-',
+					target: 'i_c',
+					prefix: 'a-',
+					props,
 				})}
 				label='Active icon'
 			/>
@@ -56,7 +94,8 @@ const AccordionIconSettings = props => {
 					getAttributesValue({ target: 'icon-content' }) !== '' && {
 						label: __('Normal state', 'maxi-blocks'),
 						content: getAttributesValue({
-							target: 'icon-content',
+							target: 'i_c',
+							props,
 						}) !== '' && (
 							<IconControl
 								{...props}
@@ -68,8 +107,9 @@ const AccordionIconSettings = props => {
 						),
 					},
 					(getAttributesValue({
-						target: 'icon-content',
-						prefix: 'active-',
+						target: 'i_c',
+						prefix: 'a-',
+						props,
 					}) !== '' ||
 						getAttributesValue({ target: 'icon-content' }) !==
 							'') && {
@@ -82,21 +122,27 @@ const AccordionIconSettings = props => {
 										'maxi-blocks'
 									)}
 									selected={getAttributesValue({
-										target: 'icon-status-hover',
+										target: 'i.sh',
+										props,
 									})}
 									onChange={val =>
 										onChange({
-											'icon-status-hover': val,
+											'i.sh': val,
 										})
 									}
 								/>
 								{getAttributesValue({
-									target: 'icon-status-hover',
+									target: 'i.sh',
+									props,
 								}) && (
 									<IconControl
 										{...props}
 										getIconWithColor={args =>
-											getIconWithColor(props, args, '')
+											getIconWithColor(
+												{ ...props, _bs: blockStyle },
+												args,
+												''
+											)
 										}
 										disableHeightFitContent
 										isHover
@@ -106,17 +152,18 @@ const AccordionIconSettings = props => {
 						),
 					},
 					getAttributesValue({
-						target: 'icon-content',
-						prefix: 'active-',
+						target: 'i_c',
+						prefix: 'a-',
+						props,
 					}) !== '' && {
 						label: __('Active state', 'maxi-blocks'),
 						content: (
 							<IconControl
 								{...props}
 								getIconWithColor={args =>
-									getIconWithColor(props, args, 'active-')
+									getIconWithColor(props, args, 'a-')
 								}
-								prefix='active-'
+								prefix='a-'
 								svgType={svgTypeActive}
 								disableHeightFitContent
 							/>

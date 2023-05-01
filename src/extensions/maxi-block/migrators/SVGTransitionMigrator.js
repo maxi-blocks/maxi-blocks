@@ -6,7 +6,7 @@ import { isEqual } from 'lodash';
 const name = 'SVG Transition Migrator';
 
 const isEligible = blockAttributes => {
-	const { uniqueID, transition } = blockAttributes;
+	const { _uid: uniqueID, transition } = blockAttributes;
 	if (!transition) return false;
 
 	const blockName = getBlockNameFromUniqueID(uniqueID);
@@ -21,7 +21,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID, _tca: transitionChangeAll } = newAttributes;
+	const { _uid: uniqueID, _tca: transitionChangeAll } = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 

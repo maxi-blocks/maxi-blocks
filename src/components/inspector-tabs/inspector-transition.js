@@ -198,7 +198,7 @@ const transition = ({
 		props: attributes,
 	});
 
-	const transition = cloneDeep(rawTransition);
+	const transition = cloneDeep(rawTransition) ?? {};
 
 	const transitionData = getTransitionData(name, selectors, attributes);
 

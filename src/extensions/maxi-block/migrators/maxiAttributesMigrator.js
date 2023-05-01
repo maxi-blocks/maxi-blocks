@@ -21,7 +21,7 @@ const maxiVersions = [
 
 const isEligible = blockAttributes => {
 	const {
-		uniqueID,
+		_uid: uniqueID,
 		'maxi-version-origin': maxiVersionOrigin,
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
@@ -39,7 +39,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID } = newAttributes;
+	const { _uid: uniqueID } = newAttributes;
 
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockData = getBlockData(blockName);

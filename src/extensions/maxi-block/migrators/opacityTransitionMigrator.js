@@ -17,7 +17,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID } = newAttributes;
+	const { _uid: uniqueID } = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 

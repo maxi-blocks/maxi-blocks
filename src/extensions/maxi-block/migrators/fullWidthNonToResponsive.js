@@ -46,7 +46,7 @@ const saveMigrator = (saveInstance, props) => {
 	});
 
 	// Concrete case for Button Maxi
-	if (attributes.uniqueID.includes('button')) {
+	if (attributes._uid.includes('button')) {
 		let buttonChildren = newInstance.props.children;
 		const buttonChild = isArray(buttonChildren)
 			? buttonChildren[0]

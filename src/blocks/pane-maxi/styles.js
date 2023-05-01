@@ -32,7 +32,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -41,7 +41,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -79,7 +79,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -96,7 +96,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -105,7 +105,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -127,7 +127,7 @@ const getNormalStyles = (props, prefix) => {
 				false,
 				prefix
 			),
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			prefix,
 		}),
 		border: getBorderStyles({
@@ -139,18 +139,20 @@ const getNormalStyles = (props, prefix) => {
 					prefix
 				),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			prefix,
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size', false, prefix),
-			prefix,
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, prefix),
+			},
+			prefix
+		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, prefix),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			prefix,
 		}),
 		padding: getMarginPaddingStyles({
@@ -167,7 +169,7 @@ const getNormalStyles = (props, prefix) => {
 const getHoverStyles = (props, prefix) => {
 	const [backgroundStatusHover, borderStatusHover, boxShadowStatusHover] =
 		getAttributesValue({
-			target: ['background-status-hover', 'bo.sh', 'bs.sh'],
+			target: ['b.sh', 'bo.sh', 'bs.sh'],
 			props,
 			isHover: true,
 			prefix,
@@ -182,7 +184,7 @@ const getHoverStyles = (props, prefix) => {
 					true,
 					prefix
 				),
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 				isHover: true,
 			})),
@@ -197,7 +199,7 @@ const getHoverStyles = (props, prefix) => {
 						prefix
 					),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 				isHover: true,
 			}),
@@ -207,7 +209,7 @@ const getHoverStyles = (props, prefix) => {
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, prefix),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 				isHover: true,
 			}),
@@ -217,18 +219,18 @@ const getHoverStyles = (props, prefix) => {
 };
 
 const getActiveStyles = (props, rawPrefix) => {
-	const prefix = `${rawPrefix}active-`;
+	const prefix = `${rawPrefix}a-`;
 
-	const { backgroundStatusHover, borderStatusHover, boxShadowStatusHover } =
+	const [backgroundStatusActive, borderStatusActive, boxShadowStatusActive] =
 		getAttributesValue({
-			target: ['background-status-hover', 'bo.sh', 'bs.sh'],
+			target: ['b.sa', 'bo.sa', 'bs.sa'],
 			props,
 			isHover: true,
 			prefix: rawPrefix,
 		});
 
 	return {
-		...(backgroundStatusHover &&
+		...(backgroundStatusActive &&
 			getBackgroundStyles({
 				...getGroupAttributes(
 					props,
@@ -236,11 +238,11 @@ const getActiveStyles = (props, rawPrefix) => {
 					false,
 					prefix
 				),
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 			})),
 		border:
-			borderStatusHover &&
+			borderStatusActive &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -250,42 +252,39 @@ const getActiveStyles = (props, rawPrefix) => {
 						prefix
 					),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 			}),
 		boxShadow:
-			boxShadowStatusHover &&
+			boxShadowStatusActive &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', false, prefix),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix,
 			}),
 	};
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' .maxi-pane-block__header': getNormalStyles(props, 'header-'),
-				' .maxi-pane-block__content': getNormalStyles(
-					props,
-					'content-'
-				),
+				' .maxi-pane-block__header': getNormalStyles(props, 'he-'),
+				' .maxi-pane-block__content': getNormalStyles(props, 'c-'),
 				'[aria-expanded] .maxi-pane-block__header:hover':
-					getHoverStyles(props, 'header-'),
+					getHoverStyles(props, 'he-'),
 				'[aria-expanded] .maxi-pane-block__content:hover':
-					getHoverStyles(props, 'content-'),
+					getHoverStyles(props, 'c-'),
 				'[aria-expanded="true"] .maxi-pane-block__header':
-					getActiveStyles(props, 'header-'),
+					getActiveStyles(props, 'he-'),
 				'[aria-expanded="true"] .maxi-pane-block__content':
-					getActiveStyles(props, 'content-'),
+					getActiveStyles(props, 'c-'),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -293,7 +292,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -307,7 +306,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 			},
 			data,

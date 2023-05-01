@@ -28,17 +28,12 @@ const AccordionLineControl = props => {
 				label={__('Line horizontal position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
 					prefix,
-					target: 'line-horizontal',
+					target: '_lh',
 					breakpoint,
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
-					getAttributeKey(
-						'line-horizontal',
-						false,
-						prefix,
-						breakpoint
-					)
+					getAttributeKey('_lh', false, prefix, breakpoint)
 				)}
 				options={[
 					{
@@ -56,29 +51,21 @@ const AccordionLineControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(
-							'line-horizontal',
-							false,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_lh', false, prefix, breakpoint)]:
+							val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[getAttributeKey(
-							'line-horizontal',
-							false,
-							prefix,
-							breakpoint
-						)]: getDefaultAttribute(
-							getAttributeKey(
-								'line-horizontal',
-								false,
-								prefix,
-								breakpoint
-							)
-						),
+						[getAttributeKey('_lh', false, prefix, breakpoint)]:
+							getDefaultAttribute(
+								getAttributeKey(
+									'_lh',
+									false,
+									prefix,
+									breakpoint
+								)
+							),
 						isReset: true,
 					});
 				}}
@@ -97,15 +84,14 @@ const AccordionLineControl = props => {
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: 'line-status',
+										target: '_li.sh',
 										prefix,
-										isHover: true,
 										props,
 									})}
 									onChange={val =>
 										onChange({
 											[getAttributeKey(
-												'line-status-hover',
+												'_li.sh',
 												false,
 												prefix
 											)]: val,
@@ -113,7 +99,7 @@ const AccordionLineControl = props => {
 									}
 								/>
 								{getAttributesValue({
-									target: 'line-status',
+									target: '_li.sh',
 									prefix,
 									isHover: true,
 									props,
@@ -134,14 +120,14 @@ const AccordionLineControl = props => {
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: 'line-status-active',
+										target: '_li.sa',
 										prefix,
 										props,
 									})}
 									onChange={val =>
 										onChange({
 											[getAttributeKey(
-												'line-status-active',
+												'_li.sa',
 												false,
 												prefix
 											)]: val,
@@ -149,13 +135,13 @@ const AccordionLineControl = props => {
 									}
 								/>
 								{getAttributesValue({
-									target: 'line-status-active',
+									target: '_li.sa',
 									prefix,
 									props,
 								}) && (
 									<DividerControl
 										{...props}
-										prefix={`${prefix}active-`}
+										prefix={`${prefix}a-`}
 									/>
 								)}
 							</>

@@ -46,11 +46,11 @@ const Inspector = props => {
 	});
 
 	const accordionLayout = getAttributesValue({
-		target: 'accordionLayout',
+		target: '_acl',
 		props: attributes,
 	});
 	const titleLevel = getAttributesValue({
-		target: 'titleLevel',
+		target: '_tl',
 		props: attributes,
 	});
 
@@ -85,8 +85,11 @@ const Inspector = props => {
 		'icon',
 		'iconHover',
 		'iconBackgroundGradient',
+		'iconBackgroundGradientHover',
 		'iconBackgroundColor',
+		'iconBackgroundColorHover',
 		'iconBorder',
+		'iconBackground',
 		'iconBackgroundHover',
 		'iconBorderWidth',
 		'iconBorderRadius',
@@ -172,7 +175,7 @@ const Inspector = props => {
 													attributes,
 													iconGroupAttributes,
 													false,
-													'active-'
+													'a-'
 												)}
 												disableIconOnly
 												disableSpacing
@@ -207,7 +210,7 @@ const Inspector = props => {
 															content: (
 																<AccordionLineControl
 																	{...lineSettingsProps}
-																	prefix='header-'
+																	prefix='he-'
 																/>
 															),
 														},
@@ -219,7 +222,7 @@ const Inspector = props => {
 															content: (
 																<AccordionLineControl
 																	{...lineSettingsProps}
-																	prefix='content-'
+																	prefix='c-'
 																/>
 															),
 														},

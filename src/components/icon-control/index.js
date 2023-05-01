@@ -391,11 +391,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 										isHover,
 										`${prefix}i-str-`
 									)]: paletteOpacity,
-									[getAttributeKey(
-										'_cc',
-										isHover,
-										`${prefix}i-str-`
-									)]: icon,
+									[getAttributeKey('i_c', false, prefix)]:
+										icon,
 								});
 							}}
 							isHover={isHover}
@@ -705,17 +702,11 @@ const IconControl = props => {
 						style={blockStyle}
 						onSelect={obj => {
 							const newSvgType =
-								obj[getAttributeKey('svgType', false, prefix)];
+								obj[getAttributeKey('_st', false, prefix)];
 
 							let icon = getIconWithColor({
 								rawIcon:
-									obj[
-										getAttributeKey(
-											'icon-content',
-											false,
-											prefix
-										)
-									],
+									obj[getAttributeKey('i_c', false, prefix)],
 								type: [
 									newSvgType !== 'Shape' && 'stroke',
 									newSvgType !== 'Line' && 'fill',

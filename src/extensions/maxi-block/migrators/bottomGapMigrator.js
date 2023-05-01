@@ -18,7 +18,7 @@ const maxiVersions = [
 
 const isEligible = blockAttributes => {
 	const {
-		uniqueID,
+		_uid: uniqueID,
 		'maxi-version-origin': maxiVersionOrigin,
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;

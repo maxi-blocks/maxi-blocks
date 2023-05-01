@@ -81,7 +81,7 @@ const migrate = props => {
 		selectors = props.selectors;
 	} else {
 		newAttributes = props;
-		selectors = getBlockSelectorsByUniqueID(newAttributes.uniqueID);
+		selectors = getBlockSelectorsByUniqueID(newAttributes._uid);
 	}
 
 	if (isEmpty(selectors)) return false;

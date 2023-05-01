@@ -42,7 +42,7 @@ const accordionTitle = {
 		obj: titleBackground,
 		sameValAttr: [
 			getAttributeKey(
-				'ps', // palette-status
+				'_ps', // palette-status
 				false,
 				`${prefix}-b-`, // background-
 				'general'
@@ -50,7 +50,7 @@ const accordionTitle = {
 		],
 		diffValAttr: {
 			[getAttributeKey(
-				'pc', // palette-color
+				'_pc', // palette-color
 				false,
 				`${prefix}-b-`, // background-
 				'general'

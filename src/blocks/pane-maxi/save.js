@@ -15,7 +15,7 @@ import { getAttributesValue } from '../../extensions/attributes';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, accordionUniqueId, linkSettings } = attributes;
+	const { title, accordionUniqueId, _lse: linkSettings } = attributes;
 
 	const titleLevel = getAttributesValue({
 		target: 'titleLevel',

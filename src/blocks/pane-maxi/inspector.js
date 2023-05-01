@@ -92,7 +92,7 @@ const Inspector = props => {
 															<AccordionControl
 																isNestedAccordion
 																items={getBaseSettings(
-																	'header-',
+																	'he-',
 																	'.maxi-pane-block__header',
 																	'Header'
 																)}
@@ -108,7 +108,7 @@ const Inspector = props => {
 															<AccordionControl
 																isNestedAccordion
 																items={getBaseSettings(
-																	'content-',
+																	'c-',
 																	'.maxi-pane-block__content',
 																	'Content'
 																)}

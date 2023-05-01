@@ -41,6 +41,7 @@ import DOMPurify from 'dompurify';
  */
 import { arrowIcon } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
+import getCleanKey from '../../extensions/attributes/getCleanKey';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -492,12 +493,11 @@ const LibraryContainer = props => {
 			case 'search-icon':
 			case 'video-icon-play':
 			case 'video-icon-close':
+			case 'navigation-icon':
 				return 'icon';
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';
-			case 'navigation-icon':
-				return 'icon';
 			default:
 				return type;
 		}
@@ -568,8 +568,8 @@ const LibraryContainer = props => {
 		);
 
 		if (isValidTemplate(finalSvgCode)) {
-			onSelect({ content: finalSvgCode });
-			onSelect({ svgType });
+			onSelect({ i_c: finalSvgCode });
+			onSelect({ _st: svgType });
 			onRequestClose();
 		}
 	};
@@ -694,8 +694,8 @@ const LibraryContainer = props => {
 				].includes(type)
 			) {
 				onSelect({
-					[`${prefix}icon-content`]: svgCode,
-					[`${prefix}svgType`]: svgType,
+					[`${prefix}i_c`]: svgCode,
+					[getCleanKey(`${prefix}_st`)]: svgType,
 				});
 
 				onRequestClose();
@@ -703,8 +703,8 @@ const LibraryContainer = props => {
 
 			if (type === 'accordion-icon-active') {
 				onSelect({
-					'active-icon-content': svgCode,
-					svgTypeActive: svgType,
+					'a-i_c': svgCode,
+					a_st: svgType,
 				});
 
 				onRequestClose();

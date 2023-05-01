@@ -49,24 +49,24 @@ const AccordionSettings = props => {
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}
 						value={getAttributesValue({
-							target: 'accordionLayout',
+							target: '_acl',
 							props,
 						})}
 						options={[
 							{ label: 'Simple', value: 'simple' },
 							{ label: 'Boxed', value: 'boxed' },
 						]}
-						onChange={val => onChange({ accordionLayout: val })}
+						onChange={val => onChange({ _acl: val })}
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}
 						selected={getAttributesValue({
-							target: 'isCollapsible',
+							target: '_ico',
 							props,
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('isCollapsible')]: val,
+								[getAttributeKey('_ico')]: val,
 							})
 						}
 					/>
@@ -76,12 +76,12 @@ const AccordionSettings = props => {
 							'maxi-block'
 						)}
 						selected={getAttributesValue({
-							target: 'autoPaneClose',
+							target: '_apc',
 							props,
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('autoPaneClose')]: val,
+								[getAttributeKey('_apc')]: val,
 							})
 						}
 					/>
@@ -92,12 +92,12 @@ const AccordionSettings = props => {
 					label={__('Spacing', 'maxi-blocks')}
 					minMaxSettings={spacingMinMaxSettings}
 					value={getLastBreakpointAttribute({
-						target: 'row-gap',
+						target: '_rg',
 						breakpoint,
 						attributes: props,
 					})}
 					unit={getLastBreakpointAttribute({
-						target: 'row-gap-unit',
+						target: '_rg.u',
 						breakpoint,
 						attributes: props,
 					})}
@@ -105,34 +105,26 @@ const AccordionSettings = props => {
 					allowedUnits={['px', 'em', 'vh']}
 					onChangeValue={val => {
 						onChange({
-							[getAttributeKey(
-								'row-gap',
-								false,
-								false,
-								breakpoint
-							)]: val !== undefined ? val : '',
+							[getAttributeKey('_rg', false, false, breakpoint)]:
+								val !== undefined ? val : '',
 						});
 					}}
 					onChangeUnit={val => {
 						onChange({
-							[`row-gap-unit-${breakpoint}`]: val,
+							[`_rg.u-${breakpoint}`]: val,
 						});
 					}}
 					onReset={() =>
 						onChange({
-							[getAttributeKey(
-								'row-gap',
-								false,
-								false,
-								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'row-gap',
-									false,
-									false,
-									breakpoint
-								)
-							),
+							[getAttributeKey('_rg', false, false, breakpoint)]:
+								getDefaultAttribute(
+									getAttributeKey(
+										'_rg',
+										false,
+										false,
+										breakpoint
+									)
+								),
 							isReset: true,
 						})
 					}
@@ -144,21 +136,19 @@ const AccordionSettings = props => {
 				max={10}
 				step={0.1}
 				value={getAttributesValue({
-					target: 'animationDuration',
+					target: '_ad',
 					props,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('animationDuration')]:
-							val !== undefined ? val : '',
+						[getAttributeKey('_ad')]: val !== undefined ? val : '',
 					});
 				}}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('animationDuration')]:
-							getDefaultAttribute(
-								getAttributeKey('animationDuration')
-							),
+						[getAttributeKey('_ad')]: getDefaultAttribute(
+							getAttributeKey('_ad')
+						),
 						isReset: true,
 					})
 				}

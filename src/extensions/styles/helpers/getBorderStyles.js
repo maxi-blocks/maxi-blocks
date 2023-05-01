@@ -33,7 +33,6 @@ const getBorderStyles = ({
 	isButton = false,
 	scValues = {},
 	borderColorProperty = 'border-color',
-	hasCommonUnit = false,
 }) => {
 	const response = {};
 
@@ -89,12 +88,13 @@ const getBorderStyles = ({
 			const currentUnit =
 				obj[
 					getAttributeKey(
-						`${key}${hasCommonUnit ? '' : axis}.u`,
+						`${key}${axis}.u`,
 						isHover,
 						prefix,
 						breakpoint
 					)
-				];
+				] ??
+				obj[getAttributeKey(`${key}.u`, isHover, prefix, breakpoint)];
 
 			const hasCurrent = !isNil(currentValue) || !isNil(currentUnit);
 
@@ -111,13 +111,21 @@ const getBorderStyles = ({
 			if (isNil(lastValue)) return null;
 
 			const lastUnit =
-				getLastBreakpointAttribute({
-					target: `${key}${hasCommonUnit ? '' : axis}.u`,
+				(getLastBreakpointAttribute({
+					target: `${key}${axis}.u`,
 					prefix,
 					breakpoint,
 					attributes: obj,
 					isHover,
-				}) || 'px';
+				}) ??
+					getLastBreakpointAttribute({
+						target: `${key}.u`,
+						prefix,
+						breakpoint,
+						attributes: obj,
+						isHover,
+					})) ||
+				'px';
 
 			return `${lastValue}${lastUnit}`;
 		};

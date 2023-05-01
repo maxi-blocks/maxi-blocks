@@ -37,7 +37,7 @@ const isEligible = blockAttributes => {
 
 	if (!hasTransform) return false;
 
-	const blockName = getBlockNameFromUniqueID(blockAttributes.uniqueID);
+	const blockName = getBlockNameFromUniqueID(blockAttributes._uid);
 
 	const data = getBlockData(blockName);
 
@@ -60,7 +60,7 @@ const isEligible = blockAttributes => {
 const migrate = newAttributes => {
 	const { transition } = newAttributes;
 
-	const blockName = getBlockNameFromUniqueID(newAttributes.uniqueID);
+	const blockName = getBlockNameFromUniqueID(newAttributes._uid);
 
 	const data = getBlockData(blockName);
 

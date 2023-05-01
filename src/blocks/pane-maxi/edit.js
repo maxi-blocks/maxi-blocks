@@ -18,25 +18,25 @@ import { copyPasteMapping } from './data';
 import { getAttributesValue } from '../../extensions/attributes';
 
 const boxedPreset = {
-	'border-radius-bottom-left-general': 10,
-	'border-radius-bottom-right-general': 10,
-	'border-width-bottom-general': 5,
-	'border-width-left-general': 5,
-	'border-width-right-general': 5,
-	'border-radius-top-left-general': 10,
-	'border-radius-top-right-general': 10,
-	'border-width-top-general': 5,
-	'border-radius-unit-general': 'px',
-	'border-width-unit-general': 'px',
-	'border-style-general': 'solid',
+	'bo.ra.bl-general': 10,
+	'bo.ra.br-general': 10,
+	'bo_w-b-general': 5,
+	'bo_w-l-general': 5,
+	'bo_w-r-general': 5,
+	'bo.ra.tl-general': 10,
+	'bo.ra.tr-general': 10,
+	'bo_w-t-general': 5,
+	'bo.ra.unit-general': 'px',
+	'bo_w-unit-general': 'px',
+	'bo_s-general': 'solid',
 };
 
 const simplePreset = {
-	'border-style-general': null,
-	'border-radius-top-left-general': 0,
-	'border-radius-top-right-general': 0,
-	'border-radius-bottom-left-general': 0,
-	'border-radius-bottom-right-general': 0,
+	'bo_s-general': null,
+	'bo.ra.tl-general': 0,
+	'bo.ra.tr-general': 0,
+	'bo.ra.bl-general': 0,
+	'bo.ra.br-general': 0,
 };
 
 const Content = forwardRef((props, ref) => {
@@ -119,7 +119,7 @@ class edit extends MaxiBlockComponent {
 		});
 
 		const accordionLayout = getAttributesValue({
-			target: 'accordionLayout',
+			target: '_acl',
 			props: this.props.attributes,
 		});
 
@@ -176,7 +176,7 @@ class edit extends MaxiBlockComponent {
 			hasSelectedChild,
 			hasInnerBlocks,
 		} = this.props;
-		const { uniqueID, title } = attributes;
+		const { _uid: uniqueID, title } = attributes;
 		const {
 			paneIcon,
 			paneIconActive,

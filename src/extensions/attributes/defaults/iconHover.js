@@ -48,6 +48,6 @@ export const iconBackgroundColorHover = hoverAttributesCreator({
 export const iconBackgroundGradientHover = hoverAttributesCreator({
 	obj: iconBackgroundGradient,
 	diffValAttr: {
-		'i-bg-o-general.h': 1, // icon-background-gradient-opacity-general-hover
+		'i-bg_o-general.h': 1, // icon-background-gradient-opacity-general-hover
 	},
 });

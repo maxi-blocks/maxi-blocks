@@ -318,8 +318,7 @@ const FullSizeControl = props => {
 				}
 				onChange={val => {
 					onChange({
-						[getAttributeKey('_sao', false, prefix, breakpoint)]:
-							val,
+						[getAttributeKey('_sao', false, prefix)]: val,
 					});
 				}}
 			/>
@@ -419,7 +418,7 @@ const FullSizeControl = props => {
 							className='maxi-full-size-control__min-width'
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: '_mw.u',
+								target: '_miw.u',
 								prefix,
 								breakpoint,
 								attributes: props,
@@ -435,7 +434,7 @@ const FullSizeControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: '_mw',
+								target: '_miw',
 								prefix,
 								breakpoint,
 								attributes: props,
@@ -562,7 +561,7 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__min-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: '_mh.u',
+							target: '_mih.u',
 							prefix,
 							breakpoint,
 							attributes: props,
@@ -570,7 +569,7 @@ const FullSizeControl = props => {
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'_mh.u',
+									'_mih.u',
 									false,
 									prefix,
 									breakpoint
@@ -578,7 +577,7 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: '_mh',
+							target: '_mih',
 							prefix,
 							breakpoint,
 							attributes: props,
@@ -586,7 +585,7 @@ const FullSizeControl = props => {
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'_mh',
+									'_mih',
 									false,
 									prefix,
 									breakpoint
@@ -596,26 +595,26 @@ const FullSizeControl = props => {
 						onReset={() => {
 							onChange({
 								[getAttributeKey(
-									'_mh',
+									'_mih',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'_mh',
+										'_mih',
 										false,
 										prefix,
 										breakpoint
 									)
 								),
 								[getAttributeKey(
-									'_mh.u',
+									'_mih.u',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'_mh.u',
+										'_mih.u',
 										false,
 										prefix,
 										breakpoint

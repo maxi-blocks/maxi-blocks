@@ -91,7 +91,6 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 				prefix: `${prefix}i-`,
 				blockStyle: props._bs,
 				isIB,
-				hasCommonUnit: true,
 			}),
 	};
 
@@ -260,7 +259,11 @@ const getButtonIconStyles = ({
 	const normalTarget = `${wrapperTarget} ${target}`;
 	const hoverTarget = `${wrapperTarget}:hover ${target}`;
 
-	const iconType = obj?.svgType?.toLowerCase();
+	const iconType = getAttributesValue({
+		props: obj,
+		target: '_st',
+		prefix,
+	})?.toLowerCase();
 
 	const response = {
 		...(hasIcon && !isHover

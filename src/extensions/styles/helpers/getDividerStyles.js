@@ -29,7 +29,7 @@ const getDividerStyles = (
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: `${prefix}divider-border-`,
+				prefix: `${prefix}di-bo-`,
 				breakpoint,
 				isHover,
 			});
@@ -54,7 +54,7 @@ const getDividerStyles = (
 		if (target === 'line') {
 			const isHorizontal =
 				getLastBreakpointAttribute({
-					target: 'line-orientation',
+					target: '_lo',
 					prefix,
 					breakpoint,
 					attributes: obj,
@@ -62,7 +62,7 @@ const getDividerStyles = (
 				}) === 'horizontal';
 
 			const dividerBorderStyle = getLastBreakpointAttribute({
-				target: 'divider-border-style',
+				target: 'di-bo_s',
 				prefix,
 				breakpoint,
 				attributes: obj,
@@ -74,14 +74,14 @@ const getDividerStyles = (
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-border-top',
+						target: 'di-bo.t',
 						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: `divider-border-${positionVertical}`,
+						target: `di-bo.${positionVertical[0]}`,
 						prefix,
 						breakpoint,
 						attributes: obj,
@@ -90,8 +90,8 @@ const getDividerStyles = (
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? 'divider-border-top.u'
-						: `divider-border-${positionVertical}.u`,
+						? 'di-bo.t.u'
+						: `di-bo.${positionVertical[0]}.u`,
 					prefix,
 					breakpoint,
 					attributes: obj,
@@ -100,14 +100,14 @@ const getDividerStyles = (
 
 			const dividerSize = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-width',
+						target: 'di_w',
 						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: 'divider-height',
+						target: 'di_h',
 						prefix,
 						breakpoint,
 						attributes: obj,
@@ -115,7 +115,7 @@ const getDividerStyles = (
 				  });
 			const dividerSizeUnit =
 				getLastBreakpointAttribute({
-					target: 'divider-width.u',
+					target: 'di_w.u',
 					prefix,
 					breakpoint,
 					attributes: obj,
@@ -123,7 +123,7 @@ const getDividerStyles = (
 				}) ?? 'px';
 
 			const dividerBorderRadius = getLastBreakpointAttribute({
-				target: 'divider-border-radius',
+				target: 'di-bo.ra',
 				prefix,
 				breakpoint,
 				attributes: obj,
@@ -138,7 +138,7 @@ const getDividerStyles = (
 								'border-radius': '20px',
 						  }
 						: getLastBreakpointAttribute({
-								target: 'divider-border-radius',
+								target: 'di-bo.ra',
 								prefix,
 								breakpoint: getPrevBreakpoint(breakpoint),
 								attributes: obj,
@@ -172,19 +172,19 @@ const getDividerStyles = (
 		} else {
 			response[breakpoint] = {
 				'flex-direction': 'row',
-				'align-items': obj[`line-vertical-${breakpoint}`]
-					? obj[`line-vertical-${breakpoint}`]
+				'align-items': obj[`_lv-${breakpoint}`]
+					? obj[`_lv-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-vertical',
+							target: '_lv',
 							prefix,
 							breakpoint,
 							attributes: obj,
 							isHover,
 					  }),
-				'justify-content': obj[`line-horizontal-${breakpoint}`]
-					? obj[`line-horizontal-${breakpoint}`]
+				'justify-content': obj[`_lh-${breakpoint}`]
+					? obj[`_lh-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-horizontal',
+							target: '_lh',
 							prefix,
 							breakpoint,
 							attributes: obj,

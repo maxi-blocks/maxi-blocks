@@ -48,7 +48,7 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, columnRefClientId } = props;
+	const { deviceType, columnRefClientId, innerBlocksPositions } = props;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -93,6 +93,7 @@ const Inspector = props => {
 									...inspectorTabs.repeater({
 										props,
 										columnRefClientId,
+										innerBlocksPositions,
 									}),
 									...inspectorTabs.blockBackground({
 										props,

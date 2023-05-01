@@ -4,7 +4,6 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,11 +15,16 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
-import { findBlockPosition } from '../../extensions/dom/detectNewBlocks';
+import { getInnerBlocksPositions } from '../../extensions/repeater';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import { RowBlockTemplate } from './components';
+
+/**
+ * External dependencies
+ */
+import { isEqual } from 'lodash';
 
 /**
  * Edit
@@ -33,6 +37,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		blocks: {},
+		innerBlocksPositions: null,
 		isInnerBlockWasUpdated: false,
 	};
 
@@ -48,20 +53,32 @@ class edit extends MaxiBlockComponent {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
 				displayHandlers: false,
-				// isInnerBlockWasUpdated: false,
 			});
 		}
 
-		if (this.state.isInnerBlockWasUpdated) {
-			this.setState({
-				isInnerBlockWasUpdated: false,
-			});
+		if (!this.state.innerBlocksPositions) {
+			this.updateInnerBlocksPositions();
 		}
 	}
 
 	// eslint-disable-next-line class-methods-use-this
 	getMaxiAttributes() {
 		return maxiAttributes;
+	}
+
+	updateInnerBlocksPositions() {
+		const tempInnerBlocksPositions = getInnerBlocksPositions(
+			this.columnsClientIds
+		);
+
+		if (
+			!isEqual(tempInnerBlocksPositions, this.state.innerBlocksPositions)
+		) {
+			console.log('tempInnerBlocksPositions', tempInnerBlocksPositions);
+			this.setState({
+				innerBlocksPositions: tempInnerBlocksPositions,
+			});
+		}
 	}
 
 	render() {
@@ -94,52 +111,11 @@ class edit extends MaxiBlockComponent {
 				</MaxiBlock>
 			);
 
-		const getInnerBlocksPositions = () => {
-			const innerBlocksPositions = new Map();
-
-			const goThroughInnerBlocks = (
-				innerBlocks,
-				column,
-				isRootColumn = false
-			) => {
-				innerBlocks?.forEach(block => {
-					const { clientId, innerBlocks } = block;
-
-					const blockPosition = `${findBlockPosition(block, column)}`;
-
-					innerBlocksPositions.set(blockPosition, {
-						...(isRootColumn
-							? {
-									clientId,
-							  }
-							: innerBlocksPositions.get(blockPosition)),
-						uniqueIDs: [
-							...(innerBlocksPositions.get(blockPosition)
-								?.uniqueIDs || []),
-							block.attributes.uniqueID,
-						],
-					});
-
-					if (innerBlocks?.length) {
-						goThroughInnerBlocks(innerBlocks);
-					}
-				});
-			};
-
-			this.columnsClientIds.forEach((columnClientId, index) => {
-				const column =
-					select('core/block-editor').getBlock(columnClientId);
-
-				goThroughInnerBlocks(column?.innerBlocks, column, index === 0);
-			});
-
-			return innerBlocksPositions;
-		};
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				columnRefClientId={this.columnsClientIds[0]}
+				innerBlocksPositions={this.state.innerBlocksPositions}
 				{...this.props}
 			/>,
 			<Toolbar
@@ -188,8 +164,11 @@ class edit extends MaxiBlockComponent {
 							target: 'repeater-status',
 							props: attributes,
 						}),
+						// TODO: consider removing this
 						columnRefClientId: this.columnsClientIds[0],
-						innerBlocksPositions: getInnerBlocksPositions(),
+						innerBlocksPositions: this.state.innerBlocksPositions,
+						updateInnerBlocksPositions:
+							this.updateInnerBlocksPositions,
 						isInnerBlockWasUpdated:
 							this.state.isInnerBlockWasUpdated,
 						setIsInnerBlockWasUpdated: update => {

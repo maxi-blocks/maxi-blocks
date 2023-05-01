@@ -10,7 +10,7 @@ import {
 	useCallback,
 	useReducer,
 } from '@wordpress/element';
-import { dispatch, select, useSelect } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,7 +20,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getIsHoverPreview } from '../../extensions/maxi-block';
-import { findBlockPosition } from '../../extensions/dom/detectNewBlocks';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 

@@ -3,15 +3,8 @@
  */
 import { cloneBlock } from '@wordpress/blocks';
 
-/**
- * External dependencies
- */
-import { isFunction } from 'lodash';
-
-const cleanInnerBlocks = (blocks, callback) =>
+const cleanInnerBlocks = blocks =>
 	blocks.map(block => {
-		if (isFunction(callback)) callback(block);
-
 		const newInnerBlocks = block.innerBlocks
 			? cleanInnerBlocks(block.innerBlocks)
 			: [];

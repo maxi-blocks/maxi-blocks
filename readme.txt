@@ -1,6 +1,6 @@
 === Maxi Blocks - Page Builder Gutenberg Template Library ===
 
-Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, maxiblocks
+Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: page builder, templates, site builder, template library, fse, starter templates, gutenberg blocks, blocks, landing pages, elements, style cards, svg icons shapes
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1

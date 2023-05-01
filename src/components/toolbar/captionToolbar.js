@@ -13,7 +13,7 @@ import { isEmpty, cloneDeep, isEqual } from 'lodash';
 /**
  * Utils
  */
-import { Alignment, TextColor, TextOptions } from './components';
+import { TextColor, TextOptions } from './components';
 
 /**
  * Internal dependencies
@@ -100,15 +100,6 @@ const CaptionToolbar = memo(
 					position='bottom center'
 				>
 					<div className='toolbar-wrapper caption-toolbar'>
-						<TextOptions
-							{...getGroupAttributes(attributes, 'typography')}
-							onChange={obj => processAttributes(obj)}
-							breakpoint={breakpoint}
-							blockStyle={blockStyle}
-							isList={isList}
-							clientId={clientId}
-							isCaptionToolbar
-						/>
 						<TextColor
 							{...getGroupAttributes(attributes, 'typography')}
 							onChangeInline={obj =>
@@ -128,10 +119,13 @@ const CaptionToolbar = memo(
 							styleCard={styleCard}
 							isCaptionToolbar
 						/>
-						<Alignment
-							{...getGroupAttributes(attributes, 'textAlignment')}
+						<TextOptions
+							{...getGroupAttributes(attributes, 'typography')}
 							onChange={obj => processAttributes(obj)}
 							breakpoint={breakpoint}
+							blockStyle={blockStyle}
+							isList={isList}
+							clientId={clientId}
 							isCaptionToolbar
 						/>
 					</div>

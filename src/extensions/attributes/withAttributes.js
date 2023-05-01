@@ -4,13 +4,13 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
-import { useContext } from '@wordpress/element';
+import { useContext, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
-import detectNewBlocks from '../dom/detectNewBlocks';
+import detectNewBlocks from '../repeater/detectNewBlocks';
 import { getCustomLabel } from '../maxi-block';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
@@ -60,11 +60,7 @@ const withAttributes = createHigherOrderComponent(
 			// uniqueID
 			if (isNil(uniqueID)) {
 				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
-				console.log(
-					'withAttributes. newUniqueID',
-					attributes.uniqueID,
-					newUniqueID
-				);
+
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
@@ -102,6 +98,12 @@ const withAttributes = createHigherOrderComponent(
 				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
 			}
 		}
+
+		useEffect(() => {
+			if (repeaterStatus) {
+				repeaterContext?.updateInnerBlocksPositions();
+			}
+		}, []);
 
 		return <BlockEdit {...props} />;
 	},

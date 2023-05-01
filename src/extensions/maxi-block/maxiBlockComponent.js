@@ -53,7 +53,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import detectNewBlocks from '../dom/detectNewBlocks';
+import detectNewBlocks from '../repeater/detectNewBlocks';
 
 /**
  * Style Component
@@ -420,7 +420,8 @@ class MaxiBlockComponent extends Component {
 					this.props,
 					false,
 					this.props.blockPositionFromColumn,
-					this.props.parentColumnClientId
+					this.props.parentColumnClientId,
+					this.props.parentInnerBlocksCount
 				);
 		}
 

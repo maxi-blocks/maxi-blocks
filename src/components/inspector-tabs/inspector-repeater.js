@@ -12,6 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 const repeater = ({
 	props: { attributes, clientId, maxiSetAttributes },
 	columnRefClientId,
+	innerBlocksPositions,
 }) => ({
 	label: __('Repeater', 'maxi-blocks'),
 	content: (
@@ -19,6 +20,7 @@ const repeater = ({
 			{...getGroupAttributes(attributes, 'repeater')}
 			clientId={clientId}
 			columnRefClientId={columnRefClientId}
+			innerBlocksPositions={innerBlocksPositions}
 			onChange={maxiSetAttributes}
 		/>
 	),

@@ -1,11 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 
 /**
- * WordPress dependencies.
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -96,20 +91,6 @@ class edit extends MaxiBlockComponent {
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-row--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.row_preview}
-						alt={__('Row block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector

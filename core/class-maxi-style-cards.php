@@ -1,6 +1,6 @@
 <?php
 require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
-include MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 
 class MaxiBlocks_StyleCards
@@ -47,6 +47,11 @@ class MaxiBlocks_StyleCards
 
         $styles = $this->get_style_card_styles();
 
+        // MVP: ensure no margin-bottom for button
+        if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+            $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+        }
+
         // SC styles
         if ($styles) {
             wp_register_style('maxi-blocks-sc-styles', false);
@@ -78,7 +83,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if($GLOBALS['default_sc_variables_string']) {
+            if(isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
 
@@ -103,7 +108,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$style || empty($style) || $style === ':root{--maxi-active-sc-color:0,0,0;}') { // ':root{--maxi-active-sc-color:0,0,0;}' is the default value
-            if($GLOBALS['default_sc_variables_string']) {
+            if(isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
         
@@ -118,7 +123,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -137,7 +142,7 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
             
@@ -157,7 +162,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$sc_variables || empty($sc_variables)) {
-            if($GLOBALS['default_sc_styles_string']) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -239,7 +244,7 @@ class MaxiBlocks_StyleCards
          * Button case has an exception for font-family. If it's empty, it will use the
          * font-family of the paragraph text level.
          */
-        if ($text_level === 'button' && empty($font)) {
+        if ($text_level === 'button' && (empty($font) || empty(str_replace('"', '', $font)) || str_contains($font, 'undefined'))) {
             $font = $style_card_values->p['font-family-general'];
         }
 

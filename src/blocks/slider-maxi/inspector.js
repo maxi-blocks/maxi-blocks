@@ -17,6 +17,7 @@ import SliderControl from './components/slider-control';
 import NavigationControl from './components/navigation-control';
 import NavigationIconsControl from './components/navigation-control/navigation-control';
 import { customCss } from './data';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -251,4 +252,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

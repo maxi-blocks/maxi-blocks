@@ -33,10 +33,10 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		[`${inputPrefix}background-palette-color-general`]: 1,
 	};
 
-	const resetBorders = {
-		[`${inputPrefix}border-left-width-general`]: 0,
-		[`${inputPrefix}border-right-width-general`]: 4,
-	};
+	const resetBorders = getDefaultAttributes([
+		`${inputPrefix}border-left-width-general`,
+		`${inputPrefix}border-right-width-general`,
+	]);
 
 	return (
 		<>
@@ -63,18 +63,18 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${inputPrefix}background-palette-color-general`]: 2,
 							...iconRevealResetStyles,
 							...resetBorders,
-							[`${inputPrefix}padding-left-general`]: 30,
-							[`${inputPrefix}padding-right-general`]: 10,
-							'icon-position': 'left',
+							[`${inputPrefix}padding-left-general`]: 10,
+							[`${inputPrefix}padding-right-general`]: 30,
+							'icon-position': 'right',
 						});
 					} else if (skin === 'boxed') {
 						onChange({
 							...iconRevealResetStyles,
 							...classicResetStyles,
 							...resetBorders,
-							[`${inputPrefix}padding-left-general`]: 30,
-							[`${inputPrefix}padding-right-general`]: 10,
-							'icon-position': 'left',
+							[`${inputPrefix}padding-left-general`]: 10,
+							[`${inputPrefix}padding-right-general`]: 30,
+							'icon-position': 'right',
 						});
 					} else if (skin === 'icon-reveal') {
 						onChange({
@@ -85,10 +85,10 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
 							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
 							[`${buttonPrefix}margin-sync-general`]: 'none',
-							[`${inputPrefix}padding-left-general`]: 30,
-							[`${inputPrefix}padding-right-general`]: 10,
+							[`${inputPrefix}padding-left-general`]: 10,
+							[`${inputPrefix}padding-right-general`]: 30,
 							...resetBorders,
-							'icon-position': 'left',
+							'icon-position': 'right',
 						});
 					}
 

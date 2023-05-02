@@ -3,6 +3,7 @@ body.maxi-blocks--active .maxi-search-block {
 	display: flex;
 	align-items: center;
 	height: auto;
+	overflow: hidden;
 
 	&--icon-left {
 		justify-content: flex-start;

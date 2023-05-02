@@ -81,6 +81,30 @@ const Inspector = props => {
 		disableVideo: true,
 	};
 
+	const positionSettings = val => {
+		const inpRightWidth = props['input-border-left-width-general'];
+		const inpLeftWidth = props['input-border-right-width-general'];
+		const inpLeftPadding = props['input-padding-left-general'];
+		const inpRightPadding = props['input-padding-right-general'];
+
+		(val === 'center' || val === 'right') &&
+			maxiSetAttributes({
+				'icon-position': val,
+				'input-border-left-width-general': inpRightWidth || 4,
+				'input-border-right-width-general': inpLeftWidth || 0,
+				'input-padding-left-general': inpLeftPadding || 10,
+				'input-padding-right-general': inpRightPadding || 35,
+			});
+		val === 'left' &&
+			maxiSetAttributes({
+				'icon-position': val,
+				'input-border-left-width-general': inpRightWidth || 0,
+				'input-border-right-width-general': inpLeftWidth || 4,
+				'input-padding-left-general': inpLeftPadding || 35,
+				'input-padding-right-general': inpRightPadding || 10,
+			});
+	};
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -205,65 +229,9 @@ const Inspector = props => {
 																						buttonPosition
 																					}
 																					onChange={val => {
-																						const inpRightWidth =
-																							props[
-																								'input-border-left-width-general'
-																							];
-																						const inpLeftWidth =
-																							props[
-																								'input-border-right-width-general'
-																							];
-																						const inpLeftPadding =
-																							props[
-																								'input-padding-left-general'
-																							];
-																						const inpRightPadding =
-																							props[
-																								'input-padding-right-general'
-																							];
-
-																						(val ===
-																							'center' ||
-																							val ===
-																								'right') &&
-																							maxiSetAttributes(
-																								{
-																									'icon-position':
-																										val,
-																									'input-border-left-width-general':
-																										inpRightWidth ||
-																										4,
-																									'input-border-right-width-general':
-																										inpLeftWidth ||
-																										0,
-																									'input-padding-left-general':
-																										inpLeftPadding ||
-																										10,
-																									'input-padding-right-general':
-																										inpRightPadding ||
-																										35,
-																								}
-																							);
-																						val ===
-																							'left' &&
-																							maxiSetAttributes(
-																								{
-																									'icon-position':
-																										val,
-																									'input-border-left-width-general':
-																										inpRightWidth ||
-																										0,
-																									'input-border-right-width-general':
-																										inpLeftWidth ||
-																										4,
-																									'input-padding-left-general':
-																										inpLeftPadding ||
-																										35,
-																									'input-padding-right-general':
-																										inpRightPadding ||
-																										10,
-																								}
-																							);
+																						positionSettings(
+																							val
+																						);
 																					}}
 																					breakpoint={
 																						deviceType

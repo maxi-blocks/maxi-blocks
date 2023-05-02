@@ -163,8 +163,6 @@ const getSCStyles = (styleCard, isBackend = false) => {
 					const targets = [
 						`${prefix} .maxi-${style}.maxi-block.maxi-text-block`,
 						`${prefix} .maxi-${style} .maxi-block.maxi-text-block`,
-						`${prefix} .maxi-${style}.maxi-image-block figcaption`,
-						`${prefix} .maxi-${style} .maxi-image-block figcaption`,
 						`${prefix} .maxi-${style}.maxi-map-block__popup__content`,
 						`${prefix} .maxi-${style} .maxi-map-block__popup__content`,
 						`${prefix} .maxi-${style} .maxi-pane-block .maxi-pane-block__header`,
@@ -292,6 +290,24 @@ const getSCStyles = (styleCard, isBackend = false) => {
 				});
 			});
 
+			// Image Maxi caption
+			[
+				`${prefix} .maxi-${style}.maxi-image-block figcaption`,
+				`${prefix} .maxi-${style} .maxi-image-block figcaption`,
+			].forEach(target => {
+				const sentences = [...breakpointLevelSentences.p];
+
+				// Remove margin-bottom sentences
+				const marginSentence = sentences?.find(
+					sentence => sentence?.indexOf('margin-bottom') > -1
+				);
+
+				if (marginSentence)
+					sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
+				response += `${target} {${sentences?.join(' ')}}`;
+			});
+
 			// Search Maxi
 			[
 				`${prefix} .maxi-${style}.maxi-search-block .maxi-search-block__input`,
@@ -326,7 +342,19 @@ const getSCStyles = (styleCard, isBackend = false) => {
 			].forEach(target => {
 				const sentences = [...generalButtonSentences.button];
 
-				// In case button 'font-family' doesn't exist, add the 'p' font-family
+				// Set font-family paragpraph variable as backup for the button font-family variables
+				sentences.forEach((sentence, i) => {
+					if (sentence?.includes('font-family')) {
+						const pVar = sentence
+							.replace('font-family: ', '')
+							.replace('button', 'p')
+							.replace(';', '');
+						const newSentence = sentence.replace(')', `, ${pVar})`);
+
+						sentences[i] = newSentence;
+					}
+				});
+
 				if (
 					!sentences?.some(sentence =>
 						sentence?.includes('font-family')
@@ -338,6 +366,14 @@ const getSCStyles = (styleCard, isBackend = false) => {
 
 					sentences?.push(pFontFamilyVar);
 				}
+
+				// Remove margin-bottom sentences
+				const marginSentence = sentences?.find(
+					sentence => sentence?.indexOf('margin-bottom') > -1
+				);
+
+				if (marginSentence)
+					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
 				response += `${target} {${sentences?.join(' ')}}`;
 			});

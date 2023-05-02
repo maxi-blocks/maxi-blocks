@@ -587,7 +587,7 @@ const LibraryToolbar = props => {
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
-					{(isBeta || (isMaxiProActive && userName)) && (
+					{(!isPro || isBeta || (isMaxiProActive && userName)) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
 							onClick={async () => {

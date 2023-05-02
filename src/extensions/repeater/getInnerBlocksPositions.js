@@ -8,8 +8,17 @@ import { select } from '@wordpress/data';
  */
 import { findBlockPosition } from './utils';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const getInnerBlocksPositions = columnsClientIds => {
 	const innerBlocksPositions = new Map();
+
+	if (isEmpty(columnsClientIds)) {
+		return innerBlocksPositions;
+	}
 
 	const goThroughInnerBlocks = (innerBlocks, column) => {
 		innerBlocks?.forEach(block => {

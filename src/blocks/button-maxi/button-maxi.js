@@ -66,13 +66,11 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
-	deprecated: [
-		...blockMigrator({
-			attributes,
-			save,
-			prefix: 'button-',
-			selectors: customCss.selectors,
-			migrators: [buttonIconTransitionMigrator, buttonAriaLabelMigrator],
-		}),
-	],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		prefix: 'button-',
+		selectors: customCss.selectors,
+		migrators: [buttonIconTransitionMigrator, buttonAriaLabelMigrator],
+	}),
 });

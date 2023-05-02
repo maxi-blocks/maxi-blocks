@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { times, compact } from 'lodash';
+import { processCss } from '../styles/store/controls';
 
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
@@ -375,7 +376,7 @@ const getSCStyles = (styleCard, isBackend = false) => {
 		});
 	});
 
-	return response;
+	return processCss(response);
 };
 
 export default getSCStyles;

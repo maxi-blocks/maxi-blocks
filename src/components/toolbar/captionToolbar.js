@@ -120,7 +120,10 @@ const CaptionToolbar = memo(
 							isCaptionToolbar
 						/>
 						<TextOptions
-							{...getGroupAttributes(attributes, 'typography')}
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'textAlignment',
+							])}
 							onChange={obj => processAttributes(obj)}
 							breakpoint={breakpoint}
 							blockStyle={blockStyle}

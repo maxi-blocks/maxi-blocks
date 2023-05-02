@@ -11,7 +11,7 @@
 }
 
 // Ensures a good displaying of native blocks inside MaxiBlocks
-.editor-styles-wrapper .maxi-block .wp-block {
+.editor-styles-wrapper .maxi-block .wp-block:not(.maxi-block) {
 	margin-right: 0;
 	margin-left: 0;
 }

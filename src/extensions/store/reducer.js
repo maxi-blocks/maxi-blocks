@@ -119,13 +119,14 @@ const reducer = (
 					...action.settings,
 				},
 			};
-		case 'SAVE_GENERAL_SETTING':
+		case 'SAVE_GENERAL_SETTING': {
 			const { setting, value } = action;
 			const newSettings = { [setting]: value };
 			return {
 				...state,
 				settings: { ...state.settings, ...newSettings },
 			};
+		}
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,

@@ -32,7 +32,7 @@ const getTemplatePartSlug = clientId => {
 		getBlockParents(clientId).filter(
 			currentClientId =>
 				getBlock(currentClientId)?.name === 'core/template-part'
-		)
+		)[0]
 	);
 
 	if (!templatePartParent) return false;

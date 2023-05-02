@@ -9,7 +9,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, createRoot, render, createRef } from '@wordpress/element';
+import { Component, createRoot, createRef } from '@wordpress/element';
 import {
 	dispatch,
 	resolveSelect,
@@ -417,6 +417,93 @@ class MaxiBlockComponent extends Component {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
+	getRootEl() {
+		const { uniqueID } = this.props.attributes;
+
+		const getStylesWrapper = (element, onCreateWrapper) => {
+			const wrapperId = getStylesWrapperId(uniqueID);
+
+			let wrapper = element.querySelector(`#${wrapperId}`);
+
+			if (!wrapper) {
+				wrapper = document.createElement('div');
+				wrapper.id = wrapperId;
+				wrapper.classList.add('maxi-blocks__styles');
+				element.appendChild(wrapper);
+
+				if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
+			}
+
+			return wrapper;
+		};
+
+		const getPreviewWrapper = element => {
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+
+			const elementBody = Array.from(
+				element.querySelectorAll('body')
+			).pop();
+
+			elementBody.classList.add('maxi-blocks--active');
+
+			const width =
+				elementBody.querySelector('.is-root-container').offsetWidth;
+			elementBody.setAttribute(
+				'maxi-blocks-responsive',
+				getWinBreakpoint(width)
+			);
+
+			return getStylesWrapper(elementHead, () => {
+				if (!element.getElementById('maxi-blocks-sc-vars-inline-css')) {
+					const SC = select(
+						'maxiBlocks/style-cards'
+					).receiveMaxiActiveStyleCard();
+					if (SC) {
+						updateSCOnEditor(SC.value, null, element);
+					}
+				}
+			});
+		};
+
+		let wrapper;
+		let root;
+
+		const isSiteEditor = getIsSiteEditor();
+
+		if (isSiteEditor) {
+			const siteEditorIframe = getSiteEditorIframe();
+
+			if (this.isTemplatePartPreview) {
+				const templateViewIframe = getTemplateViewIframe(uniqueID);
+				if (templateViewIframe) {
+					wrapper = getPreviewWrapper(templateViewIframe);
+				}
+			} else if (siteEditorIframe) {
+				// Iframe on creation generates head, then gutenberg generates their own head
+				// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
+				const iframeHead = Array.from(
+					siteEditorIframe.querySelectorAll('head')
+				).pop();
+
+				wrapper = getStylesWrapper(iframeHead);
+			}
+		} else wrapper = getStylesWrapper(document.head);
+
+		if (
+			this.rootSlot &&
+			wrapper?.parentElement.isSameNode(
+				this.rootSlot._internalRoot.containerInfo.parentElement
+			)
+		)
+			return this.rootSlot;
+
+		if (wrapper) root = createRoot(wrapper);
+
+		return root;
+	}
+
 	// eslint-disable-next-line class-methods-use-this
 	getMaxiAttributes() {
 		return null;
@@ -580,6 +667,8 @@ class MaxiBlockComponent extends Component {
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
 
+		this.rootSlot = this.getRootEl();
+
 		let obj;
 		let breakpoints;
 
@@ -599,84 +688,9 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			const getStylesWrapper = (element, onCreateWrapper) => {
-				const wrapperId = getStylesWrapperId(uniqueID);
-
-				let wrapper = element.querySelector(`#${wrapperId}`);
-
-				if (!wrapper) {
-					wrapper = document.createElement('div');
-					wrapper.id = wrapperId;
-					wrapper.classList.add('maxi-blocks__styles');
-					element.appendChild(wrapper);
-
-					if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
-				}
-
-				return wrapper;
-			};
-
-			const getPreviewWrapper = element => {
-				const elementHead = Array.from(
-					element.querySelectorAll('head')
-				).pop();
-
-				const elementBody = Array.from(
-					element.querySelectorAll('body')
-				).pop();
-
-				elementBody.classList.add('maxi-blocks--active');
-
-				const width =
-					elementBody.querySelector('.is-root-container').offsetWidth;
-				elementBody.setAttribute(
-					'maxi-blocks-responsive',
-					getWinBreakpoint(width)
-				);
-
-				return getStylesWrapper(elementHead, () => {
-					if (
-						!element.getElementById(
-							'maxi-blocks-sc-vars-inline-css'
-						)
-					) {
-						const SC = select(
-							'maxiBlocks/style-cards'
-						).receiveMaxiActiveStyleCard();
-						if (SC) {
-							updateSCOnEditor(SC.value, null, element);
-						}
-					}
-				});
-			};
-
-			let wrapper;
-
 			const isSiteEditor = getIsSiteEditor();
 
-			if (isSiteEditor) {
-				// for full site editor (FSE)
-				const siteEditorIframe = getSiteEditorIframe();
-
-				if (this.isTemplatePartPreview) {
-					const templateViewIframe = getTemplateViewIframe(uniqueID);
-					if (templateViewIframe) {
-						wrapper = getPreviewWrapper(templateViewIframe);
-					}
-				} else if (siteEditorIframe) {
-					// Iframe on creation generates head, then gutenberg generates their own head
-					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
-					const iframeHead = Array.from(
-						siteEditorIframe.querySelectorAll('head')
-					).pop();
-
-					if (isEmpty(iframeHead.childNodes)) return;
-
-					wrapper = getStylesWrapper(iframeHead);
-				}
-			} else wrapper = getStylesWrapper(document.head);
-
-			if (wrapper) {
+			if (this.rootSlot) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
@@ -689,57 +703,29 @@ class MaxiBlockComponent extends Component {
 					/>
 				);
 
-				// check if createRoot is available (since React 18)
-				if (typeof createRoot === 'function') {
-					if (isNil(this.rootSlot))
-						this.rootSlot = createRoot(wrapper);
-					this.rootSlot.render(styleComponent);
-				} else {
-					// for React 17 and below
-					render(styleComponent, wrapper);
-				}
+				this.rootSlot.render(styleComponent);
 			}
 
-			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
-			const iframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
+			// // Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
+			// const iframe = document.querySelector(
+			// 	'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+			// );
 
-			if (iframe) {
-				const iframeDocument = iframe.contentDocument;
+			// if (iframe) {
+			// 	const iframeDocument = iframe.contentDocument;
 
-				if (iframeDocument.head) {
-					const iframeWrapper = getStylesWrapper(iframeDocument.head);
-
-					// check if createRoot is available (since React 18)
-					if (typeof createRoot === 'function') {
-						if (isNil(this.rootSlot))
-							this.rootSlot = createRoot(wrapper);
-
-						this.rootSlot.render(
-							<StyleComponent
-								uniqueID={uniqueID}
-								stylesObj={obj}
-								currentBreakpoint={this.props.deviceType}
-								blockBreakpoints={breakpoints}
-								isSiteEditor={isSiteEditor}
-							/>
-						);
-					} else {
-						// for React 17 and below
-						render(
-							<StyleComponent
-								uniqueID={uniqueID}
-								stylesObj={obj}
-								currentBreakpoint={this.props.deviceType}
-								blockBreakpoints={breakpoints}
-								isIframe
-							/>,
-							iframeWrapper
-						);
-					}
-				}
-			}
+			// 	if (iframeDocument.head) {
+			// 		this.rootSlot.render(
+			// 			<StyleComponent
+			// 				uniqueID={uniqueID}
+			// 				stylesObj={obj}
+			// 				currentBreakpoint={this.props.deviceType}
+			// 				blockBreakpoints={breakpoints}
+			// 				isSiteEditor={isSiteEditor}
+			// 			/>
+			// 		);
+			// 	}
+			// }
 		}
 	}
 

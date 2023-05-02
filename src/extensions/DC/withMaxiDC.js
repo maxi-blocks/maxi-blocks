@@ -47,6 +47,7 @@ const withMaxiDC = createHigherOrderComponent(
 			);
 
 			const {
+				relation,
 				status,
 				content,
 				type,
@@ -76,8 +77,8 @@ const withMaxiDC = createHigherOrderComponent(
 				const validatedAttributes = validationsValues(
 					type,
 					field,
-					contentType,
-					true
+					relation,
+					contentType
 				);
 
 				if (dcOptions?.newValues || validatedAttributes) {

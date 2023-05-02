@@ -23,7 +23,7 @@ const getColumnDefaultValue = (
 
 	const template = getColumnTemplate(
 		getAttributesValue({
-			target: 'row-pattern',
+			target: '_rp',
 			props: rowPattern,
 			breakpoint,
 		}),
@@ -32,11 +32,11 @@ const getColumnDefaultValue = (
 
 	const defaultColumnSizes = template.content[colPosition][1];
 	const cleanColumnSizes = { ...columnSizes };
-	delete cleanColumnSizes[`column-size-${breakpoint}`];
+	delete cleanColumnSizes[`_cs-${breakpoint}`];
 	const values = { ...defaultColumnSizes, ...cleanColumnSizes };
 
 	return getAttributesValue({
-		target: 'column-size',
+		target: '_cs',
 		props: values,
 		breakpoint,
 	});

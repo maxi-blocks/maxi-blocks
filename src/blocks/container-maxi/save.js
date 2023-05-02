@@ -13,14 +13,9 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, shapeDividerTopStatus, shapeDividerBottomStatus } =
+	const [uniqueID, shapeDividerTopStatus, shapeDividerBottomStatus] =
 		getAttributesValue({
-			target: [
-				'_uid',
-				'_ioh',
-				'shape-divider-top-status',
-				'shape-divider-bottom-status',
-			],
+			target: ['_uid', 'sdt.s', 'sdb.s'],
 			props: attributes,
 		});
 

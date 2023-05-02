@@ -33,9 +33,9 @@ const copyPasteMapping = {
 	settings: {
 		'Column settings': {
 			group: {
-				'Fit content': 'column-fit-content',
-				'Column size': 'column-size',
-				'Vertical align': 'justify-content',
+				'Fit content': '_cfc',
+				'Column size': '_cs',
+				'Vertical align': '_jc',
 			},
 			hasBreakpoints: true,
 		},

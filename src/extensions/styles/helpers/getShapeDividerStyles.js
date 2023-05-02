@@ -29,7 +29,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			!isNil(
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-height`,
+						`sd${location[0]}_h`,
 						false,
 						false,
 						breakpoint
@@ -40,7 +40,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			response[breakpoint].height = `${
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-height`,
+						`sd${location[0]}_h`,
 						false,
 						false,
 						breakpoint
@@ -49,7 +49,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			}${
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-height.u`,
+						`sd${location[0]}_h.u`,
 						false,
 						false,
 						breakpoint
@@ -60,7 +60,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			!isNil(
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-opacity`,
+						`sd${location[0]}_o`,
 						false,
 						false,
 						breakpoint
@@ -71,7 +71,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			response[breakpoint].opacity =
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-opacity`,
+						`sd${location[0]}_o`,
 						false,
 						false,
 						breakpoint
@@ -111,7 +111,7 @@ export const getShapeDividerSVGStyles = (obj, location, blockStyle) => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: `shape-divider-${location}-`,
+				prefix: `sd${location[0]}-`,
 				breakpoint,
 			});
 

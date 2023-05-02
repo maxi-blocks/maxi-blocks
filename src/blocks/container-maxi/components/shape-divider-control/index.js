@@ -82,14 +82,7 @@ const ShapeDividerControl = props => {
 		shapeDividerBottomStatus,
 		shapeDividerBottomEffectsStatus,
 	] = getAttributesValue({
-		target: [
-			'shape-divider-top-shape-style',
-			'shape-divider-bottom-shape-style',
-			'shape-divider-top-status',
-			'shape-divider-top-effects-status',
-			'shape-divider-bottom-status',
-			'shape-divider-bottom-effects-status',
-		],
+		target: ['sdt_ss', 'sdb_ss', 'sdt.s', 'sdt_ef.s', 'sdb.s', 'sdb_ef.s'],
 		props,
 	});
 
@@ -249,7 +242,7 @@ const ShapeDividerControl = props => {
 									selected={shapeDividerTopStatus}
 									onChange={val =>
 										onChange({
-											'shape-divider-top-status': val,
+											'sdt.s': val,
 										})
 									}
 								/>
@@ -281,8 +274,7 @@ const ShapeDividerControl = props => {
 													items={shapeItemsTop}
 													onChange={shapeStyle => {
 														onChange({
-															'shape-divider-top-shape-style':
-																shapeStyle,
+															sdt_ss: shapeStyle,
 														});
 														onClose();
 													}}
@@ -300,13 +292,13 @@ const ShapeDividerControl = props => {
 													)}
 													opacity={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-opacity',
+															target: 'sdt_o',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													breakpoint={breakpoint}
-													prefix='shape-divider-top-'
+													prefix='sdt-'
 													onChange={onChange}
 													disableRTC
 												/>
@@ -317,22 +309,22 @@ const ShapeDividerControl = props => {
 													)}
 													color={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-color',
+															target: 'sdt_cc',
 															breakpoint,
 															attributes: props,
 														}
 													)}
-													prefix='shape-divider-top-'
+													prefix='sdt-'
 													paletteColor={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-palette-color',
+															target: 'sdt_pc',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													paletteStatus={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-palette-status',
+															target: 'sdt_ps',
 															breakpoint,
 															attributes: props,
 														}
@@ -353,19 +345,19 @@ const ShapeDividerControl = props => {
 															[getAttributeKey(
 																'_cc',
 																false,
-																'shape-divider-top-',
+																'sdt-',
 																breakpoint
 															)]: color,
 															[getAttributeKey(
 																'_pc',
 																false,
-																'shape-divider-top-',
+																'sdt-',
 																breakpoint
 															)]: paletteColor,
 															[getAttributeKey(
 																'_ps',
 																false,
-																'shape-divider-top-',
+																'sdt-',
 																breakpoint
 															)]: paletteStatus,
 														})
@@ -381,7 +373,7 @@ const ShapeDividerControl = props => {
 													enableUnit
 													unit={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-height-unit',
+															target: 'sdt_h.u',
 															breakpoint,
 															attributes: props,
 														}
@@ -389,35 +381,35 @@ const ShapeDividerControl = props => {
 													allowedUnits={['px']}
 													onChangeUnit={val =>
 														onChange({
-															[`shape-divider-top-height-unit-${breakpoint}`]:
+															[`sdt_h.u-${breakpoint}`]:
 																val,
 														})
 													}
 													value={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-top-height',
+															target: 'sdt_h',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													onChangeValue={val =>
 														onChange({
-															[`shape-divider-top-height-${breakpoint}`]:
+															[`sdt_h-${breakpoint}`]:
 																val,
 														})
 													}
 													onReset={() =>
 														onChange({
-															[`shape-divider-top-height-${breakpoint}`]:
+															[`sdt_h-${breakpoint}`]:
 																getDefaultAttribute(
 																	[
-																		`shape-divider-top-height-${breakpoint}`,
+																		`sdt_h-${breakpoint}`,
 																	]
 																),
-															[`shape-divider-top-height-unit-${breakpoint}`]:
+															[`sdt_h.u-${breakpoint}`]:
 																getDefaultAttribute(
 																	[
-																		`shape-divider-top-height-unit-${breakpoint}`,
+																		`sdt_h.u-${breakpoint}`,
 																	]
 																),
 															isReset: true,
@@ -435,8 +427,7 @@ const ShapeDividerControl = props => {
 													}
 													onChange={val =>
 														onChange({
-															'shape-divider-top-effects-status':
-																val,
+															'sdt_ef.s': val,
 														})
 													}
 												/>
@@ -446,7 +437,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
-						extraIndicators: ['shape-divider-top-status'],
+						extraIndicators: ['sdt.s'],
 					},
 					{
 						label: __('Bottom shape divider', 'maxi-blocks'),
@@ -461,7 +452,7 @@ const ShapeDividerControl = props => {
 									selected={shapeDividerBottomStatus}
 									onChange={val =>
 										onChange({
-											'shape-divider-bottom-status': val,
+											'sdb.s': val,
 										})
 									}
 								/>
@@ -493,8 +484,7 @@ const ShapeDividerControl = props => {
 													items={shapeItemsBottom}
 													onChange={shapeStyle => {
 														onChange({
-															'shape-divider-bottom-shape-style':
-																shapeStyle,
+															sdb_ss: shapeStyle,
 														});
 														onClose();
 													}}
@@ -512,13 +502,13 @@ const ShapeDividerControl = props => {
 													)}
 													opacity={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-opacity',
+															target: 'sdb_o',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													breakpoint={breakpoint}
-													prefix='shape-divider-bottom-'
+													prefix='sdb-'
 													onChange={onChange}
 													disableRTC
 												/>
@@ -529,22 +519,22 @@ const ShapeDividerControl = props => {
 													)}
 													color={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-color',
+															target: 'sdb_cc',
 															breakpoint,
 															attributes: props,
 														}
 													)}
-													prefix='shape-divider-bottom-'
+													prefix='sdb-'
 													paletteColor={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-palette-color',
+															target: 'sdb_pc',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													paletteStatus={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-palette-status',
+															target: 'sdb_ps',
 															breakpoint,
 															attributes: props,
 														}
@@ -565,19 +555,19 @@ const ShapeDividerControl = props => {
 															[getAttributeKey(
 																'_cc',
 																false,
-																'shape-divider-bottom-',
+																'sdb-',
 																breakpoint
 															)]: color,
 															[getAttributeKey(
 																'_pc',
 																false,
-																'shape-divider-bottom-',
+																'sdb-',
 																breakpoint
 															)]: paletteColor,
 															[getAttributeKey(
 																'_ps',
 																false,
-																'shape-divider-bottom-',
+																'sdb-',
 																breakpoint
 															)]: paletteStatus,
 														})
@@ -593,7 +583,7 @@ const ShapeDividerControl = props => {
 													enableUnit
 													unit={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-height-unit',
+															target: 'sdb_h.u',
 															breakpoint,
 															attributes: props,
 														}
@@ -601,35 +591,35 @@ const ShapeDividerControl = props => {
 													allowedUnits={['px']}
 													onChangeUnit={val =>
 														onChange({
-															[`shape-divider-bottom-height-unit-${breakpoint}`]:
+															[`sdb_h.u-${breakpoint}`]:
 																val,
 														})
 													}
 													value={getLastBreakpointAttribute(
 														{
-															target: 'shape-divider-bottom-height',
+															target: 'sdb_h',
 															breakpoint,
 															attributes: props,
 														}
 													)}
 													onChangeValue={val =>
 														onChange({
-															[`shape-divider-bottom-height-${breakpoint}`]:
+															[`sdb_h-${breakpoint}`]:
 																val,
 														})
 													}
 													onReset={() =>
 														onChange({
-															[`shape-divider-bottom-height-${breakpoint}`]:
+															[`sdb_h-${breakpoint}`]:
 																getDefaultAttribute(
 																	[
-																		`shape-divider-bottom-height-${breakpoint}`,
+																		`sdb_h-${breakpoint}`,
 																	]
 																),
-															[`shape-divider-bottom-height-unit-${breakpoint}`]:
+															[`sdb_h.u-${breakpoint}`]:
 																getDefaultAttribute(
 																	[
-																		`shape-divider-bottom-height-unit-${breakpoint}`,
+																		`sdb_h.u-${breakpoint}`,
 																	]
 																),
 															isReset: true,
@@ -647,8 +637,7 @@ const ShapeDividerControl = props => {
 													}
 													onChange={val =>
 														onChange({
-															'shape-divider-bottom-effects-status':
-																val,
+															'sdb_ef.s': val,
 														})
 													}
 												/>
@@ -658,7 +647,7 @@ const ShapeDividerControl = props => {
 								)}
 							</>
 						),
-						extraIndicators: ['shape-divider-bottom-status'],
+						extraIndicators: ['sdb.s'],
 					},
 				]}
 			/>

@@ -50,8 +50,8 @@ class edit extends MaxiBlockComponent {
 			props: attributes,
 		});
 		const {
-			'shape-divider-top-status': shapeDividerTopStatus,
-			'shape-divider-bottom-status': shapeDividerBottomStatus,
+			'sdt.s': shapeDividerTopStatus,
+			'sdb.s': shapeDividerBottomStatus,
 		} = attributes;
 
 		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
@@ -91,12 +91,7 @@ class edit extends MaxiBlockComponent {
 			shapeDividerTopStatus,
 			shapeDividerBottomStatus,
 		] = getAttributesValue({
-			target: [
-				'_uid',
-				'_ioh',
-				'shape-divider-top-status',
-				'shape-divider-bottom-status',
-			],
+			target: ['_uid', '_ioh', 'sdt.s', 'sdb.s'],
 			props: attributes,
 		});
 

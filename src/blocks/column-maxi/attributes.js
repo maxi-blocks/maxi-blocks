@@ -45,7 +45,7 @@ const attributes = {
 	...attributesData.scroll,
 	...{
 		...attributesData.flex,
-		'flex-direction-general': {
+		'_fd-general': {
 			type: 'string',
 			default: 'column',
 		},

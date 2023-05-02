@@ -71,11 +71,11 @@ export const borderNone = (prefix = '') => {
 		),
 		[getAttributeKey('bo_w.sy', false, prefix)]: getDefaultAttributeValue(
 			'bo_w.sy',
-			currentDefaultBorder
+			currentDefaultBorderWidth
 		),
 		[getAttributeKey('bo_w.u', false, prefix)]: getDefaultAttributeValue(
 			'bo_w.u',
-			currentDefaultBorder
+			currentDefaultBorderWidth
 		),
 	};
 

@@ -115,7 +115,7 @@ class edit extends MaxiBlockComponent {
 
 		if (columnHeightAttribute)
 			return `${columnHeightAttribute}${getLastBreakpointAttribute({
-				target: '_h-unit',
+				target: '_h.u',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			})}`;
@@ -259,7 +259,7 @@ class edit extends MaxiBlockComponent {
 						showHandle={context.displayHandlers}
 						onResizeStop={(event, direction, elt) => {
 							maxiSetAttributes({
-								[`column-size-${deviceType}`]: round(
+								[`_cs-${deviceType}`]: round(
 									+elt.style.width.replace('%', '')
 								),
 							});

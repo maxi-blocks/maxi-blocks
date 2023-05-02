@@ -16,9 +16,9 @@ const copyPasteMapping = {
 		'Row settings': {
 			group: {
 				'Row pattern': 'rp',
-				'Row gap': ['row-gap', 'row-gap-unit'],
-				'Column gap': ['column-gap', 'column-gap-unit'],
-				'Flex wrap': 'flex-wrap',
+				'Row gap': ['_rg', '_rg.u'],
+				'Column gap': ['_cg', '_cg.u'],
+				'Flex wrap': '_flw',
 			},
 			hasBreakpoints: true,
 		},

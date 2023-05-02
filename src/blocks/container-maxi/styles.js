@@ -34,7 +34,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -43,7 +43,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -81,7 +81,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -98,7 +98,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -107,7 +107,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -127,12 +127,7 @@ const getStyles = props => {
 		shapeDividerTopStatus,
 		shapeDividerBottomStatus,
 	] = getAttributesValue({
-		target: [
-			'_uid',
-			'_bs',
-			'shape-divider-top-status',
-			'shape-divider-bottom-status',
-		],
+		target: ['_uid', '_bs', 'sdt.s', 'sdb.s'],
 		props,
 	});
 

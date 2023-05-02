@@ -34,8 +34,8 @@ const Inspector = props => {
 
 	const getCategoriesCss = () => {
 		const {
-			'shape-divider-top-status': shapeDividerTopStatus,
-			'shape-divider-bottom-status': shapeDividerBottomStatus,
+			'sdt.s': shapeDividerTopStatus,
+			'sdb.s': shapeDividerBottomStatus,
 		} = attributes;
 		return without(
 			categories,

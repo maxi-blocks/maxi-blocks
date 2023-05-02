@@ -32,31 +32,31 @@ const ColumnSizeControl = props => {
 				label={__('Fit content', 'maxi-blocks')}
 				className='maxi-column-inspector__fit-content'
 				selected={getLastBreakpointAttribute({
-					target: 'column-fit-content',
+					target: '_cfc',
 					breakpoint,
 					attributes: props,
 				})}
 				onChange={val => {
 					onChange({
-						[`column-fit-content-${breakpoint}`]: val,
+						[`_cfc-${breakpoint}`]: val,
 					});
 				}}
 			/>
 			{!getLastBreakpointAttribute({
-				target: 'column-fit-content',
+				target: '_cfc',
 				breakpoint,
 				attributes: props,
 			}) && (
 				<AdvancedNumberControl
 					label={__('Column size (%)', 'maxi-blocks')}
 					value={getLastBreakpointAttribute({
-						target: 'column-size',
+						target: '_cs',
 						breakpoint,
 						attributes: props,
 					})}
 					onChangeValue={val => {
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`_cs-${breakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 						});
 					}}
@@ -74,13 +74,13 @@ const ColumnSizeControl = props => {
 						);
 
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`_cs-${breakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 							isReset: true,
 						});
 					}}
 					initialPosition={getDefaultAttribute(
-						`column-size-${breakpoint}`,
+						`_cs-${breakpoint}`,
 						clientId
 					)}
 				/>
@@ -88,12 +88,12 @@ const ColumnSizeControl = props => {
 			<SelectControl
 				label={__('Vertical align', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: 'justify-content',
+					target: '_jc',
 					breakpoint,
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
-					getAttributeKey('justify-content', false, '', breakpoint)
+					getAttributeKey('_jc', false, '', breakpoint)
 				)}
 				options={[
 					{
@@ -119,24 +119,15 @@ const ColumnSizeControl = props => {
 				]}
 				onChange={verticalAlign =>
 					onChange({
-						[`justify-content-${breakpoint}`]: verticalAlign,
+						[`_jc-${breakpoint}`]: verticalAlign,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[getAttributeKey(
-							'justify-content',
-							false,
-							'',
-							breakpoint
-						)]: getDefaultAttribute(
-							getAttributeKey(
-								'justify-content',
-								false,
-								'',
-								breakpoint
-							)
-						),
+						[getAttributeKey('_jc', false, '', breakpoint)]:
+							getDefaultAttribute(
+								getAttributeKey('_jc', false, '', breakpoint)
+							),
 						isReset: true,
 					});
 				}}

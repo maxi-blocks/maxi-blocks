@@ -10,19 +10,19 @@ import { floor } from 'lodash';
 
 const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 	return {
-		'column-size-general': floor(column * 100, 2),
-		'column-size-m': 100,
+		'_cs-general': floor(column * 100, 2),
+		'_cs-m': 100,
 		...(columnPosition.columnsNumber === 1 && {
-			'column-size-general': 100,
+			'_cs-general': 100,
 		}),
 	};
 };
 
 const getColumnAttributes = ({ column, breakpoint, columnPosition }) => {
 	return {
-		[`column-size-${breakpoint}`]: floor(column * 100, 2),
+		[`_cs-${breakpoint}`]: floor(column * 100, 2),
 		...(columnPosition.columnsNumber === 1 && {
-			[`column-size-${breakpoint}`]: 100,
+			[`_cs-${breakpoint}`]: 100,
 		}),
 	};
 };

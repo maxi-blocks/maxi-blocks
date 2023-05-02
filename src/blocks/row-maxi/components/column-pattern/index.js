@@ -15,7 +15,10 @@ import {
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../../../extensions/attributes';
+import {
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -27,7 +30,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getAttributesValue } from 'domutils';
 
 /**
  * Column patterns
@@ -37,10 +39,8 @@ const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(
-		!isNil(getAttributesValue({ target: 'row-pattern-general', props }))
-			? getNumCol(
-					getAttributesValue({ target: 'row-pattern-general', props })
-			  )
+		!isNil(getAttributesValue({ target: '_rp-general', props }))
+			? getNumCol(getAttributesValue({ target: '_rp-general', props }))
 			: 1
 	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -60,17 +60,12 @@ const ColumnPattern = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (getAttributesValue({ target: 'row-pattern-general', props })) {
+		if (getAttributesValue({ target: '_rp-general', props })) {
 			setNumCol(
-				getNumCol(
-					getAttributesValue({ target: 'row-pattern-general', props })
-				)
+				getNumCol(getAttributesValue({ target: '_rp-general', props }))
 			);
 		}
-	}, [
-		breakpoint,
-		getAttributesValue({ target: 'row-pattern-general', props }),
-	]);
+	}, [breakpoint, getAttributesValue({ target: '_rp-general', props })]);
 
 	/**
 	 * Get current columns sizes
@@ -86,7 +81,7 @@ const ColumnPattern = props => {
 		columnsBlockObjects.forEach(columnObject => {
 			columnsSizes.push(
 				getLastBreakpointAttribute({
-					target: 'column-size',
+					target: '_cs',
 					breakpoint,
 					attributes: columnObject.attributes,
 				})
@@ -195,8 +190,7 @@ const ColumnPattern = props => {
 								);
 
 								onChange({
-									[`row-pattern-${breakpoint}`]:
-										template.name,
+									[`_rp-${breakpoint}`]: template.name,
 								});
 							}}
 						>

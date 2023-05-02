@@ -23,7 +23,7 @@ export const getColumnNum = (columnsSize, clientId, breakpoint) => {
 
 	Object.entries(columnsSize).forEach(([key, value]) => {
 		const size = getLastBreakpointAttribute({
-			target: 'column-size',
+			target: '_cs',
 			breakpoint,
 			attributes: value,
 		});
@@ -52,12 +52,12 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 
 	breakpoints.forEach(breakpoint => {
 		const fitContent = getLastBreakpointAttribute({
-			target: 'column-fit-content',
+			target: '_cfc',
 			breakpoint,
 			attributes: obj,
 		});
 		const columnSize = getLastBreakpointAttribute({
-			target: 'column-size',
+			target: '_cs',
 			breakpoint,
 			attributes: obj,
 		});
@@ -70,9 +70,7 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 		} else if (
 			isNumber(columnSize) ||
 			isNumber(
-				rowGapProps?.[
-					getAttributeKey('column-gap', false, false, breakpoint)
-				]
+				rowGapProps?.[getAttributeKey('_cg', false, '', breakpoint)]
 			)
 		) {
 			const columnNum = getColumnNum(
@@ -84,14 +82,14 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 			const gapNum = columnNum - 1;
 			const gap =
 				(getLastBreakpointAttribute({
-					target: 'column-gap',
+					target: '_cg',
 					breakpoint,
 					attributes: rowGapProps,
 				}) *
 					gapNum) /
 				columnNum;
 			const gapUnit = getLastBreakpointAttribute({
-				target: 'column-gap-unit',
+				target: '_cg.u',
 				breakpoint,
 				attributes: rowGapProps,
 			});

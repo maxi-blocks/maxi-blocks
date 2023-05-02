@@ -27,7 +27,7 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -37,7 +37,7 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -80,7 +80,7 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -97,7 +97,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -106,7 +106,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -120,7 +120,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = (props, rowGapProps, clientId) => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -134,7 +134,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					rowBorderRadius: props.rowBorderRadius,
 				}),
 				...getBlockBackgroundStyles({
@@ -149,7 +149,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},

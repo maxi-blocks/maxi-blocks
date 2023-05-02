@@ -27,7 +27,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -37,7 +37,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -77,7 +77,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -94,7 +94,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -103,7 +103,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -117,7 +117,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -131,7 +131,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -145,7 +145,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 			},
 			data,

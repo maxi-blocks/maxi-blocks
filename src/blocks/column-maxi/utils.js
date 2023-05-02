@@ -1,17 +1,12 @@
 const getBorderRadiusCorners = (index, originalNestedColumns) => {
 	if (index === 0 && originalNestedColumns.length === 1) {
-		return [
-			'border-radius-top-left',
-			'border-radius-top-right',
-			'border-radius-bottom-left',
-			'border-radius-bottom-right',
-		];
+		return ['bo.ra.tl', 'bo.ra.tr', 'bo.ra.bl', 'bo.ra.br'];
 	}
 	if (index === 0) {
-		return ['border-radius-top-left', 'border-radius-bottom-left'];
+		return ['bo.ra.tl', 'bo.ra.bl'];
 	}
 	if (index === originalNestedColumns.length - 1) {
-		return ['border-radius-top-right', 'border-radius-bottom-right'];
+		return ['bo.ra.tr', 'bo.ra.br'];
 	}
 	return null;
 };

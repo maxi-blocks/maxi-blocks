@@ -58,7 +58,7 @@ import { getAttributesValue } from '../../extensions/attributes';
 const ShapeDivider = ({ location, ...props }) => {
 	const showShapes = () => {
 		const shapeDividerStyle = getAttributesValue({
-			target: `shape-divider-${location}-style`,
+			target: `sd${location[0]}_ss`,
 			props,
 		});
 

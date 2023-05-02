@@ -8,21 +8,23 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import { ColumnPattern } from '../../../../blocks/row-maxi/components';
-import { getGroupAttributes } from '../../../../extensions/attributes';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
-import { getAttributesValue } from 'domutils';
 
 const ToolbarColumnPattern = props => {
 	const { clientId, blockName, onChange, breakpoint } = props;
 
 	if (
 		blockName !== 'maxi-blocks/row-maxi' ||
-		!getAttributesValue({ target: 'row-pattern-general', props })
+		!getAttributesValue({ target: '_rp-general', props })
 	)
 		return null;
 

@@ -16,17 +16,17 @@ const shapeDividerCopyPasteGenerator = position => {
 	return {
 		[`${capitalize(position)} shape divider`]: {
 			group: {
-				'Divider status': `shape-divider-${position}-status`,
-				'Divider style': `shape-divider-${position}-shape-style`,
-				'Divider opacity': `shape-divider-${position}-opacity`,
+				'Divider status': `sd${position[0]}.s`,
+				'Divider style': `sd${position[0]}_ss`,
+				'Divider opacity': `sd${position[0]}_o`,
 				'Divider color': [
-					`shape-divider-${position}-pac`,
-					`shape-divider-${position}-color`,
-					`shape-divider-${position}-pa-status`,
+					`sd${position[0]}_pc`,
+					`sd${position[0]}_cc`,
+					`sd${position[0]}_ps`,
 				],
-				'Divider height': `shape-divider-${position}-height`,
-				'Divider height unit': `shape-divider-${position}-height.u`,
-				'Divider scroll effect': `shape-divider-${position}-effects-status`,
+				'Divider height': `sd${position[0]}_h`,
+				'Divider height unit': `sd${position[0]}_h.u`,
+				'Divider scroll effect': `sd${position[0]}_ef.s`,
 			},
 		},
 	};

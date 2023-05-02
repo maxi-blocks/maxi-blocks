@@ -24,22 +24,20 @@ const attributes = {
 				{
 					type: 'color',
 					'd-general': 'block',
-					'background-pa-status-general': true,
-					'background-pac-general': 1,
-					'background-palette-opacity': 1,
-					'background-color-general': '',
-					'background-color-clip-path-general': '',
-					'background-color-wrapper-position-sync-general': 'all',
-					'background-color-wrapper-width-general': 100,
-					'background-color-wrapper-width-unit-general': '%',
-					'background-color-wrapper-height-general': 100,
-					'background-color-wrapper-height-unit-general': '%',
-					'background-color-wrapper-position-bottom-unit-general':
-						'px',
-					'background-color-wrapper-position-top-unit-general': 'px',
-					'background-color-wrapper-position-left-unit-general': 'px',
-					'background-color-wrapper-position-right-unit-general':
-						'px',
+					'bc_ps-general': true,
+					'bc_pc-general': 1,
+					'bc_po-general': 1,
+					'bc-general': '',
+					'bc_cp-general': '',
+					'bcw_pos.sy-general': 'all',
+					'bcw_w-general': 100,
+					'bcw_w.u-general': '%',
+					'bcw_h-general': 100,
+					'bcw_h.u-general': '%',
+					'bcw_pos.b.u-general': 'px',
+					'bcw_pos.t.u-general': 'px',
+					'bcw_pos.l.u-general': 'px',
+					'bcw_pos.r.u-general': 'px',
 					order: 1,
 					id: 1,
 				},
@@ -68,11 +66,11 @@ const attributes = {
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
-		'padding-top-general': {
+		'_p.t-general': {
 			type: 'string',
 			default: '20',
 		},
-		'padding-bottom-general': {
+		'_p.b-general': {
 			type: 'string',
 			default: '20',
 		},
@@ -97,15 +95,15 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'row-gap-general': {
+		'_rg-general': {
 			type: 'number',
 			default: 20,
 		},
-		'row-gap-unit-general': {
+		'_rg-unit-general': {
 			type: 'string',
 			default: 'px',
 		},
-		'flex-direction-general': {
+		'_fd-general': {
 			type: 'string',
 			default: 'column',
 		},

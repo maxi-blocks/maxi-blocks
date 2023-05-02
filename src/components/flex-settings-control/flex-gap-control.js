@@ -29,8 +29,8 @@ const FlexGapControl = props => {
 
 	return (
 		<div className={classes}>
-			<GapAxisControl label='Row gap' target='row-gap' {...props} />
-			<GapAxisControl label='Column gap' target='column-gap' {...props} />
+			<GapAxisControl label='Row gap' target='_rg' {...props} />
+			<GapAxisControl label='Column gap' target='_cg' {...props} />
 		</div>
 	);
 };

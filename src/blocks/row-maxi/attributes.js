@@ -51,19 +51,19 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'row-gap-general': {
+		'_rg-general': {
 			type: 'number',
 			default: 20,
 		},
-		'row-gap-unit-general': {
+		'_rg.u-general': {
 			type: 'string',
 			default: 'px',
 		},
-		'column-gap-general': {
+		'_cg-general': {
 			type: 'number',
 			default: 2.5,
 		},
-		'column-gap-unit-general': {
+		'_cg.u-general': {
 			type: 'string',
 			default: '%',
 		},

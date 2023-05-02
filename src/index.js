@@ -18,14 +18,14 @@ import './css';
 // Blocks
 import './blocks/button-maxi/button-maxi';
 // import './blocks/cloud-maxi/cloud-maxi';
-// import './blocks/column-maxi/column-maxi';
-// import './blocks/container-maxi/container-maxi';
+import './blocks/column-maxi/column-maxi';
+import './blocks/container-maxi/container-maxi';
 // import './blocks/divider-maxi/divider-maxi';
 import './blocks/group-maxi/group-maxi';
 // import './blocks/image-maxi/image-maxi';
 // import './blocks/map-maxi/map-maxi';
 // import './blocks/number-counter-maxi/number-counter-maxi';
-// import './blocks/row-maxi/row-maxi';
+import './blocks/row-maxi/row-maxi';
 // import './blocks/svg-icon-maxi/svg-icon-maxi';
 // import './blocks/text-maxi/text-maxi';
 // import './blocks/slider-maxi/slider-maxi';

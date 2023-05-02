@@ -297,6 +297,7 @@ const TypographyControl = props => {
 		allowLink = false,
 		blockStyle,
 		globalProps,
+		forceIndividualChanges = false,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
@@ -335,7 +336,7 @@ const TypographyControl = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 300,
+			max: 999,
 		},
 		em: {
 			min: 0,
@@ -431,6 +432,18 @@ const TypographyControl = props => {
 		value,
 		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {}
 	) => {
+		if (forceIndividualChanges) {
+			const obj = Object.entries(value).reduce((acc, [key, val]) => {
+				acc[`${key}-${breakpoint}`] = val;
+
+				return acc;
+			}, {});
+
+			onChange({ ...obj, isReset });
+
+			return;
+		}
+
 		const obj = setFormat({
 			formatValue,
 			isList,

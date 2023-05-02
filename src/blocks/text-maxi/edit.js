@@ -5,15 +5,13 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { RawHTML, Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
@@ -120,7 +118,11 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 		} = attributes;
 
-		const { status: dcStatus, content: dcContent } = getDCValues(
+		const {
+			status: dcStatus,
+			content: dcContent,
+			containsHTML: dcContainsHTML,
+		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.context?.contextLoop
 		);
@@ -195,20 +197,6 @@ class edit extends MaxiBlockComponent {
 			// on pressing backspace with the content empty 👍
 			// onRemove={onRemove}
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-text--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.text_preview}
-						alt={__('Text block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<textContext.Provider
@@ -291,7 +279,11 @@ class edit extends MaxiBlockComponent {
 					)}
 					{dcStatus && (
 						<DCTagName className={className}>
-							<RawHTML>{dcContent}</RawHTML>
+							{dcContainsHTML ? (
+								<RawHTML>{dcContent}</RawHTML>
+							) : (
+								dcContent
+							)}
 						</DCTagName>
 					)}
 					{!dcStatus && isList && (

@@ -150,7 +150,6 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
-			preview,
 		} = attributes;
 		const {
 			status: dcStatus,
@@ -248,20 +247,6 @@ class edit extends MaxiBlockComponent {
 				})) ||
 			!isEmpty(attributes.SVGElement);
 
-		if (preview)
-			return (
-				<MaxiBlock
-					key={`maxi-image--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img
-						// eslint-disable-next-line no-undef
-						src={previews.image_preview}
-						alt={__('Image block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 		const showImage =
 			!isNil(mediaID) ||
 			mediaURL ||

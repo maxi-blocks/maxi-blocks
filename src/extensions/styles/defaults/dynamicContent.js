@@ -120,6 +120,10 @@ const dynamicContent = {
 	'dc-accumulator': {
 		type: 'number',
 	},
+	'dc-contains-html': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default dynamicContent;

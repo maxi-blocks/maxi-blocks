@@ -55,6 +55,7 @@ const withMaxiDC = createHigherOrderComponent(
 				customDate,
 				linkStatus,
 				postTaxonomyLinksStatus,
+				containsHTML,
 			} = dynamicContentProps;
 
 			const contentType = name
@@ -147,9 +148,17 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 
 					if (!isImageMaxi) {
-						const newContent = sanitizeDCContent(
-							await getDCContent(lastDynamicContentProps)
+						let newContent = await getDCContent(
+							lastDynamicContentProps
 						);
+						const newContainsHTML =
+							postTaxonomyLinksStatus &&
+							type === 'posts' &&
+							['categories', 'tags'].includes(field);
+
+						if (!newContainsHTML) {
+							newContent = sanitizeDCContent(newContent);
+						}
 
 						if (newContent !== content) {
 							isSynchronizedAttributesUpdated = true;
@@ -165,6 +174,9 @@ const withMaxiDC = createHigherOrderComponent(
 									linkSettings: newLinkSettings,
 								}),
 								...synchronizedAttributes,
+								...(newContainsHTML !== containsHTML && {
+									'dc-contains-html': newContainsHTML,
+								}),
 							});
 						}
 					} else {

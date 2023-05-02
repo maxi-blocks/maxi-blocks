@@ -130,6 +130,8 @@ wp.domReady(() => {
 		const blockContainer =
 			editorWrapper?.querySelector('.is-root-container');
 
+		if (!blockContainer) return;
+
 		const editorWidth = editorWrapper?.offsetWidth ?? null;
 
 		const fullWidthElement = document.createElement('div');
@@ -214,7 +216,7 @@ wp.domReady(() => {
 
 			if (getIsTemplatePart()) {
 				const resizableBox = document.querySelector(
-					'.components-resizable-box__container'
+					'.edit-site-visual-editor .components-resizable-box__container'
 				);
 				const isTemplatesListOpened = getIsTemplatesListOpened();
 

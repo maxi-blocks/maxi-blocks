@@ -106,7 +106,7 @@ const getDCContent = async dataRequest => {
 
 		const getItemContent = item =>
 			postTaxonomyLinksStatus
-				? `<a href="${item.link}" class="maxi-text-block--link"><span>${item.name}</span></a>`
+				? `<a class="maxi-text-block--link"><span>${item.name}</span></a>`
 				: item.name;
 
 		const namesArray = await Promise.all(
@@ -121,7 +121,9 @@ const getDCContent = async dataRequest => {
 			})
 		);
 
-		contentValue = namesArray.join(`${delimiterContent} `);
+		contentValue = postTaxonomyLinksStatus
+			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
+			: namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

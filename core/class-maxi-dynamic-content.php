@@ -30,7 +30,7 @@ class MaxiBlocks_DynamicContent
      */
     private static $custom_data = null;
 
-    private static $dynamicContentAttributes = [
+    private static $dynamic_content_attributes = [
         'dc-error' => [
             'type' => 'string',
             'default' => '',
@@ -164,19 +164,19 @@ class MaxiBlocks_DynamicContent
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/button-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/image-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
     }
 
@@ -479,6 +479,13 @@ class MaxiBlocks_DynamicContent
         }
     }
 
+    public function get_post_taxonomy_item_content($item, $link_status)
+    {
+        return ($link_status)
+            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
+            : $item->name;
+    }
+
     public function get_post_or_page_content($attributes)
     {
         @list(
@@ -531,17 +538,11 @@ class MaxiBlocks_DynamicContent
             ];
 
             $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
+
             $taxonomy_content = [];
 
-            function get_item_content($item, $link_status)
-            {
-                return ($link_status)
-                    ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
-                    : $item->name;
-            }
-
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = get_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);

@@ -56,7 +56,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		svgType,
 		breakpoint,
 		isHover = false,
-		isInteractionBuilder = false,
+		isIB = false,
 		disableBackground = false,
 		disableBorder = false,
 		disableIconInherit = false,
@@ -163,30 +163,27 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 	return (
 		<>
-			{!isInteractionBuilder &&
-				!disableIconOnly &&
-				!isHover &&
-				breakpoint === 'general' && (
-					<>
-						<hr />
-						<ToggleSwitch
-							label={__('Icon only (remove text)', 'maxi-blocks')}
-							className='maxi-icon-control__icon-only'
-							selected={iconOnly}
-							onChange={val => {
-								const icon = getIconWithColor({
-									isIconOnly: val,
-									isHover,
-								});
+			{!isIB && !disableIconOnly && !isHover && breakpoint === 'general' && (
+				<>
+					<hr />
+					<ToggleSwitch
+						label={__('Icon only (remove text)', 'maxi-blocks')}
+						className='maxi-icon-control__icon-only'
+						selected={iconOnly}
+						onChange={val => {
+							const icon = getIconWithColor({
+								isIconOnly: val,
+								isHover,
+							});
 
-								onChange({
-									[`${prefix}icon-only`]: val,
-									[`${prefix}icon-content`]: icon,
-								});
-							}}
-						/>
-					</>
-				)}
+							onChange({
+								[`${prefix}icon-only`]: val,
+								[`${prefix}icon-content`]: icon,
+							});
+						}}
+					/>
+				</>
+			)}
 			<SvgWidthControl
 				{...getGroupAttributes(props, 'icon', isHover, prefix)}
 				className='maxi-icon-control__width'
@@ -195,6 +192,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				breakpoint={breakpoint}
 				isHover={isHover}
 				disableHeightFitContent={disableHeightFitContent}
+				isIB={isIB}
 			/>
 			{svgType !== 'Shape' && (
 				<SvgStrokeWidthControl
@@ -248,7 +246,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							}
 						/>
 					)}
-					{!disablePosition && (
+					{!isIB && !disablePosition && (
 						<AxisPositionControl
 							label='Icon'
 							className='maxi-icon-control__position'
@@ -638,7 +636,7 @@ const IconControl = props => {
 		breakpoint,
 		blockStyle,
 		isHover = false,
-		isInteractionBuilder = false,
+		isIB = false,
 		disableModal = false,
 		disableHeightFitContent = false,
 		getIconWithColor,
@@ -658,37 +656,34 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isInteractionBuilder &&
-				!disableModal &&
-				!isHover &&
-				breakpoint === 'general' && (
-					<MaxiModal
-						type={type}
-						style={blockStyle}
-						onSelect={obj => {
-							const newSvgType = obj[`${prefix}svgType`];
+			{!isIB && !disableModal && !isHover && breakpoint === 'general' && (
+				<MaxiModal
+					type={type}
+					style={blockStyle}
+					onSelect={obj => {
+						const newSvgType = obj[`${prefix}svgType`];
 
-							let icon = getIconWithColor({
-								rawIcon: obj[`${prefix}icon-content`],
-								type: [
-									newSvgType !== 'Shape' && 'stroke',
-									newSvgType !== 'Line' && 'fill',
-								].filter(Boolean),
-							});
+						let icon = getIconWithColor({
+							rawIcon: obj[`${prefix}icon-content`],
+							type: [
+								newSvgType !== 'Shape' && 'stroke',
+								newSvgType !== 'Line' && 'fill',
+							].filter(Boolean),
+						});
 
-							if (!disableHeightFitContent && heightFitContent)
-								icon = togglePreserveAspectRatio(icon, true);
+						if (!disableHeightFitContent && heightFitContent)
+							icon = togglePreserveAspectRatio(icon, true);
 
-							onChange({
-								...obj,
-								[`${prefix}icon-content`]: icon,
-							});
-						}}
-						onRemove={obj => onChange(obj)}
-						icon={iconContent}
-						prefix={prefix}
-					/>
-				)}
+						onChange({
+							...obj,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+					onRemove={obj => onChange(obj)}
+					icon={iconContent}
+					prefix={prefix}
+				/>
+			)}
 			{iconContent && <IconControlResponsiveSettings {...props} />}
 		</div>
 	);

@@ -369,9 +369,9 @@ describe('getSCStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('Should return correct frontend styles for SC from default SC', () => {
+	it('Should return correct frontend styles for SC from default SC', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		const cleanSCStyles = getSCStyles(cleanVarSC);
+		const cleanSCStyles = await getSCStyles(cleanVarSC);
 
 		expect(cleanSCStyles).toMatchSnapshot();
 	});

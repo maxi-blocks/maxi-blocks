@@ -164,14 +164,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 foreach ($elements as $element) {
                     $classes = $element->getAttribute('class');
 
-                    if(!str_contains('maxi-block', $classes)) {
-                        $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
-                    }
+                    if(!str_contains('maxi-block--use-sc', $classes) || !isset($classes) || empty($classes)) {
+                        if(!str_contains('maxi-block', $classes)) {
+                            $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
+                        }
 
-                    if(!isset($classes) || empty($classes)) {
-                        $element->setAttribute('class', 'maxi-block--use-sc');
+                        if(!isset($classes) || empty($classes)) {
+                            $element->setAttribute('class', 'maxi-block--use-sc');
+                        }
                     }
-
                 }
                 
                 $block_content = $dom->saveHTML();

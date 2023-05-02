@@ -17,10 +17,11 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import {
-	typeOptions,
+	orderByOptions,
+	orderByRelationTypes,
 	relationOptions,
 	relationTypes,
-	orderByOptions,
+	typeOptions,
 } from '../../extensions/DC/constants';
 import {
 	getCLAttributes,
@@ -227,7 +228,7 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{['posts', 'pages', 'media'].includes(type) &&
+							{orderByRelationTypes.includes(type) &&
 								['by-date', 'alphabetical'].includes(
 									relation
 								) && (

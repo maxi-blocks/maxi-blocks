@@ -6,7 +6,7 @@ import { resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { relationTypes } from './constants';
+import { orderByRelationTypes, relationTypes } from './constants';
 import getDCErrors from './getDCErrors';
 
 const kindDictionary = {
@@ -58,7 +58,7 @@ const getDCEntity = async dataRequest => {
 		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
 	if (
-		relationTypes.includes(type) &&
+		orderByRelationTypes.includes(type) &&
 		['by-date', 'alphabetical'].includes(relation)
 	) {
 		const entities = await resolveSelect('core').getEntityRecords(

@@ -375,6 +375,8 @@ export const limitOptions = {
 	max: 9999,
 };
 
+export const orderByRelationTypes = ['posts', 'pages', 'media'];
+
 export const orderByOptions = {
 	'by-date': [
 		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },

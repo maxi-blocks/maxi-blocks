@@ -38,8 +38,16 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 	}
 	.maxi-toolbar-layout__button {
 		position: absolute;
-		left: 15%;
+		left: 280px;
 		top: 7px;
 		margin-left: 0;
+	}
+}
+
+@media only screen and (max-width: 781px){
+	.edit-site {
+		.maxi-toolbar-layout__button {
+			left: 125px;
+		}
 	}
 }

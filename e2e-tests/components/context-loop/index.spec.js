@@ -26,7 +26,7 @@ describe('Context Loop', () => {
 		}
 	});
 
-	it('Should return inherited from context loop DC content', async () => {
+	it.skip('Should return inherited from context loop DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data

@@ -33,11 +33,13 @@ const frontendStyleGenerator = styles => {
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([target, value]) => {
 			let breakpointResponse = '';
-			const { breakpoints, content } = value;
+			const { breakpoints, content, templateTagName } = value;
+
+			const tagName = templateTagName || '';
 
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
-					breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
+					breakpointResponse += `body.maxi-blocks--active ${tagName} #${target}${suffix}{`;
 					breakpointResponse += getStyles(props[breakpoint]);
 					breakpointResponse += '}';
 				}

@@ -219,13 +219,12 @@ const reducer = (
 				blocksToRender: [...state.blocksToRender, uniqueID],
 			};
 		}
-		case 'SET_IS_PAGE_LOADED': {
+		case 'SET_IS_PAGE_LOADED':
 			return {
 				...state,
-				isPageLoaded: true,
+				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
 			};
-		}
 		default:
 			return state;
 	}

@@ -36,7 +36,6 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
@@ -52,6 +51,7 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import getTemplatePartTagName from '../fse/getTemplatePartTagName';
 
 /**
  * External dependencies
@@ -70,6 +70,7 @@ const StyleComponent = ({
 	isSiteEditor = false,
 	isBreakpointChange,
 	currentBreakpoint,
+	clientId,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -98,7 +99,12 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const styles = styleResolver(stylesObj, false, getBreakpoints());
+	const styles = styleResolver({
+		styles: stylesObj,
+		remove: false,
+		breakpoints: getBreakpoints(),
+		clientId,
+	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
@@ -121,11 +127,10 @@ class MaxiBlockComponent extends Component {
 
 		this.areFontsLoaded = createRef(false);
 
-		const { attributes } = this.props;
+		const { clientId, attributes } = this.props;
 		const { uniqueID } = attributes;
 
 		this.isReusable = false;
-		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
@@ -133,10 +138,27 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
-		this.uniqueIDChecker(uniqueID);
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
+
+		// Add block to store
+		dispatch('maxiBlocks/blocks').addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot
+		);
+
+		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
+		// 1. Adding again the root and having a React error
+		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
+		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
+
+		this.wrapperId = getStylesWrapperId(
+			newUniqueID,
+			getTemplatePartTagName(clientId)
+		);
 	}
 
 	componentDidMount() {
@@ -203,7 +225,11 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.loadFonts();
-		this.displayStyles();
+
+		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
+		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
+		// unnecessary amount of process and resources
+		this.displayStyles(!!this.rootSlot);
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -392,25 +418,24 @@ class MaxiBlockComponent extends Component {
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
+			const { uniqueID } = this.props.attributes;
+
 			// Styles
 			const obj = this.getStylesObject;
-			styleResolver(obj, true);
+			styleResolver({ styles: obj, remover: true });
 			this.removeStyles();
 
+			// Block
+			dispatch('maxiBlocks/blocks').removeBlock(uniqueID);
+
 			// Custom data
-			dispatch('maxiBlocks/customData').removeCustomData(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
 
 			// IB
-			dispatch('maxiBlocks/relations').removeBlockRelation(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
 
 			// CSSCache
-			dispatch('maxiBlocks/styles').removeCSSCache(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
 		}
 
 		if (this.maxiBlockWillUnmount)
@@ -421,13 +446,11 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = this.props.attributes;
 
 		const getStylesWrapper = (element, onCreateWrapper) => {
-			const wrapperId = getStylesWrapperId(uniqueID);
-
-			let wrapper = element.querySelector(`#${wrapperId}`);
+			let wrapper = element.querySelector(`#${this.wrapperId}`);
 
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = wrapperId;
+				wrapper.id = this.wrapperId;
 				wrapper.classList.add('maxi-blocks__styles');
 				element.appendChild(wrapper);
 
@@ -500,6 +523,8 @@ class MaxiBlockComponent extends Component {
 			return this.rootSlot;
 
 		if (wrapper) root = createRoot(wrapper);
+
+		dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
 
 		return root;
 	}
@@ -615,16 +640,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { clientId, name: blockName } = this.props;
+		const { name: blockName } = this.props;
 
-		if (
-			getIsUniqueIDRepeated(idToCheck) ||
-			!uniqueIDStructureChecker(idToCheck, clientId)
-		) {
+		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 				diff: 1,
-				clientId,
 			});
 
 			propagateNewUniqueID(
@@ -700,36 +721,20 @@ class MaxiBlockComponent extends Component {
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
 						isPreview={this.isTemplatePartPreview}
+						clientId={this.props.clientId}
 					/>
 				);
 
 				this.rootSlot.render(styleComponent);
 			}
-
-			// // Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
-			// const iframe = document.querySelector(
-			// 	'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			// );
-
-			// if (iframe) {
-			// 	const iframeDocument = iframe.contentDocument;
-
-			// 	if (iframeDocument.head) {
-			// 		this.rootSlot.render(
-			// 			<StyleComponent
-			// 				uniqueID={uniqueID}
-			// 				stylesObj={obj}
-			// 				currentBreakpoint={this.props.deviceType}
-			// 				blockBreakpoints={breakpoints}
-			// 				isSiteEditor={isSiteEditor}
-			// 			/>
-			// 		);
-			// 	}
-			// }
 		}
 	}
 
 	removeStyles() {
+		// TODO: check if the code below is still necessary after this root unmount
+		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
+		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
+
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID
 		);
@@ -754,9 +759,7 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		editorElement
-			?.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
-			?.remove();
+		editorElement?.getElementById(this.wrapperId)?.remove();
 
 		if (this.isReusable) {
 			this.widthObserver.disconnect();

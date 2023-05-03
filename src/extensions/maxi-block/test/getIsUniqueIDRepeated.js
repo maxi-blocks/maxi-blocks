@@ -238,6 +238,7 @@ jest.mock('@wordpress/data', () => {
 						},
 					]
 			),
+			getBlock: jest.fn(() => false),
 		})),
 	};
 });

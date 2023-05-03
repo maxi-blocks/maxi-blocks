@@ -45,6 +45,7 @@ Object {
         "boxShadow": false,
       },
     },
+    "templateTagName": false,
   },
 }
 `;

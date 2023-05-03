@@ -29,6 +29,7 @@ const save = props => {
 		'icon-only': iconOnly,
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
+		'dc-field': dcField,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/button-maxi';
@@ -46,6 +47,8 @@ const save = props => {
 		iconContent && `maxi-button-block__button--icon-${iconPosition}`
 	);
 
+	const showDCContent = dcStatus && dcField !== 'static_text';
+
 	return (
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
@@ -56,7 +59,9 @@ const save = props => {
 				{!iconOnly && (
 					<RichText.Content
 						className='maxi-button-block__content'
-						value={dcStatus ? '$text-to-replace' : buttonContent}
+						value={
+							showDCContent ? '$text-to-replace' : buttonContent
+						}
 						tagName='span'
 					/>
 				)}

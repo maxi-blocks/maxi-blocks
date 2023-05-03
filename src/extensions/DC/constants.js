@@ -45,6 +45,13 @@ const generalRelationOptionsPages = [
 	{ label: __('Get alphabetical'), value: 'alphabetical' },
 ];
 
+const generalRelationOptionsUsers = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
+];
+
 const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get random'), value: 'random' },
@@ -60,6 +67,7 @@ const generalRelationOptions = {
 	pages: generalRelationOptionsPages,
 	settings: generalRelationOptionsPosts,
 	media: generalRelationOptionsPosts,
+	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
 };

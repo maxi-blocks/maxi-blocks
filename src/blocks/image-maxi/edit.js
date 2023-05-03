@@ -31,7 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
-import { getDCCustomData, getDCValues, LoopContext } from '../../extensions/DC';
+import { getDCValues, LoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -74,27 +74,6 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getMaxiCustomData() {
-		const {
-			uniqueID,
-			'dc-status': dcStatus,
-			'hover-type': hoverType,
-		} = this.props.attributes;
-		const hoverStatus = hoverType !== 'none';
-		const contextLoop = this.context?.contextLoop;
-
-		return {
-			...(hoverStatus && {
-				hover_effects: {
-					[uniqueID]: {
-						...getGroupAttributes(this.props.attributes, 'hover'),
-					},
-				},
-			}),
-			...getDCCustomData(contextLoop, dcStatus, uniqueID),
-		};
 	}
 
 	maxiBlockDidMount() {

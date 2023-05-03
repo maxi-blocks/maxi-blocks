@@ -20,7 +20,7 @@ import {
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import { getDCCustomData, getDCValues, LoopContext } from '../../extensions/DC';
+import { getDCValues, LoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -82,12 +82,6 @@ class edit extends MaxiBlockComponent {
 				)
 			)
 		);
-	}
-
-	get getMaxiCustomData() {
-		const { uniqueID, 'dc-status': dcStatus } = this.props.attributes;
-		const contextLoop = this.context?.contextLoop;
-		return getDCCustomData(contextLoop, dcStatus, uniqueID);
 	}
 
 	maxiBlockDidUpdate() {

@@ -398,7 +398,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
             }
 
             $query = new WP_Query($args);
@@ -421,7 +421,7 @@ class MaxiBlocks_DynamicContent
                 ];
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
             }
 
             $query = new WP_Query($args);
@@ -791,10 +791,10 @@ class MaxiBlocks_DynamicContent
         return $relation === 'by-date' ? 'desc' : 'asc';
     }
 
-	/**
-	 * Combines `attributes` with `context_loop` and `defaults`
-	 * to get the final values for dynamic content.
-	 */
+    /**
+     * Combines `attributes` with `context_loop` and `defaults`
+     * to get the final values for dynamic content.
+     */
     public function get_dc_values($attributes, $context_loop)
     {
         $defaults = [

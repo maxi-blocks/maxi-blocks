@@ -1,6 +1,5 @@
 export { default as getCLAttributes } from './getCLAttributes';
 export { default as getDCContent } from './getDCContent';
-export { default as getDCCustomData } from './getDCCustomData';
 export { default as getDCEntity } from './getDCEntity';
 export { default as getDCErrors } from './getDCErrors';
 export { default as getDCLink } from './getDCLink';

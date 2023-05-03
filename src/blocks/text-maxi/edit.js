@@ -24,7 +24,7 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
-import { getDCCustomData, getDCValues, LoopContext } from '../../extensions/DC';
+import { getDCValues, LoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -49,12 +49,6 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getMaxiCustomData() {
-		const { uniqueID, 'dc-status': dcStatus } = this.props.attributes;
-		const contextLoop = this.context?.contextLoop;
-		return getDCCustomData(contextLoop, dcStatus, uniqueID);
 	}
 
 	maxiBlockDidUpdate() {

@@ -16,6 +16,7 @@ import { resolveSelect } from '@wordpress/data';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
+import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	orderByOptions,
 	orderByRelationTypes,
@@ -34,7 +35,6 @@ import {
  */
 import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
-import { getDefaultAttribute } from '../../extensions/styles';
 
 const ContextLoop = props => {
 	const { className, onChange, contentType = 'group' } = props;

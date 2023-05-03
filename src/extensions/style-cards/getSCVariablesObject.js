@@ -12,7 +12,7 @@ import getTypographyStyles from '../styles/helpers/getTypographyStyles';
 /**
  * External dependencies
  */
-import { cloneDeep, merge, times } from 'lodash';
+import { cloneDeep, merge, times, isEmpty } from 'lodash';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
@@ -146,14 +146,45 @@ const getSCVariablesObject = (
 								],
 								true
 							)
-						)
-							response[
-								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = `"${
+						) {
+							// In case there's no button font-family, use the paragraph one
+							if (
+								element === 'button' &&
+								isEmpty(
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									].replaceAll('"', '')
+								)
+							) {
+								const pObj = getParsedObj(SC[style].p);
+
+								if (!cleanResponse)
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: pObj,
+									});
+								else {
+									const value =
+										pObj[`${setting}-${breakpoint}`];
+
+									if (getIsValid(value, true))
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = value;
+								}
+							} else {
 								response[
 									`--maxi-${style}-${element}-${setting}-${breakpoint}`
-								]
-							}"`.replaceAll('""', '"'); // Fix for values that already have quotes
+								] = `"${
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									]
+								}"`.replaceAll('""', '"'); // Fix for values that already have quotes
+							}
+						}
 					});
 				});
 

@@ -14,6 +14,9 @@ const versions = [
 	'1.0.0-beta',
 	'1.0.0-beta-2',
 	'wp-directory-beta-1',
+	'1.0.0',
+	'1.0.1',
+	'1.1.0',
 ];
 
 const prefixes = ['button-', 'image-', 'video-'];

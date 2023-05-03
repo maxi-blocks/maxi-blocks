@@ -52,6 +52,7 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import { LoopContext } from '../DC';
 
 /**
  * External dependencies
@@ -791,5 +792,7 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 }
+
+MaxiBlockComponent.contextType = LoopContext;
 
 export default MaxiBlockComponent;

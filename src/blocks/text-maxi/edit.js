@@ -24,15 +24,13 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
-import { getDCValues, LoopContext } from '../../extensions/DC';
+import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
  */
 class edit extends MaxiBlockComponent {
-	static contextType = LoopContext;
-
 	state = {
 		formatValue: {},
 		onChangeFormat: null,

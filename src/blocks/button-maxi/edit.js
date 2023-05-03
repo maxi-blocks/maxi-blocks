@@ -20,7 +20,7 @@ import {
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import { getDCValues, LoopContext } from '../../extensions/DC';
+import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -42,8 +42,6 @@ const IconWrapper = forwardRef((props, ref) => {
 	);
 });
 class edit extends MaxiBlockComponent {
-	static contextType = LoopContext;
-
 	constructor(...args) {
 		super(...args);
 

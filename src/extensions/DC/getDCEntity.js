@@ -39,11 +39,33 @@ const getDCEntity = async dataRequest => {
 	}
 
 	if (type === 'users') {
-		const { getUsers } = resolveSelect('core');
+		const { getUsers, getUser } = resolveSelect('core');
 
-		const user = await getUsers({ p: author });
+		if (relation === 'random') {
+			const randomUser = await getUsers({
+				who: 'authors',
+				per_page: 100,
+				hide_empty: false,
+			});
 
-		return user[0];
+			return randomUser[Math.floor(Math.random() * randomUser.length)];
+		}
+
+		if (['by-date', 'alphabetical'].includes(relation)) {
+			const users = await getUsers({
+				who: 'authors',
+				per_page: accumulator + 1,
+				hide_empty: false,
+				order,
+				orderby: relation === 'by-date' ? 'registered_date' : 'name',
+			});
+
+			return users.at(-1);
+		}
+
+		const user = await getUser(author ?? id);
+
+		return user;
 	}
 	if (relationTypes.includes(type) && relation === 'random') {
 		const randomEntity = await resolveSelect('core').getEntityRecords(

@@ -297,6 +297,7 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
             'dc-id' => $dc_id,
+            'dc-author' => $dc_author,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -459,21 +460,22 @@ class MaxiBlocks_DynamicContent
             return $terms[0];
         } elseif ($dc_type === 'users') {
             $args = [
-                // 'role' => 'author',
-                // 'number' => 1,
+                'capability' => 'edit_posts',
             ];
 
-            if ($dc_relation == 'random') {
-                $args['orderby'] = 'rand';
-            } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
-            } else {
-                $args['include'] = $dc_id;
+            if ($is_sort_relation) {
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+            } elseif ($dc_relation === 'by-id') {
+                $args['include'] = $dc_author ?? $dc_id;
             }
 
             $users = get_users($args);
 
-            return $users[0];
+            if ($dc_relation === 'random') {
+                return $users[array_rand($users)];
+            }
+
+            return end($users);
         } elseif ($dc_type === 'settings') {
             return null;
         }
@@ -828,12 +830,20 @@ class MaxiBlocks_DynamicContent
         return $result;
     }
 
-    public function get_order_by_args($relation, $order, $accumulator)
+    public function get_order_by_args($relation, $order, $accumulator, $dc_type)
     {
+        if ($dc_type === 'users') {
+            $order_by = $relation === 'by-date' ? 'user_registered' : 'display_name';
+            $limit_key = 'number';
+        } else {
+            $order_by = $relation === 'by-date' ? 'date' : 'title';
+            $limit_key = 'posts_per_page';
+        }
+
         return [
-            'orderby' => $relation === 'by-date' ? 'date' : 'title',
+            'orderby' => $order_by,
             'order' => $order,
-            'posts_per_page' => $accumulator + 1,
+            $limit_key => $accumulator + 1,
         ];
     }
 }

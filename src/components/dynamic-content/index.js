@@ -114,9 +114,11 @@ const DynamicContent = props => {
 					}))
 				);
 
-				const { id } = await resolveSelect('core').getCurrentUser();
+				if (!author) {
+					const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'dc-author': id });
+					changeProps({ 'dc-author': id });
+				}
 			}
 		}
 
@@ -225,7 +227,7 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) && type === 'users' && (
+							{type === 'users' && relation === 'by-id' && (
 								<SelectControl
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
@@ -272,7 +274,9 @@ const DynamicContent = props => {
 										}
 									/>
 								)}
-							{['posts', 'pages', 'media'].includes(type) &&
+							{['posts', 'pages', 'media', 'users'].includes(
+								type
+							) &&
 								['by-date', 'alphabetical'].includes(
 									relation
 								) && (

@@ -73,7 +73,7 @@ const updateSCStyles = async (element, SCObject) => {
 		);
 
 		if (SCStylesEl) {
-			const SCStyles = getSCStyles(SCObject, true);
+			const SCStyles = await getSCStyles(SCObject, true);
 
 			SCStylesEl.innerHTML = SCStyles;
 		}

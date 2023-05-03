@@ -19,6 +19,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -317,7 +318,12 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const marginValue = select('maxiBlocks/styles').getBlockMarginValue();
+
+		const isHoverPreview = getIsHoverPreview();
+
+		const marginValue = !isHoverPreview
+			? select('maxiBlocks/styles').getBlockMarginValue()
+			: 0;
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.

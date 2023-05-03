@@ -10,7 +10,13 @@
  * WordPress dependencies
  */
 import { Component, createRoot, render, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
+import {
+	dispatch,
+	resolveSelect,
+	select,
+	useDispatch,
+	useSelect,
+} from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -39,13 +45,13 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator } from '../attributes';
+import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
-import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
+import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 
 /**
  * External dependencies
@@ -63,16 +69,17 @@ const StyleComponent = ({
 	isIframe = false,
 	isSiteEditor = false,
 	isBreakpointChange,
+	currentBreakpoint,
 }) => {
-	const { breakpoints, currentBreakpoint } = useSelect(select => {
-		const { receiveMaxiBreakpoints, receiveMaxiDeviceType } =
-			select('maxiBlocks');
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
 		const breakpoints = receiveMaxiBreakpoints();
-		const currentBreakpoint = receiveMaxiDeviceType();
 
-		return { breakpoints, currentBreakpoint };
+		return { breakpoints };
 	});
+
+	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
 
 	if (isBreakpointChange) {
 		const styleContent =
@@ -95,12 +102,7 @@ const StyleComponent = ({
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
-	dispatch('maxiBlocks/styles').saveCSSCache(
-		uniqueID,
-		styles,
-		isIframe,
-		isSiteEditor
-	);
+	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -126,7 +128,7 @@ class MaxiBlockComponent extends Component {
 		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		this.isPreviewBlock = !!getTemplatePartChooseList();
+		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -134,10 +136,45 @@ class MaxiBlockComponent extends Component {
 		this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
+		this.setRelations();
 	}
 
 	componentDidMount() {
+		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
+		// setting this snippet here that should act the same way as a migrator
+		const blocksIBRelations = select(
+			'maxiBlocks/relations'
+		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
+
+		if (!isEmpty(blocksIBRelations))
+			blocksIBRelations.forEach(({ clientId }) => {
+				const { 'maxi-version-current': maxiVersionCurrent } =
+					select('core/block-editor').getBlockAttributes(clientId);
+
+				const needUpdate = [
+					'0.0.1-SC1',
+					'0.0.1-SC2',
+					'0.0.1-SC3',
+					'0.0.1-SC4',
+					'0.0.1-SC5',
+					'0.0.1-SC6',
+					'1.0.0-RC1',
+					'1.0.0-RC2',
+					'1.0.0',
+					'1.0.1',
+				].includes(maxiVersionCurrent);
+
+				if (needUpdate)
+					updateRelationsRemotely({
+						blockTriggerClientId: clientId,
+						blockTargetClientId: this.props.clientId,
+						blockAttributes: this.props.attributes,
+						breakpoint: this.props.deviceType,
+					});
+			});
+
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+
 		receiveMaxiSettings()
 			.then(settings => {
 				const { attributes } = this.props;
@@ -267,14 +304,58 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		// Check if the modified attribute is related with hover status,
-		// and in that case we update the other blocks IB relation
+		const { uniqueID } = this.props.attributes;
+
+		// Gets the differences between the previous and current attributes
 		const diffAttributes = diff(
 			prevProps.attributes,
 			this.props.attributes
 		);
-		if (Object.keys(diffAttributes).some(key => key.includes('hover')))
-			updateRelationHoverStatus(this.props.name, this.props.attributes);
+
+		if (!isEmpty(diffAttributes)) {
+			// Check if the modified attribute is related with hover status,
+			// and in that case update the other blocks IB relation
+			if (Object.keys(diffAttributes).some(key => key.includes('hover')))
+				updateRelationHoverStatus(
+					this.props.name,
+					this.props.attributes
+				);
+			// If relations is modified, update the relations store
+			if (Object.keys(diffAttributes).some(key => key === 'relations')) {
+				const { relations } = this.props.attributes;
+
+				if (
+					select('maxiBlocks/relations').receiveRelations(uniqueID)
+						.length !== relations.length
+				) {
+					relations.forEach(({ uniqueID: targetUniqueID }) =>
+						dispatch('maxiBlocks/relations').addRelation(
+							{ uniqueID, clientId: this.props.clientId },
+							{
+								uniqueID: targetUniqueID,
+								clientId:
+									getClientIdFromUniqueId(targetUniqueID),
+							}
+						)
+					);
+				}
+			}
+			// If there's a relation affecting this concrete block, check if is necessary
+			// to update it's content to keep the coherence and the good UX
+			const blocksIBRelations = select(
+				'maxiBlocks/relations'
+			).receiveBlockUnderRelationClientIDs(uniqueID);
+
+			if (!isEmpty(blocksIBRelations))
+				blocksIBRelations.forEach(({ clientId }) =>
+					updateRelationsRemotely({
+						blockTriggerClientId: clientId,
+						blockTargetClientId: this.props.clientId,
+						blockAttributes: this.props.attributes,
+						breakpoint: this.props.deviceType,
+					})
+				);
+		}
 
 		if (!shouldDisplayStyles)
 			this.displayStyles(
@@ -287,8 +368,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Return if it's a FSE preview block
-		if (this.isPreviewBlock) return;
+		// Return if it's a preview block
+		if (this.isTemplatePartPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -322,7 +403,9 @@ class MaxiBlockComponent extends Component {
 			);
 
 			// IB
-			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
+			dispatch('maxiBlocks/relations').removeBlockRelation(
+				this.props.attributes.uniqueID
+			);
 
 			// CSSCache
 			dispatch('maxiBlocks/styles').removeCSSCache(
@@ -359,6 +442,28 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes[key] = value;
 		});
+	}
+
+	setRelations() {
+		const { clientId, attributes } = this.props;
+		const { relations, uniqueID } = attributes;
+
+		if (!isEmpty(relations)) {
+			relations.forEach(relation => {
+				const { uniqueID: targetUniqueID } = relation;
+
+				dispatch('maxiBlocks/relations').addRelation(
+					{
+						uniqueID,
+						clientId,
+					},
+					{
+						uniqueID: targetUniqueID,
+						clientId: getClientIdFromUniqueId(targetUniqueID),
+					}
+				);
+			});
+		}
 	}
 
 	get getBreakpoints() {
@@ -511,47 +616,52 @@ class MaxiBlockComponent extends Component {
 				return wrapper;
 			};
 
+			const getPreviewWrapper = element => {
+				const elementHead = Array.from(
+					element.querySelectorAll('head')
+				).pop();
+
+				const elementBody = Array.from(
+					element.querySelectorAll('body')
+				).pop();
+
+				elementBody.classList.add('maxi-blocks--active');
+
+				const width =
+					elementBody.querySelector('.is-root-container').offsetWidth;
+				elementBody.setAttribute(
+					'maxi-blocks-responsive',
+					getWinBreakpoint(width)
+				);
+
+				return getStylesWrapper(elementHead, () => {
+					if (
+						!element.getElementById(
+							'maxi-blocks-sc-vars-inline-css'
+						)
+					) {
+						const SC = select(
+							'maxiBlocks/style-cards'
+						).receiveMaxiActiveStyleCard();
+						if (SC) {
+							updateSCOnEditor(SC.value, null, element);
+						}
+					}
+				});
+			};
+
 			let wrapper;
 
 			const isSiteEditor = getIsSiteEditor();
+
 			if (isSiteEditor) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
 
-				if (this.isPreviewBlock) {
+				if (this.isTemplatePartPreview) {
 					const templateViewIframe = getTemplateViewIframe(uniqueID);
 					if (templateViewIframe) {
-						const iframeHead = Array.from(
-							templateViewIframe.querySelectorAll('head')
-						).pop();
-
-						const iframeBody = Array.from(
-							templateViewIframe.querySelectorAll('body')
-						).pop();
-
-						iframeBody.classList.add('maxi-blocks--active');
-						iframeBody.setAttribute(
-							'maxi-blocks-responsive',
-							getWinBreakpoint(iframeBody.offsetWidth)
-						);
-
-						wrapper = getStylesWrapper(iframeHead, () => {
-							if (
-								!templateViewIframe.getElementById(
-									'maxi-blocks-sc-vars-inline-css'
-								)
-							) {
-								const SC = select(
-									'maxiBlocks/style-cards'
-								).receiveMaxiActiveStyleCard();
-								if (SC) {
-									updateSCOnEditor(
-										SC.value,
-										templateViewIframe
-									);
-								}
-							}
-						});
+						wrapper = getPreviewWrapper(templateViewIframe);
 					}
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
@@ -567,32 +677,26 @@ class MaxiBlockComponent extends Component {
 			} else wrapper = getStylesWrapper(document.head);
 
 			if (wrapper) {
+				const styleComponent = (
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.props.deviceType}
+						blockBreakpoints={breakpoints}
+						isSiteEditor={isSiteEditor}
+						isBreakpointChange={isBreakpointChange}
+						isPreview={this.isTemplatePartPreview}
+					/>
+				);
+
 				// check if createRoot is available (since React 18)
 				if (typeof createRoot === 'function') {
 					if (isNil(this.rootSlot))
 						this.rootSlot = createRoot(wrapper);
-					this.rootSlot.render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-							isBreakpointChange={isBreakpointChange}
-						/>
-					);
+					this.rootSlot.render(styleComponent);
 				} else {
 					// for React 17 and below
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={breakpoints}
-							isSiteEditor={isSiteEditor}
-						/>,
-						wrapper
-					);
+					render(styleComponent, wrapper);
 				}
 			}
 
@@ -651,24 +755,27 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		const getEditorElement = () =>
+		const editorElement =
 			templateViewIframe ||
 			siteEditorIframe ||
 			previewIframe ||
 			iframe ||
 			document;
 
-		if (!this.props.attributes.preview)
-			getEditorElement()
-				.getElementById(
-					getStylesWrapperId(this.props.attributes.uniqueID)
-				)
-				?.remove();
+		if (
+			!editorElement ||
+			typeof editorElement?.getElementById !== 'function'
+		)
+			return;
+
+		editorElement
+			?.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+			?.remove();
 
 		if (this.isReusable) {
 			this.widthObserver.disconnect();
-			getEditorElement()
-				.getElementById(
+			editorElement
+				?.getElementById(
 					`maxi-block-size-checker-${this.props.clientId}`
 				)
 				?.remove();

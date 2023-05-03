@@ -18,7 +18,7 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
 import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/utils/defaultSC.json';
+import standardSC from '../../../core/defaults/defaultSC.json';
 
 /**
  * External dependencies

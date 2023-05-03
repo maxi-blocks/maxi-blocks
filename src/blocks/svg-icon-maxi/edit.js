@@ -3,7 +3,6 @@
  */
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -234,20 +233,6 @@ class edit extends MaxiBlockComponent {
 		const inlineStylesTargets = {
 			background: '.maxi-svg-icon-block__icon',
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-icon--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.icon_preview}
-						alt={__('SVG block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			...[

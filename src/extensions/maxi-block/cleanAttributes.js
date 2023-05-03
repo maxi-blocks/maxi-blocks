@@ -15,14 +15,7 @@ import { getHoverAttributeKey, getNormalAttributeKey } from '../styles/utils';
 /**
  * External dependencies
  */
-import {
-	isBoolean,
-	isEqual,
-	isNil,
-	isPlainObject,
-	pickBy,
-	toNumber,
-} from 'lodash';
+import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -248,8 +241,7 @@ const flatWithGeneral = (
 				if (
 					isAdjustingNumber(prevValueSum, valueSum) ||
 					isChangingDigitsNumber(prevValueSum, valueSum) ||
-					isChangingDigitsNumber(valueSum, prevValueSum) ||
-					isBoolean(value)
+					isChangingDigitsNumber(valueSum, prevValueSum)
 				) {
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
 

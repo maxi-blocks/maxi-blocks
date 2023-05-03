@@ -872,63 +872,6 @@ describe('cleanAttributes', () => {
 		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
 	});
 
-	it('On switching general boolean and on crossing the same values on smaller breakpoints, if general value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
-		let i = 0;
-		select.mockImplementation(
-			jest.fn(() => {
-				return {
-					receiveMaxiDeviceType: jest.fn(() => 'xl'),
-					getSelectedBlockCount: jest.fn(() => 1),
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					getPrevSavedAttrs: jest.fn(() => {
-						i += 1;
-						switch (i) {
-							case 2:
-								return ['test-general', 'test-l'];
-							case 1:
-							default:
-								return [];
-						}
-					}),
-				};
-			})
-		);
-
-		const firstRound = {
-			newAttributes: {
-				'test-general': true,
-			},
-			attributes: {
-				'test-general': undefined,
-				'test-l': true,
-			},
-		};
-		const secondRound = {
-			newAttributes: {
-				'test-general': false,
-			},
-			attributes: {
-				'test-general': true,
-				'test-l': undefined,
-			},
-		};
-
-		const resultFirstRound = cleanAttributes(firstRound);
-		const resultSecondRound = cleanAttributes(secondRound);
-
-		const expectedFirstRound = {
-			'test-general': true,
-			'test-l': undefined,
-		};
-		const expectedSecondRound = {
-			'test-general': false,
-			'test-l': true,
-		};
-
-		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
-		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
-	});
-
 	it('Random test', () => {
 		select.mockImplementation(
 			jest.fn(() => {

@@ -75,7 +75,7 @@ const Inspector = props => {
 														attributes,
 														'size',
 														false,
-														'number-counter-'
+														'nc-'
 													)}
 													onChangeInline={(
 														obj,
@@ -100,15 +100,15 @@ const Inspector = props => {
 									},
 									...inspectorTabs.border({
 										props,
-										prefix: 'number-counter-',
+										prefix: 'nc-',
 									}),
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'number-counter-',
+										prefix: 'nc-',
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'number-counter-',
+										prefix: 'nc-',
 									}),
 								]}
 							/>

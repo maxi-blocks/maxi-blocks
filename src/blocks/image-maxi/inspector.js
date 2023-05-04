@@ -53,7 +53,7 @@ const Inspector = props => {
 	} = attributes;
 	const { selectors, categories } = customCss;
 	const imageFullWidthGeneral = getAttributesValue({
-		target: 'image-full-width-general',
+		target: 'im_fw-general',
 		props: attributes,
 	});
 	const captionGap = getAttributesValue({
@@ -69,12 +69,12 @@ const Inspector = props => {
 
 	const dropShadow =
 		(getLastBreakpointAttribute({
-			target: 'clip-path',
+			target: '_cp',
 			breakpoint: deviceType,
 			attributes,
 		}) &&
 			getLastBreakpointAttribute({
-				target: 'clip-path-status',
+				target: '_cp.s',
 				breakpoint: deviceType,
 				attributes,
 			})) ||

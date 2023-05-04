@@ -46,7 +46,7 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 			const widthUnit = getLastBreakpointAttribute({
-				target: '_w-unit',
+				target: '_w.u',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}${getLastBreakpointAttribute({
-				target: '_h-unit',
+				target: '_h.u',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}`;
@@ -89,7 +89,7 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			});
 			const widthUnit = getLastBreakpointAttribute({
-				target: '_w-unit',
+				target: '_w.u',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
@@ -98,7 +98,7 @@ class edit extends MaxiBlockComponent {
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}${getLastBreakpointAttribute({
-				target: '_h-unit',
+				target: '_h.u',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}`;
@@ -119,7 +119,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { _uid: uniqueID, _lo: lineOrientation } = attributes;
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
@@ -132,26 +132,26 @@ class edit extends MaxiBlockComponent {
 			event.preventDefault();
 
 			const sizeUnit = getLastBreakpointAttribute({
-				target: '_h-unit',
+				target: '_h.u',
 				breakpoint: deviceType,
 				attributes,
 			});
 
 			if (sizeUnit === 'em')
 				maxiSetAttributes({
-					[`height-unit-${deviceType}`]: 'px',
+					[`_h.u-${deviceType}`]: 'px',
 				});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			const sizeUnit = getLastBreakpointAttribute({
-				target: '_h-unit',
+				target: '_h.u',
 				breakpoint: deviceType,
 				attributes,
 			});
 
 			maxiSetAttributes({
-				[`height-${deviceType}`]: getResizerSize(
+				[`_h-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
 					sizeUnit,
@@ -173,7 +173,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
-				prefix='divider-'
+				prefix='di-'
 				inlineStylesTargets={inlineStylesTargets}
 				{...this.props}
 				copyPasteMapping={copyPasteMapping}
@@ -193,7 +193,7 @@ class edit extends MaxiBlockComponent {
 						breakpoint: deviceType,
 						attributes,
 					})}${getLastBreakpointAttribute({
-						target: '_h-unit',
+						target: '_h.u',
 						breakpoint: deviceType,
 						attributes,
 					})}`,
@@ -207,7 +207,7 @@ class edit extends MaxiBlockComponent {
 				cleanStyles
 			>
 				{getLastBreakpointAttribute({
-					target: 'divider-border-style',
+					target: 'di-bo_s',
 					breakpoint: deviceType,
 					attributes,
 				}) !== 'none' && <hr className='maxi-divider-block__divider' />}

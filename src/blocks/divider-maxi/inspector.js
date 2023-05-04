@@ -71,14 +71,14 @@ const Inspector = props => {
 														className='line-orientation-selector'
 														value={getLastBreakpointAttribute(
 															{
-																target: 'line-orientation',
+																target: '_lo',
 																breakpoint:
 																	deviceType,
 																attributes,
 															}
 														)}
 														defaultValue={getDefaultAttribute(
-															`line-orientation-${deviceType}`
+															`_lo-${deviceType}`
 														)}
 														options={[
 															{
@@ -98,15 +98,15 @@ const Inspector = props => {
 														]}
 														onChange={val =>
 															maxiSetAttributes({
-																[`line-orientation-${deviceType}`]:
+																[`_lo-${deviceType}`]:
 																	val,
 															})
 														}
 														onReset={() => {
 															maxiSetAttributes({
-																[`line-orientation-${deviceType}`]:
+																[`_lo-${deviceType}`]:
 																	getDefaultAttribute(
-																		`line-orientation-${deviceType}`
+																		`_lo-${deviceType}`
 																	),
 																isReset: true,
 															});
@@ -119,14 +119,14 @@ const Inspector = props => {
 														)}
 														value={getLastBreakpointAttribute(
 															{
-																target: 'line-vertical',
+																target: '_lv',
 																breakpoint:
 																	deviceType,
 																attributes,
 															}
 														)}
 														defaultValue={getDefaultAttribute(
-															`line-vertical-${deviceType}`
+															`_lv-${deviceType}`
 														)}
 														options={[
 															{
@@ -153,15 +153,15 @@ const Inspector = props => {
 														]}
 														onChange={val =>
 															maxiSetAttributes({
-																[`line-vertical-${deviceType}`]:
+																[`_lv-${deviceType}`]:
 																	val,
 															})
 														}
 														onReset={() => {
 															maxiSetAttributes({
-																[`line-vertical-${deviceType}`]:
+																[`_lv-${deviceType}`]:
 																	getDefaultAttribute(
-																		`line-vertical-${deviceType}`
+																		`_lv-${deviceType}`
 																	),
 																isReset: true,
 															});
@@ -174,14 +174,14 @@ const Inspector = props => {
 														)}
 														value={getLastBreakpointAttribute(
 															{
-																target: 'line-horizontal',
+																target: '_lh',
 																breakpoint:
 																	deviceType,
 																attributes,
 															}
 														)}
 														defaultValue={getDefaultAttribute(
-															`line-horizontal-${deviceType}`
+															`_lh-${deviceType}`
 														)}
 														options={[
 															{
@@ -208,15 +208,15 @@ const Inspector = props => {
 														]}
 														onChange={val =>
 															maxiSetAttributes({
-																[`line-horizontal-${deviceType}`]:
+																[`_lh-${deviceType}`]:
 																	val,
 															})
 														}
 														onReset={() =>
 															maxiSetAttributes({
-																[`line-horizontal-${deviceType}`]:
+																[`_lh-${deviceType}`]:
 																	getDefaultAttribute(
-																		`line-horizontal-${deviceType}`
+																		`_lh-${deviceType}`
 																	),
 																isReset: true,
 															})
@@ -226,9 +226,9 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 										extraIndicators: [
-											`line-horizontal-${deviceType}`,
-											`line-vertical-${deviceType}`,
-											`line-orientation-${deviceType}`,
+											`_lh-${deviceType}`,
+											`_lv-${deviceType}`,
+											`_lo-${deviceType}`,
 										],
 									},
 									{
@@ -259,14 +259,14 @@ const Inspector = props => {
 											/>
 										),
 										ignoreIndicator: [
-											`line-horizontal-${deviceType}`,
-											`line-vertical-${deviceType}`,
-											`line-orientation-${deviceType}`,
+											`_lh-${deviceType}`,
+											`_lv-${deviceType}`,
+											`_lo-${deviceType}`,
 										],
 									},
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'divider-',
+										prefix: 'di-',
 										disableInset: true,
 									}),
 								]}

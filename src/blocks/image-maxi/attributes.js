@@ -12,7 +12,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const prefix = 'image-';
+const prefix = 'im-';
 const attributes = {
 	...attributesData.global,
 

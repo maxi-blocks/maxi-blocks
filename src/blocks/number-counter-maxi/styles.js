@@ -61,13 +61,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -83,7 +83,7 @@ const getWrapperObject = props => {
 const getHoverWrapperObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -100,7 +100,7 @@ const getHoverWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -109,7 +109,7 @@ const getHoverWrapperObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -124,21 +124,20 @@ const getHoverWrapperObject = props => {
 
 const getBoxObject = props => {
 	const fontSize = getAttributesValue({
-		target: 'number-counter-title-font-size',
+		target: 'nc-ti_fs',
 		props,
 	});
 
 	const endCountValue = Math.ceil(
-		(getAttributesValue({ target: 'number-counter-end', props }) * 360) /
-			100
+		(getAttributesValue({ target: 'nc_e', props }) * 360) / 100
 	);
 
 	const size = getSizeStyles(
 		{
-			...getGroupAttributes(props, 'size', false, 'number-counter-'),
+			...getGroupAttributes(props, 'size', false, 'nc-'),
 			...getGroupAttributes(props, 'numberCounter'),
 		},
-		'number-counter-'
+		'nc-'
 	);
 	Object.entries(size).forEach(([key, val]) => {
 		if (key.includes('_miw') && !val)
@@ -149,37 +148,22 @@ const getBoxObject = props => {
 		size,
 		margin: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(
-					props,
-					'margin',
-					false,
-					'number-counter-'
-				),
+				...getGroupAttributes(props, 'margin', false, 'nc-'),
 			},
-			prefix: 'number-counter-',
+			prefix: 'nc-',
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(
-					props,
-					'padding',
-					false,
-					'number-counter-'
-				),
+				...getGroupAttributes(props, 'padding', false, 'nc-'),
 			},
-			prefix: 'number-counter-',
+			prefix: 'nc-',
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(
-					props,
-					'boxShadow',
-					false,
-					'number-counter-'
-				),
+				...getGroupAttributes(props, 'boxShadow', false, 'nc-'),
 			},
-			blockStyle: props.blockStyle,
-			prefix: 'number-counter-',
+			blockStyle: props._bs,
+			prefix: 'nc-',
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -187,11 +171,11 @@ const getBoxObject = props => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					false,
-					'number-counter-'
+					'nc-'
 				),
 			},
-			blockStyle: props.blockStyle,
-			prefix: 'number-counter-',
+			blockStyle: props._bs,
+			prefix: 'nc-',
 		}),
 	};
 
@@ -202,7 +186,7 @@ const getHoverBoxObject = props => {
 	const response = {
 		border:
 			getAttributesValue({
-				target: 'number-counter-border-status-hover',
+				target: 'nc-bo.sh',
 				props,
 			}) &&
 			getBorderStyles({
@@ -211,30 +195,25 @@ const getHoverBoxObject = props => {
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true,
-						'number-counter-'
+						'nc-'
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
-				prefix: 'number-counter-',
+				blockStyle: props._bs,
+				prefix: 'nc-',
 			}),
 		boxShadow:
 			getAttributesValue({
-				target: 'number-counter-box-shadow-status-hover',
+				target: 'nc-bs.sh',
 				props,
 			}) &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(
-						props,
-						'boxShadow',
-						true,
-						'number-counter-'
-					),
+					...getGroupAttributes(props, 'boxShadow', true, 'nc-'),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
-				prefix: 'number-counter-',
+				blockStyle: props._bs,
+				prefix: 'nc-',
 			}),
 	};
 
@@ -242,7 +221,7 @@ const getHoverBoxObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle } = props;
+	const { _uid: uniqueID, _bs: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -265,7 +244,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -278,7 +257,7 @@ const getStyles = props => {
 						],
 						true
 					),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					isHover: true,
 				}),
 			},

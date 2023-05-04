@@ -33,7 +33,7 @@ const MapPopupTextControl = ({
 	};
 
 	const mapMarkerHeadingLevel = getAttributesValue({
-		target: 'map-marker-heading-level',
+		target: 'm_mhl',
 		props: attributes,
 	});
 
@@ -55,8 +55,7 @@ const MapPopupTextControl = ({
 								value={mapMarkerHeadingLevel}
 								onChange={obj => {
 									onChange({
-										'map-marker-heading-level':
-											obj.textLevel,
+										m_mhl: obj.textLevel,
 									});
 								}}
 							/>
@@ -83,9 +82,9 @@ const MapPopupTextControl = ({
 									attributes,
 									'typography',
 									false,
-									'description-'
+									'd-'
 								)}
-								prefix='description-'
+								prefix='d-'
 								{...typographyProps}
 							/>
 						</>

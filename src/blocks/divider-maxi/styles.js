@@ -23,7 +23,7 @@ import {
 import data from './data';
 
 const getWrapperObject = props => {
-	const { lineAlign, lineVertical, lineHorizontal } = props;
+	const { _la: lineAlign, _lv: lineVertical, _lh: lineHorizontal } = props;
 
 	const response = {
 		border: getBorderStyles({
@@ -34,13 +34,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -75,7 +75,7 @@ const getWrapperObject = props => {
 				lineHorizontal,
 			},
 			null,
-			props.blockStyle
+			props._bs
 		),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -91,7 +91,7 @@ const getWrapperObject = props => {
 const getHoverWrapperObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -108,7 +108,7 @@ const getHoverWrapperObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -117,7 +117,7 @@ const getHoverWrapperObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -131,7 +131,7 @@ const getHoverWrapperObject = props => {
 };
 
 const getDividerObject = props => {
-	const { lineOrientation } = props;
+	const { _lo: lineOrientation } = props;
 
 	const response = {
 		divider: getDividerStyles(
@@ -140,14 +140,14 @@ const getDividerObject = props => {
 				lineOrientation,
 			},
 			'line',
-			props.blockStyle
+			props._bs
 		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'divider-'),
+				...getGroupAttributes(props, 'boxShadow', false, 'di-'),
 			},
-			blockStyle: props.blockStyle,
-			prefix: 'divider-',
+			blockStyle: props._bs,
+			prefix: 'di-',
 		}),
 	};
 
@@ -158,16 +158,16 @@ const getHoverObject = props => {
 	const response = {
 		boxShadow:
 			getAttributesValue({
-				target: 'divider-box-shadow-status-hover',
+				target: 'di-bs.sh',
 				props,
 			}) &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true, 'divider-'),
+					...getGroupAttributes(props, 'boxShadow', true, 'di-'),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
-				prefix: 'divider-',
+				blockStyle: props._bs,
+				prefix: 'di-',
 			}),
 	};
 
@@ -175,7 +175,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -191,7 +191,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -205,7 +205,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 			},
 			data,

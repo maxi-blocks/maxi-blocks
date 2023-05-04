@@ -2,9 +2,7 @@ window.onload = () => {
 	const apiKey = maxiMap[1];
 	const mapItems = maxiMap[0];
 
-	const isGoogleProvider = mapItems.some(
-		item => item['map-provider'] === 'googlemaps'
-	);
+	const isGoogleProvider = mapItems.some(item => item.m_pro === 'googlemaps');
 	const isGoogleScriptsNeeded = isGoogleProvider && apiKey;
 
 	const loadElement = (elementName, properties, callback) => {
@@ -78,16 +76,16 @@ window.onload = () => {
 			mapItems.map(item => {
 				const {
 					uniqueID,
-					'map-dragging': mapDragging,
-					'map-touch-zoom': mapTouchZoom,
-					'map-double-click-zoom': mapDoubleClickZoom,
-					'map-scroll-wheel-zoom': mapScrollWheelZoom,
-					'map-latitude': mapLatitude,
-					'map-longitude': mapLongitude,
-					'map-zoom': mapZoom,
-					'map-markers': mapMarkers,
-					'map-marker-icon': mapMarkerIcon,
-					'map-marker-heading-level': mapMarkerHeadingLevel,
+					m_dr: mapDragging,
+					m_tzo: mapTouchZoom,
+					m_dcz: mapDoubleClickZoom,
+					m_swz: mapScrollWheelZoom,
+					m_lat: mapLatitude,
+					m_lon: mapLongitude,
+					m_z: mapZoom,
+					m_mar: mapMarkers,
+					m_mic: mapMarkerIcon,
+					m_mhl: mapMarkerHeadingLevel,
 				} = item;
 
 				const map = L.map(`maxi-map-block__container-${uniqueID}`, {
@@ -126,7 +124,7 @@ window.onload = () => {
 						${
 							heading &&
 							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
-						}				
+						}
 						${
 							description &&
 							`<p class='maxi-map-block__popup__content__description'>${description}</p>`

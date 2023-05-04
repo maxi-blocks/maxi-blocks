@@ -61,7 +61,7 @@ registerBlockType('maxi-blocks/image-maxi', {
 	deprecated: blockMigrator({
 		attributes,
 		save,
-		prefix: 'image-',
+		prefix: 'im-',
 		selectors: customCss.selectors,
 	}),
 });

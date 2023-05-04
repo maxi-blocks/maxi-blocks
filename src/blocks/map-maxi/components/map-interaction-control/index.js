@@ -12,12 +12,7 @@ import { getAttributesValue } from '../../../../extensions/attributes';
 const MapInteractionControl = ({ onChange, ...attributes }) => {
 	const [mapDragging, mapTouchZoom, mapDoubleClickZoom, mapScrollWheelZoom] =
 		getAttributesValue({
-			target: [
-				'map-dragging',
-				'map-touch-zoom',
-				'map-double-click-zoom',
-				'map-scroll-wheel-zoom',
-			],
+			target: ['m_dr', 'm_tzo', 'm_dcz', 'm_swz'],
 			props: attributes,
 		});
 
@@ -28,7 +23,7 @@ const MapInteractionControl = ({ onChange, ...attributes }) => {
 				selected={mapDragging}
 				onChange={val => {
 					onChange({
-						'map-dragging': val,
+						m_dr: val,
 					});
 				}}
 			/>
@@ -37,7 +32,7 @@ const MapInteractionControl = ({ onChange, ...attributes }) => {
 				selected={mapTouchZoom}
 				onChange={val => {
 					onChange({
-						'map-touch-zoom': val,
+						m_tzo: val,
 					});
 				}}
 			/>
@@ -46,7 +41,7 @@ const MapInteractionControl = ({ onChange, ...attributes }) => {
 				selected={mapDoubleClickZoom}
 				onChange={val => {
 					onChange({
-						'map-double-click-zoom': val,
+						m_dcz: val,
 					});
 				}}
 			/>
@@ -55,7 +50,7 @@ const MapInteractionControl = ({ onChange, ...attributes }) => {
 				selected={mapScrollWheelZoom}
 				onChange={val => {
 					onChange({
-						'map-scroll-wheel-zoom': val,
+						m_swz: val,
 					});
 				}}
 			/>

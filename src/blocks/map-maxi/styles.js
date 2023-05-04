@@ -28,7 +28,7 @@ import data from './data';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const response = {
 		border: getBorderStyles({
@@ -90,7 +90,7 @@ const getHoverNormalObject = props => {
 		boxShadowStatusHover,
 		opacityStatusHover,
 	] = getAttributesValue({
-		target: ['_bs', 'bo.s', 'bs.s', '_o.s'],
+		target: ['_bs', 'bo.sh', 'bs.sh', '_o.sh'],
 		props,
 		isHover: true,
 	});
@@ -130,9 +130,9 @@ const getHoverNormalObject = props => {
 };
 
 const getPopupTypographyStyles = (props, isTitle = false) => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
-	const prefix = isTitle ? '' : 'description-';
+	const prefix = isTitle ? '' : 'd-';
 
 	const response = {
 		[isTitle ? 'typography' : 'typographyDescription']: getTypographyStyles(
@@ -144,7 +144,7 @@ const getPopupTypographyStyles = (props, isTitle = false) => {
 				prefix,
 				textLevel: isTitle
 					? getAttributesValue({
-							target: 'map-marker-heading-level',
+							target: 'm_mhl',
 							props,
 					  })
 					: 'p',
@@ -162,7 +162,7 @@ const getAdjustedPositionPopupStyles = props => {
 		response[breakpoint] = {
 			'margin-left': `${
 				+getLastBreakpointAttribute({
-					target: 'svg-width',
+					target: 's_w',
 					breakpoint,
 					attributes: props,
 				}) * 0.85
@@ -176,7 +176,7 @@ const getAdjustedPositionPopupStyles = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle } = props;
+	const { _uid: uniqueID, _bs: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -194,21 +194,21 @@ const getStyles = props => {
 								props,
 								'boxShadow',
 								false,
-								'popup-'
+								'p-'
 							),
 						},
 						blockStyle,
-						prefix: 'popup-',
+						prefix: 'p-',
 					}),
 					...getBackgroundStyles({
 						...getGroupAttributes(
 							props,
 							['background', 'backgroundColor'],
 							false,
-							'popup-'
+							'p-'
 						),
 						blockStyle,
-						prefix: 'popup-',
+						prefix: 'p-',
 					}),
 				},
 				' .maxi-map-block__popup:before': {
@@ -217,16 +217,16 @@ const getStyles = props => {
 							props,
 							['background', 'backgroundColor'],
 							false,
-							'popup-'
+							'p-'
 						),
 						blockStyle,
-						prefix: 'popup-',
+						prefix: 'p-',
 						backgroundColorProperty: 'border-top-color',
 					}),
 				},
 				' .leaflet-marker-icon': getSVGWidthStyles({
 					obj: getGroupAttributes(props, 'svg'),
-					prefix: 'svg-',
+					prefix: 's-',
 				}),
 				' .leaflet-popup-content-wrapper':
 					getAdjustedPositionPopupStyles(props),

@@ -46,9 +46,11 @@ const SvgColor = props => {
 				blockStyle,
 			});
 		const onChangeObject = {
-			[getAttributeKey('_cc', isHover, `svg-${type}-`)]: color,
-			[getAttributeKey('_pc', isHover, `svg-${type}-`)]: paletteColor,
-			[getAttributeKey('_ps', isHover, `svg-${type}-`)]: paletteStatus,
+			[getAttributeKey('_cc', isHover, `s${type.slice(0, 2)}-`)]: color,
+			[getAttributeKey('_pc', isHover, `s${type.slice(0, 2)}-`)]:
+				paletteColor,
+			[getAttributeKey('_ps', isHover, `s${type.slice(0, 2)}-`)]:
+				paletteStatus,
 			content: (isHover ? setSVGContentHover : setSVGContent)(
 				content,
 				paletteStatus ? colorStr : color,
@@ -69,19 +71,19 @@ const SvgColor = props => {
 			isHover={isHover}
 			className='maxi-color-control__SVG-line-color'
 			color={getAttributesValue({
-				target: 'svg-line-color',
+				target: 'sli_cc',
 				props,
 				isHover,
 			})}
-			prefix='svg-line-'
+			prefix='sli-'
 			avoidBreakpointForDefault
 			paletteColor={getAttributesValue({
-				target: 'svg-line-palette-color',
+				target: 'sli_pc',
 				props,
 				isHover,
 			})}
 			paletteStatus={getAttributesValue({
-				target: 'svg-line-palette-status',
+				target: 'sli_ps',
 				props,
 				isHover,
 			})}
@@ -102,19 +104,19 @@ const SvgColor = props => {
 			isHover={isHover}
 			className='maxi-color-control__SVG-fill-color'
 			color={getAttributesValue({
-				target: 'svg-fill-color',
+				target: 'sfi_cc',
 				props,
 				isHover,
 			})}
-			prefix='svg-fill-'
+			prefix='sfi-'
 			avoidBreakpointForDefault
 			paletteColor={getAttributesValue({
-				target: 'svg-fill-palette-color',
+				target: 'sfi_pc',
 				props,
 				isHover,
 			})}
 			paletteStatus={getAttributesValue({
-				target: 'svg-fill-palette-status',
+				target: 'sfi_ps',
 				props,
 				isHover,
 			})}

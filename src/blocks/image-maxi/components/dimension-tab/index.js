@@ -45,7 +45,7 @@ const DimensionTab = props => {
 		fitParentSize,
 		isFirstOnHierarchy,
 	} = attributes;
-	const { objectSize, objectPositionHorizontal, objectPositionVertical } =
+	const [objectSize, objectPositionHorizontal, objectPositionVertical] =
 		getAttributesValue({
 			target: [
 				'object-size',

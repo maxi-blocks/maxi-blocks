@@ -377,6 +377,7 @@ export const prefixesDictionary = {
 	'hover-content-': 'hc-',
 	'icon-': 'i-',
 	'image-shape-': 'is-',
+	'image-': 'im-',
 	'lightbox-': 'lb-',
 	'list-': 'l-',
 	'map-': 'm-',

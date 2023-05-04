@@ -40,7 +40,7 @@ class edit extends MaxiBlockComponent {
 		return {
 			map: [
 				{
-					uniqueID: attributes.uniqueID,
+					uniqueID: attributes._uid,
 					...getGroupAttributes(attributes, [
 						'map',
 						'mapInteraction',
@@ -56,13 +56,13 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const mapMarkerIcon = getAttributesValue({
-			target: 'map-marker-icon',
+			target: 'm_mic',
 			props: attributes,
 		});
 
 		if (!mapMarkerIcon) {
 			maxiSetAttributes({
-				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
+				m_mic: renderToString(mapMarkerIcons.mapMarker1),
 			});
 		}
 
@@ -83,7 +83,7 @@ class edit extends MaxiBlockComponent {
 			props: attributes,
 		});
 		const mapProvider = getAttributesValue({
-			target: 'map-provider',
+			target: 'm_pro',
 			props: attributes,
 		});
 

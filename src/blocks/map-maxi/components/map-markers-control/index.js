@@ -32,21 +32,21 @@ const MarkerSize = ({ deviceType, onChange, ...props }) => (
 		max={40}
 		step={1}
 		value={getLastBreakpointAttribute({
-			target: 'svg-width',
+			target: 's_w',
 			breakpoint: deviceType,
 			attributes: props,
 		})}
-		defaultValue={getDefaultAttribute(`svg-width-${deviceType}`)}
+		defaultValue={getDefaultAttribute(`s_w-${deviceType}`)}
 		onChangeValue={val => {
 			onChange({
-				[`svg-width-${deviceType}`]: val,
+				[`s_w-${deviceType}`]: val,
 			});
 		}}
 		onReset={() => {
-			const defaultAttr = getDefaultAttribute(`svg-width-${deviceType}`);
+			const defaultAttr = getDefaultAttribute(`s_w-${deviceType}`);
 
 			onChange({
-				[`svg-width-${deviceType}`]: defaultAttr,
+				[`s_w-${deviceType}`]: defaultAttr,
 				isReset: true,
 			});
 		}}
@@ -58,7 +58,7 @@ const MapMarkersControl = props => {
 	const {
 		blockStyle,
 		deviceType,
-		'map-marker': mapMarker,
+		m_ma: mapMarker,
 		onChangeInline,
 		onChange,
 	} = props;
@@ -76,8 +76,8 @@ const MapMarkersControl = props => {
 			activeItem: index === mapMarker,
 			onChange: () =>
 				onChange({
-					'map-marker': index,
-					'map-marker-icon': renderToString(value),
+					m_ma: index,
+					m_mic: renderToString(value),
 				}),
 		};
 	});
@@ -95,13 +95,13 @@ const MapMarkersControl = props => {
 				onChangeInline={onChangeInline}
 				onChangeFill={({ content, ...rest }) => {
 					onChange({
-						'map-marker-icon': content,
+						m_mic: content,
 						...rest,
 					});
 				}}
 				blockStyle={blockStyle}
 				content={getAttributesValue({
-					target: 'map-marker-icon',
+					target: 'm_mic',
 					props,
 				})}
 			/>
@@ -112,13 +112,13 @@ const MapMarkersControl = props => {
 				onChangeInline={onChangeInline}
 				onChangeStroke={({ content, ...rest }) => {
 					onChange({
-						'map-marker-icon': content,
+						m_mic: content,
 						...rest,
 					});
 				}}
 				blockStyle={blockStyle}
 				content={getAttributesValue({
-					target: 'map-marker-icon',
+					target: 'm_mic',
 					props,
 				})}
 			/>
@@ -127,7 +127,7 @@ const MapMarkersControl = props => {
 					// giving only svg-width related attributes to the control
 					{...Object.entries(getGroupAttributes(props, 'svg')).reduce(
 						(acc, [key, value]) => {
-							if (key.includes('svg-width-')) {
+							if (key.includes('s_w')) {
 								acc[key] = value;
 							}
 

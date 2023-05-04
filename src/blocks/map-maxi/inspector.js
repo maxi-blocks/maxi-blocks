@@ -37,7 +37,7 @@ const Inspector = props => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const { blockStyle } = attributes;
+	const { _bs: blockStyle } = attributes;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -67,7 +67,7 @@ const Inspector = props => {
 											<MapControl
 												{...getGroupAttributes(
 													attributes,
-													'mapMarker'
+													'map'
 												)}
 												onChange={obj =>
 													maxiSetAttributes(obj)
@@ -98,7 +98,7 @@ const Inspector = props => {
 												deviceType={deviceType}
 											/>
 										),
-										ignoreIndicator: ['mmi'],
+										ignoreIndicator: ['m_mic'],
 									},
 									{
 										label: __(
@@ -115,7 +115,7 @@ const Inspector = props => {
 													attributes,
 													'typography',
 													false,
-													'description-'
+													'd-'
 												)}
 												blockStyle={blockStyle}
 												clientId={clientId}

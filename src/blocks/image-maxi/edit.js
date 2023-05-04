@@ -75,7 +75,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
+		const { 'hover-type': hoverType, _uid: uniqueID } =
+			this.props.attributes;
 		const hoverStatus = hoverType !== 'none';
 
 		return {
@@ -91,7 +92,13 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
+		const {
+			SVGData,
+			SVGElement,
+			_uid: uniqueID,
+			mediaID,
+			mediaURL,
+		} = attributes;
 
 		// to make upload popover button appear immediately after adding image maxi
 		if (!mediaID) this.forceUpdate();
@@ -137,7 +144,7 @@ class edit extends MaxiBlockComponent {
 			mediaURL,
 			mediaWidth,
 			SVGElement,
-			uniqueID,
+			_uid: uniqueID,
 			captionPosition,
 			fitParentSize,
 			'dc-status': dcStatus,
@@ -205,7 +212,7 @@ class edit extends MaxiBlockComponent {
 
 		const getMaxWidth = () => {
 			const maxWidth = getLastBreakpointAttribute({
-				target: 'image-max-width',
+				target: 'im_mw',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -213,7 +220,7 @@ class edit extends MaxiBlockComponent {
 			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
 
 			const maxWidthUnit = getLastBreakpointAttribute({
-				target: 'image-max-width-unit',
+				target: 'im_mw.u',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -228,19 +235,19 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const fullWidth = getLastBreakpointAttribute({
-			target: 'image-full-width',
+			target: 'im_fw',
 			breakpoint: deviceType,
 			attributes,
 		});
 
 		const dropShadow =
 			(getLastBreakpointAttribute({
-				target: 'clip-path',
+				target: '_cp',
 				breakpoint: deviceType,
 				attributes,
 			}) &&
 				getLastBreakpointAttribute({
-					target: 'clip-path-status',
+					target: '_cp.s',
 					breakpoint: deviceType,
 					attributes,
 				})) ||
@@ -281,7 +288,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
-					prefix='image-'
+					prefix='im-'
 					dropShadow={dropShadow}
 				/>
 				<MaxiPopoverButton
@@ -289,7 +296,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
 					isEmptyContent={!mediaID}
-					prefix='image-'
+					prefix='im-'
 					{...this.props}
 				>
 					<MediaUpload

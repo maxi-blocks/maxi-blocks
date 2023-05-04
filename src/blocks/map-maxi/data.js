@@ -18,42 +18,42 @@ const popupDescriptionClass = `${popupContentClass}__description`;
  */
 const name = 'map-maxi';
 const copyPasteMapping = {
-	_exclude: ['map-markers'],
+	_exclude: ['m_mar'],
 	settings: {
 		'Configure map': {
 			group: {
-				'Map provider': 'map-provider',
-				'Minium zoom': 'map-min-zoom',
-				'Maximum zoom': 'map-max-zoom',
+				'Map provider': 'm_pro',
+				'Minium zoom': 'm_mz',
+				'Maximum zoom': 'm_mzo',
 			},
 		},
 		'Map marker': {
 			group: {
-				Markers: 'map-markers',
-				'Marker icon': ['mmi', 'map-marker'],
+				Markers: 'm_mar',
+				'Marker icon': ['m_mic', 'm_ma'],
 				'Marker fill colour': {
-					props: 'svg-fill',
+					props: 'sfi',
 					isPalette: true,
 				},
 				'Marker line colour': {
-					props: 'svg-line',
+					props: 'sli',
 					isPalette: true,
 				},
 				'Marker size': {
-					props: 'svg-width',
+					props: 's_w',
 					hasBreakpoints: true,
 				},
 			},
 		},
 		'Map popup text': {
 			group: {
-				'Title text level': 'map-marker-heading-level',
+				'Title text level': 'm_mhl',
 				'Title typography': {
 					groupAttributes: 'typography',
 				},
 				'Description typography': {
 					groupAttributes: 'typography',
-					prefix: 'description-',
+					prefix: 'd-',
 				},
 			},
 		},
@@ -61,11 +61,11 @@ const copyPasteMapping = {
 			group: {
 				Background: {
 					groupAttributes: ['background', 'backgroundColor'],
-					prefix: 'popup-',
+					prefix: 'p-',
 				},
 				'Box shadow': {
 					groupAttributes: 'boxShadow',
-					prefix: 'popup-',
+					prefix: 'p-',
 				},
 			},
 		},
@@ -83,10 +83,10 @@ const copyPasteMapping = {
 		},
 		'Map interaction': {
 			group: {
-				'Map dragging': 'map-dragging',
-				'Map touch zoom': 'map-touch-zoom',
-				'Map double click zoom': 'map-double-click-zoom',
-				'Map scroll wheel zoom': 'map-scroll-wheel-zoom',
+				'Map dragging': 'm_dr',
+				'Map touch zoom': 'm_tzo',
+				'Map double click zoom': 'm_dcz',
+				'Map scroll wheel zoom': 'm_swz',
 			},
 		},
 	},

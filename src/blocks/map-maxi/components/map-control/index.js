@@ -21,7 +21,7 @@ import { getMaxiAdminSettingsUrl } from '../../utils';
 const MapControl = props => {
 	const { onChange, hasApiKey = false, ...attributes } = props;
 	const [mapProvider, mapMinZoom, mapMaxZoom] = getAttributesValue({
-		target: ['map-provider', 'map-min-zoom', 'map-max-zoom'],
+		target: ['m_pro', 'm_mz', 'm_mzo'],
 		props: attributes,
 	});
 
@@ -65,10 +65,10 @@ const MapControl = props => {
 				initial={1}
 				step={1}
 				value={mapMinZoom}
-				onChangeValue={val => onChange({ 'map-min-zoom': val })}
+				onChangeValue={val => onChange({ m_mz: val })}
 				onReset={() =>
 					onChange({
-						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
+						m_mz: getDefaultAttribute('m_mz'),
 						isReset: true,
 					})
 				}
@@ -81,10 +81,10 @@ const MapControl = props => {
 				initial={1}
 				step={1}
 				value={mapMaxZoom}
-				onChangeValue={val => onChange({ 'map-max-zoom': val })}
+				onChangeValue={val => onChange({ m_mzo: val })}
 				onReset={() =>
 					onChange({
-						'map-max-zoom': getDefaultAttribute('map-max-zoom'),
+						m_mzo: getDefaultAttribute('m_mzo'),
 						isReset: true,
 					})
 				}

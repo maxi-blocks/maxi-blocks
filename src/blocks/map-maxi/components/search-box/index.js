@@ -63,7 +63,7 @@ const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 		map.flyTo([lat, lon]);
 
 		maxiSetAttributes({
-			'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
+			m_mar: getUpdatedMarkers(mapMarkers, newMarker),
 		});
 
 		clearSearchBox();

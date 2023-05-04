@@ -14,7 +14,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { lineOrientation } = attributes;
+	const { _lo: lineOrientation } = attributes;
 
 	const name = 'maxi-blocks/divider-maxi';
 

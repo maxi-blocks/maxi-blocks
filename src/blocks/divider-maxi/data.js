@@ -24,7 +24,7 @@ import { transitionDefault } from '../../extensions/attributes/transitions';
 const dividerWrapperClass = ' .maxi-divider-block';
 const dividerClass = `${dividerWrapperClass}__divider`;
 
-const prefix = 'divider-';
+const prefix = 'di-';
 
 /**
  * Data object
@@ -34,32 +34,27 @@ const copyPasteMapping = {
 	settings: {
 		Alignment: {
 			group: {
-				'Line orientation': 'line-orientation',
-				'Line vertical position': 'line-vertical',
-				'Line horizontal position': 'line-horizontal',
+				'Line orientation': '_lo',
+				'Line vertical position': '_lv',
+				'Line horizontal position': '_lh',
 			},
 			hasBreakpoints: true,
 		},
 		'Line settings': {
 			group: {
-				'Line style': 'divider-border-style',
+				'Line style': 'di-bo_s',
 				'Line colour': {
-					props: 'divider-border',
+					props: 'di-bo',
 					isPalette: true,
 				},
-				'Line size': ['divider-height', 'divider-width'],
-				'Line weight': [
-					'divider-border-top',
-					'divider-border-top-unit',
-					'divider-border-right',
-					'divider-border-right-unit',
-				],
+				'Line size': ['di_h', 'di_w'],
+				'Line weight': ['di-bo.t', 'di-bo.t.u', 'di-bo.r', 'di-bo.r.u'],
 			},
 			hasBreakpoints: true,
 		},
 		'Box shadow': {
 			template: 'boxShadow',
-			prefix: 'divider-',
+			prefix: 'di-',
 		},
 	},
 	canvas: {
@@ -110,7 +105,7 @@ const transition = {
 		'box shadow': {
 			title: 'Box shadow',
 			target: dividerClass,
-			property: 'box-shadow',
+			property: 'bs',
 			hoverProp: `${prefix}bs.sh`,
 		},
 	},
@@ -120,9 +115,9 @@ const interactionBuilderSettings = {
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
-			hoverProp: 'divider-box-shadow-status-hover',
+			hoverProp: 'di-bs.sh',
 			attrGroupName: 'boxShadow',
-			prefix: 'divider-',
+			prefix: 'di-',
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: dividerClass,
@@ -131,8 +126,7 @@ const interactionBuilderSettings = {
 			label: __('Line settings', 'maxi-blocks'),
 			attrGroupName: ['divider', 'size'],
 			component: props => <DividerControl {...props} />,
-			helper: props =>
-				getDividerStyles(props.obj, 'line', props.blockStyle),
+			helper: props => getDividerStyles(props.obj, 'line', props._bs),
 			target: dividerClass,
 		},
 	],

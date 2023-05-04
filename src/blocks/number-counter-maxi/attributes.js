@@ -9,7 +9,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const prefix = 'number-counter-';
+const prefix = 'nc-';
 const attributes = {
 	...attributesData.global,
 
@@ -36,7 +36,7 @@ const attributes = {
 		prefix,
 		diffValAttr: {
 			[`${prefix}_w-general`]: '250',
-			[`${prefix}_w-unit-general`]: 'px',
+			[`${prefix}_w.u-general`]: 'px',
 		},
 	}),
 	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),

@@ -17,6 +17,7 @@ const checkMediaQuery = numberID => {
 // Number Counter Effects
 const numberCounterEffect = () => {
 	const numberElements = document.querySelectorAll('.maxi-nc-effect');
+
 	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
@@ -31,7 +32,7 @@ const numberCounterEffect = () => {
 
 		if (numberData !== null) {
 			// Number Counter
-			if ('number-counter-status' in numberData) {
+			if ('nc.s' in numberData) {
 				const numberCounterElem = document.querySelector(
 					`#${numberID} .maxi-number-counter__box`
 				);
@@ -45,13 +46,12 @@ const numberCounterEffect = () => {
 				const radius = 90;
 				const circumference = 2 * Math.PI * radius;
 				const {
-					'number-counter-start': numberCounterStart,
-					'number-counter-end': numberCounterEnd,
-					'number-counter-duration': numberCounterDuration,
-					'number-counter-percentage-sign-status': usePercentage,
-					'number-counter-start-animation': startAnimation,
-					'number-counter-start-animation-offset':
-						startAnimationOffset,
+					nc_sta: numberCounterStart,
+					nc_e: numberCounterEnd,
+					nc_du: numberCounterDuration,
+					'nc_psi.s': usePercentage,
+					nc_san: startAnimation,
+					nc_saof: startAnimationOffset,
 				} = numberData;
 				const startCountValue = +numberCounterStart;
 				const endCountValue = +numberCounterEnd;
@@ -152,8 +152,8 @@ const setNewDyAttribute = (elem, numberData, breakpoint) => {
 
 const getTitleFontSize = (numberData, breakpoint) => {
 	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
-	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
-		return numberData[`number-counter-title-font-size-${breakpoint}`];
+	if (numberData[`nc-ti_fs-${breakpoint}`]) {
+		return numberData[`nc-ti_fs-${breakpoint}`];
 	}
 	const winIndex = breakpoints.indexOf(breakpoint);
 	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);

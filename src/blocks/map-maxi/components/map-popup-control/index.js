@@ -11,7 +11,7 @@ import { getGroupAttributes } from '../../../../extensions/attributes';
 
 const MapPopupControl = props => {
 	const { onChange, clientId, deviceType, ...attributes } = props;
-	const prefix = 'popup-';
+	const prefix = 'p-';
 
 	return (
 		<div className='maxi-map-popup-control'>

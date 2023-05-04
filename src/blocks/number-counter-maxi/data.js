@@ -14,7 +14,7 @@ import {
 const blockClass = ' .maxi-number-counter';
 const boxClass = `${blockClass}__box`;
 
-const prefix = 'number-counter-';
+const prefix = 'nc-';
 
 /**
  * Data object
@@ -97,7 +97,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: boxClass,
-			property: ['border', 'border-radius'],
+			property: ['bo', 'bo.ra'],
 			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {

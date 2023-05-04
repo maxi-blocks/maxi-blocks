@@ -65,7 +65,7 @@ const MapEventsListener = props => {
 				const newMarker = getNewMarker([lat, lng], mapMarkers);
 
 				maxiSetAttributes({
-					'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
+					m_mar: getUpdatedMarkers(mapMarkers, newMarker),
 				});
 				setIsAddingMarker(false);
 				setTimeout(() => {
@@ -77,15 +77,15 @@ const MapEventsListener = props => {
 			const { lat, lng } = mapEvents.getCenter();
 
 			maxiSetAttributes({
-				'map-latitude': lat,
-				'map-longitude': lng,
+				m_lat: lat,
+				m_lon: lng,
 			});
 		},
 		zoomend: () => {
 			const newZoom = mapEvents.getZoom();
 
 			maxiSetAttributes({
-				'map-zoom': newZoom,
+				m_z: newZoom,
 			});
 		},
 	});

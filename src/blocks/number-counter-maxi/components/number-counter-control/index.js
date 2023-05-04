@@ -55,7 +55,7 @@ const NumberCounterControl = props => {
 	};
 
 	const autoWidth = getLastBreakpointAttribute({
-		target: 'number-counter-width-auto',
+		target: 'nc_wa',
 		breakpoint,
 		attributes: props,
 	});
@@ -63,7 +63,7 @@ const NumberCounterControl = props => {
 	return (
 		<div className={classes}>
 			{!getAttributesValue({
-				target: 'number-counter-circle-status',
+				target: 'nc_ci.s',
 				props,
 			}) && (
 				<>
@@ -72,8 +72,7 @@ const NumberCounterControl = props => {
 						selected={autoWidth}
 						onChange={val =>
 							onChange({
-								[`number-counter-width-auto-${breakpoint}`]:
-									val,
+								[`nc_wa-${breakpoint}`]: val,
 							})
 						}
 					/>
@@ -83,35 +82,33 @@ const NumberCounterControl = props => {
 							className='maxi-number-counter-control__width'
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: 'number-counter-width-unit',
+								target: 'nc_w.u',
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[`number-counter-width-unit-${breakpoint}`]:
-										val,
+									[`nc_w.u-${breakpoint}`]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: 'number-counter-width',
+								target: 'nc_w',
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeValue={val =>
 								onChange({
-									[`number-counter-width-${breakpoint}`]: val,
+									[`nc_w-${breakpoint}`]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[`number-counter-width-${breakpoint}`]:
+									[`nc_w-${breakpoint}`]: getDefaultAttribute(
+										`nc_w-${breakpoint}`
+									),
+									[`nc_w.u-${breakpoint}`]:
 										getDefaultAttribute(
-											`number-counter-width-${breakpoint}`
-										),
-									[`number-counter-width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`number-counter-width-unit-${breakpoint}`
+											`nc_w.u-${breakpoint}`
 										),
 									isReset: true,
 								})
@@ -125,12 +122,12 @@ const NumberCounterControl = props => {
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={getAttributesValue({
-					target: 'number-counter-preview',
+					target: 'nc_pr',
 					props,
 				})}
 				onChange={val =>
 					onChange({
-						'number-counter-preview': val,
+						nc_pr: val,
 					})
 				}
 			/>
@@ -138,7 +135,7 @@ const NumberCounterControl = props => {
 				label={__('Start animation', 'maxi-blocks')}
 				className='maxi-number-counter-control__start-animation'
 				value={getAttributesValue({
-					target: 'number-counter-start-animation',
+					target: 'nc_san',
 					props,
 				})}
 				options={[
@@ -151,12 +148,10 @@ const NumberCounterControl = props => {
 						value: 'view-scroll',
 					},
 				]}
-				onChange={val =>
-					onChange({ 'number-counter-start-animation': val })
-				}
+				onChange={val => onChange({ nc_san: val })}
 			/>
 			{getAttributesValue({
-				target: 'number-counter-start-animation',
+				target: 'nc_san',
 				props,
 			}) === 'view-scroll' && (
 				<AdvancedNumberControl
@@ -166,31 +161,28 @@ const NumberCounterControl = props => {
 					initial={100}
 					step={1}
 					value={getAttributesValue({
-						target: 'number-counter-start-animation-offset',
+						target: 'nc_saof',
 						props,
 					})}
 					onChangeValue={val =>
 						onChange({
-							'number-counter-start-animation-offset': val,
+							nc_saof: val,
 						})
 					}
 					onReset={() =>
 						onChange({
-							'number-counter-start-animation-offset':
-								getDefaultAttribute(
-									'number-counter-start-animation-offset'
-								),
+							nc_saof: getDefaultAttribute('nc_saof'),
 							isReset: true,
 						})
 					}
 				/>
 			)}
 			{getAttributesValue({
-				target: 'number-counter-start',
+				target: 'nc_sta',
 				props,
 			}) >=
 				getAttributesValue({
-					target: 'number-counter-end',
+					target: 'nc_e',
 					props,
 				}) && (
 				<div className='maxi-number-counter-control__alert-warning'>
@@ -203,21 +195,19 @@ const NumberCounterControl = props => {
 				label={__('Start number', 'maxi-blocks')}
 				min={0}
 				max={getAttributesValue({
-					target: 'number-counter-end',
+					target: 'nc_e',
 					props,
 				})}
 				initial={0}
 				step={1}
 				value={getAttributesValue({
-					target: 'number-counter-start',
+					target: 'nc_sta',
 					props,
 				})}
-				onChangeValue={val => onChange({ 'number-counter-start': val })}
+				onChangeValue={val => onChange({ nc_sta: val })}
 				onReset={() =>
 					onChange({
-						'number-counter-start': getDefaultAttribute(
-							'number-counter-start'
-						),
+						nc_sta: getDefaultAttribute('nc_sta'),
 						isReset: true,
 					})
 				}
@@ -227,7 +217,7 @@ const NumberCounterControl = props => {
 				min={1}
 				max={
 					getAttributesValue({
-						target: 'number-counter-circle-status',
+						target: 'nc_ci.s',
 						props,
 					})
 						? 9999999999
@@ -236,24 +226,23 @@ const NumberCounterControl = props => {
 				initial={100}
 				step={1}
 				value={getAttributesValue({
-					target: 'number-counter-end',
+					target: 'nc_e',
 					props,
 				})}
-				onChangeValue={val => onChange({ 'number-counter-end': val })}
+				onChangeValue={val => onChange({ nc_e: val })}
 				onReset={() =>
 					onChange({
-						'number-counter-end':
-							getDefaultAttribute('number-counter-end'),
+						nc_e: getDefaultAttribute('nc_e'),
 						isReset: true,
 					})
 				}
 			/>
 			{!getAttributesValue({
-				target: 'number-counter-circle-status',
+				target: 'nc_ci.s',
 				props,
 			}) &&
 				getAttributesValue({
-					target: 'number-counter-end',
+					target: 'nc_e',
 					props,
 				}) >= 100 && (
 					<div className='maxi-number-counter-control__alert-warning'>
@@ -272,23 +261,19 @@ const NumberCounterControl = props => {
 				initial={1}
 				step={1}
 				value={getAttributesValue({
-					target: 'number-counter-duration',
+					target: 'nc_du',
 					props,
 				})}
-				onChangeValue={val =>
-					onChange({ 'number-counter-duration': val })
-				}
+				onChangeValue={val => onChange({ nc_du: val })}
 				onReset={() =>
 					onChange({
-						'number-counter-duration': getDefaultAttribute(
-							'number-counter-duration'
-						),
+						nc_du: getDefaultAttribute('nc_du'),
 						isReset: true,
 					})
 				}
 			/>
 			{!getAttributesValue({
-				target: 'number-counter-circle-status',
+				target: 'nc_ci.s',
 				props,
 			}) && (
 				<AdvancedNumberControl
@@ -298,17 +283,13 @@ const NumberCounterControl = props => {
 					initial={8}
 					step={1}
 					value={getAttributesValue({
-						target: 'number-counter-stroke',
+						target: 'nc_str',
 						props,
 					})}
-					onChangeValue={val =>
-						onChange({ 'number-counter-stroke': val })
-					}
+					onChangeValue={val => onChange({ nc_str: val })}
 					onReset={() =>
 						onChange({
-							'number-counter-stroke': getDefaultAttribute(
-								'number-counter-stroke'
-							),
+							nc_str: getDefaultAttribute('nc_str'),
 							isReset: true,
 						})
 					}
@@ -316,40 +297,40 @@ const NumberCounterControl = props => {
 			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				defaultValue={getDefaultAttribute(`font-family-${breakpoint}`)}
+				defaultValue={getDefaultAttribute(`_ff-${breakpoint}`)}
 				font={getLastBreakpointAttribute({
-					target: 'font-family',
+					target: '_ff',
 					breakpoint,
 					attributes: props,
 				})}
 				onChange={font =>
 					onChange({
-						[`font-family-${breakpoint}`]: font.value,
+						[`_ff-${breakpoint}`]: font.value,
 					})
 				}
 				breakpoint={breakpoint}
 			/>
 			<FontWeightControl
 				onChange={val => {
-					onChange({ [`font-weight-${breakpoint}`]: val });
+					onChange({ [`_fwe-${breakpoint}`]: val });
 				}}
 				onReset={() => {
 					onChange({
-						[`font-weight-${breakpoint}`]: getDefaultAttribute(
-							`font-weight-${breakpoint}`
+						[`_fwe-${breakpoint}`]: getDefaultAttribute(
+							`_fwe-${breakpoint}`
 						),
 						isReset: true,
 					});
 				}}
 				fontWeight={
 					getLastBreakpointAttribute({
-						target: 'font-weight',
+						target: '_fwe',
 						breakpoint,
 						attributes: props,
 					}) || '400'
 				}
 				fontName={getLastBreakpointAttribute({
-					target: 'font-family',
+					target: '_ff',
 					breakpoint,
 					attributes: props,
 				})}
@@ -363,21 +344,20 @@ const NumberCounterControl = props => {
 				initial={32}
 				step={1}
 				value={getLastBreakpointAttribute({
-					target: 'number-counter-title-font-size',
+					target: 'nc-ti_fs',
 					breakpoint,
 					attributes: props,
 				})}
 				onChangeValue={val =>
 					onChange({
-						[`number-counter-title-font-size-${breakpoint}`]: val,
+						[`nc-ti_fs-${breakpoint}`]: val,
 					})
 				}
 				onReset={() =>
 					onChange({
-						[`number-counter-title-font-size-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-title-font-size-${breakpoint}`
-							),
+						[`nc-ti_fs-${breakpoint}`]: getDefaultAttribute(
+							`nc-ti_fs-${breakpoint}`
+						),
 						isReset: true,
 					})
 				}
@@ -386,12 +366,12 @@ const NumberCounterControl = props => {
 				className='number-counter-percentage-sign-status'
 				label={__('Show percentage sign', 'maxi-block')}
 				selected={getAttributesValue({
-					target: 'number-counter-percentage-sign-status',
+					target: 'nc_psi.s',
 					props,
 				})}
 				onChange={val =>
 					onChange({
-						'number-counter-percentage-sign-status': val,
+						'nc_psi.s': val,
 					})
 				}
 			/>
@@ -399,43 +379,43 @@ const NumberCounterControl = props => {
 				className='number-counter-circle-status'
 				label={__('Hide circle', 'maxi-block')}
 				selected={getAttributesValue({
-					target: 'number-counter-circle-status',
+					target: 'nc_ci.s',
 					props,
 				})}
 				onChange={val => {
 					onChange({
-						'number-counter-circle-status': val,
+						'nc_ci.s': val,
 						...(!val && {
 							...(getAttributesValue({
-								target: 'number-counter-end',
+								target: 'nc_e',
 								props,
 							}) > 100 && {
-								'number-counter-end': 100,
+								nc_e: 100,
 							}),
 							...(getAttributesValue({
-								target: 'number-counter-start',
+								target: 'nc_sta',
 								props,
 							}) > 100 && {
-								'number-counter-start': 100,
+								nc_sta: 100,
 							}),
 						}),
 					});
 				}}
 			/>
 			{!getAttributesValue({
-				target: 'number-counter-circle-status',
+				target: 'nc_ci.s',
 				props,
 			}) && (
 				<ToggleSwitch
 					className='number-counter-rounded-status'
 					label={__('Rounded bar', 'maxi-block')}
 					selected={getAttributesValue({
-						target: 'number-counter-rounded-status',
+						target: 'nc_rou.s',
 						props,
 					})}
 					onChange={val =>
 						onChange({
-							'number-counter-rounded-status': val,
+							'nc_rou.s': val,
 						})
 					}
 				/>
@@ -444,26 +424,26 @@ const NumberCounterControl = props => {
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
 				paletteStatus={getLastBreakpointAttribute({
-					target: 'number-counter-text-palette-status',
+					target: 'nct_ps',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: 'number-counter-text-palette-color',
+					target: 'nct_pc',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: 'number-counter-text-palette-opacity',
+					target: 'nct_po',
 					breakpoint,
 					attributes: props,
 				})}
 				color={getLastBreakpointAttribute({
-					target: 'number-counter-text-color',
+					target: 'nct_cc',
 					breakpoint,
 					attributes: props,
 				})}
-				prefix='number-counter-text-'
+				prefix='nct-'
 				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
 					onChangeInline(
@@ -479,30 +459,14 @@ const NumberCounterControl = props => {
 				}) =>
 					onChange(
 						{
-							[getAttributeKey(
-								'_ps',
-								false,
-								'number-counter-text-',
-								breakpoint
-							)]: paletteStatus,
-							[getAttributeKey(
-								'_pc',
-								false,
-								'number-counter-text-',
-								breakpoint
-							)]: paletteColor,
-							[getAttributeKey(
-								'_po',
-								false,
-								'number-counter-text-',
-								breakpoint
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'_cc',
-								false,
-								'number-counter-text-',
-								breakpoint
-							)]: color,
+							[getAttributeKey('_ps', false, 'nct-', breakpoint)]:
+								paletteStatus,
+							[getAttributeKey('_pc', false, 'nct-', breakpoint)]:
+								paletteColor,
+							[getAttributeKey('_po', false, 'nct-', breakpoint)]:
+								paletteOpacity,
+							[getAttributeKey('_cc', false, 'nct-', breakpoint)]:
+								color,
 						},
 						'.maxi-number-counter__box__text'
 					)
@@ -510,29 +474,29 @@ const NumberCounterControl = props => {
 			/>
 			<hr />
 			{!getAttributesValue({
-				target: 'number-counter-circle-status',
+				target: 'nc_ci.s',
 				props,
 			}) && (
 				<>
 					<ColorControl
 						label={__('Circle background', 'maxi-blocks')}
 						paletteStatus={getAttributesValue({
-							target: 'number-counter-circle-background-palette-status',
+							target: 'nccb_ps',
 							props,
 						})}
 						paletteColor={getAttributesValue({
-							target: 'number-counter-circle-background-palette-color',
+							target: 'nccb_pc',
 							props,
 						})}
 						paletteOpacity={getAttributesValue({
-							target: 'number-counter-circle-background-palette-opacity',
+							target: 'nccb_po',
 							props,
 						})}
 						color={getAttributesValue({
-							target: 'number-counter-circle-background-color',
+							target: 'nccb_cc',
 							props,
 						})}
-						prefix='number-counter-circle-background-'
+						prefix='nccb-'
 						onChangeInline={({ color }) =>
 							onChangeInline(
 								{ fill: color },
@@ -547,26 +511,14 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									[getAttributeKey(
-										'_ps',
-										false,
-										'number-counter-circle-background-'
-									)]: paletteStatus,
-									[getAttributeKey(
-										'_pc',
-										false,
-										'number-counter-circle-background-'
-									)]: paletteColor,
-									[getAttributeKey(
-										'_po',
-										false,
-										'number-counter-circle-background-'
-									)]: paletteOpacity,
-									[getAttributeKey(
-										'_cc',
-										false,
-										'number-counter-circle-background-'
-									)]: color,
+									[getAttributeKey('_ps', false, 'nccb-')]:
+										paletteStatus,
+									[getAttributeKey('_pc', false, 'nccb-')]:
+										paletteColor,
+									[getAttributeKey('_po', false, 'nccb-')]:
+										paletteOpacity,
+									[getAttributeKey('_cc', false, 'nccb-')]:
+										color,
 								},
 								'.maxi-number-counter__box__background'
 							)
@@ -576,26 +528,26 @@ const NumberCounterControl = props => {
 					<ColorControl
 						label={__('Circle bar', 'maxi-blocks')}
 						paletteStatus={getLastBreakpointAttribute({
-							target: 'number-counter-circle-bar-palette-status',
+							target: 'nccba_ps',
 							breakpoint,
 							attributes: props,
 						})}
 						paletteColor={getLastBreakpointAttribute({
-							target: 'number-counter-circle-bar-palette-color',
+							target: 'nccba_pc',
 							breakpoint,
 							attributes: props,
 						})}
 						paletteOpacity={getLastBreakpointAttribute({
-							target: 'number-counter-circle-bar-palette-opacity',
+							target: 'nccba_po',
 							breakpoint,
 							attributes: props,
 						})}
 						color={getLastBreakpointAttribute({
-							target: 'number-counter-circle-bar-color',
+							target: 'nccba_cc',
 							breakpoint,
 							attributes: props,
 						})}
-						prefix='number-counter-circle-bar-'
+						prefix='nccba-'
 						onChangeInline={({ color }) =>
 							onChangeInline(
 								{ stroke: color },
@@ -610,30 +562,14 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									[getAttributeKey(
-										'_ps',
-										false,
-										'number-counter-circle-bar-',
-										breakpoint
-									)]: paletteStatus,
-									[getAttributeKey(
-										'_pc',
-										false,
-										'number-counter-circle-bar-',
-										breakpoint
-									)]: paletteColor,
-									[getAttributeKey(
-										'_po',
-										false,
-										'number-counter-circle-bar-',
-										breakpoint
-									)]: paletteOpacity,
-									[getAttributeKey(
-										'_cc',
-										false,
-										'number-counter-circle-bar-',
-										breakpoint
-									)]: color,
+									[getAttributeKey('_ps', false, 'nccba-')]:
+										paletteStatus,
+									[getAttributeKey('_pc', false, 'nccba-')]:
+										paletteColor,
+									[getAttributeKey('_po', false, 'nccba-')]:
+										paletteOpacity,
+									[getAttributeKey('_cc', false, 'nccba-')]:
+										color,
 								},
 								'.maxi-number-counter__box__circle'
 							)

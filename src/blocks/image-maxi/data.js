@@ -36,7 +36,7 @@ const blockClass = ' .maxi-image-block';
 const imageClass = `${blockClass}__image`;
 const imageWrapperClass = `${blockClass}-wrapper`;
 
-const prefix = 'image-';
+const prefix = 'im-';
 
 /**
  * Data object
@@ -199,20 +199,20 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: ['border', 'border-radius'],
+			property: ['bo', 'bo.ra'],
 			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: 'box-shadow',
+			property: 'bs',
 			hoverProp: `${prefix}bs.sh`,
 		},
 		'clip path': {
 			title: 'Clip path',
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: 'clip-path',
-			hoverProp: 'clip-path-status-hover',
+			property: '_cp',
+			hoverProp: '_cp.sh',
 		},
 	},
 };
@@ -269,14 +269,14 @@ const interactionBuilderSettings = {
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
 			transitionTarget: transition.block['clip path'].target,
-			hoverProp: 'clip-path-status-hover',
+			hoverProp: '_cp.sh',
 			component: props => (
 				<ClipPathControl
 					{...props}
 					getBounds={() =>
 						getEditorWrapper()
 							.querySelector(
-								`.${props.attributes.uniqueID}${imageClass}`
+								`.${props.attributes._uid}${imageClass}`
 							)
 							.getBoundingClientRect()
 					}
@@ -292,7 +292,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
-			hoverProp: 'image-border-status-hover',
+			hoverProp: 'im-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix,
 			component: props => <BorderControl {...props} />,

@@ -44,14 +44,7 @@ const MapContent = props => {
 		mapMinZoom,
 		mapZoom,
 	] = getAttributesValue({
-		target: [
-			'map-latitude',
-			'map-longitude',
-			'map-markers',
-			'map-max-zoom',
-			'map-min-zoom',
-			'map-zoom',
-		],
+		target: ['m_lat', 'm_lon', 'm_mar', 'm_mzo', 'm_mz', 'm_z'],
 		props: attributes,
 	});
 

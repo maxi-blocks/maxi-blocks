@@ -14,10 +14,10 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 const save = props => {
 	const { attributes } = props;
 	const {
-		uniqueID,
-		ncst: stroke,
-		nccs: circleStatus,
-		ncrs: roundedStatus,
+		_uid: uniqueID,
+		nc_str: stroke,
+		'nc_ci.s': circleStatus,
+		'nc_rou.s': roundedStatus,
 	} = attributes;
 
 	const classes = 'maxi-number-counter-block';

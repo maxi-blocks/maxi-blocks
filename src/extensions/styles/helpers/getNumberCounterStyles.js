@@ -22,7 +22,7 @@ const getCircleBarStyles = (obj, blockStyle) => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: 'number-counter-circle-bar-',
+				prefix: 'nccba-',
 				breakpoint,
 			});
 		if (!paletteStatus && !isNil(color)) {
@@ -55,7 +55,7 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj,
-			prefix: 'number-counter-circle-background-',
+			prefix: 'nccb-',
 		});
 
 	if (!paletteStatus && !isNil(color)) response.general.stroke = color;
@@ -76,7 +76,7 @@ const getTextStyles = (obj, blockStyle) => {
 	};
 
 	const typeOfStyle = getAttributesValue({
-		target: 'number-counter-circle-status',
+		target: 'nc-ci.s',
 		obj,
 	})
 		? 'color'
@@ -86,7 +86,7 @@ const getTextStyles = (obj, blockStyle) => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: 'number-counter-text-',
+				prefix: 'nct-',
 				breakpoint,
 			});
 		if (!paletteStatus && !isNil(color)) return color;
@@ -101,42 +101,24 @@ const getTextStyles = (obj, blockStyle) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
 			...(!isNil(
-				obj[
-					getAttributeKey(
-						'number-counter-title-font-size',
-						false,
-						false,
-						breakpoint
-					)
-				]
+				obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]
 			) && {
 				'font-size': `${
-					obj[
-						getAttributeKey(
-							'number-counter-title-font-size',
-							false,
-							false,
-							breakpoint
-						)
-					]
+					obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]
 				}px`,
 			}),
 			...(!isNil(
-				obj[getAttributeKey('font-family', false, false, breakpoint)]
+				obj[getAttributeKey('_ff', false, false, breakpoint)]
 			) && {
 				'font-family': `${
-					obj[
-						getAttributeKey('font-family', false, false, breakpoint)
-					]
+					obj[getAttributeKey('_ff', false, false, breakpoint)]
 				}`,
 			}),
 			...(!isNil(
-				obj[getAttributeKey('font-weight', false, false, breakpoint)]
+				obj[getAttributeKey('_fwe', false, false, breakpoint)]
 			) && {
 				'font-weight': `${
-					obj[
-						getAttributeKey('font-weight', false, false, breakpoint)
-					]
+					obj[getAttributeKey('_fwe', false, false, breakpoint)]
 				}`,
 			}),
 			[typeOfStyle]: getColor(breakpoint),
@@ -153,27 +135,9 @@ const getSupStyles = obj => {
 	};
 
 	breakpoints.forEach(breakpoint => {
-		if (
-			!isNil(
-				obj[
-					getAttributeKey(
-						'number-counter-title-font-size',
-						false,
-						false,
-						breakpoint
-					)
-				]
-			)
-		)
+		if (!isNil(obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]))
 			response.general['font-size'] = `${
-				obj[
-					getAttributeKey(
-						'number-counter-title-font-size',
-						false,
-						false,
-						breakpoint
-					)
-				] / 1.5
+				obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)] / 1.5
 			}px`;
 	});
 

@@ -33,7 +33,7 @@ const attributes = {
 			type: 'string',
 			default: '300',
 		},
-		'_h-unit-general': {
+		'_h.u-general': {
 			type: 'string',
 			default: 'px',
 		},

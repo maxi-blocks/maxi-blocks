@@ -9,7 +9,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const prefix = 'divider-';
+const prefix = 'di-';
 const attributes = {
 	...attributesData.global,
 

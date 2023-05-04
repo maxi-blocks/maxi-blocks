@@ -45,12 +45,12 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
-				target: 'number-counter-width',
+				target: 'nc_w',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			});
 			const svgWidthUnit = getLastBreakpointAttribute({
-				target: 'number-counter-width-unit',
+				target: 'nc_w.u',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			});
@@ -100,13 +100,13 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			const widthUnit = getLastBreakpointAttribute({
-				target: 'number-counter-width-unit',
+				target: 'nc_w.u',
 				breakpoint: deviceType,
 				attributes,
 			});
 
 			maxiSetAttributes({
-				[`number-counter-width-${deviceType}`]: getResizerSize(
+				[`nc_w-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
 					widthUnit
@@ -121,7 +121,7 @@ class edit extends MaxiBlockComponent {
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
-				prefix='number-counter-'
+				prefix='nc-'
 				{...this.props}
 				resetNumberHelper={handleReset}
 				copyPasteMapping={copyPasteMapping}
@@ -137,19 +137,14 @@ class edit extends MaxiBlockComponent {
 						'numberCounter',
 						'overflow',
 					])}
-					{...getGroupAttributes(
-						attributes,
-						'size',
-						false,
-						'number-counter-'
-					)}
+					{...getGroupAttributes(attributes, 'size', false, 'nc-')}
 					resizerProps={{
 						onResizeStop: handleOnResizeStop,
 						resizableObject: this.resizableObject,
 						showHandle:
 							isSelected &&
 							!getLastBreakpointAttribute({
-								target: 'number-counter-width-auto',
+								target: 'nc_wa',
 								breakpoint: deviceType,
 								attributes,
 							}),
@@ -172,13 +167,13 @@ class edit extends MaxiBlockComponent {
  */
 const NumberCounter = attributes => {
 	const {
-		ncd: countDuration,
-		ncst: stroke,
-		nccs: circleStatus,
-		ncp: preview,
-		ncpss: usePercentage,
-		ncsa: startNumber,
-		nce: endNumber,
+		nc_du: countDuration,
+		nc_str: stroke,
+		'nc_ci.s': circleStatus,
+		nc_pr: preview,
+		'nc_psi.s': usePercentage,
+		nc_sta: startNumber,
+		nc_e: endNumber,
 		deviceType,
 		resizerProps,
 		replayCounter,
@@ -241,17 +236,17 @@ const NumberCounter = attributes => {
 			width: circleStatus
 				? 'auto'
 				: getLastBreakpointAttribute({
-						target: 'number-counter-width-auto',
+						target: 'nc_wa',
 						breakpoint: deviceType,
 						attributes,
 				  })
 				? '100%'
 				: `${getLastBreakpointAttribute({
-						target: 'number-counter-width',
+						target: 'nc_w',
 						breakpoint: deviceType,
 						attributes,
 				  })}${getLastBreakpointAttribute({
-						target: 'number-counter-width-unit',
+						target: 'nc_w.u',
 						breakpoint: deviceType,
 						attributes,
 				  })}`,
@@ -259,7 +254,7 @@ const NumberCounter = attributes => {
 	};
 
 	const fontSize = getLastBreakpointAttribute({
-		target: 'number-counter-title-font-size',
+		target: 'nc-ti_fs',
 		breakpoint: deviceType,
 		attributes,
 	});

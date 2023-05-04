@@ -21,11 +21,7 @@ const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
 	const [mapMarkerHeadingLevel, mapMarkerIcon, mapMarkers] =
 		getAttributesValue({
-			target: [
-				'map-marker-heading-level',
-				'map-marker-icon',
-				'map-markers',
-			],
+			target: ['m_mhl', 'm_mic', 'm_mar'],
 			props: attributes,
 		});
 
@@ -42,13 +38,13 @@ const Markers = props => {
 		const updatedMarkers = [...mapMarkers];
 		updatedMarkers.splice(index, 1);
 		maxiSetAttributes({
-			'map-markers': updatedMarkers,
+			m_mar: updatedMarkers,
 		});
 	};
 
 	const updateMarkers = updatedMarkers => {
 		maxiSetAttributes({
-			'map-markers': updatedMarkers,
+			m_mar: updatedMarkers,
 		});
 	};
 

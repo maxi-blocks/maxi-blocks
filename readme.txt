@@ -16,7 +16,7 @@ Tired of locked page builders? Discover freedom with 700+ unique templates, 13K+
 
 **Tired of those page builders that tease you with basic features and make you pay for the rest? ...  Maxi is here to break the cycle!**
 
-Say goodbye to locked features, domain limits, and annoying license keys. With a big library of pre-built templates, designer icons, and innovative features like style cards, Maxi will take your website design to the next level. Plus, it's free and open-source.
+Say goodbye to locked blocks, domain limits, and annoying license keys. With a big library of pre-built templates, designer icons, and innovative features like style cards, Maxi will take your website design to the next level. Plus, it's free and open-source.
 
 Loved by page builder enthusiasts, web designers, and template users, our feature-rich plugin is here to make your life easier.
 
@@ -30,7 +30,9 @@ _"This Gutenberg builder is the BEST I've seen so far, I love it. I'm just getti
 
 -- Michael Dantzie - Founder and Digital Marketing Consultant - Danzy Design and Marketing - https://danzydma.co.uk
 
+== How Maxi can help you build websites faster ==
 
+https://www.youtube.com/watch?v=nPUopDg644o
 
 == Why choose Maxi? ==
 
@@ -50,19 +52,21 @@ Maxi Blocks stands out for several reasons:
 
 - **No locked features:** We give free what other page builders charge for. We can do this because we earn income from selling pro templates that save you time. All page builder features are free for everyone.
 
-- **Page speed:** Maxi's front end-visitor page speed scores are all green for mobile an desktop devices. Run the test and find out.
+- **Page speed:** Maxi's front-end-visitor page speed scores are all green for mobile and desktop devices. Run the test and find out.
 
 == Features you’ll love ==
 
 Explore a wide array of tools and templates to enhance your designs:
 
-- **700+ free patterns and templates:** Start your project with a huge library of ready-to-use patterns.
+- **706+ free patterns and templates:** Start your project with a huge library of ready-to-use patterns.
+
+- **26+ free page templates:** More than 70 planned.
 
 - **13.4K designer icons and shapes:** Customize your designs with a wide collection of icons and shapes.
 
 - **Style cards functionality:** Change your page or website's look easily with 100 unique style cards.
 
-- **Pro template library:** Enhance your design experience with **806 pro patterns** built, and **2500 more designs** waiting to be built.
+- **Pro template library:** Enhance your design experience with **746 pro patterns** - Plus  **2500 designs + 72 pages - coming soon**. Take a [sneak peek](https://maxiblocks.com/home-page-coming-soon/) here.
 
 - **You’ll get more variety**  and inspiration to help you work faster. Pro templates can help you reach new audiences. Have a look at the [demo library](https://maxiblocks.com/demo/) to see what's possible.
 
@@ -84,7 +88,7 @@ Build your site with components made for speedy design:
 
 == Design features ==
 
-Craft responsive, visually appealing websites with user-friendly editing tool:
+Craft responsive, visually appealing websites with a user-friendly editing tool:
 
 - **Responsive design:** Ensure your website looks great on all devices.
 
@@ -108,6 +112,34 @@ Choose from thousands of icons and shapes for a unique look:
 
 - **Optimized for speed:** Fast-loading icons and shapes with minimal file sizes for top site performance.
 
+== Pro library for production-ready responsive templates ==
+
+Pro templates give you more variety and original designs. It's faster and easier to create attractive WordPress pages.
+
+**Unlimited downloads. Unlimited sites. No locked blocks.**
+
+How many pro patterns are there?
+
+- **746 pro patterns** plus (2500 patterns + 72 pages coming soon)
+
+Ready-made patterns include:
+
+- Accordion
+- Call to action
+- Footer
+- Headlines
+- Hero
+- Icon
+- Image
+- Logo
+- Number counter
+- Pricing tables
+- Story mix
+- Team
+- Testimonial
+
+[View the pro demo library](https://maxiblocks.com/demo/?plan=pro)
+
 == Planned features ==
 
 Look forward to exciting additions to enhance your design experience:
@@ -126,9 +158,9 @@ Look forward to exciting additions to enhance your design experience:
 
 - **Menu builder:** A custom navigation block for responsive menus.
 
-- **Context loop with repeater fields:** Speed up your page building process with this powerful feature, similar to Gutenberg's "query loop block" but integrated with Maxi's blocks, container, row, column, and group. It works with the responsive grid and dynamic content.
+- **Context loop with repeater fields:** Speed up your page-building process with this powerful feature, similar to Gutenberg's "query loop block" but integrated with Maxi's blocks, container, row, column, and group. It works with the responsive grid and dynamic content.
 
-- **Dynamic content:** Soon to implement support for services like **ACF**, **Meta Box**, **JetEngine** & **Toolset**. Your ideas here... let us know what you need.
+- **Dynamic content:** Soon to implement support for services like **ACF**, **Meta Box**, **JetEngine** & **Toolset**.
 
 - **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
 
@@ -140,7 +172,7 @@ Our resources will help you get started and master Maxi Blocks in no time:
 
 - **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques.
 
-- **Dedicated support:** A support team available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
+- **Dedicated support:** A support team is available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
 
 - **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/wordpress-plugin-changelog).
 
@@ -176,7 +208,7 @@ There's no limit to the number of sites you can build with Maxi Blocks. The plug
 
 = Do I need to pay for pro features? =
 
-No, all page builder features are free for everyone. You can build anything you want without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of expereince working with Maxi. You can benefit from their skills.
+No, all page builder features are free for everyone. You can build anything you want without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of experience working with Maxi. You can benefit from their skills.
 
 = Is Maxi Blocks compatible with my theme? =
 
@@ -231,7 +263,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 _Updates: 28 April 2023_
 
-* Enable pro library sign up, sign in and downloads
+* Enable pro library sign-up, sign in and downloads
 * Fix style card variables and styles for Button Maxi
 * Add template support for child themes
 * Fix infinite scroll in template library (below 768 height)
@@ -336,4 +368,4 @@ _Updates: 21 April 2023_
 
 == Upgrade Notice ==
 
-New version of Maxi Blocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or trial the update on a staging site. Use the rollback feature in the plugin settings if needed.
+New version of Maxi Blocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.

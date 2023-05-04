@@ -14,13 +14,6 @@ const actions = {
 			clientId,
 		};
 	},
-	updateBlock(uniqueID, clientId) {
-		return {
-			type: 'UPDATE_BLOCK',
-			uniqueID,
-			clientId,
-		};
-	},
 	updateBlockStylesRoot(uniqueID, blockRoot) {
 		return {
 			type: 'UPDATE_BLOCK_STYLES_ROOT',

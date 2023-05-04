@@ -41,6 +41,7 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getTemplatePartTagName,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -51,13 +52,13 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
-import getTemplatePartTagName from '../fse/getTemplatePartTagName';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
  * Style Component
@@ -103,7 +104,6 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
-		clientId,
 	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
@@ -640,12 +640,16 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { name: blockName } = this.props;
+		const { clientId, name: blockName } = this.props;
 
-		if (getIsUniqueIDRepeated(idToCheck)) {
+		if (
+			getIsUniqueIDRepeated(idToCheck) ||
+			!uniqueIDStructureChecker(idToCheck, clientId)
+		) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 				diff: 1,
+				clientId,
 			});
 
 			propagateNewUniqueID(

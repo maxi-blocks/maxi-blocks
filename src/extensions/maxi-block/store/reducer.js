@@ -26,27 +26,6 @@ const reducer = (
 
 			return state;
 		}
-		case 'UPDATE_BLOCK': {
-			const { uniqueID, clientId } = action;
-
-			// Remove old block looking its clientId
-			const oldBlock = Object.keys(state.blocks).find(
-				blockUniqueID => state.blocks[blockUniqueID] === clientId
-			);
-
-			if (oldBlock) delete state.blocks[oldBlock];
-
-			return {
-				...state,
-				blocks: {
-					...state.blocks,
-					[uniqueID]: {
-						...state.blocks[uniqueID],
-						clientId,
-					},
-				},
-			};
-		}
 		case 'UPDATE_BLOCK_STYLES_ROOT': {
 			const { uniqueID, blockRoot } = action;
 

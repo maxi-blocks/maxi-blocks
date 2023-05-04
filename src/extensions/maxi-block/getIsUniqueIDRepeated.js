@@ -12,6 +12,7 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 	let currentRepeatCount = 0;
 
 	return (
+		!!select('maxiBlocks/blocks').getBlock(uniqueIDToCompare) ||
 		goThroughMaxiBlocks(block => {
 			if (block.attributes.uniqueID === uniqueIDToCompare) {
 				currentRepeatCount += 1;
@@ -21,7 +22,7 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 				}
 			}
 			return false;
-		}) || !!select('maxiBlocks/blocks').getBlock(uniqueIDToCompare)
+		})
 	);
 };
 

@@ -4,11 +4,6 @@
 import { dispatch } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import getTemplatePartTagName from '../fse/getTemplatePartTagName';
-
-/**
  * External dependencies
  */
 import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
@@ -58,7 +53,7 @@ const getCleanContent = content => {
 	return newContent;
 };
 
-const styleResolver = ({ styles, remover = false, breakpoints, clientId }) => {
+const styleResolver = ({ styles, remover = false, breakpoints }) => {
 	if (!styles) return {};
 
 	const response = (remover && []) || {};
@@ -79,11 +74,9 @@ const styleResolver = ({ styles, remover = false, breakpoints, clientId }) => {
 				response[target].content
 			);
 
-		if (!remover) {
-			response[target].templateTagName = getTemplatePartTagName(clientId);
-
+		if (!remover)
 			dispatch('maxiBlocks/styles').updateStyles(target, response);
-		} else dispatch('maxiBlocks/styles').removeStyles(response);
+		else dispatch('maxiBlocks/styles').removeStyles(response);
 	});
 
 	return response;

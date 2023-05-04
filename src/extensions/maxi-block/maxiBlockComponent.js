@@ -71,7 +71,6 @@ const StyleComponent = ({
 	isSiteEditor = false,
 	isBreakpointChange,
 	currentBreakpoint,
-	clientId,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -725,7 +724,6 @@ class MaxiBlockComponent extends Component {
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
 						isPreview={this.isTemplatePartPreview}
-						clientId={this.props.clientId}
 					/>
 				);
 

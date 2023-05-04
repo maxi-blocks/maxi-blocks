@@ -315,6 +315,7 @@ describe('getIsUniqueIDRepeated', () => {
 						},
 					]
 			),
+			getBlock: jest.fn(() => false),
 		}));
 		expect(getIsUniqueIDRepeated('text-maxi-1')).toBe(true);
 	});

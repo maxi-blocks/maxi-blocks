@@ -1,4 +1,4 @@
-/*
+/**
  * Internal dependencies
  */
 import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';

@@ -53,7 +53,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 			attributes,
 		});
 
-	const isFullWidth = getValue('full-width') === 'full';
+	const isFullWidth = getValue('full-width');
 
 	if (!isFullWidth) return '';
 
@@ -158,12 +158,11 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	}
 
 	// Gets if the block is full-width
-	const isFullWidth =
-		getLastBreakpointAttribute({
-			target: 'full-width',
-			breakpoint: extraProps.deviceType,
-			attributes: extraProps.attributes,
-		}) === 'full';
+	const isFullWidth = getLastBreakpointAttribute({
+		target: 'full-width',
+		breakpoint: extraProps.deviceType,
+		attributes: extraProps.attributes,
+	});
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =

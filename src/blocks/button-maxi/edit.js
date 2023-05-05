@@ -13,10 +13,14 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { getIconPositionClass } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getIconPositionClass,
+} from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -87,11 +91,11 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const {
-			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
-		} = attributes;
+		const { uniqueID } = attributes;
+		const { status: dcStatus, content: dcContent } = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.context?.contextLoop
+		);
 		const { scValues } = this.state;
 
 		const buttonClasses = classnames(

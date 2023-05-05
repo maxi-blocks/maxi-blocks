@@ -14,6 +14,11 @@ import { getInnerBlocksPositions } from '../../extensions/repeater';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+
+/**
+ * External dependencies
+ */
+import { withMaxiContextLoop } from '../../extensions/DC';
 import { RowBlockTemplate } from './components';
 
 /**
@@ -173,4 +178,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

@@ -14,7 +14,7 @@ import { findBlockPosition } from './utils';
 import { isEmpty } from 'lodash';
 
 const getInnerBlocksPositions = columnsClientIds => {
-	const innerBlocksPositions = new Map();
+	const innerBlocksPositions = {};
 
 	if (isEmpty(columnsClientIds)) {
 		return innerBlocksPositions;
@@ -27,10 +27,10 @@ const getInnerBlocksPositions = columnsClientIds => {
 			const blockPosition = findBlockPosition(block, column);
 			const key = `${blockPosition}`;
 
-			innerBlocksPositions.set(key, [
-				...(innerBlocksPositions.get(key) || []),
+			innerBlocksPositions[key] = [
+				...(innerBlocksPositions[key] || []),
 				clientId,
-			]);
+			];
 
 			if (innerBlocks?.length) {
 				goThroughInnerBlocks(innerBlocks, column);
@@ -43,7 +43,7 @@ const getInnerBlocksPositions = columnsClientIds => {
 
 		goThroughInnerBlocks(column?.innerBlocks, column, index === 0);
 	});
-
+	console.log(innerBlocksPositions);
 	return innerBlocksPositions;
 };
 

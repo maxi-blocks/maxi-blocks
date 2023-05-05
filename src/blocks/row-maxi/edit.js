@@ -40,19 +40,11 @@ class edit extends MaxiBlockComponent {
 
 	columnsClientIds = [];
 
-	shouldMaxiBlockUpdate() {
-		return this.state.isInnerBlockWasUpdated;
-	}
-
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});
-		}
-
-		if (!this.state.innerBlocksPositions) {
-			this.updateInnerBlocksPositions();
 		}
 	}
 
@@ -61,7 +53,7 @@ class edit extends MaxiBlockComponent {
 		return maxiAttributes;
 	}
 
-	updateInnerBlocksPositions() {
+	updateInnerBlocksPositions = () => {
 		const tempInnerBlocksPositions = getInnerBlocksPositions(
 			this.columnsClientIds
 		);
@@ -73,7 +65,7 @@ class edit extends MaxiBlockComponent {
 				innerBlocksPositions: tempInnerBlocksPositions,
 			});
 		}
-	}
+	};
 
 	render() {
 		const {
@@ -149,13 +141,6 @@ class edit extends MaxiBlockComponent {
 						innerBlocksPositions: this.state.innerBlocksPositions,
 						updateInnerBlocksPositions:
 							this.updateInnerBlocksPositions,
-						isInnerBlockWasUpdated:
-							this.state.isInnerBlockWasUpdated,
-						setIsInnerBlockWasUpdated: update => {
-							this.setState({
-								isInnerBlockWasUpdated: update,
-							});
-						},
 					}}
 				>
 					<MaxiBlock

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useSelect, dispatch, useDispatch } from '@wordpress/data';
+import { dispatch, useDispatch, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import {
 	useCallback,
@@ -47,7 +47,6 @@ const withMaxiProps = createHigherOrderComponent(
 			} = useSelect(select => select('core/block-editor'), []);
 
 			const {
-				updateBlockAttributes,
 				__unstableMarkNextChangeAsNotPersistent:
 					markNextChangeAsNotPersistent,
 			} = useDispatch('core/block-editor');
@@ -111,9 +110,10 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, parentColumnClientId]);
 
 			const maxiSetAttributes = useCallback(obj => {
-				const clientIds = repeaterContext?.innerBlocksPositions?.get(
-					`${blockPositionFromColumn}`
-				);
+				const clientIds =
+					repeaterContext?.innerBlocksPositions?.[
+						`${blockPositionFromColumn}`
+					];
 
 				return handleSetAttributes({
 					obj,
@@ -132,6 +132,9 @@ const withMaxiProps = createHigherOrderComponent(
 						if (clientIds && !isEmpty(nonExcludedAttributes)) {
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
+
+								const { updateBlockAttributes } =
+									dispatch('core/block-editor');
 
 								updateBlockAttributes(
 									currentClientId,

@@ -5,9 +5,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -44,11 +43,11 @@ const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
 		props;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
-
 	const formatName = 'maxi-blocks/text-link';
 
-	const { formatOptions } = useSelect(() => {
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
+
+	const getFormatOptions = () => {
 		const isWholeLink = isEqual(
 			getFormatPosition({
 				formatValue,
@@ -68,24 +67,28 @@ const LinkContent = props => {
 			formatName
 		);
 
-		return {
-			formatOptions,
-		};
+		return formatOptions;
+	};
+
+	const formatOptions = useRef(getFormatOptions());
+
+	useEffect(() => {
+		formatOptions.current = getFormatOptions();
 	}, [getActiveFormat, formatValue, formatName]);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const [linkValue, setLinkValue] = useState(
 		createLinkValue({
-			formatOptions,
+			formatOptions: formatOptions.current,
 			formatValue,
 		})
 	);
 
 	useEffect(() => {
-		if (formatOptions) {
+		if (formatOptions.current) {
 			const newLinkValue = createLinkValue({
-				formatOptions,
+				formatOptions: formatOptions.current,
 				formatValue,
 			});
 
@@ -211,7 +214,7 @@ const LinkContent = props => {
 	const onClick = attributes => {
 		const newAttributes = forceSSL(attributes);
 
-		if (!formatOptions && !isEmpty(newAttributes.url))
+		if (!formatOptions.current && !isEmpty(newAttributes.url))
 			setLinkFormat(newAttributes);
 		else updateLinkString(newAttributes);
 

@@ -6,7 +6,7 @@ import { resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { relationTypes } from './constants';
+import { orderByRelationTypes, relationTypes } from './constants';
 import getDCErrors from './getDCErrors';
 
 const kindDictionary = {
@@ -27,16 +27,8 @@ const nameDictionary = {
 };
 
 const getDCEntity = async dataRequest => {
-	const {
-		'dc-type': type,
-		'dc-id': id,
-		'dc-error': error,
-		'dc-show': show,
-		'dc-relation': relation,
-		'dc-author': author,
-		'dc-order': order,
-		'dc-accumulator': accumulator,
-	} = dataRequest;
+	const { type, id, error, show, relation, author, order, accumulator } =
+		dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
 
@@ -88,7 +80,7 @@ const getDCEntity = async dataRequest => {
 		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
 	if (
-		relationTypes.includes(type) &&
+		orderByRelationTypes.includes(type) &&
 		['by-date', 'alphabetical'].includes(relation)
 	) {
 		const entities = await resolveSelect('core').getEntityRecords(
@@ -125,6 +117,18 @@ const getDCEntity = async dataRequest => {
 		);
 
 		return termsEntity[0];
+	}
+
+	const existingPost = await resolveSelect('core').getEntityRecords(
+		kindDictionary[type],
+		nameDictionary[type] ?? type,
+		{
+			include: id,
+		}
+	);
+
+	if (!existingPost || existingPost.length === 0) {
+		return null;
 	}
 
 	// Get selected entity

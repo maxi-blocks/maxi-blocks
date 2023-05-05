@@ -81,6 +81,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.contextLoop,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

@@ -24,6 +24,7 @@ import {
 	getFormatPosition,
 	textContext,
 } from '../../../../extensions/text/formats';
+import Link from '../link';
 
 /**
  * External dependencies
@@ -35,7 +36,6 @@ import { isEmpty, isEqual } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
-import Link from '../link';
 
 /**
  * TextLink

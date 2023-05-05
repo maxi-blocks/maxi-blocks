@@ -199,7 +199,13 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
+						// In case we've got more than one activeFormat for links, we can't have multiple
+						// links in one block. So we need to remove all activeFormats
+						if (newFormatValue.activeFormats.length)
+							newFormatValue.activeFormats = [];
+
 						!dcStatus && this.state.onChangeFormat(newFormatValue);
+
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,

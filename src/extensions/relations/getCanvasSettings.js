@@ -182,13 +182,11 @@ const getCanvasSettings = ({ name }) => [
 		label: __('Height / Width', 'maxi-blocks'),
 		attrGroupName: 'size',
 		component: props => {
-			const fullWidth = getLastBreakpointAttribute({
+			const isBlockFullWidth = getLastBreakpointAttribute({
 				target: 'full-width',
 				breakpoint: props.breakpoint,
 				attributes: getGroupAttributes(props, 'size'),
 			});
-
-			const isBlockFullWidth = fullWidth === 'full';
 
 			return (
 				<FullSizeControl

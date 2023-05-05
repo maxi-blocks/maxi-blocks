@@ -57,8 +57,8 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'full-width-general': {
-			type: 'string',
-			default: 'full',
+			type: 'boolean',
+			default: true,
 		},
 		'size-advanced-options': {
 			type: 'boolean',
@@ -81,6 +81,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.contextLoop,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

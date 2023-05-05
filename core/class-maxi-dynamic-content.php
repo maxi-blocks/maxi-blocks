@@ -1,4 +1,5 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
 
 /**
  * Server side part of MaxiBlocks_DynamicContent Gutenberg component
@@ -27,6 +28,8 @@ class MaxiBlocks_DynamicContent
     /**
      * Variables
      */
+    private static $custom_data = null;
+
     private static $dynamic_content_attributes = [
         'dc-error' => [
             'type' => 'string',
@@ -34,15 +37,12 @@ class MaxiBlocks_DynamicContent
         ],
         'dc-status' => [
             'type' => 'boolean',
-            'default' => false,
         ],
         'dc-type' => [
             'type' => 'string',
-            'default' => 'posts',
         ],
         'dc-relation' => [
             'type' => 'string',
-            'default' => 'by-id',
         ],
         'dc-id' => [
             'type' => 'number',
@@ -148,12 +148,10 @@ class MaxiBlocks_DynamicContent
         ],
         'dc-order' => [
             'type' => 'string',
-            'default' => 'desc'
         ],
         'dc-accumulator' => [
             'type' => 'number',
-            'default' => 0
-        ]
+        ],
     ];
 
     /**
@@ -190,6 +188,23 @@ class MaxiBlocks_DynamicContent
         if (!$attributes['dc-status']) {
             return $content;
         }
+
+        if (self::$custom_data === null) {
+            if (class_exists('MaxiBlocks_Styles')) {
+                $styles = new MaxiBlocks_Styles();
+                self::$custom_data = $styles->custom_meta('dynamic_content');
+            } else {
+                self::$custom_data = [];
+            }
+        }
+
+        $context_loop = [];
+
+        if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
+            $context_loop = self::$custom_data[$attributes['uniqueID']];
+        }
+
+        $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
             $dc_link_status = $attributes['dc-link-status'];
@@ -387,7 +402,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
             }
 
             $query = new WP_Query($args);
@@ -410,7 +425,7 @@ class MaxiBlocks_DynamicContent
                 ];
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
             }
 
             $query = new WP_Query($args);
@@ -741,6 +756,82 @@ class MaxiBlocks_DynamicContent
         }
 
         return $string;
+    }
+
+    public function get_default_dc_value($target, $obj, $defaults)
+    {
+        if (is_callable($defaults[$target])) {
+            return $defaults[$target]($obj);
+        }
+
+        return $defaults[$target];
+    }
+
+    public function get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result)
+    {
+        $context_loop_status = isset($context_loop['cl-status']) ? $context_loop['cl-status'] : false;
+
+        $dc_value = isset($dynamic_content['dc-' . $target]) ? $dynamic_content['dc-' . $target] : null;
+        $context_loop_value = isset($context_loop['cl-' . $target]) ? $context_loop['cl-' . $target] : null;
+
+        if ($target === 'status') {
+            return $dc_value !== null ? $dc_value : $this->get_default_dc_value($target, $result, $defaults);
+        }
+
+        if ($dc_value !== null) {
+            return $dc_value;
+        }
+
+        if ($context_loop_status && $context_loop_value !== null) {
+            return $context_loop_value;
+        }
+
+        return $this->get_default_dc_value($target, $result, $defaults);
+    }
+
+    public function order_callback($attributes)
+    {
+        $relation = $attributes['dc-relation'] ?? null;
+        return $relation === 'by-date' ? 'desc' : 'asc';
+    }
+
+    /**
+     * Combines `attributes` with `context_loop` and `defaults`
+     * to get the final values for dynamic content.
+     */
+    public function get_dc_values($attributes, $context_loop)
+    {
+        $defaults = [
+            'status' => false,
+            'type' => 'posts',
+            'relation' => 'by-id',
+            'order' => [$this, 'order_callback'],
+            'accumulator' => 0,
+        ];
+
+        $dynamic_content = array_filter($attributes, function ($key) {
+            return strpos($key, 'dc-') === 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $dynamic_content_keys = array_keys($dynamic_content);
+        $context_loop_keys = array_map(function ($key) {
+            return str_replace('cl-', 'dc-', $key);
+        }, array_keys($context_loop));
+        $defaults_keys = array_map(function ($key) {
+            return 'dc-' . $key;
+        }, array_keys($defaults));
+
+        $values_keys = array_merge($dynamic_content_keys, $context_loop_keys, $defaults_keys);
+
+        $result = [];
+
+        foreach ($values_keys as $key) {
+            $target = str_replace('dc-', '', $key);
+            $dc_value = $this->get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result);
+            $result[$key] = $dc_value;
+        }
+
+        return $result;
     }
 
     public function get_order_by_args($relation, $order, $accumulator, $dc_type)

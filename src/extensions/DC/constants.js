@@ -22,6 +22,10 @@ export const typeOptions = {
 	image: generalTypeOptions.filter(
 		option => !['categories', 'tags'].includes(option.value)
 	),
+	container: generalTypeOptions,
+	row: generalTypeOptions,
+	column: generalTypeOptions,
+	group: generalTypeOptions,
 };
 
 /**
@@ -76,6 +80,10 @@ export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
 	image: generalRelationOptions,
+	container: null,
+	row: generalRelationOptions,
+	column: generalRelationOptions,
+	group: generalRelationOptions,
 };
 
 /**
@@ -393,6 +401,8 @@ export const limitOptions = {
 	max: 9999,
 };
 
+export const orderByRelationTypes = ['posts', 'pages', 'media'];
+
 export const orderByOptions = {
 	'by-date': [
 		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
@@ -402,4 +412,15 @@ export const orderByOptions = {
 		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
 		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
 	],
+};
+
+export const attributeDefaults = {
+	status: false,
+	type: 'posts',
+	relation: 'by-id',
+	order: attributes => {
+		const relation = attributes?.relation ?? attributes?.['cl-relation'];
+		return relation === 'by-date' ? 'desc' : 'asc';
+	},
+	accumulator: 0,
 };

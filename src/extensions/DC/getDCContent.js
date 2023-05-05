@@ -29,15 +29,17 @@ const nameDictionary = {
 const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
+	if (!data) return null;
+
 	const {
-		'dc-type': type,
-		'dc-field': field,
-		'dc-limit': limit,
-		'dc-delimiter-content': delimiter,
-		'dc-custom-date': isCustomDate,
-		'dc-format': format,
-		'dc-locale': locale,
-		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
+		type,
+		field,
+		limit,
+		delimiterContent,
+		customDate,
+		format,
+		locale,
+		postTaxonomyLinksStatus,
 	} = dataRequest;
 
 	let contentValue;
@@ -57,7 +59,7 @@ const getDCContent = async dataRequest => {
 
 		contentValue = processDCDate(
 			contentValue,
-			isCustomDate,
+			customDate,
 			format,
 			locale,
 			options
@@ -120,8 +122,8 @@ const getDCContent = async dataRequest => {
 		);
 
 		contentValue = postTaxonomyLinksStatus
-			? `<span>${namesArray.join(`${delimiter} `)}</span>`
-			: namesArray.join(`${delimiter} `);
+			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
+			: namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

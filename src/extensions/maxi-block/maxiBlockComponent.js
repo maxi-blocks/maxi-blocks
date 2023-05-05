@@ -52,6 +52,7 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import { LoopContext } from '../DC';
 
 /**
  * External dependencies
@@ -478,9 +479,12 @@ class MaxiBlockComponent extends Component {
 	get getCustomData() {
 		const {
 			uniqueID,
+			'dc-status': dcStatus,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
 		} = this.props.attributes;
+
+		const contextLoop = this.context?.contextLoop;
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -505,6 +509,12 @@ class MaxiBlockComponent extends Component {
 				}),
 				...(hasVideo && { bg_video: true }),
 				...(hasScrollEffects && { scroll_effects: true }),
+				...(dcStatus &&
+					contextLoop?.['cl-status'] && {
+						dynamic_content: {
+							[uniqueID]: contextLoop,
+						},
+					}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};
@@ -782,5 +792,7 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 }
+
+MaxiBlockComponent.contextType = LoopContext;
 
 export default MaxiBlockComponent;

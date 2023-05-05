@@ -100,8 +100,8 @@ const withAttributes = createHigherOrderComponent(
 		}
 
 		useEffect(() => {
-			// TODO: check if it's then working on creating block
-			if (repeaterStatus && !uniqueID) {
+			if (repeaterStatus) {
+				console.log('onMount: updateInnerBlocksPositions', uniqueID);
 				repeaterContext?.updateInnerBlocksPositions();
 			}
 		}, []);

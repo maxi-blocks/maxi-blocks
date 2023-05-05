@@ -54,9 +54,9 @@ const handleBlockMove = (
 
 		if (
 			!blockToMove ||
-			!innerBlockPositions
-				.get(`${prevPosition}`)
-				?.includes(blockToMove.clientId)
+			!innerBlockPositions[`${prevPosition}`]?.includes(
+				blockToMove.clientId
+			)
 		)
 			return;
 

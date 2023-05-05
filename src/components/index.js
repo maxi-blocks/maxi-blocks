@@ -21,6 +21,7 @@ export { default as Button } from './button';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ClipPathControl } from './clip-path-control';
 export { default as ColorControl } from './color-control';
+export { default as ContextLoop } from './context-loop';
 export { default as ContentLoader } from './content-loader';
 export { default as CustomCss } from './custom-css-control';
 export { default as CustomLabel } from './custom-label';

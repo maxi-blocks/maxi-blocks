@@ -22,6 +22,10 @@ export const typeOptions = {
 	image: generalTypeOptions.filter(
 		option => !['categories', 'tags'].includes(option.value)
 	),
+	container: generalTypeOptions,
+	row: generalTypeOptions,
+	column: generalTypeOptions,
+	group: generalTypeOptions,
 };
 
 /**
@@ -45,6 +49,13 @@ const generalRelationOptionsPages = [
 	{ label: __('Get alphabetical'), value: 'alphabetical' },
 ];
 
+const generalRelationOptionsUsers = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
+];
+
 const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get random'), value: 'random' },
@@ -60,6 +71,7 @@ const generalRelationOptions = {
 	pages: generalRelationOptionsPages,
 	settings: generalRelationOptionsPosts,
 	media: generalRelationOptionsPosts,
+	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
 };
@@ -68,6 +80,10 @@ export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
 	image: generalRelationOptions,
+	container: null,
+	row: generalRelationOptions,
+	column: generalRelationOptions,
+	group: generalRelationOptions,
 };
 
 /**
@@ -367,6 +383,8 @@ export const limitOptions = {
 	max: 9999,
 };
 
+export const orderByRelationTypes = ['posts', 'pages', 'media'];
+
 export const orderByOptions = {
 	'by-date': [
 		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
@@ -376,4 +394,15 @@ export const orderByOptions = {
 		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
 		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
 	],
+};
+
+export const attributeDefaults = {
+	status: false,
+	type: 'posts',
+	relation: 'by-id',
+	order: attributes => {
+		const relation = attributes?.relation ?? attributes?.['cl-relation'];
+		return relation === 'by-date' ? 'desc' : 'asc';
+	},
+	accumulator: 0,
 };

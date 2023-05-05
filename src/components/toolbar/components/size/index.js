@@ -62,19 +62,16 @@ const Size = props => {
 					<div>
 						<ToggleSwitch
 							label={__('Enable full width', 'maxi-blocks')}
-							selected={
-								props[`full-width-${breakpoint}`] === 'full'
-							}
+							selected={props[`full-width-${breakpoint}`]}
 							onChange={val => {
-								const full = val ? 'full' : 'normal';
 								onChange({
-									[`full-width-${breakpoint}`]: full,
+									[`full-width-${breakpoint}`]: val,
 								});
 							}}
 						/>
 					</div>
 				)}
-				{props[`full-width-${breakpoint}`] === 'normal' && (
+				{!props[`full-width-${breakpoint}`] && (
 					<>
 						<AdvancedNumberControl
 							label={__('Width', 'maxi-blocks')}

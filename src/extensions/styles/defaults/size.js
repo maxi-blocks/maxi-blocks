@@ -76,8 +76,8 @@ export const rawMinHeight = {
 
 export const rawFullWidth = {
 	'full-width': {
-		type: 'string',
-		default: 'normal',
+		type: 'boolean',
+		default: false,
 	},
 };
 

@@ -7,16 +7,16 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getIsSiteEditor from './getIsSiteEditor';
-import getTemplatePart from './getTemplatePart';
 import getIsTemplatePart from './getIsTemplatePart';
+import getTemplatePart from './getTemplatePart';
 
 /**
- * Returns the slug of the template part if we are on the FSE template part editor.
+ * Returns the tagName of the template part if we are on the FSE template part editor.
  *
- * @param {string} clientId The clientId of the block in template part from which we want to get the slug.
- * @returns {string|false} The slug of the template part or false if we are not on the FSE editor.
+ * @param {string} clientId The clientId of the block in template part from which we want to get the tagName.
+ * @returns {string|false} The tagName of the template part or false if we are not on the FSE editor.
  */
-const getTemplatePartSlug = clientId => {
+const getTemplatePartTagName = clientId => {
 	if (!getIsSiteEditor()) return false;
 
 	const { getEditedPostId } = select('core/edit-site');
@@ -30,10 +30,10 @@ const getTemplatePartSlug = clientId => {
 
 	const {
 		name,
-		attributes: { slug },
+		attributes: { tagName },
 	} = templatePartParent;
 
-	return name === 'core/template-part' ? slug : false;
+	return name === 'core/template-part' ? tagName : false;
 };
 
-export default getTemplatePartSlug;
+export default getTemplatePartTagName;

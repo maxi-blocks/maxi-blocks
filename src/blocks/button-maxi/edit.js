@@ -92,7 +92,11 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID } = attributes;
-		const { status: dcStatus, content: dcContent } = getDCValues(
+		const {
+			status: dcStatus,
+			content: dcContent,
+			field: dcField,
+		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.context?.contextLoop
 		);
@@ -111,6 +115,7 @@ class edit extends MaxiBlockComponent {
 			border: '.maxi-button-block__button',
 			boxShadow: '.maxi-button-block__button',
 		};
+		const showDCContent = dcStatus && dcField !== 'static_text';
 
 		return [
 			<Inspector
@@ -146,12 +151,12 @@ class edit extends MaxiBlockComponent {
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<>
-							{dcStatus && (
+							{showDCContent && (
 								<div className='maxi-button-block__content'>
 									{dcContent}
 								</div>
 							)}
-							{!dcStatus && (
+							{!showDCContent && (
 								<RichText
 									className='maxi-button-block__content'
 									value={attributes.buttonContent}

@@ -2,6 +2,23 @@ import getSCStyles from '../getSCStyles';
 import standardSC from '../../../../core/defaults/defaultSC.json';
 import getSCVariablesObject from '../getSCVariablesObject';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		resolveSelect: jest.fn(() => {
+			return {
+				receiveMaxiSettings: jest.fn(() => true),
+			};
+		}),
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+			};
+		}),
+	};
+});
+
 describe('getSCStyles', () => {
 	it('Should return a correct frontend styles for SC', () => {
 		const SCVariables = {

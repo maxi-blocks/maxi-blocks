@@ -164,8 +164,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 foreach ($elements as $element) {
                     $classes = $element->getAttribute('class');
 
-                    if(!str_contains('maxi-block--use-sc', $classes) || !isset($classes) || empty($classes)) {
-                        if(!str_contains('maxi-block', $classes)) {
+                    if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
+                        if(!str_contains($classes, 'maxi-block--use-sc')) {
                             $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
                         }
 

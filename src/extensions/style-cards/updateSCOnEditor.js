@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, resolveSelect } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -9,12 +9,12 @@ import { dispatch, resolveSelect } from '@wordpress/data';
 import { loadFonts } from '../text/fonts';
 import { getSiteEditorIframe } from '../fse';
 import getSCVariablesObject from './getSCVariablesObject';
+import getSCStyles from './getSCStyles';
 
 /**
  * External dependencies
  */
 import { cloneDeep, isArray, isEmpty, uniq } from 'lodash';
-import getSCStyles from './getSCStyles';
 
 export const createSCStyleString = SCObject => {
 	let response = ':root{';
@@ -62,21 +62,14 @@ const getSCFontsData = obj => {
 };
 
 const updateSCStyles = async (element, SCObject) => {
-	// The SC styles have a different WP native block target on backend, so we need to update it
-	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
-		'maxiBlocks'
-	).receiveMaxiSettings();
+	const SCStylesEl = element.getElementById(
+		'maxi-blocks-sc-styles-inline-css'
+	);
 
-	if (scGutenbergBlocks === '1') {
-		const SCStylesEl = element.getElementById(
-			'maxi-blocks-sc-styles-inline-css'
-		);
+	if (SCStylesEl) {
+		const SCStyles = await getSCStyles(SCObject, true);
 
-		if (SCStylesEl) {
-			const SCStyles = await getSCStyles(SCObject, true);
-
-			SCStylesEl.innerHTML = SCStyles;
-		}
+		SCStylesEl.innerHTML = SCStyles;
 	}
 };
 

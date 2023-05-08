@@ -42,21 +42,36 @@ import { toolbarLink } from '../../../../icons';
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
 		props;
-
+	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const getFormatOptions = () => {
-		const isWholeLink = isEqual(
-			getFormatPosition({
-				formatValue,
-				formatName: 'maxi-blocks/text-link',
-				formatClassName: null,
-				formatAttributes: null,
-			}),
-			[0, formatValue.formats.length]
-		);
+		// Checks if the whole text string is under same link
+		let linkChecker;
+		const isWholeLink =
+			isEqual(
+				getFormatPosition({
+					formatValue,
+					formatName: 'maxi-blocks/text-link',
+					formatClassName: null,
+					formatAttributes: null,
+				}),
+				[0, formatValue.formats.length]
+			) &&
+			formatValue.formats.every(formatArray => {
+				return formatArray.every(format => {
+					if (format.type !== formatName) return true;
+
+					if (!linkChecker) linkChecker = format.attributes.url;
+
+					return (
+						format.type === 'maxi-blocks/text-link' &&
+						format.attributes.url === linkChecker
+					);
+				});
+			});
 		const end = formatValue.formats.length + 1;
 		const start =
 			isWholeLink && formatValue.start === formatValue.end
@@ -72,12 +87,6 @@ const LinkContent = props => {
 
 	const formatOptions = useRef(getFormatOptions());
 
-	useEffect(() => {
-		formatOptions.current = getFormatOptions();
-	}, [getActiveFormat, formatValue, formatName]);
-
-	const typography = { ...getGroupAttributes(props, 'typography') };
-
 	const [linkValue, setLinkValue] = useState(
 		createLinkValue({
 			formatOptions: formatOptions.current,
@@ -86,6 +95,8 @@ const LinkContent = props => {
 	);
 
 	useEffect(() => {
+		formatOptions.current = getFormatOptions();
+
 		if (formatOptions.current) {
 			const newLinkValue = createLinkValue({
 				formatOptions: formatOptions.current,
@@ -106,6 +117,7 @@ const LinkContent = props => {
 			formatValue,
 			formatName: 'maxi-blocks/text-link',
 			formatClassName: null,
+			formatAttributes: formatOptions.current.attributes,
 		}) || [formatValue.start ?? 0, formatValue.end ?? 0];
 
 		formatValue.formats = formatValue.formats.map((formatEl, i) => {
@@ -113,9 +125,15 @@ const LinkContent = props => {
 				if (
 					format.type === 'maxi-blocks/text-link' &&
 					posStart <= i &&
-					i - 1 <= posEnd
+					i <= posEnd
 				)
-					format.attributes = attributes;
+					return {
+						...format,
+						attributes: {
+							...format.attributes,
+							...attributes,
+						},
+					};
 
 				return format;
 			});

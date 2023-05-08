@@ -10,13 +10,13 @@ import { isEmpty } from 'lodash';
 
 const getParsedVideoUrl = props => {
 	const {
-		url,
-		isLoop,
-		startTime,
-		endTime,
-		isAutoplay,
-		isMuted,
-		showPlayerControls,
+		_u: url,
+		_il: isLoop,
+		_sti: startTime,
+		_et: endTime,
+		_ia: isAutoplay,
+		_im: isMuted,
+		_spc: showPlayerControls,
 	} = props;
 
 	if (isEmpty(url)) return url;

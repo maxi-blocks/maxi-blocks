@@ -39,14 +39,16 @@ const ListOptionsControl = props => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+
 	const {
-		blockStyle,
+		_bs: blockStyle,
 		listReversed,
 		listStart,
 		typeOfList,
 		listStyle,
 		listStyleCustom,
 	} = attributes;
+
 	const [
 		listIndent,
 		listGap,

@@ -127,7 +127,7 @@ export const getSVGWidthStyles = ({
 	return { iconSize: response };
 };
 
-const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
+const getSVGPathStyles = (obj, prefix = 's-', isHover = false) => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -153,7 +153,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 const getSVGPathFillStyles = (
 	obj,
 	blockStyle,
-	prefix = 'svg-',
+	prefix = 's',
 	isHover = false
 ) => {
 	const response = {
@@ -162,7 +162,11 @@ const getSVGPathFillStyles = (
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: `${prefix}f-`, isHover });
+		getPaletteAttributes({
+			obj,
+			prefix: `${prefix}f${prefix === 'i-' ? '' : 'i'}-`,
+			isHover,
+		});
 
 	if (paletteStatus && paletteColor)
 		response.general.fill = getColorRGBAString({
@@ -179,7 +183,7 @@ const getSVGPathFillStyles = (
 const getSVGPathStrokeStyles = (
 	obj,
 	blockStyle,
-	prefix = 'svg-',
+	prefix = 's',
 	isHover,
 	useIconColor = true
 ) => {
@@ -201,14 +205,15 @@ const getSVGPathStrokeStyles = (
 
 		switch (prefix) {
 			case 'i-':
-			case 'active-icon-':
-			case 'navigation-arrow-both-icon-':
-			case 'navigation-dot-icon-':
-			case 'active-navigation-dot-icon-':
+			case 'cl-i-':
+			case 'a-i-':
+			case 'nab-i-':
+			case 'nd-i-':
+			case 'a-nd-i-':
 				linePrefix = `${prefix}str-`;
 				break;
 			default:
-				linePrefix = `${prefix}l-`;
+				linePrefix = `${prefix}li-`;
 				break;
 		}
 

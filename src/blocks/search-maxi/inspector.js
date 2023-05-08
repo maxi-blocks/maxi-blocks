@@ -40,9 +40,9 @@ const Inspector = props => {
 		cleanInlineStyles,
 	} = props;
 	const {
-		'icon-position': buttonPosition,
-		buttonSkin,
-		iconRevealAction,
+		i_pos: buttonPosition,
+		_bus: buttonSkin,
+		_ira: iconRevealAction,
 		skin,
 	} = attributes;
 	const { selectors, categories } = customCss;
@@ -50,8 +50,8 @@ const Inspector = props => {
 
 	const getCategoriesCss = () => {
 		const {
-			'icon-content': iconContent,
-			[`${closeIconPrefix}icon-content`]: closeIconContent,
+			i_c: iconContent,
+			[`${closeIconPrefix}i_c`]: closeIconContent,
 		} = attributes;
 		return without(
 			categories,
@@ -159,7 +159,7 @@ const Inspector = props => {
 																					type: 'search-icon',
 																					ignoreIndicator:
 																						[
-																							'icon-position',
+																							'i_pos',
 																						],
 																					...iconControlsDisabledProps,
 																				}
@@ -207,8 +207,7 @@ const Inspector = props => {
 																					onChange={val =>
 																						maxiSetAttributes(
 																							{
-																								'icon-position':
-																									val,
+																								i_pos: val,
 																							}
 																						)
 																					}
@@ -224,7 +223,7 @@ const Inspector = props => {
 																			),
 																		extraIndicators:
 																			[
-																				'icon-position',
+																				'i_pos',
 																			],
 																	}),
 																	...inspectorTabs.border(

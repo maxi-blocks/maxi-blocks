@@ -33,10 +33,10 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 	const {
-		blockStyle,
-		playerType,
-		'overlay-mediaID': overlayMediaId,
-		'overlay-altSelector': overlayAltSelector,
+		_bs: blockStyle,
+		_pt: playerType,
+		o_mi: overlayMediaId,
+		o_as: overlayAltSelector,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -90,7 +90,7 @@ const Inspector = props => {
 														'backgroundColor',
 													],
 													false,
-													'lightbox-'
+													'lb-'
 												)}
 												onChange={obj =>
 													maxiSetAttributes(obj)
@@ -129,7 +129,7 @@ const Inspector = props => {
 											),
 											content: (
 												<VideoIconControl
-													prefix='play-'
+													prefix='pl-'
 													type='video-icon-play'
 													label={__(
 														'Play icon',
@@ -154,7 +154,7 @@ const Inspector = props => {
 														attributes,
 														['icon', 'iconHover'],
 														false,
-														'play-'
+														'pl-'
 													)}
 												/>
 											),
@@ -195,20 +195,20 @@ const Inspector = props => {
 									]),
 									...inspectorTabs.border({
 										props,
-										prefix: 'video-',
+										prefix: 'v-',
 									}),
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'video-',
+										prefix: 'v-',
 									}),
 									...inspectorTabs.size({
 										props,
 										hideFullWidth: true,
-										prefix: 'video-',
+										prefix: 'v-',
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'video-',
+										prefix: 'v-',
 										customLabel: __(
 											'Padding',
 											'maxi-blocks'

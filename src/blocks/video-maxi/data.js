@@ -23,24 +23,23 @@ const overlayClass = `${blockClass}__overlay`;
  */
 const name = 'video-maxi';
 const copyPasteMapping = {
-	_exclude: ['url', 'embedUrl', 'videoType', 'overlay-mediaURL'],
+	_exclude: ['_u', '_eu', '_vt', 'o_mu'],
 	settings: {
 		Video: {
 			group: {
-				Url: ['url', 'embedUrl', 'videoType'],
-				'Video type': 'playerType',
-				'Start time': 'startTime',
-				'End time': 'endTime',
-				'Aspect ratio': 'videoRatio',
+				Url: ['_u', '_eu', '_vt'],
+				'Video type': '_pt',
+				'Start time': '_sti',
+				'End time': '_et',
+				'Aspect ratio': '_vr',
 			},
 		},
 		'Video options': {
 			group: {
-				Autoplay: 'isAutoplay',
-				Mute: 'isMuted',
-				Loop: 'isLoop',
-				'Player controls': 'showPlayerControls',
-				'Reduce black borders': 'reduceBorders',
+				Autoplay: '_ia',
+				Mute: '_im',
+				Loop: '_il',
+				'Player controls': '_spc',
 				'Lightbox background colour': {
 					groupAttributes: [
 						'lightboxBackground',
@@ -54,18 +53,18 @@ const copyPasteMapping = {
 				'Overlay background colour': {
 					groupAttributes: ['background', 'backgroundColor'],
 				},
-				'Play button': { groupAttributes: 'icon', prefix: 'play-' },
+				'Play button': { groupAttributes: 'icon', prefix: 'pl-' },
 			},
 		},
 		'Popup settings': {
 			group: {
 				'Lightbox background': {
 					groupAttributes: ['background', 'backgroundColor'],
-					prefix: 'lightbox-',
+					prefix: 'lb-',
 				},
 				'Close button': {
 					groupAttributes: 'icon',
-					prefix: 'close-',
+					prefix: 'cl-',
 				},
 				'Pop animation': 'popAnimation',
 			},
@@ -75,22 +74,22 @@ const copyPasteMapping = {
 				'Hide image(icon only)': 'hideImage',
 				'Overlay background': {
 					groupAttributes: ['background', 'backgroundColor'],
-					prefix: 'overlay-',
+					prefix: 'o-',
 				},
-				'Image source': 'overlay-mediaURL',
+				'Image source': 'o_mu',
 			},
 		},
 		Border: {
 			template: 'border',
-			prefix: 'overlay-',
+			prefix: 'o-',
 		},
 		'Box shadow': {
 			template: 'boxShadow',
-			prefix: 'overlay-',
+			prefix: 'o-',
 		},
 		'Margin/Padding': {
 			template: 'marginPadding',
-			prefix: 'overlay-',
+			prefix: 'o-',
 		},
 	},
 	advanced: {

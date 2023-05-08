@@ -38,16 +38,16 @@ import { isNil } from 'lodash';
 
 const VideoPlayer = props => {
 	const {
-		videoType,
-		embedUrl,
-		isLoop,
-		isAutoplay,
-		isMuted,
-		showPlayerControls,
+		_vt: videoType,
+		_eu: embedUrl,
+		_il: isLoop,
+		_ia: isAutoplay,
+		_im: isMuted,
+		_spc: showPlayerControls,
 		isSelected,
-		uniqueID,
-		startTime,
-		endTime,
+		_uid: uniqueID,
+		_sti: startTime,
+		_et: endTime,
 	} = props;
 
 	const playerID = `${uniqueID}-player`;
@@ -174,15 +174,15 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, isSelected, maxiSetAttributes } = this.props;
 		const {
-			uniqueID,
-			embedUrl,
-			playerType,
-			'play-icon-content': playIcon,
-			'overlay-mediaID': overlayMediaId,
-			'overlay-mediaURL': overlayMediaUrl,
-			'overlay-mediaAlt': overlayMediaAlt,
-			'overlay-altSelector': altSelector,
-			hideImage,
+			_uid: uniqueID,
+			_eu: embedUrl,
+			_pt: playerType,
+			'pl-i_c': playIcon,
+			o_mi: overlayMediaId,
+			o_mu: overlayMediaUrl,
+			o_mal: overlayMediaAlt,
+			o_as: altSelector,
+			_hi: hideImage,
 		} = attributes;
 
 		const { isUploaderOpen } = this.state;
@@ -206,15 +206,15 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				copyPasteMapping={copyPasteMapping}
 				backgroundAdvancedOptions='video overlay'
-				backgroundPrefix='overlay-'
-				mediaPrefix='overlay-'
+				backgroundPrefix='o-'
+				mediaPrefix='o-'
 			/>,
 			playerType === 'popup' && (
 				<MaxiPopoverButton
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
-					prefix='video-'
+					prefix='v-'
 					isEmptyContent={!overlayMediaId}
 					{...this.props}
 				>
@@ -226,9 +226,9 @@ class edit extends MaxiBlockComponent {
 								null;
 
 							maxiSetAttributes({
-								'overlay-mediaID': val.id,
-								'overlay-mediaURL': val.url,
-								'overlay-mediaAlt':
+								o_mi: val.id,
+								o_mu: val.url,
+								o_mal:
 									altSelector === 'wordpress' && !alt
 										? val.title
 										: alt,

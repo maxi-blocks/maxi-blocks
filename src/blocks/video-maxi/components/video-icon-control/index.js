@@ -41,7 +41,7 @@ const IconSettings = props => {
 		clientId,
 	} = props;
 	const [iconHoverStatus, iconContent, iconPosition] = getAttributesValue({
-		target: ['icon-status-hover', 'icon-content', 'icon-position'],
+		target: ['i.sh', 'i_c', 'i_pos'],
 		props,
 		prefix,
 	});
@@ -74,9 +74,7 @@ const IconSettings = props => {
 					className='maxi-video-icon-control__hover-status'
 					label={__('Enable icon hover', 'maxi-blocks')}
 					selected={iconHoverStatus}
-					onChange={val =>
-						onChange({ [`${prefix}icon-status-hover`]: val })
-					}
+					onChange={val => onChange({ [`${prefix}i.sh`]: val })}
 				/>
 			)}
 			{showSettings && (
@@ -85,28 +83,28 @@ const IconSettings = props => {
 						className='maxi-video-icon-control__icon-colour'
 						label={label}
 						color={getAttributesValue({
-							target: 'icon-fill-color',
+							target: 'i-f_cc',
 							isHover,
 							prefix,
 							props,
 						})}
 						defaultColor={getDefaultAttribute(
-							getAttributeKey('icon-fill-color', isHover, prefix)
+							getAttributeKey('i-f_cc', isHover, prefix)
 						)}
 						paletteStatus={getAttributesValue({
-							target: 'icon-fill-palette-status',
+							target: 'i-f_ps',
 							isHover,
 							prefix,
 							props,
 						})}
 						paletteColor={getAttributesValue({
-							target: 'icon-fill-palette-color',
+							target: 'i-f_pc',
 							isHover,
 							prefix,
 							props,
 						})}
 						paletteOpacity={getAttributesValue({
-							target: 'icon-fill-palette-opacity',
+							target: 'i-f_po',
 							isHover,
 							prefix,
 							props,
@@ -143,28 +141,16 @@ const IconSettings = props => {
 								  );
 
 							onChange({
-								[getAttributeKey(
-									'icon-fill-palette-status',
-									isHover,
-									prefix
-								)]: paletteStatus,
-								[getAttributeKey(
-									'icon-fill-palette-color',
-									isHover,
-									prefix
-								)]: paletteColor,
-								[getAttributeKey(
-									'icon-fill-palette-opacity',
-									isHover,
-									prefix
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'icon-fill-color',
-									isHover,
-									prefix
-								)]: color,
+								[getAttributeKey('i-f_ps', isHover, prefix)]:
+									paletteStatus,
+								[getAttributeKey('i-f_pc', isHover, prefix)]:
+									paletteColor,
+								[getAttributeKey('i-f_po', isHover, prefix)]:
+									paletteOpacity,
+								[getAttributeKey('i-f_cc', isHover, prefix)]:
+									color,
 								...(!isHover && {
-									[`${prefix}icon-content`]: icon,
+									[`${prefix}i_c`]: icon,
 								}),
 							});
 						}}
@@ -174,22 +160,19 @@ const IconSettings = props => {
 						isHover={isHover}
 						deviceType={breakpoint}
 						clientId={clientId}
-						prefix={`${prefix}icon-`}
+						prefix={`${prefix}i-`}
 					/>
-					{prefix === 'close-' && (
+					{prefix === 'cl-' && (
 						<SelectControl
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={iconPosition}
-							defaultValue={getDefaultAttribute(
-								`${prefix}icon-position`
-							)}
+							defaultValue={getDefaultAttribute(`${prefix}i_pos`)}
 							onReset={() =>
 								onChange({
-									[`${prefix}icon-position`]:
-										getDefaultAttribute(
-											`${prefix}icon-position`
-										),
+									[`${prefix}i_pos`]: getDefaultAttribute(
+										`${prefix}i_pos`
+									),
 									isReset: true,
 								})
 							}
@@ -211,7 +194,7 @@ const IconSettings = props => {
 							]}
 							onChange={val =>
 								onChange({
-									[`${prefix}icon-position`]: val,
+									[`${prefix}i_pos`]: val,
 								})
 							}
 						/>
@@ -223,7 +206,7 @@ const IconSettings = props => {
 								className='maxi-video-icon-control__icon-height'
 								optionType='string'
 								value={getLastBreakpointAttribute({
-									target: 'icon-height',
+									target: 'i_h',
 									prefix,
 									breakpoint,
 									isHover,
@@ -232,7 +215,7 @@ const IconSettings = props => {
 								onChangeValue={val =>
 									onChange({
 										[getAttributeKey(
-											'icon-height',
+											'i_h',
 											isHover,
 											prefix,
 											breakpoint
@@ -240,12 +223,12 @@ const IconSettings = props => {
 									})
 								}
 								defaultValue={getDefaultAttribute(
-									`${prefix}icon-height-${breakpoint}`
+									`${prefix}i_h-${breakpoint}`
 								)}
 								enableUnit
 								unit={getLastBreakpointAttribute({
 									target: getAttributeKey(
-										'icon-height-unit',
+										'i_h.u',
 										isHover,
 										prefix
 									),
@@ -253,12 +236,12 @@ const IconSettings = props => {
 									attributes: props,
 								})}
 								defaultUnit={getDefaultAttribute(
-									`${prefix}icon-height-unit-${breakpoint}`
+									`${prefix}i_h.u-${breakpoint}`
 								)}
 								onChangeUnit={val =>
 									onChange({
 										[getAttributeKey(
-											'icon-height-unit',
+											'i_h.u',
 											isHover,
 											prefix,
 											breakpoint
@@ -268,20 +251,18 @@ const IconSettings = props => {
 								onReset={() =>
 									onChange({
 										[getAttributeKey(
-											'icon-height',
+											'i_h',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											`${prefix}icon-height`
-										),
+										)]: getDefaultAttribute(`${prefix}i_h`),
 										[getAttributeKey(
-											'icon-height-unit',
+											'i_h.u',
 											isHover,
 											prefix,
 											breakpoint
 										)]: getDefaultAttribute(
-											`${prefix}icon-height.u`
+											`${prefix}i_h.u`
 										),
 										isReset: true,
 									})
@@ -295,20 +276,20 @@ const IconSettings = props => {
 									className='maxi-video-icon-control__icon-spacing'
 									placeholder={0}
 									value={getLastBreakpointAttribute({
-										target: 'icon-spacing',
+										target: 'i_spa',
 										prefix,
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val =>
 										onChange({
-											[`${prefix}icon-spacing-${breakpoint}`]:
+											[`${prefix}i_spa-${breakpoint}`]:
 												val,
 										})
 									}
 									enableUnit
 									unit={getLastBreakpointAttribute({
-										target: 'icon-spacing.u',
+										target: 'i_spa.u',
 										prefix,
 										breakpoint,
 										attributes: props,
@@ -333,19 +314,19 @@ const IconSettings = props => {
 									}}
 									onChangeUnit={val =>
 										onChange({
-											[`${prefix}icon-spacing-unit-${breakpoint}`]:
+											[`${prefix}i_spa.u-${breakpoint}`]:
 												val,
 										})
 									}
 									onReset={() => {
 										onChange({
-											[`${prefix}icon-spacing-${breakpoint}`]:
+											[`${prefix}i_spa-${breakpoint}`]:
 												getDefaultAttribute(
-													`${prefix}icon-spacing-${breakpoint}`
+													`${prefix}i_spa-${breakpoint}`
 												),
-											[`${prefix}icon-spacing-unit-${breakpoint}`]:
+											[`${prefix}i_spa.u-${breakpoint}`]:
 												getDefaultAttribute(
-													`${prefix}icon-spacing-unit-${breakpoint}`
+													`${prefix}i_spa.u-${breakpoint}`
 												),
 											isReset: true,
 										});

@@ -23,7 +23,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -33,7 +33,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -66,7 +66,7 @@ const getNormalObject = props => {
 
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.s', 'bs.s'],
+		target: ['bo.sh', 'bs.sh'],
 		props,
 		isHover: true,
 	});
@@ -83,7 +83,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -92,7 +92,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 	};
 
@@ -100,7 +100,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const slideStyles = styleProcessor(
 		{
@@ -113,7 +113,7 @@ const getStyles = props => {
 					'borderWidth',
 					'borderRadius',
 				]),
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(
@@ -127,7 +127,7 @@ const getStyles = props => {
 					true
 				),
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		},
 		customCss.selectors,

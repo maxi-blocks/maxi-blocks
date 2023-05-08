@@ -27,18 +27,14 @@ const SliderControl = props => {
 		onChange,
 		isEditView,
 		setEditView,
-		isLoop,
-		isAutoplay,
-		pauseOnHover,
-		pauseOnInteraction,
+		_il: isLoop,
+		_ia: isAutoplay,
+		_poh: pauseOnHover,
+		_poi: pauseOnInteraction,
 	} = props;
-	const { sliderAutoplaySpeed, sliderTransition, sliderTransitionSpeed } =
+	const [sliderAutoplaySpeed, sliderTransition, sliderTransitionSpeed] =
 		getAttributesValue({
-			target: [
-				'slider-autoplay-speed',
-				'slider-transition',
-				'slider-transition-speed',
-			],
+			target: ['_sas', '_slt', '_sts'],
 			props,
 		});
 
@@ -57,7 +53,7 @@ const SliderControl = props => {
 				label={__('Autoplay', 'maxi-blocks')}
 				selected={isAutoplay}
 				onChange={val => {
-					onChange({ isAutoplay: val });
+					onChange({ _ia: val });
 				}}
 			/>
 			{isAutoplay && (
@@ -66,14 +62,14 @@ const SliderControl = props => {
 						label={__('Pause on hover', 'maxi-blocks')}
 						selected={pauseOnHover}
 						onChange={val => {
-							onChange({ pauseOnHover: val });
+							onChange({ _poh: val });
 						}}
 					/>
 					<ToggleSwitch
 						label={__('Pause on interaction', 'maxi-blocks')}
 						selected={pauseOnInteraction}
 						onChange={val => {
-							onChange({ pauseOnInteraction: val });
+							onChange({ _poi: val });
 						}}
 					/>
 					<AdvancedNumberControl
@@ -85,14 +81,12 @@ const SliderControl = props => {
 						value={sliderAutoplaySpeed}
 						onChangeValue={val => {
 							onChange({
-								'slider-autoplay-speed':
-									val !== undefined ? val : '',
+								_sas: val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								'slider-autoplay-speed':
-									getDefaultAttribute('autoplay-speed'),
+								_sas: getDefaultAttribute('_sas'),
 							})
 						}
 					/>
@@ -102,7 +96,7 @@ const SliderControl = props => {
 				label={__('Infinite loop', 'maxi-blocks')}
 				selected={isLoop}
 				onChange={val => {
-					onChange({ isLoop: val });
+					onChange({ _il: val });
 				}}
 			/>
 			<SelectControl
@@ -120,7 +114,7 @@ const SliderControl = props => {
 				value={sliderTransition}
 				onChange={val => {
 					onChange({
-						'slider-transition': val,
+						_slt: val,
 					});
 				}}
 			/>
@@ -133,15 +127,12 @@ const SliderControl = props => {
 				value={sliderTransitionSpeed}
 				onChangeValue={val => {
 					onChange({
-						'slider-transition-speed':
-							val !== undefined && val !== '' ? val : '',
+						_sts: val !== undefined && val !== '' ? val : '',
 					});
 				}}
 				onReset={() =>
 					onChange({
-						'slider-transition-speed': getDefaultAttribute(
-							'slider-transition-speed'
-						),
+						_sts: getDefaultAttribute('_sts'),
 					})
 				}
 			/>

@@ -18,7 +18,7 @@ const videoPopup = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'lb-b_pc-general': 5, // lightbox-background-palette-color-general
+			'lb-bc_pc-general': 5, // lightbox-background-palette-color-general
 		},
 	}),
 };

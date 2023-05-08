@@ -54,9 +54,14 @@ const icon = ({
 		cleanInlineStyles,
 		clientId,
 	} = props;
-	const [hoverStatus, blockStyle, svgType] = getAttributesValue({
-		target: ['i.sh', '_bs', '_st'],
+	const blockStyle = getAttributesValue({
+		target: '_bs',
 		props: attributes,
+	});
+	const [hoverStatus, svgType] = getAttributesValue({
+		target: ['i.sh', '_st'],
+		props: attributes,
+		prefix,
 	});
 
 	const iconControlBasicProps = {

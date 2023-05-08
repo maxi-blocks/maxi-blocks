@@ -21,8 +21,8 @@ const overlayColor = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'o-b_pc-general': 5, // overlay-background-palette-color-general
-			'o-b_po-general': 0.7, // overlay-background-palette-opacity-general
+			'o-bc_pc-general': 5, // overlay-background-palette-color-general
+			'o-bc_po-general': 0.7, // overlay-background-palette-opacity-general
 		},
 	}),
 };

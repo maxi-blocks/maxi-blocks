@@ -49,14 +49,7 @@ const SliderWrapper = props => {
 		navigationArrowSecondIconContent,
 		navigationDotIconContent,
 	] = getAttributesValue({
-		target: [
-			'isLoop',
-			'slider-transition',
-			'slider-transition-speed',
-			'navigation-arrow-first-icon-content',
-			'navigation-arrow-second-icon-content',
-			'navigation-dot-icon-content',
-		],
+		target: ['_il', '_slt', '_sts', 'naf-i_c', 'nas-i_c', 'nd-i_c'],
 		props: attributes,
 	});
 
@@ -333,7 +326,7 @@ const SliderWrapper = props => {
 			/>
 			<div className={navClasses}>
 				{getAttributesValue({
-					target: 'navigation-arrow-first-icon-content',
+					target: 'naf-i_c',
 					attributes,
 				}) && (
 					<span
@@ -349,7 +342,7 @@ const SliderWrapper = props => {
 					</span>
 				)}
 				{getAttributesValue({
-					target: 'navigation-arrow-second-icon-content',
+					target: 'nas-i_c',
 					attributes,
 				}) && (
 					<span
@@ -367,7 +360,7 @@ const SliderWrapper = props => {
 					</span>
 				)}
 				{getAttributesValue({
-					target: 'navigation-dot-icon-content',
+					target: 'nd-i_c',
 					attributes,
 				}) && (
 					<div className='maxi-slider-block__dots'>

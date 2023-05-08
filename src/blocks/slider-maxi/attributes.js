@@ -18,38 +18,38 @@ const attributes = {
 	...attributesData.blockBackground,
 	...{
 		...attributesData.border,
-		'border-style-general': {
+		'bo_s-general': {
 			type: 'string',
 			default: 'solid',
 		},
-		'border-pac-general': {
+		'bo_pc-general': {
 			type: 'number',
 			default: 3,
 		},
-		'border-palette-opacity-general': {
+		'bo_po-general': {
 			type: 'number',
 			default: 0.25,
 		},
 	},
 	...{
 		...attributesData.borderWidth,
-		'border-width-top-general': {
+		'bo_w.t-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-width-right-general': {
+		'bo_w.r-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-width-bottom-general': {
+		'bo_w.b-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-width-left-general': {
+		'bo_w.l-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-width-sync-general': {
+		'bo_w.sy-general': {
 			type: 'string',
 			default: 'all',
 		},

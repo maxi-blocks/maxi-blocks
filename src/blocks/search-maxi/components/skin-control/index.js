@@ -15,6 +15,8 @@ import { prefixes } from '../../data';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	const { buttonPrefix, inputPrefix } = prefixes;
+	const buttonWO = buttonPrefix.replace('-', '');
+	const inputWO = inputPrefix.replace('-', '');
 
 	const getDefaultAttributes = attributeKeys =>
 		attributeKeys.reduce((acc, key) => {
@@ -23,23 +25,18 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		}, {});
 
 	const iconRevealResetStyles = getDefaultAttributes([
-		`${buttonPrefix}border-radius-unit-general`,
-		`${buttonPrefix}border-radius-top-left-general`,
-		`${buttonPrefix}border-radius-top-right-general`,
-		`${buttonPrefix}border-radius-bottom-left-general`,
-		`${buttonPrefix}border-radius-bottom-right-general`,
-		`${buttonPrefix}margin-left-general`,
-		`${buttonPrefix}margin-sync-general`,
-		'icon-position',
+		`${buttonPrefix}bo.ra.u-general`,
+		`${buttonPrefix}bo.ra.tl-general`,
+		`${buttonPrefix}bo.ra.tr-general`,
+		`${buttonPrefix}bo.ra.bl-general`,
+		`${buttonPrefix}bo.ra.br-general`,
+		`${buttonWO}_m.l-general`,
+		`${buttonWO}_m.sy-general`,
+		'i_pos',
 	]);
 
 	const classicResetStyles = {
-		[getAttributeKey(
-			'_pc',
-			false,
-			`${inputPrefix}background-`,
-			'general'
-		)]: 1,
+		[getAttributeKey('_pc', false, `${inputPrefix}bc-`, 'general')]: 1,
 	};
 
 	return (
@@ -67,7 +64,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[getAttributeKey(
 								'_pc',
 								false,
-								`${inputPrefix}background-`,
+								`${inputPrefix}bc-`,
 								'general'
 							)]: 2,
 							...iconRevealResetStyles,
@@ -80,13 +77,13 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 					} else if (skin === 'icon-reveal') {
 						onChange({
 							...classicResetStyles,
-							[`${buttonPrefix}border-radius-unit-general`]: '%',
-							[`${buttonPrefix}border-radius-top-left-general`]: 50,
-							[`${buttonPrefix}border-radius-top-right-general`]: 50,
-							[`${buttonPrefix}border-radius-bottom-left-general`]: 50,
-							[`${buttonPrefix}border-radius-bottom-right-general`]: 50,
-							[`${buttonPrefix}margin-left-general`]: '-20',
-							[`${buttonPrefix}margin-sync-general`]: 'none',
+							[`${buttonPrefix}bo.ra.u-general`]: '%',
+							[`${buttonPrefix}bo.ra.tl-general`]: 50,
+							[`${buttonPrefix}bo.ra.tr-general`]: 50,
+							[`${buttonPrefix}bo.ra.bl-general`]: 50,
+							[`${buttonPrefix}bo.ra.br-general`]: 50,
+							[`${buttonWO}_m.l-general`]: '-20',
+							[`${buttonWO}_m.sy-general`]: 'none',
 						});
 					}
 
@@ -112,7 +109,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 					]}
 					onChange={iconRevealAction =>
 						onChange({
-							iconRevealAction,
+							_ira: iconRevealAction,
 						})
 					}
 				/>

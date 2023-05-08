@@ -28,7 +28,7 @@ import {
 import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-const videoPrefix = 'video-';
+const videoPrefix = 'v-';
 
 const getNormalObject = props => {
 	const response = {
@@ -36,7 +36,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -46,7 +46,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -80,7 +80,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -97,7 +97,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -106,7 +106,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -126,10 +126,10 @@ const getLightBoxObject = props => {
 				props,
 				['background', 'backgroundColor'],
 				false,
-				'lightbox-'
+				'lb-'
 			),
-			prefix: 'lightbox-',
-			blockStyle: props.blockStyle,
+			prefix: 'lb-',
+			blockStyle: props._bs,
 		}),
 	};
 
@@ -137,7 +137,7 @@ const getLightBoxObject = props => {
 };
 
 const getOverlayImageStyles = props => {
-	const prefix = 'overlay-media-';
+	const prefix = 'om-';
 
 	const response = {
 		size: getSizeStyles(
@@ -162,8 +162,8 @@ const getOverlayBackgroundObject = (props, isHover = false) => {
 	const response = {
 		...getBackgroundStyles({
 			...getGroupAttributes(props, 'videoOverlay'),
-			prefix: 'overlay-',
-			blockStyle: props.blockStyle,
+			prefix: 'o-',
+			blockStyle: props._bs,
 			isHover,
 		}),
 	};
@@ -172,7 +172,7 @@ const getOverlayBackgroundObject = (props, isHover = false) => {
 };
 
 const getAspectRatioStyles = (props, isPopup = false) => {
-	const { videoRatio, popupRatio } = props;
+	const { _vr: videoRatio, _pra: popupRatio } = props;
 
 	const response = {
 		...(isPopup
@@ -188,7 +188,7 @@ const getCloseIconPosition = obj => {
 		label: 'Icon position',
 	};
 
-	const { 'close-icon-position': iconPosition } = obj;
+	const { 'cl-i_pos': iconPosition } = obj;
 
 	// if the icon is spacing from the screen boundaries we want to move it left down,
 	// if it is spacing from the video we want to move it top right
@@ -198,12 +198,12 @@ const getCloseIconPosition = obj => {
 		response[breakpoint] = {};
 
 		const rawIconSpacing = getLastBreakpointAttribute({
-			target: 'close-icon-spacing',
+			target: 'cl-i_spa',
 			breakpoint,
 			attributes: obj,
 		});
 		const iconSpacingUnit = getLastBreakpointAttribute({
-			target: 'close-icon-spacing-unit',
+			target: 'cl-i_spa.u',
 			breakpoint,
 			attributes: obj,
 		});
@@ -228,7 +228,7 @@ const getCloseIconPosition = obj => {
 };
 
 const getIconObject = (prefix, obj) => {
-	const { [`${prefix}icon-status-hover`]: iconHoverStatus } = obj;
+	const { [`${prefix}i.sh`]: iconHoverStatus } = obj;
 
 	return {
 		[` .maxi-video-block__${prefix}button svg`]: getIconSize(
@@ -242,26 +242,26 @@ const getIconObject = (prefix, obj) => {
 			prefix
 		),
 		[` .maxi-video-block__${prefix}button`]: {
-			icon: getIconStyles(obj, obj.blockStyle, false, false, prefix),
-			...(prefix === 'close-' && {
+			icon: getIconStyles(obj, obj._bs, false, false, prefix),
+			...(prefix === 'cl-' && {
 				iconPosition: getCloseIconPosition(obj),
 			}),
 		},
 		...getSVGStyles({
 			obj,
 			target: `.maxi-video-block__${prefix}button`,
-			blockStyle: obj.blockStyle,
-			prefix: `${prefix}icon-`,
+			blockStyle: obj._bs,
+			prefix: `${prefix}i-`,
 			useIconColor: true,
 		}),
 		...(iconHoverStatus &&
-			(prefix === 'play-'
+			(prefix === 'pl-'
 				? {
 						[`:hover .maxi-video-block__${prefix}button svg`]: {
 							...getIconSize(obj, true, prefix),
 							icon: getIconStyles(
 								obj,
-								obj.blockStyle,
+								obj._bs,
 								false,
 								true,
 								prefix
@@ -272,8 +272,8 @@ const getIconObject = (prefix, obj) => {
 						...getSVGStyles({
 							obj,
 							target: `:hover .maxi-video-block__${prefix}button`,
-							blockStyle: obj.blockStyle,
-							prefix: `${prefix}icon-`,
+							blockStyle: obj._bs,
+							prefix: `${prefix}i-`,
 							useIconColor: true,
 							isHover: true,
 						}),
@@ -283,7 +283,7 @@ const getIconObject = (prefix, obj) => {
 							...getIconSize(obj, true, prefix),
 							icon: getIconStyles(
 								obj,
-								obj.blockStyle,
+								obj._bs,
 								false,
 								true,
 								prefix
@@ -294,8 +294,8 @@ const getIconObject = (prefix, obj) => {
 						...getSVGStyles({
 							obj,
 							target: ` .maxi-video-block__${prefix}button:hover`,
-							blockStyle: obj.blockStyle,
-							prefix: `${prefix}icon-`,
+							blockStyle: obj._bs,
+							prefix: `${prefix}i-`,
 							useIconColor: true,
 							isHover: true,
 						}),
@@ -305,7 +305,7 @@ const getIconObject = (prefix, obj) => {
 
 const getVideoStyles = (props, isHover = false) => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.s', 'bs.s'],
+		target: ['bo.sh', 'bs.sh'],
 		props,
 		isHover: true,
 		prefix: videoPrefix,
@@ -322,7 +322,7 @@ const getVideoStyles = (props, isHover = false) => {
 						videoPrefix
 					),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix: videoPrefix,
 				isHover,
 			}),
@@ -337,7 +337,7 @@ const getVideoStyles = (props, isHover = false) => {
 						videoPrefix
 					),
 				},
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 				prefix: videoPrefix,
 				isHover,
 			}),
@@ -360,9 +360,9 @@ const getVideoStyles = (props, isHover = false) => {
 };
 
 const getStyles = props => {
-	const { uniqueID, playerType, overlayBackgroundStatusHover } =
+	const [uniqueID, playerType, overlayBackgroundStatusHover] =
 		getAttributesValue({
-			target: ['_uid', 'playerType', 'overlay-background-status-hover'],
+			target: ['_uid', '_pt', 'o-b.sh'],
 			props,
 		});
 
@@ -379,7 +379,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -393,7 +393,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 				}),
 				...(playerType === 'video'
 					? {
@@ -422,8 +422,8 @@ const getStyles = props => {
 					':hover .maxi-video-block__overlay-background':
 						getOverlayBackgroundObject(props, true),
 				}),
-				...getIconObject('play-', props),
-				...getIconObject('close-', props),
+				...getIconObject('pl-', props),
+				...getIconObject('cl-', props),
 			},
 			data,
 			props
@@ -435,7 +435,7 @@ const getStyles = props => {
 					props,
 					true
 				),
-				...getIconObject('close-', props),
+				...getIconObject('cl-', props),
 			},
 			data,
 			props

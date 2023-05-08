@@ -10,8 +10,8 @@ const videoEvents = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const { videoType } = videoData;
-		const videoEnd = videoData.endTime;
+		const { _vt: videoType } = videoData;
+		const videoEnd = videoData._et;
 
 		if (videoType === 'vimeo' && videoEnd) {
 			if (!isScriptMounted('maxi-vimeo-sdk')) {
@@ -30,9 +30,9 @@ const videoEvents = () => {
 			return;
 		}
 
-		const { embedUrl } = videoData;
+		const { _eu: embedUrl } = videoData;
 
-		if (videoData.playerType === 'popup') {
+		if (videoData._pt === 'popup') {
 			const popupContent = insertPopup(video);
 			popupEvents(video, popupContent, embedUrl);
 		}
@@ -51,12 +51,12 @@ const handleYoutubeVideos = () => {
 
 		const popupContent = insertPopup(video);
 		const iframe =
-			videoData.playerType === 'popup'
+			videoData._pt === 'popup'
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
 		iframe.id = `${videoID}-iframe`;
-		iframe.src = videoData.embedUrl;
+		iframe.src = videoData._eu;
 
 		const player = new YT.Player(iframe, {
 			events: {
@@ -65,14 +65,14 @@ const handleYoutubeVideos = () => {
 		});
 
 		function handleStateChange(state) {
-			const { isLoop, startTime } = videoData;
+			const { _il: isLoop, _sti: startTime } = videoData;
 
 			if (state.data === YT.PlayerState.ENDED && isLoop) {
 				player.seekTo(startTime || 0);
 			}
 		}
 
-		if (videoData.playerType === 'popup') {
+		if (videoData._pt === 'popup') {
 			popupEvents(video, popupContent, '', () => player.pauseVideo());
 		}
 	});
@@ -88,15 +88,15 @@ function handleVimeoVideos() {
 
 		const popupContent = insertPopup(video);
 		const player =
-			videoData.playerType === 'popup'
+			videoData._pt === 'popup'
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
-		player.src = videoData.embedUrl;
+		player.src = videoData._eu;
 		const vimeoPlayer = new Vimeo.Player(player);
-		const { endTime } = videoData;
-		const { startTime } = videoData;
-		const { isLoop } = videoData;
+		const { _et: endTime } = videoData;
+		const { _sti: startTime } = videoData;
+		const { _il: isLoop } = videoData;
 
 		vimeoPlayer.on('timeupdate', function (data) {
 			if (data.seconds > +endTime) {
@@ -105,7 +105,7 @@ function handleVimeoVideos() {
 			}
 		});
 
-		if (videoData.playerType === 'popup') {
+		if (videoData._pt === 'popup') {
 			popupEvents(video, popupContent, '', () => vimeoPlayer.pause());
 		}
 	});

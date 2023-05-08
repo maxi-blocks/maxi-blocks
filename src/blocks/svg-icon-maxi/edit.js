@@ -48,8 +48,8 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate(prevProps) {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
-		const svgCode = this.props.attributes.content;
-		const blockId = this.props.attributes.uniqueID;
+		const svgCode = this.props.attributes._c;
+		const blockId = this.props.attributes._uid;
 
 		if (svgCode) {
 			const svgInsideIds = uniq(
@@ -70,14 +70,14 @@ class edit extends MaxiBlockComponent {
 							newInsideId
 						);
 						this.props.maxiSetAttributes({
-							content: newSvgCode,
+							_c: newSvgCode,
 						});
 					}
 				});
 			}
 		}
 
-		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
+		if (prevProps.attributes._uid !== this.props.attributes._uid) {
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
@@ -85,18 +85,18 @@ class edit extends MaxiBlockComponent {
 			const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
 
 			updateBlockAttributes(this.props.clientId, {
-				content: finalSvgCode,
+				_c: finalSvgCode,
 			});
 		}
 
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
-				target: 'svg-width',
+				target: 's_w',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			});
 			const svgWidthUnit = getLastBreakpointAttribute({
-				target: 'svg-width-unit',
+				target: 's_w.u',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			});
@@ -118,7 +118,7 @@ class edit extends MaxiBlockComponent {
 
 				if (!isEmpty(newContent))
 					this.props.maxiSetAttributes({
-						content: newContent,
+						_c: newContent,
 					});
 			}
 		}
@@ -130,14 +130,14 @@ class edit extends MaxiBlockComponent {
 		 * when the block is duplicated.
 		 */
 		const svgClass =
-			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+			this.props.attributes._c.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const newContent = this.props.attributes.content.replaceAll(
+		const newContent = this.props.attributes._c.replaceAll(
 			svgClass.match(/__(\d)/)[0],
 			`__${newUniqueID.match(/-(\d+)$/).pop()}`
 		);
-		this.props.attributes.content = newContent;
+		this.props.attributes._c = newContent;
 	}
 
 	get getStylesObject() {
@@ -163,13 +163,18 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const { content, openFirstTime, blockStyle, uniqueID } = attributes;
+		const {
+			_c: content,
+			openFirstTime,
+			_bs: blockStyle,
+			_uid: uniqueID,
+		} = attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
 
 		const heightFitContent = getLastBreakpointAttribute({
-			target: 'svg-width-fit-content',
+			target: 's_wfc',
 			breakpoint: deviceType,
 			attributes,
 		});
@@ -179,11 +184,11 @@ class edit extends MaxiBlockComponent {
 			elt.querySelector('svg').style.width = null;
 
 			maxiSetAttributes({
-				[`svg-width-${deviceType}`]: getResizerSize(
+				[`s_w-${deviceType}`]: getResizerSize(
 					elt,
 					this.blockRef,
 					getLastBreakpointAttribute({
-						target: 'svg-width-unit',
+						target: 's_w.u',
 						breakpoint: deviceType || 'general',
 						attributes,
 					})
@@ -207,7 +212,7 @@ class edit extends MaxiBlockComponent {
 
 				if (content) {
 					const disableHeightFitContent = getLastBreakpointAttribute({
-						target: 'svg-width-fit-content',
+						target: 's_wfc',
 						breakpoint: deviceType,
 						attributes,
 					});
@@ -247,7 +252,7 @@ class edit extends MaxiBlockComponent {
 						propsToAvoid={['resizableObject']}
 						resizableObject={this.resizableObject}
 						copyPasteMapping={copyPasteMapping}
-						prefix='svg-'
+						prefix='s-'
 						inlineStylesTargets={inlineStylesTargets}
 						onModalOpen={() => this.setState({ isOpen: true })}
 						{...this.props}
@@ -256,7 +261,7 @@ class edit extends MaxiBlockComponent {
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
-						prefix='svg-'
+						prefix='s-'
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />
@@ -289,11 +294,11 @@ class edit extends MaxiBlockComponent {
 							deviceType={deviceType}
 							defaultSize={{
 								width: `${getLastBreakpointAttribute({
-									target: 'svg-width',
+									target: 's_w',
 									breakpoint: deviceType || 'general',
 									attributes,
 								})}${getLastBreakpointAttribute({
-									target: 'svg-width-unit',
+									target: 's_w.u',
 									breakpoint: deviceType || 'general',
 									attributes,
 								})}`,

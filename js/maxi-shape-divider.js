@@ -18,14 +18,9 @@ const shapeDivider = () => {
 
 		if (shapeData !== null) {
 			// Shape Divider
-			if (
-				shapeData['shape-divider-top-effects-status'] &&
-				shapeData['shape-divider-top-status']
-			) {
-				const shapeDividerTopHeight =
-					shapeData['shape-divider-top-height'];
-				const shapeDividerTopHeightUnit =
-					shapeData['shape-divider-top-height-unit'];
+			if (shapeData['sdt_ef.s'] && shapeData['sdt.s']) {
+				const shapeDividerTopHeight = shapeData.sdt_h;
+				const shapeDividerTopHeightUnit = shapeData['sdt_h.u'];
 				const target = document.querySelector(
 					`#${shapeID} > .maxi-shape-divider.maxi-shape-divider__top`
 				);
@@ -40,14 +35,9 @@ const shapeDivider = () => {
 				});
 			}
 
-			if (
-				shapeData['shape-divider-bottom-effects-status'] &&
-				shapeData['shape-divider-bottom-status']
-			) {
-				const shapeDividerBottomHeight =
-					shapeData['shape-divider-bottom-height'];
-				const shapeDividerBottomHeightUnit =
-					shapeData['shape-divider-bottom-height-unit'];
+			if (shapeData['sdb_ef.s'] && shapeData['sdb.s']) {
+				const shapeDividerBottomHeight = shapeData.sdb_h;
+				const shapeDividerBottomHeightUnit = shapeData['sdb_h.u'];
 				const target = document.querySelector(
 					`#${shapeID} > .maxi-shape-divider.maxi-shape-divider__bottom`
 				);

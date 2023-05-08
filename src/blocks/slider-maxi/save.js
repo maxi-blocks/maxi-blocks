@@ -35,14 +35,7 @@ const save = props => {
 		navigationArrowSecondIconContent,
 		navigationDotIconContent,
 	] = getAttributesValue({
-		target: [
-			'slider-transition',
-			'slider-transition-speed',
-			'slider-autoplay-speed',
-			'navigation-arrow-first-icon-content',
-			'navigation-arrow-second-icon-content',
-			'navigation-dot-icon-content',
-		],
+		target: ['_slt', '_sts', '_sas', 'naf-i_c', 'nas-i_c', 'nd-i_c'],
 		props: attributes,
 	});
 
@@ -74,7 +67,7 @@ const save = props => {
 				/>
 				<div className='maxi-slider-block__nav'>
 					{getAttributesValue({
-						target: 'navigation-arrow-first-icon-content',
+						target: 'naf-i_c',
 						attributes,
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
@@ -82,7 +75,7 @@ const save = props => {
 						</span>
 					)}
 					{getAttributesValue({
-						target: 'navigation-arrow-second-icon-content',
+						target: 'nas-i_c',
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
 							<RawHTML>
@@ -91,7 +84,7 @@ const save = props => {
 						</span>
 					)}
 					{getAttributesValue({
-						target: 'navigation-dot-icon-content',
+						target: 'nd-i_c',
 						attributes,
 					}) && (
 						<div className='maxi-slider-block__dots'>

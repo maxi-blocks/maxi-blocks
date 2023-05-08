@@ -16,10 +16,15 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { buttonContent, buttonSkin, placeholder, skin } = attributes;
+	const {
+		_bc: buttonContent,
+		_bus: buttonSkin,
+		pla: placeholder,
+		skin,
+	} = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
 	const [iconContent, iconPosition] = getAttributesValue({
-		target: ['icon-content', 'icon-position'],
+		target: ['i_c', 'i_pos'],
 		props: attributes,
 	});
 

@@ -31,7 +31,7 @@ const PlaceholderColorControl = ({
 			value={placeholder}
 			onChange={placeholder =>
 				onChange({
-					placeholder,
+					pla: placeholder,
 				})
 			}
 		/>
@@ -40,23 +40,23 @@ const PlaceholderColorControl = ({
 				label={__('Font', 'maxi-blocks')}
 				className='maxi-typography-control__color'
 				color={getLastBreakpointAttribute({
-					target: 'placeholder-color',
+					target: 'pla_cc',
 					breakpoint: deviceType,
 					attributes,
 				})}
-				prefix='placeholder-'
+				prefix='pla-'
 				paletteColor={getLastBreakpointAttribute({
-					target: 'placeholder-palette-color',
+					target: 'pla_pc',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: 'placeholder-palette-opacity',
+					target: 'pla_po',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				paletteStatus={getLastBreakpointAttribute({
-					target: 'placeholder-palette-status',
+					target: 'pla_ps',
 					breakpoint: deviceType,
 					attributes,
 				})}
@@ -74,30 +74,14 @@ const PlaceholderColorControl = ({
 					paletteOpacity,
 				}) => {
 					onChange({
-						[getAttributeKey(
-							'_cc',
-							false,
-							'placeholder-',
-							deviceType
-						)]: color,
-						[getAttributeKey(
-							'_pc',
-							false,
-							'placeholder-',
-							deviceType
-						)]: paletteColor,
-						[getAttributeKey(
-							'_ps',
-							false,
-							'placeholder-',
-							deviceType
-						)]: paletteStatus,
-						[getAttributeKey(
-							'_po',
-							false,
-							'placeholder-',
-							deviceType
-						)]: paletteOpacity,
+						[getAttributeKey('_cc', false, 'pla-', deviceType)]:
+							color,
+						[getAttributeKey('_pc', false, 'pla-', deviceType)]:
+							paletteColor,
+						[getAttributeKey('_ps', false, 'pla-', deviceType)]:
+							paletteStatus,
+						[getAttributeKey('_po', false, 'pla-', deviceType)]:
+							paletteOpacity,
 					});
 					cleanInlineStyles(
 						' .maxi-search-block__input',

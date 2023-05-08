@@ -23,18 +23,17 @@ const NavigationControl = props => {
 	const { className, onChange, deviceType } = props;
 
 	const classes = classnames('maxi-slider-navigation', className);
-	const dotPrefix = 'navigation-dot-';
-	const arrowPrefix = 'navigation-arrow-';
+	const dotPrefix = 'nd';
+	const arrowPrefix = 'na';
 
 	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'both-status',
-		prefix: arrowPrefix,
+		target: 'nab.s',
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
 	});
 	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'status',
+		target: '.s',
 		prefix: dotPrefix,
 		breakpoint: deviceType,
 		props,
@@ -48,7 +47,7 @@ const NavigationControl = props => {
 				selected={arrowsEnabled}
 				onChange={val =>
 					onChange({
-						[`${arrowPrefix}both-status-${deviceType}`]: val,
+						[`${arrowPrefix}b.s-${deviceType}`]: val,
 					})
 				}
 			/>
@@ -56,7 +55,7 @@ const NavigationControl = props => {
 				label={__('Enable dots')}
 				selected={dotsEnabled}
 				onChange={val =>
-					onChange({ [`${dotPrefix}status-${deviceType}`]: val })
+					onChange({ [`${dotPrefix}.s-${deviceType}`]: val })
 				}
 			/>
 			{arrowsEnabled && (
@@ -82,11 +81,10 @@ const NavigationControl = props => {
 						onChange({
 							[`${arrowPrefix}_pos${deviceType}`]: val,
 							...(val === 'inside' && {
-								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]:
-									-40,
+								[`${arrowPrefix}b-i_sh-${deviceType}`]: -40,
 							}),
 							...(val === 'outside' && {
-								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]: 10,
+								[`${arrowPrefix}b-i_sh-${deviceType}`]: 10,
 							}),
 						});
 					}}
@@ -115,10 +113,10 @@ const NavigationControl = props => {
 						onChange({
 							[`${dotPrefix}_pos${deviceType}`]: val,
 							...(val === 'inside' && {
-								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 85,
+								[`${dotPrefix}-i_sv-${deviceType}`]: 85,
 							}),
 							...(val === 'outside' && {
-								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 110,
+								[`${dotPrefix}-i_sv-${deviceType}`]: 110,
 							}),
 						});
 					}}

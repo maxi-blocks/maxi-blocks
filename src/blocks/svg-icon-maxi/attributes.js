@@ -9,7 +9,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const prefix = 'svg-';
+const prefix = 's-';
 const attributes = {
 	...attributesData.global,
 
@@ -20,10 +20,10 @@ const attributes = {
 		type: 'boolean',
 		default: true,
 	},
-	svgType: {
+	_st: {
 		type: 'string',
 	},
-	content: {
+	_c: {
 		type: 'string',
 	},
 	altTitle: { type: 'string' },
@@ -32,7 +32,7 @@ const attributes = {
 	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
-		'alignment-general': {
+		'_a-general': {
 			type: 'string',
 			default: 'center',
 		},
@@ -44,7 +44,7 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}background-pac-general`]: 4 },
+		diffValAttr: { [`${prefix}bc_pc-general`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,

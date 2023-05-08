@@ -6,7 +6,7 @@ import * as attributesData from '../../extensions/attributes/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 import { customCss, transition } from './data';
 
-const prefix = 'video-';
+const prefix = 'v-';
 
 const attributes = {
 	...attributesData.global,

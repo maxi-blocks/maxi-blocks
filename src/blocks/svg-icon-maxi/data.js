@@ -29,7 +29,7 @@ import { SvgColorControl } from './components';
 const blockClass = ' .maxi-svg-icon-block';
 const iconClass = `${blockClass}__icon`;
 
-const prefix = 'svg-';
+const prefix = 's-';
 
 /**
  * Data object
@@ -38,7 +38,7 @@ const name = 'svg-icon-maxi';
 const copyPasteMapping = {
 	_exclude: ['content', 'svgType'],
 	settings: {
-		'Icon content': ['svgType', 'content'],
+		'Icon content': ['_st', '_c'],
 		Alignment: {
 			groupAttributes: 'alignment',
 		},
@@ -50,7 +50,7 @@ const copyPasteMapping = {
 		},
 		'Icon colour': {
 			group: {
-				'Icon hover status': 'svg-status-hover',
+				'Icon hover status': 's.sh',
 				'Fill colour': { props: 'svg-fill', isPalette: true },
 				'Line colour': { label: 'svg-line', isPalette: true },
 				'Fill hover colour': {
@@ -172,7 +172,7 @@ const transition = {
 			title: 'Background',
 			target: iconClass,
 			property: 'background',
-			hoverProp: `${prefix}background-status-hover`,
+			hoverProp: `${prefix}b.sh`,
 		},
 	},
 };
@@ -185,11 +185,15 @@ const interactionBuilderSettings = {
 				transition.block['colour two'].target,
 			],
 			transitionTrigger: `${iconClass} svg`,
-			hoverProp: 'svg-status-hover',
+			hoverProp: 's.sh',
 			attrGroupName: 'svg',
 			component: props => {
 				const { attributes, onChange } = props;
-				const { blockStyle, content, svgType } = attributes;
+				const {
+					_bs: blockStyle,
+					_c: content,
+					_st: svgType,
+				} = attributes;
 
 				return (
 					<SvgColorControl
@@ -209,7 +213,7 @@ const interactionBuilderSettings = {
 				getSVGStyles({
 					...props,
 					target: ' .maxi-svg-icon-block__icon',
-					prefix: 'svg-',
+					prefix: 's-',
 				}),
 		},
 		// TODO: fix #3619
@@ -238,13 +242,13 @@ const interactionBuilderSettings = {
 		{
 			label: __('Icon background', 'maxi-blocks'),
 			transitionTarget: transition.block.background.target,
-			hoverProp: 'svg-background-status-hover',
+			hoverProp: 's-b.sh',
 			attrGroupName: [
 				'background',
 				'backgroundColor',
 				'backgroundGradient',
 			],
-			prefix: 'svg-',
+			prefix: 's-',
 			component: props => (
 				<BackgroundControl
 					{...props}
@@ -263,7 +267,7 @@ const interactionBuilderSettings = {
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'svg-border-status-hover',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
-			prefix: 'svg-',
+			prefix: 's-',
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',

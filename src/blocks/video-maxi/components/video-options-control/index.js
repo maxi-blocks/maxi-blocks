@@ -12,11 +12,11 @@ import { getParsedVideoUrl } from '../../../../extensions/video';
 const VideoOptionsControl = props => {
 	const {
 		onChange,
-		isAutoplay,
-		isMuted,
-		isLoop,
-		showPlayerControls,
-		videoType,
+		_ia: isAutoplay,
+		_im: isMuted,
+		_il: isLoop,
+		_spc: showPlayerControls,
+		_vt: videoType,
 	} = props;
 
 	const onChangeValue = obj => {
@@ -32,7 +32,7 @@ const VideoOptionsControl = props => {
 					selected={isAutoplay}
 					onChange={val =>
 						onChangeValue({
-							isAutoplay: val,
+							_ia: val,
 						})
 					}
 				/>
@@ -43,7 +43,7 @@ const VideoOptionsControl = props => {
 				selected={isMuted}
 				onChange={val =>
 					onChangeValue({
-						isMuted: val,
+						_im: val,
 					})
 				}
 			/>
@@ -53,7 +53,7 @@ const VideoOptionsControl = props => {
 				selected={isLoop}
 				onChange={val =>
 					onChangeValue({
-						isLoop: val,
+						_il: val,
 					})
 				}
 			/>
@@ -64,13 +64,13 @@ const VideoOptionsControl = props => {
 				onChange={val => {
 					if (videoType === 'direct' && !val) {
 						onChangeValue({
-							showPlayerControls: val,
-							isAutoplay: true,
+							_spc: val,
+							_ia: true,
 						});
 						return;
 					}
 					onChangeValue({
-						showPlayerControls: val,
+						_spc: val,
 					});
 				}}
 			/>

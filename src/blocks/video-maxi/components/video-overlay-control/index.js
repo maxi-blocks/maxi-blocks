@@ -38,33 +38,28 @@ const OverlayColor = props => {
 			className='maxi-video-overlay-control__overlay-background-colour'
 			label={__('Overlay background', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
-				target: 'overlay-background-color-custom-color',
+				target: 'o-bc_cc',
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			defaultColor={getDefaultAttribute(
-				getAttributeKey(
-					'overlay-background-color-custom-color',
-					isHover,
-					'',
-					breakpoint
-				)
+				getAttributeKey('o-bc_cc', isHover, '', breakpoint)
 			)}
 			paletteStatus={getLastBreakpointAttribute({
-				target: 'overlay-background-palette-status',
+				target: 'o-bc_ps',
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			paletteColor={getLastBreakpointAttribute({
-				target: 'overlay-background-palette-color',
+				target: 'o-bc_pc',
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			paletteOpacity={getLastBreakpointAttribute({
-				target: 'overlay-background-palette-opacity',
+				target: 'o-bc_po',
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -86,30 +81,14 @@ const OverlayColor = props => {
 				color,
 			}) => {
 				onChange({
-					[getAttributeKey(
-						'overlay-background-palette-status',
-						isHover,
-						'',
-						breakpoint
-					)]: paletteStatus,
-					[getAttributeKey(
-						'overlay-background-palette-color',
-						isHover,
-						'',
-						breakpoint
-					)]: paletteColor,
-					[getAttributeKey(
-						'overlay-background-palette-opacity',
-						isHover,
-						'',
-						breakpoint
-					)]: paletteOpacity,
-					[getAttributeKey(
-						'overlay-background-color-custom-color',
-						isHover,
-						'',
-						breakpoint
-					)]: color,
+					[getAttributeKey('o-bc_ps', isHover, '', breakpoint)]:
+						paletteStatus,
+					[getAttributeKey('o-bc_pc', isHover, '', breakpoint)]:
+						paletteColor,
+					[getAttributeKey('o-bc_po', isHover, '', breakpoint)]:
+						paletteOpacity,
+					[getAttributeKey('o-bc_cc', isHover, '', breakpoint)]:
+						color,
 				});
 				cleanInlineStyles &&
 					cleanInlineStyles(inlineStylesTargets.overlay);
@@ -137,15 +116,16 @@ const VideoOverlayControl = props => {
 		disableUploadImage = false,
 		disableHover = false,
 		breakpoint,
+		altSelector,
+		mediaID,
 	} = props;
-	const { mediaID, altSelector, overLayBackgroundStatusHover } =
-		getAttributesValue({
-			target: ['mediaID', 'overlaySelector', 'background-status-hover'],
-			props,
-			prefix: 'overlay-',
-		});
+	const overLayBackgroundStatusHover = getAttributesValue({
+		target: 'b.sh',
+		props,
+		prefix: 'o-',
+	});
 
-	const mediaPrefix = 'overlay-media-';
+	const mediaPrefix = 'o-m-';
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -178,7 +158,7 @@ const VideoOverlayControl = props => {
 					className='maxi-video-overlay-control__hide-image'
 					label={__('Hide image(icon only)', 'maxi-blocks')}
 					selected={hideImage}
-					onChange={val => onChange({ hideImage: val })}
+					onChange={val => onChange({ _hi: val })}
 				/>
 			)}
 			{!hideImage && (
@@ -195,9 +175,9 @@ const VideoOverlayControl = props => {
 									null;
 
 								onChange({
-									'overlay-mediaID': val.id,
-									'overlay-mediaURL': val.url,
-									'overlay-mediaAlt':
+									o_mi: val.id,
+									o_mu: val.url,
+									o_mal:
 										altSelector === 'wordpress' && !alt
 											? val.title
 											: alt,
@@ -205,9 +185,9 @@ const VideoOverlayControl = props => {
 							}}
 							onRemoveImage={() =>
 								onChange({
-									'overlay-mediaID': null,
-									'overlay-mediaURL': '',
-									'overlay-mediaAlt': '',
+									o_mi: null,
+									o_mu: '',
+									o_mal: '',
 								})
 							}
 						/>
@@ -224,7 +204,7 @@ const VideoOverlayControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${mediaPrefix}_w-unit-${breakpoint}`]: val,
+								[`${mediaPrefix}_w.u-${breakpoint}`]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -247,9 +227,9 @@ const VideoOverlayControl = props => {
 									getDefaultAttribute(
 										`${mediaPrefix}_w-${breakpoint}`
 									),
-								[`${mediaPrefix}_w-unit-${breakpoint}`]:
+								[`${mediaPrefix}_w.u-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}_w-unit-${breakpoint}`
+										`${mediaPrefix}_w.u-${breakpoint}`
 									),
 								isReset: true,
 							});
@@ -270,7 +250,7 @@ const VideoOverlayControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${mediaPrefix}_h-unit-${breakpoint}`]: val,
+								[`${mediaPrefix}_h.u-${breakpoint}`]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -293,9 +273,9 @@ const VideoOverlayControl = props => {
 									getDefaultAttribute(
 										`${mediaPrefix}_h-${breakpoint}`
 									),
-								[`${mediaPrefix}_h-unit-${breakpoint}`]:
+								[`${mediaPrefix}_h.u-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}_h-unit-${breakpoint}`
+										`${mediaPrefix}_h.u-${breakpoint}`
 									),
 								isReset: true,
 							});
@@ -307,7 +287,7 @@ const VideoOverlayControl = props => {
 					<OpacityControl
 						label={__('Image opacity', 'maxi-blocks')}
 						opacity={getLastBreakpointAttribute({
-							target: 'opacity',
+							target: '_o',
 							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
@@ -340,8 +320,7 @@ const VideoOverlayControl = props => {
 										selected={overLayBackgroundStatusHover}
 										onChange={val =>
 											onChange({
-												'overlay-background-status-hover':
-													val,
+												'o-b.sh': val,
 											})
 										}
 									/>

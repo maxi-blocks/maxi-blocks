@@ -6,30 +6,26 @@ import { createSelectors } from '../../extensions/attributes/custom-css';
  */
 const name = 'slider-maxi';
 const copyPasteMapping = {
-	_exclude: [
-		'active-navigation-dot-icon-content',
-		'navigation-arrow-first-icon-content',
-		'navigation-arrow-second-icon-content',
-	],
+	_exclude: ['a-nd-i_c', 'naf-i_c', 'nas-i_c'],
 	settings: {
 		'Slider settings': {
 			group: {
-				'Edit view': 'isEditView',
-				Loop: 'isLoop',
-				Autoplay: 'isAutoplay',
-				'Pause on hover': 'pauseOnHover',
-				'Pause on interaction': 'pauseOnInteraction',
-				'Autoplay speed': 'slider-autoplay-speed',
-				'Transition type': 'slider-transition',
-				'Transition speed': 'slider-transition-speed',
+				'Edit view': '_iev',
+				Loop: '_il',
+				Autoplay: '_ia',
+				'Pause on hover': '_poh',
+				'Pause on interaction': '_poi',
+				'Autoplay speed': '_sas',
+				'Transition type': '_slt',
+				'Transition speed': '_sts',
 			},
 		},
 		Navigation: {
 			group: {
-				'Enable arrows': 'navigation-arrow-both-status',
-				'Enable dots': 'navigation-dot-status',
-				'Arrows position': 'navigation-a.pos',
-				'Dots position': 'navigation-dot-position',
+				'Enable arrows': 'nab.s',
+				'Enable dots': 'nd.s',
+				'Arrows position': 'na_pos',
+				'Dots position': 'nd_pos',
 			},
 			hasBreakpoints: true,
 		},

@@ -127,7 +127,7 @@ const Inspector = props => {
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}
-												prefix='navigation-arrow-both-icon-'
+												prefix='nab-i-'
 											/>
 										),
 									}),
@@ -161,7 +161,7 @@ const Inspector = props => {
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}
-												prefix='navigation-dot-icon-'
+												prefix='nd-i-'
 											/>
 										),
 									}),

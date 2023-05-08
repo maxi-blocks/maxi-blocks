@@ -568,7 +568,7 @@ const LibraryContainer = props => {
 		);
 
 		if (isValidTemplate(finalSvgCode)) {
-			onSelect({ i_c: finalSvgCode });
+			onSelect({ _c: finalSvgCode });
 			onSelect({ _st: svgType });
 			onRequestClose();
 		}

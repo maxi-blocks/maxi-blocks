@@ -23,7 +23,7 @@ const SvgColorControl = props => {
 		disableHover = false,
 	} = props;
 	const hoverStatus = getAttributesValue({
-		target: 'svg-status-hover',
+		target: 's.sh',
 		props,
 	});
 
@@ -89,7 +89,7 @@ const SvgColorControl = props => {
 								className='maxi-svg-status-hover'
 								onChange={val => {
 									maxiSetAttributes({
-										'svg-status-hover': val,
+										's.sh': val,
 									});
 								}}
 							/>

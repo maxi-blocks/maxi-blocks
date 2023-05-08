@@ -59,10 +59,10 @@ const save = props => {
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{addAlt(
-					attributes.content,
+					attributes._c,
 					attributes.altTitle,
 					attributes.altDescription,
-					attributes.uniqueID
+					attributes._uid
 				)}
 			</RawHTML>
 		</MaxiBlock.save>

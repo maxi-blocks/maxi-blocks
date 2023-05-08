@@ -41,9 +41,9 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } =
+	const [blockStyle, customLabel, isFirstOnHierarchy, svgType] =
 		getAttributesValue({
-			target: ['_bs', 'customLabel', '_ioh', 'svgType'],
+			target: ['_bs', '_cl', '_ioh', '_st'],
 			props: attributes,
 		});
 	const { selectors, categories } = customCss;
@@ -57,7 +57,7 @@ const Inspector = props => {
 						customLabel={customLabel}
 						onChange={customLabel =>
 							maxiSetAttributes({
-								customLabel,
+								_cl: customLabel,
 							})
 						}
 					/>
@@ -76,12 +76,12 @@ const Inspector = props => {
 								svgLineColor,
 							] = getAttributesValue({
 								target: [
-									'svg-fill-palette-color',
-									'svg-fill-palette-opacity',
-									'svg-fill-color',
-									'svg-line-palette-color',
-									'svg-line-palette-opacity',
-									'svg-line-color',
+									's-f_pc',
+									's-f_po',
+									's-f_cc',
+									's-l_pc',
+									's-l_po',
+									's-l_cc',
 								],
 								props: attributes,
 							});
@@ -101,18 +101,18 @@ const Inspector = props => {
 
 							maxiSetAttributes({
 								...obj,
-								content: setSVGContentWithBlockStyle(
-									attributes.content,
+								_c: setSVGContentWithBlockStyle(
+									attributes._c,
 									getAttributesValue({
 										target: '_ps',
-										prefix: 'svg-fill-',
+										prefix: 's-f-',
 										props: attributes,
 									})
 										? fillColorStr
 										: svgFillColor,
 									getAttributesValue({
 										target: '_ps',
-										prefix: 'svg-line-',
+										prefix: 's-l-',
 										props: attributes,
 									})
 										? lineColorStr
@@ -155,7 +155,7 @@ const Inspector = props => {
 											/>
 										),
 									},
-									attributes.content && {
+									attributes._c && {
 										label: __('Icon colour', 'maxi-blocks'),
 										content: (
 											<SvgColorControl
@@ -185,16 +185,16 @@ const Inspector = props => {
 													});
 												}}
 												blockStyle={blockStyle}
-												content={attributes.content}
+												content={attributes._c}
 											/>
 										),
 										ignoreIndicator: [
-											`svg-width-${deviceType}`,
-											`svg-stroke-${deviceType}`,
+											`s_w-${deviceType}`,
+											`s-str-${deviceType}`,
 										],
 									},
 
-									attributes.content &&
+									attributes._c &&
 										svgType !== 'Shape' && {
 											label: __(
 												'Icon line width',
@@ -206,22 +206,22 @@ const Inspector = props => {
 														attributes,
 														'svg'
 													)}
-													prefix='svg-'
+													prefix='s-'
 													onChange={obj => {
 														maxiSetAttributes(obj);
 													}}
-													content={attributes.content}
+													content={attributes._c}
 													breakpoint={deviceType}
 												/>
 											),
 											ignoreIndicator: [
-												'svg-fill-palette-color',
-												'svg-fill-palette-status',
-												'svg-fill-color',
-												'svg-line-palette-color',
-												'svg-line-palette-status',
-												'svg-line-color',
-												`svg-width-${deviceType}`,
+												's-f_pc',
+												's-f_ps',
+												's-f_cc',
+												's-l_pc',
+												's-l_ps',
+												's-l_cc',
+												`s_w-${deviceType}`,
 											].map(attributeKey =>
 												getAttributeKey(attributeKey)
 											),
@@ -235,19 +235,19 @@ const Inspector = props => {
 										disableVideo: true,
 										disableClipPath: true,
 										disableSVG: true,
-										prefix: 'svg-',
+										prefix: 's-',
 										inlineTarget:
 											inlineStylesTargets.background,
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: 'svg-',
+										prefix: 's-',
 									}),
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'svg-',
+										prefix: 's-',
 									}),
-									attributes.content && {
+									attributes._c && {
 										label: __(
 											'Height / Width',
 											'maxi-blocks'
@@ -261,30 +261,30 @@ const Inspector = props => {
 														attributes,
 														'svg'
 													)}
-													content={attributes.content}
+													content={attributes._c}
 													onChange={obj => {
 														maxiSetAttributes(obj);
 													}}
 													breakpoint={deviceType}
-													prefix='svg-'
+													prefix='s-'
 												/>
 											</ResponsiveTabsControl>
 										),
 										ignoreIndicator: [
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-color',
-											`svg-stroke-${deviceType}`,
+											's-f_pc',
+											's-f_ps',
+											's-f_cc',
+											's-l_pc',
+											's-l_ps',
+											's-l_cc',
+											`s-str-${deviceType}`,
 										].map(attributeKey =>
 											getAttributeKey(attributeKey)
 										),
 									},
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'svg-',
+										prefix: 's-',
 									}),
 								]}
 							/>

@@ -17,9 +17,9 @@ const inputClass = `${blockClass}__input`;
 const defaultIconClass = `${buttonClass}__default-icon`;
 const closeIconClass = `${buttonClass}__close-icon`;
 
-const buttonPrefix = 'button-';
-const closeIconPrefix = 'close-';
-const inputPrefix = 'input-';
+const buttonPrefix = 'bt-';
+const closeIconPrefix = 'cl-';
+const inputPrefix = 'in-';
 
 /**
  * Data object
@@ -31,7 +31,7 @@ const prefixes = {
 	inputPrefix,
 };
 const copyPasteMapping = {
-	_exclude: ['icon-content', 'close-icon-content', 'placeholder'],
+	_exclude: ['i_c', 'cl-i_c', 'pla'],
 	block: {
 		Border: {
 			template: 'border',
@@ -50,9 +50,9 @@ const copyPasteMapping = {
 		Skin: 'skin',
 		Button: {
 			group: {
-				Skin: 'bs',
-				'Button text': 'bc',
-				'Button text close': 'bcc',
+				Skin: 'buttonSkin',
+				'Button text': 'buttonContent',
+				'Button text close': 'buttonContentClose',
 			},
 		},
 		Icon: {
@@ -237,14 +237,14 @@ const transition = {
 	button: {
 		...createIconTransitions({
 			target: defaultIconClass,
-			prefix: 'icon-',
+			prefix: 'i-',
 			titlePrefix: 'icon',
 			disableBackground: true,
 			disableBorder: true,
 		}),
 		...createIconTransitions({
 			target: closeIconClass,
-			prefix: `${closeIconPrefix}icon-`,
+			prefix: `${closeIconPrefix}i-`,
 			titlePrefix: 'close icon',
 			disableBackground: true,
 			disableBorder: true,
@@ -253,19 +253,19 @@ const transition = {
 			title: 'Typography',
 			target: `${buttonClass}__content`,
 			property: false,
-			hoverProp: `${buttonPrefix}typography-status-hover`,
+			hoverProp: `${buttonPrefix}t.sh`,
 		},
 		border: {
 			title: 'Border',
 			target: buttonClass,
-			property: ['border', 'border-radius'],
+			property: ['bo', 'bo.ra'],
 			prefix: buttonPrefix,
 		},
 		'button background': {
 			title: 'button background',
 			target: buttonClass,
 			property: 'background',
-			hoverProp: `${buttonPrefix}background-status-hover`,
+			hoverProp: `${buttonPrefix}b.sh`,
 		},
 	},
 	input: {
@@ -273,19 +273,19 @@ const transition = {
 			title: 'Typography',
 			target: inputClass,
 			property: false,
-			hoverProp: `${inputPrefix}typography-status-hover`,
+			hoverProp: `${inputPrefix}t.sh`,
 		},
 		border: {
 			title: 'Border',
 			target: inputClass,
-			property: ['border', 'border-radius'],
+			property: ['bo', 'bo.ra'],
 			hoverProp: `${inputPrefix}bo.sh`,
 		},
 		'input background': {
 			title: 'Input background',
 			target: inputClass,
 			property: 'background',
-			hoverProp: `${inputPrefix}background-status-hover`,
+			hoverProp: `${inputPrefix}b.sh`,
 		},
 		'icon reveal appear': {
 			title: 'Icon reveal appear',

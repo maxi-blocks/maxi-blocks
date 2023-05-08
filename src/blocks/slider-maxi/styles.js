@@ -40,7 +40,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -50,7 +50,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -86,7 +86,7 @@ const getNormalObject = props => {
 
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.s', 'bs.s'],
+		target: ['bo.sh', 'bs.sh'],
 		props,
 		isHover: true,
 	});
@@ -103,7 +103,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -112,15 +112,15 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 	};
 
 	return response;
 };
 
-const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
-	const iconPrefix = `${prefix}icon-`;
+const getIconStyles = (props, prefix = 'nab-') => {
+	const iconPrefix = `${prefix}i-`;
 	const [
 		backgroundStatus,
 		backgroundActiveMediaGeneral,
@@ -128,10 +128,10 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 		borderStatus,
 	] = getAttributesValue({
 		target: [
-			'background-status',
-			'background-active-media-general',
-			`${iconPrefix}shadow-status`,
-			`${iconPrefix}border-status`,
+			'b.s',
+			'b_am-general',
+			`${iconPrefix}bs.s`,
+			`${iconPrefix}bo.s`,
 		],
 		props,
 	});
@@ -151,7 +151,7 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 						'backgroundColor',
 					]),
 					prefix: iconPrefix,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					isIcon: true,
 				}),
 			},
@@ -180,7 +180,7 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 					),
 				},
 				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		border:
 			borderStatus &&
@@ -194,7 +194,7 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 					),
 				},
 				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		padding: getMarginPaddingStyles({
 			obj: {
@@ -208,12 +208,9 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 };
 
 const getIconHoverStyles = (props, prefix) => {
-	const iconPrefix = `${prefix}icon-`;
+	const iconPrefix = `${prefix}i-`;
 	const [iconHoverStatus, iconHoverActiveMedia] = getAttributesValue({
-		target: [
-			`${iconPrefix}status-hover`,
-			`${iconPrefix}background-active-media-general-hover`,
-		],
+		target: [`${iconPrefix}.sh`, `${iconPrefix}b_am-general.h`],
 		props,
 	});
 
@@ -233,7 +230,7 @@ const getIconHoverStyles = (props, prefix) => {
 							true
 						),
 						prefix: iconPrefix,
-						blockStyle: props.blockStyle,
+						blockStyle: props._bs,
 						isHover: true,
 						isIcon: true,
 					}),
@@ -270,7 +267,7 @@ const getIconHoverStyles = (props, prefix) => {
 						),
 					},
 					prefix: iconPrefix,
-					blockStyle: props.blockStyle,
+					blockStyle: props._bs,
 					isHover: true,
 				}),
 		  }
@@ -279,18 +276,13 @@ const getIconHoverStyles = (props, prefix) => {
 	return response;
 };
 
-const getIconSpacing = (
-	props,
-	icon,
-	isHover = false,
-	prefix = 'navigation-arrow-both-'
-) => {
+const getIconSpacing = (props, icon, isHover = false, prefix = 'nab-') => {
 	const response = {
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', isHover, prefix),
 			},
-			prefix: `${prefix}icon-`,
+			prefix: `${prefix}i-`,
 		}),
 	};
 
@@ -303,14 +295,14 @@ const getIconSpacing = (
 		responsive[breakpoint] = {};
 
 		const horizontalSpacing = getLastBreakpointAttribute({
-			target: 'icon-spacing-horizontal',
+			target: 'i_sh',
 			prefix,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 		const verticalSpacing = getLastBreakpointAttribute({
-			target: 'icon-spacing-vertical',
+			target: 'i_sv',
 			prefix,
 			breakpoint,
 			attributes: props,
@@ -336,11 +328,7 @@ const getIconSpacing = (
 	return response;
 };
 
-const getIconSpacingBetween = (
-	props,
-	prefix = 'navigation-dot-',
-	isHover = false
-) => {
+const getIconSpacingBetween = (props, prefix = 'nd-', isHover = false) => {
 	const response = {};
 
 	const responsive = {
@@ -354,7 +342,7 @@ const getIconSpacingBetween = (
 		if (
 			!isNil(
 				getAttributesValue({
-					target: 'icon-spacing-between',
+					target: 'i_sb',
 					props,
 					isHover,
 					prefix,
@@ -365,7 +353,7 @@ const getIconSpacingBetween = (
 			responsive[breakpoint][
 				'margin-right'
 			] = `${getLastBreakpointAttribute({
-				target: 'icon-spacing-between',
+				target: 'i_sb',
 				prefix,
 				breakpoint,
 				attributes: props,
@@ -404,14 +392,14 @@ const getDisabledStyles = (props, prefix) => {
 const getIconObject = (props, prefix, target, isHover = false) => {
 	const hoverFlag = isHover ? ':hover' : '';
 	const fullTarget = `${target}${hoverFlag}`;
-	const isActive = prefix.includes('active');
+	const isActive = prefix.includes('a-');
 
 	const response = {
 		...getSVGStyles({
 			obj: props,
 			target: fullTarget,
-			blockStyle: props.blockStyle,
-			prefix: `${prefix}icon-`,
+			blockStyle: props._bs,
+			prefix: `${prefix}i-`,
 			isHover,
 		}),
 		[` ${fullTarget} svg path`]: getIconPathStyles(props, isHover, prefix),
@@ -463,12 +451,9 @@ const getArrowIconObject = (props, isHover = false) => {
 };
 
 const getDotsIconObject = props => {
-	const prefix = 'navigation-dot-';
+	const prefix = 'nd-';
 	const [dotIconHoverStatus, dotIconActiveStatus] = getAttributesValue({
-		target: [
-			'navigation-dot-icon-status-hover',
-			'active-navigation-dot-icon-status',
-		],
+		target: ['nd-i.sh', 'a-nd-i.s'],
 		props,
 	});
 
@@ -514,10 +499,10 @@ const getDotsIconObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, blockStyle } = props;
+	const { _uid: uniqueID, _bs: blockStyle } = props;
 
 	const arrowIconHoverStatus = getAttributesValue({
-		target: 'navigation-arrow-both-icon-status-hover',
+		target: 'nab-i.sh',
 		props,
 	});
 

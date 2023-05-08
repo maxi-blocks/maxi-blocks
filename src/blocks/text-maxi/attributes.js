@@ -23,7 +23,7 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	content: {
+	_c: {
 		type: 'string',
 		default: '',
 	},

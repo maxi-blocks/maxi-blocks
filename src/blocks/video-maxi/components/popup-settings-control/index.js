@@ -25,8 +25,8 @@ const PopupSettingsControl = props => {
 		clientId,
 		blockStyle,
 		onChange,
-		popAnimation,
-		popupRatio,
+		_pan: popAnimation,
+		_pra: popupRatio,
 	} = props;
 
 	return (
@@ -35,25 +35,23 @@ const PopupSettingsControl = props => {
 				className='maxi-video-options-control__lightbox-colour'
 				label={__('Lightbox background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
-					target: 'lightbox-background-color-custom-color',
+					target: 'lb-bc_cc',
 					breakpoint,
 					attributes: props,
 				})}
-				defaultColor={getDefaultAttribute(
-					`lightbox-background-color-${breakpoint}`
-				)}
+				defaultColor={getDefaultAttribute(`lb-bc_cc-${breakpoint}`)}
 				paletteStatus={getLastBreakpointAttribute({
-					target: 'lightbox-background-palette-status',
+					target: 'lb-bc_ps',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: 'lightbox-background-palette-color',
+					target: 'lb-bc_pc',
 					breakpoint,
 					attributes: props,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: 'lightbox-background-palette-opacity',
+					target: 'lb-bc_po',
 					breakpoint,
 					attributes: props,
 				})}
@@ -65,30 +63,14 @@ const PopupSettingsControl = props => {
 					color,
 				}) => {
 					onChange({
-						[getAttributeKey(
-							'_ps',
-							false,
-							'lightbox-background-',
-							breakpoint
-						)]: paletteStatus,
-						[getAttributeKey(
-							'_pc',
-							false,
-							'lightbox-background-',
-							breakpoint
-						)]: paletteColor,
-						[getAttributeKey(
-							'_po',
-							false,
-							'lightbox-background-',
-							breakpoint
-						)]: paletteOpacity,
-						[getAttributeKey(
-							'_cc',
-							false,
-							'lightbox-background-',
-							breakpoint
-						)]: color,
+						[getAttributeKey('_ps', false, 'lb-bc-', breakpoint)]:
+							paletteStatus,
+						[getAttributeKey('_pc', false, 'lb-bc-', breakpoint)]:
+							paletteColor,
+						[getAttributeKey('_po', false, 'lb-bc-', breakpoint)]:
+							paletteOpacity,
+						[getAttributeKey('_cc', false, 'lb-bc-', breakpoint)]:
+							color,
 					});
 				}}
 				disableImage
@@ -110,10 +92,10 @@ const PopupSettingsControl = props => {
 						value: 'initial',
 					},
 				]}
-				onChange={popupRatio => onChange({ popupRatio })}
+				onChange={popupRatio => onChange({ _pra: popupRatio })}
 				onReset={() =>
 					onChange({
-						popupRatio: getDefaultAttribute('popupRatio'),
+						_pra: getDefaultAttribute('_pra'),
 						isReset: true,
 					})
 				}
@@ -138,12 +120,12 @@ const PopupSettingsControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						popAnimation: val,
+						_pan: val,
 					})
 				}
 			/>
 			<VideoIconControl
-				prefix='close-'
+				prefix='cl-'
 				type='video-icon-close'
 				label={__('Lightbox close button', 'maxi-blocks')}
 				blockStyle={blockStyle}
@@ -154,7 +136,7 @@ const PopupSettingsControl = props => {
 					props,
 					['icon', 'iconHover'],
 					false,
-					'close-'
+					'cl-'
 				)}
 			/>
 		</>

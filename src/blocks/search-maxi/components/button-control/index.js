@@ -9,9 +9,9 @@ import { __ } from '@wordpress/i18n';
 import { SelectControl, TextControl } from '../../../../components';
 
 const ButtonControl = ({
-	buttonContent,
-	buttonContentClose,
-	buttonSkin,
+	_bc: buttonContent,
+	_bcc: buttonContentClose,
+	_bus: buttonSkin,
 	skin,
 	onChange,
 }) => {
@@ -33,7 +33,7 @@ const ButtonControl = ({
 				]}
 				onChange={buttonSkin =>
 					onChange({
-						buttonSkin,
+						_bus: buttonSkin,
 					})
 				}
 			/>
@@ -44,7 +44,7 @@ const ButtonControl = ({
 						value={buttonContent}
 						onChange={buttonContent =>
 							onChange({
-								buttonContent,
+								_bc: buttonContent,
 							})
 						}
 					/>
@@ -54,7 +54,7 @@ const ButtonControl = ({
 							value={buttonContentClose}
 							onChange={buttonContentClose =>
 								onChange({
-									buttonContentClose,
+									_bcc: buttonContentClose,
 								})
 							}
 						/>

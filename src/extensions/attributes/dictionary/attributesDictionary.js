@@ -378,6 +378,7 @@ export const prefixesDictionary = {
 	'icon-': 'i-',
 	'image-shape-': 'is-',
 	'image-': 'im-',
+	'input-': 'in-',
 	'lightbox-': 'lb-',
 	'list-': 'l-',
 	'map-': 'm-',
@@ -406,6 +407,7 @@ export const prefixesDictionary = {
 	'title-': 'ti-',
 	'transform-': 'tr-',
 	'typography-': 't-',
+	'video-': 'v-',
 };
 
 export const suffixesDictionary = {

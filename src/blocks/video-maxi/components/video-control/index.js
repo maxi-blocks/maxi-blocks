@@ -23,11 +23,11 @@ import { getDefaultAttribute } from '../../../../extensions/attributes';
 const VideoControl = props => {
 	const {
 		onChange,
-		url: videoUrl,
-		startTime,
-		endTime,
-		videoRatio,
-		playerType,
+		_u: videoUrl,
+		_sti: startTime,
+		_et: endTime,
+		_vr: videoRatio,
+		_pt: playerType,
 	} = props;
 
 	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
@@ -50,7 +50,7 @@ const VideoControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						playerType: val,
+						_pt: val,
 					})
 				}
 				selected={playerType}
@@ -74,12 +74,12 @@ const VideoControl = props => {
 					}
 
 					onChange({
-						url: val !== '' ? val : defaultURL,
-						embedUrl: getParsedVideoUrl({
+						_u: val !== '' ? val : defaultURL,
+						_eu: getParsedVideoUrl({
 							...props,
-							url: val !== '' ? val : defaultURL,
+							_u: val !== '' ? val : defaultURL,
 						}),
-						videoType: parseVideo(val).type,
+						_vt: parseVideo(val).type,
 					});
 				}}
 				validationText={validationText}
@@ -92,10 +92,10 @@ const VideoControl = props => {
 				onChangeValue={val => {
 					const safeVal = val !== undefined && val !== '' ? val : '';
 					onChange({
-						startTime: safeVal,
+						_sti: safeVal,
 						embedUrl: getParsedVideoUrl({
 							...props,
-							startTime: safeVal,
+							_sti: safeVal,
 						}),
 					});
 				}}
@@ -103,7 +103,7 @@ const VideoControl = props => {
 				max={999}
 				onReset={() =>
 					onChange({
-						startTime: '',
+						_sti: '',
 						isReset: true,
 					})
 				}
@@ -116,10 +116,10 @@ const VideoControl = props => {
 				onChangeValue={val => {
 					const safeVal = val !== undefined && val !== '' ? val : '';
 					onChange({
-						endTime: safeVal,
+						_et: safeVal,
 						embedUrl: getParsedVideoUrl({
 							...props,
-							endTime: safeVal,
+							_et: safeVal,
 						}),
 					});
 				}}
@@ -127,7 +127,7 @@ const VideoControl = props => {
 				max={999}
 				onReset={() =>
 					onChange({
-						endTime: '',
+						_et: '',
 						isReset: true,
 					})
 				}
@@ -143,10 +143,10 @@ const VideoControl = props => {
 						value: 'initial',
 					},
 				]}
-				onChange={videoRatio => onChange({ videoRatio })}
+				onChange={videoRatio => onChange({ _vr: videoRatio })}
 				onReset={() =>
 					onChange({
-						videoRatio: getDefaultAttribute('videoRatio'),
+						_vr: getDefaultAttribute('_vr'),
 						isReset: true,
 					})
 				}

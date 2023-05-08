@@ -35,13 +35,13 @@ const getWrapperObject = props => {
 					'borderRadius',
 				]),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -85,7 +85,7 @@ const getWrapperObject = props => {
 const getWrapperObjectHover = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
+			target: ['bo.sh', 'bs.sh', '_o.sh'],
 			props,
 			isHover: true,
 		});
@@ -102,7 +102,7 @@ const getWrapperObjectHover = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -111,7 +111,7 @@ const getWrapperObjectHover = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle: props._bs,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -128,22 +128,22 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
+				...getGroupAttributes(props, 'boxShadow', false, 's-'),
 			},
-			blockStyle: props.blockStyle,
-			prefix: 'svg-',
+			blockStyle: props._bs,
+			prefix: 's-',
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'margin', false, 'svg-'),
+				...getGroupAttributes(props, 'margin', false, 's-'),
 			},
-			prefix: 'svg-',
+			prefix: 's-',
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'padding', false, 'svg-'),
+				...getGroupAttributes(props, 'padding', false, 's-'),
 			},
-			prefix: 'svg-',
+			prefix: 's-',
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -151,15 +151,15 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					false,
-					'svg-'
+					's-'
 				),
 			},
-			blockStyle: props.blockStyle,
-			prefix: 'svg-',
+			blockStyle: props._bs,
+			prefix: 's-',
 		}),
 		...getSVGWidthStyles({
 			obj: getGroupAttributes(props, 'svg'),
-			prefix: 'svg-',
+			prefix: 's-',
 			iconWidthHeightRatio,
 		}),
 		...getBackgroundStyles({
@@ -167,10 +167,10 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 				props,
 				['background', 'backgroundColor', 'backgroundGradient'],
 				false,
-				'svg-'
+				's-'
 			),
-			blockStyle: props.blockStyle,
-			prefix: 'svg-',
+			blockStyle: props._bs,
+			prefix: 's-',
 		}),
 	};
 
@@ -179,10 +179,10 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.s', 'bs.s'],
+		target: ['bo.sh', 'bs.sh'],
 		props,
 		isHover: true,
-		prefix: 'svg-',
+		prefix: 's-',
 	});
 
 	const response = {
@@ -194,33 +194,33 @@ const getHoverObject = props => {
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true,
-						'svg-'
+						's-'
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
-				prefix: 'svg-',
+				blockStyle: props._bs,
+				prefix: 's-',
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true, 'svg-'),
+					...getGroupAttributes(props, 'boxShadow', true, 's-'),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
-				prefix: 'svg-',
+				blockStyle: props._bs,
+				prefix: 's-',
 			}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
 				['background', 'backgroundColor', 'backgroundGradient'],
 				true,
-				'svg-'
+				's-'
 			),
-			blockStyle: props.blockStyle,
+			blockStyle: props._bs,
 			isHover: true,
-			prefix: 'svg-',
+			prefix: 's-',
 		}),
 	};
 
@@ -228,7 +228,7 @@ const getHoverObject = props => {
 };
 
 const getStyles = (props, iconWidthHeightRatio) => {
-	const { uniqueID, blockStyle } = props;
+	const { _uid: uniqueID, _bs: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -249,7 +249,7 @@ const getStyles = (props, iconWidthHeightRatio) => {
 				}),
 
 				...(getAttributesValue({
-					target: 'svg-status-hover',
+					target: 's.sh',
 					props,
 				}) && {
 					...getSVGStyles({

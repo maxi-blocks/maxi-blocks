@@ -20,31 +20,34 @@ const NavigationIconsControl = props => {
 		activeInlineTarget,
 		clientId,
 		blockStyle,
-		prefix = 'navigation-arrow-both-icon-',
+		prefix = 'nab-i-',
 	} = props;
 	const hoverStatus = getAttributesValue({
-		target: `${prefix}status-hover`,
+		target: `${prefix}.sh`,
 		props,
 	});
 
 	const getSvgType = prefix => {
 		switch (prefix) {
-			case 'navigation-arrow-both-icon-':
+			case 'nab-i-':
 				return getAttributesValue({
-					target: 'navigation-arrow-first-svgType',
+					target: 'naf_st',
 					props,
 				}) ===
 					getAttributesValue({
-						target: 'navigation-arrow-second-svgType',
+						target: 'nas_st',
+						props,
 					})
 					? getAttributesValue({
-							target: 'navigation-arrow-first-svgType',
+							target: 'naf_st',
+							props,
 					  })
 					: 'Filled';
-			case 'navigation-dot-icon-':
+			case 'nd-i-':
 			default:
 				return getAttributesValue({
-					target: 'navigation-dot-svgType',
+					target: 'nd_st',
+					props,
 				});
 		}
 	};
@@ -92,7 +95,7 @@ const NavigationIconsControl = props => {
 								selected={hoverStatus}
 								onChange={val =>
 									onChange({
-										[`${prefix}status-hover`]: val,
+										[`${prefix}.sh`]: val,
 									})
 								}
 							/>
@@ -113,7 +116,7 @@ const NavigationIconsControl = props => {
 						</>
 					),
 				},
-				prefix.includes('dot') && {
+				prefix.includes('d') && {
 					label: __('Active state', 'maxi-blocks'),
 					content: (
 						<>
@@ -123,18 +126,17 @@ const NavigationIconsControl = props => {
 									'maxi-blocks'
 								)}
 								selected={getAttributesValue({
-									target: 'active-navigation-dot-icon-status',
+									target: 'a-nd-i.s',
 									props,
 								})}
 								onChange={val =>
 									onChange({
-										'active-navigation-dot-icon-status':
-											val,
+										'a-nd-i.s': val,
 									})
 								}
 							/>
 							{getAttributesValue({
-								target: 'active-navigation-dot-icon-status',
+								target: 'a-nd-i.s',
 								props,
 							}) && (
 								<NavigationIconControl
@@ -160,7 +162,8 @@ const NavigationIconsControl = props => {
 									breakpoint={deviceType}
 									clientId={clientId}
 									blockStyle={blockStyle}
-									prefix='active-navigation-dot-icon-'
+									prefix='a-nd-i-'
+									longPrefix='active-navigation-dot-icon'
 								/>
 							)}
 						</>

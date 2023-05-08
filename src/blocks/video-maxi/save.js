@@ -21,21 +21,21 @@ import { placeholderImage } from '../../icons';
  */
 const save = props => {
 	const {
-		playerType,
-		embedUrl,
-		'close-icon-content': closeIcon,
-		'play-icon-content': playIcon,
-		videoType,
-		isLoop,
-		isAutoplay,
-		isMuted,
-		showPlayerControls,
-		'overlay-mediaID': overlayMediaId,
-		'overlay-mediaURL': overlayMediaUrl,
-		'overlay-mediaAlt': overlayMediaAlt,
-		hideImage,
-		'close-icon-position': closeIconPosition,
-		popAnimation,
+		_pt: playerType,
+		_eu: embedUrl,
+		'cl-i_c': closeIcon,
+		'pl-i_c': playIcon,
+		_vt: videoType,
+		_il: isLoop,
+		_ia: isAutoplay,
+		_im: isMuted,
+		_spc: showPlayerControls,
+		o_mi: overlayMediaId,
+		o_mu: overlayMediaUrl,
+		o_mal: overlayMediaAlt,
+		_hi: hideImage,
+		'cl-i_pos': closeIconPosition,
+		_pan: popAnimation,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';

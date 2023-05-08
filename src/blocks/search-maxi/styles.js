@@ -27,7 +27,7 @@ import data, { prefixes } from './data';
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const response = {
 		border: getBorderStyles({
@@ -53,7 +53,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			blockStyle: props.blockStyle,
+			blockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -79,12 +79,15 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
-	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
-		getAttributesValue({
-			target: ['bo.s', 'bs.s', '_o.s'],
-			props,
-			isHover: true,
-		});
+	const [
+		blockStyle,
+		borderStatusHover,
+		boxShadowStatusHover,
+		opacityStatusHover,
+	] = getAttributesValue({
+		target: ['_bs', 'bo.sh', 'bs.sh', '_o.sh'],
+		props,
+	});
 
 	const response = {
 		border:
@@ -98,7 +101,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle,
 			}),
 		boxShadow:
 			boxShadowStatusHover &&
@@ -107,7 +110,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				blockStyle: props.blockStyle,
+				blockStyle,
 			}),
 		opacity:
 			opacityStatusHover &&
@@ -121,7 +124,7 @@ const getHoverObject = props => {
 };
 
 const getSearchButtonStyles = (props, isHover = false) => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const response = {
 		...getBackgroundStyles({
@@ -173,7 +176,7 @@ const getSearchButtonStyles = (props, isHover = false) => {
 };
 
 const getSearchButtonIconStyles = props => {
-	const { blockStyle, buttonSkin, skin } = props;
+	const { _bs: blockStyle, _bus: buttonSkin, skin } = props;
 
 	const searchButtonIsIcon = buttonSkin === 'icon';
 
@@ -217,7 +220,7 @@ const getSearchButtonIconStyles = props => {
 };
 
 const getSearchButtonContentStyles = (props, isHover = false) => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const response = {
 		typography: getTypographyStyles({
@@ -239,7 +242,7 @@ const getSearchButtonContentStyles = (props, isHover = false) => {
 };
 
 const getSearchInputStyles = (props, isHover = false) => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const response = {
 		...getBackgroundStyles({
@@ -293,7 +296,7 @@ const getSearchInputStyles = (props, isHover = false) => {
 };
 
 const getSearchInputPlaceholderStyles = props => {
-	const { blockStyle } = props;
+	const { _bs: blockStyle } = props;
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -301,25 +304,25 @@ const getSearchInputPlaceholderStyles = props => {
 
 	breakpoints.forEach(breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
-			target: 'placeholder-palette-status',
+			target: 'pla_ps',
 			attributes: props,
 			breakpoint,
 		});
 
 		const paletteColor = getLastBreakpointAttribute({
-			target: 'placeholder-palette-color',
+			target: 'pla_pc',
 			attributes: props,
 			breakpoint,
 		});
 
 		const paletteOpacity = getLastBreakpointAttribute({
-			target: 'placeholder-palette-opacity',
+			target: 'pla_po',
 			attributes: props,
 			breakpoint,
 		});
 
 		const color = getLastBreakpointAttribute({
-			target: 'placeholder-color',
+			target: 'pla_cc',
 			attributes: props,
 			breakpoint,
 		});
@@ -345,7 +348,7 @@ const getSearchInputPlaceholderStyles = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { _uid: uniqueID } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(

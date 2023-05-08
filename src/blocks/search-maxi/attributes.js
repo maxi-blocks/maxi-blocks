@@ -7,6 +7,10 @@ import { transitionAttributesCreator } from '../../extensions/attributes/transit
 import { customCss, prefixes, transition } from './data';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
+// without Hyphen
+const buttonWO = buttonPrefix.replace('-', '');
+const closeWO = closeIconPrefix.replace('-', '');
+const inputWO = inputPrefix.replace('-', '');
 
 /**
  * Attributes
@@ -53,19 +57,19 @@ const attributes = {
 		},
 		prefix: inputPrefix,
 		diffValAttr: {
-			[`${inputPrefix}font-size-general`]: '20',
-			[`${inputPrefix}border-style-general`]: 'solid',
-			[`${inputPrefix}border-width-top-general`]: 4,
-			[`${inputPrefix}border-width-right-general`]: 0,
-			[`${inputPrefix}border-width-bottom-general`]: 4,
-			[`${inputPrefix}border-width-left-general`]: 4,
-			[`${inputPrefix}border-sync-general`]: 'none',
-			[`${inputPrefix}padding-top-general`]: '8',
-			[`${inputPrefix}padding-right-general`]: '10',
-			[`${inputPrefix}padding-bottom-general`]: '8',
-			[`${inputPrefix}padding-left-general`]: '10',
-			[`${inputPrefix}padding-sync-general`]: 'axis',
-			[`${inputPrefix}background-active-media-general`]: 'color',
+			[`${inputWO}_fs-general`]: '20',
+			[`${inputPrefix}bo_s-general`]: 'solid',
+			[`${inputPrefix}bo_w.t-general`]: 4,
+			[`${inputPrefix}bo_w.r-general`]: 0,
+			[`${inputPrefix}bo_w.b-general`]: 4,
+			[`${inputPrefix}bo_w.l-general`]: 4,
+			[`${inputPrefix}bo_w.sy-general`]: 'none',
+			[`${inputWO}_p.t-general`]: '8',
+			[`${inputWO}_p.r-general`]: '10',
+			[`${inputWO}_p.b-general`]: '8',
+			[`${inputWO}_p.l-general`]: '10',
+			[`${inputWO}_p.sy-general`]: 'axis',
+			[`${inputPrefix}b_am-general`]: 'color',
 		},
 	}),
 
@@ -90,43 +94,43 @@ const attributes = {
 		},
 		prefix: buttonPrefix,
 		diffValAttr: {
-			[`${buttonPrefix}pac-general`]: 1,
-			[`${buttonPrefix}padding-top-general`]: '12',
-			[`${buttonPrefix}padding-right-general`]: '12',
-			[`${buttonPrefix}padding-bottom-general`]: '12',
-			[`${buttonPrefix}padding-left-general`]: '12',
-			[`${buttonPrefix}background-active-media-general`]: 'color',
-			[`${buttonPrefix}background-pac-general`]: 4,
+			[`${buttonWO}_pc-general`]: 1,
+			[`${buttonWO}_p.t-general`]: '12',
+			[`${buttonWO}_p.r-general`]: '12',
+			[`${buttonWO}_p.b-general`]: '12',
+			[`${buttonWO}_p.l-general`]: '12',
+			[`${buttonPrefix}b_am-general`]: 'color',
+			[`${buttonPrefix}bc_pc-general`]: 4,
 		},
 	}),
-	placeholder: {
+	pla: {
 		type: 'string',
 		default: 'Search...',
 	},
 	...attributesData.placeholderColor,
 	...{
 		...attributesData.icon,
-		svgType: {
+		_st: {
 			type: 'string',
 			default: 'Shape',
 		},
-		'icon-inherit': {
+		i_i: {
 			type: 'boolean',
 			default: false,
 		},
-		'icon-width-general': {
+		'i_w-general': {
 			type: 'string',
 			default: '25',
 		},
-		'icon-fill-pac': {
+		'i-f_pc': {
 			type: 'number',
 			default: 1,
 		},
-		'icon-spacing-general': {
+		'i_spa-general': {
 			type: 'number',
 			default: 0,
 		},
-		'icon-content': {
+		i_c: {
 			type: 'string',
 			default:
 				'<svg viewBox="0 0 36.1 36.1" height="64px" width="64px" class="magnifying-glass-41-shape-maxi-svg"><path fill="#081219" d="M35.2 32.1l-7.9-7.9c1.9-2.6 3-5.7 3-8.9 0-8.3-6.8-15-15-15s-15 6.8-15 15 6.8 15 15 15c3.2 0 6.4-1 8.9-3l7.9 7.9c.4.4 1 .7 1.6.7s1.2-.2 1.6-.7.7-1 .7-1.6-.3-1.1-.8-1.5zm-19.9-6.2c-5.8 0-10.6-4.8-10.6-10.6S9.4 4.7 15.3 4.7s10.6 4.8 10.6 10.6-4.8 10.6-10.6 10.6z" data-fill></path></svg>',
@@ -137,12 +141,12 @@ const attributes = {
 		obj: { ...attributesData.icon, ...attributesData.iconHover },
 		prefix: closeIconPrefix,
 		diffValAttr: {
-			[`${closeIconPrefix}svgType`]: 'Shape',
-			[`${closeIconPrefix}icon-inherit`]: false,
-			[`${closeIconPrefix}icon-width-general`]: '25',
-			[`${closeIconPrefix}icon-fill-pac`]: 1,
-			[`${closeIconPrefix}icon-spacing-general`]: 0,
-			[`${closeIconPrefix}icon-content`]:
+			[`${closeWO}_st`]: 'Shape',
+			[`${closeIconPrefix}i_i`]: false,
+			[`${closeIconPrefix}i_w-general`]: '25',
+			[`${closeIconPrefix}i-f_pc`]: 1,
+			[`${closeIconPrefix}i_spa-general`]: 0,
+			[`${closeIconPrefix}i_c`]:
 				'<svg class="cross-29-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.1 36.1" data-fill fill="#081219"><path d="M26.1 13l-3-3-5 5-5.1-5-3 3 5 5-5 5.1 3 3 5.1-5 5 5 3-3-5-5.1zm4.5-7.5c-6.9-6.9-18.2-6.9-25.1 0s-6.9 18.2 0 25.1 18.2 6.9 25.1 0 6.9-18.2 0-25.1zm-2.1 23c-5.8 5.8-15.2 5.8-20.9 0-5.8-5.8-5.8-15.2 0-20.9 5.8-5.8 15.2-5.8 20.9 0 5.8 5.8 5.8 15.1 0 20.9z"/></svg>',
 		},
 	}),

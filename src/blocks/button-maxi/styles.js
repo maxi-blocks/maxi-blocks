@@ -26,8 +26,6 @@ import {
 } from '../../extensions/styles/helpers';
 import data from './data';
 
-const prefix = 'bt-';
-
 const getWrapperObject = props => {
 	const response = {
 		alignment: getAlignmentFlexStyles({

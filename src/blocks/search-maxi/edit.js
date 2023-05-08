@@ -27,13 +27,13 @@ const SearchBlock = props => {
 	const { closeIconPrefix } = prefixes;
 	const { attributes, isSelected } = props;
 	const {
-		'icon-content': buttonIcon,
-		[`${closeIconPrefix}icon-content`]: closeButtonIcon,
-		buttonContent,
-		buttonContentClose,
-		buttonSkin,
-		iconRevealAction,
-		placeholder,
+		i_c: buttonIcon,
+		[`${closeIconPrefix}i_c`]: closeButtonIcon,
+		_bc: buttonContent,
+		_bcc: buttonContentClose,
+		_bus: buttonSkin,
+		_ira: iconRevealAction,
+		pla: placeholder,
 		skin,
 	} = attributes;
 
@@ -136,14 +136,14 @@ class edit extends MaxiBlockComponent {
 		const { closeIconPrefix } = prefixes;
 		const { attributes } = this.props;
 		const {
-			'icon-content': buttonIconContent,
-			[`${closeIconPrefix}icon-content`]: buttonCloseIconContent,
-			buttonContent,
-			buttonContentClose,
-			buttonSkin,
-			iconRevealAction,
+			i_c: buttonIconContent,
+			[`${closeIconPrefix}i_c`]: buttonCloseIconContent,
+			_bc: buttonContent,
+			_bcc: buttonContentClose,
+			_bus: buttonSkin,
+			_ira: iconRevealAction,
 			skin,
-			uniqueID,
+			_uid: uniqueID,
 		} = attributes;
 
 		return {
@@ -168,7 +168,7 @@ class edit extends MaxiBlockComponent {
 			props: attributes,
 		});
 		const iconPosition = getAttributesValue({
-			target: 'icon-position',
+			target: 'i_pos',
 			props: attributes,
 		});
 

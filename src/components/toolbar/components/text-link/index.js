@@ -106,7 +106,7 @@ const LinkContent = props => {
 			formatValue,
 			formatName: 'maxi-blocks/text-link',
 			formatClassName: null,
-		}) || [0, 0];
+		}) || [formatValue.start ?? 0, formatValue.end ?? 0];
 
 		formatValue.formats = formatValue.formats.map((formatEl, i) => {
 			return formatEl.map(format => {

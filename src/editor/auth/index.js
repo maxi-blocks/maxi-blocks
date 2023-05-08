@@ -20,6 +20,12 @@ export const getMaxiCookieKey = () => {
 	return { email, key };
 };
 
+export const getPathToAdmin = () => {
+	const path = window.location.pathname;
+	const subfolder = path.substring(0, path.lastIndexOf('/'));
+	return subfolder;
+};
+
 export const removeMaxiCookie = () => {
 	const cookie = document.cookie
 		.split(';')
@@ -27,7 +33,7 @@ export const removeMaxiCookie = () => {
 		?.split('=')[1];
 
 	if (cookie) {
-		document.cookie = `maxi_blocks_key=${cookie};max-age=0; Path=/wp-admin;Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+		document.cookie = `maxi_blocks_key=${cookie};max-age=0; Path=${getPathToAdmin()};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 	}
 };
 
@@ -138,7 +144,8 @@ export async function authConnect(withRedirect = false, email = false) {
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
-		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000;Path=/wp-admin;`;
+
+		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
 	}
 
 	const redirect = () => {

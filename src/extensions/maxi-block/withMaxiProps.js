@@ -38,6 +38,11 @@ const withMaxiProps = createHigherOrderComponent(
 				ownProps;
 
 			const repeaterContext = useContext(RepeaterContext);
+			const repeaterContextRef = useRef(repeaterContext);
+
+			useEffect(() => {
+				repeaterContextRef.current = repeaterContext;
+			}, [repeaterContext]);
 
 			const {
 				getBlock,
@@ -56,7 +61,7 @@ const withMaxiProps = createHigherOrderComponent(
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
 			const parentColumnClientId =
-				repeaterContext?.repeaterStatus &&
+				repeaterContextRef?.current?.repeaterStatus &&
 				getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
@@ -111,7 +116,7 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const maxiSetAttributes = useCallback(obj => {
 				const clientIds =
-					repeaterContext?.innerBlocksPositions?.[
+					repeaterContextRef?.current?.innerBlocksPositions?.[
 						`${blockPositionFromColumn}`
 					];
 
@@ -120,7 +125,7 @@ const withMaxiProps = createHigherOrderComponent(
 					attributes,
 					clientId,
 					onChange: obj => {
-						if (!repeaterContext?.repeaterStatus) {
+						if (!repeaterContextRef?.current?.repeaterStatus) {
 							setAttributes(obj);
 						}
 
@@ -200,6 +205,10 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [isSelected]);
 
 			useEffect(() => {
+				repeaterContextRef.current = repeaterContext;
+			}, [repeaterContext]);
+
+			useEffect(() => {
 				if (
 					!isEqual(
 						prevBlockPositionFromColumn.current,
@@ -214,10 +223,10 @@ const withMaxiProps = createHigherOrderComponent(
 							ownProps,
 							prevBlockPositionFromColumn.current,
 							blockPositionFromColumn,
-							repeaterContext?.innerBlocksPositions
+							repeaterContextRef?.current?.innerBlocksPositions
 						);
 
-						repeaterContext?.updateInnerBlocksPositions();
+						repeaterContextRef?.current?.updateInnerBlocksPositions();
 					}
 
 					prevBlockPositionFromColumn.current =

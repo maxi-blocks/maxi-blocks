@@ -17,6 +17,7 @@ import { getAttributesValue } from '../../../../extensions/attributes';
  */
 import DOMPurify from 'dompurify';
 import { isEmpty, uniqueId } from 'lodash';
+import getCleanKey from '../../../../extensions/attributes/getCleanKey';
 
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/image-maxi',
@@ -45,13 +46,7 @@ const ToolbarMediaUpload = props => {
 	} = props;
 	const [mediaID, altSelector, playerType, hideImage, uniqueID] =
 		getAttributesValue({
-			target: [
-				`${prefix}mediaID`,
-				`${prefix}altSelector`,
-				'playerType',
-				'hideImage',
-				'_uid',
-			],
+			target: [`${prefix}_mi`, `${prefix}_as`, '_pt', '_hi', '_uid'],
 			props: attributes,
 		});
 
@@ -76,8 +71,8 @@ const ToolbarMediaUpload = props => {
 							null;
 
 						maxiSetAttributes({
-							[`${prefix}mediaID`]: media.id,
-							[`${prefix}mediaURL`]: media.url,
+							[getCleanKey(`${prefix}_mi`)]: media.id,
+							[getCleanKey(`${prefix}_mu`)]: media.url,
 							[`${prefix}mediaWidth`]: media.width,
 							[`${prefix}mediaHeight`]: media.height,
 							[`${prefix}isImageUrl`]: false,

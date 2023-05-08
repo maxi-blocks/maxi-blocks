@@ -164,7 +164,7 @@ const getSVGPathFillStyles = (
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj,
-			prefix: `${prefix}f${prefix === 'i-' ? '' : 'i'}-`,
+			prefix: `${prefix}f${prefix.includes('i-') ? '' : 'i'}-`,
 			isHover,
 		});
 

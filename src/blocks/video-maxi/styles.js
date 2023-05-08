@@ -227,75 +227,76 @@ const getCloseIconPosition = obj => {
 	};
 };
 
-const getIconObject = (prefix, obj) => {
-	const { [`${prefix}i.sh`]: iconHoverStatus } = obj;
+const getIconObject = (longPrefix, obj) => {
+	const shortPrefix = `${longPrefix.slice(0, 2)}-`;
+	const { [`${shortPrefix}i.sh`]: iconHoverStatus } = obj;
 
 	return {
-		[` .maxi-video-block__${prefix}button svg`]: getIconSize(
+		[` .maxi-video-block__${longPrefix}button svg`]: getIconSize(
 			obj,
 			false,
-			prefix
+			shortPrefix
 		),
-		[` .maxi-video-block__${prefix}button svg path`]: getIconPathStyles(
+		[` .maxi-video-block__${longPrefix}button svg path`]: getIconPathStyles(
 			obj,
 			false,
-			prefix
+			shortPrefix
 		),
-		[` .maxi-video-block__${prefix}button`]: {
-			icon: getIconStyles(obj, obj._bs, false, false, prefix),
-			...(prefix === 'cl-' && {
+		[` .maxi-video-block__${longPrefix}button`]: {
+			icon: getIconStyles(obj, obj._bs, false, false, shortPrefix),
+			...(longPrefix === 'close-' && {
 				iconPosition: getCloseIconPosition(obj),
 			}),
 		},
 		...getSVGStyles({
 			obj,
-			target: `.maxi-video-block__${prefix}button`,
+			target: `.maxi-video-block__${longPrefix}button`,
 			blockStyle: obj._bs,
-			prefix: `${prefix}i-`,
+			prefix: `${shortPrefix}i-`,
 			useIconColor: true,
 		}),
 		...(iconHoverStatus &&
-			(prefix === 'pl-'
+			(longPrefix === 'play-'
 				? {
-						[`:hover .maxi-video-block__${prefix}button svg`]: {
-							...getIconSize(obj, true, prefix),
+						[`:hover .maxi-video-block__${longPrefix}button svg`]: {
+							...getIconSize(obj, true, shortPrefix),
 							icon: getIconStyles(
 								obj,
 								obj._bs,
 								false,
 								true,
-								prefix
+								shortPrefix
 							),
 						},
-						[`:hover .maxi-video-block__${prefix}button svg path`]:
-							getIconPathStyles(obj, true, prefix),
+						[`:hover .maxi-video-block__${longPrefix}button svg path`]:
+							getIconPathStyles(obj, true, shortPrefix),
 						...getSVGStyles({
 							obj,
-							target: `:hover .maxi-video-block__${prefix}button`,
+							target: `:hover .maxi-video-block__${longPrefix}button`,
 							blockStyle: obj._bs,
-							prefix: `${prefix}i-`,
+							prefix: `${shortPrefix}i-`,
 							useIconColor: true,
 							isHover: true,
 						}),
 				  }
 				: {
-						[` .maxi-video-block__${prefix}button:hover svg`]: {
-							...getIconSize(obj, true, prefix),
+						[` .maxi-video-block__${longPrefix}button:hover svg`]: {
+							...getIconSize(obj, true, shortPrefix),
 							icon: getIconStyles(
 								obj,
 								obj._bs,
 								false,
 								true,
-								prefix
+								shortPrefix
 							),
 						},
-						[` .maxi-video-block__${prefix}button:hover svg path`]:
-							getIconPathStyles(obj, true, prefix),
+						[` .maxi-video-block__${longPrefix}button:hover svg path`]:
+							getIconPathStyles(obj, true, shortPrefix),
 						...getSVGStyles({
 							obj,
-							target: ` .maxi-video-block__${prefix}button:hover`,
+							target: ` .maxi-video-block__${longPrefix}button:hover`,
 							blockStyle: obj._bs,
-							prefix: `${prefix}i-`,
+							prefix: `${shortPrefix}i-`,
 							useIconColor: true,
 							isHover: true,
 						}),
@@ -422,8 +423,8 @@ const getStyles = props => {
 					':hover .maxi-video-block__overlay-background':
 						getOverlayBackgroundObject(props, true),
 				}),
-				...getIconObject('pl-', props),
-				...getIconObject('cl-', props),
+				...getIconObject('play-', props),
+				...getIconObject('close-', props),
 			},
 			data,
 			props
@@ -435,7 +436,7 @@ const getStyles = props => {
 					props,
 					true
 				),
-				...getIconObject('cl-', props),
+				...getIconObject('close-', props),
 			},
 			data,
 			props

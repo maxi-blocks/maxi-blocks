@@ -344,7 +344,7 @@ const IconSettings = props => {
 const VideoIconControl = props => {
 	const { blockStyle, onChange, prefix, label, type } = props;
 	const iconContent = getAttributesValue({
-		target: 'icon-content',
+		target: 'i_c',
 		props,
 		prefix,
 	});

@@ -111,7 +111,7 @@ const OverlayColorControl = withRTC(OverlayColor);
 const VideoOverlayControl = props => {
 	const {
 		onChange,
-		hideImage,
+		_hi: hideImage,
 		disableHideImage = false,
 		disableUploadImage = false,
 		disableHover = false,
@@ -125,7 +125,7 @@ const VideoOverlayControl = props => {
 		prefix: 'o-',
 	});
 
-	const mediaPrefix = 'o-m-';
+	const mediaPrefix = 'om-';
 	const minMaxSettings = {
 		px: {
 			min: 0,

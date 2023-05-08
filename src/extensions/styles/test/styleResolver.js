@@ -7,6 +7,7 @@ jest.mock('@wordpress/data', () => {
 				updateStyles: jest.fn(),
 			};
 		}),
+		select: jest.fn(() => false),
 	};
 });
 
@@ -136,7 +137,7 @@ describe('styleResolver', () => {
 			xs: 480,
 		};
 
-		const result = styleResolver(styles, remover, breakpoints);
+		const result = styleResolver({ styles, remover, breakpoints });
 
 		expect(result).toMatchSnapshot();
 	});

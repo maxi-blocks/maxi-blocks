@@ -4,13 +4,13 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
-import { useContext, useEffect } from '@wordpress/element';
+import { useContext, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
-import detectNewBlocks from '../repeater/detectNewBlocks';
+import { insertBlockIntoColumns } from '../repeater';
 import { getCustomLabel } from '../maxi-block';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
@@ -53,6 +53,8 @@ const withAttributes = createHigherOrderComponent(
 		const { attributes, name: blockName, clientId } = props;
 		const { uniqueID } = attributes;
 
+		const wasUniqueIDAdded = useRef(false);
+
 		const repeaterContext = useContext(RepeaterContext);
 		const repeaterStatus = repeaterContext?.repeaterStatus;
 
@@ -67,7 +69,7 @@ const withAttributes = createHigherOrderComponent(
 					newUniqueID
 				);
 
-				if (repeaterStatus) detectNewBlocks(props);
+				wasUniqueIDAdded.current = true;
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
@@ -101,10 +103,17 @@ const withAttributes = createHigherOrderComponent(
 
 		useEffect(() => {
 			if (repeaterStatus) {
-				console.log('onMount: updateInnerBlocksPositions', uniqueID);
 				repeaterContext?.updateInnerBlocksPositions();
 			}
 		}, []);
+
+		useEffect(() => {
+			if (wasUniqueIDAdded.current) {
+				insertBlockIntoColumns(clientId);
+
+				wasUniqueIDAdded.current = false;
+			}
+		}, [wasUniqueIDAdded.current]);
 
 		return <BlockEdit {...props} />;
 	},

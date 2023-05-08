@@ -256,6 +256,10 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
+        if ($attributes['dc-field'] === 'static_text') {
+            return $content;
+        }
+
         if (empty($dc_type)) {
             $dc_type = 'posts';
         }

@@ -238,6 +238,7 @@ jest.mock('@wordpress/data', () => {
 						},
 					]
 			),
+			getBlock: jest.fn(() => false),
 		})),
 	};
 });
@@ -314,6 +315,7 @@ describe('getIsUniqueIDRepeated', () => {
 						},
 					]
 			),
+			getBlock: jest.fn(() => false),
 		}));
 		expect(getIsUniqueIDRepeated('text-maxi-1')).toBe(true);
 	});

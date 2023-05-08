@@ -59,7 +59,7 @@ import { LoopContext } from '../DC';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import detectNewBlocks from '../repeater/detectNewBlocks';
+import { removeBlockFromColumns } from '../repeater';
 
 /**
  * Style Component
@@ -414,14 +414,12 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 
-			if (this.props.parentColumnClientId)
-				detectNewBlocks(
-					this.props,
-					false,
-					this.props.blockPositionFromColumn,
-					this.props.parentColumnClientId,
-					this.props.parentInnerBlocksCount
-				);
+			// Repeater
+			removeBlockFromColumns(
+				this.props.blockPositionFromColumn,
+				this.props.parentColumnClientId,
+				this.props.parentInnerBlocksCount
+			);
 		}
 
 		if (this.maxiBlockWillUnmount)

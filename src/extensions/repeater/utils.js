@@ -54,7 +54,7 @@ export const findTargetParent = (blockPosition, column) => {
 	return currentBlock;
 };
 
-export const getChildColumns = (blockClientId, parentColumn) => {
+export const getChildColumns = blockClientId => {
 	const { getBlock, getBlocks, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
@@ -66,10 +66,7 @@ export const getChildColumns = (blockClientId, parentColumn) => {
 		}
 
 		return getBlock(
-			getBlockParentsByBlockName(
-				parentColumn ?? blockClientId,
-				'maxi-blocks/row-maxi'
-			)[0]
+			getBlockParentsByBlockName(blockClientId, 'maxi-blocks/row-maxi')[0]
 		);
 	};
 

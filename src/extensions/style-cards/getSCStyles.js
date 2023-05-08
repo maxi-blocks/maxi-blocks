@@ -424,7 +424,8 @@ const getWPNativeStyles = ({ organizedValues, prefix, style, isBackend }) => {
 					)}}`;
 
 				// Adds margin-bottom sentence to all elements except the last one
-				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
+				if (marginSentence)
+					response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
 			}
 		);
 

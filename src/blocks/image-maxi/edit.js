@@ -109,6 +109,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
+		if (!this.resizableObject.current) return;
+
 		const imgWidth = getAttributeValue({
 			target: 'imgWidth',
 			props: this.props.attributes,

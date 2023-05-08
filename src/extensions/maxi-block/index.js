@@ -1,3 +1,5 @@
+import './store';
+
 export { default as getCustomLabel } from './getCustomLabel';
 export { default as getIsHoverPreview } from './getIsHoverPreview';
 export { default as getIsUniqueIDRepeated } from './getIsUniqueIDRepeated';

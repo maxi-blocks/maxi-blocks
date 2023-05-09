@@ -66,6 +66,7 @@ class edit extends MaxiBlockComponent {
 		if (
 			!isEqual(tempInnerBlocksPositions, this.state.innerBlocksPositions)
 		) {
+			console.log('updateInnerBlocksPositions');
 			this.setState({
 				innerBlocksPositions: tempInnerBlocksPositions,
 			});

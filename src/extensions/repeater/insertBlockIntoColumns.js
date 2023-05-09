@@ -62,8 +62,6 @@ const insertBlockIntoColumns = clientId => {
 		);
 		// Insert the cloned block into the column at the same index
 		insertBlock(clonedBlock, blockIndex, targetParent.clientId, false);
-
-		// onClonedBlockInsert?.(clonedBlock.clientId);
 	});
 };
 

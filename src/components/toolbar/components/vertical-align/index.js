@@ -35,15 +35,12 @@ const VerticalAlign = props => {
 				<SelectControl
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}
-					defaultValue={getDefaultAttribute(
-						`justify-content-${breakpoint}`
-					)}
+					defaultValue={getDefaultAttribute(`_jc-${breakpoint}`)}
 					onReset={() =>
 						onChange({
-							[`justify-content-${breakpoint}`]:
-								getDefaultAttribute(
-									`justify-content-${breakpoint}`
-								),
+							[`_jc-${breakpoint}`]: getDefaultAttribute(
+								`_jc-${breakpoint}`
+							),
 							isReset: true,
 						})
 					}
@@ -71,7 +68,7 @@ const VerticalAlign = props => {
 					]}
 					onChange={verticalAlign =>
 						onChange({
-							[`justify-content-${breakpoint}`]: verticalAlign,
+							[`_jc-${breakpoint}`]: verticalAlign,
 						})
 					}
 				/>

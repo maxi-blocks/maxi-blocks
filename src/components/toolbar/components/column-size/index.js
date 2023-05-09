@@ -40,13 +40,13 @@ const ColumnSize = props => {
 				<AdvancedNumberControl
 					label={__('Column size (%)', 'maxi-blocks')}
 					value={getLastBreakpointAttribute({
-						target: 'column-size',
+						target: '_cs',
 						breakpoint,
 						attributes: props,
 					})}
 					onChangeValue={val => {
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`_cs-${breakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 						});
 					}}
@@ -55,23 +55,19 @@ const ColumnSize = props => {
 					step={0.1}
 					onReset={() =>
 						onChange({
-							[`column-size-${breakpoint}`]:
-								getColumnDefaultValue(
-									rowPattern,
-									{
-										...getGroupAttributes(
-											props,
-											'columnSize'
-										),
-									},
-									clientId,
-									breakpoint
-								),
+							[`_cs-${breakpoint}`]: getColumnDefaultValue(
+								rowPattern,
+								{
+									...getGroupAttributes(props, 'columnSize'),
+								},
+								clientId,
+								breakpoint
+							),
 							isReset: true,
 						})
 					}
 					initialPosition={getDefaultAttribute(
-						`column-size-${breakpoint}`,
+						`_cs-${breakpoint}`,
 						clientId
 					)}
 				/>

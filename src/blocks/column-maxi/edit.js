@@ -258,10 +258,13 @@ class edit extends MaxiBlockComponent {
 						maxWidth='100%'
 						showHandle={context.displayHandlers}
 						onResizeStop={(event, direction, elt) => {
+							const widthPx = round(
+								+elt.style.width.replace('px', '')
+							);
+							const parentWidth = elt.parentElement.offsetWidth;
 							maxiSetAttributes({
-								[`_cs-${deviceType}`]: round(
-									+elt.style.width.replace('%', '')
-								),
+								[`_cs-${deviceType}`]:
+									(widthPx / parentWidth) * 100,
 							});
 						}}
 						useInnerBlocks

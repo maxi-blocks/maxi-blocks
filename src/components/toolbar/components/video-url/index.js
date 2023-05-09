@@ -20,7 +20,7 @@ import {
 import { toolbarVideo } from '../../../../icons';
 
 const VideoUrl = props => {
-	const { url, onChange } = props;
+	const { _u: url, onChange } = props;
 
 	const [validationText, setValidationText] = useState(null);
 
@@ -51,12 +51,12 @@ const VideoUrl = props => {
 						}
 
 						onChange({
-							url: val !== '' ? val : defaultURL,
-							embedUrl: getParsedVideoUrl({
+							_u: val !== '' ? val : defaultURL,
+							_eu: getParsedVideoUrl({
 								...props,
 								url: val !== '' ? val : defaultURL,
 							}),
-							videoType: parseVideo(val).type,
+							_vt: parseVideo(val).type,
 						});
 					}}
 					validationText={validationText}

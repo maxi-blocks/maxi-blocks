@@ -55,13 +55,13 @@ const Divider = props => {
 	};
 
 	const lineOrientation = getLastBreakpointAttribute({
-		target: 'line-orientation',
+		target: '_lo',
 		breakpoint,
 		attributes: props,
 	});
 
 	const dividerBorderStyle = getLastBreakpointAttribute({
-		target: 'divider-border-style',
+		target: 'di-bo_s',
 		breakpoint,
 		attributes: props,
 	});
@@ -79,7 +79,7 @@ const Divider = props => {
 					onChange={onChange}
 					breakpoint={breakpoint}
 					dividerBorderStyle={getLastBreakpointAttribute({
-						target: 'divider-border-style',
+						target: 'di-bo_s',
 						breakpoint,
 						attributes: props,
 					})}
@@ -96,25 +96,24 @@ const Divider = props => {
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
 									value={getLastBreakpointAttribute({
-										target: 'divider-border-top',
+										target: 'di-bo.t',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val =>
 										onChange({
-											[`divider-border-top-${breakpoint}`]:
-												val,
+											[`di-bo.t-${breakpoint}`]: val,
 										})
 									}
 									onReset={() =>
 										onChange({
-											[`divider-border-top-${breakpoint}`]:
+											[`di-bo.t-${breakpoint}`]:
 												getDefaultAttribute(
-													`divider-border-top-${breakpoint}`
+													`di-bo.t-${breakpoint}`
 												),
-											[`divider-border-top-unit-${breakpoint}`]:
+											[`di-bo.t.u-${breakpoint}`]:
 												getDefaultAttribute(
-													`divider-border-top-unit-${breakpoint}`
+													`di-bo.t.u-${breakpoint}`
 												),
 											isReset: true,
 										})
@@ -130,24 +129,23 @@ const Divider = props => {
 							}
 							label={__('Line size', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
-								target: 'divider-width',
+								target: 'di_w',
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeValue={val =>
 								onChange({
-									[`divider-width-${breakpoint}`]: val,
+									[`di_w-${breakpoint}`]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[`divider-width-${breakpoint}`]:
+									[`di_w-${breakpoint}`]: getDefaultAttribute(
+										`di_w-${breakpoint}`
+									),
+									[`di_w.u-${breakpoint}`]:
 										getDefaultAttribute(
-											`divider-width-${breakpoint}`
-										),
-									[`divider-width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`divider-width-unit-${breakpoint}`
+											`di_w.u-${breakpoint}`
 										),
 									isReset: true,
 								})
@@ -168,13 +166,13 @@ const Divider = props => {
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
 									value={getLastBreakpointAttribute({
-										target: 'divider-border-right',
+										target: 'di-bo.r',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val => {
 										onChange({
-											[`divider-border-right-${breakpoint}`]:
+											[`di-bo.r-${breakpoint}`]:
 												val !== undefined && val !== ''
 													? val
 													: '',
@@ -184,15 +182,15 @@ const Divider = props => {
 									max={100}
 									onReset={() =>
 										onChange({
-											[`divider-border-right-${breakpoint}`]:
+											[`di-bo.r-${breakpoint}`]:
 												getDefaultAttribute(
-													`divider-border-right-${breakpoint}`
+													`di-bo.r-${breakpoint}`
 												),
 											isReset: true,
 										})
 									}
 									initialPosition={getDefaultAttribute(
-										`divider-border-right-${breakpoint}`
+										`di-bo.r-${breakpoint}`
 									)}
 								/>
 							</div>
@@ -204,13 +202,13 @@ const Divider = props => {
 							}
 							label={__('Size', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
-								target: 'divider-height',
+								target: 'di_h',
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeValue={val => {
 								onChange({
-									[`divider-height-${breakpoint}`]:
+									[`di_h-${breakpoint}`]:
 										val !== undefined && val !== ''
 											? val
 											: '',
@@ -220,15 +218,14 @@ const Divider = props => {
 							max={100}
 							onReset={() =>
 								onChange({
-									[`divider-height-${breakpoint}`]:
-										getDefaultAttribute(
-											`divider-height-${breakpoint}`
-										),
+									[`di_h-${breakpoint}`]: getDefaultAttribute(
+										`di_h-${breakpoint}`
+									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								`divider-height-${breakpoint}`
+								`di_h-${breakpoint}`
 							)}
 						/>
 					</>

@@ -10,6 +10,8 @@ import { customCss, transition } from './data';
  * Attributes
  */
 const prefix = 'nc-';
+const prefixWOHyphen = 'nc';
+
 const attributes = {
 	...attributesData.global,
 
@@ -35,8 +37,8 @@ const attributes = {
 		obj: attributesData.size,
 		prefix,
 		diffValAttr: {
-			[`${prefix}_w-general`]: '250',
-			[`${prefix}_w.u-general`]: 'px',
+			[`${prefixWOHyphen}_w-general`]: '250',
+			[`${prefixWOHyphen}_w.u-general`]: 'px',
 		},
 	}),
 	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),

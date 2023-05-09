@@ -193,11 +193,11 @@ const MaxiToolbar = memo(
 			inlineStylesTargets
 		);
 
-		const lineOrientation = getLastBreakpointAttribute(
-			'_lo',
+		const lineOrientation = getLastBreakpointAttribute({
+			target: '_lo',
 			breakpoint,
-			attributes
-		);
+			attributes,
+		});
 
 		return (
 			isSelected &&
@@ -358,7 +358,7 @@ const MaxiToolbar = memo(
 										svgType='Fill'
 										type='fill'
 										blockStyle={blockStyle}
-										content={attributes.content}
+										content={attributes._c}
 									/>
 								)}
 								{svgType !== 'Shape' && (
@@ -387,12 +387,12 @@ const MaxiToolbar = memo(
 										svgType='Line'
 										type='line'
 										blockStyle={blockStyle}
-										content={attributes.content}
+										content={attributes._c}
 									/>
 								)}
 								<SvgWidth
 									{...getGroupAttributes(attributes, 'svg')}
-									content={attributes.content}
+									content={attributes._c}
 									blockName={name}
 									onChange={obj => {
 										maxiSetAttributes(obj);
@@ -617,7 +617,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							blockName={name}
 							verticalAlign={getLastBreakpointAttribute({
-								target: '_js',
+								target: '_jc',
 								breakpoint,
 								attributes,
 							})}
@@ -653,16 +653,16 @@ const MaxiToolbar = memo(
 						<DividerAlignment
 							{...getGroupAttributes(attributes, 'divider')}
 							lineOrientation={lineOrientation}
-							lineVertical={getLastBreakpointAttribute(
-								'_lv',
+							lineVertical={getLastBreakpointAttribute({
+								target: '_lv',
 								breakpoint,
-								attributes
-							)}
-							lineHorizontal={getLastBreakpointAttribute(
-								'_lh',
+								attributes,
+							})}
+							lineHorizontal={getLastBreakpointAttribute({
+								target: '_lh',
 								breakpoint,
-								attributes
-							)}
+								attributes,
+							})}
 							blockName={name}
 							onChangeOrientation={lineOrientation =>
 								maxiSetAttributes({

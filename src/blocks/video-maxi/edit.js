@@ -208,6 +208,9 @@ class edit extends MaxiBlockComponent {
 				backgroundAdvancedOptions='video overlay'
 				backgroundPrefix='o-'
 				mediaPrefix='o-'
+				inlineStylesTargets={{
+					background: '.maxi-video-block__overlay-background',
+				}}
 			/>,
 			playerType === 'popup' && (
 				<MaxiPopoverButton

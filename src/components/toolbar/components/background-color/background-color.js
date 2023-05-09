@@ -43,7 +43,7 @@ const BackgroundColor = props => {
 		advancedOptions = 'background',
 	} = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName) || props.playerType === 'video')
+	if (!ALLOWED_BLOCKS.includes(blockName) || props._pt === 'video')
 		return null;
 
 	const activeMedia = getLastBreakpointAttribute({

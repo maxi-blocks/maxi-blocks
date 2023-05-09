@@ -73,7 +73,7 @@ const Size = props => {
 							onChange={val => {
 								const full = val ? 'full' : 'normal';
 								onChange({
-									[`full-width-${breakpoint}`]: full,
+									[`_fw-${breakpoint}`]: full,
 								});
 							}}
 						/>
@@ -85,13 +85,13 @@ const Size = props => {
 							label={__('Width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: '_w-unit',
+								target: '_w.u',
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[`width-unit-${breakpoint}`]: val,
+									[`_w.u-${breakpoint}`]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
@@ -102,19 +102,17 @@ const Size = props => {
 							allowedUnits={['px', 'em', 'vw', '%']}
 							onChangeValue={val =>
 								onChange({
-									[`width-${breakpoint}`]: val,
+									[`_w-${breakpoint}`]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[`width-${breakpoint}`]:
-										getDefaultAttribute(
-											`width-${breakpoint}`
-										),
-									[`width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`width-unit-${breakpoint}`
-										),
+									[`_w-${breakpoint}`]: getDefaultAttribute(
+										`_w-${breakpoint}`
+									),
+									[`_w.u-${breakpoint}`]: getDefaultAttribute(
+										`_w.u-${breakpoint}`
+									),
 									isReset: true,
 								})
 							}
@@ -128,25 +126,24 @@ const Size = props => {
 									label={__('Max width', 'maxi-blocks')}
 									enableUnit
 									unit={getLastBreakpointAttribute({
-										target: '_mw-unit',
+										target: '_mw.u',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeUnit={val =>
 										onChange({
-											[`max-width-unit-${breakpoint}`]:
-												val,
+											[`_mw.u-${breakpoint}`]: val,
 										})
 									}
 									onReset={() =>
 										onChange({
-											[`max-width-${breakpoint}`]:
+											[`_mw-${breakpoint}`]:
 												getDefaultAttribute(
-													`max-width-${breakpoint}`
+													`_mw-${breakpoint}`
 												),
-											[`max-width-unit-${breakpoint}`]:
+											[`_mw.u-${breakpoint}`]:
 												getDefaultAttribute(
-													`max-width-unit-${breakpoint}`
+													`_mw.u-${breakpoint}`
 												),
 											isReset: true,
 										})
@@ -158,7 +155,7 @@ const Size = props => {
 									})}
 									onChangeValue={val =>
 										onChange({
-											[`max-width-${breakpoint}`]: val,
+											[`_mw-${breakpoint}`]: val,
 										})
 									}
 								/>

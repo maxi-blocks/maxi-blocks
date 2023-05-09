@@ -46,23 +46,23 @@ const DividerColor = props => {
 				<ColorControl
 					label={__('Divider line', 'maxi-blocks')}
 					color={getLastBreakpointAttribute({
-						target: 'divider-border-color',
+						target: 'di-bo_cc',
 						breakpoint,
 						attributes: props,
 					})}
-					prefix='divider-border-'
+					prefix='di-bo-'
 					paletteColor={getLastBreakpointAttribute({
-						target: 'divider-border-palette-color',
+						target: 'di-bo_pc',
 						breakpoint,
 						attributes: props,
 					})}
 					paletteOpacity={getLastBreakpointAttribute({
-						target: 'divider-border-palette-opacity',
+						target: 'di-bo_po',
 						breakpoint,
 						attributes: props,
 					})}
 					paletteStatus={getLastBreakpointAttribute({
-						target: 'divider-border-palette-status',
+						target: 'di-bo_ps',
 						breakpoint,
 						attributes: props,
 					})}
@@ -79,25 +79,25 @@ const DividerColor = props => {
 							[getAttributeKey(
 								'_cc',
 								false,
-								'divider-border-',
+								'di-bo-',
 								breakpoint
 							)]: color,
 							[getAttributeKey(
 								'_pc',
 								false,
-								'divider-border-',
+								'di-bo-',
 								breakpoint
 							)]: paletteColor,
 							[getAttributeKey(
 								'_po',
 								false,
-								'divider-border-',
+								'di-bo-',
 								breakpoint
 							)]: paletteOpacity,
 							[getAttributeKey(
 								'_ps',
 								false,
-								'divider-border-',
+								'di-bo-',
 								breakpoint
 							)]: paletteStatus,
 						});

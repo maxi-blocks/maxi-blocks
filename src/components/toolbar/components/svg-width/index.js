@@ -35,7 +35,7 @@ const SvgWidth = props => {
 				<SvgWidthControl
 					{...props}
 					onChange={onChange}
-					prefix='svg-'
+					prefix='s-'
 					breakpoint={breakpoint}
 					resizableObject={resizableObject}
 				/>
@@ -45,7 +45,7 @@ const SvgWidth = props => {
 						content={props.content}
 						onChange={onChange}
 						breakpoint={breakpoint}
-						prefix='svg-'
+						prefix='s-'
 					/>
 				)}
 			</div>

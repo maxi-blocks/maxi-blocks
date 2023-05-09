@@ -123,7 +123,7 @@ const LinkContent = props => {
 		// Just need to change one format to change the rest with the same structure,
 		// as they share THE SAME object. For example, a word in a sentence that shares same link
 		// with position from 5 to 10, will mean format[5] === format[6] === format[7]...=== format[10]
-		formatValue.formats[posStart].forEach((format, j) => {
+		formatValue?.formats?.[posStart]?.forEach((format, j) => {
 			if (format.type === 'maxi-blocks/text-link')
 				formatValue.formats[posStart][j].attributes = attributes;
 		});

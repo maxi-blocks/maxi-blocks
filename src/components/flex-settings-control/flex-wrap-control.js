@@ -16,12 +16,7 @@ import {
 /**
  * Icons
  */
-import {
-	flexWrapNowrap,
-	flexWrap,
-	flexWrapReverse,
-	styleNone,
-} from '../../icons';
+import { flexWrapNowrap, flexWrap, flexWrapReverse } from '../../icons';
 
 /**
  * Component
@@ -32,11 +27,6 @@ const FlexWrapControl = props => {
 
 	const getOptions = () => {
 		const options = [];
-
-		options.push({
-			icon: <Icon icon={styleNone} />,
-			value: 'unset',
-		});
 
 		options.push({
 			icon: <Icon icon={flexWrapNowrap} />,

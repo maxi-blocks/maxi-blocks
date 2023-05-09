@@ -484,9 +484,10 @@ const getWPNativeStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				1
 			);
 
-		response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${buttonSentences?.join(
-			' '
-		)}}`;
+		response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
+			...buttonSentences,
+			`color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
+		]?.join(' ')}}`;
 
 		// General color
 		response += `${prefix} .maxi-${style} .${nativeWPPrefix} {

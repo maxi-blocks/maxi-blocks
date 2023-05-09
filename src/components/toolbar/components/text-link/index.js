@@ -113,30 +113,19 @@ const LinkContent = props => {
 	}, [linkValue.url]);
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
-		const [posStart, posEnd] = getFormatPosition({
+		const [posStart] = getFormatPosition({
 			formatValue,
-			formatName: 'maxi-blocks/text-link',
+			formatName,
 			formatClassName: null,
-			formatAttributes: formatOptions.current.attributes,
-		}) || [formatValue.start ?? 0, formatValue.end ?? 0];
+			formatAttributes: formatOptions.current?.attributes,
+		}) || [formatValue.start ?? 0];
 
-		formatValue.formats = formatValue.formats.map((formatEl, i) => {
-			return formatEl.map(format => {
-				if (
-					format.type === 'maxi-blocks/text-link' &&
-					posStart <= i &&
-					i <= posEnd
-				)
-					return {
-						...format,
-						attributes: {
-							...format.attributes,
-							...attributes,
-						},
-					};
-
-				return format;
-			});
+		// Just need to change one format to change the rest with the same structure,
+		// as they share THE SAME object. For example, a word in a sentence that shares same link
+		// with position from 5 to 10, will mean format[5] === format[6] === format[7]...=== format[10]
+		formatValue.formats[posStart].forEach((format, j) => {
+			if (format.type === 'maxi-blocks/text-link')
+				formatValue.formats[posStart][j].attributes = attributes;
 		});
 
 		return formatValue;

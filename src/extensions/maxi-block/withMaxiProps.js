@@ -114,10 +114,22 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, parentColumnClientId]);
 
 			const maxiSetAttributes = useCallback(obj => {
+				// const clientIds =
+				// 	repeaterContext?.innerBlocksPositions?.[
+				// 		`${blockPositionFromColumn}`
+				// 	];
 				const clientIds =
 					repeaterContextRef?.current?.innerBlocksPositions?.[
 						`${blockPositionFromColumn}`
 					];
+				console.log(
+					repeaterContext?.innerBlocksPositions?.[
+						`${blockPositionFromColumn}`
+					],
+					repeaterContextRef?.current?.innerBlocksPositions?.[
+						`${blockPositionFromColumn}`
+					]
+				);
 
 				return handleSetAttributes({
 					obj,
@@ -134,6 +146,7 @@ const withMaxiProps = createHigherOrderComponent(
 						);
 
 						if (clientIds && !isEmpty(nonExcludedAttributes)) {
+							console.log(clientIds);
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
 

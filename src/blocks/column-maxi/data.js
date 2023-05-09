@@ -82,9 +82,9 @@ const interactionBuilderSettings = {
 
 				const rowPattern = getGroupAttributes(
 					getBlockAttributes(
-						wp.data
-							.select('core/block-editor')
-							.getBlockRootClientId(props.clientId)
+						select('core/block-editor').getBlockRootClientId(
+							props.clientId
+						)
 					),
 					'rowPattern'
 				);

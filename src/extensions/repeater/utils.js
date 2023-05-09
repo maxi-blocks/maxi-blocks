@@ -8,15 +8,15 @@ export const findBlockIndex = (clientId, block) =>
 		innerBlock => innerBlock.clientId === clientId
 	);
 
-export const findBlockPosition = (block, rootColumn) => {
+export const findBlockPosition = (blockClientId, rootColumn) => {
 	const blockPosition = [];
 
-	if (!block || !rootColumn) return blockPosition;
+	if (!blockClientId || !rootColumn) return blockPosition;
 
 	const { getBlockParents } = select('core/block-editor');
 
-	const rawBlockParents = getBlockParents(block.clientId).filter(
-		parentId => parentId !== block.clientId
+	const rawBlockParents = getBlockParents(blockClientId).filter(
+		parentId => parentId !== blockClientId
 	);
 	const blockParents = rawBlockParents.slice(
 		rawBlockParents.indexOf(rootColumn.clientId) + 1,
@@ -37,7 +37,7 @@ export const findBlockPosition = (block, rootColumn) => {
 		currentParent = parentBlock;
 	});
 
-	blockPosition.push(findBlockIndex(block.clientId, currentParent));
+	blockPosition.push(findBlockIndex(blockClientId, currentParent));
 
 	return blockPosition;
 };
@@ -48,7 +48,7 @@ export const findTargetParent = (blockPosition, column) => {
 	let currentBlock = column;
 
 	for (let i = 0; i < blockPosition.length - 1; i += 1) {
-		currentBlock = currentBlock.innerBlocks[blockPosition[i]];
+		currentBlock = currentBlock?.innerBlocks[blockPosition[i]];
 	}
 
 	return currentBlock;

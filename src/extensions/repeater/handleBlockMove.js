@@ -41,12 +41,20 @@ const handleBlockMove = (
 
 	const childColumns = getChildColumns(block.clientId);
 
+	const modifiedNextPosition = [...nextPosition];
+
+	if (prevPosition.length < nextPosition.length) {
+		modifiedNextPosition[prevPosition.length - 1] += 1;
+	}
+
 	goThroughColumns(childColumns, initialColumn.clientId, column => {
-		const nextTargetParent = findTargetParent(nextPosition, column);
+		const nextTargetParent = findTargetParent(modifiedNextPosition, column);
 
 		if (!nextTargetParent) return;
 
 		const prevTargetParent = findTargetParent(prevPosition, column);
+
+		if (!prevTargetParent) return;
 
 		const blockToMove = getBlock(
 			prevTargetParent.innerBlocks[prevBlockIndex]?.clientId
@@ -60,7 +68,8 @@ const handleBlockMove = (
 		)
 			return;
 
-		const nextBlockIndex = nextPosition[nextPosition.length - 1];
+		const nextBlockIndex =
+			modifiedNextPosition[modifiedNextPosition.length - 1];
 
 		const {
 			moveBlockToPosition,
@@ -69,7 +78,6 @@ const handleBlockMove = (
 		} = dispatch('core/block-editor');
 
 		markNextChangeAsNotPersistent();
-		console.log('Moving block', blockToMove.name, blockToMove.clientId);
 		moveBlockToPosition(
 			blockToMove.clientId,
 			prevTargetParent.clientId,

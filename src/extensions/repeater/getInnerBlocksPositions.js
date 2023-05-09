@@ -24,7 +24,7 @@ const getInnerBlocksPositions = columnsClientIds => {
 		innerBlocks?.forEach(block => {
 			const { clientId, innerBlocks } = block;
 
-			const blockPosition = findBlockPosition(block, column);
+			const blockPosition = findBlockPosition(clientId, column);
 			const key = `${blockPosition}`;
 
 			innerBlocksPositions[key] = [
@@ -41,9 +41,9 @@ const getInnerBlocksPositions = columnsClientIds => {
 	columnsClientIds.forEach((columnClientId, index) => {
 		const column = select('core/block-editor').getBlock(columnClientId);
 
-		goThroughInnerBlocks(column?.innerBlocks, column, index === 0);
+		goThroughInnerBlocks(column?.innerBlocks, column);
 	});
-	console.log(innerBlocksPositions);
+
 	return innerBlocksPositions;
 };
 

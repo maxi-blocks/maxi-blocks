@@ -44,16 +44,16 @@ const buttonClass = `${buttonWrapperClass}__button`;
 const iconClass = `${buttonWrapperClass}__icon`;
 const contentClass = `${buttonWrapperClass}__content`;
 
-const prefix = 'button-';
+const prefix = 'bt-';
 
 /**
  * Data object
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
-	_exclude: ['buttonContent', 'icon-content'],
+	_exclude: ['i_c'],
 	settings: {
-		'Button text': 'buttonContent',
+		'Button text': '_bc',
 		Icon: {
 			group: {
 				Icon: { groupAttributes: ['icon', 'iconHover'] },
@@ -78,7 +78,7 @@ const copyPasteMapping = {
 					],
 				},
 				'Icon padding': {
-					groupAttributes: 'Icon padding',
+					groupAttributes: 'iconPadding',
 				},
 			},
 		},

@@ -21,7 +21,7 @@ const prefix = 'nc-';
  */
 const name = 'number-counter-maxi';
 const copyPasteMapping = {
-	_exclude: ['ncsa', 'nnce'],
+	_exclude: ['nc_sta', 'nc_e'],
 	settings: {
 		Alignment: {
 			groupAttributes: 'alignment',

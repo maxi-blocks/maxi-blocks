@@ -18,18 +18,18 @@ import { targets as paneTargets } from '../pane-maxi/data';
  */
 const name = 'accordion-maxi';
 const copyPasteMapping = {
-	_exclude: ['icon-content', 'active-icon-content'],
+	_exclude: ['i_c', 'a-i_c'],
 	settings: {
 		'Accordion settings': {
 			group: {
-				'Accordion layout': 'al',
-				Collapsible: 'ic',
-				'Pane closes when another opens': 'apc',
+				'Accordion layout': '_acl',
+				Collapsible: '_ico',
+				'Pane closes when another opens': '_apc',
 				'Pane spacing': {
-					props: ['pane-spacing', 'pane-spacing-unit'],
+					props: ['_rg', '_rg.u'],
 					hasBreakpoints: true,
 				},
-				'Animation duration': 'ad',
+				'Animation duration': '_ad',
 			},
 		},
 		'Accordion line': { groupAttributes: 'accordionLine' },
@@ -58,7 +58,7 @@ const copyPasteMapping = {
 					],
 				},
 				'Icon padding': {
-					groupAttributes: 'Icon padding',
+					groupAttributes: 'iconPadding',
 				},
 			},
 		},
@@ -66,7 +66,7 @@ const copyPasteMapping = {
 			group: {
 				Icon: {
 					groupAttributes: ['icon', 'iconHover'],
-					prefix: 'active-',
+					prefix: 'a-',
 				},
 				'Icon border': {
 					groupAttributes: [
@@ -77,7 +77,7 @@ const copyPasteMapping = {
 						'iconBorderWidthHover',
 						'iconBorderRadiusHover',
 					],
-					prefix: 'active-',
+					prefix: 'a-',
 				},
 				'Icon background': {
 					groupAttributes: [
@@ -88,11 +88,11 @@ const copyPasteMapping = {
 						'iconBackgroundColorHover',
 						'iconBackgroundGradientHover',
 					],
-					prefix: 'active-',
+					prefix: 'a-',
 				},
 				'Icon padding': {
-					groupAttributes: 'Icon padding',
-					prefix: 'active-',
+					groupAttributes: 'iconPadding',
+					prefix: 'a-',
 				},
 			},
 		},

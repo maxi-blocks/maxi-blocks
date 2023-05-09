@@ -61,9 +61,7 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 		}
 
 		if (isHover)
-			currAttrKeys = currAttrKeys.map(
-				currAttrKey => `${currAttrKey}-hover`
-			);
+			currAttrKeys = currAttrKeys.map(currAttrKey => `${currAttrKey}.h`);
 
 		currAttrKeys.forEach(currAttrKey => {
 			attr[currAttrKey] = attributes[currAttrKey];

@@ -60,8 +60,8 @@ const Inspector = props => {
 											/>
 										),
 										extraIndicators: [
-											`column-fit-content-${deviceType}`,
-											`column-size-${deviceType}`,
+											`_cfc-${deviceType}`,
+											`_cs-${deviceType}`,
 										],
 									},
 									...inspectorTabs.blockBackground({

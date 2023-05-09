@@ -13,20 +13,21 @@ import {
 import { capitalize } from 'lodash';
 
 const shapeDividerCopyPasteGenerator = position => {
+	const firstLetter = position[0];
 	return {
 		[`${capitalize(position)} shape divider`]: {
 			group: {
-				'Divider status': `sd${position[0]}.s`,
-				'Divider style': `sd${position[0]}_ss`,
-				'Divider opacity': `sd${position[0]}_o`,
+				'Divider status': `sd${firstLetter}.s`,
+				'Divider style': `sd${firstLetter}_ss`,
+				'Divider opacity': `sd${firstLetter}_o`,
 				'Divider color': [
-					`sd${position[0]}_pc`,
-					`sd${position[0]}_cc`,
-					`sd${position[0]}_ps`,
+					`sd${firstLetter}_pc`,
+					`sd${firstLetter}_cc`,
+					`sd${firstLetter}_ps`,
 				],
-				'Divider height': `sd${position[0]}_h`,
-				'Divider height unit': `sd${position[0]}_h.u`,
-				'Divider scroll effect': `sd${position[0]}_ef.s`,
+				'Divider height': `sd${firstLetter}_h`,
+				'Divider height unit': `sd${firstLetter}_h.u`,
+				'Divider scroll effect': `sd${firstLetter}_ef.s`,
 			},
 		},
 	};

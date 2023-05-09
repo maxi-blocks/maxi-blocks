@@ -36,7 +36,6 @@ const prefix = 's-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
-	_exclude: ['content', 'svgType'],
 	settings: {
 		'Icon content': ['_st', '_c'],
 		Alignment: {
@@ -51,22 +50,22 @@ const copyPasteMapping = {
 		'Icon colour': {
 			group: {
 				'Icon hover status': 's.sh',
-				'Fill colour': { props: 'svg-fill', isPalette: true },
-				'Line colour': { label: 'svg-line', isPalette: true },
+				'Fill colour': { props: 'sfi', isPalette: true },
+				'Line colour': { props: 'sli', isPalette: true },
 				'Fill hover colour': {
-					props: 'svg-fill',
+					props: 'sfi',
 					isPalette: true,
 					isHover: true,
 				},
 				'Line hover colour': {
-					props: 'svg-line',
+					props: 'sli',
 					isPalette: true,
 					isHover: true,
 				},
 			},
 		},
 		'Icon line width': {
-			props: 'svg-stroke',
+			props: 's-str',
 			hasBreakpoints: true,
 		},
 		'Icon background': {

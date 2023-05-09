@@ -81,13 +81,13 @@ const templates = {
 		props: '_ecn',
 	},
 	anchor: {
-		props: ['anchor', '_lse'],
+		props: ['_al', '_lse'],
 	},
 	interaction: {
 		props: 'relations',
 	},
 	breakpoints: {
-		groupAttributes: '_bp',
+		groupAttributes: 'breakpoints',
 	},
 	customCss: {
 		groupAttributes: 'customCss',
@@ -99,13 +99,13 @@ const templates = {
 		groupAttributes: 'transform',
 	},
 	transition: {
-		groupAttributes: '_t',
+		groupAttributes: 'transition',
 	},
 	display: {
 		groupAttributes: 'display',
 	},
 	position: {
-		groupAttributes: '_pos',
+		groupAttributes: 'position',
 	},
 	overflow: {
 		groupAttributes: 'overflow',
@@ -127,7 +127,7 @@ const templates = {
 			template: 'interaction',
 		},
 		Breakpoints: {
-			template: '_bp',
+			template: 'breakpoints',
 		},
 		'Custom CSS': {
 			template: 'customCss',
@@ -139,13 +139,13 @@ const templates = {
 			template: 'transform',
 		},
 		'Hover transition': {
-			template: '_t',
+			template: 'transition',
 		},
 		'Show/hide block': {
 			template: 'display',
 		},
 		Position: {
-			template: '_pos',
+			template: 'position',
 		},
 		Overflow: {
 			template: 'overflow',

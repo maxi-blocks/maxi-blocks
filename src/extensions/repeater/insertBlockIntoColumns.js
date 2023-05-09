@@ -28,7 +28,7 @@ const insertBlockIntoColumns = clientId => {
 
 	const childColumns = getChildColumns(block.clientId);
 
-	const blockPosition = findBlockPosition(block, initialColumn);
+	const blockPosition = findBlockPosition(block.clientId, initialColumn);
 	const blockIndex = blockPosition[blockPosition.length - 1];
 
 	goThroughColumns(childColumns, initialColumn.clientId, column => {

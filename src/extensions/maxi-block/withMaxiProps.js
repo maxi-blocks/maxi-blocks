@@ -52,6 +52,7 @@ const withMaxiProps = createHigherOrderComponent(
 			} = useSelect(select => select('core/block-editor'), []);
 
 			const {
+				updateBlockAttributes,
 				__unstableMarkNextChangeAsNotPersistent:
 					markNextChangeAsNotPersistent,
 			} = useDispatch('core/block-editor');
@@ -88,12 +89,10 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const prevBlockPositionFromColumn = useRef();
-
 			const blockPositionFromColumn = useMemo(() => {
 				if (parentColumnClientId) {
 					return findBlockPosition(
-						ownProps,
+						clientId,
 						getBlock(parentColumnClientId)
 					);
 				}
@@ -137,9 +136,6 @@ const withMaxiProps = createHigherOrderComponent(
 						if (clientIds && !isEmpty(nonExcludedAttributes)) {
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
-
-								const { updateBlockAttributes } =
-									dispatch('core/block-editor');
 
 								updateBlockAttributes(
 									currentClientId,
@@ -205,38 +201,35 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [isSelected]);
 
 			useEffect(() => {
-				repeaterContextRef.current = repeaterContext;
-			}, [repeaterContext]);
+				let blockInnerBlocksPositions = null;
 
-			useEffect(() => {
+				if (repeaterContextRef?.current?.innerBlocksPositions) {
+					Object.entries(
+						repeaterContextRef.current.innerBlocksPositions
+					).forEach(([position, clientIds]) => {
+						if (clientIds.includes(clientId)) {
+							blockInnerBlocksPositions = position
+								.split(',')
+								.map(Number);
+						}
+					});
+				}
+
 				if (
-					!isEqual(
-						prevBlockPositionFromColumn.current,
-						blockPositionFromColumn
-					)
+					blockInnerBlocksPositions &&
+					blockPositionFromColumn &&
+					!isEqual(blockInnerBlocksPositions, blockPositionFromColumn)
 				) {
-					if (
-						prevBlockPositionFromColumn.current &&
-						blockPositionFromColumn
-					) {
-						handleBlockMove(
-							ownProps,
-							prevBlockPositionFromColumn.current,
-							blockPositionFromColumn,
-							repeaterContextRef?.current?.innerBlocksPositions
-						);
+					handleBlockMove(
+						ownProps,
+						blockInnerBlocksPositions,
+						blockPositionFromColumn,
+						repeaterContextRef?.current?.innerBlocksPositions
+					);
 
-						repeaterContextRef?.current?.updateInnerBlocksPositions();
-					}
-
-					prevBlockPositionFromColumn.current =
-						blockPositionFromColumn;
+					repeaterContextRef?.current?.updateInnerBlocksPositions();
 				}
 			}, [blockPositionFromColumn]);
-
-			// TODO: make maxiSetAttributes work with inner repeater blocks
-			// TODO: normalize column(add it also to innerBlockPositions(mb rename it to blockPositions))
-			// TODO: move detectNewBlocks to a better place, clean it, make it take only clientId, not whole block(check if it's possible)
 
 			return (
 				<>

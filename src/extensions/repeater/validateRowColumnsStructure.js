@@ -78,7 +78,7 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 				return false;
 			}
 
-			const blockPosition = findBlockPosition(block, column);
+			const blockPosition = findBlockPosition(block.clientId, column);
 			const refClientId = innerBlocksPositions[`${blockPosition}`].at(0);
 
 			const { getBlockAttributes } = select('core/block-editor');

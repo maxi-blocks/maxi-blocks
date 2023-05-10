@@ -68,16 +68,25 @@ const getBorderStyles = ({
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
 		const getColorString = () => {
-			const { paletteStatus, paletteColor, paletteOpacity, color } =
-				getPaletteAttributes({
-					obj,
-					prefix: `${prefix}border-`,
-					isHover,
-					breakpoint,
-				});
+			const {
+				paletteStatus,
+				paletteSCStatus,
+				paletteColor,
+				paletteOpacity,
+				color,
+			} = getPaletteAttributes({
+				obj,
+				prefix: `${prefix}border-`,
+				isHover,
+				breakpoint,
+			});
 
 			if (paletteStatus)
-				if (isButton && (!isHover || hoverStatus || globalHoverStatus))
+				if (
+					!paletteSCStatus &&
+					isButton &&
+					(!isHover || hoverStatus || globalHoverStatus)
+				)
 					return getColorRGBAString({
 						firstVar: `${isButton ? 'button-' : ''}border-color${
 							isHover ? '-hover' : ''

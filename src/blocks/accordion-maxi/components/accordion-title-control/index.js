@@ -72,10 +72,18 @@ const TitleSettings = props => {
 						prefix: bgPrefix,
 						breakpoint,
 					})}
+					paletteSCStatus={getAttributeValue({
+						target: 'palette-sc-status',
+						props,
+						isHover,
+						prefix: bgPrefix,
+						breakpoint,
+					})}
 					onChange={({
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) =>
 						onChange({
@@ -85,6 +93,12 @@ const TitleSettings = props => {
 								bgPrefix,
 								breakpoint
 							)]: paletteStatus,
+							[getAttributeKey(
+								'palette-sc-status',
+								isHover,
+								bgPrefix,
+								breakpoint
+							)]: paletteSCStatus,
 							[getAttributeKey(
 								'palette-color',
 								isHover,

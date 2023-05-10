@@ -501,6 +501,15 @@ const NavigationIconControl = props => {
 									)
 								]
 							}
+							paletteSCStatus={
+								props[
+									getAttributeKey(
+										'stroke-palette-sc-status',
+										isHover,
+										prefix
+									)
+								]
+							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
 								onChangeInline(
@@ -513,20 +522,31 @@ const NavigationIconControl = props => {
 								color,
 								paletteColor,
 								paletteStatus,
+								paletteSCStatus,
 								paletteOpacity,
 							}) => {
-								const strokeColorStr = getColorRGBAString({
-									firstVar: getAttributeKey(
-										'stroke',
-										isHover,
-										prefix
-									),
-									secondVar: `color-${paletteColor}${
-										isHover ? '-hover' : ''
-									}`,
-									opacity: paletteOpacity,
-									blockStyle,
-								});
+								const strokeColorStr = getColorRGBAString(
+									paletteSCStatus
+										? {
+												firstVar: `color-${paletteColor}${
+													isHover ? '-hover' : ''
+												}`,
+												opacity: paletteOpacity,
+												blockStyle,
+										  }
+										: {
+												firstVar: getAttributeKey(
+													'stroke',
+													isHover,
+													prefix
+												),
+												secondVar: `color-${paletteColor}${
+													isHover ? '-hover' : ''
+												}`,
+												opacity: paletteOpacity,
+												blockStyle,
+										  }
+								);
 								const onChangeObj = {
 									[getAttributeKey(
 										'stroke-color',
@@ -543,6 +563,11 @@ const NavigationIconControl = props => {
 										isHover,
 										prefix
 									)]: paletteStatus,
+									[getAttributeKey(
+										'stroke-palette-sc-status',
+										isHover,
+										prefix
+									)]: paletteSCStatus,
 									[getAttributeKey(
 										'stroke-palette-opacity',
 										isHover,
@@ -646,6 +671,15 @@ const NavigationIconControl = props => {
 									)
 								]
 							}
+							paletteSCStatus={
+								props[
+									getAttributeKey(
+										'fill-palette-sc-status',
+										isHover,
+										prefix
+									)
+								]
+							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
 								onChangeInline(
@@ -658,20 +692,31 @@ const NavigationIconControl = props => {
 								color,
 								paletteColor,
 								paletteStatus,
+								paletteSCStatus,
 								paletteOpacity,
 							}) => {
-								const fillColorStr = getColorRGBAString({
-									firstVar: getAttributeKey(
-										'fill',
-										isHover,
-										prefix
-									),
-									secondVar: `color-${paletteColor}${
-										isHover ? '-hover' : ''
-									}`,
-									opacity: paletteOpacity,
-									blockStyle,
-								});
+								const fillColorStr = getColorRGBAString(
+									paletteSCStatus
+										? {
+												firstVar: `color-${paletteColor}${
+													isHover ? '-hover' : ''
+												}`,
+												opacity: paletteOpacity,
+												blockStyle,
+										  }
+										: {
+												firstVar: getAttributeKey(
+													'fill',
+													isHover,
+													prefix
+												),
+												secondVar: `color-${paletteColor}${
+													isHover ? '-hover' : ''
+												}`,
+												opacity: paletteOpacity,
+												blockStyle,
+										  }
+								);
 								const onChangeObj = {
 									[getAttributeKey(
 										'fill-color',
@@ -688,6 +733,11 @@ const NavigationIconControl = props => {
 										isHover,
 										prefix
 									)]: paletteStatus,
+									[getAttributeKey(
+										'fill-palette-sc-status',
+										isHover,
+										prefix
+									)]: paletteSCStatus,
 									[getAttributeKey(
 										'fill-palette-opacity',
 										isHover,
@@ -818,6 +868,14 @@ const NavigationIconControl = props => {
 										attributes: props,
 										isHover,
 									})}
+									paletteSCStatus={getLastBreakpointAttribute(
+										{
+											target: `${prefix}background-palette-sc-status`,
+											breakpoint,
+											attributes: props,
+											isHover,
+										}
+									)}
 									paletteColor={getLastBreakpointAttribute({
 										target: `${prefix}background-palette-color`,
 										breakpoint,
@@ -853,6 +911,7 @@ const NavigationIconControl = props => {
 									}
 									onChange={({
 										paletteStatus,
+										paletteSCStatus,
 										paletteColor,
 										paletteOpacity,
 										color,
@@ -865,6 +924,12 @@ const NavigationIconControl = props => {
 													prefix,
 													breakpoint
 												)]: paletteStatus,
+												[getAttributeKey(
+													'background-palette-sc-status',
+													isHover,
+													prefix,
+													breakpoint
+												)]: paletteSCStatus,
 												[getAttributeKey(
 													'background-palette-color',
 													isHover,

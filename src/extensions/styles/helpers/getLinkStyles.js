@@ -45,6 +45,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		const {
 			paletteStatus: linkPaletteStatus,
+			paletteSCStatus: linkPaletteSCStatus,
 			paletteColor: linkPaletteColor,
 			paletteOpacity: linkPaletteOpacity,
 			color: linkColor,
@@ -68,20 +69,25 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
 
-			response[target].link[breakpoint].color = getColorRGBAString({
-				firstVar: 'link',
-				secondVar: `color-${linkPaletteColor}`,
-				opacity: linkPaletteOpacity,
-				blockStyle,
-			});
+			const colorString = getColorRGBAString(
+				linkPaletteSCStatus
+					? {
+							firstVar: `color-${linkPaletteColor}`,
+							opacity: linkPaletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: 'link',
+							secondVar: `color-${linkPaletteColor}`,
+							opacity: linkPaletteOpacity,
+							blockStyle,
+					  }
+			);
+
+			response[target].link[breakpoint].color = colorString;
 			response[
 				[`.block-editor-block-list__block ${target}:visited`]
-			].link[breakpoint].color = getColorRGBAString({
-				firstVar: 'link',
-				secondVar: `color-${linkPaletteColor}`,
-				opacity: linkPaletteOpacity,
-				blockStyle,
-			});
+			].link[breakpoint].color = colorString;
 		}
 
 		response[`${target}:hover`].link[breakpoint] = {};
@@ -93,6 +99,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		const {
 			paletteStatus: linkHoverPaletteStatus,
+			paletteSCStatus: linkHoverPaletteSCStatus,
 			paletteColor: linkHoverPaletteColor,
 			paletteOpacity: linkHoverPaletteOpacity,
 			color: linkHoverColor,
@@ -110,12 +117,20 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			response[[`${target}:visited:hover`]].link[breakpoint].color =
 				linkHoverColor;
 		} else if (linkHoverPaletteColor) {
-			const color = getColorRGBAString({
-				firstVar: 'link-hover',
-				secondVar: `color-${linkHoverPaletteColor}`,
-				opacity: linkHoverPaletteOpacity,
-				blockStyle,
-			});
+			const color = getColorRGBAString(
+				linkHoverPaletteSCStatus
+					? {
+							firstVar: `color-${linkHoverPaletteColor}`,
+							opacity: linkHoverPaletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: 'link-hover',
+							secondVar: `color-${linkHoverPaletteColor}`,
+							opacity: linkHoverPaletteOpacity,
+							blockStyle,
+					  }
+			);
 
 			response[`${target}:hover`].link[breakpoint].color = color;
 
@@ -124,6 +139,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		const {
 			paletteStatus: linkActivePaletteStatus,
+			paletteSCStatus: linkActivePaletteSCStatus,
 			paletteColor: linkActivePaletteColor,
 			paletteOpacity: linkActivePaletteOpacity,
 			color: linkActiveColor,
@@ -142,12 +158,20 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			response[`${target}:active span`].link[breakpoint].color =
 				linkActiveColor;
 		} else if (linkActivePaletteColor) {
-			const color = getColorRGBAString({
-				firstVar: 'link-active',
-				secondVar: `color-${linkActivePaletteColor}`,
-				opacity: linkActivePaletteOpacity,
-				blockStyle,
-			});
+			const color = getColorRGBAString(
+				linkActivePaletteSCStatus
+					? {
+							firstVar: `color-${linkActivePaletteColor}`,
+							opacity: linkActivePaletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: 'link-active',
+							secondVar: `color-${linkActivePaletteColor}`,
+							opacity: linkActivePaletteOpacity,
+							blockStyle,
+					  }
+			);
 
 			response[`${target}:active`].link[breakpoint] = { color };
 			response[`${target}:active span`].link[breakpoint] = { color };
@@ -155,6 +179,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		const {
 			paletteStatus: linkVisitedPaletteStatus,
+			paletteSCStatus: linkVisitedPaletteSCStatus,
 			paletteColor: linkVisitedPaletteColor,
 			paletteOpacity: linkVisitedPaletteOpacity,
 			color: linkVisitedColor,
@@ -173,12 +198,20 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			response[`${target}:visited span`].link[breakpoint].color =
 				linkVisitedColor;
 		} else if (linkVisitedPaletteColor) {
-			const color = getColorRGBAString({
-				firstVar: 'link-visited',
-				secondVar: `color-${linkVisitedPaletteColor}`,
-				opacity: linkVisitedPaletteOpacity,
-				blockStyle,
-			});
+			const color = getColorRGBAString(
+				linkVisitedPaletteSCStatus
+					? {
+							firstVar: `color-${linkVisitedPaletteColor}`,
+							opacity: linkVisitedPaletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: 'link-visited',
+							secondVar: `color-${linkVisitedPaletteColor}`,
+							opacity: linkVisitedPaletteOpacity,
+							blockStyle,
+					  }
+			);
 
 			response[`${target}:visited`].link[breakpoint] = { color };
 			response[`${target}:visited span`].link[breakpoint] = { color };

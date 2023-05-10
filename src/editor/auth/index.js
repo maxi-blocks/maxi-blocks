@@ -87,12 +87,20 @@ export const getUserEmail = () => {
 	return false;
 };
 
-export const processLocalActivation = (email, name, status, key) => {
+export const getSessionsCount = () => {
+	const { info, key } = getProInfoByEmail();
+
+	if (info && info?.key === key) return info?.count;
+	return false;
+};
+
+export const processLocalActivation = (email, name, status, key, count) => {
 	const newPro = {
 		[email]: {
 			status,
 			name,
 			key,
+			count,
 		},
 	};
 	let obj = newPro;
@@ -127,6 +135,15 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	if (!cookieKey && !email) return;
 
+	if (cookieKey) {
+		const cookieObj = JSON.parse(cookieKey);
+		const cookieEmail = Object.keys(cookieObj)[0];
+		if (cookieEmail !== email) {
+			removeMaxiCookie();
+			cookieKey = false;
+		}
+	}
+
 	if (!cookieKey && email) {
 		const generateCookieKey = (email, length) => {
 			let key = '';
@@ -144,7 +161,6 @@ export async function authConnect(withRedirect = false, email = false) {
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
-
 		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
 	}
 
@@ -165,7 +181,7 @@ export async function authConnect(withRedirect = false, email = false) {
 	const useEmail = email;
 
 	if (useEmail) {
-		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
+		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw-test.php';
 
 		const fetchOptions = {
 			method: 'POST',
@@ -193,7 +209,7 @@ export async function authConnect(withRedirect = false, email = false) {
 							return;
 						}
 						const date = data?.expiration_date;
-						const { name, status } = data;
+						const { name, status, count } = data;
 
 						if (status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
@@ -202,7 +218,8 @@ export async function authConnect(withRedirect = false, email = false) {
 									useEmail,
 									name,
 									'expired',
-									key
+									key,
+									count
 								);
 								redirect();
 							} else {
@@ -210,7 +227,8 @@ export async function authConnect(withRedirect = false, email = false) {
 									useEmail,
 									name,
 									'yes',
-									key
+									key,
+									count
 								);
 							}
 						}
@@ -218,7 +236,13 @@ export async function authConnect(withRedirect = false, email = false) {
 							status === 'error' &&
 							data.message === 'already logged in'
 						) {
-							processLocalActivation(useEmail, name, 'no', key);
+							processLocalActivation(
+								useEmail,
+								name,
+								'no',
+								key,
+								count
+							);
 						}
 						if (
 							status === 'error' &&

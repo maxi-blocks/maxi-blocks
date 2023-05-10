@@ -19,7 +19,7 @@ import {
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '../../components';
-import { isValidEmail } from '../auth';
+import { isValidEmail, removeMaxiCookie, getSessionsCount } from '../auth';
 
 /**
  * External dependencies
@@ -493,6 +493,15 @@ const LibraryToolbar = props => {
 						<span className={usernameClasses}>{userName}</span>
 					</h5>
 					<Button
+						key='maxi-cloud-toolbar__button__manage-sessions'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
+						label={__('Manage sessions', 'maxi-blocks')}
+						onClick={() => manageSessions()}
+					>
+						{__('Manage sessions', 'maxi-blocks')}{' '}
+						{getSessionsCount()}/5
+					</Button>
+					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
 						label={__('Sign out', 'maxi-blocks')}
@@ -513,16 +522,15 @@ const LibraryToolbar = props => {
 			{!isMaxiProActive && userName && !isMaxiProExpired && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						{__('Already signed in: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__manage-sessions'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
-						label={__('Manage sessions', 'maxi-blocks')}
+						label={__('Maximum sessions 5/5', 'maxi-blocks')}
 						onClick={() => manageSessions()}
 					>
-						{__('Manage sessions', 'maxi-blocks')}
+						{__('Maximum sessions 5/5', 'maxi-blocks')}
 					</Button>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
@@ -554,7 +562,7 @@ const LibraryToolbar = props => {
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
 							onClickConnect(userEmail);
-							// MVP
+							// MVP;
 							setTimeout(() => {
 								const button = document.querySelector(
 									'.components-button.maxi-cloud-container__patterns__top-menu__button-connect-pro'

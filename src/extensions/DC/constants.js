@@ -154,29 +154,47 @@ const generalTagFields = generalCategoryFields.filter(
 	option => option.value !== 'parent'
 );
 
-const buttonPostsPagesFields = generalPostsPagesFields.filter(option =>
-	['title', 'author'].includes(option.value)
-);
+const buttonPostsPagesFields = [
+	...generalPostsPagesFields.filter(option =>
+		['title', 'author'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
-const buttonSettingsFields = generalSettingsFields.filter(option =>
-	['title', 'tagline', 'email'].includes(option.value)
-);
+const buttonSettingsFields = [
+	...generalSettingsFields.filter(option =>
+		['title', 'tagline', 'email'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
-const buttonMediaFields = generalMediaFields.filter(option =>
-	['title', 'author'].includes(option.value)
-);
+const buttonMediaFields = [
+	...generalMediaFields.filter(option =>
+		['title', 'tagline', 'email'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
-const buttonAuthorFields = generalUsersFields.filter(option =>
-	['name', 'email', 'url'].includes(option.value)
-);
+const buttonAuthorFields = [
+	...generalUsersFields.filter(option =>
+		['title', 'tagline', 'email'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
-const buttonCategoryFields = generalCategoryFields.filter(option =>
-	['name', 'slug', 'parent'].includes(option.value)
-);
+const buttonCategoryFields = [
+	...generalCategoryFields.filter(option =>
+		['title', 'tagline', 'email'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
-const buttonTagFields = generalTagFields.filter(option =>
-	['name', 'slug'].includes(option.value)
-);
+const buttonTagFields = [
+	...generalTagFields.filter(option =>
+		['title', 'tagline', 'email'].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
 const mediaPostsPagesFields = [
 	{ label: __('Featured media', 'maxi-blocks'), value: 'featured_media' },

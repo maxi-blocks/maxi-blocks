@@ -9,7 +9,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, createRoot, render, createRef } from '@wordpress/element';
+import { Component, createRoot, createRef } from '@wordpress/element';
 import {
 	dispatch,
 	resolveSelect,
@@ -36,12 +36,12 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getTemplatePartTagName,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -59,6 +59,7 @@ import { LoopContext } from '../DC';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
  * Style Component
@@ -99,7 +100,11 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const styles = styleResolver(stylesObj, false, getBreakpoints());
+	const styles = styleResolver({
+		styles: stylesObj,
+		remove: false,
+		breakpoints: getBreakpoints(),
+	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
@@ -122,11 +127,10 @@ class MaxiBlockComponent extends Component {
 
 		this.areFontsLoaded = createRef(false);
 
-		const { attributes } = this.props;
+		const { clientId, attributes } = this.props;
 		const { uniqueID } = attributes;
 
 		this.isReusable = false;
-		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
@@ -134,10 +138,27 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
-		this.uniqueIDChecker(uniqueID);
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
+
+		// Add block to store
+		dispatch('maxiBlocks/blocks').addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot
+		);
+
+		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
+		// 1. Adding again the root and having a React error
+		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
+		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
+
+		this.wrapperId = getStylesWrapperId(
+			newUniqueID,
+			getTemplatePartTagName(clientId)
+		);
 	}
 
 	componentDidMount() {
@@ -204,7 +225,11 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.loadFonts();
-		this.displayStyles();
+
+		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
+		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
+		// unnecessary amount of process and resources
+		this.displayStyles(!!this.rootSlot);
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -393,29 +418,115 @@ class MaxiBlockComponent extends Component {
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
+			const { uniqueID } = this.props.attributes;
+
 			// Styles
 			const obj = this.getStylesObject;
-			styleResolver(obj, true);
+			styleResolver({ styles: obj, remover: true });
 			this.removeStyles();
 
+			// Block
+			dispatch('maxiBlocks/blocks').removeBlock(uniqueID);
+
 			// Custom data
-			dispatch('maxiBlocks/customData').removeCustomData(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
 
 			// IB
-			dispatch('maxiBlocks/relations').removeBlockRelation(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
 
 			// CSSCache
-			dispatch('maxiBlocks/styles').removeCSSCache(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
 		}
 
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+	}
+
+	getRootEl() {
+		const { uniqueID } = this.props.attributes;
+
+		const getStylesWrapper = (element, onCreateWrapper) => {
+			let wrapper = element.querySelector(`#${this.wrapperId}`);
+
+			if (!wrapper) {
+				wrapper = document.createElement('div');
+				wrapper.id = this.wrapperId;
+				wrapper.classList.add('maxi-blocks__styles');
+				element.appendChild(wrapper);
+
+				if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
+			}
+
+			return wrapper;
+		};
+
+		const getPreviewWrapper = element => {
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+
+			const elementBody = Array.from(
+				element.querySelectorAll('body')
+			).pop();
+
+			elementBody.classList.add('maxi-blocks--active');
+
+			const width =
+				elementBody.querySelector('.is-root-container').offsetWidth;
+			elementBody.setAttribute(
+				'maxi-blocks-responsive',
+				getWinBreakpoint(width)
+			);
+
+			return getStylesWrapper(elementHead, () => {
+				if (!element.getElementById('maxi-blocks-sc-vars-inline-css')) {
+					const SC = select(
+						'maxiBlocks/style-cards'
+					).receiveMaxiActiveStyleCard();
+					if (SC) {
+						updateSCOnEditor(SC.value, null, element);
+					}
+				}
+			});
+		};
+
+		let wrapper;
+		let root;
+
+		const isSiteEditor = getIsSiteEditor();
+
+		if (isSiteEditor) {
+			const siteEditorIframe = getSiteEditorIframe();
+
+			if (this.isTemplatePartPreview) {
+				const templateViewIframe = getTemplateViewIframe(uniqueID);
+				if (templateViewIframe) {
+					wrapper = getPreviewWrapper(templateViewIframe);
+				}
+			} else if (siteEditorIframe) {
+				// Iframe on creation generates head, then gutenberg generates their own head
+				// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
+				const iframeHead = Array.from(
+					siteEditorIframe.querySelectorAll('head')
+				).pop();
+
+				wrapper = getStylesWrapper(iframeHead);
+			}
+		} else wrapper = getStylesWrapper(document.head);
+
+		if (
+			this.rootSlot &&
+			wrapper?.parentElement.isSameNode(
+				this.rootSlot._internalRoot.containerInfo.parentElement
+			)
+		)
+			return this.rootSlot;
+
+		if (wrapper) root = createRoot(wrapper);
+
+		dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
+
+		return root;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -590,6 +701,8 @@ class MaxiBlockComponent extends Component {
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
 
+		this.rootSlot = this.getRootEl();
+
 		let obj;
 		let breakpoints;
 
@@ -609,84 +722,9 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			const getStylesWrapper = (element, onCreateWrapper) => {
-				const wrapperId = getStylesWrapperId(uniqueID);
-
-				let wrapper = element.querySelector(`#${wrapperId}`);
-
-				if (!wrapper) {
-					wrapper = document.createElement('div');
-					wrapper.id = wrapperId;
-					wrapper.classList.add('maxi-blocks__styles');
-					element.appendChild(wrapper);
-
-					if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
-				}
-
-				return wrapper;
-			};
-
-			const getPreviewWrapper = element => {
-				const elementHead = Array.from(
-					element.querySelectorAll('head')
-				).pop();
-
-				const elementBody = Array.from(
-					element.querySelectorAll('body')
-				).pop();
-
-				elementBody.classList.add('maxi-blocks--active');
-
-				const width =
-					elementBody.querySelector('.is-root-container').offsetWidth;
-				elementBody.setAttribute(
-					'maxi-blocks-responsive',
-					getWinBreakpoint(width)
-				);
-
-				return getStylesWrapper(elementHead, () => {
-					if (
-						!element.getElementById(
-							'maxi-blocks-sc-vars-inline-css'
-						)
-					) {
-						const SC = select(
-							'maxiBlocks/style-cards'
-						).receiveMaxiActiveStyleCard();
-						if (SC) {
-							updateSCOnEditor(SC.value, null, element);
-						}
-					}
-				});
-			};
-
-			let wrapper;
-
 			const isSiteEditor = getIsSiteEditor();
 
-			if (isSiteEditor) {
-				// for full site editor (FSE)
-				const siteEditorIframe = getSiteEditorIframe();
-
-				if (this.isTemplatePartPreview) {
-					const templateViewIframe = getTemplateViewIframe(uniqueID);
-					if (templateViewIframe) {
-						wrapper = getPreviewWrapper(templateViewIframe);
-					}
-				} else if (siteEditorIframe) {
-					// Iframe on creation generates head, then gutenberg generates their own head
-					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
-					const iframeHead = Array.from(
-						siteEditorIframe.querySelectorAll('head')
-					).pop();
-
-					if (isEmpty(iframeHead.childNodes)) return;
-
-					wrapper = getStylesWrapper(iframeHead);
-				}
-			} else wrapper = getStylesWrapper(document.head);
-
-			if (wrapper) {
+			if (this.rootSlot) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
@@ -699,61 +737,16 @@ class MaxiBlockComponent extends Component {
 					/>
 				);
 
-				// check if createRoot is available (since React 18)
-				if (typeof createRoot === 'function') {
-					if (isNil(this.rootSlot))
-						this.rootSlot = createRoot(wrapper);
-					this.rootSlot.render(styleComponent);
-				} else {
-					// for React 17 and below
-					render(styleComponent, wrapper);
-				}
-			}
-
-			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
-			const iframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
-
-			if (iframe) {
-				const iframeDocument = iframe.contentDocument;
-
-				if (iframeDocument.head) {
-					const iframeWrapper = getStylesWrapper(iframeDocument.head);
-
-					// check if createRoot is available (since React 18)
-					if (typeof createRoot === 'function') {
-						if (isNil(this.rootSlot))
-							this.rootSlot = createRoot(wrapper);
-
-						this.rootSlot.render(
-							<StyleComponent
-								uniqueID={uniqueID}
-								stylesObj={obj}
-								currentBreakpoint={this.props.deviceType}
-								blockBreakpoints={breakpoints}
-								isSiteEditor={isSiteEditor}
-							/>
-						);
-					} else {
-						// for React 17 and below
-						render(
-							<StyleComponent
-								uniqueID={uniqueID}
-								stylesObj={obj}
-								currentBreakpoint={this.props.deviceType}
-								blockBreakpoints={breakpoints}
-								isIframe
-							/>,
-							iframeWrapper
-						);
-					}
-				}
+				this.rootSlot.render(styleComponent);
 			}
 		}
 	}
 
 	removeStyles() {
+		// TODO: check if the code below is still necessary after this root unmount
+		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
+		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
+
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID
 		);
@@ -778,9 +771,7 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		editorElement
-			?.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
-			?.remove();
+		editorElement?.getElementById(this.wrapperId)?.remove();
 
 		if (this.isReusable) {
 			this.widthObserver.disconnect();

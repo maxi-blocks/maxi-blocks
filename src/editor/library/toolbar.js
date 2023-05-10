@@ -19,7 +19,7 @@ import {
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '../../components';
-import { isValidEmail, removeMaxiCookie, getSessionsCount } from '../auth';
+import { isValidEmail, getSessionsCount } from '../auth';
 
 /**
  * External dependencies
@@ -505,7 +505,10 @@ const LibraryToolbar = props => {
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
 						label={__('Sign out', 'maxi-blocks')}
-						onClick={onLogOut}
+						onClick={() => {
+							onLogOut(true);
+							onLogOut();
+						}}
 					>
 						{__('Sign out', 'maxi-blocks')}
 					</Button>
@@ -561,14 +564,11 @@ const LibraryToolbar = props => {
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
+							const url =
+								'https://my.maxiblocks.com/login?plugin';
+							window.open(url, '_blank')?.focus();
+
 							onClickConnect(userEmail);
-							// MVP;
-							setTimeout(() => {
-								const button = document.querySelector(
-									'.components-button.maxi-cloud-container__patterns__top-menu__button-connect-pro'
-								);
-								button?.click();
-							}, '100');
 						}}
 					>
 						{__('Sign in', 'maxi-blocks')}

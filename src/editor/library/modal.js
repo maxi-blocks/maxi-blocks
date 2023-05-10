@@ -24,7 +24,6 @@ import {
 	isValidEmail,
 	getUserName,
 	logOut,
-	getMaxiCookieKey,
 } from '../auth';
 
 /**
@@ -199,7 +198,9 @@ const MaxiModal = props => {
 			document.addEventListener(
 				'visibilitychange',
 				function userIsBack() {
+					console.log('user is back');
 					if (!document.hidden) {
+						console.log('!document.hidden');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
 							setIsMaxiProExpired(isProSubExpired());
@@ -209,7 +210,7 @@ const MaxiModal = props => {
 				}
 			);
 
-			await authConnect(true, email).then(() => {
+			await authConnect(false, email).then(() => {
 				setIsMaxiProActive(isProSubActive());
 				setIsMaxiProExpired(isProSubExpired());
 				setUserName(getUserName());
@@ -217,8 +218,8 @@ const MaxiModal = props => {
 		} else setShowNotValidEmail(true);
 	};
 
-	const onLogOut = () => {
-		logOut();
+	const onLogOut = redirect => {
+		logOut(redirect);
 		setIsMaxiProActive(false);
 		setIsMaxiProExpired(false);
 		setUserName('');

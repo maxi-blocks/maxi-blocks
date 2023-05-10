@@ -58,24 +58,36 @@ const getProInfoByEmail = () => {
 export const isProSubActive = () => {
 	const { info, key } = getProInfoByEmail();
 
-	if (info && info?.key === key && info?.status === 'yes') return true;
+	if (info && info?.status === 'yes' && info?.key) {
+		const keysArray = info?.key.split(',');
+		if (keysArray.includes(key)) return true;
+		return false;
+	}
 	return false;
 };
 
 export const isProSubExpired = () => {
 	const { info, key } = getProInfoByEmail();
 
-	if (info && info?.key === key && info?.status === 'expired') return true;
+	if (info && info?.status === 'expired' && info?.key) {
+		const keysArray = info?.key.split(',');
+		if (keysArray.includes(key)) return true;
+		return false;
+	}
 	return false;
 };
 
 export const getUserName = () => {
 	const { email, info, key } = getProInfoByEmail();
 
-	if (info && info?.key === key) {
-		const name = info?.name;
-		if (name && name !== '' && name !== '1') return name;
-		return email;
+	if (info && info?.key) {
+		const keysArray = info?.key.split(',');
+		if (keysArray.includes(key)) {
+			const name = info?.name;
+			if (name && name !== '' && name !== '1') return name;
+			return email;
+		}
+		return false;
 	}
 	return false;
 };
@@ -83,19 +95,27 @@ export const getUserName = () => {
 export const getUserEmail = () => {
 	const { email, info, key } = getProInfoByEmail();
 
-	if (info && info?.key === key) return email;
+	if (info && info?.key) {
+		const keysArray = info?.key.split(',');
+		if (keysArray.includes(key)) return email;
+		return false;
+	}
 	return false;
 };
 
 export const getSessionsCount = () => {
 	const { info, key } = getProInfoByEmail();
 
-	if (info && info?.key === key) return info?.count;
+	if (info && info?.key) {
+		const keysArray = info?.key.split(',');
+		if (keysArray.includes(key)) return info?.count;
+		return false;
+	}
 	return false;
 };
 
 export const processLocalActivation = (email, name, status, key, count) => {
-	const newPro = {
+	let newPro = {
 		[email]: {
 			status,
 			name,
@@ -104,15 +124,80 @@ export const processLocalActivation = (email, name, status, key, count) => {
 		},
 	};
 	let obj = newPro;
+
 	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
 	if (typeof oldPro === 'string') {
 		const oldProObj = JSON.parse(oldPro);
+		const oldEmailInfo = oldProObj?.[email];
+		if (oldEmailInfo && oldEmailInfo?.key) {
+			const arrayUnique = (value, index, self) => {
+				return self.indexOf(value) === index;
+			};
+
+			const oldKeysArray = oldEmailInfo?.key.split(',');
+			oldKeysArray.push(key);
+			const oldKeysArrayUnique = oldKeysArray.filter(arrayUnique);
+			const newKey = oldKeysArrayUnique.join();
+			newPro = {
+				[email]: {
+					status,
+					name,
+					key: newKey,
+					count,
+				},
+			};
+		}
+
 		if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
 	}
 
 	const objString = JSON.stringify(obj);
 
 	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+};
+
+export const processLocalActivationRemoveDevice = (
+	email,
+	name,
+	status,
+	key,
+	count
+) => {
+	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	let obj = {};
+	if (typeof oldPro === 'string') {
+		const oldProObj = JSON.parse(oldPro);
+		const oldEmailInfo = oldProObj?.[email];
+		if (oldEmailInfo && oldEmailInfo?.key) {
+			let newPro = {
+				[email]: {
+					status,
+					name,
+					key,
+					count: 1,
+				},
+			};
+			const oldKeysArray = oldEmailInfo?.key.split(',');
+			const newKeysArray = oldKeysArray.filter(item => item !== key);
+			if (newKeysArray.length !== 0) {
+				const newKey = newKeysArray.join();
+				const oldStatus = oldEmailInfo?.status;
+				const newCount = oldEmailInfo?.count || count;
+				newPro = {
+					[email]: {
+						status: oldStatus,
+						name,
+						key: newKey,
+						count: newCount - 1,
+					},
+				};
+			}
+
+			if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
+			const objString = JSON.stringify(obj);
+			dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+		}
+	}
 };
 
 export const removeLocalActivation = email => {
@@ -206,6 +291,7 @@ export async function authConnect(withRedirect = false, email = false) {
 						if (data.error) {
 							console.error(data.error);
 							deactivateLocal();
+
 							return;
 						}
 						const date = data?.expiration_date;
@@ -266,14 +352,17 @@ export async function authConnect(withRedirect = false, email = false) {
 	}
 }
 
-export const logOut = () => {
+export const logOut = redirect => {
 	const { key } = getMaxiCookieKey();
 	const email = getUserEmail();
 	const name = getUserName();
-	processLocalActivation(email, name, 'no', key);
+	const count = getSessionsCount();
+	processLocalActivationRemoveDevice(email, name, 'no', key, count);
 	removeMaxiCookie();
-	const url = 'https://my.maxiblocks.com/log-out?plugin';
-	window.open(url, '_blank')?.focus();
+	if (redirect) {
+		const url = 'https://my.maxiblocks.com/log-out?plugin';
+		window.open(url, '_blank')?.focus();
+	}
 };
 
 export const isValidEmail = email => {

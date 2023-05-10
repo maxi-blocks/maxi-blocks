@@ -229,7 +229,7 @@ const ColorControl = props => {
 		<div className={classes}>
 			{globalStatus && (
 				<ToggleSwitch
-					label={__('Christiaan, we need you here =P', 'maxi-blocks')}
+					label={__('Override style card palette', 'maxi-blocks')}
 					selected={paletteSCStatus}
 					onChange={val =>
 						onChangeValue({

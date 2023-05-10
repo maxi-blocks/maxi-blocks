@@ -119,13 +119,14 @@ const reducer = (
 					...action.settings,
 				},
 			};
-		case 'SAVE_GENERAL_SETTING':
+		case 'SAVE_GENERAL_SETTING': {
 			const { setting, value } = action;
 			const newSettings = { [setting]: value };
 			return {
 				...state,
 				settings: { ...state.settings, ...newSettings },
 			};
+		}
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,
@@ -218,13 +219,12 @@ const reducer = (
 				blocksToRender: [...state.blocksToRender, uniqueID],
 			};
 		}
-		case 'SET_IS_PAGE_LOADED': {
+		case 'SET_IS_PAGE_LOADED':
 			return {
 				...state,
-				isPageLoaded: true,
+				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
 			};
-		}
 		default:
 			return state;
 	}

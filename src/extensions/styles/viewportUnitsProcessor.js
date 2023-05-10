@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import getVwSize from '../dom/getViewPortUnitsSize';

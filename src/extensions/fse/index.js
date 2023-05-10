@@ -7,4 +7,5 @@ export { default as getSiteEditorIframeBody } from './getSiteEditorIframeBody';
 export { default as getTemplatePartChooseList } from './getTemplatePartChooseList';
 export { default as getTemplatePartsIds } from './getTemplatePartsIds';
 export { default as getTemplatePartSlug } from './getTemplatePartSlug';
+export { default as getTemplatePartTagName } from './getTemplatePartTagName';
 export { default as getTemplateViewIframe } from './getTemplateViewIframe';

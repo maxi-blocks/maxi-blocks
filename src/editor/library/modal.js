@@ -192,7 +192,7 @@ const MaxiModal = props => {
 		setIsMaxiProExpired(isProSubExpired());
 	}, [type]);
 
-	const onClickConnect = email => {
+	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);
 		if (isValid) {
 			setShowNotValidEmail(false);
@@ -209,34 +209,10 @@ const MaxiModal = props => {
 				}
 			);
 
-			authConnect(true, email).then(response => {
-				const { receiveMaxiProStatus } =
-					resolveSelect('maxiBlocks/pro');
-
-				receiveMaxiProStatus().then(data => {
-					if (typeof data === 'string') {
-						const proJson = JSON.parse(data);
-						const info = proJson[email];
-						const maxiCookie = getMaxiCookieKey();
-						if (info && maxiCookie) {
-							const { key } = maxiCookie;
-							let name = info?.name;
-							if (!name || name !== '' || name !== '1')
-								name = email;
-							const isActive =
-								info &&
-								info?.key === key &&
-								info?.status === 'yes';
-							const isExpired =
-								info &&
-								info?.key === key &&
-								info?.status === 'expired';
-							setUserName(name);
-							setIsMaxiProActive(isActive);
-							setIsMaxiProExpired(isExpired);
-						}
-					}
-				});
+			await authConnect(true, email).then(() => {
+				setIsMaxiProActive(isProSubActive());
+				setIsMaxiProExpired(isProSubExpired());
+				setUserName(getUserName());
 			});
 		} else setShowNotValidEmail(true);
 	};

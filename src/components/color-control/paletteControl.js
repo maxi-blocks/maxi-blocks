@@ -2,14 +2,12 @@
  * Wordpress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
-import { getBlockStyle } from '../../extensions/styles';
 import ResetButton from '../reset-control';
 /**
  * External dependencies
@@ -28,70 +26,29 @@ const ColorPaletteControl = props => {
 	const {
 		label = '',
 		value,
+		paletteSCStatus,
 		onChange,
-		globalProps,
 		disableOpacity,
 		opacity = 1,
-		clientId,
 		disableReset,
 		onReset,
 		onResetOpacity,
-		isHover,
+		globalStatus,
+		globalPaletteColor,
+		globalPaletteOpacity,
 	} = props;
 
-	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
-		useSelect(select => {
-			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
-
-			const prefix = globalProps?.target
-				? isHover && !globalProps?.target.includes('hover')
-					? `hover-${globalProps?.target}-`
-					: `${globalProps?.target}-`
-				: '';
-
-			const globalStatus = globalProps
-				? receiveStyleCardValue(
-						`${prefix}color-global`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteColor = globalProps
-				? receiveStyleCardValue(
-						`${prefix}palette-color`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteOpacity = globalProps
-				? receiveStyleCardValue(
-						`${prefix}palette-opacity`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-
-			return {
-				globalStatus,
-				globalPaletteColor,
-				globalPaletteOpacity: globalPaletteOpacity || 1,
-			};
-		});
-
-	const classes = classnames(
-		'maxi-color-control__palette',
-		globalStatus && 'maxi-color-control__palette--disabled'
-	);
+	const paletteStatus = globalStatus && !paletteSCStatus;
 
 	const getIsActive = item => {
-		if (globalStatus && globalPaletteColor === item) return true;
-		if (!globalStatus && value === item) return true;
+		if (paletteStatus && globalPaletteColor === item) return true;
+		if (!paletteStatus && value === item) return true;
 
 		return false;
 	};
 
 	return (
-		<div className={classes}>
+		<div className='maxi-color-control__palette'>
 			<BaseControl
 				className='maxi-color-control__palette-label'
 				label={label ? `${label} colour` : ''}

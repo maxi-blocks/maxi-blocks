@@ -504,6 +504,7 @@ Object {
     "type": "number",
   },
   "button-box-shadow-palette-sc-status-general-hover": Object {
+    "default": false,
     "type": "boolean",
   },
   "button-box-shadow-palette-sc-status-l-hover": Object {

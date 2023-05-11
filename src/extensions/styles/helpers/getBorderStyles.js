@@ -33,6 +33,12 @@ const getBorderStyles = ({
 }) => {
 	const response = {};
 
+	// Clean `palette-sc-status` traces on obj. This is an MVP, considering future implementation of
+	// #4679 will implement a new border style helper.
+	Object.keys(obj).forEach(key => {
+		if (key.includes('palette-sc-status')) delete obj[key];
+	});
+
 	const hoverStatus = obj[`${prefix}border-status-hover`];
 	const {
 		'hover-border-color-global': isActive,

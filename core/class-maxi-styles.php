@@ -495,7 +495,10 @@ class MaxiBlocks_Styles
                             if($this->check_font_url($font_url)) {
                                 wp_enqueue_style(
                                     $name . '-font-' . sanitize_title_with_dashes($font),
-                                    $font_url
+                                    $font_url,
+                                    array(),
+                                    null,
+                                    'all'
                                 );
                             }
                         }
@@ -595,13 +598,19 @@ class MaxiBlocks_Styles
                                     if($this->check_font_url($font_url)) {
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
-                                            $font_url
+                                            $font_url,
+                                            array(),
+                                            null,
+                                            'all'
                                         );
                                     } else {  // Load default font weight for cases where the saved font weight doesn't exist
                                         $font_url = strstr($font_url, ':wght', true);
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font),
-                                            $font_url
+                                            $font_url,
+                                            array(),
+                                            null,
+                                            'all'
                                         );
                                     }
                                 }
@@ -631,7 +640,7 @@ class MaxiBlocks_Styles
                         );
                         $html = str_replace(
                             "media='all'",
-                            "as='style' crossorigin media='all'",
+                            "as='style' media='all'",
                             $html
                         );
                     }

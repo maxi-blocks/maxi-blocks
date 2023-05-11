@@ -636,7 +636,7 @@ class MaxiBlocks_Styles
             add_filter(
                 'style_loader_tag',
                 function ($html, $handle) {
-                    if (strpos($handle, 'maxi-font-') !== false) {
+                    if (strpos($handle, 'maxi-blocks-styles-font-') !== false) {
                         $html = str_replace(
                             "rel='stylesheet'",
                             "rel='stylesheet preload'",

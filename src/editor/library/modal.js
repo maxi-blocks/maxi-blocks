@@ -9,7 +9,6 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -198,9 +197,7 @@ const MaxiModal = props => {
 			document.addEventListener(
 				'visibilitychange',
 				function userIsBack() {
-					console.log('user is back');
 					if (!document.hidden) {
-						console.log('!document.hidden');
 						authConnect(false, email).then(() => {
 							setIsMaxiProActive(isProSubActive());
 							setIsMaxiProExpired(isProSubExpired());

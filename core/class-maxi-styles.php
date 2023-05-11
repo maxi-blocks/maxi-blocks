@@ -419,6 +419,8 @@ class MaxiBlocks_Styles
      */
     public function check_font_url($font_url)
     {
+        $font_url = str_replace(' ', '+', $font_url);
+
         $array = @get_headers($font_url);
 
         if(!$array) {
@@ -609,6 +611,7 @@ class MaxiBlocks_Styles
                                             $font_url
                                         );
                                     } else {  // Load default font weight for cases where the saved font weight doesn't exist
+                                        $font_url = strstr($font_url, ':wght', true);
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font),
                                             $font_url

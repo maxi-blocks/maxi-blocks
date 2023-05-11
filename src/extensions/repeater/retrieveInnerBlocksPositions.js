@@ -13,7 +13,7 @@ import { findBlockPosition } from './utils';
  */
 import { isEmpty } from 'lodash';
 
-const getInnerBlocksPositions = columnsClientIds => {
+const retrieveInnerBlocksPositions = columnsClientIds => {
 	const innerBlocksPositions = {};
 
 	if (isEmpty(columnsClientIds)) {
@@ -47,4 +47,4 @@ const getInnerBlocksPositions = columnsClientIds => {
 	return innerBlocksPositions;
 };
 
-export default getInnerBlocksPositions;
+export default retrieveInnerBlocksPositions;

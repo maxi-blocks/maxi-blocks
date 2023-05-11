@@ -10,7 +10,7 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
-import { getInnerBlocksPositions } from '../../extensions/repeater';
+import { retrieveInnerBlocksPositions } from '../../extensions/repeater';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -59,14 +59,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	updateInnerBlocksPositions = () => {
-		const tempInnerBlocksPositions = getInnerBlocksPositions(
+		const tempInnerBlocksPositions = retrieveInnerBlocksPositions(
 			this.columnsClientIds
 		);
 
 		if (
 			!isEqual(tempInnerBlocksPositions, this.state.innerBlocksPositions)
 		) {
-			console.log('updateInnerBlocksPositions');
 			this.setState({
 				innerBlocksPositions: tempInnerBlocksPositions,
 			});
@@ -144,7 +143,8 @@ class edit extends MaxiBlockComponent {
 						}),
 						// TODO: consider removing this
 						columnRefClientId: this.columnsClientIds[0],
-						innerBlocksPositions: this.state.innerBlocksPositions,
+						getInnerBlocksPositions: () =>
+							this.state.innerBlocksPositions,
 						updateInnerBlocksPositions:
 							this.updateInnerBlocksPositions,
 					}}

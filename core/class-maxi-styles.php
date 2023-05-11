@@ -405,15 +405,6 @@ class MaxiBlocks_Styles
         ];
     }
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     /**
      * Check font url status code
      */
@@ -428,10 +419,6 @@ class MaxiBlocks_Styles
         }
 
         $string = $array[0];
-
-        $this->write_log($font_url);
-        $this->write_log($string);
-        $this->write_log('------------------');
 
         if(strpos($string, '200')) {
             return true;

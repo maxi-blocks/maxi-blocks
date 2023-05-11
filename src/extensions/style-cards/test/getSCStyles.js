@@ -3,7 +3,7 @@ import standardSC from '../../../../core/defaults/defaultSC.json';
 import getSCVariablesObject from '../getSCVariablesObject';
 
 describe('getSCStyles', () => {
-	it('Should return a correct frontend styles for SC', () => {
+	it('Should return a correct frontend styles for SC', async () => {
 		const SCVariables = {
 			'--maxi-light-button-font-family-general': '',
 			'--maxi-light-button-font-size-general': '16px',
@@ -364,14 +364,21 @@ describe('getSCStyles', () => {
 			'--maxi-active-sc-color': '255,74,23',
 		};
 
-		const result = getSCStyles(SCVariables);
+		const result = await getSCStyles(SCVariables);
 
 		expect(result).toMatchSnapshot();
 	});
 
-	it('Should return correct frontend styles for SC from default SC', () => {
+	it('Should return correct frontend styles for SC from default SC', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		const cleanSCStyles = getSCStyles(cleanVarSC);
+		const cleanSCStyles = await getSCStyles(cleanVarSC);
+
+		expect(cleanSCStyles).toMatchSnapshot();
+	});
+
+	it('Should return correct frontend styles for SC from default SC for backend', async () => {
+		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+		const cleanSCStyles = await getSCStyles(cleanVarSC, true);
 
 		expect(cleanSCStyles).toMatchSnapshot();
 	});

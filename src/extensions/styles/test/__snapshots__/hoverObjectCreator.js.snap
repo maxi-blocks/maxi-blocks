@@ -382,6 +382,7 @@ Object {
     "type": "number",
   },
   "background-palette-sc-status-general-hover": Object {
+    "default": false,
     "type": "boolean",
   },
   "background-palette-sc-status-l-hover": Object {

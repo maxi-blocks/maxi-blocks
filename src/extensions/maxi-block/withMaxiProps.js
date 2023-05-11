@@ -38,11 +38,6 @@ const withMaxiProps = createHigherOrderComponent(
 				ownProps;
 
 			const repeaterContext = useContext(RepeaterContext);
-			const repeaterContextRef = useRef(repeaterContext);
-
-			useEffect(() => {
-				repeaterContextRef.current = repeaterContext;
-			}, [repeaterContext]);
 
 			const {
 				getBlock,
@@ -62,7 +57,7 @@ const withMaxiProps = createHigherOrderComponent(
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
 			const parentColumnClientId =
-				repeaterContextRef?.current?.repeaterStatus &&
+				repeaterContext?.repeaterStatus &&
 				getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
@@ -114,31 +109,25 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, parentColumnClientId]);
 
 			const maxiSetAttributes = useCallback(obj => {
-				// const clientIds =
-				// 	repeaterContext?.innerBlocksPositions?.[
-				// 		`${blockPositionFromColumn}`
-				// 	];
-				const clientIds =
-					repeaterContextRef?.current?.innerBlocksPositions?.[
-						`${blockPositionFromColumn}`
-					];
-				console.log(
-					repeaterContext?.innerBlocksPositions?.[
-						`${blockPositionFromColumn}`
-					],
-					repeaterContextRef?.current?.innerBlocksPositions?.[
-						`${blockPositionFromColumn}`
-					]
-				);
-
 				return handleSetAttributes({
 					obj,
 					attributes,
 					clientId,
 					onChange: obj => {
-						if (!repeaterContextRef?.current?.repeaterStatus) {
+						if (!repeaterContext?.repeaterStatus) {
 							setAttributes(obj);
 						}
+
+						// TODO: remove this when the bug is fixed
+						const blockPositionFromColumn = findBlockPosition(
+							clientId,
+							getBlock(parentColumnClientId)
+						);
+
+						const clientIds =
+							repeaterContext?.getInnerBlocksPositions()?.[
+								`${blockPositionFromColumn}`
+							];
 
 						const nonExcludedAttributes = excludeAttributes(
 							obj,
@@ -146,7 +135,6 @@ const withMaxiProps = createHigherOrderComponent(
 						);
 
 						if (clientIds && !isEmpty(nonExcludedAttributes)) {
-							console.log(clientIds);
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
 
@@ -214,33 +202,41 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [isSelected]);
 
 			useEffect(() => {
-				let blockInnerBlocksPositions = null;
+				if (repeaterContext?.repeaterStatus) {
+					let blockInnerBlocksPositions = null;
 
-				if (repeaterContextRef?.current?.innerBlocksPositions) {
-					Object.entries(
-						repeaterContextRef.current.innerBlocksPositions
-					).forEach(([position, clientIds]) => {
-						if (clientIds.includes(clientId)) {
-							blockInnerBlocksPositions = position
-								.split(',')
-								.map(Number);
-						}
-					});
-				}
+					const innerBlocksPositions =
+						repeaterContext?.getInnerBlocksPositions();
 
-				if (
-					blockInnerBlocksPositions &&
-					blockPositionFromColumn &&
-					!isEqual(blockInnerBlocksPositions, blockPositionFromColumn)
-				) {
-					handleBlockMove(
-						ownProps,
-						blockInnerBlocksPositions,
-						blockPositionFromColumn,
-						repeaterContextRef?.current?.innerBlocksPositions
-					);
+					if (innerBlocksPositions) {
+						Object.entries(innerBlocksPositions).forEach(
+							([position, clientIds]) => {
+								if (clientIds.includes(clientId)) {
+									blockInnerBlocksPositions = position
+										.split(',')
+										.map(Number);
+								}
+							}
+						);
+					}
 
-					repeaterContextRef?.current?.updateInnerBlocksPositions();
+					if (
+						blockInnerBlocksPositions &&
+						blockPositionFromColumn &&
+						!isEqual(
+							blockInnerBlocksPositions,
+							blockPositionFromColumn
+						)
+					) {
+						handleBlockMove(
+							ownProps,
+							blockInnerBlocksPositions,
+							blockPositionFromColumn,
+							innerBlocksPositions
+						);
+
+						repeaterContext?.updateInnerBlocksPositions();
+					}
 				}
 			}, [blockPositionFromColumn]);
 

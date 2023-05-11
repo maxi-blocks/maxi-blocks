@@ -74,6 +74,8 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
+
+
         if (empty($array)) {
             return false;
         }
@@ -84,7 +86,7 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
-        $array = array_filter($array, function ($arr) {$arr !== null && $arr !== false && $arr !== '';});
+        $array = array_filter($array, function ($arr) {return $arr !== null && $arr !== false && $arr !== '';});
 
         if (empty($array)) {
             return false;

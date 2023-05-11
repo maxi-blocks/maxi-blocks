@@ -480,7 +480,21 @@ class MaxiBlocks_Styles
                         $font_styles = [$font_data['style']];
                     }
 
-                    $font_url = "https://fonts.googleapis.com/css2?family=$font";
+                    if ($use_local_fonts) {
+                        $font_name_sanitized = str_replace(
+                            ' ',
+                            '',
+                            strtolower($font)
+                        );
+                        $font_url =
+                            wp_upload_dir()['baseurl'] .
+                            '/maxi/fonts/' .
+                            $font_name_sanitized .
+                            '/style.css';
+                    } else {
+
+                        $font_url = "https://fonts.googleapis.com/css2?family=$font";
+                    }
 
                     // Load default font weight for cases where the saved font weight doesn't exist
                     wp_enqueue_style(

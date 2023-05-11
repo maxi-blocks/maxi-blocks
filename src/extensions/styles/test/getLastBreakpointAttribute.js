@@ -333,6 +333,12 @@ describe('getLastBreakpointAttribute', () => {
 	});
 
 	test('Should return general value being on XXL baseBreakpoint and enabling `forceUseBreakpoint`', () => {
+		select.mockImplementation(() => ({
+			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
+			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
+		}));
+
 		const args = {
 			target: 'line-height-unit',
 			breakpoint: 'general',

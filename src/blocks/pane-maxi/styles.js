@@ -79,7 +79,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.sh', 'bs.sh', '_o.sh'],
+			target: ['bo.s', 'bs.s', '_o.s'],
 			props,
 			isHover: true,
 		});
@@ -169,7 +169,7 @@ const getNormalStyles = (props, prefix) => {
 const getHoverStyles = (props, prefix) => {
 	const [backgroundStatusHover, borderStatusHover, boxShadowStatusHover] =
 		getAttributesValue({
-			target: ['b.sh', 'bo.sh', 'bs.sh'],
+			target: ['b.s', 'bo.s', 'bs.s'],
 			props,
 			isHover: true,
 			prefix,

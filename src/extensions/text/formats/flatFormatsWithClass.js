@@ -102,9 +102,7 @@ export const flatRepeatedClassNames = (
 	});
 
 	repeatedClasses.forEach(className => {
-		delete newTypography[`custom-formats${isHover ? '-hover' : ''}`][
-			className
-		];
+		delete newTypography[`_cf${isHover ? '.h' : ''}`][className];
 	});
 
 	return {
@@ -144,8 +142,7 @@ export const removeUnnecessaryFormats = ({
 		},
 		isHover
 	);
-	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
-		typography;
+	const { [`_cf${isHover ? '.h' : ''}`]: customFormats } = typography;
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -168,9 +165,7 @@ export const removeUnnecessaryFormats = ({
 
 				// Exist on typography, not in content
 				if (!format) {
-					delete typography[
-						`custom-formats${isHover ? '-hover' : ''}`
-					][target];
+					delete typography[`_cf${isHover ? '.h' : ''}`][target];
 				}
 				// Style is empty
 				if (isFullFormat && isEmpty(cleanedStyle)) {
@@ -185,9 +180,7 @@ export const removeUnnecessaryFormats = ({
 						'maxi-blocks/text-custom'
 					);
 
-					delete typography[
-						`custom-formats${isHover ? '-hover' : ''}`
-					][target];
+					delete typography[`_cf${isHover ? '.h' : ''}`][target];
 
 					return true;
 				}
@@ -239,8 +232,7 @@ const flatFormatsWithClass = ({
 	styleCardPrefix = '',
 	styleCard,
 }) => {
-	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
-		typography;
+	const { [`_cf${isHover ? '.h' : ''}`]: customFormats } = typography;
 
 	let newContent = content;
 	let newFormatValue = { ...formatValue };

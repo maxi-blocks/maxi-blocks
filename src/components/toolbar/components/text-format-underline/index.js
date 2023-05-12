@@ -27,7 +27,7 @@ import { toolbarUnderline } from '../../../../icons';
 const TextFormatUnderline = props => {
 	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getTextDecorationValue = () => getValue('text-decoration') || '';
+	const getTextDecorationValue = () => getValue('_td') || '';
 
 	const [isActive, setIsActive] = useState(
 		getTextDecorationValue().indexOf('overline') >= 0
@@ -53,7 +53,7 @@ const TextFormatUnderline = props => {
 		if (isEmpty(response)) response = 'unset';
 
 		onChangeFormat({
-			'text-decoration': response,
+			_td: response,
 		});
 	};
 

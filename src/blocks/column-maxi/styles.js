@@ -80,7 +80,7 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.sh', 'bs.sh', '_o.sh'],
+			target: ['bo.s', 'bs.s', '_o.s'],
 			props,
 			isHover: true,
 		});

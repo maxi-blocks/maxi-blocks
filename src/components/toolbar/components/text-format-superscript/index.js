@@ -22,7 +22,7 @@ import { toolbarSuperScript } from '../../../../icons';
 const TextFormatSuperscript = props => {
 	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getSuperscriptValue = () => getValue('vertical-align') || '';
+	const getSuperscriptValue = () => getValue('_va') || '';
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [isActive, setIsActive] = useState(
@@ -39,7 +39,7 @@ const TextFormatSuperscript = props => {
 				className='toolbar-item toolbar-item__superscript'
 				onClick={() =>
 					onChangeFormat({
-						'vertical-align': isActive ? 'unset' : 'super',
+						_va: isActive ? 'unset' : 'super',
 					})
 				}
 				aria-pressed={isActive}

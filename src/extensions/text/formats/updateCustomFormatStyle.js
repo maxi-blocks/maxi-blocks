@@ -24,8 +24,8 @@ import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
  */
 const cleanCustomFormats = (typography, isHover) => {
 	return {
-		...(!!typography[`custom-formats${isHover ? '-hover' : ''}`] &&
-			typography[`custom-formats${isHover ? '-hover' : ''}`]),
+		...(!!typography[`_cf${isHover ? '.h' : ''}`] &&
+			typography[`_cf${isHover ? '.h' : ''}`]),
 	};
 };
 
@@ -66,7 +66,7 @@ export const styleObjectManipulator = ({
 	const defaultTypography = getTypographyFromSC(SC[blockStyle], prefix);
 
 	const getCurrentValue = target =>
-		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+		typography[`${target}-${breakpoint}${isHover ? '.h' : ''}`];
 	const getDefaultValue = target =>
 		defaultTypography[`${target}-${breakpoint}`];
 
@@ -137,12 +137,12 @@ const updateCustomFormatStyle = ({
 }) => {
 	const newTypography = { ...typography };
 
-	newTypography[`custom-formats${isHover ? '-hover' : ''}`] =
-		cleanCustomFormats(newTypography, isHover);
+	newTypography[`_cf${isHover ? '.h' : ''}`] = cleanCustomFormats(
+		newTypography,
+		isHover
+	);
 
-	newTypography[`custom-formats${isHover ? '-hover' : ''}`][
-		currentClassName
-	] = {
+	newTypography[`_cf${isHover ? '.h' : ''}`][currentClassName] = {
 		...styleObjectManipulator({
 			typography: newTypography,
 			value,
@@ -164,9 +164,7 @@ const updateCustomFormatStyle = ({
 	);
 
 	if (isEmpty(customFormat))
-		delete newTypography[`custom-formats${isHover ? '-hover' : ''}`][
-			currentClassName
-		];
+		delete newTypography[`_cf${isHover ? '.h' : ''}`][currentClassName];
 
 	return { typography: newTypography };
 };

@@ -69,7 +69,6 @@ const HoverEffectControl = props => {
 		hoverPreview,
 		hoverExtension,
 		hoverTransitionEasing,
-
 		hoverTransitionEasingCubicBezier,
 		hoverTextEffectType,
 		hoverTextPreset,
@@ -81,32 +80,40 @@ const HoverEffectControl = props => {
 		hoverPaddingStatus,
 		hoverMarginStatus,
 	] = getAttributesValue({
-		targets: [
-			'hover-type',
-			'hover-basic-effect-type',
-			'hover-transition-duration',
-			'hover-preview',
-			'hover-extension',
-			'hover-transition-easing',
-			'hover-transition-easing-cubic-bezier',
-			'hover-text-effect-type',
-			'hover-text-preset',
-			'hover-title-typography-content',
-			'hover-title-typography-status',
-			'hover-content-typography-content',
-			'hover-content-typography-status',
-			'hover-border-status',
-			'hover-padding-status',
-			'hover-margin-status',
+		target: [
+			'h_ty',
+			'h_bet',
+			'h_tdu',
+			'h_pr',
+			'h_ex',
+			'h_te',
+			'h_tecb',
+			'h_tety',
+			'h_tp',
+			'h-ti-t_c',
+			'h-ti-t.s',
+			'hc-t_c',
+			'hc-t.s',
+			'h-bo.s',
+			'h_p.s',
+			'h_m.s',
 		],
 		props,
 	});
+
+	const shortEffectType = `${hoverBasicEffectType?.[0]}${
+		hoverBasicEffectType === 'zoom-in'
+			? 'i'
+			: hoverBasicEffectType === 'zoom-out'
+			? 'o'
+			: ''
+	}`;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
 	const effectNone = () => {
 		onChange({
-			'hover-type': 'none',
+			h_ty: 'none',
 		});
 		document
 			.getElementsByClassName('maxi-image-block__image')[0]
@@ -115,7 +122,7 @@ const HoverEffectControl = props => {
 
 	const disablePreview = () => {
 		onChange({
-			'hover-preview': false,
+			h_pr: false,
 		});
 		document
 			.getElementsByClassName('maxi-image-block__image')[0]
@@ -137,8 +144,8 @@ const HoverEffectControl = props => {
 					val === 'none'
 						? effectNone()
 						: onChange({
-								'hover-type': val,
-								'hover-transition-duration': 0.5,
+								h_ty: val,
+								h_tdu: 0.5,
 						  });
 				}}
 				hasBorder
@@ -151,13 +158,13 @@ const HoverEffectControl = props => {
 						onChange={val => {
 							val === false
 								? disablePreview()
-								: onChange({ 'hover-preview': val });
+								: onChange({ h_pr: val });
 						}}
 					/>
 					<ToggleSwitch
 						label={__('Extend outside boundary', 'maxi-blocks')}
 						selected={hoverExtension}
-						onChange={val => onChange({ 'hover-extension': val })}
+						onChange={val => onChange({ h_ex: val })}
 					/>
 				</>
 			)}
@@ -180,7 +187,7 @@ const HoverEffectControl = props => {
 							value={hoverTransitionDuration}
 							onChangeValue={val => {
 								onChange({
-									'hover-transition-duration':
+									h_tdu:
 										val !== undefined && val !== ''
 											? val
 											: '',
@@ -191,35 +198,23 @@ const HoverEffectControl = props => {
 							max={10}
 							onReset={() =>
 								onChange({
-									'hover-transition-duration':
-										getDefaultAttribute(
-											'hover-transition-duration'
-										),
+									h_tdu: getDefaultAttribute('h_tdu'),
 									isReset: true,
 								})
 							}
-							initialPosition={getDefaultAttribute(
-								'hover-transition-duration'
-							)}
+							initialPosition={getDefaultAttribute('h_tdu')}
 						/>
 						<SelectControl
 							label={__('Easing', 'maxi-blocks')}
 							value={hoverTransitionEasing}
-							defaultValue={getDefaultAttribute(
-								'hover-transition-easing'
-							)}
+							defaultValue={getDefaultAttribute('h_te')}
 							onReset={() =>
 								onChange({
-									'hover-transition-easing':
-										getDefaultAttribute(
-											'hover-transition-easing'
-										),
+									h_te: getDefaultAttribute('h_te'),
 									isReset: true,
 								})
 							}
-							onChange={val =>
-								onChange({ 'hover-transition-easing': val })
-							}
+							onChange={val => onChange({ h_te: val })}
 							options={[
 								{
 									label: __('Ease', 'maxi-blocks'),
@@ -254,7 +249,7 @@ const HoverEffectControl = props => {
 					value={hoverTransitionEasingCubicBezier}
 					onChange={val =>
 						onChange({
-							'hover-transition-easing-cubic-bezier': val,
+							h_tecb: val,
 						})
 					}
 				/>
@@ -264,20 +259,14 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Effect type', 'maxi-blocks')}
 						value={hoverBasicEffectType}
-						defaultValue={getDefaultAttribute(
-							'hover-basic-effect-type'
-						)}
+						defaultValue={getDefaultAttribute('h_bet')}
 						onReset={() =>
 							onChange({
-								'hover-basic-effect-type': getDefaultAttribute(
-									'hover-basic-effect-type'
-								),
+								h_bet: getDefaultAttribute('h_bet'),
 								isReset: true,
 							})
 						}
-						onChange={val =>
-							onChange({ 'hover-basic-effect-type': val })
-						}
+						onChange={val => onChange({ h_bet: val })}
 						options={[
 							{
 								label: __('Zoom in', 'maxi-blocks'),
@@ -335,12 +324,12 @@ const HoverEffectControl = props => {
 							<AdvancedNumberControl
 								label={__('Amount', 'maxi-blocks')}
 								value={getAttributesValue({
-									target: `hover-basic-${hoverBasicEffectType}-value`,
+									target: `h_b${shortEffectType}v`,
 									props,
 								})}
 								onChangeValue={val => {
 									onChange({
-										[`hover-basic-${hoverBasicEffectType}-value`]:
+										[`h_b${shortEffectType}v`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
@@ -351,15 +340,15 @@ const HoverEffectControl = props => {
 								max={100}
 								onReset={() =>
 									onChange({
-										[`hover-basic-${hoverBasicEffectType}-value`]:
+										[`h_b${shortEffectType}v`]:
 											getDefaultAttribute(
-												`hover-basic-${hoverBasicEffectType}-value`
+												`h_b${shortEffectType}v`
 											),
 										isReset: true,
 									})
 								}
 								initialPosition={getDefaultAttribute(
-									`hover-basic-${hoverBasicEffectType}-value`
+									`h_b${shortEffectType}v`
 								)}
 							/>
 						)}
@@ -370,14 +359,10 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Animation type', 'maxi-blocks')}
 						value={hoverTextEffectType}
-						defaultValue={getDefaultAttribute(
-							'hover-text-effect-type'
-						)}
+						defaultValue={getDefaultAttribute('h_tety')}
 						onReset={() =>
 							onChange({
-								'hover-text-effect-type': getDefaultAttribute(
-									'hover-text-effect-type'
-								),
+								h_tety: getDefaultAttribute('h_tety'),
 								isReset: true,
 							})
 						}
@@ -420,9 +405,7 @@ const HoverEffectControl = props => {
 								value: 'flip-horiz',
 							},
 						]}
-						onChange={val =>
-							onChange({ 'hover-text-effect-type': val })
-						}
+						onChange={val => onChange({ h_tety: val })}
 					/>
 					<SettingTabsControl
 						type='buttons'
@@ -450,7 +433,7 @@ const HoverEffectControl = props => {
 								value: 'right-bottom',
 							},
 						]}
-						onChange={val => onChange({ 'hover-text-preset': val })}
+						onChange={val => onChange({ h_tp: val })}
 					/>
 					<TextareaControl
 						placeholder={__(
@@ -460,10 +443,8 @@ const HoverEffectControl = props => {
 						value={hoverTitleTypographyContent}
 						onChange={val =>
 							onChange({
-								'hover-title-typography-content': isNil(val)
-									? getDefaultAttribute(
-											'hover-title-typography-content'
-									  )
+								'h-ti-t_c': isNil(val)
+									? getDefaultAttribute('h-ti-t_c')
 									: val,
 							})
 						}
@@ -473,7 +454,7 @@ const HoverEffectControl = props => {
 						selected={hoverTitleTypographyStatus}
 						onChange={val =>
 							onChange({
-								'hover-title-typography-status': val,
+								'h-ti-t.s': val,
 							})
 						}
 					/>
@@ -488,7 +469,7 @@ const HoverEffectControl = props => {
 							hideAlignment
 							onChangeInline={onChangeInline}
 							onChange={onChange}
-							prefix='hover-title-'
+							prefix='h-ti-'
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
@@ -509,10 +490,8 @@ const HoverEffectControl = props => {
 						value={hoverContentTypographyContent}
 						onChange={val =>
 							onChange({
-								'hover-content-typography-content': isNil(val)
-									? getDefaultAttribute(
-											'hover-content-typography-content'
-									  )
+								'hc-t_c': isNil(val)
+									? getDefaultAttribute('hc-t_c')
 									: val,
 							})
 						}
@@ -522,7 +501,7 @@ const HoverEffectControl = props => {
 						selected={hoverContentTypographyStatus}
 						onChange={val =>
 							onChange({
-								'hover-content-typography-status': val,
+								'hc-t.s': val,
 							})
 						}
 					/>
@@ -536,7 +515,7 @@ const HoverEffectControl = props => {
 							}}
 							hideAlignment
 							onChange={onChange}
-							prefix='hover-content-'
+							prefix='hc-'
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
@@ -563,7 +542,7 @@ const HoverEffectControl = props => {
 						disableImage
 						disableVideo
 						disableSVG
-						prefix='hover-'
+						prefix='h-'
 						clientId={clientId}
 					/>
 					<ToggleSwitch
@@ -571,7 +550,7 @@ const HoverEffectControl = props => {
 						selected={hoverBorderStatus}
 						onChange={val =>
 							onChange({
-								'hover-border-status': val,
+								'h-bo.s': val,
 							})
 						}
 					/>
@@ -589,9 +568,10 @@ const HoverEffectControl = props => {
 								)
 							}
 							onChange={onChange}
-							prefix='hover-'
+							prefix='h-'
 							disablePalette
 							clientId={clientId}
+							breakpoint={breakpoint}
 						/>
 					)}
 					<ToggleSwitch
@@ -599,7 +579,7 @@ const HoverEffectControl = props => {
 						selected={hoverPaddingStatus}
 						onChange={val =>
 							onChange({
-								'hover-padding-status': val,
+								'h_p.s': val,
 							})
 						}
 					/>
@@ -608,7 +588,7 @@ const HoverEffectControl = props => {
 							{...getGroupAttributes(props, 'hoverPadding')}
 							label={__('Padding', 'maxi-blocks')}
 							onChange={onChange}
-							target='hover-padding'
+							target='h_p'
 							breakpoint={breakpoint}
 							disableAuto
 						/>
@@ -618,7 +598,7 @@ const HoverEffectControl = props => {
 						selected={hoverMarginStatus}
 						onChange={val =>
 							onChange({
-								'hover-margin-status': val,
+								'h_m.s': val,
 							})
 						}
 					/>
@@ -627,7 +607,7 @@ const HoverEffectControl = props => {
 							{...getGroupAttributes(props, 'hoverMargin')}
 							label={__('Margin', 'maxi-blocks')}
 							onChange={onChange}
-							target='hover-margin'
+							target='h_m'
 							optionType='string'
 							breakpoint={breakpoint}
 						/>

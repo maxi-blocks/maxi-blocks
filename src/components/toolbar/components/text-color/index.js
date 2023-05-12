@@ -151,10 +151,10 @@ const TextColor = props => {
 						paletteOpacity,
 					}) =>
 						onChangeFormat({
-							c: color,
-							pac: paletteColor,
-							'pa-status': paletteStatus,
-							pao: paletteOpacity,
+							_cc: color,
+							_pc: paletteColor,
+							_ps: paletteStatus,
+							_po: paletteOpacity,
 						})
 					}
 					globalProps={{ target: '', type: textLevel }}

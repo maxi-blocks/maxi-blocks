@@ -80,7 +80,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.sh', 'bs.sh', '_o.sh'],
+			target: ['bo.s', 'bs.s', '_o.s'],
 			props,
 			isHover: true,
 		});
@@ -306,7 +306,7 @@ const getIconObject = (longPrefix, obj) => {
 
 const getVideoStyles = (props, isHover = false) => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.sh', 'bs.sh'],
+		target: ['bo.s', 'bs.s'],
 		props,
 		isHover: true,
 		prefix: videoPrefix,

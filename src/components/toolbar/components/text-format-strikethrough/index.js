@@ -27,7 +27,7 @@ import { toolbarStrikethrough } from '../../../../icons';
 const TextFormatStrikethrough = props => {
 	const { onChangeFormat, getValue, tooltipHide } = props;
 
-	const getTextDecorationValue = () => getValue('text-decoration') || '';
+	const getTextDecorationValue = () => getValue('_td') || '';
 
 	const [isActive, setIsActive] = useState(
 		getTextDecorationValue().indexOf('line-through') >= 0
@@ -53,7 +53,7 @@ const TextFormatStrikethrough = props => {
 		if (isEmpty(response)) response = 'unset';
 
 		onChangeFormat({
-			'text-decoration': response,
+			_td: response,
 		});
 	};
 

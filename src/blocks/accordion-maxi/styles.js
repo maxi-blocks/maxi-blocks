@@ -89,7 +89,7 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.sh', 'bs.sh', '_o.sh'],
+			target: ['bo.s', 'bs.s', '_o.s'],
 			props,
 			isHover: true,
 		});
@@ -305,7 +305,7 @@ const getPaneHeaderObject = props => {
 			},
 		}),
 		...(getAttributesValue({
-			target: '_li.sh',
+			target: '_li.s',
 			prefix: 'he-',
 			isHover: true,
 			props,

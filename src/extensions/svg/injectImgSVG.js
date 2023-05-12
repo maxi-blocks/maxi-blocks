@@ -27,8 +27,7 @@ const injectImgSVG = (
 		select('core/block-editor');
 
 	const uniqueID =
-		blockUniqueID ??
-		getBlockAttributes(getSelectedBlockClientId()).uniqueID;
+		blockUniqueID ?? getBlockAttributes(getSelectedBlockClientId())._uid;
 	const imageShapePosition = getSVGPosition(svg.outerHTML ?? svg);
 	const imageShapeRatio = getSVGRatio(svg.outerHTML ?? svg);
 

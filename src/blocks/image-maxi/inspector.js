@@ -40,24 +40,24 @@ import { isEmpty } from 'lodash';
 const Inspector = props => {
 	const { attributes, clientId, deviceType, maxiSetAttributes } = props;
 	const {
-		altSelector,
-		blockStyle,
-		captionType,
-		mediaAlt,
-		SVGElement,
-		uniqueID,
-		mediaID,
-		captionPosition,
-		fitParentSize,
-		'dc-status': dcStatus,
+		_as: altSelector,
+		_bs: blockStyle,
+		_ct: captionType,
+		_mal: mediaAlt,
+		_se: SVGElement,
+		_uid: uniqueID,
+		_mi: mediaID,
+		_cpo: captionPosition,
+		_fps: fitParentSize,
+		'dc.s': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
 	const imageFullWidthGeneral = getAttributesValue({
-		target: 'im_fw-general',
+		target: 'fw-general',
 		props: attributes,
 	});
 	const captionGap = getAttributesValue({
-		target: 'caption-gap',
+		target: '_cg',
 		props: attributes,
 		breakpoint: deviceType,
 	});
@@ -78,7 +78,7 @@ const Inspector = props => {
 				breakpoint: deviceType,
 				attributes,
 			})) ||
-		!isEmpty(attributes.SVGElement);
+		!isEmpty(SVGElement);
 
 	const getCaptionOptions = () => {
 		if (dcStatus)
@@ -132,10 +132,7 @@ const Inspector = props => {
 													imageData={imageData}
 												/>
 											),
-											extraIndicators: [
-												'imageRatio',
-												'imgWidth',
-											],
+											extraIndicators: ['_ir', '_iw'],
 										},
 									...inspectorTabs.alignment({
 										props,
@@ -169,7 +166,7 @@ const Inspector = props => {
 														options={getCaptionOptions()}
 														onChange={captionType => {
 															maxiSetAttributes({
-																captionType,
+																_ct: captionType,
 															});
 															if (
 																imageData &&
@@ -178,10 +175,9 @@ const Inspector = props => {
 															)
 																maxiSetAttributes(
 																	{
-																		captionContent:
-																			imageData
-																				.caption
-																				.raw,
+																		_cco: imageData
+																			.caption
+																			.raw,
 																	}
 																);
 														}}
@@ -216,7 +212,7 @@ const Inspector = props => {
 																onChange={captionPosition =>
 																	maxiSetAttributes(
 																		{
-																			captionPosition,
+																			_cpo: captionPosition,
 																		}
 																	)
 																}
@@ -229,7 +225,7 @@ const Inspector = props => {
 																className='maxi-image-inspector__caption-gap'
 																placeholder={getLastBreakpointAttribute(
 																	{
-																		target: 'caption-gap',
+																		target: '_cg',
 																		breakpoint:
 																			deviceType,
 																		attributes,
@@ -241,7 +237,7 @@ const Inspector = props => {
 																onChangeValue={val =>
 																	maxiSetAttributes(
 																		{
-																			[`caption-gap-${deviceType}`]:
+																			[`_cg-${deviceType}`]:
 																				val,
 																		}
 																	)
@@ -249,7 +245,7 @@ const Inspector = props => {
 																enableUnit
 																unit={getLastBreakpointAttribute(
 																	{
-																		target: 'caption-gap-unit',
+																		target: '_cg.u',
 																		breakpoint:
 																			deviceType,
 																		attributes,
@@ -268,7 +264,7 @@ const Inspector = props => {
 																onChangeUnit={val =>
 																	maxiSetAttributes(
 																		{
-																			[`caption-gap-unit-${deviceType}`]:
+																			[`_cg.u-${deviceType}`]:
 																				val,
 																		}
 																	)
@@ -276,13 +272,13 @@ const Inspector = props => {
 																onReset={() =>
 																	maxiSetAttributes(
 																		{
-																			[`caption-gap-${deviceType}`]:
+																			[`_cg-${deviceType}`]:
 																				getDefaultAttribute(
-																					`caption-gap-${deviceType}`
+																					`_cg-${deviceType}`
 																				),
-																			[`caption-gap-unit-${deviceType}`]:
+																			[`_cg.u-${deviceType}`]:
 																				getDefaultAttribute(
-																					`caption-gap-unit-${deviceType}`
+																					`_cg.u-${deviceType}`
 																				),
 																			isReset: true,
 																		}
@@ -308,7 +304,7 @@ const Inspector = props => {
 																			obj.content;
 
 																		delete obj.content;
-																		obj.captionContent =
+																		obj._cco =
 																			newCaptionContent;
 																	}
 
@@ -393,12 +389,12 @@ const Inspector = props => {
 												breakpoint={deviceType}
 											/>
 										),
-										extraIndicators: ['SVGElement'],
+										extraIndicators: ['_se'],
 										ignoreIndicator: [
-											`image-shape-scale-${deviceType}`,
-											`image-shape-rotate-${deviceType}`,
-											`image-shape-flip-x-${deviceType}`,
-											`image-shape-flip-y-${deviceType}`,
+											`is_sc-${deviceType}`,
+											`is_rot-${deviceType}`,
+											`is_fx-${deviceType}`,
+											`is_fy-${deviceType}`,
 										],
 									},
 									...inspectorTabs.clipPath({
@@ -407,22 +403,22 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: 'image-',
+										prefix: 'im-',
 									}),
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'image-',
+										prefix: 'im-',
 										dropShadow,
 									}),
 									...inspectorTabs.size({
 										props,
-										prefix: 'image-',
+										prefix: 'im-',
 										isImage: true,
 										hideWidth: true,
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'image-',
+										prefix: 'im-',
 										customLabel: __(
 											'Padding',
 											'maxi-blocks'

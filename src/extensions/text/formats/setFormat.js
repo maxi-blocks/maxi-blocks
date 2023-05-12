@@ -49,8 +49,7 @@ const setFormat = ({
 		const newTypography = { ...typography };
 
 		Object.entries(value).forEach(([key, val]) => {
-			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
-				val;
+			newTypography[`${key}-${breakpoint}${isHover ? '.h' : ''}`] = val;
 		});
 		// Ensures the format changes are saved as undo entity on historical records
 		markLastChangeAsPersistent();
@@ -87,8 +86,7 @@ const setFormat = ({
 		};
 
 		Object.entries(value).forEach(([key, val]) => {
-			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
-				val;
+			newTypography[`${key}-${breakpoint}${isHover ? '.h' : ''}`] = val;
 		});
 
 		const hasCustomFormat = getHasCustomFormat(newFormatValue, isHover);

@@ -601,8 +601,8 @@ const LibraryContainer = props => {
 	const onRequestInsertShape = (svgCode, svgType) => {
 		const {
 			_uid: uniqueID,
-			mediaID,
-			mediaURL,
+			_mi: mediaID,
+			_mu: mediaURL,
 			b_ly: bgLayers,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 

@@ -54,12 +54,17 @@ const TextOptionsContent = props => {
 		getValue,
 		getDefault,
 		onChangeFormat,
-		prefix,
+		prefix: prefixWithHyphen = '',
 		minMaxSettings,
 		minMaxSettingsLetterSpacing,
 		breakpoint,
 		avoidXXL,
 	} = props;
+
+	const prefix =
+		prefixWithHyphen[prefixWithHyphen.length - 1] === '-'
+			? prefixWithHyphen.slice(0, -1)
+			: prefixWithHyphen;
 
 	return (
 		<>
@@ -69,25 +74,23 @@ const TextOptionsContent = props => {
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__size'
-				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
-				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
+				value={getValue(`${prefix}_fs`, breakpoint, avoidXXL)}
+				defaultValue={getDefault(`${prefix}_fs`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat({
-						[`${prefix}font-size`]: val,
+						[`${prefix}_fs`]: val,
 					});
 				}}
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
-							),
+							[`${prefix}_fs`]: getDefault(`${prefix}_fs`),
 						},
 						true
 					)
 				}
-				min={minMaxSettings[getValue(`${prefix}font-size.u`)].min}
-				max={minMaxSettings[getValue(`${prefix}font-size.u`)].max}
+				min={minMaxSettings[getValue(`${prefix}_fs.u`)].min}
+				max={minMaxSettings[getValue(`${prefix}_fs.u`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -95,25 +98,23 @@ const TextOptionsContent = props => {
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
-				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
-				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
+				value={getValue(`${prefix}_lhe`, breakpoint, avoidXXL)}
+				defaultValue={getDefault(`${prefix}_lhe`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat({
-						[`${prefix}line-height`]: val,
+						[`${prefix}_lhe`]: val,
 					});
 				}}
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
-							),
+							[`${prefix}_lhe`]: getDefault(`${prefix}_lhe`),
 						},
 						true
 					)
 				}
-				min={minMaxSettings[getValue(`${prefix}line-height.u`)].min}
-				max={minMaxSettings[getValue(`${prefix}line-height.u`)].max}
+				min={minMaxSettings[getValue(`${prefix}_lhe.u`)].min}
+				max={minMaxSettings[getValue(`${prefix}_lhe.u`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -121,34 +122,26 @@ const TextOptionsContent = props => {
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
-				value={getValue(
-					`${prefix}letter-spacing`,
-					breakpoint,
-					avoidXXL
-				)}
-				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
+				value={getValue(`${prefix}_ls`, breakpoint, avoidXXL)}
+				defaultValue={getDefault(`${prefix}_ls`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat({
-						[`${prefix}letter-spacing`]: val,
+						[`${prefix}_ls`]: val,
 					});
 				}}
 				onReset={() =>
 					onChangeFormat(
 						{
-							[`${prefix}letter-spacing`]: '',
+							[`${prefix}_ls`]: '',
 						},
 						true
 					)
 				}
 				min={
-					minMaxSettingsLetterSpacing[
-						getValue(`${prefix}letter-spacing.u`)
-					].min
+					minMaxSettingsLetterSpacing[getValue(`${prefix}_ls.u`)].min
 				}
 				max={
-					minMaxSettingsLetterSpacing[
-						getValue(`${prefix}letter-spacing.u`)
-					].max
+					minMaxSettingsLetterSpacing[getValue(`${prefix}_ls.u`)].max
 				}
 				step={0.1}
 			/>
@@ -300,12 +293,12 @@ const TextOptions = props => {
 									<FontFamilySelector
 										className='toolbar-item__popover__font-options__font__selector'
 										defaultValue={getDefaultAttribute(
-											`font-family-${breakpoint}`
+											`_ff-${breakpoint}`
 										)}
-										font={getValue('font-family')}
+										font={getValue('_ff')}
 										onChange={font => {
 											onChangeFormat({
-												'font-family': font.value,
+												_ff: font.value,
 											});
 										}}
 										theme='dark'

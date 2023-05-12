@@ -92,7 +92,6 @@ const getHoverNormalObject = props => {
 	] = getAttributesValue({
 		target: ['_bs', 'bo.sh', 'bs.sh', '_o.sh'],
 		props,
-		isHover: true,
 	});
 
 	const response = {

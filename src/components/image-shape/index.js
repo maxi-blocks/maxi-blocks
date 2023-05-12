@@ -51,22 +51,7 @@ const ImageShapeResponsiveSettings = ({
 
 		const getDictionaryValue = value => dictionary[component][value];
 
-		const getShortTarget = target => {
-			switch (target) {
-				case 'scale':
-					return 'sc';
-				case 'rotate':
-					return 'rot';
-				case 'flip-x':
-					return 'fx';
-				case 'flip-y':
-					return 'fy';
-				default:
-					return '';
-			}
-		};
-
-		const target = `${prefix}is_${getShortTarget(rawTarget)}`;
+		const target = `${prefix}is_${rawTarget}`;
 		const targetWithBreakpoint = `${target}-${breakpoint}`;
 
 		return {
@@ -95,7 +80,7 @@ const ImageShapeResponsiveSettings = ({
 				max={500}
 				step={1}
 				initial={100}
-				{...getProps('scale')}
+				{...getProps('sc')}
 			/>
 			<AdvancedNumberControl
 				label={__('Rotate shape', 'maxi-blocks')}
@@ -103,15 +88,15 @@ const ImageShapeResponsiveSettings = ({
 				max={360}
 				step={1}
 				placeholder='0'
-				{...getProps('rotate')}
+				{...getProps('rot')}
 			/>
 			<ToggleSwitch
 				label={__('Flip shape horizontally', 'maxi-blocks')}
-				{...getProps('flip-x', 'ToggleSwitch')}
+				{...getProps('fx', 'ToggleSwitch')}
 			/>
 			<ToggleSwitch
 				label={__('Flip shape vertically', 'maxi-blocks')}
-				{...getProps('flip-y', 'ToggleSwitch')}
+				{...getProps('fy', 'ToggleSwitch')}
 			/>
 		</>
 	);
@@ -148,7 +133,7 @@ const ImageShape = props => {
 							} maxi-image-block__image"`
 						);
 
-						onChange({ ...obj, SVGElement: newSVGElement });
+						onChange({ ...obj, _se: newSVGElement });
 					}}
 					onRemove={obj => {
 						onChange(obj);

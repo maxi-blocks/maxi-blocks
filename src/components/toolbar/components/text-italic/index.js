@@ -24,7 +24,7 @@ import { toolbarItalic } from '../../../../icons';
 const TextItalic = props => {
 	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getItalicValue = () => getValue('font-style');
+	const getItalicValue = () => getValue('_fst');
 
 	const [isActive, setIsActive] = useState(
 		(getItalicValue() > 400 && true) || false
@@ -40,7 +40,7 @@ const TextItalic = props => {
 				className='toolbar-item toolbar-item__italic'
 				onClick={() =>
 					onChangeFormat({
-						'font-style': isActive ? 'normal' : 'italic',
+						_fst: isActive ? 'normal' : 'italic',
 					})
 				}
 				aria-pressed={isActive}

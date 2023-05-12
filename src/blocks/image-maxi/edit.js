@@ -75,8 +75,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'hover-type': hoverType, _uid: uniqueID } =
-			this.props.attributes;
+		const { h_ty: hoverType, _uid: uniqueID } = this.props.attributes;
 		const hoverStatus = hoverType !== 'none';
 
 		return {
@@ -93,11 +92,11 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const {
-			SVGData,
-			SVGElement,
+			_sd: SVGData,
+			_se: SVGElement,
 			_uid: uniqueID,
-			mediaID,
-			mediaURL,
+			_mi: mediaID,
+			_mu: mediaURL,
 		} = attributes;
 
 		// to make upload popover button appear immediately after adding image maxi
@@ -123,8 +122,8 @@ class edit extends MaxiBlockComponent {
 
 			const resEl = injectImgSVG(svg, resData, false, uniqueID);
 			maxiSetAttributes({
-				SVGElement: resEl.outerHTML,
-				SVGData: resData,
+				_se: resEl.outerHTML,
+				_sd: resData,
 			});
 		}
 	}
@@ -133,24 +132,25 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
 			this.props;
 		const {
-			captionContent,
-			captionType,
-			imgWidth,
-			mediaAlt,
-			altSelector,
-			useInitSize,
-			mediaHeight,
-			mediaID,
-			mediaURL,
-			mediaWidth,
-			SVGElement,
+			_cco: captionContent,
+			_ct: captionType,
+			_iw: imgWidth,
+			_mal: mediaAlt,
+			_as: altSelector,
+			_uis: useInitSize,
+			_meh: mediaHeight,
+			_mi: mediaID,
+			_mu: mediaURL,
+			_mew: mediaWidth,
+			_se: SVGElement,
+			_sd: SVGData,
 			_uid: uniqueID,
-			captionPosition,
-			fitParentSize,
-			'dc-status': dcStatus,
-			'dc-media-id': dcMediaId,
-			'dc-media-url': dcMediaUrl,
-			'dc-media-caption': dcMediaCaption,
+			_cpo: captionPosition,
+			_fps: fitParentSize,
+			'dc.s': dcStatus,
+			dc_mid: dcMediaId,
+			dc_mur: dcMediaUrl,
+			dc_mc: dcMediaCaption,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 		const [
@@ -159,12 +159,7 @@ class edit extends MaxiBlockComponent {
 			hoverBasicEffectType,
 			hoverTextEffectType,
 		] = getAttributesValue({
-			target: [
-				'hover-preview',
-				'hover-type',
-				'hover-basic-effect-type',
-				'hover-text-effect-type',
-			],
+			target: ['h_pr', 'h_ty', 'h_bet', 'h_tety'],
 			props: attributes,
 		});
 
@@ -198,21 +193,21 @@ class edit extends MaxiBlockComponent {
 
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
-				maxiSetAttributes({ captionContent: `${newContent}</a>` });
+				maxiSetAttributes({ _cco: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent) {
 					clearTimeout(this.typingTimeoutContent);
 				}
 
 				this.typingTimeoutContent = setTimeout(() => {
-					maxiSetAttributes({ captionContent });
+					maxiSetAttributes({ _cco: captionContent });
 				}, 100);
 			}
 		};
 
 		const getMaxWidth = () => {
 			const maxWidth = getLastBreakpointAttribute({
-				target: 'im_mw',
+				target: '_mw',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -220,7 +215,7 @@ class edit extends MaxiBlockComponent {
 			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
 
 			const maxWidthUnit = getLastBreakpointAttribute({
-				target: 'im_mw.u',
+				target: '_mw.u',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -235,7 +230,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const fullWidth = getLastBreakpointAttribute({
-			target: 'im_fw',
+			target: '_fw',
 			breakpoint: deviceType,
 			attributes,
 		});
@@ -251,7 +246,7 @@ class edit extends MaxiBlockComponent {
 					breakpoint: deviceType,
 					attributes,
 				})) ||
-			!isEmpty(attributes.SVGElement);
+			!isEmpty(attributes._se);
 
 		const showImage =
 			!isNil(mediaID) ||
@@ -307,14 +302,14 @@ class edit extends MaxiBlockComponent {
 								null;
 
 							maxiSetAttributes({
-								mediaID: media.id,
-								mediaURL: media.url,
-								mediaWidth: media.width,
-								mediaHeight: media.height,
-								isImageUrl: false,
+								_mi: media.id,
+								_mu: media.url,
+								_mew: media.width,
+								_meh: media.height,
+								_iiu: false,
 								...(altSelector === 'wordpress' &&
-									!alt && { altSelector: 'title' }),
-								mediaAlt:
+									!alt && { _as: 'title' }),
+								_mal:
 									altSelector === 'wordpress' && !alt
 										? media.title
 										: alt,
@@ -322,10 +317,9 @@ class edit extends MaxiBlockComponent {
 
 							this.setState({ isExternalClass: false });
 
-							if (!isEmpty(attributes.SVGData)) {
-								const cleanedContent = DOMPurify.sanitize(
-									attributes.SVGElement
-								);
+							if (!isEmpty(SVGData)) {
+								const cleanedContent =
+									DOMPurify.sanitize(SVGElement);
 
 								const svg = document
 									.createRange()
@@ -349,8 +343,8 @@ class edit extends MaxiBlockComponent {
 
 								const resEl = injectImgSVG(svg, resData);
 								maxiSetAttributes({
-									SVGElement: resEl.outerHTML,
-									SVGData: SVGValue,
+									_se: resEl.outerHTML,
+									_sd: SVGValue,
 								});
 							}
 						}}
@@ -413,7 +407,7 @@ class edit extends MaxiBlockComponent {
 							}}
 							onResizeStop={(event, direction, elt, delta) =>
 								maxiSetAttributes({
-									imgWidth: +round(
+									_iw: +round(
 										elt.style.width.replace(/[^0-9.]/g, ''),
 										1
 									),

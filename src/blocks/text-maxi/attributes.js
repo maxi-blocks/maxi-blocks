@@ -1,10 +1,6 @@
 /**
  * Internal dependencies
  */
-import {
-	breakpointAttributesCreator,
-	paletteAttributesCreator,
-} from '../../extensions/attributes';
 import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 
 /**
@@ -27,89 +23,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	textLevel: {
-		type: 'string',
-		default: 'p',
-	},
-	isList: {
-		type: 'boolean',
-		default: false,
-	},
-	typeOfList: {
-		type: 'string',
-		default: 'ul',
-	},
-	listStart: {
-		type: 'number',
-	},
-	listReversed: {
-		type: 'boolean',
-	},
-	...breakpointAttributesCreator({
-		obj: {
-			'list-gap': {
-				type: 'number',
-				default: 1,
-			},
-			'list-gap-unit': {
-				type: 'string',
-				default: 'em',
-			},
-			'list-paragraph-spacing': {
-				type: 'number',
-			},
-			'list-paragraph-spacing-unit': {
-				type: 'string',
-				default: 'em',
-			},
-			'list-indent': {
-				type: 'number',
-			},
-			'list-indent-unit': {
-				type: 'string',
-				default: 'px',
-			},
-			'list-marker-size': {
-				type: 'number',
-				default: 1,
-			},
-			'list-marker-size-unit': {
-				type: 'string',
-				default: 'em',
-			},
-			'list-marker-indent': {
-				type: 'number',
-				default: 0.5,
-			},
-			'list-marker-indent-unit': {
-				type: 'string',
-				default: 'em',
-			},
-			'list-marker-line-height': {
-				type: 'number',
-				default: 0.5,
-			},
-			'list-marker-line-height-unit': {
-				type: 'string',
-				default: 'em',
-			},
-			'list-text-position': {
-				type: 'string',
-				default: 'middle',
-			},
-			'list-style-position': {
-				type: 'string',
-				default: 'outside',
-			},
-		},
-	}),
-	listStyle: {
-		type: 'string',
-	},
-	listStyleCustom: {
-		type: 'string',
-	},
-	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
+	...attributesData.text,
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,

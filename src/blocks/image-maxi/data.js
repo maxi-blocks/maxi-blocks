@@ -43,46 +43,31 @@ const prefix = 'im-';
  */
 const name = 'image-maxi';
 const copyPasteMapping = {
-	_exclude: [
-		'mediaID',
-		'isImageUrl',
-		'mediaURL',
-		'mediaWidth',
-		'mediaHeight',
-		'mediaAlt',
-	],
 	settings: {
-		Image: [
-			'mediaID',
-			'isImageUrl',
-			'mediaURL',
-			'mediaWidth',
-			'mediaHeight',
-			'mediaAlt',
-		],
+		Image: ['_mi', '_iiu', '_mu', '_mew', '_meh', '_mal'],
 		Dimension: {
 			group: {
-				'Image size': 'imageSize',
-				'Use original size': 'useInitSize',
-				'Image width': 'imgWidth',
-				'Image ratio': 'imageRatio',
+				'Image size': '_is',
+				'Use original size': '_uis',
+				'Image width': '_iw',
+				'Image ratio': '_ir',
 			},
 		},
 		Alignment: {
 			groupAttributes: 'alignment',
 		},
-		'Alt tag': ['mediaAlt', 'altSelector'],
+		'Alt tag': ['_mal', '_as'],
 		Caption: {
 			group: {
-				'Caption type': 'captionType',
-				'Caption content': 'captionContent',
-				'Caption position': 'captionPosition',
+				'Caption type': '_ct',
+				'Caption content': '_cco',
+				'Caption position': '_cpo',
 				'Caption gap': {
-					props: 'caption-gap',
+					props: '_cg',
 					hasBreakpoints: true,
 				},
 				'Caption gap unit': {
-					props: 'caption-gap-unit',
+					props: '_cg.u',
 					hasBreakpoints: true,
 				},
 				Typography: {

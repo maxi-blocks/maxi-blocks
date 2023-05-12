@@ -23,7 +23,7 @@ import { toolbarBold } from '../../../../icons';
 const TextBold = props => {
 	const { onChangeFormat, getValue, tooltipsHide } = props;
 
-	const getBoldValue = () => getValue('font-weight');
+	const getBoldValue = () => getValue('_fwe');
 
 	const [isActive, setIsActive] = useState(
 		(getBoldValue() > 400 && true) || false
@@ -39,7 +39,7 @@ const TextBold = props => {
 				className='toolbar-item toolbar-item__bold'
 				onClick={() =>
 					onChangeFormat({
-						'font-weight': (isActive && 400) || 700,
+						_fwe: (isActive && 400) || 700,
 					})
 				}
 				aria-pressed={isActive}

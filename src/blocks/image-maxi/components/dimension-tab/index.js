@@ -35,23 +35,19 @@ const DimensionTab = props => {
 		deviceType,
 	} = props;
 	const {
-		cropOptions,
-		imageRatio,
-		imageSize,
-		isImageUrl,
-		mediaID,
-		SVGElement,
-		useInitSize,
-		fitParentSize,
-		isFirstOnHierarchy,
+		_co: cropOptions,
+		_ir: imageRatio,
+		_is: imageSize,
+		_iiu: isImageUrl,
+		_mi: mediaID,
+		_se: SVGElement,
+		_uis: useInitSize,
+		_fps: fitParentSize,
+		_ioh: isFirstOnHierarchy,
 	} = attributes;
 	const [objectSize, objectPositionHorizontal, objectPositionVertical] =
 		getAttributesValue({
-			target: [
-				'object-size',
-				'object-position-horizontal',
-				'object-position-vertical',
-			],
+			target: ['_os', '_oph', '_opv'],
 			props: attributes,
 			breakpoint: deviceType,
 		});
@@ -113,22 +109,28 @@ const DimensionTab = props => {
 								? imageSize
 								: 'full'
 						} // is still necessary?
-						defaultValue={getDefaultAttribute('imageSize')}
-						onReset={() =>
+						defaultValue={getDefaultAttribute('_is')}
+						onReset={() => {
+							const imageSize = getDefaultAttribute('_is');
+							const { mediaURL, mediaWidth, mediaHeight } =
+								getSizeResponse(imageSize);
 							maxiSetAttributes({
-								imageSize: getDefaultAttribute('imageSize'),
+								_is: imageSize,
+								_mu: mediaURL,
+								_mew: mediaWidth,
+								_meh: mediaHeight,
 								isReset: true,
-							})
-						}
+							});
+						}}
 						options={getSizeOptions()}
 						onChange={imageSize => {
 							const { mediaURL, mediaWidth, mediaHeight } =
 								getSizeResponse(imageSize);
 							maxiSetAttributes({
-								imageSize,
-								mediaURL,
-								mediaWidth,
-								mediaHeight,
+								_is: imageSize,
+								_mu: mediaURL,
+								_mew: mediaWidth,
+								_meh: mediaHeight,
 							});
 						}}
 					/>
@@ -138,10 +140,10 @@ const DimensionTab = props => {
 							cropOptions={cropOptions}
 							onChange={cropOptions => {
 								maxiSetAttributes({
-									cropOptions,
-									mediaURL: cropOptions.image.source_url,
-									mediaHeight: cropOptions.image.height,
-									mediaWidth: cropOptions.image.width,
+									_co: cropOptions,
+									_mu: cropOptions.image.source_url,
+									_meh: cropOptions.image.height,
+									_mew: cropOptions.image.width,
 								});
 							}}
 						/>
@@ -154,7 +156,7 @@ const DimensionTab = props => {
 				selected={useInitSize}
 				onChange={val =>
 					maxiSetAttributes({
-						useInitSize: val,
+						_uis: val,
 					})
 				}
 			/>
@@ -162,11 +164,11 @@ const DimensionTab = props => {
 				<RangeControl
 					className='maxi-image-inspector__dimension-width'
 					label={__('Width', 'maxi-blocks')}
-					value={attributes.imgWidth}
+					value={attributes._iw}
 					onChange={val => {
 						if (!isNil(val)) {
 							maxiSetAttributes({
-								imgWidth: val,
+								_iw: val,
 							});
 
 							resizableObject &&
@@ -175,12 +177,12 @@ const DimensionTab = props => {
 								});
 						} else {
 							const defaultAttribute = getDefaultAttribute(
-								'imgWidth',
+								'_iw',
 								clientId
 							);
 
 							maxiSetAttributes({
-								imgWidth: defaultAttribute,
+								_iw: defaultAttribute,
 							});
 
 							resizableObject &&
@@ -191,7 +193,7 @@ const DimensionTab = props => {
 					}}
 					max={100}
 					allowReset
-					initialPosition={getDefaultAttribute('imgWidth', clientId)}
+					initialPosition={getDefaultAttribute('_iw', clientId)}
 				/>
 			)}
 			<AspectRatioControl
@@ -206,12 +208,12 @@ const DimensionTab = props => {
 				]}
 				onChange={imageRatio =>
 					maxiSetAttributes({
-						imageRatio,
+						_ir: imageRatio,
 					})
 				}
 				onReset={() =>
 					maxiSetAttributes({
-						imageRatio: getDefaultAttribute('imageRatio'),
+						_ir: getDefaultAttribute('_ir'),
 						isReset: true,
 					})
 				}
@@ -224,7 +226,7 @@ const DimensionTab = props => {
 						selected={fitParentSize}
 						onChange={val =>
 							maxiSetAttributes({
-								fitParentSize: val,
+								_fps: val,
 							})
 						}
 					/>
@@ -234,21 +236,21 @@ const DimensionTab = props => {
 								label={__('Adjust size', 'maxi-blocks')}
 								className='maxi-image-inspector__image-size'
 								placeholder={getLastBreakpointAttribute({
-									target: 'object-size',
+									target: '_os',
 									breakpoint: deviceType,
 									attributes,
 								})}
 								value={objectSize}
 								onChangeValue={val =>
 									maxiSetAttributes({
-										[`object-size-${deviceType}`]: val,
+										[`_os-${deviceType}`]: val,
 									})
 								}
 								onReset={() =>
 									maxiSetAttributes({
-										[`object-size-${deviceType}`]:
+										[`_os-${deviceType}`]:
 											getDefaultAttribute(
-												`object-size-${deviceType}`
+												`_os-${deviceType}`
 											),
 										isReset: true,
 									})
@@ -264,22 +266,21 @@ const DimensionTab = props => {
 								)}
 								className='maxi-image-inspector__image-horizontal-position'
 								placeholder={getLastBreakpointAttribute({
-									target: 'object-position-horizontal',
+									target: '_oph',
 									breakpoint: deviceType,
 									attributes,
 								})}
 								value={objectPositionHorizontal}
 								onChangeValue={val =>
 									maxiSetAttributes({
-										[`object-position-horizontal-${deviceType}`]:
-											val,
+										[`_oph-${deviceType}`]: val,
 									})
 								}
 								onReset={() =>
 									maxiSetAttributes({
-										[`object-position-horizontal-${deviceType}`]:
+										[`_oph-${deviceType}`]:
 											getDefaultAttribute(
-												`object-position-horizontal-${deviceType}`
+												`_oph-${deviceType}`
 											),
 										isReset: true,
 									})
@@ -294,22 +295,21 @@ const DimensionTab = props => {
 								)}
 								className='maxi-image-inspector__image-vertical-position'
 								placeholder={getLastBreakpointAttribute({
-									target: 'object-position-vertical',
+									target: '_opv',
 									breakpoint: deviceType,
 									attributes,
 								})}
 								value={objectPositionVertical}
 								onChangeValue={val =>
 									maxiSetAttributes({
-										[`object-position-vertical-${deviceType}`]:
-											val,
+										[`_opv-${deviceType}`]: val,
 									})
 								}
 								onReset={() =>
 									maxiSetAttributes({
-										[`object-position-vertical-${deviceType}`]:
+										[`_opv-${deviceType}`]:
 											getDefaultAttribute(
-												`object-position-vertical-${deviceType}`
+												`_opv-${deviceType}`
 											),
 										isReset: true,
 									})

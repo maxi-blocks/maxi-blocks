@@ -50,7 +50,7 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: 'clip-path-status',
+										target: '_cp.sh',
 										props: attributes,
 										isHover: true,
 										prefix,
@@ -58,13 +58,13 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 									onChange={val =>
 										maxiSetAttributes({
 											[getAttributeKey(
-												'clip-path-status',
+												'_cp.s',
 												true,
 												prefix
 											)]: val,
 											...(isEmpty(
 												getLastBreakpointAttribute({
-													target: 'clip-path',
+													target: '_cp',
 													prefix,
 													breakpoint: deviceType,
 													attributes,
@@ -73,7 +73,7 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 											) &&
 											!isEmpty(
 												getLastBreakpointAttribute({
-													target: 'clip-path',
+													target: '_cp',
 													prefix,
 													breakpoint: deviceType,
 													attributes,
@@ -81,13 +81,13 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 											)
 												? {
 														[getAttributeKey(
-															'clip-path',
+															'_cp',
 															true,
 															prefix,
 															deviceType
 														)]: getLastBreakpointAttribute(
 															{
-																target: 'clip-path',
+																target: '_cp',
 																prefix,
 																breakpoint:
 																	deviceType,
@@ -100,8 +100,8 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 									}
 								/>
 								{getAttributesValue({
-									target: 'clip-path-status',
-									props,
+									target: '_cp.s',
+									props: attributes,
 									isHover: true,
 								}) && (
 									<ClipPathControl

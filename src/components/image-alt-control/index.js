@@ -82,8 +82,8 @@ const ImageAltControl = ({
 	useEffect(() => {
 		if (typeof altSelector === 'undefined' && titleAlt)
 			onChange({
-				altSelector: 'title',
-				mediaAlt: titleAlt,
+				_as: 'title',
+				_mal: titleAlt,
 			});
 	}, []);
 
@@ -96,14 +96,14 @@ const ImageAltControl = ({
 				options={getImageAltOptions()}
 				onChange={altSelector =>
 					onChange({
-						altSelector,
+						_as: altSelector,
 						...(altSelector === 'wordpress' && {
-							mediaAlt: wpAlt,
+							_mal: wpAlt,
 						}),
 						...(altSelector === 'title' && {
-							mediaAlt: titleAlt,
+							_mal: titleAlt,
 						}),
-						...(altSelector === 'none' && { mediaAlt: null }),
+						...(altSelector === 'none' && { _mal: null }),
 					})
 				}
 			/>
@@ -114,7 +114,7 @@ const ImageAltControl = ({
 					value={mediaAlt || ''}
 					onChange={mediaAlt =>
 						onChange({
-							mediaAlt,
+							_mal: mediaAlt,
 						})
 					}
 				/>

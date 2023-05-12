@@ -19,7 +19,7 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 	let omitClipPath = !isHover && !isIB;
 	breakpoints.forEach(breakpoint => {
 		const currentClipPath = getLastBreakpointAttribute({
-			target: 'clip-path',
+			target: '_cp',
 			breakpoint,
 			attributes: obj,
 			isHover,
@@ -32,12 +32,12 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 			...(currentClipPath &&
 				(isHover
 					? getAttributesValue({
-							target: 'clip-path-status',
+							target: '_cp.s',
 							props: obj,
 							isHover,
 					  })
 					: getLastBreakpointAttribute({
-							target: 'clip-path-status',
+							target: '_cp.s',
 							breakpoint,
 							attributes: obj,
 							isHover,

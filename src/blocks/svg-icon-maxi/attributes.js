@@ -16,18 +16,20 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	openFirstTime: {
+	_oft: {
 		type: 'boolean',
 		default: true,
+		longLabel: 'openFirstTime',
 	},
 	_st: {
 		type: 'string',
+		longLabel: 'svgType',
 	},
 	_c: {
 		type: 'string',
 	},
-	altTitle: { type: 'string' },
-	altDescription: { type: 'string' },
+	_ati: { type: 'string', longLabel: 'altTitle' },
+	_ade: { type: 'string', longLabel: 'altDescription' },
 	...attributesData.svg,
 	...attributesData.svgHover,
 	...{

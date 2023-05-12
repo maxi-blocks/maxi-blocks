@@ -23,7 +23,7 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 
 	breakpoints.forEach(breakpoint => {
 		const currentActiveMedia = getLastBreakpointAttribute({
-			target: 'hover-background-active-media',
+			target: 'h-b_am',
 			breakpoint,
 			attributes: props,
 		});
@@ -37,11 +37,11 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 						props,
 						'backgroundColor',
 						false,
-						'hover-'
+						'h-'
 					),
 					blockStyle,
 					breakpoint,
-					prefix: 'hover-',
+					prefix: 'h-',
 				}),
 			}),
 			...(currentActiveMedia === 'gradient' && {
@@ -50,10 +50,10 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 						props,
 						'backgroundGradient',
 						false,
-						'hover-'
+						'h-'
 					),
 					breakpoint,
-					prefix: 'hover-',
+					prefix: 'h-',
 				}),
 			}),
 		});
@@ -70,7 +70,7 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 					/\((\d+),(\d+),(\d+)\)/g,
 					`($1,$2,$3,${
 						getAttributesValue({
-							target: 'hover-background-gradient-opacity',
+							target: 'h-bg_o',
 							props,
 						}) || 1
 					})`

@@ -61,12 +61,13 @@ const CaptionToolbar = memo(
 			isSelected,
 		} = props;
 		const [isList = false, textLevel = 'p', uniqueID] = getAttributesValue({
-			target: ['isList', 'textLevel', 'uniqueID'],
+			target: ['_ili', '_tl', '_uid'],
 			props: attributes,
 		});
 
-		const typography = { ...getGroupAttributes(props, 'typography') };
-
+		const typography = { ...getGroupAttributes(attributes, 'typography') };
+		console.log('capt', typography['_pc-general']);
+		console.log('fs', typography['_fs-general']);
 		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {
@@ -104,7 +105,7 @@ const CaptionToolbar = memo(
 				const newCaptionContent = obj.content;
 
 				delete obj.content;
-				obj.captionContent = newCaptionContent;
+				obj._cco = newCaptionContent;
 			}
 
 			maxiSetAttributes(obj);

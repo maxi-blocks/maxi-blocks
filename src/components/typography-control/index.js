@@ -740,20 +740,20 @@ const TypographyControl = props => {
 				<FontWeightControl
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_fw', false, prefix)]: val,
+							[getAttributeKey('_fwe', false, prefix)]: val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_fw', false, prefix)]:
-									getDefault('_fw'),
+								[getAttributeKey('_fwe', false, prefix)]:
+									getDefault('_fwe'),
 							},
 							{ isReset: true }
 						);
 					}}
-					fontWeight={getValue('_fw')}
-					defaultFontWeight={getDefault('_fw')}
+					fontWeight={getValue('_fwe')}
+					defaultFontWeight={getDefault('_fwe')}
 					fontName={getValue('_ff')}
 					fontStyle={getValue('_fst')}
 					breakpoint={breakpoint}

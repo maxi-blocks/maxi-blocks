@@ -213,8 +213,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
 		blockName && getBlockClassName(blockName),
-		motion['hover-type'] &&
-			motion['hover-type'] !== 'none' &&
+		motion.h_ty &&
+			motion.h_ty !== 'none' &&
 			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
 		getHasParallax(background.b_ly) &&
 			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,

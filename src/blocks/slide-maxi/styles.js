@@ -66,7 +66,7 @@ const getNormalObject = props => {
 
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.sh', 'bs.sh'],
+		target: ['bo.s', 'bs.s'],
 		props,
 		isHover: true,
 	});

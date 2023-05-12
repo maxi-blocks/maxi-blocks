@@ -156,8 +156,8 @@ const getTypographyStyles = ({
 					breakpoint
 				)}`,
 			}),
-			...(!isNil(getValue('_fw', breakpoint)) && {
-				'font-weight': getValue('_fw', breakpoint),
+			...(!isNil(getValue('_fwe', breakpoint)) && {
+				'font-weight': getValue('_fwe', breakpoint),
 			}),
 			...(!isNil(getValue('_ttr', breakpoint)) && {
 				'text-transform': getValue('_ttr', breakpoint),

@@ -2,10 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/attributes/defaults/index';
-import {
-	breakpointAttributesCreator,
-	prefixAttributesCreator,
-} from '../../extensions/attributes';
+import { prefixAttributesCreator } from '../../extensions/attributes';
 import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 import { customCss, transition } from './data';
 
@@ -21,101 +18,12 @@ const attributes = {
 	 */
 	...{
 		...attributesData.alignment,
-		'a-general': {
+		'_a-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
-	imageRatio: {
-		type: 'string',
-		default: 'original',
-	},
-	SVGElement: {
-		type: 'string',
-	},
-	SVGData: {
-		type: 'object',
-	},
-	captionType: {
-		type: 'string',
-		default: 'none',
-	},
-	captionContent: {
-		type: 'string',
-		default: '',
-	},
-	captionPosition: {
-		type: 'string',
-		default: 'bottom',
-	},
-	...breakpointAttributesCreator({
-		obj: {
-			'caption-gap': {
-				type: 'number',
-				default: 1,
-			},
-			'caption-gap-unit': {
-				type: 'string',
-				default: 'em',
-			},
-		},
-	}),
-	imageSize: {
-		type: 'string',
-		default: 'full',
-	},
-	cropOptions: {
-		type: 'object',
-	},
-	isImageUrl: {
-		type: 'boolean',
-		default: false,
-	},
-	mediaID: {
-		type: 'number',
-	},
-	mediaURL: {
-		type: 'string',
-	},
-	mediaAlt: {
-		type: 'string',
-	},
-	altSelector: {
-		type: 'string',
-		default: 'wordpress',
-	},
-	mediaWidth: {
-		type: 'number',
-	},
-	mediaHeight: {
-		type: 'number',
-	},
-	imgWidth: {
-		type: 'number',
-		default: 100,
-	},
-	useInitSize: {
-		type: 'boolean',
-	},
-	fitParentSize: {
-		type: 'boolean',
-	},
-	...breakpointAttributesCreator({
-		obj: {
-			'object-size': {
-				type: 'number',
-				default: 1,
-			},
-			'object-position-horizontal': {
-				type: 'number',
-				default: 50,
-			},
-			'object-position-vertical': {
-				type: 'number',
-				default: 50,
-			},
-		},
-	}),
+	...attributesData.image,
 	...attributesData.clipPath,
 	...attributesData.clipPathHover,
 	...attributesData.link,

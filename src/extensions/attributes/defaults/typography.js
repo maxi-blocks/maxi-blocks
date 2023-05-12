@@ -112,7 +112,7 @@ export const rawTypography = {
 
 export const typography = breakpointAttributesCreator({
 	obj: rawTypography,
-	noBreakpointAttr: ['cf'], // custom-formats
+	noBreakpointAttr: ['_cf'], // custom-formats
 });
 
 export const typographyAlignment = prefixAttributesCreator({

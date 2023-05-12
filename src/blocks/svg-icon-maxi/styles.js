@@ -85,7 +85,7 @@ const getWrapperObject = props => {
 const getWrapperObjectHover = props => {
 	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
 		getAttributesValue({
-			target: ['bo.sh', 'bs.sh', '_o.sh'],
+			target: ['bo.s', 'bs.s', '_o.s'],
 			props,
 			isHover: true,
 		});
@@ -179,7 +179,7 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 
 const getHoverObject = props => {
 	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
-		target: ['bo.sh', 'bs.sh'],
+		target: ['bo.s', 'bs.s'],
 		props,
 		isHover: true,
 		prefix: 's-',

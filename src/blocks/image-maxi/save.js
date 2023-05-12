@@ -48,28 +48,23 @@ const FigCaption = props => {
 const save = props => {
 	const { attributes } = props;
 	const {
-		uniqueID,
-		captionType,
-		captionContent,
-		mediaID,
-		mediaURL,
-		mediaWidth,
-		mediaHeight,
-		mediaAlt,
-		SVGElement,
-		isImageUrl,
-		captionPosition,
-		fitParentSize,
-		'dc-status': dcStatus,
+		_uid: uniqueID,
+		_ct: captionType,
+		_cco: captionContent,
+		_mi: mediaID,
+		_mu: mediaURL,
+		_mew: mediaWidth,
+		_meh: mediaHeight,
+		_mal: mediaAlt,
+		_se: SVGElement,
+		_iiu: isImageUrl,
+		_cpo: captionPosition,
+		_fps: fitParentSize,
+		'dc.s': dcStatus,
 	} = attributes;
-	const { hoverType, hoverBasicEffectType, hoverTextEffectType } =
+	const [hoverType, hoverBasicEffectType, hoverTextEffectType] =
 		getAttributesValue({
-			target: [
-				'hover-preview',
-				'hover-type',
-				'hover-basic-effect-type',
-				'hover-text-effect-type',
-			],
+			target: ['h_ty', 'h_bet', 'h_tety'],
 			props: attributes,
 		});
 

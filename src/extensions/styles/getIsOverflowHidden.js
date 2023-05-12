@@ -6,12 +6,12 @@ import getLastBreakpointAttribute from '../attributes/getLastBreakpointAttribute
 
 export const getIsOverflowHidden = (attributes, breakpoint) =>
 	getLastBreakpointAttribute({
-		target: 'overflow-y',
+		target: '_oy',
 		breakpoint,
 		attributes,
 	}) === 'hidden' &&
 	getLastBreakpointAttribute({
-		target: 'overflow-x',
+		target: '_ox',
 		breakpoint,
 		attributes,
 	}) === 'hidden';

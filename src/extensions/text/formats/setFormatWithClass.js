@@ -32,7 +32,7 @@ import { isEmpty, isNil, isBoolean } from 'lodash';
  */
 export const getFormatClassName = (typography, isHover) => {
 	const customFormatsClasses = Object.keys(
-		typography[`custom-formats${isHover ? '-hover' : ''}`] || {}
+		typography[`_cf${isHover ? '.h' : ''}`] || {}
 	);
 
 	let num = 0;
@@ -136,10 +136,10 @@ const updateCustomFormat = ({
 	textLevel,
 	styleCard,
 }) => {
-	if (!typography[`custom-formats${isHover ? '-hover' : ''}`])
-		typography[`custom-formats${isHover ? '-hover' : ''}`] = {};
+	if (!typography[`_cf${isHover ? '.h' : ''}`])
+		typography[`_cf${isHover ? '.h' : ''}`] = {};
 
-	typography[`custom-formats${isHover ? '-hover' : ''}`][formatClassName] = {
+	typography[`_cf${isHover ? '.h' : ''}`][formatClassName] = {
 		...getCustomFormat(typography, currentClassName, isHover),
 	};
 
@@ -372,8 +372,7 @@ const mergeNewFormat = ({
 			({ className }) => className === currentClassName
 		);
 
-		if (isRemovable)
-			delete newTypography['custom-formats'][currentClassName];
+		if (isRemovable) delete newTypography._cf[currentClassName];
 	}
 	return {
 		typography: newTypography,
@@ -482,8 +481,7 @@ const mergeMultipleFormats = ({
 
 	if (isWholeContent) {
 		Object.entries(value).forEach(([key, val]) => {
-			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
-				val;
+			newTypography[`${key}-${breakpoint}${isHover ? '.h' : ''}`] = val;
 		});
 	}
 

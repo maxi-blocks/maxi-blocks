@@ -2,7 +2,13 @@
  * WordPress dependencies
  */
 import { sprintf, __ } from '@wordpress/i18n';
-import { useEffect, useState, useCallback, useMemo } from '@wordpress/element';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+	useMemo,
+} from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -26,6 +32,7 @@ import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import AcfSettingsControl from './acf-settings-control';
+import { getDCValues, LoopContext } from '../../extensions/DC';
 
 /**
  * External dependencies
@@ -51,29 +58,31 @@ const DynamicContent = props => {
 		...dynamicContent
 	} = props;
 
-	const classes = classnames('maxi-dynamic-content', className);
-
-	const {
-		'dc-status': status,
-		'dc-source': source,
-		'dc-type': type,
-		'dc-relation': relation,
-		'dc-id': id,
-		'dc-field': field,
-		'dc-author': author,
-		'dc-limit': limit,
-		'dc-delimiter-content': delimiter,
-		'dc-custom-delimiter-status': customDelimiterStatus,
-		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
-		'dc-error': error,
-		'dc-order': order,
-		'dc-accumulator': accumulator,
-		'dc-acf-field-type': acfFieldType,
-	} = dynamicContent;
+	const contextLoop = useContext(LoopContext)?.contextLoop;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
+	const classes = classnames('maxi-dynamic-content', className);
+
+	const dcValues = getDCValues(dynamicContent, contextLoop);
+	const {
+		status,
+		source,
+		type,
+		relation,
+		id,
+		field,
+		author,
+		limit,
+		delimiterContent,
+		customDelimiterStatus,
+		postTaxonomyLinksStatus,
+		error,
+		order,
+		accumulator,
+		acfFieldType,
+	} = dcValues;
 	const delimiterOptions = [
 		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ label: __('Comma', 'maxi-blocks'), value: ',' },
@@ -109,9 +118,11 @@ const DynamicContent = props => {
 					}))
 				);
 
-				const { id } = await resolveSelect('core').getCurrentUser();
+				if (!author) {
+					const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'dc-author': id });
+					changeProps({ 'dc-author': id });
+				}
 			}
 		}
 
@@ -129,7 +140,9 @@ const DynamicContent = props => {
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
-				contentType
+				contentType,
+				false,
+				contextLoop
 			);
 
 			if (postIDSettings) {
@@ -243,6 +256,11 @@ const DynamicContent = props => {
 								...validatedAttributes,
 							});
 						}}
+						onReset={() =>
+							changeProps({
+								'dc-type': getDefaultAttribute('dc-type'),
+							})
+						}
 					/>
 					{isEmpty(postIdOptions) && type !== 'settings' ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
@@ -268,9 +286,17 @@ const DynamicContent = props => {
 											}),
 										})
 									}
+									onReset={() =>
+										changeProps({
+											'dc-relation':
+												getDefaultAttribute(
+													'dc-relation'
+												),
+										})
+									}
 								/>
 							)}
-							{relationTypes.includes(type) && type === 'users' && (
+							{type === 'users' && relation === 'by-id' && (
 								<SelectControl
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
@@ -278,6 +304,14 @@ const DynamicContent = props => {
 									onChange={value =>
 										changeProps({
 											'dc-author': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-author':
+												getDefaultAttribute(
+													'dc-author'
+												),
 										})
 									}
 								/>
@@ -299,9 +333,19 @@ const DynamicContent = props => {
 												'dc-id': Number(value),
 											})
 										}
+										onReset={() =>
+											changeProps({
+												'dc-id':
+													getDefaultAttribute(
+														'dc-id'
+													),
+											})
+										}
 									/>
 								)}
-							{['posts', 'pages', 'media'].includes(type) &&
+							{['posts', 'pages', 'media', 'users'].includes(
+								type
+							) &&
 								['by-date', 'alphabetical'].includes(
 									relation
 								) && (
@@ -313,6 +357,14 @@ const DynamicContent = props => {
 											onChange={value =>
 												changeProps({
 													'dc-order': value,
+												})
+											}
+											onReset={() =>
+												changeProps({
+													'dc-order':
+														getDefaultAttribute(
+															'dc-order'
+														),
 												})
 											}
 										/>
@@ -339,7 +391,6 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
@@ -361,6 +412,14 @@ const DynamicContent = props => {
 										onChange={value =>
 											changeProps({
 												'dc-field': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-field':
+													fieldOptions[contentType][
+														type
+													][0]?.value,
 											})
 										}
 									/>
@@ -403,7 +462,7 @@ const DynamicContent = props => {
 								<DateFormatting
 									allowCustomDate={allowCustomDate}
 									onChange={obj => changeProps(obj)}
-									{...dynamicContent}
+									{...dcValues}
 								/>
 							)}
 							{(['tags', 'categories'].includes(field) ||
@@ -441,7 +500,7 @@ const DynamicContent = props => {
 											value={
 												customDelimiterStatus
 													? 'custom'
-													: delimiter
+													: delimiterContent
 											}
 											options={delimiterOptions}
 											onChange={value => {
@@ -458,6 +517,7 @@ const DynamicContent = props => {
 												);
 											}}
 										/>
+
 										{customDelimiterStatus && (
 											<TextControl
 												className='maxi-dynamic-content__custom-delimiter'
@@ -465,7 +525,7 @@ const DynamicContent = props => {
 													'Custom delimiter',
 													'maxi-blocks'
 												)}
-												value={delimiter}
+												value={delimiterContent}
 												onChange={value =>
 													changeProps({
 														'dc-delimiter-content':

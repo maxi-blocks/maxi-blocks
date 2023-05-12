@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -60,6 +59,7 @@ const SearchBlock = props => {
 
 	const inputClasses = classnames(
 		'maxi-search-block__input',
+		skin,
 		skin === 'icon-reveal' &&
 			!isInputOpen &&
 			'maxi-search-block__input--hidden'
@@ -172,20 +172,6 @@ class edit extends MaxiBlockComponent {
 				'maxi-search-block'
 			)
 		);
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-search--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.search_preview}
-						alt={__('Search block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

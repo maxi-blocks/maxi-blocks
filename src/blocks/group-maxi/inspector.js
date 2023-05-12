@@ -82,6 +82,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'group',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -91,9 +95,7 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({

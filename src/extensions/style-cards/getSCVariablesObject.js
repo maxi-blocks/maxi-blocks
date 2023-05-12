@@ -12,7 +12,7 @@ import getTypographyStyles from '../styles/helpers/getTypographyStyles';
 /**
  * External dependencies
  */
-import { cloneDeep, merge, times } from 'lodash';
+import { cloneDeep, merge, times, isEmpty } from 'lodash';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
@@ -117,6 +117,8 @@ const getSCVariablesObject = (
 			const obj = getParsedObj(SC[style][element]);
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
+					const isFontFamily = setting === 'font-family';
+
 					breakpoints.forEach(breakpoint => {
 						if (!cleanResponse)
 							response[
@@ -133,6 +135,55 @@ const getSCVariablesObject = (
 								response[
 									`--maxi-${style}-${element}-${setting}-${breakpoint}`
 								] = value;
+						}
+
+						// Font family needs quotes for values that has space in middle
+						if (
+							isFontFamily &&
+							getIsValid(
+								response[
+									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+								],
+								true
+							)
+						) {
+							// In case there's no button font-family, use the paragraph one
+							if (
+								element === 'button' &&
+								isEmpty(
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									].replaceAll('"', '')
+								)
+							) {
+								const pObj = getParsedObj(SC[style].p);
+
+								if (!cleanResponse)
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: pObj,
+									});
+								else {
+									const value =
+										pObj[`${setting}-${breakpoint}`];
+
+									if (getIsValid(value, true))
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = value;
+								}
+							} else {
+								response[
+									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+								] = `"${
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									]
+								}"`.replaceAll('""', '"'); // Fix for values that already have quotes
+							}
 						}
 					});
 				});

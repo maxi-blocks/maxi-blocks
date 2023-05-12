@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -21,6 +20,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+import { withMaxiContextLoop } from '../../extensions/DC';
 
 /**
  * General
@@ -81,20 +81,6 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-container--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.container_preview}
-						alt={__('Container block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -165,4 +151,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

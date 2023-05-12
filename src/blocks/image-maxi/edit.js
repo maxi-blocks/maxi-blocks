@@ -31,6 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -71,21 +72,6 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getMaxiCustomData() {
-		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
-		const hoverStatus = hoverType !== 'none';
-
-		return {
-			...(hoverStatus && {
-				hover_effects: {
-					[uniqueID]: {
-						...getGroupAttributes(this.props.attributes, 'hover'),
-					},
-				},
-			}),
-		};
 	}
 
 	maxiBlockDidMount() {
@@ -141,12 +127,16 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
-			preview,
-			'dc-status': dcStatus,
-			'dc-media-id': dcMediaId,
-			'dc-media-url': dcMediaUrl,
-			'dc-media-caption': dcMediaCaption,
 		} = attributes;
+		const {
+			status: dcStatus,
+			mediaId: dcMediaId,
+			mediaUrl: dcMediaUrl,
+			mediaCaption: dcMediaCaption,
+		} = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.context?.contextLoop
+		);
 		const { isExternalClass, isUploaderOpen } = this.state;
 
 		const wrapperClassName = classnames(
@@ -234,20 +224,6 @@ class edit extends MaxiBlockComponent {
 				})) ||
 			!isEmpty(attributes.SVGElement);
 
-		if (preview)
-			return (
-				<MaxiBlock
-					key={`maxi-image--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img
-						// eslint-disable-next-line no-undef
-						src={previews.image_preview}
-						alt={__('Image block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 		const showImage =
 			!isNil(mediaID) ||
 			mediaURL ||
@@ -389,15 +365,11 @@ class edit extends MaxiBlockComponent {
 							)}
 							defaultSize={{
 								width: `${
-									fullWidth !== 'full' && !useInitSize
-										? imgWidth
-										: 100
+									!fullWidth && !useInitSize ? imgWidth : 100
 								}%`,
 							}}
 							showHandle={
-								isSelected &&
-								fullWidth !== 'full' &&
-								!useInitSize
+								isSelected && !fullWidth && !useInitSize
 							}
 							maxWidth={getMaxWidth()}
 							enable={{

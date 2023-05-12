@@ -632,15 +632,10 @@ class MaxiBlocks_Styles
             add_filter(
                 'style_loader_tag',
                 function ($html, $handle) {
-                    if (strpos($handle, 'maxi-blocks-styles-font-') !== false) {
+                    if (strpos($handle, 'maxi-blocks-styles-font-') !== false || strpos($handle, 'maxi-blocks-style-templates-header-font-') !== false) {
                         $html = str_replace(
                             "rel='stylesheet'",
                             "rel='stylesheet preload'",
-                            $html
-                        );
-                        $html = str_replace(
-                            "media='all'",
-                            "as='style' media='all'",
                             $html
                         );
                     }

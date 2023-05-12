@@ -49,7 +49,7 @@ const getDCContent = async dataRequest => {
 	if (source === 'acf') {
 		contentValue = await getACFFieldContent(field, data.id);
 
-		return getACFContentByType(contentValue, acfFieldType);
+		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
 	if (

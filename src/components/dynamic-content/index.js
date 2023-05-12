@@ -31,7 +31,7 @@ import {
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
-import AcfSettingsControl from './acf-settings-control';
+import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 
 /**
@@ -231,9 +231,9 @@ const DynamicContent = props => {
 						/>
 					)}
 					{source === 'acf' && (
-						<AcfSettingsControl
+						<ACFSettingsControl
 							changeProps={changeProps}
-							dynamicContent={dynamicContent}
+							dynamicContent={dcValues}
 							contentType={contentType}
 						/>
 					)}

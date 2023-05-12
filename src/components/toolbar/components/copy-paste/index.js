@@ -137,13 +137,11 @@ const CopyPaste = props => {
 		copyStyles(blockAttributes);
 	};
 	const onPasteStyles = () => {
-		// const styles = { ...copiedStyles };
-
-		// if (copyPasteMapping._exclude)
-		// 	copyPasteMapping._exclude.forEach(prop => {
-		// 		if (styles[prop]) delete styles[prop];
-		// 	});
-		const styles = excludeAttributes(copiedStyles, copyPasteMapping);
+		const styles = excludeAttributes(
+			copiedStyles,
+			attributes,
+			copyPasteMapping
+		);
 
 		closeMoreSettings();
 

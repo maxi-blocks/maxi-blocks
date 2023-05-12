@@ -45,6 +45,7 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const {
 				getBlock,
+				getBlockAttributes,
 				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
@@ -119,35 +120,44 @@ const withMaxiProps = createHigherOrderComponent(
 					clientId,
 					onChange: obj => {
 						if (!repeaterContext?.repeaterStatus) {
-							setAttributes(obj);
+							return setAttributes(obj);
 						}
 
+						const innerBlocksPositions =
+							repeaterContext?.getInnerBlocksPositions();
+
 						const clientIds =
-							repeaterContext?.getInnerBlocksPositions()?.[
+							innerBlocksPositions?.[
 								`${getBlockPosition(
 									clientId,
-									repeaterContext?.getInnerBlocksPositions()
+									innerBlocksPositions
 								)}`
 							];
 
-						const nonExcludedAttributes = excludeAttributes(
-							obj,
-							copyPasteMapping
-						);
-
-						if (clientIds && !isEmpty(nonExcludedAttributes)) {
+						if (clientIds) {
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
 
-								updateBlockAttributes(
-									currentClientId,
-									nonExcludedAttributes
+								const currentAttributes =
+									getBlockAttributes(currentClientId);
+
+								const nonExcludedAttributes = excludeAttributes(
+									obj,
+									currentAttributes,
+									copyPasteMapping
 								);
-								markNextChangeAsNotPersistent();
+
+								if (!isEmpty(nonExcludedAttributes)) {
+									updateBlockAttributes(
+										currentClientId,
+										nonExcludedAttributes
+									);
+									markNextChangeAsNotPersistent();
+								}
 							});
 						}
 
-						setAttributes(obj);
+						return setAttributes(obj);
 					},
 				})
 			);

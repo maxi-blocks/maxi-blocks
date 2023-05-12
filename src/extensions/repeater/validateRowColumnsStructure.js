@@ -85,10 +85,12 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 
 			const nonExcludedRefAttributes = excludeAttributes(
 				getBlockAttributes(refClientId),
+				null,
 				copyPasteMapping
 			);
 			const nonExcludedBlockAttributes = excludeAttributes(
 				block.attributes,
+				null,
 				copyPasteMapping
 			);
 

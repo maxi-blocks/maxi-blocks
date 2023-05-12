@@ -125,6 +125,7 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 		post_status: 'inherit',
 		posts_per_page: 1,
 		search: title,
+		exact: true,
 	});
 
 	if (!isEmpty(media))

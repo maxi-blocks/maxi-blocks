@@ -125,7 +125,7 @@ const dynamicContent = {
 		type: 'number',
 	},
 	'dc-acf-group': {
-		type: 'string',
+		type: 'number',
 	},
 	'dc-acf-field-type': {
 		type: 'string',

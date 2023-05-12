@@ -24,7 +24,11 @@ import { getBlockData } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 import { handleBlockMove } from '../repeater';
-import { findBlockPosition, findTargetParent } from '../repeater/utils';
+import {
+	findBlockPosition,
+	findTargetParent,
+	getBlockPosition,
+} from '../repeater/utils';
 
 /**
  * External dependencies
@@ -108,8 +112,8 @@ const withMaxiProps = createHigherOrderComponent(
 				return null;
 			}, [blockIndex, parentColumnClientId]);
 
-			const maxiSetAttributes = useCallback(obj => {
-				return handleSetAttributes({
+			const maxiSetAttributes = useCallback(obj =>
+				handleSetAttributes({
 					obj,
 					attributes,
 					clientId,
@@ -118,15 +122,12 @@ const withMaxiProps = createHigherOrderComponent(
 							setAttributes(obj);
 						}
 
-						// TODO: remove this when the bug is fixed
-						const blockPositionFromColumn = findBlockPosition(
-							clientId,
-							getBlock(parentColumnClientId)
-						);
-
 						const clientIds =
 							repeaterContext?.getInnerBlocksPositions()?.[
-								`${blockPositionFromColumn}`
+								`${getBlockPosition(
+									clientId,
+									repeaterContext?.getInnerBlocksPositions()
+								)}`
 							];
 
 						const nonExcludedAttributes = excludeAttributes(
@@ -148,8 +149,8 @@ const withMaxiProps = createHigherOrderComponent(
 
 						setAttributes(obj);
 					},
-				});
-			});
+				})
+			);
 
 			const ref = useRef(null);
 			const styleObjKeys = useRef([]);
@@ -203,34 +204,25 @@ const withMaxiProps = createHigherOrderComponent(
 
 			useEffect(() => {
 				if (repeaterContext?.repeaterStatus) {
-					let blockInnerBlocksPositions = null;
-
 					const innerBlocksPositions =
 						repeaterContext?.getInnerBlocksPositions();
 
-					if (innerBlocksPositions) {
-						Object.entries(innerBlocksPositions).forEach(
-							([position, clientIds]) => {
-								if (clientIds.includes(clientId)) {
-									blockInnerBlocksPositions = position
-										.split(',')
-										.map(Number);
-								}
-							}
-						);
-					}
+					const blockPositionFromInnerBlocks = getBlockPosition(
+						clientId,
+						innerBlocksPositions
+					);
 
 					if (
-						blockInnerBlocksPositions &&
+						blockPositionFromInnerBlocks &&
 						blockPositionFromColumn &&
 						!isEqual(
-							blockInnerBlocksPositions,
+							blockPositionFromInnerBlocks,
 							blockPositionFromColumn
 						)
 					) {
 						handleBlockMove(
 							ownProps,
-							blockInnerBlocksPositions,
+							blockPositionFromInnerBlocks,
 							blockPositionFromColumn,
 							innerBlocksPositions
 						);

@@ -54,6 +54,20 @@ export const findTargetParent = (blockPosition, column) => {
 	return currentBlock;
 };
 
+export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
+	if (innerBlocksPositions) {
+		for (const [position, clientIds] of Object.entries(
+			innerBlocksPositions
+		)) {
+			if (clientIds.includes(blockClientId)) {
+				return position.split(',').map(Number);
+			}
+		}
+	}
+
+	return null;
+};
+
 export const getChildColumns = blockClientId => {
 	const { getBlock, getBlocks, getBlockParentsByBlockName } =
 		select('core/block-editor');

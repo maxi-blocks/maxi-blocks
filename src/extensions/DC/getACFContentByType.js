@@ -4,6 +4,7 @@ const getACFContentByType = (content, type, dcAttributes) => {
 	switch (type) {
 		case 'select':
 		case 'radio':
+		case 'button_group':
 			return typeof content === 'object' ? content.label : content;
 		case 'checkbox':
 			return content

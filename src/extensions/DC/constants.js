@@ -224,6 +224,7 @@ const textACFFieldTypes = [
 	'select',
 	'radio',
 	'checkbox',
+	'button_group',
 ];
 
 const mediaACFFieldTypes = ['image'];

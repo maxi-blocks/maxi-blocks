@@ -438,9 +438,16 @@ class MaxiBlocks_Styles
             return;
         }
 
+        if(str_contains($name, '-templates-')) {
+            $pattern = '/(-templates-)(\w*)/';
+            $name = preg_replace($pattern, '', $name);
+            $name = str_replace('style', 'styles', $name);
+        }
+
         $use_local_fonts = (bool) get_option('local_fonts');
 
         $loaded_fonts = [];
+
 
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;

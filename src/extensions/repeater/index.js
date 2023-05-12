@@ -1,4 +1,4 @@
-export { default as getUpdatedRelationsInColumn } from './getUpdatedRelationsInColumn';
+export { default as updateRelationsInColumn } from './updateRelationsInColumn';
 export { default as handleBlockMove } from './handleBlockMove';
 export { default as insertBlockIntoColumns } from './insertBlockIntoColumns';
 export { default as removeBlockFromColumns } from './removeBlockFromColumns';

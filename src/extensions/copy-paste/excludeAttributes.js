@@ -33,27 +33,28 @@ const excludeAttributes = (
 				'background-layers-hover'
 			))
 	) {
-		attributesToExclude['background-layers'] = cloneDeep(
-			attributesToExclude['background-layers']
-		);
+		['background-layers', 'background-layers-hover'].forEach(key => {
+			attributesToExclude[key] = cloneDeep(
+				attributesToExclude['background-layers']
+			);
 
-		attributesToExclude['background-layers'].forEach((layer, index) => {
-			if (layer.type === 'image') {
+			attributesToExclude[key].forEach((layer, index) => {
+				if (layer.type !== 'image') {
+					return;
+				}
+
 				['mediaID', 'mediaURL'].forEach(prop => {
-					const key = getAttributeKey(
+					const attrKey = getAttributeKey(
 						prop,
 						false,
 						'background-image-'
 					);
 
-					if (layer[key]) {
-						if (attributes['background-layers']?.[index]?.[key]) {
-							layer[key] =
-								attributes['background-layers'][index][key];
-						}
+					if (layer[attrKey] && attributes[key]?.[index]?.[attrKey]) {
+						layer[attrKey] = attributes[key][index][attrKey];
 					}
 				});
-			}
+			});
 		});
 	}
 

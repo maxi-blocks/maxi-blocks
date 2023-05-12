@@ -233,13 +233,23 @@ const getSVGPathStrokeStyles = (
 		});
 
 		if (paletteStatus && paletteColor) {
-			if (!paletteSCStatus && useIconColor)
-				response.general.stroke = getColorRGBAString({
-					firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				});
+			if (useIconColor)
+				response.general.stroke = getColorRGBAString(
+					paletteSCStatus
+						? {
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: `icon-stroke${
+									isHover ? '-hover' : ''
+								}`,
+								secondVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+				);
 			else
 				response[breakpoint].stroke = getColorRGBAString({
 					firstVar: `color-${paletteColor}`,

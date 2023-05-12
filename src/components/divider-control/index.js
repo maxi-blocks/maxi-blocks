@@ -265,6 +265,7 @@ const DividerControl = props => {
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) =>
 						onChange({

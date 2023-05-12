@@ -59,7 +59,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 				});
 			if (!paletteSCStatus)
 				paletteSCStatus = getAttributeValue({
-					target: `icon-${type}-palette-status`,
+					target: `icon-${type}-palette-sc-status`,
 					isHover,
 					props: attributes,
 				});

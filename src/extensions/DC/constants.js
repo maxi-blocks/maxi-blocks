@@ -189,7 +189,7 @@ const textACFFieldTypes = [
 	'time_picker',
 	'select',
 	'radio',
-	// 'checkbox', TODO: add support for multiple values
+	'checkbox',
 ];
 
 const mediaACFFieldTypes = ['image'];

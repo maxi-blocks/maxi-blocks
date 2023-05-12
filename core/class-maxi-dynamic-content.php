@@ -636,6 +636,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
+            'dc-delimiter-content' => $dc_delimiter,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
@@ -645,9 +646,13 @@ class MaxiBlocks_DynamicContent
 
         switch ($dc_acf_field_type) {
             case 'select':
-            case 'checkbox':
             case 'radio':
                 $content = is_array($acf_value) ? $acf_value['label'] : $acf_value;
+                break;
+            case 'checkbox':
+                $content = implode("$dc_delimiter ", array_map(function ($item) {
+                    return is_array($item) ? $item['label'] : $item;
+                }, $acf_value));
                 break;
             default:
                 $content = $acf_value;

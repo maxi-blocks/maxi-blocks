@@ -68,6 +68,7 @@ const DynamicContent = props => {
 		'dc-error': error,
 		'dc-order': order,
 		'dc-accumulator': accumulator,
+		'dc-acf-field-type': acfFieldType,
 	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
@@ -405,61 +406,76 @@ const DynamicContent = props => {
 									{...dynamicContent}
 								/>
 							)}
-							{['tags', 'categories'].includes(field) && !error && (
-								<>
-									<ToggleSwitch
-										label={__(
-											sprintf('Use %s links', field),
-											'maxi-blocks'
+							{(['tags', 'categories'].includes(field) ||
+								(source === 'acf' &&
+									acfFieldType === 'checkbox')) &&
+								!error && (
+									<>
+										{['tags', 'categories'].includes(
+											field
+										) && (
+											<ToggleSwitch
+												label={__(
+													sprintf(
+														'Use %s links',
+														field
+													),
+													'maxi-blocks'
+												)}
+												selected={
+													postTaxonomyLinksStatus
+												}
+												onChange={value =>
+													changeProps({
+														'dc-post-taxonomy-links-status':
+															value,
+													})
+												}
+											/>
 										)}
-										selected={postTaxonomyLinksStatus}
-										onChange={value =>
-											changeProps({
-												'dc-post-taxonomy-links-status':
-													value,
-											})
-										}
-									/>
-									<SelectControl
-										label={__('Delimiter', 'maxi-blocks')}
-										value={
-											customDelimiterStatus
-												? 'custom'
-												: delimiter
-										}
-										options={delimiterOptions}
-										onChange={value => {
-											changeProps(
-												value === 'custom'
-													? {
-															'dc-custom-delimiter-status': true,
-													  }
-													: {
-															'dc-custom-delimiter-status': false,
-															'dc-delimiter-content':
-																value,
-													  }
-											);
-										}}
-									/>
-									{customDelimiterStatus && (
-										<TextControl
-											className='maxi-dynamic-content__custom-delimiter'
+										<SelectControl
 											label={__(
-												'Custom delimiter',
+												'Delimiter',
 												'maxi-blocks'
 											)}
-											value={delimiter}
-											onChange={value =>
-												changeProps({
-													'dc-delimiter-content':
-														value,
-												})
+											value={
+												customDelimiterStatus
+													? 'custom'
+													: delimiter
 											}
+											options={delimiterOptions}
+											onChange={value => {
+												changeProps(
+													value === 'custom'
+														? {
+																'dc-custom-delimiter-status': true,
+														  }
+														: {
+																'dc-custom-delimiter-status': false,
+																'dc-delimiter-content':
+																	value,
+														  }
+												);
+											}}
 										/>
-									)}
-								</>
-							)}
+										{customDelimiterStatus && (
+											<TextControl
+												className='maxi-dynamic-content__custom-delimiter'
+												label={__(
+													'Custom delimiter',
+													'maxi-blocks'
+												)}
+												value={delimiter}
+												onChange={value =>
+													changeProps({
+														'dc-delimiter-content':
+															value,
+													})
+												}
+											/>
+										)}
+									</>
+								)}
 						</>
 					)}
 				</>

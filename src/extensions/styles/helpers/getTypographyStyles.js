@@ -118,6 +118,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
+			forceUseBreakpoint: true,
 		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;

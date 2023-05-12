@@ -331,4 +331,50 @@ describe('getLastBreakpointAttribute', () => {
 		});
 		expect(result).toBe(3);
 	});
+
+	test('Should return general value being on XXL baseBreakpoint and enabling `forceUseBreakpoint`', () => {
+		select.mockImplementation(() => ({
+			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
+			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
+		}));
+
+		const args = {
+			target: 'line-height-unit',
+			breakpoint: 'general',
+			attributes: {
+				'palette-status-general': true,
+				'palette-sc-status-general': false,
+				'palette-color-general': 5,
+				'list-palette-status-general': true,
+				'list-palette-sc-status-general': false,
+				'list-palette-color-general': 4,
+				'font-size-unit-general': 'px',
+				'font-size-general': 65,
+				'font-size-xxl': 94,
+				'font-size-l': 50,
+				'font-size-m': 40,
+				'font-size-xs': 30,
+				'line-height-unit-general': 'px',
+				'line-height-unit-xxl': 'em',
+				'line-height-unit-l': 'px',
+				'line-height-general': 78,
+				'line-height-xxl': 1.2,
+				'line-height-l': 65,
+				'line-height-m': 55,
+				'line-height-xs': 42,
+				'letter-spacing-unit-general': 'px',
+				'font-weight-general': '700',
+				'text-indent-unit-general': 'px',
+				'word-spacing-unit-general': 'px',
+				'bottom-gap-general': 0,
+				'bottom-gap-unit-general': 'px',
+			},
+			forceUseBreakpoint: true,
+		};
+
+		const result = getLastBreakpointAttribute(args);
+
+		expect(result).toBe('px');
+	});
 });

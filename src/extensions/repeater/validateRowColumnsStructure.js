@@ -85,7 +85,13 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 
 			const nonExcludedRefAttributes = excludeAttributes(
 				getBlockAttributes(refClientId),
-				null,
+				['background-layers', 'background-layers-hover'].reduce(
+					(acc, key) => {
+						acc[key] = block.attributes[key];
+						return acc;
+					},
+					{}
+				),
 				copyPasteMapping
 			);
 			const nonExcludedBlockAttributes = excludeAttributes(
@@ -94,6 +100,7 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 				copyPasteMapping
 			);
 
+			// TODO: check how it works with relations
 			if (
 				!isEqual(nonExcludedRefAttributes, nonExcludedBlockAttributes)
 			) {

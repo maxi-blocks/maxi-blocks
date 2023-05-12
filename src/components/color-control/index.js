@@ -23,7 +23,6 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -58,8 +57,6 @@ const ColorControl = props => {
 		prefix = '',
 		avoidBreakpointForDefault = false,
 	} = props;
-
-	const hasGlobalProps = !globalProps || !isEmpty(globalProps);
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
 		useSelect(select => {
@@ -230,7 +227,7 @@ const ColorControl = props => {
 
 	return (
 		<div className={classes}>
-			{hasGlobalProps && (
+			{globalStatus && (
 				<ToggleSwitch
 					label={__('Override style card palette', 'maxi-blocks')}
 					selected={paletteSCStatus}

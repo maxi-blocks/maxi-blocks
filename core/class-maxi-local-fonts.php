@@ -56,9 +56,20 @@ class MaxiBlocks_Local_Fonts
             "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
         );
 
+        // for templates
+        $post_content_templates_array = (array) $wpdb->get_results(
+            "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+        );
+
+        $prev_post_content_templates_array = (array) $wpdb->get_results(
+            "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+        );
+
         if (
             empty($post_content_array) &&
             empty($prev_post_content_array) &&
+            empty($post_content_templates_array) &&
+            empty($prev_post_content_templates_array) &&
             $sc_string === ''
         ) {
             return false;
@@ -74,7 +85,17 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
+        if (!empty($post_content_templates_array)) {
+            foreach ($post_content_templates_array as $font) {
+                $array[] = $font->fonts_value;
+            }
+        }
 
+        if (!empty($prev_post_content_templates_array)) {
+            foreach ($prev_post_content_templates_array as $font) {
+                $array[] = $font->prev_fonts_value;
+            }
+        }
 
         if (empty($array)) {
             return false;

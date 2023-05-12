@@ -9,13 +9,14 @@ import { __ } from '@wordpress/i18n';
 import RelationControl from '../relation-control';
 
 const relation = ({ props, isButton = false }) => {
-	const { attributes, maxiSetAttributes, deviceType } = props;
+	const { attributes, clientId, maxiSetAttributes, deviceType } = props;
 
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),
 		content: (
 			<RelationControl
 				{...attributes}
+				clientId={clientId}
 				onChange={obj => maxiSetAttributes(obj)}
 				deviceType={deviceType}
 				isButton={isButton}

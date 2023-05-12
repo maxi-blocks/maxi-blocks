@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -30,6 +31,7 @@ import { getSelectedIBSettings } from '../../extensions/relations/utils';
 import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
 import getIBStyles from '../../extensions/relations/getIBStyles';
 import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -46,7 +48,10 @@ const RelationControl = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const repeaterContext = useContext(RepeaterContext);
+
 	const {
+		clientId,
 		deviceType,
 		isButton,
 		onChange,
@@ -270,12 +275,44 @@ const RelationControl = props => {
 
 	const getBlocksToAffect = () => {
 		const arr = [];
+
+		const { getBlockParentsByBlockName } = select('core/block-editor');
+
+		const parentRowClientId =
+			repeaterContext?.repeaterStatus &&
+			getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')?.[0];
+
+		const parentColumnClientId =
+			repeaterContext?.repeaterStatus &&
+			getBlockParentsByBlockName(
+				clientId,
+				'maxi-blocks/column-maxi'
+			)?.[0];
+
 		goThroughMaxiBlocks(block => {
 			if (
 				block.attributes.customLabel !==
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID
 			) {
+				const isBlockInRepeaterAndInAnotherColumn =
+					repeaterContext?.repeaterStatus &&
+					parentRowClientId ===
+						getBlockParentsByBlockName(
+							block.clientId,
+							'maxi-blocks/row-maxi'
+						)?.[0] &&
+					parentColumnClientId !==
+						getBlockParentsByBlockName(
+							block.clientId,
+							'maxi-blocks/column-maxi'
+						)?.[0] &&
+					parentColumnClientId !== block.clientId;
+
+				if (isBlockInRepeaterAndInAnotherColumn) {
+					return;
+				}
+
 				arr.push({
 					label: block.attributes.customLabel,
 					value: block.attributes.uniqueID,

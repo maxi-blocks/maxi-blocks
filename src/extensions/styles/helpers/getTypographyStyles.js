@@ -118,6 +118,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
+			forceUseBreakpoint: true,
 		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
@@ -132,7 +133,7 @@ const getTypographyStyles = ({
 	breakpoints.forEach(breakpoint => {
 		const typography = {
 			...(!isNil(getValue('font-family', breakpoint)) && {
-				'font-family': getValue('font-family', breakpoint),
+				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
 			...(!isNil(getValue('font-size', breakpoint)) && {

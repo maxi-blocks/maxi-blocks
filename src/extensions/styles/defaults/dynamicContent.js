@@ -5,7 +5,6 @@ const dynamicContent = {
 	},
 	'dc-status': {
 		type: 'boolean',
-		default: false,
 	},
 	'dc-source': {
 		type: 'string',
@@ -13,11 +12,9 @@ const dynamicContent = {
 	},
 	'dc-type': {
 		type: 'string',
-		default: 'posts',
 	},
 	'dc-relation': {
 		type: 'string',
-		default: 'by-id',
 	},
 	'dc-id': {
 		type: 'number',
@@ -123,11 +120,9 @@ const dynamicContent = {
 	},
 	'dc-order': {
 		type: 'string',
-		default: 'desc',
 	},
 	'dc-accumulator': {
 		type: 'number',
-		default: 0,
 	},
 	'dc-acf-group': {
 		type: 'string',

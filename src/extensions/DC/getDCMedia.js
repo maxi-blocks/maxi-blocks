@@ -13,7 +13,7 @@ import { getACFFieldContent } from './getACFData';
 const getDCMedia = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
-	const { 'dc-field': field, 'dc-source': source } = dataRequest;
+	const { field, source } = dataRequest;
 
 	if (source === 'acf') {
 		const contentValue = await getACFFieldContent(field, data.id);

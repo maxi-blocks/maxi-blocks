@@ -53,13 +53,7 @@ const getCleanContent = content => {
 	return newContent;
 };
 
-const styleResolver = (
-	styles,
-	// eslint-disable-next-line default-param-last
-	remover = false,
-	breakpoints,
-	update = true
-) => {
+const styleResolver = ({ styles, remover = false, breakpoints }) => {
 	if (!styles) return {};
 
 	const response = (remover && []) || {};
@@ -80,11 +74,9 @@ const styleResolver = (
 				response[target].content
 			);
 
-		if (update) {
-			if (!remover)
-				dispatch('maxiBlocks/styles').updateStyles(target, response);
-			else dispatch('maxiBlocks/styles').removeStyles(response);
-		}
+		if (!remover)
+			dispatch('maxiBlocks/styles').updateStyles(target, response);
+		else dispatch('maxiBlocks/styles').removeStyles(response);
 	});
 
 	return response;

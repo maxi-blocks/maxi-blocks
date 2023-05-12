@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { createRef } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -166,20 +165,6 @@ class edit extends MaxiBlockComponent {
 		const inlineStylesTargets = {
 			dividerColor: '.maxi-divider-block__divider',
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-divider--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.divider_preview}
-						alt={__('Divider block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector

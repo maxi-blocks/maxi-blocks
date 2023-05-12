@@ -13,6 +13,8 @@ export const findBlockPosition = (blockClientId, rootColumn) => {
 
 	if (!blockClientId || !rootColumn) return blockPosition;
 
+	if (blockClientId === rootColumn.clientId) return [-1];
+
 	const { getBlockParents } = select('core/block-editor');
 
 	const rawBlockParents = getBlockParents(blockClientId).filter(

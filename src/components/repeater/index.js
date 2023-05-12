@@ -12,8 +12,7 @@ import { validateRowColumnsStructure } from '../../extensions/repeater';
 
 const Repeater = ({
 	clientId,
-	columnRefClientId,
-	innerBlocksPositions,
+	updateInnerBlocksPositions,
 	onChange,
 	...attributes
 }) => {
@@ -35,9 +34,12 @@ const Repeater = ({
 					});
 
 					if (val) {
+						const newInnerBlocksPositions =
+							updateInnerBlocksPositions();
+
 						validateRowColumnsStructure(
 							clientId,
-							innerBlocksPositions
+							newInnerBlocksPositions
 						);
 					}
 				}}

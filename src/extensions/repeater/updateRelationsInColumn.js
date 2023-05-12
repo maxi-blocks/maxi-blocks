@@ -10,21 +10,25 @@ import { getClientIdFromUniqueId } from '../attributes';
 import { getBlockPosition } from './utils';
 
 /**
- * Updates relation trigger(uniqueID) to the same block,
+ * Updates attributes.relations. In each item it
+ * updates relation trigger(uniqueID) to the same block,
  * but in the new column, if trigger is in the old column.
  *
- * @param {Array<Object>}                 relations
- * @param {string}                        oldClientId
- * @param {string}                        newClientId
- * @param {Object<string, Array<string>>} innerBlocksPositions
- * @returns {Array<Object>}
+ * @param {Object<string, any>}      attributes
+ * @param {string}                   oldClientId
+ * @param {string}                   newClientId
+ * @param {Object<string, string[]>} innerBlocksPositions
  */
-const getUpdatedRelationsInColumn = (
-	relations,
+const updateRelationsInColumn = (
+	attributes,
 	oldClientId,
 	newClientId,
 	innerBlocksPositions
 ) => {
+	if (!('relations' in attributes)) {
+		return;
+	}
+
 	const { getBlock, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
@@ -36,7 +40,7 @@ const getUpdatedRelationsInColumn = (
 			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')?.[0]
 	);
 
-	return relations.map(relation => {
+	attributes.relations = attributes.relations.map(relation => {
 		const { uniqueID } = relation;
 
 		const relationClientId = getClientIdFromUniqueId(uniqueID);
@@ -74,4 +78,4 @@ const getUpdatedRelationsInColumn = (
 	});
 };
 
-export default getUpdatedRelationsInColumn;
+export default updateRelationsInColumn;

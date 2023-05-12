@@ -517,7 +517,6 @@ const DynamicContent = props => {
 												);
 											}}
 										/>
-
 										{customDelimiterStatus && (
 											<TextControl
 												className='maxi-dynamic-content__custom-delimiter'

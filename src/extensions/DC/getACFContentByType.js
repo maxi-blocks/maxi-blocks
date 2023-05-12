@@ -1,5 +1,5 @@
 const getACFContentByType = (content, type, dcAttributes) => {
-	const { 'dc-delimiter-content': delimiter } = dcAttributes;
+	const { delimiterContent } = dcAttributes;
 
 	switch (type) {
 		case 'select':
@@ -8,7 +8,7 @@ const getACFContentByType = (content, type, dcAttributes) => {
 		case 'checkbox':
 			return content
 				.map(item => (typeof item === 'object' ? item.label : item))
-				.join(`${delimiter} `);
+				.join(`${delimiterContent} `);
 		default:
 			return content;
 	}

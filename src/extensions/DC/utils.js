@@ -49,8 +49,11 @@ export const validationsValues = (
 	variableValue,
 	field,
 	relation,
-	contentType
+	contentType,
+	source
 ) => {
+	if (source === 'acf') return {};
+
 	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);

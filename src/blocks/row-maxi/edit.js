@@ -24,7 +24,7 @@ import { RowBlockTemplate } from './components';
 /**
  * External dependencies
  */
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 /**
  * Edit
@@ -70,6 +70,16 @@ class edit extends MaxiBlockComponent {
 				innerBlocksPositions: tempInnerBlocksPositions,
 			});
 		}
+
+		return tempInnerBlocksPositions;
+	};
+
+	getInnerBlocksPositions = () => {
+		if (isEmpty(this.state.innerBlocksPositions)) {
+			return this.updateInnerBlocksPositions();
+		}
+
+		return this.state.innerBlocksPositions;
 	};
 
 	render() {
@@ -91,8 +101,7 @@ class edit extends MaxiBlockComponent {
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
-				columnRefClientId={this.columnsClientIds[0]}
-				innerBlocksPositions={this.state.innerBlocksPositions}
+				updateInnerBlocksPositions={this.updateInnerBlocksPositions}
 				{...this.props}
 			/>,
 			<Toolbar
@@ -141,10 +150,7 @@ class edit extends MaxiBlockComponent {
 							target: 'repeater-status',
 							props: attributes,
 						}),
-						// TODO: consider removing this
-						columnRefClientId: this.columnsClientIds[0],
-						getInnerBlocksPositions: () =>
-							this.state.innerBlocksPositions,
+						getInnerBlocksPositions: this.getInnerBlocksPositions,
 						updateInnerBlocksPositions:
 							this.updateInnerBlocksPositions,
 					}}

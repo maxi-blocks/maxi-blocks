@@ -23,7 +23,7 @@ import { excludeAttributes } from '../copy-paste';
 import { getBlockData } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
-import { handleBlockMove } from '../repeater';
+import { getUpdatedRelationsInColumn, handleBlockMove } from '../repeater';
 import {
 	findBlockPosition,
 	findTargetParent,
@@ -148,6 +148,16 @@ const withMaxiProps = createHigherOrderComponent(
 								);
 
 								if (!isEmpty(nonExcludedAttributes)) {
+									if ('relations' in nonExcludedAttributes) {
+										nonExcludedAttributes.relations =
+											getUpdatedRelationsInColumn(
+												nonExcludedAttributes.relations,
+												clientId,
+												currentClientId,
+												innerBlocksPositions
+											);
+									}
+
 									updateBlockAttributes(
 										currentClientId,
 										nonExcludedAttributes

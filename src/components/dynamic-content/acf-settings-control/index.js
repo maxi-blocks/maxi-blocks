@@ -18,9 +18,9 @@ import { acfFieldTypes } from '../../../extensions/DC/constants';
  */
 import { isEmpty } from 'lodash';
 
-const AcfSettingsControl = props => {
+const ACFSettingsControl = props => {
 	const { dynamicContent, changeProps, contentType } = props;
-	const { 'dc-acf-group': group, 'dc-field': field } = dynamicContent;
+	const { acfGroup: group, field } = dynamicContent;
 
 	const [groupOptions, setGroupOptions] = useState(null);
 	const [fieldsOptions, setFieldsOptions] = useState(null);
@@ -124,4 +124,4 @@ const AcfSettingsControl = props => {
 	);
 };
 
-export default AcfSettingsControl;
+export default ACFSettingsControl;

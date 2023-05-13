@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -108,6 +109,17 @@ const ColorControl = props => {
 			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
+
+	useEffect(() => {
+		if (globalStatus && !paletteStatus)
+			onChange({
+				paletteSCStatus: true,
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color,
+			});
+	}, [globalStatus]);
 
 	const showPalette = !disablePalette && paletteStatus;
 
@@ -234,6 +246,17 @@ const ColorControl = props => {
 					onChange={val =>
 						onChangeValue({
 							paletteSCStatus: val,
+							// If SC palette status is disabled, and palette status is also disabled,
+							// we need to ensure we set the palettes back to show the SC global property
+							...(!val &&
+								!paletteStatus && {
+									paletteStatus: true,
+									color: `rgba(${getPaletteColor({
+										clientId,
+										color: paletteColor,
+										blockStyle,
+									})},${paletteOpacity || 1})`,
+								}),
 						})
 					}
 				/>

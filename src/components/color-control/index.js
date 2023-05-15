@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +24,7 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import classnames from 'classnames';
 import tinycolor from 'tinycolor2';
+
 /**
  * Styles
  */
@@ -35,6 +38,7 @@ const ColorControl = props => {
 		label = '',
 		className,
 		paletteStatus,
+		paletteSCStatus,
 		paletteColor,
 		paletteOpacity,
 		color,
@@ -55,6 +59,47 @@ const ColorControl = props => {
 		avoidBreakpointForDefault = false,
 	} = props;
 
+	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
+		useSelect(select => {
+			const { receiveSelectedStyleCardValue } = select(
+				'maxiBlocks/style-cards'
+			);
+
+			const prefix = globalProps?.target
+				? isHover && !globalProps?.target.includes('hover')
+					? `hover-${globalProps?.target}-`
+					: `${globalProps?.target}-`
+				: '';
+
+			const globalStatus = globalProps
+				? receiveSelectedStyleCardValue(
+						`${prefix}color-global`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+			const globalPaletteColor = globalProps
+				? receiveSelectedStyleCardValue(
+						`${prefix}palette-color`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+			const globalPaletteOpacity = globalProps
+				? receiveSelectedStyleCardValue(
+						`${prefix}palette-opacity`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+
+			return {
+				globalStatus,
+				globalPaletteColor,
+				globalPaletteOpacity: globalPaletteOpacity || 1,
+			};
+		});
+
 	const blockStyle = rawBlockStyle
 		? rawBlockStyle.replace('maxi-', '')
 		: getBlockStyle(clientId);
@@ -66,6 +111,17 @@ const ColorControl = props => {
 			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
+
+	useEffect(() => {
+		if (globalStatus && !paletteStatus)
+			onChange({
+				paletteSCStatus: true,
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color,
+			});
+	}, [globalStatus]);
 
 	const showPalette = !disablePalette && paletteStatus;
 
@@ -79,6 +135,7 @@ const ColorControl = props => {
 
 	const colorObj = {
 		paletteStatus,
+		paletteSCStatus,
 		paletteColor,
 		paletteOpacity,
 		color,
@@ -103,6 +160,7 @@ const ColorControl = props => {
 			onReset({
 				showPalette,
 				paletteStatus,
+				paletteSCStatus,
 				paletteColor,
 				paletteOpacity,
 				color,
@@ -113,38 +171,25 @@ const ColorControl = props => {
 			if (!defaultColorAttr) {
 				defaultColorAttr = {};
 
-				defaultColorAttr.paletteStatus = getDefaultAttribute(
-					getAttributeKey(
-						'palette-status',
-						isHover,
-						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
-				);
-				defaultColorAttr.paletteColor = getDefaultAttribute(
-					getAttributeKey(
-						'palette-color',
-						isHover,
-						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
-				);
-				defaultColorAttr.paletteOpacity = getDefaultAttribute(
-					getAttributeKey(
-						'palette-opacity',
-						isHover,
-						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
-				);
-				defaultColorAttr.color = getDefaultAttribute(
-					getAttributeKey(
-						'color',
-						isHover,
-						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
-				);
+				const getDefaultColorAttribute = target =>
+					getDefaultAttribute(
+						getAttributeKey(
+							target,
+							isHover,
+							prefix,
+							avoidBreakpointForDefault ? '' : deviceType
+						)
+					);
+
+				defaultColorAttr.paletteStatus =
+					getDefaultColorAttribute('palette-status');
+				defaultColorAttr.paletteSCStatus =
+					getDefaultColorAttribute('palette-sc-status');
+				defaultColorAttr.paletteColor =
+					getDefaultColorAttribute('palette-color');
+				defaultColorAttr.paletteOpacity =
+					getDefaultColorAttribute('palette-opacity');
+				defaultColorAttr.color = getDefaultColorAttribute('color');
 			}
 
 			if (showPalette)
@@ -186,6 +231,7 @@ const ColorControl = props => {
 
 		onChange({
 			paletteStatus,
+			paletteSCStatus,
 			paletteColor,
 			paletteOpacity: opacity,
 			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
@@ -195,62 +241,91 @@ const ColorControl = props => {
 
 	return (
 		<div className={classes}>
-			{showPalette && (
-				<ColorPaletteControl
-					label={label}
-					value={paletteColor}
-					globalProps={globalProps}
-					isHover={isHover}
-					onChange={obj => onChangeValue(obj)}
-					deviceType={deviceType}
-					clientId={clientId}
-					disableOpacity={disableOpacity}
-					opacity={paletteOpacity}
-					className={className}
-					onReset={onResetValues}
-					onResetOpacity={onResetOpacity}
-				/>
-			)}
-			{!disablePalette && (
+			{globalStatus && (
 				<ToggleSwitch
-					label={__('Set custom colour', 'maxi-blocks')}
-					selected={!paletteStatus}
-					onChange={val => {
+					label={__('Override style card palette', 'maxi-blocks')}
+					selected={paletteSCStatus}
+					onChange={val =>
 						onChangeValue({
-							paletteStatus: !val,
-							// If palette is disabled, set custom color from palette one
-							...(val && {
-								color: `rgba(${getPaletteColor({
-									clientId,
-									color: paletteColor,
-									blockStyle,
-								})},${paletteOpacity || 1})`,
-							}),
-							// If palette is set, save the custom color opacity
-							...(!disableOpacity &&
-								!val && {
-									paletteOpacity:
-										tinycolor(color).getAlpha() ||
-										paletteOpacity,
+							paletteSCStatus: val,
+							// If SC palette status is disabled, and palette status is also disabled,
+							// we need to ensure we set the palettes back to show the SC global property
+							...(!val &&
+								!paletteStatus && {
+									paletteStatus: true,
+									color: `rgba(${getPaletteColor({
+										clientId,
+										color: paletteColor,
+										blockStyle,
+									})},${paletteOpacity || 1})`,
 								}),
-						});
-					}}
+						})
+					}
 				/>
 			)}
-			{!showPalette && (
-				<CustomColorControl
-					label={label}
-					color={getRGBA(color)}
-					onChangeInlineValue={onChangeInlineValue}
-					onChangeValue={onChangeValue}
-					onReset={onResetValues}
-					onResetOpacity={onResetOpacity}
-					disableColorDisplay={disableColorDisplay}
-					disableOpacity={disableOpacity}
-					clientId={clientId}
-					isToolbar={isToolbar}
-				/>
-			)}
+			<div
+				className={classnames(
+					globalStatus &&
+						!paletteSCStatus &&
+						'maxi-color-control--disabled'
+				)}
+			>
+				{showPalette && (
+					<ColorPaletteControl
+						label={label}
+						value={paletteColor}
+						paletteSCStatus={paletteSCStatus}
+						onChange={obj => onChangeValue(obj)}
+						disableOpacity={disableOpacity}
+						opacity={paletteOpacity}
+						onReset={onResetValues}
+						onResetOpacity={onResetOpacity}
+						globalStatus={globalStatus}
+						globalPaletteColor={globalPaletteColor}
+						globalPaletteOpacity={globalPaletteOpacity}
+					/>
+				)}
+				{!disablePalette && (
+					<ToggleSwitch
+						label={__('Set custom colour', 'maxi-blocks')}
+						selected={!paletteStatus}
+						onChange={val => {
+							onChangeValue({
+								paletteStatus: !val,
+								// If palette is disabled, set custom color from palette one
+								...(val && {
+									color: `rgba(${getPaletteColor({
+										clientId,
+										color: paletteColor,
+										blockStyle,
+									})},${paletteOpacity || 1})`,
+								}),
+								// If palette is set, save the custom color opacity
+								...(!disableOpacity &&
+									!val && {
+										paletteOpacity:
+											tinycolor(color).getAlpha() ||
+											paletteOpacity,
+									}),
+							});
+						}}
+					/>
+				)}
+				{!showPalette && (
+					<CustomColorControl
+						label={label}
+						color={getRGBA(color)}
+						onChangeInlineValue={onChangeInlineValue}
+						onChangeValue={onChangeValue}
+						onReset={onResetValues}
+						onResetOpacity={onResetOpacity}
+						disableColorDisplay={disableColorDisplay}
+						disableOpacity={disableOpacity}
+						clientId={clientId}
+						isToolbar={isToolbar}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

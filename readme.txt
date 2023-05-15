@@ -263,20 +263,30 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 _Updates: 15 May 2023_
 
-* Fix: custom colours for Style Cards.
-* Fix: dialogue box for Site Editor UI.
-* Fix: Style Cards variables for Site Editor backend.
-* Fix: possible 404 errors for Google fonts.
-* Fix: various PHP warnings.
-* Fix: warnings on React 8.
-* Fix: wrong image when downloading from Template Library for images with similar names.
-* Fix: Style Cards on XXL breakpoint.
-* Fix: Style Cards on lower breakpoints.
-* Fix: search icon position.
-* Fix: author for Dynamic Content.
-* Update: option to serve the font files locally.
-* Update: allow up to 5 sessions for one account.
-* Update: context loop.
+* Update: Option to serve the Google Fonts files locally
+* Update: Pro account login. Allow up to 5 device sessions per user account
+* Update: Context loop integration. Speed up everyone's page-building process. It's similar to the Gutenberg "query loop block" but it's integrated with Maxi's blocks; container, row, column, and group. It works with the responsive grid and dynamic content. Required for the Blog block. Create dynamic page layout templates with advanced controls. The feature uses patterns and dynamic content to produce structured layout templates with dynamic content such as blog index, search, archives, custom posts, galleries and so on. Tutorial videos coming soon
+* Update: Constants with static text as buttons field option
+* Update: Implement static text as DC content for button maxi
+* Update: Modified cleanAttributes to keep boolean attributes
+* Update: Migrated full-width attributes from string to boolean
+* Update: Dynamic content (dc), add users relation options
+* Update: Dynamic content, implement dc author on frontend
+* Update: Give updated attributes to save migrators
+* Fix: Custom colours for style cards
+* Fix: Dialogue box for site editor UI
+* Fix: Style card variables for site editor back-end
+* Fix: Possible 404 errors for Google fonts
+* Fix: Various PHP warnings
+* Fix: Warnings on React 18
+* Fix: Better image import handling from template library for images with similar names
+* Fix: Style cards not editable on XXL breakpoint
+* Fix: Style cards bug on lower breakpoints
+* Fix: Search block icon position
+* Fix: Dynamic content, fix author on editor
+* Fix: Button hover migration bug
+* Fix: Style card variables and styles for Button Maxi
+* Fix: Undefined button font
 
 
 _Updates: 8 May 2023_

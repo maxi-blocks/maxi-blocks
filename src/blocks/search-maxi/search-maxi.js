@@ -23,6 +23,7 @@ import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 /**
  * Styles and icons
  */
+import './editor.scss';
 import './style.scss';
 import { searchIcon } from '../../icons';
 

@@ -147,9 +147,10 @@ const actions = {
 			clientId,
 		};
 	},
-	setIsPageLoaded() {
+	setIsPageLoaded(isPageLoaded = true) {
 		return {
 			type: 'SET_IS_PAGE_LOADED',
+			isPageLoaded,
 		};
 	},
 };

@@ -7,6 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getIsSiteEditor from './getIsSiteEditor';
+import getTemplatePart from './getTemplatePart';
 import getIsTemplatePart from './getIsTemplatePart';
 
 /**
@@ -23,17 +24,7 @@ const getTemplatePartSlug = clientId => {
 	// Checking if we on the FSE template part editor.
 	if (getIsTemplatePart()) return getEditedPostId().split('//', 2)[1];
 
-	if (!clientId) return false;
-
-	// Checking if we on the FSE template editor and clientId in inside of the template part.
-	const { getBlock, getBlockParents } = select('core/block-editor');
-
-	const templatePartParent = getBlock(
-		getBlockParents(clientId).filter(
-			currentClientId =>
-				getBlock(currentClientId)?.name === 'core/template-part'
-		)
-	);
+	const templatePartParent = getTemplatePart(clientId);
 
 	if (!templatePartParent) return false;
 

@@ -8,17 +8,13 @@ import {
 	select,
 	subscribe,
 } from '@wordpress/data';
-import {
-	useEffect,
-	render,
-	createRoot,
-	useLayoutEffect,
-} from '@wordpress/element';
+import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
+import { getIsSiteEditor, getIsTemplatePart } from '../../extensions/fse';
 
 /**
  * Component
@@ -29,7 +25,9 @@ const BlockStylesSaver = () => {
 		isPreviewing,
 		isDraft,
 		isCodeEditor,
-		allStylesAreSaved = true,
+		allStylesAreSaved,
+		isPageLoaded,
+		hasTemplateChanged,
 	} = useSelect(select => {
 		const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
 			select('core/editor');
@@ -37,6 +35,7 @@ const BlockStylesSaver = () => {
 			select('core');
 		const { getEditorMode } =
 			select('core/edit-site') || select('core/edit-post');
+		const { getIsPageLoaded } = select('maxiBlocks');
 		const { getAllStylesAreSaved } = select('maxiBlocks/styles');
 
 		const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
@@ -49,8 +48,10 @@ const BlockStylesSaver = () => {
 		const isPreviewing = isPreviewingPost();
 		const isDraft = getCurrentPostAttribute('status') === 'draft';
 		const isCodeEditor = getEditorMode() === 'text';
-		// const allStylesAreSaved = getAllStylesAreSaved();
-		const allStylesAreSaved = true;
+		const allStylesAreSaved = getAllStylesAreSaved();
+		const isPageLoaded = getIsPageLoaded();
+
+		const hasTemplateChanged = getIsSiteEditor() && getIsTemplatePart();
 
 		return {
 			isSaving,
@@ -58,6 +59,8 @@ const BlockStylesSaver = () => {
 			isDraft,
 			isCodeEditor,
 			allStylesAreSaved,
+			isPageLoaded,
+			hasTemplateChanged,
 		};
 	});
 
@@ -79,10 +82,21 @@ const BlockStylesSaver = () => {
 		}
 	});
 
-	useLayoutEffect(() => {
-		const { getIsPageLoaded } = select('maxiBlocks');
+	// When swapping to code editor, as all blocks are unmounted, we need to set the `isPageLoaded`
+	// to false to ensure a good UX when coming back to the visual editor.
+	useEffect(() => {
+		if (isCodeEditor) dispatch('maxiBlocks').setIsPageLoaded(false);
+	}, [isCodeEditor]);
 
-		if (!getIsPageLoaded()) {
+	// In FSE, when the template part is changed, we need to set the `isPageLoaded` to false to ensure
+	// a good UX as with the `isPageLoaded` equal to false the load of the editor is smoother.
+	useEffect(() => {
+		if (getIsSiteEditor() && isPageLoaded)
+			dispatch('maxiBlocks').setIsPageLoaded(false);
+	}, [hasTemplateChanged]);
+
+	useLayoutEffect(() => {
+		if (!isPageLoaded) {
 			const isMaxiBlock = block => {
 				if (block.name.includes('maxi-blocks/')) return true;
 
@@ -167,13 +181,7 @@ wp.domReady(() => {
 
 		document.head.appendChild(wrapper);
 
-		// check if createRoot is available (since React 18)
-		if (typeof createRoot === 'function') {
-			const root = createRoot(wrapper);
-			root.render(<BlockStylesSaver />);
-		} else {
-			// for React 17 and below
-			render(<BlockStylesSaver />, wrapper);
-		}
+		const root = createRoot(wrapper);
+		root.render(<BlockStylesSaver />);
 	}
 });

@@ -227,7 +227,22 @@ class MaxiBlocks_Styles
                     $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }
             } else {
-                $template_id .= $block_templates[0]->slug;
+                // Arrived here, means we are probably trying to get index.php; so if the slug is not coming from $block_templates,
+                // we need to start going down on the WP hierarchy to find the correct template.
+                // TODO: create a better way to get the correct template.
+                if($block_templates && !empty($block_templates)) {
+                    $template_id .= $block_templates[0]->slug;
+                } elseif (is_search()) {
+                    $template_id .= 'search';
+                } elseif (is_404()) {
+                    $template_id .= '404';
+                } elseif (is_archive()) {
+                    $template_id .= 'archive';
+                } elseif (is_page()) {
+                    $template_id .= 'page';
+                } else {
+                    $template_id .= 'single';
+                }
             }
         } elseif (is_search()) {
             $template_id .= 'search';
@@ -581,7 +596,7 @@ class MaxiBlocks_Styles
     /**
      * Custom Meta
      */
-    public function custom_meta($metaJs, $is_template, $id = null)
+    public function custom_meta($metaJs, $is_template = false, $id = null)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {

@@ -261,7 +261,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 15 May 2023_
+_Updates: 16 May 2023_
 
 * Update: Option to serve the Google Fonts files locally
 * Update: Pro account login. Allow up to 5 device sessions per user account
@@ -273,6 +273,7 @@ _Updates: 15 May 2023_
 * Update: Dynamic content (dc), add users relation options
 * Update: Dynamic content, implement dc author on frontend
 * Update: Give updated attributes to save migrators
+* Update: Add support for style card modal in full set editing mode
 * Fix: Custom colours for style cards
 * Fix: Dialogue box for site editor UI
 * Fix: Style card variables for site editor back-end

@@ -119,6 +119,7 @@ const LinkOptions = props => {
 					color={getValue('link-color')}
 					prefix={`${prefix}link-`}
 					paletteStatus={getValue('link-palette-status')}
+					paletteSCStatus={getValue('link-palette-sc-status')}
 					paletteColor={getValue('link-palette-color')}
 					paletteOpacity={getValue('link-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -127,12 +128,15 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
 						onChangeFormat(
 							{
 								[`${prefix}link-palette-status`]: paletteStatus,
+								[`${prefix}link-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-palette-color`]: paletteColor,
 								[`${prefix}link-palette-opacity`]:
 									paletteOpacity,
@@ -155,6 +159,7 @@ const LinkOptions = props => {
 					color={getValue('link-hover-color')}
 					prefix={`${prefix}link-hover-`}
 					paletteStatus={getValue('link-hover-palette-status')}
+					paletteSCStatus={getValue('link-hover-palette-sc-status')}
 					paletteColor={getValue('link-hover-palette-color')}
 					paletteOpacity={getValue('link-hover-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -163,6 +168,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -170,6 +176,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-hover-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-hover-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-hover-palette-color`]:
 									paletteColor,
 								[`${prefix}link-hover-palette-opacity`]:
@@ -193,6 +201,7 @@ const LinkOptions = props => {
 					color={getValue('link-active-color')}
 					prefix={`${prefix}link-active-`}
 					paletteStatus={getValue('link-active-palette-status')}
+					paletteSCStatus={getValue('link-active-palette-sc-status')}
 					paletteColor={getValue('link-active-palette-color')}
 					paletteOpacity={getValue('link-active-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -201,6 +210,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -208,6 +218,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-active-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-active-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-active-palette-color`]:
 									paletteColor,
 								[`${prefix}link-active-palette-opacity`]:
@@ -234,6 +246,7 @@ const LinkOptions = props => {
 					color={getValue('link-visited-color')}
 					prefix={`${prefix}link-visited-`}
 					paletteStatus={getValue('link-visited-palette-status')}
+					paletteSCStatus={getValue('link-visited-palette-sc-status')}
 					paletteColor={getValue('link-visited-palette-color')}
 					paletteOpacity={getValue('link-visited-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -242,6 +255,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -249,6 +263,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-visited-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-visited-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-visited-palette-color`]:
 									paletteColor,
 								[`${prefix}link-visited-palette-opacity`]:
@@ -541,6 +557,7 @@ const TypographyControl = props => {
 							`${prefix}palette-opacity`
 						)}
 						paletteStatus={getValue('palette-status')}
+						paletteSCStatus={getValue('palette-sc-status')}
 						onChangeInline={({ color }) =>
 							onChangeInlineValue({ color })
 						}
@@ -548,12 +565,14 @@ const TypographyControl = props => {
 							color,
 							paletteColor,
 							paletteStatus,
+							paletteSCStatus,
 							paletteOpacity,
 						}) =>
 							onChangeFormat({
 								[`${prefix}color`]: color,
 								[`${prefix}palette-color`]: paletteColor,
 								[`${prefix}palette-status`]: paletteStatus,
+								[`${prefix}palette-sc-status`]: paletteSCStatus,
 								[`${prefix}palette-opacity`]: paletteOpacity,
 							})
 						}

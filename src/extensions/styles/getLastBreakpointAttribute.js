@@ -32,7 +32,8 @@ const getLastBreakpointAttributeSingle = (
 	attributes,
 	isHover,
 	avoidXXL,
-	keys
+	keys,
+	forceUseBreakpoint = false
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } = select(
 		'core/block-editor'
@@ -67,6 +68,7 @@ const getLastBreakpointAttributeSingle = (
 	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
 	// or the baseBreakpoint is different from 'xxl' and currentBreakpoint
 	if (
+		!forceUseBreakpoint &&
 		breakpoint === 'general' &&
 		(currentBreakpoint === 'general' ||
 			(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
@@ -183,6 +185,7 @@ const getLastBreakpointAttribute = ({
 	forceSingle = false,
 	avoidXXL = true,
 	keys = [],
+	forceUseBreakpoint = false,
 }) => {
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
@@ -194,7 +197,8 @@ const getLastBreakpointAttribute = ({
 			breakpoint,
 			isHover,
 			avoidXXL,
-			keys
+			keys,
+			forceUseBreakpoint
 		);
 
 	return getLastBreakpointAttributeSingle(
@@ -203,7 +207,8 @@ const getLastBreakpointAttribute = ({
 		attributes,
 		isHover,
 		avoidXXL,
-		keys
+		keys,
+		forceUseBreakpoint
 	);
 };
 

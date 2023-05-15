@@ -9,6 +9,7 @@ import { createPortal, useState } from '@wordpress/element';
  */
 import Button from '../button';
 import Icon from '../icon';
+import { getIsSiteEditor } from '../../extensions/fse';
 
 /**
  * Styles and icons
@@ -28,6 +29,11 @@ const DialogBox = props => {
 	} = props;
 
 	const [isHidden, setIsHidden] = useState(true);
+
+	const getContainer = () =>
+		!getIsSiteEditor()
+			? document.getElementById('editor')
+			: document.getElementById('site-editor');
 
 	return isHidden ? (
 		<Button
@@ -71,7 +77,7 @@ const DialogBox = props => {
 					</div>
 				</div>
 			</div>,
-			document.getElementById('editor')
+			getContainer()
 		)
 	);
 };

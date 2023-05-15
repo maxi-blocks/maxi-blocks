@@ -24,7 +24,7 @@ const SvgColor = props => {
 	} = props;
 
 	const onChange = val => {
-		const { color, paletteColor, paletteStatus } = val;
+		const { color, paletteColor, paletteStatus, paletteSCStatus } = val;
 
 		const isNeededType = isHover
 			? svgType === 'Filled'
@@ -35,18 +35,28 @@ const SvgColor = props => {
 		const paletteStr = type === 'line' ? 'stroke' : 'fill';
 		const colorStr =
 			isNeededType &&
-			getColorRGBAString({
-				firstVar: `icon-${paletteStr}`,
-				secondVar: `color-${paletteColor}`,
-				opacity: 1,
-				blockStyle,
-			});
+			getColorRGBAString(
+				paletteSCStatus
+					? {
+							firstVar: `color-${paletteColor}`,
+							opacity: 1,
+							blockStyle,
+					  }
+					: {
+							firstVar: `icon-${paletteStr}`,
+							secondVar: `color-${paletteColor}`,
+							opacity: 1,
+							blockStyle,
+					  }
+			);
 		const onChangeObject = {
 			[`svg-${type}-color${isHover ? '-hover' : ''}`]: color,
 			[`svg-${type}-palette-color${isHover ? '-hover' : ''}`]:
 				paletteColor,
 			[`svg-${type}-palette-status${isHover ? '-hover' : ''}`]:
 				paletteStatus,
+			[`svg-${type}-palette-sc-status${isHover ? '-hover' : ''}`]:
+				paletteSCStatus,
 			content: (isHover ? setSVGContentHover : setSVGContent)(
 				content,
 				paletteStatus ? colorStr : color,
@@ -83,6 +93,11 @@ const SvgColor = props => {
 				props,
 				isHover,
 			})}
+			paletteSCStatus={getAttributeValue({
+				target: 'svg-line-palette-sc-status',
+				props,
+				isHover,
+			})}
 			onChangeInline={({ color }) =>
 				onChangeInline &&
 				onChangeInline({ stroke: color }, '[data-stroke]')
@@ -113,6 +128,11 @@ const SvgColor = props => {
 			})}
 			paletteStatus={getAttributeValue({
 				target: 'svg-fill-palette-status',
+				props,
+				isHover,
+			})}
+			paletteSCStatus={getAttributeValue({
+				target: 'svg-fill-palette-sc-status',
 				props,
 				isHover,
 			})}

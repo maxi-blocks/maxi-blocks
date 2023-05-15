@@ -123,17 +123,33 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	// Check if it already exist
 	const media = await getEntityRecords('postType', 'attachment', {
 		post_status: 'inherit',
-		posts_per_page: 1,
 		search: title,
+		exact: true,
 	});
 
-	if (!isEmpty(media))
+	if (!isEmpty(media)) {
+		let mediaEl;
+
+		if (media.length === 0) return placeholderUploader();
+		if (media.length === 1) [mediaEl] = media;
+		else {
+			const mediaElIndex = media.findIndex(
+				({ title: { raw: rawTitle } }) =>
+					rawTitle === title || rawTitle === `${title}-1` // sometimes WP add a -1 to the title
+			);
+
+			if (mediaElIndex === -1) return placeholderUploader();
+
+			mediaEl = media[mediaElIndex];
+		}
+
 		return {
-			id: media[0].id,
+			id: mediaEl.id,
 			url:
-				media[0]?.media_details?.sizes?.full?.source_url ??
-				media[0].guid.rendered,
+				mediaEl?.media_details?.sizes?.full?.source_url ??
+				mediaEl.guid.rendered,
 		};
+	}
 
 	// In case the image is not found, let's fetch it from the Cloud server
 	const imageBlob = await fetch(imageSrc)

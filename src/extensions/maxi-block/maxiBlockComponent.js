@@ -250,7 +250,7 @@ class MaxiBlockComponent extends Component {
 					oldSC: SC,
 					scValues: select(
 						'maxiBlocks/style-cards'
-					).receiveStyleCardValue(
+					).receiveActiveStyleCardValue(
 						this.scProps.scElements,
 						this.props.attributes.blockStyle,
 						this.scProps.scType

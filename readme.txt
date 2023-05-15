@@ -264,14 +264,14 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 _Updates: 15 May 2023_
 
 * Fix: Custom colours for Style Cards.
-* Fix: DialogBox in Site Editor UI.
+* Fix: Maxi dialog box for Site Editor UI.
 * Fix: Style Cards variables for Site Editor backend.
 * Fix: possible 404 errors for google fonts.
 * Fix: various PHP warnings.
+* Fix: warnings on React 8.
 * Fix: wrong image when downloading from Template Library for images with similar names.
 * Fix: Style Cards on XXL breakpoint.
 * Fix: Style Cards on lower breakpoints.
-* Fix: warnings on React 8.
 * Fix: search icon position.
 * Fix: author for Dynamic Content.
 * Update: option to serve the font files locally.

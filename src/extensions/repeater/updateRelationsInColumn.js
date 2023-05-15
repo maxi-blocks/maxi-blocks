@@ -37,7 +37,7 @@ const updateRelationsInColumn = (
 		newClientId,
 	].map(
 		clientId =>
-			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')?.[0]
+			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')[0]
 	);
 
 	attributes.relations = attributes.relations.map(relation => {
@@ -47,7 +47,7 @@ const updateRelationsInColumn = (
 		const relationClientIdColumn = getBlockParentsByBlockName(
 			relationClientId,
 			'maxi-blocks/column-maxi'
-		)?.[0];
+		)[0];
 
 		if (relationClientIdColumn !== oldClientIdColumn) {
 			return relation;
@@ -63,7 +63,7 @@ const updateRelationsInColumn = (
 				const clientIdColumn = getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
-				)?.[0];
+				)[0];
 
 				return clientIdColumn === newClientIdColumn;
 			}

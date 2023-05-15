@@ -213,7 +213,6 @@ const ColumnPattern = props => {
 									props,
 									breakpoint,
 								});
-
 								const newRowPattern =
 									template.isMoreThanEightColumns
 										? numCol.toString()

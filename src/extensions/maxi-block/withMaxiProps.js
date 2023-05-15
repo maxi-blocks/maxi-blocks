@@ -66,7 +66,7 @@ const withMaxiProps = createHigherOrderComponent(
 				getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
-				)?.[0];
+				)[0];
 
 			const {
 				deviceType,

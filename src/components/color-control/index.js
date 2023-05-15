@@ -61,7 +61,9 @@ const ColorControl = props => {
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
 		useSelect(select => {
-			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
+			const { receiveSelectedStyleCardValue } = select(
+				'maxiBlocks/style-cards'
+			);
 
 			const prefix = globalProps?.target
 				? isHover && !globalProps?.target.includes('hover')
@@ -70,21 +72,21 @@ const ColorControl = props => {
 				: '';
 
 			const globalStatus = globalProps
-				? receiveStyleCardValue(
+				? receiveSelectedStyleCardValue(
 						`${prefix}color-global`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
 				: false;
 			const globalPaletteColor = globalProps
-				? receiveStyleCardValue(
+				? receiveSelectedStyleCardValue(
 						`${prefix}palette-color`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
 				: false;
 			const globalPaletteOpacity = globalProps
-				? receiveStyleCardValue(
+				? receiveSelectedStyleCardValue(
 						`${prefix}palette-opacity`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type

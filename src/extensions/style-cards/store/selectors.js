@@ -36,34 +36,58 @@ export const receiveStyleCardsList = state => {
 	return false;
 };
 
-export const receiveStyleCardValue = (
+const getSCValues = (SC, rawTarget, blockStyle, SCEntry) => {
+	const getSCValue = target => {
+		const styleCardEntry = {
+			...SC.value?.[blockStyle]?.defaultStyleCard[SCEntry],
+			...SC.value?.[blockStyle]?.styleCard[SCEntry],
+		};
+		const value = styleCardEntry?.[target];
+
+		return getIsValid(value, true) ? value : false;
+	};
+
+	if (typeof rawTarget === 'string') return getSCValue(rawTarget);
+
+	const response = {};
+
+	rawTarget.forEach(target => {
+		response[target] = getSCValue(target);
+	});
+
+	return response;
+};
+
+export const receiveActiveStyleCardValue = (
 	state,
 	rawTarget,
 	blockStyle,
 	SCEntry
 ) => {
-	if (state.styleCards) {
-		const getSCValue = target => {
-			const selectedSCStyleCard = getActiveStyleCard(state.styleCards);
-			const styleCardEntry = {
-				...selectedSCStyleCard.value?.[blockStyle]?.defaultStyleCard[
-					SCEntry
-				],
-				...selectedSCStyleCard.value?.[blockStyle]?.styleCard[SCEntry],
-			};
-			const value = styleCardEntry?.[target];
+	if (state.styleCards)
+		return getSCValues(
+			getActiveStyleCard(state.styleCards),
+			rawTarget,
+			blockStyle,
+			SCEntry
+		);
 
-			return getIsValid(value, true) ? value : false;
-		};
+	return false;
+};
 
-		if (typeof rawTarget === 'string') return getSCValue(rawTarget);
+export const receiveSelectedStyleCardValue = (
+	state,
+	rawTarget,
+	blockStyle,
+	SCEntry
+) => {
+	if (state.styleCards)
+		return getSCValues(
+			getActiveStyleCard(state.styleCards, true),
+			rawTarget,
+			blockStyle,
+			SCEntry
+		);
 
-		const response = {};
-		rawTarget.forEach(target => {
-			response[target] = getSCValue(target);
-		});
-
-		return response;
-	}
 	return false;
 };

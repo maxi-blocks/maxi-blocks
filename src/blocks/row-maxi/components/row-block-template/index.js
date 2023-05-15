@@ -16,7 +16,12 @@ import loadColumnsTemplate from '../../../../extensions/column-templates/loadCol
  */
 import { uniqueId } from 'lodash';
 
-const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
+const RowBlockTemplate = ({
+	clientId,
+	repeaterStatus,
+	maxiSetAttributes,
+	deviceType,
+}) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
@@ -29,7 +34,7 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 				onClick={() => selectBlock(clientId)}
 				key={`maxi-row-block--${clientId}`}
 			>
-				{getTemplates().map(template => {
+				{getTemplates(repeaterStatus).map(template => {
 					return (
 						<Button
 							key={uniqueId(`maxi-row-block--${clientId}--`)}

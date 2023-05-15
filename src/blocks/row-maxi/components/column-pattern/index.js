@@ -15,25 +15,36 @@ import {
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeValue,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { uniqueId, isEqual, isNil, floor } from 'lodash';
+import { floor, isEqual, isNil, toNumber, uniqueId } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 
 /**
  * Column patterns
  *
  */
 const ColumnPattern = props => {
-	const { clientId, onChange, breakpoint, toolbar = false } = props;
+	const {
+		clientId,
+		onChange,
+		breakpoint,
+		repeaterStatus,
+		getInnerBlocksPositions,
+		toolbar = false,
+	} = props;
 
 	const [numCol, setNumCol] = useState(
 		!isNil(props['row-pattern-general'])
@@ -46,9 +57,11 @@ const ColumnPattern = props => {
 
 	useEffect(() => {
 		if (toolbar) {
-			setDisplayedTemplates(getTemplates());
+			setDisplayedTemplates(getTemplates(repeaterStatus));
 		} else {
-			setDisplayedTemplates(getTemplates(breakpoint, numCol));
+			setDisplayedTemplates(
+				getTemplates(repeaterStatus, breakpoint, numCol)
+			);
 		}
 	}, [breakpoint, numCol]);
 
@@ -191,14 +204,38 @@ const ColumnPattern = props => {
 									template.name,
 									clientId,
 									breakpoint,
-									numCol
+									numCol,
+									repeaterStatus
 								);
+
+								const prevRowPattern = getAttributeValue({
+									target: 'row-pattern',
+									props,
+									breakpoint,
+								});
+
+								const newRowPattern =
+									template.isMoreThanEightColumns
+										? numCol.toString()
+										: template.name;
+
+								const sanitizeRowPattern = pattern =>
+									toNumber(pattern.replace(/[^0-9]/g, '')[0]);
+
+								if (
+									repeaterStatus &&
+									sanitizeRowPattern(prevRowPattern) <
+										sanitizeRowPattern(newRowPattern)
+								) {
+									validateRowColumnsStructure(
+										clientId,
+										getInnerBlocksPositions()
+									);
+								}
 
 								onChange({
 									[`row-pattern-${breakpoint}`]:
-										template.isMoreThanEightColumns
-											? numCol.toString()
-											: template.name,
+										newRowPattern,
 								});
 							}}
 						>

@@ -29,22 +29,30 @@ const loadTemplate = (template, clientId) => {
 	);
 };
 
-const updateTemplate = (template, columnsBlockObjects, clientId) => {
+const updateTemplate = (
+	template,
+	columnsBlockObjects,
+	clientId,
+	noLeftoverInsertion = false
+) => {
 	const templateLength = template.content.length;
 	const newAttributes = template.attributes;
-	const leftoverContent = compact(
-		columnsBlockObjects.map((column, i) => {
-			if (i < templateLength) return null;
 
-			return column.innerBlocks;
-		})
-	);
+	if (!noLeftoverInsertion) {
+		const leftoverContent = compact(
+			columnsBlockObjects.map((column, i) => {
+				if (i < templateLength) return null;
 
-	// Insert leftover content on the last column
-	if (columnsBlockObjects.length > templateLength)
-		columnsBlockObjects[templateLength - 1].innerBlocks.push(
-			...flatten(leftoverContent)
+				return column.innerBlocks;
+			})
 		);
+
+		// Insert leftover content on the last column
+		if (columnsBlockObjects.length > templateLength)
+			columnsBlockObjects[templateLength - 1].innerBlocks.push(
+				...flatten(leftoverContent)
+			);
+	}
 
 	const newTemplate = synchronizeBlocksWithTemplate(
 		columnsBlockObjects,
@@ -70,7 +78,13 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	});
 };
 
-const loadColumnsTemplate = (templateName, clientId, breakpoint, numCol) => {
+const loadColumnsTemplate = (
+	templateName,
+	clientId,
+	breakpoint,
+	numCol,
+	noLeftoverInsertion
+) => {
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks;
@@ -86,7 +100,13 @@ const loadColumnsTemplate = (templateName, clientId, breakpoint, numCol) => {
 
 	isRowEmpty
 		? loadTemplate(template, clientId)
-		: updateTemplate(template, columnsBlockObjects, clientId, numCol);
+		: updateTemplate(
+				template,
+				columnsBlockObjects,
+				clientId,
+				numCol,
+				noLeftoverInsertion
+		  );
 };
 
 export default loadColumnsTemplate;

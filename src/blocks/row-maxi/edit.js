@@ -102,10 +102,19 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
 
+		const repeaterStatus =
+			this.context?.repeaterStatus ||
+			getAttributeValue({
+				target: 'repeater-status',
+				props: attributes,
+			});
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
+				repeaterStatus={repeaterStatus}
 				isRepeaterInherited={this.isRepeaterInherited}
+				getInnerBlocksPositions={this.getInnerBlocksPositions}
 				updateInnerBlocksPositions={this.updateInnerBlocksPositions}
 				{...this.props}
 			/>,
@@ -118,6 +127,8 @@ class edit extends MaxiBlockComponent {
 					});
 				}}
 				copyPasteMapping={copyPasteMapping}
+				repeaterStatus={repeaterStatus}
+				getInnerBlocksPositions={this.getInnerBlocksPositions}
 				{...this.props}
 			/>,
 			<RowContext.Provider
@@ -151,10 +162,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<RepeaterContext.Provider
 					value={{
-						repeaterStatus: getAttributeValue({
-							target: 'repeater-status',
-							props: attributes,
-						}),
+						repeaterStatus,
 						getInnerBlocksPositions: this.getInnerBlocksPositions,
 						updateInnerBlocksPositions:
 							this.updateInnerBlocksPositions,
@@ -175,6 +183,7 @@ class edit extends MaxiBlockComponent {
 								? () => (
 										<RowBlockTemplate
 											clientId={clientId}
+											repeaterStatus={repeaterStatus}
 											maxiSetAttributes={
 												maxiSetAttributes
 											}

@@ -20,7 +20,14 @@ import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 function ColumnPicker(props) {
-	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		clientId,
+		attributes,
+		deviceType,
+		repeaterStatus,
+		getInnerBlocksPositions,
+		maxiSetAttributes,
+	} = props;
 
 	return (
 		<>
@@ -29,6 +36,8 @@ function ColumnPicker(props) {
 				{...getGroupAttributes(attributes, 'rowPattern')}
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
+				repeaterStatus={repeaterStatus}
+				getInnerBlocksPositions={getInnerBlocksPositions}
 			/>
 			<FlexGapControl
 				{...getGroupAttributes(attributes, 'flex')}

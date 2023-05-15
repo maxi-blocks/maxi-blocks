@@ -108,6 +108,8 @@ const MaxiToolbar = memo(
 			mediaPrefix,
 			dropShadow,
 			disableInset,
+			repeaterStatus,
+			getInnerBlocksPositions,
 		} = props;
 		const {
 			blockStyle,
@@ -521,6 +523,8 @@ const MaxiToolbar = memo(
 							blockName={name}
 							{...getGroupAttributes(attributes, 'rowPattern')}
 							onChange={obj => maxiSetAttributes(obj)}
+							repeaterStatus={repeaterStatus}
+							getInnerBlocksPositions={getInnerBlocksPositions}
 							breakpoint={breakpoint}
 						/>
 						<NumberCounterReplay

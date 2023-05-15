@@ -381,6 +381,28 @@ Object {
   "background-palette-opacity-xxl-hover": Object {
     "type": "number",
   },
+  "background-palette-sc-status-general-hover": Object {
+    "default": false,
+    "type": "boolean",
+  },
+  "background-palette-sc-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-sc-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-sc-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-sc-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-sc-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-sc-status-xxl-hover": Object {
+    "type": "boolean",
+  },
   "background-palette-status-general-hover": Object {
     "default": true,
     "type": "boolean",

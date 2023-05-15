@@ -319,6 +319,13 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
+													paletteSCStatus={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-top-palette-sc-status',
+															breakpoint,
+															attributes: props,
+														}
+													)}
 													onChangeInline={({
 														color,
 													}) =>
@@ -330,6 +337,7 @@ const ShapeDividerControl = props => {
 														color,
 														paletteColor,
 														paletteStatus,
+														paletteSCStatus,
 													}) =>
 														onChange({
 															[`shape-divider-top-color-${breakpoint}`]:
@@ -338,6 +346,8 @@ const ShapeDividerControl = props => {
 																paletteColor,
 															[`shape-divider-top-palette-status-${breakpoint}`]:
 																paletteStatus,
+															[`shape-divider-top-palette-sc-status-${breakpoint}`]:
+																paletteSCStatus,
 														})
 													}
 													disableOpacity
@@ -525,6 +535,13 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
+													paletteSCStatus={getLastBreakpointAttribute(
+														{
+															target: 'shape-divider-bottom-palette-sc-status',
+															breakpoint,
+															attributes: props,
+														}
+													)}
 													onChangeInline={({
 														color,
 													}) =>
@@ -536,6 +553,7 @@ const ShapeDividerControl = props => {
 														color,
 														paletteColor,
 														paletteStatus,
+														paletteSCStatus,
 													}) =>
 														onChange({
 															[`shape-divider-bottom-color-${breakpoint}`]:
@@ -544,6 +562,8 @@ const ShapeDividerControl = props => {
 																paletteColor,
 															[`shape-divider-bottom-palette-status-${breakpoint}`]:
 																paletteStatus,
+															[`shape-divider-bottom-palette-sc-status-${breakpoint}`]:
+																paletteSCStatus,
 														})
 													}
 													disableOpacity

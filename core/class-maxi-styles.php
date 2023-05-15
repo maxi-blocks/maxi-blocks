@@ -421,6 +421,28 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Check font url status code
+     */
+    public function check_font_url($font_url)
+    {
+        $font_url = str_replace(' ', '+', $font_url);
+
+        $array = @get_headers($font_url);
+
+        if(!$array) {
+            return false;
+        }
+
+        $string = $array[0];
+
+        if(strpos($string, '200')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Post fonts
      *
      * @return object   Font name with font options

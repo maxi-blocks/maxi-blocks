@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +18,14 @@ import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
 
 const ToolbarColumnPattern = props => {
-	const { clientId, blockName, onChange, breakpoint } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		breakpoint,
+		repeaterStatus,
+		getInnerBlocksPositions,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/row-maxi' || !props['row-pattern-general'])
 		return null;
@@ -35,8 +43,10 @@ const ToolbarColumnPattern = props => {
 					onChange={rowPattern => {
 						onChange(rowPattern);
 					}}
-					toolbar
 					breakpoint={breakpoint}
+					repeaterStatus={repeaterStatus}
+					getInnerBlocksPositions={getInnerBlocksPositions}
+					toolbar
 				/>
 			</div>
 		</ToolbarPopover>

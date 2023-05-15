@@ -71,6 +71,12 @@ const IconBackground = props => {
 							attributes: props,
 							isHover,
 						})}
+						paletteSCStatus={getLastBreakpointAttribute({
+							target: 'icon-background-palette-sc-status',
+							breakpoint,
+							attributes: props,
+							isHover,
+						})}
 						paletteColor={getLastBreakpointAttribute({
 							target: 'icon-background-palette-color',
 							breakpoint,
@@ -102,6 +108,7 @@ const IconBackground = props => {
 						}
 						onChange={({
 							paletteStatus,
+							paletteSCStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
@@ -114,6 +121,12 @@ const IconBackground = props => {
 										'icon-',
 										breakpoint
 									)]: paletteStatus,
+									[getAttributeKey(
+										'background-palette-sc-status',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: paletteSCStatus,
 									[getAttributeKey(
 										'background-palette-color',
 										isHover,

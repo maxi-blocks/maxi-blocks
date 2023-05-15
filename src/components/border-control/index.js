@@ -65,6 +65,12 @@ const BorderColorControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			paletteSCStatus={getLastBreakpointAttribute({
+				target: `${prefix}border-palette-sc-status`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
 			paletteColor={getLastBreakpointAttribute({
 				target: `${prefix}border-palette-color`,
 				breakpoint,
@@ -86,6 +92,7 @@ const BorderColorControl = props => {
 			onChange={({
 				paletteColor,
 				paletteStatus,
+				paletteSCStatus,
 				paletteOpacity,
 				color,
 			}) => {
@@ -93,6 +100,9 @@ const BorderColorControl = props => {
 					[`${prefix}border-palette-status-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`]: paletteStatus,
+					[`${prefix}border-palette-sc-status-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: paletteSCStatus,
 					[`${prefix}border-palette-color-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`]: paletteColor,

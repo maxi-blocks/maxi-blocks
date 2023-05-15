@@ -26,22 +26,35 @@ const getDividerStyles = (
 	};
 
 	const getColor = breakpoint => {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj,
-				prefix: `${prefix}divider-border-`,
-				breakpoint,
-				isHover,
-			});
+		const {
+			paletteStatus,
+			paletteSCStatus,
+			paletteColor,
+			paletteOpacity,
+			color,
+		} = getPaletteAttributes({
+			obj,
+			prefix: `${prefix}divider-border-`,
+			breakpoint,
+			isHover,
+		});
 
 		if (paletteStatus && isNumber(paletteColor))
 			return {
-				'border-color': getColorRGBAString({
-					firstVar: `${prefix}divider-color`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				}),
+				'border-color': getColorRGBAString(
+					paletteSCStatus
+						? {
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: `${prefix}divider-color`,
+								secondVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+				),
 			};
 
 		return { 'border-color': color };

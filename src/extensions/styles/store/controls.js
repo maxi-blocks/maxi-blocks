@@ -19,7 +19,7 @@ import { getIsSiteEditor, getTemplatePartsIds } from '../../fse';
 import entityRecordsWrapper from '../entityRecordsWrapper';
 import getFilteredData from '../getFilteredData';
 
-async function processCss(code) {
+export const processCss = async code => {
 	if (!code) return null;
 
 	const { css } = postcss([autoprefixer]).process(code);
@@ -28,7 +28,7 @@ async function processCss(code) {
 	const minifiedCss = minifyCssString(css);
 
 	return minifiedCss;
-}
+};
 
 /**
  * Controls

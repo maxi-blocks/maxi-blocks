@@ -57,6 +57,11 @@ const PlaceholderColorControl = ({
 					breakpoint: deviceType,
 					attributes,
 				})}
+				paletteSCStatus={getLastBreakpointAttribute({
+					target: 'placeholder-palette-sc-status',
+					breakpoint: deviceType,
+					attributes,
+				})}
 				onChangeInline={({ color }) =>
 					insertInlineStyles({
 						obj: { color },
@@ -68,6 +73,7 @@ const PlaceholderColorControl = ({
 					color,
 					paletteColor,
 					paletteStatus,
+					paletteSCStatus,
 					paletteOpacity,
 				}) => {
 					onChange({
@@ -76,6 +82,8 @@ const PlaceholderColorControl = ({
 							paletteColor,
 						[`placeholder-palette-status-${deviceType}`]:
 							paletteStatus,
+						[`placeholder-palette-sc-status-${deviceType}`]:
+							paletteSCStatus,
 						[`placeholder-palette-opacity-${deviceType}`]:
 							paletteOpacity,
 					});

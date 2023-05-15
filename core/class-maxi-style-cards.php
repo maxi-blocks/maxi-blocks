@@ -111,7 +111,7 @@ class MaxiBlocks_StyleCards
             if(isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
-        
+
             return false;
         }
 
@@ -145,7 +145,7 @@ class MaxiBlocks_StyleCards
             if(isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
-            
+
             return false;
         }
 
@@ -175,7 +175,7 @@ class MaxiBlocks_StyleCards
     public static function get_maxi_blocks_current_style_cards()
     {
         global $wpdb;
-        
+
         $maxi_blocks_style_cards_current =
             $wpdb->get_var(
                 $wpdb->prepare(
@@ -183,7 +183,7 @@ class MaxiBlocks_StyleCards
                     'style_cards_current'
                 )
             );
-            
+
         if (
             $maxi_blocks_style_cards_current &&
             !empty($maxi_blocks_style_cards_current)
@@ -196,7 +196,7 @@ class MaxiBlocks_StyleCards
                 'id' => 'style_cards_current',
                 'object' => $default_style_card
             ]);
-            
+
             $maxi_blocks_style_cards_current = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -237,6 +237,11 @@ class MaxiBlocks_StyleCards
         );
 
         $text_level_values = (object) $style_card_values->$text_level;
+
+
+        if(!property_exists($text_level_values, 'font-family-general')) {
+            $text_level_values = (object) $default_values[$text_level];
+        }
 
         $font = $text_level_values->{'font-family-general'};
 

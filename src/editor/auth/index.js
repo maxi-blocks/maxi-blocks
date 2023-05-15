@@ -266,7 +266,7 @@ export async function authConnect(withRedirect = false, email = false) {
 	const useEmail = email;
 
 	if (useEmail) {
-		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw-test.php';
+		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
 
 		const fetchOptions = {
 			method: 'POST',

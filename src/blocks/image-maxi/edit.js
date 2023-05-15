@@ -109,20 +109,20 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (!this.resizableObject.current) return;
-
-		const imgWidth = getAttributeValue({
-			target: 'imgWidth',
-			props: this.props.attributes,
-		});
-		const resizableWidth = toNumber(
-			this.resizableObject.current.state.width
-		);
-
-		if (imgWidth !== resizableWidth) {
-			this.resizableObject.current.updateSize({
-				width: `${imgWidth}%`,
+		if (this.resizableObject.current) {
+			const imgWidth = getAttributeValue({
+				target: 'imgWidth',
+				props: this.props.attributes,
 			});
+			const resizableWidth = toNumber(
+				this.resizableObject.current.state.width
+			);
+
+			if (imgWidth !== resizableWidth) {
+				this.resizableObject.current.updateSize({
+					width: `${imgWidth}%`,
+				});
+			}
 		}
 	}
 

@@ -95,6 +95,12 @@ const IconSettings = props => {
 							prefix,
 							props,
 						})}
+						paletteSCStatus={getAttributeValue({
+							target: 'icon-fill-palette-sc-status',
+							isHover,
+							prefix,
+							props,
+						})}
 						paletteColor={getAttributeValue({
 							target: 'icon-fill-palette-color',
 							isHover,
@@ -117,15 +123,24 @@ const IconSettings = props => {
 						onChange={({
 							paletteColor,
 							paletteStatus,
+							paletteSCStatus,
 							paletteOpacity,
 							color,
 						}) => {
-							const fillColorStr = getColorRGBAString({
-								firstVar: 'icon-fill',
-								secondVar: `color-${paletteColor}`,
-								opacity: paletteOpacity,
-								blockStyle,
-							});
+							const fillColorStr = getColorRGBAString(
+								paletteSCStatus
+									? {
+											firstVar: `color-${paletteColor}`,
+											opacity: paletteOpacity,
+											blockStyle,
+									  }
+									: {
+											firstVar: 'icon-fill',
+											secondVar: `color-${paletteColor}`,
+											opacity: paletteOpacity,
+											blockStyle,
+									  }
+							);
 							const icon = isHover
 								? setSVGContentHover(
 										props[`${prefix}icon-content`],
@@ -144,6 +159,11 @@ const IconSettings = props => {
 									isHover,
 									prefix
 								)]: paletteStatus,
+								[getAttributeKey(
+									'icon-fill-palette-sc-status',
+									isHover,
+									prefix
+								)]: paletteSCStatus,
 								[getAttributeKey(
 									'icon-fill-palette-color',
 									isHover,

@@ -6,12 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import InfoBox from '../info-box';
 import ToggleSwitch from '../toggle-switch';
 import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
 import { validateRowColumnsStructure } from '../../extensions/repeater';
 
 const Repeater = ({
 	clientId,
+	isRepeaterInherited,
 	updateInnerBlocksPositions,
 	onChange,
 	...attributes
@@ -25,25 +27,34 @@ const Repeater = ({
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Enable repeater', 'maxi-blocks')}
-				selected={repeaterStatus}
-				onChange={val => {
-					onChange({
-						[getAttributeKey('repeater-status')]: val,
-					});
+			{!isRepeaterInherited && (
+				<ToggleSwitch
+					label={__('Enable repeater', 'maxi-blocks')}
+					selected={repeaterStatus}
+					onChange={val => {
+						onChange({
+							[getAttributeKey('repeater-status')]: val,
+						});
 
-					if (val) {
-						const newInnerBlocksPositions =
-							updateInnerBlocksPositions();
+						if (val) {
+							const newInnerBlocksPositions =
+								updateInnerBlocksPositions();
 
-						validateRowColumnsStructure(
-							clientId,
-							newInnerBlocksPositions
-						);
-					}
-				}}
-			/>
+							validateRowColumnsStructure(
+								clientId,
+								newInnerBlocksPositions
+							);
+						}
+					}}
+				/>
+			)}
+			{isRepeaterInherited && (
+				<InfoBox
+					message={__(
+						'Inherited from parent row. To edit, please disable inheritance.'
+					)}
+				/>
+			)}
 		</div>
 	);
 };

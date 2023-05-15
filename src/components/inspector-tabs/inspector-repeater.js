@@ -11,6 +11,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 
 const repeater = ({
 	props: { attributes, clientId, maxiSetAttributes },
+	isRepeaterInherited,
 	updateInnerBlocksPositions,
 }) => ({
 	label: __('Repeater', 'maxi-blocks'),
@@ -18,6 +19,7 @@ const repeater = ({
 		<Repeater
 			{...getGroupAttributes(attributes, 'repeater')}
 			clientId={clientId}
+			isRepeaterInherited={isRepeaterInherited}
 			updateInnerBlocksPositions={updateInnerBlocksPositions}
 			onChange={maxiSetAttributes}
 		/>

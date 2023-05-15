@@ -53,14 +53,6 @@ const insertBlockIntoColumns = clientId => {
 		} = dispatch('core/block-editor');
 
 		markNextChangeAsNotPersistent();
-
-		console.log(
-			'Inserting block into ',
-			targetParent.name,
-			' at index ',
-			blockIndex
-		);
-		// Insert the cloned block into the column at the same index
 		insertBlock(clonedBlock, blockIndex, targetParent.clientId, false);
 	});
 };

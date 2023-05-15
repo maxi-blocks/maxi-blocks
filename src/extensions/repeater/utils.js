@@ -75,15 +75,19 @@ export const getChildColumns = blockClientId => {
 		select('core/block-editor');
 
 	const getParentRow = () => {
-		const block = getBlock(blockClientId);
+		const rowBlock = getBlock(
+			getBlockParentsByBlockName(blockClientId, 'maxi-blocks/row-maxi')[0]
+		);
+		if (rowBlock) {
+			return rowBlock;
+		}
 
+		const block = getBlock(blockClientId);
 		if (block?.name === 'maxi-blocks/row-maxi') {
 			return block;
 		}
 
-		return getBlock(
-			getBlockParentsByBlockName(blockClientId, 'maxi-blocks/row-maxi')[0]
-		);
+		return null;
 	};
 
 	const parentRow = getParentRow();

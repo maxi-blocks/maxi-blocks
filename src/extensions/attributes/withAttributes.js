@@ -110,8 +110,6 @@ const withAttributes = createHigherOrderComponent(
 		useEffect(() => {
 			if (repeaterContext?.repeaterStatus && wasUniqueIDAdded.current) {
 				insertBlockIntoColumns(clientId);
-
-				wasUniqueIDAdded.current = false;
 			}
 		}, [wasUniqueIDAdded.current]);
 

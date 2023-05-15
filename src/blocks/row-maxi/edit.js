@@ -30,6 +30,8 @@ import { isEmpty, isEqual } from 'lodash';
  * Edit
  */
 class edit extends MaxiBlockComponent {
+	static contextType = RepeaterContext;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -44,6 +46,8 @@ class edit extends MaxiBlockComponent {
 	columnsSize = {};
 
 	columnsClientIds = [];
+
+	isRepeaterInherited = !!this.context;
 
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
@@ -101,6 +105,7 @@ class edit extends MaxiBlockComponent {
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
+				isRepeaterInherited={this.isRepeaterInherited}
 				updateInnerBlocksPositions={this.updateInnerBlocksPositions}
 				{...this.props}
 			/>,
@@ -153,6 +158,7 @@ class edit extends MaxiBlockComponent {
 						getInnerBlocksPositions: this.getInnerBlocksPositions,
 						updateInnerBlocksPositions:
 							this.updateInnerBlocksPositions,
+						...this.context,
 					}}
 				>
 					<MaxiBlock

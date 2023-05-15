@@ -48,7 +48,8 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, updateInnerBlocksPositions } = props;
+	const { deviceType, isRepeaterInherited, updateInnerBlocksPositions } =
+		props;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -92,6 +93,7 @@ const Inspector = props => {
 									},
 									...inspectorTabs.repeater({
 										props,
+										isRepeaterInherited,
 										updateInnerBlocksPositions,
 									}),
 									...inspectorTabs.blockBackground({

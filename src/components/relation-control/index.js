@@ -280,14 +280,11 @@ const RelationControl = props => {
 
 		const parentRowClientId =
 			repeaterContext?.repeaterStatus &&
-			getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')?.[0];
+			getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')[0];
 
 		const parentColumnClientId =
 			repeaterContext?.repeaterStatus &&
-			getBlockParentsByBlockName(
-				clientId,
-				'maxi-blocks/column-maxi'
-			)?.[0];
+			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')[0];
 
 		goThroughMaxiBlocks(block => {
 			if (
@@ -301,12 +298,12 @@ const RelationControl = props => {
 						getBlockParentsByBlockName(
 							block.clientId,
 							'maxi-blocks/row-maxi'
-						)?.[0] &&
+						)[0] &&
 					parentColumnClientId !==
 						getBlockParentsByBlockName(
 							block.clientId,
 							'maxi-blocks/column-maxi'
-						)?.[0] &&
+						)[0] &&
 					parentColumnClientId !== block.clientId;
 
 				if (isBlockInRepeaterAndInAnotherColumn) {

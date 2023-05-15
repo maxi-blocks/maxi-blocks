@@ -18,9 +18,9 @@ import { uniqueId } from 'lodash';
 
 const RowBlockTemplate = ({
 	clientId,
-	repeaterStatus,
 	maxiSetAttributes,
 	deviceType,
+	repeaterStatus,
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 

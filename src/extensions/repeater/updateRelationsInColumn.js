@@ -25,7 +25,7 @@ const updateRelationsInColumn = (
 	newClientId,
 	innerBlocksPositions
 ) => {
-	if (!('relations' in attributes)) {
+	if (!attributes.relations) {
 		return;
 	}
 

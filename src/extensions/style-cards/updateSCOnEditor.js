@@ -83,17 +83,20 @@ const updateSCOnEditor = (
 		activeSCColour
 	);
 	const allSCFonts = getSCFontsData(SCObject);
+	const SCVariableString = createSCStyleString(SCObject);
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
-	elements.forEach(element => {
+	elements.forEach((element, i) => {
 		if (!element) return;
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
+
 		if (!SCVarEl) {
 			SCVarEl = element.createElement('style');
 			SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
-			SCVarEl.innerHTML = createSCStyleString(SCObject);
+			SCVarEl.innerHTML = SCVariableString;
+
 			// Iframe on creation generates head, then gutenberg generates their own head
 			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
 			const elementHead = Array.from(
@@ -105,7 +108,7 @@ const updateSCOnEditor = (
 			// Needs a delay, if not Redux returns error 3
 			setTimeout(() => saveSCStyles(false), 150);
 		} else {
-			SCVarEl.innerHTML = createSCStyleString(SCObject);
+			SCVarEl.innerHTML = SCVariableString;
 
 			updateSCStyles(element, SCObject);
 		}

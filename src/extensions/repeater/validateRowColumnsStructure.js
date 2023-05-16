@@ -64,12 +64,29 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 	return null;
 };
 
-const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
-	const childColumns = getChildColumns(rowClientId);
+const validateRowColumnsStructure = (
+	rowClientId,
+	innerBlocksPositions,
+	columnToValidateByClientId
+) => {
+	let childColumns = getChildColumns(rowClientId);
 
-	const firstColumn = childColumns[0];
-	const firstColumnInnerBlocks = firstColumn.innerBlocks;
-	const firstColumnStructure = [];
+	const columnToValidateBy = columnToValidateByClientId
+		? childColumns.find(
+				column => column.clientId === columnToValidateByClientId
+		  )
+		: childColumns[0];
+
+	// Make sure that column to validate by is first in childColumns array
+	if (columnToValidateBy.clientId !== childColumns[0].clientId) {
+		childColumns = childColumns.filter(
+			column => column.clientId !== columnToValidateBy.clientId
+		);
+		childColumns.unshift(columnToValidateBy);
+	}
+
+	const columnToValidateByInnerBlocks = columnToValidateBy.innerBlocks;
+	const columnToValidateByStructure = [];
 
 	const handleReplaceColumn = columnClientId => {
 		const {
@@ -86,7 +103,7 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 		markNextChangeAsNotPersistent();
 		replaceInnerBlocks(
 			columnClientId,
-			cleanInnerBlocks(firstColumnInnerBlocks),
+			cleanInnerBlocks(columnToValidateByInnerBlocks),
 			false
 		);
 	};
@@ -96,17 +113,18 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 		// so we need to compare only block names
 		const columnInnerBlocks = column.innerBlocks;
 
-		const isFirstColumn = column.clientId === firstColumn.clientId;
+		const isColumnToValidateBy =
+			column.clientId === columnToValidateBy.clientId;
 
-		if (!isFirstColumn && columnInnerBlocks.length === 0) {
+		if (!isColumnToValidateBy && columnInnerBlocks.length === 0) {
 			return handleReplaceColumn(column.clientId);
 		}
 
 		const columnStructure = [];
 
 		goThroughMaxiBlocks(block => {
-			if (isFirstColumn) {
-				firstColumnStructure.push(block.name);
+			if (isColumnToValidateBy) {
+				columnToValidateByStructure.push(block.name);
 				return false;
 			}
 
@@ -115,11 +133,11 @@ const validateRowColumnsStructure = (rowClientId, innerBlocksPositions) => {
 			return null;
 		}, columnInnerBlocks);
 
-		if (isFirstColumn) {
+		if (isColumnToValidateBy) {
 			return null;
 		}
 
-		if (!isEqual(firstColumnStructure, columnStructure)) {
+		if (!isEqual(columnToValidateByStructure, columnStructure)) {
 			return handleReplaceColumn(column.clientId);
 		}
 

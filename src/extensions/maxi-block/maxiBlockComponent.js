@@ -59,7 +59,10 @@ import { LoopContext } from '../DC';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import { removeBlockFromColumns } from '../repeater';
+import {
+	removeBlockFromColumns,
+	validateRowColumnsStructure,
+} from '../repeater';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
@@ -445,7 +448,47 @@ class MaxiBlockComponent extends Component {
 				this.props.parentInnerBlocksCount
 			);
 		}
-
+		// If repeater is turned on and block was moved
+		// outwards, remove it from the columns
+		else if (
+			this.props.repeaterStatus &&
+			!select('core/block-editor').getBlockParentsByBlockName(
+				this.props.clientId,
+				'maxi-blocks/column-maxi'
+			)[0]
+		) {
+			// Repeater
+			removeBlockFromColumns(
+				this.props.blockPositionFromColumn,
+				this.props.parentColumnClientId,
+				this.props.parentInnerBlocksCount,
+				true
+			);
+		}
+		// If repeater is turned on and block was moved
+		// inwards, validate the structure
+		else if (
+			select('core/block-editor').getBlockAttributes(
+				select('core/block-editor').getBlockParentsByBlockName(
+					this.props.clientId,
+					'maxi-blocks/row-maxi'
+				)[0]
+			)?.['repeater-status'] &&
+			!this.props.repeaterStatus
+		) {
+			validateRowColumnsStructure(
+				select('core/block-editor').getBlockParentsByBlockName(
+					this.props.clientId,
+					'maxi-blocks/row-maxi'
+				)[0],
+				this.props.getInnerBlocksPositions?.(),
+				select('core/block-editor').getBlockParentsByBlockName(
+					this.props.clientId,
+					'maxi-blocks/column-maxi'
+				)[0],
+				true
+			);
+		}
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}

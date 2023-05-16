@@ -74,11 +74,16 @@ const withMaxiProps = createHigherOrderComponent(
 				hasSelectedChild,
 				isTyping,
 				blockIndex,
+				blockRootClientId,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
-				const { hasSelectedInnerBlock, isTyping, getBlockIndex } =
-					select('core/block-editor');
+				const {
+					hasSelectedInnerBlock,
+					isTyping,
+					getBlockIndex,
+					getBlockRootClientId,
+				} = select('core/block-editor');
 
 				return {
 					deviceType: receiveMaxiDeviceType(),
@@ -86,6 +91,7 @@ const withMaxiProps = createHigherOrderComponent(
 					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
 					isTyping: isTyping(),
 					blockIndex: getBlockIndex(clientId),
+					blockRootClientId: getBlockRootClientId(clientId),
 				};
 			});
 
@@ -98,7 +104,7 @@ const withMaxiProps = createHigherOrderComponent(
 				}
 
 				return null;
-			}, [blockIndex, parentColumnClientId]);
+			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
 			const parentInnerBlocksCount = useMemo(() => {
 				const targetParent = findTargetParent(
@@ -111,7 +117,7 @@ const withMaxiProps = createHigherOrderComponent(
 				}
 
 				return null;
-			}, [blockIndex, parentColumnClientId]);
+			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
 			const maxiSetAttributes = useCallback(obj =>
 				handleSetAttributes({
@@ -273,6 +279,10 @@ const withMaxiProps = createHigherOrderComponent(
 							)
 						}
 						hasSelectedChild={hasSelectedChild}
+						repeaterStatus={repeaterContext?.repeaterStatus}
+						getInnerBlocksPositions={
+							repeaterContext?.getInnerBlocksPositions
+						}
 					/>
 					{/*
 						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.

@@ -25,7 +25,6 @@ import { RowBlockTemplate } from './components';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
-import { repeater } from '../../components/inspector-tabs';
 
 /**
  * Edit

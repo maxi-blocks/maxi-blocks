@@ -134,6 +134,11 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Video headers fails sometimes
+		if (text.includes('Error with Permissions-Policy header')) {
+			return;
+		}
+
 		// CustomCSS validator returns connection errors sometimes
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;

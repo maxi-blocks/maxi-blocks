@@ -74,7 +74,7 @@ const TextListOptions = props => {
 			multilineTag: 'li',
 		});
 
-		onChange({ isList: true, typeOfList, content: newContent });
+		onChange({ _ili: true, _tol: typeOfList, _c: newContent });
 	};
 
 	const onChangeList = type => {
@@ -82,15 +82,15 @@ const TextListOptions = props => {
 
 		if (!isList || typeOfList === type)
 			onChange({
-				isList: !isList,
-				typeOfList: type,
-				content: getContent(content),
+				_ili: !isList,
+				_tol: type,
+				_c: getContent(content),
 			});
 		else
 			onChange({
-				isList,
-				typeOfList: type,
-				content,
+				_ili: isList,
+				_tol: type,
+				_c: content,
 			});
 	};
 
@@ -99,8 +99,8 @@ const TextListOptions = props => {
 
 		if (isList) {
 			onChange({
-				isList: false,
-				content: getContent(content),
+				_ili: false,
+				_c: getContent(content),
 			});
 		}
 	};

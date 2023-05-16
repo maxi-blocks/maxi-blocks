@@ -21,12 +21,13 @@ import classnames from 'classnames';
 const save = props => {
 	const { attributes } = props;
 	const {
-		isLoop,
-		isAutoplay,
-		pauseOnHover,
-		pauseOnInteraction,
-		numberOfSlides,
+		_il: isLoop,
+		_ia: isAutoplay,
+		_poh: pauseOnHover,
+		_poi: pauseOnInteraction,
+		_nos: numberOfSlides,
 	} = attributes;
+
 	const [
 		sliderTransition,
 		sliderTransitionSpeed,
@@ -68,7 +69,7 @@ const save = props => {
 				<div className='maxi-slider-block__nav'>
 					{getAttributesValue({
 						target: 'naf-i_c',
-						attributes,
+						props: attributes,
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
 							<RawHTML>{navigationArrowFirstIconContent}</RawHTML>
@@ -76,6 +77,7 @@ const save = props => {
 					)}
 					{getAttributesValue({
 						target: 'nas-i_c',
+						props: attributes,
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
 							<RawHTML>
@@ -85,7 +87,7 @@ const save = props => {
 					)}
 					{getAttributesValue({
 						target: 'nd-i_c',
-						attributes,
+						props: attributes,
 					}) && (
 						<div className='maxi-slider-block__dots'>
 							{Array.from(Array(numberOfSlides).keys()).map(i => {

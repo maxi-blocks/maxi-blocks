@@ -77,26 +77,22 @@ const LinkOptions = props => {
 							'_po',
 							'_ps',
 						].map(attributeKey =>
-							getAttributeKey(
-								attributeKey,
-								false,
-								`${prefix}link-`
-							)
+							getAttributeKey(attributeKey, false, `${prefix}l-`)
 						),
 					},
 					{
 						label: __('Hover', 'maxi-block'),
 						value: 'hover_link',
 						extraIndicatorsResponsive: [
-							'hover-color',
-							'hover-palette-color',
-							'hover-palette-opacity',
-							'hover-palette-status',
+							'_cc',
+							'_pc',
+							'_po',
+							'_ps',
 						].map(attributeKey =>
 							getAttributeKey(
 								attributeKey,
 								false,
-								`${prefix}link-`
+								`${prefix}_lih-`
 							)
 						),
 					},
@@ -104,15 +100,15 @@ const LinkOptions = props => {
 						label: __('Active', 'maxi-block'),
 						value: 'active_link',
 						extraIndicatorsResponsive: [
-							'active-color',
-							'active-palette-color',
-							'active-palette-opacity',
-							'active-palette-status',
+							'_cc',
+							'_pc',
+							'_po',
+							'_ps',
 						].map(attributeKey =>
 							getAttributeKey(
 								attributeKey,
 								false,
-								`${prefix}link-`
+								`${prefix}_lia-`
 							)
 						),
 					},
@@ -120,15 +116,15 @@ const LinkOptions = props => {
 						label: __('Visited', 'maxi-block'),
 						value: 'visited_link',
 						extraIndicatorsResponsive: [
-							'visited-color',
-							'visited-palette-color',
-							'visited-palette-opacity',
-							'visited-palette-status',
+							'_cc',
+							'_pc',
+							'_po',
+							'_ps',
 						].map(attributeKey =>
 							getAttributeKey(
 								attributeKey,
 								false,
-								`${prefix}link-`
+								`${prefix}_liv-`
 							)
 						),
 					},
@@ -138,12 +134,12 @@ const LinkOptions = props => {
 			{linkStatus === 'normal_link' && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-color'
-					color={getValue('link-color')}
-					prefix={`${prefix}link-`}
-					paletteStatus={getValue('link-palette-status')}
-					paletteColor={getValue('link-palette-color')}
-					paletteOpacity={getValue('link-palette-opacity')}
+					className='maxi-typography-link_cc'
+					color={getValue('_l_cc')}
+					prefix={`${prefix}_l-`}
+					paletteStatus={getValue('_l_ps')}
+					paletteColor={getValue('_l_pc')}
+					paletteOpacity={getValue('_l_po')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a')
 					}
@@ -155,26 +151,14 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'_ps',
-									false,
-									`${prefix}link-`
-								)]: paletteStatus,
-								[getAttributeKey(
-									'_pc',
-									false,
-									`${prefix}link-`
-								)]: paletteColor,
-								[getAttributeKey(
-									'_po',
-									false,
-									`${prefix}link-`
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'_cc',
-									false,
-									`${prefix}link-`
-								)]: color,
+								[getAttributeKey('_ps', false, `${prefix}_l-`)]:
+									paletteStatus,
+								[getAttributeKey('_pc', false, `${prefix}_l-`)]:
+									paletteColor,
+								[getAttributeKey('_po', false, `${prefix}_l-`)]:
+									paletteOpacity,
+								[getAttributeKey('_cc', false, `${prefix}_l-`)]:
+									color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a' }
 						)
@@ -189,12 +173,12 @@ const LinkOptions = props => {
 			{linkStatus === 'hover_link' && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-hover-color'
-					color={getValue('link-hover-color')}
-					prefix={`${prefix}link-hover-`}
-					paletteStatus={getValue('link-hover-palette-status')}
-					paletteColor={getValue('link-hover-palette-color')}
-					paletteOpacity={getValue('link-hover-palette-opacity')}
+					className='maxi-typography-link-hover_cc'
+					color={getValue('_lih_cc')}
+					prefix={`${prefix}_lih-`}
+					paletteStatus={getValue('_lih_ps')}
+					paletteColor={getValue('_lih_pc')}
+					paletteOpacity={getValue('_lih_po')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:hover')
 					}
@@ -207,24 +191,24 @@ const LinkOptions = props => {
 						onChangeFormat(
 							{
 								[getAttributeKey(
-									'hover-palette-status',
+									'_ps',
 									false,
-									`${prefix}link-`
+									`${prefix}_lih`
 								)]: paletteStatus,
 								[getAttributeKey(
-									'hover-palette-color',
+									'_pc',
 									false,
-									`${prefix}link-`
+									`${prefix}_lih`
 								)]: paletteColor,
 								[getAttributeKey(
-									'hover-palette-opacity',
+									'_po',
 									false,
-									`${prefix}link-`
+									`${prefix}_lih`
 								)]: paletteOpacity,
 								[getAttributeKey(
-									'hover-color',
+									'_cc',
 									false,
-									`${prefix}link-`
+									`${prefix}_lih`
 								)]: color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a:hover' }
@@ -240,12 +224,12 @@ const LinkOptions = props => {
 			{linkStatus === 'active_link' && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-active-color'
-					color={getValue('link-active-color')}
-					prefix={`${prefix}link-active-`}
-					paletteStatus={getValue('link-active-palette-status')}
-					paletteColor={getValue('link-active-palette-color')}
-					paletteOpacity={getValue('link-active-palette-opacity')}
+					className='maxi-typography-link-active_cc'
+					color={getValue('_lia_cc')}
+					prefix={`${prefix}_lia-`}
+					paletteStatus={getValue('_lia_ps')}
+					paletteColor={getValue('_lia_pc')}
+					paletteOpacity={getValue('_lia_po')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:active')
 					}
@@ -258,24 +242,24 @@ const LinkOptions = props => {
 						onChangeFormat(
 							{
 								[getAttributeKey(
-									'active-palette-status',
+									'_ps',
 									false,
-									`${prefix}link-`
+									`${prefix}_lia-`
 								)]: paletteStatus,
 								[getAttributeKey(
-									'active-palette-color',
+									'_pc',
 									false,
-									`${prefix}link-`
+									`${prefix}_lia-`
 								)]: paletteColor,
 								[getAttributeKey(
-									'active-palette-opacity',
+									'_po',
 									false,
-									`${prefix}link-`
+									`${prefix}_lia-`
 								)]: paletteOpacity,
 								[getAttributeKey(
-									'active-color',
+									'_cc',
 									false,
-									`${prefix}link-`
+									`${prefix}_lia-`
 								)]: color,
 							},
 							{
@@ -294,12 +278,12 @@ const LinkOptions = props => {
 			{linkStatus === 'visited_link' && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-visited-color'
-					color={getValue('link-visited-color')}
-					prefix={`${prefix}link-visited-`}
-					paletteStatus={getValue('link-visited-palette-status')}
-					paletteColor={getValue('link-visited-palette-color')}
-					paletteOpacity={getValue('link-visited-palette-opacity')}
+					className='maxi-typography-link-visited_cc'
+					color={getValue('_liv_cc')}
+					prefix={`${prefix}_liv-`}
+					paletteStatus={getValue('_liv_ps')}
+					paletteColor={getValue('_liv_pc')}
+					paletteOpacity={getValue('_liv_po')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:visited')
 					}
@@ -312,24 +296,24 @@ const LinkOptions = props => {
 						onChangeFormat(
 							{
 								[getAttributeKey(
-									'visited-palette-status',
+									'_ps',
 									false,
-									`${prefix}link-`
+									`${prefix}_liv-`
 								)]: paletteStatus,
 								[getAttributeKey(
-									'visited-palette-color',
+									'_pc',
 									false,
-									`${prefix}link-`
+									`${prefix}_liv-`
 								)]: paletteColor,
 								[getAttributeKey(
-									'visited-palette-opacity',
+									'_po',
 									false,
-									`${prefix}link-`
+									`${prefix}_liv-`
 								)]: paletteOpacity,
 								[getAttributeKey(
-									'visited-color',
+									'_cc',
 									false,
-									`${prefix}link-`
+									`${prefix}_liv-`
 								)]: color,
 							},
 							{
@@ -565,8 +549,8 @@ const TypographyControl = props => {
 								)]: font.files,
 							});
 						}}
-						fontWeight={getValue('font-weight')}
-						fontStyle={getValue('font-style')}
+						fontWeight={getValue('_fwe')}
+						fontStyle={getValue('_fst')}
 						breakpoint={breakpoint}
 					/>
 				)}
@@ -919,8 +903,8 @@ const TypographyControl = props => {
 						<SelectControl
 							label={__('Text direction', 'maxi-blocks')}
 							className='maxi-typography-control__direction'
-							value={getValue('_td')}
-							defaultValue={getDefault('_td')}
+							value={getValue('_tdi')}
+							defaultValue={getDefault('_tdi')}
 							options={[
 								{
 									label: __('Left to right', 'maxi-blocks'),
@@ -933,15 +917,18 @@ const TypographyControl = props => {
 							]}
 							onChange={val => {
 								onChangeFormat({
-									[getAttributeKey('_td', false, prefix)]:
+									[getAttributeKey('_tdi', false, prefix)]:
 										val,
 								});
 							}}
 							onReset={() =>
 								onChangeFormat(
 									{
-										[getAttributeKey('_td', false, prefix)]:
-											getDefault('_td'),
+										[getAttributeKey(
+											'_tdi',
+											false,
+											prefix
+										)]: getDefault('_tdi'),
 									},
 									{ isReset: true }
 								)
@@ -1186,7 +1173,7 @@ const TypographyControl = props => {
 								});
 							}}
 							defaultColor={getLastBreakpointAttribute({
-								target: '_cc',
+								target: '_pc',
 								breakpoint,
 								attributes: typography,
 							})}

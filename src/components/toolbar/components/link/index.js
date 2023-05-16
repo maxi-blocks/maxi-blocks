@@ -36,8 +36,8 @@ const Link = props => {
 		linkSettings,
 		clientId,
 		disableCustomFormats = false,
-		'dc-status': dcStatus,
-		'dc-link-status': dcLinkStatus,
+		'dc.s': dcStatus,
+		'dc_l.s': dcLinkStatus,
 	} = props;
 
 	if (
@@ -70,7 +70,7 @@ const Link = props => {
 					!isEmpty(attributes.linkSettings?.url) ||
 					(select('core/block-editor').getBlockName(child) ===
 						'maxi-blocks/text-maxi' &&
-						attributes.content.includes('<a '))
+						attributes._c.includes('<a '))
 				)
 					childHasLink = true;
 			});
@@ -100,7 +100,7 @@ const Link = props => {
 								selected={dcLinkStatus}
 								onChange={value => {
 									onChange(linkSettings, {
-										'dc-link-status': value,
+										'dc_l.s': value,
 									});
 								}}
 							/>

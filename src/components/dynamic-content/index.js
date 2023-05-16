@@ -253,7 +253,7 @@ const DynamicContent = props => {
 										onReset={() =>
 											changeProps({
 												dc_lim: getDefaultAttribute(
-													'dc-lim'
+													'dc_lim'
 												),
 											})
 										}

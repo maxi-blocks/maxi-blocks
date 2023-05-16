@@ -30,73 +30,73 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
-	_exclude: ['content'],
+	_exclude: ['_c'],
 	settings: {
-		'Text content': 'content',
-		'Heading / Paragraph tag': 'textLevel',
+		'Text content': '_c',
+		'Heading / Paragraph tag': '_tl',
 		'List options': {
 			group: {
 				'List indent': {
-					props: 'list-indent',
+					props: '_lin',
 					hasBreakpoints: true,
 				},
 				'List indent unit': {
-					props: 'list-indent-unit',
+					props: '_lin.u',
 					hasBreakpoints: true,
 				},
 				'List gap': {
-					props: 'list-gap',
+					props: '_lg',
 					hasBreakpoints: true,
 				},
 				'List gap unit': {
-					props: 'list-gap-unit',
+					props: '_lg.u',
 					hasBreakpoints: true,
 				},
 				'List paragraph spacing': {
-					props: 'list-paragraph-spacing',
+					props: '_lps',
 					hasBreakpoints: true,
 				},
 				'List paragraph spacing unit': {
-					props: 'list-paragraph-spacing-unit',
+					props: '_lps.u',
 					hasBreakpoints: true,
 				},
 				'Marker size': {
-					props: 'list-marker-size',
+					props: '_lms',
 					hasBreakpoints: true,
 				},
 				'Marker size unit': {
-					props: 'list-marker-size-unit',
+					props: '_lms.u',
 					hasBreakpoints: true,
 				},
 				'List marker indent': {
-					props: 'list-marker-indent',
+					props: '_lmi',
 					hasBreakpoints: true,
 				},
 				'List marker indent unit': {
-					props: 'list-marker-indent-unit',
+					props: '_lmi.u',
 					hasBreakpoints: true,
 				},
 				'List marker line height': {
-					props: 'list-marker-line-height',
+					props: '_lmlh',
 					hasBreakpoints: true,
 				},
 				'List marker line height unit': {
-					props: 'list-marker-line-height-unit',
+					props: '_lmlh.u',
 					hasBreakpoints: true,
 				},
 				'List colour': {
-					props: 'list',
+					props: 'l',
 					isPalette: true,
 				},
 				'List text position': {
-					props: 'list-text-position',
+					props: '_ltp',
 					hasBreakpoints: true,
 				},
-				'List type': 'typeOfList',
-				'List style': 'listStyle',
-				'List style custom': 'listStyleCustom',
-				'List start': 'listStart',
-				'List reversed': 'listReversed',
+				'List type': '_tol',
+				'List style': '_lsty',
+				'List style custom': '_lsc',
+				'List start': '_lst',
+				'List reversed': '_lr',
 			},
 		},
 		'Text alignment': {
@@ -183,7 +183,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Typography', 'maxi-blocks'),
 			transitionTarget: transition.canvas.typography.target,
-			hoverProp: 'typography-status-hover',
+			hoverProp: 't.sh',
 			attrGroupName: 'typography',
 			component: props => (
 				<TypographyControl

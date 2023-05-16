@@ -376,7 +376,7 @@ const getDisabledStyles = (props, prefix) => {
 		response.iconDisplay[breakpoint] = {};
 
 		const isEnabled = getLastBreakpointAttribute({
-			target: 'status',
+			target: '.s',
 			prefix,
 			breakpoint,
 			attributes: props,
@@ -425,7 +425,7 @@ const getIconObject = (props, prefix, target, isHover = false) => {
 
 const getArrowIconObject = (props, isHover = false) => {
 	const hoverFlag = isHover ? ':hover' : '';
-	const prefix = 'navigation-arrow-both-';
+	const prefix = 'nab-';
 	const target = '.maxi-slider-block__arrow';
 
 	return {
@@ -470,7 +470,7 @@ const getDotsIconObject = props => {
 		),
 		' .maxi-slider-block__dot:not(:last-child)': getIconSpacingBetween(
 			props,
-			'navigation-dot-',
+			prefix,
 			false
 		),
 		' .maxi-slider-block__dots': getIconSpacing(
@@ -491,7 +491,7 @@ const getDotsIconObject = props => {
 		...(dotIconActiveStatus && {
 			...getIconObject(
 				props,
-				`active-${prefix}`,
+				`a-${prefix}`,
 				'.maxi-slider-block__dot--active'
 			),
 		}),

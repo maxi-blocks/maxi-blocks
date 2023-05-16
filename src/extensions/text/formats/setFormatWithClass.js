@@ -198,12 +198,12 @@ export const checkFormatCoincidence = ({
 	styleCard,
 }) => {
 	const clonedTypography = { ...typography };
-	const { 'custom-formats': customFormats } = clonedTypography;
+	const { _cf: customFormats } = clonedTypography;
 
 	if (isNil(customFormats)) return false;
 
 	const {
-		'custom-formats': { [className]: updatedFormat },
+		_cf: { [className]: updatedFormat },
 	} = updateCustomFormatStyle({
 		typography: clonedTypography,
 		currentClassName: className,

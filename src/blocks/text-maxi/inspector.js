@@ -29,7 +29,7 @@ const Inspector = props => {
 		context,
 		disableCustomFormats,
 	} = props;
-	const { isList, textLevel } = attributes;
+	const { _ili: isList, _tl: textLevel } = attributes;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -69,7 +69,7 @@ const Inspector = props => {
 													}
 												/>
 											),
-											indicatorProps: ['textLevel'],
+											indicatorProps: ['_tl'],
 										},
 									...(isList && {
 										label: __(

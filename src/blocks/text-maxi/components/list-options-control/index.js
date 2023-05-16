@@ -42,11 +42,11 @@ const ListOptionsControl = props => {
 
 	const {
 		_bs: blockStyle,
-		listReversed,
-		listStart,
-		typeOfList,
-		listStyle,
-		listStyleCustom,
+		_lr: listReversed,
+		_lst: listStart,
+		_tol: typeOfList,
+		_lsty: listStyle,
+		_lsc: listStyleCustom,
 	} = attributes;
 
 	const [
@@ -56,13 +56,7 @@ const ListOptionsControl = props => {
 		listMarkerLineHeight,
 		listMarkerIndent,
 	] = getAttributesValue({
-		target: [
-			'list-indent',
-			'list-gap',
-			'list-paragraph-spacing',
-			'list-marker-line-height',
-			'list-marker-indent',
-		],
+		target: ['_lin', '_lg', '_lps', '_lmlh', '_lmi'],
 		props: attributes,
 		breakpoint: deviceType,
 	});
@@ -171,19 +165,16 @@ const ListOptionsControl = props => {
 				label={__('List style position', 'maxi-blocks')}
 				className='maxi-text-inspector__list-style-position'
 				value={getLastBreakpointAttribute({
-					target: 'list-style-position',
+					target: '_lsp',
 					breakpoint: deviceType,
 					attributes,
 				})}
-				defaultValue={getDefaultAttribute(
-					`list-style-position-${deviceType}`
-				)}
+				defaultValue={getDefaultAttribute(`_lsp-${deviceType}`)}
 				onReset={() =>
 					maxiSetAttributes({
-						[`list-style-position-${deviceType}`]:
-							getDefaultAttribute(
-								`list-style-position-${deviceType}`
-							),
+						[`_lsp-${deviceType}`]: getDefaultAttribute(
+							`_lsp-${deviceType}`
+						),
 						isReset: true,
 					})
 				}
@@ -199,7 +190,7 @@ const ListOptionsControl = props => {
 				]}
 				onChange={val =>
 					maxiSetAttributes({
-						[`list-style-position-${deviceType}`]: val,
+						[`_lsp-${deviceType}`]: val,
 					})
 				}
 			/>
@@ -207,19 +198,19 @@ const ListOptionsControl = props => {
 				label={__('Text indent', 'maxi-blocks')}
 				className='maxi-text-inspector__list-indent'
 				placeholder={getLastBreakpointAttribute({
-					target: 'list-indent',
+					target: '_lin',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				value={listIndent}
 				onChangeValue={val =>
 					maxiSetAttributes({
-						[`list-indent-${deviceType}`]: val,
+						[`_lin-${deviceType}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-indent-unit',
+					target: '_lin.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
@@ -243,16 +234,16 @@ const ListOptionsControl = props => {
 				}}
 				onChangeUnit={val =>
 					maxiSetAttributes({
-						[`list-indent-unit-${deviceType}`]: val,
+						[`_lin.u-${deviceType}`]: val,
 					})
 				}
 				onReset={() => {
 					maxiSetAttributes({
-						[`list-indent-${deviceType}`]: getDefaultAttribute(
-							`list-indent-${deviceType}`
+						[`_lin-${deviceType}`]: getDefaultAttribute(
+							`_lin-${deviceType}`
 						),
-						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
-							`list-indent-unit-${deviceType}`
+						[`_lin.u-${deviceType}`]: getDefaultAttribute(
+							`_lin.u-${deviceType}`
 						),
 						isReset: true,
 					});
@@ -262,19 +253,19 @@ const ListOptionsControl = props => {
 				label={__('List gap', 'maxi-blocks')}
 				className='maxi-text-inspector__list-gap'
 				placeholder={getLastBreakpointAttribute({
-					target: 'list-gap',
+					target: '_lg',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				value={listGap}
 				onChangeValue={val =>
 					maxiSetAttributes({
-						[`list-gap-${deviceType}`]: val,
+						[`_lg-${deviceType}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-gap-unit',
+					target: '_lg.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
@@ -302,16 +293,16 @@ const ListOptionsControl = props => {
 				}}
 				onChangeUnit={val =>
 					maxiSetAttributes({
-						[`list-gap-unit-${deviceType}`]: val,
+						[`_lg.u-${deviceType}`]: val,
 					})
 				}
 				onReset={() => {
 					maxiSetAttributes({
-						[`list-gap-${deviceType}`]: getDefaultAttribute(
-							`list-gap-${deviceType}`
+						[`_lg-${deviceType}`]: getDefaultAttribute(
+							`_lg-${deviceType}`
 						),
-						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
-							`list-gap-unit-${deviceType}`
+						[`_lg.u-${deviceType}`]: getDefaultAttribute(
+							`_lg.u-${deviceType}`
 						),
 						isReset: true,
 					});
@@ -321,19 +312,19 @@ const ListOptionsControl = props => {
 				label={__('Paragraph spacing', 'maxi-blocks')}
 				className='maxi-text-inspector__list-paragraph-spacing'
 				placeholder={getLastBreakpointAttribute({
-					target: 'list-paragraph-spacing',
+					target: '_lps',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				value={listParagraphSpacing}
 				onChangeValue={val =>
 					maxiSetAttributes({
-						[`list-paragraph-spacing-${deviceType}`]: val,
+						[`_lps-${deviceType}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-paragraph-spacing-unit',
+					target: '_lps.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
@@ -361,19 +352,17 @@ const ListOptionsControl = props => {
 				}}
 				onChangeUnit={val =>
 					maxiSetAttributes({
-						[`list-paragraph-spacing-unit-${deviceType}`]: val,
+						[`_lps.u-${deviceType}`]: val,
 					})
 				}
 				onReset={() => {
 					maxiSetAttributes({
-						[`list-paragraph-spacing-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-${deviceType}`
-							),
-						[`list-paragraph-spacing-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-unit-${deviceType}`
-							),
+						[`_lps-${deviceType}`]: getDefaultAttribute(
+							`_lps-${deviceType}`
+						),
+						[`_lps.u-${deviceType}`]: getDefaultAttribute(
+							`_lps.u-${deviceType}`
+						),
 						isReset: true,
 					});
 				}}
@@ -382,20 +371,20 @@ const ListOptionsControl = props => {
 				label={__('Marker size', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-size'
 				value={getLastBreakpointAttribute({
-					target: 'list-marker-size',
+					target: '_lms',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				onChangeValue={val => {
 					const unit = getLastBreakpointAttribute({
-						target: 'list-marker-size-unit',
+						target: '_lms.u',
 						breakpoint: deviceType,
 						attributes,
 					});
 					const svgElement = getSVGElement(val, unit);
 
 					maxiSetAttributes({
-						[`list-marker-size-${deviceType}`]:
+						[`_lms-${deviceType}`]:
 							val !== undefined && val !== '' ? val : '',
 						...(svgElement && {
 							listStyleCustom: svgElement,
@@ -404,22 +393,22 @@ const ListOptionsControl = props => {
 				}}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-marker-size-unit',
+					target: '_lms.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				onChangeUnit={val => {
 					const size = getLastBreakpointAttribute({
-						target: 'list-marker-size',
+						target: '_lms',
 						breakpoint: deviceType,
 						attributes,
 					});
 					const svgElement = getSVGElement(size, val);
 
 					maxiSetAttributes({
-						[`list-marker-size-unit-${deviceType}`]: val,
+						[`_lms.u-${deviceType}`]: val,
 						...(svgElement && {
-							listStyleCustom: svgElement,
+							_lsc: svgElement,
 						}),
 					});
 				}}
@@ -444,22 +433,21 @@ const ListOptionsControl = props => {
 				}}
 				onReset={() => {
 					const defaultSize = getDefaultAttribute(
-						`list-marker-size-${deviceType}`
+						`_lms-${deviceType}`
 					);
 					const defaultUnit = getDefaultAttribute(
-						`list-marker-size-unit-${deviceType}`
+						`_lms.u-${deviceType}`
 					);
 					const svgElement = getSVGElement(defaultSize, defaultUnit);
 					maxiSetAttributes({
-						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
-							`list-marker-size-${deviceType}`
+						[`_lms-${deviceType}`]: getDefaultAttribute(
+							`_lms-${deviceType}`
 						),
-						[`list-marker-size-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-size-unit-${deviceType}`
-							),
+						[`_lms.u-${deviceType}`]: getDefaultAttribute(
+							`_lms.u-${deviceType}`
+						),
 						...(svgElement && {
-							listStyleCustom: svgElement,
+							_lsc: svgElement,
 						}),
 						isReset: true,
 					});
@@ -469,37 +457,35 @@ const ListOptionsControl = props => {
 				label={__('Marker line-height', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-line-height'
 				placeholder={getLastBreakpointAttribute({
-					target: 'list-marker-line-height',
+					target: '_lmlh',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				value={listMarkerLineHeight}
 				onChangeValue={val =>
 					maxiSetAttributes({
-						[`list-marker-line-height-${deviceType}`]: val,
+						[`_lmlh-${deviceType}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-marker-line-height-unit',
+					target: '_lmlh.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				onChangeUnit={val =>
 					maxiSetAttributes({
-						[`list-marker-line-height-unit-${deviceType}`]: val,
+						[`_lmlh.u-${deviceType}`]: val,
 					})
 				}
 				onReset={() => {
 					maxiSetAttributes({
-						[`list-marker-line-height-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-${deviceType}`
-							),
-						[`list-marker-line-height-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-unit-${deviceType}`
-							),
+						[`_lmlh-${deviceType}`]: getDefaultAttribute(
+							`_lmlh-${deviceType}`
+						),
+						[`_lmlh.u-${deviceType}`]: getDefaultAttribute(
+							`_lmlh.u-${deviceType}`
+						),
 						isReset: true,
 					});
 				}}
@@ -509,25 +495,25 @@ const ListOptionsControl = props => {
 				label={__('Marker indent', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-indent'
 				placeholder={getLastBreakpointAttribute({
-					target: 'list-marker-indent',
+					target: '_lmi',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				value={listMarkerIndent}
 				onChangeValue={val =>
 					maxiSetAttributes({
-						[`list-marker-indent-${deviceType}`]: val,
+						[`_lmi-${deviceType}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: 'list-marker-indent-unit',
+					target: '_lmi.u',
 					breakpoint: deviceType,
 					attributes,
 				})}
 				onChangeUnit={val =>
 					maxiSetAttributes({
-						[`list-marker-indent-unit-${deviceType}`]: val,
+						[`_lmi.u-${deviceType}`]: val,
 					})
 				}
 				breakpoint={deviceType}
@@ -551,14 +537,12 @@ const ListOptionsControl = props => {
 				}}
 				onReset={() => {
 					maxiSetAttributes({
-						[`list-marker-indent-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-${deviceType}`
-							),
-						[`list-marker-indent-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-unit-${deviceType}`
-							),
+						[`_lmi-${deviceType}`]: getDefaultAttribute(
+							`_lmi-${deviceType}`
+						),
+						[`_lmi.u-${deviceType}`]: getDefaultAttribute(
+							`_lmi.u-${deviceType}`
+						),
 						isReset: true,
 					});
 				}}
@@ -567,22 +551,22 @@ const ListOptionsControl = props => {
 				<ColorControl
 					label={__('Marker', 'maxi-blocks')}
 					color={getAttributesValue({
-						target: 'list-color',
+						target: 'l_cc',
 						props: attributes,
 					})}
 					paletteStatus={getAttributesValue({
-						target: 'list-palette-status',
+						target: 'l_ps',
 						props: attributes,
 					})}
 					paletteColor={getAttributesValue({
-						target: 'list-palette-color',
+						target: 'l_pc',
 						props: attributes,
 					})}
 					paletteOpacity={getAttributesValue({
-						target: 'list-palette-opacity',
+						target: 'l_po',
 						props: attributes,
 					})}
-					prefix='list-'
+					prefix='l-'
 					avoidBreakpointForDefault
 					onChangeInline={({ color }) =>
 						insertInlineStyles({
@@ -607,15 +591,12 @@ const ListOptionsControl = props => {
 							: color;
 
 						maxiSetAttributes({
-							[getAttributeKey('list-palette-status')]:
-								paletteStatus,
-							[getAttributeKey('list-palette-color')]:
-								paletteColor,
-							[getAttributeKey('list-palette-opacity')]:
-								paletteOpacity,
-							[getAttributeKey('list-color')]: color,
+							[getAttributeKey('l_ps')]: paletteStatus,
+							[getAttributeKey('l_pc')]: paletteColor,
+							[getAttributeKey('l_po')]: paletteOpacity,
+							[getAttributeKey('l_cc')]: color,
 							...(listStyleCustom?.includes('<svg ') && {
-								listStyleCustom: setSVGColor({
+								_lsc: setSVGColor({
 									svg: listStyleCustom,
 									color: colorStr,
 									type: 'fill',
@@ -630,19 +611,16 @@ const ListOptionsControl = props => {
 				label={__('Text position', 'maxi-blocks')}
 				className='maxi-text-inspector__list-style'
 				value={getLastBreakpointAttribute({
-					target: 'list-text-position',
+					target: '_ltp',
 					breakpoint: deviceType,
 					attributes,
 				})}
-				defaultValue={getDefaultAttribute(
-					`list-text-position-${deviceType}`
-				)}
+				defaultValue={getDefaultAttribute(`_ltp-${deviceType}`)}
 				onReset={() =>
 					maxiSetAttributes({
-						[`list-text-position-${deviceType}`]:
-							getDefaultAttribute(
-								`list-text-position-${deviceType}`
-							),
+						[`_ltp-${deviceType}`]: getDefaultAttribute(
+							`_ltp-${deviceType}`
+						),
 						isReset: true,
 					})
 				}
@@ -676,7 +654,7 @@ const ListOptionsControl = props => {
 				]}
 				onChange={val =>
 					maxiSetAttributes({
-						[`list-text-position-${deviceType}`]: val,
+						[`_ltp-${deviceType}`]: val,
 					})
 				}
 			/>
@@ -685,12 +663,12 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
-					defaultValue={getDefaultAttribute('typeOfList')}
+					defaultValue={getDefaultAttribute('_tol')}
 					onReset={() =>
 						maxiSetAttributes({
-							typeOfList: getDefaultAttribute('typeOfList'),
+							_tol: getDefaultAttribute('_tol'),
 							listStyle: getListStyleOptions(
-								getDefaultAttribute('typeOfList')
+								getDefaultAttribute('_tol')
 							)[0].value,
 							isReset: true,
 						})
@@ -707,8 +685,8 @@ const ListOptionsControl = props => {
 					]}
 					onChange={typeOfList =>
 						maxiSetAttributes({
-							typeOfList,
-							listStyle: getListStyleOptions(typeOfList)[0].value,
+							_tol: typeOfList,
+							_lsty: getListStyleOptions(typeOfList)[0].value,
 						})
 					}
 				/>
@@ -719,17 +697,17 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
-						defaultValue={getDefaultAttribute('listStyle')}
+						defaultValue={getDefaultAttribute('_lsty')}
 						onReset={() =>
 							maxiSetAttributes({
-								listStyle: getDefaultAttribute('listStyle'),
+								_lsty: getDefaultAttribute('_lsty'),
 								isReset: true,
 							})
 						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
 							maxiSetAttributes({
-								listStyle,
+								_lsty: listStyle,
 							});
 							if (
 								!(
@@ -739,7 +717,7 @@ const ListOptionsControl = props => {
 								) &&
 								listStart < 0
 							) {
-								maxiSetAttributes({ listStart: 0 });
+								maxiSetAttributes({ _lsty: 0 });
 							}
 						}}
 					/>
@@ -751,7 +729,7 @@ const ListOptionsControl = props => {
 								value={listStart}
 								onChangeValue={val => {
 									maxiSetAttributes({
-										listStart:
+										_lst:
 											val !== undefined && val !== ''
 												? val
 												: '',
@@ -767,7 +745,7 @@ const ListOptionsControl = props => {
 								max={99}
 								onReset={() =>
 									maxiSetAttributes({
-										listStart: '',
+										_lst: '',
 										isReset: true,
 									})
 								}
@@ -778,7 +756,7 @@ const ListOptionsControl = props => {
 								selected={listReversed}
 								onChange={val => {
 									maxiSetAttributes({
-										listReversed: val,
+										_lr: val,
 									});
 								}}
 							/>
@@ -793,7 +771,7 @@ const ListOptionsControl = props => {
 								defaultValue={defaultListStyleSource}
 								onReset={() =>
 									maxiSetAttributes({
-										listStyleCustom: defaultListStyleSource,
+										_lsc: defaultListStyleSource,
 										isReset: true,
 									})
 								}
@@ -816,10 +794,9 @@ const ListOptionsControl = props => {
 
 									if (listStyleCustoms[listStyleSource])
 										maxiSetAttributes({
-											listStyleCustom:
-												listStyleCustoms[
-													listStyleSource
-												],
+											_lsc: listStyleCustoms[
+												listStyleSource
+											],
 										});
 								}}
 							/>
@@ -831,7 +808,7 @@ const ListOptionsControl = props => {
 									}
 									onChange={listStyleCustom => {
 										maxiSetAttributes({
-											listStyleCustom,
+											_lsc: listStyleCustom,
 										});
 
 										setListStyleCustoms({
@@ -853,7 +830,7 @@ const ListOptionsControl = props => {
 											color,
 										} = getPaletteAttributes({
 											obj: attributes,
-											prefix: 'list-',
+											prefix: 'l-',
 										});
 
 										const colorStr = paletteStatus
@@ -872,12 +849,12 @@ const ListOptionsControl = props => {
 
 										const size =
 											getLastBreakpointAttribute({
-												target: 'list-marker-size',
+												target: '_lms',
 												breakpoint: deviceType,
 												attributes,
 											}) +
 											getLastBreakpointAttribute({
-												target: 'list-marker-size-unit',
+												target: '_lms.u',
 												breakpoint: deviceType,
 												attributes,
 											});
@@ -888,7 +865,7 @@ const ListOptionsControl = props => {
 										});
 
 										maxiSetAttributes({
-											listStyleCustom: SVGElement,
+											_lsc: SVGElement,
 										});
 										setListStyleCustoms({
 											...listStyleCustoms,
@@ -897,7 +874,7 @@ const ListOptionsControl = props => {
 									}}
 									onRemove={() => {
 										maxiSetAttributes({
-											listStyleCustom: '',
+											_lsc: '',
 										});
 										setListStyleCustoms({
 											...listStyleCustoms,

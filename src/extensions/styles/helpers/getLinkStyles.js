@@ -29,9 +29,8 @@ const getLinkStyles = (obj, target, blockStyle) => {
 	};
 
 	const getTextDecoration = (breakpoint, isHover = false) => {
-		const hoverStatus = obj[getAttributeKey('typography-status-hover')];
-		const value =
-			obj[getAttributeKey('text-decoration', isHover, '', breakpoint)];
+		const hoverStatus = obj[getAttributeKey('t.sh')];
+		const value = obj[getAttributeKey('_td', isHover, '', breakpoint)];
 		return !isNil(value) && (hoverStatus || !isHover) && value;
 	};
 
@@ -50,7 +49,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			color: linkColor,
 		} = getPaletteAttributes({
 			obj,
-			prefix: 'link-',
+			prefix: '_l-',
 			breakpoint,
 		});
 
@@ -98,7 +97,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			color: linkHoverColor,
 		} = getPaletteAttributes({
 			obj,
-			prefix: 'link-hover-',
+			prefix: '_lih-',
 			breakpoint,
 		});
 
@@ -129,7 +128,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			color: linkActiveColor,
 		} = getPaletteAttributes({
 			obj,
-			prefix: 'link-active-',
+			prefix: '_lia-',
 			breakpoint,
 		});
 
@@ -160,7 +159,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			color: linkVisitedColor,
 		} = getPaletteAttributes({
 			obj,
-			prefix: 'link-visited-',
+			prefix: '_liv-',
 			breakpoint,
 		});
 

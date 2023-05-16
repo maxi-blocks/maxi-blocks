@@ -70,20 +70,20 @@ const DateFormatting = props => {
 	const [linkStatus, setLinkStatus] = useState('year');
 
 	const {
-		'dc-custom-date': customDate,
-		'dc-day': day,
-		'dc-era': era,
-		'dc-format': format,
-		'dc-hour': hour,
-		'dc-hour12': hour12,
-		'dc-minute': minute,
-		'dc-month': month,
-		'dc-second': second,
-		'dc-locale': locale,
-		'dc-timezone': timeZone,
-		'dc-timezone-name': timeZoneName,
-		'dc-weekday': weekday,
-		'dc-year': year,
+		dc_cd: customDate,
+		dc_da: day,
+		dc_era: era,
+		dc_fo: format,
+		dc_hou: hour,
+		dc_h12: hour12,
+		dc_min: minute,
+		dc_mo: month,
+		dc_sec: second,
+		dc_loc: locale,
+		dc_tz: timeZone,
+		dc_tzn: timeZoneName,
+		dc_wd: weekday,
+		dc_y: year,
 	} = props;
 
 	const changeProps = params => {
@@ -157,7 +157,7 @@ const DateFormatting = props => {
 			<ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
 				selected={customDate}
-				onChange={value => changeProps({ 'dc-custom-date': value })}
+				onChange={value => changeProps({ dc_cd: value })}
 			/>
 			{!customDate && (
 				<div className='maxi-custom-date-formatting__help-trigger'>
@@ -210,7 +210,7 @@ const DateFormatting = props => {
 										value={era}
 										options={DateOptions.era}
 										onChange={value =>
-											changeProps({ 'dc-era': value })
+											changeProps({ dc_era: value })
 										}
 									/>
 									<SelectControl
@@ -218,7 +218,7 @@ const DateFormatting = props => {
 										value={year}
 										options={DateOptions.year}
 										onChange={value =>
-											changeProps({ 'dc-year': value })
+											changeProps({ dc_y: value })
 										}
 									/>
 									<SelectControl
@@ -226,7 +226,7 @@ const DateFormatting = props => {
 										value={month}
 										options={DateOptions.month}
 										onChange={value =>
-											changeProps({ 'dc-month': value })
+											changeProps({ dc_mo: value })
 										}
 									/>
 									<SelectControl
@@ -234,7 +234,7 @@ const DateFormatting = props => {
 										value={day}
 										options={DateOptions.day}
 										onChange={value =>
-											changeProps({ 'dc-day': value })
+											changeProps({ dc_da: value })
 										}
 									/>
 									<SelectControl
@@ -242,7 +242,7 @@ const DateFormatting = props => {
 										value={weekday}
 										options={DateOptions.weekday}
 										onChange={value =>
-											changeProps({ 'dc-weekday': value })
+											changeProps({ dc_wd: value })
 										}
 									/>
 								</>
@@ -254,7 +254,7 @@ const DateFormatting = props => {
 										value={hour12}
 										options={DateOptions.hour12}
 										onChange={value =>
-											changeProps({ 'dc-hour12': value })
+											changeProps({ dc_h12: value })
 										}
 									/>
 									<SelectControl
@@ -262,7 +262,7 @@ const DateFormatting = props => {
 										value={hour}
 										options={DateOptions.hour}
 										onChange={value =>
-											changeProps({ 'dc-hour': value })
+											changeProps({ dc_hou: value })
 										}
 									/>
 									<SelectControl
@@ -270,7 +270,7 @@ const DateFormatting = props => {
 										value={minute}
 										options={DateOptions.minute}
 										onChange={value =>
-											changeProps({ 'dc-minute': value })
+											changeProps({ dc_min: value })
 										}
 									/>
 									<SelectControl
@@ -278,7 +278,7 @@ const DateFormatting = props => {
 										value={second}
 										options={DateOptions.second}
 										onChange={value =>
-											changeProps({ 'dc-second': value })
+											changeProps({ dc_sec: value })
 										}
 									/>
 								</>
@@ -290,7 +290,7 @@ const DateFormatting = props => {
 										value={locale}
 										options={DateOptions.locale}
 										onChange={value =>
-											changeProps({ 'dc-locale': value })
+											changeProps({ dc_loc: value })
 										}
 									/>
 									<SelectControl
@@ -299,7 +299,7 @@ const DateFormatting = props => {
 										options={DateOptions.timeZone}
 										onChange={value =>
 											changeProps({
-												'dc-timezone': value,
+												dc_tz: value,
 											})
 										}
 									/>
@@ -312,7 +312,7 @@ const DateFormatting = props => {
 										options={DateOptions.timeZoneName}
 										onChange={value =>
 											changeProps({
-												'dc-timezone-name': value,
+												dc_tzn: value,
 											})
 										}
 									/>

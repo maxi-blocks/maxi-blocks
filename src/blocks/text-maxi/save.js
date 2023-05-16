@@ -13,13 +13,13 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const {
-		textLevel,
-		isList,
-		typeOfList,
-		content,
-		listReversed,
-		listStart,
-		'dc-status': dcStatus,
+		_tl: textLevel,
+		_ili: isList,
+		_tol: typeOfList,
+		_c: content,
+		_lr: listReversed,
+		_ili: listStart,
+		'dc.s': dcStatus,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';

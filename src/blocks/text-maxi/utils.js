@@ -14,7 +14,7 @@ import {
 
 const onMerge = (props, forward) => {
 	const { attributes, clientId, maxiSetAttributes } = props;
-	const { isList, content, 'custom-formats': customFormats } = attributes;
+	const { _ili: isList, _c: content, _cf: customFormats } = attributes;
 
 	const {
 		getNextBlockClientId,
@@ -33,9 +33,9 @@ const onMerge = (props, forward) => {
 		if (nextBlockClientId && blockName === 'maxi-blocks/text-maxi') {
 			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
 			const {
-				content: nextBlockContent,
-				isList: nextBlockIsList,
-				'custom-formats': nextBlockCustomFormats,
+				_c: nextBlockContent,
+				_ili: nextBlockIsList,
+				_cf: nextBlockCustomFormats,
 			} = nextBlockAttributes;
 
 			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
@@ -55,8 +55,8 @@ const onMerge = (props, forward) => {
 				);
 
 			maxiSetAttributes({
-				content: newContent,
-				'custom-formats': newCustomFormats,
+				_c: newContent,
+				_cf: newCustomFormats,
 			});
 
 			removeBlock(nextBlockClientId);
@@ -74,8 +74,8 @@ const onMerge = (props, forward) => {
 				previousBlockClientId
 			);
 			const {
-				content: previousBlockContent,
-				'custom-formats': previousBlockCustomFormats,
+				_c: previousBlockContent,
+				_cf: previousBlockCustomFormats,
 			} = previousBlockAttributes;
 
 			const { content: newContent, 'custom-formats': newCustomFormats } =
@@ -93,8 +93,8 @@ const onMerge = (props, forward) => {
 				);
 
 			updateBlockAttributes(previousBlockClientId, {
-				content: newContent,
-				'custom-formats': newCustomFormats,
+				_c: newContent,
+				_cf: newCustomFormats,
 			});
 
 			removeBlock(clientId);

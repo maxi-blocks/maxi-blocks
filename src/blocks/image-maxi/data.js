@@ -43,6 +43,7 @@ const prefix = 'im-';
  */
 const name = 'image-maxi';
 const copyPasteMapping = {
+	_exclude: ['_mi', '_iiu', '_mu', '_mew', '_meh', '_mal'],
 	settings: {
 		Image: ['_mi', '_iiu', '_mu', '_mew', '_meh', '_mal'],
 		Dimension: {

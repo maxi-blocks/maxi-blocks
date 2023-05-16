@@ -79,7 +79,7 @@ const NavigationControl = props => {
 					})}
 					onChange={val => {
 						onChange({
-							[`${arrowPrefix}_pos${deviceType}`]: val,
+							[`${arrowPrefix}_pos-${deviceType}`]: val,
 							...(val === 'inside' && {
 								[`${arrowPrefix}b-i_sh-${deviceType}`]: -40,
 							}),
@@ -111,7 +111,7 @@ const NavigationControl = props => {
 					})}
 					onChange={val => {
 						onChange({
-							[`${dotPrefix}_pos${deviceType}`]: val,
+							[`${dotPrefix}_pos-${deviceType}`]: val,
 							...(val === 'inside' && {
 								[`${dotPrefix}-i_sv-${deviceType}`]: 85,
 							}),

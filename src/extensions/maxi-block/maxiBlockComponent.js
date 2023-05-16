@@ -438,7 +438,7 @@ class MaxiBlockComponent extends Component {
 			!uniqueIDStructureChecker(idToCheck, clientId)
 		) {
 			const [bgLayers, customLabel] = getAttributesValue({
-				target: ['b_ly', 'customLabel'],
+				target: ['b_ly', '_cl'],
 				props: this.props.attributes,
 			});
 

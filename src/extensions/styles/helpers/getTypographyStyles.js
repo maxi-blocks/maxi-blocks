@@ -187,8 +187,8 @@ const getTypographyStyles = ({
 						: 'unset',
 				'text-orientation': getValue('_to', breakpoint),
 			}),
-			...(!isNil(getValue('_td', breakpoint)) && {
-				direction: getValue('_td', breakpoint),
+			...(!isNil(getValue('_tdi', breakpoint)) && {
+				direction: getValue('_tdi', breakpoint),
 			}),
 			...(!isNil(getValue('_ws', breakpoint)) && {
 				'white-space': getValue('_ws', breakpoint),
@@ -213,8 +213,8 @@ const getTypographyStyles = ({
 							: 'unset',
 					'text-orientation': getValue('_to', breakpoint),
 				}),
-				...(!isNil(getValue('_td', breakpoint)) && {
-					direction: getValue('_td', breakpoint),
+				...(!isNil(getValue('_tdi', breakpoint)) && {
+					direction: getValue('_tdi', breakpoint),
 				}),
 			}),
 		};

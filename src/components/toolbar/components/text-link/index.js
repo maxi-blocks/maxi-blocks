@@ -44,8 +44,14 @@ import Link from '../link';
  * TextLink
  */
 const LinkContent = props => {
-	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
-		props;
+	const {
+		onChange,
+		ili: isList,
+		_tl: textLevel,
+		onClose,
+		blockStyle,
+		styleCard,
+	} = props;
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
@@ -273,7 +279,7 @@ const TextLink = props => {
 	const {
 		blockName,
 		isCaptionToolbar = false,
-		'dc-status': dcStatus = false,
+		'dc.s': dcStatus = false,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;

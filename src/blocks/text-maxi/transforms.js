@@ -85,12 +85,12 @@ const transforms = {
 					...getBlockAttributes(name),
 				};
 				const isList = ['ul', 'ol'].includes(nodeName);
-				attributes.content = node.innerHTML;
+				attributes._c = node.innerHTML;
 
 				if (isList) {
-					attributes.isList = true;
-					attributes.typeOfList = nodeName;
-				} else attributes.textLevel = nodeName;
+					attributes._ili = true;
+					attributes._tol = nodeName;
+				} else attributes._tl = nodeName;
 
 				const { textAlign } = node.style || {};
 
@@ -99,7 +99,7 @@ const transforms = {
 					textAlign === 'center' ||
 					textAlign === 'right'
 				) {
-					attributes['ta-general'] = textAlign;
+					attributes['_ta-general'] = textAlign;
 				}
 
 				const formatElement = {
@@ -109,7 +109,11 @@ const transforms = {
 
 				const formatValue = generateFormatValue(formatElement, node);
 
-				const { typeOfList, content, textLevel } = attributes;
+				const {
+					_tol: typeOfList,
+					_c: content,
+					_tl: textLevel,
+				} = attributes;
 
 				const cleanCustomProps = setCustomFormatsWhenPaste({
 					formatValue,

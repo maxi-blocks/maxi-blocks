@@ -100,7 +100,7 @@ const FontLevelControl = props => {
 		}
 
 		onChange({
-			textLevel: value,
+			_tl: value,
 			...fontOptResponse,
 			...fontOptResponseHover,
 		});

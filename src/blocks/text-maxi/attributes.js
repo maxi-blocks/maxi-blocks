@@ -14,7 +14,6 @@ import { customCss, transition } from './data';
  */
 const attributes = {
 	...attributesData.global,
-	...attributesData.dynamicContent,
 
 	/**
 	 * Block styles
@@ -44,6 +43,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.dynamicContent,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

@@ -51,7 +51,7 @@ const prefix = 'bt-';
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
-	_exclude: ['i_c'],
+	_exclude: ['i_c', '_bc'],
 	settings: {
 		'Button text': '_bc',
 		Icon: {

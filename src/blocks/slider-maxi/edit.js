@@ -290,7 +290,7 @@ const SliderWrapper = props => {
 	}, [currentSlide, isLoop, isEditView, slidesWidth]);
 
 	useEffect(() => {
-		maxiSetAttributes({ numberOfSlides });
+		maxiSetAttributes({ _nos: numberOfSlides });
 	}, [numberOfSlides]);
 
 	const classes = classnames(
@@ -327,7 +327,7 @@ const SliderWrapper = props => {
 			<div className={navClasses}>
 				{getAttributesValue({
 					target: 'naf-i_c',
-					attributes,
+					props: attributes,
 				}) && (
 					<span
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
@@ -343,7 +343,7 @@ const SliderWrapper = props => {
 				)}
 				{getAttributesValue({
 					target: 'nas-i_c',
-					attributes,
+					props: attributes,
 				}) && (
 					<span
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
@@ -361,7 +361,7 @@ const SliderWrapper = props => {
 				)}
 				{getAttributesValue({
 					target: 'nd-i_c',
-					attributes,
+					props: attributes,
 				}) && (
 					<div className='maxi-slider-block__dots'>
 						{Array.from(Array(numberOfSlides).keys()).map(i => {

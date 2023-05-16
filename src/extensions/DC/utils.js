@@ -48,7 +48,7 @@ export const sanitizeDCContent = content =>
 export const validationsValues = (variableValue, field, contentType) => {
 	const result = fieldOptions[contentType][variableValue].map(x => x.value);
 
-	return result.includes(field) ? {} : { 'dc-field': result[0] };
+	return result.includes(field) ? {} : { dc_f: result[0] };
 };
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);

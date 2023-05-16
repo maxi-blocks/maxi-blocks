@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 			target: '_uid',
 			props: attributes,
 		});
-		const { 'dc-status': dcStatus } = attributes;
+		const { 'dc.s': dcStatus } = attributes;
 
 		return {
 			...(dcStatus && {
@@ -70,8 +70,13 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		const { attributes, setAttributes } = this.props;
-		const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
-			attributes;
+		const {
+			_bs: blockStyle,
+			_ili: isList,
+			_tol: typeOfList,
+			_lsty: listStyle,
+			_lsc: listStyleCustom,
+		} = attributes;
 
 		// Ensures svg list markers change the colour when SC color changes
 		if (
@@ -83,7 +88,7 @@ class edit extends MaxiBlockComponent {
 			const { paletteStatus, paletteColor, paletteOpacity } =
 				getPaletteAttributes({
 					obj: attributes,
-					prefix: 'list-',
+					prefix: 'l-',
 				});
 
 			if (paletteStatus) {
@@ -120,15 +125,15 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 		} = this.props;
 		const {
-			content,
-			isList,
-			listReversed,
-			listStart,
-			textLevel,
-			typeOfList,
-			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
+			_c: content,
+			_ili: isList,
+			_lr: listReversed,
+			_lst: listStart,
+			_tl: textLevel,
+			_tol: typeOfList,
+			_uid: uniqueID,
+			'dc.s': dcStatus,
+			dc_c: dcContent,
 		} = attributes;
 
 		const className = 'maxi-text-block__content';
@@ -158,13 +163,13 @@ class edit extends MaxiBlockComponent {
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
 
-				maxiSetAttributes({ content: `${newContent}</a>` });
+				maxiSetAttributes({ _c: `${newContent}</a>` });
 			} else {
 				if (this.typingTimeoutContent)
 					clearTimeout(this.typingTimeoutContent);
 
 				this.typingTimeoutContent = setTimeout(() => {
-					maxiSetAttributes({ content });
+					maxiSetAttributes({ _c: content });
 				}, 100);
 			}
 		};
@@ -272,7 +277,7 @@ class edit extends MaxiBlockComponent {
 
 										if (newContent) {
 											maxiSetAttributes({
-												content: newContent,
+												_c: newContent,
 											});
 										}
 									},

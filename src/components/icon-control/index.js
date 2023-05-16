@@ -477,7 +477,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							[`${prefix}icon-fill-palette-status${
 								isHover ? '-hover' : ''
 							}`]: paletteStatus,
-							[`${prefix}icon-fill-palette-status${
+							[`${prefix}icon-fill-palette-sc-status${
 								isHover ? '-hover' : ''
 							}`]: paletteSCStatus,
 							[`${prefix}icon-fill-palette-opacity${

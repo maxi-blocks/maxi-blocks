@@ -760,6 +760,10 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
+        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+            return false;
+        }
+
         if (is_callable($defaults[$target])) {
             return $defaults[$target]($obj);
         }

@@ -170,7 +170,10 @@ function observeConsoleLogging() {
 		}
 
 		// Sometimes favicon is not found
-		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
+		if (
+			message?._stackTraceLocations?.[0]?.url?.includes('favicon.ico') ||
+			text.includes('favicon.ico')
+		)
 			return;
 
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];

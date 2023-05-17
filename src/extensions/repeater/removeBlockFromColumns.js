@@ -16,8 +16,7 @@ import { isEmpty } from 'lodash';
 const removeBlockFromColumns = (
 	blockPosition,
 	parentColumnClientId,
-	parentInnerBlocksCount,
-	additionalMarkNextChangeAsNotPersistent = false
+	parentInnerBlocksCount
 ) => {
 	const { getBlock } = select('core/block-editor');
 
@@ -60,9 +59,7 @@ const removeBlockFromColumns = (
 				markNextChangeAsNotPersistent,
 		} = dispatch('core/block-editor');
 
-		if (additionalMarkNextChangeAsNotPersistent) {
-			markNextChangeAsNotPersistent();
-		}
+		markNextChangeAsNotPersistent();
 		markNextChangeAsNotPersistent();
 		removeBlocks(clientIdsToRemove);
 	}

@@ -11,6 +11,7 @@ import { getChildColumns, goThroughColumns, findBlockPosition } from './utils';
 import { goThroughMaxiBlocks } from '../maxi-block';
 import { getBlockData } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
+import DISALLOWED_BLOCKS from './disallowedBlocks';
 
 /**
  * External dependencies
@@ -71,6 +72,12 @@ const validateRowColumnsStructure = (
 	innerBlocksPositions,
 	columnToValidateByClientId
 ) => {
+	const {
+		replaceInnerBlocks,
+		removeBlock,
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = dispatch('core/block-editor');
+
 	let childColumns = getChildColumns(rowClientId, true);
 
 	const columnToValidateBy = columnToValidateByClientId
@@ -87,15 +94,9 @@ const validateRowColumnsStructure = (
 		childColumns.unshift(columnToValidateBy);
 	}
 
-	const columnToValidateByInnerBlocks = columnToValidateBy.innerBlocks;
 	const columnToValidateByStructure = [];
 
 	const handleReplaceColumn = columnClientId => {
-		const {
-			replaceInnerBlocks,
-			__unstableMarkNextChangeAsNotPersistent:
-				markNextChangeAsNotPersistent,
-		} = dispatch('core/block-editor');
 		const { getBlock } = select('core/block-editor');
 
 		const column = getBlock(columnClientId);
@@ -105,9 +106,18 @@ const validateRowColumnsStructure = (
 		markNextChangeAsNotPersistent();
 		replaceInnerBlocks(
 			columnClientId,
-			cleanInnerBlocks(columnToValidateByInnerBlocks),
+			cleanInnerBlocks(getBlock(columnToValidateByClientId).innerBlocks),
 			false
 		);
+	};
+
+	const pushToStructure = (block, structureArray) => {
+		if (DISALLOWED_BLOCKS.includes(block.name)) {
+			markNextChangeAsNotPersistent();
+			removeBlock(block.clientId, false);
+		} else {
+			structureArray.push(block.name);
+		}
 	};
 
 	goThroughColumns(childColumns, null, column => {
@@ -126,11 +136,12 @@ const validateRowColumnsStructure = (
 
 		goThroughMaxiBlocks(block => {
 			if (isColumnToValidateBy) {
-				columnToValidateByStructure.push(block.name);
+				pushToStructure(block, columnToValidateByStructure);
+
 				return false;
 			}
 
-			columnStructure.push(block.name);
+			pushToStructure(block, columnStructure);
 
 			return null;
 		}, columnInnerBlocks);

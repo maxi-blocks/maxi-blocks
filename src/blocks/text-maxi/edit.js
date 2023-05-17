@@ -28,6 +28,12 @@ import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
+
+/**
  * Content
  */
 class edit extends MaxiBlockComponent {
@@ -224,11 +230,13 @@ class edit extends MaxiBlockComponent {
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
-					classes={`${
-						content === ''
+					classes={classnames(
+						isEmpty(content)
 							? 'maxi-text-block__empty'
-							: 'maxi-text-block__has-text'
-					} ${isList ? 'maxi-list-block' : ''}`}
+							: 'maxi-text-block__has-text',
+						isList && 'maxi-list-block',
+						dcStatus && 'maxi-text-block__dc'
+					)}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>

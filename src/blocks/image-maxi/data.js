@@ -49,6 +49,7 @@ const copyPasteMapping = {
 		'mediaWidth',
 		'mediaHeight',
 		'mediaAlt',
+		'captionContent',
 	],
 	settings: {
 		Image: [

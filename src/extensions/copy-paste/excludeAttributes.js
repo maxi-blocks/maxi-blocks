@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributeKey } from '../styles';
+import { getAttributeKey, getDefaultAttribute } from '../styles';
 
 /**
  * External dependencies
@@ -13,7 +13,8 @@ const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel'];
 const excludeAttributes = (
 	rawAttributesToExclude,
 	attributes,
-	copyPasteMapping
+	copyPasteMapping,
+	shouldExcludeEmpty = true
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
 
@@ -23,7 +24,13 @@ const excludeAttributes = (
 	];
 
 	keysToExclude.forEach(prop => {
-		if (attributesToExclude[prop]) delete attributesToExclude[prop];
+		if (
+			attributesToExclude[prop] &&
+			(shouldExcludeEmpty ||
+				(!shouldExcludeEmpty &&
+					attributes?.[prop] !== getDefaultAttribute(prop)))
+		)
+			delete attributesToExclude[prop];
 	});
 
 	if (

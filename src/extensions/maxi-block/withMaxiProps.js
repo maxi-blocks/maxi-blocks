@@ -150,7 +150,8 @@ const withMaxiProps = createHigherOrderComponent(
 								const nonExcludedAttributes = excludeAttributes(
 									obj,
 									currentAttributes,
-									copyPasteMapping
+									copyPasteMapping,
+									false
 								);
 
 								updateRelationsInColumn(

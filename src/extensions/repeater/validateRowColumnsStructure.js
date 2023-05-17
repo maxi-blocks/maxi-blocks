@@ -35,7 +35,8 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 			acc[key] = block.attributes[key];
 			return acc;
 		}, {}),
-		copyPasteMapping
+		copyPasteMapping,
+		false
 	);
 	updateRelationsInColumn(
 		nonExcludedRefAttributes,
@@ -47,7 +48,8 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 	const nonExcludedBlockAttributes = excludeAttributes(
 		block.attributes,
 		null,
-		copyPasteMapping
+		copyPasteMapping,
+		false
 	);
 
 	if (!isEqual(nonExcludedRefAttributes, nonExcludedBlockAttributes)) {

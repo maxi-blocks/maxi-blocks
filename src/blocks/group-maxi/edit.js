@@ -9,6 +9,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import { withMaxiContextLoop } from '../../extensions/DC';
+import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
  * Edit
@@ -36,6 +37,7 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
+						...(this.props.repeaterStatus && DISALLOWED_BLOCKS),
 					].indexOf(blockName) === -1
 			);
 

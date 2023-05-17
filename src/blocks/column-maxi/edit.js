@@ -21,6 +21,7 @@ import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
 import { withMaxiContextLoop } from '../../extensions/DC';
+import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
  * External dependencies
@@ -193,6 +194,7 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
+						...(this.props.repeaterStatus && DISALLOWED_BLOCKS),
 					].indexOf(blockName) === -1
 			);
 

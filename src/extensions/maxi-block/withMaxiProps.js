@@ -20,15 +20,15 @@ import {
 	handleCleanInlineStyles,
 } from './inlineStyles';
 import { excludeAttributes } from '../copy-paste';
-import { getBlockData } from '../attributes';
+import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 import { handleBlockMove, updateRelationsInColumn } from '../repeater';
 import {
 	findBlockPosition,
 	findTargetParent,
 	getBlockPosition,
 } from '../repeater/utils';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -45,7 +45,6 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const {
 				getBlock,
-				getBlockAttributes,
 				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
@@ -144,8 +143,9 @@ const withMaxiProps = createHigherOrderComponent(
 							clientIds.forEach(currentClientId => {
 								if (currentClientId === clientId) return;
 
+								const currentBlock = getBlock(currentClientId);
 								const currentAttributes =
-									getBlockAttributes(currentClientId);
+									currentBlock?.attributes;
 
 								const nonExcludedAttributes = excludeAttributes(
 									obj,
@@ -160,6 +160,23 @@ const withMaxiProps = createHigherOrderComponent(
 									currentClientId,
 									innerBlocksPositions
 								);
+
+								if (
+									'SVGData' in nonExcludedAttributes &&
+									'SVGElement' in nonExcludedAttributes
+								) {
+									const { SVGData, SVGElement } =
+										getUpdatedSVGDataAndElement(
+											nonExcludedAttributes,
+											currentAttributes.uniqueID,
+											'',
+											currentAttributes.mediaURL
+										);
+
+									nonExcludedAttributes.SVGData = SVGData;
+									nonExcludedAttributes.SVGElement =
+										SVGElement;
+								}
 
 								if (!isEmpty(nonExcludedAttributes)) {
 									updateBlockAttributes(

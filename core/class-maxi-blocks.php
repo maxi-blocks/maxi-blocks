@@ -11,6 +11,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
+
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
     {
@@ -38,6 +40,9 @@ if (!class_exists('MaxiBlocks_Blocks')):
         {
             // Enqueue blocks styles and scripts
             add_action('init', [$this, 'enqueue_blocks_assets']);
+
+            // Enqueue blocks
+            add_action('init', [$this, 'register_blocks']);
 
             // Register MaxiBlocks attachment taxonomy and terms
             add_action('init', [$this,'maxi_add_image_taxonomy']);
@@ -86,6 +91,14 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 filemtime(MAXI_PLUGIN_DIR_PATH . "/$style_css")
             );
             wp_enqueue_style('maxi-blocks-block');
+        }
+
+        public function register_blocks()
+        {
+            if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
+                MaxiBlocks_Group_Maxi_Block::register();
+            }
+
         }
 
         public function maxi_add_image_taxonomy()

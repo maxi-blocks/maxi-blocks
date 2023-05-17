@@ -311,8 +311,8 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'by-id';
         }
 
-        $media_id;
-        $media_src;
+        $media_id = null;
+        $media_src = null;
         $media_alt = '';
         $media_caption = '';
 
@@ -430,7 +430,7 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            $post;
+            $post = null;
 
             if ($is_random) {
                 $posts = $query->posts;

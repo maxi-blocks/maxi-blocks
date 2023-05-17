@@ -1,7 +1,7 @@
 /**
- * BLOCK: maxi-blocks/row-maxi
+ * BLOCK: maxi-blocks/group-maxi
  *
- * Container for columns in order to create webpage structures
+ * Create a number counter
  */
 
 /**
@@ -11,15 +11,9 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
- * Styles and icons
- */
-import './style.scss';
-import './editor.scss';
-import { rowIcon } from '../../icons';
-
-/**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -28,44 +22,35 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
+ * Styles and icons
+ */
+import './style.scss';
+import { numberCounterIcon } from '../../icons';
+
+/**
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
+import NCMigrator from '../../extensions/styles/migrators/NCMigrator';
 
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/row-maxi', {
-	title: __('Row Maxi', 'maxi-blocks'),
-	icon: rowIcon,
-	description: 'Configure columns inside a row',
-	category: 'maxi-blocks',
-	parent: ['maxi-blocks/container-maxi'],
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: numberCounterIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [NCMigrator],
 	}),
 });

@@ -1,10 +1,4 @@
 /**
- * BLOCK: maxi-blocks/container-maxi
- *
- * Container for columns in order to create webpage structures
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -13,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -36,31 +31,15 @@ import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDivider
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/container-maxi', {
-	title: __('Container Maxi', 'maxi-blocks'),
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
 	icon: containerIcon,
-	description: 'Wrap blocks within a container',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({

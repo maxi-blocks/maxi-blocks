@@ -1,8 +1,8 @@
 /**
- * BLOCK: maxi-blocks/divider-maxi
+ * BLOCK: maxi-blocks/text-maxi
  *
- * Registering an divider block with Gutenberg.
- * Shows an divider and a description. A test block.
+ * Registering an text block with Gutenberg.
+ * Shows an text and a description. A test block.
  */
 
 /**
@@ -14,9 +14,11 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
+import transforms from './transforms';
 import { customCss } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
@@ -24,8 +26,9 @@ import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 /**
  * Styles and icons
  */
+import './editor.scss';
 import './style.scss';
-import { dividerIcon } from '../../icons';
+import { textIcon } from '../../icons';
 
 /**
  * Migrators
@@ -35,32 +38,19 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 /**
  * Block
  */
-registerBlockType('maxi-blocks/divider-maxi', {
-	title: __('Divider Maxi', 'maxi-blocks'),
-	icon: dividerIcon,
-	description: 'Create a divider between visual elements',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+const { title, description, category, example, parent } = metadata;
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: textIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	parent,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
+	transforms,
 	deprecated: blockMigrator({
 		attributes,
 		save,

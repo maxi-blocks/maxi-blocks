@@ -1,8 +1,4 @@
 /**
- * BLOCK: maxi-blocks/accordion-maxi
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -11,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -26,31 +23,15 @@ import { accordionIcon } from '../../icons';
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/accordion-maxi', {
-	title: __('Accordion Maxi', 'maxi-blocks'),
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
 	icon: accordionIcon,
-	description: 'Expand or collapse content inside of a panel',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 });

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { injectImgSVG } from '../svg';
+import getUpdatedSVGDataAndElement from './getUpdatedSVGDataAndElement';
 
 /**
  * External dependencies
@@ -19,29 +19,16 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 	if (isEmpty(rawBackgroundLayers)) return rawBackgroundLayers;
 
 	return rawBackgroundLayers.map(layer => {
-		const SVGData = layer?.['background-svg-SVGData'];
-		const SVGElement = layer?.['background-svg-SVGElement'];
-		if (!SVGData || !SVGElement) return layer;
-
-		const id = Object.keys(SVGData)[0];
-		const uniqueIDFromId = id.match(/^(.*?)(?=(__))/)?.[0];
-		if (uniqueIDFromId === uniqueID) return layer;
-
-		const newId = id.replace(/^(.*?)(?=(__))/, uniqueID);
-		const newSVGData = { ...SVGData, [newId]: SVGData[id] };
-		delete newSVGData[id];
-
-		const newSVGElement = injectImgSVG(
-			SVGElement,
-			newSVGData,
-			false,
-			uniqueID
-		).outerHTML;
+		const { SVGData, SVGElement } = getUpdatedSVGDataAndElement(
+			layer,
+			uniqueID,
+			'background-svg-'
+		);
 
 		return {
 			...layer,
-			'background-svg-SVGData': newSVGData,
-			'background-svg-SVGElement': newSVGElement,
+			'background-svg-SVGData': SVGData,
+			'background-svg-SVGElement': SVGElement,
 		};
 	});
 };

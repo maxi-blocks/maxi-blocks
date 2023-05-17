@@ -1,7 +1,22 @@
 <?php
+/**
+ * MaxiBlocks Maxi Styles Class
+ *
+ * @since   1.2.0
+ * @package MaxiBlocks
+ */
+
+// Exit if accessed directly.
+if (!defined('ABSPATH')) {
+    exit();
+}
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_resolver.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/frontend_style_generator.php';
 
 class MaxiBlocks_Styles
 {
@@ -325,6 +340,19 @@ class MaxiBlocks_Styles
             OBJECT
         );
 
+        if (!$is_template) {
+            $styles_test = self::get_styles_from_blocks();
+
+            if (!empty($styles_test)) {
+                $content = $content_array[0];
+
+                $content->css_value = $styles_test;
+                $content->prev_css_value = $styles_test;
+
+                return json_decode(json_encode($content), true);
+            }
+        }
+
         if (!$content_array || empty($content_array)) {
             return false;
         }
@@ -336,6 +364,43 @@ class MaxiBlocks_Styles
         }
 
         return json_decode(json_encode($content), true);
+    }
+
+
+    public function get_styles_from_blocks()
+    {
+        global $post;
+
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
+
+        $blocks = parse_blocks($post->post_content);
+
+        if (!$blocks || empty($blocks)) {
+            return false;
+        }
+
+        $styles = [];
+
+        foreach ($blocks as $block) {
+            if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
+                $props = $block['attrs'];
+
+                $styles = MaxiBlocks_Group_Maxi_Block::get_styles($props);
+            }
+        }
+
+        if (!$styles || empty($styles)) {
+            return false;
+        }
+
+        $resolved_styles = style_resolver($styles);
+        $frontend_styles = frontend_style_generator($resolved_styles);
+
+        var_dump('Loaded styles for Group Maxi: ' . $frontend_styles);
+
+        return $frontend_styles;
     }
 
     /**

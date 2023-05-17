@@ -8,26 +8,26 @@
  * @param array $attributes The attributes.
  * @return mixed
  */
-function get_last_breakpoint_attribute($target, $breakpoint, $attributes)
-{
-	$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+// function get_last_breakpoint_attribute($target, $breakpoint, $attributes)
+// {
+// 	$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	if(property_exists($attributes, $target . '-' . $breakpoint))
-		return $attributes->{$target . '-' . $breakpoint};
+// 	if(property_exists($attributes, $target . '-' . $breakpoint))
+// 		return $attributes->{$target . '-' . $breakpoint};
 
-	$breakpoint_pos = array_search($breakpoint, $breakpoints);
+// 	$breakpoint_pos = array_search($breakpoint, $breakpoints);
 
-	$attr = null;
+// 	$attr = null;
 
-	while (
-		$breakpoint_pos >= 0 &&
-		is_null($attr)
-	) {
-		if(property_exists($attributes, $target . '-' . $breakpoints[$breakpoint_pos]))
-			$attr = $attributes->{$target . '-' . $breakpoints[$breakpoint_pos]};
+// 	while (
+// 		$breakpoint_pos >= 0 &&
+// 		is_null($attr)
+// 	) {
+// 		if(property_exists($attributes, $target . '-' . $breakpoints[$breakpoint_pos]))
+// 			$attr = $attributes->{$target . '-' . $breakpoints[$breakpoint_pos]};
 
-		$breakpoint_pos -= 1;
-	}
+// 		$breakpoint_pos -= 1;
+// 	}
 
-	return $attr;
-}
+// 	return $attr;
+// }

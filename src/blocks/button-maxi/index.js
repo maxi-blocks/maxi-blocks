@@ -1,11 +1,4 @@
 /**
- * BLOCK: maxi-blocks/button-maxi
- *
- * Registering a button block with Gutenberg.
- * Shows a button. A test block.
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -14,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -40,30 +34,15 @@ import {
 /**
  * Block
  */
-registerBlockType('maxi-blocks/button-maxi', {
-	title: __('Button Maxi', 'maxi-blocks'),
-	icon: buttonIcon,
-	description: 'Insert, modify or style a button',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+const { title, description, category, example } = metadata;
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: buttonIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({

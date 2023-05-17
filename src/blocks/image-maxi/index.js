@@ -1,8 +1,4 @@
 /**
- * BLOCK: maxi-blocks/pane-maxi
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -11,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -22,7 +19,8 @@ import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
-import { groupIcon } from '../../icons';
+import './editor.scss';
+import { imageBox } from '../../icons';
 
 /**
  * Migrators
@@ -32,37 +30,21 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/pane-maxi', {
-	title: __('Pane Maxi', 'maxi-blocks'),
-	description: __('Hide some content inside of it', 'maxi-blocks'),
-	icon: groupIcon,
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	parent: ['maxi-blocks/accordion-maxi'],
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: imageBox,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({
 		attributes,
 		save,
+		prefix: 'image-',
 		selectors: customCss.selectors,
 	}),
 });

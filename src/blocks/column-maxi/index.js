@@ -1,14 +1,16 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
- *
- * Combine a set of blocks in a group
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+
+/**
+ * Styles and icons
+ */
+import metadata from './block.json';
+import './style.scss';
+import './editor.scss';
+import { columnIcon } from '../../icons';
 
 /**
  * Block dependencies
@@ -21,13 +23,6 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
- * Styles and icons
- */
-import './style.scss';
-import './editor.scss';
-import { groupIcon } from '../../icons';
-
-/**
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
@@ -35,31 +30,15 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/group-maxi', {
-	title: __('Group Maxi', 'maxi-blocks'),
-	icon: groupIcon,
-	description: 'Combine a set of blocks in a group',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: columnIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({

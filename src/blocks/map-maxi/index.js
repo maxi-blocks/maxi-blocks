@@ -1,7 +1,7 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
+ * BLOCK: maxi-blocks/map-maxi
  *
- * Create a number counter
+ * Create a map with marker and description
  */
 
 /**
@@ -13,6 +13,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -24,48 +25,31 @@ import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
-import { numberCounterIcon } from '../../icons';
+import './editor.scss';
+import { mapIcon } from '../../icons';
 
 /**
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
-import NCMigrator from '../../extensions/styles/migrators/NCMigrator';
 
 /**
  * Block
  */
+const { title, description, category, example } = metadata;
 
-registerBlockType('maxi-blocks/number-counter-maxi', {
-	title: __('Number Counter Maxi', 'maxi-blocks'),
-	icon: numberCounterIcon,
-	description: __('Create a number counter', 'maxi-blocks'),
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: mapIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({
 		attributes,
 		save,
 		selectors: customCss.selectors,
-		migrators: [NCMigrator],
 	}),
 });

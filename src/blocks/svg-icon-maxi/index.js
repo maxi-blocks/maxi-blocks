@@ -14,6 +14,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -39,30 +40,16 @@ import {
 /**
  * Block
  */
-registerBlockType('maxi-blocks/svg-icon-maxi', {
-	title: __('Icon Maxi', 'maxi-blocks'),
-	icon: iconBox,
-	description: 'Add icon or shape and style it',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+const { title, description, category, example, parent } = metadata;
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: iconBox,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	parent,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({

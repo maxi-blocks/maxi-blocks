@@ -1,11 +1,4 @@
 /**
- * BLOCK: maxi-blocks/text-maxi
- *
- * Registering an text block with Gutenberg.
- * Shows an text and a description. A test block.
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -14,10 +7,10 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import transforms from './transforms';
 import { customCss } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
@@ -27,7 +20,7 @@ import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
  */
 import './editor.scss';
 import './style.scss';
-import { textIcon } from '../../icons';
+import { searchIcon } from '../../icons';
 
 /**
  * Migrators
@@ -37,33 +30,17 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 /**
  * Block
  */
-registerBlockType('maxi-blocks/text-maxi', {
-	title: __('Text Maxi', 'maxi-blocks'),
-	icon: textIcon,
-	description: 'Insert, modify or style text',
-	category: 'maxi-blocks',
-	example: {
-		attributes: {
-			preview: true,
-		},
-	},
-	supports: {
-		align: false,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+const { title, description, category, example } = metadata;
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+registerBlockType(metadata, {
+	title: __(title, 'maxi-blocks'),
+	icon: searchIcon,
+	description: __(description, 'maxi-blocks'),
+	category,
+	example,
+	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
-	transforms,
 	deprecated: blockMigrator({
 		attributes,
 		save,

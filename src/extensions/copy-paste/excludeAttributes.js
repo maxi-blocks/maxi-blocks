@@ -10,6 +10,8 @@ import { cloneDeep } from 'lodash';
 
 const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel'];
 
+const TEXT_CONTENT_EXCLUDE = ['content', 'buttonContent', 'captionContent'];
+
 const excludeAttributes = (
 	rawAttributesToExclude,
 	attributes,
@@ -28,7 +30,8 @@ const excludeAttributes = (
 			attributesToExclude[prop] &&
 			(shouldExcludeEmpty ||
 				(!shouldExcludeEmpty &&
-					attributes?.[prop] !== getDefaultAttribute(prop)))
+					(TEXT_CONTENT_EXCLUDE.includes(prop) ||
+						attributes?.[prop] !== getDefaultAttribute(prop))))
 		)
 			delete attributesToExclude[prop];
 	});

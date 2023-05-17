@@ -70,7 +70,7 @@ export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
 	return null;
 };
 
-export const getChildColumns = blockClientId => {
+export const getChildColumns = (blockClientId, isRowClientId = false) => {
 	const { getBlock, getBlocks, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
@@ -90,7 +90,7 @@ export const getChildColumns = blockClientId => {
 		return null;
 	};
 
-	const parentRow = getParentRow();
+	const parentRow = isRowClientId ? getBlock(blockClientId) : getParentRow();
 
 	// Check if the selected block is a child of your custom row block
 	if (parentRow) {

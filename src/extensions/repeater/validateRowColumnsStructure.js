@@ -69,7 +69,7 @@ const validateRowColumnsStructure = (
 	innerBlocksPositions,
 	columnToValidateByClientId
 ) => {
-	let childColumns = getChildColumns(rowClientId);
+	let childColumns = getChildColumns(rowClientId, true);
 
 	const columnToValidateBy = columnToValidateByClientId
 		? childColumns.find(

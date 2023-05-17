@@ -46,7 +46,7 @@ class edit extends MaxiBlockComponent {
 
 	columnsClientIds = [];
 
-	isRepeaterInherited = !!this.context;
+	isRepeaterInherited = !!this.context?.repeaterStatus;
 
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
@@ -108,7 +108,7 @@ class edit extends MaxiBlockComponent {
 			}),
 			getInnerBlocksPositions: this.getInnerBlocksPositions,
 			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
-			...this.context,
+			...(this.context?.repeaterStatus && this.context),
 		};
 
 		return [

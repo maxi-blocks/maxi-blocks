@@ -37,7 +37,9 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
-						...(this.props.repeaterStatus && DISALLOWED_BLOCKS),
+						...(this.props.repeaterStatus
+							? DISALLOWED_BLOCKS
+							: Array(DISALLOWED_BLOCKS.length).fill(null)),
 					].indexOf(blockName) === -1
 			);
 

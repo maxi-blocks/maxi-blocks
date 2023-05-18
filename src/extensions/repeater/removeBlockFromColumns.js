@@ -16,7 +16,8 @@ import { isEmpty } from 'lodash';
 const removeBlockFromColumns = (
 	blockPosition,
 	parentColumnClientId,
-	parentInnerBlocksCount
+	parentInnerBlocksCount,
+	updateInnerBlocksPositions
 ) => {
 	const { getBlock } = select('core/block-editor');
 
@@ -73,6 +74,8 @@ const removeBlockFromColumns = (
 					innerBlock => innerBlock.clientId !== clientId
 				)
 			);
+
+			updateInnerBlocksPositions?.();
 		});
 	}
 };

@@ -301,6 +301,9 @@ const withMaxiProps = createHigherOrderComponent(
 						getInnerBlocksPositions={
 							repeaterContext?.getInnerBlocksPositions
 						}
+						updateInnerBlocksPositions={
+							repeaterContext?.updateInnerBlocksPositions
+						}
 					/>
 					{/*
 						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.

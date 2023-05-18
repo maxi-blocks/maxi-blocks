@@ -114,11 +114,15 @@ class edit extends MaxiBlockComponent {
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
+				{...this.props}
 				repeaterStatus={repeaterContext.repeaterStatus}
 				isRepeaterInherited={this.isRepeaterInherited}
-				getInnerBlocksPositions={this.getInnerBlocksPositions}
-				updateInnerBlocksPositions={this.updateInnerBlocksPositions}
-				{...this.props}
+				getInnerBlocksPositions={
+					repeaterContext.getInnerBlocksPositions
+				}
+				updateInnerBlocksPositions={
+					repeaterContext.updateInnerBlocksPositions
+				}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}

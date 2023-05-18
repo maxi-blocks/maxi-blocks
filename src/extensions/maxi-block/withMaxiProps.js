@@ -151,7 +151,8 @@ const withMaxiProps = createHigherOrderComponent(
 									obj,
 									currentAttributes,
 									copyPasteMapping,
-									false
+									false,
+									true
 								);
 
 								updateRelationsInColumn(

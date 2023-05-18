@@ -10,18 +10,23 @@ import { cloneDeep } from 'lodash';
 
 const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel'];
 
+const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
+	key => key !== 'customLabel'
+);
+
 const TEXT_CONTENT_EXCLUDE = ['content', 'buttonContent', 'captionContent'];
 
 const excludeAttributes = (
 	rawAttributesToExclude,
 	attributes,
 	copyPasteMapping,
-	shouldExcludeEmpty = true
+	shouldExcludeEmpty = true,
+	isRepeater = false
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
 
 	const keysToExclude = [
-		...GLOBAL_EXCLUDE,
+		...(isRepeater ? REPEATER_GLOBAL_EXCLUDE : GLOBAL_EXCLUDE),
 		...(copyPasteMapping._exclude || []),
 	];
 

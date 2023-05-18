@@ -276,7 +276,11 @@ const RelationControl = props => {
 	const getBlocksToAffect = () => {
 		const arr = [];
 
-		const { getBlockParentsByBlockName } = select('core/block-editor');
+		const {
+			getBlockAttributes,
+			getBlockOrder,
+			getBlockParentsByBlockName,
+		} = select('core/block-editor');
 
 		const parentRowClientId =
 			repeaterContext?.repeaterStatus &&
@@ -292,26 +296,44 @@ const RelationControl = props => {
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID
 			) {
+				const currentParentRowClientId = getBlockParentsByBlockName(
+					block.clientId,
+					'maxi-blocks/row-maxi'
+				)[0];
+				const currentParentColumnClientId =
+					block.name === 'maxi-blocks/column-maxi'
+						? block.clientId
+						: getBlockParentsByBlockName(
+								block.clientId,
+								'maxi-blocks/column-maxi'
+						  )[0];
+
 				const isBlockInRepeaterAndInAnotherColumn =
 					repeaterContext?.repeaterStatus &&
-					parentRowClientId ===
-						getBlockParentsByBlockName(
-							block.clientId,
-							'maxi-blocks/row-maxi'
-						)[0] &&
-					parentColumnClientId !==
-						getBlockParentsByBlockName(
-							block.clientId,
-							'maxi-blocks/column-maxi'
-						)[0] &&
-					parentColumnClientId !== block.clientId;
+					parentRowClientId === currentParentRowClientId &&
+					parentColumnClientId !== currentParentColumnClientId;
+
+				const isTargetInRepeaterAndTriggerNot =
+					!repeaterContext?.repeaterStatus &&
+					currentParentRowClientId &&
+					getBlockAttributes(currentParentRowClientId)[
+						'repeater-status'
+					];
 
 				if (isBlockInRepeaterAndInAnotherColumn) {
 					return;
 				}
 
 				arr.push({
-					label: block.attributes.customLabel,
+					label: `${block.attributes.customLabel}${
+						isTargetInRepeaterAndTriggerNot
+							? `(${
+									getBlockOrder(
+										currentParentRowClientId
+									).indexOf(currentParentColumnClientId) + 1
+							  })`
+							: ''
+					}`,
 					value: block.attributes.uniqueID,
 				});
 			}

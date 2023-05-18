@@ -39,7 +39,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		blocks: {},
-		innerBlocksPositions: null,
+		innerBlocksPositions: {},
 	};
 
 	columnsSize = {};

@@ -9,7 +9,7 @@ import { dispatch, select } from '@wordpress/data';
 import { cleanInnerBlocks, excludeAttributes } from '../copy-paste';
 import { getChildColumns, goThroughColumns, findBlockPosition } from './utils';
 import { goThroughMaxiBlocks } from '../maxi-block';
-import { getBlockData } from '../attributes';
+import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
 import DISALLOWED_BLOCKS from './disallowedBlocks';
 
@@ -22,7 +22,7 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
 
 	const blockPosition = findBlockPosition(block.clientId, column);
-	const refClientId = innerBlocksPositions?.[`${blockPosition}`].at(0);
+	const refClientId = innerBlocksPositions?.[blockPosition]?.at(0);
 
 	if (!refClientId) {
 		return false;
@@ -32,10 +32,7 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 
 	const nonExcludedRefAttributes = excludeAttributes(
 		getBlockAttributes(refClientId),
-		['background-layers', 'background-layers-hover'].reduce((acc, key) => {
-			acc[key] = block.attributes[key];
-			return acc;
-		}, {}),
+		block.attributes,
 		copyPasteMapping,
 		false
 	);
@@ -45,10 +42,24 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 		block.clientId,
 		innerBlocksPositions
 	);
+	if (
+		'SVGData' in nonExcludedRefAttributes &&
+		'SVGElement' in nonExcludedRefAttributes
+	) {
+		const { SVGData, SVGElement } = getUpdatedSVGDataAndElement(
+			nonExcludedRefAttributes,
+			block.attributes.uniqueID,
+			'',
+			block.attributes.mediaURL
+		);
+
+		nonExcludedRefAttributes.SVGData = SVGData;
+		nonExcludedRefAttributes.SVGElement = SVGElement;
+	}
 
 	const nonExcludedBlockAttributes = excludeAttributes(
 		block.attributes,
-		null,
+		block.attributes,
 		copyPasteMapping,
 		false
 	);
@@ -70,7 +81,7 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 const validateRowColumnsStructure = (
 	rowClientId,
 	innerBlocksPositions,
-	columnToValidateByClientId
+	rawColumnToValidateByClientId
 ) => {
 	const {
 		replaceInnerBlocks,
@@ -80,11 +91,12 @@ const validateRowColumnsStructure = (
 
 	let childColumns = getChildColumns(rowClientId, true);
 
-	const columnToValidateBy = columnToValidateByClientId
+	const columnToValidateBy = rawColumnToValidateByClientId
 		? childColumns.find(
-				column => column.clientId === columnToValidateByClientId
+				column => column.clientId === rawColumnToValidateByClientId
 		  )
 		: childColumns[0];
+	const columnToValidateByClientId = columnToValidateBy.clientId;
 
 	// Make sure that column to validate by is first in childColumns array
 	if (columnToValidateBy.clientId !== childColumns[0].clientId) {

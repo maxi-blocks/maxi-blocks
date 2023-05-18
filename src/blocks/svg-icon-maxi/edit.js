@@ -59,7 +59,7 @@ class edit extends MaxiBlockComponent {
 			const innerBlockPositions = this.props.getInnerBlocksPositions();
 
 			return (
-				innerBlockPositions[[-1]].indexOf(parentColumnClientId) === 0
+				innerBlockPositions?.[[-1]]?.indexOf(parentColumnClientId) === 0
 			);
 		}
 

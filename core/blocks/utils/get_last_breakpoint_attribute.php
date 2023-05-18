@@ -19,12 +19,12 @@ function get_last_breakpoint_attribute(
 
     if (!isset($breakpoint)) {
         return get_value_from_keys(
-            get_attribute_value(array(
-                'target' => $target,
-                'props' => $attr,
-                'isHover' => $is_hover,
-                'breakpoint' => $breakpoint,
-            )),
+            get_attributes_value(
+                $target,
+                $attr,
+                $is_hover,
+                $breakpoint,
+            ),
             $keys
         );
     }

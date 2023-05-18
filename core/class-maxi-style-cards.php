@@ -23,6 +23,14 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Return the registered instance
+     */
+    public static function get_instance()
+    {
+        return self::$instance;
+    }
+
+    /**
      * Constructor
      */
     public function __construct()

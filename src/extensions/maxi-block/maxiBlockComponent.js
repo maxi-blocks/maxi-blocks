@@ -445,7 +445,8 @@ class MaxiBlockComponent extends Component {
 			removeBlockFromColumns(
 				this.props.blockPositionFromColumn,
 				this.props.parentColumnClientId,
-				this.props.parentInnerBlocksCount
+				this.props.parentInnerBlocksCount,
+				this.props.updateInnerBlocksPositions
 			);
 		}
 		// If repeater is turned on and block was moved
@@ -461,7 +462,8 @@ class MaxiBlockComponent extends Component {
 			removeBlockFromColumns(
 				this.props.blockPositionFromColumn,
 				this.props.parentColumnClientId,
-				this.props.parentInnerBlocksCount
+				this.props.parentInnerBlocksCount,
+				this.props.updateInnerBlocksPositions
 			);
 		}
 		// If repeater is turned on and block was moved

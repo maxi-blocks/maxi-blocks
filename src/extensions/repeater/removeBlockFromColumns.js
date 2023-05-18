@@ -54,14 +54,26 @@ const removeBlockFromColumns = (
 
 	if (!wasBlockRemoved && !isEmpty(clientIdsToRemove)) {
 		const {
-			removeBlocks,
+			replaceInnerBlocks,
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
 		} = dispatch('core/block-editor');
+		const { getBlockRootClientId } = select('core/block-editor');
 
-		markNextChangeAsNotPersistent();
-		markNextChangeAsNotPersistent();
-		removeBlocks(clientIdsToRemove);
+		// Use replaceInnerBlocks instead of removeBlocks,
+		// because markNextChangeAsNotPersistent is not working with removeBlocks
+		clientIdsToRemove.forEach(clientId => {
+			const rootClientId = getBlockRootClientId(clientId);
+			const rootBlock = getBlock(rootClientId);
+
+			markNextChangeAsNotPersistent();
+			replaceInnerBlocks(
+				rootClientId,
+				rootBlock.innerBlocks.filter(
+					innerBlock => innerBlock.clientId !== clientId
+				)
+			);
+		});
 	}
 };
 

@@ -18,7 +18,6 @@ const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
 			onChange={obj => maxiSetAttributes(obj)}
-			allowCustomDate
 			contentType={contentType}
 		/>
 	),

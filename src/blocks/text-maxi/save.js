@@ -24,11 +24,7 @@ const save = props => {
 
 	const name = 'maxi-blocks/text-maxi';
 	const className = 'maxi-text-block__content';
-	console.log('content');
-	console.log(content);
 	const value = content?.replace(/\n/g, '<br />');
-	console.log('value');
-	console.log(value);
 
 	return (
 		<MaxiBlock.save

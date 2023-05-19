@@ -58,7 +58,6 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 	} else {
 		content = NewDate.toLocaleString(locale, options);
 	}
-	console.log('content from process date', content);
 	return content;
 };
 

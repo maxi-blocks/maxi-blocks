@@ -1,6 +1,6 @@
 import cleanAttributes from '../cleanAttributes';
 
-jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+jest.mock('src/extensions/attributes/getDefaultAttribute.js', () =>
 	jest.fn(attr =>
 		attr === 'attribute-with-default-value-hover' ? true : undefined
 	)

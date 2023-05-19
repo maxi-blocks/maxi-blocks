@@ -6,7 +6,9 @@ jest.mock('@wordpress/blocks', () => {
 		getActiveFormat: jest.fn(),
 	};
 });
-jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../../attributes/transitions/getTransitionData.js', () =>
+	jest.fn()
+);
 jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
 
 describe('getCustomFormatValue', () => {
@@ -20,18 +22,18 @@ describe('getCustomFormatValue', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'font-size-unit-xxl': 'px',
-			'letter-spacing-unit-xxl': 'px',
-			'font-size-unit-xl': 'px',
-			'letter-spacing-unit-xl': 'px',
-			'font-size-unit-l': 'px',
-			'letter-spacing-unit-l': 'px',
-			'font-size-unit-m': 'px',
-			'letter-spacing-unit-m': 'px',
-			'font-size-unit-s': 'px',
-			'letter-spacing-unit-s': 'px',
-			'font-size-unit-xs': 'px',
-			'letter-spacing-unit-xs': 'px',
+			'_fs.u-xxl': 'px',
+			'_ls.u-xxl': 'px',
+			'_fs.u-xl': 'px',
+			'_ls.u-xl': 'px',
+			'_fs.u-l': 'px',
+			'_ls.u-l': 'px',
+			'_fs.u-m': 'px',
+			'_ls.u-m': 'px',
+			'_fs.u-s': 'px',
+			'_ls.u-s': 'px',
+			'_fs.u-xs': 'px',
+			'_ls.u-xs': 'px',
 		};
 		const styleCard = {
 			light: {
@@ -40,13 +42,13 @@ describe('getCustomFormatValue', () => {
 				},
 				styleCard: {
 					p: {
-						'font-size-xl': '16',
-						'font-size-unit-xl': 'px',
+						'_fs-xl': '16',
+						'_fs-unit-xl': 'px',
 					},
 				},
 			},
 		};
-		const prop = 'font-size';
+		const prop = '_fs';
 		const breakpoint = 'xl';
 		const textLevel = 'p';
 		const blockStyle = 'light';

@@ -20,7 +20,7 @@ const updateRelationHoverStatus = (blockName, blockAttributes) => {
 
 	goThroughMaxiBlocks(({ clientId, attributes: currentBlockAttributes }) => {
 		const [relations, blockUniqueID] = getAttributesValue({
-			target: ['relations', 'uniqueID'],
+			target: ['_r', '_uid'],
 			props: currentBlockAttributes,
 		});
 
@@ -29,7 +29,7 @@ const updateRelationHoverStatus = (blockName, blockAttributes) => {
 				const {
 					attributes: relationAttributes,
 					settings: settingName,
-					uniqueID: relationUniqueID,
+					_uid: relationUniqueID,
 				} = relation;
 
 				if (!settingName || uniqueID !== relationUniqueID)

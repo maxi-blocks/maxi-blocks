@@ -57,7 +57,7 @@ const Inspector = props => {
 		props: attributes,
 	});
 	const captionGap = getAttributesValue({
-		target: '_cg',
+		target: '_cga',
 		props: attributes,
 		breakpoint: deviceType,
 	});
@@ -225,7 +225,7 @@ const Inspector = props => {
 																className='maxi-image-inspector__caption-gap'
 																placeholder={getLastBreakpointAttribute(
 																	{
-																		target: '_cg',
+																		target: '_cga',
 																		breakpoint:
 																			deviceType,
 																		attributes,
@@ -237,7 +237,7 @@ const Inspector = props => {
 																onChangeValue={val =>
 																	maxiSetAttributes(
 																		{
-																			[`_cg-${deviceType}`]:
+																			[`_cga-${deviceType}`]:
 																				val,
 																		}
 																	)
@@ -245,7 +245,7 @@ const Inspector = props => {
 																enableUnit
 																unit={getLastBreakpointAttribute(
 																	{
-																		target: '_cg.u',
+																		target: '_cga.u',
 																		breakpoint:
 																			deviceType,
 																		attributes,
@@ -264,7 +264,7 @@ const Inspector = props => {
 																onChangeUnit={val =>
 																	maxiSetAttributes(
 																		{
-																			[`_cg.u-${deviceType}`]:
+																			[`_cga.u-${deviceType}`]:
 																				val,
 																		}
 																	)
@@ -272,13 +272,13 @@ const Inspector = props => {
 																onReset={() =>
 																	maxiSetAttributes(
 																		{
-																			[`_cg-${deviceType}`]:
+																			[`_cga-${deviceType}`]:
 																				getDefaultAttribute(
-																					`_cg-${deviceType}`
+																					`_cga-${deviceType}`
 																				),
-																			[`_cg.u-${deviceType}`]:
+																			[`_cga.u-${deviceType}`]:
 																				getDefaultAttribute(
-																					`_cg.u-${deviceType}`
+																					`_cga.u-${deviceType}`
 																				),
 																			isReset: true,
 																		}

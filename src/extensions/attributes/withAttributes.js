@@ -72,14 +72,13 @@ const withAttributes = createHigherOrderComponent(
 
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
-			attributes[getAttributeKey('_ioh')] = isEmpty(parentBlocks);
-			if (!attributes[getAttributeKey('_ioh')]) {
+			attributes._ioh = isEmpty(parentBlocks);
+			if (!attributes._ioh) {
 				const firstMaxiParentBlock = select(
 					'core/block-editor'
 				).getBlock(parentBlocks[0]);
 
-				attributes[getAttributeKey('_bs')] =
-					firstMaxiParentBlock.attributes[getAttributeKey('_bs')];
+				attributes._bs = firstMaxiParentBlock.attributes._bs;
 			}
 
 			// RTL

@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getDividerStyles from '../getDividerStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -29,40 +28,40 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getDividerStyles', () => {
 	it('Get a correct divider styles', () => {
-		const obj = parseLongAttrObj({
-			'divider-border-top-general': 38,
-			'divider-border-top-s': 149,
-			'divider-border-top-unit-general': 'px',
-			'divider-border-right-general': 2,
-			'divider-border-right-l': 14,
-			'divider-border-right-unit-general': 'px',
-			'divider-border-radius-general': false,
-			'divider-width-general': 79,
-			'divider-width-s': 23,
-			'divider-width-unit-general': '%',
-			'divider-height-general': 100,
-			'divider-height-l': 41,
-			'line-align-general': 'row',
-			'line-vertical-general': 'flex-end',
-			'line-vertical-l': 'flex-start',
-			'line-vertical-s': 'center',
-			'line-horizontal-general': 'flex-start',
-			'line-horizontal-l': 'center',
-			'line-horizontal-s': 'flex-start',
-			'line-orientation-general': 'horizontal',
-			'line-orientation-l': 'vertical',
-			'line-orientation-s': 'horizontal',
-			'divider-border-palette-status-general': true,
-			'divider-border-palette-status-l': true,
-			'divider-border-palette-status-s': true,
-			'divider-border-palette-color-general': 7,
-			'divider-border-palette-color-l': 4,
-			'divider-border-palette-color-s': 3,
-			'divider-border-palette-opacity-l': 0.56,
-			'divider-border-palette-opacity-s': 0.56,
-			'divider-border-style-general': 'dashed',
-			'divider-border-style-l': 'solid',
-		});
+		const obj = {
+			'di-bo.t-general': 38,
+			'di-bo.t-s': 149,
+			'di-bo.t.u-general': 'px',
+			'di-bo.r-general': 2,
+			'di-bo.r-l': 14,
+			'di-bo.r.u-general': 'px',
+			'di-bo.ra-general': false,
+			'di_w-general': 79,
+			'di_w-s': 23,
+			'di_w.u-general': '%',
+			'di_h-general': 100,
+			'di_h-l': 41,
+			'_la-general': 'row',
+			'_lv-general': 'flex-end',
+			'_lv-l': 'flex-start',
+			'_lv-s': 'center',
+			'_lh-general': 'flex-start',
+			'_lh-l': 'center',
+			'_lh-s': 'flex-start',
+			'_lo-general': 'horizontal',
+			'_lo-l': 'vertical',
+			'_lo-s': 'horizontal',
+			'di-bo_ps-general': true,
+			'di-bo_ps-l': true,
+			'di-bo_ps-s': true,
+			'di-bo_pc-general': 7,
+			'di-bo_pc-l': 4,
+			'di-bo_pc-s': 3,
+			'di-bo_po-l': 0.56,
+			'di-bo_po-s': 0.56,
+			'di-bo_s-general': 'dashed',
+			'di-bo_s-l': 'solid',
+		};
 
 		const resultLine = getDividerStyles(obj, 'line', 'light');
 		expect(resultLine).toMatchSnapshot();

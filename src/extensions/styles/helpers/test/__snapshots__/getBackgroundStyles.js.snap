@@ -1215,6 +1215,7 @@ Object {
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xl": Object {
+        "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
         "background-origin": "border-box",
@@ -1230,6 +1231,7 @@ Object {
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
       "xxl": Object {
+        "-webkit-transform": "translate3d(0,0,0)",
         "background-position": "left top",
         "background-size": "cover",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",

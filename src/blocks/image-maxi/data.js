@@ -64,11 +64,11 @@ const copyPasteMapping = {
 				'Caption content': '_cco',
 				'Caption position': '_cpo',
 				'Caption gap': {
-					props: '_cg',
+					props: '_cga',
 					hasBreakpoints: true,
 				},
 				'Caption gap unit': {
-					props: '_cg.u',
+					props: '_cga.u',
 					hasBreakpoints: true,
 				},
 				Typography: {

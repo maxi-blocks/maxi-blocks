@@ -21,7 +21,7 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 
 	return rawBackgroundLayers.map(layer => {
 		const [SVGData, SVGElement] = getAttributesValue({
-			target: ['background-svg-SVGData', 'background-svg-svgElement'],
+			target: ['bsv_sd', 'bsv_se'],
 			props: layer,
 		});
 
@@ -44,8 +44,8 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 
 		return {
 			...layer,
-			'background-svg-SVGData': newSVGData,
-			'background-svg-SVGElement': newSVGElement,
+			bsv_sd: newSVGData,
+			bsv_se: newSVGElement,
 		};
 	});
 };

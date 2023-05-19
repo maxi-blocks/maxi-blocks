@@ -37,7 +37,7 @@ const getIsActiveTab = (
 		'_bs',
 		'_ioh',
 		'_uid',
-		'svgType',
+		'_st',
 		...ignoreIndicator,
 		...ignoreAttributes,
 	];

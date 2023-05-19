@@ -5,8 +5,8 @@ describe('hoverAttributesCreator', () => {
 	it('Returns a color bg object', () => {
 		const result = hoverAttributesCreator({
 			obj: backgroundColor,
-			sameValAttr: ['background-palette-status-general'],
-			diffValAttr: { 'background-palette-color-general': 6 },
+			sameValAttr: ['bc_ps-general'],
+			diffValAttr: { 'bc_pc-general': 6 },
 		});
 
 		expect(result).toMatchSnapshot();
@@ -16,7 +16,7 @@ describe('hoverAttributesCreator', () => {
 		const result = hoverAttributesCreator({
 			obj: background,
 			newAttr: {
-				'background-status-hover': {
+				'b.sh': {
 					type: 'boolean',
 					default: false,
 				},

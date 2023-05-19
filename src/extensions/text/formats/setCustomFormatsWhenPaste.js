@@ -229,7 +229,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/italic',
-			value: { 'font-style': 'italic' },
+			value: { _fst: 'italic' },
 			isList,
 			textLevel,
 		});
@@ -243,7 +243,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/underline',
-			value: { 'font-decoration': 'underline' },
+			value: { _td: 'underline' },
 			isList,
 			textLevel,
 		});
@@ -257,7 +257,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/strikethrough',
-			value: { 'text-decoration': 'line-through' },
+			value: { _td: 'line-through' },
 			isList,
 			textLevel,
 		});
@@ -271,7 +271,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/subscript',
-			value: { 'vertical-align': 'sub' },
+			value: { _va: 'sub' },
 			isList,
 			textLevel,
 		});
@@ -285,7 +285,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/superscript',
-			value: { 'vertical-align': 'super' },
+			value: { _va: 'super' },
 			isList,
 			textLevel,
 		});

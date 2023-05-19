@@ -131,16 +131,11 @@ class MaxiBlockComponent extends Component {
 				const { attributes } = this.props;
 				const maxiVersion = settings.maxi_version;
 
-				if (
-					maxiVersion !==
-					attributes[getAttributeKey('maxi-version-current')]
-				)
-					attributes[getAttributeKey('maxi-version-current')] =
-						maxiVersion;
+				if (maxiVersion !== attributes[getAttributeKey('_mvc')])
+					attributes[getAttributeKey('_mvc')] = maxiVersion;
 
-				if (!attributes[getAttributeKey('maxi-version-origin')])
-					attributes[getAttributeKey('maxi-version-origin')] =
-						maxiVersion;
+				if (!attributes[getAttributeKey('_mvo')])
+					attributes[getAttributeKey('_mvo')] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
@@ -271,7 +266,7 @@ class MaxiBlockComponent extends Component {
 			prevProps.attributes,
 			this.props.attributes
 		);
-		if (Object.keys(diffAttributes).some(key => key.includes('hover')))
+		if (Object.keys(diffAttributes).some(key => key.includes('.h')))
 			updateRelationHoverStatus(this.props.name, this.props.attributes);
 
 		if (!shouldDisplayStyles) this.displayStyles();
@@ -361,7 +356,7 @@ class MaxiBlockComponent extends Component {
 					!isEqual(currentValue, value)) &&
 				// Using `maxi-version-current` as is an attribute that set on componentDidMount
 				// so it ensures we add these attributes the first time we add the block
-				'maxi-version-current' in this.props.attributes
+				'_mvc' in this.props.attributes
 			)
 				return;
 
@@ -380,7 +375,7 @@ class MaxiBlockComponent extends Component {
 
 	get getCustomData() {
 		const [uniqueID, bgLayers, relationsRaw] = getAttributesValue({
-			target: ['_uid', 'b_ly', 'relations'],
+			target: ['_uid', 'b_ly', '_r'],
 			props: this.props.attributes,
 		});
 
@@ -422,7 +417,7 @@ class MaxiBlockComponent extends Component {
 		const newBlockStyle = getBlockStyle(clientId);
 
 		if (blockStyle !== newBlockStyle) {
-			this.props.attributes[getAttributeKey('_bs')] = newBlockStyle;
+			this.props.attributes._bs = newBlockStyle;
 
 			return true;
 		}

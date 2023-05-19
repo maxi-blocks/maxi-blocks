@@ -35,9 +35,6 @@ const dictionary = {
 	accordionLine: {
 		line: '_li',
 	},
-	accordionTitle: {
-		titleLevel: '_tl',
-	},
 	alignment: {
 		alignment: '_a',
 	},
@@ -201,9 +198,9 @@ const dictionary = {
 		captionType: '_ct',
 		captionContent: '_cco',
 		captionPosition: '_cpo',
-		'caption-gap': '_cg',
+		'caption-gap': '_cga',
 		imageSize: '_is',
-		cropOptions: '_co',
+		cropOptions: '_cop',
 		isImageUrl: '_iiu',
 		altSelector: '_as',
 		mediaAlt: '_mal',

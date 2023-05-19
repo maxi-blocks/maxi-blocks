@@ -7,7 +7,7 @@ describe('getFormatsOnMerge', () => {
 				'Testing <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Text</span> Maxi',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': '800',
+					'_fwe-general': '800',
 				},
 			},
 		};
@@ -16,7 +16,7 @@ describe('getFormatsOnMerge', () => {
 				'When <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">merging</span>',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
-					'font-style-general': 'italic',
+					'_fst-general': 'italic',
 				},
 			},
 		};

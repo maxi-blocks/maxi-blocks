@@ -1,9 +1,9 @@
 import handleSetAttributes from '../handleSetAttributes';
 
-jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+jest.mock('src/extensions/attributes/getDefaultAttribute.js', () =>
 	jest.fn(() => undefined)
 );
-jest.mock('src/extensions/attributes/handleOnReset.js', () =>
+jest.mock('src/extensions/maxi-block/handleOnReset.js', () =>
 	jest.fn(obj => obj)
 );
 jest.mock('@wordpress/data', () => {

@@ -1,4 +1,3 @@
-const getHoverAttributeKey = key =>
-	key.includes('-hover') ? key : `${key}-hover`;
+const getHoverAttributeKey = key => (key.includes('.h') ? key : `${key}.h`);
 
 export default getHoverAttributeKey;

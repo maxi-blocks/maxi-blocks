@@ -35,7 +35,7 @@ const DimensionTab = props => {
 		deviceType,
 	} = props;
 	const {
-		_co: cropOptions,
+		_cop: cropOptions,
 		_ir: imageRatio,
 		_is: imageSize,
 		_iiu: isImageUrl,
@@ -140,7 +140,7 @@ const DimensionTab = props => {
 							cropOptions={cropOptions}
 							onChange={cropOptions => {
 								maxiSetAttributes({
-									_co: cropOptions,
+									_cop: cropOptions,
 									_mu: cropOptions.image.source_url,
 									_meh: cropOptions.image.height,
 									_mew: cropOptions.image.width,

@@ -120,7 +120,7 @@ export const getShapeDividerSVGStyles = (obj, location, blockStyle) => {
 		} else if (paletteStatus && paletteColor) {
 			response[breakpoint].fill = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
-				opacity: obj[paletteOpacity],
+				opacity: paletteOpacity,
 				blockStyle,
 			});
 		}

@@ -69,7 +69,7 @@ const removeLinkFormat = ({
 		getCustomFormatValue({
 			formatValue: { ...formatValue, start: 0, end: formatLength },
 			typography,
-			prop: 'text-decoration',
+			prop: '_td',
 			breakpoint: 'general',
 			blockStyle,
 			textLevel,
@@ -94,7 +94,7 @@ const removeLinkFormat = ({
 			isList,
 			typography,
 			value: {
-				'text-decoration': '',
+				_td: '',
 			},
 			textLevel,
 		});
@@ -110,7 +110,7 @@ const removeLinkFormat = ({
 						isList,
 						typography: cleanTypography,
 						value: {
-							'text-decoration': 'underline',
+							_td: 'underline',
 						},
 						textLevel,
 						returnFormatValue: true,
@@ -128,7 +128,7 @@ const removeLinkFormat = ({
 						isList,
 						typography: firstPartTypography,
 						value: {
-							'text-decoration': 'underline',
+							_td: 'underline',
 						},
 						textLevel,
 				  })
@@ -152,7 +152,7 @@ const removeLinkFormat = ({
 				isList,
 				typography,
 				value: {
-					'text-decoration': '',
+					_td: '',
 				},
 				textLevel,
 			}),
@@ -165,7 +165,7 @@ const removeLinkFormat = ({
 		isList,
 		typography,
 		value: {
-			'text-decoration': '',
+			_td: '',
 		},
 		textLevel,
 	});

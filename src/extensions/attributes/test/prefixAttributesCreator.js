@@ -13,7 +13,11 @@ describe('prefixAttributesCreator', () => {
 		};
 
 		expect(
-			prefixAttributesCreator({ obj, prefix: 'bt-' })
+			prefixAttributesCreator({
+				obj,
+				prefix: 'bt-',
+				longPrefix: 'button-',
+			})
 		).toMatchSnapshot();
 	});
 
@@ -22,7 +26,8 @@ describe('prefixAttributesCreator', () => {
 			prefixAttributesCreator({
 				obj: padding,
 				prefix: 'bt-',
-				diffValAttr: { 'button-padding-bottom-general': 30 },
+				longPrefix: 'button-',
+				diffValAttr: { 'bt_p.b-general': 30 },
 			})
 		).toMatchSnapshot();
 	});
@@ -32,7 +37,8 @@ describe('prefixAttributesCreator', () => {
 			prefixAttributesCreator({
 				obj: padding,
 				prefix: 'bt-',
-				exclAttr: ['padding-bottom'],
+				exclAttr: ['_p.b'],
+				longPrefix: 'button-',
 			})
 		).toMatchSnapshot();
 	});

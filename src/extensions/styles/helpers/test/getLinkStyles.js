@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getLinkStyles from '../getLinkStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -29,17 +28,17 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getLinkStyles', () => {
 	it('Returns a correct object', () => {
-		const obj = parseLongAttrObj({
-			'link-palette-status-general': true,
-			'link-palette-color-general': 4,
-			'link-hover-palette-status-general': true,
-			'link-hover-palette-color-general': 4,
-			'link-hover-palette-opacity-general': 0.2,
-			'link-active-palette-status-general': true,
-			'link-active-palette-color-general': 3,
-			'link-visited-palette-status-general': true,
-			'link-visited-palette-color-general': 3,
-		});
+		const obj = {
+			'_l_ps-general': true,
+			'_l_pc-general': 4,
+			'_lih_ps-general': true,
+			'_lih_pc-general': 4,
+			'_lih_po-general': 0.2,
+			'_lia_ps-general': true,
+			'_lia_pc-general': 3,
+			'_liv_ps-general': true,
+			'_liv_pc-general': 3,
+		};
 		const target = ' p.maxi-text-block__content a';
 		const blockStyles = 'light';
 
@@ -49,21 +48,21 @@ describe('getLinkStyles', () => {
 	});
 
 	it('Returns a correct object with custom colors', () => {
-		const obj = parseLongAttrObj({
-			'link-palette-status-general': false,
-			'link-palette-color-general': 4,
-			'link-color-general': 'rgba(57,189,39,1)',
-			'link-hover-palette-status-general': false,
-			'link-hover-palette-color-general': 4,
-			'link-hover-palette-opacity-general': 0.2,
-			'link-hover-color-general': 'rgba(191,192,86,1)',
-			'link-active-palette-status-general': false,
-			'link-active-palette-color-general': 3,
-			'link-active-color-general': 'rgba(221,32,32,1)',
-			'link-visited-palette-status-general': false,
-			'link-visited-palette-color-general': 3,
-			'link-visited-color-general': 'rgba(27,109,168,1)',
-		});
+		const obj = {
+			'_l_ps-general': false,
+			'_l_pc-general': 4,
+			'_l_cc-general': 'rgba(57,189,39,1)',
+			'_lih_ps-general': false,
+			'_lih_pc-general': 4,
+			'_lih_po-general': 0.2,
+			'_lih_cc-general': 'rgba(191,192,86,1)',
+			'_lia_ps-general': false,
+			'_lia_pc-general': 3,
+			'_lia_cc-general': 'rgba(221,32,32,1)',
+			'_liv_ps-general': false,
+			'_liv_pc-general': 3,
+			'_liv_cc-general': 'rgba(27,109,168,1)',
+		};
 		const target = ' p.maxi-text-block__content a';
 		const blockStyles = 'light';
 

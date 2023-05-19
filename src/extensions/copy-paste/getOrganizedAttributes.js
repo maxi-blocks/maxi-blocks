@@ -8,6 +8,7 @@ import { getGroupAttributes, paletteAttributesCreator } from '../attributes';
  * External dependencies
  */
 import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
+import getCleanKey from '../attributes/getCleanKey';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -42,7 +43,7 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 	const props = isString(rawProps) ? [rawProps] : rawProps;
 
 	props.forEach(prop => {
-		const key = `${prefix}${prop}`;
+		const key = getCleanKey(`${prefix}${prop}`);
 
 		let currAttrKeys = [key];
 

@@ -32,9 +32,9 @@ export const getAllFonts = (
 
 	const getAllFontsRecursively = obj => {
 		breakpoints.forEach(breakpoint => {
-			const fontName = obj[`font-family-${breakpoint}`];
-			const fontWeight = obj[`font-weight-${breakpoint}`];
-			const fontStyle = obj[`font-style-${breakpoint}`];
+			const fontName = obj[`_ff-${breakpoint}`];
+			const fontWeight = obj[`_fwe-${breakpoint}`];
+			const fontStyle = obj[`_fst-${breakpoint}`];
 
 			if (
 				fontName ||
@@ -46,7 +46,7 @@ export const getAllFonts = (
 					fontName ??
 					getCustomFormatValue({
 						typography: { ...obj },
-						prop: 'font-family',
+						prop: '_ff',
 						breakpoint,
 						isHover,
 						textLevel,
@@ -59,7 +59,7 @@ export const getAllFonts = (
 					fontWeight ??
 					getCustomFormatValue({
 						typography: { ...obj },
-						prop: 'font-weight',
+						prop: '_fwe',
 						breakpoint,
 						isHover,
 						textLevel,
@@ -70,7 +70,7 @@ export const getAllFonts = (
 					fontStyle ??
 					getCustomFormatValue({
 						typography: { ...obj },
-						prop: 'font-style',
+						prop: '_fst',
 						breakpoint,
 						isHover,
 						textLevel,
@@ -166,7 +166,7 @@ export const getPageFonts = (onlyBackend = false) => {
 			let typography = {};
 			let typographyHover = {};
 			const [blockStyle, rawTextLevel] = getAttributesValue({
-				target: ['_bs', 'textLevel'],
+				target: ['_bs', '_tl'],
 				props: attributes,
 			});
 			let textLevel = rawTextLevel || 'p';
@@ -196,7 +196,7 @@ export const getPageFonts = (onlyBackend = false) => {
 					break;
 			}
 
-			if (typographyHover?.['typography-status-hover'])
+			if (typographyHover?.['t.sh'])
 				response = mergeDeep(
 					getAllFonts(
 						typography,

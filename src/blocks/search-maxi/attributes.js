@@ -8,9 +8,9 @@ import { customCss, prefixes, transition } from './data';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 // without Hyphen
-const buttonWO = buttonPrefix.replace('-', '');
-const closeWO = closeIconPrefix.replace('-', '');
-const inputWO = inputPrefix.replace('-', '');
+const buttonWO = buttonPrefix?.replace('-', '');
+const closeWO = closeIconPrefix?.replace('-', '');
+const inputWO = inputPrefix?.replace('-', '');
 
 /**
  * Attributes

@@ -1,56 +1,55 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getOverflowStyles from '../getOverflowStyles';
 
 describe('getOverflowStyles', () => {
 	it('Get a correct overflow styles with default values', () => {
-		const object = parseLongAttrObj({
-			'overflow-x-general': 'visible',
-			'overflow-y-general': 'visible',
-		});
+		const object = {
+			'_ox-general': 'visible',
+			'_oy-general': 'visible',
+		};
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct overflow styles when all values visible', () => {
-		const object = parseLongAttrObj({
-			'overflow-x-general': 'visible',
-			'overflow-y-general': 'visible',
-			'overflow-x-xxl': 'visible',
-			'overflow-y-xxl': 'visible',
-			'overflow-x-xl': 'visible',
-			'overflow-y-xl': 'visible',
-			'overflow-x-l': 'visible',
-			'overflow-y-l': 'visible',
-			'overflow-x-m': 'visible',
-			'overflow-y-m': 'visible',
-			'overflow-x-s': 'visible',
-			'overflow-y-s': 'visible',
-			'overflow-x-xs': 'visible',
-			'overflow-y-xs': 'visible',
-		});
+		const object = {
+			'_ox-general': 'visible',
+			'_oy-general': 'visible',
+			'_ox-xxl': 'visible',
+			'_oy-xxl': 'visible',
+			'_ox-xl': 'visible',
+			'_oy-xl': 'visible',
+			'_ox-l': 'visible',
+			'_oy-l': 'visible',
+			'_ox-m': 'visible',
+			'_oy-m': 'visible',
+			'_ox-s': 'visible',
+			'_oy-s': 'visible',
+			'_ox-xs': 'visible',
+			'_oy-xs': 'visible',
+		};
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct overflow styles', () => {
-		const object = parseLongAttrObj({
-			'overflow-x-general': 'visible',
-			'overflow-y-general': 'hidden',
-			'overflow-x-xxl': 'hidden',
-			'overflow-y-xxl': 'visible',
-			'overflow-x-xl': 'auto',
-			'overflow-y-xl': 'clip',
-			'overflow-x-l': 'clip',
-			'overflow-y-l': 'auto',
-			'overflow-x-m': 'scroll',
-			'overflow-y-m': 'scroll',
-			'overflow-x-s': 'auto',
-			'overflow-y-s': 'auto',
-			'overflow-x-xs': 'visible',
-			'overflow-y-xs': 'visible',
-		});
+		const object = {
+			'_ox-general': 'visible',
+			'_oy-general': 'hidden',
+			'_ox-xxl': 'hidden',
+			'_oy-xxl': 'visible',
+			'_ox-xl': 'auto',
+			'_oy-xl': 'clip',
+			'_ox-l': 'clip',
+			'_oy-l': 'auto',
+			'_ox-m': 'scroll',
+			'_oy-m': 'scroll',
+			'_ox-s': 'auto',
+			'_oy-s': 'auto',
+			'_ox-xs': 'visible',
+			'_oy-xs': 'visible',
+		};
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();

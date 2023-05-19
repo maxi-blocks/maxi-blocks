@@ -21,7 +21,7 @@ const WithLink = props => {
 	const { linkSettings, dynamicContent, children } = props;
 
 	const [dcStatus, dcLinkStatus] = getAttributesValue({
-		target: ['dc-status', 'dc-link-status'],
+		target: ['dc.s', 'dc_l.s'],
 		props: dynamicContent,
 	});
 

@@ -169,7 +169,7 @@ const getBoxShadowStyles = ({
 			(breakpoint === 'general' && isIB) ||
 			(breakpoint !== 'general' &&
 				clipPathExists !== defaultClipPathExists &&
-				prefix === 'image-' &&
+				prefix === 'im-' &&
 				clipPathExists) ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
@@ -223,7 +223,7 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			if (!(prefix === 'image-' && clipPathExists))
+			if (!(prefix === 'im-' && clipPathExists))
 				response[breakpoint] = {
 					'box-shadow': `${boxShadowString.trim()}`,
 				};

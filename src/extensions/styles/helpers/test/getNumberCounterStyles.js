@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -29,27 +28,26 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getNumberCounterStyles', () => {
 	it('Returns correct styles', () => {
-		const obj = parseLongAttrObj({
-			'number-counter-status': true,
-			'number-counter-preview': true,
-			'number-counter-percentage-sign-status': false,
-			'number-counter-rounded-status': false,
-			'number-counter-circle-status': false,
-			'number-counter-start': 0,
-			'number-counter-end': 100,
-			'number-counter-radius': 200,
-			'number-counter-stroke': 20,
-			'number-counter-duration': 1,
-			'number-counter-start-animation': 'page-load',
-			'number-counter-text-palette-status-general': true,
-			'number-counter-text-palette-color-general': 5,
-			'number-counter-circle-background-palette-status': true,
-			'number-counter-circle-background-palette-color': 2,
-			'number-counter-circle-bar-palette-status-general': true,
-			'number-counter-circle-bar-palette-color-general': 4,
-			'number-counter-title-font-size-general': 40,
-			'font-family-general': 'Roboto',
-		});
+		const obj = {
+			'nc.s': true,
+			nc_pr: true,
+			'nc_psi.s': false,
+			'nc_rou.s': false,
+			'nc_ci.s': false,
+			nc_sta: 0,
+			nc_e: 100,
+			nc_du: 1,
+			nc_str: 20,
+			nc_san: 'page-load',
+			'nct_ps-general': true,
+			'nct_pc-general': 5,
+			nccb_ps: true,
+			nccb_pc: 2,
+			'nccba_ps-general': true,
+			'nccba_pc-general': 4,
+			'nc-ti_fs-general': 40,
+			'_ff-general': 'Roboto',
+		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';
 

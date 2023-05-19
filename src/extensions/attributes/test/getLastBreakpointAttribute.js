@@ -16,20 +16,17 @@ import { select } from '@wordpress/data';
 
 const attributes = {
 	'test-general': 1,
-	'test-general-hover': 10,
+	'test-general.h': 10,
 	'test-xxl': 2,
-	'test-xxl-hover': 20,
-	// Removed for General tests
-	// 'test-xl': 3,
-	// 'test-xl-hover': 30,
+	'test-xxl.h': 20,
 	'test-l': 4,
-	'test-l-hover': 40,
+	'test-l.h': 40,
 	'test-m': 5,
-	'test-m-hover': 50,
+	'test-m.h': 50,
 	'test-s': 6,
-	'test-s-hover': 60,
+	'test-s.h': 60,
 	'test-xs': 7,
-	'test-xs-hover': 70,
+	'test-xs.h': 70,
 };
 
 describe('getLastBreakpointAttribute', () => {
@@ -94,7 +91,7 @@ describe('getLastBreakpointAttribute', () => {
 			breakpoint: 'xl',
 			attributes: {
 				...attributes,
-				'test-xl-hover': 30,
+				'test-xl.h': 30,
 			},
 			isHover: true,
 		});
@@ -251,7 +248,7 @@ describe('getLastBreakpointAttribute', () => {
 			target: 'test',
 			breakpoint: 'general',
 			attributes: {
-				'test-general-hover': {
+				'test-general.h': {
 					'test-key': 1,
 				},
 			},
@@ -266,16 +263,16 @@ describe('getLastBreakpointAttribute', () => {
 			target: 'test',
 			breakpoint: 'm',
 			attributes: {
-				'test-general-hover': {
+				'test-general.h': {
 					'test-key': 1,
 				},
-				'test-xl-hover': {
+				'test-xl.h': {
 					'test-key': 2,
 				},
-				'test-m-hover': {
+				'test-m.h': {
 					'test-key': 3,
 				},
-				'test-s-hover': {
+				'test-s.h': {
 					'test-key': 4,
 				},
 			},
@@ -332,7 +329,7 @@ describe('getLastBreakpointAttribute', () => {
 		expect(result).toBe(3);
 	});
 
-	test('Should return an object when target is an array', () => {
+	test('Should return an array by default when target is an array', () => {
 		const result = getLastBreakpointAttribute({
 			target: ['test', 'test-2'],
 			breakpoint: 'm',
@@ -346,6 +343,26 @@ describe('getLastBreakpointAttribute', () => {
 				'test-2-m': 'test-2-m',
 				'test-2-s': 'test-2-s',
 			},
+		});
+
+		expect(result).toEqual(['test-m', 'test-2-m']);
+	});
+
+	test('Should return an object when target is an array and returnObj is true', () => {
+		const result = getLastBreakpointAttribute({
+			target: ['test', 'test-2'],
+			breakpoint: 'm',
+			attributes: {
+				'test-general': 'test-general',
+				'test-xl': 'test-xl',
+				'test-m': 'test-m',
+				'test-s': 'test-s',
+				'test-2-general': 'test-2-general',
+				'test-2-xl': 'test-2-xl',
+				'test-2-m': 'test-2-m',
+				'test-2-s': 'test-2-s',
+			},
+			returnObj: true,
 		});
 
 		expect(result).toEqual({

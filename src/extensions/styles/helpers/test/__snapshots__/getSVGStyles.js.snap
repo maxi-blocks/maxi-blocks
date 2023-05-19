@@ -198,8 +198,28 @@ Object {
 exports[`getSVGStyles Should work on responsive 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {},
+    "general": Object {
+      "width": "32px",
+    },
+    "l": Object {
+      "width": "32px",
+    },
     "label": "Icon size",
+    "m": Object {
+      "width": "12em",
+    },
+    "s": Object {
+      "width": "12em",
+    },
+    "xl": Object {
+      "width": "32px",
+    },
+    "xs": Object {
+      "width": "12em",
+    },
+    "xxl": Object {
+      "width": "32px",
+    },
   },
 }
 `;

@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import { getSVGStyles, getSVGWidthStyles } from '../getSVGStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -29,18 +28,18 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getSVGStyles', () => {
 	it('Returns correct styles', () => {
-		const obj = parseLongAttrObj({
-			'svg-fill-palette-status': true,
-			'svg-fill-palette-color': 4,
-			'svg-line-palette-status': true,
-			'svg-line-palette-color': 7,
-			'svg-stroke-general': 2,
-			'svg-width-general': '64',
-			'svg-width-unit-general': 'px',
-			'svg-stroke-m': 20,
-			'svg-width-m': '640',
-			'svg-width-unit-m': 'vw',
-		});
+		const obj = {
+			sfi_ps: true,
+			sfi_pc: 4,
+			sli_ps: true,
+			sli_pc: 7,
+			's_str-general': 2,
+			's_w-general': '64',
+			's_w.u-general': 'px',
+			's_str-m': 20,
+			's_w-m': '640',
+			's_w.u-m': 'vw',
+		};
 		const target = ' .maxi-svg-icon-block__icon';
 		const blockStyle = 'light';
 
@@ -50,65 +49,65 @@ describe('getSVGStyles', () => {
 	});
 
 	it('Should return correct icon size', () => {
-		const attributes = parseLongAttrObj({
-			'svg-width-general': '32',
-			'svg-width-unit-general': 'px',
-			'svg-width-fit-content-general': false,
-			'svg-icon-width-general': '71',
-			'svg-icon-width-unit-general': '%',
-		});
+		const attributes = {
+			's_w-general': '32',
+			's_w.u-general': 'px',
+			's_wfc-general': false,
+			's-i_w-general': '71',
+			's-i_w.u-general': '%',
+		};
 
 		expect(
-			getSVGWidthStyles({ obj: attributes, prefix: 'svg-' })
+			getSVGWidthStyles({ obj: attributes, prefix: 's-' })
 		).toMatchSnapshot();
 	});
 
 	it('Should return correct icon size with disableHeight: false', () => {
-		const attributes = parseLongAttrObj({
-			'svg-width-general': '32',
-			'svg-width-unit-general': 'px',
-			'svg-width-fit-content-general': false,
-			'svg-icon-width-general': '71',
-			'svg-icon-width-unit-general': '%',
-		});
+		const attributes = {
+			's_w-general': '32',
+			's_w.u-general': 'px',
+			's_wfc-general': false,
+			's-i_w-general': '71',
+			's-i_w.u-general': '%',
+		};
 
 		expect(
 			getSVGWidthStyles({
 				obj: attributes,
-				prefix: 'svg-',
+				prefix: 's-',
 				disableHeight: false,
 			})
 		).toMatchSnapshot();
 	});
 
 	it('Should work on responsive', () => {
-		const prefix = 'any-prefix-';
+		const prefix = 'any-prefix';
 
-		const attributes = parseLongAttrObj({
-			[`${prefix}icon-height-general`]: '32',
-			[`${prefix}icon-height-unit-general`]: 'px',
-			[`${prefix}icon-height-m`]: '12',
-			[`${prefix}icon-height-unit-m`]: 'em',
-		});
+		const attributes = {
+			[`${prefix}_h-general`]: '32',
+			[`${prefix}_h.u-general`]: 'px',
+			[`${prefix}_h-m`]: '12',
+			[`${prefix}_h.u-m`]: 'em',
+		};
 
 		expect(
-			getSVGWidthStyles({ obj: attributes, prefix })
+			getSVGWidthStyles({ obj: attributes, prefix: `${prefix}-` })
 		).toMatchSnapshot();
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio > 1 with disableHeight true', () => {
-		const attributes = parseLongAttrObj({
-			'icon-width-general': '36',
-			'icon-width-unit-general': '%',
-			'icon-width-fit-content-general': true,
-			'icon-width-l': '32',
-			'icon-width-fit-content-l': false,
-			'icon-width-m': '36',
-			'icon-width-fit-content-m': true,
-			'icon-stroke-general': '1',
-			'icon-stroke-l': '3',
-			'icon-stroke-m': '4',
-		});
+		const attributes = {
+			'i_w-general': '36',
+			'i_w.u-general': '%',
+			'i_wfc-general': true,
+			'i_w-l': '32',
+			'i_wfc-l': false,
+			'i_w-m': '36',
+			'i_wfc-m': true,
+			'i_str-general': '1',
+			'i_str-l': '3',
+			'i_str-m': '4',
+		};
 
 		expect(
 			getSVGWidthStyles({
@@ -120,18 +119,18 @@ describe('getSVGStyles', () => {
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio < 1 with disableHeight: true', () => {
-		const attributes = parseLongAttrObj({
-			'icon-width-general': '36',
-			'icon-width-unit-general': '%',
-			'icon-width-fit-content-general': true,
-			'icon-width-l': '32',
-			'icon-width-fit-content-l': false,
-			'icon-width-m': '36',
-			'icon-width-fit-content-m': true,
-			'icon-stroke-general': '1',
-			'icon-stroke-l': '3',
-			'icon-stroke-m': '4',
-		});
+		const attributes = {
+			'i_w-general': '36',
+			'i_w.u-general': '%',
+			'i_wfc-general': true,
+			'i_w-l': '32',
+			'i_wfc-l': false,
+			'i_w-m': '36',
+			'i_wfc-m': true,
+			'i_str-general': '1',
+			'i_str-l': '3',
+			'i_str-m': '4',
+		};
 
 		expect(
 			getSVGWidthStyles({

@@ -40,12 +40,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					false,
 					prefix
 				),
-				...getGroupAttributes(
-					props,
-					'backgroundColor',
-					false,
-					'button-'
-				),
+				...getGroupAttributes(props, 'backgroundColor', false, 'bt-'),
 				prefix: `${prefix}i-`,
 				blockStyle: props._bs,
 				isIconInherit: getAttributesValue({

@@ -25,8 +25,7 @@ const getIconStyles = (
 
 	const isShape = iconType !== 'shape';
 
-	if (isIconInherit && !obj[getAttributeKey('typography-status-hover')])
-		return response;
+	if (isIconInherit && !obj[getAttributeKey('t.sh')]) return response;
 
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -49,7 +48,7 @@ const getIconStyles = (
 		}
 	} else {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({ obj, prefix: `${prefix}icon-`, isHover });
+			getPaletteAttributes({ obj, prefix: `${prefix}i-`, isHover });
 
 		if (!isShape && !paletteStatus && !isNil(color)) {
 			response.general.stroke = color;

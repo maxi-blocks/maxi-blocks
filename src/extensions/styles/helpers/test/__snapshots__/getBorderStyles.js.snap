@@ -158,10 +158,14 @@ Object {
     "border-top-width": "20px",
   },
   "l": Object {
+    "border-bottom-left-radius": "50%",
+    "border-bottom-right-radius": "50%",
     "border-bottom-width": "0px",
     "border-color": "rgba(23, 63, 194, 0.38)",
     "border-left-width": "30px",
     "border-right-width": "0px",
+    "border-top-left-radius": "50%",
+    "border-top-right-radius": "50%",
     "border-top-width": "20px",
   },
   "m": Object {
@@ -195,7 +199,7 @@ Object {
 }
 `;
 
-exports[`getBorderStyles Return an IB border styles when border-style - none 1`] = `
+exports[`getBorderStyles Return an IB border styles when bo_s - none 1`] = `
 Object {
   "general": Object {
     "border": "none",
@@ -220,10 +224,14 @@ Object {
     "border-top-width": "2px",
   },
   "l": Object {
+    "border-bottom-left-radius": "50%",
+    "border-bottom-right-radius": "50%",
     "border-bottom-width": "0px",
     "border-color": "rgba(23, 63, 194, 0.38)",
     "border-left-width": "30px",
     "border-right-width": "0px",
+    "border-top-left-radius": "50%",
+    "border-top-right-radius": "50%",
     "border-top-width": "20px",
   },
   "m": Object {},

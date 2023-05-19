@@ -10,7 +10,7 @@ import flatFormatsWithClass, {
 /**
  * Mocks
  */
-jest.mock('../../../styles/getBlockStyle', () => {
+jest.mock('../../../attributes/getBlockStyle', () => {
 	return jest.fn(() => {
 		return 'light';
 	});
@@ -48,7 +48,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'p-line-height-m': 1.625,
 						'p-line-height-s': 1.625,
 						'p-line-height-xs': 1.625,
-						'p-font-weight-general': '400',
+						'p-_fwe-general': '400',
 						'p-letter-spacing-general': '0px',
 						'p-text-transform-general': 'none',
 						'p-font-style-general': 'normal',
@@ -68,7 +68,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'button-line-height-m': 1.625,
 						'button-line-height-s': 1.625,
 						'button-line-height-xs': 1.625,
-						'button-font-weight-general': '400',
+						'button-_fwe-general': '400',
 						'button-letter-spacing-general': '0px',
 						'button-text-transform-general': 'none',
 						'button-font-style-general': 'normal',
@@ -87,7 +87,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h1-line-height-m': 1.27,
 						'h1-line-height-s': 1.27,
 						'h1-line-height-xs': 1.27,
-						'h1-font-weight-general': '500',
+						'h1-_fwe-general': '500',
 						'h1-letter-spacing-general': '0px',
 						'h1-text-transform-general': 'none',
 						'h1-font-style-general': 'normal',
@@ -106,7 +106,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h2-line-height-m': 1.33,
 						'h2-line-height-s': 1.33,
 						'h2-line-height-xs': 1.33,
-						'h2-font-weight-general': '500',
+						'h2-_fwe-general': '500',
 						'h2-letter-spacing-general': '0px',
 						'h2-text-transform-general': 'none',
 						'h2-font-style-general': 'normal',
@@ -125,7 +125,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h3-line-height-m': 1.16,
 						'h3-line-height-s': 1.16,
 						'h3-line-height-xs': 1.16,
-						'h3-font-weight-general': '500',
+						'h3-_fwe-general': '500',
 						'h3-letter-spacing-general': '0px',
 						'h3-text-transform-general': 'none',
 						'h3-font-style-general': 'normal',
@@ -144,7 +144,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h4-line-height-m': 1.42,
 						'h4-line-height-s': 1.42,
 						'h4-line-height-xs': 1.42,
-						'h4-font-weight-general': '500',
+						'h4-_fwe-general': '500',
 						'h4-letter-spacing-general': '0px',
 						'h4-text-transform-general': 'none',
 						'h4-font-style-general': 'normal',
@@ -163,7 +163,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h5-line-height-m': 1.5,
 						'h5-line-height-s': 1.5,
 						'h5-line-height-xs': 1.5,
-						'h5-font-weight-general': '500',
+						'h5-_fwe-general': '500',
 						'h5-letter-spacing-general': '0px',
 						'h5-text-transform-general': 'none',
 						'h5-font-style-general': 'normal',
@@ -182,7 +182,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h6-line-height-m': 1.56,
 						'h6-line-height-s': 1.56,
 						'h6-line-height-xs': 1.56,
-						'h6-font-weight-general': '500',
+						'h6-_fwe-general': '500',
 						'h6-letter-spacing-general': '0px',
 						'h6-text-transform-general': 'none',
 						'h6-font-style-general': 'normal',
@@ -194,13 +194,15 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 		};
 	});
 });
-jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../../attributes/transitions/getTransitionData.js', () =>
+	jest.fn()
+);
 
 describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'font-weight-general': '800',
+				'_fwe-general': '800',
 			},
 		};
 		const formatValue = {
@@ -272,10 +274,10 @@ describe('getRepeatedClassNames', () => {
 	it('Should return 2 repeated classNames that has the same format', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'font-weight-general': '800',
+				'_fwe-general': '800',
 			},
 			'maxi-text-block__custom-format--1': {
-				'font-weight-general': '800',
+				'_fwe-general': '800',
 			},
 		};
 		const formatValue = {
@@ -493,12 +495,12 @@ describe('flatRepeatedClassNames', () => {
 			end: 12,
 		};
 		const typography = {
-			'custom-formats': {
+			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': '800',
+					'_fwe-general': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'font-weight-general': '800',
+					'_fwe-general': '800',
 				},
 			},
 		};
@@ -594,9 +596,9 @@ describe('flatRepeatedClassNames', () => {
 				end: 12,
 			},
 			typography: {
-				'custom-formats': {
+				_cf: {
 					'maxi-text-block__custom-format--0': {
-						'font-weight-general': '800',
+						'_fwe-general': '800',
 					},
 				},
 			},
@@ -666,10 +668,10 @@ describe('flatFormatsWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'font-weight-general': '400',
-			'custom-formats': {
+			'_fwe-general': '400',
+			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'font-weight-general': '400',
+					'_fwe-general': '400',
 				},
 			},
 		};
@@ -677,7 +679,7 @@ describe('flatFormatsWithClass', () => {
 			'Testing <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Text</span> Maxi';
 		const isList = false;
 		const value = {
-			'font-weight': '400',
+			_fwe: '400',
 		};
 		const breakpoint = 'general';
 		const textLevel = 'p';
@@ -692,7 +694,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': '400', 'custom-formats': {} },
+			typography: { '_fwe-general': '400', _cf: {} },
 			content: 'Testing Text Maxi',
 		};
 
@@ -882,13 +884,13 @@ describe('flatFormatsWithClass', () => {
 			],
 		};
 		const typography = {
-			'font-weight-general': '800',
+			'_fwe-general': '800',
 		};
 		const content =
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Testing Text Maxi</span>';
 		const isList = false;
 		const value = {
-			'font-weight': '800',
+			_fwe: '800',
 		};
 		const breakpoint = 'general';
 		const textLevel = 'p';
@@ -903,7 +905,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': '800' },
+			typography: { '_fwe-general': '800' },
 			content: 'Testing Text Maxi',
 		};
 

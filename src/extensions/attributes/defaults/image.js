@@ -31,12 +31,12 @@ const image = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			_cg: {
+			_cga: {
 				type: 'number',
 				default: 1,
 				longLabel: 'caption-gap',
 			},
-			'_cg.u': {
+			'_cga.u': {
 				type: 'string',
 				default: 'em',
 				longLabel: 'caption-gap-unit',
@@ -48,7 +48,7 @@ const image = {
 		default: 'full',
 		longLabel: 'imageSize',
 	},
-	_co: {
+	_cop: {
 		type: 'object',
 		longLabel: 'cropOptions',
 	},

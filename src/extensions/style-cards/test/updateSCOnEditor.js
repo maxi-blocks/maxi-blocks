@@ -3,7 +3,7 @@ jest.mock('@wordpress/blocks', () => {
 		getBlockAttributes: jest.fn(),
 	};
 });
-jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../attributes/transitions/getTransitionData.js', () => jest.fn());
 jest.mock('../../attributes/getBlockData.js', () => jest.fn());
 
 /**

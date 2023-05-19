@@ -42,28 +42,24 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 				clientId,
 			} = block;
 
-			if ('relations' in attributes && !isEmpty(attributes.relations)) {
+			if ('_r' in attributes && !isEmpty(attributes._r)) {
 				const relations = getAttributesValue({
-					target: 'relations',
+					target: '_r',
 					props: attributes,
 				});
 
 				const newRelations = cloneDeep(relations).map(relation => {
-					const { uniqueID } = relation;
+					const { _uid: uniqueID } = relation;
 
 					if (uniqueID === oldUniqueID) {
-						relation.uniqueID = newUniqueID;
+						relation._uid = newUniqueID;
 					}
 
 					return relation;
 				});
 
 				if (!isEqual(relations, newRelations) && clientId)
-					updateBlockAttributesUpdate(
-						clientId,
-						'relations',
-						newRelations
-					);
+					updateBlockAttributesUpdate(clientId, '_r', newRelations);
 			}
 
 			if (!isEmpty(rawInnerBlocks)) {

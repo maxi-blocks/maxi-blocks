@@ -19,7 +19,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-1',
+								_uid: 'button-maxi-1',
 							},
 						},
 						{
@@ -27,7 +27,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-2',
+								_uid: 'button-maxi-2',
 							},
 						},
 						{
@@ -35,7 +35,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-2',
+								_uid: 'button-maxi-2',
 							},
 						},
 						{
@@ -43,7 +43,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-3',
+								_uid: 'button-maxi-3',
 							},
 						},
 						{
@@ -51,7 +51,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-3',
+								_uid: 'button-maxi-3',
 							},
 						},
 						{
@@ -59,7 +59,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								_uid: 'button-maxi-4',
 							},
 						},
 						{
@@ -67,7 +67,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								_uid: 'button-maxi-4',
 							},
 						},
 						{
@@ -75,7 +75,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								_uid: 'button-maxi-4',
 							},
 						},
 						{
@@ -103,8 +103,7 @@ jest.mock('@wordpress/data', () => {
 															name: 'maxi-blocks/column-maxi',
 															innerBlocks: [],
 															attributes: {
-																uniqueID:
-																	'column-maxi-1',
+																_uid: 'column-maxi-1',
 															},
 														},
 														{
@@ -132,28 +131,24 @@ jest.mock('@wordpress/data', () => {
 																								[],
 																							attributes:
 																								{
-																									uniqueID:
-																										'divider-maxi-1',
+																									_uid: 'divider-maxi-1',
 																								},
 																						},
 																					],
 																				attributes:
 																					{
-																						uniqueID:
-																							'column-maxi-8',
+																						_uid: 'column-maxi-8',
 																					},
 																			},
 																		],
 																	attributes:
 																		{
-																			uniqueID:
-																				'row-maxi-3',
+																			_uid: 'row-maxi-3',
 																		},
 																},
 															],
 															attributes: {
-																uniqueID:
-																	'column-maxi-1',
+																_uid: 'column-maxi-1',
 															},
 														},
 														{
@@ -169,24 +164,22 @@ jest.mock('@wordpress/data', () => {
 																		[],
 																	attributes:
 																		{
-																			uniqueID:
-																				'text-maxi-1',
+																			_uid: 'text-maxi-1',
 																		},
 																},
 															],
 															attributes: {
-																uniqueID:
-																	'column-maxi-1',
+																_uid: 'column-maxi-1',
 															},
 														},
 													],
 													attributes: {
-														uniqueID: 'row-maxi-2',
+														_uid: 'row-maxi-2',
 													},
 												},
 											],
 											attributes: {
-												uniqueID: 'column-maxi-1',
+												_uid: 'column-maxi-1',
 											},
 										},
 										{
@@ -200,12 +193,12 @@ jest.mock('@wordpress/data', () => {
 													name: 'maxi-blocks/text-maxi',
 													innerBlocks: [],
 													attributes: {
-														uniqueID: 'text-maxi-1',
+														_uid: 'text-maxi-1',
 													},
 												},
 											],
 											attributes: {
-												uniqueID: 'column-maxi-2',
+												_uid: 'column-maxi-2',
 											},
 										},
 										{
@@ -214,7 +207,7 @@ jest.mock('@wordpress/data', () => {
 											name: 'maxi-blocks/column-maxi',
 											innerBlocks: [],
 											attributes: {
-												uniqueID: 'column-maxi-3',
+												_uid: 'column-maxi-3',
 											},
 										},
 										{
@@ -223,17 +216,17 @@ jest.mock('@wordpress/data', () => {
 											name: 'maxi-blocks/column-maxi',
 											innerBlocks: [],
 											attributes: {
-												uniqueID: 'column-maxi-3',
+												_uid: 'column-maxi-3',
 											},
 										},
 									],
 									attributes: {
-										uniqueID: 'row-maxi-1',
+										_uid: 'row-maxi-1',
 									},
 								},
 							],
 							attributes: {
-								uniqueID: 'container-maxi-1',
+								_uid: 'container-maxi-1',
 							},
 						},
 					]
@@ -280,7 +273,7 @@ describe('getIsUniqueIDRepeated', () => {
 							clientId: '36d5807b-981b-4d80-88ea-21fef846647d',
 							name: 'maxi-blocks/group-maxi',
 							attributes: {
-								uniqueID: 'group-maxi-1',
+								_uid: 'group-maxi-1',
 							},
 							innerBlocks: [
 								{
@@ -288,7 +281,7 @@ describe('getIsUniqueIDRepeated', () => {
 										'a8db982d-4460-4092-8c34-3e7d8ff1623f',
 									name: 'maxi-blocks/text-maxi',
 									attributes: {
-										uniqueID: 'text-maxi-1',
+										_uid: 'text-maxi-1',
 									},
 									innerBlocks: [],
 								},
@@ -298,7 +291,7 @@ describe('getIsUniqueIDRepeated', () => {
 							clientId: '437157e6-2af5-4e6e-8b2c-f2274fff85eb',
 							name: 'maxi-blocks/group-maxi',
 							attributes: {
-								uniqueID: 'group-maxi-2',
+								_uid: 'group-maxi-2',
 							},
 							innerBlocks: [
 								{
@@ -306,7 +299,7 @@ describe('getIsUniqueIDRepeated', () => {
 										'687687a4-0636-4b9a-a70c-979ef4dbad60',
 									name: 'maxi-blocks/text-maxi',
 									attributes: {
-										uniqueID: 'text-maxi-1',
+										_uid: 'text-maxi-1',
 									},
 									innerBlocks: [],
 								},

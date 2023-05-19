@@ -1,17 +1,16 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getOpacityStyles from '../getOpacityStyles';
 
 describe('getOpacityStyles', () => {
 	it('Get a correct opacity styles', () => {
-		const object = parseLongAttrObj({
-			'opacity-general': 1,
-			'opacity-xxl': 0.56,
-			'opacity-xl': 0.77,
-			'opacity-l': 0.95,
-			'opacity-m': 0.85,
-			'opacity-s': 0.66,
-			'opacity-xs': 0.99,
-		});
+		const object = {
+			'_o-general': 1,
+			'_o-xxl': 0.56,
+			'_o-xl': 0.77,
+			'_o-l': 0.95,
+			'_o-m': 0.85,
+			'_o-s': 0.66,
+			'_o-xs': 0.99,
+		};
 
 		const result = getOpacityStyles(object);
 		expect(result).toMatchSnapshot();

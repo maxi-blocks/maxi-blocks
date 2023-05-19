@@ -136,7 +136,7 @@ export const getColorBackgroundObject = ({
 
 		const { paletteColor, paletteOpacity, color } = getPaletteAttributes({
 			obj: props,
-			prefix: 'bt-b',
+			prefix: 'bt-bc',
 			isHover,
 			breakpoint,
 		});
@@ -461,7 +461,7 @@ export const getVideoBackgroundObject = ({
 
 	const [bgVideoOpacity, bgVideoClipPath, bgVideoFallbackUrl] =
 		getLastBreakpointAttribute({
-			target: ['bv_o', 'bv_cp', 'bv_mu'],
+			target: ['bv_o', 'bv_cp', 'bv_fu'],
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -699,7 +699,7 @@ const getBackgroundLayers = ({
 											),
 											(value, key) =>
 												key.includes('bi_o') &&
-												key.includes('-hover')
+												key.includes('.h')
 										)),
 									isHover,
 									prefix,

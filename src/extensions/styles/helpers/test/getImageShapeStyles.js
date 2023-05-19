@@ -1,34 +1,28 @@
 import getImageShapeStyles from '../getImageShapeStyles';
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 describe('getImageShapeStyles', () => {
-	const object = parseLongAttrObj({
-		'background-svg-image-shape-scale-general': 100,
-		'background-svg-image-shape-scale-m': 50,
-		'background-svg-image-shape-scale-s': 100,
-	});
+	const object = {
+		'bsv-is_sc-general': 100,
+		'bsv-is_sc-m': 50,
+		'bsv-is_sc-s': 100,
+	};
 
 	it('Ensure that image shape scale is working with responsive', () => {
-		const result = getImageShapeStyles('svg', object, 'background-svg-');
+		const result = getImageShapeStyles('svg', object, 'bsv-');
 		expect(result).toMatchSnapshot();
 
-		const object2 = parseLongAttrObj({
-			'background-svg-image-shape-scale-general': 50,
-			'background-svg-image-shape-scale-m': 100,
-			'background-svg-image-shape-scale-s': 50,
-		});
+		const object2 = {
+			'bsv-is_sc-general': 50,
+			'bsv-is_sc-m': 100,
+			'bsv-is_sc-s': 50,
+		};
 
-		const result2 = getImageShapeStyles('svg', object2, 'background-svg-');
+		const result2 = getImageShapeStyles('svg', object2, 'bsv-');
 		expect(result2).toMatchSnapshot();
 	});
 
 	it('Ensure that ignoreOmit is working', () => {
-		const result = getImageShapeStyles(
-			'svg',
-			object,
-			'background-svg-',
-			true
-		);
+		const result = getImageShapeStyles('svg', object, 'bsv-', true);
 		expect(result).toMatchSnapshot();
 	});
 });

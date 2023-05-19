@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getSizeStyles from '../getSizeStyles';
 
 jest.mock('../../../attributes/getDefaultAttribute', () => {
@@ -9,7 +8,7 @@ jest.mock('../../../attributes/getDefaultAttribute', () => {
 
 describe('getSizeStyles', () => {
 	it('Get a correct size styles', () => {
-		const object = parseLongAttrObj({
+		const object = {
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -92,14 +91,14 @@ describe('getSizeStyles', () => {
 			'_h-xs': '3',
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with force aspect ratio', () => {
-		const object = parseLongAttrObj({
+		const object = {
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -179,13 +178,13 @@ describe('getSizeStyles', () => {
 			'_h-xs': '3',
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
-		});
+		};
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with width fit content', () => {
-		const object = parseLongAttrObj({
+		const object = {
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -266,42 +265,42 @@ describe('getSizeStyles', () => {
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
 			'_wfc-general': true,
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width', () => {
-		const object = parseLongAttrObj({
-			'full-width-general': 'full',
-			'full-width-l': 'normal',
-		});
+		const object = {
+			'_fw-general': 'full',
+			'_fw-l': 'normal',
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width 2', () => {
-		const object = parseLongAttrObj({
+		const object = {
 			_sao: true,
-			'full-width-general': 'full',
-			'full-width-xl': 'normal',
-			'full-width-l': 'full',
+			'_fw-general': 'full',
+			'_fw-xl': 'normal',
+			'_fw-l': 'full',
 			'_miw-l': '2',
 			'_miw.u-l': 'px',
-			'full-width-m': 'normal',
+			'_fw-m': 'normal',
 			'_miw-m': '3',
 			'_miw-s': '0',
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width 3', () => {
-		const object = parseLongAttrObj({
-			'full-width-general': 'full',
+		const object = {
+			'_fw-general': 'full',
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -315,15 +314,15 @@ describe('getSizeStyles', () => {
 			'_h-general': '4',
 			'_mih.u-general': 'px',
 			'_mih-general': '1',
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width responsive', () => {
-		const object = parseLongAttrObj({
-			'full-width-general': 'full',
+		const object = {
+			'_fw-general': 'full',
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -337,7 +336,7 @@ describe('getSizeStyles', () => {
 			'_h-general': '4',
 			'_mih.u-general': 'px',
 			'_mih-general': '1',
-			'full-width-xxl': 'normal',
+			'_fw-xxl': 'normal',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
 			'_w.u-xxl': 'px',
@@ -350,7 +349,7 @@ describe('getSizeStyles', () => {
 			'_h-xxl': '2',
 			'_mih.u-xxl': 'px',
 			'_mih-xxl': '2',
-			'full-width-xl': 'full',
+			'_fw-xl': 'full',
 			'_mw.u-xl': 'px',
 			'_mw-xl': '3',
 			'_w.u-xl': 'px',
@@ -361,7 +360,7 @@ describe('getSizeStyles', () => {
 			'_mh-xl': '2',
 			'_mih.u-xl': 'px',
 			'_mih-xl': '4',
-			'full-width-l': 'normal',
+			'_fw-l': 'normal',
 			'_mw.u-l': 'px',
 			'_mw-l': '2',
 			'_w.u-l': 'px',
@@ -372,7 +371,7 @@ describe('getSizeStyles', () => {
 			'_mh-l': '2',
 			'_mih.u-l': 'px',
 			'_mih-l': '1',
-			'full-width-m': 'full',
+			'_fw-m': 'full',
 			'_mw.u-m': 'px',
 			'_mw-m': '2',
 			'_w.u-m': 'px',
@@ -383,7 +382,7 @@ describe('getSizeStyles', () => {
 			'_mh-m': '1',
 			'_mih.u-m': 'px',
 			'_mih-m': '2',
-			'full-width-s': 'normal',
+			'_fw-s': 'normal',
 			'_mw.u-s': 'px',
 			'_mw-s': '3',
 			'_w.u-s': 'px',
@@ -396,7 +395,7 @@ describe('getSizeStyles', () => {
 			'_h-s': '1',
 			'_mih.u-s': 'px',
 			'_mih-s': '2',
-			'full-width-xs': 'full',
+			'_fw-xs': 'full',
 			'_mw.u-xs': 'px',
 			'_mw-xs': '3',
 			'_w.u-xs': 'px',
@@ -410,15 +409,15 @@ describe('getSizeStyles', () => {
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
 			'_wfc-general': true,
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width responsive 2', () => {
-		const object = parseLongAttrObj({
-			'full-width-general': 'normal',
+		const object = {
+			'_fw-general': 'normal',
 			_sao: true,
 			'_mw.u-general': 'px',
 			'_mw-general': '2',
@@ -432,7 +431,7 @@ describe('getSizeStyles', () => {
 			'_h-general': '4',
 			'_mih.u-general': 'px',
 			'_mih-general': '1',
-			'full-width-xxl': 'full',
+			'_fw-xxl': 'full',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
 			'_w.u-xxl': 'px',
@@ -445,7 +444,7 @@ describe('getSizeStyles', () => {
 			'_h-xxl': '2',
 			'_mih.u-xxl': 'px',
 			'_mih-xxl': '2',
-			'full-width-xl': 'normal',
+			'_fw-xl': 'normal',
 			'_mw.u-xl': 'px',
 			'_mw-xl': '3',
 			'_w.u-xl': 'px',
@@ -456,7 +455,7 @@ describe('getSizeStyles', () => {
 			'_mh-xl': '2',
 			'_mih.u-xl': 'px',
 			'_mih-xl': '4',
-			'full-width-l': 'full',
+			'_fw-l': 'full',
 			'_mw.u-l': 'px',
 			'_mw-l': '2',
 			'_w.u-l': 'px',
@@ -467,7 +466,7 @@ describe('getSizeStyles', () => {
 			'_mh-l': '2',
 			'_mih.u-l': 'px',
 			'_mih-l': '1',
-			'full-width-m': 'normal',
+			'_fw-m': 'normal',
 			'_mw.u-m': 'px',
 			'_mw-m': '2',
 			'_w.u-m': 'px',
@@ -476,7 +475,7 @@ describe('getSizeStyles', () => {
 			'_mh-m': '1',
 			'_mih.u-m': 'px',
 			'_mih-m': '2',
-			'full-width-s': 'full',
+			'_fw-s': 'full',
 			'_mw.u-s': 'px',
 			'_mw-s': '3',
 			'_w.u-s': 'px',
@@ -487,7 +486,7 @@ describe('getSizeStyles', () => {
 			'_h-s': '1',
 			'_mih.u-s': 'px',
 			'_mih-s': '2',
-			'full-width-xs': 'normal',
+			'_fw-xs': 'normal',
 			'_mw.u-xs': 'px',
 			'_mw-xs': '3',
 			'_w.u-xs': 'px',
@@ -501,7 +500,7 @@ describe('getSizeStyles', () => {
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
 			'_wfc-general': true,
-		});
+		};
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();

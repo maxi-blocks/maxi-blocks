@@ -11,9 +11,7 @@ describe('getAttrKeyWithoutBreakpoint', () => {
 		expect(getAttrKeyWithoutBreakpoint('test-s')).toBe('test');
 		expect(getAttrKeyWithoutBreakpoint('test-xs')).toBe('test');
 
-		expect(getAttrKeyWithoutBreakpoint('test-general-hover')).toBe(
-			'test-hover'
-		);
+		expect(getAttrKeyWithoutBreakpoint('test-general.h')).toBe('test.h');
 		expect(getAttrKeyWithoutBreakpoint('test-s-s-s')).toBe('test-s-s');
 	});
 });

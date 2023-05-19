@@ -22,7 +22,7 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 	if (!isDragging)
 		goThroughMaxiBlocks(({ clientId, attributes }) => {
 			const [relations, blockUniqueID] = getAttributesValue({
-				target: ['relations', 'uniqueID'],
+				target: ['_r', '_uid'],
 				props: attributes,
 			});
 

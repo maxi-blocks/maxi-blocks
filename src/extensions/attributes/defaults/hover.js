@@ -127,8 +127,8 @@ export const hoverBackgroundColor = prefixAttributesCreator({
 	prefix,
 	longPrefix,
 	diffValAttr: {
-		'h-b_pc': 5, // hover-background-palette-color
-		'h-b-po': 60, // hover-background-palette-opacity
+		'h-bc_pc': 5, // hover-background-palette-color
+		'h-bc_po': 60, // hover-background-palette-opacity
 	},
 });
 

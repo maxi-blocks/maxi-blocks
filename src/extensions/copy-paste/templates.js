@@ -84,7 +84,7 @@ const templates = {
 		props: ['_al', '_lse'],
 	},
 	interaction: {
-		props: 'relations',
+		props: '_r',
 	},
 	breakpoints: {
 		groupAttributes: 'breakpoints',

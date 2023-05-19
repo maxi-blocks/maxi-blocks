@@ -1,5 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getArrowStyles Get a correct arrow hover styles with background, shadow and bo custom colors 1`] = `
+Object {
+  " .maxi-container-arrow": Object {
+    "shadow": Object {},
+  },
+  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+    },
+  },
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+    },
+    "borderRadius": Object {
+      "general": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "l": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "label": "Arrow Border",
+      "m": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "s": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xl": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xs": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+      "xxl": Object {
+        "border-bottom-left-radius": "10px",
+        "border-bottom-right-radius": "10px",
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "10px",
+      },
+    },
+  },
+  ":hover .maxi-container-arrow": Object {
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(1px 2px 1px rgba(61,133,209))",
+      },
+    },
+  },
+}
+`;
+
 exports[`getArrowStyles Get a correct arrow hover styles with background, shadow and border custom colors 1`] = `
 Object {
   " .maxi-container-arrow": Object {
@@ -328,6 +440,10 @@ Object {
 exports[`getArrowStyles Return empty arrow styles when arrow status is off 1`] = `Object {}`;
 
 exports[`getArrowStyles Return empty arrow styles when background color is not selected 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is selected and bo is active but some style on hover is not solid 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is selected and bo is active but the style is not solid 1`] = `Object {}`;
 
 exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but some style on hover is not solid 1`] = `Object {}`;
 

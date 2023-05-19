@@ -492,12 +492,12 @@ const getFigcaptionObject = props => {
 
 			breakpoints.forEach(breakpoint => {
 				const num = getLastBreakpointAttribute({
-					target: '_cg',
+					target: '_cga',
 					breakpoint,
 					attributes: props,
 				});
 				const unit = getLastBreakpointAttribute({
-					target: '_cg.u',
+					target: '_cga.u',
 					breakpoint,
 					attributes: props,
 				});

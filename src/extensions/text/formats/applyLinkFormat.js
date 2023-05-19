@@ -41,7 +41,7 @@ const applyLinkFormat = ({
 		typography,
 		isList,
 		value: {
-			'text-decoration': 'underline',
+			_td: 'underline',
 		},
 		breakpoint,
 		isHover,

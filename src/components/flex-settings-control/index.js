@@ -178,7 +178,7 @@ const FlexSettingsControl = props => {
 								/>
 								<AdvancedNumberControl
 									className='maxi-typography-control__flex-shrink'
-									label={__('_fls', 'maxi-blocks')}
+									label={__('Flex-shrink', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
 										target: '_fls',

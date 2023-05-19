@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getBoxShadowStyles from '../getBoxShadowStyles';
 
 jest.mock('src/extensions/attributes/getDefaultAttribute.js', () =>
@@ -33,8 +32,8 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getBoxShadowStyles', () => {
 	it('Get a correct box shadow styles with values in all responsive and with custom color', () => {
-		const object = parseLongAttrObj({
-			'box-shadow-palette-status-general': false,
+		const object = {
+			'bs_ps-general': false,
 			'bs_cc-general': 'rgb(255, 99, 71)',
 			'bs_ho-general': 1,
 			'bs_v-general': 2,
@@ -45,7 +44,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-general': 'px',
 			'bs_v.u-general': 'px',
 			'bs_sp.u-general': 'px',
-			'box-shadow-palette-status-xxl': false,
+			'bs_ps-xxl': false,
 			'bs_cc-xxl': 'rgb(255, 99, 72)',
 			'bs_ho-xxl': 5,
 			'bs_v-xxl': 6,
@@ -55,7 +54,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-xxl': 'px',
 			'bs_v.u-xxl': 'px',
 			'bs_sp.u-xxl': 'px',
-			'box-shadow-palette-status-xl': false,
+			'bs_ps-xl': false,
 			'bs_cc-xl': 'rgb(255, 99, 73)',
 			'bs_ho-xl': 9,
 			'bs_v-xl': 10,
@@ -65,7 +64,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-xl': 'px',
 			'bs_v.u-xl': 'px',
 			'bs_sp.u-xl': 'px',
-			'box-shadow-palette-status-l': false,
+			'bs_ps-l': false,
 			'bs_cc-l': 'rgb(255, 99, 74)',
 			'bs_ho-l': 13,
 			'bs_v-l': 14,
@@ -75,7 +74,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-l': 'px',
 			'bs_v.u-l': 'px',
 			'bs_sp.u-l': 'px',
-			'box-shadow-palette-status-m': false,
+			'bs_ps-m': false,
 			'bs_cc-m': 'rgb(255, 99, 75)',
 			'bs_ho-m': 17,
 			'bs_v-m': 18,
@@ -86,7 +85,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-m': 'px',
 			'bs_v.u-m': 'px',
 			'bs_sp.u-m': 'px',
-			'box-shadow-palette-status-s': false,
+			'bs_ps-s': false,
 			'bs_cc-s': 'rgb(255, 99, 76)',
 			'bs_ho-s': 21,
 			'bs_v-s': 22,
@@ -96,7 +95,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-s': 'px',
 			'bs_v.u-s': 'px',
 			'bs_sp.u-s': 'px',
-			'box-shadow-palette-status-xs': false,
+			'bs_ps-xs': false,
 			'bs_cc-xs': 'rgb(255, 99, 77)',
 			'bs_ho-xs': 25,
 			'bs_v-xs': 26,
@@ -107,7 +106,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-xs': 'px',
 			'bs_v.u-xs': 'px',
 			'bs_sp.u-xs': 'px',
-		});
+		};
 
 		const result = getBoxShadowStyles({
 			obj: object,
@@ -117,8 +116,8 @@ describe('getBoxShadowStyles', () => {
 	});
 
 	it('Returns box-shadow object with different colors based on palette', () => {
-		const object = parseLongAttrObj({
-			'box-shadow-palette-status-general': true,
+		const object = {
+			'bs_ps-general': true,
 			'bs_pc-general': 4,
 			'bs_ho-general': 1,
 			'bs_v-general': 2,
@@ -130,7 +129,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_ho.u-general': 'px',
 			'bs_v.u-general': 'px',
 			'bs_sp.u-general': 'px',
-		});
+		};
 
 		const result = getBoxShadowStyles({
 			obj: object,
@@ -140,8 +139,8 @@ describe('getBoxShadowStyles', () => {
 	});
 
 	it('Returns box-shadow default styles for IB', () => {
-		const object = parseLongAttrObj({
-			'box-shadow-palette-status-general': true,
+		const object = {
+			'bs_ps-general': true,
 			'bs_pc-general': 8,
 			'bs_pc-l': 8,
 			'bs_po-general': 1,
@@ -163,7 +162,7 @@ describe('getBoxShadowStyles', () => {
 			'bs_sp-l': 0,
 			'bs_sp.u-general': 'px',
 			'bs_sp.u-l': 'px',
-		});
+		};
 
 		const result = getBoxShadowStyles({
 			obj: object,

@@ -1,4 +1,3 @@
-import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
@@ -6,39 +5,39 @@ import {
 
 describe('getShapeDividerStyles', () => {
 	it('Get a correct shape divider styles', () => {
-		const object = parseLongAttrObj({
-			'shape-divider-top-status': true,
-			'shape-divider-top-height-general': 1,
-			'shape-divider-top-height-unit-general': 'px',
-			'shape-divider-top-opacity-general': 1,
-			'shape-divider-top-shape-style': 'default',
-			'shape-divider-top-effects-status': true,
-			'shape-divider-top-color-general': 'rgb(255, 99, 71)',
-			'shape-divider-bottom-status': true,
-			'shape-divider-bottom-height-general': 3,
-			'shape-divider-bottom-height-unit-general': 'px',
-			'shape-divider-bottom-opacity-general': 0.51,
-			'shape-divider-bottom-shape-style': 'default',
-			'shape-divider-bottom-effects-status': true,
-			'shape-divider-bottom-color-general': 'rgb(255, 99, 71)',
-		});
+		const object = {
+			'sdt.s': true,
+			'sdt_h-general': 1,
+			'sdt_h.u-general': 'px',
+			'sdt_o-general': 1,
+			sdt_ss: 'default',
+			'sdt_ef.s': true,
+			'sdt_cc-general': 'rgb(255, 99, 71)',
+			'sdb.s': true,
+			'sdb_h-general': 3,
+			'sdb_h.u-general': 'px',
+			'sdb_o-general': 0.51,
+			sdb_ss: 'default',
+			'sdb_ef.s': true,
+			'sdb_cc-general': 'rgb(255, 99, 71)',
+		};
 
-		const objectSVGStyles = parseLongAttrObj({
-			'shape-divider-top-status': true,
-			'shape-divider-top-height-general': 3,
-			'shape-divider-top-height-unit-general': 'px',
-			'shape-divider-top-opacity-general': 0.98,
-			'shape-divider-top-shape-style': 'default',
-			'shape-divider-top-effects-status': true,
-			'shape-divider-top-color-general': 'rgb(255, 99, 71)',
-			'shape-divider-bottom-status': true,
-			'shape-divider-bottom-height-general': 1,
-			'shape-divider-bottom-height-unit-general': 'px',
-			'shape-divider-bottom-opacity-general': 1,
-			'shape-divider-bottom-shape-style': 'default',
-			'shape-divider-bottom-effects-status': true,
-			'shape-divider-bottom-color-general': 'rgb(255, 99, 71)',
-		});
+		const objectSVGStyles = {
+			'sdt.s': true,
+			'sdt_h-general': 3,
+			'sdt_h.u-general': 'px',
+			'sdt_o-general': 0.98,
+			sdt_ss: 'default',
+			'sdt_ef.s': true,
+			'sdt_cc-general': 'rgb(255, 99, 71)',
+			'sdb.s': true,
+			'sdb_h-general': 1,
+			'sdb_h.u-general': 'px',
+			'sdb_o-general': 1,
+			sdb_ss: 'default',
+			'sdb_ef.s': true,
+			'sdb_cc-general': 'rgb(255, 99, 71)',
+		};
 
 		const result = getShapeDividerStyles(object, 'top');
 		expect(result).toMatchSnapshot();

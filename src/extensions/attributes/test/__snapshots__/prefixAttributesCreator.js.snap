@@ -2,199 +2,262 @@
 
 exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] = `
 Object {
-  "button-padding-bottom-general": Object {
+  "bt_p.b-general": Object {
     "default": 30,
+    "longLabel": "button-padding-bottom-general",
     "type": "string",
   },
-  "button-padding-bottom-l": Object {
+  "bt_p.b-l": Object {
+    "longLabel": "button-padding-bottom-l",
     "type": "string",
   },
-  "button-padding-bottom-m": Object {
+  "bt_p.b-m": Object {
+    "longLabel": "button-padding-bottom-m",
     "type": "string",
   },
-  "button-padding-bottom-s": Object {
+  "bt_p.b-s": Object {
+    "longLabel": "button-padding-bottom-s",
     "type": "string",
   },
-  "button-padding-bottom-unit-general": Object {
+  "bt_p.b-xl": Object {
+    "longLabel": "button-padding-bottom-xl",
+    "type": "string",
+  },
+  "bt_p.b-xs": Object {
+    "longLabel": "button-padding-bottom-xs",
+    "type": "string",
+  },
+  "bt_p.b-xxl": Object {
+    "longLabel": "button-padding-bottom-xxl",
+    "type": "string",
+  },
+  "bt_p.b.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-bottom-unit-general",
     "type": "string",
   },
-  "button-padding-bottom-unit-l": Object {
+  "bt_p.b.u-l": Object {
+    "longLabel": "button-padding-bottom-unit-l",
     "type": "string",
   },
-  "button-padding-bottom-unit-m": Object {
+  "bt_p.b.u-m": Object {
+    "longLabel": "button-padding-bottom-unit-m",
     "type": "string",
   },
-  "button-padding-bottom-unit-s": Object {
+  "bt_p.b.u-s": Object {
+    "longLabel": "button-padding-bottom-unit-s",
     "type": "string",
   },
-  "button-padding-bottom-unit-xl": Object {
+  "bt_p.b.u-xl": Object {
+    "longLabel": "button-padding-bottom-unit-xl",
     "type": "string",
   },
-  "button-padding-bottom-unit-xs": Object {
+  "bt_p.b.u-xs": Object {
+    "longLabel": "button-padding-bottom-unit-xs",
     "type": "string",
   },
-  "button-padding-bottom-unit-xxl": Object {
+  "bt_p.b.u-xxl": Object {
+    "longLabel": "button-padding-bottom-unit-xxl",
     "type": "string",
   },
-  "button-padding-bottom-xl": Object {
+  "bt_p.l-general": Object {
+    "longLabel": "button-padding-left-general",
     "type": "string",
   },
-  "button-padding-bottom-xs": Object {
+  "bt_p.l-l": Object {
+    "longLabel": "button-padding-left-l",
     "type": "string",
   },
-  "button-padding-bottom-xxl": Object {
+  "bt_p.l-m": Object {
+    "longLabel": "button-padding-left-m",
     "type": "string",
   },
-  "button-padding-left-general": Object {
+  "bt_p.l-s": Object {
+    "longLabel": "button-padding-left-s",
     "type": "string",
   },
-  "button-padding-left-l": Object {
+  "bt_p.l-xl": Object {
+    "longLabel": "button-padding-left-xl",
     "type": "string",
   },
-  "button-padding-left-m": Object {
+  "bt_p.l-xs": Object {
+    "longLabel": "button-padding-left-xs",
     "type": "string",
   },
-  "button-padding-left-s": Object {
+  "bt_p.l-xxl": Object {
+    "longLabel": "button-padding-left-xxl",
     "type": "string",
   },
-  "button-padding-left-unit-general": Object {
+  "bt_p.l.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-left-unit-general",
     "type": "string",
   },
-  "button-padding-left-unit-l": Object {
+  "bt_p.l.u-l": Object {
+    "longLabel": "button-padding-left-unit-l",
     "type": "string",
   },
-  "button-padding-left-unit-m": Object {
+  "bt_p.l.u-m": Object {
+    "longLabel": "button-padding-left-unit-m",
     "type": "string",
   },
-  "button-padding-left-unit-s": Object {
+  "bt_p.l.u-s": Object {
+    "longLabel": "button-padding-left-unit-s",
     "type": "string",
   },
-  "button-padding-left-unit-xl": Object {
+  "bt_p.l.u-xl": Object {
+    "longLabel": "button-padding-left-unit-xl",
     "type": "string",
   },
-  "button-padding-left-unit-xs": Object {
+  "bt_p.l.u-xs": Object {
+    "longLabel": "button-padding-left-unit-xs",
     "type": "string",
   },
-  "button-padding-left-unit-xxl": Object {
+  "bt_p.l.u-xxl": Object {
+    "longLabel": "button-padding-left-unit-xxl",
     "type": "string",
   },
-  "button-padding-left-xl": Object {
+  "bt_p.r-general": Object {
+    "longLabel": "button-padding-right-general",
     "type": "string",
   },
-  "button-padding-left-xs": Object {
+  "bt_p.r-l": Object {
+    "longLabel": "button-padding-right-l",
     "type": "string",
   },
-  "button-padding-left-xxl": Object {
+  "bt_p.r-m": Object {
+    "longLabel": "button-padding-right-m",
     "type": "string",
   },
-  "button-padding-right-general": Object {
+  "bt_p.r-s": Object {
+    "longLabel": "button-padding-right-s",
     "type": "string",
   },
-  "button-padding-right-l": Object {
+  "bt_p.r-xl": Object {
+    "longLabel": "button-padding-right-xl",
     "type": "string",
   },
-  "button-padding-right-m": Object {
+  "bt_p.r-xs": Object {
+    "longLabel": "button-padding-right-xs",
     "type": "string",
   },
-  "button-padding-right-s": Object {
+  "bt_p.r-xxl": Object {
+    "longLabel": "button-padding-right-xxl",
     "type": "string",
   },
-  "button-padding-right-unit-general": Object {
+  "bt_p.r.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-right-unit-general",
     "type": "string",
   },
-  "button-padding-right-unit-l": Object {
+  "bt_p.r.u-l": Object {
+    "longLabel": "button-padding-right-unit-l",
     "type": "string",
   },
-  "button-padding-right-unit-m": Object {
+  "bt_p.r.u-m": Object {
+    "longLabel": "button-padding-right-unit-m",
     "type": "string",
   },
-  "button-padding-right-unit-s": Object {
+  "bt_p.r.u-s": Object {
+    "longLabel": "button-padding-right-unit-s",
     "type": "string",
   },
-  "button-padding-right-unit-xl": Object {
+  "bt_p.r.u-xl": Object {
+    "longLabel": "button-padding-right-unit-xl",
     "type": "string",
   },
-  "button-padding-right-unit-xs": Object {
+  "bt_p.r.u-xs": Object {
+    "longLabel": "button-padding-right-unit-xs",
     "type": "string",
   },
-  "button-padding-right-unit-xxl": Object {
+  "bt_p.r.u-xxl": Object {
+    "longLabel": "button-padding-right-unit-xxl",
     "type": "string",
   },
-  "button-padding-right-xl": Object {
-    "type": "string",
-  },
-  "button-padding-right-xs": Object {
-    "type": "string",
-  },
-  "button-padding-right-xxl": Object {
-    "type": "string",
-  },
-  "button-padding-sync-general": Object {
+  "bt_p.sy-general": Object {
     "default": "all",
+    "longLabel": "button-padding-sync-general",
     "type": "string",
   },
-  "button-padding-sync-l": Object {
+  "bt_p.sy-l": Object {
+    "longLabel": "button-padding-sync-l",
     "type": "string",
   },
-  "button-padding-sync-m": Object {
+  "bt_p.sy-m": Object {
+    "longLabel": "button-padding-sync-m",
     "type": "string",
   },
-  "button-padding-sync-s": Object {
+  "bt_p.sy-s": Object {
+    "longLabel": "button-padding-sync-s",
     "type": "string",
   },
-  "button-padding-sync-xl": Object {
+  "bt_p.sy-xl": Object {
+    "longLabel": "button-padding-sync-xl",
     "type": "string",
   },
-  "button-padding-sync-xs": Object {
+  "bt_p.sy-xs": Object {
+    "longLabel": "button-padding-sync-xs",
     "type": "string",
   },
-  "button-padding-sync-xxl": Object {
+  "bt_p.sy-xxl": Object {
+    "longLabel": "button-padding-sync-xxl",
     "type": "string",
   },
-  "button-padding-top-general": Object {
+  "bt_p.t-general": Object {
+    "longLabel": "button-padding-top-general",
     "type": "string",
   },
-  "button-padding-top-l": Object {
+  "bt_p.t-l": Object {
+    "longLabel": "button-padding-top-l",
     "type": "string",
   },
-  "button-padding-top-m": Object {
+  "bt_p.t-m": Object {
+    "longLabel": "button-padding-top-m",
     "type": "string",
   },
-  "button-padding-top-s": Object {
+  "bt_p.t-s": Object {
+    "longLabel": "button-padding-top-s",
     "type": "string",
   },
-  "button-padding-top-unit-general": Object {
+  "bt_p.t-xl": Object {
+    "longLabel": "button-padding-top-xl",
+    "type": "string",
+  },
+  "bt_p.t-xs": Object {
+    "longLabel": "button-padding-top-xs",
+    "type": "string",
+  },
+  "bt_p.t-xxl": Object {
+    "longLabel": "button-padding-top-xxl",
+    "type": "string",
+  },
+  "bt_p.t.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-top-unit-general",
     "type": "string",
   },
-  "button-padding-top-unit-l": Object {
+  "bt_p.t.u-l": Object {
+    "longLabel": "button-padding-top-unit-l",
     "type": "string",
   },
-  "button-padding-top-unit-m": Object {
+  "bt_p.t.u-m": Object {
+    "longLabel": "button-padding-top-unit-m",
     "type": "string",
   },
-  "button-padding-top-unit-s": Object {
+  "bt_p.t.u-s": Object {
+    "longLabel": "button-padding-top-unit-s",
     "type": "string",
   },
-  "button-padding-top-unit-xl": Object {
+  "bt_p.t.u-xl": Object {
+    "longLabel": "button-padding-top-unit-xl",
     "type": "string",
   },
-  "button-padding-top-unit-xs": Object {
+  "bt_p.t.u-xs": Object {
+    "longLabel": "button-padding-top-unit-xs",
     "type": "string",
   },
-  "button-padding-top-unit-xxl": Object {
-    "type": "string",
-  },
-  "button-padding-top-xl": Object {
-    "type": "string",
-  },
-  "button-padding-top-xs": Object {
-    "type": "string",
-  },
-  "button-padding-top-xxl": Object {
+  "bt_p.t.u-xxl": Object {
+    "longLabel": "button-padding-top-unit-xxl",
     "type": "string",
   },
 }
@@ -202,608 +265,805 @@ Object {
 
 exports[`prefixAttributesCreator Returns prefixed object with default values 1`] = `
 Object {
-  "button-border-width-bottom-general": Object {
+  "bt-bo_w.b-general": Object {
     "default": 2,
+    "longLabel": "button-border-width-bottom-general",
     "type": "number",
   },
-  "button-border-width-bottom-l": Object {
+  "bt-bo_w.b-l": Object {
+    "longLabel": "button-border-width-bottom-l",
     "type": "number",
   },
-  "button-border-width-bottom-m": Object {
+  "bt-bo_w.b-m": Object {
+    "longLabel": "button-border-width-bottom-m",
     "type": "number",
   },
-  "button-border-width-bottom-s": Object {
+  "bt-bo_w.b-s": Object {
+    "longLabel": "button-border-width-bottom-s",
     "type": "number",
   },
-  "button-border-width-bottom-xl": Object {
+  "bt-bo_w.b-xl": Object {
+    "longLabel": "button-border-width-bottom-xl",
     "type": "number",
   },
-  "button-border-width-bottom-xs": Object {
+  "bt-bo_w.b-xs": Object {
+    "longLabel": "button-border-width-bottom-xs",
     "type": "number",
   },
-  "button-border-width-bottom-xxl": Object {
+  "bt-bo_w.b-xxl": Object {
+    "longLabel": "button-border-width-bottom-xxl",
     "type": "number",
   },
-  "button-border-width-left-general": Object {
+  "bt-bo_w.l-general": Object {
     "default": 2,
+    "longLabel": "button-border-width-left-general",
     "type": "number",
   },
-  "button-border-width-left-l": Object {
+  "bt-bo_w.l-l": Object {
+    "longLabel": "button-border-width-left-l",
     "type": "number",
   },
-  "button-border-width-left-m": Object {
+  "bt-bo_w.l-m": Object {
+    "longLabel": "button-border-width-left-m",
     "type": "number",
   },
-  "button-border-width-left-s": Object {
+  "bt-bo_w.l-s": Object {
+    "longLabel": "button-border-width-left-s",
     "type": "number",
   },
-  "button-border-width-left-xl": Object {
+  "bt-bo_w.l-xl": Object {
+    "longLabel": "button-border-width-left-xl",
     "type": "number",
   },
-  "button-border-width-left-xs": Object {
+  "bt-bo_w.l-xs": Object {
+    "longLabel": "button-border-width-left-xs",
     "type": "number",
   },
-  "button-border-width-left-xxl": Object {
+  "bt-bo_w.l-xxl": Object {
+    "longLabel": "button-border-width-left-xxl",
     "type": "number",
   },
-  "button-border-width-right-general": Object {
+  "bt-bo_w.r-general": Object {
     "default": 2,
+    "longLabel": "button-border-width-right-general",
     "type": "number",
   },
-  "button-border-width-right-l": Object {
+  "bt-bo_w.r-l": Object {
+    "longLabel": "button-border-width-right-l",
     "type": "number",
   },
-  "button-border-width-right-m": Object {
+  "bt-bo_w.r-m": Object {
+    "longLabel": "button-border-width-right-m",
     "type": "number",
   },
-  "button-border-width-right-s": Object {
+  "bt-bo_w.r-s": Object {
+    "longLabel": "button-border-width-right-s",
     "type": "number",
   },
-  "button-border-width-right-xl": Object {
+  "bt-bo_w.r-xl": Object {
+    "longLabel": "button-border-width-right-xl",
     "type": "number",
   },
-  "button-border-width-right-xs": Object {
+  "bt-bo_w.r-xs": Object {
+    "longLabel": "button-border-width-right-xs",
     "type": "number",
   },
-  "button-border-width-right-xxl": Object {
+  "bt-bo_w.r-xxl": Object {
+    "longLabel": "button-border-width-right-xxl",
     "type": "number",
   },
-  "button-border-width-sync-general": Object {
+  "bt-bo_w.sy-general": Object {
     "default": "all",
+    "longLabel": "button-border-width-sync-general",
     "type": "string",
   },
-  "button-border-width-sync-l": Object {
+  "bt-bo_w.sy-l": Object {
+    "longLabel": "button-border-width-sync-l",
     "type": "string",
   },
-  "button-border-width-sync-m": Object {
+  "bt-bo_w.sy-m": Object {
+    "longLabel": "button-border-width-sync-m",
     "type": "string",
   },
-  "button-border-width-sync-s": Object {
+  "bt-bo_w.sy-s": Object {
+    "longLabel": "button-border-width-sync-s",
     "type": "string",
   },
-  "button-border-width-sync-xl": Object {
+  "bt-bo_w.sy-xl": Object {
+    "longLabel": "button-border-width-sync-xl",
     "type": "string",
   },
-  "button-border-width-sync-xs": Object {
+  "bt-bo_w.sy-xs": Object {
+    "longLabel": "button-border-width-sync-xs",
     "type": "string",
   },
-  "button-border-width-sync-xxl": Object {
+  "bt-bo_w.sy-xxl": Object {
+    "longLabel": "button-border-width-sync-xxl",
     "type": "string",
   },
-  "button-border-width-top-general": Object {
+  "bt-bo_w.t-general": Object {
     "default": 2,
+    "longLabel": "button-border-width-top-general",
     "type": "number",
   },
-  "button-border-width-top-l": Object {
+  "bt-bo_w.t-l": Object {
+    "longLabel": "button-border-width-top-l",
     "type": "number",
   },
-  "button-border-width-top-m": Object {
+  "bt-bo_w.t-m": Object {
+    "longLabel": "button-border-width-top-m",
     "type": "number",
   },
-  "button-border-width-top-s": Object {
+  "bt-bo_w.t-s": Object {
+    "longLabel": "button-border-width-top-s",
     "type": "number",
   },
-  "button-border-width-top-xl": Object {
+  "bt-bo_w.t-xl": Object {
+    "longLabel": "button-border-width-top-xl",
     "type": "number",
   },
-  "button-border-width-top-xs": Object {
+  "bt-bo_w.t-xs": Object {
+    "longLabel": "button-border-width-top-xs",
     "type": "number",
   },
-  "button-border-width-top-xxl": Object {
+  "bt-bo_w.t-xxl": Object {
+    "longLabel": "button-border-width-top-xxl",
     "type": "number",
   },
-  "button-border-width-unit-general": Object {
+  "bt-bo_w.u-general": Object {
     "default": "px",
+    "longLabel": "button-border-width-unit-general",
     "type": "string",
   },
-  "button-border-width-unit-l": Object {
+  "bt-bo_w.u-l": Object {
+    "longLabel": "button-border-width-unit-l",
     "type": "string",
   },
-  "button-border-width-unit-m": Object {
+  "bt-bo_w.u-m": Object {
+    "longLabel": "button-border-width-unit-m",
     "type": "string",
   },
-  "button-border-width-unit-s": Object {
+  "bt-bo_w.u-s": Object {
+    "longLabel": "button-border-width-unit-s",
     "type": "string",
   },
-  "button-border-width-unit-xl": Object {
+  "bt-bo_w.u-xl": Object {
+    "longLabel": "button-border-width-unit-xl",
     "type": "string",
   },
-  "button-border-width-unit-xs": Object {
+  "bt-bo_w.u-xs": Object {
+    "longLabel": "button-border-width-unit-xs",
     "type": "string",
   },
-  "button-border-width-unit-xxl": Object {
+  "bt-bo_w.u-xxl": Object {
+    "longLabel": "button-border-width-unit-xxl",
     "type": "string",
   },
-  "button-box-shadow-blur-general-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-l-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-m-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-s-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-unit-general-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-l-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-m-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-s-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-xl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-xs-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-unit-xxl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-blur-xl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-xs-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-blur-xxl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-color-general-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-l-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-m-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-s-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-xl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-xs-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-color-xxl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-general-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-l-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-m-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-s-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-unit-general-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-l-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-m-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-s-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-xl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-xs-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-unit-xxl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-horizontal-xl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-xs-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-horizontal-xxl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-inset-general-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-l-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-m-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-s-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-xl-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-xs-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-inset-xxl-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-color-general-hover": Object {
-    "default": 6,
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-l-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-m-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-s-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-xl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-xs-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-color-xxl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-general-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-l-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-m-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-s-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-xl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-xs-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-opacity-xxl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-palette-status-general-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-l-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-m-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-s-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xl-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xs-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-palette-status-xxl-hover": Object {
-    "type": "boolean",
-  },
-  "button-box-shadow-spread-general-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-l-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-m-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-s-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-unit-general-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-l-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-m-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-s-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-xl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-xs-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-unit-xxl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-spread-xl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-xs-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-spread-xxl-hover": Object {
-    "type": "number",
-  },
-  "button-box-shadow-status-hover": Object {
+  "bt-bs.sh": Object {
     "default": false,
+    "longLabel": "button-box-shadow-status-hover",
     "type": "boolean",
   },
-  "button-box-shadow-vertical-general-hover": Object {
+  "bt-bs_blu-general.h": Object {
+    "longLabel": "button-box-shadow-blur-general-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-l-hover": Object {
+  "bt-bs_blu-l.h": Object {
+    "longLabel": "button-box-shadow-blur-l-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-m-hover": Object {
+  "bt-bs_blu-m.h": Object {
+    "longLabel": "button-box-shadow-blur-m-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-s-hover": Object {
+  "bt-bs_blu-s.h": Object {
+    "longLabel": "button-box-shadow-blur-s-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-unit-general-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-l-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-m-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-s-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-xl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-xs-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-unit-xxl-hover": Object {
-    "type": "string",
-  },
-  "button-box-shadow-vertical-xl-hover": Object {
+  "bt-bs_blu-xl.h": Object {
+    "longLabel": "button-box-shadow-blur-xl-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-xs-hover": Object {
+  "bt-bs_blu-xs.h": Object {
+    "longLabel": "button-box-shadow-blur-xs-hover",
     "type": "number",
   },
-  "button-box-shadow-vertical-xxl-hover": Object {
+  "bt-bs_blu-xxl.h": Object {
+    "longLabel": "button-box-shadow-blur-xxl-hover",
     "type": "number",
   },
-  "button-margin-bottom-general": Object {
+  "bt-bs_blu.u-general.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-general-hover",
     "type": "string",
   },
-  "button-margin-bottom-l": Object {
+  "bt-bs_blu.u-l.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-l-hover",
     "type": "string",
   },
-  "button-margin-bottom-m": Object {
+  "bt-bs_blu.u-m.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-m-hover",
     "type": "string",
   },
-  "button-margin-bottom-s": Object {
+  "bt-bs_blu.u-s.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-s-hover",
     "type": "string",
   },
-  "button-margin-bottom-unit-general": Object {
+  "bt-bs_blu.u-xl.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-xl-hover",
+    "type": "string",
+  },
+  "bt-bs_blu.u-xs.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-xs-hover",
+    "type": "string",
+  },
+  "bt-bs_blu.u-xxl.h": Object {
+    "longLabel": "button-box-shadow-blur-unit-xxl-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-general.h": Object {
+    "longLabel": "button-box-shadow-custom-color-general-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-l.h": Object {
+    "longLabel": "button-box-shadow-custom-color-l-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-m.h": Object {
+    "longLabel": "button-box-shadow-custom-color-m-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-s.h": Object {
+    "longLabel": "button-box-shadow-custom-color-s-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-xl.h": Object {
+    "longLabel": "button-box-shadow-custom-color-xl-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-xs.h": Object {
+    "longLabel": "button-box-shadow-custom-color-xs-hover",
+    "type": "string",
+  },
+  "bt-bs_cc-xxl.h": Object {
+    "longLabel": "button-box-shadow-custom-color-xxl-hover",
+    "type": "string",
+  },
+  "bt-bs_ho-general.h": Object {
+    "longLabel": "button-box-shadow-horizontal-general-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-l.h": Object {
+    "longLabel": "button-box-shadow-horizontal-l-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-m.h": Object {
+    "longLabel": "button-box-shadow-horizontal-m-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-s.h": Object {
+    "longLabel": "button-box-shadow-horizontal-s-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-xl.h": Object {
+    "longLabel": "button-box-shadow-horizontal-xl-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-xs.h": Object {
+    "longLabel": "button-box-shadow-horizontal-xs-hover",
+    "type": "number",
+  },
+  "bt-bs_ho-xxl.h": Object {
+    "longLabel": "button-box-shadow-horizontal-xxl-hover",
+    "type": "number",
+  },
+  "bt-bs_ho.u-general.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-general-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-l.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-l-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-m.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-m-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-s.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-s-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-xl.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-xl-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-xs.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-xs-hover",
+    "type": "string",
+  },
+  "bt-bs_ho.u-xxl.h": Object {
+    "longLabel": "button-box-shadow-horizontal-unit-xxl-hover",
+    "type": "string",
+  },
+  "bt-bs_in-general.h": Object {
+    "longLabel": "button-box-shadow-inset-general-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-l.h": Object {
+    "longLabel": "button-box-shadow-inset-l-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-m.h": Object {
+    "longLabel": "button-box-shadow-inset-m-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-s.h": Object {
+    "longLabel": "button-box-shadow-inset-s-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-xl.h": Object {
+    "longLabel": "button-box-shadow-inset-xl-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-xs.h": Object {
+    "longLabel": "button-box-shadow-inset-xs-hover",
+    "type": "boolean",
+  },
+  "bt-bs_in-xxl.h": Object {
+    "longLabel": "button-box-shadow-inset-xxl-hover",
+    "type": "boolean",
+  },
+  "bt-bs_pc-general.h": Object {
+    "default": 6,
+    "longLabel": "button-box-shadow-palette-color-general-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-l.h": Object {
+    "longLabel": "button-box-shadow-palette-color-l-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-m.h": Object {
+    "longLabel": "button-box-shadow-palette-color-m-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-s.h": Object {
+    "longLabel": "button-box-shadow-palette-color-s-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-xl.h": Object {
+    "longLabel": "button-box-shadow-palette-color-xl-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-xs.h": Object {
+    "longLabel": "button-box-shadow-palette-color-xs-hover",
+    "type": "number",
+  },
+  "bt-bs_pc-xxl.h": Object {
+    "longLabel": "button-box-shadow-palette-color-xxl-hover",
+    "type": "number",
+  },
+  "bt-bs_po-general.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-general-hover",
+    "type": "number",
+  },
+  "bt-bs_po-l.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-l-hover",
+    "type": "number",
+  },
+  "bt-bs_po-m.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-m-hover",
+    "type": "number",
+  },
+  "bt-bs_po-s.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-s-hover",
+    "type": "number",
+  },
+  "bt-bs_po-xl.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-xl-hover",
+    "type": "number",
+  },
+  "bt-bs_po-xs.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-xs-hover",
+    "type": "number",
+  },
+  "bt-bs_po-xxl.h": Object {
+    "longLabel": "button-box-shadow-palette-opacity-xxl-hover",
+    "type": "number",
+  },
+  "bt-bs_ps-general.h": Object {
+    "longLabel": "button-box-shadow-palette-status-general-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-l.h": Object {
+    "longLabel": "button-box-shadow-palette-status-l-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-m.h": Object {
+    "longLabel": "button-box-shadow-palette-status-m-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-s.h": Object {
+    "longLabel": "button-box-shadow-palette-status-s-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-xl.h": Object {
+    "longLabel": "button-box-shadow-palette-status-xl-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-xs.h": Object {
+    "longLabel": "button-box-shadow-palette-status-xs-hover",
+    "type": "boolean",
+  },
+  "bt-bs_ps-xxl.h": Object {
+    "longLabel": "button-box-shadow-palette-status-xxl-hover",
+    "type": "boolean",
+  },
+  "bt-bs_sp-general.h": Object {
+    "longLabel": "button-box-shadow-spread-general-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-l.h": Object {
+    "longLabel": "button-box-shadow-spread-l-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-m.h": Object {
+    "longLabel": "button-box-shadow-spread-m-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-s.h": Object {
+    "longLabel": "button-box-shadow-spread-s-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-xl.h": Object {
+    "longLabel": "button-box-shadow-spread-xl-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-xs.h": Object {
+    "longLabel": "button-box-shadow-spread-xs-hover",
+    "type": "number",
+  },
+  "bt-bs_sp-xxl.h": Object {
+    "longLabel": "button-box-shadow-spread-xxl-hover",
+    "type": "number",
+  },
+  "bt-bs_sp.u-general.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-general-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-l.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-l-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-m.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-m-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-s.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-s-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-xl.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-xl-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-xs.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-xs-hover",
+    "type": "string",
+  },
+  "bt-bs_sp.u-xxl.h": Object {
+    "longLabel": "button-box-shadow-spread-unit-xxl-hover",
+    "type": "string",
+  },
+  "bt-bs_v-general.h": Object {
+    "longLabel": "button-box-shadow-vertical-general-hover",
+    "type": "number",
+  },
+  "bt-bs_v-l.h": Object {
+    "longLabel": "button-box-shadow-vertical-l-hover",
+    "type": "number",
+  },
+  "bt-bs_v-m.h": Object {
+    "longLabel": "button-box-shadow-vertical-m-hover",
+    "type": "number",
+  },
+  "bt-bs_v-s.h": Object {
+    "longLabel": "button-box-shadow-vertical-s-hover",
+    "type": "number",
+  },
+  "bt-bs_v-xl.h": Object {
+    "longLabel": "button-box-shadow-vertical-xl-hover",
+    "type": "number",
+  },
+  "bt-bs_v-xs.h": Object {
+    "longLabel": "button-box-shadow-vertical-xs-hover",
+    "type": "number",
+  },
+  "bt-bs_v-xxl.h": Object {
+    "longLabel": "button-box-shadow-vertical-xxl-hover",
+    "type": "number",
+  },
+  "bt-bs_v.u-general.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-general-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-l.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-l-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-m.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-m-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-s.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-s-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-xl.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-xl-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-xs.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-xs-hover",
+    "type": "string",
+  },
+  "bt-bs_v.u-xxl.h": Object {
+    "longLabel": "button-box-shadow-vertical-unit-xxl-hover",
+    "type": "string",
+  },
+  "bt_m.b-general": Object {
+    "longLabel": "button-margin-bottom-general",
+    "type": "string",
+  },
+  "bt_m.b-l": Object {
+    "longLabel": "button-margin-bottom-l",
+    "type": "string",
+  },
+  "bt_m.b-m": Object {
+    "longLabel": "button-margin-bottom-m",
+    "type": "string",
+  },
+  "bt_m.b-s": Object {
+    "longLabel": "button-margin-bottom-s",
+    "type": "string",
+  },
+  "bt_m.b-xl": Object {
+    "longLabel": "button-margin-bottom-xl",
+    "type": "string",
+  },
+  "bt_m.b-xs": Object {
+    "longLabel": "button-margin-bottom-xs",
+    "type": "string",
+  },
+  "bt_m.b-xxl": Object {
+    "longLabel": "button-margin-bottom-xxl",
+    "type": "string",
+  },
+  "bt_m.b.u-general": Object {
     "default": "px",
+    "longLabel": "button-margin-bottom-unit-general",
     "type": "string",
   },
-  "button-margin-bottom-unit-l": Object {
+  "bt_m.b.u-l": Object {
+    "longLabel": "button-margin-bottom-unit-l",
     "type": "string",
   },
-  "button-margin-bottom-unit-m": Object {
+  "bt_m.b.u-m": Object {
+    "longLabel": "button-margin-bottom-unit-m",
     "type": "string",
   },
-  "button-margin-bottom-unit-s": Object {
+  "bt_m.b.u-s": Object {
+    "longLabel": "button-margin-bottom-unit-s",
     "type": "string",
   },
-  "button-margin-bottom-unit-xl": Object {
+  "bt_m.b.u-xl": Object {
+    "longLabel": "button-margin-bottom-unit-xl",
     "type": "string",
   },
-  "button-margin-bottom-unit-xs": Object {
+  "bt_m.b.u-xs": Object {
+    "longLabel": "button-margin-bottom-unit-xs",
     "type": "string",
   },
-  "button-margin-bottom-unit-xxl": Object {
+  "bt_m.b.u-xxl": Object {
+    "longLabel": "button-margin-bottom-unit-xxl",
     "type": "string",
   },
-  "button-margin-bottom-xl": Object {
+  "bt_m.l-general": Object {
+    "longLabel": "button-margin-left-general",
     "type": "string",
   },
-  "button-margin-bottom-xs": Object {
+  "bt_m.l-l": Object {
+    "longLabel": "button-margin-left-l",
     "type": "string",
   },
-  "button-margin-bottom-xxl": Object {
+  "bt_m.l-m": Object {
+    "longLabel": "button-margin-left-m",
     "type": "string",
   },
-  "button-margin-left-general": Object {
+  "bt_m.l-s": Object {
+    "longLabel": "button-margin-left-s",
     "type": "string",
   },
-  "button-margin-left-l": Object {
+  "bt_m.l-xl": Object {
+    "longLabel": "button-margin-left-xl",
     "type": "string",
   },
-  "button-margin-left-m": Object {
+  "bt_m.l-xs": Object {
+    "longLabel": "button-margin-left-xs",
     "type": "string",
   },
-  "button-margin-left-s": Object {
+  "bt_m.l-xxl": Object {
+    "longLabel": "button-margin-left-xxl",
     "type": "string",
   },
-  "button-margin-left-unit-general": Object {
+  "bt_m.l.u-general": Object {
     "default": "px",
+    "longLabel": "button-margin-left-unit-general",
     "type": "string",
   },
-  "button-margin-left-unit-l": Object {
+  "bt_m.l.u-l": Object {
+    "longLabel": "button-margin-left-unit-l",
     "type": "string",
   },
-  "button-margin-left-unit-m": Object {
+  "bt_m.l.u-m": Object {
+    "longLabel": "button-margin-left-unit-m",
     "type": "string",
   },
-  "button-margin-left-unit-s": Object {
+  "bt_m.l.u-s": Object {
+    "longLabel": "button-margin-left-unit-s",
     "type": "string",
   },
-  "button-margin-left-unit-xl": Object {
+  "bt_m.l.u-xl": Object {
+    "longLabel": "button-margin-left-unit-xl",
     "type": "string",
   },
-  "button-margin-left-unit-xs": Object {
+  "bt_m.l.u-xs": Object {
+    "longLabel": "button-margin-left-unit-xs",
     "type": "string",
   },
-  "button-margin-left-unit-xxl": Object {
+  "bt_m.l.u-xxl": Object {
+    "longLabel": "button-margin-left-unit-xxl",
     "type": "string",
   },
-  "button-margin-left-xl": Object {
+  "bt_m.r-general": Object {
+    "longLabel": "button-margin-right-general",
     "type": "string",
   },
-  "button-margin-left-xs": Object {
+  "bt_m.r-l": Object {
+    "longLabel": "button-margin-right-l",
     "type": "string",
   },
-  "button-margin-left-xxl": Object {
+  "bt_m.r-m": Object {
+    "longLabel": "button-margin-right-m",
     "type": "string",
   },
-  "button-margin-right-general": Object {
+  "bt_m.r-s": Object {
+    "longLabel": "button-margin-right-s",
     "type": "string",
   },
-  "button-margin-right-l": Object {
+  "bt_m.r-xl": Object {
+    "longLabel": "button-margin-right-xl",
     "type": "string",
   },
-  "button-margin-right-m": Object {
+  "bt_m.r-xs": Object {
+    "longLabel": "button-margin-right-xs",
     "type": "string",
   },
-  "button-margin-right-s": Object {
+  "bt_m.r-xxl": Object {
+    "longLabel": "button-margin-right-xxl",
     "type": "string",
   },
-  "button-margin-right-unit-general": Object {
+  "bt_m.r.u-general": Object {
     "default": "px",
+    "longLabel": "button-margin-right-unit-general",
     "type": "string",
   },
-  "button-margin-right-unit-l": Object {
+  "bt_m.r.u-l": Object {
+    "longLabel": "button-margin-right-unit-l",
     "type": "string",
   },
-  "button-margin-right-unit-m": Object {
+  "bt_m.r.u-m": Object {
+    "longLabel": "button-margin-right-unit-m",
     "type": "string",
   },
-  "button-margin-right-unit-s": Object {
+  "bt_m.r.u-s": Object {
+    "longLabel": "button-margin-right-unit-s",
     "type": "string",
   },
-  "button-margin-right-unit-xl": Object {
+  "bt_m.r.u-xl": Object {
+    "longLabel": "button-margin-right-unit-xl",
     "type": "string",
   },
-  "button-margin-right-unit-xs": Object {
+  "bt_m.r.u-xs": Object {
+    "longLabel": "button-margin-right-unit-xs",
     "type": "string",
   },
-  "button-margin-right-unit-xxl": Object {
+  "bt_m.r.u-xxl": Object {
+    "longLabel": "button-margin-right-unit-xxl",
     "type": "string",
   },
-  "button-margin-right-xl": Object {
-    "type": "string",
-  },
-  "button-margin-right-xs": Object {
-    "type": "string",
-  },
-  "button-margin-right-xxl": Object {
-    "type": "string",
-  },
-  "button-margin-sync-general": Object {
+  "bt_m.sy-general": Object {
     "default": "all",
+    "longLabel": "button-margin-sync-general",
     "type": "string",
   },
-  "button-margin-sync-l": Object {
+  "bt_m.sy-l": Object {
+    "longLabel": "button-margin-sync-l",
     "type": "string",
   },
-  "button-margin-sync-m": Object {
+  "bt_m.sy-m": Object {
+    "longLabel": "button-margin-sync-m",
     "type": "string",
   },
-  "button-margin-sync-s": Object {
+  "bt_m.sy-s": Object {
+    "longLabel": "button-margin-sync-s",
     "type": "string",
   },
-  "button-margin-sync-xl": Object {
+  "bt_m.sy-xl": Object {
+    "longLabel": "button-margin-sync-xl",
     "type": "string",
   },
-  "button-margin-sync-xs": Object {
+  "bt_m.sy-xs": Object {
+    "longLabel": "button-margin-sync-xs",
     "type": "string",
   },
-  "button-margin-sync-xxl": Object {
+  "bt_m.sy-xxl": Object {
+    "longLabel": "button-margin-sync-xxl",
     "type": "string",
   },
-  "button-margin-top-general": Object {
+  "bt_m.t-general": Object {
+    "longLabel": "button-margin-top-general",
     "type": "string",
   },
-  "button-margin-top-l": Object {
+  "bt_m.t-l": Object {
+    "longLabel": "button-margin-top-l",
     "type": "string",
   },
-  "button-margin-top-m": Object {
+  "bt_m.t-m": Object {
+    "longLabel": "button-margin-top-m",
     "type": "string",
   },
-  "button-margin-top-s": Object {
+  "bt_m.t-s": Object {
+    "longLabel": "button-margin-top-s",
     "type": "string",
   },
-  "button-margin-top-unit-general": Object {
+  "bt_m.t-xl": Object {
+    "longLabel": "button-margin-top-xl",
+    "type": "string",
+  },
+  "bt_m.t-xs": Object {
+    "longLabel": "button-margin-top-xs",
+    "type": "string",
+  },
+  "bt_m.t-xxl": Object {
+    "longLabel": "button-margin-top-xxl",
+    "type": "string",
+  },
+  "bt_m.t.u-general": Object {
     "default": "px",
+    "longLabel": "button-margin-top-unit-general",
     "type": "string",
   },
-  "button-margin-top-unit-l": Object {
+  "bt_m.t.u-l": Object {
+    "longLabel": "button-margin-top-unit-l",
     "type": "string",
   },
-  "button-margin-top-unit-m": Object {
+  "bt_m.t.u-m": Object {
+    "longLabel": "button-margin-top-unit-m",
     "type": "string",
   },
-  "button-margin-top-unit-s": Object {
+  "bt_m.t.u-s": Object {
+    "longLabel": "button-margin-top-unit-s",
     "type": "string",
   },
-  "button-margin-top-unit-xl": Object {
+  "bt_m.t.u-xl": Object {
+    "longLabel": "button-margin-top-unit-xl",
     "type": "string",
   },
-  "button-margin-top-unit-xs": Object {
+  "bt_m.t.u-xs": Object {
+    "longLabel": "button-margin-top-unit-xs",
     "type": "string",
   },
-  "button-margin-top-unit-xxl": Object {
-    "type": "string",
-  },
-  "button-margin-top-xl": Object {
-    "type": "string",
-  },
-  "button-margin-top-xs": Object {
-    "type": "string",
-  },
-  "button-margin-top-xxl": Object {
+  "bt_m.t.u-xxl": Object {
+    "longLabel": "button-margin-top-unit-xxl",
     "type": "string",
   },
 }
@@ -811,155 +1071,204 @@ Object {
 
 exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`] = `
 Object {
-  "button-padding-left-general": Object {
+  "bt_p.l-general": Object {
+    "longLabel": "button-padding-left-general",
     "type": "string",
   },
-  "button-padding-left-l": Object {
+  "bt_p.l-l": Object {
+    "longLabel": "button-padding-left-l",
     "type": "string",
   },
-  "button-padding-left-m": Object {
+  "bt_p.l-m": Object {
+    "longLabel": "button-padding-left-m",
     "type": "string",
   },
-  "button-padding-left-s": Object {
+  "bt_p.l-s": Object {
+    "longLabel": "button-padding-left-s",
     "type": "string",
   },
-  "button-padding-left-unit-general": Object {
+  "bt_p.l-xl": Object {
+    "longLabel": "button-padding-left-xl",
+    "type": "string",
+  },
+  "bt_p.l-xs": Object {
+    "longLabel": "button-padding-left-xs",
+    "type": "string",
+  },
+  "bt_p.l-xxl": Object {
+    "longLabel": "button-padding-left-xxl",
+    "type": "string",
+  },
+  "bt_p.l.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-left-unit-general",
     "type": "string",
   },
-  "button-padding-left-unit-l": Object {
+  "bt_p.l.u-l": Object {
+    "longLabel": "button-padding-left-unit-l",
     "type": "string",
   },
-  "button-padding-left-unit-m": Object {
+  "bt_p.l.u-m": Object {
+    "longLabel": "button-padding-left-unit-m",
     "type": "string",
   },
-  "button-padding-left-unit-s": Object {
+  "bt_p.l.u-s": Object {
+    "longLabel": "button-padding-left-unit-s",
     "type": "string",
   },
-  "button-padding-left-unit-xl": Object {
+  "bt_p.l.u-xl": Object {
+    "longLabel": "button-padding-left-unit-xl",
     "type": "string",
   },
-  "button-padding-left-unit-xs": Object {
+  "bt_p.l.u-xs": Object {
+    "longLabel": "button-padding-left-unit-xs",
     "type": "string",
   },
-  "button-padding-left-unit-xxl": Object {
+  "bt_p.l.u-xxl": Object {
+    "longLabel": "button-padding-left-unit-xxl",
     "type": "string",
   },
-  "button-padding-left-xl": Object {
+  "bt_p.r-general": Object {
+    "longLabel": "button-padding-right-general",
     "type": "string",
   },
-  "button-padding-left-xs": Object {
+  "bt_p.r-l": Object {
+    "longLabel": "button-padding-right-l",
     "type": "string",
   },
-  "button-padding-left-xxl": Object {
+  "bt_p.r-m": Object {
+    "longLabel": "button-padding-right-m",
     "type": "string",
   },
-  "button-padding-right-general": Object {
+  "bt_p.r-s": Object {
+    "longLabel": "button-padding-right-s",
     "type": "string",
   },
-  "button-padding-right-l": Object {
+  "bt_p.r-xl": Object {
+    "longLabel": "button-padding-right-xl",
     "type": "string",
   },
-  "button-padding-right-m": Object {
+  "bt_p.r-xs": Object {
+    "longLabel": "button-padding-right-xs",
     "type": "string",
   },
-  "button-padding-right-s": Object {
+  "bt_p.r-xxl": Object {
+    "longLabel": "button-padding-right-xxl",
     "type": "string",
   },
-  "button-padding-right-unit-general": Object {
+  "bt_p.r.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-right-unit-general",
     "type": "string",
   },
-  "button-padding-right-unit-l": Object {
+  "bt_p.r.u-l": Object {
+    "longLabel": "button-padding-right-unit-l",
     "type": "string",
   },
-  "button-padding-right-unit-m": Object {
+  "bt_p.r.u-m": Object {
+    "longLabel": "button-padding-right-unit-m",
     "type": "string",
   },
-  "button-padding-right-unit-s": Object {
+  "bt_p.r.u-s": Object {
+    "longLabel": "button-padding-right-unit-s",
     "type": "string",
   },
-  "button-padding-right-unit-xl": Object {
+  "bt_p.r.u-xl": Object {
+    "longLabel": "button-padding-right-unit-xl",
     "type": "string",
   },
-  "button-padding-right-unit-xs": Object {
+  "bt_p.r.u-xs": Object {
+    "longLabel": "button-padding-right-unit-xs",
     "type": "string",
   },
-  "button-padding-right-unit-xxl": Object {
+  "bt_p.r.u-xxl": Object {
+    "longLabel": "button-padding-right-unit-xxl",
     "type": "string",
   },
-  "button-padding-right-xl": Object {
-    "type": "string",
-  },
-  "button-padding-right-xs": Object {
-    "type": "string",
-  },
-  "button-padding-right-xxl": Object {
-    "type": "string",
-  },
-  "button-padding-sync-general": Object {
+  "bt_p.sy-general": Object {
     "default": "all",
+    "longLabel": "button-padding-sync-general",
     "type": "string",
   },
-  "button-padding-sync-l": Object {
+  "bt_p.sy-l": Object {
+    "longLabel": "button-padding-sync-l",
     "type": "string",
   },
-  "button-padding-sync-m": Object {
+  "bt_p.sy-m": Object {
+    "longLabel": "button-padding-sync-m",
     "type": "string",
   },
-  "button-padding-sync-s": Object {
+  "bt_p.sy-s": Object {
+    "longLabel": "button-padding-sync-s",
     "type": "string",
   },
-  "button-padding-sync-xl": Object {
+  "bt_p.sy-xl": Object {
+    "longLabel": "button-padding-sync-xl",
     "type": "string",
   },
-  "button-padding-sync-xs": Object {
+  "bt_p.sy-xs": Object {
+    "longLabel": "button-padding-sync-xs",
     "type": "string",
   },
-  "button-padding-sync-xxl": Object {
+  "bt_p.sy-xxl": Object {
+    "longLabel": "button-padding-sync-xxl",
     "type": "string",
   },
-  "button-padding-top-general": Object {
+  "bt_p.t-general": Object {
+    "longLabel": "button-padding-top-general",
     "type": "string",
   },
-  "button-padding-top-l": Object {
+  "bt_p.t-l": Object {
+    "longLabel": "button-padding-top-l",
     "type": "string",
   },
-  "button-padding-top-m": Object {
+  "bt_p.t-m": Object {
+    "longLabel": "button-padding-top-m",
     "type": "string",
   },
-  "button-padding-top-s": Object {
+  "bt_p.t-s": Object {
+    "longLabel": "button-padding-top-s",
     "type": "string",
   },
-  "button-padding-top-unit-general": Object {
+  "bt_p.t-xl": Object {
+    "longLabel": "button-padding-top-xl",
+    "type": "string",
+  },
+  "bt_p.t-xs": Object {
+    "longLabel": "button-padding-top-xs",
+    "type": "string",
+  },
+  "bt_p.t-xxl": Object {
+    "longLabel": "button-padding-top-xxl",
+    "type": "string",
+  },
+  "bt_p.t.u-general": Object {
     "default": "px",
+    "longLabel": "button-padding-top-unit-general",
     "type": "string",
   },
-  "button-padding-top-unit-l": Object {
+  "bt_p.t.u-l": Object {
+    "longLabel": "button-padding-top-unit-l",
     "type": "string",
   },
-  "button-padding-top-unit-m": Object {
+  "bt_p.t.u-m": Object {
+    "longLabel": "button-padding-top-unit-m",
     "type": "string",
   },
-  "button-padding-top-unit-s": Object {
+  "bt_p.t.u-s": Object {
+    "longLabel": "button-padding-top-unit-s",
     "type": "string",
   },
-  "button-padding-top-unit-xl": Object {
+  "bt_p.t.u-xl": Object {
+    "longLabel": "button-padding-top-unit-xl",
     "type": "string",
   },
-  "button-padding-top-unit-xs": Object {
+  "bt_p.t.u-xs": Object {
+    "longLabel": "button-padding-top-unit-xs",
     "type": "string",
   },
-  "button-padding-top-unit-xxl": Object {
-    "type": "string",
-  },
-  "button-padding-top-xl": Object {
-    "type": "string",
-  },
-  "button-padding-top-xs": Object {
-    "type": "string",
-  },
-  "button-padding-top-xxl": Object {
+  "bt_p.t.u-xxl": Object {
+    "longLabel": "button-padding-top-unit-xxl",
     "type": "string",
   },
 }

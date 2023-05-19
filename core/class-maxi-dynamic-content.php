@@ -254,6 +254,7 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
+            'dc-content' => $dc_content,
         ) = $attributes;
 
         if ($attributes['dc-field'] === 'static_text') {
@@ -281,8 +282,8 @@ class MaxiBlocks_DynamicContent
             $response = self::get_user_content($attributes);
         }
 
-        if ($dc_field === 'date') {
-            $response = self::get_date($response, $attributes);
+        if ($dc_field === 'date' && !empty($dc_content)) {
+            $response = $dc_content;
         }
 
         if (empty($response)) {
@@ -637,83 +638,6 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
-    }
-
-    public function get_date($date, $attributes)
-    {
-        @list(
-            'dc-format' => $dc_format,
-            'dc-custom-format' => $dc_custom_format,
-            'dc-custom-date' => $dc_custom_date,
-            'dc-year' => $dc_year,
-            'dc-month' => $dc_month,
-            'dc-day' => $dc_day,
-            'dc-hour' => $dc_hour,
-            'dc-hour12' => $dc_hour12,
-            'dc-minute' => $dc_minute,
-            'dc-second' => $dc_second,
-            'dc-weekday' => $dc_weekday,
-            'dc-era' => $dc_era,
-            'dc-locale' => $dc_locale,
-            'dc-timezone' => $dc_timezone,
-            'dc-timezone-name' => $dc_timezone_name,
-        ) = $attributes;
-
-        if (!isset($dc_custom_date)) {
-            $dc_custom_date = false;
-        }
-        if (!isset($dc_timezone)) {
-            $dc_timezone = 'none';
-        }
-        if (!isset($dc_format)) {
-            $dc_format = 'd.m.Y t';
-        }
-
-        $options = array(
-            'day' => $dc_day === 'none' ? null : $dc_day,
-            'era' => $dc_era === 'none' ? null : $dc_era,
-            'hour' => $dc_hour === 'none' ? null : $dc_hour,
-            'hour12' => $dc_hour12 === 'false' ? false : ($dc_hour12 === 'true' ? true : $dc_hour12),
-            'minute' => $dc_minute === 'none' ? null : $dc_minute,
-            'month' => $dc_month === 'none' ? null : $dc_month,
-            'second' => $dc_second === 'none' ? null : $dc_second,
-            'timezone' => $dc_timezone === 'none' ? 'UTC' : $dc_timezone,
-            'timezone_name' => $dc_timezone_name === 'none' ? null : $dc_timezone_name,
-            'weekday' => $dc_weekday === 'none' ? null : $dc_weekday,
-            'year' => $dc_year === 'none' ? null : $dc_year,
-        );
-
-        $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
-
-        $content = '';
-        $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
-
-        if ($dc_custom_date) {
-            $new_format = self::convert_moment_to_php_date_format($dc_custom_format);
-        }
-
-        $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $new_format);
-
-        $map = array(
-            'z' => 'D',
-            'x' => 'd',
-            'c' => 'M',
-            'd' => 'j',
-            'D' => 'l',
-            'm' => 'm',
-            'M' => 'F',
-            'y' => 'y',
-            'Y' => 'Y',
-            't' => 'H:i:s',
-        );
-
-        $new_format = preg_replace_callback('/[xzcdDmMyYt]/', function ($match) use ($map) {
-            return $map[$match[0]];
-        }, $new_format);
-
-        $content = $new_date->format($new_format);
-
-        return $content;
     }
 
     public function convert_moment_to_php_date_format($format)

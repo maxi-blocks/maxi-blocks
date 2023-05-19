@@ -88,7 +88,6 @@ const DateFormatting = props => {
 	} = props;
 
 	const changeProps = params => {
-		console.log(params);
 		const hasChangesToSave = Object.entries(props).some(([key, val]) => {
 			if (!(key in params)) return false;
 
@@ -99,7 +98,6 @@ const DateFormatting = props => {
 	};
 
 	const validateAnchor = str => {
-		console.log('str beginning', str);
 		const length = [
 			'd',
 			'D',
@@ -124,8 +122,6 @@ const DateFormatting = props => {
 			acc[cur] = str.split(cur).length - 1;
 			return acc;
 		}, {});
-
-		console.log('length', length);
 
 		if (
 			length.dd === 0 &&

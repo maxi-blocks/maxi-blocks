@@ -1,8 +1,6 @@
 import moment from 'moment';
 
 export const formatDateOptions = props => {
-	console.log('formatDateOptions');
-	console.log('props', props);
 	const {
 		day,
 		era,
@@ -60,6 +58,7 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 	} else {
 		content = NewDate.toLocaleString(locale, options);
 	}
+	console.log('content from process date', content);
 	return content;
 };
 

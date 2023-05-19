@@ -112,8 +112,7 @@ const DynamicContent = props => {
 		'dc-year': year,
 		'dc-custom-format': customFormat,
 	};
-	console.log('dcValues', dcValues);
-	console.log('dcValuesForDate', dcValuesForDate);
+
 	const delimiterOptions = [
 		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ label: __('Comma', 'maxi-blocks'), value: ',' },

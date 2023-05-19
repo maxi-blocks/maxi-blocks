@@ -133,10 +133,13 @@ class edit extends MaxiBlockComponent {
 			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
 			 * Does not replace spaces, which inside of HTML tags
 			 */
+			console.log('processContent');
+			console.log(rawContent);
 			const replaceSpaces = content =>
 				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 
 			const content = replaceSpaces(rawContent);
+			console.log(content);
 
 			const isWholeLink =
 				content.split('</a>').length === 2 &&

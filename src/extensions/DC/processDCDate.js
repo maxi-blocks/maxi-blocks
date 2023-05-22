@@ -51,7 +51,7 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 			M: 'MMMM',
 			y: 'YY',
 			Y: 'YYYY',
-			t: 'HH:mm:ss',
+			t: 'HH:mm',
 		};
 		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 		content = moment(NewDate).format(newFormat);

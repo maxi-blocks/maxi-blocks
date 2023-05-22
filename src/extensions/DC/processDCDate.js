@@ -31,14 +31,6 @@ export const formatDateOptions = props => {
 };
 
 const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
-	console.log(
-		'processDCDate',
-		dateValue,
-		isCustomDate,
-		format,
-		locale,
-		options
-	);
 	const NewDate = new Date(dateValue);
 
 	let content;

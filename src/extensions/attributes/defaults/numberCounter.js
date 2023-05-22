@@ -47,7 +47,7 @@ const numberCounter = {
 		default: 100,
 		longLabel: 'number-counter-end',
 	},
-	nc_str: {
+	'nc-str': {
 		type: 'number',
 		default: 5,
 		longLabel: 'number-counter-stroke',

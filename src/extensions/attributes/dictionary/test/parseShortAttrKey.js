@@ -5,7 +5,7 @@ describe('parseShortAttrKey', () => {
 		const attributes = {
 			'bc_ps-general': 'background-color-palette-status-general',
 			'bo_s-general': 'border-style-general',
-			_bl: 'background-layers',
+			b_ly: 'background-layers',
 			'bc_po-general': 'background-color-palette-opacity-general',
 			bs_pc: 'box-shadow-palette-color',
 			'bo_w.t-general': 'border-width-top-general',
@@ -21,7 +21,7 @@ describe('parseShortAttrKey', () => {
 			'i_h.u-general.h': 'icon-height-unit-general-hover',
 			'a-i-bo.ra.tl-general':
 				'active-icon-border-radius-top-left-general',
-			'he_db_s-general': 'header-divider-border-style-general',
+			'he-di-bo_s-general': 'header-divider-border-style-general',
 			'a-i_spa.u-general': 'active-icon-spacing-unit-general',
 			i_i: 'icon-inherit',
 			'ti_ti.u-general': 'title-text-indent-unit-general',

@@ -1,5 +1,4 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const text = {
 	_tl: {
@@ -105,6 +104,5 @@ const text = {
 		type: 'string',
 		longLabel: 'listStyleCustom',
 	},
-	...paletteAttributesCreator({ prefix: 'l-', palette: 4 }),
 };
 export default text;

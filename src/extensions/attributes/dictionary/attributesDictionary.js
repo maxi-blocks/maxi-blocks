@@ -9,7 +9,6 @@ const dictionary = {
 		'clip-path': '_cp',
 		preview: '_pr',
 		opacity: '_o',
-		stroke: '_str',
 		origin: '_ori',
 		scale: '_sc',
 		rotate: '_rot',
@@ -31,6 +30,7 @@ const dictionary = {
 		isCollapsible: '_ico',
 		animationDuration: '_ad',
 	},
+	accordionTitle: { titleLevel: '_tle' },
 	accordionIcon: {},
 	accordionLine: {
 		line: '_li',
@@ -56,8 +56,6 @@ const dictionary = {
 		size: '_si',
 		'crop-options': '_co',
 		repeat: '_re',
-		'position-width': '_pw',
-		'position-height': '_ph',
 		clip: '_clp',
 		attachment: '_at',
 		'parallax-speed': '_psp',
@@ -104,9 +102,6 @@ const dictionary = {
 	},
 	displayHover: {},
 	divider: {
-		// 'divider-border': '_db',
-		// 'divider-width': '_dw',
-		// 'divider-height': '_dh',
 		'line-align': '_la',
 		'line-vertical': '_lv',
 		'line-horizontal': '_lh',
@@ -314,6 +309,7 @@ const dictionary = {
 		altTitle: '_ati',
 		altDescription: '_ade',
 		openFirstTime: '_oft',
+		stroke: 'str',
 	},
 	text: {
 		textLevel: '_tl',
@@ -433,7 +429,6 @@ export const prefixesDictionary = {
 	'shape-divider-bottom-': 'sdb-',
 	'shape-divider-top-': 'sdt-',
 	'shape-fill-': 'sf-',
-	'stroke-': 'str-',
 	'svg-': 's-',
 	'svg-fill-': 'sfi-',
 	'svg-line-': 'sli-',
@@ -448,7 +443,6 @@ export const suffixesDictionary = {
 	'-status-hover': '.sh',
 	'-status-active': '.sa',
 	'-hover': '.h',
-	'-active': '.a',
 	'-unit': '.u',
 	'-top': '.t',
 	'-right': '.r',
@@ -513,6 +507,13 @@ export const colorReversedDictionary = {
 		(acc, [key, val]) => ({ ...acc, [val]: key }),
 		{}
 	),
+};
+
+export const allReversedDictionary = {
+	...prefixesReversedDictionary,
+	...suffixesReversedDictionary,
+	...colorReversedDictionary,
+	...reversedDictionary,
 };
 
 export default dictionary;

@@ -27,7 +27,7 @@ const titleBackground = breakpointAttributesCreator({
 });
 
 const accordionTitle = {
-	_tl: {
+	_tle: {
 		type: 'string',
 		default: 'h6',
 		longLabel: 'titleLevel',

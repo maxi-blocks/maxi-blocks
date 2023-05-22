@@ -47,7 +47,7 @@ export const icon = {
 				default: '%',
 				longLabel: 'icon-spacing-unit',
 			},
-			i_str: {
+			'i-str': {
 				type: 'number',
 				default: 2,
 				longLabel: 'icon-stroke',

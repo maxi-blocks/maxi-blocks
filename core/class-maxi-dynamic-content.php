@@ -282,8 +282,8 @@ class MaxiBlocks_DynamicContent
             $response = self::get_user_content($attributes);
         }
 
-        if ($dc_field === 'date' && !empty($dc_content)) {
-            $response = $dc_content;
+        if ($dc_field === 'date') {
+            $response = self::get_date($response, $attributes);
         }
 
         if (empty($response)) {
@@ -638,6 +638,113 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
+
+
+    }
+
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
+    public function get_date($date, $attributes)
+    {
+        @list(
+            'dc-format' => $dc_format,
+            'dc-custom-format' => $dc_custom_format,
+            'dc-custom-date' => $dc_custom_date,
+            'dc-year' => $dc_year,
+            'dc-month' => $dc_month,
+            'dc-day' => $dc_day,
+            'dc-hour' => $dc_hour,
+            'dc-hour12' => $dc_hour12,
+            'dc-minute' => $dc_minute,
+            'dc-second' => $dc_second,
+            'dc-weekday' => $dc_weekday,
+            'dc-era' => $dc_era,
+            'dc-locale' => $dc_locale,
+            'dc-timezone' => $dc_timezone,
+            'dc-timezone-name' => $dc_timezone_name,
+        ) = $attributes;
+
+        if (!isset($dc_custom_date)) {
+            $dc_custom_date = false;
+        }
+        if (!isset($dc_timezone) || !$dc_custom_date) {
+            $dc_timezone = 'none';
+        }
+        if (!isset($dc_format)) {
+            $dc_format = 'd.m.Y t';
+        }
+
+        $options = array(
+            'day' => $dc_day === 'none' ? null : $dc_day,
+            'era' => $dc_era === 'none' ? null : $dc_era,
+            'hour' => $dc_hour === 'none' ? null : $dc_hour,
+            'hour12' => $dc_hour12 === 'false' ? false : ($dc_hour12 === 'true' ? true : $dc_hour12),
+            'minute' => $dc_minute === 'none' ? null : $dc_minute,
+            'month' => $dc_month === 'none' ? null : $dc_month,
+            'second' => $dc_second === 'none' ? null : $dc_second,
+            'timezone' => $dc_timezone === 'none' ? 'UTC' : $dc_timezone,
+            'timezone_name' => $dc_timezone_name === 'none' ? null : $dc_timezone_name,
+            'weekday' => $dc_weekday === 'none' ? null : $dc_weekday,
+            'year' => $dc_year === 'none' ? null : $dc_year,
+        );
+
+        $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+
+        $content = '';
+        $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
+
+        $this->write_log('$new_format before');
+        $this->write_log($new_format);
+
+        if ($dc_custom_date) {
+            $new_format = self::convert_moment_to_php_date_format($dc_custom_format);
+        }
+
+        $this->write_log('$new_format after');
+        $this->write_log($new_format);
+
+        $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $new_format);
+
+        $map = array(
+            'z' => 'D',
+            'x' => 'd',
+            'c' => 'M',
+            'd' => 'j',
+            'D' => 'l',
+            'm' => 'm',
+            'M' => 'F',
+            'y' => 'y',
+            'Y' => 'Y',
+            't' => 'H:i:s',
+        );
+
+        $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {
+            return $map[$match[0]];
+        }, $new_format);
+
+        $this->write_log('$new_format end');
+        $this->write_log($new_format);
+
+        $this->write_log('$new_date');
+        $this->write_log($new_date);
+
+        // $content = $new_date->format($new_format);
+        $content = date_i18n($new_format, $new_date->getTimestamp());
+
+        // Regular expression to match square brackets.
+        $regex = '/[\[\]]/';
+
+        // Use preg_replace to replace each match with an empty string.
+        $content = preg_replace($regex, '', $content);
+
+        return $content;
     }
 
     public function convert_moment_to_php_date_format($format)
@@ -651,15 +758,12 @@ class MaxiBlocks_DynamicContent
           'o' => 'S',
           'e' => 'w',
           'DDD' => 'z',
-          'W' => 'W',
           'MMMM' => 'F',
           'MM' => 'm',
           'MMM' => 'M',
           'M' => 'n',
           'YYYY' => 'o',
           'YY' => 'y',
-          'a' => 'a',
-          'A' => 'A',
           'h' => 'g',
           'H' => 'G',
           'hh' => 'h',
@@ -671,7 +775,29 @@ class MaxiBlocks_DynamicContent
           'X' => 'U'
         );
 
-        return strtr($format, $replacements);
+        $format = preg_replace_callback(
+            '/\b(' . implode('|', array_keys($replacements)) . ')\b/',
+            function ($matches) use ($replacements) {
+                return $replacements[$matches[0]];
+            },
+            $format
+        );
+
+        // Regular expression to match content inside square brackets, including brackets.
+        $regex = '/\[[^\]]*\]/';
+
+        // Use preg_replace_callback to replace each match.
+        $format = preg_replace_callback($regex, function ($matches) {
+            // Prepend each symbol with a slash.
+            $result = '';
+            for ($i = 0; $i < strlen($matches[0]); $i++) {
+                $result .= '\\' . $matches[0][$i];
+            }
+            return $result;
+        }, $format);
+
+        // return strtr($format, $replacements);
+        return $format;
     }
 
     public function get_limited_string($string, $limit)

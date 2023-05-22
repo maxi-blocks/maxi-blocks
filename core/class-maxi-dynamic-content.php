@@ -642,19 +642,9 @@ class MaxiBlocks_DynamicContent
 
     }
 
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     public function get_date($date, $attributes)
     {
-        $this->write_log('$date');
-        $this->write_log($date);
+
         @list(
             'dc-format' => $dc_format,
             'dc-custom-format' => $dc_custom_format,
@@ -702,15 +692,9 @@ class MaxiBlocks_DynamicContent
         $content = '';
         $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
 
-        $this->write_log('$new_format before');
-        $this->write_log($new_format);
-
         if ($dc_custom_date) {
             $new_format = self::convert_moment_to_php_date_format($dc_custom_format);
         }
-
-        $this->write_log('$new_format after');
-        $this->write_log($new_format);
 
         $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $new_format);
 
@@ -730,12 +714,6 @@ class MaxiBlocks_DynamicContent
         $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {
             return $map[$match[0]];
         }, $new_format);
-
-        $this->write_log('$new_format end');
-        $this->write_log($new_format);
-
-        $this->write_log('$new_date');
-        $this->write_log($new_date);
 
         // $content = $new_date->format($new_format);
         $content = date_i18n($new_format, $new_date->getTimestamp());

@@ -1,34 +1,32 @@
-=== Maxi Blocks - Page Builder Gutenberg Template Library ===
+=== Maxi Blocks Template Library & Gutenberg Page Builder ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: page builder, templates, site builder, template library, fse, starter templates, gutenberg blocks, blocks, landing pages, elements, style cards, svg icons shapes
+Tags: template library, page builder, site builder, starter templates, style cards, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1
 Tested up to: 6.2
 Requires PHP: 7.1
 Stable tag: 1.2.0
-License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version (the “GPL”) and the Mozilla Public License, Version 2.0 (the “MPL”)
+License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Tired of locked page builders? Discover freedom with 700+ unique templates, 13K+ icons, 100 design styles. 100% free & unlocked. Join our community!
+Tired of locked blocks? Discover freedom and work faster with 706 free templates, 13K+ icons, 100 design styles. Always free to build & create. Join our community!
 
 == Description ==
 
-**Tired of those page builders that tease you with basic features and make you pay for the rest? ...  Maxi is here to break the cycle!**
+**Tired of those page builders that tease you with basic blocks and make you pay for the rest? ... Maxi is here to break the cycle!**
 
-Say goodbye to locked blocks, domain limits, and annoying license keys. With a big library of pre-built templates, designer icons, and innovative features like style cards, Maxi will take your website design to the next level. Plus, it's free and open-source.
+Say goodbye to locked blocks, domain limits, and annoying license keys. With a big library of pre-built templates, designer icons, and innovative features like style cards, Maxi will take your website design to the next level. Plus, it's free to build and open to everyone.
 
 Loved by page builder enthusiasts, web designers, and template users, our feature-rich plugin is here to make your life easier.
 
-But don't take our word for it...
+Here's what users say...
 
-_"Ah, and the style cards functionality is genius. So much more advanced than any other WP theme that supports palettes. The product looks great. The icons are fantastic, and for me personally, the style cards will be very helpful."_
+_"Ah, and the style cards functionality is genius. So much more advanced than any other WP theme that supports palettes. The product looks great. The icons are fantastic, and for me personally, the style cards will be very helpful."_  -- Ivan Arnaudov, Freelancer
 
--- Ivan Arnaudov
+_"I love your philosophy of keeping the plugin and all its features free, rather than hiding some features behind a paywall as most companies do. And then earning your income from professionally designed page and block templates that people may want to buy to speed up their website creation, especially people or companies that have to build many websites. It is a win-win!"_ -- Ani, Early supporter
 
-_"This Gutenberg builder is the BEST I've seen so far, I love it. I'm just getting my head around the Ui, but it's very intuitive if one has used other builders. Love the blocks, templates, SO CLEAN, and looks amazing on mobile straight away. Can't wait for its public launch and pro version... To produce a great product like this among a really crowded market, is not EASY... Took some real ingenuity, research and some bravery. The team DESERVES it. What excites, is this is just beta. Where will it be a year from now, then two years from now? (Can't wait) Wishing you all continued success!!"_
-
--- Michael Dantzie - Founder and Digital Marketing Consultant - Danzy Design and Marketing - https://danzydma.co.uk
+_“I like the settings and the power it offers me. You did a great job with the “one-click design change” that you offer with style cards while offering the power to change everything with the settings.”_ -- A. Ku, Online marketeer
 
 == How Maxi can help you build websites faster ==
 
@@ -54,7 +52,7 @@ Maxi Blocks stands out for several reasons:
 
 - **Page speed:** Maxi's front-end-visitor page speed scores are all green for mobile and desktop devices. Run the test and find out.
 
-== Features you’ll love ==
+== Features you'll love ==
 
 Explore a wide array of tools and templates to enhance your designs:
 
@@ -66,9 +64,9 @@ Explore a wide array of tools and templates to enhance your designs:
 
 - **Style cards functionality:** Change your page or website's look easily with 100 unique style cards.
 
-- **Pro template library:** Enhance your design experience with **746 pro patterns** - Plus  **2500 designs + 72 pages - coming soon**. Take a [sneak peek](https://maxiblocks.com/home-page-coming-soon/) here.
+- **Pro template library:** Enhance your design experience with **852 pro patterns** - Plus  **2400 designs + 72 pages - coming soon**. Take a [sneak peek](https://maxiblocks.com/home-page-coming-soon/) here.
 
-- **You’ll get more variety**  and inspiration to help you work faster. Pro templates can help you reach new audiences. Have a look at the [demo library](https://maxiblocks.com/demo/) to see what's possible.
+- **You'll get more variety**  and inspiration to help you work faster. Pro templates can help you reach new audiences. Have a look at the [demo library](https://maxiblocks.com/demo/) to see what's possible.
 
 == Maxi components ==
 
@@ -118,9 +116,9 @@ Pro templates give you more variety and original designs. It's faster and easier
 
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-How many pro patterns are there?
+How many pro patterns are there right now?
 
-- **746 pro patterns** plus (2500 patterns + 72 pages coming soon)
+- **852 pro patterns** plus (2400 patterns + 72 pages coming soon)
 
 Ready-made patterns include:
 
@@ -178,7 +176,7 @@ Our resources will help you get started and master Maxi Blocks in no time:
 
 == Community & contributions ==
 
-Maxi Blocks is more than a plugin—it's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make Maxi Blocks even better:
+Maxi Blocks is more than a plugin. It's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make Maxi Blocks even better:
 
 - **Join the Maxi Blocks community:** Participate in forums, share your experiences, and connect with other users. Follow us on [Twitter](https://twitter.com/maxiblocks) or join our [discord community](https://maxiblocks.com/go/maxi-discord).
 
@@ -192,7 +190,7 @@ Ready to take your website design to the next level? Download Maxi Blocks today 
 
 _**A note from your designer...**_
 
-_“Join us in our mission to provide a user-friendly solution for website creation. With Maxi Blocks, you'll have a faster, easier, and more enjoyable website design experience. We're excited to see the websites you create with Maxi Blocks!”_
+_Join us in our mission to provide a user-friendly solution for website creation. With Maxi Blocks, you'll have a faster, easier, and more enjoyable website design experience. We're excited to see the websites you create with Maxi Blocks!_
 
 _Take care, Kyra - Design lead & co-founder of Maxi Blocks_
 
@@ -200,23 +198,31 @@ _Take care, Kyra - Design lead & co-founder of Maxi Blocks_
 
 = Do I own what I create? =
 
-Absolutely! Your creations are yours to keep.
+Absolutely! Your creations are yours to keep. It's open source and free to build.
 
 = How many sites can I build? =
 
-There's no limit to the number of sites you can build with Maxi Blocks. The plugin is free to use for personal and commercial projects.
+There's no limit to the number of sites you can build with Maxi Blocks. The plugin, blocks and all features are free to use for any purpose, personal or commercial.
 
-= Do I need to pay for pro features? =
+= Do I need to pay for advanced blocks? =
 
-No, all page builder features are free for everyone. You can build anything you want without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of experience working with Maxi. You can benefit from their skills.
+No, all page builder features and blocks are free for everyone. You can build anything you want with Maxi Blocks without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of experience working with Maxi. You can benefit from their skills and save a ton of time by using the templates we create and maintain just for you.
 
 = Is Maxi Blocks compatible with my theme? =
 
-Maxi Blocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing Maxi Blocks with your theme to ensure the best experience. Talk to us if you have any issues. Happy to help where possible.
+Maxi Blocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing Maxi Blocks with your theme to ensure the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the Maxi Blocks Theme coming soon too.
 
 = Does Maxi Blocks work with Gutenberg? =
 
 Yes, Maxi Blocks is fully integrated with the Gutenberg editor, providing custom Gutenberg blocks and full compatibility with WordPress's native editor.
+
+= Why don’t you need licence keys with the pro library? =
+
+We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). Plus, we refuse to follow the crowd and hold basic features hostage just to sell the “full-version.” With Maxi, your pro templates always stay functional and receive updates indefinitely.
+
+= Got a public roadmap =
+
+You bet. [Check it out here](https://maxiblocks.com/go/roadmap).
 
 == Installation ==
 

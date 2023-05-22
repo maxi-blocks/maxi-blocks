@@ -8,11 +8,13 @@
 .maxi-custom-date-formatting {
 	&__help-trigger {
 		position: relative;
+		display: flex;
 	}
 	&__help-icon {
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
+		margin-left: 20px;
 
 		.maxi-custom-date-formatting__help-icon-span {
 			display: flex;

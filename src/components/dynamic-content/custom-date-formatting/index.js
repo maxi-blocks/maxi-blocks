@@ -155,24 +155,25 @@ const DateFormatting = props => {
 	return (
 		<div className='maxi-custom-date-formatting'>
 			{showHelp && <DateHelperPopover />}
-			<ToggleSwitch
+			{/* Hide custom date until we figure out moment.parseFormat for other languages */}
+			{/* <ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
 				selected={customDate}
 				onChange={value => changeProps({ 'dc-custom-date': value })}
-			/>
+			/> */}
 			{!customDate && (
 				<div className='maxi-custom-date-formatting__help-trigger'>
+					<TextControl
+						label={__('Date format', 'maxi-blocks')}
+						help={false}
+						placeholder={__('d.m.Y t', 'maxi-blocks')}
+						value={format}
+						onChange={val => validateAnchor(val)}
+					/>
 					<div
 						className='maxi-custom-date-formatting__help-icon'
 						onClick={() => setShowHelp(state => !state)}
 					>
-						<TextControl
-							label={__('Date format', 'maxi-blocks')}
-							help={false}
-							placeholder={__('d.m.Y t', 'maxi-blocks')}
-							value={format}
-							onChange={val => validateAnchor(val)}
-						/>
 						<span className='maxi-custom-date-formatting__help-icon-span'>
 							i
 						</span>

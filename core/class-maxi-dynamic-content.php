@@ -254,7 +254,6 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
-            'dc-content' => $dc_content,
         ) = $attributes;
 
         if ($attributes['dc-field'] === 'static_text') {
@@ -715,7 +714,6 @@ class MaxiBlocks_DynamicContent
             return $map[$match[0]];
         }, $new_format);
 
-        // $content = $new_date->format($new_format);
         $content = date_i18n($new_format, $new_date->getTimestamp());
 
         // Regular expression to match square brackets.
@@ -738,12 +736,15 @@ class MaxiBlocks_DynamicContent
           'o' => 'S',
           'e' => 'w',
           'DDD' => 'z',
+          'W' => 'W',
           'MMMM' => 'F',
           'MM' => 'm',
           'MMM' => 'M',
           'M' => 'n',
           'YYYY' => 'o',
           'YY' => 'y',
+          'a' => 'a',
+          'A' => 'A',
           'h' => 'g',
           'H' => 'G',
           'hh' => 'h',
@@ -776,7 +777,6 @@ class MaxiBlocks_DynamicContent
             return $result;
         }, $format);
 
-        // return strtr($format, $replacements);
         return $format;
     }
 

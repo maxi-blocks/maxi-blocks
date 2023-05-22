@@ -708,7 +708,7 @@ class MaxiBlocks_DynamicContent
             'M' => 'F',
             'y' => 'y',
             'Y' => 'Y',
-            't' => 'H:i:s',
+            't' => 'H:i',
         );
 
         $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {

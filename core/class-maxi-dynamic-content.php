@@ -653,6 +653,8 @@ class MaxiBlocks_DynamicContent
 
     public function get_date($date, $attributes)
     {
+        $this->write_log('$date');
+        $this->write_log($date);
         @list(
             'dc-format' => $dc_format,
             'dc-custom-format' => $dc_custom_format,

@@ -31,6 +31,14 @@ export const formatDateOptions = props => {
 };
 
 const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
+	console.log(
+		'processDCDate',
+		dateValue,
+		isCustomDate,
+		format,
+		locale,
+		options
+	);
 	const NewDate = new Date(dateValue);
 
 	let content;
@@ -51,7 +59,7 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 			M: 'MMMM',
 			y: 'YY',
 			Y: 'YYYY',
-			t: 'HH:MM:SS',
+			t: 'HH:mm:ss',
 		};
 		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 		content = moment(NewDate).format(newFormat);

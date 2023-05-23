@@ -1,7 +1,7 @@
-=== Maxi Blocks Template Library & Gutenberg Page Builder ===
+=== Maxi Blocks Template Library Free Page Builder ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: template library, page builder, site builder, starter templates, style cards, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
+Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1
 Tested up to: 6.2
@@ -10,7 +10,7 @@ Stable tag: 1.2.0
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Tired of locked blocks? Discover freedom and work faster with 706 free templates, 13K+ icons, 100 design styles. Always free to build & create. Join our community!
+Tired of locked blocks? Discover freedom & work faster w/ 706 free templates, 13K+ icons, 100 design styles. Always free to build & create. Join our community!
 
 == Description ==
 

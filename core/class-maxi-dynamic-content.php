@@ -498,12 +498,13 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            // temp
+            // 'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
 
-        if (is_null($post)) {
+        if (is_null($post) || (is_bool($post) && !$post)) {
             return '';
         }
 
@@ -515,7 +516,7 @@ class MaxiBlocks_DynamicContent
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            if($dc_field === 'excerpt') {
+            if ($dc_field === 'excerpt') {
                 $post_data = excerpt_remove_blocks($post_data);
             }
             $post_data = wp_strip_all_tags($post_data);
@@ -762,7 +763,7 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
-        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+        if (!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
             return false;
         }
 

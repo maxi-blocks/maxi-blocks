@@ -12,12 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH .
-    'core/blocks/utils/get_group_attributes.php';
-require_once MAXI_PLUGIN_DIR_PATH .
-    'core/blocks/style-helpers/get_margin_padding_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH .
-    'core/blocks/utils/style_processor.php';
+
 
 if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
     class MaxiBlocks_Group_Maxi_Block extends MaxiBlocks_Block
@@ -47,6 +42,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
         public static function get_styles($props)
         {
             $uniqueID = $props['uniqueID'];
+            $block_style = $props['blockStyle'];
 
             $data = [
                 'customCss' => [
@@ -89,12 +85,89 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                 ],
             ];
 
-            $response = style_processor(
-                [
-                    $uniqueID => [
-                        '' => self::get_normal_styles($props),
-                    ],
+
+
+            $styles_obj = [
+                $uniqueID => [
+                    '' => self::get_normal_object($props),
+                    ':hover' => self::get_hover_object($props),
                 ],
+            ];
+
+            $background_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes($props, [
+                        'blockBackground',
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                    ]),
+                    [ 'block_style' => $block_style,]
+                )
+            );
+            $background_hover_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes(
+                        $props,
+                        [
+                            'blockBackground',
+                            'border',
+                            'borderWidth',
+                            'borderRadius',
+                        ],
+                        true
+                    ),
+                    [
+                        'block_style' => $block_style,
+                        'is_hover' => true,
+                    ]
+                )
+            );
+            $arrow_styles = get_arrow_styles(
+                array_merge(
+                    get_group_attributes($props, [
+                        'arrow',
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                        'blockBackground',
+                        'boxShadow',
+                    ]),
+                    [ 'block_style' => $block_style,]
+                )
+            );
+            $arrow_hover_styles =  get_arrow_styles(
+                array_merge(
+                    get_group_attributes(
+                        $props,
+                        [
+                            'arrow',
+                            'border',
+                            'borderWidth',
+                            'borderRadius',
+                            'blockBackground',
+                            'boxShadow',
+                        ],
+                        true
+                    ),
+                    get_group_attributes($props, ['arrow']),
+                    [
+                        'block_style' => $block_style,
+                        'is_hover' => true,
+                    ]
+                )
+            );
+
+            $styles_obj[$uniqueID] = array_merge(
+                $styles_obj[$uniqueID],
+                $background_styles,
+                $background_hover_styles,
+                $arrow_styles,
+                $arrow_hover_styles
+            );
+
+            $response = style_processor(
+                $styles_obj,
                 $data,
                 $props,
             );
@@ -102,8 +175,10 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
             return $response;
         }
 
-        public static function get_normal_styles($props)
+        public static function get_normal_object($props)
         {
+            $block_style = $props['blockStyle'];
+
             $response =
                 [
                     'margin' => get_margin_padding_styles([
@@ -112,27 +187,55 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                     'padding' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
-                    // 'border' => get_border_styles(array(
-                    //     'obj' => array_merge(get_group_attributes($props, array(
-                    //         'border',
-                    //         'borderWidth',
-                    //         'borderRadius',
-                    //     ))),
-                    //     'blockStyle' => $props['blockStyle'],
-                    // )),
-                    // 'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
-                    // 'boxShadow' => get_box_shadow_styles(array(
-                    //     'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
-                    //     'blockStyle' => $props['blockStyle'],
-                    // )),
-                    // 'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    // 'zIndex' => get_z_index_styles(array_merge(get_group_attributes($props, 'zIndex'))),
-                    // 'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    // 'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    // 'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    // 'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
+                    'border' => get_border_styles(array(
+                        'obj' => array_merge(get_group_attributes($props, array(
+                            'border',
+                            'borderWidth',
+                            'borderRadius',
+                        ))),
+                        'block_style' => $block_style,
+                    )),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'boxShadow' => get_box_shadow_styles(array(
+                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
+                        'block_style' => $block_style,
+                    )),
+                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
+                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
+                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
+                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
+                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
+                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
 
+            return $response;
+        }
+
+        public static function get_hover_object($props)
+        {
+            $block_style = $props['blockStyle'];
+
+            $response = [
+                'border' => array_key_exists('border-status-hover', $props) && $props['border-status-hover'] ? get_border_styles([
+                    'obj' => [
+                        ...get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'], true)
+                    ],
+                    'is_hover' => true,
+                    'block_style' => $block_style
+                ]) : null,
+                'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
+                    'obj' => [
+                        ...get_group_attributes($props, 'boxShadow', true)
+                    ],
+                    'is_hover' => true,
+                    'block_style' => $block_style
+                ]) : null,
+                'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
+                    get_group_attributes($props, 'opacity', true),
+                    true
+                ) : null,
+            ];
+        
             return $response;
         }
     }

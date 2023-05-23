@@ -62,3 +62,9 @@ export const getAllStylesAreSaved = state => {
 
 	return false;
 };
+
+export const getDefaultGroupAttributes = state => {
+	if (state.defaultGroupAttributes) return state.defaultGroupAttributes;
+
+	return false;
+};

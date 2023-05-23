@@ -19,16 +19,16 @@ function get_margin_padding_styles($args)
             foreach ($key_words as $key) {
                 $attribute_name = $prefix . $type . '-' . $key;
 
-                $last_value = get_last_breakpoint_attribute(
-                    $attribute_name,
-                    $breakpoint,
-                    $obj,
-                );
-                $last_unit = get_last_breakpoint_attribute(
-                    $attribute_name . '-unit',
-                    $breakpoint,
-                    $obj,
-                );
+                $last_value = get_last_breakpoint_attribute([
+                    'target' => $attribute_name,
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $obj,
+                ]);
+                $last_unit = get_last_breakpoint_attribute([
+                    'target' => $attribute_name . '-unit',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $obj,
+                ]);
                 $value = isset($obj["$attribute_name-$breakpoint"]) ? $obj["$attribute_name-$breakpoint"] : null;
                 $unit = isset($obj["$attribute_name-unit-$breakpoint"]) ? $obj["$attribute_name-unit-$breakpoint"] : null;
 

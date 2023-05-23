@@ -86,7 +86,10 @@ function get_size_styles($obj, $prefix = '')
                 }
             }
 
-            if (is_numeric($obj[$prefix . $target . '-' . $breakpoint]) || isset($obj[$prefix . $target . '-unit-' . $breakpoint])) {
+            if (
+                (array_key_exists($prefix . $target . '-' . $breakpoint, $obj) && is_numeric($obj[$prefix . $target . '-' . $breakpoint])) || 
+                isset($obj[$prefix . $target . '-unit-' . $breakpoint])
+            ) {
                 $num = get_last_breakpoint_attribute([
                     'target' => $prefix . $target,
                     'breakpoint' => $breakpoint,
@@ -119,12 +122,12 @@ function get_size_styles($obj, $prefix = '')
         };
 
         $response[$breakpoint] = array_merge(
-            get_value('max-width'),
-            get_value('width'),
-            get_value('min-width'),
-            get_value('max-height'),
-            get_value('height'),
-            get_value('min-height')
+            $get_value('max-width') ?? [],
+            $get_value('width') ?? [],
+            $get_value('min-width') ?? [],
+            $get_value('max-height') ?? [],
+            $get_value('height') ?? [],
+            $get_value('min-height') ?? []
         );
     }
 

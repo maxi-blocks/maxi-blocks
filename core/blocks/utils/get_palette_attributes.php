@@ -1,11 +1,25 @@
 <?php
 
-function get_palette_attributes($obj, $prefix = '', $breakpoint, $is_hover) {
-    function get_value($key, $prefix, $obj, $is_hover, $breakpoint) {
-        return is_null($breakpoint)
-            ? get_attribute_value($prefix . $key, $obj, $is_hover, null)
-            : get_last_breakpoint_attribute($prefix . $key, $breakpoint, $obj, $is_hover);
-    }
+function get_value($key, $prefix, $obj, $is_hover, $breakpoint) {
+    return is_null($breakpoint)
+        ? get_attributes_value([
+            'target' => $prefix . $key,
+            'props' => $obj,
+            'is_hover' => $is_hover,
+        ])
+        : get_last_breakpoint_attribute([
+            'target' => $prefix . $key,
+            'attributes' => $obj,
+            'is_hover' => $is_hover,
+            'breakpoint' => $breakpoint,
+        ]);
+}
+
+function get_palette_attributes($args) {
+    $obj = $args['obj'];
+    $prefix = $args['prefix'] ?? '';
+    $breakpoint = $args['breakpoint'] ?? null;
+    $is_hover = $args['is_hover'] ?? false;
 
     return [
         'palette_status' => get_value('palette-status', $prefix, $obj, $is_hover, $breakpoint),

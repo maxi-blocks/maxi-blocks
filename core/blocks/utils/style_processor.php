@@ -60,7 +60,7 @@ function general_breakpoint_cleaner($obj)
             break;
         }
 
-        if ($is_last) {
+        if ($is_last && isset($val)) {
             foreach ($val as $prop => $value) {
                 if ($prop !== 'label' && isset($response['general'][$prop]) && $value === $response['general'][$prop]) {
                     unset($response[$key][$prop]);

@@ -92,6 +92,40 @@ const blockJsonAbstracter = async () => {
 			);
 	}
 
+	// Save default group attributes
+	const defaultGroupAttributes = JSON.parse(
+		await page.evaluate(() =>
+			JSON.stringify(
+				wp.data.select('maxiBlocks/styles').getDefaultGroupAttributes()
+			)
+		)
+	);
+
+	if (!defaultGroupAttributes) {
+		console.error('❌ No default group attributes found');
+
+		// End the process
+		await browser.close();
+		return;
+	}
+
+	// Save the default group attributes to the `core/blocks/utils/default-group-attributes.json` file
+	const defaultGroupAttributesFilePath = path.join(
+		'core/blocks/utils/default-group-attributes.json'
+	);
+
+	writeFile(
+		defaultGroupAttributesFilePath,
+		JSON.stringify(defaultGroupAttributes, null, 2)
+	)
+		.catch(err => console.error(err))
+		.then(() =>
+			// eslint-disable-next-line no-console
+			console.log(
+				'✅ default-group-attributes.json file created with the default group attributes'
+			)
+		);
+
 	await browser.close();
 };
 

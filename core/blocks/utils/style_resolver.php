@@ -2,46 +2,48 @@
 
 function clean_content($content)
 {
-    $newContent = $content;
+    $new_content = $content;
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-    foreach ($newContent as $prop => $value) {
-        if ((empty($newContent[$prop]) &&
-                !is_numeric($newContent[$prop]) &&
-                !is_bool($newContent[$prop])) || $prop === 'label') {
-            unset($newContent[$prop]);
-        } elseif (is_array($newContent[$prop])) {
+    foreach ($new_content as $prop => $value) {
+        if ((empty($new_content[$prop]) &&
+                !is_numeric($new_content[$prop]) &&
+                !is_bool($new_content[$prop])) || $prop === 'label') {
+            unset($new_content[$prop]);
+        } elseif (is_array($new_content[$prop])) {
             if (in_array($prop, $breakpoints)) {
-                $newContent[$prop] = clean_content($newContent[$prop]);
+                $new_content[$prop] = clean_content($new_content[$prop]);
             } else {
-                $newContent = array_merge($newContent, clean_content($newContent[$prop]));
-                unset($newContent[$prop]);
+                $new_content = array_merge_recursive($new_content, clean_content($new_content[$prop]));
+                unset($new_content[$prop]);
             }
         }
     }
 
-    return $newContent;
+    return $new_content;
 }
 
 function get_clean_content($content)
 {
-    $newContent = $content;
+    $new_content = $content;
 
-    foreach ($newContent as $target => $value) {
-        if (is_array($newContent[$target])) {
-            $newContent[$target] = clean_content($newContent[$target]);
+    foreach ($new_content as $target => $value) {
+        if (is_array($new_content[$target])) {
+            $new_content[$target] = clean_content($new_content[$target]);
         }
 
-        if (empty($newContent[$target])) {
-            unset($newContent[$target]);
+        if (empty($new_content[$target])) {
+            unset($new_content[$target]);
+
+            continue;
         }
 
-        if (json_encode($newContent[$target]) === json_encode([ 'general' => [] ])) {
-            unset($newContent[$target]);
+        if (json_encode($new_content[$target]) === json_encode([ 'general' => [] ])) {
+            unset($new_content[$target]);
         }
     }
 
-    return $newContent;
+    return $new_content;
 }
 
 function style_resolver($styles)

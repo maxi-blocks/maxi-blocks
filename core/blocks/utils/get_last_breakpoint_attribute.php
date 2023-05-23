@@ -3,17 +3,18 @@
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_value_from_keys.php';
 
 function get_last_breakpoint_attribute(
-    $target,
-    $breakpoint,
-    $attributes,
-    $is_hover = false,
-    $avoid_xxl = true,
-    $keys = []
+    $args
 ) {
-    $attr = $attributes;
+    $target = $args['target'];
+    $breakpoint = $args['breakpoint'];
+    $attributes = $args['attributes'];
+    $is_hover = $args['is_hover'] ?? false;
+    $avoid_xxl = $args['avoid_xxl'] ?? true;
+    $keys = $args['keys'] ?? [];
+
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-    if (!isset($attr)) {
+    if (!isset($attributes)) {
         return false;
     }
 
@@ -21,7 +22,7 @@ function get_last_breakpoint_attribute(
         return get_value_from_keys(
             get_attributes_value(
                 $target,
-                $attr,
+                $attributes,
                 $is_hover,
                 $breakpoint,
             ),
@@ -32,35 +33,35 @@ function get_last_breakpoint_attribute(
     $current_breakpoint = 'general';
     $base_breakpoint = 'xl';
 
-    $attr_filter = function ($attr) {
-        return isset($attr) &&
-            (is_int($attr) || is_bool($attr) || is_string($attr) || !empty($attr));
+    $attr_filter = function ($attributes) {
+        return isset($attributes) &&
+            (is_int($attributes) || is_bool($attributes) || is_string($attributes) || !empty($attributes));
     };
 
     if ($breakpoint === 'general' &&
         ($current_breakpoint === 'general' ||
             ($base_breakpoint !== 'xxl' && $current_breakpoint !== $base_breakpoint))
     ) {
-        $base_breakpoint_attr = get_last_breakpoint_attribute(
-            $target,
-            $base_breakpoint,
-            $attributes,
-            $is_hover,
-            $avoid_xxl,
-            $keys
-        );
+        $base_breakpoint_attr = get_last_breakpoint_attribute([
+            'target' => $target,
+            'breakpoint' => $base_breakpoint,
+            'attributes' => $attributes,
+            'is_hover' => $is_hover,
+            'avoid_xxl' => $avoid_xxl,
+            'keys' => $keys,
+        ]);
 
         if ($attr_filter($base_breakpoint_attr)) {
             return $base_breakpoint_attr;
         }
     }
 
-    $current_attr = isset($attr[
+    $current_attr = isset($attributes[
         (!empty($target) ? $target . '-' : '') .
         $breakpoint .
         ($is_hover ? '-hover' : '')
     ]) ? get_value_from_keys(
-        $attr[
+        $attributes[
             (!empty($target) ? $target . '-' : '') .
             $breakpoint .
             ($is_hover ? '-hover' : '')
@@ -84,12 +85,12 @@ function get_last_breakpoint_attribute(
         $breakpoint_position -= 1;
 
         if (!($avoid_xxl && $breakpoints[$breakpoint_position] === 'xxl')) {
-            $current_attr = isset($attr[
+            $current_attr = isset($attributes[
                 (!empty($target) ? $target . '-' : '') .
                 $breakpoints[$breakpoint_position] .
                 ($is_hover ? '-hover' : '')
             ]) ? get_value_from_keys(
-                $attr[
+                $attributes[
                     (!empty($target) ? $target . '-' : '') .
                     $breakpoints[$breakpoint_position] .
                     ($is_hover ? '-hover' : '')
@@ -111,14 +112,14 @@ function get_last_breakpoint_attribute(
     }
 
     if (!$current_attr && $breakpoint === 'general' && $base_breakpoint) {
-        $current_attr = get_last_breakpoint_attribute(
-            $target,
-            $base_breakpoint,
-            $attributes,
-            $is_hover,
-            $base_breakpoint === 'xxl' ? false : $avoid_xxl,
-            $keys
-        );
+        $current_attr = get_last_breakpoint_attribute([
+            'target' => $target,
+            'breakpoint' => $base_breakpoint,
+            'attributes' => $attributes,
+            'is_hover' => $is_hover,
+            'avoid_xxl' => $base_breakpoint === 'xxl' ? false : $avoid_xxl,
+            'keys' => $keys,
+        ]);
     }
 
     return $current_attr;

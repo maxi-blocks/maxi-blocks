@@ -309,7 +309,7 @@ const dictionary = {
 		altTitle: '_ati',
 		altDescription: '_ade',
 		openFirstTime: '_oft',
-		stroke: 'str',
+		stroke: '_str',
 	},
 	text: {
 		textLevel: '_tl',
@@ -429,6 +429,7 @@ export const prefixesDictionary = {
 	'shape-divider-bottom-': 'sdb-',
 	'shape-divider-top-': 'sdt-',
 	'shape-fill-': 'sf-',
+	'stroke-': 'str-',
 	'svg-': 's-',
 	'svg-fill-': 'sfi-',
 	'svg-line-': 'sli-',

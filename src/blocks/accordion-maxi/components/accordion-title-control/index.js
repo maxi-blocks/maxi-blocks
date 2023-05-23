@@ -117,7 +117,7 @@ const AccordionTitleSettings = props => {
 	const { onChange, breakpoint } = props;
 
 	const titleLevel = getAttributesValue({
-		target: '_tl',
+		target: '_tle',
 		props,
 	});
 
@@ -130,7 +130,7 @@ const AccordionTitleSettings = props => {
 				<FontLevelControl
 					value={titleLevel}
 					onChange={obj => {
-						onChange({ _tl: obj.textLevel });
+						onChange({ _tle: obj.textLevel });
 					}}
 				/>
 			)}

@@ -26,7 +26,7 @@ export const svg = {
 	}),
 	...breakpointAttributesCreator({
 		obj: {
-			's-str': {
+			s_str: {
 				type: 'number',
 				default: 2,
 				longLabel: 'svg-stroke',

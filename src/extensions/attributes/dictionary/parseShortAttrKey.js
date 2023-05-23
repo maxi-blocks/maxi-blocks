@@ -33,7 +33,7 @@ const findLongKeys = attrKey => {
 
 	key = key.replace('-', '');
 
-	if (key[0] !== '_' && key[0] !== '.' && key !== 'str') key = `${key}-`;
+	if (key[0] !== '_' && key[0] !== '.') key = `${key}-`;
 
 	return [allReversedDictionary[key] || key, ...findLongKeys(remainingKey)];
 };

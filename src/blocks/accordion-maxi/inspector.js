@@ -50,7 +50,7 @@ const Inspector = props => {
 		props: attributes,
 	});
 	const titleLevel = getAttributesValue({
-		target: '_tl',
+		target: '_tle',
 		props: attributes,
 	});
 

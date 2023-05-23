@@ -36,9 +36,14 @@ const SvgStrokeWidthControl = props => {
 
 	const classes = classnames('maxi-svg-stroke-width-control', className);
 
-	const strokeAttrLabel = getAttributeKey('str', isHover, prefix, breakpoint);
+	const strokeAttrLabel = getAttributeKey(
+		'_str',
+		isHover,
+		prefix,
+		breakpoint
+	);
 	const stroke = getAttributesValue({
-		target: 'str',
+		target: '_str',
 		props,
 		breakpoint,
 		isHover,
@@ -46,7 +51,7 @@ const SvgStrokeWidthControl = props => {
 	});
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
 	const placeholderStroke = getLastBreakpointAttribute({
-		target: 'str',
+		target: '_str',
 		prefix,
 		breakpoint,
 		attributes: props,

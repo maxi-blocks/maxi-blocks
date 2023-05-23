@@ -190,7 +190,7 @@ const Inspector = props => {
 										),
 										ignoreIndicator: [
 											`s_w-${deviceType}`,
-											`s-str-${deviceType}`,
+											`s_str-${deviceType}`,
 										],
 									},
 
@@ -277,7 +277,7 @@ const Inspector = props => {
 											's-l_pc',
 											's-l_ps',
 											's-l_cc',
-											`s-str-${deviceType}`,
+											`s_str-${deviceType}`,
 										].map(attributeKey =>
 											getAttributeKey(attributeKey)
 										),

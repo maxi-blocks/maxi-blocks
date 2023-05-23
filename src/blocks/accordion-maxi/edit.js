@@ -107,7 +107,7 @@ class edit extends MaxiBlockComponent {
 			iconContent,
 			activeIconContent,
 		] = getAttributesValue({
-			target: ['_uid', '_tl', '_acl', '_ico', '_ad', 'i_c', 'a-i_c'],
+			target: ['_uid', '_tle', '_acl', '_ico', '_ad', 'i_c', 'a-i_c'],
 			props: attributes,
 		});
 

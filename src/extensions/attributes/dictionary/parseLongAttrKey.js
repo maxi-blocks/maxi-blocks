@@ -55,6 +55,10 @@ const parseLongAttrKey = attrKey => {
 						if (key === 'content' && !newKey.startsWith('content-'))
 							canReplace = true;
 					}
+					// exception for stroke
+					if (key === 'stroke-' && !newKey.includes('stroke-_')) {
+						canReplace = false;
+					}
 
 					if (canReplace) newKey = newKey.replace(cleanedKey, val);
 				}

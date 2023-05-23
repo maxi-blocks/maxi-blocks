@@ -9,11 +9,6 @@ export const rawTypography = {
 		longLabel: 'font-family',
 	},
 	...paletteAttributesCreator({ prefix: '', palette: 3 }),
-	...paletteAttributesCreator({
-		prefix: 'l-',
-		longPrefix: 'list-',
-		palette: 4,
-	}),
 	'_fs.u': {
 		type: 'string',
 		default: 'px',

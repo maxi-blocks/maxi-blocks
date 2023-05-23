@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const text = {
 	_tl: {
@@ -95,6 +96,11 @@ const text = {
 				longLabel: 'list-style-position',
 			},
 		},
+	}),
+	...paletteAttributesCreator({
+		prefix: 'l-',
+		longPrefix: 'list-',
+		palette: 4,
 	}),
 	_lsty: {
 		type: 'string',

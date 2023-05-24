@@ -102,12 +102,12 @@ function get_last_breakpoint_attribute(
 
     if ($is_hover && !$attr_filter($current_attr)) {
         $current_attr = get_last_breakpoint_attribute(
-            $target,
-            $breakpoint,
-            $attributes,
-            false,
-            $avoid_xxl,
-            $keys
+            ['target' => $target,
+            'breakpoint' => $breakpoint,
+            'attributes' => $attributes,
+            'is_hover' => false,
+            'avoid_xxl' => $avoid_xxl,
+            'keys' => $keys]
         );
     }
 

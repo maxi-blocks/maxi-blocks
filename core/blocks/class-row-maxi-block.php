@@ -1,6 +1,6 @@
 <?php
 /**
- * MaxiBlocks Group Maxi Block Class
+ * MaxiBlocks Row Maxi Block Class
  *
  * @since   1.2.0
  * @package MaxiBlocks
@@ -14,20 +14,20 @@ if (!defined('ABSPATH')) {
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block.php';
 
 
-if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
-    class MaxiBlocks_Group_Maxi_Block extends MaxiBlocks_Block
+if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
+    class MaxiBlocks_Row_Maxi_Block extends MaxiBlocks_Block
     {
         /**
          * Plugin's core instance.
          *
-         * @var MaxiBlocks_Group_Maxi_Block
+         * @var MaxiBlocks_Row_Maxi_Block
          */
         private static $instance;
 
         /**
          * Block name
          */
-        protected $block_name = 'group-maxi';
+        protected $block_name = 'row-maxi';
 
         /**
          * Block
@@ -42,7 +42,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
         public static function register()
         {
             if (null === self::$instance) {
-                self::$instance = new MaxiBlocks_Group_Maxi_Block();
+                self::$instance = new MaxiBlocks_Row_Maxi_Block();
             }
         }
 
@@ -59,48 +59,47 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
+            // TODO: update data automatically. This data is from Group Maxi.
             $data = [
                 'customCss' => [
                     'selectors' => [
-                        'group' => [
-                            'normal' => ['label' => 'group', 'target' => ''],
+                        'Row' => [
+                            'normal' => ['label' => 'Row', 'target' => ''],
                             'hover' => [
-                                'label' => 'group on hover',
+                                'label' => 'Row on hover',
                                 'target' => ':hover',
                             ],
                         ],
-                        'before group' => [
+                        'before Row' => [
                             'normal' => [
-                                'label' => 'group ::before',
+                                'label' => 'Row ::before',
                                 'target' => '::before',
                             ],
                             'hover' => [
-                                'label' => 'group ::before on hover',
+                                'label' => 'Row ::before on hover',
                                 'target' => ':hover::before',
                             ],
                         ],
-                        'after group' => [
+                        'after Row' => [
                             'normal' => [
-                                'label' => 'group ::after',
+                                'label' => 'Row ::after',
                                 'target' => '::after',
                             ],
                             'hover' => [
-                                'label' => 'group ::after on hover',
+                                'label' => 'Row ::after on hover',
                                 'target' => ':hover::after',
                             ],
                         ],
                     ],
                     'categories' => [
-                        'group',
-                        'before group',
-                        'after group',
+                        'Row',
+                        'before Row',
+                        'after Row',
                         'background',
                         'background hover',
                     ],
                 ],
             ];
-
-
 
             $styles_obj = [
                 $uniqueID => [
@@ -138,47 +137,11 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                     ]
                 )
             );
-            $arrow_styles = get_arrow_styles(
-                array_merge(
-                    get_group_attributes($props, [
-                        'arrow',
-                        'border',
-                        'borderWidth',
-                        'borderRadius',
-                        'blockBackground',
-                        'boxShadow',
-                    ]),
-                    [ 'block_style' => $block_style,]
-                )
-            );
-            $arrow_hover_styles =  get_arrow_styles(
-                array_merge(
-                    get_group_attributes(
-                        $props,
-                        [
-                            'arrow',
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                            'blockBackground',
-                            'boxShadow',
-                        ],
-                        true
-                    ),
-                    get_group_attributes($props, ['arrow']),
-                    [
-                        'block_style' => $block_style,
-                        'is_hover' => true,
-                    ]
-                )
-            );
 
             $styles_obj[$uniqueID] = array_merge(
                 $styles_obj[$uniqueID],
                 $background_styles,
                 $background_hover_styles,
-                $arrow_styles,
-                $arrow_hover_styles
             );
 
             $response = style_processor(
@@ -196,12 +159,10 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
 
             $response =
                 [
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
-                    ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
+                    'boxShadow' => get_box_shadow_styles(array(
+                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
+                        'block_style' => $block_style,
+                    )),
                     'border' => get_border_styles(array(
                         'obj' => array_merge(get_group_attributes($props, array(
                             'border',
@@ -211,14 +172,17 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                         'block_style' => $block_style,
                     )),
                     'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
-                    'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
-                        'block_style' => $block_style,
-                    )),
+                    'margin' => get_margin_padding_styles([
+                        'obj' => get_group_attributes($props, 'margin'),
+                    ]),
+                    'padding' => get_margin_padding_styles([
+                        'obj' => get_group_attributes($props, 'padding'),
+                    ]),
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
                     'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
                     'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
+                    'row' => [ 'general' => [ ]],
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];

@@ -14,20 +14,20 @@ if (!defined('ABSPATH')) {
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block.php';
 
 
-if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
-    class MaxiBlocks_Group_Maxi_Block extends MaxiBlocks_Block
+if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
+    class MaxiBlocks_Container_Maxi_Block extends MaxiBlocks_Block
     {
         /**
          * Plugin's core instance.
          *
-         * @var MaxiBlocks_Group_Maxi_Block
+         * @var MaxiBlocks_Container_Maxi_Block
          */
         private static $instance;
 
         /**
          * Block name
          */
-        protected $block_name = 'group-maxi';
+        protected $block_name = 'container-maxi';
 
         /**
          * Block
@@ -42,7 +42,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
         public static function register()
         {
             if (null === self::$instance) {
-                self::$instance = new MaxiBlocks_Group_Maxi_Block();
+                self::$instance = new MaxiBlocks_Container_Maxi_Block();
             }
         }
 
@@ -59,6 +59,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
+            // TODO: update data automatically. This data is from Group Maxi.
             $data = [
                 'customCss' => [
                     'selectors' => [
@@ -100,8 +101,6 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                 ],
             ];
 
-
-
             $styles_obj = [
                 $uniqueID => [
                     '' => self::get_normal_object($props),
@@ -109,6 +108,66 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                 ],
             ];
 
+            $shape_divider_top_styles =
+                array_key_exists('shape-divider-top-status', $props) &&
+                $props['shape-divider-top-status'] ?
+                    [
+                        ' .maxi-shape-divider__top' => [
+                            'shapeDivider' =>  get_shape_divider_styles(
+                                get_group_attributes(
+                                    $props,
+                                    [
+                                        'shapeDivider',
+                                        'padding'
+                                    ]
+                                ),
+                                'top'
+                            ),
+                        ' .maxi-shape-divider__top svg' => [
+                            'shapeDivider' =>  get_shape_divider_svg_styles(
+                                get_group_attributes(
+                                    $props,
+                                    [
+                                        'shapeDivider',
+                                        'padding'
+                                    ]
+                                ),
+                                'top',
+                                $block_style
+                            ),
+                        ]
+                        ]
+                    ] : [];
+            $shape_divider_bottom_styles =
+                array_key_exists('shape-divider-bottom-status', $props) &&
+                $props['shape-divider-bottom-status'] ?
+                    [
+                        ' .maxi-shape-divider__bottom' => [
+                            'shapeDivider' =>  get_shape_divider_styles(
+                                get_group_attributes(
+                                    $props,
+                                    [
+                                        'shapeDivider',
+                                        'padding'
+                                    ]
+                                ),
+                                'bottom'
+                            ),
+                        ' .maxi-shape-divider__bottom svg' => [
+                            'shapeDivider' =>  get_shape_divider_svg_styles(
+                                get_group_attributes(
+                                    $props,
+                                    [
+                                        'shapeDivider',
+                                        'padding'
+                                    ]
+                                ),
+                                'bottom',
+                                $block_style
+                            ),
+                        ]
+                        ]
+                    ] : [];
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -175,6 +234,8 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
 
             $styles_obj[$uniqueID] = array_merge(
                 $styles_obj[$uniqueID],
+                $shape_divider_top_styles,
+                $shape_divider_bottom_styles,
                 $background_styles,
                 $background_hover_styles,
                 $arrow_styles,
@@ -196,12 +257,6 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
 
             $response =
                 [
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
-                    ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
                     'border' => get_border_styles(array(
                         'obj' => array_merge(get_group_attributes($props, array(
                             'border',
@@ -220,6 +275,12 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                     'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
+                    'margin' => get_margin_padding_styles([
+                        'obj' => get_group_attributes($props, 'margin'),
+                    ]),
+                    'padding' => get_margin_padding_styles([
+                        'obj' => get_group_attributes($props, 'padding'),
+                    ]),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
 

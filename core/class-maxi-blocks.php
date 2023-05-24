@@ -12,6 +12,9 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-container-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-row-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
@@ -98,7 +101,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
             if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
                 MaxiBlocks_Group_Maxi_Block::register();
             }
-
+            if (class_exists('MaxiBlocks_Container_Maxi_Block')) {
+                MaxiBlocks_Container_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Row_Maxi_Block')) {
+                MaxiBlocks_Row_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Column_Maxi_Block')) {
+                MaxiBlocks_Column_Maxi_Block::register();
+            }
         }
 
         public function maxi_add_image_taxonomy()

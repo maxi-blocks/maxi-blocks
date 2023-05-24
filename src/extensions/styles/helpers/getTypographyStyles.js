@@ -76,10 +76,15 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
+		const paletteSCStatus = getValue('palette-sc-status', breakpoint);
 		const paletteColor = getValue('palette-color', breakpoint);
 		const paletteOpacity = getValue('palette-opacity', breakpoint);
 
-		if (paletteStatus && (!isHover || hoverStatus || globalHoverStatus))
+		if (
+			!paletteSCStatus &&
+			paletteStatus &&
+			(!isHover || hoverStatus || globalHoverStatus)
+		)
 			return {
 				...(!isNil(paletteColor) && {
 					color: getColorRGBAString({
@@ -118,6 +123,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
+			forceUseBreakpoint: true,
 		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;

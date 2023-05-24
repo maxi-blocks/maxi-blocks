@@ -33,7 +33,7 @@ const controls = {
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
 		const varSC = getSCVariablesObject(styleCards.value, null, true);
 		const varSCString = createSCStyleString(varSC);
-		const SCStyles = getSCStyles(varSC);
+		const SCStyles = await getSCStyles(varSC);
 
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/style-card',

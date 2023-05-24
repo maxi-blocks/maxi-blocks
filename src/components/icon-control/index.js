@@ -325,6 +325,12 @@ const IconControlResponsiveSettings = withRTC(props => {
 								isHover,
 								prefix,
 							})}
+							paletteSCStatus={getAttributeValue({
+								target: 'icon-stroke-palette-sc-status',
+								props,
+								isHover,
+								prefix,
+							})}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
 								onChangeInline(
@@ -337,12 +343,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 								color,
 								paletteColor,
 								paletteStatus,
+								paletteSCStatus,
 								paletteOpacity,
 							}) => {
 								const icon = getIconWithColor({
 									color,
 									paletteColor,
 									paletteStatus,
+									paletteSCStatus,
 									paletteOpacity,
 									isHover,
 								});
@@ -357,6 +365,9 @@ const IconControlResponsiveSettings = withRTC(props => {
 									[`${prefix}icon-stroke-palette-status${
 										isHover ? '-hover' : ''
 									}`]: paletteStatus,
+									[`${prefix}icon-stroke-palette-sc-status${
+										isHover ? '-hover' : ''
+									}`]: paletteSCStatus,
 									[`${prefix}icon-stroke-palette-opacity${
 										isHover ? '-hover' : ''
 									}`]: paletteOpacity,
@@ -429,6 +440,12 @@ const IconControlResponsiveSettings = withRTC(props => {
 						isHover,
 						prefix,
 					})}
+					paletteSCStatus={getAttributeValue({
+						target: 'icon-fill-palette-sc-status',
+						props,
+						isHover,
+						prefix,
+					})}
 					onChangeInline={({ color }) =>
 						onChangeInline &&
 						onChangeInline({ fill: color }, '[data-fill]', true)
@@ -437,12 +454,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) => {
 						const icon = getIconWithColor({
 							color,
 							paletteColor,
 							paletteStatus,
+							paletteSCStatus,
 							paletteOpacity,
 							type: 'fill',
 							isHover,
@@ -458,6 +477,9 @@ const IconControlResponsiveSettings = withRTC(props => {
 							[`${prefix}icon-fill-palette-status${
 								isHover ? '-hover' : ''
 							}`]: paletteStatus,
+							[`${prefix}icon-fill-palette-sc-status${
+								isHover ? '-hover' : ''
+							}`]: paletteSCStatus,
 							[`${prefix}icon-fill-palette-opacity${
 								isHover ? '-hover' : ''
 							}`]: paletteOpacity,
@@ -501,6 +523,12 @@ const IconControlResponsiveSettings = withRTC(props => {
 									attributes: props,
 									isHover,
 								})}
+								paletteSCStatus={getLastBreakpointAttribute({
+									target: `${prefix}icon-background-palette-sc-status`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}
 								paletteColor={getLastBreakpointAttribute({
 									target: `${prefix}icon-background-palette-color`,
 									breakpoint,
@@ -535,6 +563,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 								}
 								onChange={({
 									paletteStatus,
+									paletteSCStatus,
 									paletteColor,
 									paletteOpacity,
 									color,
@@ -547,6 +576,12 @@ const IconControlResponsiveSettings = withRTC(props => {
 												`${prefix}icon-`,
 												breakpoint
 											)]: paletteStatus,
+											[getAttributeKey(
+												'background-palette-sc-status',
+												isHover,
+												`${prefix}icon-`,
+												breakpoint
+											)]: paletteSCStatus,
 											[getAttributeKey(
 												'background-palette-color',
 												isHover,

@@ -515,7 +515,9 @@ class MaxiBlocks_DynamicContent
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            $post_data = excerpt_remove_blocks($post_data);
+            if($dc_field === 'excerpt') {
+                $post_data = excerpt_remove_blocks($post_data);
+            }
             $post_data = wp_strip_all_tags($post_data);
 
             // Ensures no double or more line breaks
@@ -760,6 +762,10 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
+        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+            return false;
+        }
+
         if (is_callable($defaults[$target])) {
             return $defaults[$target]($obj);
         }

@@ -9,6 +9,7 @@ import { dispatch } from '@wordpress/data';
 import { loadFonts } from '../text/fonts';
 import { getSiteEditorIframe } from '../fse';
 import getSCVariablesObject from './getSCVariablesObject';
+import getSCStyles from './getSCStyles';
 
 /**
  * External dependencies
@@ -60,6 +61,18 @@ const getSCFontsData = obj => {
 	return response;
 };
 
+const updateSCStyles = async (element, SCObject) => {
+	const SCStylesEl = element.getElementById(
+		'maxi-blocks-sc-styles-inline-css'
+	);
+
+	if (SCStylesEl) {
+		const SCStyles = await getSCStyles(SCObject, true);
+
+		SCStylesEl.innerHTML = SCStyles;
+	}
+};
+
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
@@ -70,28 +83,35 @@ const updateSCOnEditor = (
 		activeSCColour
 	);
 	const allSCFonts = getSCFontsData(SCObject);
+	const SCVariableString = createSCStyleString(SCObject);
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
-	elements.forEach(element => {
+	elements.forEach((element, i) => {
 		if (!element) return;
 
-		let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
-		if (!SCStyle) {
-			SCStyle = element.createElement('style');
-			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
-			SCStyle.innerHTML = createSCStyleString(SCObject);
+		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
+
+		if (!SCVarEl) {
+			SCVarEl = element.createElement('style');
+			SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
+			SCVarEl.innerHTML = SCVariableString;
+
 			// Iframe on creation generates head, then gutenberg generates their own head
 			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
 			const elementHead = Array.from(
 				element.querySelectorAll('head')
 			).pop();
-			elementHead?.appendChild(SCStyle);
+			elementHead?.appendChild(SCVarEl);
 			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 			// Needs a delay, if not Redux returns error 3
 			setTimeout(() => saveSCStyles(false), 150);
-		} else SCStyle.innerHTML = createSCStyleString(SCObject);
+		} else {
+			SCVarEl.innerHTML = SCVariableString;
+
+			updateSCStyles(element, SCObject);
+		}
 
 		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
 	});

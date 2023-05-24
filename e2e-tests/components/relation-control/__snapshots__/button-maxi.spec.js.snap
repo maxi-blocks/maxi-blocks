@@ -7,6 +7,7 @@ Array [
     "attributes": Object {
       "button-background-palette-color-general": 8,
       "button-background-palette-opacity-general": 0.5,
+      "button-background-palette-sc-status-general": false,
       "button-background-palette-status-general": true,
     },
     "css": Object {
@@ -85,6 +86,7 @@ Array [
     "attributes": Object {
       "button-background-palette-color-general": 8,
       "button-background-palette-opacity-general": 0.5,
+      "button-background-palette-sc-status-general": false,
       "button-background-palette-status-general": true,
     },
     "css": Object {
@@ -207,6 +209,7 @@ Array [
       "button-border-left-width-general": 2,
       "button-border-palette-color-general": 8,
       "button-border-palette-opacity-general": 0.5,
+      "button-border-palette-sc-status-general": false,
       "button-border-palette-status-general": true,
       "button-border-right-width-general": 2,
       "button-border-style-general": "solid",
@@ -355,6 +358,7 @@ Array [
     "attributes": Object {
       "icon-background-palette-color-general": 5,
       "icon-background-palette-opacity-general": 0.43,
+      "icon-background-palette-sc-status-general": false,
       "icon-background-palette-status-general": true,
       "icon-content": "<svg stroke-miterlimit=\\"10\\" stroke-linejoin=\\"round\\" stroke-linecap=\\"round\\" stroke-width=\\"5\\" data-stroke data-hover-stroke stroke=\\"var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" height=\\"64px\\" width=\\"64px\\" class=\\"arrow-right-6-line-maxi-svg\\"><path d=\\"M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6\\"></path></svg>",
       "icon-padding-bottom-general": "44",
@@ -371,6 +375,7 @@ Array [
       "icon-stroke-general": 5,
       "icon-stroke-palette-color": 8,
       "icon-stroke-palette-opacity": 0.75,
+      "icon-stroke-palette-sc-status": false,
       "icon-stroke-palette-status": true,
       "icon-width-general": "11",
       "icon-width-unit-general": "%",
@@ -748,6 +753,7 @@ Array [
       "button-box-shadow-inset-general": false,
       "button-box-shadow-palette-color-general": 8,
       "button-box-shadow-palette-opacity-general": 0.11,
+      "button-box-shadow-palette-sc-status-general": false,
       "button-box-shadow-palette-status-general": true,
       "button-box-shadow-spread-general": 55,
       "button-box-shadow-spread-unit-general": "px",
@@ -803,6 +809,7 @@ Array [
       "line-height-unit-general": "%",
       "palette-color-general": 8,
       "palette-opacity-general": 0.5,
+      "palette-sc-status-general": false,
       "palette-status-general": true,
       "text-decoration-general": "underline",
       "text-direction-general": "rtl",

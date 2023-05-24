@@ -207,8 +207,7 @@ const LinkContent = props => {
 		)
 			return attributes;
 
-		if (!url.includes('www.')) attributes.url = `https://www.${url}`;
-		else if (!url.includes('http:')) attributes.url = `https://${url}`;
+		if (!url.includes('http:')) attributes.url = `https://${url}`;
 		else if (url.includes('http:'))
 			attributes.url = url.replace(/^http:\/\//i, 'https://');
 

@@ -197,10 +197,15 @@ const LinkContent = props => {
 		onChange(newLinkAttributes, obj);
 	};
 
-	const forceSSL = attributes => {
+	const prepareUrl = attributes => {
 		const { url } = attributes;
 
-		attributes.url = url.replace(/^http:\/\//i, 'https://');
+		if (url?.startsWith('#')) return attributes;
+
+		if (!url.includes('www.')) attributes.url = `https://www.${url}`;
+		else if (!url.includes('http:')) attributes.url = `https://${url}`;
+		else if (url.includes('http:'))
+			attributes.url = url.replace(/^http:\/\//i, 'https://');
 
 		return attributes;
 	};
@@ -219,7 +224,7 @@ const LinkContent = props => {
 	};
 
 	const onClick = attributes => {
-		const newAttributes = forceSSL(attributes);
+		const newAttributes = prepareUrl(attributes);
 
 		if (!formatOptions.current && !isEmpty(newAttributes.url))
 			setLinkFormat(newAttributes);

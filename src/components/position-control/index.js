@@ -68,12 +68,11 @@ const PositionControl = props => {
 			'.b-u',
 			'.l-u',
 		].reduce((acc, key) => {
-			const attrLabel = getAttributeKey(
-				`_pos${key}`,
-				false,
+			const attrLabel = getAttributeKey({
+				key: `_pos${key}`,
 				prefix,
-				breakpoint
-			);
+				breakpoint,
+			});
 
 			acc[attrLabel] = getDefaultAttribute(attrLabel);
 
@@ -120,34 +119,38 @@ const PositionControl = props => {
 							}) || ''
 						}
 						defaultValue={getDefaultAttribute(
-							getAttributeKey('_pos', isHover, prefix, breakpoint)
+							getAttributeKey({
+								key: '_pos',
+								isHover,
+								prefix,
+								breakpoint,
+							})
 						)}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'_pos',
+								[getAttributeKey({
+									key: '_pos',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_pos',
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_pos',
 										isHover,
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
 								isReset: true,
 							})
 						}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'_pos',
-									false,
+								[getAttributeKey({
+									key: '_pos',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 								...(isEmpty(val) && getCleanOptions()),
 							})
 						}

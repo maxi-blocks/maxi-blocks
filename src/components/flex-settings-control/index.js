@@ -119,12 +119,10 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[getAttributeKey(
-												'_or',
-												false,
-												false,
-												breakpoint
-											)]: val,
+											[getAttributeKey({
+												key: '_or',
+												breakpoint,
+											})]: val,
 										});
 									}}
 									min={0}
@@ -132,12 +130,10 @@ const FlexSettingsControl = props => {
 									step={1}
 									onReset={() =>
 										onChange({
-											[getAttributeKey(
-												'_or',
-												false,
-												false,
-												breakpoint
-											)]: null,
+											[getAttributeKey({
+												key: '_or',
+												breakpoint,
+											})]: null,
 											isReset: true,
 										})
 									}
@@ -153,12 +149,10 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[getAttributeKey(
-												'_fg',
-												false,
-												false,
-												breakpoint
-											)]: val,
+											[getAttributeKey({
+												key: '_fg',
+												breakpoint,
+											})]: val,
 										});
 									}}
 									min={0}
@@ -166,12 +160,10 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[getAttributeKey(
-												'_fg',
-												false,
-												false,
-												breakpoint
-											)]: null,
+											[getAttributeKey({
+												key: '_fg',
+												breakpoint,
+											})]: null,
 											isReset: true,
 										})
 									}
@@ -187,12 +179,10 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[getAttributeKey(
-												'_fls',
-												false,
-												false,
-												breakpoint
-											)]: val,
+											[getAttributeKey({
+												key: '_fls',
+												breakpoint,
+											})]: val,
 										});
 									}}
 									min={0}
@@ -200,12 +190,10 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[getAttributeKey(
-												'_fls',
-												false,
-												false,
-												breakpoint
-											)]: null,
+											[getAttributeKey({
+												key: '_fls',
+												breakpoint,
+											})]: null,
 											isReset: true,
 										})
 									}
@@ -223,27 +211,21 @@ const FlexSettingsControl = props => {
 											  }) ?? ''
 									}
 									defaultValue={getDefaultAttribute(
-										getAttributeKey(
-											'_fb',
-											false,
-											false,
-											breakpoint
-										)
+										getAttributeKey({
+											key: '_fb',
+											breakpoint,
+										})
 									)}
 									onReset={() =>
 										onChange({
-											[getAttributeKey(
-												'_fb',
-												false,
-												false,
-												breakpoint
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'_fb',
-													false,
-													false,
-													breakpoint
-												)
+											[getAttributeKey({
+												key: '_fb',
+												breakpoint,
+											})]: getDefaultAttribute(
+												getAttributeKey({
+													key: '_fb',
+													breakpoint,
+												})
 											),
 											isReset: true,
 										})
@@ -258,12 +240,10 @@ const FlexSettingsControl = props => {
 									onChange={val => {
 										if (val !== 'custom') {
 											onChange({
-												[getAttributeKey(
-													'_fb',
-													false,
-													false,
-													breakpoint
-												)]: val,
+												[getAttributeKey({
+													key: '_fb',
+													breakpoint,
+												})]: val,
 											});
 											setCustomFlexBasis(false);
 										} else {
@@ -287,12 +267,10 @@ const FlexSettingsControl = props => {
 										})}
 										onChangeUnit={val => {
 											onChange({
-												[getAttributeKey(
-													'_fb.u',
-													false,
-													false,
-													breakpoint
-												)]: val,
+												[getAttributeKey({
+													key: '_fb.u',
+													breakpoint,
+												})]: val,
 											});
 										}}
 										value={getLastBreakpointAttribute({
@@ -302,12 +280,10 @@ const FlexSettingsControl = props => {
 										})}
 										onChangeValue={val => {
 											onChange({
-												[getAttributeKey(
-													'_fb',
-													false,
-													false,
-													breakpoint
-												)]: toString(val),
+												[getAttributeKey({
+													key: '_fb',
+													breakpoint,
+												})]: toString(val),
 											});
 										}}
 										minMaxSettings={{
@@ -331,12 +307,10 @@ const FlexSettingsControl = props => {
 										allowedUnits={['px', 'em', 'vw', '%']}
 										onReset={() =>
 											onChange({
-												[getAttributeKey(
-													'_fb',
-													false,
-													false,
-													breakpoint
-												)]: null,
+												[getAttributeKey({
+													key: '_fb',
+													breakpoint,
+												})]: null,
 												isReset: true,
 											})
 										}

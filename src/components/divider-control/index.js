@@ -32,7 +32,8 @@ export const DefaultDividersControl = props => {
 
 	const onChangeStyle = newStyle => {
 		onChange({
-			[getAttributeKey('di-bo_s', isHover, prefix, breakpoint)]: newStyle,
+			[getAttributeKey({ key: 'di-bo_s', isHover, prefix, breakpoint })]:
+				newStyle,
 		});
 	};
 
@@ -166,34 +167,30 @@ const DividerControl = props => {
 						}) || 'none'
 					}
 					defaultValue={getDefaultAttribute(
-						getAttributeKey('di-bo_s', false, false, breakpoint)
+						getAttributeKey({ key: 'di-bo_s', breakpoint })
 					)}
 					onReset={() =>
 						onChange({
-							[getAttributeKey(
-								'di-bo_s',
-								false,
-								false,
-								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'di-bo_s',
-									false,
-									false,
-									breakpoint
-								)
+							[getAttributeKey({
+								key: 'di-bo_s',
+								breakpoint,
+							})]: getDefaultAttribute(
+								getAttributeKey({
+									key: 'di-bo_s',
+									breakpoint,
+								})
 							),
 							isReset: true,
 						})
 					}
 					onChange={val =>
 						onChange({
-							[getAttributeKey(
-								'di-bo_s',
+							[getAttributeKey({
+								key: 'di-bo_s',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						})
 					}
 				/>
@@ -206,12 +203,12 @@ const DividerControl = props => {
 						selected={dividerBorderRadius}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'di-bo.ra',
+								[getAttributeKey({
+									key: 'di-bo.ra',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 					/>
@@ -259,30 +256,30 @@ const DividerControl = props => {
 						paletteOpacity,
 					}) =>
 						onChange({
-							[getAttributeKey(
-								'di-bo_cc',
+							[getAttributeKey({
+								key: 'di-bo_cc',
 								isHover,
 								prefix,
-								breakpoint
-							)]: color,
-							[getAttributeKey(
-								'di-bo_pc',
+								breakpoint,
+							})]: color,
+							[getAttributeKey({
+								key: 'di-bo_pc',
 								isHover,
 								prefix,
-								breakpoint
-							)]: paletteColor,
-							[getAttributeKey(
-								'di-bo_ps',
+								breakpoint,
+							})]: paletteColor,
+							[getAttributeKey({
+								key: 'di-bo_ps',
 								isHover,
 								prefix,
-								breakpoint
-							)]: paletteStatus,
-							[getAttributeKey(
-								'di-bo_po',
+								breakpoint,
+							})]: paletteStatus,
+							[getAttributeKey({
+								key: 'di-bo_po',
 								isHover,
 								prefix,
-								breakpoint
-							)]: paletteOpacity,
+								breakpoint,
+							})]: paletteOpacity,
 						})
 					}
 					disableGradient
@@ -307,12 +304,12 @@ const DividerControl = props => {
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[getAttributeKey(
-										'di_w.u',
+									[getAttributeKey({
+										key: 'di_w.u',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
@@ -324,30 +321,30 @@ const DividerControl = props => {
 							})}
 							onChangeValue={val =>
 								onChange({
-									[getAttributeKey(
-										'di_w',
+									[getAttributeKey({
+										key: 'di_w',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[getAttributeKey(
-										'di_w',
+									[getAttributeKey({
+										key: 'di_w',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
+										breakpoint,
+									})]: getDefaultAttribute(
 										`di_w-${breakpoint}`
 									),
-									[getAttributeKey(
-										'di_w.u',
+									[getAttributeKey({
+										key: 'di_w.u',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
+										breakpoint,
+									})]: getDefaultAttribute(
 										`di_w.u-${breakpoint}`
 									),
 									isReset: true,
@@ -368,22 +365,22 @@ const DividerControl = props => {
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[getAttributeKey(
-										'di-bo.t.u',
+									[getAttributeKey({
+										key: 'di-bo.t.u',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							onChange={val =>
 								onChange({
-									[getAttributeKey(
-										'di-bo.t',
+									[getAttributeKey({
+										key: 'di-bo.t',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
@@ -395,30 +392,30 @@ const DividerControl = props => {
 							})}
 							onChangeValue={val =>
 								onChange({
-									[getAttributeKey(
-										'di-bo.t',
+									[getAttributeKey({
+										key: 'di-bo.t',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[getAttributeKey(
-										'di-bo.t',
+									[getAttributeKey({
+										key: 'di-bo.t',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
+										breakpoint,
+									})]: getDefaultAttribute(
 										`di-bo.t-${breakpoint}`
 									),
-									[getAttributeKey(
-										'di-bo.t.u',
+									[getAttributeKey({
+										key: 'di-bo.t.u',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
+										breakpoint,
+									})]: getDefaultAttribute(
 										`di-bo.t.u-${breakpoint}`
 									),
 									isReset: true,
@@ -443,12 +440,12 @@ const DividerControl = props => {
 							})}
 							onChangeValue={val => {
 								onChange({
-									[getAttributeKey(
-										'di_h',
+									[getAttributeKey({
+										key: 'di_h',
 										isHover,
 										prefix,
-										breakpoint
-									)]:
+										breakpoint,
+									})]:
 										val !== undefined && val !== ''
 											? val
 											: '',
@@ -458,29 +455,22 @@ const DividerControl = props => {
 							max={100}
 							onReset={() =>
 								onChange({
-									[getAttributeKey(
-										'di_h',
+									[getAttributeKey({
+										key: 'di_h',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'di_h',
-											false,
-											false,
-											breakpoint
-										)
+										breakpoint,
+									})]: getDefaultAttribute(
+										getAttributeKey({
+											key: 'di_h',
+											breakpoint,
+										})
 									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								getAttributeKey(
-									'di_h',
-									false,
-									false,
-									breakpoint
-								)
+								getAttributeKey({ key: 'di_h', breakpoint })
 							)}
 						/>
 						<AdvancedNumberControl
@@ -494,12 +484,12 @@ const DividerControl = props => {
 							})}
 							onChangeValue={val => {
 								onChange({
-									[getAttributeKey(
-										'di-bo.r',
+									[getAttributeKey({
+										key: 'di-bo.r',
 										isHover,
 										prefix,
-										breakpoint
-									)]:
+										breakpoint,
+									})]:
 										val !== undefined && val !== ''
 											? val
 											: '',
@@ -509,29 +499,22 @@ const DividerControl = props => {
 							max={100}
 							onReset={() =>
 								onChange({
-									[getAttributeKey(
-										'di-bo.r',
+									[getAttributeKey({
+										key: 'di-bo.r',
 										isHover,
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'di-bo.r',
-											false,
-											false,
-											breakpoint
-										)
+										breakpoint,
+									})]: getDefaultAttribute(
+										getAttributeKey({
+											key: 'di-bo.r',
+											breakpoint,
+										})
 									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								getAttributeKey(
-									'di-bo.r',
-									false,
-									false,
-									breakpoint
-								)
+								getAttributeKey({ key: 'di-bo.r', breakpoint })
 							)}
 						/>
 					</>

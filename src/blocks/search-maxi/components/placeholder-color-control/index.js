@@ -74,14 +74,26 @@ const PlaceholderColorControl = ({
 					paletteOpacity,
 				}) => {
 					onChange({
-						[getAttributeKey('_cc', false, 'pla-', deviceType)]:
-							color,
-						[getAttributeKey('_pc', false, 'pla-', deviceType)]:
-							paletteColor,
-						[getAttributeKey('_ps', false, 'pla-', deviceType)]:
-							paletteStatus,
-						[getAttributeKey('_po', false, 'pla-', deviceType)]:
-							paletteOpacity,
+						[getAttributeKey({
+							key: '_cc',
+							prefix: 'pla-',
+							breakpoint: deviceType,
+						})]: color,
+						[getAttributeKey({
+							key: '_pc',
+							prefix: 'pla-',
+							breakpoint: deviceType,
+						})]: paletteColor,
+						[getAttributeKey({
+							key: '_ps',
+							prefix: 'pla-',
+							breakpoint: deviceType,
+						})]: paletteStatus,
+						[getAttributeKey({
+							key: '_po',
+							prefix: 'pla-',
+							breakpoint: deviceType,
+						})]: paletteOpacity,
 					});
 					cleanInlineStyles(
 						' .maxi-search-block__input',

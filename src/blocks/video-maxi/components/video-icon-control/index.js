@@ -89,7 +89,7 @@ const IconSettings = props => {
 							props,
 						})}
 						defaultColor={getDefaultAttribute(
-							getAttributeKey('i-f_cc', isHover, prefix)
+							getAttributeKey({ key: 'i-f_cc', isHover, prefix })
 						)}
 						paletteStatus={getAttributesValue({
 							target: 'i-f_ps',
@@ -141,14 +141,26 @@ const IconSettings = props => {
 								  );
 
 							onChange({
-								[getAttributeKey('i-f_ps', isHover, prefix)]:
-									paletteStatus,
-								[getAttributeKey('i-f_pc', isHover, prefix)]:
-									paletteColor,
-								[getAttributeKey('i-f_po', isHover, prefix)]:
-									paletteOpacity,
-								[getAttributeKey('i-f_cc', isHover, prefix)]:
-									color,
+								[getAttributeKey({
+									key: 'i-f_ps',
+									isHover,
+									prefix,
+								})]: paletteStatus,
+								[getAttributeKey({
+									key: 'i-f_pc',
+									isHover,
+									prefix,
+								})]: paletteColor,
+								[getAttributeKey({
+									key: 'i-f_po',
+									isHover,
+									prefix,
+								})]: paletteOpacity,
+								[getAttributeKey({
+									key: 'i-f_cc',
+									isHover,
+									prefix,
+								})]: color,
 								...(!isHover && {
 									[`${prefix}i_c`]: icon,
 								}),
@@ -214,12 +226,12 @@ const IconSettings = props => {
 								})}
 								onChangeValue={val =>
 									onChange({
-										[getAttributeKey(
-											'i_h',
+										[getAttributeKey({
+											key: 'i_h',
 											isHover,
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								defaultValue={getDefaultAttribute(
@@ -227,11 +239,11 @@ const IconSettings = props => {
 								)}
 								enableUnit
 								unit={getLastBreakpointAttribute({
-									target: getAttributeKey(
-										'i_h.u',
+									target: getAttributeKey({
+										key: 'i_h.u',
 										isHover,
-										prefix
-									),
+										prefix,
+									}),
 									breakpoint,
 									attributes: props,
 								})}
@@ -240,28 +252,30 @@ const IconSettings = props => {
 								)}
 								onChangeUnit={val =>
 									onChange({
-										[getAttributeKey(
-											'i_h.u',
+										[getAttributeKey({
+											key: 'i_h.u',
 											isHover,
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								onReset={() =>
 									onChange({
-										[getAttributeKey(
-											'i_h',
+										[getAttributeKey({
+											key: 'i_h',
 											isHover,
 											prefix,
-											breakpoint
-										)]: getDefaultAttribute(`${prefix}i_h`),
-										[getAttributeKey(
-											'i_h.u',
+											breakpoint,
+										})]: getDefaultAttribute(
+											`${prefix}i_h`
+										),
+										[getAttributeKey({
+											key: 'i_h.u',
 											isHover,
 											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
+											breakpoint,
+										})]: getDefaultAttribute(
 											`${prefix}i_h.u`
 										),
 										isReset: true,

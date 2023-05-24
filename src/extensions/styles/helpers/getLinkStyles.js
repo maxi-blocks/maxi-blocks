@@ -29,8 +29,8 @@ const getLinkStyles = (obj, target, blockStyle) => {
 	};
 
 	const getTextDecoration = (breakpoint, isHover = false) => {
-		const hoverStatus = obj[getAttributeKey('t.sh')];
-		const value = obj[getAttributeKey('_td', isHover, '', breakpoint)];
+		const hoverStatus = obj[getAttributeKey({ key: 't.sh' })];
+		const value = obj[getAttributeKey({ key: '_td', isHover, breakpoint })];
 		return !isNil(value) && (hoverStatus || !isHover) && value;
 	};
 

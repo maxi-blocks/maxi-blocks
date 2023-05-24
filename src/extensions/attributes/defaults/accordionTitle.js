@@ -41,20 +41,18 @@ const accordionTitle = {
 	...hoverAttributesCreator({
 		obj: titleBackground,
 		sameValAttr: [
-			getAttributeKey(
-				'_ps', // palette-status
-				false,
-				`${prefix}-b-`, // background-
-				'general'
-			),
+			getAttributeKey({
+				key: '_ps', // palette-status
+				prefix: `${prefix}-b-`, // background-
+				breakpoint: 'general',
+			}),
 		],
 		diffValAttr: {
-			[getAttributeKey(
-				'_pc', // palette-color
-				false,
-				`${prefix}-b-`, // background-
-				'general'
-			)]: 6,
+			[getAttributeKey({
+				key: '_pc', // palette-color
+				prefix: `${prefix}-b-`, // background-
+				breakpoint: 'general',
+			})]: 6,
 		},
 	}),
 	...prefixAttributesCreator({ obj: typography, prefix, longPrefix }),

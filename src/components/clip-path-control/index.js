@@ -272,7 +272,7 @@ const ClipPathControl = props => {
 
 	const onChangeValue = val => {
 		onChange({
-			[getAttributeKey('_cp', isHover, prefix, breakpoint)]: val,
+			[getAttributeKey({ key: '_cp', isHover, prefix, breakpoint })]: val,
 		});
 	};
 
@@ -296,7 +296,8 @@ const ClipPathControl = props => {
 
 	const onToggleClipPath = val => {
 		onChange({
-			[getAttributeKey('_cp.s', isHover, prefix, breakpoint)]: val,
+			[getAttributeKey({ key: '_cp.s', isHover, prefix, breakpoint })]:
+				val,
 		});
 	};
 

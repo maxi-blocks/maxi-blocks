@@ -2,19 +2,28 @@ import getAttributeKey from '../getAttributeKey';
 
 describe('getAttributeKey', () => {
 	it('should return the correct key', () => {
-		expect(getAttributeKey('test')).toBe('test');
-		expect(getAttributeKey('test', true)).toBe('test.h');
-		expect(getAttributeKey('test', false, 'test-')).toBe('test-test');
-		expect(getAttributeKey('test', true, 'test-')).toBe('test-test.h');
-		expect(getAttributeKey('test', false, 'test-', 'md')).toBe(
-			'test-test-md'
+		expect(getAttributeKey({ key: 'test' })).toBe('test');
+		expect(getAttributeKey({ key: 'test', isHover: true })).toBe('test.h');
+		expect(getAttributeKey({ key: 'test', prefix: 'test-' })).toBe(
+			'test-test'
 		);
-		expect(getAttributeKey('test', true, 'test-', 'md')).toBe(
-			'test-test-md.h'
-		);
+		expect(
+			getAttributeKey({ key: 'test', isHover: true, prefix: 'test-' })
+		).toBe('test-test.h');
+		expect(
+			getAttributeKey({ key: 'test', prefix: 'test-', breakpoint: 'md' })
+		).toBe('test-test-md');
+		expect(
+			getAttributeKey({
+				key: 'test',
+				isHover: true,
+				prefix: 'test-',
+				breakpoint: 'md',
+			})
+		).toBe('test-test-md.h');
 	});
 	it('Should return the correct shortened key', () => {
-		expect(getAttributeKey('bc_ps', false, false, 'general')).toBe(
+		expect(getAttributeKey({ key: 'bc_ps', breakpoint: 'general' })).toBe(
 			'bc_ps-general'
 		);
 	});

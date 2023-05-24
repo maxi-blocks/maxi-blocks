@@ -137,7 +137,7 @@ const getSVGPathStyles = (obj, prefix = 's-', isHover = false) => {
 		response[breakpoint] = {};
 
 		const iconStroke =
-			obj[getAttributeKey('_str', isHover, prefix, breakpoint)];
+			obj[getAttributeKey({ key: '_str', isHover, prefix, breakpoint })];
 
 		if (!isNil(iconStroke)) {
 			response[breakpoint]['stroke-width'] = iconStroke;
@@ -191,7 +191,7 @@ const getSVGPathStrokeStyles = (
 		label: 'SVG Path stroke',
 	};
 
-	if (isHover && !useIconColor && !obj[getAttributeKey('t.sh')]) {
+	if (isHover && !useIconColor && !obj[getAttributeKey({ key: 't.sh' })]) {
 		response.general = {};
 		response.general.stroke = '';
 

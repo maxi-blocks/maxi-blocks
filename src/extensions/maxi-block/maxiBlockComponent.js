@@ -131,11 +131,13 @@ class MaxiBlockComponent extends Component {
 				const { attributes } = this.props;
 				const maxiVersion = settings.maxi_version;
 
-				if (maxiVersion !== attributes[getAttributeKey('_mvc')])
-					attributes[getAttributeKey('_mvc')] = maxiVersion;
+				if (
+					maxiVersion !== attributes[getAttributeKey({ key: '_mvc' })]
+				)
+					attributes[getAttributeKey({ key: '_mvc' })] = maxiVersion;
 
-				if (!attributes[getAttributeKey('_mvo')])
-					attributes[getAttributeKey('_mvo')] = maxiVersion;
+				if (!attributes[getAttributeKey({ key: '_mvo' })])
+					attributes[getAttributeKey({ key: '_mvo' })] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 

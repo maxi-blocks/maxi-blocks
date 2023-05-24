@@ -69,9 +69,7 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 			};
 		} else if (
 			isNumber(columnSize) ||
-			isNumber(
-				rowGapProps?.[getAttributeKey('_cg', false, '', breakpoint)]
-			)
+			isNumber(rowGapProps?.[getAttributeKey({ key: '_cg', breakpoint })])
 		) {
 			const columnNum = getColumnNum(
 				rowGapProps?.columnsSize,

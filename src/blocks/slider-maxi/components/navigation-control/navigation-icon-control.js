@@ -258,10 +258,12 @@ const NavigationIconControl = props => {
 																	),
 																	obj[
 																		getAttributeKey(
-																			'str',
-																			isHover,
-																			prefix,
-																			breakpoint
+																			{
+																				key: '_str',
+																				isHover,
+																				prefix,
+																				breakpoint,
+																			}
 																		)
 																	]
 																),
@@ -282,10 +284,12 @@ const NavigationIconControl = props => {
 																),
 																obj[
 																	getAttributeKey(
-																		'str',
-																		isHover,
-																		prefix,
-																		breakpoint
+																		{
+																			key: 'str',
+																			isHover,
+																			prefix,
+																			breakpoint,
+																		}
 																	)
 																]
 															),
@@ -323,12 +327,12 @@ const NavigationIconControl = props => {
 											})}
 											onChangeValue={val => {
 												onChange({
-													[getAttributeKey(
-														'_sh',
+													[getAttributeKey({
+														key: '_sh',
 														isHover,
 														prefix,
-														breakpoint
-													)]:
+														breakpoint,
+													})]:
 														val !== undefined &&
 														val !== ''
 															? val
@@ -337,18 +341,18 @@ const NavigationIconControl = props => {
 											}}
 											onReset={() =>
 												onChange({
-													[getAttributeKey(
-														'_sh',
+													[getAttributeKey({
+														key: '_sh',
 														isHover,
 														prefix,
-														breakpoint
-													)]: getDefaultAttribute(
-														getAttributeKey(
-															'_sh',
+														breakpoint,
+													})]: getDefaultAttribute(
+														getAttributeKey({
+															key: '_sh',
 															isHover,
 															prefix,
-															breakpoint
-														)
+															breakpoint,
+														})
 													),
 												})
 											}
@@ -375,12 +379,12 @@ const NavigationIconControl = props => {
 											})}
 											onChangeValue={val => {
 												onChange({
-													[getAttributeKey(
-														'_sv',
+													[getAttributeKey({
+														key: '_sv',
 														isHover,
 														prefix,
-														breakpoint
-													)]:
+														breakpoint,
+													})]:
 														val !== undefined &&
 														val !== ''
 															? val
@@ -389,18 +393,18 @@ const NavigationIconControl = props => {
 											}}
 											onReset={() =>
 												onChange({
-													[getAttributeKey(
-														'_sv',
+													[getAttributeKey({
+														key: '_sv',
 														isHover,
 														prefix,
-														breakpoint
-													)]: getDefaultAttribute(
-														getAttributeKey(
-															'_sv',
+														breakpoint,
+													})]: getDefaultAttribute(
+														getAttributeKey({
+															key: '_sv',
 															isHover,
 															prefix,
-															breakpoint
-														)
+															breakpoint,
+														})
 													),
 												})
 											}
@@ -428,12 +432,12 @@ const NavigationIconControl = props => {
 												)}
 												onChangeValue={val => {
 													onChange({
-														[getAttributeKey(
-															'_sb',
+														[getAttributeKey({
+															key: '_sb',
 															isHover,
 															prefix,
-															breakpoint
-														)]:
+															breakpoint,
+														})]:
 															val !== undefined &&
 															val !== ''
 																? val
@@ -442,18 +446,18 @@ const NavigationIconControl = props => {
 												}}
 												onReset={() =>
 													onChange({
-														[getAttributeKey(
-															'_sb',
+														[getAttributeKey({
+															key: '_sb',
 															isHover,
 															prefix,
-															breakpoint
-														)]: getDefaultAttribute(
-															getAttributeKey(
-																'_sb',
+															breakpoint,
+														})]: getDefaultAttribute(
+															getAttributeKey({
+																key: '_sb',
 																isHover,
 																prefix,
-																breakpoint
-															)
+																breakpoint,
+															})
 														),
 													})
 												}
@@ -544,11 +548,11 @@ const NavigationIconControl = props => {
 									paletteOpacity,
 								}) => {
 									const strokeColorStr = getColorRGBAString({
-										firstVar: getAttributeKey(
-											'stroke',
+										firstVar: getAttributeKey({
+											key: 'stroke',
 											isHover,
-											prefix
-										),
+											prefix,
+										}),
 										secondVar: `color-${paletteColor}${
 											isHover ? '-hover' : ''
 										}`,
@@ -556,26 +560,26 @@ const NavigationIconControl = props => {
 										blockStyle,
 									});
 									const onChangeObj = {
-										[getAttributeKey(
-											'str_cc',
+										[getAttributeKey({
+											key: 'str_cc',
 											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'str_pc',
+											prefix,
+										})]: color,
+										[getAttributeKey({
+											key: 'str_pc',
 											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'str_ps',
+											prefix,
+										})]: paletteColor,
+										[getAttributeKey({
+											key: 'str_ps',
 											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'str_po',
+											prefix,
+										})]: paletteStatus,
+										[getAttributeKey({
+											key: 'str_po',
 											isHover,
-											prefix
-										)]: paletteOpacity,
+											prefix,
+										})]: paletteOpacity,
 									};
 
 									shortPrefix === arrowShortPrefix &&
@@ -680,11 +684,11 @@ const NavigationIconControl = props => {
 									paletteOpacity,
 								}) => {
 									const fillColorStr = getColorRGBAString({
-										firstVar: getAttributeKey(
-											'fill',
+										firstVar: getAttributeKey({
+											key: 'fill',
 											isHover,
-											prefix
-										),
+											prefix,
+										}),
 										secondVar: `color-${paletteColor}${
 											isHover ? '-hover' : ''
 										}`,
@@ -692,26 +696,26 @@ const NavigationIconControl = props => {
 										blockStyle,
 									});
 									const onChangeObj = {
-										[getAttributeKey(
-											'f_cc',
+										[getAttributeKey({
+											key: 'f_cc',
 											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'f_pc',
+											prefix,
+										})]: color,
+										[getAttributeKey({
+											key: 'f_pc',
 											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'f_ps',
+											prefix,
+										})]: paletteColor,
+										[getAttributeKey({
+											key: 'f_ps',
 											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'f_po',
+											prefix,
+										})]: paletteStatus,
+										[getAttributeKey({
+											key: 'f_po',
 											isHover,
-											prefix
-										)]: paletteOpacity,
+											prefix,
+										})]: paletteOpacity,
 									};
 
 									shortPrefix === arrowShortPrefix &&
@@ -819,12 +823,12 @@ const NavigationIconControl = props => {
 									onChange={val => {
 										setIconBgActive(val);
 										onChange({
-											[getAttributeKey(
-												'b_am',
+											[getAttributeKey({
+												key: 'b_am',
 												isHover,
 												prefix,
-												breakpoint
-											)]: val,
+												breakpoint,
+											})]: val,
 										});
 									}}
 								/>
@@ -892,30 +896,30 @@ const NavigationIconControl = props => {
 										}) => {
 											onChange(
 												{
-													[getAttributeKey(
-														'bc_ps',
+													[getAttributeKey({
+														key: 'bc_ps',
 														isHover,
 														prefix,
-														breakpoint
-													)]: paletteStatus,
-													[getAttributeKey(
-														'bc_pc',
+														breakpoint,
+													})]: paletteStatus,
+													[getAttributeKey({
+														key: 'bc_pc',
 														isHover,
 														prefix,
-														breakpoint
-													)]: paletteColor,
-													[getAttributeKey(
-														'bc_po',
+														breakpoint,
+													})]: paletteColor,
+													[getAttributeKey({
+														key: 'bc_po',
 														isHover,
 														prefix,
-														breakpoint
-													)]: paletteOpacity,
-													[getAttributeKey(
-														'bc_cc',
+														breakpoint,
+													})]: paletteOpacity,
+													[getAttributeKey({
+														key: 'bc_cc',
 														isHover,
 														prefix,
-														breakpoint
-													)]: color,
+														breakpoint,
+													})]: color,
 												},
 												shortPrefix === arrowShortPrefix
 													? '.maxi-slider-block__arrow'
@@ -950,31 +954,31 @@ const NavigationIconControl = props => {
 											}
 										)}
 										defaultGradient={getDefaultAttribute(
-											getAttributeKey(
-												'bg_c',
+											getAttributeKey({
+												key: 'bg_c',
 												isHover,
 												prefix,
-												breakpoint
-											)
+												breakpoint,
+											})
 										)}
 										onChange={val =>
 											onChange({
-												[getAttributeKey(
-													'bg_c',
+												[getAttributeKey({
+													key: 'bg_c',
 													isHover,
 													prefix,
-													breakpoint
-												)]: val,
+													breakpoint,
+												})]: val,
 											})
 										}
 										onChangeOpacity={val =>
 											onChange({
-												[getAttributeKey(
-													'bg_o',
+												[getAttributeKey({
+													key: 'bg_o',
 													isHover,
 													prefix,
-													breakpoint
-												)]: val,
+													breakpoint,
+												})]: val,
 											})
 										}
 										isHover={isHover}

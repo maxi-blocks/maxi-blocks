@@ -114,36 +114,36 @@ const ColorControl = props => {
 				defaultColorAttr = {};
 
 				defaultColorAttr.paletteStatus = getDefaultAttribute(
-					getAttributeKey(
-						'_ps',
+					getAttributeKey({
+						key: '_ps',
 						isHover,
 						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
+						breakpoint: avoidBreakpointForDefault ? '' : deviceType,
+					})
 				);
 				defaultColorAttr.paletteColor = getDefaultAttribute(
-					getAttributeKey(
-						'_pc',
+					getAttributeKey({
+						key: '_pc',
 						isHover,
 						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
+						breakpoint: avoidBreakpointForDefault ? '' : deviceType,
+					})
 				);
 				defaultColorAttr.paletteOpacity = getDefaultAttribute(
-					getAttributeKey(
-						'_po',
+					getAttributeKey({
+						key: '_po',
 						isHover,
 						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
+						breakpoint: avoidBreakpointForDefault ? '' : deviceType,
+					})
 				);
 				defaultColorAttr.color = getDefaultAttribute(
-					getAttributeKey(
-						'_cc',
+					getAttributeKey({
+						key: '_cc',
 						isHover,
 						prefix,
-						avoidBreakpointForDefault ? '' : deviceType
-					)
+						breakpoint: avoidBreakpointForDefault ? '' : deviceType,
+					})
 				);
 			}
 
@@ -176,12 +176,12 @@ const ColorControl = props => {
 		const opacity =
 			defaultColorAttributes?.paletteOpacity ??
 			getDefaultAttribute(
-				getAttributeKey(
-					'_po',
+				getAttributeKey({
+					key: '_po',
 					isHover,
 					prefix,
-					!avoidBreakpointForDefault ? deviceType : null
-				)
+					breakpoint: !avoidBreakpointForDefault ? deviceType : null,
+				})
 			);
 
 		onChange({

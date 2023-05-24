@@ -11,12 +11,12 @@ const getPrefix = prefix => {
 	return `${prefix}-`;
 };
 
-const getAttributeKey = (
+const getAttributeKey = ({
 	key = '',
 	isHover = false,
 	prefix = '',
-	breakpoint = false
-) =>
+	breakpoint = false,
+}) =>
 	getCleanKey(
 		`${getPrefix(prefix)}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
 			isHover ? '.h' : ''

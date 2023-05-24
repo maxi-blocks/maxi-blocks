@@ -82,12 +82,10 @@ const withAttributes = createHigherOrderComponent(
 			}
 
 			// RTL
-			const textAlignmentLabel = getAttributeKey(
-				'_ta',
-				false,
-				false,
-				'general'
-			);
+			const textAlignmentLabel = getAttributeKey({
+				key: '_ta',
+				breakpoint: 'general',
+			});
 
 			if (
 				textAlignmentLabel in attributes &&

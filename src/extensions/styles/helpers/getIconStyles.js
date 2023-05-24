@@ -25,7 +25,8 @@ const getIconStyles = (
 
 	const isShape = iconType !== 'shape';
 
-	if (isIconInherit && !obj[getAttributeKey('t.sh')]) return response;
+	if (isIconInherit && !obj[getAttributeKey({ key: 't.sh' })])
+		return response;
 
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =

@@ -459,14 +459,26 @@ const NumberCounterControl = props => {
 				}) =>
 					onChange(
 						{
-							[getAttributeKey('_ps', false, 'nct-', breakpoint)]:
-								paletteStatus,
-							[getAttributeKey('_pc', false, 'nct-', breakpoint)]:
-								paletteColor,
-							[getAttributeKey('_po', false, 'nct-', breakpoint)]:
-								paletteOpacity,
-							[getAttributeKey('_cc', false, 'nct-', breakpoint)]:
-								color,
+							[getAttributeKey({
+								key: '_ps',
+								prefix: 'nct-',
+								breakpoint,
+							})]: paletteStatus,
+							[getAttributeKey({
+								key: '_pc',
+								prefix: 'nct-',
+								breakpoint,
+							})]: paletteColor,
+							[getAttributeKey({
+								key: '_po',
+								prefix: 'nct-',
+								breakpoint,
+							})]: paletteOpacity,
+							[getAttributeKey({
+								key: '_cc',
+								prefix: 'nct-',
+								breakpoint,
+							})]: color,
 						},
 						'.maxi-number-counter__box__text'
 					)
@@ -511,14 +523,22 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									[getAttributeKey('_ps', false, 'nccb-')]:
-										paletteStatus,
-									[getAttributeKey('_pc', false, 'nccb-')]:
-										paletteColor,
-									[getAttributeKey('_po', false, 'nccb-')]:
-										paletteOpacity,
-									[getAttributeKey('_cc', false, 'nccb-')]:
-										color,
+									[getAttributeKey({
+										key: '_ps',
+										prefix: 'nccb-',
+									})]: paletteStatus,
+									[getAttributeKey({
+										key: '_pc',
+										prefix: 'nccb-',
+									})]: paletteColor,
+									[getAttributeKey({
+										key: '_po',
+										prefix: 'nccb-',
+									})]: paletteOpacity,
+									[getAttributeKey({
+										key: '_cc',
+										prefix: 'nccb-',
+									})]: color,
 								},
 								'.maxi-number-counter__box__background'
 							)
@@ -562,14 +582,22 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									[getAttributeKey('_ps', false, 'nccba-')]:
-										paletteStatus,
-									[getAttributeKey('_pc', false, 'nccba-')]:
-										paletteColor,
-									[getAttributeKey('_po', false, 'nccba-')]:
-										paletteOpacity,
-									[getAttributeKey('_cc', false, 'nccba-')]:
-										color,
+									[getAttributeKey({
+										key: '_ps',
+										prefix: 'nccba-',
+									})]: paletteStatus,
+									[getAttributeKey({
+										key: '_pc',
+										prefix: 'nccba-',
+									})]: paletteColor,
+									[getAttributeKey({
+										key: '_po',
+										prefix: 'nccba-',
+									})]: paletteOpacity,
+									[getAttributeKey({
+										key: '_cc',
+										prefix: 'nccba-',
+									})]: color,
 								},
 								'.maxi-number-counter__box__circle'
 							)

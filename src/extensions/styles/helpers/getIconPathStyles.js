@@ -20,7 +20,7 @@ const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 		response[breakpoint] = {};
 
 		const iconStroke =
-			obj[getAttributeKey('i_str', isHover, prefix, breakpoint)];
+			obj[getAttributeKey({ key: 'i_str', isHover, prefix, breakpoint })];
 
 		if (!isNil(iconStroke)) {
 			response[breakpoint]['stroke-width'] = iconStroke;

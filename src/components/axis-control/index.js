@@ -342,12 +342,11 @@ const AxisControlContent = props => {
 				input.includes('.b') ||
 				input.includes('.r')
 			) {
-				const key = getAttributeKey(
-					getKey(input),
+				const key = getAttributeKey({
+					key: getKey(input),
 					isHover,
-					false,
-					breakpoint
-				);
+					breakpoint,
+				});
 				const value = getLastBreakpointAttribute({
 					target: getKey(input),
 					breakpoint,
@@ -364,7 +363,7 @@ const AxisControlContent = props => {
 		});
 
 		onChange({
-			[getAttributeKey(getKey('.u'), isHover, false, breakpoint)]: val,
+			[getAttributeKey({ key: getKey('.u'), isHover, breakpoint })]: val,
 			...response,
 		});
 	};
@@ -575,12 +574,11 @@ const AxisControl = props => {
 		};
 
 		const getValueByBreakpoint = (key, breakpoint) => {
-			const attrLabel = getAttributeKey(
-				getKey(key),
+			const attrLabel = getAttributeKey({
+				key: getKey(key),
 				isHover,
-				false,
-				breakpoint
-			);
+				breakpoint,
+			});
 
 			const value =
 				defaultAttributes && attrLabel in defaultAttributes
@@ -629,12 +627,11 @@ const AxisControl = props => {
 
 		attributesKeys.forEach(key => {
 			response[
-				getAttributeKey(
-					getKey(key),
+				getAttributeKey({
+					key: getKey(key),
 					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
+					breakpoint: customBreakpoint ?? breakpoint,
+				})
 			] = getDefaultValue(key);
 		});
 
@@ -643,12 +640,11 @@ const AxisControl = props => {
 
 	const onChangeSync = (value, customBreakpoint) => {
 		const response = {
-			[getAttributeKey(
-				getKey('.sy'),
+			[getAttributeKey({
+				key: getKey('.sy'),
 				isHover,
-				false,
-				customBreakpoint ?? breakpoint
-			)]: value,
+				breakpoint: customBreakpoint ?? breakpoint,
+			})]: value,
 		};
 
 		onChange(response);
@@ -743,12 +739,11 @@ const AxisControl = props => {
 				inputsArray.forEach(key => {
 					if (isAllChange(key)) {
 						response[
-							getAttributeKey(
-								getKey(key),
+							getAttributeKey({
+								key: getKey(key),
 								isHover,
-								false,
-								customBreakpoint ?? breakpoint
-							)
+								breakpoint: customBreakpoint ?? breakpoint,
+							})
 						] = newValue;
 					}
 				});
@@ -760,12 +755,11 @@ const AxisControl = props => {
 					inputsArray.forEach(key => {
 						if (isHorizontalChange(key)) {
 							response[
-								getAttributeKey(
-									getKey(key),
+								getAttributeKey({
+									key: getKey(key),
 									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
+									breakpoint: customBreakpoint ?? breakpoint,
+								})
 							] = newValue;
 						}
 					});
@@ -773,12 +767,11 @@ const AxisControl = props => {
 					inputsArray.forEach(key => {
 						if (isVerticalChange(key)) {
 							response[
-								getAttributeKey(
-									getKey(key),
+								getAttributeKey({
+									key: getKey(key),
 									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
+									breakpoint: customBreakpoint ?? breakpoint,
+								})
 							] = newValue;
 						}
 					});
@@ -791,26 +784,24 @@ const AxisControl = props => {
 				response = {
 					...(prefix
 						? {
-								[getAttributeKey(
-									getKey(
+								[getAttributeKey({
+									key: getKey(
 										`${singleTarget}${prefix}${
 											isUnit ? '.u' : ''
 										}`
 									),
 									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)]: newValue,
+									breakpoint: customBreakpoint ?? breakpoint,
+								})]: newValue,
 						  }
 						: {
-								[getAttributeKey(
-									getKey(
+								[getAttributeKey({
+									key: getKey(
 										`${singleTarget}${isUnit ? '.u' : ''}`
 									),
 									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)]: newValue,
+									breakpoint: customBreakpoint ?? breakpoint,
+								})]: newValue,
 						  }),
 				};
 

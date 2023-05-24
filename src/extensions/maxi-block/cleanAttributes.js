@@ -82,12 +82,11 @@ const flatSameAsPrev = (
 		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		if (isXXL) {
-			const generalKey = getAttributeKey(
-				simpleLabel,
+			const generalKey = getAttributeKey({
+				key: simpleLabel,
 				isHover,
-				'',
-				'general'
-			);
+				breakpoint: 'general',
+			});
 			const generalAttr = attributes[generalKey];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
@@ -126,12 +125,11 @@ const flatSameAsPrev = (
 
 			higherBreakpoints.reverse().forEach(breakpoint => {
 				if (!breakpointLock) {
-					const label = getAttributeKey(
-						simpleLabel,
+					const label = getAttributeKey({
+						key: simpleLabel,
 						isHover,
-						'',
-						breakpoint
-					);
+						breakpoint,
+					});
 					const attribute = attributes?.[label];
 					const defaultAttribute =
 						defaultAttributes?.[label] ??
@@ -143,12 +141,11 @@ const flatSameAsPrev = (
 						else if (breakpoint === 'general') {
 							const generalAttr =
 								attributes[
-									getAttributeKey(
-										simpleLabel,
+									getAttributeKey({
+										key: simpleLabel,
 										isHover,
-										'',
-										'general'
-									)
+										breakpoint: 'general',
+									})
 								];
 
 							if (
@@ -269,21 +266,19 @@ const flatWithGeneral = (
 				const isHover = getIsHover(attr);
 				const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
 
-				const generalKey = getAttributeKey(
-					simpleLabel,
+				const generalKey = getAttributeKey({
+					key: simpleLabel,
 					isHover,
-					'',
-					'general'
-				);
+					breakpoint: 'general',
+				});
 				const generalAttr = attributes[generalKey];
 
 				if (
-					getAttributeKey(
-						simpleLabel,
+					getAttributeKey({
+						key: simpleLabel,
 						isHover,
-						'',
-						currentBreakpoint
-					) === key &&
+						breakpoint: currentBreakpoint,
+					}) === key &&
 					value.toString().startsWith(generalAttr)
 				) {
 					result[key] = undefined;
@@ -317,7 +312,11 @@ const flatWithGeneral = (
 
 		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
+		const keyOnXXL = getAttributeKey({
+			key: simpleLabel,
+			isHover,
+			breakpoint: 'xxl',
+		});
 		const attrOnXXL = attributes[keyOnXXL];
 
 		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL))
@@ -328,7 +327,11 @@ const flatWithGeneral = (
 		breakpoints.forEach(breakpoint => {
 			if (breakpointLock || breakpoint === 'general') return;
 
-			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
+			const label = getAttributeKey({
+				key: simpleLabel,
+				isHover,
+				breakpoint,
+			});
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
 			if (isNil(attribute)) return;
@@ -370,7 +373,11 @@ const flatNewAttributes = (
 
 		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const generalKey = getAttributeKey(simpleLabel, isHover, '', 'general');
+		const generalKey = getAttributeKey({
+			key: simpleLabel,
+			isHover,
+			breakpoint: 'general',
+		});
 		const existsGeneralAttr = generalKey in newAttributes;
 
 		if (!existsGeneralAttr) return;
@@ -526,7 +533,11 @@ const flatLowerAttr = (
 		lowerBreakpoints.forEach(breakpoint => {
 			if (breakpointLock) return;
 
-			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
+			const label = getAttributeKey({
+				key: simpleLabel,
+				isHover,
+				breakpoint,
+			});
 			const attribute = attributes?.[label];
 
 			if (isNil(attribute)) return;
@@ -535,12 +546,11 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			const generalKey = getAttributeKey(
-				simpleLabel,
+			const generalKey = getAttributeKey({
+				key: simpleLabel,
 				isHover,
-				'',
-				'general'
-			);
+				breakpoint: 'general',
+			});
 
 			if (isEqual(value, attribute)) {
 				// Covers a concrete situation where we've got XXL and XL
@@ -621,15 +631,18 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 
 		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const baseLabel = getAttributeKey(
-			simpleLabel,
+		const baseLabel = getAttributeKey({
+			key: simpleLabel,
 			isHover,
-			'',
-			baseBreakpoint
-		);
+			breakpoint: baseBreakpoint,
+		});
 		const baseAttr = { ...attributes, ...newAttributes }?.[baseLabel];
 		const generalAttr = { ...attributes, ...newAttributes }?.[
-			getAttributeKey(simpleLabel, isHover, '', 'general')
+			getAttributeKey({
+				key: simpleLabel,
+				isHover,
+				breakpoint: 'general',
+			})
 		];
 
 		if (!isEqual(baseAttr, generalAttr) && !isEqual(generalAttr, value))

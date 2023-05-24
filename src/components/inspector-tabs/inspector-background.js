@@ -119,11 +119,10 @@ const background = ({
 									className='maxi-background-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributeKey(
-												'b.sh',
-												false,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: 'b.sh',
+												prefix,
+											})]: val,
 										})
 									}
 								/>
@@ -149,7 +148,7 @@ const background = ({
 							</>
 						),
 						extraIndicators: [
-							getAttributeKey('b.sh', false, prefix),
+							getAttributeKey({ key: 'b.sh', prefix }),
 						],
 					},
 					enableActiveState && {
@@ -165,11 +164,10 @@ const background = ({
 									className='maxi-background-status-active'
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributeKey(
-												'b.sa',
-												false,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: 'b.sa',
+												prefix,
+											})]: val,
 										})
 									}
 								/>
@@ -195,7 +193,7 @@ const background = ({
 							</>
 						),
 						extraIndicators: [
-							getAttributeKey('b.sa', false, prefix),
+							getAttributeKey({ key: 'b.sa', prefix }),
 						],
 					},
 				]}

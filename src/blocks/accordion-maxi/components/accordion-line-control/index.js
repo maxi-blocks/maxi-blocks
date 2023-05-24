@@ -33,7 +33,7 @@ const AccordionLineControl = props => {
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
-					getAttributeKey('_lh', false, prefix, breakpoint)
+					getAttributeKey({ key: '_lh', prefix, breakpoint })
 				)}
 				options={[
 					{
@@ -51,20 +51,19 @@ const AccordionLineControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('_lh', false, prefix, breakpoint)]:
+						[getAttributeKey({ key: '_lh', prefix, breakpoint })]:
 							val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[getAttributeKey('_lh', false, prefix, breakpoint)]:
+						[getAttributeKey({ key: '_lh', prefix, breakpoint })]:
 							getDefaultAttribute(
-								getAttributeKey(
-									'_lh',
-									false,
+								getAttributeKey({
+									key: '_lh',
 									prefix,
-									breakpoint
-								)
+									breakpoint,
+								})
 							),
 						isReset: true,
 					});
@@ -90,11 +89,10 @@ const AccordionLineControl = props => {
 									})}
 									onChange={val =>
 										onChange({
-											[getAttributeKey(
-												'_li.sh',
-												false,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: '_li.sh',
+												prefix,
+											})]: val,
 										})
 									}
 								/>
@@ -126,11 +124,10 @@ const AccordionLineControl = props => {
 									})}
 									onChange={val =>
 										onChange({
-											[getAttributeKey(
-												'_li.sa',
-												false,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: '_li.sa',
+												prefix,
+											})]: val,
 										})
 									}
 								/>

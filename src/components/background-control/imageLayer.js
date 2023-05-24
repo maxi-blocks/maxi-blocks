@@ -131,14 +131,22 @@ const ImageLayerSettings = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('bi_si', isHover, prefix, breakpoint)]:
-							val,
+						[getAttributeKey({
+							key: 'bi_si',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: val,
 					})
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('bi_si', isHover, prefix, breakpoint)]:
-							getDefaultAttr('bi_si'),
+						[getAttributeKey({
+							key: 'bi_si',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: getDefaultAttr('bi_si'),
 					})
 				}
 			/>
@@ -164,18 +172,18 @@ const ImageLayerSettings = props => {
 					})}
 					onChange={cropOptions =>
 						onChange({
-							[getAttributeKey(
-								'bi_co',
+							[getAttributeKey({
+								key: 'bi_co',
 								isHover,
 								prefix,
-								breakpoint
-							)]: cropOptions,
-							[getAttributeKey(
-								'bi_mu',
+								breakpoint,
+							})]: cropOptions,
+							[getAttributeKey({
+								key: 'bi_mu',
 								isHover,
 								prefix,
-								breakpoint
-							)]: cropOptions.image.source_url,
+								breakpoint,
+							})]: cropOptions.image.source_url,
 						})
 					}
 				/>
@@ -220,22 +228,22 @@ const ImageLayerSettings = props => {
 					]}
 					onChange={val =>
 						onChange({
-							[getAttributeKey(
-								'bi_re',
+							[getAttributeKey({
+								key: 'bi_re',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						})
 					}
 					onReset={() =>
 						onChange({
-							[getAttributeKey(
-								'bi_re',
+							[getAttributeKey({
+								key: 'bi_re',
 								isHover,
 								prefix,
-								breakpoint
-							)]: getDefaultAttr('bi_re'),
+								breakpoint,
+							})]: getDefaultAttr('bi_re'),
 						})
 					}
 				/>
@@ -295,22 +303,22 @@ const ImageLayerSettings = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(
-							'bi_pos',
+						[getAttributeKey({
+							key: 'bi_pos',
 							isHover,
 							prefix,
-							breakpoint
-						)]: val,
+							breakpoint,
+						})]: val,
 					})
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey(
-							'bi_pos',
+						[getAttributeKey({
+							key: 'bi_pos',
 							isHover,
 							prefix,
-							breakpoint
-						)]: getDefaultAttr('bi_pos'),
+							breakpoint,
+						})]: getDefaultAttr('bi_pos'),
 					})
 				}
 			/>
@@ -334,12 +342,12 @@ const ImageLayerSettings = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_w.u',
+								[getAttributeKey({
+									key: 'bi_pos_w.u',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -351,28 +359,28 @@ const ImageLayerSettings = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_w',
+								[getAttributeKey({
+									key: 'bi_pos_w',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_w',
+								[getAttributeKey({
+									key: 'bi_pos_w',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttr('bi_pos_w'),
-								[getAttributeKey(
-									'bi_pos_w.u',
+									breakpoint,
+								})]: getDefaultAttr('bi_pos_w'),
+								[getAttributeKey({
+									key: 'bi_pos_w.u',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttr('bi_pos_w.u'),
+									breakpoint,
+								})]: getDefaultAttr('bi_pos_w.u'),
 								isReset: true,
 							})
 						}
@@ -388,12 +396,12 @@ const ImageLayerSettings = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_h.u',
+								[getAttributeKey({
+									key: 'bi_pos_h.u',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -404,28 +412,28 @@ const ImageLayerSettings = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_h',
+								[getAttributeKey({
+									key: 'bi_pos_h',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'bi_pos_h',
+								[getAttributeKey({
+									key: 'bi_pos_h',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttr('bi_pos_h'),
-								[getAttributeKey(
-									'bi_pos_h.u',
+									breakpoint,
+								})]: getDefaultAttr('bi_pos_h'),
+								[getAttributeKey({
+									key: 'bi_pos_h.u',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttr('bi_pos_h.u'),
+									breakpoint,
+								})]: getDefaultAttr('bi_pos_h.u'),
 								isReset: true,
 							})
 						}
@@ -461,22 +469,22 @@ const ImageLayerSettings = props => {
 						]}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'bi_at',
+								[getAttributeKey({
+									key: 'bi_at',
 									isHover,
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'bi_at',
+								[getAttributeKey({
+									key: 'bi_at',
 									isHover,
 									prefix,
-									breakpoint
-								)]: getDefaultAttr('bi_at'),
+									breakpoint,
+								})]: getDefaultAttr('bi_at'),
 							})
 						}
 					/>
@@ -517,22 +525,22 @@ const ImageLayerSettings = props => {
 								]}
 								onChange={val =>
 									onChange({
-										[getAttributeKey(
-											'bi_ori',
+										[getAttributeKey({
+											key: 'bi_ori',
 											isHover,
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								onReset={() =>
 									onChange({
-										[getAttributeKey(
-											'bi_ori',
+										[getAttributeKey({
+											key: 'bi_ori',
 											isHover,
 											prefix,
-											breakpoint
-										)]: getDefaultAttr('bi_ori'),
+											breakpoint,
+										})]: getDefaultAttr('bi_ori'),
 									})
 								}
 							/>
@@ -563,22 +571,22 @@ const ImageLayerSettings = props => {
 								]}
 								onChange={val =>
 									onChange({
-										[getAttributeKey(
-											'bi_clp',
+										[getAttributeKey({
+											key: 'bi_clp',
 											isHover,
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								onReset={() =>
 									onChange({
-										[getAttributeKey(
-											'bi_clp',
+										[getAttributeKey({
+											key: 'bi_clp',
 											isHover,
 											prefix,
-											breakpoint
-										)]: getDefaultAttr('bi_clp'),
+											breakpoint,
+										})]: getDefaultAttr('bi_clp'),
 									})
 								}
 							/>
@@ -641,7 +649,7 @@ const ImageLayer = props => {
 				: undefined;
 
 		return getDefaultAttribute(
-			getAttributeKey(target, isHover, prefix, breakpoint)
+			getAttributeKey({ key: target, isHover, prefix, breakpoint })
 		);
 	};
 
@@ -658,22 +666,30 @@ const ImageLayer = props => {
 					mediaID={mediaID}
 					onSelectImage={imageData =>
 						onChange({
-							[getAttributeKey('bi_mi', isHover, prefix)]:
-								imageData.id,
-							[getAttributeKey('bi_mu', isHover, prefix)]:
-								imageData.url,
-							[getAttributeKey('bi_w', isHover, prefix)]:
+							[getAttributeKey({
+								key: 'bi_mi',
+								isHover,
+								prefix,
+							})]: imageData.id,
+							[getAttributeKey({
+								key: 'bi_mu',
+								isHover,
+								prefix,
+							})]: imageData.url,
+							[getAttributeKey({ key: 'bi_w', isHover, prefix })]:
 								imageData.width,
-							[getAttributeKey('bi_h', isHover, prefix)]:
+							[getAttributeKey({ key: 'bi_h', isHover, prefix })]:
 								imageData.height,
 						})
 					}
 					onRemoveImage={() =>
 						onChange({
-							[getAttributeKey('bi_mi', false, prefix)]: '',
-							[getAttributeKey('bi_mu', false, prefix)]: '',
-							[getAttributeKey('bi_w', isHover, prefix)]: '',
-							[getAttributeKey('bi_h', isHover, prefix)]: '',
+							[getAttributeKey({ key: 'bi_mi', prefix })]: '',
+							[getAttributeKey({ key: 'bi_mu', prefix })]: '',
+							[getAttributeKey({ key: 'bi_w', isHover, prefix })]:
+								'',
+							[getAttributeKey({ key: 'bi_h', isHover, prefix })]:
+								'',
 						})
 					}
 				/>

@@ -16,35 +16,36 @@ export const boxShadowNone = prefix => {
 		})?.default;
 
 	response = {
-		[getAttributeKey('bs_po', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_po', false, prefix)
+		[getAttributeKey({ key: 'bs_po', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_po', prefix })
 		),
-		[getAttributeKey('bs_ho', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_ho', false, prefix)
+		[getAttributeKey({ key: 'bs_ho', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_ho', prefix })
 		),
-		[getAttributeKey('bs_ho.u', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_ho.u', false, prefix)
+		[getAttributeKey({ key: 'bs_ho.u', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_ho.u', prefix })
 		),
-		[getAttributeKey('bs_v', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_v', false, prefix)
+		[getAttributeKey({ key: 'bs_v', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_v', prefix })
 		),
-		[getAttributeKey('bs_v.u', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_v.u', false, prefix)
+		[getAttributeKey({ key: 'bs_v.u', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_v.u', prefix })
 		),
-		[getAttributeKey('bs_blu', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_blu', false, prefix)
+		[getAttributeKey({ key: 'bs_blu', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_blu', prefix })
 		),
-		[getAttributeKey('bs_blu.u', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_blu.u', false, prefix)
+		[getAttributeKey({ key: 'bs_blu.u', prefix })]:
+			getDefaultAttributeValue(
+				getAttributeKey({ key: 'bs_blu.u', prefix })
+			),
+		[getAttributeKey({ key: 'bs_sp', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_sp', prefix })
 		),
-		[getAttributeKey('bs_sp', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_sp', false, prefix)
+		[getAttributeKey({ key: 'bs_sp.u', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_sp.u', prefix })
 		),
-		[getAttributeKey('bs_sp.u', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_sp.u', false, prefix)
-		),
-		[getAttributeKey('bs_in', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_in', false, prefix)
+		[getAttributeKey({ key: 'bs_in', prefix })]: getDefaultAttributeValue(
+			getAttributeKey({ key: 'bs_in', prefix })
 		),
 	};
 
@@ -55,10 +56,10 @@ const boxShadowUnits = prefix => {
 	let response = {};
 
 	response = {
-		[getAttributeKey('bs_ho.u', false, prefix)]: 'px',
-		[getAttributeKey('bs_v.u', false, prefix)]: 'px',
-		[getAttributeKey('bs_blu.u', false, prefix)]: 'px',
-		[getAttributeKey('bs_sp.u', false, prefix)]: 'px',
+		[getAttributeKey({ key: 'bs_ho.u', prefix })]: 'px',
+		[getAttributeKey({ key: 'bs_v.u', prefix })]: 'px',
+		[getAttributeKey({ key: 'bs_blu.u', prefix })]: 'px',
+		[getAttributeKey({ key: 'bs_sp.u', prefix })]: 'px',
 	};
 
 	return response;
@@ -68,12 +69,12 @@ export const boxShadowTotal = prefix => {
 	let response = {};
 
 	response = {
-		[getAttributeKey('bs_po', false, prefix)]: 0.23,
-		[getAttributeKey('bs_ho', false, prefix)]: 0,
-		[getAttributeKey('bs_v', false, prefix)]: 30,
-		[getAttributeKey('bs_blu', false, prefix)]: 50,
-		[getAttributeKey('bs_sp', false, prefix)]: 0,
-		[getAttributeKey('bs_in', false, prefix)]: false,
+		[getAttributeKey({ key: 'bs_po', prefix })]: 0.23,
+		[getAttributeKey({ key: 'bs_ho', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_v', prefix })]: 30,
+		[getAttributeKey({ key: 'bs_blu', prefix })]: 50,
+		[getAttributeKey({ key: 'bs_sp', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_in', prefix })]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -84,12 +85,12 @@ export const boxShadowBottom = prefix => {
 	let response = {};
 
 	response = {
-		[getAttributeKey('bs_po', false, prefix)]: 0.5,
-		[getAttributeKey('bs_ho', false, prefix)]: 0,
-		[getAttributeKey('bs_v', false, prefix)]: 30,
-		[getAttributeKey('bs_blu', false, prefix)]: 50,
-		[getAttributeKey('bs_sp', false, prefix)]: 0,
-		[getAttributeKey('bs_in', false, prefix)]: false,
+		[getAttributeKey({ key: 'bs_po', prefix })]: 0.5,
+		[getAttributeKey({ key: 'bs_ho', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_v', prefix })]: 30,
+		[getAttributeKey({ key: 'bs_blu', prefix })]: 50,
+		[getAttributeKey({ key: 'bs_sp', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_in', prefix })]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -100,12 +101,12 @@ export const boxShadowSolid = prefix => {
 	let response = {};
 
 	response = {
-		[getAttributeKey('bs_po', false, prefix)]: 0.5,
-		[getAttributeKey('bs_ho', false, prefix)]: 5,
-		[getAttributeKey('bs_v', false, prefix)]: 6,
-		[getAttributeKey('bs_blu', false, prefix)]: 0,
-		[getAttributeKey('bs_sp', false, prefix)]: 0,
-		[getAttributeKey('bs_in', false, prefix)]: false,
+		[getAttributeKey({ key: 'bs_po', prefix })]: 0.5,
+		[getAttributeKey({ key: 'bs_ho', prefix })]: 5,
+		[getAttributeKey({ key: 'bs_v', prefix })]: 6,
+		[getAttributeKey({ key: 'bs_blu', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_sp', prefix })]: 0,
+		[getAttributeKey({ key: 'bs_in', prefix })]: false,
 		...boxShadowUnits(prefix),
 	};
 

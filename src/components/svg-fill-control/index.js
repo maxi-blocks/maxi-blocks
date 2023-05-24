@@ -73,19 +73,19 @@ const ColorContent = ({
 				color,
 			}) => {
 				SVGData[id][
-					getAttributeKey('bsv_cc', isHover, false, breakpoint)
+					getAttributeKey({ key: 'bsv_cc', isHover, breakpoint })
 				] = color;
 
 				onChange({
 					bsv_se: injectImgSVG(SVGOptions.bsv_se, SVGData).outerHTML,
 					bsv_sd: SVGData,
-					[getAttributeKey('bsv_ps', isHover, false, breakpoint)]:
+					[getAttributeKey({ key: 'bsv_ps', isHover, breakpoint })]:
 						paletteStatus,
-					[getAttributeKey('bsv_pc', isHover, false, breakpoint)]:
+					[getAttributeKey({ key: 'bsv_pc', isHover, breakpoint })]:
 						paletteColor,
-					[getAttributeKey('bsv_po', isHover, false, breakpoint)]:
+					[getAttributeKey({ key: 'bsv_po', isHover, breakpoint })]:
 						paletteOpacity,
-					[getAttributeKey('bsv_cc', isHover, false, breakpoint)]:
+					[getAttributeKey({ key: 'bsv_cc', isHover, breakpoint })]:
 						color,
 				});
 			}}
@@ -113,7 +113,8 @@ const SVGFillControl = props => {
 	});
 
 	const SVGData = cloneDeep(
-		SVGOptions[getAttributeKey('bsv_sd', isHover)] || SVGOptions.bsv_sd
+		SVGOptions[getAttributeKey({ key: 'bsv_sd', isHover })] ||
+			SVGOptions.bsv_sd
 	);
 
 	const bgImage = Object.values(SVGData)[0]?.imageURL;
@@ -158,16 +159,17 @@ const SVGFillControl = props => {
 						);
 
 						onChange({
-							[getAttributeKey('_se', false, 'bsv')]:
+							[getAttributeKey({ key: '_se', prefix: 'bsv' })]:
 								resEl.outerHTML,
-							[getAttributeKey('_sd', false, 'bsv')]: tempSVGData,
-							[getAttributeKey('_pc', false, 'bsv')]:
+							[getAttributeKey({ key: '_sd', prefix: 'bsv' })]:
+								tempSVGData,
+							[getAttributeKey({ key: '_pc', prefix: 'bsv' })]:
 								getAttributesValue({
 									target: '_pc',
 									prefix: 'bsv',
 									props: props.SVGOptions,
 								}),
-							[getAttributeKey('_ps', false, 'bsv')]:
+							[getAttributeKey({ key: '_ps', prefix: 'bsv' })]:
 								getAttributesValue({
 									target: '_ps',
 									prefix: 'bsv',
@@ -205,22 +207,30 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										[getAttributeKey('_se', false, 'bsv')]:
-											resEl.outerHTML,
-										[getAttributeKey('_sd', false, 'bsv')]:
-											SVGData,
-										[getAttributeKey('_pc', false, 'bsv')]:
-											getAttributesValue({
-												target: '_pc',
-												prefix: 'bsv',
-												props: props.SVGOptions,
-											}),
-										[getAttributeKey('_ps', false, 'bsv')]:
-											getAttributesValue({
-												target: '_ps',
-												prefix: 'bsv',
-												props: props.SVGOptions,
-											}),
+										[getAttributeKey({
+											key: '_se',
+											prefix: 'bsv',
+										})]: resEl.outerHTML,
+										[getAttributeKey({
+											key: '_sd',
+											prefix: 'bsv',
+										})]: SVGData,
+										[getAttributeKey({
+											key: '_pc',
+											prefix: 'bsv',
+										})]: getAttributesValue({
+											target: '_pc',
+											prefix: 'bsv',
+											props: props.SVGOptions,
+										}),
+										[getAttributeKey({
+											key: '_ps',
+											prefix: 'bsv',
+										})]: getAttributesValue({
+											target: '_ps',
+											prefix: 'bsv',
+											props: props.SVGOptions,
+										}),
 									});
 								}}
 								onRemoveImage={() => {
@@ -234,22 +244,30 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										[getAttributeKey('_se', false, 'bsv')]:
-											resEl.outerHTML,
-										[getAttributeKey('_sd', false, 'bsv')]:
-											SVGData,
-										[getAttributeKey('_pc', false, 'bsv')]:
-											getAttributesValue({
-												target: '_pc',
-												prefix: 'bsv',
-												props: props.SVGOptions,
-											}),
-										[getAttributeKey('_ps', false, 'bsv')]:
-											getAttributesValue({
-												target: '_ps',
-												prefix: 'bsv',
-												props: props.SVGOptions,
-											}),
+										[getAttributeKey({
+											key: '_se',
+											prefix: 'bsv',
+										})]: resEl.outerHTML,
+										[getAttributeKey({
+											key: '_sd',
+											prefix: 'bsv',
+										})]: SVGData,
+										[getAttributeKey({
+											key: '_pc',
+											prefix: 'bsv',
+										})]: getAttributesValue({
+											target: '_pc',
+											prefix: 'bsv',
+											props: props.SVGOptions,
+										}),
+										[getAttributeKey({
+											key: '_ps',
+											prefix: 'bsv',
+										})]: getAttributesValue({
+											target: '_ps',
+											prefix: 'bsv',
+											props: props.SVGOptions,
+										}),
 									});
 								}}
 							/>

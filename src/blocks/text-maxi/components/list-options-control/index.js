@@ -591,10 +591,10 @@ const ListOptionsControl = props => {
 							: color;
 
 						maxiSetAttributes({
-							[getAttributeKey('l_ps')]: paletteStatus,
-							[getAttributeKey('l_pc')]: paletteColor,
-							[getAttributeKey('l_po')]: paletteOpacity,
-							[getAttributeKey('l_cc')]: color,
+							[getAttributeKey({ key: 'l_ps' })]: paletteStatus,
+							[getAttributeKey({ key: 'l_pc' })]: paletteColor,
+							[getAttributeKey({ key: 'l_po' })]: paletteOpacity,
+							[getAttributeKey({ key: 'l_cc' })]: color,
 							...(listStyleCustom?.includes('<svg ') && {
 								_lsc: setSVGColor({
 									svg: listStyleCustom,

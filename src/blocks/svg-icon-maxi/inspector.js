@@ -223,7 +223,9 @@ const Inspector = props => {
 												's-l_cc',
 												`s_w-${deviceType}`,
 											].map(attributeKey =>
-												getAttributeKey(attributeKey)
+												getAttributeKey({
+													key: attributeKey,
+												})
 											),
 										},
 									...inspectorTabs.background({
@@ -279,7 +281,9 @@ const Inspector = props => {
 											's-l_cc',
 											`s_str-${deviceType}`,
 										].map(attributeKey =>
-											getAttributeKey(attributeKey)
+											getAttributeKey({
+												key: attributeKey,
+											})
 										),
 									},
 									...inspectorTabs.marginPadding({

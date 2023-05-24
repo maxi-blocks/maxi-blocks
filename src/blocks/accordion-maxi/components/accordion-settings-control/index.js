@@ -66,7 +66,7 @@ const AccordionSettings = props => {
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('_ico')]: val,
+								[getAttributeKey({ key: '_ico' })]: val,
 							})
 						}
 					/>
@@ -81,7 +81,7 @@ const AccordionSettings = props => {
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('_apc')]: val,
+								[getAttributeKey({ key: '_apc' })]: val,
 							})
 						}
 					/>
@@ -105,7 +105,7 @@ const AccordionSettings = props => {
 					allowedUnits={['px', 'em', 'vh']}
 					onChangeValue={val => {
 						onChange({
-							[getAttributeKey('_rg', false, false, breakpoint)]:
+							[getAttributeKey({ key: '_rg', breakpoint })]:
 								val !== undefined ? val : '',
 						});
 					}}
@@ -116,14 +116,12 @@ const AccordionSettings = props => {
 					}}
 					onReset={() =>
 						onChange({
-							[getAttributeKey('_rg', false, false, breakpoint)]:
+							[getAttributeKey({ key: '_rg', breakpoint })]:
 								getDefaultAttribute(
-									getAttributeKey(
-										'_rg',
-										false,
-										false,
-										breakpoint
-									)
+									getAttributeKey({
+										key: '_rg',
+										breakpoint,
+									})
 								),
 							isReset: true,
 						})
@@ -141,13 +139,14 @@ const AccordionSettings = props => {
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('_ad')]: val !== undefined ? val : '',
+						[getAttributeKey({ key: '_ad' })]:
+							val !== undefined ? val : '',
 					});
 				}}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('_ad')]: getDefaultAttribute(
-							getAttributeKey('_ad')
+						[getAttributeKey({ key: '_ad' })]: getDefaultAttribute(
+							getAttributeKey({ key: '_ad' })
 						),
 						isReset: true,
 					})

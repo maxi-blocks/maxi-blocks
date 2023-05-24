@@ -132,7 +132,7 @@ const CustomCssControl = props => {
 			}
 
 			onChange(
-				getAttributeKey('_ccs', null, null, breakpoint),
+				getAttributeKey({ key: '_ccs', breakpoint }),
 				newCustomCss
 			);
 		};

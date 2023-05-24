@@ -38,7 +38,9 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		if (
 			type === 'fill' ||
 			useIconColor ||
-			(isHover && !useIconColor && !attributes[getAttributeKey('t.sh')])
+			(isHover &&
+				!useIconColor &&
+				!attributes[getAttributeKey({ key: 't.sh' })])
 		) {
 			if (!paletteColor)
 				paletteColor = getAttributesValue({

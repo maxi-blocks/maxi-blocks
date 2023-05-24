@@ -51,12 +51,11 @@ const getBoxShadowStyles = ({
 			const defaultValue =
 				breakpoint === 'general'
 					? getDefaultAttribute(
-							getAttributeKey(
-								`bs${target}`,
-								false,
+							getAttributeKey({
+								key: `bs${target}`,
 								prefix,
-								breakpoint
-							)
+								breakpoint,
+							})
 					  )
 					: getLastBreakpointAttribute({
 							target: `bs${target}`,

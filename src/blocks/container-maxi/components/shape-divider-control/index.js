@@ -342,24 +342,21 @@ const ShapeDividerControl = props => {
 														paletteStatus,
 													}) =>
 														onChange({
-															[getAttributeKey(
-																'_cc',
-																false,
-																'sdt-',
-																breakpoint
-															)]: color,
-															[getAttributeKey(
-																'_pc',
-																false,
-																'sdt-',
-																breakpoint
-															)]: paletteColor,
-															[getAttributeKey(
-																'_ps',
-																false,
-																'sdt-',
-																breakpoint
-															)]: paletteStatus,
+															[getAttributeKey({
+																key: '_cc',
+																prefix: 'sdt-',
+																breakpoint,
+															})]: color,
+															[getAttributeKey({
+																key: '_pc',
+																prefix: 'sdt-',
+																breakpoint,
+															})]: paletteColor,
+															[getAttributeKey({
+																key: '_ps',
+																prefix: 'sdt-',
+																breakpoint,
+															})]: paletteStatus,
 														})
 													}
 													disableOpacity
@@ -552,24 +549,21 @@ const ShapeDividerControl = props => {
 														paletteStatus,
 													}) =>
 														onChange({
-															[getAttributeKey(
-																'_cc',
-																false,
-																'sdb-',
-																breakpoint
-															)]: color,
-															[getAttributeKey(
-																'_pc',
-																false,
-																'sdb-',
-																breakpoint
-															)]: paletteColor,
-															[getAttributeKey(
-																'_ps',
-																false,
-																'sdb-',
-																breakpoint
-															)]: paletteStatus,
+															[getAttributeKey({
+																key: '_cc',
+																prefix: 'sdb-',
+																breakpoint,
+															})]: color,
+															[getAttributeKey({
+																key: '_pc',
+																prefix: 'sdb-',
+																breakpoint,
+															})]: paletteColor,
+															[getAttributeKey({
+																key: '_ps',
+																prefix: 'sdb-',
+																breakpoint,
+															})]: paletteStatus,
 														})
 													}
 													disableOpacity

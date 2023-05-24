@@ -63,14 +63,26 @@ const PopupSettingsControl = props => {
 					color,
 				}) => {
 					onChange({
-						[getAttributeKey('_ps', false, 'lb-bc-', breakpoint)]:
-							paletteStatus,
-						[getAttributeKey('_pc', false, 'lb-bc-', breakpoint)]:
-							paletteColor,
-						[getAttributeKey('_po', false, 'lb-bc-', breakpoint)]:
-							paletteOpacity,
-						[getAttributeKey('_cc', false, 'lb-bc-', breakpoint)]:
-							color,
+						[getAttributeKey({
+							key: '_ps',
+							prefix: 'lb-bc-',
+							breakpoint,
+						})]: paletteStatus,
+						[getAttributeKey({
+							key: '_pc',
+							prefix: 'lb-bc-',
+							breakpoint,
+						})]: paletteColor,
+						[getAttributeKey({
+							key: '_po',
+							prefix: 'lb-bc-',
+							breakpoint,
+						})]: paletteOpacity,
+						[getAttributeKey({
+							key: '_cc',
+							prefix: 'lb-bc-',
+							breakpoint,
+						})]: color,
 					});
 				}}
 				disableImage

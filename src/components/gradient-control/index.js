@@ -71,12 +71,12 @@ const GradientControl = props => {
 					value={gradient}
 					onChange={gradient =>
 						onChange({
-							[getAttributeKey(
-								'_c',
+							[getAttributeKey({
+								key: '_c',
 								isHover,
 								prefix,
-								breakpoint
-							)]: gradient,
+								breakpoint,
+							})]: gradient,
 						})
 					}
 					gradients={[]}

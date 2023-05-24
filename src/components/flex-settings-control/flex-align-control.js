@@ -138,16 +138,16 @@ const FlexAlignControl = props => {
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('_jc', false, false, breakpoint)]:
+						[getAttributeKey({ key: '_jc', breakpoint })]:
 							getDefaultAttribute(
-								getAttributeKey('_jc', false, false, breakpoint)
+								getAttributeKey({ key: '_jc', breakpoint })
 							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('_jc', false, false, breakpoint)]: val,
+						[getAttributeKey({ key: '_jc', breakpoint })]: val,
 					})
 				}
 			/>
@@ -175,16 +175,16 @@ const FlexAlignControl = props => {
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('_ai', false, false, breakpoint)]:
+						[getAttributeKey({ key: '_ai', breakpoint })]:
 							getDefaultAttribute(
-								getAttributeKey('_ai', false, false, breakpoint)
+								getAttributeKey({ key: '_ai', breakpoint })
 							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('_ai', false, false, breakpoint)]: val,
+						[getAttributeKey({ key: '_ai', breakpoint })]: val,
 					})
 				}
 			/>

@@ -23,7 +23,8 @@ export const validateOriginValue = val => {
 
 export const getParallaxLayers = (uniqueID, bgLayers) => {
 	const response = bgLayers?.filter(
-		layer => layer.type === 'image' && layer[getAttributeKey('bi_pa.s')]
+		layer =>
+			layer.type === 'image' && layer[getAttributeKey({ key: 'bi_pa.s' })]
 	);
 
 	if (!response || isEmpty(response)) return null;

@@ -79,22 +79,13 @@ const Size = ({
 		}
 
 		return getDefaultAttribute(
-			getAttributeKey(target, isHover, prefix, breakpoint)
+			getAttributeKey({ key: target, isHover, prefix, breakpoint })
 		);
 	};
 
 	const onReset = target => {
 		onChange({
-			[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
-				? getLastBreakpointAttribute({
-						target,
-						prefix,
-						breakpoint,
-						attributes: options,
-						isHover: false,
-				  })
-				: getDefaultAttr(target),
-			[getAttributeKey(`${target}.u`, isHover, prefix, breakpoint)]:
+			[getAttributeKey({ key: target, isHover, prefix, breakpoint })]:
 				isHover
 					? getLastBreakpointAttribute({
 							target,
@@ -103,7 +94,21 @@ const Size = ({
 							attributes: options,
 							isHover: false,
 					  })
-					: getDefaultAttr(`${target}.u`),
+					: getDefaultAttr(target),
+			[getAttributeKey({
+				key: `${target}.u`,
+				isHover,
+				prefix,
+				breakpoint,
+			})]: isHover
+				? getLastBreakpointAttribute({
+						target,
+						prefix,
+						breakpoint,
+						attributes: options,
+						isHover: false,
+				  })
+				: getDefaultAttr(`${target}.u`),
 			isReset: true,
 		});
 	};
@@ -130,14 +135,22 @@ const Size = ({
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('_w', isHover, prefix, breakpoint)]:
-							val,
+						[getAttributeKey({
+							key: '_w',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[getAttributeKey('_w.u', isHover, prefix, breakpoint)]:
-							val,
+						[getAttributeKey({
+							key: '_w.u',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: val,
 					})
 				}
 				onReset={() => onReset('_w')}
@@ -163,14 +176,22 @@ const Size = ({
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('_h', isHover, prefix, breakpoint)]:
-							val,
+						[getAttributeKey({
+							key: '_h',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[getAttributeKey('_h.u', isHover, prefix, breakpoint)]:
-							val,
+						[getAttributeKey({
+							key: '_h.u',
+							isHover,
+							prefix,
+							breakpoint,
+						})]: val,
 					})
 				}
 				onReset={() => onReset('_h')}

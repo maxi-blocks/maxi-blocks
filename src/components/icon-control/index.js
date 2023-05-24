@@ -190,9 +190,9 @@ const IconControlResponsiveSettings = withRTC(props => {
 								});
 
 								onChange({
-									[getAttributeKey('i_on', false, prefix)]:
+									[getAttributeKey({ key: 'i_on', prefix })]:
 										val,
-									[getAttributeKey('i_c', false, prefix)]:
+									[getAttributeKey({ key: 'i_c', prefix })]:
 										icon,
 								});
 							}}
@@ -242,28 +242,25 @@ const IconControlResponsiveSettings = withRTC(props => {
 						value={iconSpacing}
 						onChangeValue={val => {
 							onChange({
-								[getAttributeKey(
-									'i_spa',
-									false,
+								[getAttributeKey({
+									key: 'i_spa',
 									prefix,
-									breakpoint
-								)]: val !== undefined && val !== '' ? val : '',
+									breakpoint,
+								})]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'i_spa',
-									false,
+								[getAttributeKey({
+									key: 'i_spa',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'i_spa',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: 'i_spa',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
 								isReset: true,
 							})
@@ -276,7 +273,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							selected={iconPosition}
 							onChange={val => {
 								onChange({
-									[getAttributeKey('i_pos', false, prefix)]:
+									[getAttributeKey({ key: 'i_pos', prefix })]:
 										val,
 								});
 							}}
@@ -300,8 +297,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[getAttributeKey('i_i', false, prefix)]: val,
-							[getAttributeKey('i_c', false, prefix)]: icon,
+							[getAttributeKey({ key: 'i_i', prefix })]: val,
+							[getAttributeKey({ key: 'i_c', prefix })]: icon,
 						});
 					}}
 				/>
@@ -371,27 +368,27 @@ const IconControlResponsiveSettings = withRTC(props => {
 								});
 
 								onChange({
-									[getAttributeKey(
-										'_cc',
+									[getAttributeKey({
+										key: '_cc',
 										isHover,
-										`${prefix}i-str-`
-									)]: color,
-									[getAttributeKey(
-										'_pc',
+										prefix: `${prefix}i-str-`,
+									})]: color,
+									[getAttributeKey({
+										key: '_pc',
 										isHover,
-										`${prefix}i-str-`
-									)]: paletteColor,
-									[getAttributeKey(
-										'_ps',
+										prefix: `${prefix}i-str-`,
+									})]: paletteColor,
+									[getAttributeKey({
+										key: '_ps',
 										isHover,
-										`${prefix}i-str-`
-									)]: paletteStatus,
-									[getAttributeKey(
-										'_po',
+										prefix: `${prefix}i-str-`,
+									})]: paletteStatus,
+									[getAttributeKey({
+										key: '_po',
 										isHover,
-										`${prefix}i-str-`
-									)]: paletteOpacity,
-									[getAttributeKey('i_c', false, prefix)]:
+										prefix: `${prefix}i-str-`,
+									})]: paletteOpacity,
+									[getAttributeKey({ key: 'i_c', prefix })]:
 										icon,
 								});
 							}}
@@ -481,16 +478,31 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[getAttributeKey('_cc', isHover, `${prefix}i-f-`)]:
-								color,
-							[getAttributeKey('_pc', isHover, `${prefix}i-f-`)]:
-								paletteColor,
-							[getAttributeKey('_ps', isHover, `${prefix}i-f-`)]:
-								paletteStatus,
-							[getAttributeKey('_po', isHover, `${prefix}i-f-`)]:
-								paletteOpacity,
-							[getAttributeKey('_c', isHover, `${prefix}i-`)]:
-								icon,
+							[getAttributeKey({
+								key: '_cc',
+								isHover,
+								prefix: `${prefix}i-f-`,
+							})]: color,
+							[getAttributeKey({
+								key: '_pc',
+								isHover,
+								prefix: `${prefix}i-f-`,
+							})]: paletteColor,
+							[getAttributeKey({
+								key: '_ps',
+								isHover,
+								prefix: `${prefix}i-f-`,
+							})]: paletteStatus,
+							[getAttributeKey({
+								key: '_po',
+								isHover,
+								prefix: `${prefix}i-f-`,
+							})]: paletteOpacity,
+							[getAttributeKey({
+								key: '_c',
+								isHover,
+								prefix: `${prefix}i-`,
+							})]: icon,
 						});
 					}}
 					isHover={isHover}
@@ -512,12 +524,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 							setIconBgActive(val);
 
 							onChange({
-								[getAttributeKey(
-									'b_am',
-									false,
-									`${prefix}i-`,
-									breakpoint
-								)]: val,
+								[getAttributeKey({
+									key: 'b_am',
+									prefix: `${prefix}i-`,
+									breakpoint,
+								})]: val,
 							});
 						}}
 					/>
@@ -572,30 +583,30 @@ const IconControlResponsiveSettings = withRTC(props => {
 								}) => {
 									onChange(
 										{
-											[getAttributeKey(
-												'bc_ps',
+											[getAttributeKey({
+												key: 'bc_ps',
 												isHover,
-												`${prefix}i-`,
-												breakpoint
-											)]: paletteStatus,
-											[getAttributeKey(
-												'bc_pc',
+												prefix: `${prefix}i-`,
+												breakpoint,
+											})]: paletteStatus,
+											[getAttributeKey({
+												key: 'bc_pc',
 												isHover,
-												`${prefix}i-`,
-												breakpoint
-											)]: paletteColor,
-											[getAttributeKey(
-												'bc_po',
+												prefix: `${prefix}i-`,
+												breakpoint,
+											})]: paletteColor,
+											[getAttributeKey({
+												key: 'bc_po',
 												isHover,
-												`${prefix}i-`,
-												breakpoint
-											)]: paletteOpacity,
-											[getAttributeKey(
-												'bc_cc',
+												prefix: `${prefix}i-`,
+												breakpoint,
+											})]: paletteOpacity,
+											[getAttributeKey({
+												key: 'bc_cc',
 												isHover,
-												`${prefix}i-`,
-												breakpoint
-											)]: color,
+												prefix: `${prefix}i-`,
+												breakpoint,
+											})]: color,
 										},
 										inlineTarget
 									);
@@ -702,11 +713,13 @@ const IconControl = props => {
 						style={blockStyle}
 						onSelect={obj => {
 							const newSvgType =
-								obj[getAttributeKey('_st', false, prefix)];
+								obj[getAttributeKey({ key: '_st', prefix })];
 
 							let icon = getIconWithColor({
 								rawIcon:
-									obj[getAttributeKey('i_c', false, prefix)],
+									obj[
+										getAttributeKey({ key: 'i_c', prefix })
+									],
 								type: [
 									newSvgType !== 'Shape' && 'stroke',
 									newSvgType !== 'Line' && 'fill',
@@ -717,9 +730,9 @@ const IconControl = props => {
 								icon = togglePreserveAspectRatio(icon, true);
 
 							onChange({
-								[getAttributeKey('_st', false, prefix)]:
+								[getAttributeKey({ key: '_st', prefix })]:
 									newSvgType,
-								[getAttributeKey('i_c', false, prefix)]: icon,
+								[getAttributeKey({ key: 'i_c', prefix })]: icon,
 							});
 						}}
 						onRemove={obj => onChange(obj)}

@@ -107,7 +107,7 @@ const FlexContentAlignControl = props => {
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey('_ac', false, false, breakpoint)]: val,
+					[getAttributeKey({ key: '_ac', breakpoint })]: val,
 				})
 			}
 		/>

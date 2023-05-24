@@ -27,56 +27,23 @@ export const getShapeDividerStyles = (obj, location) => {
 
 		if (
 			!isNil(
-				obj[
-					getAttributeKey(
-						`sd${location[0]}_h`,
-						false,
-						false,
-						breakpoint
-					)
-				]
+				obj[getAttributeKey({ key: `sd${location[0]}_h`, breakpoint })]
 			)
 		)
 			response[breakpoint].height = `${
-				obj[
-					getAttributeKey(
-						`sd${location[0]}_h`,
-						false,
-						false,
-						breakpoint
-					)
-				]
+				obj[getAttributeKey({ key: `sd${location[0]}_h`, breakpoint })]
 			}${
 				obj[
-					getAttributeKey(
-						`sd${location[0]}_h.u`,
-						false,
-						false,
-						breakpoint
-					)
+					getAttributeKey({ key: `sd${location[0]}_h.u`, breakpoint })
 				] ?? 'px'
 			}`;
 		if (
 			!isNil(
-				obj[
-					getAttributeKey(
-						`sd${location[0]}_o`,
-						false,
-						false,
-						breakpoint
-					)
-				]
+				obj[getAttributeKey({ key: `sd${location[0]}_o`, breakpoint })]
 			)
 		)
 			response[breakpoint].opacity =
-				obj[
-					getAttributeKey(
-						`sd${location[0]}_o`,
-						false,
-						false,
-						breakpoint
-					)
-				];
+				obj[getAttributeKey({ key: `sd${location[0]}_o`, breakpoint })];
 	});
 
 	const rawPositions = getMarginPaddingStyles({

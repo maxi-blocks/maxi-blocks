@@ -50,8 +50,7 @@ const GapAxisControl = props => {
 			})}
 			onChangeUnit={val => {
 				onChange({
-					[getAttributeKey(`${target}.u`, false, false, breakpoint)]:
-						val,
+					[getAttributeKey({ key: `${target}.u`, breakpoint })]: val,
 				});
 			}}
 			value={getLastBreakpointAttribute({
@@ -61,24 +60,22 @@ const GapAxisControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[getAttributeKey(target, false, false, breakpoint)]: val,
+					[getAttributeKey({ key: target, breakpoint })]: val,
 				});
 			}}
 			allowedUnits={['px', 'em', 'vw', '%']}
 			onReset={() =>
 				onChange({
-					[getAttributeKey(target, false, false, breakpoint)]:
+					[getAttributeKey({ key: target, breakpoint })]:
 						getDefaultAttribute(
-							getAttributeKey(target, false, false, breakpoint)
+							getAttributeKey({ key: target, breakpoint })
 						),
-					[getAttributeKey(`${target}.u`, false, false, breakpoint)]:
+					[getAttributeKey({ key: `${target}.u`, breakpoint })]:
 						getDefaultAttribute(
-							getAttributeKey(
-								`${target}.u`,
-								false,
-								false,
-								breakpoint
-							)
+							getAttributeKey({
+								key: `${target}.u`,
+								breakpoint,
+							})
 						),
 					isReset: true,
 				})

@@ -108,26 +108,22 @@ const IconColor = props => {
 
 									onChange(
 										{
-											[getAttributeKey(
-												'_cc',
-												false,
-												'icon-stroke-'
-											)]: color,
-											[getAttributeKey(
-												'_pc',
-												false,
-												'icon-stroke-'
-											)]: paletteColor,
-											[getAttributeKey(
-												'_ps',
-												false,
-												'icon-stroke-'
-											)]: paletteStatus,
-											[getAttributeKey(
-												'content',
-												false,
-												'icon-'
-											)]: setSVGContent(
+											[getAttributeKey({
+												key: '_cc',
+												prefix: 'icon-stroke-',
+											})]: color,
+											[getAttributeKey({
+												key: '_pc',
+												prefix: 'icon-stroke-',
+											})]: paletteColor,
+											[getAttributeKey({
+												key: '_ps',
+												prefix: 'icon-stroke-',
+											})]: paletteStatus,
+											[getAttributeKey({
+												key: 'content',
+												prefix: 'icon-',
+											})]: setSVGContent(
 												getAttributesValue({
 													target: 'content',
 													prefix: 'icon-',
@@ -188,26 +184,22 @@ const IconColor = props => {
 
 									onChange(
 										{
-											[getAttributeKey(
-												'_cc',
-												false,
-												'icon-fill-'
-											)]: color,
-											[getAttributeKey(
-												'_pc',
-												false,
-												'icon-fill-'
-											)]: paletteColor,
-											[getAttributeKey(
-												'_ps',
-												false,
-												'icon-fill-'
-											)]: paletteStatus,
-											[getAttributeKey(
-												'content',
-												false,
-												'icon-'
-											)]: setSVGContent(
+											[getAttributeKey({
+												key: '_cc',
+												prefix: 'icon-fill-',
+											})]: color,
+											[getAttributeKey({
+												key: '_pc',
+												prefix: 'icon-fill-',
+											})]: paletteColor,
+											[getAttributeKey({
+												key: '_ps',
+												prefix: 'icon-fill-',
+											})]: paletteStatus,
+											[getAttributeKey({
+												key: 'content',
+												prefix: 'icon-',
+											})]: setSVGContent(
 												getAttributesValue({
 													target: 'content',
 													prefix: 'icon-',

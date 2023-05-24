@@ -43,37 +43,37 @@ export const borderNone = (prefix = '') => {
 		}).default;
 
 	response = {
-		[getAttributeKey('bo_ps', false, prefix)]:
+		[getAttributeKey({ key: 'bo_ps', prefix })]:
 			getDefaultAttributeValue('bo_ps'),
-		[getAttributeKey('bo_pc', false, prefix)]:
+		[getAttributeKey({ key: 'bo_pc', prefix })]:
 			getDefaultAttributeValue('bo_pc'),
-		[getAttributeKey('bo_po', false, prefix)]:
+		[getAttributeKey({ key: 'bo_po', prefix })]:
 			getDefaultAttributeValue('bo_po'),
-		[getAttributeKey('bo_cc', false, prefix)]:
+		[getAttributeKey({ key: 'bo_cc', prefix })]:
 			getDefaultAttributeValue('bo_cc'),
-		[getAttributeKey('bo_s', false, prefix)]:
+		[getAttributeKey({ key: 'bo_s', prefix })]:
 			getDefaultAttributeValue('bo_s'),
-		[getAttributeKey('bo_w.t', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.t', prefix })]: getDefaultAttributeValue(
 			'bo_w.t',
 			currentDefaultBorderWidth
 		),
-		[getAttributeKey('bo_w.r', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.r', prefix })]: getDefaultAttributeValue(
 			'bo_w.r',
 			currentDefaultBorderWidth
 		),
-		[getAttributeKey('bo_w.b', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.b', prefix })]: getDefaultAttributeValue(
 			'bo_w.b',
 			currentDefaultBorderWidth
 		),
-		[getAttributeKey('bo_w.l', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.l', prefix })]: getDefaultAttributeValue(
 			'bo_w.l',
 			currentDefaultBorderWidth
 		),
-		[getAttributeKey('bo_w.sy', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.sy', prefix })]: getDefaultAttributeValue(
 			'bo_w.sy',
 			currentDefaultBorderWidth
 		),
-		[getAttributeKey('bo_w.u', false, prefix)]: getDefaultAttributeValue(
+		[getAttributeKey({ key: 'bo_w.u', prefix })]: getDefaultAttributeValue(
 			'bo_w.u',
 			currentDefaultBorderWidth
 		),

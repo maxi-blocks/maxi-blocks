@@ -58,7 +58,11 @@ const getSizeStyles = (obj, prefix = '') => {
 								prefix,
 							});
 							const defaultVal = getDefaultAttribute(
-								getAttributeKey('_fw', false, prefix, bp)
+								getAttributeKey({
+									key: '_fw',
+									prefix,
+									breakpoint: bp,
+								})
 							);
 
 							return val !== defaultVal;
@@ -72,7 +76,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				}
 			}
 
-			if (!obj[getAttributeKey('_sao', false, prefix)]) {
+			if (!obj[getAttributeKey({ key: '_sao', prefix })]) {
 				if (target.includes('min')) return null;
 				if (target.includes('max')) return fullWidthNormalStyles;
 			}
@@ -87,7 +91,7 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (forceAspectRatio)
 					return { 'aspect-ratio': 1, height: 'auto' };
-				if (obj[getAttributeKey('fitParentSize')])
+				if (obj[getAttributeKey({ key: 'fitParentSize' })])
 					return { height: '100% !important' };
 			}
 			if (target === '_w') {

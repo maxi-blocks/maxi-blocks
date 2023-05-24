@@ -46,11 +46,21 @@ const SvgColor = props => {
 				blockStyle,
 			});
 		const onChangeObject = {
-			[getAttributeKey('_cc', isHover, `s${type.slice(0, 2)}-`)]: color,
-			[getAttributeKey('_pc', isHover, `s${type.slice(0, 2)}-`)]:
-				paletteColor,
-			[getAttributeKey('_ps', isHover, `s${type.slice(0, 2)}-`)]:
-				paletteStatus,
+			[getAttributeKey({
+				key: '_cc',
+				isHover,
+				prefix: `s${type.slice(0, 2)}-`,
+			})]: color,
+			[getAttributeKey({
+				key: '_pc',
+				isHover,
+				prefix: `s${type.slice(0, 2)}-`,
+			})]: paletteColor,
+			[getAttributeKey({
+				key: '_ps',
+				isHover,
+				prefix: `s${type.slice(0, 2)}-`,
+			})]: paletteStatus,
 			content: (isHover ? setSVGContentHover : setSVGContent)(
 				content,
 				paletteStatus ? colorStr : color,

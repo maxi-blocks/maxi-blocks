@@ -120,8 +120,11 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('_d', false, '', breakpoint)]:
-							!isEmpty(val) ? val : null,
+						[getAttributeKey({ key: '_d', breakpoint })]: !isEmpty(
+							val
+						)
+							? val
+							: null,
 					})
 				}
 				hasBorder

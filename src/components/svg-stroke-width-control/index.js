@@ -36,12 +36,12 @@ const SvgStrokeWidthControl = props => {
 
 	const classes = classnames('maxi-svg-stroke-width-control', className);
 
-	const strokeAttrLabel = getAttributeKey(
-		'_str',
+	const strokeAttrLabel = getAttributeKey({
+		key: '_str',
 		isHover,
 		prefix,
-		breakpoint
-	);
+		breakpoint,
+	});
 	const stroke = getAttributesValue({
 		target: '_str',
 		props,
@@ -57,11 +57,11 @@ const SvgStrokeWidthControl = props => {
 		attributes: props,
 		isHover,
 	});
-	const contentLabel = getAttributeKey(
-		'_c',
+	const contentLabel = getAttributeKey({
+		key: '_c',
 		isHover,
-		`${prefix === 's-' ? '' : prefix}`
-	);
+		prefix: `${prefix === 's-' ? '' : prefix}`,
+	});
 
 	return (
 		<AdvancedNumberControl

@@ -36,7 +36,11 @@ const TitleSettings = props => {
 				selected={bgStatus}
 				onChange={value =>
 					onChange({
-						[getAttributeKey('.s', isHover, bgPrefix)]: value,
+						[getAttributeKey({
+							key: '.s',
+							isHover,
+							prefix: bgPrefix,
+						})]: value,
 					})
 				}
 			/>
@@ -79,30 +83,30 @@ const TitleSettings = props => {
 						paletteOpacity,
 					}) =>
 						onChange({
-							[getAttributeKey(
-								'_ps',
+							[getAttributeKey({
+								key: '_ps',
 								isHover,
-								bgPrefix,
-								breakpoint
-							)]: paletteStatus,
-							[getAttributeKey(
-								'_pc',
+								prefix: bgPrefix,
+								breakpoint,
+							})]: paletteStatus,
+							[getAttributeKey({
+								key: '_pc',
 								isHover,
-								bgPrefix,
-								breakpoint
-							)]: paletteColor,
-							[getAttributeKey(
-								'_po',
+								prefix: bgPrefix,
+								breakpoint,
+							})]: paletteColor,
+							[getAttributeKey({
+								key: '_po',
 								isHover,
-								bgPrefix,
-								breakpoint
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'_cc',
+								prefix: bgPrefix,
+								breakpoint,
+							})]: paletteOpacity,
+							[getAttributeKey({
+								key: '_cc',
 								isHover,
-								bgPrefix,
-								breakpoint
-							)]: color,
+								prefix: bgPrefix,
+								breakpoint,
+							})]: color,
 						})
 					}
 					clientId={clientId}

@@ -77,7 +77,10 @@ const LinkOptions = props => {
 							'_po',
 							'_ps',
 						].map(attributeKey =>
-							getAttributeKey(attributeKey, false, `${prefix}l-`)
+							getAttributeKey({
+								key: attributeKey,
+								prefix: `${prefix}l-`,
+							})
 						),
 					},
 					{
@@ -89,11 +92,10 @@ const LinkOptions = props => {
 							'_po',
 							'_ps',
 						].map(attributeKey =>
-							getAttributeKey(
-								attributeKey,
-								false,
-								`${prefix}_lih-`
-							)
+							getAttributeKey({
+								key: attributeKey,
+								prefix: `${prefix}_lih-`,
+							})
 						),
 					},
 					{
@@ -105,11 +107,10 @@ const LinkOptions = props => {
 							'_po',
 							'_ps',
 						].map(attributeKey =>
-							getAttributeKey(
-								attributeKey,
-								false,
-								`${prefix}_lia-`
-							)
+							getAttributeKey({
+								key: attributeKey,
+								prefix: `${prefix}_lia-`,
+							})
 						),
 					},
 					{
@@ -121,11 +122,10 @@ const LinkOptions = props => {
 							'_po',
 							'_ps',
 						].map(attributeKey =>
-							getAttributeKey(
-								attributeKey,
-								false,
-								`${prefix}_liv-`
-							)
+							getAttributeKey({
+								key: attributeKey,
+								prefix: `${prefix}_liv-`,
+							})
 						),
 					},
 				]}
@@ -151,14 +151,22 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_ps', false, `${prefix}_l-`)]:
-									paletteStatus,
-								[getAttributeKey('_pc', false, `${prefix}_l-`)]:
-									paletteColor,
-								[getAttributeKey('_po', false, `${prefix}_l-`)]:
-									paletteOpacity,
-								[getAttributeKey('_cc', false, `${prefix}_l-`)]:
-									color,
+								[getAttributeKey({
+									key: '_ps',
+									prefix: `${prefix}_l-`,
+								})]: paletteStatus,
+								[getAttributeKey({
+									key: '_pc',
+									prefix: `${prefix}_l-`,
+								})]: paletteColor,
+								[getAttributeKey({
+									key: '_po',
+									prefix: `${prefix}_l-`,
+								})]: paletteOpacity,
+								[getAttributeKey({
+									key: '_cc',
+									prefix: `${prefix}_l-`,
+								})]: color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a' }
 						)
@@ -190,26 +198,22 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'_ps',
-									false,
-									`${prefix}_lih`
-								)]: paletteStatus,
-								[getAttributeKey(
-									'_pc',
-									false,
-									`${prefix}_lih`
-								)]: paletteColor,
-								[getAttributeKey(
-									'_po',
-									false,
-									`${prefix}_lih`
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'_cc',
-									false,
-									`${prefix}_lih`
-								)]: color,
+								[getAttributeKey({
+									key: '_ps',
+									prefix: `${prefix}_lih`,
+								})]: paletteStatus,
+								[getAttributeKey({
+									key: '_pc',
+									prefix: `${prefix}_lih`,
+								})]: paletteColor,
+								[getAttributeKey({
+									key: '_po',
+									prefix: `${prefix}_lih`,
+								})]: paletteOpacity,
+								[getAttributeKey({
+									key: '_cc',
+									prefix: `${prefix}_lih`,
+								})]: color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a:hover' }
 						)
@@ -241,26 +245,22 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'_ps',
-									false,
-									`${prefix}_lia-`
-								)]: paletteStatus,
-								[getAttributeKey(
-									'_pc',
-									false,
-									`${prefix}_lia-`
-								)]: paletteColor,
-								[getAttributeKey(
-									'_po',
-									false,
-									`${prefix}_lia-`
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'_cc',
-									false,
-									`${prefix}_lia-`
-								)]: color,
+								[getAttributeKey({
+									key: '_ps',
+									prefix: `${prefix}_lia-`,
+								})]: paletteStatus,
+								[getAttributeKey({
+									key: '_pc',
+									prefix: `${prefix}_lia-`,
+								})]: paletteColor,
+								[getAttributeKey({
+									key: '_po',
+									prefix: `${prefix}_lia-`,
+								})]: paletteOpacity,
+								[getAttributeKey({
+									key: '_cc',
+									prefix: `${prefix}_lia-`,
+								})]: color,
 							},
 							{
 								forceDisableCustomFormats: false,
@@ -295,26 +295,22 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[getAttributeKey(
-									'_ps',
-									false,
-									`${prefix}_liv-`
-								)]: paletteStatus,
-								[getAttributeKey(
-									'_pc',
-									false,
-									`${prefix}_liv-`
-								)]: paletteColor,
-								[getAttributeKey(
-									'_po',
-									false,
-									`${prefix}_liv-`
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'_cc',
-									false,
-									`${prefix}_liv-`
-								)]: color,
+								[getAttributeKey({
+									key: '_ps',
+									prefix: `${prefix}_liv-`,
+								})]: paletteStatus,
+								[getAttributeKey({
+									key: '_pc',
+									prefix: `${prefix}_liv-`,
+								})]: paletteColor,
+								[getAttributeKey({
+									key: '_po',
+									prefix: `${prefix}_liv-`,
+								})]: paletteOpacity,
+								[getAttributeKey({
+									key: '_cc',
+									prefix: `${prefix}_liv-`,
+								})]: color,
 							},
 							{
 								forceDisableCustomFormats: false,
@@ -540,13 +536,12 @@ const TypographyControl = props => {
 						font={getValue('_ff')}
 						onChange={font => {
 							onChangeFormat({
-								[getAttributeKey('_ff', false, prefix)]:
+								[getAttributeKey({ key: '_ff', prefix })]:
 									font.value,
-								[getAttributeKey(
-									'font-options',
-									false,
-									prefix
-								)]: font.files,
+								[getAttributeKey({
+									key: 'font-options',
+									prefix,
+								})]: font.files,
 							});
 						}}
 						fontWeight={getValue('_fwe')}
@@ -573,12 +568,13 @@ const TypographyControl = props => {
 							paletteOpacity,
 						}) =>
 							onChangeFormat({
-								[getAttributeKey('_cc', false, prefix)]: color,
-								[getAttributeKey('_pc', false, prefix)]:
+								[getAttributeKey({ key: '_cc', prefix })]:
+									color,
+								[getAttributeKey({ key: '_pc', prefix })]:
 									paletteColor,
-								[getAttributeKey('_ps', false, prefix)]:
+								[getAttributeKey({ key: '_ps', prefix })]:
 									paletteStatus,
-								[getAttributeKey('_po', false, prefix)]:
+								[getAttributeKey({ key: '_po', prefix })]:
 									paletteOpacity,
 							})
 						}
@@ -610,7 +606,7 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('_fs.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey('_fs.u', false, prefix)]: val,
+							[getAttributeKey({ key: '_fs.u', prefix })]: val,
 						});
 					}}
 					placeholder={getValue('_fs')}
@@ -618,18 +614,19 @@ const TypographyControl = props => {
 					defaultValue={getDefault('_fs')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[getAttributeKey('_fs', false, prefix)]: val,
+							[getAttributeKey({ key: '_fs', prefix })]: val,
 							...(unit && {
-								[getAttributeKey('_fs.u', false, prefix)]: unit,
+								[getAttributeKey({ key: '_fs.u', prefix })]:
+									unit,
 							}),
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_fs.u', false, prefix)]:
+								[getAttributeKey({ key: '_fs.u', prefix })]:
 									getDefault('_fs.u'),
-								[getAttributeKey('_fs', false, prefix)]:
+								[getAttributeKey({ key: '_fs', prefix })]:
 									getDefault('_fs'),
 							},
 							{ isReset: true }
@@ -646,7 +643,7 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('_lhe.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey('_lhe.u', false, prefix)]: val,
+							[getAttributeKey({ key: '_lhe.u', prefix })]: val,
 						});
 					}}
 					placeholder={getValue('_lhe')}
@@ -654,9 +651,9 @@ const TypographyControl = props => {
 					defaultValue={getDefault('_lhe')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[getAttributeKey('_lhe', false, prefix)]: val,
+							[getAttributeKey({ key: '_lhe', prefix })]: val,
 							...(unit && {
-								[getAttributeKey('_lhe.u', false, prefix)]:
+								[getAttributeKey({ key: '_lhe.u', prefix })]:
 									unit,
 							}),
 						});
@@ -664,9 +661,9 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_lhe.u', false, prefix)]:
+								[getAttributeKey({ key: '_lhe.u', prefix })]:
 									getDefault('_lhe.u'),
-								[getAttributeKey('_lhe', false, prefix)]:
+								[getAttributeKey({ key: '_lhe', prefix })]:
 									getDefault('_lhe'),
 							},
 							{ isReset: true }
@@ -691,7 +688,7 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('_ls.u')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[getAttributeKey('_ls.u', false, prefix)]: val,
+							[getAttributeKey({ key: '_ls.u', prefix })]: val,
 						});
 					}}
 					placeholder={getValue('_ls')}
@@ -699,15 +696,15 @@ const TypographyControl = props => {
 					defaultValue={getDefault('_ls')}
 					onChangeValue={val => {
 						onChangeFormat({
-							[getAttributeKey('_ls', false, prefix)]: val,
+							[getAttributeKey({ key: '_ls', prefix })]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_ls.u', false, prefix)]:
+								[getAttributeKey({ key: '_ls.u', prefix })]:
 									getDefault('_ls.u'),
-								[getAttributeKey('_ls', false, prefix)]:
+								[getAttributeKey({ key: '_ls', prefix })]:
 									getDefault('_ls'),
 							},
 							{ isReset: true }
@@ -724,13 +721,13 @@ const TypographyControl = props => {
 				<FontWeightControl
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_fwe', false, prefix)]: val,
+							[getAttributeKey({ key: '_fwe', prefix })]: val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_fwe', false, prefix)]:
+								[getAttributeKey({ key: '_fwe', prefix })]:
 									getDefault('_fwe'),
 							},
 							{ isReset: true }
@@ -767,13 +764,13 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_ttr', false, prefix)]: val,
+							[getAttributeKey({ key: '_ttr', prefix })]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_ttr', false, prefix)]:
+								[getAttributeKey({ key: '_ttr', prefix })]:
 									getDefault('_ttr'),
 							},
 							{ isReset: true }
@@ -801,13 +798,13 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_fst', false, prefix)]: val,
+							[getAttributeKey({ key: '_fst', prefix })]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_fst', false, prefix)]:
+								[getAttributeKey({ key: '_fst', prefix })]:
 									getDefault('_fst'),
 							},
 							{ isReset: true }
@@ -843,13 +840,13 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_td', false, prefix)]: val,
+							[getAttributeKey({ key: '_td', prefix })]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_td', false, prefix)]:
+								[getAttributeKey({ key: '_td', prefix })]:
 									getDefault('_td'),
 							},
 							{ isReset: true }
@@ -884,8 +881,10 @@ const TypographyControl = props => {
 							onChange={val => {
 								onChangeFormat(
 									{
-										[getAttributeKey('_to', false, prefix)]:
-											val,
+										[getAttributeKey({
+											key: '_to',
+											prefix,
+										})]: val,
 									},
 									{ forceDisableCustomFormats: true }
 								);
@@ -893,8 +892,10 @@ const TypographyControl = props => {
 							onReset={() =>
 								onChangeFormat(
 									{
-										[getAttributeKey('_to', false, prefix)]:
-											getDefault('_to'),
+										[getAttributeKey({
+											key: '_to',
+											prefix,
+										})]: getDefault('_to'),
 									},
 									{ isReset: true }
 								)
@@ -917,18 +918,17 @@ const TypographyControl = props => {
 							]}
 							onChange={val => {
 								onChangeFormat({
-									[getAttributeKey('_tdi', false, prefix)]:
+									[getAttributeKey({ key: '_tdi', prefix })]:
 										val,
 								});
 							}}
 							onReset={() =>
 								onChangeFormat(
 									{
-										[getAttributeKey(
-											'_tdi',
-											false,
-											prefix
-										)]: getDefault('_tdi'),
+										[getAttributeKey({
+											key: '_tdi',
+											prefix,
+										})]: getDefault('_tdi'),
 									},
 									{ isReset: true }
 								)
@@ -945,7 +945,8 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_ti.u', false, prefix)]: val,
+								[getAttributeKey({ key: '_ti.u', prefix })]:
+									val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -956,7 +957,7 @@ const TypographyControl = props => {
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_ti', false, prefix)]: val,
+								[getAttributeKey({ key: '_ti', prefix })]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -964,9 +965,9 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_ti.u', false, prefix)]:
+								[getAttributeKey({ key: '_ti.u', prefix })]:
 									getDefault('_ti.u'),
-								[getAttributeKey('_ti', false, prefix)]:
+								[getAttributeKey({ key: '_ti', prefix })]:
 									getDefault('_ti'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
@@ -1025,13 +1026,13 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[getAttributeKey('_ws', false, prefix)]: val,
+							[getAttributeKey({ key: '_ws', prefix })]: val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_ws', false, prefix)]:
+								[getAttributeKey({ key: '_ws', prefix })]:
 									getDefault('_ws'),
 							},
 							{ isReset: true }
@@ -1047,7 +1048,8 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_wsp.u', false, prefix)]: val,
+								[getAttributeKey({ key: '_wsp.u', prefix })]:
+									val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1058,7 +1060,7 @@ const TypographyControl = props => {
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[getAttributeKey('_wsp', false, prefix)]: val,
+								[getAttributeKey({ key: '_wsp', prefix })]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1066,9 +1068,9 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[getAttributeKey('_wsp.u', false, prefix)]:
+								[getAttributeKey({ key: '_wsp.u', prefix })]:
 									getDefault('_wsp.u'),
-								[getAttributeKey('_wsp', false, prefix)]:
+								[getAttributeKey({ key: '_wsp', prefix })]:
 									getDefault('_wsp'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
@@ -1104,7 +1106,7 @@ const TypographyControl = props => {
 						onChangeUnit={val => {
 							onChangeFormat(
 								{
-									[getAttributeKey('_bg.u', false, prefix)]:
+									[getAttributeKey({ key: '_bg.u', prefix })]:
 										val,
 								},
 								{ forceDisableCustomFormats: true }
@@ -1116,7 +1118,7 @@ const TypographyControl = props => {
 						onChangeValue={val => {
 							onChangeFormat(
 								{
-									[getAttributeKey('_bg', false, prefix)]:
+									[getAttributeKey({ key: '_bg', prefix })]:
 										val,
 								},
 								{ forceDisableCustomFormats: true }
@@ -1125,9 +1127,9 @@ const TypographyControl = props => {
 						onReset={() =>
 							onChangeFormat(
 								{
-									[getAttributeKey('_bg.u', false, prefix)]:
+									[getAttributeKey({ key: '_bg.u', prefix })]:
 										getDefault('_bg.u'),
-									[getAttributeKey('_bg', false, prefix)]:
+									[getAttributeKey({ key: '_bg', prefix })]:
 										getDefault('_bg'),
 								},
 								{
@@ -1168,7 +1170,7 @@ const TypographyControl = props => {
 							}
 							onChange={val => {
 								onChangeFormat({
-									[getAttributeKey('_tsh', false, prefix)]:
+									[getAttributeKey({ key: '_tsh', prefix })]:
 										val,
 								});
 							}}

@@ -16,7 +16,8 @@ const getAttributeValue = ({
 	prefix = '',
 	allowNil = false,
 }) => {
-	const value = props?.[getAttributeKey(target, isHover, prefix, breakpoint)];
+	const value =
+		props?.[getAttributeKey({ key: target, isHover, prefix, breakpoint })];
 
 	if (
 		(value || isNumber(value) || isBoolean(value) || isEmpty(value)) &&
@@ -38,7 +39,7 @@ const getAttributeValue = ({
 			prefix,
 		});
 
-	return props?.[getAttributeKey(target, null, prefix)];
+	return props?.[getAttributeKey({ key: target, prefix })];
 };
 
 const getAttributesValue = ({

@@ -84,17 +84,31 @@ const getBorderStyles = ({
 		const getValueAndUnit = (key, axis) => {
 			const target = key + axis;
 			const currentValue =
-				obj[getAttributeKey(target, isHover, prefix, breakpoint)];
-			const currentUnit =
 				obj[
-					getAttributeKey(
-						`${key}${axis}.u`,
+					getAttributeKey({
+						key: target,
 						isHover,
 						prefix,
-						breakpoint
-					)
+						breakpoint,
+					})
+				];
+			const currentUnit =
+				obj[
+					getAttributeKey({
+						key: `${key}${axis}.u`,
+						isHover,
+						prefix,
+						breakpoint,
+					})
 				] ??
-				obj[getAttributeKey(`${key}.u`, isHover, prefix, breakpoint)];
+				obj[
+					getAttributeKey({
+						key: `${key}.u`,
+						isHover,
+						prefix,
+						breakpoint,
+					})
+				];
 
 			const hasCurrent = !isNil(currentValue) || !isNil(currentUnit);
 
@@ -181,7 +195,14 @@ const getBorderStyles = ({
 			};
 
 			const currentBorderStyle =
-				obj[getAttributeKey('bo_s', isHover, prefix, breakpoint)];
+				obj[
+					getAttributeKey({
+						key: 'bo_s',
+						isHover,
+						prefix,
+						breakpoint,
+					})
+				];
 			if (!isNil(currentBorderStyle))
 				response[breakpoint]['border-style'] = borderStyle;
 
@@ -198,7 +219,16 @@ const getBorderStyles = ({
 					response[breakpoint][cssProperty] = val;
 			});
 		} else if (
-			!isNil(obj[getAttributeKey('bo_s', isHover, prefix, breakpoint)]) &&
+			!isNil(
+				obj[
+					getAttributeKey({
+						key: 'bo_s',
+						isHover,
+						prefix,
+						breakpoint,
+					})
+				]
+			) &&
 			borderStyle === 'none'
 		)
 			response[breakpoint].border = 'none';

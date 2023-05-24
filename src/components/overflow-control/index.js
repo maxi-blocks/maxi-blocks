@@ -82,7 +82,7 @@ const OverflowControl = props => {
 		sync: currentSync = sync,
 	}) =>
 		(currentSync ? axes : [axis]).reduce((acc, axis) => {
-			acc[getAttributeKey(`_o${axis}`, false, false, breakpoint)] = val;
+			acc[getAttributeKey({ key: `_o${axis}`, breakpoint })] = val;
 			return acc;
 		}, {});
 
@@ -124,18 +124,16 @@ const OverflowControl = props => {
 						}) || ''
 					}
 					defaultValue={getDefaultAttribute(
-						getAttributeKey(`_o${axis}`, false, false, breakpoint)
+						getAttributeKey({ key: `_o${axis}`, breakpoint })
 					)}
 					onChange={val => onChangeValue(val, axis)}
 					onReset={() =>
 						onChangeValue(
 							getDefaultAttribute(
-								getAttributeKey(
-									`_o${axis}`,
-									false,
-									false,
-									breakpoint
-								)
+								getAttributeKey({
+									key: `_o${axis}`,
+									breakpoint,
+								})
 							),
 							axis
 						)

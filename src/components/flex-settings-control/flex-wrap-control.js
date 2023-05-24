@@ -82,16 +82,16 @@ const FlexWrapControl = props => {
 			}
 			onReset={() =>
 				onChange({
-					[getAttributeKey('_flw', false, false, breakpoint)]:
+					[getAttributeKey({ key: '_flw', breakpoint })]:
 						getDefaultAttribute(
-							getAttributeKey('_flw', false, false, breakpoint)
+							getAttributeKey({ key: '_flw', breakpoint })
 						),
 					isReset: true,
 				})
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey('_flw', false, false, breakpoint)]: val,
+					[getAttributeKey({ key: '_flw', breakpoint })]: val,
 				})
 			}
 		/>

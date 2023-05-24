@@ -98,14 +98,30 @@ const BorderColorControl = props => {
 				color,
 			}) => {
 				onChange({
-					[getAttributeKey('bo_ps', isHover, prefix, breakpoint)]:
-						paletteStatus,
-					[getAttributeKey('bo_pc', isHover, prefix, breakpoint)]:
-						paletteColor,
-					[getAttributeKey('bo_po', isHover, prefix, breakpoint)]:
-						paletteOpacity,
-					[getAttributeKey('bo_cc', isHover, prefix, breakpoint)]:
-						color,
+					[getAttributeKey({
+						key: 'bo_ps',
+						isHover,
+						prefix,
+						breakpoint,
+					})]: paletteStatus,
+					[getAttributeKey({
+						key: 'bo_pc',
+						isHover,
+						prefix,
+						breakpoint,
+					})]: paletteColor,
+					[getAttributeKey({
+						key: 'bo_po',
+						isHover,
+						prefix,
+						breakpoint,
+					})]: paletteOpacity,
+					[getAttributeKey({
+						key: 'bo_cc',
+						isHover,
+						prefix,
+						breakpoint,
+					})]: color,
 				});
 			}}
 			disableImage
@@ -180,7 +196,7 @@ const BorderControl = props => {
 		const response = {};
 
 		Object.keys(axisDictionary).forEach(item => {
-			response[getAttributeKey(`bo_w${item}`, isHover, prefix)] =
+			response[getAttributeKey({ key: `bo_w${item}`, isHover, prefix })] =
 				getLastBreakpointAttribute({
 					target: `bo_w${item}`,
 					breakpoint,
@@ -255,7 +271,9 @@ const BorderControl = props => {
 			});
 
 			if (!value)
-				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
+				response[
+					getAttributeKey({ key: item, isHover, breakpoint })
+				] = 2;
 		});
 
 		return response;
@@ -322,22 +340,27 @@ const BorderControl = props => {
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
 					defaultValue={getDefaultAttribute(
-						getAttributeKey('bo_s', isHover, prefix, breakpoint)
+						getAttributeKey({
+							key: 'bo_s',
+							isHover,
+							prefix,
+							breakpoint,
+						})
 					)}
 					onReset={() =>
 						onChange({
-							[getAttributeKey(
-								'bo_s',
+							[getAttributeKey({
+								key: 'bo_s',
 								isHover,
 								prefix,
-								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'bo_s',
+								breakpoint,
+							})]: getDefaultAttribute(
+								getAttributeKey({
+									key: 'bo_s',
 									isHover,
 									prefix,
-									breakpoint
-								)
+									breakpoint,
+								})
 							),
 							isReset: true,
 						})
@@ -355,12 +378,12 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[getAttributeKey(
-								'bo_s',
+							[getAttributeKey({
+								key: 'bo_s',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 							...getValuesOnChangeType(),
 						});
 					}}

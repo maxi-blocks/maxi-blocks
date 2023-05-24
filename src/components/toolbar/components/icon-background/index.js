@@ -114,30 +114,30 @@ const IconBackground = props => {
 						}) => {
 							onChange(
 								{
-									[getAttributeKey(
-										'background-palette-status',
+									[getAttributeKey({
+										key: 'background-palette-status',
 										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteStatus,
-									[getAttributeKey(
-										'background-palette-color',
+										prefix: 'icon-',
+										breakpoint,
+									})]: paletteStatus,
+									[getAttributeKey({
+										key: 'background-palette-color',
 										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteColor,
-									[getAttributeKey(
-										'background-palette-opacity',
+										prefix: 'icon-',
+										breakpoint,
+									})]: paletteColor,
+									[getAttributeKey({
+										key: 'background-palette-opacity',
 										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteOpacity,
-									[getAttributeKey(
-										'bc_cc',
+										prefix: 'icon-',
+										breakpoint,
+									})]: paletteOpacity,
+									[getAttributeKey({
+										key: 'bc_cc',
 										isHover,
-										'icon-',
-										breakpoint
-									)]: color,
+										prefix: 'icon-',
+										breakpoint,
+									})]: color,
 								},
 								'.maxi-button-block__icon'
 							);

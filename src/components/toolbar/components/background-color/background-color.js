@@ -71,12 +71,11 @@ const BackgroundColor = props => {
 					selected={isBackgroundColor}
 					onChange={val => {
 						onChange({
-							[getAttributeKey(
-								'b_am',
-								false,
+							[getAttributeKey({
+								key: 'b_am',
 								prefix,
-								breakpoint
-							)]: val ? 'color' : 'none',
+								breakpoint,
+							})]: val ? 'color' : 'none',
 						});
 					}}
 				/>

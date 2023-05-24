@@ -126,12 +126,12 @@ const BackgroundControl = props => {
 					items={getOptions()}
 					onChange={val =>
 						onChange({
-							[getAttributeKey(
-								'b_am',
+							[getAttributeKey({
+								key: 'b_am',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						})
 					}
 				/>

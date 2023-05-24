@@ -44,7 +44,7 @@ const OverlayColor = props => {
 				isHover,
 			})}
 			defaultColor={getDefaultAttribute(
-				getAttributeKey('o-bc_cc', isHover, '', breakpoint)
+				getAttributeKey({ key: 'o-bc_cc', isHover, breakpoint })
 			)}
 			paletteStatus={getLastBreakpointAttribute({
 				target: 'o-bc_ps',
@@ -81,13 +81,13 @@ const OverlayColor = props => {
 				color,
 			}) => {
 				onChange({
-					[getAttributeKey('o-bc_ps', isHover, '', breakpoint)]:
+					[getAttributeKey({ key: 'o-bc_ps', isHover, breakpoint })]:
 						paletteStatus,
-					[getAttributeKey('o-bc_pc', isHover, '', breakpoint)]:
+					[getAttributeKey({ key: 'o-bc_pc', isHover, breakpoint })]:
 						paletteColor,
-					[getAttributeKey('o-bc_po', isHover, '', breakpoint)]:
+					[getAttributeKey({ key: 'o-bc_po', isHover, breakpoint })]:
 						paletteOpacity,
-					[getAttributeKey('o-bc_cc', isHover, '', breakpoint)]:
+					[getAttributeKey({ key: 'o-bc_cc', isHover, breakpoint })]:
 						color,
 				});
 				cleanInlineStyles &&

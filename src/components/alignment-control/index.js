@@ -120,7 +120,7 @@ const AlignmentControl = props => {
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(target, isHover, null, breakpoint)]:
+						[getAttributeKey({ key: target, isHover, breakpoint })]:
 							val,
 					})
 				}

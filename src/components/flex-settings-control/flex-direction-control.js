@@ -87,7 +87,7 @@ const FlexDirectionControl = props => {
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey('_fd', false, false, breakpoint)]: val,
+					[getAttributeKey({ key: '_fd', breakpoint })]: val,
 				})
 			}
 		/>

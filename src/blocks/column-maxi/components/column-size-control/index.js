@@ -93,7 +93,7 @@ const ColumnSizeControl = props => {
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
-					getAttributeKey('_jc', false, '', breakpoint)
+					getAttributeKey({ key: '_jc', breakpoint })
 				)}
 				options={[
 					{
@@ -124,9 +124,9 @@ const ColumnSizeControl = props => {
 				}
 				onReset={() => {
 					onChange({
-						[getAttributeKey('_jc', false, '', breakpoint)]:
+						[getAttributeKey({ key: '_jc', breakpoint })]:
 							getDefaultAttribute(
-								getAttributeKey('_jc', false, '', breakpoint)
+								getAttributeKey({ key: '_jc', breakpoint })
 							),
 						isReset: true,
 					});

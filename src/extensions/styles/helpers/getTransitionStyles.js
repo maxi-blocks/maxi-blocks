@@ -89,12 +89,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						});
 						const transitionSplit =
 							transition[type][key]?.[
-								getAttributeKey(
-									'split',
-									false,
-									false,
-									breakpoint
-								)
+								getAttributeKey({ key: 'split', breakpoint })
 							];
 
 						const isNewTransitionSplit =

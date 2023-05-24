@@ -56,13 +56,14 @@ const ColorLayerContent = props => {
 		paletteOpacity,
 	}) => {
 		const response = {
-			[getAttributeKey('bc_ps', isHover, prefix, breakpoint)]:
+			[getAttributeKey({ key: 'bc_ps', isHover, prefix, breakpoint })]:
 				paletteStatus,
-			[getAttributeKey('bc_pc', isHover, prefix, breakpoint)]:
+			[getAttributeKey({ key: 'bc_pc', isHover, prefix, breakpoint })]:
 				paletteColor,
-			[getAttributeKey('bc_po', isHover, prefix, breakpoint)]:
+			[getAttributeKey({ key: 'bc_po', isHover, prefix, breakpoint })]:
 				paletteOpacity,
-			[getAttributeKey('bc_cc', isHover, prefix, breakpoint)]: color,
+			[getAttributeKey({ key: 'bc_cc', isHover, prefix, breakpoint })]:
+				color,
 		};
 
 		onChange(response);

@@ -64,34 +64,34 @@ const VideoLayerContent = props => {
 					})}
 					onSelectImage={val =>
 						onChange({
-							[getAttributeKey(
-								'bv_mi',
+							[getAttributeKey({
+								key: 'bv_mi',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val.id,
-							[getAttributeKey(
-								'bv_mu',
+								breakpoint,
+							})]: val.id,
+							[getAttributeKey({
+								key: 'bv_mu',
 								isHover,
 								prefix,
-								breakpoint
-							)]: val.url,
+								breakpoint,
+							})]: val.url,
 						})
 					}
 					onRemoveImage={() =>
 						onChange({
-							[getAttributeKey(
-								'bv_mi',
+							[getAttributeKey({
+								key: 'bv_mi',
 								isHover,
 								prefix,
-								breakpoint
-							)]: '',
-							[getAttributeKey(
-								'bv_mu',
+								breakpoint,
+							})]: '',
+							[getAttributeKey({
+								key: 'bv_mu',
 								isHover,
 								prefix,
-								breakpoint
-							)]: '',
+								breakpoint,
+							})]: '',
 						})
 					}
 				/>
@@ -133,7 +133,7 @@ const VideoLayer = props => {
 							}
 
 							onChange({
-								[getAttributeKey('bv_mu', false, prefix)]:
+								[getAttributeKey({ key: 'bv_mu', prefix })]:
 									val !== '' ? val : defaultURL,
 							});
 						}}
@@ -149,7 +149,7 @@ const VideoLayer = props => {
 						})}
 						onChangeValue={val => {
 							onChange({
-								[getAttributeKey('bv_sti', false, prefix)]:
+								[getAttributeKey({ key: 'bv_sti', prefix })]:
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
@@ -157,7 +157,8 @@ const VideoLayer = props => {
 						max={999}
 						onReset={() =>
 							onChange({
-								[getAttributeKey('bv_sti', false, prefix)]: '',
+								[getAttributeKey({ key: 'bv_sti', prefix })]:
+									'',
 								isReset: true,
 							})
 						}
@@ -172,7 +173,7 @@ const VideoLayer = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey('bv_et', false, prefix)]:
+								[getAttributeKey({ key: 'bv_et', prefix })]:
 									val !== undefined && val !== '' ? val : '',
 							})
 						}
@@ -180,7 +181,7 @@ const VideoLayer = props => {
 						max={999}
 						onReset={() =>
 							onChange({
-								[getAttributeKey('bv_et', false, prefix)]: '',
+								[getAttributeKey({ key: 'bv_et', prefix })]: '',
 								isReset: true,
 							})
 						}
@@ -202,7 +203,8 @@ const VideoLayer = props => {
 						}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('bv_loo', false, prefix)]: val,
+								[getAttributeKey({ key: 'bv_loo', prefix })]:
+									val,
 							})
 						}
 					/>
@@ -216,7 +218,8 @@ const VideoLayer = props => {
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey('bv_rb', false, prefix)]: val,
+								[getAttributeKey({ key: 'bv_rb', prefix })]:
+									val,
 							})
 						}
 					/>

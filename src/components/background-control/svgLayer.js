@@ -44,10 +44,10 @@ const SVGLayer = props => {
 					onRemove={obj => {
 						if (layerOrder) {
 							delete SVGOptions[
-								getAttributeKey('bsv_se', false, prefix)
+								getAttributeKey({ key: 'bsv_se', prefix })
 							];
 							delete SVGOptions[
-								getAttributeKey('bsv_sd', false, prefix)
+								getAttributeKey({ key: 'bsv_sd', prefix })
 							];
 						}
 						onChange({ ...SVGOptions, ...obj });

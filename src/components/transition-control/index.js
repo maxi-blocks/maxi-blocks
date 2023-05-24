@@ -122,12 +122,10 @@ const TransitionControl = props => {
 						})}
 						onChangeValue={val => {
 							handleChange({
-								[getAttributeKey(
-									'transition-duration',
-									false,
-									false,
-									breakpoint
-								)]: val !== undefined && val !== '' ? val : '',
+								[getAttributeKey({
+									key: 'transition-duration',
+									breakpoint,
+								})]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						min={0}
@@ -136,12 +134,10 @@ const TransitionControl = props => {
 						initial={0.3}
 						onReset={() =>
 							handleChange({
-								[getAttributeKey(
-									'transition-duration',
-									false,
-									false,
-									breakpoint
-								)]: getDefaultTransitionAttribute(
+								[getAttributeKey({
+									key: 'transition-duration',
+									breakpoint,
+								})]: getDefaultTransitionAttribute(
 									'transition-duration'
 								),
 							})
@@ -160,12 +156,10 @@ const TransitionControl = props => {
 						})}
 						onChangeValue={val => {
 							handleChange({
-								[getAttributeKey(
-									'transition-delay',
-									false,
-									false,
-									breakpoint
-								)]: val !== undefined && val !== '' ? val : '',
+								[getAttributeKey({
+									key: 'transition-delay',
+									breakpoint,
+								})]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						min={0}
@@ -174,12 +168,10 @@ const TransitionControl = props => {
 						initial={0}
 						onReset={() =>
 							handleChange({
-								[getAttributeKey(
-									'transition-delay',
-									false,
-									false,
-									breakpoint
-								)]:
+								[getAttributeKey({
+									key: 'transition-delay',
+									breakpoint,
+								})]:
 									getDefaultTransitionAttribute(
 										'transition-delay'
 									),
@@ -216,22 +208,18 @@ const TransitionControl = props => {
 						]}
 						onChange={val => {
 							handleChange({
-								[getAttributeKey(
-									'easing',
-									false,
-									false,
-									breakpoint
-								)]: val !== undefined && val !== '' ? val : '',
+								[getAttributeKey({
+									key: 'easing',
+									breakpoint,
+								})]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							handleChange({
-								[getAttributeKey(
-									'easing',
-									false,
-									false,
-									breakpoint
-								)]: getDefaultTransitionAttribute('easing'),
+								[getAttributeKey({
+									key: 'easing',
+									breakpoint,
+								})]: getDefaultTransitionAttribute('easing'),
 							})
 						}
 					/>

@@ -93,12 +93,10 @@ const FullSizeControl = props => {
 						selected={isBlockFullWidth}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'_fw',
-									false,
-									false,
-									breakpoint
-								)]: val ? 'full' : 'normal',
+								[getAttributeKey({
+									key: '_fw',
+									breakpoint,
+								})]: val ? 'full' : 'normal',
 							})
 						}
 					/>
@@ -112,20 +110,18 @@ const FullSizeControl = props => {
 										imageRatio: 'original',
 										imageSize: 'full',
 										imgWidth: 100,
-										[getAttributeKey(
-											'_fw',
-											false,
+										[getAttributeKey({
+											key: '_fw',
 											prefix,
-											breakpoint
-										)]: val ? 'full' : 'normal',
+											breakpoint,
+										})]: val ? 'full' : 'normal',
 								  })
 								: onChange({
-										[getAttributeKey(
-											'_fw',
-											false,
+										[getAttributeKey({
+											key: '_fw',
 											prefix,
-											breakpoint
-										)]: val ? 'full' : 'normal',
+											breakpoint,
+										})]: val ? 'full' : 'normal',
 								  })
 						}
 					/>
@@ -142,12 +138,11 @@ const FullSizeControl = props => {
 					})}
 					onChange={val => {
 						onChange({
-							[getAttributeKey(
-								'_wfc',
-								false,
+							[getAttributeKey({
+								key: '_wfc',
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						});
 					}}
 				/>
@@ -165,12 +160,11 @@ const FullSizeControl = props => {
 					})}
 					onChangeUnit={val =>
 						onChange({
-							[getAttributeKey(
-								'_w.u',
-								false,
+							[getAttributeKey({
+								key: '_w.u',
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						})
 					}
 					value={getLastBreakpointAttribute({
@@ -181,33 +175,36 @@ const FullSizeControl = props => {
 					})}
 					onChangeValue={val =>
 						onChange({
-							[getAttributeKey('_w', false, prefix, breakpoint)]:
-								val,
+							[getAttributeKey({
+								key: '_w',
+								prefix,
+								breakpoint,
+							})]: val,
 						})
 					}
 					onReset={() => {
 						onChange({
-							[getAttributeKey('_w', false, prefix, breakpoint)]:
-								getDefaultAttribute(
-									getAttributeKey(
-										'_w',
-										false,
-										prefix,
-										breakpoint
-									)
-								),
-							[getAttributeKey(
-								'_w.u',
-								false,
+							[getAttributeKey({
+								key: '_w',
 								prefix,
-								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'_w.u',
-									false,
+								breakpoint,
+							})]: getDefaultAttribute(
+								getAttributeKey({
+									key: '_w',
+
 									prefix,
-									breakpoint
-								)
+									breakpoint,
+								})
+							),
+							[getAttributeKey({
+								key: '_w.u',
+								prefix,
+								breakpoint,
+							})]: getDefaultAttribute(
+								getAttributeKey({
+									key: '_w.u',
+									breakpoint,
+								})
 							),
 							isReset: true,
 						});
@@ -232,12 +229,11 @@ const FullSizeControl = props => {
 					})}
 					onChange={val =>
 						onChange({
-							[getAttributeKey(
-								'_far',
-								false,
+							[getAttributeKey({
+								key: '_far',
 								prefix,
-								breakpoint
-							)]: val,
+								breakpoint,
+							})]: val,
 						})
 					}
 				/>
@@ -261,12 +257,11 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[getAttributeKey(
-									'_h.u',
-									false,
+								[getAttributeKey({
+									key: '_h.u',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -285,18 +280,16 @@ const FullSizeControl = props => {
 										`${prefix}_h-${breakpoint}`
 									),
 
-								[getAttributeKey(
-									'_h.u',
-									false,
+								[getAttributeKey({
+									key: '_h.u',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_h.u',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_h.u',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
 								isReset: true,
 							});
@@ -318,7 +311,7 @@ const FullSizeControl = props => {
 				}
 				onChange={val => {
 					onChange({
-						[getAttributeKey('_sao', false, prefix)]: val,
+						[getAttributeKey({ key: '_sao', prefix })]: val,
 					});
 				}}
 			/>
@@ -347,12 +340,11 @@ const FullSizeControl = props => {
 								})}
 								onChangeUnit={val =>
 									onChange({
-										[getAttributeKey(
-											'_mw.u',
-											false,
+										[getAttributeKey({
+											key: '_mw.u',
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								value={getLastBreakpointAttribute({
@@ -363,41 +355,36 @@ const FullSizeControl = props => {
 								})}
 								onChangeValue={val =>
 									onChange({
-										[getAttributeKey(
-											'_mw',
-											false,
+										[getAttributeKey({
+											key: '_mw',
 											prefix,
-											breakpoint
-										)]: val,
+											breakpoint,
+										})]: val,
 									})
 								}
 								onReset={() => {
 									onChange({
-										[getAttributeKey(
-											'_mw',
-											false,
+										[getAttributeKey({
+											key: '_mw',
 											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'_mw',
-												false,
+											breakpoint,
+										})]: getDefaultAttribute(
+											getAttributeKey({
+												key: '_mw',
 												prefix,
-												breakpoint
-											)
+												breakpoint,
+											})
 										),
-										[getAttributeKey(
-											'_mw.u',
-											false,
+										[getAttributeKey({
+											key: '_mw.u',
 											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'_mw.u',
-												false,
+											breakpoint,
+										})]: getDefaultAttribute(
+											getAttributeKey({
+												key: '_mw.u',
 												prefix,
-												breakpoint
-											)
+												breakpoint,
+											})
 										),
 										isReset: true,
 									});
@@ -425,12 +412,11 @@ const FullSizeControl = props => {
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[getAttributeKey(
-										'_miw.u',
-										false,
+									[getAttributeKey({
+										key: '_miw.u',
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
@@ -441,41 +427,36 @@ const FullSizeControl = props => {
 							})}
 							onChangeValue={val =>
 								onChange({
-									[getAttributeKey(
-										'_miw',
-										false,
+									[getAttributeKey({
+										key: '_miw',
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 							onReset={() => {
 								onChange({
-									[getAttributeKey(
-										'_miw',
-										false,
+									[getAttributeKey({
+										key: '_miw',
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'_miw',
-											false,
+										breakpoint,
+									})]: getDefaultAttribute(
+										getAttributeKey({
+											key: '_miw',
 											prefix,
-											breakpoint
-										)
+											breakpoint,
+										})
 									),
-									[getAttributeKey(
-										'_miw.u',
-										false,
+									[getAttributeKey({
+										key: '_miw.u',
 										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'_miw.u',
-											false,
+										breakpoint,
+									})]: getDefaultAttribute(
+										getAttributeKey({
+											key: '_miw.u',
 											prefix,
-											breakpoint
-										)
+											breakpoint,
+										})
 									),
 									isReset: true,
 								});
@@ -497,12 +478,11 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[getAttributeKey(
-									'_mh.u',
-									false,
+								[getAttributeKey({
+									key: '_mh.u',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -513,41 +493,36 @@ const FullSizeControl = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey(
-									'_mh',
-									false,
+								[getAttributeKey({
+									key: '_mh',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						onReset={() => {
 							onChange({
-								[getAttributeKey(
-									'_mh',
-									false,
+								[getAttributeKey({
+									key: '_mh',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_mh',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_mh',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
-								[getAttributeKey(
-									'_mh.u',
-									false,
+								[getAttributeKey({
+									key: '_mh.u',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_mh.u',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_mh.u',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
 								isReset: true,
 							});
@@ -568,12 +543,11 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[getAttributeKey(
-									'_mih.u',
-									false,
+								[getAttributeKey({
+									key: '_mih.u',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -584,41 +558,36 @@ const FullSizeControl = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey(
-									'_mih',
-									false,
+								[getAttributeKey({
+									key: '_mih',
 									prefix,
-									breakpoint
-								)]: val,
+									breakpoint,
+								})]: val,
 							})
 						}
 						onReset={() => {
 							onChange({
-								[getAttributeKey(
-									'_mih',
-									false,
+								[getAttributeKey({
+									key: '_mih',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_mih',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_mih',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
-								[getAttributeKey(
-									'_mih.u',
-									false,
+								[getAttributeKey({
+									key: '_mih.u',
 									prefix,
-									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'_mih.u',
-										false,
+									breakpoint,
+								})]: getDefaultAttribute(
+									getAttributeKey({
+										key: '_mih.u',
 										prefix,
-										breakpoint
-									)
+										breakpoint,
+									})
 								),
 								isReset: true,
 							});

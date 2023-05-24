@@ -39,10 +39,10 @@ const AccordionIconSettings = props => {
 				type='accordion-icon'
 				style={blockStyle}
 				onSelect={obj => {
-					const newSvgType = obj[getAttributeKey('_st', false, '')];
+					const newSvgType = obj[getAttributeKey({ key: '_st' })];
 
 					const icon = getIconWithColor(props, {
-						rawIcon: obj[getAttributeKey('i_c', false, '')],
+						rawIcon: obj[getAttributeKey({ key: 'i_c' })],
 						type: [
 							newSvgType !== 'Shape' && 'stroke',
 							newSvgType !== 'Line' && 'fill',
@@ -50,8 +50,8 @@ const AccordionIconSettings = props => {
 					});
 
 					onChange({
-						[getAttributeKey('_st', false, '')]: newSvgType,
-						[getAttributeKey('i_c', false, '')]: icon,
+						[getAttributeKey({ key: '_st' })]: newSvgType,
+						[getAttributeKey({ key: 'i_c' })]: icon,
 					});
 				}}
 				onRemove={obj => onChange(obj)}
@@ -62,12 +62,19 @@ const AccordionIconSettings = props => {
 				type='accordion-icon-active'
 				style={blockStyle}
 				onSelect={obj => {
-					const newSvgType = obj[getAttributeKey('_st', false, 'a-')];
+					const newSvgType =
+						obj[getAttributeKey({ key: '_st', prefix: 'a-' })];
 
 					const icon = getIconWithColor(
 						props,
 						{
-							rawIcon: obj[getAttributeKey('i_c', false, 'a-')],
+							rawIcon:
+								obj[
+									getAttributeKey({
+										key: 'i_c',
+										prefix: 'a-',
+									})
+								],
 							type: [
 								newSvgType !== 'Shape' && 'stroke',
 								newSvgType !== 'Line' && 'fill',
@@ -77,8 +84,9 @@ const AccordionIconSettings = props => {
 					);
 
 					onChange({
-						[getAttributeKey('_st', false, 'a-')]: newSvgType,
-						[getAttributeKey('i_c', false, 'a-')]: icon,
+						[getAttributeKey({ key: '_st', prefix: 'a-' })]:
+							newSvgType,
+						[getAttributeKey({ key: 'i_c', prefix: 'a-' })]: icon,
 					});
 				}}
 				onRemove={obj => onChange(obj)}

@@ -76,30 +76,26 @@ const DividerColor = props => {
 						paletteOpacity,
 					}) => {
 						onChange({
-							[getAttributeKey(
-								'_cc',
-								false,
-								'di-bo-',
-								breakpoint
-							)]: color,
-							[getAttributeKey(
-								'_pc',
-								false,
-								'di-bo-',
-								breakpoint
-							)]: paletteColor,
-							[getAttributeKey(
-								'_po',
-								false,
-								'di-bo-',
-								breakpoint
-							)]: paletteOpacity,
-							[getAttributeKey(
-								'_ps',
-								false,
-								'di-bo-',
-								breakpoint
-							)]: paletteStatus,
+							[getAttributeKey({
+								key: '_cc',
+								prefix: 'di-bo-',
+								breakpoint,
+							})]: color,
+							[getAttributeKey({
+								key: '_pc',
+								prefix: 'di-bo-',
+								breakpoint,
+							})]: paletteColor,
+							[getAttributeKey({
+								key: '_po',
+								prefix: 'di-bo-',
+								breakpoint,
+							})]: paletteOpacity,
+							[getAttributeKey({
+								key: '_ps',
+								prefix: 'di-bo-',
+								breakpoint,
+							})]: paletteStatus,
 						});
 					}}
 					deviceType={breakpoint}

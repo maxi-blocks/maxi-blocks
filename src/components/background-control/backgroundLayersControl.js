@@ -346,7 +346,7 @@ const getLayerCardTitle = props => {
 
 		onChange({
 			...layer,
-			[getAttributeKey('_d', isHover, false, breakpoint)]:
+			[getAttributeKey({ key: '_d', isHover, breakpoint })]:
 				currentDisplay === 'block' ? 'none' : 'block',
 		});
 	};
@@ -516,7 +516,8 @@ const BackgroundLayersControl = ({
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
 			onChange(
 				{
-					[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
+					[getAttributeKey({ key: 'b_ly', isHover: isHoverLayer })]:
+						newLayers,
 				},
 				target
 			);
@@ -529,7 +530,8 @@ const BackgroundLayersControl = ({
 		newLayers.push(layer);
 
 		onChange({
-			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
+			[getAttributeKey({ key: 'b_ly', isHover: isHoverLayer })]:
+				newLayers,
 			// ...(!isHoverLayer
 			// 	? {
 			// 			_t: {
@@ -559,7 +561,8 @@ const BackgroundLayersControl = ({
 		);
 
 		onChange({
-			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
+			[getAttributeKey({ key: 'b_ly', isHover: isHoverLayer })]:
+				newLayers,
 			transition: {
 				...transition,
 				transform: omit(transition.transform, `_${idOfRemovedLayer}`),

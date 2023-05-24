@@ -33,7 +33,7 @@ const getTypographyStyles = ({
 }) => {
 	const response = {};
 
-	const hoverStatus = obj[getAttributeKey('t.sh', false, prefix)];
+	const hoverStatus = obj[getAttributeKey({ key: 't.sh', prefix })];
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
 		scValues;
 
@@ -45,12 +45,12 @@ const getTypographyStyles = ({
 
 	const getValue = (target, breakpoint) =>
 		obj[
-			getAttributeKey(
-				target,
-				!isCustomFormat && isHover,
+			getAttributeKey({
+				key: target,
+				isHover: !isCustomFormat && isHover,
 				prefix,
-				breakpoint
-			)
+				breakpoint,
+			})
 		];
 
 	const getPaletteColorStatus = breakpoint => {

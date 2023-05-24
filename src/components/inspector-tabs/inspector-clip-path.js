@@ -57,11 +57,11 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 									})}
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributeKey(
-												'_cp.s',
-												true,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: '_cp.s',
+												isHover: true,
+												prefix,
+											})]: val,
 											...(isEmpty(
 												getLastBreakpointAttribute({
 													target: '_cp',
@@ -80,12 +80,13 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 												})
 											)
 												? {
-														[getAttributeKey(
-															'_cp',
-															true,
+														[getAttributeKey({
+															key: '_cp',
+															isHover: true,
 															prefix,
-															deviceType
-														)]: getLastBreakpointAttribute(
+															breakpoint:
+																deviceType,
+														})]: getLastBreakpointAttribute(
 															{
 																target: '_cp',
 																prefix,

@@ -98,8 +98,12 @@ const BoxShadowValueControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)]:
-						val !== undefined && val !== '' ? val : '',
+					[getAttributeKey({
+						key: `bs${type}`,
+						isHover,
+						prefix,
+						breakpoint,
+					})]: val !== undefined && val !== '' ? val : '',
 				});
 			}}
 			min={-100}
@@ -107,33 +111,42 @@ const BoxShadowValueControl = props => {
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({
-					[getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)]:
-						getDefaultAttribute(
-							getAttributeKey(
-								`bs${type}`,
-								isHover,
-								prefix,
-								breakpoint
-							)
-						),
-					[getAttributeKey(
-						`bs${type}.u`,
+					[getAttributeKey({
+						key: `bs${type}`,
 						isHover,
 						prefix,
-						breakpoint
-					)]: getDefaultAttribute(
-						getAttributeKey(
-							`bs${type}.u`,
+						breakpoint,
+					})]: getDefaultAttribute(
+						getAttributeKey({
+							key: `bs${type}`,
 							isHover,
 							prefix,
-							breakpoint
-						)
+							breakpoint,
+						})
+					),
+					[getAttributeKey({
+						key: `bs${type}.u`,
+						isHover,
+						prefix,
+						breakpoint,
+					})]: getDefaultAttribute(
+						getAttributeKey({
+							key: `bs${type}.u`,
+							isHover,
+							prefix,
+							breakpoint,
+						})
 					),
 					isReset: true,
 				})
 			}
 			initialPosition={getDefaultAttribute(
-				getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)
+				getAttributeKey({
+					key: `bs${type}`,
+					isHover,
+					prefix,
+					breakpoint,
+				})
 			)}
 			{...(!isToolbar && { enableUnit: true })}
 			unit={getLastBreakpointAttribute({
@@ -145,12 +158,12 @@ const BoxShadowValueControl = props => {
 			})}
 			onChangeUnit={val =>
 				onChange({
-					[getAttributeKey(
-						`bs${type}.u`,
+					[getAttributeKey({
+						key: `bs${type}.u`,
 						isHover,
 						prefix,
-						breakpoint
-					)]: val,
+						breakpoint,
+					})]: val,
 				})
 			}
 			allowedUnits={['px', 'em', 'vw']}
@@ -179,7 +192,7 @@ const BoxShadowControl = props => {
 	const onChangeDefault = defaultProp => {
 		const response = {};
 
-		defaultProp[getAttributeKey('bs_pc', false, prefix)] =
+		defaultProp[getAttributeKey({ key: 'bs_pc', prefix })] =
 			getLastBreakpointAttribute({
 				target: 'bs_pc',
 				prefix,
@@ -188,7 +201,7 @@ const BoxShadowControl = props => {
 				isHover,
 			});
 
-		defaultProp[getAttributeKey('bs_cc', false, prefix)] =
+		defaultProp[getAttributeKey({ key: 'bs_cc', prefix })] =
 			getLastBreakpointAttribute({
 				target: 'bs_cc',
 				prefix,
@@ -198,7 +211,7 @@ const BoxShadowControl = props => {
 			});
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
-			response[getAttributeKey(key, isHover, null, breakpoint)] = value;
+			response[getAttributeKey({ key, isHover, breakpoint })] = value;
 		});
 
 		onChange(response);
@@ -364,30 +377,30 @@ const BoxShadowControl = props => {
 					paletteOpacity,
 				}) => {
 					onChange({
-						[getAttributeKey(
-							'_cc',
+						[getAttributeKey({
+							key: '_cc',
 							isHover,
-							`${prefix}bs`,
-							breakpoint
-						)]: color,
-						[getAttributeKey(
-							'_ps',
+							prefix: `${prefix}bs`,
+							breakpoint,
+						})]: color,
+						[getAttributeKey({
+							key: '_ps',
 							isHover,
-							`${prefix}bs`,
-							breakpoint
-						)]: paletteStatus,
-						[getAttributeKey(
-							'_pc',
+							prefix: `${prefix}bs`,
+							breakpoint,
+						})]: paletteStatus,
+						[getAttributeKey({
+							key: '_pc',
 							isHover,
-							`${prefix}bs`,
-							breakpoint
-						)]: paletteColor,
-						[getAttributeKey(
-							'_po',
+							prefix: `${prefix}bs`,
+							breakpoint,
+						})]: paletteColor,
+						[getAttributeKey({
+							key: '_po',
 							isHover,
-							`${prefix}bs`,
-							breakpoint
-						)]: paletteOpacity,
+							prefix: `${prefix}bs`,
+							breakpoint,
+						})]: paletteOpacity,
 					});
 				}}
 				disableGradient
@@ -411,12 +424,12 @@ const BoxShadowControl = props => {
 							})}
 							onChange={val =>
 								onChange({
-									[getAttributeKey(
-										'bs_in',
+									[getAttributeKey({
+										key: 'bs_in',
 										isHover,
 										prefix,
-										breakpoint
-									)]: val,
+										breakpoint,
+									})]: val,
 								})
 							}
 						/>

@@ -101,24 +101,20 @@ const getTextStyles = (obj, blockStyle) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
 			...(!isNil(
-				obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]
+				obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })]
 			) && {
 				'font-size': `${
-					obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]
+					obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })]
 				}px`,
 			}),
-			...(!isNil(
-				obj[getAttributeKey('_ff', false, false, breakpoint)]
-			) && {
+			...(!isNil(obj[getAttributeKey({ key: '_ff', breakpoint })]) && {
 				'font-family': `${
-					obj[getAttributeKey('_ff', false, false, breakpoint)]
+					obj[getAttributeKey({ key: '_ff', breakpoint })]
 				}`,
 			}),
-			...(!isNil(
-				obj[getAttributeKey('_fwe', false, false, breakpoint)]
-			) && {
+			...(!isNil(obj[getAttributeKey({ key: '_fwe', breakpoint })]) && {
 				'font-weight': `${
-					obj[getAttributeKey('_fwe', false, false, breakpoint)]
+					obj[getAttributeKey({ key: '_fwe', breakpoint })]
 				}`,
 			}),
 			[typeOfStyle]: getColor(breakpoint),
@@ -135,9 +131,9 @@ const getSupStyles = obj => {
 	};
 
 	breakpoints.forEach(breakpoint => {
-		if (!isNil(obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)]))
+		if (!isNil(obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })]))
 			response.general['font-size'] = `${
-				obj[getAttributeKey('nc-ti_fs', false, false, breakpoint)] / 1.5
+				obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })] / 1.5
 			}px`;
 	});
 

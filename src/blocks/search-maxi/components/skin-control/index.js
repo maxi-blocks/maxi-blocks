@@ -16,7 +16,6 @@ import { prefixes } from '../../data';
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	const { buttonPrefix, inputPrefix } = prefixes;
 	const buttonWO = buttonPrefix.replace('-', '');
-	const inputWO = inputPrefix.replace('-', '');
 
 	const getDefaultAttributes = attributeKeys =>
 		attributeKeys.reduce((acc, key) => {
@@ -36,7 +35,11 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	]);
 
 	const classicResetStyles = {
-		[getAttributeKey('_pc', false, `${inputPrefix}bc-`, 'general')]: 1,
+		[getAttributeKey({
+			key: '_pc',
+			prefix: `${inputPrefix}bc-`,
+			breakpoint: 'general',
+		})]: 1,
 	};
 
 	return (
@@ -61,12 +64,11 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 				onChange={skin => {
 					if (skin === 'classic') {
 						onChange({
-							[getAttributeKey(
-								'_pc',
-								false,
-								`${inputPrefix}bc-`,
-								'general'
-							)]: 2,
+							[getAttributeKey({
+								key: '_pc',
+								prefix: `${inputPrefix}bc-`,
+								breakpoint: 'general',
+							})]: 2,
 							...iconRevealResetStyles,
 						});
 					} else if (skin === 'boxed') {

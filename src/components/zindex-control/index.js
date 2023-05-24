@@ -31,7 +31,7 @@ const ZIndexControl = props => {
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
 			defaultValue={getDefaultAttribute(
-				getAttributeKey('_zi', false, '', breakpoint)
+				getAttributeKey({ key: '_zi', breakpoint })
 			)}
 			value={getLastBreakpointAttribute({
 				target: '_zi',
@@ -40,7 +40,7 @@ const ZIndexControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[getAttributeKey('_zi', false, '', breakpoint)]:
+					[getAttributeKey({ key: '_zi', breakpoint })]:
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
@@ -48,15 +48,15 @@ const ZIndexControl = props => {
 			max={9999}
 			onReset={() =>
 				onChange({
-					[getAttributeKey('_zi', false, '', breakpoint)]:
+					[getAttributeKey({ key: '_zi', breakpoint })]:
 						getDefaultAttribute(
-							getAttributeKey('_zi', false, '', breakpoint)
+							getAttributeKey({ key: '_zi', breakpoint })
 						),
 					isReset: true,
 				})
 			}
 			initialPosition={getDefaultAttribute(
-				getAttributeKey('_zi', false, '', breakpoint)
+				getAttributeKey({ key: '_zi', breakpoint })
 			)}
 		/>
 	);

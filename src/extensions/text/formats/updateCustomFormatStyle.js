@@ -108,7 +108,7 @@ export const styleObjectManipulator = ({
 				)
 		)
 	)
-		delete style[getAttributeKey('_cc', false, breakpoint)];
+		delete style[getAttributeKey({ key: '_cc', breakpoint })];
 
 	return style;
 };

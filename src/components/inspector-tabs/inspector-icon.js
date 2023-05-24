@@ -143,11 +143,10 @@ const icon = ({
 									selected={hoverStatus}
 									onChange={val =>
 										maxiSetAttributes({
-											[getAttributeKey(
-												'i.sh',
-												false,
-												prefix
-											)]: val,
+											[getAttributeKey({
+												key: 'i.sh',
+												prefix,
+											})]: val,
 										})
 									}
 								/>

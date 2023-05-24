@@ -200,7 +200,12 @@ const LinkContent = props => {
 	const prepareUrl = attributes => {
 		const { url } = attributes;
 
-		if (url?.startsWith('#')) return attributes;
+		if (
+			url?.startsWith('#') ||
+			url?.startsWith('http') ||
+			url.startsWith('localhost')
+		)
+			return attributes;
 
 		if (!url.includes('www.')) attributes.url = `https://www.${url}`;
 		else if (!url.includes('http:')) attributes.url = `https://${url}`;

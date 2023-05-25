@@ -515,7 +515,9 @@ class MaxiBlocks_DynamicContent
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            $post_data = excerpt_remove_blocks($post_data);
+            if($dc_field === 'excerpt') {
+                $post_data = excerpt_remove_blocks($post_data);
+            }
             $post_data = wp_strip_all_tags($post_data);
 
             // Ensures no double or more line breaks

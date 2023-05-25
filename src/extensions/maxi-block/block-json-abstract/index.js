@@ -59,7 +59,11 @@ const blockJsonAbstracter = async () => {
 
 	// Iterate over the `maxi-blocks` blocks
 	for (const maxiBlock of maxiBlocks) {
-		const { attributes: blockAttributes } = maxiBlock;
+		const {
+			attributes: blockAttributes,
+			customCss: blockCustomCss,
+			scProps: blockSCProps,
+		} = maxiBlock;
 		const blockName = maxiBlock.name.replace('maxi-blocks/', '');
 
 		// Get the block.json file path
@@ -81,6 +85,14 @@ const blockJsonAbstracter = async () => {
 
 		// Replace the attributes of the block.json file
 		blockFileContent.attributes = blockAttributes;
+
+		// Replace the customCss of the block.json file
+		blockFileContent.customCss = blockCustomCss;
+
+		// Replace the scProps of the block.json file if they exist
+		if (blockSCProps) {
+			blockFileContent.scProps = blockSCProps;
+		}
 
 		// Write the new block.json file
 		writeFile(blockPath, JSON.stringify(blockFileContent, null, 2))

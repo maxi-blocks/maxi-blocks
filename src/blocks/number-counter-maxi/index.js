@@ -53,4 +53,5 @@ registerBlockType(metadata, {
 		selectors: customCss.selectors,
 		migrators: [NCMigrator],
 	}),
+	customCss,
 });

@@ -37,6 +37,11 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
         protected $block;
 
         /**
+         * Block custom css
+         */
+        protected $block_custom_css = [];
+
+        /**
          * Registers the plugin.
          */
         public static function register()
@@ -54,52 +59,14 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
             return self::$instance;
         }
         
-        public static function get_styles($props, $context = [])
+        public static function get_styles($props, $customCss, $sc_props, $context = [])
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $row_border_radius = $context['row_border_radius'] ?? [];
 
-            // TODO: update data automatically. This data is from Group Maxi.
             $data = [
-                'customCss' => [
-                    'selectors' => [
-                        'Column' => [
-                            'normal' => ['label' => 'Column', 'target' => ''],
-                            'hover' => [
-                                'label' => 'Column on hover',
-                                'target' => ':hover',
-                            ],
-                        ],
-                        'before Column' => [
-                            'normal' => [
-                                'label' => 'Column ::before',
-                                'target' => '::before',
-                            ],
-                            'hover' => [
-                                'label' => 'Column ::before on hover',
-                                'target' => ':hover::before',
-                            ],
-                        ],
-                        'after Column' => [
-                            'normal' => [
-                                'label' => 'Column ::after',
-                                'target' => '::after',
-                            ],
-                            'hover' => [
-                                'label' => 'Column ::after on hover',
-                                'target' => ':hover::after',
-                            ],
-                        ],
-                    ],
-                    'categories' => [
-                        'Column',
-                        'before Column',
-                        'after Column',
-                        'background',
-                        'background hover',
-                    ],
-                ],
+                'customCss' => $customCss,
             ];
 
             $styles_obj = [

@@ -1122,65 +1122,75 @@ function get_block_background_styles($args)
 }
 
 
-function get_background_styles($is_hover, $prefix, $is_button, $block_style, $is_icon_inherit, $sc_values, $background_color_property, ...$props)
+function get_background_styles($args)
 {
+    $is_hover = $args['is_hover'] ?? false;
+    $prefix = $args['prefix'] ?? '';
+    $is_button = $args['is_button'] ?? false;
+    $block_style = $args['block_style'];
+    $is_icon_inherit = $args['is_icon_inherit'] ?? false;
+    $sc_values  = $args['sc_values'] ?? [];
+    $background_color_property = $args['background_color_property'] ?? 'background-color';
+    $props = $args;
+
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        $currentActiveMedia = get_last_breakpoint_attribute(
-            $prefix . "background-active-media",
-            $breakpoint,
-            $props,
-            $is_hover
-        );
-
-        if (!$currentActiveMedia) {
+        $current_active_media = get_last_breakpoint_attribute(array(
+            'target' => "{$prefix}background-active-media",
+            'breakpoint' => $breakpoint,
+            'attributes' => $props,
+            'is_hover' => $is_hover,
+        ));
+    
+        if (!$current_active_media) {
             continue;
         }
 
-        if ($currentActiveMedia === "color") {
-            $colorBackground = get_color_background_object(
-                get_group_attributes(
-                    $props,
-                    ["background", "backgroundColor"],
-                    $is_hover,
-                    $prefix
-                ),
-                $block_style,
-                $is_button,
-                $breakpoint,
-                $is_hover,
-                $prefix,
-                $is_icon_inherit,
-                $sc_values,
-                $background_color_property
+        if ($current_active_media === 'color') {
+            $response['background'] = get_color_background_object(
+                array_merge(
+                    get_group_attributes(
+                        $props,
+                        array('background', 'backgroundColor'),
+                        $is_hover,
+                        $prefix
+                    ),
+                    [
+                        'block_style' => $block_style,
+                        'is_button' => $is_button,
+                        'breakpoint' => $breakpoint,
+                        'is_hover' => $is_hover,
+                        'prefix' => $prefix,
+                        'is_icon_inherit' => $is_icon_inherit,
+                        'sc_values' => $sc_values,
+                        'background_color_property' => $background_color_property,
+                    ]
+                )
             );
-
-            $response = array_merge($response, ["background" => $colorBackground]);
         }
-
-        if ($currentActiveMedia === "gradient") {
-            $gradientBackground = get_gradient_background_object(
-                get_group_attributes(
-                    $props,
-                    ["backgroundColor", "backgroundGradient"],
-                    $is_hover,
-                    $prefix
-                ),
-                $block_style,
-                $is_button,
-                $breakpoint,
-                $is_hover,
-                $prefix,
-                $is_icon_inherit,
-                $sc_values
+        if ($current_active_media === 'gradient') {
+            $response['background'] = get_gradient_background_object(
+                array(
+                    ...get_group_attributes(
+                        $props,
+                        array('background', 'backgroundGradient'),
+                        $is_hover,
+                        $prefix
+                    ),
+                    'block_style' => $block_style,
+                    'is_button' => $is_button,
+                    'breakpoint' => $breakpoint,
+                    'is_hover' => $is_hover,
+                    'prefix' => $prefix,
+                    'is_icon_inherit' => $is_icon_inherit,
+                    'sc_values' => $sc_values,
+                )
             );
-
-            $response = array_merge($response, ["background" => $gradientBackground]);
         }
     }
-
+    
     return $response;
 }

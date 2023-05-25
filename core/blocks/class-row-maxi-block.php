@@ -37,6 +37,11 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
         protected $block;
 
         /**
+         * Block custom css
+         */
+        protected $block_custom_css = [];
+
+        /**
          * Registers the plugin.
          */
         public static function register()
@@ -54,51 +59,13 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
             return self::$instance;
         }
         
-        public static function get_styles($props)
+        public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            // TODO: update data automatically. This data is from Group Maxi.
             $data = [
-                'customCss' => [
-                    'selectors' => [
-                        'Row' => [
-                            'normal' => ['label' => 'Row', 'target' => ''],
-                            'hover' => [
-                                'label' => 'Row on hover',
-                                'target' => ':hover',
-                            ],
-                        ],
-                        'before Row' => [
-                            'normal' => [
-                                'label' => 'Row ::before',
-                                'target' => '::before',
-                            ],
-                            'hover' => [
-                                'label' => 'Row ::before on hover',
-                                'target' => ':hover::before',
-                            ],
-                        ],
-                        'after Row' => [
-                            'normal' => [
-                                'label' => 'Row ::after',
-                                'target' => '::after',
-                            ],
-                            'hover' => [
-                                'label' => 'Row ::after on hover',
-                                'target' => ':hover::after',
-                            ],
-                        ],
-                    ],
-                    'categories' => [
-                        'Row',
-                        'before Row',
-                        'after Row',
-                        'background',
-                        'background hover',
-                    ],
-                ],
+                'customCss' => $customCss,
             ];
 
             $styles_obj = [

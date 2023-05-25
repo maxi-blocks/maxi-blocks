@@ -9,7 +9,7 @@ function get_size_styles($obj, $prefix = '')
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-    foreach($breakpoints as $breakpoint) {
+    foreach ($breakpoints as $breakpoint) {
         $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
             $full_width_normal_styles = [];
 
@@ -50,7 +50,7 @@ function get_size_styles($obj, $prefix = '')
                 }
             }
 
-            if (!$obj[$prefix . 'size-advanced-options']) {
+            if (isset($obj[$prefix . 'size-advanced-options']) && !$obj[$prefix . 'size-advanced-options']) {
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
@@ -87,7 +87,7 @@ function get_size_styles($obj, $prefix = '')
             }
 
             if (
-                (array_key_exists($prefix . $target . '-' . $breakpoint, $obj) && is_numeric($obj[$prefix . $target . '-' . $breakpoint])) || 
+                (array_key_exists($prefix . $target . '-' . $breakpoint, $obj) && is_numeric($obj[$prefix . $target . '-' . $breakpoint])) ||
                 isset($obj[$prefix . $target . '-unit-' . $breakpoint])
             ) {
                 $num = get_last_breakpoint_attribute([

@@ -58,4 +58,5 @@ registerBlockType(metadata, {
 		selectors: customCss.selectors,
 		migrators: [SVGTransitionMigrator],
 	}),
+	customCss,
 });

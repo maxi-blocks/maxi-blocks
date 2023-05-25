@@ -26,12 +26,15 @@ function get_box_shadow_styles($params)
                 'breakpoint' => $breakpoint
             ]);
 
-            $default_value = $breakpoint === 'general' ? get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint) : get_last_breakpoint_attribute([
-                'target' => $prefix . 'box-shadow-' . $target,
-                'breakpoint' => get_prev_breakpoint($breakpoint),
-                'attributes' => $obj,
-                'is_hover' => $is_hover
-            ]);
+            $default_value =
+                $breakpoint === 'general' ?
+                    get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint)
+                    : get_last_breakpoint_attribute([
+                        'target' => $prefix . 'box-shadow-' . $target,
+                        'breakpoint' => get_prev_breakpoint($breakpoint),
+                        'attributes' => $obj,
+                        'is_hover' => $is_hover
+                    ]);
 
             return [
                 'value' => $value,

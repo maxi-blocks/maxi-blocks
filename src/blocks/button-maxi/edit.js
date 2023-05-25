@@ -19,7 +19,7 @@ import {
 } from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
-import { copyPasteMapping, maxiAttributes } from './data';
+import { copyPasteMapping, maxiAttributes, scProps } from './data';
 import { getDCValues } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
@@ -48,17 +48,7 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
-	scProps = {
-		scElements: [
-			'hover-border-color-global',
-			'hover-border-color-all',
-			'hover-color-global',
-			'hover-color-all',
-			'hover-background-color-global',
-			'hover-background-color-all',
-		],
-		scType: 'button',
-	};
+	scProps = scProps;
 
 	typingTimeout = 0;
 

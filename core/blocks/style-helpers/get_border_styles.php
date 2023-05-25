@@ -4,16 +4,6 @@
  * IMPORTANT: version from https://github.com/maxi-blocks/maxi-blocks/pull/4679
  */
 
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_last_breakpoint_attribute.php';
-
-function get_prev_breakpoint($breakpoint)
-{
-    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-    $index = array_search($breakpoint, $breakpoints);
-    return $index > 0 ? $breakpoints[$index - 1] : 'general';
-}
-
 function get_border_styles($args)
 {
     $obj = $args['obj'];

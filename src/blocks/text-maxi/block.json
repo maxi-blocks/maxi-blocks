@@ -6339,5 +6339,103 @@
     "align": false,
     "anchor": false,
     "html": false
+  },
+  "customCss": {
+    "selectors": {
+      "text wrapper": {
+        "normal": {
+          "label": "text wrapper",
+          "target": ""
+        },
+        "hover": {
+          "label": "text wrapper on hover",
+          "target": ":hover"
+        }
+      },
+      "links": {
+        "normal": {
+          "label": "links",
+          "target": " .maxi-text-block--link"
+        },
+        "hover": {
+          "label": "links on hover",
+          "target": " .maxi-text-block--link:hover"
+        }
+      },
+      "ordered list": {
+        "normal": {
+          "label": "ordered list",
+          "target": " ol.maxi-text-block__content"
+        },
+        "hover": {
+          "label": "ordered list on hover",
+          "target": " ol.maxi-text-block__content:hover"
+        }
+      },
+      "unordered list": {
+        "normal": {
+          "label": "unordered list",
+          "target": " ul.maxi-text-block__content"
+        },
+        "hover": {
+          "label": "unordered list on hover",
+          "target": " ul.maxi-text-block__content:hover"
+        }
+      },
+      "text": {
+        "normal": {
+          "label": "text",
+          "target": " .maxi-text-block__content"
+        },
+        "hover": {
+          "label": "text on hover",
+          "target": " .maxi-text-block__content:hover"
+        }
+      },
+      "before text": {
+        "normal": {
+          "label": "text ::before",
+          "target": " .maxi-text-block__content::before"
+        },
+        "hover": {
+          "label": "text ::before on hover",
+          "target": " .maxi-text-block__content:hover::before"
+        }
+      },
+      "after text": {
+        "normal": {
+          "label": "text ::after",
+          "target": " .maxi-text-block__content::after"
+        },
+        "hover": {
+          "label": "text ::after on hover",
+          "target": " .maxi-text-block__content:hover::after"
+        }
+      }
+    },
+    "categories": [
+      "text wrapper",
+      "text",
+      "links",
+      "ordered list",
+      "unordered list",
+      "before text",
+      "after text",
+      "background",
+      "background hover"
+    ]
+  },
+  "scProps": {
+    "scElements": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "scType": "color"
   }
 }

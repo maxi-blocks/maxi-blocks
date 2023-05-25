@@ -405,6 +405,17 @@ const maxiAttributes = {
 	'button-padding-bottom-xxl': '23',
 	'button-padding-left-xxl': '55',
 };
+const scProps = {
+	scElements: [
+		'hover-border-color-global',
+		'hover-border-color-all',
+		'hover-color-global',
+		'hover-color-all',
+		'hover-background-color-global',
+		'hover-background-color-all',
+	],
+	scType: 'button',
+};
 
 const data = {
 	name,
@@ -413,6 +424,7 @@ const data = {
 	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
+	scProps,
 };
 
 export {
@@ -421,5 +433,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
+	scProps,
 };
 export default data;

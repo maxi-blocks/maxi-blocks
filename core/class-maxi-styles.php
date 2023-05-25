@@ -22,6 +22,9 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-container-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-row-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
 
 class MaxiBlocks_Styles
 {
@@ -408,6 +411,11 @@ class MaxiBlocks_Styles
 
         $block_name = $block['blockName'];
         $props = $block['attrs'];
+        $block_style = $props['blockStyle'];
+
+        if (strpos($block_name, 'maxi-blocks') === false) {
+            return $styles;
+        }
 
         $block_instance = null;
 
@@ -432,10 +440,27 @@ class MaxiBlocks_Styles
                     $block_instance = MaxiBlocks_Column_Maxi_Block::get_instance();
                 }
                 break;
+            case 'maxi-blocks/accordion-maxi':
+                if (class_exists('MaxiBlocks_Accordion_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Accordion_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/pane-maxi':
+                if (class_exists('MaxiBlocks_Pane_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Pane_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/button-maxi':
+                if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Button_Maxi_Block::get_instance();
+                }
+                break;
         }
 
         $props = $block_instance->get_block_attributes($props);
-        $styles = $block_instance->get_styles($props, $context);
+        $customCss = $block_instance->get_block_custom_css($props);
+        $sc_props = $block_instance->get_block_sc_vars($block_style);
+        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
 
         $inner_blocks = $block['innerBlocks'];
 

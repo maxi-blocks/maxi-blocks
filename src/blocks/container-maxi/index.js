@@ -49,4 +49,5 @@ registerBlockType(metadata, {
 		selectors: customCss.selectors,
 		migrators: [shapeDividerMigrator],
 	}),
+	customCss,
 });

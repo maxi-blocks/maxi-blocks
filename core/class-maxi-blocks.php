@@ -15,6 +15,9 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-container-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-row-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
@@ -109,6 +112,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
             }
             if (class_exists('MaxiBlocks_Column_Maxi_Block')) {
                 MaxiBlocks_Column_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Accordion_Maxi_Block')) {
+                MaxiBlocks_Accordion_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Pane_Maxi_Block')) {
+                MaxiBlocks_Pane_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
+                MaxiBlocks_Button_Maxi_Block::register();
             }
         }
 

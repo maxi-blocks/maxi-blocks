@@ -47,4 +47,5 @@ registerBlockType(metadata, {
 		prefix: 'image-',
 		selectors: customCss.selectors,
 	}),
+	customCss,
 });

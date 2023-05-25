@@ -45,4 +45,5 @@ registerBlockType(metadata, {
 		save,
 		selectors: customCss.selectors,
 	}),
+	customCss,
 });

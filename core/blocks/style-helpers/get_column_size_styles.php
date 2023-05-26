@@ -33,11 +33,15 @@ function get_column_num($columns_size, $unique_id, $breakpoint)
         }
     }
 
-    $row = array_filter($column_size_matrix, function ($row) use ($unique_id) {
-        return in_array($unique_id, $row);
-    });
+    $result = [];
 
-    return count($row) > 0 ? count($row[0]) : null;
+    foreach ($column_size_matrix as $column_unique_id) {
+        if (in_array($unique_id, $column_unique_id)) {
+            $result[] = $column_unique_id;
+        }
+    }
+
+    return count($result) > 0 ? count($result[0]) : null;
 }
 
 function get_column_size_styles($obj, $row_gap_props, $unique_id)

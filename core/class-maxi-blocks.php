@@ -18,6 +18,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-divider-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
@@ -121,6 +126,21 @@ if (!class_exists('MaxiBlocks_Blocks')):
             }
             if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
                 MaxiBlocks_Button_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Divider_Maxi_Block')) {
+                MaxiBlocks_Divider_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Image_Maxi_Block')) {
+                MaxiBlocks_Image_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')) {
+                MaxiBlocks_SVG_Icon_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Text_Maxi_Block')) {
+                MaxiBlocks_Text_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
+                MaxiBlocks_Video_Maxi_Block::register();
             }
         }
 

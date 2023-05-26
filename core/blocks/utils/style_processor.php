@@ -16,14 +16,14 @@ function repeated_breakpoint_cleaner($obj)
 {
     $response = $obj;
 
-    $breakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
+    $breakpoints = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'general'];
     foreach ($breakpoints as $i => $breakpoint) {
         if (!isset($obj[$breakpoint])) {
             continue;
         }
 
         foreach ($obj[$breakpoint] as $key => $val) {
-            $prev_breakpoint = ($breakpoint !== 'xl') ? $breakpoints[$i + 1] : 'general';
+            $prev_breakpoint = ($breakpoint !== 'xl' && $breakpoint !== 'general') ? $breakpoints[$i + 1] : 'general';
 
             if (isset($obj[$prev_breakpoint][$key]) && $obj[$prev_breakpoint][$key] === $val) {
                 unset($response[$breakpoint][$key]);

@@ -3,14 +3,14 @@
 function get_typography_styles($args)
 {
     $obj = $args['obj'];
-    $is_hover = isset($args['isHover']) ? $args['isHover'] : false;
+    $is_hover = isset($args['is_hover']) ? $args['is_hover'] : false;
     $prefix = isset($args['prefix']) ? $args['prefix'] : '';
-    $custom_format_typography = isset($args['customFormatTypography']) ? $args['customFormatTypography'] : false;
+    $custom_format_typography = isset($args['custom_format_typography']) ? $args['custom_format_typography'] : false;
     $block_style = isset($args['block_style']) ? $args['block_style'] : '';
-    $text_level = isset($args['textLevel']) ? $args['textLevel'] : 'p';
-    $normal_typography = isset($args['normalTypography']) ? $args['normalTypography'] : null;
-    $sc_values = isset($args['scValues']) ? $args['scValues'] : array();
-    $is_style_cards = isset($args['isStyleCards']) ? $args['isStyleCards'] : false;
+    $text_level = isset($args['text_level']) ? $args['text_level'] : 'p';
+    $normal_typography = isset($args['normal_typography']) ? $args['normal_typography'] : null;
+    $sc_values = isset($args['sc_values']) ? $args['sc_values'] : array();
+    $is_style_cards = isset($args['is_style_cards']) ? $args['is_style_cards'] : false;
 
     $response = array();
 
@@ -37,7 +37,7 @@ function get_typography_styles($args)
                 'target' => $prefix . 'palette-status',
                 'breakpoint' => $breakpoint,
                 'attributes' => $is_custom_format ? $custom_format_typography : $obj,
-                'isHover' => $is_hover
+                'is_hover' => $is_hover
             )
         );
 
@@ -51,7 +51,7 @@ function get_typography_styles($args)
                     'target' => $prefix . 'palette-status',
                     'breakpoint' => $breakpoint,
                     'attributes' => $custom_format_typography,
-                    'isHover' => $is_hover
+                    'is_hover' => $is_hover
                 )
             );
         }
@@ -122,27 +122,27 @@ function get_typography_styles($args)
     $breakpoints = array('general', 'sm', 'md', 'lg', 'xl', 'xxl');
 
     foreach ($breakpoints as $breakpoint) {
-        $typography = array(
-            !is_null($get_value('font-family', $breakpoint)) ? ['font-family' => '"' . $get_value('font-family', $breakpoint) . '"'] : null,
-            !is_null($get_value('font-size', $breakpoint)) ? ['font-size' => $get_value('font-size', $breakpoint) . $get_unit_value('font-size-unit', $breakpoint)] : null,
-            !is_null($get_value('line-height', $breakpoint)) ? ['line-height' => $get_value('line-height', $breakpoint) . ($get_unit_value('line-height-unit', $breakpoint) ?: '')] : null,
-            !is_null($get_value('letter-spacing', $breakpoint)) ? ['letter-spacing' => $get_value('letter-spacing', $breakpoint) . $get_unit_value('letter-spacing-unit', $breakpoint)] : null,
-            !is_null($get_value('font-weight', $breakpoint)) ? ['font-weight' => $get_value('font-weight', $breakpoint)] : null,
-            !is_null($get_value('text-transform', $breakpoint)) ? ['text-transform' => $get_value('text-transform', $breakpoint)] : null,
-            !is_null($get_value('font-style', $breakpoint)) ? ['font-style' => $get_value('font-style', $breakpoint)] : null,
-            !is_null($get_value('text-decoration', $breakpoint)) ? ['text-decoration' => $get_value('text-decoration', $breakpoint)] : null,
-            !is_null($get_value('text-indent', $breakpoint)) ? ['text-indent' => $get_value('text-indent', $breakpoint) . $get_unit_value('text-indent-unit', $breakpoint)] : null,
-            !is_null($get_value('text-shadow', $breakpoint)) ? ['text-shadow' => $get_value('text-shadow', $breakpoint)] : null,
-            !is_null($get_value('vertical-align', $breakpoint)) ? ['vertical-align' => $get_value('vertical-align', $breakpoint)] : null,
-            !is_null($get_value('text-orientation', $breakpoint)) ? ['writing-mode' => $get_value('text-orientation', $breakpoint) !== 'unset' ? 'vertical-rl' : 'unset'] : null,
-            !is_null($get_value('text-orientation', $breakpoint)) ? ['text-orientation' => $get_value('text-orientation', $breakpoint)] : null,
-            !is_null($get_value('text-direction', $breakpoint)) ? ['direction' => $get_value('text-direction', $breakpoint)] : null,
-            !is_null($get_value('white-space', $breakpoint)) ? ['white-space' => $get_value('white-space', $breakpoint)] : null,
-            !is_null($get_value('word-spacing', $breakpoint)) ? ['word-spacing' => $get_value('word-spacing', $breakpoint) . $get_unit_value('word-spacing-unit', $breakpoint)] : null,
-            !is_null($get_value('bottom-gap', $breakpoint)) ? ['margin-bottom' => $get_value('bottom-gap', $breakpoint) . $get_unit_value('bottom-gap-unit', $breakpoint)] : null,
+        $typography = array_merge(
+            !is_null($get_value('font-family', $breakpoint)) ? ['font-family' => '"' . $get_value('font-family', $breakpoint) . '"'] : [],
+            !is_null($get_value('font-size', $breakpoint)) ? ['font-size' => $get_value('font-size', $breakpoint) . $get_unit_value('font-size-unit', $breakpoint)] : [],
+            !is_null($get_value('line-height', $breakpoint)) ? ['line-height' => $get_value('line-height', $breakpoint) . ($get_unit_value('line-height-unit', $breakpoint) ?: '')] : [],
+            !is_null($get_value('letter-spacing', $breakpoint)) ? ['letter-spacing' => $get_value('letter-spacing', $breakpoint) . $get_unit_value('letter-spacing-unit', $breakpoint)] : [],
+            !is_null($get_value('font-weight', $breakpoint)) ? ['font-weight' => $get_value('font-weight', $breakpoint)] : [],
+            !is_null($get_value('text-transform', $breakpoint)) ? ['text-transform' => $get_value('text-transform', $breakpoint)] : [],
+            !is_null($get_value('font-style', $breakpoint)) ? ['font-style' => $get_value('font-style', $breakpoint)] : [],
+            !is_null($get_value('text-decoration', $breakpoint)) ? ['text-decoration' => $get_value('text-decoration', $breakpoint)] : [],
+            !is_null($get_value('text-indent', $breakpoint)) ? ['text-indent' => $get_value('text-indent', $breakpoint) . $get_unit_value('text-indent-unit', $breakpoint)] : [],
+            !is_null($get_value('text-shadow', $breakpoint)) ? ['text-shadow' => $get_value('text-shadow', $breakpoint)] : [],
+            !is_null($get_value('vertical-align', $breakpoint)) ? ['vertical-align' => $get_value('vertical-align', $breakpoint)] : [],
+            !is_null($get_value('text-orientation', $breakpoint)) ? ['writing-mode' => $get_value('text-orientation', $breakpoint) !== 'unset' ? 'vertical-rl' : 'unset'] : [],
+            !is_null($get_value('text-orientation', $breakpoint)) ? ['text-orientation' => $get_value('text-orientation', $breakpoint)] : [],
+            !is_null($get_value('text-direction', $breakpoint)) ? ['direction' => $get_value('text-direction', $breakpoint)] : [],
+            !is_null($get_value('white-space', $breakpoint)) ? ['white-space' => $get_value('white-space', $breakpoint)] : [],
+            !is_null($get_value('word-spacing', $breakpoint)) ? ['word-spacing' => $get_value('word-spacing', $breakpoint) . $get_unit_value('word-spacing-unit', $breakpoint)] : [],
+            !is_null($get_value('bottom-gap', $breakpoint)) ? ['margin-bottom' => $get_value('bottom-gap', $breakpoint) . $get_unit_value('bottom-gap-unit', $breakpoint)] : [],
             ...!$is_style_cards ? [
-                !is_null($get_value('text-orientation', $breakpoint)) ? ['writing-mode' => $get_value('text-orientation', $breakpoint) !== 'unset' ? 'vertical-rl' : 'unset'] : null,
-                !is_null($get_value('text-direction', $breakpoint)) ? ['direction' => $get_value('text-direction', $breakpoint)] : null
+                !is_null($get_value('text-orientation', $breakpoint)) ? ['writing-mode' => $get_value('text-orientation', $breakpoint) !== 'unset' ? 'vertical-rl' : 'unset'] : [],
+                !is_null($get_value('text-direction', $breakpoint)) ? ['direction' => $get_value('text-direction', $breakpoint)] : []
             ] : []
         );
 

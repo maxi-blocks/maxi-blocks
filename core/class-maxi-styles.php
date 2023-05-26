@@ -25,6 +25,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-divider-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 
 class MaxiBlocks_Styles
 {
@@ -410,12 +415,14 @@ class MaxiBlocks_Styles
         $styles = [];
 
         $block_name = $block['blockName'];
-        $props = $block['attrs'];
-        $block_style = $props['blockStyle'];
-
+        
         if (strpos($block_name, 'maxi-blocks') === false) {
             return $styles;
         }
+
+        $props = $block['attrs'];
+        $block_style = $props['blockStyle'];
+
 
         $block_instance = null;
 
@@ -453,6 +460,31 @@ class MaxiBlocks_Styles
             case 'maxi-blocks/button-maxi':
                 if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
                     $block_instance = MaxiBlocks_Button_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/divider-maxi':
+                if (class_exists('MaxiBlocks_Divider_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Divider_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/image-maxi':
+                if (class_exists('MaxiBlocks_Image_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Image_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/svg-icon-maxi':
+                if (class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_SVG_Icon_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/text-maxi':
+                if (class_exists('MaxiBlocks_Text_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Text_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/video-maxi':
+                if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Video_Maxi_Block::get_instance();
                 }
                 break;
         }

@@ -13,7 +13,6 @@ const dictionary = {
 		scale: '_sc',
 		rotate: '_rot',
 		type: '_ty',
-		link: '_l',
 		startTime: '_sti',
 		endTime: '_et',
 		isLoop: '_il',
@@ -213,6 +212,7 @@ const dictionary = {
 		'flip-y': '_fy',
 	},
 	link: {
+		link: '_l',
 		'link-hover': '_lih',
 		'link-active': '_lia',
 		'link-visited': '_liv',
@@ -410,6 +410,7 @@ export const prefixesDictionary = {
 	'input-': 'in-',
 	'lightbox-': 'lb-',
 	'list-': 'l-',
+	'line-': 'li-',
 	'map-': 'm-',
 	'navigation-arrow-': 'na-',
 	'navigation-arrow-both-': 'nab-',
@@ -437,6 +438,7 @@ export const prefixesDictionary = {
 	'transform-': 'tr-',
 	'typography-': 't-',
 	'video-': 'v-',
+	'visited-': 'vi-',
 };
 
 export const suffixesDictionary = {
@@ -455,6 +457,8 @@ export const suffixesDictionary = {
 	'-bottom-right': '.br',
 	'-radius': '.ra',
 	'-sync': '.sy',
+	'-global': '.g',
+	'-all': '.a',
 	// '-general': '-g',
 };
 
@@ -463,6 +467,7 @@ export const colorDictionary = {
 	'palette-opacity': '_po',
 	'palette-status': '_ps', // exception of status
 	'custom-color': '_cc',
+	color: '_col',
 };
 
 const flattenDictionary = dict => {

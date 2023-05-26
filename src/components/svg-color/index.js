@@ -103,7 +103,7 @@ const SvgColor = props => {
 			}
 			onChange={onChange}
 			globalProps={{
-				target: `${isHover ? 'hover-' : ''}line`,
+				target: `${isHover ? 'h-' : ''}li`,
 				type: 'icon',
 			}}
 			disableOpacity
@@ -135,7 +135,7 @@ const SvgColor = props => {
 			}
 			onChange={onChange}
 			globalProps={{
-				target: `${isHover ? 'hover-' : ''}fill`,
+				target: `${isHover ? 'h-' : ''}f`,
 				type: 'icon',
 			}}
 			disableOpacity

@@ -394,7 +394,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							}}
 							isHover={isHover}
 							globalProps={{
-								target: `${isHover ? 'hover-line' : 'line'}`,
+								target: `${isHover ? 'h-li' : 'li'}`,
 								type: 'icon',
 							}}
 						/>
@@ -507,7 +507,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					}}
 					isHover={isHover}
 					globalProps={{
-						target: `${isHover ? 'hover-fill' : 'fill'}`,
+						target: `${isHover ? 'h-f' : 'f'}`,
 						type: 'icon',
 					}}
 					avoidBreakpointForDefault

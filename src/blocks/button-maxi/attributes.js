@@ -125,7 +125,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
-		[`${prefix}bs-pac-general`]: {
+		[`${prefix}bs-_pc-general`]: {
 			type: 'number',
 			default: 4,
 		},

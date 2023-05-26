@@ -34,8 +34,7 @@ const getTypographyStyles = ({
 	const response = {};
 
 	const hoverStatus = obj[getAttributeKey({ key: 't.sh', prefix })];
-	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
-		scValues;
+	const { 'h_col.g': isActive, 'h_col.a': affectAll } = scValues;
 
 	const globalHoverStatus = isActive && affectAll;
 

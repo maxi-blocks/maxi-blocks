@@ -142,17 +142,17 @@ const Inspector = props => {
 	useEffect(
 		() =>
 			maxiSetAttributes({
-				ic: getIconWithColor(attributes),
+				i_c: getIconWithColor(attributes),
 			}),
 		[
-			attributes['pc-general'],
-			attributes['pc-general.h'],
-			attributes['ps-general'],
-			attributes['ps-general.h'],
-			attributes['po-general'],
-			attributes['po-general.h'],
-			attributes['cc-general'],
-			attributes['cc-general.h'],
+			attributes['_pc-general'],
+			attributes['_pc-general.h'],
+			attributes['_ps-general'],
+			attributes['_ps-general.h'],
+			attributes['_po-general'],
+			attributes['_po-general.h'],
+			attributes['_cc-general'],
+			attributes['_cc-general.h'],
 		]
 	);
 
@@ -230,7 +230,7 @@ const Inspector = props => {
 												type: 'button',
 											},
 											hoverGlobalProps: {
-												target: 'hover',
+												target: 'h',
 												type: 'button',
 											},
 										}),
@@ -244,11 +244,11 @@ const Inspector = props => {
 										disableSVG: true,
 										prefix: 'bt-',
 										globalProps: {
-											target: 'background',
+											target: 'b',
 											type: 'button',
 										},
 										hoverGlobalProps: {
-											target: 'hover-background',
+											target: 'h-b',
 											type: 'button',
 										},
 										inlineTarget:
@@ -258,11 +258,11 @@ const Inspector = props => {
 										props,
 										prefix: 'bt-',
 										globalProps: {
-											target: 'border',
+											target: 'bo',
 											type: 'button',
 										},
 										hoverGlobalProps: {
-											target: 'hover-border',
+											target: 'h-bo',
 											type: 'button',
 										},
 									}),

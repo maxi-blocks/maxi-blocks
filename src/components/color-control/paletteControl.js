@@ -45,14 +45,20 @@ const ColorPaletteControl = props => {
 			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
 			const prefix = globalProps?.target
-				? isHover && !globalProps?.target.includes('hover')
-					? `hover-${globalProps?.target}-`
-					: `${globalProps?.target}-`
+				? isHover && !globalProps?.target.includes('h')
+					? `h-${globalProps?.target}`
+					: `${globalProps?.target}`
 				: '';
 
+			const globalPrefix =
+				prefix === 'b'
+					? 'bc'
+					: prefix === 'h-b'
+					? 'h-bc'
+					: `${prefix}_col`;
 			const globalStatus = globalProps
 				? receiveStyleCardValue(
-						`${prefix}color-global`,
+						`${globalPrefix}.g`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )

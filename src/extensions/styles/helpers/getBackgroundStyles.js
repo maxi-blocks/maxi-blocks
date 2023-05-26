@@ -48,12 +48,10 @@ export const getColorBackgroundObject = ({
 	const hoverStatus = getAttributesValue({
 		target: 'b.sh',
 		props,
+		prefix,
 	});
 
-	const {
-		'hover-background-color-global': isActive,
-		'hover-background-color-all': affectAll,
-	} = scValues;
+	const { 'h-bc.g': isActive, 'h-bc.a': affectAll } = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)

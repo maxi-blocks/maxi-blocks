@@ -175,7 +175,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
-					globalProps={{ target: 'link', type: 'link' }}
+					globalProps={{ target: '_l', type: 'link' }}
 				/>
 			)}
 			{linkStatus === 'hover_link' && (
@@ -222,7 +222,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
-					globalProps={{ target: 'hover', type: 'link' }}
+					globalProps={{ target: 'h', type: 'link' }}
 				/>
 			)}
 			{linkStatus === 'active_link' && (
@@ -272,7 +272,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
-					globalProps={{ target: 'active', type: 'link' }}
+					globalProps={{ target: 'a', type: 'link' }}
 				/>
 			)}
 			{linkStatus === 'visited_link' && (
@@ -322,7 +322,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
-					globalProps={{ target: 'visited', type: 'link' }}
+					globalProps={{ target: 'vi', type: 'link' }}
 				/>
 			)}
 		</>

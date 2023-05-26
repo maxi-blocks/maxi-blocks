@@ -42,12 +42,11 @@ const typography = ({
 	} = props;
 	const [blockStyle, textLevel, isList, typographyHoverStatus] =
 		getAttributesValue({
-			target: ['_bs', 'textLevel', 'isList', `${prefix}t.sh`],
+			target: ['_bs', '_tl', '_ili', `${prefix}t.sh`],
 			props: attributes,
 		});
 
-	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
-		scValues;
+	const { 'h_col.g': isActive, 'h_col.a': affectAll } = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	const hoverStatus = typographyHoverStatus || globalHoverStatus;

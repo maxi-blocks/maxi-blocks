@@ -52,10 +52,7 @@ const background = ({
 		prefix,
 	});
 
-	const {
-		'hover-background-color-global': isActive,
-		'hover-background-color-all': affectAll,
-	} = scValues;
+	const { 'h-bc.g': isActive, 'h-bc.a': affectAll } = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	const hoverStatus = backgroundStatusHover || globalHoverStatus;

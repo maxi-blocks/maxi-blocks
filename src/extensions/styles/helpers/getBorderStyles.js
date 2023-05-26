@@ -42,10 +42,7 @@ const getBorderStyles = ({
 		prefix,
 	});
 
-	const {
-		'hover-border-color-global': isActive,
-		'hover-border-color-all': affectAll,
-	} = scValues;
+	const { 'h-bo_col.g': isActive, 'h-bo_col.a': affectAll } = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)

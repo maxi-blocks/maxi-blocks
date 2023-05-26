@@ -117,12 +117,12 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
 	const lineColorGlobal = receiveStyleCardValue(
-		'line-color',
+		'li_cc',
 		getBlockStyle(clientId),
 		'icon'
 	);
 	const lineColorGlobalStatus = receiveStyleCardValue(
-		'line-color-global',
+		'li_col.g',
 		getBlockStyle(clientId),
 		'icon'
 	);

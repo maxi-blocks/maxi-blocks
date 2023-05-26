@@ -48,18 +48,18 @@ const getTypographyFromSC = (styleCard, type) => {
 
 	const breakpoint = receiveMaxiDeviceType();
 
-	if (!isEmpty(SC[`font-family-${breakpoint}`])) return SC;
+	if (!isEmpty(SC[`_ff-${breakpoint}`])) return SC;
 
 	const pObj = getTypographyFromSC(selectedSC, 'p');
 	const fontFamily = getLastBreakpointAttribute({
-		target: 'font-family',
+		target: '_ff',
 		breakpoint,
 		attributes: pObj,
 	});
 
 	return {
 		...SC,
-		[`font-family-${breakpoint}`]: fontFamily,
+		[`_ff-${breakpoint}`]: fontFamily,
 	};
 };
 

@@ -47,12 +47,12 @@ class edit extends MaxiBlockComponent {
 
 	scProps = {
 		scElements: [
-			'hover-border-color-global',
-			'hover-border-color-all',
-			'hover-color-global',
-			'hover-color-all',
-			'hover-background-color-global',
-			'hover-background-color-all',
+			'h-bo_col.g',
+			'h-bo_col.a',
+			'h_col.g',
+			'h_col.a',
+			'h-bc.g',
+			'h-bc.a',
 		],
 		scType: 'button',
 	};

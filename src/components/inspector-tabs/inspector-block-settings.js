@@ -11,7 +11,7 @@ import CustomLabel from '../custom-label';
 const blockSettings = ({ props }) => {
 	const { attributes, deviceType, clientId, maxiSetAttributes } = props;
 	const [blockStyle, customLabel, isFirstOnHierarchy] = getAttributesValue({
-		target: ['_bs', '_cl', '_ifo'],
+		target: ['_bs', '_cl', '_ioh'],
 		props: attributes,
 	});
 

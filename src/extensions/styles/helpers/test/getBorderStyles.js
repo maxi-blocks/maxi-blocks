@@ -412,8 +412,8 @@ describe('getBorderStyles', () => {
 			isButton: true,
 			prefix: 'bt-',
 			scValues: {
-				'hover-bo-color-global': true,
-				'hover-bo-color-all': true,
+				'h-bo-_col.g': true,
+				'h-bo_col.a': true,
 			},
 		});
 		// The snapshot of this test should be equal than the snapshot of the previous test

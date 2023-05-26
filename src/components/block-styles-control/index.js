@@ -84,8 +84,7 @@ const BlockStylesControl = props => {
 						getAllInnerBlocks(clientId, blockStyle);
 
 						onChange({
-							blockStyle,
-							...{ blockStyle },
+							_bs: blockStyle,
 						});
 					}}
 				/>

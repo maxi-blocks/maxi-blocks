@@ -10,8 +10,7 @@ const getGroupAttributes = (
 	target,
 	isHover = false,
 	prefix = '',
-	cleaned = false,
-	isStyleCard = false
+	cleaned = false
 ) => {
 	if (!target) return null;
 
@@ -28,7 +27,7 @@ const getGroupAttributes = (
 		if (defaultAttributes)
 			Object?.keys(defaultAttributes)?.forEach(key => {
 				const newKey = getAttributeKey({
-					key: !isStyleCard ? key : defaultAttributes[key].longLabel,
+					key,
 					prefix,
 				});
 

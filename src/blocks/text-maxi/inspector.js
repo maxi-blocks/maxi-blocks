@@ -94,7 +94,7 @@ const Inspector = props => {
 											type: textLevel,
 										},
 										hoverGlobalProps: {
-											target: 'hover',
+											target: 'h',
 											type: textLevel,
 										},
 										context,

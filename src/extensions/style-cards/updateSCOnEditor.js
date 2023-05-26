@@ -149,7 +149,7 @@ export const getSCVariablesObject = (
 					});
 				});
 
-			if (obj['color-global'])
+			if (obj['_col.g'])
 				response[`--maxi-${style}-${element}-color`] = getColorString(
 					obj,
 					null,
@@ -157,67 +157,67 @@ export const getSCVariablesObject = (
 				);
 			switch (element) {
 				case 'button':
-					if (obj['background-color-global'])
+					if (obj['bc.g'])
 						response[
 							`--maxi-${style}-${element}-background-color`
-						] = getColorString(obj, 'background', style);
+						] = getColorString(obj, 'b', style);
 
-					if (obj['hover-background-color-global'])
+					if (obj['h-bc.g'])
 						response[
 							`--maxi-${style}-${element}-background-color-hover`
-						] = getColorString(obj, 'hover-background', style);
-					if (obj['hover-color-global'])
+						] = getColorString(obj, 'h-b', style);
+					if (obj['h_col.g'])
 						response[`--maxi-${style}-${element}-color-hover`] =
-							getColorString(obj, 'hover', style);
+							getColorString(obj, 'h', style);
 
-					if (obj['border-color-global'])
+					if (obj['bo_col.g'])
 						response[`--maxi-${style}-${element}-border-color`] =
-							getColorString(obj, 'border', style);
-					if (obj['hover-border-color-global'])
+							getColorString(obj, 'bo', style);
+					if (obj['h-bo_col.g'])
 						response[
 							`--maxi-${style}-${element}-border-color-hover`
-						] = getColorString(obj, 'hover-border', style);
+						] = getColorString(obj, 'h-bo', style);
 
 					break;
 
 				case 'icon':
-					if (obj['line-color-global'])
+					if (obj['li_col.g'])
 						response[`--maxi-${style}-${element}-stroke`] =
-							getColorString(obj, 'line', style);
+							getColorString(obj, 'li', style);
 
-					if (obj['fill-color-global'])
+					if (obj['f_col.g'])
 						response[`--maxi-${style}-${element}-fill`] =
-							getColorString(obj, 'fill', style);
+							getColorString(obj, 'f', style);
 
-					if (obj['hover-line-color-global'])
+					if (obj['h-li_col.g'])
 						response[`--maxi-${style}-${element}-stroke-hover`] =
-							getColorString(obj, 'hover-line', style);
+							getColorString(obj, 'h-li', style);
 
-					if (obj['hover-fill-color-global'])
+					if (obj['h-f_col.g'])
 						response[`--maxi-${style}-${element}-fill-hover`] =
-							getColorString(obj, 'hover-fill', style);
+							getColorString(obj, 'h-f', style);
 
 					break;
 
 				case 'link':
-					if (obj['link-color-global'])
+					if (obj['_l_col.g'])
 						response[`--maxi-${style}-link`] = getColorString(
 							obj,
-							'link',
+							'_l',
 							style
 						);
-					if (obj['hover-color-global'])
+					if (obj['h_col.g'])
 						response[`--maxi-${style}-link-hover`] = getColorString(
 							obj,
-							'hover',
+							'h',
 							style
 						);
-					if (obj['active-color-global'])
+					if (obj['a_col.g'])
 						response[`--maxi-${style}-link-active`] =
-							getColorString(obj, 'active', style);
-					if (obj['visited-color-global'])
+							getColorString(obj, 'a', style);
+					if (obj['vi_col.g'])
 						response[`--maxi-${style}-link-visited`] =
-							getColorString(obj, 'visited', style);
+							getColorString(obj, 'vi', style);
 
 					break;
 

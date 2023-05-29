@@ -121,7 +121,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $svg_styles,
                 $svg_hover_styles,

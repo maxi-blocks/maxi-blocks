@@ -17,6 +17,7 @@ function repeated_breakpoint_cleaner($obj)
     $response = $obj;
 
     $breakpoints = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'general'];
+    
     foreach ($breakpoints as $i => $breakpoint) {
         if (!isset($obj[$breakpoint])) {
             continue;
@@ -38,7 +39,7 @@ function general_breakpoint_cleaner($obj)
 {
     $response = $obj;
 
-    $breakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
     foreach ($response as $key => $val) {
         if ($key === 'general') {
             continue;

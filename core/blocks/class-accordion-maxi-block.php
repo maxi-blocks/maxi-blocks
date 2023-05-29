@@ -109,7 +109,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 $uniqueID
             );
 
-            $styles_obj[$uniqueID] = array_merge(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $background_styles,
                 $background_hover_styles,

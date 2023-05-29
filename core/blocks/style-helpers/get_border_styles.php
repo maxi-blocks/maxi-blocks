@@ -92,8 +92,7 @@ function get_border_styles($args)
             }
 
             $last_value = get_last_breakpoint_attribute([
-                'target' => $target,
-                'prefix' => $prefix,
+                'target' => $prefix . $target,
                 'breakpoint' => $breakpoint,
                 'attributes' => $obj,
                 'is_hover' => $is_hover,

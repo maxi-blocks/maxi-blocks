@@ -111,10 +111,10 @@ function get_size_styles($obj, $prefix = '')
                     ]) && '100%');
 
                 if (!is_null($num) && !is_null($unit)) {
-                    return [
-                        $target => $auto ?? $num . $unit,
+                    return array_merge(
                         $full_width_normal_styles,
-                    ];
+                        [$target => $auto ? $auto : $num . $unit]
+                    );
                 }
             }
 

@@ -81,8 +81,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             ];
 
             if($is_list) {
-                $styles_obj = array_merge(
-                    $styles_obj,
+                $styles_obj[$uniqueID] = array_merge(
+                    $styles_obj[$uniqueID],
                     [
                         " $element.maxi-text-block__content" => self::get_list_object(
                             array_merge($props, [$is_rtl => $is_rtl])
@@ -100,8 +100,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 );
             } else {
-                $styles_obj = array_merge(
-                    $styles_obj,
+                $styles_obj[$uniqueID] = array_merge(
+                    $styles_obj[$uniqueID],
                     [
                         " $element.maxi-text-block__content" => self::get_typography_object($props, $is_list),
                         " $element.maxi-text-block__content:hover" => self::get_typography_hover_object($props),
@@ -214,6 +214,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'padding' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
+                    "textAlignment" => get_alignment_text_styles(get_group_attributes($props, 'textAlignment')),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
@@ -253,7 +254,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         {
             $response = [
             'typography' => get_typography_styles([
-                    'obj' =>get_group_attributes($props, 'typography'),
+                    'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
                     'text_level' => $props['textLevel']
                 ])
@@ -266,7 +267,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         {
             $response = [
             'typography' => get_typography_styles([
-                    'obj' =>get_group_attributes($props, 'typography', true),
+                    'obj' => get_group_attributes($props, 'typography', true),
                     'is_hover' => true,
                     'block_style' => $props['blockStyle'],
                     'text_level' => $props['textLevel'],

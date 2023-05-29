@@ -142,7 +142,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                 self::get_icon_object('close-', $props),
             );
 
-            $styles_obj[$uniqueID] = array_merge(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $background_styles,
                 $background_hover_styles,

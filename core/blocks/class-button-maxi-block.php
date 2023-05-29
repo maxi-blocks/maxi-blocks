@@ -125,7 +125,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'is_hover' => true,
             ]);
 
-            $styles_obj[$uniqueID] = array_merge(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $background_styles,
                 $background_hover_styles,

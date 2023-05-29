@@ -1,12 +1,13 @@
 <?php
 
-function get_alignment_text_styles($obj, $type = 'text') {
+function get_alignment_text_styles($obj, $type = 'text')
+{
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        if (!empty($obj["text-alignment-{$breakpoint}"])) {
+        if (isset($obj["text-alignment-{$breakpoint}"])) {
             switch ($obj["text-alignment-{$breakpoint}"]) {
                 case 'left':
                     $response[$breakpoint] = [
@@ -25,11 +26,20 @@ function get_alignment_text_styles($obj, $type = 'text') {
                     ];
                     break;
                 case 'right':
-                    $response[$breakpoint] = [
-                        $type === 'list' ? 'list-style-position' : 'text-align' =>
-                            $type === 'list' ? 'inside' : 'initial',
-                    ];
-                    break;
+                    {
+                        if($type === 'list') {
+                            $response[$breakpoint] = [
+                                $type === 'list' ? 'list-style-position' : 'text-align' =>
+                                    $type === 'list' ? 'inside' : 'initial',
+                            ];
+                        } else {
+                            $response[$breakpoint] = [
+                                'text-align' => 'right',
+                            ];
+                        }
+
+                        break;
+                    }
                 default:
                     return false;
             }

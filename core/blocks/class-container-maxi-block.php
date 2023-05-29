@@ -199,7 +199,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $shape_divider_top_styles,
                 $shape_divider_bottom_styles,

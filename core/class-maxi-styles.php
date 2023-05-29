@@ -357,10 +357,18 @@ class MaxiBlocks_Styles
             $styles_test = self::get_styles_from_blocks();
 
             if (!empty($styles_test)) {
+                $prev_content = $content_array[0]->prev_css_value;
                 $content = $content_array[0];
 
                 $content->css_value = $styles_test;
                 $content->prev_css_value = $styles_test;
+
+                if ($prev_content) {
+                    if ($prev_content !== $styles_test) {
+                        var_dump($prev_content);
+                        var_dump($styles_test);
+                    }
+                }
 
                 return json_decode(json_encode($content), true);
             }

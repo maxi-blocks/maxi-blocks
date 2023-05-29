@@ -300,10 +300,7 @@ const DynamicContent = props => {
 										}
 										onReset={() =>
 											changeProps({
-												'dc-id':
-													getDefaultAttribute(
-														'dc-id'
-													),
+												'dc-id': postIdOptions[0].value,
 											})
 										}
 									/>

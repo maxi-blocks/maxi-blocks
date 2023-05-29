@@ -10,12 +10,12 @@ import getAttributesValue from '../../attributes/getAttributesValue';
 import { isNil } from 'lodash';
 import getAttributeKey from '../../attributes/getAttributeKey';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getCircleBarStyles = (obj, blockStyle) => {
 	const response = {
 		label: 'Number Counter',
-		general: {},
+		g: {},
 	};
 
 	const getColor = breakpoint => {
@@ -49,7 +49,7 @@ const getCircleBarStyles = (obj, blockStyle) => {
 const getCircleBackgroundStyles = (obj, blockStyle) => {
 	const response = {
 		label: 'Number Counter',
-		general: {},
+		g: {},
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -58,9 +58,9 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 			prefix: 'nccb-',
 		});
 
-	if (!paletteStatus && !isNil(color)) response.general.stroke = color;
+	if (!paletteStatus && !isNil(color)) response.g.stroke = color;
 	else if (paletteStatus && paletteColor)
-		response.general.stroke = getColorRGBAString({
+		response.g.stroke = getColorRGBAString({
 			firstVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
 			blockStyle,
@@ -72,7 +72,7 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 const getTextStyles = (obj, blockStyle) => {
 	const response = {
 		label: 'Number Counter',
-		general: {},
+		g: {},
 	};
 
 	const typeOfStyle = getAttributesValue({
@@ -127,12 +127,12 @@ const getTextStyles = (obj, blockStyle) => {
 const getSupStyles = obj => {
 	const response = {
 		label: 'Number Counter',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
 		if (!isNil(obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })]))
-			response.general['font-size'] = `${
+			response.g['font-size'] = `${
 				obj[getAttributeKey({ key: 'nc-ti_fs', breakpoint })] / 1.5
 			}px`;
 	});

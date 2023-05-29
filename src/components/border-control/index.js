@@ -185,7 +185,7 @@ const BorderControl = props => {
 	const {
 		className,
 		onChange,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		isToolbar = false,
 		disableColor = false,
 		isHover = false,

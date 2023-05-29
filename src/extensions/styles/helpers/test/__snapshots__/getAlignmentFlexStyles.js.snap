@@ -2,7 +2,7 @@
 
 exports[`getAlignmentFlexStyles Get a correct alignment flex styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "justify-content": "flex-end",
   },
   "l": Object {

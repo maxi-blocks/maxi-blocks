@@ -45,7 +45,7 @@ const attributes = {
 	...attributesData.scroll,
 	...{
 		...attributesData.flex,
-		'_fd-general': {
+		'_fd-g': {
 			type: 'string',
 			default: 'column',
 		},

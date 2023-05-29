@@ -35,7 +35,7 @@ describe('AlignmentControl', () => {
 			await setting.click();
 
 			const attributes = await getBlockAttributes();
-			const attribute = attributes['text-alignment-general'];
+			const attribute = attributes['text-alignment-g'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});

@@ -14,15 +14,15 @@ const handleOnReset = props => {
 
 	const breakpoint = receiveMaxiDeviceType();
 
-	if (breakpoint !== 'general') return props;
+	if (breakpoint !== 'g') return props;
 
 	const result = { ...props };
 
 	const baseBreakpoint = receiveBaseBreakpoint();
 
 	Object.keys(result).forEach(attr => {
-		if (attr.includes('general')) {
-			const baseAttr = attr.replace('general', baseBreakpoint);
+		if (attr.includes('g')) {
+			const baseAttr = attr.replace('g', baseBreakpoint);
 			const baseDefaultAttr = getDefaultAttribute(baseAttr);
 
 			result[baseAttr] = baseDefaultAttr;

@@ -57,8 +57,8 @@ const Inspector = props => {
 			newDefaultPresets[`preset${number}`].i_c = iconContent;
 
 		if (
-			!isNil(defaultPresets[`preset${number}`]['i-bo_s-general.h']) &&
-			defaultPresets[`preset${number}`]['i-bo_s-general.h'] !== 'none'
+			!isNil(defaultPresets[`preset${number}`]['i-bo_s-g.h']) &&
+			defaultPresets[`preset${number}`]['i-bo_s-g.h'] !== 'none'
 		) {
 			const hoverAttr = getGroupAttributes(
 				{ ...newDefaultPresets[`preset${number}`] },
@@ -145,14 +145,14 @@ const Inspector = props => {
 				i_c: getIconWithColor(attributes),
 			}),
 		[
-			attributes['_pc-general'],
-			attributes['_pc-general.h'],
-			attributes['_ps-general'],
-			attributes['_ps-general.h'],
-			attributes['_po-general'],
-			attributes['_po-general.h'],
-			attributes['_cc-general'],
-			attributes['_cc-general.h'],
+			attributes['_pc-g'],
+			attributes['_pc-g.h'],
+			attributes['_ps-g'],
+			attributes['_ps-g.h'],
+			attributes['_po-g'],
+			attributes['_po-g.h'],
+			attributes['_cc-g'],
+			attributes['_cc-g.h'],
 		]
 	);
 
@@ -196,7 +196,7 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										label: __(
 											'Quick styles',
 											'maxi-blocks'
@@ -314,12 +314,12 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props,
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props,
 										}),
@@ -355,7 +355,7 @@ const Inspector = props => {
 									...inspectorTabs.position({
 										props,
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props,
 										}),

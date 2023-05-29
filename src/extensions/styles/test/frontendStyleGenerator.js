@@ -14,7 +14,7 @@ describe('frontendStyleGenerator', () => {
 				},
 				content: {
 					' p.maxi-text-block__content': {
-						general: {
+						g: {
 							'font-style': 'normal',
 						},
 						l: {
@@ -22,7 +22,7 @@ describe('frontendStyleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content li': {
-						general: {
+						g: {
 							'font-style': 'normal',
 						},
 						l: {
@@ -30,7 +30,7 @@ describe('frontendStyleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content a': {
-						general: {
+						g: {
 							'font-style': 'normal',
 						},
 						l: {
@@ -39,7 +39,7 @@ describe('frontendStyleGenerator', () => {
 					},
 					' > .maxi-background-displayer .maxi-background-displayer__color':
 						{
-							general: {
+							g: {
 								'background-color': 'rgba(56,25,212,1)',
 							},
 						},

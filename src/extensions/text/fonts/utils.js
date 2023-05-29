@@ -15,7 +15,7 @@ import { getAttributesValue, getGroupAttributes } from '../../attributes';
 import { getCustomFormatValue } from '../formats';
 import { goThroughMaxiBlocks } from '../../maxi-block';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getAllFonts = (
 	attr,
@@ -36,12 +36,7 @@ export const getAllFonts = (
 			const fontWeight = obj[`_fwe-${breakpoint}`];
 			const fontStyle = obj[`_fst-${breakpoint}`];
 
-			if (
-				fontName ||
-				fontWeight ||
-				fontStyle ||
-				breakpoint === 'general'
-			) {
+			if (fontName || fontWeight || fontStyle || breakpoint === 'g') {
 				const finalFontName =
 					fontName ??
 					getCustomFormatValue({

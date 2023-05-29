@@ -29,7 +29,7 @@ describe('CheckBoxControl', () => {
 			checkBox => checkBox.click()
 		);
 
-		expect(await getAttributes('full-width-general')).toStrictEqual('full');
-		expect(await getAttributes('_far-general')).toStrictEqual(true);
+		expect(await getAttributes('full-width-g')).toStrictEqual('full');
+		expect(await getAttributes('_far-g')).toStrictEqual(true);
 	});
 });

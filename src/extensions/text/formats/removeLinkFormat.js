@@ -70,7 +70,7 @@ const removeLinkFormat = ({
 			formatValue: { ...formatValue, start: 0, end: formatLength },
 			typography,
 			prop: '_td',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			blockStyle,
 			textLevel,
 			styleCard,

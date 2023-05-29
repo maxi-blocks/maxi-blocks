@@ -1,4 +1,4 @@
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const breakpointAttributesCreator = ({
 	obj,
@@ -24,7 +24,7 @@ const breakpointAttributesCreator = ({
 
 			if (diffValAttrKeys.includes(newKey))
 				newVal.default = diffValAttr[newKey];
-			else if (breakpoint !== 'general') delete newVal.default;
+			else if (breakpoint !== 'g') delete newVal.default;
 
 			response[newKey] = newVal;
 		});

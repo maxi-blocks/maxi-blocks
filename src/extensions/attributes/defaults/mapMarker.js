@@ -3,7 +3,7 @@ import { svg } from './svg';
 const mapMarker = {
 	...{
 		...svg,
-		's_w-general': {
+		's_w-g': {
 			type: 'string',
 			default: '20',
 			longLabel: 'svg-width-general',

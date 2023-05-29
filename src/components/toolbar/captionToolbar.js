@@ -66,8 +66,7 @@ const CaptionToolbar = memo(
 		});
 
 		const typography = { ...getGroupAttributes(attributes, 'typography') };
-		console.log('capt', typography['_pc-general']);
-		console.log('fs', typography['_fs-general']);
+
 		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {

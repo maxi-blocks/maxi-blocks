@@ -32,7 +32,7 @@ import { isEmpty, uniqueId } from 'lodash';
  * Component
  */
 const OverflowControl = props => {
-	const { className, onChange, breakpoint = 'general' } = props;
+	const { className, onChange, breakpoint = 'g' } = props;
 
 	const classes = classnames('maxi-overflow-control', className);
 

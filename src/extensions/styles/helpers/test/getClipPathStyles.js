@@ -2,8 +2,8 @@ import getClipPathStyles from '../getClipPathStyles';
 
 describe('getClipPathStyles', () => {
 	const object = {
-		'_cp.s-general': true,
-		'_cp-general': 'polygon(50% 0%, 0% 100%, 100% 100%)',
+		'_cp.s-g': true,
+		'_cp-g': 'polygon(50% 0%, 0% 100%, 100% 100%)',
 		'_cp.s-l': true,
 		'_cp-l': 'polygon(50% 0%, 0% 100%, 100% 100%)',
 		'_cp.s-xl': true,
@@ -18,7 +18,7 @@ describe('getClipPathStyles', () => {
 		'_cp-xs': 'polygon(50% 0%, 0% 100%, 100% 100%)',
 		// hover attributes
 		'_cp.sh': true,
-		'_cp-general.h': 'none',
+		'_cp-g.h': 'none',
 		'_cp-l.h': 'circle(50% at 50% 50%)',
 		'_cp-xl.h': 'polygon(0% 75%, 100% 25%, 62.5% 75%)',
 		'_cp-xxl.h':
@@ -48,8 +48,8 @@ describe('getClipPathStyles', () => {
 	it('Get an empty clipPath styles, when clipPath - none', () => {
 		const result = getClipPathStyles({
 			obj: {
-				'_cp-general': 'none',
-				'_cp.s-general': true,
+				'_cp-g': 'none',
+				'_cp.s-g': true,
 			},
 		});
 		expect(result).toMatchSnapshot();
@@ -58,7 +58,7 @@ describe('getClipPathStyles', () => {
 	it('Get a none hover clipPath styles, when clipPath - none', () => {
 		const result = getClipPathStyles({
 			obj: {
-				'_cp-general.h': 'none',
+				'_cp-g.h': 'none',
 				'_cp.sh': true,
 			},
 			isHover: true,

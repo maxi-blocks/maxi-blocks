@@ -174,10 +174,10 @@ const SCAccordion = props => {
 					disablePalette
 					disableFormats
 					disableCustomFormats
-					disableFontFamily={breakpoint !== 'general'}
+					disableFontFamily={breakpoint !== 'g'}
 				/>
 			)}
-			{breakpoint === 'general' &&
+			{breakpoint === 'g' &&
 				colorContent.map(
 					({
 						label,
@@ -550,7 +550,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							/>
 						),
 					},
-					breakpoint === 'general' && {
+					breakpoint === 'g' && {
 						label: linkTabs.label,
 						classNameItem: 'maxi-blocks-sc__type--link',
 						content: (
@@ -575,7 +575,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							/>
 						),
 					},
-					breakpoint === 'general' && {
+					breakpoint === 'g' && {
 						label: iconTabs.label,
 						classNameItem: 'maxi-blocks-sc__type--SVG',
 						content: (
@@ -591,7 +591,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							/>
 						),
 					},
-					breakpoint === 'general' && {
+					breakpoint === 'g' && {
 						label: dividerTabs.label,
 						classNameItem: 'maxi-blocks-sc__type--divider',
 						content: (

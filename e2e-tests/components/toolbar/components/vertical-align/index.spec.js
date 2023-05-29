@@ -46,7 +46,7 @@ describe('Vertical align align from Toolbar', () => {
 
 		await selector.select('center');
 
-		expect(await getAttributes('justify-content-general')).toStrictEqual(
+		expect(await getAttributes('justify-content-g')).toStrictEqual(
 			'center'
 		);
 

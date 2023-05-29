@@ -33,9 +33,9 @@ describe('getSVGStyles', () => {
 			sfi_pc: 4,
 			sli_ps: true,
 			sli_pc: 7,
-			's_str-general': 2,
-			's_w-general': '64',
-			's_w.u-general': 'px',
+			's_str-g': 2,
+			's_w-g': '64',
+			's_w.u-g': 'px',
 			's_str-m': 20,
 			's_w-m': '640',
 			's_w.u-m': 'vw',
@@ -50,11 +50,11 @@ describe('getSVGStyles', () => {
 
 	it('Should return correct icon size', () => {
 		const attributes = {
-			's_w-general': '32',
-			's_w.u-general': 'px',
-			's_wfc-general': false,
-			's-i_w-general': '71',
-			's-i_w.u-general': '%',
+			's_w-g': '32',
+			's_w.u-g': 'px',
+			's_wfc-g': false,
+			's-i_w-g': '71',
+			's-i_w.u-g': '%',
 		};
 
 		expect(
@@ -64,11 +64,11 @@ describe('getSVGStyles', () => {
 
 	it('Should return correct icon size with disableHeight: false', () => {
 		const attributes = {
-			's_w-general': '32',
-			's_w.u-general': 'px',
-			's_wfc-general': false,
-			's-i_w-general': '71',
-			's-i_w.u-general': '%',
+			's_w-g': '32',
+			's_w.u-g': 'px',
+			's_wfc-g': false,
+			's-i_w-g': '71',
+			's-i_w.u-g': '%',
 		};
 
 		expect(
@@ -84,8 +84,8 @@ describe('getSVGStyles', () => {
 		const prefix = 'any-prefix';
 
 		const attributes = {
-			[`${prefix}_h-general`]: '32',
-			[`${prefix}_h.u-general`]: 'px',
+			[`${prefix}_h-g`]: '32',
+			[`${prefix}_h.u-g`]: 'px',
 			[`${prefix}_h-m`]: '12',
 			[`${prefix}_h.u-m`]: 'em',
 		};
@@ -97,14 +97,14 @@ describe('getSVGStyles', () => {
 
 	it('Should return right styles with height fit-content, width/height ratio > 1 with disableHeight true', () => {
 		const attributes = {
-			'i_w-general': '36',
-			'i_w.u-general': '%',
-			'i_wfc-general': true,
+			'i_w-g': '36',
+			'i_w.u-g': '%',
+			'i_wfc-g': true,
 			'i_w-l': '32',
 			'i_wfc-l': false,
 			'i_w-m': '36',
 			'i_wfc-m': true,
-			'i_str-general': '1',
+			'i_str-g': '1',
 			'i_str-l': '3',
 			'i_str-m': '4',
 		};
@@ -120,14 +120,14 @@ describe('getSVGStyles', () => {
 
 	it('Should return right styles with height fit-content, width/height ratio < 1 with disableHeight: true', () => {
 		const attributes = {
-			'i_w-general': '36',
-			'i_w.u-general': '%',
-			'i_wfc-general': true,
+			'i_w-g': '36',
+			'i_w.u-g': '%',
+			'i_wfc-g': true,
 			'i_w-l': '32',
 			'i_wfc-l': false,
 			'i_w-m': '36',
 			'i_wfc-m': true,
-			'i_str-general': '1',
+			'i_str-g': '1',
 			'i_str-l': '3',
 			'i_str-m': '4',
 		};

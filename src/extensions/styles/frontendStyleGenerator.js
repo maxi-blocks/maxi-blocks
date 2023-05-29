@@ -3,7 +3,7 @@
  */
 import { isNil, isEmpty } from 'lodash';
 
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getStyles = content => {
 	if (!content) return false;
@@ -46,14 +46,14 @@ const frontendStyleGenerator = styles => {
 			if (!isEmpty(breakpointResponse)) {
 				if (breakpoint === 'xxl')
 					response += getMediaQueryString(breakpoint, breakpoints.xl);
-				else if (breakpoint !== 'general')
+				else if (breakpoint !== 'g')
 					response += getMediaQueryString(
 						breakpoint,
 						breakpoints[breakpoint]
 					);
 
 				response += breakpointResponse;
-				if (breakpoint !== 'general') response += '}';
+				if (breakpoint !== 'g') response += '}';
 			}
 		});
 	});

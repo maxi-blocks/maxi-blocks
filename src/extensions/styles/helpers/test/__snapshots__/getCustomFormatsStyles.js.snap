@@ -4,7 +4,7 @@ exports[`getCustomFormatsStyles Get a correct custom formats styles 1`] = `
 Object {
   "test .maxi-text-block__custom-format--0": Object {
     "typography": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(57,28,202,1)",
         "font-style": "italic",
         "font-weight": 800,
@@ -13,7 +13,7 @@ Object {
   },
   "test .maxi-text-block__custom-format--1": Object {
     "typography": Object {
-      "general": Object {
+      "g": Object {
         "text-decoration": "underline",
       },
     },

@@ -25,7 +25,7 @@ const applyLinkFormat = ({
 	linkAttributes = {},
 	isList,
 	textLevel,
-	breakpoint = 'general',
+	breakpoint = 'g',
 	isHover = false,
 	returnFormatValue = false,
 	saveFormatValue = false,

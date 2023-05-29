@@ -18,25 +18,25 @@ import { copyPasteMapping } from './data';
 import { getAttributesValue } from '../../extensions/attributes';
 
 const boxedPreset = {
-	'bo.ra.bl-general': 10,
-	'bo.ra.br-general': 10,
-	'bo_w-b-general': 5,
-	'bo_w-l-general': 5,
-	'bo_w-r-general': 5,
-	'bo.ra.tl-general': 10,
-	'bo.ra.tr-general': 10,
-	'bo_w-t-general': 5,
-	'bo.ra.unit-general': 'px',
-	'bo_w-unit-general': 'px',
-	'bo_s-general': 'solid',
+	'bo.ra.bl-g': 10,
+	'bo.ra.br-g': 10,
+	'bo_w-b-g': 5,
+	'bo_w-l-g': 5,
+	'bo_w-r-g': 5,
+	'bo.ra.tl-g': 10,
+	'bo.ra.tr-g': 10,
+	'bo_w-t-g': 5,
+	'bo.ra.unit-g': 'px',
+	'bo_w-unit-g': 'px',
+	'bo_s-g': 'solid',
 };
 
 const simplePreset = {
-	'bo_s-general': null,
-	'bo.ra.tl-general': 0,
-	'bo.ra.tr-general': 0,
-	'bo.ra.bl-general': 0,
-	'bo.ra.br-general': 0,
+	'bo_s-g': null,
+	'bo.ra.tl-g': 0,
+	'bo.ra.tr-g': 0,
+	'bo.ra.bl-g': 0,
+	'bo.ra.br-g': 0,
 };
 
 const Content = forwardRef((props, ref) => {

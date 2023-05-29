@@ -509,7 +509,7 @@ const mergeMultipleFormats = ({
 const setFormatWithClass = ({
 	formatValue,
 	typography,
-	breakpoint = 'general',
+	breakpoint = 'g',
 	value,
 	isList,
 	isHover = false,

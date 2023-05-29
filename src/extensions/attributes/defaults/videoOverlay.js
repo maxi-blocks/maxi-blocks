@@ -13,7 +13,7 @@ const overlayColor = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'o-b_am-general': 'color', // overlay-background-active-media-general
+			'o-b_am-g': 'color', // overlay-background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
@@ -21,8 +21,8 @@ const overlayColor = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'o-bc_pc-general': 5, // overlay-background-palette-color-general
-			'o-bc_po-general': 0.7, // overlay-background-palette-opacity-general
+			'o-bc_pc-g': 5, // overlay-background-palette-color-general
+			'o-bc_po-g': 0.7, // overlay-background-palette-opacity-general
 		},
 	}),
 };
@@ -31,7 +31,7 @@ const videoOverlay = {
 	...overlayColor,
 	...hoverAttributesCreator({
 		obj: overlayColor,
-		sameValAttr: ['o-b_am-general', 'o-b_pc-general', 'o-b_po-general'],
+		sameValAttr: ['o-b_am-g', 'o-b_pc-g', 'o-b_po-g'],
 		newAttr: {
 			'o-b.sh': {
 				type: 'boolean',
@@ -46,10 +46,10 @@ const videoOverlay = {
 		prefix: 'om-',
 		longPrefix: 'overlay-media-',
 		diffValAttr: {
-			'om_w-general': '100', // overlay-media-width-general
-			'om_w.u-general': '%', // overlay-media-width-unit-general
-			'om_h-general': '100', // overlay-media-height-general
-			'om_h.u-general': '%', // overlay-media-height-unit-general
+			'om_w-g': '100', // overlay-media-width-general
+			'om_w.u-g': '%', // overlay-media-width-unit-general
+			'om_h-g': '100', // overlay-media-height-general
+			'om_h.u-g': '%', // overlay-media-height-unit-general
 		},
 	}),
 

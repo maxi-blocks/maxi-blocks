@@ -32,24 +32,24 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '66',
-			'margin-bottom-general': '66',
-			'margin-left-general': '66',
-			'margin-right-general': '66',
-			'margin-left-unit-general': '%',
-			'margin-bottom-unit-general': '%',
-			'margin-top-unit-general': '%',
-			'margin-right-unit-general': '%',
+			'margin-top-g': '66',
+			'margin-bottom-g': '66',
+			'margin-left-g': '66',
+			'margin-right-g': '66',
+			'margin-left-unit-g': '%',
+			'margin-bottom-unit-g': '%',
+			'margin-top-unit-g': '%',
+			'margin-right-unit-g': '%',
 		};
 		const marginResult = await getAttributes([
-			'margin-left-unit-general',
-			'margin-bottom-unit-general',
-			'margin-top-unit-general',
-			'margin-right-unit-general',
-			'margin-top-general',
-			'margin-bottom-general',
-			'margin-left-general',
-			'margin-right-general',
+			'margin-left-unit-g',
+			'margin-bottom-unit-g',
+			'margin-top-unit-g',
+			'margin-right-unit-g',
+			'margin-top-g',
+			'margin-bottom-g',
+			'margin-left-g',
+			'margin-right-g',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -65,13 +65,13 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
-		expect(
-			typeof (await getAttributes('padding-bottom-general'))
-		).toStrictEqual('string');
+		expect(typeof (await getAttributes('padding-bottom-g'))).toStrictEqual(
+			'string'
+		);
 
-		expect(
-			typeof (await getAttributes('margin-bottom-general'))
-		).toStrictEqual('string');
+		expect(typeof (await getAttributes('margin-bottom-g'))).toStrictEqual(
+			'string'
+		);
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -120,14 +120,14 @@ describe('AxisControl', () => {
 
 		await page.waitForTimeout(300);
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual('3.5');
+		expect(await getAttributes('margin-top-g')).toStrictEqual('3.5');
 
 		const input = await page.$$('.maxi-axis-control__content__item input');
 
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('margin-top-general')).toStrictEqual('-1');
+		expect(await getAttributes('margin-top-g')).toStrictEqual('-1');
 	});
 
 	it('Checking AxisControl auto', async () => {
@@ -141,25 +141,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': 'auto',
-			'margin-bottom-general': 'auto',
-			'margin-left-general': 'auto',
-			'margin-right-general': 'auto',
-			'margin-left-unit-general': 'px',
-			'margin-bottom-unit-general': 'px',
-			'margin-top-unit-general': 'px',
-			'margin-right-unit-general': 'px',
+			'margin-top-g': 'auto',
+			'margin-bottom-g': 'auto',
+			'margin-left-g': 'auto',
+			'margin-right-g': 'auto',
+			'margin-left-unit-g': 'px',
+			'margin-bottom-unit-g': 'px',
+			'margin-top-unit-g': 'px',
+			'margin-right-unit-g': 'px',
 		};
 
 		const result = await getAttributes([
-			'margin-left-unit-general',
-			'margin-bottom-unit-general',
-			'margin-top-unit-general',
-			'margin-right-unit-general',
-			'margin-top-general',
-			'margin-bottom-general',
-			'margin-left-general',
-			'margin-right-general',
+			'margin-left-unit-g',
+			'margin-bottom-unit-g',
+			'margin-top-unit-g',
+			'margin-right-unit-g',
+			'margin-top-g',
+			'margin-bottom-g',
+			'margin-left-g',
+			'margin-right-g',
 		]);
 
 		expect(result).toStrictEqual(expectMargin);
@@ -180,25 +180,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectAxisMargin = {
-			'margin-top-general': '66',
-			'margin-bottom-general': '66',
-			'margin-left-general': '77',
-			'margin-right-general': '77',
-			'margin-left-unit-general': 'px',
-			'margin-bottom-unit-general': '%',
-			'margin-top-unit-general': '%',
-			'margin-right-unit-general': 'px',
+			'margin-top-g': '66',
+			'margin-bottom-g': '66',
+			'margin-left-g': '77',
+			'margin-right-g': '77',
+			'margin-left-unit-g': 'px',
+			'margin-bottom-unit-g': '%',
+			'margin-top-unit-g': '%',
+			'margin-right-unit-g': 'px',
 		};
 
 		const resultAxis = await getAttributes([
-			'margin-left-unit-general',
-			'margin-bottom-unit-general',
-			'margin-top-unit-general',
-			'margin-right-unit-general',
-			'margin-bottom-general',
-			'margin-left-general',
-			'margin-right-general',
-			'margin-top-general',
+			'margin-left-unit-g',
+			'margin-bottom-unit-g',
+			'margin-top-unit-g',
+			'margin-right-unit-g',
+			'margin-bottom-g',
+			'margin-left-g',
+			'margin-right-g',
+			'margin-top-g',
 		]);
 
 		expect(resultAxis).toStrictEqual(expectAxisMargin);
@@ -212,25 +212,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectSyncOptionNone = {
-			'margin-top-general': '66',
-			'margin-bottom-general': '55',
-			'margin-left-general': '33',
-			'margin-right-general': '77',
-			'margin-left-unit-general': 'px',
-			'margin-bottom-unit-general': '%',
-			'margin-top-unit-general': 'px',
-			'margin-right-unit-general': 'px',
+			'margin-top-g': '66',
+			'margin-bottom-g': '55',
+			'margin-left-g': '33',
+			'margin-right-g': '77',
+			'margin-left-unit-g': 'px',
+			'margin-bottom-unit-g': '%',
+			'margin-top-unit-g': 'px',
+			'margin-right-unit-g': 'px',
 		};
 
 		const resultSyncOptionNone = await getAttributes([
-			'margin-top-general',
-			'margin-bottom-general',
-			'margin-left-general',
-			'margin-right-general',
-			'margin-left-unit-general',
-			'margin-bottom-unit-general',
-			'margin-top-unit-general',
-			'margin-right-unit-general',
+			'margin-top-g',
+			'margin-bottom-g',
+			'margin-left-g',
+			'margin-right-g',
+			'margin-left-unit-g',
+			'margin-bottom-unit-g',
+			'margin-top-unit-g',
+			'margin-right-unit-g',
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
@@ -254,7 +254,7 @@ describe('AxisControl', () => {
 		await input.focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('padding-top-general')).toStrictEqual('0');
+		expect(await getAttributes('padding-top-g')).toStrictEqual('0');
 	});
 
 	it('Checking AxisControl arrows when value inherited from higher breakpoints', async () => {

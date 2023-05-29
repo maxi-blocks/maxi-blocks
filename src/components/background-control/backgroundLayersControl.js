@@ -376,7 +376,7 @@ const getLayerCardTitle = props => {
 				</span>
 				{getTitle(type)}
 			</span>
-			{breakpoint === 'general' && (
+			{breakpoint === 'g' && (
 				<span
 					className={classnames(
 						'maxi-background-layer__title__mover',
@@ -456,7 +456,7 @@ const BackgroundLayersControl = ({
 		return {
 			...setBreakpointToLayer({
 				layer: backgroundLayers[getLayerLabel(type)],
-				breakpoint: 'general',
+				breakpoint: 'g',
 				isHover,
 			}),
 			order: getLayerUniqueParameter('order'),
@@ -494,7 +494,7 @@ const BackgroundLayersControl = ({
 			defaultAttributes: {
 				...setBreakpointToLayer({
 					layer: backgroundLayers[getLayerLabel(currentLayer.type)],
-					breakpoint: 'general',
+					breakpoint: 'g',
 					isHover,
 				}),
 			},

@@ -34,7 +34,7 @@ const attributes = {
 	...attributesData.svgHover,
 	...{
 		...attributesData.alignment,
-		'_a-general': {
+		'_a-g': {
 			type: 'string',
 			default: 'center',
 		},
@@ -46,7 +46,7 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}bc_pc-general`]: 4 },
+		diffValAttr: { [`${prefix}bc_pc-g`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,

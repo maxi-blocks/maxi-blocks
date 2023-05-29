@@ -3,7 +3,7 @@ import clipPath from './clipPath';
 
 const clipPathHover = hoverAttributesCreator({
 	obj: clipPath,
-	sameValAttr: ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].map(
+	sameValAttr: ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'].map(
 		breakpoint => `_cp.s-${breakpoint}` // clip-path-status
 	),
 });

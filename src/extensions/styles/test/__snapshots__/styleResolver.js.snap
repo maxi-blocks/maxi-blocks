@@ -13,29 +13,29 @@ Object {
     },
     "content": Object {
       "": Object {
-        "general": Object {
+        "g": Object {
           "z-index": 1,
         },
       },
       " > .maxi-background-displayer .maxi-background-displayer__color": Object {
-        "general": Object {
+        "g": Object {
           "background-color": "rgba(56,25,212,1)",
         },
       },
       " p.maxi-text-block__content": Object {
-        "general": Object {
+        "g": Object {
           "font-style": "italic",
           "font-weight": 800,
         },
       },
       " p.maxi-text-block__content a": Object {
-        "general": Object {
+        "g": Object {
           "font-style": "italic",
           "font-weight": 800,
         },
       },
       " p.maxi-text-block__content li": Object {
-        "general": Object {
+        "g": Object {
           "font-style": "italic",
           "font-weight": 800,
         },

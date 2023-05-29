@@ -2,7 +2,7 @@
 
 exports[`getOverflowStyles Get a correct overflow styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "overflow-y": "hidden",
   },
   "l": Object {
@@ -34,7 +34,7 @@ Object {
 
 exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `
 Object {
-  "general": Object {},
+  "g": Object {},
   "l": Object {},
   "m": Object {},
   "s": Object {},
@@ -46,7 +46,7 @@ Object {
 
 exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `
 Object {
-  "general": Object {},
+  "g": Object {},
   "l": Object {},
   "m": Object {},
   "s": Object {},

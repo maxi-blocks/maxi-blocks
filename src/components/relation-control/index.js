@@ -202,15 +202,15 @@ const RelationControl = props => {
 		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
-			if (deviceType !== 'general') return {};
+			if (deviceType !== 'g') return {};
 
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
-				if (key.includes('-general')) {
-					const newKey = key.replace('general', baseBreakpoint);
+				if (key.includes('-g')) {
+					const newKey = key.replace('g', baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -257,13 +257,9 @@ const RelationControl = props => {
 		};
 
 		const getStyles = (stylesObj, isFirst = false) => {
-			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
+			if (Object.keys(stylesObj).some(key => key.includes('g'))) {
 				const styles = Object.keys(stylesObj).reduce((acc, key) => {
-					if (
-						breakpoints[key] ||
-						key === 'xxl' ||
-						key === 'general'
-					) {
+					if (breakpoints[key] || key === 'xxl' || key === 'g') {
 						acc[key] = {
 							styles: stylesObj[key],
 							breakpoint: breakpoints[key] || null,

@@ -19,7 +19,7 @@ import getAttributesValue from './getAttributesValue';
 import { isEmpty, isNil } from 'lodash';
 
 /**
- * General
+ * g
  */
 const allowedBlocks = [
 	'maxi-blocks/row-maxi',
@@ -84,7 +84,7 @@ const withAttributes = createHigherOrderComponent(
 			// RTL
 			const textAlignmentLabel = getAttributeKey({
 				key: '_ta',
-				breakpoint: 'general',
+				breakpoint: 'g',
 			});
 
 			if (

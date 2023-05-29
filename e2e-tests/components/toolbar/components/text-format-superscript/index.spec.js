@@ -28,8 +28,6 @@ describe('Text superscript', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('vertical-align-general')).toStrictEqual(
-			'super'
-		);
+		expect(await getAttributes('vertical-align-g')).toStrictEqual('super');
 	});
 });

@@ -3,7 +3,7 @@ import boxShadow from './boxShadow';
 
 const boxShadowHover = hoverAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { 'bs_pc-general': 6 }, // box-shadow-palette-color-general
+	diffValAttr: { 'bs_pc-g': 6 }, // box-shadow-palette-color-g
 	newAttr: {
 		'bs.sh': {
 			type: 'boolean',

@@ -22,7 +22,7 @@ describe('Responsive attributes mechanisms', () => {
 		await insertMaxiBlock(page, 'Group Maxi');
 	});
 
-	it('On change attributes from base responsive, just "general" attributes change', async () => {
+	it('On change attributes from base responsive, just "g" attributes change', async () => {
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		const selector = await borderAccordion.$(
 			'.maxi-border-control__type select'
@@ -30,11 +30,11 @@ describe('Responsive attributes mechanisms', () => {
 		await selector.select('solid');
 
 		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-width-top-general': 2,
-			'border-width-right-general': 2,
-			'border-width-bottom-general': 2,
-			'border-width-left-general': 2,
+			'border-style-g': 'solid',
+			'border-width-top-g': 2,
+			'border-width-right-g': 2,
+			'border-width-bottom-g': 2,
+			'border-width-left-g': 2,
 			'border-style-m': undefined,
 			'border-width-top-m': undefined,
 			'border-width-right-m': undefined,
@@ -43,11 +43,11 @@ describe('Responsive attributes mechanisms', () => {
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-width-top-general',
-			'border-width-right-general',
-			'border-width-bottom-general',
-			'border-width-left-general',
+			'border-style-g',
+			'border-width-top-g',
+			'border-width-right-g',
+			'border-width-bottom-g',
+			'border-width-left-g',
 			'border-style-m',
 			'border-width-top-m',
 			'border-width-right-m',
@@ -60,7 +60,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from base responsive multiple times, just "general" attributes change', async () => {
+	it('On change attributes from base responsive multiple times, just "g" attributes change', async () => {
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		const selector = await borderAccordion.$(
 			'.maxi-border-control__type select'
@@ -73,12 +73,10 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const firstExpect = {
-			'border-palette-status-general': false,
+			'border-palette-status-g': false,
 		};
 
-		const firstResult = await getAttributes([
-			'border-palette-status-general',
-		]);
+		const firstResult = await getAttributes(['border-palette-status-g']);
 
 		expect(firstResult).toStrictEqual(firstExpect);
 
@@ -88,12 +86,12 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const secondExpect = {
-			'border-palette-status-general': true,
+			'border-palette-status-g': true,
 			'border-palette-status-m': undefined,
 		};
 
 		const secondResult = await getAttributes([
-			'border-palette-status-general',
+			'border-palette-status-g',
 			'border-palette-status-m',
 		]);
 
@@ -102,7 +100,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from base responsive and some attributes have default on general, just "general" attributes change', async () => {
+	it('On change attributes from base responsive and some attributes have default on g, just "g" attributes change', async () => {
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
 			'.maxi-tabs-content .maxi-default-styles-control button',
@@ -110,13 +108,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-width-top-general': 2,
-			'border-width-right-general': 2,
-			'border-width-bottom-general': 2,
-			'border-width-left-general': 2,
-			'border-width-sync-general': 'all',
-			'border-width-unit-general': 'px',
+			'border-style-g': 'solid',
+			'border-width-top-g': 2,
+			'border-width-right-g': 2,
+			'border-width-bottom-g': 2,
+			'border-width-left-g': 2,
+			'border-width-sync-g': 'all',
+			'border-width-unit-g': 'px',
 			'border-style-m': undefined,
 			'border-width-top-m': undefined,
 			'border-width-right-m': undefined,
@@ -127,13 +125,13 @@ describe('Responsive attributes mechanisms', () => {
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-width-top-general',
-			'border-width-right-general',
-			'border-width-bottom-general',
-			'border-width-left-general',
-			'border-width-sync-general',
-			'border-width-unit-general',
+			'border-style-g',
+			'border-width-top-g',
+			'border-width-right-g',
+			'border-width-bottom-g',
+			'border-width-left-g',
+			'border-width-sync-g',
+			'border-width-unit-g',
 			'border-style-m',
 			'border-width-top-m',
 			'border-width-right-m',
@@ -148,7 +146,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from XXL responsive and without a default general attribute value, just "general" change', async () => {
+	it('On change attributes from XXL responsive and without a default g attribute value, just "g" change', async () => {
 		await changeResponsive(page, 'xxl');
 
 		const marginPaddingAccordion = await openSidebarTab(
@@ -166,12 +164,12 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '100',
+			'margin-top-g': '100',
 			'margin-top-xxl': undefined,
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-g',
 			'margin-top-xxl',
 		]);
 
@@ -180,7 +178,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from XXL responsive and some of them that have default on general, just "general" attributes change', async () => {
+	it('On change attributes from XXL responsive and some of them that have default on g, just "g" attributes change', async () => {
 		await changeResponsive(page, 'xxl');
 
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -197,11 +195,11 @@ describe('Responsive attributes mechanisms', () => {
 			'border-width-left-xxl': undefined,
 			'border-width-sync-xxl': undefined,
 			'border-width-unit-xxl': undefined,
-			'border-style-general': 'none',
-			'border-width-top-general': 2,
-			'border-width-right-general': 2,
-			'border-width-bottom-general': 2,
-			'border-width-left-general': 2,
+			'border-style-g': 'none',
+			'border-width-top-g': 2,
+			'border-width-right-g': 2,
+			'border-width-bottom-g': 2,
+			'border-width-left-g': 2,
 		};
 
 		const borderResult = await getAttributes([
@@ -212,11 +210,11 @@ describe('Responsive attributes mechanisms', () => {
 			'border-width-left-xxl',
 			'border-width-sync-xxl',
 			'border-width-unit-xxl',
-			'border-style-general',
-			'border-width-top-general',
-			'border-width-right-general',
-			'border-width-bottom-general',
-			'border-width-left-general',
+			'border-style-g',
+			'border-width-top-g',
+			'border-width-right-g',
+			'border-width-bottom-g',
+			'border-width-left-g',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -224,7 +222,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On first change attributes from XXL responsive and without a default general attribute value, and then changing from XL, just "general" and XL attributes change', async () => {
+	it('On first change attributes from XXL responsive and without a default g attribute value, and then changing from XL, just "g" and XL attributes change', async () => {
 		await changeResponsive(page, 'xxl');
 
 		let marginPaddingAccordion = await openSidebarTab(
@@ -257,13 +255,13 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-g': '10',
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-g',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -273,7 +271,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On first change attributes from XXL responsive and some of them have default general attribute value, and then changing from XL, "XL" change', async () => {
+	it('On first change attributes from XXL responsive and some of them have default g attribute value, and then changing from XL, "XL" change', async () => {
 		await changeResponsive(page, 'xxl');
 
 		let marginPaddingAccordion = await openSidebarTab(
@@ -307,13 +305,13 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-g': '10',
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-g',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -323,7 +321,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On first change attributes from XXL responsive and some of them have default general attribute value, and then changing from XL and from "M", all values correspond', async () => {
+	it('On first change attributes from XXL responsive and some of them have default g attribute value, and then changing from XL and from "M", all values correspond', async () => {
 		await changeResponsive(page, 'xxl');
 		let borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
@@ -347,14 +345,14 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-style-general': 'dotted',
+			'border-style-g': 'dotted',
 			'border-style-xl': 'dashed',
 			'border-style-m': 'dotted',
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xxl',
-			'border-style-general',
+			'border-style-g',
 			'border-style-xl',
 			'border-style-m',
 		]);
@@ -384,7 +382,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
+	it('On change attributes from XL responsive and then change from "M", "g" attributes change', async () => {
 		await changeResponsive(page, 'xl');
 
 		let marginPaddingAccordion = await openSidebarTab(
@@ -418,13 +416,13 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-g': '10',
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-g',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -434,7 +432,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change number attributes from XXL responsive without General attribute, it changes on XXL and General all time', async () => {
+	it('On change number attributes from XXL responsive without g attribute, it changes on XXL and g all time', async () => {
 		await changeResponsive(page, 'xxl');
 
 		const accordionPanel = await openSidebarTab(
@@ -453,12 +451,12 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '123',
+			'margin-top-g': '123',
 			'margin-top-xxl': undefined,
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-g',
 			'margin-top-xxl',
 		]);
 
@@ -477,12 +475,12 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('100', { delay: 100 });
 
 		const expectRadiusOnM = {
-			'border-radius-top-left-general': 100,
+			'border-radius-top-left-g': 100,
 			'border-radius-top-left-m': undefined,
 		};
 
 		const radiusOnM = await getAttributes([
-			'border-radius-top-left-general',
+			'border-radius-top-left-g',
 			'border-radius-top-left-m',
 		]);
 
@@ -499,13 +497,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('150', { delay: 100 });
 
 		const expectRadiusOnXl = {
-			'border-radius-top-left-general': 100,
+			'border-radius-top-left-g': 100,
 			'border-radius-top-left-xl': 150,
 			'border-radius-top-left-m': 100,
 		};
 
 		const radiusOnXl = await getAttributes([
-			'border-radius-top-left-general',
+			'border-radius-top-left-g',
 			'border-radius-top-left-m',
 			'border-radius-top-left-xl',
 		]);
@@ -519,13 +517,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnXl = {
-			'border-radius-top-left-general': 100,
+			'border-radius-top-left-g': 100,
 			'border-radius-top-left-m': undefined,
 			'border-radius-top-left-xl': undefined,
 		};
 
 		const resetRadiusOnXl = await getAttributes([
-			'border-radius-top-left-general',
+			'border-radius-top-left-g',
 			'border-radius-top-left-m',
 			'border-radius-top-left-xl',
 		]);
@@ -543,13 +541,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnM = {
-			'border-radius-top-left-general': undefined,
+			'border-radius-top-left-g': undefined,
 			'border-radius-top-left-m': undefined,
 			'border-radius-top-left-xl': undefined,
 		};
 
 		const resetRadiusOnM = await getAttributes([
-			'border-radius-top-left-general',
+			'border-radius-top-left-g',
 			'border-radius-top-left-m',
 			'border-radius-top-left-xl',
 		]);
@@ -557,7 +555,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
+	it('On change XL default attributes from g responsive and then reset, changes on g', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1920, height: 700 });
 
@@ -580,12 +578,12 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnM = {
-			'button-padding-top-general': '10',
+			'button-padding-top-g': '10',
 			'button-padding-top-xl': undefined,
 		};
 
 		const paddingOnM = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-g',
 			'button-padding-top-xl',
 		]);
 
@@ -594,13 +592,13 @@ describe('Responsive attributes mechanisms', () => {
 		await changeResponsive(page, 'xxl');
 
 		const expectPaddingOnXl = {
-			'button-padding-top-general': '10',
+			'button-padding-top-g': '10',
 			'button-padding-top-xl': undefined,
 			'button-padding-top-xxl': '23',
 		};
 
 		const paddingOnXl = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-g',
 			'button-padding-top-xl',
 			'button-padding-top-xxl',
 		]);
@@ -618,13 +616,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectPaddingAfterReset = {
-			'button-padding-top-general': '15',
+			'button-padding-top-g': '15',
 			'button-padding-top-xl': undefined,
 			'button-padding-top-xxl': '23',
 		};
 
 		const paddingAfterReset = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-g',
 			'button-padding-top-xl',
 			'button-padding-top-xxl',
 		]);
@@ -632,7 +630,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(paddingAfterReset).toStrictEqual(expectPaddingAfterReset);
 	});
 
-	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {
+	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the g attribute it changes on g and XXL', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1920, height: 700 });
 
@@ -660,13 +658,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'padding-top-general': '10',
+			'padding-top-g': '10',
 			'padding-top-xxl': undefined,
 			'padding-top-xl': undefined,
 		};
 
 		const paddingOnXl = await getAttributes([
-			'padding-top-general',
+			'padding-top-g',
 			'padding-top-xxl',
 			'padding-top-xl',
 		]);
@@ -687,13 +685,13 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnXxl = {
-			'padding-top-general': '15',
+			'padding-top-g': '15',
 			'padding-top-xl': undefined,
 			'padding-top-xxl': undefined,
 		};
 
 		const paddingOnXxl = await getAttributes([
-			'padding-top-general',
+			'padding-top-g',
 			'padding-top-xl',
 			'padding-top-xxl',
 		]);
@@ -702,7 +700,7 @@ describe('Responsive attributes mechanisms', () => {
 	});
 
 	/**
-	 * TODO: needs #3809 to be fixed first. On resetting, General values are overwriting XXL ones.
+	 * TODO: needs #3809 to be fixed first. On resetting, g values are overwriting XXL ones.
 	 */
 	it.skip('On resetting Typography values from SC having XXL as baseBreakpoint', async () => {
 		// Base responsive is "XXL"
@@ -758,10 +756,10 @@ describe('Responsive attributes mechanisms', () => {
 	});
 
 	// Skipped as Row doesn't have Width options anymore and there are no more situations where the first default attribute doesn't
-	// start with XXL, General or XL. In this case, having the width-l default value as the first was creating this concrete issue that
+	// start with XXL, g or XL. In this case, having the width-l default value as the first was creating this concrete issue that
 	// was supposed to be fixed and tested here. Things are different now, so this test is skipped but kept in case we find a future
 	// situation related that will need it 👍
-	it.skip('On L as a baseBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
+	it.skip('On L as a baseBreakpoint and changing a default L attribute with no higher value, it changes g and L', async () => {
 		// Base responsive is "L"
 		await setBrowserViewport({ width: 1400, height: 700 });
 

@@ -27,7 +27,7 @@ const getAttributeValue = ({
 
 	if (
 		!allowNil &&
-		(isNil(breakpoint) || breakpoint === 'general') &&
+		(isNil(breakpoint) || breakpoint === 'g') &&
 		isHover &&
 		isNil(value)
 	)

@@ -102,7 +102,7 @@ export const getSCVariablesObject = (
 		'divider',
 		'link',
 	];
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
 		'font-family',
 		'font-size',

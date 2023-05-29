@@ -51,9 +51,7 @@ describe('TextShadowControl', () => {
 			);
 			await page.waitForTimeout(200);
 
-			expect(await getAttributes('text-shadow-general')).toStrictEqual(
-				setting
-			);
+			expect(await getAttributes('text-shadow-g')).toStrictEqual(setting);
 		}
 
 		// change values manually
@@ -79,7 +77,7 @@ describe('TextShadowControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('54');
 
-		expect(await getAttributes('text-shadow-general')).toStrictEqual(
+		expect(await getAttributes('text-shadow-g')).toStrictEqual(
 			'34px 12px 54px rgba(var(--maxi-light-color-8,150,176,203),0.21)'
 		);
 

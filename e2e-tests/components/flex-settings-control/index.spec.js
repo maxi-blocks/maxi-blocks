@@ -68,27 +68,27 @@ describe('FlexSettings', () => {
 
 		// expect
 		const attributeParent = await getAttributes([
-			'flex-direction-general',
-			'flex-wrap-general',
-			'justify-content-general',
-			'align-content-general',
-			'align-items-general',
-			'column-gap-general',
-			'column-gap-unit-general',
-			'row-gap-general',
-			'row-gap-unit-general',
+			'flex-direction-g',
+			'flex-wrap-g',
+			'justify-content-g',
+			'align-content-g',
+			'align-items-g',
+			'column-gap-g',
+			'column-gap-unit-g',
+			'row-gap-g',
+			'row-gap-unit-g',
 		]);
 
 		const expectedParentAttribute = {
-			'flex-direction-general': 'row',
-			'flex-wrap-general': 'wrap',
-			'justify-content-general': 'flex-end',
-			'align-content-general': 'flex-start',
-			'align-items-general': 'flex-end',
-			'column-gap-general': 77,
-			'column-gap-unit-general': 'em',
-			'row-gap-general': 55,
-			'row-gap-unit-general': 'vw',
+			'flex-direction-g': 'row',
+			'flex-wrap-g': 'wrap',
+			'justify-content-g': 'flex-end',
+			'align-content-g': 'flex-start',
+			'align-items-g': 'flex-end',
+			'column-gap-g': 77,
+			'column-gap-unit-g': 'em',
+			'row-gap-g': 55,
+			'row-gap-unit-g': 'vw',
 		};
 		expect(attributeParent).toStrictEqual(expectedParentAttribute);
 
@@ -154,17 +154,17 @@ describe('FlexSettings', () => {
 
 		// expect
 		const attributeResult = await getAttributes([
-			'flex-basis-general',
-			'flex-grow-general',
-			'flex-shrink-general',
-			'order-general',
+			'flex-basis-g',
+			'flex-grow-g',
+			'flex-shrink-g',
+			'order-g',
 		]);
 
 		const expectedAttributes = {
-			'flex-basis-general': 'max-content',
-			'flex-grow-general': 10,
-			'flex-shrink-general': 6,
-			'order-general': 4,
+			'flex-basis-g': 'max-content',
+			'flex-grow-g': 10,
+			'flex-shrink-g': 6,
+			'order-g': 4,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);
@@ -184,10 +184,8 @@ describe('FlexSettings', () => {
 			newValue: '%',
 		});
 
-		expect(await getAttributes('flex-basis-general')).toStrictEqual('33');
-		expect(await getAttributes('flex-basis-unit-general')).toStrictEqual(
-			'%'
-		);
+		expect(await getAttributes('flex-basis-g')).toStrictEqual('33');
+		expect(await getAttributes('flex-basis-unit-g')).toStrictEqual('%');
 
 		// flex-child responsive
 		// check s
@@ -499,7 +497,7 @@ describe('FlexSettings', () => {
 					columnGapValue: 77,
 					columnGapUnit: 'em',
 				},
-				'general'
+				'g'
 			)
 		).toBe(true);
 

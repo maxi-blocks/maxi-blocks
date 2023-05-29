@@ -56,17 +56,17 @@ describe('Border from Toolbar', () => {
 		await page.keyboard.type('66');
 
 		const expectBorder = {
-			'button-border-style-general': 'solid',
-			'button-border-palette-color-general': 8,
-			'button-border-palette-opacity-general': 0.66,
-			'button-border-width-bottom-general': 59,
+			'button-border-style-g': 'solid',
+			'button-border-palette-color-g': 8,
+			'button-border-palette-opacity-g': 0.66,
+			'button-border-width-bottom-g': 59,
 		};
 
 		const borderResult = await getAttributes([
-			'button-border-style-general',
-			'button-border-palette-color-general',
-			'button-border-palette-opacity-general',
-			'button-border-width-bottom-general',
+			'button-border-style-g',
+			'button-border-palette-color-g',
+			'button-border-palette-opacity-g',
+			'button-border-width-bottom-g',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);

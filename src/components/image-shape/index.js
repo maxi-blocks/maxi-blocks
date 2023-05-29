@@ -120,7 +120,7 @@ const ImageShape = props => {
 
 	return (
 		<>
-			{!disableModal && breakpoint === 'general' && (
+			{!disableModal && breakpoint === 'g' && (
 				<MaxiModal
 					type='image-shape'
 					onSelect={obj => {
@@ -143,7 +143,7 @@ const ImageShape = props => {
 			)}
 			{icon && (
 				<>
-					{breakpoint === 'general' && (
+					{breakpoint === 'g' && (
 						<>
 							{!disableImageRatio && (
 								<SelectControl

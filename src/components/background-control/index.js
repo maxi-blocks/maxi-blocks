@@ -56,7 +56,7 @@ const BackgroundControl = props => {
 		prefix = '',
 		disablePalette,
 		clientId,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		globalProps,
 		inlineTarget = '',
 		getBounds,

@@ -15,7 +15,7 @@ import { isNil } from 'lodash';
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getShapeDividerStyles = (obj, location) => {
 	const response = {
@@ -69,7 +69,7 @@ export const getShapeDividerStyles = (obj, location) => {
 export const getShapeDividerSVGStyles = (obj, location, blockStyle) => {
 	const response = {
 		label: 'Shape Divider SVG',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {

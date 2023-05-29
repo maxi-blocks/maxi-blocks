@@ -49,9 +49,7 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('44');
 
-		expect(
-			await getAttributes('transform-scale-general')
-		).toMatchSnapshot();
+		expect(await getAttributes('transform-scale-g')).toMatchSnapshot();
 
 		// translate
 		await buttons[1].click();
@@ -80,9 +78,7 @@ describe('TransformControl', () => {
 		);
 		await selectXUnit.select('px');
 
-		expect(
-			await getAttributes('transform-translate-general')
-		).toMatchSnapshot();
+		expect(await getAttributes('transform-translate-g')).toMatchSnapshot();
 
 		// Rotate
 		await buttons[2].click();
@@ -102,9 +98,7 @@ describe('TransformControl', () => {
 		await rotateInputs[2].focus();
 		await page.keyboard.type('100');
 
-		expect(
-			await getAttributes('transform-rotate-general')
-		).toMatchSnapshot();
+		expect(await getAttributes('transform-rotate-g')).toMatchSnapshot();
 
 		// Origin
 		await buttons[3].click();
@@ -124,9 +118,7 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('20');
 
-		expect(
-			await getAttributes('transform-origin-general')
-		).toMatchSnapshot();
+		expect(await getAttributes('transform-origin-g')).toMatchSnapshot();
 
 		// check responsive scale
 		await buttons[0].click();

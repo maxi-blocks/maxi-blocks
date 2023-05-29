@@ -44,7 +44,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-general')).toStrictEqual('right');
+		expect(await getAttributes('alignment-g')).toStrictEqual('right');
 
 		await changeResponsive(page, 'l');
 		await page.$eval(

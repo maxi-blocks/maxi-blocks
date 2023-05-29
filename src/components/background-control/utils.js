@@ -41,21 +41,20 @@ export const setBreakpointToLayer = ({
 			if (isHover)
 				response[getAttributeKey({ key, isHover, breakpoint })] = val;
 
-			if (breakpoint !== 'general') {
+			if (breakpoint !== 'g') {
 				// General non-hover values
-				response[getAttributeKey({ key, breakpoint: 'general' })] = val;
+				response[getAttributeKey({ key, breakpoint: 'g' })] = val;
 
 				// General hover values
 				if (isHover)
 					response[
-						getAttributeKey({ key, isHover, breakpoint: 'general' })
+						getAttributeKey({ key, isHover, breakpoint: 'g' })
 					] = val;
 			}
 		} else response[key] = val;
 
-		if (key === '_d' && (isHover || breakpoint !== 'general'))
-			response[getAttributeKey({ key: '_d', breakpoint: 'general' })] =
-				'none';
+		if (key === '_d' && (isHover || breakpoint !== 'g'))
+			response[getAttributeKey({ key: '_d', breakpoint: 'g' })] = 'none';
 
 		response.isHover = isHover;
 	});

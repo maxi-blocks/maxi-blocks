@@ -1,4 +1,3 @@
-/* eslint-disable @wordpress/no-global-event-listener */
 // Parallax
 class Parallax {
 	constructor(el, speed) {

@@ -47,7 +47,7 @@ const isEligible = blockAttributes =>
 const migrate = newAttributes => {
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key in deprecatedAttributes) {
-			newAttributes[`${key}-general`] = attr;
+			newAttributes[`${key}-g`] = attr;
 
 			delete newAttributes[key];
 		}

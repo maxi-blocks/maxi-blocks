@@ -34,20 +34,20 @@ export const iconHover = hoverAttributesCreator({
 export const iconBackgroundHover = hoverAttributesCreator({
 	obj: iconBackground,
 	diffValAttr: {
-		'i-b_am-general.h': 'none', // icon-background-active-media-general-hover
+		'i-b_am-g.h': 'none', // icon-background-active-media-g-hover
 	},
 });
 
 export const iconBackgroundColorHover = hoverAttributesCreator({
 	obj: iconBackgroundColor,
 	diffValAttr: {
-		'i-b_pc-general.h': 6, // icon-background-palette-color-general-hover
+		'i-b_pc-g.h': 6, // icon-background-palette-color-g-hover
 	},
 });
 
 export const iconBackgroundGradientHover = hoverAttributesCreator({
 	obj: iconBackgroundGradient,
 	diffValAttr: {
-		'i-bg_o-general.h': 1, // icon-background-gradient-opacity-general-hover
+		'i-bg_o-g.h': 1, // icon-background-gradient-opacity-g-hover
 	},
 });

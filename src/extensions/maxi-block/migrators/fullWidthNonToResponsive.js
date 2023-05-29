@@ -27,8 +27,8 @@ const migrate = ({ newAttributes, prefix }) => {
 	const { blockFullWidth, fullWidth } = newAttributes;
 	delete newAttributes.blockFullWidth;
 
-	newAttributes['full-width-general'] = blockFullWidth;
-	if (prefix) newAttributes[`${prefix}_fw-general`] = fullWidth;
+	newAttributes['full-width-g'] = blockFullWidth;
+	if (prefix) newAttributes[`${prefix}_fw-g`] = fullWidth;
 
 	return newAttributes;
 };

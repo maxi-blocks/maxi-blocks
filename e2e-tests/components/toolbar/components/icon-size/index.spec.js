@@ -40,7 +40,7 @@ describe('Icon size', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('132');
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual('132');
+		expect(await getAttributes('svg-width-g')).toStrictEqual('132');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'height width');

@@ -14,11 +14,11 @@ import { isNil, isEmpty, isNumber } from 'lodash';
 import getAttributesValue from '../../attributes/getAttributesValue';
 import { radiusAxisDictionary } from '../../attributes/constants';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getArrowObject = props => {
 	const response = {};
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
@@ -70,7 +70,7 @@ export const getArrowObject = props => {
 export const getArrowBorder = (props, isHover) => {
 	const response = {
 		label: 'Arrow Border',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -108,7 +108,7 @@ export const getArrowColorObject = (
 ) => {
 	const response = {
 		label: 'Arrow Color',
-		general: {},
+		g: {},
 	};
 
 	const colorLayers = backgroundLayers.filter(
@@ -163,7 +163,7 @@ const getArrowStyles = props => {
 		});
 
 		if (
-			breakpoint === 'general' &&
+			breakpoint === 'g' &&
 			borderStyle !== 'solid' &&
 			borderStyle !== 'none'
 		)

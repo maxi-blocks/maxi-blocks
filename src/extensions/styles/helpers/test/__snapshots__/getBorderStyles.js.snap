@@ -2,7 +2,7 @@
 
 exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-width": "2px",
     "border-color": "rgba(var(--maxi-light-color-7,8,18,25),1)",
     "border-left-width": "2px",
@@ -23,7 +23,7 @@ Object {
 
 exports[`getBorderStyles Return a border radius object as the one that can be required by background helper 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-left-radius": "181px",
     "border-bottom-right-radius": "182px",
     "border-top-left-radius": "183px",
@@ -40,7 +40,7 @@ Object {
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -99,7 +99,7 @@ Object {
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi with hover active and non global SC settings enabled 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -122,7 +122,7 @@ Object {
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi with hover disabled and global SC settings enabled 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -145,7 +145,7 @@ Object {
 
 exports[`getBorderStyles Return a border styles object with hover options 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-left-radius": "0px",
     "border-bottom-right-radius": "0px",
     "border-bottom-width": "20px",
@@ -201,7 +201,7 @@ Object {
 
 exports[`getBorderStyles Return an IB border styles when bo_s - none 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border": "none",
   },
   "l": Object {},
@@ -215,7 +215,7 @@ Object {
 
 exports[`getBorderStyles Return border styles object with all the settings 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-bottom-width": "2px",
     "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
     "border-left-width": "2px",
@@ -260,7 +260,7 @@ Object {
 
 exports[`getBorderStyles Test simple and default border attributes 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border": "none",
   },
   "l": Object {},

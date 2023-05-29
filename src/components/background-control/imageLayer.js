@@ -644,7 +644,7 @@ const ImageLayer = props => {
 
 	const getDefaultAttr = target => {
 		if (isLayer)
-			return breakpoint === 'general'
+			return breakpoint === 'g'
 				? getDefaultLayerAttr('imageOptions', `${prefix}${target}`)
 				: undefined;
 

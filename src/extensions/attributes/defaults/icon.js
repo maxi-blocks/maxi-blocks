@@ -59,7 +59,7 @@ export const icon = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'i_w-general': '32',
+			'i_w-g': '32',
 		},
 	}),
 	...prefixAttributesCreator({
@@ -67,7 +67,7 @@ export const icon = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'i_h-general': '32',
+			'i_h-g': '32',
 		},
 	}),
 	...paletteAttributesCreator({
@@ -86,7 +86,7 @@ export const iconBackground = prefixAttributesCreator({
 	obj: background,
 	prefix,
 	longPrefix,
-	diffValAttr: { 'i-b_am-general': 'none' }, // icon-background-active-media-general
+	diffValAttr: { 'i-b_am-g': 'none' }, // icon-background-active-media-g
 });
 
 export const iconPadding = prefixAttributesCreator({

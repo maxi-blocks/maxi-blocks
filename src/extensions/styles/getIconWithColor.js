@@ -82,7 +82,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 				paletteColor = getAttributesValue({
 					target: '_pc',
 					isHover,
-					breakpoint: 'general',
+					breakpoint: 'g',
 					props: attributes,
 					prefix,
 				});
@@ -90,7 +90,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 				paletteOpacity = getAttributesValue({
 					target: '_po',
 					isHover,
-					breakpoint: 'general',
+					breakpoint: 'g',
 					props: attributes,
 					prefix,
 				});
@@ -98,7 +98,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 				paletteStatus = getAttributesValue({
 					target: '_ps',
 					isHover,
-					breakpoint: 'general',
+					breakpoint: 'g',
 					props: attributes,
 					prefix,
 				});
@@ -106,7 +106,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 				color = getAttributesValue({
 					target: '_cc',
 					isHover,
-					breakpoint: 'general',
+					breakpoint: 'g',
 					props: attributes,
 					prefix,
 				});

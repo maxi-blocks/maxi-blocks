@@ -2,7 +2,7 @@ import getSizeStyles from '../getSizeStyles';
 
 jest.mock('../../../attributes/getDefaultAttribute', () => {
 	return jest.fn(attribute => {
-		return attribute.includes('general') ? 'normal' : undefined;
+		return attribute.includes('-g') ? 'normal' : undefined;
 	});
 });
 
@@ -10,18 +10,18 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles', () => {
 		const object = {
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': '1',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': '1',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 			'_mw-xxl': '2',
 			'_w.u-xxl': 'px',
 			'_w-xxl': '3',
@@ -100,18 +100,18 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles with force aspect ratio', () => {
 		const object = {
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': '1',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': '1',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
 			'_w.u-xxl': 'px',
@@ -186,18 +186,18 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles with width fit content', () => {
 		const object = {
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': 'fit-content',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': 'fit-content',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
 			'_w.u-xxl': 'px',
@@ -264,7 +264,7 @@ describe('getSizeStyles', () => {
 			'_h-xs': '3',
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
-			'_wfc-general': true,
+			'_wfc-g': true,
 		};
 
 		const result = getSizeStyles(object);
@@ -273,7 +273,7 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width', () => {
 		const object = {
-			'_fw-general': 'full',
+			'_fw-g': 'full',
 			'_fw-l': 'normal',
 		};
 
@@ -284,7 +284,7 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles with full width 2', () => {
 		const object = {
 			_sao: true,
-			'_fw-general': 'full',
+			'_fw-g': 'full',
 			'_fw-xl': 'normal',
 			'_fw-l': 'full',
 			'_miw-l': '2',
@@ -300,20 +300,20 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width 3', () => {
 		const object = {
-			'_fw-general': 'full',
+			'_fw-g': 'full',
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': 'fit-content',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': 'fit-content',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 		};
 
 		const result = getSizeStyles(object);
@@ -322,20 +322,20 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width responsive', () => {
 		const object = {
-			'_fw-general': 'full',
+			'_fw-g': 'full',
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': 'fit-content',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': 'fit-content',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 			'_fw-xxl': 'normal',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
@@ -408,7 +408,7 @@ describe('getSizeStyles', () => {
 			'_h-xs': '3',
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
-			'_wfc-general': true,
+			'_wfc-g': true,
 		};
 
 		const result = getSizeStyles(object);
@@ -417,20 +417,20 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width responsive 2', () => {
 		const object = {
-			'_fw-general': 'normal',
+			'_fw-g': 'normal',
 			_sao: true,
-			'_mw.u-general': 'px',
-			'_mw-general': '2',
-			'_w.u-general': 'px',
-			'_w-general': 'fit-content',
-			'_miw.u-general': 'px',
-			'_miw-general': '2',
-			'_mh.u-general': 'px',
-			'_mh-general': '3',
-			'_h.u-general': 'px',
-			'_h-general': '4',
-			'_mih.u-general': 'px',
-			'_mih-general': '1',
+			'_mw.u-g': 'px',
+			'_mw-g': '2',
+			'_w.u-g': 'px',
+			'_w-g': 'fit-content',
+			'_miw.u-g': 'px',
+			'_miw-g': '2',
+			'_mh.u-g': 'px',
+			'_mh-g': '3',
+			'_h.u-g': 'px',
+			'_h-g': '4',
+			'_mih.u-g': 'px',
+			'_mih-g': '1',
 			'_fw-xxl': 'full',
 			'_mw.u-xxl': 'px',
 			'_mw-xxl': '2',
@@ -499,7 +499,7 @@ describe('getSizeStyles', () => {
 			'_h-xs': '3',
 			'_mih.u-xs': 'px',
 			'_mih-xs': '4',
-			'_wfc-general': true,
+			'_wfc-g': true,
 		};
 
 		const result = getSizeStyles(object);

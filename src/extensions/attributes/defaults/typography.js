@@ -115,6 +115,6 @@ export const typographyAlignment = prefixAttributesCreator({
 	prefix: 't-',
 	longPrefix: 'typography-',
 	diffValAttr: {
-		'_ta-general': 'left', // typography-alignment-general
+		'_ta-g': 'left', // typography-alignment-general
 	},
 });

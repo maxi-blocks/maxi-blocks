@@ -33,7 +33,7 @@ describe('FontFamilySelector', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-g')).toStrictEqual(
 			'Montserrat'
 		);
 
@@ -43,9 +43,7 @@ describe('FontFamilySelector', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
-			undefined
-		);
+		expect(await getAttributes('font-family-g')).toStrictEqual(undefined);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

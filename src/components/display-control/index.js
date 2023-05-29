@@ -37,7 +37,7 @@ const DisplayControl = props => {
 	const classes = classnames('maxi-display-control', className);
 
 	const isHide = () => {
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
 
 		if (breakpointIndex < 0) return false;

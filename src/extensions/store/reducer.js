@@ -43,14 +43,14 @@ const breakpointResizer = ({
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
 			'maxi-blocks-responsive',
-			size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
+			size !== 'g' ? size : getWinBreakpoint(winSize, breakpoints)
 		);
 	});
 
 	if (changeSize) {
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
-			(size === 'general' && 'none') ||
+			(size === 'g' && 'none') ||
 			(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 			breakpoints[size];
 
@@ -68,7 +68,7 @@ const breakpointResizer = ({
 			}
 		} else editorWrapper.removeAttribute('is-maxi-preview');
 
-		if (size === 'general') {
+		if (size === 'g') {
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
 		} else {
@@ -99,7 +99,7 @@ const reducer = (
 	state = {
 		settings: {},
 		breakpoints: {},
-		deviceType: 'general',
+		deviceType: 'g',
 		presets: '',
 		copiedStyles: {},
 		copiedBlocks: {},

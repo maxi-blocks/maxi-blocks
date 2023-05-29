@@ -29,7 +29,7 @@ const PositionControl = props => {
 		className,
 		onChange,
 		disablePosition = false,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		prefix = '',
 		isHover = false,
 		defaultAttributes,

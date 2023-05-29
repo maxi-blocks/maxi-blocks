@@ -30,24 +30,24 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-general': '24',
-			'padding-bottom-general': '24',
-			'padding-left-general': '24',
-			'padding-right-general': '24',
-			'padding-left-unit-general': 'em',
-			'padding-bottom-unit-general': 'em',
-			'padding-top-unit-general': 'em',
-			'padding-right-unit-general': 'em',
+			'padding-top-g': '24',
+			'padding-bottom-g': '24',
+			'padding-left-g': '24',
+			'padding-right-g': '24',
+			'padding-left-unit-g': 'em',
+			'padding-bottom-unit-g': 'em',
+			'padding-top-unit-g': 'em',
+			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
-			'padding-left-unit-general',
-			'padding-bottom-unit-general',
-			'padding-top-unit-general',
-			'padding-right-unit-general',
-			'padding-top-general',
-			'padding-bottom-general',
-			'padding-left-general',
-			'padding-right-general',
+			'padding-left-unit-g',
+			'padding-bottom-unit-g',
+			'padding-top-unit-g',
+			'padding-right-unit-g',
+			'padding-top-g',
+			'padding-bottom-g',
+			'padding-left-g',
+			'padding-right-g',
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);
@@ -85,24 +85,24 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-general': '34',
-			'padding-bottom-general': '34',
-			'padding-left-general': '44',
-			'padding-right-general': '44',
-			'padding-left-unit-general': 'em',
-			'padding-bottom-unit-general': '%',
-			'padding-top-unit-general': '%',
-			'padding-right-unit-general': 'em',
+			'padding-top-g': '34',
+			'padding-bottom-g': '34',
+			'padding-left-g': '44',
+			'padding-right-g': '44',
+			'padding-left-unit-g': 'em',
+			'padding-bottom-unit-g': '%',
+			'padding-top-unit-g': '%',
+			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
-			'padding-left-unit-general',
-			'padding-bottom-unit-general',
-			'padding-top-unit-general',
-			'padding-right-unit-general',
-			'padding-top-general',
-			'padding-bottom-general',
-			'padding-left-general',
-			'padding-right-general',
+			'padding-left-unit-g',
+			'padding-bottom-unit-g',
+			'padding-top-unit-g',
+			'padding-right-unit-g',
+			'padding-top-g',
+			'padding-bottom-g',
+			'padding-left-g',
+			'padding-right-g',
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);
@@ -151,24 +151,24 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-general': '10',
-			'padding-bottom-general': '30',
-			'padding-left-general': '40',
-			'padding-right-general': '20',
-			'padding-left-unit-general': '%',
-			'padding-bottom-unit-general': 'vw',
-			'padding-top-unit-general': '%',
-			'padding-right-unit-general': 'em',
+			'padding-top-g': '10',
+			'padding-bottom-g': '30',
+			'padding-left-g': '40',
+			'padding-right-g': '20',
+			'padding-left-unit-g': '%',
+			'padding-bottom-unit-g': 'vw',
+			'padding-top-unit-g': '%',
+			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
-			'padding-left-unit-general',
-			'padding-bottom-unit-general',
-			'padding-top-unit-general',
-			'padding-right-unit-general',
-			'padding-top-general',
-			'padding-bottom-general',
-			'padding-left-general',
-			'padding-right-general',
+			'padding-left-unit-g',
+			'padding-bottom-unit-g',
+			'padding-top-unit-g',
+			'padding-right-unit-g',
+			'padding-top-g',
+			'padding-bottom-g',
+			'padding-left-g',
+			'padding-right-g',
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);

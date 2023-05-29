@@ -70,7 +70,7 @@ const Size = ({
 
 			// getDefaultLayerAttr does not support breakpoints,
 			// so I wrote a little hack to reset it correctly
-			return breakpoint === 'general'
+			return breakpoint === 'g'
 				? getDefaultLayerAttr(
 						`${type === 'shape' ? 'SVG' : type}Options`,
 						`${prefix}${target}`
@@ -224,7 +224,7 @@ const SizeAndPositionLayerControl = ({
 			).reduce(
 				(acc, [key, value]) => ({
 					...acc,
-					...(key.includes(prefix) && { [`${key}-general`]: value }),
+					...(key.includes(prefix) && { [`${key}-g`]: value }),
 				}),
 				{}
 			);
@@ -252,7 +252,7 @@ const SizeAndPositionLayerControl = ({
 				disablePosition
 				defaultAttributes={getDefaultLayerWithBreakpoint(
 					`${type === 'shape' ? 'SVG' : type}Options`,
-					'general',
+					'g',
 					isHover
 				)}
 				disableRTC

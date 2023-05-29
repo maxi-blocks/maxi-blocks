@@ -50,14 +50,14 @@ describe('Column Maxi', () => {
 
 		await page.keyboard.type('50');
 
-		expect(await getAttributes('column-size-general')).toStrictEqual(50);
+		expect(await getAttributes('column-size-g')).toStrictEqual(50);
 
 		const selector = await page.$(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
 		);
 		await selector.select('center');
 
-		expect(await getAttributes('justify-content-general')).toStrictEqual(
+		expect(await getAttributes('justify-content-g')).toStrictEqual(
 			'center'
 		);
 
@@ -139,16 +139,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectBorder = {
-			'border-radius-bottom-left-general': 25,
-			'border-radius-bottom-right-general': 24,
-			'border-radius-top-left-general': 16,
-			'border-radius-top-right-general': 15,
+			'border-radius-bottom-left-g': 25,
+			'border-radius-bottom-right-g': 24,
+			'border-radius-top-left-g': 16,
+			'border-radius-top-right-g': 15,
 		};
 		const borderResult = await getAttributes([
-			'border-radius-bottom-left-general',
-			'border-radius-bottom-right-general',
-			'border-radius-top-left-general',
-			'border-radius-top-right-general',
+			'border-radius-bottom-left-g',
+			'border-radius-bottom-right-g',
+			'border-radius-top-left-g',
+			'border-radius-top-right-g',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -177,16 +177,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectHoverBorder = {
-			'border-radius-bottom-left-general-hover': 12,
-			'border-radius-bottom-right-general-hover': 55,
-			'border-radius-top-left-general-hover': 33,
-			'border-radius-top-right-general-hover': 25,
+			'border-radius-bottom-left-g-hover': 12,
+			'border-radius-bottom-right-g-hover': 55,
+			'border-radius-top-left-g-hover': 33,
+			'border-radius-top-right-g-hover': 25,
 		};
 		const borderHoverResult = await getAttributes([
-			'border-radius-bottom-left-general-hover',
-			'border-radius-bottom-right-general-hover',
-			'border-radius-top-left-general-hover',
-			'border-radius-top-right-general-hover',
+			'border-radius-bottom-left-g-hover',
+			'border-radius-bottom-right-g-hover',
+			'border-radius-top-left-g-hover',
+			'border-radius-top-right-g-hover',
 		]);
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
 

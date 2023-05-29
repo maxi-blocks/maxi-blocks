@@ -37,8 +37,8 @@ const attributes = {
 		obj: attributesData.size,
 		prefix,
 		diffValAttr: {
-			[`${prefixWOHyphen}_w-general`]: '250',
-			[`${prefixWOHyphen}_w.u-general`]: 'px',
+			[`${prefixWOHyphen}_w-g`]: '250',
+			[`${prefixWOHyphen}_w.u-g`]: 'px',
 		},
 	}),
 	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),

@@ -2,7 +2,7 @@
 
 exports[`getSizeStyles Get a correct size styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -63,7 +63,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -129,7 +129,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with full width 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "min-width": "100%",
   },
   "l": Object {
@@ -155,7 +155,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with full width 2 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "min-width": "100%",
   },
   "l": Object {
@@ -181,7 +181,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with full width 3 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
@@ -228,7 +228,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with full width responsive 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
@@ -281,7 +281,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with full width responsive 2 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -336,7 +336,7 @@ Object {
 
 exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",

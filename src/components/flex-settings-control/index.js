@@ -41,7 +41,7 @@ const FlexSettingsControl = props => {
 		className,
 		onChange,
 		name,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		getParentBlockName,
 	} = props;
 

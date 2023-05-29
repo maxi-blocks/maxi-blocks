@@ -17,21 +17,21 @@ const accordionLineAttributes = {
 
 const rawAccordionLine = {
 	...divider,
-	'di-bo_pc-general': {
+	'di-bo_pc-g': {
 		type: 'number',
 		default: 3,
-		longLabel: 'divider-border-palette-color-general',
+		longLabel: 'divider-border-palette-color-g',
 	},
-	'di_w-general': {
+	'di_w-g': {
 		type: 'number',
 		default: 100,
-		longLabel: 'divider-width-general',
+		longLabel: 'divider-width-g',
 	},
 	...dividerHover,
-	'di_w-general.h': {
+	'di_w-g.h': {
 		type: 'number',
 		default: 100,
-		longLabel: 'divider-width-general-hover',
+		longLabel: 'divider-width-g-hover',
 	},
 	...accordionLineAttributes,
 	...prefixAttributesCreator({
@@ -39,8 +39,8 @@ const rawAccordionLine = {
 		prefix: 'a-',
 		longPrefix: 'active-',
 		diffValAttr: {
-			'a-db_pc-general': 3, // active-divider-border-palette-color-general
-			'a-di_w-general': 100, // active-divider-width-general
+			'a-db_pc-g': 3, // active-divider-border-palette-color-g
+			'a-di_w-g': 100, // active-divider-width-g
 		},
 	}),
 };

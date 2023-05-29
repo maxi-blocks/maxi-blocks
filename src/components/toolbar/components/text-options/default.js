@@ -1,6 +1,6 @@
 const defaultFontSize = {
 	label: 'Custom font size',
-	general: {
+	g: {
 		'font-sizeUnit': '',
 		'font-size': '',
 	},

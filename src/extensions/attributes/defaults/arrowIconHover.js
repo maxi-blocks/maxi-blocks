@@ -4,14 +4,14 @@ import arrowIcon from './arrowIcon';
 const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,
 	diffValAttr: {
-		// navigation-arrow-both-icon-background-gradient-opacity-general-hover
-		'nab-i-bg_o-general.h': 1,
-		// navigation-arrow-both-icon-background-palette-color-general-hover
-		'nab-i-b_pc-general.h': 6,
-		// navigation-arrow-both-icon-background-active-media-general-hover
-		'nab-i-b_am-general.h': 'none',
-		// navigation-arrow-both-icon-box-shadow-palette-color-general
-		'nab-i-bs_pc-general': 6,
+		// navigation-arrow-both-icon-background-gradient-opacity-g-hover
+		'nab-i-bg_o-g.h': 1,
+		// navigation-arrow-both-icon-background-palette-color-g-hover
+		'nab-i-b_pc-g.h': 6,
+		// navigation-arrow-both-icon-background-active-media-g-hover
+		'nab-i-b_am-g.h': 'none',
+		// navigation-arrow-both-icon-box-shadow-palette-color-g
+		'nab-i-bs_pc-g': 6,
 	},
 	newAttr: {
 		'nab-i.sh': {

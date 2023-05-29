@@ -28,9 +28,7 @@ const controls = {
 	async RECEIVE_DEVICE_TYPE() {
 		const originalDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
-		return originalDeviceType === 'Desktop'
-			? 'general'
-			: originalDeviceType;
+		return originalDeviceType === 'Desktop' ? 'g' : originalDeviceType;
 	},
 };
 

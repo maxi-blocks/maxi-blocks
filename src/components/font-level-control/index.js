@@ -86,20 +86,19 @@ const FontLevelControl = props => {
 				getAttributesValue({
 					target: '_pc',
 					props: fontOptions,
-					breakpoint: 'general',
+					breakpoint: 'g',
 				})
 			);
 			fontOptResponse = {
 				...fontOptions,
-				[getAttributeKey({ key: '_pc', breakpoint: 'general' })]:
-					newColor,
+				[getAttributeKey({ key: '_pc', breakpoint: 'g' })]: newColor,
 			};
 			fontOptResponseHover = {
 				...fontOptionsHover,
 				[getAttributeKey({
 					key: '_pc',
 					isHover: true,
-					breakpoint: 'general',
+					breakpoint: 'g',
 				})]: 5,
 			};
 		}

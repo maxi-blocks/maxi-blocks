@@ -32,7 +32,7 @@ describe('Text bold', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('font-weight-general')).toStrictEqual(700);
+		expect(await getAttributes('font-weight-g')).toStrictEqual(700);
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'typography');

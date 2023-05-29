@@ -81,22 +81,22 @@ const rawIcon = {
 		default: false,
 		longLabel: 'icon-inherit',
 	},
-	'i_w-general': {
+	'i_w-g': {
 		type: 'string',
 		default: null,
 		longLabel: 'icon-width-general',
 	},
-	'i_w.u-general': {
+	'i_w.u-g': {
 		type: 'string',
 		default: null,
 		longLabel: 'icon-width-unit-general',
 	},
-	'i_w-general.h': {
+	'i_w-g.h': {
 		type: 'string',
 		default: null,
 		longLabel: 'icon-width-general-hover',
 	},
-	'i_w.u-general.h': {
+	'i_w.u-g.h': {
 		type: 'string',
 		default: null,
 		longLabel: 'icon-width-unit-general-hover',
@@ -109,7 +109,7 @@ const icons = {
 		prefix: 'cl-',
 		longPrefix: 'close-',
 		diffValAttr: {
-			'cl-i_spa-general': 5, // 'close-icon-spacing-general'
+			'cl-i_spa-g': 5, // 'close-icon-spacing-general'
 			'cl-i_pos': 'top-screen-right', // 'close-icon-position'
 			'cl-i-f_pc': 1, // 'close-icon-fill-palette-color'
 			// 'close-icon-content'
@@ -123,7 +123,7 @@ const icons = {
 		longPrefix: 'play-',
 		diffValAttr: {
 			'pl-i-f_pc': 1, // 'play-icon-fill-palette-color'
-			'pl-i_h-general': '50', // 'play-icon-height-general'
+			'pl-i_h-g': '50', // 'play-icon-height-general'
 			// 'play-icon-content'
 			'pl-i_c':
 				'<svg class="play-16-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.099 36.099"><path d="M18.05.438C8.323.438.438 8.323.438 18.05S8.323 35.661 18.05 35.661s17.611-7.885 17.611-17.611S27.776.438 18.05.438zM13.238 25.71V10.39l13.267 7.66-13.267 7.66z" data-fill fill="#ff4a17"/></svg>',

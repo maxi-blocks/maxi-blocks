@@ -4,7 +4,7 @@
 import { select } from '@wordpress/data';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Retrieve cleaned target
@@ -58,7 +58,7 @@ const styleStringGenerator = (
 
 	generalString += getTargetString(target, isIframe, isSiteEditor);
 
-	if (breakpoint === 'general') {
+	if (breakpoint === 'g') {
 		string += generalString;
 	} else if (breakpoint === 'xxl') {
 		string += `body.maxi-blocks--active${
@@ -112,7 +112,7 @@ const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 				if (
 					breakpoint !== currentBreakpoint &&
 					isBaseLowerThanCurrent &&
-					breakpoint !== 'general'
+					breakpoint !== 'g'
 				)
 					return;
 
@@ -126,10 +126,10 @@ const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 					isSiteEditor
 				);
 
-				if (breakpoint === 'general') {
+				if (breakpoint === 'g') {
 					response += styleStringGenerator(
 						`${target}${suffix}`,
-						getResponsiveStyles(props.general),
+						getResponsiveStyles(props.g),
 						baseBreakpoint,
 						isIframe,
 						isSiteEditor

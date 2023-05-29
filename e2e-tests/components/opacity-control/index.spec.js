@@ -29,7 +29,7 @@ describe('OpacityControl', () => {
 			newNumber: '19',
 		});
 
-		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
+		expect(await getAttributes('opacity-g')).toStrictEqual(0.19);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 

@@ -2,7 +2,7 @@
 
 exports[`getAlignmentTextStyles Get a correct alignment text styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "text-align": "right",
   },
   "l": Object {

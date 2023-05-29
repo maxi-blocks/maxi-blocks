@@ -39,13 +39,13 @@ describe('Text color', () => {
 		await page.keyboard.type('32');
 
 		const expectDivider = {
-			'palette-color-general': 5,
-			'palette-opacity-general': 0.32,
+			'palette-color-g': 5,
+			'palette-opacity-g': 0.32,
 		};
 
 		const dividerResult = await getAttributes([
-			'palette-color-general',
-			'palette-opacity-general',
+			'palette-color-g',
+			'palette-opacity-g',
 		]);
 
 		expect(dividerResult).toStrictEqual(expectDivider);

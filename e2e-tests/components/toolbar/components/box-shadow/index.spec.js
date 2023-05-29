@@ -56,17 +56,17 @@ describe('Box shadow from Toolbar', () => {
 		await page.keyboard.type('66');
 
 		const expectBoxShadow = {
-			'button-box-shadow-palette-color-general': 6,
-			'button-box-shadow-palette-opacity-general': 0.66,
-			'button-box-shadow-blur-general': 50,
-			'button-box-shadow-spread-general': 77,
+			'button-box-shadow-palette-color-g': 6,
+			'button-box-shadow-palette-opacity-g': 0.66,
+			'button-box-shadow-blur-g': 50,
+			'button-box-shadow-spread-g': 77,
 		};
 
 		const boxShadowResult = await getAttributes([
-			'button-box-shadow-palette-color-general',
-			'button-box-shadow-palette-opacity-general',
-			'button-box-shadow-blur-general',
-			'button-box-shadow-spread-general',
+			'button-box-shadow-palette-color-g',
+			'button-box-shadow-palette-opacity-g',
+			'button-box-shadow-blur-g',
+			'button-box-shadow-spread-g',
 		]);
 
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);

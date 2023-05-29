@@ -43,7 +43,7 @@ const AlignmentControl = props => {
 		disableRight = false,
 		disableJustify = false,
 		showLabel = false,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		type = '',
 		isHover = false,
 		isToolbar = false,

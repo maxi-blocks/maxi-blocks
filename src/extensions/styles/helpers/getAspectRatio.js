@@ -3,7 +3,7 @@ const getAspectRatio = ratio => {
 
 	return {
 		ratio: {
-			general: {
+			g: {
 				'aspect-ratio': (() => {
 					switch (ratio) {
 						case 'ar11':

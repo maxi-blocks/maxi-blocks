@@ -21,9 +21,9 @@ const getStyles = (stylesObj, isFirst = false) => {
 		xl: 1920,
 	};
 
-	if (Object.keys(stylesObj).some(key => key.includes('general'))) {
+	if (Object.keys(stylesObj).some(key => key.includes('g'))) {
 		const styles = Object.keys(stylesObj).reduce((acc, key) => {
-			if (breakpoints[key] || key === 'xxl' || key === 'general') {
+			if (breakpoints[key] || key === 'xxl' || key === 'g') {
 				acc[key] = {
 					styles: stylesObj[key],
 					breakpoint: breakpoints[key] || null,

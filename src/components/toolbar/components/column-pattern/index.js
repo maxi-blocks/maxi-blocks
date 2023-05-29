@@ -24,7 +24,7 @@ const ToolbarColumnPattern = props => {
 
 	if (
 		blockName !== 'maxi-blocks/row-maxi' ||
-		!getAttributesValue({ target: '_rp-general', props })
+		!getAttributesValue({ target: '_rp-g', props })
 	)
 		return null;
 

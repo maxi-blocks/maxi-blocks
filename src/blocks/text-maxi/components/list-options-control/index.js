@@ -547,7 +547,7 @@ const ListOptionsControl = props => {
 					});
 				}}
 			/>
-			{deviceType === 'general' && (
+			{deviceType === 'g' && (
 				<ColorControl
 					label={__('Marker', 'maxi-blocks')}
 					color={getAttributesValue({
@@ -658,7 +658,7 @@ const ListOptionsControl = props => {
 					})
 				}
 			/>
-			{deviceType === 'general' && (
+			{deviceType === 'g' && (
 				<SelectControl
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
@@ -691,7 +691,7 @@ const ListOptionsControl = props => {
 					}
 				/>
 			)}
-			{deviceType === 'general' && (
+			{deviceType === 'g' && (
 				<>
 					<SelectControl
 						label={__('Style', 'maxi-blocks')}

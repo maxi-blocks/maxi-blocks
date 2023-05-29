@@ -5,15 +5,15 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-background-palette-color-general": 8,
+      "button-background-palette-color-g": 8,
       "button-background-palette-color-xl": 8,
-      "button-background-palette-opacity-general": 0.5,
+      "button-background-palette-opacity-g": 0.5,
       "button-background-palette-opacity-xl": 0.5,
-      "button-background-palette-status-general": true,
+      "button-background-palette-status-g": true,
       "button-background-palette-status-xl": true,
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
@@ -58,11 +58,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": true,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__button",
     },
     "id": 1,
@@ -86,15 +86,15 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-background-palette-color-general": 8,
+      "button-background-palette-color-g": 8,
       "button-background-palette-color-xl": 8,
-      "button-background-palette-opacity-general": 0.5,
+      "button-background-palette-opacity-g": 0.5,
       "button-background-palette-opacity-xl": 0.5,
-      "button-background-palette-status-general": true,
+      "button-background-palette-status-g": true,
       "button-background-palette-status-xl": true,
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
@@ -139,11 +139,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": true,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__button",
     },
     "id": 1,
@@ -156,31 +156,31 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-box-shadow-blur-general": 50,
-      "button-box-shadow-blur-unit-general": "px",
+      "button-box-shadow-blur-g": 50,
+      "button-box-shadow-blur-unit-g": "px",
       "button-box-shadow-blur-unit-xl": "px",
       "button-box-shadow-blur-xl": 50,
-      "button-box-shadow-horizontal-general": 0,
-      "button-box-shadow-horizontal-unit-general": "px",
+      "button-box-shadow-horizontal-g": 0,
+      "button-box-shadow-horizontal-unit-g": "px",
       "button-box-shadow-horizontal-unit-xl": "px",
       "button-box-shadow-horizontal-xl": 0,
-      "button-box-shadow-inset-general": false,
+      "button-box-shadow-inset-g": false,
       "button-box-shadow-inset-xl": false,
-      "button-box-shadow-palette-color-general": 4,
+      "button-box-shadow-palette-color-g": 4,
       "button-box-shadow-palette-color-xl": 4,
-      "button-box-shadow-palette-opacity-general": 0.23,
+      "button-box-shadow-palette-opacity-g": 0.23,
       "button-box-shadow-palette-opacity-xl": 0.23,
-      "button-box-shadow-spread-general": 0,
-      "button-box-shadow-spread-unit-general": "px",
+      "button-box-shadow-spread-g": 0,
+      "button-box-shadow-spread-unit-g": "px",
       "button-box-shadow-spread-unit-xl": "px",
       "button-box-shadow-spread-xl": 0,
-      "button-box-shadow-vertical-general": 30,
-      "button-box-shadow-vertical-unit-general": "px",
+      "button-box-shadow-vertical-g": 30,
+      "button-box-shadow-vertical-unit-g": "px",
       "button-box-shadow-vertical-unit-xl": "px",
       "button-box-shadow-vertical-xl": 30,
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "box-shadow": "0px 30px 50px 0px rgba(var(--maxi-light-color-4,255,74,23),0.23)",
@@ -189,11 +189,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__button",
     },
     "id": 2,
@@ -217,37 +217,37 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-border-radius-bottom-left-general": 11,
+      "button-border-radius-bottom-left-g": 11,
       "button-border-radius-bottom-left-xl": 11,
-      "button-border-radius-bottom-right-general": 11,
+      "button-border-radius-bottom-right-g": 11,
       "button-border-radius-bottom-right-xl": 11,
-      "button-border-width-bottom-general": 2,
+      "button-border-width-bottom-g": 2,
       "button-border-width-bottom-xl": 2,
-      "button-border-width-left-general": 2,
+      "button-border-width-left-g": 2,
       "button-border-width-left-xl": 2,
-      "button-border-palette-color-general": 8,
+      "button-border-palette-color-g": 8,
       "button-border-palette-color-xl": 8,
-      "button-border-palette-opacity-general": 0.5,
+      "button-border-palette-opacity-g": 0.5,
       "button-border-palette-opacity-xl": 0.5,
-      "button-border-palette-status-general": true,
+      "button-border-palette-status-g": true,
       "button-border-palette-status-xl": true,
-      "button-border-width-right-general": 2,
+      "button-border-width-right-g": 2,
       "button-border-width-right-xl": 2,
-      "button-border-style-general": "solid",
+      "button-border-style-g": "solid",
       "button-border-style-xl": "solid",
-      "button-border-width-sync-general": "all",
+      "button-border-width-sync-g": "all",
       "button-border-width-sync-xl": "all",
-      "button-border-radius-top-left-general": 11,
+      "button-border-radius-top-left-g": 11,
       "button-border-radius-top-left-xl": 11,
-      "button-border-radius-top-right-general": 11,
+      "button-border-radius-top-right-g": 11,
       "button-border-radius-top-right-xl": 11,
-      "button-border-width-top-general": 2,
+      "button-border-width-top-g": 2,
       "button-border-width-top-xl": 2,
-      "button-border-width-unit-general": "",
+      "button-border-width-unit-g": "",
       "button-border-width-unit-xl": "",
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "border-bottom-left-radius": "11px",
@@ -355,11 +355,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__button",
     },
     "id": 1,
@@ -383,38 +383,38 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "icon-background-palette-color-general": 5,
+      "icon-background-palette-color-g": 5,
       "icon-background-palette-color-xl": 5,
-      "icon-background-palette-opacity-general": 0.43,
+      "icon-background-palette-opacity-g": 0.43,
       "icon-background-palette-opacity-xl": 0.43,
-      "icon-background-palette-status-general": true,
+      "icon-background-palette-status-g": true,
       "icon-background-palette-status-xl": true,
       "icon-content": "<svg stroke-miterlimit=\\"10\\" stroke-linejoin=\\"round\\" stroke-linecap=\\"round\\" stroke-width=\\"5\\" data-stroke data-hover-stroke stroke=\\"var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" height=\\"64px\\" width=\\"64px\\" class=\\"arrow-right-6-line-maxi-svg\\"><path d=\\"M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6\\"></path></svg>",
-      "icon-padding-bottom-general": "44",
+      "icon-padding-bottom-g": "44",
       "icon-padding-bottom-xl": "44",
-      "icon-padding-left-general": "44",
+      "icon-padding-left-g": "44",
       "icon-padding-left-xl": "44",
-      "icon-padding-right-general": "44",
+      "icon-padding-right-g": "44",
       "icon-padding-right-xl": "44",
-      "icon-padding-top-general": "44",
+      "icon-padding-top-g": "44",
       "icon-padding-top-xl": "44",
-      "icon-padding-unit-general": "%",
+      "icon-padding-unit-g": "%",
       "icon-padding-unit-xl": "%",
-      "icon-spacing-general": 33,
+      "icon-spacing-g": 33,
       "icon-spacing-xl": 33,
-      "icon-stroke-general": 5,
+      "icon-stroke-g": 5,
       "icon-stroke-palette-color": 8,
       "icon-stroke-palette-opacity": 0.75,
       "icon-stroke-palette-status": true,
       "icon-stroke-xl": 5,
-      "icon-width-general": "11",
-      "icon-width-unit-general": "%",
+      "icon-width-g": "11",
+      "icon-width-unit-g": "%",
       "icon-width-unit-xl": "%",
       "icon-width-xl": "11",
     },
     "css": Object {
       "  .maxi-button-block__button  .maxi-button-block__icon": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
@@ -510,7 +510,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "height": "11%",
@@ -561,7 +561,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg > *": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
@@ -599,7 +599,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -607,7 +607,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -615,7 +615,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg path": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke-width": 5,
@@ -635,7 +635,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -643,7 +643,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -651,7 +651,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -659,7 +659,7 @@ Array [
         },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {
             "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))",
@@ -667,7 +667,7 @@ Array [
         },
       },
       " > .maxi-background-displayer": Object {
-        "general": Object {
+        "g": Object {
           "breakpoint": null,
           "styles": Object {},
         },
@@ -699,11 +699,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": Array [
         "  .maxi-button-block__icon svg > *:not(g)",
         " .maxi-button-block__icon svg",
@@ -732,27 +732,27 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-margin-bottom-general": "1",
+      "button-margin-bottom-g": "1",
       "button-margin-bottom-xl": "1",
-      "button-margin-left-general": "1",
+      "button-margin-left-g": "1",
       "button-margin-left-xl": "1",
-      "button-margin-right-general": "1",
+      "button-margin-right-g": "1",
       "button-margin-right-xl": "1",
-      "button-margin-top-general": "1",
+      "button-margin-top-g": "1",
       "button-margin-top-xl": "1",
-      "button-padding-bottom-general": "2",
+      "button-padding-bottom-g": "2",
       "button-padding-bottom-xl": "2",
-      "button-padding-left-general": "2",
+      "button-padding-left-g": "2",
       "button-padding-left-xl": "2",
-      "button-padding-right-general": "2",
+      "button-padding-right-g": "2",
       "button-padding-right-xl": "2",
-      "button-padding-sync-general": "all",
+      "button-padding-sync-g": "all",
       "button-padding-sync-xl": "all",
-      "button-padding-top-general": "2",
+      "button-padding-top-g": "2",
       "button-padding-top-xl": "2",
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "margin-bottom": "1px",
@@ -806,11 +806,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
     },
     "id": 1,
     "isButton": true,
@@ -833,33 +833,33 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "button-box-shadow-blur-general": 44,
-      "button-box-shadow-blur-unit-general": "px",
+      "button-box-shadow-blur-g": 44,
+      "button-box-shadow-blur-unit-g": "px",
       "button-box-shadow-blur-unit-xl": "px",
       "button-box-shadow-blur-xl": 44,
-      "button-box-shadow-horizontal-general": 22,
-      "button-box-shadow-horizontal-unit-general": "px",
+      "button-box-shadow-horizontal-g": 22,
+      "button-box-shadow-horizontal-unit-g": "px",
       "button-box-shadow-horizontal-unit-xl": "px",
       "button-box-shadow-horizontal-xl": 22,
-      "button-box-shadow-inset-general": false,
+      "button-box-shadow-inset-g": false,
       "button-box-shadow-inset-xl": false,
-      "button-box-shadow-palette-color-general": 8,
+      "button-box-shadow-palette-color-g": 8,
       "button-box-shadow-palette-color-xl": 8,
-      "button-box-shadow-palette-opacity-general": 0.11,
+      "button-box-shadow-palette-opacity-g": 0.11,
       "button-box-shadow-palette-opacity-xl": 0.11,
-      "button-box-shadow-palette-status-general": true,
+      "button-box-shadow-palette-status-g": true,
       "button-box-shadow-palette-status-xl": true,
-      "button-box-shadow-spread-general": 55,
-      "button-box-shadow-spread-unit-general": "px",
+      "button-box-shadow-spread-g": 55,
+      "button-box-shadow-spread-unit-g": "px",
       "button-box-shadow-spread-unit-xl": "px",
       "button-box-shadow-spread-xl": 55,
-      "button-box-shadow-vertical-general": 33,
-      "button-box-shadow-vertical-unit-general": "px",
+      "button-box-shadow-vertical-g": 33,
+      "button-box-shadow-vertical-unit-g": "px",
       "button-box-shadow-vertical-unit-xl": "px",
       "button-box-shadow-vertical-xl": 33,
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
@@ -868,11 +868,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__button",
     },
     "id": 1,
@@ -896,53 +896,53 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "bottom-gap-unit-general": "px",
+      "bottom-gap-unit-g": "px",
       "bottom-gap-unit-xl": "px",
-      "color-general": null,
+      "color-g": null,
       "color-xl": null,
-      "font-size-general": 24,
-      "font-size-unit-general": "px",
+      "font-size-g": 24,
+      "font-size-unit-g": "px",
       "font-size-unit-xl": "px",
       "font-size-xl": 24,
-      "font-style-general": "italic",
+      "font-style-g": "italic",
       "font-style-xl": "italic",
-      "font-weight-general": "",
+      "font-weight-g": "",
       "font-weight-xl": "",
-      "letter-spacing-general": 15,
-      "letter-spacing-unit-general": "px",
+      "letter-spacing-g": 15,
+      "letter-spacing-unit-g": "px",
       "letter-spacing-unit-xl": "px",
       "letter-spacing-xl": 15,
-      "line-height-general": 60,
-      "line-height-unit-general": "%",
+      "line-height-g": 60,
+      "line-height-unit-g": "%",
       "line-height-unit-xl": "%",
       "line-height-xl": 60,
-      "list-palette-color-general": 4,
+      "list-palette-color-g": 4,
       "list-palette-color-xl": 4,
-      "list-palette-status-general": true,
+      "list-palette-status-g": true,
       "list-palette-status-xl": true,
-      "palette-color-general": 8,
+      "palette-color-g": 8,
       "palette-color-xl": 8,
-      "palette-opacity-general": 0.5,
+      "palette-opacity-g": 0.5,
       "palette-opacity-xl": 0.5,
-      "palette-status-general": true,
+      "palette-status-g": true,
       "palette-status-xl": true,
-      "text-decoration-general": "underline",
+      "text-decoration-g": "underline",
       "text-decoration-xl": "underline",
-      "text-direction-general": "rtl",
+      "text-direction-g": "rtl",
       "text-direction-xl": "rtl",
-      "text-indent-general": 20,
-      "text-indent-unit-general": "px",
+      "text-indent-g": 20,
+      "text-indent-unit-g": "px",
       "text-indent-unit-xl": "px",
       "text-indent-xl": 20,
-      "text-orientation-general": "sideways",
+      "text-orientation-g": "sideways",
       "text-orientation-xl": "sideways",
-      "text-transform-general": "capitalize",
+      "text-transform-g": "capitalize",
       "text-transform-xl": "capitalize",
-      "word-spacing-unit-general": "px",
+      "word-spacing-unit-g": "px",
       "word-spacing-unit-xl": "px",
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
@@ -979,11 +979,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
       "transitionTarget": " .maxi-button-block__content",
       "transitionTrigger": " .maxi-button-block__button",
     },

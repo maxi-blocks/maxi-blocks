@@ -77,7 +77,7 @@ const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
 	const isRowEmpty = !columnsBlockObjects.length;
 	// When inserting column, template should be loaded for general
 	const template = cloneDeep(
-		getColumnTemplate(templateName, isRowEmpty ? 'general' : breakpoint)
+		getColumnTemplate(templateName, isRowEmpty ? 'g' : breakpoint)
 	);
 
 	isRowEmpty

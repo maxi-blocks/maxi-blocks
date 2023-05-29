@@ -29,7 +29,7 @@ const ScrollEffectsUniqueControl = props => {
 		className,
 		values,
 		onChange,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		uniqueID,
 		isPreviewEnabled,
 	} = props;
@@ -120,7 +120,7 @@ const ScrollEffectsUniqueControl = props => {
 									onChange({
 										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
 											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-general`
+												`scroll-${type}-${special?.attr}-g`
 											),
 										isReset: true,
 									});
@@ -129,12 +129,12 @@ const ScrollEffectsUniqueControl = props => {
 											type,
 											uniqueID,
 											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-general`
+												`scroll-${type}-${special?.attr}-g`
 											)
 										);
 								}}
 								initialPosition={getDefaultAttribute(
-									`scroll-${type}-${special?.attr}-general`
+									`scroll-${type}-${special?.attr}-g`
 								)}
 							/>
 						),

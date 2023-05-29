@@ -28,7 +28,7 @@ Object {
 
 exports[`getPositionStyles Ensure unnecessary position styles are not added 2`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
@@ -70,7 +70,7 @@ Object {
 
 exports[`getPositionStyles Get a correct position styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",

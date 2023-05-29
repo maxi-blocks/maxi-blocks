@@ -22,7 +22,7 @@ class Relation {
 			.getComputedStyle(this.targetEl)
 			.getPropertyValue('_t');
 
-		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		this.breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>
 			Object.keys(item).some(key => !this.breakpoints.includes(key))
 		);
@@ -159,11 +159,11 @@ class Relation {
 	getCurrentBreakpoint() {
 		const winWidth = window.innerWidth;
 
-		let currentBreakpoint = 'general';
+		let currentBreakpoint = 'g';
 
 		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
-			if (!['general', 'xxl'].includes(breakpoint)) {
-				if (breakpoint === 'general') return;
+			if (!['g', 'xxl'].includes(breakpoint)) {
+				if (breakpoint === 'g') return;
 
 				if (winWidth <= this.breakpointsObj.xl)
 					currentBreakpoint = breakpoint;
@@ -248,9 +248,7 @@ class Relation {
 
 				return {
 					[target]:
-						inOrOutEffects[
-							`${target}-${lastBreakpoint ?? 'general'}`
-						],
+						inOrOutEffects[`${target}-${lastBreakpoint ?? 'g'}`],
 				};
 			};
 
@@ -384,8 +382,7 @@ class Relation {
 				) {
 					let { breakpoint: breakpointValue } = css[breakpoint];
 
-					breakpointValue =
-						breakpoint === 'general' ? '' : breakpointValue;
+					breakpointValue = breakpoint === 'g' ? '' : breakpointValue;
 					breakpointValue =
 						breakpoint === 'xxl'
 							? css.xl.breakpoint
@@ -479,7 +476,7 @@ class Relation {
 		let prevLine = '';
 		let postLine = '';
 
-		if (breakpoint === 'general') return { prevLine, postLine };
+		if (breakpoint === 'g') return { prevLine, postLine };
 
 		const mediaRule = breakpoint === 'xxl' ? 'min-width' : 'max-width';
 		const mediaValue =

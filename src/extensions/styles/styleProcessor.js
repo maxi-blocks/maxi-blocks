@@ -27,7 +27,7 @@ import {
 	mergeWith,
 } from 'lodash';
 
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].reverse();
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'].reverse();
 
 const objectsCleaner = obj => {
 	const response = cloneDeep(obj);
@@ -48,7 +48,7 @@ const repeatedBreakpointCleaner = obj => {
 				const prevBreakpoint =
 					breakpoint !== 'xl' // Ensures we jump XXL on XL breakpoint
 						? BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) + 1]
-						: 'general';
+						: 'g';
 
 				if (
 					obj?.[prevBreakpoint]?.[key] &&
@@ -65,14 +65,14 @@ const generalBreakpointCleaner = obj => {
 	const response = cloneDeep(obj);
 
 	Object.entries(response).forEach(([key, val]) => {
-		if (key === 'general') return;
+		if (key === 'g') return;
 
 		const breakpointIndex = BREAKPOINTS.indexOf(key);
 		// Is last breakpoint before general
 		const isLast = cloneDeep(BREAKPOINTS)
 			.splice(breakpointIndex)
 			.every(breakpoint => {
-				if (breakpoint === 'general' || breakpoint === key) return true;
+				if (breakpoint === 'g' || breakpoint === key) return true;
 				if (!(breakpoint in response) || isEmpty(response[breakpoint]))
 					return true;
 
@@ -83,9 +83,9 @@ const generalBreakpointCleaner = obj => {
 			Object.entries(val).forEach(([prop, value]) => {
 				if (
 					prop !== 'label' &&
-					'general' in response &&
-					!isNil(response.general[prop]) &&
-					isEqual(value, response.general[prop])
+					'g' in response &&
+					!isNil(response.g[prop]) &&
+					isEqual(value, response.g[prop])
 				)
 					delete response[key][prop];
 			});

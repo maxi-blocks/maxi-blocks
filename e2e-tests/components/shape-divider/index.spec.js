@@ -56,7 +56,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('88');
 
 		expect(
-			await getAttributes('shape-divider-top-opacity-general')
+			await getAttributes('shape-divider-top-opacity-g')
 		).toStrictEqual(0.88);
 
 		await editColorControl({
@@ -69,7 +69,7 @@ describe('Shape divider', () => {
 		});
 
 		expect(
-			await getAttributes('shape-divider-top-palette-color-general')
+			await getAttributes('shape-divider-top-palette-color-g')
 		).toStrictEqual(5);
 
 		await page.$eval(
@@ -80,9 +80,9 @@ describe('Shape divider', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('70');
 
-		expect(
-			await getAttributes('shape-divider-top-height-general')
-		).toStrictEqual(70);
+		expect(await getAttributes('shape-divider-top-height-g')).toStrictEqual(
+			70
+		);
 
 		// Bottom shape
 		await accordionPanel.$eval(
@@ -118,7 +118,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('44');
 
 		expect(
-			await getAttributes('shape-divider-bottom-opacity-general')
+			await getAttributes('shape-divider-bottom-opacity-g')
 		).toStrictEqual(0.44);
 
 		await editColorControl({
@@ -131,7 +131,7 @@ describe('Shape divider', () => {
 		});
 
 		expect(
-			await getAttributes('shape-divider-bottom-palette-color-general')
+			await getAttributes('shape-divider-bottom-palette-color-g')
 		).toStrictEqual(7);
 
 		// Divider height
@@ -144,7 +144,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('254');
 
 		expect(
-			await getAttributes('shape-divider-bottom-height-general')
+			await getAttributes('shape-divider-bottom-height-g')
 		).toStrictEqual(254);
 	});
 	it('Checking the shape divider responsive', async () => {

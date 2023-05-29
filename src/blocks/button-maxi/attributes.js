@@ -26,11 +26,11 @@ const attributes = {
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		'i-bc_ps-general': {
+		'i-bc_ps-g': {
 			type: 'boolean',
 			default: true,
 		},
-		'i-bc_pc-general': {
+		'i-bc_pc-g': {
 			type: 'number',
 			default: 4,
 		},
@@ -46,22 +46,22 @@ const attributes = {
 	...attributesData.iconBorderRadiusHover,
 	...{
 		...attributesData.alignment,
-		'_a-general': {
+		'_a-g': {
 			type: 'string',
 			default: 'center',
 		},
 	},
 	...{
 		...attributesData.textAlignment,
-		'ta-general': { type: 'string', default: 'center' },
+		'ta-g': { type: 'string', default: 'center' },
 	},
 	...{
 		...attributesData.typography,
-		'_lhe.u-general': {
+		'_lhe.u-g': {
 			type: 'string',
 			default: '%',
 		},
-		'_pc-general': {
+		'_pc-g': {
 			type: 'number',
 			default: 1,
 		},
@@ -71,13 +71,13 @@ const attributes = {
 		obj: attributesData.background,
 		prefix,
 		diffValAttr: {
-			[`${prefix}b_am-general`]: 'color',
+			[`${prefix}b_am-g`]: 'color',
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}bc_pc-general`]: 4 },
+		diffValAttr: { [`${prefix}bc_pc-g`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,
@@ -94,7 +94,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.border, prefix }),
-		[`${prefix}bo_pc-general`]: {
+		[`${prefix}bo_pc-g`]: {
 			type: 'number',
 			default: 4,
 		},
@@ -104,10 +104,10 @@ const attributes = {
 		obj: attributesData.borderRadius,
 		prefix,
 		diffValAttr: {
-			[`${prefix}bo.ra.tl-general`]: 10,
-			[`${prefix}bo.ra.tr-general`]: 10,
-			[`${prefix}bo.ra.bl-general`]: 10,
-			[`${prefix}bo.ra.br-general`]: 10,
+			[`${prefix}bo.ra.tl-g`]: 10,
+			[`${prefix}bo.ra.tr-g`]: 10,
+			[`${prefix}bo.ra.bl-g`]: 10,
+			[`${prefix}bo.ra.br-g`]: 10,
 		},
 	}),
 	...prefixAttributesCreator({
@@ -125,7 +125,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
-		[`${prefix}bs-_pc-general`]: {
+		[`${prefix}bs-_pc-g`]: {
 			type: 'number',
 			default: 4,
 		},
@@ -138,11 +138,11 @@ const attributes = {
 		obj: attributesData.padding,
 		prefix,
 		diffValAttr: {
-			'bt_p.sy-general': 'axis',
-			'bt_p.t-general': '15',
-			'bt_p.r-general': '36',
-			'bt_p.b-general': '15',
-			'bt_p.l-general': '36',
+			'bt_p.sy-g': 'axis',
+			'bt_p.t-g': '15',
+			'bt_p.r-g': '36',
+			'bt_p.b-g': '15',
+			'bt_p.l-g': '36',
 		},
 	}),
 

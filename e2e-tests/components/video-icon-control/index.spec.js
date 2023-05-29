@@ -44,7 +44,7 @@ describe('Video icon control', () => {
 		});
 
 		expect(
-			await getAttributes('lightbox-background-palette-color-general')
+			await getAttributes('lightbox-background-palette-color-g')
 		).toStrictEqual(6);
 
 		// Change opacity
@@ -57,7 +57,7 @@ describe('Video icon control', () => {
 		});
 
 		expect(
-			await getAttributes('lightbox-background-palette-opacity-general')
+			await getAttributes('lightbox-background-palette-opacity-g')
 		).toStrictEqual(0.33);
 
 		// Lightbox close button colour
@@ -92,9 +92,7 @@ describe('Video icon control', () => {
 			newNumber: '44',
 		});
 
-		expect(await getAttributes('close-icon-height-general')).toStrictEqual(
-			'44'
-		);
+		expect(await getAttributes('close-icon-height-g')).toStrictEqual('44');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -116,9 +114,7 @@ describe('Video icon control', () => {
 			newNumber: '44',
 		});
 
-		expect(await getAttributes('close-icon-spacing-general')).toStrictEqual(
-			44
-		);
+		expect(await getAttributes('close-icon-spacing-g')).toStrictEqual(44);
 
 		// Pop animation
 		const popAnimationSelector = await page.$(

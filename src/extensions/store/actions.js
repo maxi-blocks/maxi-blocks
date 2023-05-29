@@ -67,7 +67,7 @@ const actions = {
 			const winBreakpoint = getWinBreakpoint(width, breakpoints);
 			const baseBreakpoint = receiveBaseBreakpoint();
 			if (winBreakpoint === baseBreakpoint) {
-				return 'general';
+				return 'g';
 			}
 			return winBreakpoint;
 		};

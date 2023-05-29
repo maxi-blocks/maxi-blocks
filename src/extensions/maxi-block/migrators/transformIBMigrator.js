@@ -9,7 +9,7 @@ import { splitValueAndUnit } from '../../styles/utils';
  */
 import { isEmpty, findKey, isEqual } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const name = 'IB Transform';
 

@@ -36,11 +36,11 @@ const isEligible = blockAttributes => {
 
 const migrate = newAttributes => {
 	if (
-		!['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].some(
+		!['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'].some(
 			breakpoint => !!newAttributes[`bottom-gap-${breakpoint}`]
 		)
 	)
-		newAttributes['bottom-gap-general'] = 0;
+		newAttributes['bottom-gap-g'] = 0;
 
 	return newAttributes;
 };

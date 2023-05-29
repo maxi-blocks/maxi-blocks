@@ -3,7 +3,7 @@
 exports[`getIconSize Should return correct icon size 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "71%",
       "width": "71%",
     },
@@ -39,7 +39,7 @@ Object {
 exports[`getIconSize Should return correct icon size 2`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "123%",
       "width": "123%",
     },
@@ -75,7 +75,7 @@ Object {
 exports[`getIconSize Should return right hover styles with only unit specified on hover 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32em",
       "width": "32em",
     },
@@ -111,7 +111,7 @@ Object {
 exports[`getIconSize Should return right hover styles with only value specified on hover (no unit) 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "64%",
       "width": "64%",
     },
@@ -147,7 +147,7 @@ Object {
 exports[`getIconSize Should return right styles with height fit-content, width/height ratio < 1 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "72%",
       "width": "36%",
     },
@@ -183,7 +183,7 @@ Object {
 exports[`getIconSize Should return right styles with height fit-content, width/height ratio > 1 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "12%",
       "width": "36%",
     },
@@ -219,7 +219,7 @@ Object {
 exports[`getIconSize Should return right styles with only unit specified on responsive 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32%",
       "width": "32%",
     },
@@ -255,7 +255,7 @@ Object {
 exports[`getIconSize Should use height when width is not specified 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32px",
       "width": "32px",
     },
@@ -291,7 +291,7 @@ Object {
 exports[`getIconSize Should use height when width is not specified 2`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "50%",
       "width": "50%",
     },
@@ -327,7 +327,7 @@ Object {
 exports[`getIconSize Should work on responsive 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32px",
       "width": "32px",
     },
@@ -363,7 +363,7 @@ Object {
 exports[`getIconSize Should work on responsive 2`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "50%",
       "width": "50%",
     },
@@ -399,7 +399,7 @@ Object {
 exports[`getIconSize Should work with prefixes 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32px",
       "width": "32px",
     },
@@ -435,7 +435,7 @@ Object {
 exports[`getIconSize Should work with prefixes 2`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "50%",
       "width": "50%",
     },

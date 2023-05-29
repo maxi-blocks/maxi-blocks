@@ -44,7 +44,7 @@ const AccordionSettings = props => {
 
 	return (
 		<>
-			{breakpoint === 'general' && (
+			{breakpoint === 'g' && (
 				<>
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}

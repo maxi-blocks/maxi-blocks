@@ -12,7 +12,7 @@ export const boxShadowNone = prefix => {
 			target,
 			prefix,
 			props: boxShadow,
-			breakpoint: 'general',
+			breakpoint: 'g',
 		})?.default;
 
 	response = {

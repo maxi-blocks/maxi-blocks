@@ -2,7 +2,7 @@
 
 exports[`getShapeDividerStyles Get a correct shape divider styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "height": "1px",
     "opacity": 1,
   },
@@ -18,7 +18,7 @@ Object {
 
 exports[`getShapeDividerStyles Get a correct shape divider styles 2`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "fill": "rgb(255, 99, 71)",
   },
   "l": Object {

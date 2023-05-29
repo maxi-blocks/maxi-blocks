@@ -8,8 +8,7 @@ const changeResponsive = async (page, size) => {
 	const breakpoints = await page.evaluate(() =>
 		wp.data.select('maxiBlocks').receiveMaxiBreakpoints()
 	);
-	const parsedSize =
-		size === 'base' || baseBreakpoint === size ? 'general' : size;
+	const parsedSize = size === 'base' || baseBreakpoint === size ? 'g' : size;
 
 	await page.evaluate(
 		(_size, width) =>
@@ -18,8 +17,7 @@ const changeResponsive = async (page, size) => {
 				...(width && { width }),
 			}),
 		parsedSize,
-		parsedSize !== 'general' &&
-			(size !== 'xxl' ? breakpoints[size] : xxlSize)
+		parsedSize !== 'g' && (size !== 'xxl' ? breakpoints[size] : xxlSize)
 	);
 
 	return null;

@@ -32,7 +32,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { customCss } from './data';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -127,12 +127,7 @@ const getIconStyles = (props, prefix = 'nab-') => {
 		boxShadowStatus,
 		borderStatus,
 	] = getAttributesValue({
-		target: [
-			'b.s',
-			'b_am-general',
-			`${iconPrefix}bs.s`,
-			`${iconPrefix}bo.s`,
-		],
+		target: ['b.s', 'b_am-g', `${iconPrefix}bs.s`, `${iconPrefix}bo.s`],
 		props,
 	});
 
@@ -210,7 +205,7 @@ const getIconStyles = (props, prefix = 'nab-') => {
 const getIconHoverStyles = (props, prefix) => {
 	const iconPrefix = `${prefix}i-`;
 	const [iconHoverStatus, iconHoverActiveMedia] = getAttributesValue({
-		target: [`${iconPrefix}.sh`, `${iconPrefix}b_am-general.h`],
+		target: [`${iconPrefix}.sh`, `${iconPrefix}b_am-g.h`],
 		props,
 	});
 
@@ -288,7 +283,7 @@ const getIconSpacing = (props, icon, isHover = false, prefix = 'nab-') => {
 
 	const responsive = {
 		label: 'Icon responsive',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -333,7 +328,7 @@ const getIconSpacingBetween = (props, prefix = 'nd-', isHover = false) => {
 
 	const responsive = {
 		label: 'Icon responsive',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {

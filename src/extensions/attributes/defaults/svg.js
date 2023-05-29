@@ -22,7 +22,7 @@ export const svg = {
 		obj: width,
 		prefix,
 		longPrefix,
-		diffValAttr: { 's_w-general': '64' }, // svg-width-general
+		diffValAttr: { 's_w-g': '64' }, // svg-width-general
 	}),
 	...breakpointAttributesCreator({
 		obj: {

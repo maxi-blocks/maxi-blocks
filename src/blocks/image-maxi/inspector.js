@@ -53,7 +53,7 @@ const Inspector = props => {
 	} = attributes;
 	const { selectors, categories } = customCss;
 	const imageFullWidthGeneral = getAttributesValue({
-		target: 'fw-general',
+		target: 'fw-g',
 		props: attributes,
 	});
 	const captionGap = getAttributesValue({
@@ -120,7 +120,7 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-									deviceType === 'general' &&
+									deviceType === 'g' &&
 										imageFullWidthGeneral !== 'full' && {
 											label: __(
 												'Dimension',
@@ -139,7 +139,7 @@ const Inspector = props => {
 										isAlignment: true,
 										disableJustify: true,
 									}),
-									deviceType === 'general' &&
+									deviceType === 'g' &&
 										!SVGElement && {
 											label: __('Alt tag', 'maxi-blocks'),
 											content: (
@@ -463,12 +463,12 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props,
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props,
 										}),
@@ -504,7 +504,7 @@ const Inspector = props => {
 									...inspectorTabs.position({
 										props,
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props,
 										}),

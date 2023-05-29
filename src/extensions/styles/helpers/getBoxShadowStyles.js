@@ -15,7 +15,7 @@ import getAttributeKey from '../../attributes/getAttributeKey';
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getPrevBreakpoint = breakpoint =>
 	breakpoints[breakpoints.indexOf(breakpoint) - 1];
@@ -49,7 +49,7 @@ const getBoxShadowStyles = ({
 			});
 
 			const defaultValue =
-				breakpoint === 'general'
+				breakpoint === 'g'
 					? getDefaultAttribute(
 							getAttributeKey({
 								key: `bs${target}`,
@@ -90,7 +90,7 @@ const getBoxShadowStyles = ({
 			!isEmpty(SVGElement);
 
 		const defaultClipPathExists =
-			breakpoint === 'general'
+			breakpoint === 'g'
 				? false
 				: (getLastBreakpointAttribute({
 						target: '_cp',
@@ -165,8 +165,8 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
-			(breakpoint === 'general' && isIB) ||
-			(breakpoint !== 'general' &&
+			(breakpoint === 'g' && isIB) ||
+			(breakpoint !== 'g' &&
 				clipPathExists !== defaultClipPathExists &&
 				prefix === 'im-' &&
 				clipPathExists) ||

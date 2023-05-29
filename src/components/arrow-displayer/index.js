@@ -21,7 +21,7 @@ import './style.scss';
  * Component
  */
 const ArrowDisplayer = props => {
-	const { className, breakpoint = 'general' } = props;
+	const { className, breakpoint = 'g' } = props;
 	const backgroundLayers = getAttributesValue({
 		target: 'b_ly',
 		props,

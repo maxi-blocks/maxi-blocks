@@ -9,10 +9,10 @@ const mapPopupText = {
 	},
 	...{
 		...typography,
-		'_pc-general': {
+		'_pc-g': {
 			type: 'number',
 			default: 4,
-			longLabel: 'palette-color-general',
+			longLabel: 'palette-color-g',
 		},
 	},
 	...prefixAttributesCreator({
@@ -20,7 +20,7 @@ const mapPopupText = {
 		prefix: 'd-',
 		longPrefix: 'description-',
 		diffValAttr: {
-			'd-fs-general': 16, // description-font-size-general
+			'd-fs-g': 16, // description-font-size-general
 		},
 	}),
 };

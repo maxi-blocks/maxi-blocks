@@ -25,7 +25,7 @@ import {
 } from '../../extensions/styles/helpers';
 import data from './data';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const { _bs: blockStyle } = props;

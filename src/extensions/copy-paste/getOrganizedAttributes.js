@@ -10,7 +10,7 @@ import { getGroupAttributes, paletteAttributesCreator } from '../attributes';
 import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
 import getCleanKey from '../attributes/getCleanKey';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getTemplate = templateName => {
 	const getNestedTemplates = obj => {

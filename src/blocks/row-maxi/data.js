@@ -65,7 +65,7 @@ const maxiAttributes = {
 	'mw-xxl': '1690',
 	'mw-xl': '1170',
 	'mw-l': '90',
-	'mwu-general': undefined,
+	'mwu-g': undefined,
 	'mwu-xxl': 'px',
 	'mwu-xl': 'px',
 	'mwu-l': '%',

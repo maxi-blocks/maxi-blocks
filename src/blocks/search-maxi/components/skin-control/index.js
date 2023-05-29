@@ -24,13 +24,13 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		}, {});
 
 	const iconRevealResetStyles = getDefaultAttributes([
-		`${buttonPrefix}bo.ra.u-general`,
-		`${buttonPrefix}bo.ra.tl-general`,
-		`${buttonPrefix}bo.ra.tr-general`,
-		`${buttonPrefix}bo.ra.bl-general`,
-		`${buttonPrefix}bo.ra.br-general`,
-		`${buttonWO}_m.l-general`,
-		`${buttonWO}_m.sy-general`,
+		`${buttonPrefix}bo.ra.u-g`,
+		`${buttonPrefix}bo.ra.tl-g`,
+		`${buttonPrefix}bo.ra.tr-g`,
+		`${buttonPrefix}bo.ra.bl-g`,
+		`${buttonPrefix}bo.ra.br-g`,
+		`${buttonWO}_m.l-g`,
+		`${buttonWO}_m.sy-g`,
 		'i_pos',
 	]);
 
@@ -38,7 +38,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		[getAttributeKey({
 			key: '_pc',
 			prefix: `${inputPrefix}bc-`,
-			breakpoint: 'general',
+			breakpoint: 'g',
 		})]: 1,
 	};
 
@@ -67,7 +67,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[getAttributeKey({
 								key: '_pc',
 								prefix: `${inputPrefix}bc-`,
-								breakpoint: 'general',
+								breakpoint: 'g',
 							})]: 2,
 							...iconRevealResetStyles,
 						});
@@ -79,13 +79,13 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 					} else if (skin === 'icon-reveal') {
 						onChange({
 							...classicResetStyles,
-							[`${buttonPrefix}bo.ra.u-general`]: '%',
-							[`${buttonPrefix}bo.ra.tl-general`]: 50,
-							[`${buttonPrefix}bo.ra.tr-general`]: 50,
-							[`${buttonPrefix}bo.ra.bl-general`]: 50,
-							[`${buttonPrefix}bo.ra.br-general`]: 50,
-							[`${buttonWO}_m.l-general`]: '-20',
-							[`${buttonWO}_m.sy-general`]: 'none',
+							[`${buttonPrefix}bo.ra.u-g`]: '%',
+							[`${buttonPrefix}bo.ra.tl-g`]: 50,
+							[`${buttonPrefix}bo.ra.tr-g`]: 50,
+							[`${buttonPrefix}bo.ra.bl-g`]: 50,
+							[`${buttonPrefix}bo.ra.br-g`]: 50,
+							[`${buttonWO}_m.l-g`]: '-20',
+							[`${buttonWO}_m.sy-g`]: 'none',
 						});
 					}
 

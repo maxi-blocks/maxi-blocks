@@ -2,7 +2,7 @@
 
 exports[`getDisplayStyles Get a correct display styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "display": "block",
   },
   "l": Object {

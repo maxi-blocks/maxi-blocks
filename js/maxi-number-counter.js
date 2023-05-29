@@ -10,7 +10,7 @@ const checkMediaQuery = numberID => {
 			break;
 		}
 	}
-	breakpoint = breakpoint === 'xl' ? 'general' : breakpoint;
+	breakpoint = breakpoint === 'xl' ? 'g' : breakpoint;
 
 	return breakpoint;
 };
@@ -151,7 +151,7 @@ const setNewDyAttribute = (elem, numberData, breakpoint) => {
 };
 
 const getTitleFontSize = (numberData, breakpoint) => {
-	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
+	const breakpoints = ['xs', 's', 'm', 'l', 'g', 'xxl'];
 	if (numberData[`nc-ti_fs-${breakpoint}`]) {
 		return numberData[`nc-ti_fs-${breakpoint}`];
 	}

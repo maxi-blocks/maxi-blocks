@@ -44,14 +44,14 @@ const accordionTitle = {
 			getAttributeKey({
 				key: '_ps', // palette-status
 				prefix: `${prefix}-b-`, // background-
-				breakpoint: 'general',
+				breakpoint: 'g',
 			}),
 		],
 		diffValAttr: {
 			[getAttributeKey({
 				key: '_pc', // palette-color
 				prefix: `${prefix}-b-`, // background-
-				breakpoint: 'general',
+				breakpoint: 'g',
 			})]: 6,
 		},
 	}),

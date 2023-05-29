@@ -53,7 +53,7 @@ const ResponsiveButton = ({
 	);
 
 	const getIsPressed = () => {
-		if (breakpoint === 'general') return baseBreakpoint === target;
+		if (breakpoint === 'g') return baseBreakpoint === target;
 
 		return breakpoint === target;
 	};
@@ -62,9 +62,7 @@ const ResponsiveButton = ({
 		<div className={classes}>
 			<Button
 				className='maxi-responsive-selector__button-item'
-				onClick={() =>
-					setScreenSize(isBaseBreakpoint ? 'general' : target)
-				}
+				onClick={() => setScreenSize(isBaseBreakpoint ? 'g' : target)}
 				aria-pressed={getIsPressed()}
 			>
 				<div>

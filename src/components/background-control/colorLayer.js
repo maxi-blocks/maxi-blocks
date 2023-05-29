@@ -25,7 +25,7 @@ import { getPaletteColor } from '../../extensions/style-cards';
  */
 import { cloneDeep } from 'lodash';
 
-const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Component

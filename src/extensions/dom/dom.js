@@ -410,8 +410,7 @@ wp.domReady(() => {
 										const { target } = e;
 										const value = target.innerText;
 										const maxiValue =
-											(value === 'Desktop' &&
-												'general') ||
+											(value === 'Desktop' && 'g') ||
 											(value === 'Tablet' && 's') ||
 											(value === 'Mobile' && 'xs');
 
@@ -491,7 +490,7 @@ wp.domReady(() => {
 			if (
 				baseBreakpoint &&
 				deviceType &&
-				deviceType !== 'general' &&
+				deviceType !== 'g' &&
 				breakpoints.indexOf(baseBreakpoint) >
 					breakpoints.indexOf(deviceType)
 			) {
@@ -531,7 +530,7 @@ wp.domReady(() => {
 				select('maxiBlocks').receiveBaseBreakpoint();
 
 			if (deviceType === baseWinBreakpoint || isNil(baseWinBreakpoint))
-				setScreenSize('general', false);
+				setScreenSize('g', false);
 			else if (!['xs', 's'].includes(deviceType))
 				setScreenSize(deviceType, false);
 		}
@@ -564,7 +563,7 @@ wp.domReady(() => {
 			) {
 				setTimeout(() => {
 					dispatch('maxiBlocks').setMaxiDeviceType({
-						deviceType: 'general',
+						deviceType: 'g',
 					});
 				}, 150);
 

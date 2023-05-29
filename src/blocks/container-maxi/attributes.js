@@ -23,21 +23,21 @@ const attributes = {
 			default: [
 				{
 					type: 'color',
-					'd-general': 'block',
-					'bc_ps-general': true,
-					'bc_pc-general': 1,
-					'bc_po-general': 1,
-					'bc-general': '',
-					'bc_cp-general': '',
-					'bcw_pos.sy-general': 'all',
-					'bcw_w-general': 100,
-					'bcw_w.u-general': '%',
-					'bcw_h-general': 100,
-					'bcw_h.u-general': '%',
-					'bcw_pos.b.u-general': 'px',
-					'bcw_pos.t.u-general': 'px',
-					'bcw_pos.l.u-general': 'px',
-					'bcw_pos.r.u-general': 'px',
+					'd-g': 'block',
+					'bc_ps-g': true,
+					'bc_pc-g': 1,
+					'bc_po-g': 1,
+					'bc-g': '',
+					'bc_cp-g': '',
+					'bcw_pos.sy-g': 'all',
+					'bcw_w-g': 100,
+					'bcw_w.u-g': '%',
+					'bcw_h-g': 100,
+					'bcw_h.u-g': '%',
+					'bcw_pos.b.u-g': 'px',
+					'bcw_pos.t.u-g': 'px',
+					'bcw_pos.l.u-g': 'px',
+					'bcw_pos.r.u-g': 'px',
 					order: 1,
 					id: 1,
 				},
@@ -54,7 +54,7 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
-		'fw-general': {
+		'fw-g': {
 			type: 'string',
 			default: 'full',
 		},
@@ -66,11 +66,11 @@ const attributes = {
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
-		'_p.t-general': {
+		'_p.t-g': {
 			type: 'string',
 			default: '20',
 		},
-		'_p.b-general': {
+		'_p.b-g': {
 			type: 'string',
 			default: '20',
 		},
@@ -95,15 +95,15 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'_rg-general': {
+		'_rg-g': {
 			type: 'number',
 			default: 20,
 		},
-		'_rg-unit-general': {
+		'_rg-unit-g': {
 			type: 'string',
 			default: 'px',
 		},
-		'_fd-general': {
+		'_fd-g': {
 			type: 'string',
 			default: 'column',
 		},

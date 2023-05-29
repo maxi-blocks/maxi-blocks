@@ -8,7 +8,7 @@ describe('getTransformStyles', () => {
 
 	it('Get a correct transform styles', () => {
 		const object = {
-			'transform-origin-general': {
+			'transform-origin-g': {
 				canvas: {
 					normal: {
 						x: 'left',
@@ -18,7 +18,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-rotate-general': {
+			'transform-rotate-g': {
 				canvas: {
 					'hover-status': true,
 					hover: {
@@ -26,7 +26,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-scale-general': {
+			'transform-scale-g': {
 				canvas: {
 					normal: {
 						y: 200,
@@ -37,7 +37,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-translate-general': {
+			'transform-translate-g': {
 				canvas: {
 					normal: {
 						x: -20,
@@ -62,7 +62,7 @@ describe('getTransformStyles', () => {
 
 	it('Get a correct default hover transform styles', () => {
 		const object = {
-			'transform-origin-general': {
+			'transform-origin-g': {
 				canvas: {
 					'hover-status': true,
 					normal: {
@@ -73,7 +73,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-rotate-general': {
+			'transform-rotate-g': {
 				canvas: {
 					'hover-status': true,
 					normal: {
@@ -83,7 +83,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-scale-general': {
+			'transform-scale-g': {
 				canvas: {
 					'hover-status': true,
 					normal: {
@@ -91,7 +91,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-			'transform-translate-general': {
+			'transform-translate-g': {
 				canvas: {
 					'hover-status': true,
 					normal: {

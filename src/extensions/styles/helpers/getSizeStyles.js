@@ -14,7 +14,7 @@ import getAttributeKey from '../../attributes/getAttributeKey';
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Generates size styles object

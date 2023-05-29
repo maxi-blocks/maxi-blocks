@@ -18,7 +18,7 @@ describe('styleGenerator', () => {
 				breakpoints: {},
 				content: {
 					' p.maxi-text-block__content': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -30,7 +30,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content li': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -42,7 +42,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content a': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -55,7 +55,7 @@ describe('styleGenerator', () => {
 					},
 					' > .maxi-background-displayer .maxi-background-displayer__color':
 						{
-							general: {
+							g: {
 								'background-color': 'rgba(180,174,209,1)',
 							},
 						},
@@ -73,7 +73,7 @@ describe('styleGenerator', () => {
 				breakpoints: {},
 				content: {
 					' p.maxi-text-block__content': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -85,7 +85,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content li': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -97,7 +97,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content a': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -110,7 +110,7 @@ describe('styleGenerator', () => {
 					},
 					' > .maxi-background-displayer .maxi-background-displayer__color':
 						{
-							general: {
+							g: {
 								'background-color': 'rgba(180,174,209,1)',
 							},
 						},
@@ -128,7 +128,7 @@ describe('styleGenerator', () => {
 				breakpoints: {},
 				content: {
 					' p.maxi-text-block__content': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -140,7 +140,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content li': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -152,7 +152,7 @@ describe('styleGenerator', () => {
 						},
 					},
 					' p.maxi-text-block__content a': {
-						general: {
+						g: {
 							'font-family': 'Montserrat',
 							'font-style': 'normal',
 						},
@@ -165,7 +165,7 @@ describe('styleGenerator', () => {
 					},
 					' > .maxi-background-displayer .maxi-background-displayer__color':
 						{
-							general: {
+							g: {
 								'background-color': 'rgba(180,174,209,1)',
 							},
 						},

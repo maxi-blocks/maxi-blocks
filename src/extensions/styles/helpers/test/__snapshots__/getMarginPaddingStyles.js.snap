@@ -2,7 +2,7 @@
 
 exports[`getMarginPaddingStyles Different values ​​depends on the responsive 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "margin-bottom": "11px",
     "margin-left": "11px",
     "margin-right": "11px",
@@ -49,7 +49,7 @@ Object {
 
 exports[`getMarginPaddingStyles Get a correct margin and padding 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
@@ -96,7 +96,7 @@ Object {
 
 exports[`getMarginPaddingStyles Get a correct margin and padding simple styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
@@ -126,7 +126,7 @@ Object {
 
 exports[`getMarginPaddingStyles Get a correct margin and padding styles, when only unit on some breakpoint was changed 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "margin-top": "11em",
   },
   "l": Object {},
@@ -146,7 +146,7 @@ Object {
 
 exports[`getMarginPaddingStyles Get a correct margin and padding styles, when value is undefined but unit is defined 1`] = `
 Object {
-  "general": Object {},
+  "g": Object {},
   "l": Object {},
   "m": Object {},
   "s": Object {},

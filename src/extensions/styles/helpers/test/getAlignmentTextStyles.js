@@ -3,7 +3,7 @@ import getAlignmentTextStyles from '../getAlignmentTextStyles';
 describe('getAlignmentTextStyles', () => {
 	it('Get a correct alignment text styles', () => {
 		const object = {
-			'_ta-general': 'right',
+			'_ta-g': 'right',
 			'_ta-xxl': 'left',
 			'_ta-xl': 'right',
 			'_ta-l': 'left',

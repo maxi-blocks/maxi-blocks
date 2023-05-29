@@ -5,8 +5,8 @@ describe('hoverAttributesCreator', () => {
 	it('Returns a color bg object', () => {
 		const result = hoverAttributesCreator({
 			obj: backgroundColor,
-			sameValAttr: ['bc_ps-general'],
-			diffValAttr: { 'bc_pc-general': 6 },
+			sameValAttr: ['bc_ps-g'],
+			diffValAttr: { 'bc_pc-g': 6 },
 		});
 
 		expect(result).toMatchSnapshot();

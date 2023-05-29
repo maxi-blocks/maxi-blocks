@@ -45,7 +45,7 @@ describe('TypographyControl', () => {
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-g')).toStrictEqual(
 			'Montserrat'
 		);
 	});
@@ -115,9 +115,7 @@ describe('TypographyControl', () => {
 			customColor: '#FAFA03',
 		});
 
-		expect(await getAttributes('color-general')).toStrictEqual(
-			'rgb(250,250,3)'
-		);
+		expect(await getAttributes('color-g')).toStrictEqual('rgb(250,250,3)');
 
 		// Check responsive palette opacity
 		const accordionPanel = await openSidebarTab(
@@ -142,9 +140,7 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		expect(await getAttributes('palette-status-general')).toStrictEqual(
-			true
-		);
+		expect(await getAttributes('palette-status-g')).toStrictEqual(true);
 
 		// s
 		await changeResponsive(page, 's');
@@ -197,29 +193,29 @@ describe('TypographyControl', () => {
 		});
 
 		const typographyResult = await getAttributes([
-			'font-style-general',
-			'font-weight-general',
-			'text-decoration-general',
-			'text-transform-general',
-			'text-orientation-general',
-			'text-direction-general',
-			'text-indent-general',
-			'white-space-general',
-			'word-spacing-general',
-			'bottom-gap-general',
+			'font-style-g',
+			'font-weight-g',
+			'text-decoration-g',
+			'text-transform-g',
+			'text-orientation-g',
+			'text-direction-g',
+			'text-indent-g',
+			'white-space-g',
+			'word-spacing-g',
+			'bottom-gap-g',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-style-general': 'italic',
-			'font-weight-general': '300',
-			'text-decoration-general': 'overline',
-			'text-transform-general': 'capitalize',
-			'text-orientation-general': 'mixed',
-			'text-direction-general': 'ltr',
-			'text-indent-general': 44,
-			'white-space-general': 'pre',
-			'word-spacing-general': 20,
-			'bottom-gap-general': 15,
+			'font-style-g': 'italic',
+			'font-weight-g': '300',
+			'text-decoration-g': 'overline',
+			'text-transform-g': 'capitalize',
+			'text-orientation-g': 'mixed',
+			'text-direction-g': 'ltr',
+			'text-indent-g': 44,
+			'white-space-g': 'pre',
+			'word-spacing-g': 20,
+			'bottom-gap-g': 15,
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);
@@ -345,15 +341,15 @@ describe('TypographyControl', () => {
 		});
 
 		const attributeResult = await getAttributes([
-			'line-height-general',
-			'letter-spacing-general',
-			'font-size-general',
+			'line-height-g',
+			'letter-spacing-g',
+			'font-size-g',
 		]);
 
 		const expectedAttributes = {
-			'line-height-general': 22,
-			'letter-spacing-general': 10,
-			'font-size-general': 19,
+			'line-height-g': 22,
+			'letter-spacing-g': 10,
+			'font-size-g': 19,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);

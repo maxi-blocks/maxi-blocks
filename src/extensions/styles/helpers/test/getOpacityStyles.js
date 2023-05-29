@@ -3,7 +3,7 @@ import getOpacityStyles from '../getOpacityStyles';
 describe('getOpacityStyles', () => {
 	it('Get a correct opacity styles', () => {
 		const object = {
-			'_o-general': 1,
+			'_o-g': 1,
 			'_o-xxl': 0.56,
 			'_o-xl': 0.77,
 			'_o-l': 0.95,

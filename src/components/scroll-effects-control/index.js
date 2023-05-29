@@ -45,13 +45,7 @@ import './editor.scss';
  * Component
  */
 const ScrollEffectsControl = props => {
-	const {
-		className,
-		onChange,
-		breakpoint = 'general',
-		uniqueID,
-		depth,
-	} = props;
+	const { className, onChange, breakpoint = 'g', uniqueID, depth } = props;
 	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const activeTabName = getActiveTabName(depth);
@@ -574,7 +568,7 @@ const ScrollEffectsControl = props => {
 									!val &&
 										removeEffect(type, uniqueID) &&
 										onChange({
-											[`scroll-${type}-preview-status-general`]: false,
+											[`scroll-${type}-preview-status-g`]: false,
 										});
 								}}
 							/>
@@ -638,13 +632,13 @@ const ScrollEffectsControl = props => {
 											onChange({
 												[`scroll-${type}-speed-${breakpoint}`]:
 													getDefaultAttribute(
-														`scroll-${type}-speed-general`
+														`scroll-${type}-speed-g`
 													),
 												isReset: true,
 											})
 										}
 										initialPosition={getDefaultAttribute(
-											`scroll-${type}-speed-general`
+											`scroll-${type}-speed-g`
 										)}
 									/>
 									<AdvancedNumberControl
@@ -670,13 +664,13 @@ const ScrollEffectsControl = props => {
 											onChange({
 												[`scroll-${type}-delay-${breakpoint}`]:
 													getDefaultAttribute(
-														`scroll-${type}-delay-general`
+														`scroll-${type}-delay-g`
 													),
 												isReset: true,
 											})
 										}
 										initialPosition={getDefaultAttribute(
-											`scroll-${type}-delay-general`
+											`scroll-${type}-delay-g`
 										)}
 									/>
 									<SelectControl
@@ -706,7 +700,7 @@ const ScrollEffectsControl = props => {
 										selected={isPreviewEnabled}
 										onChange={val => {
 											onChange({
-												[`scroll-${type}-preview-status-general`]:
+												[`scroll-${type}-preview-status-g`]:
 													val,
 											});
 											val &&

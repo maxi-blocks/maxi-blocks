@@ -67,7 +67,7 @@ const getDefaultAttribute = (
 	if (getBlockData(blockName)?.maxiAttributes?.[prop])
 		response = getBlockData(blockName).maxiAttributes[prop];
 
-	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
+	const isGeneral = getBreakpointFromAttribute(prop) === 'g';
 
 	if (getIsValid(response, true)) return response;
 	if (isGeneral) {
@@ -75,9 +75,7 @@ const getDefaultAttribute = (
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const baseAttribute =
-			getBlockAttributes(blockName)[
-				prop.replace('general', baseBreakpoint)
-			];
+			getBlockAttributes(blockName)[prop.replace('g', baseBreakpoint)];
 
 		if (getIsValid(baseAttribute)) return baseAttribute;
 	}
@@ -90,12 +88,12 @@ const getDefaultAttribute = (
 	if (
 		!avoidBaseBreakpoint &&
 		isNil(response) &&
-		getBreakpointFromAttribute(prop) === 'general'
+		getBreakpointFromAttribute(prop) === 'g'
 	) {
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 		response = getDefaultAttribute(
-			prop.replace('general', baseBreakpoint, clientIds)
+			prop.replace('g', baseBreakpoint, clientIds)
 		);
 	}
 

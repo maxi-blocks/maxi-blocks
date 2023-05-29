@@ -101,7 +101,7 @@ class edit extends MaxiBlockComponent {
 	getHeight() {
 		const forceAspectRatio = getLastBreakpointAttribute({
 			target: '_far',
-			breakpoint: this.props.deviceType || 'general',
+			breakpoint: this.props.deviceType || 'g',
 			attributes: this.props.attributes,
 		});
 
@@ -109,14 +109,14 @@ class edit extends MaxiBlockComponent {
 
 		const columnHeightAttribute = getLastBreakpointAttribute({
 			target: '_h',
-			breakpoint: this.props.deviceType || 'general',
+			breakpoint: this.props.deviceType || 'g',
 			attributes: this.props.attributes,
 		});
 
 		if (columnHeightAttribute)
 			return `${columnHeightAttribute}${getLastBreakpointAttribute({
 				target: '_h.u',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: this.props.deviceType || 'g',
 				attributes: this.props.attributes,
 			})}`;
 

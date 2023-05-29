@@ -336,7 +336,7 @@ const TypographyControl = props => {
 		hideAlignment = false,
 		onChangeInline = null,
 		onChange,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		inlineTarget = '.maxi-text-block__content',
 		isList = false,
 		isHover = false,
@@ -448,7 +448,7 @@ const TypographyControl = props => {
 
 		const currentBreakpoint =
 			(isStyleCards &&
-				breakpoint === 'general' &&
+				breakpoint === 'g' &&
 				!keepBreakpoint &&
 				baseBreakpoint) ||
 			breakpoint;

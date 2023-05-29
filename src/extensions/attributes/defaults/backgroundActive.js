@@ -26,7 +26,7 @@ export const backgroundActive = prefixAttributesCreator({
 
 export const backgroundColorActive = prefixAttributesCreator({
 	obj: backgroundColor,
-	diffValAttr: { [`${prefix}b_pc-general`]: 6 }, // background-palette-color-general
+	diffValAttr: { [`${prefix}b_pc-g`]: 6 }, // background-palette-color-g
 	prefix,
 	longPrefix,
 });
@@ -51,7 +51,7 @@ export const backgroundGradientActive = prefixAttributesCreator({
 
 export const backgroundSVGActive = prefixAttributesCreator({
 	obj: backgroundSVG,
-	diffValAttr: { [`${prefix}bs_pc-general`]: 6 }, // background-svg-palette-color-general
+	diffValAttr: { [`${prefix}bs_pc-g`]: 6 }, // background-svg-palette-color-g
 	prefix,
 	longPrefix,
 });

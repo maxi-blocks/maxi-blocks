@@ -24,7 +24,7 @@ const generateAttr = (
 	attr,
 	valueType = 'number',
 	defaultValue,
-	breakpoint = 'general'
+	breakpoint = 'g'
 ) => {
 	const key = `scroll-${scrollType}-${attr}-${breakpoint}`;
 	const value =
@@ -46,7 +46,7 @@ const generateUniqueAttributes = (
 	type,
 	attr,
 	defaults = [0, 0, 0],
-	breakpoint = 'general'
+	breakpoint = 'g'
 ) => {
 	generateAttr(type, `${attr}-start`, 'number', defaults[0], breakpoint);
 	generateAttr(type, `${attr}-mid`, 'number', defaults[1], breakpoint);

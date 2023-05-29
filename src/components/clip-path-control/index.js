@@ -438,7 +438,7 @@ const ClipPathControl = props => {
 												}}
 												onReset={coordIndex => {
 													const breakpoints = [
-														'general',
+														'g',
 														'xxl',
 														'xl',
 														'l',

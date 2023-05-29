@@ -2,7 +2,7 @@
 
 exports[`getColumnSizeStyles Get a correct column size styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "flex-basis": "calc(1% - 0px)",
     "width": "calc(1% - 0px)",
   },
@@ -35,7 +35,7 @@ Object {
 
 exports[`getColumnSizeStyles Get a correct column size styles with gap options 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "flex-basis": "calc(1% - 1.6667%)",
     "width": "calc(1% - 1.6667%)",
   },
@@ -68,7 +68,7 @@ Object {
 
 exports[`getColumnSizeStyles Get a correct column size styles with some fit-content 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "flex-basis": "calc(1% - 0px)",
     "width": "calc(1% - 0px)",
   },
@@ -101,7 +101,7 @@ Object {
 
 exports[`getColumnSizeStyles Get a correct column size styles with some full width columns 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "flex-basis": "100%",
     "width": "100%",
   },
@@ -134,7 +134,7 @@ Object {
 
 exports[`getColumnSizeStyles Get a correct column size styles with some fullwidth columns 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "flex-basis": "100%",
     "width": "100%",
   },

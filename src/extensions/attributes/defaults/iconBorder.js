@@ -20,5 +20,5 @@ export const iconBorderRadius = prefixAttributesCreator({
 	obj: borderRadius,
 	prefix,
 	longPrefix,
-	diffValAttr: { 'i-bo.ra.u-general': 'px' }, // icon-border-radius-unit-general
+	diffValAttr: { 'i-bo.ra.u-g': 'px' }, // icon-border-radius-unit-g
 });

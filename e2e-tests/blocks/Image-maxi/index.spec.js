@@ -98,7 +98,7 @@ describe.skip('Image Maxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-g')).toStrictEqual(
 			'Montserrat'
 		);
 
@@ -110,9 +110,7 @@ describe.skip('Image Maxi', () => {
 			colorPalette: 4,
 		});
 
-		expect(await getAttributes('link-palette-color-general')).toStrictEqual(
-			4
-		);
+		expect(await getAttributes('link-palette-color-g')).toStrictEqual(4);
 
 		// alignment
 		await accordionPanel.$$eval(
@@ -120,9 +118,7 @@ describe.skip('Image Maxi', () => {
 			alignment => alignment[1].click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
-			'center'
-		);
+		expect(await getAttributes('text-alignment-g')).toStrictEqual('center');
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -136,15 +132,15 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const attributes = await getAttributes([
-			'font-size-general',
-			'line-height-general',
-			'letter-spacing-general',
+			'font-size-g',
+			'line-height-g',
+			'letter-spacing-g',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-size-general': 19,
-			'line-height-general': 4,
-			'letter-spacing-general': 11,
+			'font-size-g': 19,
+			'line-height-g': 4,
+			'letter-spacing-g': 11,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -164,17 +160,17 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const result = await getAttributes([
-			'font-style-general',
-			'font-weight-general',
-			'text-decoration-general',
-			'text-transform-general',
+			'font-style-g',
+			'font-weight-g',
+			'text-decoration-g',
+			'text-transform-g',
 		]);
 
 		const expectedAttributes = {
-			'font-style-general': 'italic',
-			'font-weight-general': '300',
-			'text-decoration-general': 'overline',
-			'text-transform-general': 'capitalize',
+			'font-style-g': 'italic',
+			'font-weight-g': '300',
+			'text-decoration-g': 'overline',
+			'text-transform-g': 'capitalize',
 		};
 
 		expect(result).toStrictEqual(expectedAttributes);
@@ -209,9 +205,7 @@ describe.skip('Image Maxi', () => {
 			);
 			await page.waitForTimeout(200);
 
-			expect(await getAttributes('text-shadow-general')).toStrictEqual(
-				setting
-			);
+			expect(await getAttributes('text-shadow-g')).toStrictEqual(setting);
 		}
 
 		// LinkColor
@@ -264,17 +258,17 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const expectedValues = {
-			'link-palette-color-general': 2,
-			'link-hover-palette-color-general': 3,
-			'link-active-palette-color-general': 4,
-			'link-visited-palette-color-general': 5,
+			'link-palette-color-g': 2,
+			'link-hover-palette-color-g': 3,
+			'link-active-palette-color-g': 4,
+			'link-visited-palette-color-g': 5,
 		};
 
 		const linkAttributes = await getAttributes([
-			'link-palette-color-general',
-			'link-hover-palette-color-general',
-			'link-active-palette-color-general',
-			'link-visited-palette-color-general',
+			'link-palette-color-g',
+			'link-hover-palette-color-g',
+			'link-active-palette-color-g',
+			'link-visited-palette-color-g',
 		]);
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
@@ -315,16 +309,14 @@ describe.skip('Image Maxi', () => {
 		);
 
 		expect(checkFrontend).toMatchSnapshot();
-		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+		expect(await getAttributes('caption-gap-g')).toStrictEqual(5);
 
 		const gapSelector = await page.$(
 			'.maxi-image-inspector__caption-gap select'
 		);
 
 		await gapSelector.select('px');
-		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
-			'px'
-		);
+		expect(await getAttributes('caption-gap-unit-g')).toStrictEqual('px');
 	});
 
 	it('Image alt tag', async () => {

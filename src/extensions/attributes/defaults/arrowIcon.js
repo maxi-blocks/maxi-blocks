@@ -29,10 +29,10 @@ const arrowIcon = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'nab-i_w-general': '20', // navigation-arrow-both-icon-width-general
+			'nab-i_w-g': '20', // navigation-arrow-both-icon-width-g
 			'nab-i-str_pc': 5, // navigation-arrow-both-icon-stroke-palette-color
-			'nab-i-b_am-general': 'none', // navigation-arrow-both-icon-background-active-media-general
-			'nab-i-bo.ra.u-general': 'px', // navigation-arrow-both-icon-border-radius-unit-general
+			'nab-i-b_am-g': 'none', // navigation-arrow-both-icon-background-active-media-g
+			'nab-i-bo.ra.u-g': 'px', // navigation-arrow-both-icon-border-radius-unit-g
 		},
 		exclAttr: [
 			'i_i', // 'icon-inherit'

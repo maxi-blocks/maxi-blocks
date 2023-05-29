@@ -28,8 +28,6 @@ describe('Text subscript', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('vertical-align-general')).toStrictEqual(
-			'sub'
-		);
+		expect(await getAttributes('vertical-align-g')).toStrictEqual('sub');
 	});
 });

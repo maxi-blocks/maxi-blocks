@@ -14,11 +14,11 @@ import getAttributesValue from '../../attributes/getAttributesValue';
  */
 import { merge } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 	const response = {
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {

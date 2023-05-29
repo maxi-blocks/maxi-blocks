@@ -113,7 +113,7 @@ const TransformControl = props => {
 				...transformOptions[`${type}-${breakpoint}`],
 				...typeObj,
 			};
-			if (breakpoint === 'general') {
+			if (breakpoint === 'g') {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
 				transformOptions[`${type}-${baseBreakpoint}`] = {

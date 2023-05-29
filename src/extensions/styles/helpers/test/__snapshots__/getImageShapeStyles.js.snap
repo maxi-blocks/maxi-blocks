@@ -2,7 +2,7 @@
 
 exports[`getImageShapeStyles Ensure that ignoreOmit is working 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "transform": "scale(1) ",
   },
   "m": Object {
@@ -33,7 +33,7 @@ Object {
 
 exports[`getImageShapeStyles Ensure that image shape scale is working with responsive 2`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "transform": "scale(0.5) ",
   },
   "l": Object {

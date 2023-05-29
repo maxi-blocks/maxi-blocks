@@ -4,7 +4,7 @@ exports[`getLinkStyles Returns a correct object 1`] = `
 Object {
   " p.maxi-text-block__content a": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "l": Object {
@@ -29,7 +29,7 @@ Object {
   },
   " p.maxi-text-block__content a:active": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
       "l": Object {
@@ -54,7 +54,7 @@ Object {
   },
   " p.maxi-text-block__content a:active span": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
       "l": Object {
@@ -79,7 +79,7 @@ Object {
   },
   " p.maxi-text-block__content a:hover": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
       },
       "l": Object {
@@ -104,7 +104,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
       "l": Object {
@@ -129,7 +129,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited span": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
       "l": Object {
@@ -154,7 +154,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited:hover": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
       },
       "l": Object {
@@ -179,7 +179,7 @@ Object {
   },
   ".block-editor-block-list__block  p.maxi-text-block__content a:visited": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "l": Object {
@@ -209,7 +209,7 @@ exports[`getLinkStyles Returns a correct object with custom colors 1`] = `
 Object {
   " p.maxi-text-block__content a": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(57,189,39,1)",
       },
       "l": Object {
@@ -234,7 +234,7 @@ Object {
   },
   " p.maxi-text-block__content a:active": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(221,32,32,1)",
       },
       "l": Object {
@@ -259,7 +259,7 @@ Object {
   },
   " p.maxi-text-block__content a:active span": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(221,32,32,1)",
       },
       "l": Object {
@@ -284,7 +284,7 @@ Object {
   },
   " p.maxi-text-block__content a:hover": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(191,192,86,1)",
       },
       "l": Object {
@@ -309,7 +309,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(27,109,168,1)",
       },
       "l": Object {
@@ -334,7 +334,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited span": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(27,109,168,1)",
       },
       "l": Object {
@@ -359,7 +359,7 @@ Object {
   },
   " p.maxi-text-block__content a:visited:hover": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(191,192,86,1)",
       },
       "l": Object {
@@ -384,7 +384,7 @@ Object {
   },
   ".block-editor-block-list__block  p.maxi-text-block__content a:visited": Object {
     "link": Object {
-      "general": Object {
+      "g": Object {
         "color": "rgba(57,189,39,1)",
       },
       "l": Object {

@@ -2,7 +2,7 @@
 
 exports[`getZIndexStyle Get a correct z-index style 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "z-index": 1,
   },
   "l": Object {

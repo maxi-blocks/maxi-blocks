@@ -11,7 +11,7 @@ const mapPopup = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			[`${prefix}b_am-general`]: 'color', // background-active-media-general
+			[`${prefix}b_am-g`]: 'color', // background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({

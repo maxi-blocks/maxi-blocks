@@ -4,7 +4,7 @@ exports[`getTransformStyles Get a correct default hover transform styles 1`] = `
 Object {
   "": Object {
     "transform": Object {
-      "general": Object {
+      "g": Object {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
@@ -41,7 +41,7 @@ exports[`getTransformStyles Get a correct transform styles 1`] = `
 Object {
   "": Object {
     "transform": Object {
-      "general": Object {
+      "g": Object {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
@@ -73,7 +73,7 @@ Object {
   },
   ":hover": Object {
     "transform": Object {
-      "general": Object {
+      "g": Object {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
       "l": Object {

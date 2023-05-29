@@ -39,25 +39,25 @@ const styleCard = {
 			p: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 18,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 16,
 				'font-size-unit-xl': 'px',
 				'line-height-xxl': 1.5,
-				'_fwe-general': '400',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '400',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h1: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 50,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 45,
@@ -74,19 +74,19 @@ const styleCard = {
 				'line-height-xl': 1.1,
 				'line-height-l': 1.22,
 				'line-height-m': 1.27,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h2: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 44,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 38,
@@ -103,19 +103,19 @@ const styleCard = {
 				'line-height-xl': 1.05,
 				'line-height-l': 1.26,
 				'line-height-m': 1.33,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h3: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 34,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 30,
@@ -128,19 +128,19 @@ const styleCard = {
 				'line-height-xl': 1.3,
 				'line-height-l': 1.23,
 				'line-height-m': 1.16,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h4: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 30,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 26,
@@ -153,19 +153,19 @@ const styleCard = {
 				'line-height-xl': 1.24,
 				'line-height-l': 1.38,
 				'line-height-m': 1.42,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h5: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 26,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 22,
@@ -176,19 +176,19 @@ const styleCard = {
 				'line-height-xl': 1.26,
 				'line-height-l': 1.45,
 				'line-height-m': 1.5,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h6: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 24,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 20,
@@ -199,21 +199,21 @@ const styleCard = {
 				'line-height-xl': 1.29,
 				'line-height-l': 1.5,
 				'line-height-m': 1.56,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			button: {
 				'_col.g': false,
 				color: '',
 				'h_col.g': false,
 				'hover-color': '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 22,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 18,
@@ -226,10 +226,10 @@ const styleCard = {
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_fwe-general': '400',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
-				'_td-general': 'unset',
+				'_fwe-g': '400',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
+				'_td-g': 'unset',
 				'bc.g': false,
 				bc_cc: '',
 				'h-bc.g': false,
@@ -262,26 +262,26 @@ const styleCard = {
 			p: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 18,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 16,
 				'font-size-unit-xl': 'px',
 				'line-height-xxl': 1.5,
 				'line-height-xl': 1.625,
-				'_fwe-general': '400',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '400',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h1: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 50,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 45,
@@ -298,19 +298,19 @@ const styleCard = {
 				'line-height-xl': 1.1,
 				'line-height-l': 1.22,
 				'line-height-m': 1.27,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h2: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 44,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 38,
@@ -327,19 +327,19 @@ const styleCard = {
 				'line-height-xl': 1.05,
 				'line-height-l': 1.26,
 				'line-height-m': 1.33,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h3: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 34,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 30,
@@ -354,20 +354,20 @@ const styleCard = {
 				'line-height-xl': 1.3,
 				'line-height-l': 1.23,
 				'line-height-m': 1.16,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h4: {
 				'_col.g': false,
 				color: '',
 
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 30,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 26,
@@ -380,19 +380,19 @@ const styleCard = {
 				'line-height-xl': 1.24,
 				'line-height-l': 1.38,
 				'line-height-m': 1.42,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h5: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 28,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 22,
@@ -403,19 +403,19 @@ const styleCard = {
 				'line-height-xl': 1.26,
 				'line-height-l': 1.45,
 				'line-height-m': 1.5,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			h6: {
 				'_col.g': false,
 				color: '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 24,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 20,
@@ -426,21 +426,21 @@ const styleCard = {
 				'line-height-xl': 1.29,
 				'line-height-l': 1.5,
 				'line-height-m': 1.56,
-				'_fwe-general': '500',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '500',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 			},
 			button: {
 				'_col.g': false,
 				color: '',
 				'h_col.g': false,
 				'hover-color': '',
-				'font-family-general': 'Roboto',
+				'font-family-g': 'Roboto',
 				'font-size-xxl': 22,
 				'font-size-unit-xxl': 'px',
 				'font-size-xl': 18,
@@ -449,14 +449,14 @@ const styleCard = {
 				'font-size-unit-l': 'px',
 				'line-height-xxl': 1.5,
 				'line-height-xl': 1.625,
-				'_fwe-general': '400',
-				'text-transform-general': 'none',
-				'_fst-general': 'normal',
+				'_fwe-g': '400',
+				'text-transform-g': 'none',
+				'_fst-g': 'normal',
 				'letter-spacing-xxl': 0,
 				'letter-spacing-unit-xxl': 'px',
 				'letter-spacing-xl': 0,
 				'letter-spacing-unit-xl': 'px',
-				'_td-general': 'unset',
+				'_td-g': 'unset',
 				'bc.g': false,
 				bc_cc: '',
 				'h-bc.g': false,
@@ -503,7 +503,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -572,7 +572,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -644,7 +644,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -666,10 +666,10 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -740,10 +740,10 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -765,7 +765,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -836,7 +836,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -858,8 +858,8 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -939,8 +939,8 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -962,7 +962,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -1034,7 +1034,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -1056,7 +1056,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -1167,7 +1167,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -1189,7 +1189,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -1269,7 +1269,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -1291,11 +1291,11 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -1375,11 +1375,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -1402,16 +1402,16 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
-					'_fwe-general': '800',
-					'_cc-general': 'rgba(58,22,237,1)',
-					'_ps-general': false,
+					'_fwe-g': '800',
+					'_cc-g': 'rgba(58,22,237,1)',
+					'_ps-g': false,
 				},
 			},
 			content:
@@ -1491,11 +1491,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -1517,7 +1517,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -1597,11 +1597,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -1623,7 +1623,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -1703,16 +1703,16 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(51,12,247,1)',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(51,12,247,1)',
 				},
 			},
 		};
@@ -1734,11 +1734,11 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(51,12,247,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(51,12,247,1)',
 				},
 			},
 			content:
@@ -1802,10 +1802,10 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -1828,18 +1828,18 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fst-g': 'italic',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 			},
 			content:
@@ -1911,18 +1911,18 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fst-g': 'italic',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 			},
 		};
@@ -1944,24 +1944,24 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_fst-g': 'italic',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 				'maxi-text-block__custom-format--3': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 			},
-			'_td-general': 'underline',
+			'_td-g': 'underline',
 			content:
 				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
 		};
@@ -2029,24 +2029,24 @@ describe('setFormatWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'_td-general': 'underline',
+			'_td-g': 'underline',
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_fst-g': 'italic',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 				'maxi-text-block__custom-format--3': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
-					'_td-general': 'underline',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
+					'_td-g': 'underline',
 				},
 			},
 		};
@@ -2066,21 +2066,21 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'_td-general': '',
+			'_td-g': '',
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fwe-g': '800',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_fst-g': 'italic',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(52,17,228,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(52,17,228,1)',
 				},
 			},
 			content:
@@ -2200,11 +2200,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -2226,11 +2226,11 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -2350,11 +2350,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
-					'_fst-general': 'italic',
+					'_fwe-g': '800',
+					'_fst-g': 'italic',
 				},
 			},
 		};
@@ -2376,7 +2376,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			_cf: {
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
+					'_fst-g': 'italic',
 				},
 			},
 			content:
@@ -2446,11 +2446,11 @@ describe('setFormatWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'_fwe-general': '800',
+			'_fwe-g': '800',
 			_cf: {
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_fwe-general': '800',
+					'_fst-g': 'italic',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -2470,14 +2470,14 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'_fwe-general': '800',
+			'_fwe-g': '800',
 			_cf: {
 				'maxi-text-block__custom-format--1': {
-					'_fst-general': 'italic',
-					'_fwe-general': '800',
+					'_fst-g': 'italic',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '400',
+					'_fwe-g': '400',
 				},
 			},
 			content:
@@ -2555,10 +2555,10 @@ describe('setFormatWithClass', () => {
 			],
 		};
 		const typography = {
-			'_fwe-general': '800',
+			'_fwe-g': '800',
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '400',
+					'_fwe-g': '400',
 				},
 			},
 		};
@@ -2578,7 +2578,7 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'_fwe-general': '800',
+			'_fwe-g': '800',
 			_cf: {},
 			content: 'Testing Text Maxi',
 		};
@@ -2617,8 +2617,8 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'_cf.h': {
 				'maxi-text-block__custom-format--0--hover': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(221,31,31,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(221,31,31,1)',
 				},
 			},
 			content:
@@ -2694,11 +2694,11 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'_cf.h': {
 				'maxi-text-block__custom-format--1--hover': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--0--hover': {
-					'_ps-general': false,
-					'_cc-general': 'rgba(220,34,34,1)',
+					'_ps-g': false,
+					'_cc-g': 'rgba(220,34,34,1)',
 				},
 			},
 		};
@@ -2722,7 +2722,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'_cf.h': {
 				'maxi-text-block__custom-format--2--hover': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 			content:
@@ -2740,15 +2740,15 @@ describe('checkFormatCoincidence', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
 		const className = 'maxi-text-block__custom-format--1';
-		const breakpoint = 'general';
+		const breakpoint = 'g';
 		const value = {
 			_fwe: '800',
 		};

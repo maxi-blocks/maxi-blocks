@@ -46,12 +46,12 @@ class edit extends MaxiBlockComponent {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
 				target: 'nc_w',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: this.props.deviceType || 'g',
 				attributes: this.props.attributes,
 			});
 			const svgWidthUnit = getLastBreakpointAttribute({
 				target: 'nc_w.u',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: this.props.deviceType || 'g',
 				attributes: this.props.attributes,
 			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;

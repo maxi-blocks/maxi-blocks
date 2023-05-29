@@ -53,9 +53,7 @@ export const applyEffect = (type, uniqueID, viewport) => {
 		`[class*='maxi-block'][uniqueID=${uniqueID}]`
 	)[0];
 
-	const scrollType = element?.getAttribute(
-		`data-scroll-effect-${type}-general`
-	);
+	const scrollType = element?.getAttribute(`data-scroll-effect-${type}-g`);
 
 	const effectSettings = data => {
 		const response = {};

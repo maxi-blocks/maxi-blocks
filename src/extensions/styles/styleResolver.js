@@ -11,7 +11,7 @@ import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
 /**
  * Styles resolver
  */
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const cleanContent = content => {
 	let newContent = { ...content };
@@ -46,8 +46,7 @@ const getCleanContent = content => {
 			newContent[target] = cleanContent(newContent[target]);
 
 		if (isEmpty(newContent[target])) delete newContent[target];
-		if (isEqual(newContent[target], { general: {} }))
-			delete newContent[target];
+		if (isEqual(newContent[target], { g: {} })) delete newContent[target];
 	}
 
 	return newContent;

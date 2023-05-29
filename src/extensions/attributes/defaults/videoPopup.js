@@ -10,7 +10,7 @@ const videoPopup = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'lb-b_am-general': 'color', // lightbox-background-active-media-general
+			'lb-b_am-g': 'color', // lightbox-background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
@@ -18,7 +18,7 @@ const videoPopup = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			'lb-bc_pc-general': 5, // lightbox-background-palette-color-general
+			'lb-bc_pc-g': 5, // lightbox-background-palette-color-general
 		},
 	}),
 };

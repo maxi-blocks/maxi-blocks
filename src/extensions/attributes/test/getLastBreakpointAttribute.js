@@ -6,7 +6,7 @@ jest.mock('@wordpress/data', () => {
 			return {
 				getSelectedBlockCount: jest.fn(() => 1),
 				receiveBaseBreakpoint: jest.fn(() => 'xl'),
-				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				receiveMaxiDeviceType: jest.fn(() => 'g'),
 			};
 		}),
 	};
@@ -15,8 +15,8 @@ jest.mock('@wordpress/data', () => {
 import { select } from '@wordpress/data';
 
 const attributes = {
-	'test-general': 1,
-	'test-general.h': 10,
+	'test-g': 1,
+	'test-g.h': 10,
 	'test-xxl': 2,
 	'test-xxl.h': 20,
 	'test-l': 4,
@@ -33,7 +33,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return General value', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes,
 		});
 
@@ -43,7 +43,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return General hover value', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes,
 			isHover: true,
 		});
@@ -144,7 +144,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XL value when breakpoint is General but there is not General attribute; baseBreakpoint is XL', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
 				'test-xxl': 2,
 				'test-xl': 3,
@@ -161,13 +161,13 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General but there is not General attribute; baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
-			receiveMaxiDeviceType: jest.fn(() => 'general'),
+			receiveMaxiDeviceType: jest.fn(() => 'g'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
 				'test-xxl': 2,
 				'test-xl': 3,
@@ -184,15 +184,15 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General and baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
-			receiveMaxiDeviceType: jest.fn(() => 'general'),
+			receiveMaxiDeviceType: jest.fn(() => 'g'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
-				'test-general': 1,
+				'test-g': 1,
 				'test-xxl': 2,
 				'test-xl': 3,
 				'test-l': 4,
@@ -208,9 +208,9 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return general key of object', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
-				'test-general': {
+				'test-g': {
 					'test-key': 1,
 				},
 			},
@@ -225,7 +225,7 @@ describe('getLastBreakpointAttribute', () => {
 			target: 'test',
 			breakpoint: 'm',
 			attributes: {
-				'test-general': {
+				'test-g': {
 					'test-key': 1,
 				},
 				'test-xl': {
@@ -246,9 +246,9 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return general hover key of object', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
-				'test-general.h': {
+				'test-g.h': {
 					'test-key': 1,
 				},
 			},
@@ -263,7 +263,7 @@ describe('getLastBreakpointAttribute', () => {
 			target: 'test',
 			breakpoint: 'm',
 			attributes: {
-				'test-general.h': {
+				'test-g.h': {
 					'test-key': 1,
 				},
 				'test-xl.h': {
@@ -285,9 +285,9 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return general key of object, when object has multiply nested keys', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
-			breakpoint: 'general',
+			breakpoint: 'g',
 			attributes: {
-				'test-general': {
+				'test-g': {
 					'test-key': {
 						'test-key-2': 1,
 					},
@@ -303,7 +303,7 @@ describe('getLastBreakpointAttribute', () => {
 			target: 'test',
 			breakpoint: 'm',
 			attributes: {
-				'test-general': {
+				'test-g': {
 					'test-key': {
 						'test-key-2': 1,
 					},
@@ -334,11 +334,11 @@ describe('getLastBreakpointAttribute', () => {
 			target: ['test', 'test-2'],
 			breakpoint: 'm',
 			attributes: {
-				'test-general': 'test-general',
+				'test-g': 'test-g',
 				'test-xl': 'test-xl',
 				'test-m': 'test-m',
 				'test-s': 'test-s',
-				'test-2-general': 'test-2-general',
+				'test-2-g': 'test-2-g',
 				'test-2-xl': 'test-2-xl',
 				'test-2-m': 'test-2-m',
 				'test-2-s': 'test-2-s',
@@ -353,11 +353,11 @@ describe('getLastBreakpointAttribute', () => {
 			target: ['test', 'test-2'],
 			breakpoint: 'm',
 			attributes: {
-				'test-general': 'test-general',
+				'test-g': 'test-g',
 				'test-xl': 'test-xl',
 				'test-m': 'test-m',
 				'test-s': 'test-s',
-				'test-2-general': 'test-2-general',
+				'test-2-g': 'test-2-g',
 				'test-2-xl': 'test-2-xl',
 				'test-2-m': 'test-2-m',
 				'test-2-s': 'test-2-s',

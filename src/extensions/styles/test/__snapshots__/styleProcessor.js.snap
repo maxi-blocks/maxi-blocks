@@ -4,7 +4,7 @@ exports[`styleCleaner Returns cleaned styles obj 1`] = `
 Object {
   "": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-width": "2px",
         "border-color": "var(--maxi-light-color-2)",
         "border-left-width": "2px",
@@ -14,26 +14,26 @@ Object {
       },
     },
     "boxShadow": Object {
-      "general": Object {
+      "g": Object {
         "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
       },
     },
     "transition": Object {
-      "general": Object {
+      "g": Object {
         "transition": "box-shadow 0.3s 0s ease",
       },
     },
   },
   " .maxi-container-arrow": Object {
     "shadow": Object {
-      "general": Object {
+      "g": Object {
         "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-1))",
       },
     },
   },
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "background": "var(--maxi-undefined-color-2)",
         "height": "calc(50% + 4px)",
         "left": "calc(1px)",
@@ -44,7 +44,7 @@ Object {
   },
   " > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-width": "2px",
         "border-color": "var(--maxi-light-color-2)",
         "border-left-width": "2px",
@@ -56,24 +56,24 @@ Object {
   },
   ":hover": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-color": "var(--maxi-light-color-6)",
       },
     },
     "boxShadow": Object {
-      "general": Object {
+      "g": Object {
         "box-shadow": "5px 5px 0px 0px var(--maxi-light-color-6)",
       },
     },
   },
   ":hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-color": "var(--maxi-light-color-6)",
       },
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
       },
     },

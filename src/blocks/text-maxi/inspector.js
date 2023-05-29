@@ -50,7 +50,7 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-									deviceType === 'general' &&
+									deviceType === 'g' &&
 										!isList && {
 											label: __(
 												'Heading / Paragraph tag',
@@ -126,12 +126,12 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props,
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props,
 										}),
@@ -169,7 +169,7 @@ const Inspector = props => {
 									...inspectorTabs.position({
 										props,
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props,
 										}),

@@ -2,7 +2,7 @@
 
 exports[`getOpacityStyles Get a correct opacity styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "opacity": 1,
   },
   "l": Object {

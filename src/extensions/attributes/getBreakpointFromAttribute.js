@@ -1,6 +1,6 @@
 import getNormalAttributeKey from './getNormalAttributeKey';
 
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getBreakpointFromAttribute = rawTarget => {
 	const target = getNormalAttributeKey(rawTarget);

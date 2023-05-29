@@ -39,7 +39,7 @@ export const borderNone = (prefix = '') => {
 			target,
 			prefix,
 			props,
-			breakpoint: 'general',
+			breakpoint: 'g',
 		}).default;
 
 	response = {

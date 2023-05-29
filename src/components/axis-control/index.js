@@ -441,7 +441,7 @@ const AxisControl = props => {
 		label = '',
 		className,
 		onChange,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		disableAuto = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		target,
@@ -530,7 +530,7 @@ const AxisControl = props => {
 	const getValue = (key, customBreakpoint) => {
 		let value;
 
-		if (breakpoint === 'general' || customBreakpoint === 'general') {
+		if (breakpoint === 'g' || customBreakpoint === 'g') {
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 			value = getAttributesValue({
@@ -591,7 +591,7 @@ const AxisControl = props => {
 		const getDefaultValue = key => {
 			let value;
 
-			if (breakpoint === 'general' || customBreakpoint === 'general') {
+			if (breakpoint === 'g' || customBreakpoint === 'g') {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
 				value = getValueByBreakpoint(key, baseBreakpoint);

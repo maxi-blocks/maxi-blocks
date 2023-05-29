@@ -5,13 +5,13 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "column-size-general": 50,
+      "column-size-g": 50,
       "column-size-xl": 50,
-      "justify-content-general": "space-between",
+      "justify-content-g": "space-between",
       "justify-content-xl": "space-between",
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "flex-basis": "calc(50% - 0px)",
@@ -77,11 +77,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": false,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
     },
     "id": 1,
     "isButton": true,

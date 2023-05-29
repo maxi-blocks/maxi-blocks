@@ -85,7 +85,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 	const [iconStyle, setIconStyle] = useState('color');
 
 	useEffect(() => {
-		if (breakpoint !== 'general') {
+		if (breakpoint !== 'g') {
 			setIconStyle('border');
 		}
 	}, [breakpoint]);
@@ -93,7 +93,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 	const getOptions = () => {
 		const options = [];
 
-		if (breakpoint === 'general') {
+		if (breakpoint === 'g') {
 			if (svgType !== 'Shape')
 				options.push({
 					icon: <Icon icon={iconBorder} />,
@@ -176,7 +176,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			{!isInteractionBuilder &&
 				!disableIconOnly &&
 				!isHover &&
-				breakpoint === 'general' && (
+				breakpoint === 'g' && (
 					<>
 						<hr />
 						<ToggleSwitch
@@ -282,7 +282,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					)}
 				</>
 			)}
-			{!disableIconInherit && !isHover && breakpoint === 'general' && (
+			{!disableIconInherit && !isHover && breakpoint === 'g' && (
 				<ToggleSwitch
 					label={__(
 						'Inherit stroke colour/background from button',
@@ -707,7 +707,7 @@ const IconControl = props => {
 			{!isInteractionBuilder &&
 				!disableModal &&
 				!isHover &&
-				breakpoint === 'general' && (
+				breakpoint === 'g' && (
 					<MaxiModal
 						type={type}
 						style={blockStyle}

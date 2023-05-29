@@ -5,11 +5,11 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
-      "alignment-general": "right",
+      "alignment-g": "right",
       "alignment-xl": "right",
     },
     "css": Object {
-      "general": Object {
+      "g": Object {
         "breakpoint": null,
         "styles": Object {
           "justify-content": "flex-end",
@@ -24,11 +24,11 @@ Array [
     },
     "effects": Object {
       "disableTransition": true,
-      "easing-general": "ease",
+      "easing-g": "ease",
       "hoverStatus": false,
-      "transition-delay-general": 0,
-      "transition-duration-general": 0.3,
-      "transition-status-general": true,
+      "transition-delay-g": 0,
+      "transition-duration-g": 0.3,
+      "transition-status-g": true,
     },
     "id": 1,
     "isButton": true,

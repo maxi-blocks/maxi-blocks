@@ -26,7 +26,7 @@ import {
 import getAttributeKey from '../../attributes/getAttributeKey';
 import { axisDictionary, sizeDictionary } from '../../attributes/constants';
 
-const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const BREAKPOINTS = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Clean BackgroundControl object for being delivered for styling
@@ -40,7 +40,7 @@ export const getColorBackgroundObject = ({
 	isButton = false,
 	isIcon = false,
 	isIconInherit = false,
-	breakpoint = 'general',
+	breakpoint = 'g',
 	scValues = {},
 	backgroundColorProperty = 'background-color',
 	...props
@@ -161,7 +161,7 @@ export const getColorBackgroundObject = ({
 export const getGradientBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	breakpoint = 'general',
+	breakpoint = 'g',
 	isIcon = false,
 	blockStyle,
 	isButton,
@@ -334,7 +334,7 @@ export const getImageBackgroundObject = ({
 
 	if (!isParallax) {
 		// Image
-		if (breakpoint === 'general') {
+		if (breakpoint === 'g') {
 			if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
 				response[breakpoint][
 					'background-image'
@@ -866,7 +866,7 @@ const getBackgroundLayers = ({
 						),
 					},
 				};
-				if (breakpoint === 'general') {
+				if (breakpoint === 'g') {
 					response[`${layerTarget} > svg:first-child`] = {
 						...response[`${layerTarget} > svg:first-child`],
 						[type]: {
@@ -926,7 +926,7 @@ const getGeneralBackgroundStyles = (
 	blockStyle,
 	isHover
 ) => {
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
 	const getBorderValue = (target, breakpoint, forceIsHover = null) => {
@@ -962,7 +962,7 @@ const getGeneralBackgroundStyles = (
 			});
 			const borderStyleGeneral = getAttributesValue({
 				target: 'bo_s',
-				breakpoint: 'general',
+				breakpoint: 'g',
 				props,
 			});
 
@@ -1034,7 +1034,7 @@ const getGeneralBackgroundStyles = (
 			border[breakpoint]['border-left-style'] = breakpointStyle;
 	});
 
-	delete border.general['border-style'];
+	delete border.g['border-style'];
 
 	// Clean size object
 	if (!isEmpty(size))
@@ -1115,7 +1115,7 @@ const getBasicResponseObject = ({
 
 	return {
 		[`${target} > .maxi-background-displayer`]:
-			includeBorder && !isEmpty(borderObj.general)
+			includeBorder && !isEmpty(borderObj.g)
 				? mergedBorderObj
 				: rowBorderRadiusObj,
 	};

@@ -22,17 +22,17 @@ jest.mock('@wordpress/data', () => {
 							return [];
 						case 2:
 						case 3:
-							return ['test-general'];
+							return ['test-g'];
 						case 4:
-							return ['test-general', 'test-xxl'];
+							return ['test-g', 'test-xxl'];
 						case 5:
 							return ['test-xl'];
 						case 6:
-							return ['test-general', 'test-m'];
+							return ['test-g', 'test-m'];
 						case 7:
 						case 8:
 						case 9:
-							return ['test-general'];
+							return ['test-g'];
 						case 10:
 							return [];
 						case 11:
@@ -71,7 +71,7 @@ describe('handleSetAttributes', () => {
 				'test-xxl': '12',
 			},
 			attributes: {
-				'test-general': '1',
+				'test-g': '1',
 			},
 			onChange,
 		};
@@ -80,7 +80,7 @@ describe('handleSetAttributes', () => {
 				'test-xxl': '123',
 			},
 			attributes: {
-				'test-general': '12',
+				'test-g': '12',
 			},
 			onChange,
 		};
@@ -91,15 +91,15 @@ describe('handleSetAttributes', () => {
 
 		const firstRoundExpected = {
 			'test-xxl': undefined,
-			'test-general': '1',
+			'test-g': '1',
 		};
 		const secondRoundExpected = {
 			'test-xxl': undefined,
-			'test-general': '12',
+			'test-g': '12',
 		};
 		const thirdRoundExpected = {
 			'test-xxl': undefined,
-			'test-general': '123',
+			'test-g': '123',
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
@@ -117,7 +117,7 @@ describe('handleSetAttributes', () => {
 
 		const expectedAttrs = {
 			'test-xxl': undefined,
-			'test-general': '123',
+			'test-g': '123',
 		};
 
 		expect(resultAttrs).toStrictEqual(expectedAttrs);
@@ -136,18 +136,18 @@ describe('handleSetAttributes', () => {
 				'test-xl': 'dashed',
 			},
 			attributes: {
-				'test-general': 'solid',
+				'test-g': 'solid',
 				'test-xxl': undefined,
 			},
 			onChange,
 		};
 		const thirdRound = {
 			obj: {
-				'test-general': 'dotted',
+				'test-g': 'dotted',
 			},
 			attributes: {
 				'test-xxl': undefined,
-				'test-general': 'solid',
+				'test-g': 'solid',
 				'test-xl': 'dashed',
 			},
 			onChange,
@@ -158,7 +158,7 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'test-general': 'solid',
+			'test-g': 'solid',
 			'test-xxl': undefined,
 		};
 		const secondRoundExpected = {
@@ -166,7 +166,7 @@ describe('handleSetAttributes', () => {
 			'test-m': 'solid',
 		};
 		const thirdRoundExpected = {
-			'test-general': 'dotted',
+			'test-g': 'dotted',
 			'test-m': 'dotted',
 		};
 
@@ -185,7 +185,7 @@ describe('handleSetAttributes', () => {
 
 		const expectedAttrs = {
 			'test-xxl': undefined,
-			'test-general': 'dotted',
+			'test-g': 'dotted',
 			'test-xl': 'dashed',
 			'test-m': 'dotted',
 		};
@@ -196,26 +196,26 @@ describe('handleSetAttributes', () => {
 	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', () => {
 		const firstRound = {
 			obj: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 			attributes: {},
 			onChange,
 		};
 		const secondRound = {
 			obj: {
-				'test-general': 10,
+				'test-g': 10,
 			},
 			attributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 			onChange,
 		};
 		const thirdRound = {
 			obj: {
-				'test-general': 100,
+				'test-g': 100,
 			},
 			attributes: {
-				'test-general': 10,
+				'test-g': 10,
 			},
 			onChange,
 		};
@@ -225,13 +225,13 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'test-general': 1,
+			'test-g': 1,
 		};
 		const secondRoundExpected = {
-			'test-general': 10,
+			'test-g': 10,
 		};
 		const thirdRoundExpected = {
-			'test-general': 100,
+			'test-g': 100,
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
@@ -243,7 +243,7 @@ describe('handleSetAttributes', () => {
 				'test-xl': 1,
 			},
 			attributes: {
-				'test-general': 100,
+				'test-g': 100,
 			},
 			onChange,
 		};
@@ -252,7 +252,7 @@ describe('handleSetAttributes', () => {
 				'test-xl': 15,
 			},
 			attributes: {
-				'test-general': 100,
+				'test-g': 100,
 				'test-xl': 1,
 			},
 			onChange,
@@ -262,7 +262,7 @@ describe('handleSetAttributes', () => {
 				'test-xl': 150,
 			},
 			attributes: {
-				'test-general': 100,
+				'test-g': 100,
 				'test-xl': 15,
 				'test-m': 100,
 			},
@@ -305,7 +305,7 @@ describe('handleSetAttributes', () => {
 		};
 
 		const expectedAttrs = {
-			'test-general': 100,
+			'test-g': 100,
 			'test-xl': 150,
 			'test-m': 100,
 		};
@@ -317,16 +317,16 @@ describe('handleSetAttributes', () => {
 		const args = {
 			obj: {
 				isReset: true,
-				'test-general': 1,
+				'test-g': 1,
 			},
 			attributes: {
-				'test-general': 0,
+				'test-g': 0,
 			},
 			onChange,
 		};
 
 		const expectedAttrs = {
-			'test-general': 1,
+			'test-g': 1,
 		};
 
 		expect(handleSetAttributes(args)).toStrictEqual(expectedAttrs);

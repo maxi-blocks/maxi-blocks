@@ -18,7 +18,7 @@ const attributes = {
 	 */
 	...{
 		...attributesData.alignment,
-		'_a-general': {
+		'_a-g': {
 			type: 'string',
 			default: 'center',
 		},

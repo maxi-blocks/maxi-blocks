@@ -14,12 +14,7 @@ import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 /**
  * Component
  */
-const customCss = ({
-	props,
-	breakpoint = 'general',
-	selectors,
-	categories,
-}) => {
+const customCss = ({ props, breakpoint = 'g', selectors, categories }) => {
 	const { attributes, maxiSetAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute({

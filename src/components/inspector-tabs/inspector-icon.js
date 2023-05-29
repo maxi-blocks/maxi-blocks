@@ -46,7 +46,7 @@ const icon = ({
 		props: attributes,
 	});
 
-	if (deviceType !== 'general' && isEmpty(iconContent)) return null;
+	if (deviceType !== 'g' && isEmpty(iconContent)) return null;
 
 	const {
 		maxiSetAttributes,

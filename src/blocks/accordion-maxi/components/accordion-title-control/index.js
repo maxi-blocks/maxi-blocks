@@ -130,7 +130,7 @@ const AccordionTitleSettings = props => {
 
 	return (
 		<>
-			{breakpoint === 'general' && (
+			{breakpoint === 'g' && (
 				<FontLevelControl
 					value={titleLevel}
 					onChange={obj => {

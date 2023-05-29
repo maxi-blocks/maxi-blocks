@@ -298,7 +298,7 @@ const getSearchInputStyles = (props, isHover = false) => {
 const getSearchInputPlaceholderStyles = props => {
 	const { _bs: blockStyle } = props;
 
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 	const response = {};
 

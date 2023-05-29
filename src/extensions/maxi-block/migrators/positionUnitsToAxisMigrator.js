@@ -8,7 +8,7 @@ import getGroupAttributes from '../../attributes/getGroupAttributes';
 import { isEmpty } from 'lodash';
 import breakpointAttributesCreator from '../../attributes/breakpointAttributesCreator';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const targets = ['position', 'blockBackground'];
 const keyWords = ['top', 'right', 'bottom', 'left'];
 

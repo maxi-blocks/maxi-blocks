@@ -30,21 +30,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'bs_blu-general': 50,
-			'bs_cc-general': undefined,
-			'bs_ho-general': 0,
-			'bs_sp-general': 0,
+			'bs_blu-g': 50,
+			'bs_cc-g': undefined,
+			'bs_ho-g': 0,
+			'bs_sp-g': 0,
 			'bs.sh': false,
-			'bs_v-general': 30,
+			'bs_v-g': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'bs_blu-general',
-			'bs_cc-general',
-			'bs_ho-general',
-			'bs_sp-general',
+			'bs_blu-g',
+			'bs_cc-g',
+			'bs_ho-g',
+			'bs_sp-g',
 			'bs.sh',
-			'bs_v-general',
+			'bs_v-g',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
@@ -79,17 +79,17 @@ describe('BoxShadowControl', () => {
 		await page.keyboard.press('Enter');
 
 		const expectChanges = {
-			'bs_blu-general': 10,
-			'bs_ho-general': 30,
-			'bs_sp-general': 60,
-			'bs_v-general': 40,
+			'bs_blu-g': 10,
+			'bs_ho-g': 30,
+			'bs_sp-g': 60,
+			'bs_v-g': 40,
 		};
 
 		const boxShadowAttributes = await getAttributes([
-			'bs_blu-general',
-			'bs_ho-general',
-			'bs_sp-general',
-			'bs_v-general',
+			'bs_blu-g',
+			'bs_ho-g',
+			'bs_sp-g',
+			'bs_v-g',
 		]);
 
 		expect(boxShadowAttributes).toStrictEqual(expectChanges);
@@ -127,25 +127,25 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectBoxShadow = {
-			'bs_blu-general': 0,
-			'bs_blu-general-hover': undefined,
-			'bs_ho-general': 0,
-			'bs_ho-general-hover': undefined,
-			'bs_sp-general': 0,
-			'bs_sp-general-hover': undefined,
-			'bs_v-general': 0,
-			'bs_v-general-hover': undefined,
+			'bs_blu-g': 0,
+			'bs_blu-g-hover': undefined,
+			'bs_ho-g': 0,
+			'bs_ho-g-hover': undefined,
+			'bs_sp-g': 0,
+			'bs_sp-g-hover': undefined,
+			'bs_v-g': 0,
+			'bs_v-g-hover': undefined,
 		};
 
 		const boxShadowResult = await getAttributes([
-			'bs_blu-general',
-			'bs_blu-general-hover',
-			'bs_ho-general',
-			'bs_ho-general-hover',
-			'bs_sp-general',
-			'bs_sp-general-hover',
-			'bs_v-general',
-			'bs_v-general-hover',
+			'bs_blu-g',
+			'bs_blu-g-hover',
+			'bs_ho-g',
+			'bs_ho-g-hover',
+			'bs_sp-g',
+			'bs_sp-g-hover',
+			'bs_v-g',
+			'bs_v-g-hover',
 		]);
 
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
@@ -172,21 +172,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'bs_blu-general': 50,
-			'bs_cc-general': undefined,
-			'bs_ho-general': 0,
-			'bs_sp-general': 0,
+			'bs_blu-g': 50,
+			'bs_cc-g': undefined,
+			'bs_ho-g': 0,
+			'bs_sp-g': 0,
 			'bs.sh': true,
-			'bs_v-general': 30,
+			'bs_v-g': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'bs_blu-general',
-			'bs_cc-general',
-			'bs_ho-general',
-			'bs_sp-general',
+			'bs_blu-g',
+			'bs_cc-g',
+			'bs_ho-g',
+			'bs_sp-g',
 			'bs.sh',
-			'bs_v-general',
+			'bs_v-g',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);

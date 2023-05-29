@@ -16,7 +16,7 @@ const blockSettings = ({ props }) => {
 	});
 
 	return (
-		deviceType === 'general' && (
+		deviceType === 'g' && (
 			<div className='maxi-tab-content__box  sidebar-block-info'>
 				<CustomLabel
 					customLabel={customLabel}

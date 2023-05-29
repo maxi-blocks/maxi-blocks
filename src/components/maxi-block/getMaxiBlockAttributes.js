@@ -157,7 +157,7 @@ const getMaxiBlockAttributes = props => {
 				});
 
 				if (!isEmpty(responseString))
-					scroll[`data-scroll-effect-${type}-general`] =
+					scroll[`data-scroll-effect-${type}-g`] =
 						responseString.trim();
 			}
 		});

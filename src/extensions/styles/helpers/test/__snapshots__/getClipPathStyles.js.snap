@@ -2,7 +2,7 @@
 
 exports[`getClipPathStyles Get a correct clipPath styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
   "l": Object {
@@ -26,7 +26,7 @@ Object {
 
 exports[`getClipPathStyles Get a correct hover clipPath styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "clip-path": "none",
   },
   "l": Object {
@@ -52,7 +52,7 @@ Object {
 
 exports[`getClipPathStyles Get a none hover clipPath styles, when clipPath - none 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "clip-path": "none",
   },
   "l": Object {
@@ -80,7 +80,7 @@ exports[`getClipPathStyles Get an empty clipPath styles, when clipPath - none 1`
 
 exports[`getClipPathStyles Get an empty hover clipPath styles, when hover-status is false 1`] = `
 Object {
-  "general": Object {},
+  "g": Object {},
   "l": Object {},
   "m": Object {},
   "s": Object {},

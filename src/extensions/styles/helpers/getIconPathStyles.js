@@ -8,12 +8,12 @@ import getAttributeKey from '../../attributes/getAttributeKey';
  */
 import { isNil, isEmpty } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 	const response = {
 		label: 'Icon path',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -26,7 +26,7 @@ const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 			response[breakpoint]['stroke-width'] = iconStroke;
 		}
 
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'g')
 			delete response[breakpoint];
 	});
 

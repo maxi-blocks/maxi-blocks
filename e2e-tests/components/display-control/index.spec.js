@@ -29,7 +29,7 @@ describe('DisplayControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('d-general')).toStrictEqual('none');
+		expect(await getAttributes('d-g')).toStrictEqual('none');
 	});
 
 	it('Check Responsive display control', async () => {

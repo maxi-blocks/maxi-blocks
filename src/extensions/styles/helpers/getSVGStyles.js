@@ -13,7 +13,7 @@ import getAttributeValue from '../../attributes/getAttributesValue';
  */
 import { isNil, isEmpty, round } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getSVGWidthStyles = ({
 	obj,
@@ -24,7 +24,7 @@ export const getSVGWidthStyles = ({
 }) => {
 	const response = {
 		label: 'Icon size',
-		general: {},
+		g: {},
 	};
 
 	const svgType = getAttributeValue({
@@ -120,7 +120,7 @@ export const getSVGWidthStyles = ({
 			response[breakpoint].width = `${iconSize}${iconUnit}`;
 		}
 
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'g')
 			delete response[breakpoint];
 	});
 
@@ -130,7 +130,7 @@ export const getSVGWidthStyles = ({
 const getSVGPathStyles = (obj, prefix = 's-', isHover = false) => {
 	const response = {
 		label: 'SVG path',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -143,7 +143,7 @@ const getSVGPathStyles = (obj, prefix = 's-', isHover = false) => {
 			response[breakpoint]['stroke-width'] = iconStroke;
 		}
 
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'g')
 			delete response[breakpoint];
 	});
 
@@ -158,7 +158,7 @@ const getSVGPathFillStyles = (
 ) => {
 	const response = {
 		label: 'SVG path-fill',
-		general: {},
+		g: {},
 	};
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -169,13 +169,13 @@ const getSVGPathFillStyles = (
 		});
 
 	if (paletteStatus && paletteColor)
-		response.general.fill = getColorRGBAString({
+		response.g.fill = getColorRGBAString({
 			firstVar: `icon-fill${isHover ? '-hover' : ''}`,
 			secondVar: `color-${paletteColor}`,
 			opacity: paletteOpacity,
 			blockStyle,
 		});
-	else if (!paletteStatus && !isNil(color)) response.general.fill = color;
+	else if (!paletteStatus && !isNil(color)) response.g.fill = color;
 
 	return { SVGPathFill: response };
 };
@@ -192,13 +192,13 @@ const getSVGPathStrokeStyles = (
 	};
 
 	if (isHover && !useIconColor && !obj[getAttributeKey({ key: 't.sh' })]) {
-		response.general = {};
-		response.general.stroke = '';
+		response.g = {};
+		response.g.stroke = '';
 
 		return response;
 	}
 
-	(!useIconColor ? breakpoints : ['general']).forEach(breakpoint => {
+	(!useIconColor ? breakpoints : ['g']).forEach(breakpoint => {
 		response[breakpoint] = {};
 
 		let linePrefix = '';
@@ -227,7 +227,7 @@ const getSVGPathStrokeStyles = (
 
 		if (paletteStatus && paletteColor) {
 			if (useIconColor)
-				response.general.stroke = getColorRGBAString({
+				response.g.stroke = getColorRGBAString({
 					firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
 					secondVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,

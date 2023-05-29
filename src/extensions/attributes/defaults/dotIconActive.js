@@ -11,7 +11,7 @@ const dotIconActive = prefixAttributesCreator({
 	prefix: activePrefix,
 	longPrefix: longActivePrefix,
 	diffValAttr: {
-		[`${prefix}i_w-general`]: '10', // icon-width-general
+		[`${prefix}i_w-g`]: '10', // icon-width-g
 		[`${prefix}i-str_pc`]: 2, // icon-stroke-palette-color
 		[`${prefix}i-f_pc`]: 4, // icon-fill-palette-color
 	},

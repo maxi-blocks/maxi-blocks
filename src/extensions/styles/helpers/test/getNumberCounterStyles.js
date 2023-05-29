@@ -39,14 +39,14 @@ describe('getNumberCounterStyles', () => {
 			nc_du: 1,
 			nc_str: 20,
 			nc_san: 'page-load',
-			'nct_ps-general': true,
-			'nct_pc-general': 5,
+			'nct_ps-g': true,
+			'nct_pc-g': 5,
 			nccb_ps: true,
 			nccb_pc: 2,
-			'nccba_ps-general': true,
-			'nccba_pc-general': 4,
-			'nc-ti_fs-general': 40,
-			'_ff-general': 'Roboto',
+			'nccba_ps-g': true,
+			'nccba_pc-g': 4,
+			'nc-ti_fs-g': 40,
+			'_ff-g': 'Roboto',
 		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';

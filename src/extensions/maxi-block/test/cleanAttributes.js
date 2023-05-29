@@ -10,7 +10,7 @@ jest.mock('@wordpress/data', () => {
 		select: jest.fn(() => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
-				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				receiveMaxiDeviceType: jest.fn(() => 'g'),
 				getPrevSavedAttrs: jest.fn(() => []),
 				getSelectedBlockCount: jest.fn(() => 1),
 			};
@@ -28,11 +28,11 @@ describe('cleanAttributes', () => {
 	it('Should flat the entry object with same value for same attribute with different breakpoints, and just return general one', () => {
 		const obj = {
 			newAttributes: {
-				'test-general': 10,
+				'test-g': 10,
 				'test-xl': 10,
 			},
 			attributes: {
-				'test-general': 11,
+				'test-g': 11,
 				'test-xl': 11,
 			},
 			defaultAttributes: {},
@@ -41,7 +41,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 10,
+			'test-g': 10,
 			'test-xl': undefined,
 		};
 
@@ -55,7 +55,7 @@ describe('cleanAttributes', () => {
 			},
 
 			attributes: {
-				'test-general': 100,
+				'test-g': 100,
 				'test-m': 99,
 			},
 			defaultAttributes: {},
@@ -76,7 +76,7 @@ describe('cleanAttributes', () => {
 		};
 
 		const attributes = {
-			'test-general': 100,
+			'test-g': 100,
 			'test-l': 99,
 			'test-m': 98,
 		};
@@ -99,7 +99,7 @@ describe('cleanAttributes', () => {
 		};
 
 		const attributes = {
-			'test-general': 100,
+			'test-g': 100,
 		};
 
 		const result = cleanAttributes({
@@ -117,11 +117,11 @@ describe('cleanAttributes', () => {
 
 	it('Should return L value as default, as is equal as its general saving attribute (general)', () => {
 		const newAttributes = {
-			'test-general': 100,
+			'test-g': 100,
 		};
 
 		const attributes = {
-			'test-general': 99,
+			'test-g': 99,
 			'test-l': 100,
 		};
 
@@ -131,7 +131,7 @@ describe('cleanAttributes', () => {
 			defaultAttributes: {},
 		});
 		const expectedResult = {
-			'test-general': 100,
+			'test-g': 100,
 			'test-l': undefined,
 		};
 
@@ -140,11 +140,11 @@ describe('cleanAttributes', () => {
 
 	it('Should return XXL value as default, as is equal as its general saving attribute (general)', () => {
 		const newAttributes = {
-			'test-general': 100,
+			'test-g': 100,
 		};
 
 		const attributes = {
-			'test-general': 99,
+			'test-g': 99,
 			'test-xxl': 100,
 		};
 
@@ -154,7 +154,7 @@ describe('cleanAttributes', () => {
 			defaultAttributes: {},
 		});
 		const expectedResult = {
-			'test-general': 100,
+			'test-g': 100,
 			'test-xxl': undefined,
 		};
 
@@ -167,15 +167,15 @@ describe('cleanAttributes', () => {
 			'test-m': 4,
 		};
 		const attributes = {
-			'test-status-general': true,
-			'test-general': 4,
+			'test-status-g': true,
+			'test-g': 4,
 
 			'test-m': 7,
 			'test-status-m': true,
 		};
 		const defaultAttributes = {
-			'test-status-general': true,
-			'test-general': 4,
+			'test-status-g': true,
+			'test-g': 4,
 		};
 
 		const result = cleanAttributes({
@@ -194,17 +194,17 @@ describe('cleanAttributes', () => {
 	it('On changing general attribute, if coincide with winBreakpoint, it should overwrite it', () => {
 		const obj = {
 			newAttributes: {
-				'test-status-general': true,
-				'test-general': 4,
-				'test-opacity-general': 1,
+				'test-status-g': true,
+				'test-g': 4,
+				'test-opacity-g': 1,
 			},
 			attributes: {
-				'test-status-general': true,
-				'test-general': 4,
+				'test-status-g': true,
+				'test-g': 4,
 				'test-status-m': true,
 				'test-opacity-m': 1,
 				'test-m': 8,
-				'test-opacity-general': 1,
+				'test-opacity-g': 1,
 			},
 			defaultAttributes: {},
 		};
@@ -212,10 +212,10 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-status-general': true,
-			'test-general': 4,
+			'test-status-g': true,
+			'test-g': 4,
 			'test-m': undefined,
-			'test-opacity-general': 1,
+			'test-opacity-g': 1,
 			'test-status-m': undefined,
 			'test-opacity-m': undefined,
 		};
@@ -225,17 +225,17 @@ describe('cleanAttributes', () => {
 
 	it('On changing general attribute, if there is a smaller breakpoint with same value, it should be returned to its default', () => {
 		const obj = {
-			'test-general': 8,
+			'test-g': 8,
 		};
 		const attributes = {
-			'test-status-general': true,
-			'test-general': 5,
+			'test-status-g': true,
+			'test-g': 5,
 
 			'test-m': 8,
 		};
 		const defaultAttributes = {
-			'test-status-general': true,
-			'test-general': 5,
+			'test-status-g': true,
+			'test-g': 5,
 		};
 
 		const result = cleanAttributes({
@@ -245,7 +245,7 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'test-general': 8,
+			'test-g': 8,
 			'test-m': undefined,
 		};
 
@@ -255,22 +255,22 @@ describe('cleanAttributes', () => {
 	it('On changing general attribute, if there is a smaller breakpoint with same value, it should be returned to its default - 2', () => {
 		const obj = {
 			newAttributes: {
-				'test-general': 7,
+				'test-g': 7,
 				'test-m': 7,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-m': 8,
 			},
 			defaultAttributes: {
-				'test-general': 4,
+				'test-g': 4,
 			},
 		};
 
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 7,
+			'test-g': 7,
 			'test-m': undefined,
 		};
 
@@ -283,14 +283,14 @@ describe('cleanAttributes', () => {
 			'test-s': 8,
 		};
 		const attributes = {
-			'test-status-general': true,
-			'test-general': 4,
+			'test-status-g': true,
+			'test-g': 4,
 			'test-status-xs': true,
 			'test-xs': 8,
 		};
 		const defaultAttributes = {
-			'test-status-general': true,
-			'test-general': 4,
+			'test-status-g': true,
+			'test-g': 4,
 		};
 
 		const result = cleanAttributes({
@@ -315,12 +315,12 @@ describe('cleanAttributes', () => {
 				'test-l': undefined,
 			},
 			attributes: {
-				'test-general': 2,
+				'test-g': 2,
 				'test-l': 4,
 				'test-m': 2,
 			},
 			defaultAttributes: {
-				'test-general': 2,
+				'test-g': 2,
 			},
 		};
 
@@ -346,9 +346,9 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return ['test-g'];
 							case 3:
-								return ['test-general', 'test-l'];
+								return ['test-g', 'test-l'];
 							case 1:
 							default:
 								return [];
@@ -360,28 +360,28 @@ describe('cleanAttributes', () => {
 
 		const firstRound = {
 			newAttributes: {
-				'test-general': 3,
+				'test-g': 3,
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': 4,
 			},
 		};
 		const secondRound = {
 			newAttributes: {
-				'test-general': 4,
+				'test-g': 4,
 			},
 			attributes: {
-				'test-general': 3,
+				'test-g': 3,
 				'test-l': 4,
 			},
 		};
 		const thirdRound = {
 			newAttributes: {
-				'test-general': 5,
+				'test-g': 5,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-l': undefined,
 			},
 		};
@@ -391,14 +391,14 @@ describe('cleanAttributes', () => {
 		const resultThirdRound = cleanAttributes(thirdRound);
 
 		const expectedFirstRound = {
-			'test-general': 3,
+			'test-g': 3,
 		};
 		const expectedSecondRound = {
-			'test-general': 4,
+			'test-g': 4,
 			'test-l': undefined,
 		};
 		const expectedThirdRound = {
-			'test-general': 5,
+			'test-g': 5,
 			'test-l': 4,
 		};
 
@@ -412,7 +412,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -421,7 +421,7 @@ describe('cleanAttributes', () => {
 
 		const firstRound = {
 			newAttributes: {
-				'test-general': {
+				'test-g': {
 					normal: {
 						numberWhichIsChanging: 3,
 						keyOfUndefined: undefined,
@@ -432,7 +432,7 @@ describe('cleanAttributes', () => {
 				},
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': {
 					normal: {
 						numberWhichIsChanging: 4,
@@ -446,7 +446,7 @@ describe('cleanAttributes', () => {
 		};
 		const secondRound = {
 			newAttributes: {
-				'test-general': {
+				'test-g': {
 					normal: {
 						numberWhichIsChanging: 4,
 						keyOfUndefined: undefined,
@@ -457,7 +457,7 @@ describe('cleanAttributes', () => {
 				},
 			},
 			attributes: {
-				'test-general': {
+				'test-g': {
 					normal: {
 						numberWhichIsChanging: 3,
 						keyOfUndefined: undefined,
@@ -479,7 +479,7 @@ describe('cleanAttributes', () => {
 		};
 		const thirdRound = {
 			newAttributes: {
-				'test-general': {
+				'test-g': {
 					normal: {
 						numberWhichIsChanging: 5,
 						keyOfUndefined: undefined,
@@ -490,7 +490,7 @@ describe('cleanAttributes', () => {
 				},
 			},
 			attributes: {
-				'test-general': {
+				'test-g': {
 					normal: {
 						numberWhichIsChanging: 4,
 						keyOfUndefined: undefined,
@@ -510,10 +510,7 @@ describe('cleanAttributes', () => {
 					receiveMaxiDeviceType: jest.fn(() => 'xl'),
 					getSelectedBlockCount: jest.fn(() => 1),
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					getPrevSavedAttrs: jest.fn(() => [
-						'test-general',
-						'test-l',
-					]),
+					getPrevSavedAttrs: jest.fn(() => ['test-g', 'test-l']),
 				};
 			})
 		);
@@ -521,7 +518,7 @@ describe('cleanAttributes', () => {
 		const resultThirdRound = cleanAttributes(thirdRound);
 
 		const expectedFirstRound = {
-			'test-general': {
+			'test-g': {
 				normal: {
 					numberWhichIsChanging: 3,
 					keyOfUndefined: undefined,
@@ -532,7 +529,7 @@ describe('cleanAttributes', () => {
 			},
 		};
 		const expectedSecondRound = {
-			'test-general': {
+			'test-g': {
 				normal: {
 					numberWhichIsChanging: 4,
 					keyOfUndefined: undefined,
@@ -544,7 +541,7 @@ describe('cleanAttributes', () => {
 			'test-l': undefined,
 		};
 		const expectedThirdRound = {
-			'test-general': {
+			'test-g': {
 				normal: {
 					numberWhichIsChanging: 5,
 					keyOfUndefined: undefined,
@@ -581,9 +578,9 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return ['test-g'];
 							case 3:
-								return ['test-general', 'test-l', 'test-xxl'];
+								return ['test-g', 'test-l', 'test-xxl'];
 							case 1:
 							default:
 								return [];
@@ -595,30 +592,30 @@ describe('cleanAttributes', () => {
 
 		const firstRound = {
 			newAttributes: {
-				'test-general': 3,
+				'test-g': 3,
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xxl': 4,
 				'test-l': 4,
 			},
 		};
 		const secondRound = {
 			newAttributes: {
-				'test-general': 4,
+				'test-g': 4,
 			},
 			attributes: {
-				'test-general': 3,
+				'test-g': 3,
 				'test-xxl': 4,
 				'test-l': 4,
 			},
 		};
 		const thirdRound = {
 			newAttributes: {
-				'test-general': 5,
+				'test-g': 5,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-xxl': undefined,
 				'test-l': undefined,
 			},
@@ -629,15 +626,15 @@ describe('cleanAttributes', () => {
 		const resultThirdRound = cleanAttributes(thirdRound);
 
 		const expectedFirstRound = {
-			'test-general': 3,
+			'test-g': 3,
 		};
 		const expectedSecondRound = {
-			'test-general': 4,
+			'test-g': 4,
 			'test-xxl': undefined,
 			'test-l': undefined,
 		};
 		const expectedThirdRound = {
-			'test-general': 5,
+			'test-g': 5,
 			'test-xxl': 4,
 			'test-l': 4,
 		};
@@ -652,7 +649,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -664,7 +661,7 @@ describe('cleanAttributes', () => {
 				'test-xl': 3,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-xl': undefined,
 			},
 		};
@@ -673,7 +670,7 @@ describe('cleanAttributes', () => {
 				'test-xl': 4,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-m': 4,
 				'test-xl': 3,
 			},
@@ -683,7 +680,7 @@ describe('cleanAttributes', () => {
 				'test-xl': 5,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-m': undefined,
 				'test-xl': undefined,
 			},
@@ -811,9 +808,9 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return ['test-g'];
 							case 3:
-								return ['test-general', 'test-l'];
+								return ['test-g', 'test-l'];
 							case 1:
 							default:
 								return [];
@@ -825,28 +822,28 @@ describe('cleanAttributes', () => {
 
 		const firstRound = {
 			newAttributes: {
-				'test-general': 4,
+				'test-g': 4,
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': 40,
 			},
 		};
 		const secondRound = {
 			newAttributes: {
-				'test-general': 40,
+				'test-g': 40,
 			},
 			attributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-l': 40,
 			},
 		};
 		const thirdRound = {
 			newAttributes: {
-				'test-general': 400,
+				'test-g': 400,
 			},
 			attributes: {
-				'test-general': 40,
+				'test-g': 40,
 				'test-l': undefined,
 			},
 		};
@@ -856,14 +853,14 @@ describe('cleanAttributes', () => {
 		const resultThirdRound = cleanAttributes(thirdRound);
 
 		const expectedFirstRound = {
-			'test-general': 4,
+			'test-g': 4,
 		};
 		const expectedSecondRound = {
-			'test-general': 40,
+			'test-g': 40,
 			'test-l': undefined,
 		};
 		const expectedThirdRound = {
-			'test-general': 400,
+			'test-g': 400,
 			'test-l': 40,
 		};
 
@@ -877,7 +874,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -889,23 +886,23 @@ describe('cleanAttributes', () => {
 				'test-xl': 3,
 			},
 			attributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 			defaultAttributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 		};
 		const secondRound = {
 			newAttributes: {
-				'test-general': 4,
+				'test-g': 4,
 				'test-l': 4,
 			},
 			attributes: {
 				'test-xl': 3,
-				'test-general': 1,
+				'test-g': 1,
 			},
 			defaultAttributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 		};
 
@@ -917,7 +914,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -930,10 +927,10 @@ describe('cleanAttributes', () => {
 			},
 			attributes: {
 				'test-xl': 3,
-				'test-general': 4,
+				'test-g': 4,
 			},
 			defaultAttributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 		};
 
@@ -944,7 +941,7 @@ describe('cleanAttributes', () => {
 			'test-l': 1,
 		};
 		const expectedSecondRound = {
-			'test-general': 4,
+			'test-g': 4,
 			'test-l': 4,
 		};
 		const expectedThirdRound = {
@@ -967,7 +964,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-xl': 3,
-			'test-general': 4,
+			'test-g': 4,
 			'test-l': 4,
 			// 'test-m': 4,
 		};
@@ -981,7 +978,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -990,10 +987,10 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'border-palette-color-general': 2,
+				'border-palette-color-g': 2,
 			},
 			attributes: {
-				'border-palette-color-general': 2,
+				'border-palette-color-g': 2,
 				'border-palette-color-l': 4,
 				'border-palette-color-m': 5,
 			},
@@ -1003,7 +1000,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'border-palette-color-general': 2,
+			'border-palette-color-g': 2,
 			'border-palette-color-l': undefined,
 		};
 
@@ -1013,15 +1010,15 @@ describe('cleanAttributes', () => {
 	it('Random test 3', () => {
 		const obj = {
 			newAttributes: {
-				'background-palette-color-general': 4,
+				'background-palette-color-g': 4,
 			},
 			attributes: {
-				'background-palette-color-general': 1,
+				'background-palette-color-g': 1,
 				'background-palette-color-l': 4,
 			},
 
 			defaultAttributes: {
-				'background-palette-color-general': 1,
+				'background-palette-color-g': 1,
 				// 'background-palette-color-l': 4,
 			},
 		};
@@ -1029,20 +1026,20 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'background-palette-color-general': 4,
+			'background-palette-color-g': 4,
 			'background-palette-color-l': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
 	});
 
-	it('Saving an attribute higher than winBase, when winBase attribute is default, return the new attribute value and sets general value to winBase attribute', () => {
+	it('Saving an attribute higher than winBase, when winBase attribute is default, return the new attribute value and sets g value to winBase attribute', () => {
 		// Change winBreakpoint to M
 		select.mockImplementation(
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1054,10 +1051,10 @@ describe('cleanAttributes', () => {
 				'test-l': 4,
 			},
 			attributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 			defaultAttributes: {
-				'test-general': 1,
+				'test-g': 1,
 			},
 		};
 
@@ -1077,10 +1074,10 @@ describe('cleanAttributes', () => {
 				'border-palette-opacity-s': 0.45,
 			},
 			attributes: {
-				'border-palette-opacity-general': 0.45,
+				'border-palette-opacity-g': 0.45,
 			},
 			defaultAttributes: {
-				'border-palette-opacity-general': 100,
+				'border-palette-opacity-g': 100,
 			},
 		};
 
@@ -1098,7 +1095,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1107,15 +1104,15 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': 'em',
+				'test-g': 'em',
 				'test-xl': 'em',
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 			},
 		};
@@ -1123,7 +1120,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 'em',
+			'test-g': 'em',
 			'test-xl': undefined,
 		};
 
@@ -1135,7 +1132,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1144,17 +1141,17 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': 'em',
+				'test-g': 'em',
 				'test-l': 'em',
 			},
 			attributes: {
 				'text-xxl': 'vw',
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 				'test-l': '%',
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 				'text-l': '%',
 			},
@@ -1163,7 +1160,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 'em',
+			'test-g': 'em',
 			'test-l': 'em',
 		};
 
@@ -1175,7 +1172,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1184,18 +1181,18 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': 'em',
+				'test-g': 'em',
 				'test-xl': 'em',
 			},
 			attributes: {
 				'text-xxl': 'px',
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 				'test-l': '%',
 			},
 			defaultAttributes: {
 				'test-xxl': 'px',
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': 'px',
 				'text-l': '%',
 			},
@@ -1204,7 +1201,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 'em',
+			'test-g': 'em',
 			'test-xl': undefined,
 		};
 
@@ -1216,7 +1213,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1225,15 +1222,15 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': '15',
+				'test-g': '15',
 				'test-xxl': '23',
 			},
 			attributes: {
-				'test-general': '15',
+				'test-g': '15',
 				'test-xxl': '23',
 			},
 			defaultAttributes: {
-				'test-general': '15',
+				'test-g': '15',
 				'test-xxl': '23',
 			},
 		};
@@ -1241,7 +1238,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': '15',
+			'test-g': '15',
 			'test-xxl': '23',
 		};
 
@@ -1253,9 +1250,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => [
-						'test-general',
+						'test-g',
 						'test-m',
 						'test-xxl',
 						'test-xl',
@@ -1267,19 +1264,19 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': 20,
+				'test-g': 20,
 				'test-m': 20,
 				'test-xxl': 24,
 				'test-xl': 16,
 			},
 			attributes: {
-				'test-general': 20,
+				'test-g': 20,
 				'test-xxl': 24,
 				'test-m': 2,
 				'test-xl': undefined,
 			},
 			defaultAttributes: {
-				'test-general': 16,
+				'test-g': 16,
 				'test-xxl': 24,
 				'test-xl': 16,
 			},
@@ -1288,7 +1285,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 20,
+			'test-g': 20,
 			'test-xxl': 24,
 			'test-xl': 16,
 			'test-m': undefined,
@@ -1302,7 +1299,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1311,17 +1308,17 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': '%',
+				'test-g': '%',
 				'test-xl': '%',
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': '%',
 				'test-xl': 'px',
 				'test-xxl': 'px',
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': '%',
 				'test-xl': 'px',
 				'test-xxl': 'px',
@@ -1331,7 +1328,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': '%',
+			'test-g': '%',
 			'test-xl': undefined,
 			'test-l': undefined,
 		};
@@ -1344,7 +1341,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1357,13 +1354,13 @@ describe('cleanAttributes', () => {
 				'test-xl': '%',
 			},
 			attributes: {
-				'test-general': '%',
+				'test-g': '%',
 				'test-xxl': 'px',
 				'test-xl': undefined,
 				'test-l': undefined,
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-l': '%',
 				'test-xl': 'px',
 				'test-xxl': 'px',
@@ -1385,7 +1382,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1393,20 +1390,20 @@ describe('cleanAttributes', () => {
 		);
 
 		const obj = {
-			newAttributes: { 'test-general': 'full' },
+			newAttributes: { 'test-g': 'full' },
 			attributes: {
-				'test-general': 'normal',
+				'test-g': 'normal',
 				'test-xxl': 'full',
 			},
 			defaultAttributes: {
-				'test-general': 'normal',
+				'test-g': 'normal',
 			},
 		};
 
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': 'full',
+			'test-g': 'full',
 			'test-xxl': undefined,
 		};
 
@@ -1418,7 +1415,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1427,15 +1424,15 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': '1170',
 			},
 			attributes: {
-				'test-general': 100,
+				'test-g': 100,
 				'test-xl': undefined,
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': '1170',
 			},
 		};
@@ -1443,7 +1440,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': undefined,
+			'test-g': undefined,
 			'test-xl': '1170',
 		};
 
@@ -1455,7 +1452,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1464,15 +1461,15 @@ describe('cleanAttributes', () => {
 
 		const obj = {
 			newAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': '1170',
 			},
 			attributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': undefined,
 			},
 			defaultAttributes: {
-				'test-general': undefined,
+				'test-g': undefined,
 				'test-xl': '1170',
 			},
 		};
@@ -1480,7 +1477,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': undefined,
+			'test-g': undefined,
 			'test-xl': '1170',
 		};
 
@@ -1492,7 +1489,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1505,11 +1502,11 @@ describe('cleanAttributes', () => {
 				'test-xl': 'none',
 			},
 			attributes: {
-				'test-general': 'none',
+				'test-g': 'none',
 				'test-xxl': 'axis',
 			},
 			defaultAttributes: {
-				'test-general': 'axis',
+				'test-g': 'axis',
 				'test-xxl': 'axis',
 			},
 		};
@@ -1529,7 +1526,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					receiveMaxiDeviceType: jest.fn(() => 'g'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1541,7 +1538,7 @@ describe('cleanAttributes', () => {
 				'test-m': undefined,
 			},
 			attributes: {
-				'test-general': '5',
+				'test-g': '5',
 				'test-xl': undefined,
 				'test-xxl': '23',
 			},
@@ -1563,11 +1560,11 @@ describe('cleanAttributes', () => {
 	it('Should save hover attribute same as normal one as undefined', () => {
 		const obj = {
 			newAttributes: {
-				'test-general-hover': '5',
+				'test-g-hover': '5',
 			},
 			attributes: {
-				'test-general': '5',
-				'test-general-hover': '4',
+				'test-g': '5',
+				'test-g-hover': '4',
 			},
 			defaultAttributes: {},
 		};
@@ -1575,7 +1572,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general-hover': undefined,
+			'test-g-hover': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1584,11 +1581,11 @@ describe('cleanAttributes', () => {
 	it('Should delete hover attribute same as normal one', () => {
 		const obj = {
 			newAttributes: {
-				'test-general': '4',
+				'test-g': '4',
 			},
 			attributes: {
-				'test-general': '5',
-				'test-general-hover': '4',
+				'test-g': '5',
+				'test-g-hover': '4',
 			},
 			defaultAttributes: {},
 		};
@@ -1596,8 +1593,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general': '4',
-			'test-general-hover': undefined,
+			'test-g': '4',
+			'test-g-hover': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1609,8 +1606,8 @@ describe('cleanAttributes', () => {
 				'test-s-hover': '4',
 			},
 			attributes: {
-				'test-general': '5',
-				'test-general-hover': '4',
+				'test-g': '5',
+				'test-g-hover': '4',
 				'test-s-hover': '3',
 			},
 			defaultAttributes: {},
@@ -1628,11 +1625,11 @@ describe('cleanAttributes', () => {
 	it('Should delete responsive hover attributes same as general', () => {
 		const obj = {
 			newAttributes: {
-				'test-general-hover': '3',
+				'test-g-hover': '3',
 			},
 			attributes: {
-				'test-general': '5',
-				'test-general-hover': '4',
+				'test-g': '5',
+				'test-g-hover': '4',
 				'test-s-hover': '3',
 			},
 			defaultAttributes: {},
@@ -1641,7 +1638,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-general-hover': '3',
+			'test-g-hover': '3',
 			'test-s-hover': undefined,
 		};
 

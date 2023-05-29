@@ -4,7 +4,7 @@ exports[`getSVGStyles Returns correct styles 1`] = `
 Object {
   "  .maxi-svg-icon-block__icon svg circle[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -12,7 +12,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -20,7 +20,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -28,7 +28,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -36,7 +36,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg path": Object {
     "SVGPath": Object {
-      "general": Object {
+      "g": Object {
         "stroke-width": 2,
       },
       "label": "SVG path",
@@ -47,7 +47,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -55,7 +55,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -63,7 +63,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -71,7 +71,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -79,7 +79,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -87,7 +87,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^=\\"none\\"]) *": Object {
     "SVGPathFill": Object {
-      "general": Object {
+      "g": Object {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
@@ -95,7 +95,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -103,7 +103,7 @@ Object {
   },
   "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
     "SVGPathStroke": Object {
-      "general": Object {
+      "g": Object {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -115,7 +115,7 @@ Object {
 exports[`getSVGStyles Should return correct icon size 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "width": "32px",
     },
     "l": Object {
@@ -144,7 +144,7 @@ Object {
 exports[`getSVGStyles Should return correct icon size with disableHeight: false 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "height": "32px",
       "width": "32px",
     },
@@ -180,7 +180,7 @@ Object {
 exports[`getSVGStyles Should return right styles with height fit-content, width/height ratio < 1 with disableHeight: true 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {},
+    "g": Object {},
     "label": "Icon size",
   },
 }
@@ -189,7 +189,7 @@ Object {
 exports[`getSVGStyles Should return right styles with height fit-content, width/height ratio > 1 with disableHeight true 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {},
+    "g": Object {},
     "label": "Icon size",
   },
 }
@@ -198,7 +198,7 @@ Object {
 exports[`getSVGStyles Should work on responsive 1`] = `
 Object {
   "iconSize": Object {
-    "general": Object {
+    "g": Object {
       "width": "32px",
     },
     "l": Object {

@@ -3,7 +3,7 @@ import getDisplayStyles from '../getDisplayStyles';
 describe('getDisplayStyles', () => {
 	it('Get a correct display styles', () => {
 		const object = {
-			'_d-general': 'block',
+			'_d-g': 'block',
 			'_d-xxl': 'block',
 			'_d-xl': 'block',
 			'_d-l': 'block',

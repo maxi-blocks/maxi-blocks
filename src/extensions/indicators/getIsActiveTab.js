@@ -98,7 +98,7 @@ const getIsActiveTab = (
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 			if (result && baseBreakpoint === breakpoint)
-				result = breakpointAttributeChecker('general');
+				result = breakpointAttributeChecker('g');
 
 			return result;
 		}

@@ -16,7 +16,7 @@ describe('styleResolver', () => {
 			'test-target': {
 				'': {
 					border: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -25,7 +25,7 @@ describe('styleResolver', () => {
 						xs: {},
 					},
 					size: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -35,7 +35,7 @@ describe('styleResolver', () => {
 					},
 					boxShadow: {},
 					opacity: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -43,12 +43,12 @@ describe('styleResolver', () => {
 						s: {},
 						xs: {},
 					},
-					zIndex: { general: { 'z-index': 1 } },
+					zIndex: { g: { 'z-index': 1 } },
 					position: {},
 					display: {},
 					transform: {},
 					margin: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -57,7 +57,7 @@ describe('styleResolver', () => {
 						xs: {},
 					},
 					padding: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -73,7 +73,7 @@ describe('styleResolver', () => {
 				},
 				' p.maxi-text-block__content': {
 					typography: {
-						general: {
+						g: {
 							'font-weight': 800,
 							'font-style': 'italic',
 						},
@@ -84,7 +84,7 @@ describe('styleResolver', () => {
 				},
 				' p.maxi-text-block__content li': {
 					typography: {
-						general: {
+						g: {
 							'font-weight': 800,
 							'font-style': 'italic',
 						},
@@ -95,7 +95,7 @@ describe('styleResolver', () => {
 				},
 				' p.maxi-text-block__content a': {
 					typography: {
-						general: {
+						g: {
 							'font-weight': 800,
 							'font-style': 'italic',
 						},
@@ -106,7 +106,7 @@ describe('styleResolver', () => {
 				},
 				' > .maxi-background-displayer': {
 					border: {
-						general: {},
+						g: {},
 						xxl: {},
 						xl: {},
 						l: {},
@@ -119,7 +119,7 @@ describe('styleResolver', () => {
 					{
 						background: {
 							label: 'Background Color',
-							general: {
+							g: {
 								'background-color': 'rgba(56,25,212,1)',
 							},
 						},

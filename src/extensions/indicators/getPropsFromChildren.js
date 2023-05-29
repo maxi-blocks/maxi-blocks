@@ -20,7 +20,7 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 	const keyResponse = [];
 
 	const currentBreakpoint =
-		select('maxiBlocks').receiveMaxiDeviceType() || 'general';
+		select('maxiBlocks').receiveMaxiDeviceType() || 'g';
 
 	const getProps = item => {
 		if (!isObject(item)) return;

@@ -257,14 +257,14 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props: {
 												...props,
 											},
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props: {
 												...props,
@@ -310,7 +310,7 @@ const Inspector = props => {
 											...props,
 										},
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props: {
 												...props,

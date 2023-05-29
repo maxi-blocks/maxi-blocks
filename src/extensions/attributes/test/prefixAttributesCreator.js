@@ -27,7 +27,7 @@ describe('prefixAttributesCreator', () => {
 				obj: padding,
 				prefix: 'bt-',
 				longPrefix: 'button-',
-				diffValAttr: { 'bt_p.b-general': 30 },
+				diffValAttr: { 'bt_p.b-g': 30 },
 			})
 		).toMatchSnapshot();
 	});

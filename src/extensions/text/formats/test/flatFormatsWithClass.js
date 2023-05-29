@@ -34,8 +34,8 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'color-5': '#000000',
 						'color-6': '#c9340a',
 						'color-7': '#081219',
-						'p-font-family-general': 'Roboto',
-						'p-font-size-general': '16px',
+						'p-font-family-g': 'Roboto',
+						'p-font-size-g': '16px',
 						'p-font-size-xxl': '20px',
 						'p-font-size-xl': '16px',
 						'p-font-size-l': '16px',
@@ -48,33 +48,33 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'p-line-height-m': 1.625,
 						'p-line-height-s': 1.625,
 						'p-line-height-xs': 1.625,
-						'p-_fwe-general': '400',
-						'p-letter-spacing-general': '0px',
-						'p-text-transform-general': 'none',
-						'p-font-style-general': 'normal',
-						'p-text-decoration-general': 'unset',
-						'button-font-family-general': 'Roboto',
-						'button-font-size-general': '18px',
+						'p-_fwe-g': '400',
+						'p-letter-spacing-g': '0px',
+						'p-text-transform-g': 'none',
+						'p-font-style-g': 'normal',
+						'p-text-decoration-g': 'unset',
+						'button-font-family-g': 'Roboto',
+						'button-font-size-g': '18px',
 						'button-font-size-xxl': '22px',
 						'button-font-size-xl': '18px',
 						'button-font-size-l': '16px',
 						'button-font-size-m': '16px',
 						'button-font-size-s': '16px',
 						'button-font-size-xs': '16px',
-						'button-line-height-general': 1.625,
+						'button-line-height-g': 1.625,
 						'button-line-height-xxl': 1.5,
 						'button-line-height-xl': 1.625,
 						'button-line-height-l': 1.625,
 						'button-line-height-m': 1.625,
 						'button-line-height-s': 1.625,
 						'button-line-height-xs': 1.625,
-						'button-_fwe-general': '400',
-						'button-letter-spacing-general': '0px',
-						'button-text-transform-general': 'none',
-						'button-font-style-general': 'normal',
-						'button-text-decoration-general': 'unset',
-						'h1-font-family-general': 'Roboto',
-						'h1-font-size-general': '45px',
+						'button-_fwe-g': '400',
+						'button-letter-spacing-g': '0px',
+						'button-text-transform-g': 'none',
+						'button-font-style-g': 'normal',
+						'button-text-decoration-g': 'unset',
+						'h1-font-family-g': 'Roboto',
+						'h1-font-size-g': '45px',
 						'h1-font-size-xxl': '50px',
 						'h1-font-size-xl': '45px',
 						'h1-font-size-l': '40px',
@@ -87,13 +87,13 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h1-line-height-m': 1.27,
 						'h1-line-height-s': 1.27,
 						'h1-line-height-xs': 1.27,
-						'h1-_fwe-general': '500',
-						'h1-letter-spacing-general': '0px',
-						'h1-text-transform-general': 'none',
-						'h1-font-style-general': 'normal',
-						'h1-text-decoration-general': 'unset',
-						'h2-font-family-general': 'Roboto',
-						'h2-font-size-general': '38px',
+						'h1-_fwe-g': '500',
+						'h1-letter-spacing-g': '0px',
+						'h1-text-transform-g': 'none',
+						'h1-font-style-g': 'normal',
+						'h1-text-decoration-g': 'unset',
+						'h2-font-family-g': 'Roboto',
+						'h2-font-size-g': '38px',
 						'h2-font-size-xxl': '44px',
 						'h2-font-size-xl': '38px',
 						'h2-font-size-l': '36px',
@@ -106,13 +106,13 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h2-line-height-m': 1.33,
 						'h2-line-height-s': 1.33,
 						'h2-line-height-xs': 1.33,
-						'h2-_fwe-general': '500',
-						'h2-letter-spacing-general': '0px',
-						'h2-text-transform-general': 'none',
-						'h2-font-style-general': 'normal',
-						'h2-text-decoration-general': 'unset',
-						'h3-font-family-general': 'Roboto',
-						'h3-font-size-general': '30px',
+						'h2-_fwe-g': '500',
+						'h2-letter-spacing-g': '0px',
+						'h2-text-transform-g': 'none',
+						'h2-font-style-g': 'normal',
+						'h2-text-decoration-g': 'unset',
+						'h3-font-family-g': 'Roboto',
+						'h3-font-size-g': '30px',
 						'h3-font-size-xxl': '34px',
 						'h3-font-size-xl': '30px',
 						'h3-font-size-l': '30px',
@@ -125,13 +125,13 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h3-line-height-m': 1.16,
 						'h3-line-height-s': 1.16,
 						'h3-line-height-xs': 1.16,
-						'h3-_fwe-general': '500',
-						'h3-letter-spacing-general': '0px',
-						'h3-text-transform-general': 'none',
-						'h3-font-style-general': 'normal',
-						'h3-text-decoration-general': 'unset',
-						'h4-font-family-general': 'Roboto',
-						'h4-font-size-general': '26px',
+						'h3-_fwe-g': '500',
+						'h3-letter-spacing-g': '0px',
+						'h3-text-transform-g': 'none',
+						'h3-font-style-g': 'normal',
+						'h3-text-decoration-g': 'unset',
+						'h4-font-family-g': 'Roboto',
+						'h4-font-size-g': '26px',
 						'h4-font-size-xxl': '30px',
 						'h4-font-size-xl': '26px',
 						'h4-font-size-l': '24px',
@@ -144,13 +144,13 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h4-line-height-m': 1.42,
 						'h4-line-height-s': 1.42,
 						'h4-line-height-xs': 1.42,
-						'h4-_fwe-general': '500',
-						'h4-letter-spacing-general': '0px',
-						'h4-text-transform-general': 'none',
-						'h4-font-style-general': 'normal',
-						'h4-text-decoration-general': 'unset',
-						'h5-font-family-general': 'Roboto',
-						'h5-font-size-general': '22px',
+						'h4-_fwe-g': '500',
+						'h4-letter-spacing-g': '0px',
+						'h4-text-transform-g': 'none',
+						'h4-font-style-g': 'normal',
+						'h4-text-decoration-g': 'unset',
+						'h5-font-family-g': 'Roboto',
+						'h5-font-size-g': '22px',
 						'h5-font-size-xxl': '28px',
 						'h5-font-size-xl': '22px',
 						'h5-font-size-l': '22px',
@@ -163,13 +163,13 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h5-line-height-m': 1.5,
 						'h5-line-height-s': 1.5,
 						'h5-line-height-xs': 1.5,
-						'h5-_fwe-general': '500',
-						'h5-letter-spacing-general': '0px',
-						'h5-text-transform-general': 'none',
-						'h5-font-style-general': 'normal',
-						'h5-text-decoration-general': 'unset',
-						'h6-font-family-general': 'Roboto',
-						'h6-font-size-general': '20px',
+						'h5-_fwe-g': '500',
+						'h5-letter-spacing-g': '0px',
+						'h5-text-transform-g': 'none',
+						'h5-font-style-g': 'normal',
+						'h5-text-decoration-g': 'unset',
+						'h6-font-family-g': 'Roboto',
+						'h6-font-size-g': '20px',
 						'h6-font-size-xxl': '24px',
 						'h6-font-size-xl': '20px',
 						'h6-font-size-l': '20px',
@@ -182,12 +182,12 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 						'h6-line-height-m': 1.56,
 						'h6-line-height-s': 1.56,
 						'h6-line-height-xs': 1.56,
-						'h6-_fwe-general': '500',
-						'h6-letter-spacing-general': '0px',
-						'h6-text-transform-general': 'none',
-						'h6-font-style-general': 'normal',
-						'h6-text-decoration-general': 'unset',
-						'font-icon-font-size-general': '30px',
+						'h6-_fwe-g': '500',
+						'h6-letter-spacing-g': '0px',
+						'h6-text-transform-g': 'none',
+						'h6-font-style-g': 'normal',
+						'h6-text-decoration-g': 'unset',
+						'font-icon-font-size-g': '30px',
 					},
 				},
 			},
@@ -202,7 +202,7 @@ describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'_fwe-general': '800',
+				'_fwe-g': '800',
 			},
 		};
 		const formatValue = {
@@ -274,10 +274,10 @@ describe('getRepeatedClassNames', () => {
 	it('Should return 2 repeated classNames that has the same format', () => {
 		const customFormats = {
 			'maxi-text-block__custom-format--0': {
-				'_fwe-general': '800',
+				'_fwe-g': '800',
 			},
 			'maxi-text-block__custom-format--1': {
-				'_fwe-general': '800',
+				'_fwe-g': '800',
 			},
 		};
 		const formatValue = {
@@ -497,10 +497,10 @@ describe('flatRepeatedClassNames', () => {
 		const typography = {
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 				'maxi-text-block__custom-format--1': {
-					'_fwe-general': '800',
+					'_fwe-g': '800',
 				},
 			},
 		};
@@ -598,7 +598,7 @@ describe('flatRepeatedClassNames', () => {
 			typography: {
 				_cf: {
 					'maxi-text-block__custom-format--0': {
-						'_fwe-general': '800',
+						'_fwe-g': '800',
 					},
 				},
 			},
@@ -668,10 +668,10 @@ describe('flatFormatsWithClass', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'_fwe-general': '400',
+			'_fwe-g': '400',
 			_cf: {
 				'maxi-text-block__custom-format--0': {
-					'_fwe-general': '400',
+					'_fwe-g': '400',
 				},
 			},
 		};
@@ -681,7 +681,7 @@ describe('flatFormatsWithClass', () => {
 		const value = {
 			_fwe: '400',
 		};
-		const breakpoint = 'general';
+		const breakpoint = 'g';
 		const textLevel = 'p';
 
 		const result = flatFormatsWithClass({
@@ -694,7 +694,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { '_fwe-general': '400', _cf: {} },
+			typography: { '_fwe-g': '400', _cf: {} },
 			content: 'Testing Text Maxi',
 		};
 
@@ -884,7 +884,7 @@ describe('flatFormatsWithClass', () => {
 			],
 		};
 		const typography = {
-			'_fwe-general': '800',
+			'_fwe-g': '800',
 		};
 		const content =
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Testing Text Maxi</span>';
@@ -892,7 +892,7 @@ describe('flatFormatsWithClass', () => {
 		const value = {
 			_fwe: '800',
 		};
-		const breakpoint = 'general';
+		const breakpoint = 'g';
 		const textLevel = 'p';
 
 		const result = flatFormatsWithClass({
@@ -905,7 +905,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { '_fwe-general': '800' },
+			typography: { '_fwe-g': '800' },
 			content: 'Testing Text Maxi',
 		};
 

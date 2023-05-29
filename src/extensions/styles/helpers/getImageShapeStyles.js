@@ -1,7 +1,7 @@
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * External dependencies
@@ -43,7 +43,7 @@ const getImageShapeStyles = (
 				target === 'svg' ? [scale, 100] : [100, scale];
 
 			if (
-				(breakpoint === 'general' && ignoreGeneralOmit) ||
+				(breakpoint === 'g' && ignoreGeneralOmit) ||
 				!(scale === 100 && omitTransformScale)
 			)
 				transformString += `scale(${

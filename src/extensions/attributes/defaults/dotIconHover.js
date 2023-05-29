@@ -4,7 +4,7 @@ import dotIcon from './dotIcon';
 const dotIconHover = hoverAttributesCreator({
 	obj: dotIcon,
 	diffValAttr: {
-		'nd-i-bs_pc-general': 6, // navigation-dot-icon-box-shadow-palette-color-general
+		'nd-i-bs_pc-g': 6, // navigation-dot-icon-box-shadow-palette-color-g
 	},
 	newAttr: {
 		'nd-i.sh': {

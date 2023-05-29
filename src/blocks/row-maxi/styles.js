@@ -61,7 +61,7 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'display'),
 		}),
 		row: {
-			general: {},
+			g: {},
 		},
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),

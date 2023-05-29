@@ -15,9 +15,9 @@ import { isUndefined, isNil } from 'lodash';
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getPrevBreakpoint = breakpoint =>
-	breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'general';
+	breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'g';
 
 /**
  * Generates border styles object

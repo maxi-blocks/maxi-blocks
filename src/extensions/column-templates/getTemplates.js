@@ -9,7 +9,7 @@ import columnTemplates from './columnTemplates';
  * @param {Integer} columnsNumber Number of columns
  * @return {Array} Array of templates for the corresponding columns number
  */
-function getTemplates(deviceType = 'general', columnsNumber = undefined) {
+function getTemplates(deviceType = 'g', columnsNumber = undefined) {
 	const responsiveSnappingScreens = ['m', 's', 'xs'];
 
 	const {

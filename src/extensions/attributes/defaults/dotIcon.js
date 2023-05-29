@@ -29,16 +29,16 @@ const dotIcon = {
 		prefix,
 		longPrefix,
 		diffValAttr: {
-			// navigation-dot-icon-width-general
-			'nd-i_w-general': '10',
+			// navigation-dot-icon-width-g
+			'nd-i_w-g': '10',
 			// navigation-dot-icon-stroke-palette-color
 			'nd-i-str_pc': 5,
 			// navigation-dot-icon-fill-palette-color
 			'nd-i-f_pc': 3,
-			// navigation-dot-icon-border-radius-unit-general
-			'nd-i_bo-ra.u-general': 'px',
-			// navigation-dot-icon-background-active-media-general
-			'nd-i-b_am-general': 'none',
+			// navigation-dot-icon-border-radius-unit-g
+			'nd-i_bo-ra.u-g': 'px',
+			// navigation-dot-icon-background-active-media-g
+			'nd-i-b_am-g': 'none',
 			// navigation-dot-icon-content
 			'nd-i_c':
 				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',

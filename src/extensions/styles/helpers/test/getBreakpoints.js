@@ -4,7 +4,7 @@ import '../../../store';
 describe('getBreakpoints', () => {
 	it('Get a correct breakpoint', () => {
 		const object = {
-			'_bp-general': 1800,
+			'_bp-g': 1800,
 			'_bp-xl': 2000,
 			'_bp-l': 1300,
 			'_bp-m': 1000,

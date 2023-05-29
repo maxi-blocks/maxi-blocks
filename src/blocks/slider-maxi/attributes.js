@@ -18,38 +18,38 @@ const attributes = {
 	...attributesData.blockBackground,
 	...{
 		...attributesData.border,
-		'bo_s-general': {
+		'bo_s-g': {
 			type: 'string',
 			default: 'solid',
 		},
-		'bo_pc-general': {
+		'bo_pc-g': {
 			type: 'number',
 			default: 3,
 		},
-		'bo_po-general': {
+		'bo_po-g': {
 			type: 'number',
 			default: 0.25,
 		},
 	},
 	...{
 		...attributesData.borderWidth,
-		'bo_w.t-general': {
+		'bo_w.t-g': {
 			type: 'number',
 			default: 1,
 		},
-		'bo_w.r-general': {
+		'bo_w.r-g': {
 			type: 'number',
 			default: 1,
 		},
-		'bo_w.b-general': {
+		'bo_w.b-g': {
 			type: 'number',
 			default: 1,
 		},
-		'bo_w.l-general': {
+		'bo_w.l-g': {
 			type: 'number',
 			default: 1,
 		},
-		'bo_w.sy-general': {
+		'bo_w.sy-g': {
 			type: 'string',
 			default: 'all',
 		},

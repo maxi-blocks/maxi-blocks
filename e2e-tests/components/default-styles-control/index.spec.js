@@ -33,7 +33,7 @@ describe('DefaultStylesControl', () => {
 			);
 
 			const attributes = await getBlockAttributes();
-			const borderAttribute = attributes['border-style-general'];
+			const borderAttribute = attributes['border-style-g'];
 
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}

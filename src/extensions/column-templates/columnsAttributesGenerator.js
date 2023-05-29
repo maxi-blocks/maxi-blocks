@@ -10,10 +10,10 @@ import { floor } from 'lodash';
 
 const getGeneralColumnAttributes = ({ column, columnPosition }) => {
 	return {
-		'_cs-general': floor(column * 100, 2),
+		'_cs-g': floor(column * 100, 2),
 		'_cs-m': 100,
 		...(columnPosition.columnsNumber === 1 && {
-			'_cs-general': 100,
+			'_cs-g': 100,
 		}),
 	};
 };
@@ -37,7 +37,7 @@ const columnAttributesGenerator = (columns, breakpoint) => {
 	const newColumnsSizes = [];
 	const columnsPositions = getColumnsPosition(columns);
 
-	const isResponsive = breakpoint !== 'general';
+	const isResponsive = breakpoint !== 'g';
 
 	columns.forEach((column, i) => {
 		newColumnsSizes.push(

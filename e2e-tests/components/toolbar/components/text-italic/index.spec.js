@@ -32,9 +32,7 @@ describe('Text italic', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('font-style-general')).toStrictEqual(
-			'italic'
-		);
+		expect(await getAttributes('font-style-g')).toStrictEqual('italic');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'typography');

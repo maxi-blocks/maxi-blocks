@@ -13,7 +13,7 @@ import getAttributesValue from '../../attributes/getAttributesValue';
 const getShapeStyles = (obj, target, blockStyle) => {
 	const response = {
 		label: 'Shape',
-		general: {},
+		g: {},
 	};
 
 	if (target === 'svg' && !isNil(obj['shape-width'])) {
@@ -22,8 +22,8 @@ const getShapeStyles = (obj, target, blockStyle) => {
 			props: obj,
 		});
 
-		response.general['max-width'] = `${shapeWidth}${shapeWidthUnit}`;
-		response.general['max-height'] = `${shapeWidth}${shapeWidthUnit}`;
+		response.g['max-width'] = `${shapeWidth}${shapeWidthUnit}`;
+		response.g['max-height'] = `${shapeWidth}${shapeWidthUnit}`;
 	}
 
 	if (target === 'path') {
@@ -31,12 +31,12 @@ const getShapeStyles = (obj, target, blockStyle) => {
 			getPaletteAttributes({ obj, prefix: 'shape-fill-' });
 
 		if (paletteStatus && paletteColor)
-			response.general.fill = getColorRGBAString({
+			response.g.fill = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle,
 			});
-		else if (!paletteStatus && !isNil(color)) response.general.fill = color;
+		else if (!paletteStatus && !isNil(color)) response.g.fill = color;
 	}
 
 	return response;

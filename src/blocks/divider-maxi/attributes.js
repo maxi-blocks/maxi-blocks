@@ -36,11 +36,11 @@ const attributes = {
 	...attributesData.opacityHover,
 	...{
 		...attributesData.size,
-		'_h-general': {
+		'_h-g': {
 			type: 'string',
 			default: '100',
 		},
-		'_h-unit-general': {
+		'_h-unit-g': {
 			type: 'string',
 			default: 'px',
 		},

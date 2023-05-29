@@ -101,7 +101,7 @@ describe('Custom-Css-Control', () => {
 		await page.$eval('.maxi-group-block', block => block.focus());
 
 		// return css block
-		expect(await getAttributes('_ccs-general')).toMatchSnapshot();
+		expect(await getAttributes('_ccs-g')).toMatchSnapshot();
 		expect(await getAttributes('_ccs-m')).toMatchSnapshot();
 		expect(await getAttributes('_ccs-s')).toMatchSnapshot();
 

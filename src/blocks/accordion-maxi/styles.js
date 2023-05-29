@@ -30,7 +30,7 @@ import {
 } from '../../extensions/styles/helpers';
 import data from './data';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -193,7 +193,7 @@ const getPaneContentWrapperStyles = props => {
 	const response = {
 		paneTransition: {
 			label: 'Pane transition',
-			general: {
+			g: {
 				transition: getPaneContentTransition(animationDuration),
 			},
 		},
@@ -252,7 +252,7 @@ const getPaneHeaderObject = props => {
 		' .maxi-pane-block__header-content': {
 			paneHeader: getPaneHeaderStyles(props, ''),
 			paneHeaderIconPosition: {
-				general: {
+				g: {
 					'flex-direction':
 						getAttributesValue({
 							target: 'i_pos',

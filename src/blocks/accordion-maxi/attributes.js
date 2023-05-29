@@ -52,11 +52,11 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'_rg-general': {
+		'_rg-g': {
 			type: 'number',
 			default: 15,
 		},
-		'_fd-general': {
+		'_fd-g': {
 			type: 'string',
 			default: 'column',
 		},

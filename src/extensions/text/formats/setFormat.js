@@ -34,7 +34,7 @@ const setFormat = ({
 	typography,
 	isList,
 	value,
-	breakpoint = 'general',
+	breakpoint = 'g',
 	isHover = false,
 	textLevel,
 	returnFormatValue = false,

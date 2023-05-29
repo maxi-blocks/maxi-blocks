@@ -36,7 +36,7 @@ import data from './data';
  */
 import { isNil } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const prefix = 'im-';
 
 const getWrapperObject = props => {
@@ -252,7 +252,7 @@ const getImageWrapperObject = props => {
 			target: 'h_ex',
 			props,
 		}) && {
-			hoverExtension: { general: { overflow: 'visible' } },
+			hoverExtension: { g: { overflow: 'visible' } },
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -270,7 +270,7 @@ const getImageWrapperObject = props => {
 			prefix,
 		}),
 		...(props._fps && {
-			firParentSize: { general: { overflow: 'hidden' } },
+			firParentSize: { g: { overflow: 'hidden' } },
 		}),
 	};
 
@@ -368,7 +368,7 @@ const getImageObject = props => {
 		}),
 		...(imgWidth && {
 			imgWidth: {
-				general: {
+				g: {
 					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
 				},
 			},
@@ -484,7 +484,7 @@ const getFigcaptionObject = props => {
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
 		...(props._iw && {
-			imgWidth: { general: { width: `${props._iw}%` } },
+			imgWidth: { g: { width: `${props._iw}%` } },
 		}),
 		...(() => {
 			const response = { captionMargin: {} };
@@ -531,7 +531,7 @@ const getImageShapeObject = (target, props) => {
 			}),
 		}),
 		...(clipPath && {
-			image: { general: { 'clip-path': clipPath } },
+			image: { g: { 'clip-path': clipPath } },
 		}),
 		...(target === 'svg' && imageRatio && getAspectRatio(imageRatio)),
 	};

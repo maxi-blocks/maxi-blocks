@@ -19,24 +19,24 @@ describe('getTransitionStyles', () => {
 				block: {},
 				canvas: {
 					border: {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': false,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': false,
 						hoverProp: 'bb.sh',
 					},
 				},
@@ -48,19 +48,19 @@ describe('getTransitionStyles', () => {
 	});
 
 	const repeatedAttributes = {
-		'transition-duration-general': 0.3,
+		'transition-duration-g': 0.3,
 		'transition-duration-l': 0.4,
 		'transition-duration-m': 0.5,
 		'transition-duration-s': 0.6,
 		'transition-duration-xs': 0.7,
 		'transition-duration-xxl': 0.8,
-		'transition-delay-general': 0,
+		'transition-delay-g': 0,
 		'transition-delay-l': 0.1,
 		'transition-delay-m': 0.2,
 		'transition-delay-s': 0.3,
 		'transition-delay-xs': 0.4,
 		'transition-delay-xxl': 0.5,
-		'easing-general': 'ease',
+		'easing-g': 'ease',
 		'easing-l': 'ease-in',
 		'easing-m': 'ease-out',
 		'easing-s': 'ease-in-out',
@@ -69,10 +69,10 @@ describe('getTransitionStyles', () => {
 	};
 
 	const repeatedGeneralAttributes = {
-		'transition-duration-general': 0.3,
-		'transition-delay-general': 0,
-		'easing-general': 'ease',
-		'transition-status-general': true,
+		'transition-duration-g': 0.3,
+		'transition-delay-g': 0,
+		'easing-g': 'ease',
+		'transition-status-g': true,
 	};
 
 	it('Get a correct responsive transition styles', () => {
@@ -85,7 +85,7 @@ describe('getTransitionStyles', () => {
 				canvas: {
 					border: {
 						...repeatedAttributes,
-						'transition-status-general': true,
+						'transition-status-g': true,
 						'transition-status-l': false,
 						'transition-status-m': true,
 						'transition-status-s': false,
@@ -95,7 +95,7 @@ describe('getTransitionStyles', () => {
 					},
 					'box shadow': {
 						...repeatedAttributes,
-						'transition-status-general': false,
+						'transition-status-g': false,
 						'transition-status-l': true,
 						'transition-status-m': false,
 						'transition-status-s': true,
@@ -105,7 +105,7 @@ describe('getTransitionStyles', () => {
 					},
 					'background / layer': {
 						...repeatedAttributes,
-						'transition-status-general': true,
+						'transition-status-g': true,
 						'transition-status-l': false,
 						'transition-status-m': true,
 						'transition-status-s': false,
@@ -141,7 +141,7 @@ describe('getTransitionStyles', () => {
 
 	const repeatedAttributesWithStatus = {
 		...repeatedAttributes,
-		'transition-status-general': true,
+		'transition-status-g': true,
 		'transition-status-l': false,
 		'transition-status-m': true,
 		'transition-status-s': false,
@@ -185,38 +185,38 @@ describe('getTransitionStyles', () => {
 				block: {},
 				canvas: {
 					border: {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						out: {
-							'transition-duration-general': 0.9,
-							'transition-delay-general': 0.2,
-							'easing-general': 'ease-out',
-							'transition-status-general': true,
+							'transition-duration-g': 0.9,
+							'transition-delay-g': 0.2,
+							'easing-g': 'ease-out',
+							'transition-status-g': true,
 						},
-						'split-general': true,
+						'split-g': true,
 						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						out: {
-							'transition-duration-general': 0.9,
-							'transition-delay-general': 0.2,
-							'easing-general': 'ease-out',
-							'transition-status-general': true,
+							'transition-duration-g': 0.9,
+							'transition-delay-g': 0.2,
+							'easing-g': 'ease-out',
+							'transition-status-g': true,
 						},
-						'split-general': false,
+						'split-g': false,
 						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': false,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': false,
 						hoverProp: 'bb.sh',
 					},
 				},
@@ -229,25 +229,25 @@ describe('getTransitionStyles', () => {
 
 	it('Get a correct responsive in/out transition styles', () => {
 		const repeatedOutAttributes = {
-			'transition-duration-general': 1.8,
+			'transition-duration-g': 1.8,
 			'transition-duration-l': 1.7,
 			'transition-duration-m': 1.6,
 			'transition-duration-s': 1.5,
 			'transition-duration-xs': 1.4,
 			'transition-duration-xxl': 1.3,
-			'transition-delay-general': 1,
+			'transition-delay-g': 1,
 			'transition-delay-l': 0.9,
 			'transition-delay-m': 0.8,
 			'transition-delay-s': 0.7,
 			'transition-delay-xs': 0.6,
 			'transition-delay-xxl': 0.5,
-			'easing-general': 'ease-in-out',
+			'easing-g': 'ease-in-out',
 			'easing-l': 'ease-out',
 			'easing-m': 'ease-in',
 			'easing-s': 'linear',
 			'easing-xs': 'ease-in-out',
 			'easing-xxl': 'linear',
-			'transition-status-general': true,
+			'transition-status-g': true,
 		};
 
 		const object = {
@@ -260,13 +260,13 @@ describe('getTransitionStyles', () => {
 					border: {
 						...repeatedAttributes,
 						out: repeatedOutAttributes,
-						'transition-status-general': true,
+						'transition-status-g': true,
 						'transition-status-l': false,
 						'transition-status-m': true,
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						'split-general': true,
+						'split-g': true,
 						'split-l': true,
 						'split-m': false,
 						'split-s': true,
@@ -277,13 +277,13 @@ describe('getTransitionStyles', () => {
 					'box shadow': {
 						...repeatedAttributes,
 						out: repeatedOutAttributes,
-						'transition-status-general': false,
+						'transition-status-g': false,
 						'transition-status-l': true,
 						'transition-status-m': false,
 						'transition-status-s': true,
 						'transition-status-xs': false,
 						'transition-status-xxl': true,
-						'split-general': false,
+						'split-g': false,
 						'split-l': false,
 						'split-m': true,
 						'split-s': true,
@@ -294,13 +294,13 @@ describe('getTransitionStyles', () => {
 					'background / layer': {
 						...repeatedAttributes,
 						out: repeatedOutAttributes,
-						'transition-status-general': true,
+						'transition-status-g': true,
 						'transition-status-l': false,
 						'transition-status-m': true,
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						'split-general': true,
+						'split-g': true,
 						'split-l': true,
 						'split-m': false,
 						'split-s': true,
@@ -341,7 +341,7 @@ describe('getTransitionStyles', () => {
 
 	it('Get a correct transform transition styles', () => {
 		const object = {
-			'transform-scale-general': {
+			'transform-scale-g': {
 				canvas: {
 					'hover-status': true,
 				},
@@ -349,7 +349,7 @@ describe('getTransitionStyles', () => {
 					'hover-status': false,
 				},
 			},
-			'transform-rotate-general': {
+			'transform-rotate-g': {
 				canvas: {
 					'hover-status': false,
 				},
@@ -378,7 +378,7 @@ describe('getTransitionStyles', () => {
 
 		const object = merge(
 			{
-				'transform-scale-general': {
+				'transform-scale-g': {
 					canvas: {
 						'hover-status': true,
 					},
@@ -386,7 +386,7 @@ describe('getTransitionStyles', () => {
 						'hover-status': false,
 					},
 				},
-				'transform-rotate-general': {
+				'transform-rotate-g': {
 					canvas: {
 						'hover-status': false,
 					},

@@ -92,12 +92,12 @@ class edit extends MaxiBlockComponent {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
 				target: 's_w',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: this.props.deviceType || 'g',
 				attributes: this.props.attributes,
 			});
 			const svgWidthUnit = getLastBreakpointAttribute({
 				target: 's_w.u',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: this.props.deviceType || 'g',
 				attributes: this.props.attributes,
 			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
@@ -189,7 +189,7 @@ class edit extends MaxiBlockComponent {
 					this.blockRef,
 					getLastBreakpointAttribute({
 						target: 's_w.u',
-						breakpoint: deviceType || 'general',
+						breakpoint: deviceType || 'g',
 						attributes,
 					})
 				),
@@ -295,11 +295,11 @@ class edit extends MaxiBlockComponent {
 							defaultSize={{
 								width: `${getLastBreakpointAttribute({
 									target: 's_w',
-									breakpoint: deviceType || 'general',
+									breakpoint: deviceType || 'g',
 									attributes,
 								})}${getLastBreakpointAttribute({
 									target: 's_w.u',
-									breakpoint: deviceType || 'general',
+									breakpoint: deviceType || 'g',
 									attributes,
 								})}`,
 							}}

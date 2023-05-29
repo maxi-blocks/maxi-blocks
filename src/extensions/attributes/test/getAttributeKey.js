@@ -23,8 +23,8 @@ describe('getAttributeKey', () => {
 		).toBe('test-test-md.h');
 	});
 	it('Should return the correct shortened key', () => {
-		expect(getAttributeKey({ key: 'bc_ps', breakpoint: 'general' })).toBe(
-			'bc_ps-general'
+		expect(getAttributeKey({ key: 'bc_ps', breakpoint: 'g' })).toBe(
+			'bc_ps-g'
 		);
 	});
 });

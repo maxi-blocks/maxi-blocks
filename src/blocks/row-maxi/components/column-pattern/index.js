@@ -39,8 +39,8 @@ const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(
-		!isNil(getAttributesValue({ target: '_rp-general', props }))
-			? getNumCol(getAttributesValue({ target: '_rp-general', props }))
+		!isNil(getAttributesValue({ target: '_rp-g', props }))
+			? getNumCol(getAttributesValue({ target: '_rp-g', props }))
 			: 1
 	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -49,7 +49,7 @@ const ColumnPattern = props => {
 
 	useEffect(() => {
 		if (toolbar) {
-			if (breakpoint === 'general') {
+			if (breakpoint === 'g') {
 				setDisplayedTemplates(getTemplates());
 			} else {
 				setDisplayedTemplates(getTemplates(breakpoint, numCol));
@@ -60,12 +60,12 @@ const ColumnPattern = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (getAttributesValue({ target: '_rp-general', props })) {
+		if (getAttributesValue({ target: '_rp-g', props })) {
 			setNumCol(
-				getNumCol(getAttributesValue({ target: '_rp-general', props }))
+				getNumCol(getAttributesValue({ target: '_rp-g', props }))
 			);
 		}
-	}, [breakpoint, getAttributesValue({ target: '_rp-general', props })]);
+	}, [breakpoint, getAttributesValue({ target: '_rp-g', props })]);
 
 	/**
 	 * Get current columns sizes
@@ -159,7 +159,7 @@ const ColumnPattern = props => {
 
 	return (
 		<div className='components-column-pattern'>
-			{!toolbar && breakpoint === 'general' && (
+			{!toolbar && breakpoint === 'g' && (
 				<AdvancedNumberControl
 					label={__('Number of columns', 'maxi-blocks')}
 					value={numCol}

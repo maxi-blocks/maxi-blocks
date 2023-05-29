@@ -15,7 +15,7 @@ const getColumnDefaultValue = (
 	clientId,
 	breakpoint
 ) => {
-	if (breakpoint !== 'general') return null;
+	if (breakpoint !== 'g') return null;
 
 	const { getBlockOrder, getBlockRootClientId } = select('core/block-editor');
 	const columns = getBlockOrder(getBlockRootClientId(clientId));

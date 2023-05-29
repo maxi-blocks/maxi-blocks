@@ -55,19 +55,19 @@ const attributes = {
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
-		'_p.t-general': {
+		'_p.t-g': {
 			type: 'string',
 			default: '25',
 		},
-		'_p.b-general': {
+		'_p.b-g': {
 			type: 'string',
 			default: '25',
 		},
-		'_p.l-general': {
+		'_p.l-g': {
 			type: 'string',
 			default: '25',
 		},
-		'_p.r-general': {
+		'_p.r-g': {
 			type: 'string',
 			default: '25',
 		},
@@ -87,15 +87,15 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: {
 			...mutualAttributes,
-			'_p.t-general': {
+			'_p.t-g': {
 				type: 'string',
 				default: '25',
 			},
-			'_p.b-general': {
+			'_p.b-g': {
 				type: 'string',
 				default: '25',
 			},
-			'_p.sy-general': {
+			'_p.sy-g': {
 				type: 'string',
 				default: 'axis',
 			},

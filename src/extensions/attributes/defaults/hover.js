@@ -169,8 +169,8 @@ export const hoverTitleTypography = prefixAttributesCreator({
 	prefix: 'h-ti-',
 	longPrefix: 'hover-title-',
 	diffValAttr: {
-		'h-ti_fs-general': 30, // hover-title-font-size-general
-		'h-ti_pc-general': 1, // hover-title-palette-color-general
+		'h-ti_fs-g': 30, // hover-title-font-size-g
+		'h-ti_pc-g': 1, // hover-title-palette-color-g
 	},
 	newAttr: {
 		'h-ti-t.s': {
@@ -191,8 +191,8 @@ export const hoverContentTypography = prefixAttributesCreator({
 	prefix: 'hc-',
 	longPrefix: 'hover-content-',
 	diffValAttr: {
-		'hc_fs-general': 18, // hover-content-font-size-general
-		'hc_pc-general': 1, // hover-content-palette-color-general
+		'hc_fs-g': 18, // hover-content-font-size-g
+		'hc_pc-g': 1, // hover-content-palette-color-g
 	},
 	newAttr: {
 		'hc-t.s': {

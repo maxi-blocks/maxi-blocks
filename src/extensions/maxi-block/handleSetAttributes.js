@@ -50,20 +50,17 @@ const handleSetAttributes = ({
 		)}-${baseBreakpoint}`;
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
 		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
-		const attrLabelOnGeneral = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-general`;
+		const attrLabelOnGeneral = `${key.slice(0, key.lastIndexOf('-'))}-g`;
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
-		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
+		if (attrExistOnBaseBreakpoint && breakpoint !== 'g') return;
 
 		// Ensures saving both General and XXL attribute when XXL attribute is already set,
 		// BaseBreakpoint is XXL and breakpoint is General
 		if (
-			breakpoint === 'general' &&
+			breakpoint === 'g' &&
 			baseBreakpoint === 'xxl' &&
 			attrExistOnBaseBreakpoint &&
 			defaultGeneralAttribute !== value
@@ -109,7 +106,7 @@ const handleSetAttributes = ({
 
 		if (
 			!attrExistOnBaseBreakpoint &&
-			(breakpoint === 'general' || !existHigherBreakpointAttribute)
+			(breakpoint === 'g' || !existHigherBreakpointAttribute)
 		) {
 			// Checks if the higher breakpoint attribute is not on XXL
 			if (
@@ -137,7 +134,7 @@ const handleSetAttributes = ({
 
 		if (
 			!attrExistOnGeneral &&
-			breakpoint === 'general' &&
+			breakpoint === 'g' &&
 			(!attrExistOnBaseBreakpoint ||
 				defaultOnBaseBreakpointAttribute === attrOnBaseBreakpoint)
 		)
@@ -145,10 +142,7 @@ const handleSetAttributes = ({
 
 		if (!attrExistOnGeneral) return;
 
-		if (
-			breakpoint === 'general' &&
-			defaultOnBaseBreakpointAttribute === value
-		) {
+		if (breakpoint === 'g' && defaultOnBaseBreakpointAttribute === value) {
 			response[attrLabelOnBaseBreakpoint] = value;
 
 			return;
@@ -160,9 +154,9 @@ const handleSetAttributes = ({
 		)
 			return;
 
-		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
+		if (breakpoint !== 'g' && attrExistOnObjOnGeneral) return;
 
-		if (breakpoint === 'general') {
+		if (breakpoint === 'g') {
 			response[attrLabelOnBaseBreakpoint] = value;
 
 			return;

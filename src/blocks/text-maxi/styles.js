@@ -40,7 +40,7 @@ import { getSVGListStyle } from './utils';
 import { isNil, isNumber } from 'lodash';
 import parse from 'html-react-parser';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -195,7 +195,7 @@ const getListObject = props => {
 
 	const response = {
 		listStart: {
-			general: {
+			g: {
 				'counter-reset': `li ${counterReset}`,
 			},
 		},
@@ -305,7 +305,7 @@ const getListItemObject = props => {
 	return {
 		...(listReversed && {
 			listReversed: {
-				general: {
+				g: {
 					'counter-increment': 'li -1',
 				},
 			},
@@ -392,7 +392,7 @@ const getMarkerObject = props => {
 
 	return {
 		color: {
-			general: {
+			g: {
 				color: paletteStatus
 					? getColorRGBAString({
 							firstVar: `color-${paletteColor}`,
@@ -404,7 +404,7 @@ const getMarkerObject = props => {
 		},
 		...(typeOfList === 'ol' && {
 			listContent: {
-				general: {
+				g: {
 					content: `counters(li, "."${
 						listStyle ? `, ${listStyle}` : ''
 					})`,
@@ -413,7 +413,7 @@ const getMarkerObject = props => {
 		}),
 		...(typeOfList === 'ul' && {
 			listContent: {
-				general: {
+				g: {
 					content: `counter(li${
 						listStyle && listStyle === 'custom' && listStyleCustom
 							? `, ${listStyleCustom}`
@@ -425,7 +425,7 @@ const getMarkerObject = props => {
 		...(listStyle &&
 			typeOfList === 'ol' && {
 				listStyle: {
-					general: {
+					g: {
 						'list-style-type': listStyle,
 					},
 				},
@@ -433,7 +433,7 @@ const getMarkerObject = props => {
 		...(listStyle &&
 			typeOfList === 'ul' && {
 				listStyle: {
-					general: {
+					g: {
 						...(listStyle === 'custom' &&
 							listStyleCustom && {
 								...(isURL(listStyleCustom) && {

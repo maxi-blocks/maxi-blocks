@@ -7,7 +7,7 @@ describe('styleCleaner', () => {
 		const obj = {
 			'': {
 				margin: {
-					general: {},
+					g: {},
 					xxl: {},
 					xl: {},
 					l: {},
@@ -16,7 +16,7 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				padding: {
-					general: {},
+					g: {},
 					xxl: {},
 					xl: {},
 					l: {},
@@ -25,7 +25,7 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				border: {
-					general: {
+					g: {
 						'border-color': 'var(--maxi-light-color-2)',
 						'border-style': 'solid',
 						'border-top-width': '2px',
@@ -41,7 +41,7 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				size: {
-					general: {},
+					g: {},
 					xxl: {},
 					xl: {},
 					l: {},
@@ -50,13 +50,13 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				boxShadow: {
-					general: {
+					g: {
 						'box-shadow':
 							'0px 0px 0px 0px var(--maxi-light-color-1)',
 					},
 				},
 				opacity: {
-					general: {},
+					g: {},
 					xxl: {},
 					xl: {},
 					l: {},
@@ -71,7 +71,7 @@ describe('styleCleaner', () => {
 			},
 			':hover': {
 				border: {
-					general: {
+					g: {
 						'border-color': 'var(--maxi-light-color-6)',
 						'border-style': 'solid',
 						'border-top-width': '2px',
@@ -87,7 +87,7 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				boxShadow: {
-					general: {
+					g: {
 						'box-shadow':
 							'5px 5px 0px 0px var(--maxi-light-color-6)',
 					},
@@ -95,7 +95,7 @@ describe('styleCleaner', () => {
 			},
 			' > .maxi-background-displayer': {
 				border: {
-					general: {
+					g: {
 						'border-color': 'var(--maxi-light-color-2)',
 						'border-style': 'solid',
 						'border-top-width': '2px',
@@ -113,7 +113,7 @@ describe('styleCleaner', () => {
 			},
 			':hover > .maxi-background-displayer': {
 				border: {
-					general: {
+					g: {
 						'border-color': 'var(--maxi-light-color-6)',
 						'border-style': 'solid',
 						'border-top-width': '2px',
@@ -129,7 +129,7 @@ describe('styleCleaner', () => {
 					xs: {},
 				},
 				size: {
-					general: {
+					g: {
 						transform:
 							'translate(calc(-50% - 0px), calc(-50% - 0px))',
 					},
@@ -161,7 +161,7 @@ describe('styleCleaner', () => {
 			},
 			' .maxi-container-arrow': {
 				shadow: {
-					general: {
+					g: {
 						filter: 'drop-shadow(0px 0px 0px var(--maxi-light-color-1))',
 					},
 				},
@@ -172,13 +172,13 @@ describe('styleCleaner', () => {
 			' .maxi-container-arrow .maxi-container-arrow--content:after': {
 				background: {
 					label: 'Arrow Color',
-					general: {},
+					g: {},
 				},
 			},
 			' .maxi-container-arrow .maxi-container-arrow--content:before': {
 				border: {
 					label: 'Arrow Border',
-					general: {
+					g: {
 						background: 'var(--maxi-undefined-color-2)',
 						top: 'calc(1px)',
 						left: 'calc(1px)',
@@ -190,53 +190,53 @@ describe('styleCleaner', () => {
 		};
 
 		const props = {
-			'bs_blu-general': 50,
-			'bs_blu-general.h': 50,
-			'bs_blu.u-general': 'px',
-			'bs_blu.u-general.h': 'px',
-			'bs_ho-general': 0,
-			'bs_ho-general.h': 0,
-			'bs_ho.u-general': 'px',
-			'bs_ho.u-general.h': 'px',
-			'bs_in-general': false,
-			'bs_in-general.h': false,
-			'bs_pc-general': 8,
-			'bs_pc-general.h': 6,
-			'bs_po-general': 0.23,
-			'bs_po-general.h': 0.23,
-			'bs_ps-general': true,
-			'bs_ps-general.h': true,
-			'bs_sp-general': 0,
-			'bs_sp-general.h': 0,
-			'bs_sp.u-general': 'px',
-			'bs_sp.u-general.h': 'px',
+			'bs_blu-g': 50,
+			'bs_blu-g.h': 50,
+			'bs_blu.u-g': 'px',
+			'bs_blu.u-g.h': 'px',
+			'bs_ho-g': 0,
+			'bs_ho-g.h': 0,
+			'bs_ho.u-g': 'px',
+			'bs_ho.u-g.h': 'px',
+			'bs_in-g': false,
+			'bs_in-g.h': false,
+			'bs_pc-g': 8,
+			'bs_pc-g.h': 6,
+			'bs_po-g': 0.23,
+			'bs_po-g.h': 0.23,
+			'bs_ps-g': true,
+			'bs_ps-g.h': true,
+			'bs_sp-g': 0,
+			'bs_sp-g.h': 0,
+			'bs_sp.u-g': 'px',
+			'bs_sp.u-g.h': 'px',
 			'bs.sh': true,
-			'bs_v-general': 30,
-			'bs_v-general.h': 30,
-			'bs_v.u-general': 'px',
-			'bs_v.u-general.h': 'px',
+			'bs_v-g': 30,
+			'bs_v-g.h': 30,
+			'bs_v.u-g': 'px',
+			'bs_v.u-g.h': 'px',
 			transition: {
 				block: {},
 				canvas: {
 					border: {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
-						'transition-duration-general': 0.3,
-						'transition-delay-general': 0,
-						'easing-general': 'ease',
-						'transition-status-general': true,
+						'transition-duration-g': 0.3,
+						'transition-delay-g': 0,
+						'easing-g': 'ease',
+						'transition-status-g': true,
 						hoverProp: 'bb.sh',
 					},
 				},

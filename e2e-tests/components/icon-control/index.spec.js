@@ -35,20 +35,20 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
+		expect(await getAttributes('icon-width-g')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();
 		await page.keyboard.type('5');
 
-		expect(await getAttributes('icon-stroke-general')).toStrictEqual(5);
+		expect(await getAttributes('icon-stroke-g')).toStrictEqual(5);
 
 		// icon spacing
 		await inputs[4].click();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('66');
 
-		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);
+		expect(await getAttributes('icon-spacing-g')).toStrictEqual(66);
 
 		// icon position
 		const iconPosition = await page.$$(
@@ -73,7 +73,7 @@ describe('IconControl', () => {
 		);
 
 		// expects
-		expect(await getAttributes('icon-border-style-general')).toStrictEqual(
+		expect(await getAttributes('icon-border-style-g')).toStrictEqual(
 			'dashed'
 		);
 	});

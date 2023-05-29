@@ -24,7 +24,7 @@ import {
 /**
  * Breakpoints
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getValueFromKeys = (value, keys) =>
 	keys.reduce((acc, key) => acc?.[key], value);
@@ -67,19 +67,19 @@ const getLastBreakpointAttributeSingle = (
 		);
 
 	const currentBreakpoint =
-		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
+		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'g';
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 
 	const attrFilter = attr =>
 		!isNil(attr) &&
 		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
-	// In case that breakpoint is general and baseBreakpoint attribute exists,
-	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
+	// In case that breakpoint is g and baseBreakpoint attribute exists,
+	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'g'
 	// or the baseBreakpoint is different from 'xxl' and currentBreakpoint
 	if (
-		breakpoint === 'general' &&
-		(currentBreakpoint === 'general' ||
+		breakpoint === 'g' &&
+		(currentBreakpoint === 'g' ||
 			(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
 	) {
 		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
@@ -148,9 +148,9 @@ const getLastBreakpointAttributeSingle = (
 			keys
 		);
 
-	// Helps responsive API: when breakpoint is general and the attribute is undefined,
+	// Helps responsive API: when breakpoint is g and the attribute is undefined,
 	// check for the win selected breakpoint
-	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
+	if (!currentAttr && breakpoint === 'g' && baseBreakpoint)
 		currentAttr = getLastBreakpointAttributeSingle(
 			rawTarget,
 			baseBreakpoint,

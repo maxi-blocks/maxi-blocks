@@ -52,7 +52,7 @@ const ResponsiveTabsControl = props => {
 	const classes = classnames('maxi-responsive-tabs-control', className);
 
 	const getTextOptionsTab = () => {
-		if (breakpoint !== 'general')
+		if (breakpoint !== 'g')
 			return breakpoints.indexOf(breakpoint.toUpperCase());
 
 		if (!baseBreakpoint) return null;
@@ -75,7 +75,7 @@ const ResponsiveTabsControl = props => {
 						cloneElement(children, {
 							breakpoint:
 								baseBreakpoint === breakpoint.toLowerCase()
-									? 'general'
+									? 'g'
 									: breakpoint.toLowerCase(),
 						}),
 					// content: children,
@@ -83,7 +83,7 @@ const ResponsiveTabsControl = props => {
 					callback: () =>
 						!disableCallback
 							? baseBreakpoint === breakpoint.toLowerCase()
-								? setScreenSize('general')
+								? setScreenSize('g')
 								: setScreenSize(breakpoint.toLowerCase())
 							: null,
 					breakpoint: breakpoint.toLowerCase(),

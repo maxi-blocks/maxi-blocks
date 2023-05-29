@@ -21,14 +21,14 @@ import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttrib
 import getIconSize from './getIconSize';
 import getAttributesValue from '../../attributes/getAttributesValue';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getIconObject = (props, target, prefix = '', isIB) => {
 	const iconBackgroundActiveMediaGeneral = getAttributesValue({
 		target: 'i-b_am',
 		props,
 		prefix,
-		breakpoint: 'general',
+		breakpoint: 'g',
 	});
 
 	const response = {
@@ -91,7 +91,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 
 	const responsive = {
 		label: 'Icon responsive',
-		general: {},
+		g: {},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -154,7 +154,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 		target: 'i-b_am',
 		prefix,
 		isHover: true,
-		breakpoint: 'general',
+		breakpoint: 'g',
 		props,
 	});
 

@@ -714,10 +714,8 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 
-		const {
-			'palette-color-general': expectedColor,
-			content: expectedContent2,
-		} = await getBlockAttributes();
+		const { 'palette-color-g': expectedColor, content: expectedContent2 } =
+			await getBlockAttributes();
 
 		expect(expectedColor).toBe(4);
 		expect(expectedContent2 === expectedContent).toBeTruthy();

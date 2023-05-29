@@ -35,7 +35,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('19');
 
-		expect(await getAttributes('font-size-general')).toStrictEqual(19);
+		expect(await getAttributes('font-size-g')).toStrictEqual(19);
 
 		// line height
 		await page.$eval(
@@ -46,7 +46,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('24');
 
-		expect(await getAttributes('line-height-general')).toStrictEqual(24);
+		expect(await getAttributes('line-height-g')).toStrictEqual(24);
 
 		// letter spacing
 		await page.$eval(
@@ -57,7 +57,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12');
 
-		expect(await getAttributes('letter-spacing-general')).toStrictEqual(12);
+		expect(await getAttributes('letter-spacing-g')).toStrictEqual(12);
 
 		// font family
 		const fontFamily = await page.$(
@@ -68,9 +68,7 @@ describe('Text options', () => {
 		await page.keyboard.type('Lato');
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
-			'Lato'
-		);
+		expect(await getAttributes('font-family-g')).toStrictEqual('Lato');
 
 		// text alignment center
 		await page.$eval(
@@ -78,9 +76,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
-			'center'
-		);
+		expect(await getAttributes('text-alignment-g')).toStrictEqual('center');
 
 		// text alignment right
 		await page.$eval(
@@ -88,9 +84,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
-			'right'
-		);
+		expect(await getAttributes('text-alignment-g')).toStrictEqual('right');
 
 		// text alignment justify
 		await page.$eval(
@@ -98,7 +92,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+		expect(await getAttributes('text-alignment-g')).toStrictEqual(
 			'justify'
 		);
 

@@ -1,6 +1,6 @@
 const axis = ['top', 'left', 'bottom', 'right'];
 
-const positionArray = axis.map(a => `_pos${a}-unit-general`);
+const positionArray = axis.map(a => `_pos${a}-unit-g`);
 
 const getLayerType = layer => {
 	let { type } = layer;

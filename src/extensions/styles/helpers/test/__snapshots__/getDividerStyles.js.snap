@@ -2,7 +2,7 @@
 
 exports[`getDividerStyles Get a correct divider styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
     "border-right-style": "none",
     "border-top-style": "dashed",
@@ -64,7 +64,7 @@ Object {
 
 exports[`getDividerStyles Get a correct divider styles 2`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "align-items": "flex-end",
     "flex-direction": "row",
     "justify-content": "flex-start",

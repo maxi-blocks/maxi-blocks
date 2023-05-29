@@ -4,7 +4,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-style": "solid",
         "border-bottom-width": "15px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -31,7 +31,7 @@ Object {
       "xxl": Object {},
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "-15px",
         "left": "-20px",
         "right": "-10px",
@@ -51,7 +51,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "display": "block",
         "width": "100%",
@@ -90,7 +90,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -113,7 +113,7 @@ Object {
       "xxl": Object {},
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
@@ -123,7 +123,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
@@ -162,7 +162,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
         "border-top-left-radius": "182px",
@@ -178,7 +178,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "display": "block",
       },
@@ -210,7 +210,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -221,7 +221,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -295,7 +295,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -306,7 +306,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -375,7 +375,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -386,7 +386,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.59)",
         "bottom": "11%",
         "height": "101px",
@@ -459,7 +459,7 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-left-radius": "181px",
         "border-bottom-right-radius": "182px",
         "border-top-left-radius": "183px",
@@ -475,7 +475,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "display": "block",
       },
@@ -507,7 +507,7 @@ exports[`getBackgroundStyles Get correct block background styles for different l
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -518,7 +518,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
@@ -545,7 +545,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "10px",
         "display": "block",
         "height": "100%",
@@ -613,7 +613,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 svg *": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "l": Object {
@@ -639,7 +639,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
     "video": Object {
-      "general": Object {
+      "g": Object {
         "display": "block",
         "opacity": 1,
       },
@@ -667,11 +667,11 @@ Object {
 }
 `;
 
-exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
+exports[`getBackgroundStyles Get correct block background styles for g responsive stage 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -682,7 +682,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
@@ -709,7 +709,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "10px",
         "display": "block",
         "height": "100%",
@@ -771,7 +771,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "video": Object {
-      "general": Object {
+      "g": Object {
         "display": "block",
         "opacity": 1,
       },
@@ -798,7 +798,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
     "gradient": Object {
-      "general": Object {
+      "g": Object {
         "display": "block",
       },
       "l": Object {},
@@ -812,7 +812,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "display": "block",
         "width": "100%",
       },
@@ -845,7 +845,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
@@ -876,7 +876,7 @@ exports[`getBackgroundStyles Get correct block background styles for gradient la
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -887,7 +887,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
-      "general": Object {
+      "g": Object {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "display": "block",
       },
@@ -919,7 +919,7 @@ exports[`getBackgroundStyles Get correct block background styles for gradient la
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -930,7 +930,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
-      "general": Object {
+      "g": Object {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "bottom": "10%",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
@@ -1006,7 +1006,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1017,7 +1017,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
-      "general": Object {
+      "g": Object {
         "background": "radial-gradient(rgba(26,229,6,0.71) 0%,rgba(186,69,107,0.71) 52%,rgba(224,218,82,0.71) 100%)",
         "bottom": "11%",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
@@ -1097,7 +1097,7 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1108,7 +1108,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
@@ -1167,7 +1167,7 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1178,7 +1178,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
@@ -1241,7 +1241,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1252,7 +1252,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "background-attachment": "local",
         "background-clip": "padding-box",
         "background-image": "url('http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg')",
@@ -1306,7 +1306,7 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1317,14 +1317,14 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "display": "block",
       },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 img": Object {
     "image": Object {
-      "general": Object {
+      "g": Object {
         "-webkit-transform": "translate3d(0,0,0)",
         "display": "block",
         "object-fit": "cover",
@@ -1368,7 +1368,7 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1379,7 +1379,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "10%",
         "display": "block",
         "height": "100px",
@@ -1441,7 +1441,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "transform": "scale(0.72) rotate(104deg) ",
       },
       "l": Object {
@@ -1466,7 +1466,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
       "l": Object {
@@ -1491,7 +1491,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
@@ -1522,7 +1522,7 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1533,7 +1533,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "10%",
         "display": "block",
         "height": "100px",
@@ -1601,7 +1601,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "l": Object {
@@ -1627,7 +1627,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1638,7 +1638,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "11%",
         "height": "101px",
         "left": "11%",
@@ -1705,7 +1705,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
     "shape": Object {
-      "general": Object {
+      "g": Object {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
       "l": Object {
@@ -1736,7 +1736,7 @@ exports[`getBackgroundStyles Get correct block background styles for video layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1747,7 +1747,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
-      "general": Object {
+      "g": Object {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "10%",
@@ -1835,7 +1835,7 @@ exports[`getBackgroundStyles Get correct block background styles for video layer
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1846,7 +1846,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
-      "general": Object {
+      "g": Object {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "10%",
@@ -1929,7 +1929,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -1940,7 +1940,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
-      "general": Object {
+      "g": Object {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "11%",
@@ -2027,7 +2027,7 @@ exports[`getBackgroundStyles Get correct block background styles when border att
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2056,7 +2056,7 @@ Object {
       },
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
@@ -2078,7 +2078,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
@@ -2105,7 +2105,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
       },
       "l": Object {},
@@ -2118,7 +2118,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
       "l": Object {
@@ -2149,7 +2149,7 @@ exports[`getBackgroundStyles Get correct block background styles when hover stat
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -2160,7 +2160,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -2229,7 +2229,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {},
+      "g": Object {},
       "l": Object {},
       "m": Object {},
       "s": Object {},
@@ -2245,7 +2245,7 @@ exports[`getBackgroundStyles Get correct block background styles when most borde
 Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2274,7 +2274,7 @@ Object {
       },
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
@@ -2296,7 +2296,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
@@ -2323,7 +2323,7 @@ Object {
   },
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
-      "general": Object {
+      "g": Object {
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
         "border-top-width": "3px",
       },
@@ -2335,14 +2335,14 @@ Object {
       "xxl": Object {},
     },
     "size": Object {
-      "general": Object {
+      "g": Object {
         "top": "-3px",
       },
     },
   },
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "color": Object {
-      "general": Object {
+      "g": Object {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
       "l": Object {
@@ -2372,7 +2372,7 @@ Object {
 exports[`getBackgroundStyles Get correct simple background styles 1`] = `
 Object {
   "background": Object {
-    "general": Object {
+    "g": Object {
       "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)",
     },
     "l": Object {

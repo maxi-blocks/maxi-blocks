@@ -2,7 +2,7 @@ import getImageShapeStyles from '../getImageShapeStyles';
 
 describe('getImageShapeStyles', () => {
 	const object = {
-		'bsv-is_sc-general': 100,
+		'bsv-is_sc-g': 100,
 		'bsv-is_sc-m': 50,
 		'bsv-is_sc-s': 100,
 	};
@@ -12,7 +12,7 @@ describe('getImageShapeStyles', () => {
 		expect(result).toMatchSnapshot();
 
 		const object2 = {
-			'bsv-is_sc-general': 50,
+			'bsv-is_sc-g': 50,
 			'bsv-is_sc-m': 100,
 			'bsv-is_sc-s': 50,
 		};

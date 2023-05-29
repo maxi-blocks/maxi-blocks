@@ -459,7 +459,7 @@ export const suffixesDictionary = {
 	'-sync': '.sy',
 	'-global': '.g',
 	'-all': '.a',
-	// '-general': '-g',
+	// '-g': '-g',
 };
 
 export const colorDictionary = {

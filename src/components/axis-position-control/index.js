@@ -25,7 +25,7 @@ const AxisPositionControl = ({
 	const classes = classnames('maxi-axis-position-control', className);
 
 	return (
-		breakpoint === 'general' && (
+		breakpoint === 'g' && (
 			<SettingTabsControl
 				label={__(`${label} position`, 'maxi-block')}
 				className={classes}

@@ -38,7 +38,7 @@ describe('Svg stroke width control', () => {
 			newNumber: '3',
 		});
 
-		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
+		expect(await getAttributes('svg-stroke-g')).toStrictEqual(3);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});

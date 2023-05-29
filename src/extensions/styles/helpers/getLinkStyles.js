@@ -11,7 +11,7 @@ import getAttributeKey from '../../attributes/getAttributeKey';
 import { isBoolean, isNil } from 'lodash';
 
 const getLinkStyles = (obj, target, blockStyle) => {
-	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const response = {
 		[target]: { link: {} },
 		[`${target}:hover`]: { link: {} },

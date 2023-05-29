@@ -164,7 +164,7 @@ const NavigationIconControl = props => {
 		<div className={classes}>
 			{!isHover &&
 				!isActive &&
-				breakpoint === 'general' &&
+				breakpoint === 'g' &&
 				shortPrefix === arrowShortPrefix &&
 				['first', 'second'].map(current => (
 					<MaxiModal
@@ -183,7 +183,7 @@ const NavigationIconControl = props => {
 				))}
 			{!isHover &&
 				!isActive &&
-				breakpoint === 'general' &&
+				breakpoint === 'g' &&
 				shortPrefix === dotsShortPrefix && (
 					<MaxiModal
 						type='navigation-icon'

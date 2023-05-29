@@ -51,7 +51,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
-			{deviceType === 'general' && (
+			{deviceType === 'g' && (
 				<div className='maxi-tab-content__box sidebar-block-info'>
 					<CustomLabel
 						customLabel={customLabel}
@@ -143,7 +143,7 @@ const Inspector = props => {
 									}),
 									{
 										label: __('Icon alt', 'maxi-blocks'),
-										content: deviceType === 'general' && (
+										content: deviceType === 'g' && (
 											<SvgAltControl
 												altTitle={attributes.altTitle}
 												altDescription={
@@ -330,12 +330,12 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props,
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props,
 										}),
@@ -366,7 +366,7 @@ const Inspector = props => {
 									...inspectorTabs.position({
 										props,
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props,
 										}),

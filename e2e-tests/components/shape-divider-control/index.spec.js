@@ -69,7 +69,7 @@ describe('ShapeDividerControl', () => {
 		await page.keyboard.type('50');
 
 		expect(
-			await getAttributes('shape-divider-top-opacity-general')
+			await getAttributes('shape-divider-top-opacity-g')
 		).toStrictEqual(0.5);
 
 		// color
@@ -79,7 +79,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		expect(
-			await getAttributes('shape-divider-top-palette-color-general')
+			await getAttributes('shape-divider-top-palette-color-g')
 		).toStrictEqual(4);
 
 		// divider height
@@ -91,9 +91,9 @@ describe('ShapeDividerControl', () => {
 			newNumber: '200',
 		});
 
-		expect(
-			await getAttributes('shape-divider-top-height-general')
-		).toStrictEqual(200);
+		expect(await getAttributes('shape-divider-top-height-g')).toStrictEqual(
+			200
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -47,7 +47,7 @@ describe('Icon background', () => {
 
 		// hover state
 		expect(
-			await getAttributes('svg-background-palette-color-general')
+			await getAttributes('svg-background-palette-color-g')
 		).toStrictEqual(6);
 
 		await page.$eval('.maxi-tabs-control__button-none', button =>
@@ -73,7 +73,7 @@ describe('Icon background', () => {
 		);
 
 		expect(
-			await getAttributes('svg-background-palette-color-general-hover')
+			await getAttributes('svg-background-palette-color-g-hover')
 		).toStrictEqual(7);
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 

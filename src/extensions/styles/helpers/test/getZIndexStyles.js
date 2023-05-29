@@ -3,7 +3,7 @@ import getZIndexStyles from '../getZIndexStyles';
 describe('getZIndexStyle', () => {
 	it('Get a correct z-index style', () => {
 		const object = {
-			'_zi-general': 1,
+			'_zi-g': 1,
 			'_zi-xxl': 2,
 			'_zi-xl': 3,
 			'_zi-l': 4,

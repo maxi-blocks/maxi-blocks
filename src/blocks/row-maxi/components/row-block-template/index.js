@@ -36,7 +36,7 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 							className='maxi-row-block__template__button'
 							onClick={() => {
 								maxiSetAttributes({
-									'_rp-general': template.name,
+									'_rp-g': template.name,
 									'_rp-m': template.responsiveLayout,
 								});
 								loadColumnsTemplate(

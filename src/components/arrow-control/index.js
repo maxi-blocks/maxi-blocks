@@ -26,7 +26,7 @@ import { isNil, isEmpty } from 'lodash';
  * Component
  */
 const ArrowControl = props => {
-	const { className, onChange, isFullWidth, breakpoint = 'general' } = props;
+	const { className, onChange, isFullWidth, breakpoint = 'g' } = props;
 	const [isFirstOnHierarchy, backgroundLayers] = getAttributesValue({
 		target: ['_ioh', 'b_ly'],
 		props,

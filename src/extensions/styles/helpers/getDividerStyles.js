@@ -10,7 +10,7 @@ import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttrib
 import { isNil, isNumber } from 'lodash';
 import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getDividerStyles = (
 	obj,
@@ -22,7 +22,7 @@ const getDividerStyles = (
 ) => {
 	const response = {
 		label: 'Divider',
-		general: {},
+		g: {},
 	};
 
 	const getColor = breakpoint => {
@@ -48,7 +48,7 @@ const getDividerStyles = (
 	};
 
 	const getPrevBreakpoint = breakpoint =>
-		breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'general';
+		breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'g';
 
 	breakpoints.forEach(breakpoint => {
 		if (target === 'line') {

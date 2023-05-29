@@ -32,7 +32,7 @@ describe('Text underline', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-decoration-general')).toStrictEqual(
+		expect(await getAttributes('text-decoration-g')).toStrictEqual(
 			'underline'
 		);
 

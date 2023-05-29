@@ -27,7 +27,7 @@ const BlockBackgroundControl = props => {
 		isIB = false,
 		prefix = '',
 		clientId,
-		breakpoint = 'general',
+		breakpoint = 'g',
 		disableImage = false,
 		disableVideo = false,
 		disableGradient = false,

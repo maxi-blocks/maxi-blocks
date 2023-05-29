@@ -3,7 +3,7 @@ import getAlignmentFlexStyles from '../getAlignmentFlexStyles';
 describe('getAlignmentFlexStyles', () => {
 	it('Get a correct alignment flex styles', () => {
 		const object = {
-			'_a-general': 'right',
+			'_a-g': 'right',
 			'_a-xxl': 'left',
 			'_a-xl': 'right',
 			'_a-l': 'left',

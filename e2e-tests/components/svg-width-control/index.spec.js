@@ -44,7 +44,7 @@ describe('Svg width control', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('37');
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual('37');
+		expect(await getAttributes('svg-width-g')).toStrictEqual('37');
 
 		const unitSelector = await accordionPanel.$(
 			'.maxi-advanced-number-control select'
@@ -52,9 +52,7 @@ describe('Svg width control', () => {
 
 		await unitSelector.select('%');
 
-		expect(await getAttributes('svg-width-unit-general')).toStrictEqual(
-			'%'
-		);
+		expect(await getAttributes('svg-width-unit-g')).toStrictEqual('%');
 
 		const responsiveSelectResult = await addResponsiveTest({
 			page,

@@ -15,7 +15,7 @@ const responsiveInfoBox = ({ props }) => {
 	const { deviceType } = props;
 
 	return (
-		deviceType !== 'general' && (
+		deviceType !== 'g' && (
 			<InfoBox
 				message={__(
 					'Responsive mode activated. Edits apply exclusively to selected break points. Return to "Your size" for global editing (recommended).',

@@ -2,7 +2,7 @@
 
 exports[`getTypographyStyles Get a correct typography styles 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
@@ -103,9 +103,9 @@ Object {
 }
 `;
 
-exports[`getTypographyStyles Get a correct typography styles when there is a unit value set for XXL and general has no value (it has unit) 1`] = `
+exports[`getTypographyStyles Get a correct typography styles when there is a unit value set for XXL and g has no value (it has unit) 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
     "font-size": "90px",
     "line-height": "99px",
@@ -127,7 +127,7 @@ Object {
 
 exports[`getTypographyStyles Get a correct typography styles with hover 1`] = `
 Object {
-  "general": Object {
+  "g": Object {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-3,155,155,155),1))",
     "font-style": "italic",
     "font-weight": "500",

@@ -81,7 +81,7 @@ const Inspector = props => {
 												<ColumnPicker {...props} />
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: ['rp-general', 'rp-m'],
+										ignoreIndicator: ['rp-g', 'rp-m'],
 										extraIndicators: [
 											'verticalAlign',
 											'horizontalAlign',
@@ -106,7 +106,7 @@ const Inspector = props => {
 								]}
 							/>
 						),
-						ignoreIndicator: ['rp-general', 'rp-m'],
+						ignoreIndicator: ['rp-g', 'rp-m'],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),
@@ -114,12 +114,12 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
 											props,
 										}),
 									},
-									deviceType === 'general' && {
+									deviceType === 'g' && {
 										...inspectorTabs.anchor({
 											props,
 										}),
@@ -153,7 +153,7 @@ const Inspector = props => {
 									...inspectorTabs.position({
 										props,
 									}),
-									deviceType !== 'general' && {
+									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
 											props,
 										}),

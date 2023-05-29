@@ -3,8 +3,8 @@ import getOverflowStyles from '../getOverflowStyles';
 describe('getOverflowStyles', () => {
 	it('Get a correct overflow styles with default values', () => {
 		const object = {
-			'_ox-general': 'visible',
-			'_oy-general': 'visible',
+			'_ox-g': 'visible',
+			'_oy-g': 'visible',
 		};
 
 		const result = getOverflowStyles(object);
@@ -13,8 +13,8 @@ describe('getOverflowStyles', () => {
 
 	it('Get a correct overflow styles when all values visible', () => {
 		const object = {
-			'_ox-general': 'visible',
-			'_oy-general': 'visible',
+			'_ox-g': 'visible',
+			'_oy-g': 'visible',
 			'_ox-xxl': 'visible',
 			'_oy-xxl': 'visible',
 			'_ox-xl': 'visible',
@@ -35,8 +35,8 @@ describe('getOverflowStyles', () => {
 
 	it('Get a correct overflow styles', () => {
 		const object = {
-			'_ox-general': 'visible',
-			'_oy-general': 'hidden',
+			'_ox-g': 'visible',
+			'_oy-g': 'hidden',
 			'_ox-xxl': 'hidden',
 			'_oy-xxl': 'visible',
 			'_ox-xl': 'auto',

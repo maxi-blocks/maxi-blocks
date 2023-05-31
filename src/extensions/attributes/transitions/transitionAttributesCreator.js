@@ -15,7 +15,7 @@ const transitionAttributesCreator = ({
 	selectors,
 }) => {
 	const getTransitionOptions = transitionObj =>
-		transitionObj ? Object.values(transitionObj) : null;
+		transitionObj ? Object.keys(transitionObj) : null;
 
 	if (!isEmpty(selectors))
 		transition.transform = getTransformTransitionData(selectors);
@@ -26,10 +26,10 @@ const transitionAttributesCreator = ({
 
 	const createTransitionStyleObjForType = (type, options) =>
 		options &&
-		options.forEach(({ title }) => {
+		options.forEach(key => {
 			transitionStyleObj[type] = {
 				...transitionStyleObj[type],
-				[title.toLowerCase()]: {
+				[key]: {
 					...transitionRawObj,
 				},
 			};
@@ -44,7 +44,7 @@ const transitionAttributesCreator = ({
 
 	const createTransitionSelectedAttributes = transitionObj =>
 		Object.keys(transitionObj).reduce((acc, type) => {
-			acc[`transition-${type}-selected`] = {
+			acc[`t-${type}-s`] = {
 				type: 'string',
 				default: 'none',
 			};
@@ -53,7 +53,7 @@ const transitionAttributesCreator = ({
 		}, {});
 
 	return {
-		transition: {
+		_t: {
 			type: 'object',
 			default: transitionStyleObj,
 		},

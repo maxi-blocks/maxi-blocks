@@ -14,12 +14,7 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	const corruptedAttributes = [
-		'bo.sh',
-		'bs.sh',
-		'background-status-hover',
-		'svg-status-hover',
-	];
+	const corruptedAttributes = ['bo.sh', 'bs.sh', 'b.sh', 's.sh'];
 
 	return (
 		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&

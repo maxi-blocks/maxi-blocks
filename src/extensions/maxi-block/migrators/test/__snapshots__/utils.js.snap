@@ -1388,7 +1388,7 @@ Object {
   ],
   "component": [Function],
   "helper": [Function],
-  "hoverProp": "icon-status-hover",
+  "hoverProp": "i.sh",
   "label": "Button icon",
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg > *:not(g)",

@@ -214,31 +214,32 @@ const customCss = {
 	],
 };
 const transition = {
-	block: {
-		border: {
-			title: 'Border',
-			target: ['', ' > .maxi-background-displayer'],
-			property: ['border', 'top', 'left'],
-			hoverProp: 'bo.sh',
+	b: {
+		bo: {
+			ti: 'Border',
+			ta: ['', ' > .maxi-background-displayer'],
+			p: ['border', 'top', 'left'],
+			hp: 'bo.sh',
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: '',
-			property: 'box-shadow',
-			hoverProp: 'bs.sh',
+		bs: {
+			ti: 'Box shadow',
+			ta: '',
+			p: 'box-shadow',
+			hp: 'bs.sh',
 		},
 		opacity: {
-			title: 'Opacity',
-			target: '',
-			property: 'opacity',
-			hoverProp: '_o.sh',
+			ti: 'Opacity',
+			ta: '',
+			p: 'opacity',
+			hp: '_o.sh',
 		},
 	},
-	button: {
+	bt: {
 		...createIconTransitions({
 			target: defaultIconClass,
 			prefix: 'i-',
 			titlePrefix: 'icon',
+			shortPrefix: 'i',
 			disableBackground: true,
 			disableBorder: true,
 		}),
@@ -246,51 +247,52 @@ const transition = {
 			target: closeIconClass,
 			prefix: `${closeIconPrefix}i-`,
 			titlePrefix: 'close icon',
+			shortPrefix: 'ci',
 			disableBackground: true,
 			disableBorder: true,
 		}),
-		typography: {
-			title: 'Typography',
-			target: `${buttonClass}__content`,
-			property: false,
-			hoverProp: `${buttonPrefix}t.sh`,
+		t: {
+			ti: 'Typography',
+			ta: `${buttonClass}__content`,
+			p: false,
+			hp: `${buttonPrefix}t.sh`,
 		},
-		border: {
-			title: 'Border',
-			target: buttonClass,
-			property: ['bo', 'bo.ra'],
+		bo: {
+			ti: 'Border',
+			ta: buttonClass,
+			p: ['bo', 'bo.ra'],
 			prefix: buttonPrefix,
 		},
-		'button background': {
-			title: 'button background',
-			target: buttonClass,
-			property: 'background',
-			hoverProp: `${buttonPrefix}b.sh`,
+		'bt bg': {
+			ti: 'button background',
+			ta: buttonClass,
+			p: 'background',
+			hp: `${buttonPrefix}b.sh`,
 		},
 	},
-	input: {
-		typography: {
-			title: 'Typography',
-			target: inputClass,
-			property: false,
-			hoverProp: `${inputPrefix}t.sh`,
+	in: {
+		ty: {
+			ti: 'Typography',
+			ta: inputClass,
+			p: false,
+			hp: `${inputPrefix}t.sh`,
 		},
-		border: {
-			title: 'Border',
-			target: inputClass,
-			property: ['bo', 'bo.ra'],
-			hoverProp: `${inputPrefix}bo.sh`,
+		bo: {
+			ti: 'Border',
+			ta: inputClass,
+			p: ['bo', 'bo.ra'],
+			hp: `${inputPrefix}bo.sh`,
 		},
-		'input background': {
-			title: 'Input background',
-			target: inputClass,
-			property: 'background',
-			hoverProp: `${inputPrefix}b.sh`,
+		'in bg': {
+			ti: 'Input background',
+			ta: inputClass,
+			p: 'background',
+			hp: `${inputPrefix}b.sh`,
 		},
-		'icon reveal appear': {
-			title: 'Icon reveal appear',
-			target: inputClass,
-			property: ['opacity', 'visibility', 'width'],
+		'i r a': {
+			ti: 'Icon reveal appear',
+			ta: inputClass,
+			p: ['opacity', 'visibility', 'width'],
 		},
 	},
 };

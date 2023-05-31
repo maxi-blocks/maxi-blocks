@@ -532,17 +532,17 @@ const BackgroundLayersControl = ({
 		onChange({
 			[getAttributeKey({ key: 'b_ly', isHover: isHoverLayer })]:
 				newLayers,
-			// ...(!isHoverLayer
-			// 	? {
-			// 			_t: {
-			// 				...transition,
-			// 				transform: {
-			// 					...transition.transform,
-			// 					[`_${layer.id}`]: createTransitionObj(),
-			// 				},
-			// 			},
-			// 	  }
-			// 	: {}),
+			...(!isHoverLayer
+				? {
+						_t: {
+							...transition,
+							transform: {
+								...transition.transform,
+								[`_${layer.id}`]: createTransitionObj(),
+							},
+						},
+				  }
+				: {}),
 		});
 	};
 

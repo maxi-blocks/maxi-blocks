@@ -332,16 +332,14 @@ const getButtonIconStyles = ({
 			...getGroupAttributes(obj, 'svg'),
 			[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
 			[` ${hoverTarget}`]:
-				obj['icon-status-hover'] &&
-				getIconHoverObject(obj, 'iconHover'),
+				obj['i.sh'] && getIconHoverObject(obj, 'iconHover'),
 			[` ${hoverTarget} svg > *`]:
-				obj['icon-status-hover'] &&
-				getIconHoverObject(obj, 'iconHover'),
+				obj['i.sh'] && getIconHoverObject(obj, 'iconHover'),
 			[` ${hoverTarget} svg`]:
-				obj['icon-status-hover'] &&
+				obj['i.sh'] &&
 				getIconSize(obj, true, prefix, iconWidthHeightRatio),
 			[` ${hoverTarget} svg path`]:
-				obj['icon-status-hover'] && getIconPathStyles(obj, true),
+				obj['i.sh'] && getIconPathStyles(obj, true),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(obj, [
 					'blockBackground',

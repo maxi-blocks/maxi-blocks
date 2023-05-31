@@ -156,18 +156,18 @@ const customCss = {
 	],
 };
 const transition = {
-	canvas: {
-		...transitionDefault.canvas,
-		typography: {
-			title: 'Typography',
-			target: [contentClass, `${contentClass} li`, `${contentClass} ol`],
-			property: false,
-			hoverProp: 'typography-status-hover',
+	c: {
+		...transitionDefault.c,
+		ty: {
+			ti: 'Typography',
+			ta: [contentClass, `${contentClass} li`, `${contentClass} ol`],
+			p: false,
+			hp: 't.sh',
 		},
-		link: {
-			title: 'Link',
-			target: [linkClass, `${linkClass} span`],
-			property: 'color',
+		li: {
+			ti: 'Link',
+			ta: [linkClass, `${linkClass} span`],
+			p: 'color',
 		},
 	},
 };
@@ -182,7 +182,7 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Typography', 'maxi-blocks'),
-			transitionTarget: transition.canvas.typography.target,
+			transitionTarget: transition.c.ty.ta,
 			hoverProp: 't.sh',
 			attrGroupName: 'typography',
 			component: props => (

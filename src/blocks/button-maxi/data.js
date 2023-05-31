@@ -191,35 +191,36 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		typography: {
-			title: 'Typography',
-			target: contentClass,
-			property: false,
-			hoverProp: 'typography-status-hover',
+	b: {
+		ty: {
+			ti: 'Typography',
+			ta: contentClass,
+			p: false,
+			hp: 't.sh',
 		},
-		'button background': {
-			title: 'Button background',
-			target: buttonClass,
-			property: 'background',
-			hoverProp: `${prefix}background-status-hover`,
+		'bt bg': {
+			ti: 'Button background',
+			ta: buttonClass,
+			p: 'background',
+			hp: `${prefix}b.sh`,
 		},
-		border: {
-			title: 'Border',
-			target: buttonClass,
-			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}bo.sh`,
+		bo: {
+			ti: 'Border',
+			ta: buttonClass,
+			p: ['border', 'border-radius'],
+			hp: `${prefix}bo.sh`,
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: buttonClass,
-			property: 'box-shadow',
-			hoverProp: `${prefix}bs.sh`,
+		bs: {
+			ti: 'Box shadow',
+			ta: buttonClass,
+			p: 'box-shadow',
+			hp: `${prefix}bs.sh`,
 		},
 		...createIconTransitions({
 			target: ' .maxi-button-block__icon',
-			prefix: 'icon-',
+			prefix: 'i-',
 			titlePrefix: 'icon',
+			shortPrefix: 'i',
 		}),
 	},
 };
@@ -228,12 +229,12 @@ const interactionBuilderSettings = {
 		{
 			label: __('Button icon', 'maxi-blocks'),
 			transitionTarget: [
-				transition.block['icon colour'].target,
-				transition.block['icon width'].target,
-				transition.block['icon background'].target,
-				transition.block['icon border'].target,
+				transition.b['i co'].ta,
+				transition.b['i w'].ta,
+				transition.b['i bg'].ta,
+				transition.b['i bo'].ta,
 			],
-			hoverProp: 'icon-status-hover',
+			hoverProp: 'i.sh',
 			attrGroupName: [
 				'icon',
 				'iconBackground',
@@ -248,12 +249,12 @@ const interactionBuilderSettings = {
 			component: props => {
 				const { attributes, blockAttributes } = props;
 				const [svgType, iconContent] = getAttributesValue({
-					target: ['svgType', 'icon-content'],
+					target: ['_st', 'i_c'],
 					props: attributes,
 				});
 
 				const iconInherit = getAttributesValue({
-					target: 'icon-inherit',
+					target: 'i_i',
 					props: blockAttributes,
 				});
 
@@ -284,9 +285,9 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Button typography', 'maxi-blocks'),
-			transitionTarget: transition.block.typography.target,
+			transitionTarget: transition.b.ty.ta,
 			transitionTrigger: buttonClass,
-			hoverProp: 'typography-status-hover',
+			hoverProp: 't.sh',
 			attrGroupName: 'typography',
 			component: props => (
 				<TypographyControl
@@ -304,7 +305,7 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Button border', 'maxi-blocks'),
-			transitionTarget: transition.block.border.target,
+			transitionTarget: transition.b.bo.ta,
 			hoverProp: 'bt-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'bt-',
@@ -314,8 +315,8 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Button background', 'maxi-blocks'),
-			transitionTarget: transition.block['button background'].target,
-			hoverProp: 'button-background-status-hover',
+			transitionTarget: transition.b['bt bg'].ta,
+			hoverProp: 'bt-b.sh',
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -341,8 +342,8 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Button box shadow', 'maxi-blocks'),
-			transitionTarget: transition.block['box shadow'].target,
-			hoverProp: 'button-box-shadow-status-hover',
+			transitionTarget: transition.b.bs.ta,
+			hoverProp: 'bt-bs.sh',
 			attrGroupName: 'boxShadow',
 			prefix: 'bt-',
 			component: props => <BoxShadowControl {...props} />,
@@ -367,11 +368,11 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 const maxiAttributes = {
-	'button-padding-sync-xxl': 'axis',
-	'button-padding-top-xxl': '23',
-	'button-padding-right-xxl': '55',
-	'button-padding-bottom-xxl': '23',
-	'button-padding-left-xxl': '55',
+	'bt_p.sy-xxl': 'axis',
+	'bt_p.t-xxl': '23',
+	'bt_p.r-xxl': '55',
+	'bt_p.b-xxl': '23',
+	'bt_p.l-xxl': '55',
 };
 
 const data = {

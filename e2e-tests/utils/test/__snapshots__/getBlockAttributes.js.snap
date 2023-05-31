@@ -24,7 +24,7 @@ Object {
   "background-palette-color-hover": 6,
   "background-palette-status": true,
   "background-palette-status-hover": true,
-  "background-status-hover": false,
+  "b.sh": false,
   "background-svg-left": 0,
   "background-svg-left-unit": "%",
   "background-svg-palette-color": 5,

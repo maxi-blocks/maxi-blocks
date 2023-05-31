@@ -27,6 +27,7 @@ import TransitionControl from '../transition-control';
  * External dependencies
  */
 import { capitalize, cloneDeep, isArray, isEmpty } from 'lodash';
+import { reversedTransitionKeys } from '../../extensions/attributes/dictionary/attributesDictionary';
 
 /**
  * Component
@@ -42,7 +43,7 @@ const TransitionControlWrapper = props => {
 		transitionData,
 	} = props;
 	const [transitionChangeAll, transitionTypeSelect] = getAttributesValue({
-		target: ['_tca', `_t-${type}-selected`],
+		target: ['_tca', `t-${type}-s`],
 		props: attributes,
 	});
 
@@ -62,7 +63,7 @@ const TransitionControlWrapper = props => {
 		if (!transitionData) return null;
 
 		const newObj = {
-			transition: {},
+			_t: {},
 		};
 
 		if (transitionChangeAll) {
@@ -119,7 +120,7 @@ const TransitionControlWrapper = props => {
 		return {
 			...getGroupAttributes(attributes, 'transition'),
 			...Object.entries(attributes).reduce((acc, [key, value]) => {
-				if (key.startsWith('_t') && key.includes('selected')) {
+				if (key.startsWith('_t') && key.endsWith('-s')) {
 					acc[key] = value;
 				}
 
@@ -141,7 +142,7 @@ const TransitionControlWrapper = props => {
 						},
 						...(transitionData[type] &&
 							Object.entries(transitionData[type]).reduce(
-								(acc, [key, { title }]) => {
+								(acc, [key, { ti: title }]) => {
 									if (!transition[type][key]) return acc;
 
 									acc.push({
@@ -156,7 +157,7 @@ const TransitionControlWrapper = props => {
 					]}
 					onChange={val => {
 						maxiSetAttributes({
-							[`_t${type}-selected`]: val,
+							[`t-${type}-s`]: val,
 						});
 					}}
 				/>
@@ -197,7 +198,6 @@ const transition = ({
 		target: ['_t', '_tca'],
 		props: attributes,
 	});
-
 	const transition = cloneDeep(rawTransition) ?? {};
 
 	const transitionData = getTransitionData(name, selectors, attributes);
@@ -206,7 +206,7 @@ const transition = ({
 		Object.keys(transition[type]).forEach(key => {
 			if (!transitionData?.[type]?.[key]) return;
 
-			const { hoverProp, isTransform = false } =
+			const { hp: hoverProp, it: isTransform = false } =
 				transitionData[type][key];
 
 			if (hoverProp) {
@@ -247,6 +247,9 @@ const transition = ({
 		type => !isEmpty(transition[type])
 	)[0];
 
+	const getLongLabel = type =>
+		capitalize(reversedTransitionKeys[type] || type);
+
 	return {
 		label,
 		content: Object.values(transition).every(obj => isEmpty(obj)) ? (
@@ -274,15 +277,16 @@ const transition = ({
 						breakpoint={deviceType}
 						items={Object.keys(rawTransition).map(type => ({
 							label: __(
-								capitalize(
+								getLongLabel(
 									// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
 									// To avoid confusion with labeling, display the `block` instead of the `canvas`
 									// if the `block` transition attribute is missing.
-									type === 'canvas' &&
+
+									type === 'c' &&
 										!Object.keys(rawTransition).includes(
-											'block'
+											'b'
 										)
-										? 'block'
+										? 'b'
 										: type
 								),
 								'maxi-blocks'

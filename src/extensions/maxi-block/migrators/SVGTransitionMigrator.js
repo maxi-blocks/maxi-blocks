@@ -16,7 +16,7 @@ const isEligible = blockAttributes => {
 
 	return !isEqual(
 		Object.keys(blockDataTransition.block),
-		Object.keys(transition.block)
+		Object.keys(transition.b)
 	);
 };
 
@@ -30,9 +30,9 @@ const migrate = newAttributes => {
 	}).transition.default.block;
 
 	Object.keys(blockDataTransition.block).forEach(transitionName => {
-		if (!newAttributes.transition.block[transitionName]) {
-			newAttributes.transition.block[transitionName] = transitionChangeAll
-				? Object.values(newAttributes.transition.block)[0]
+		if (!newAttributes.transition.b[transitionName]) {
+			newAttributes.transition.b[transitionName] = transitionChangeAll
+				? Object.values(newAttributes.transition.b)[0]
 				: defaultAttributes[transitionName];
 		}
 	});

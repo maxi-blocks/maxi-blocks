@@ -2,18 +2,21 @@
  * External dependencies
  */
 import { capitalize } from 'lodash';
+import getCleanKey from '../getCleanKey';
 
 const createIconTransitions = ({
 	target,
 	titlePrefix,
 	prefix = '',
+	shortPrefix = '',
 	disableBackground = false,
 	disableBorder = false,
 	disableWidth = false,
 }) => {
-	const iconStatusHover = `${prefix}.sh`;
+	const iconStatusHover = getCleanKey(`${prefix}.sh`);
 
 	const getKey = key => (titlePrefix ? `${titlePrefix} ${key}` : key);
+	const getShortKey = key => (shortPrefix ? `${shortPrefix} ${key}` : key);
 
 	const colorKey = getKey('colour');
 	const colorKeyTwo = `${colorKey} two`;
@@ -22,40 +25,40 @@ const createIconTransitions = ({
 	const borderKey = getKey('border');
 
 	return {
-		[colorKey]: {
-			title: capitalize(colorKey),
-			target: ` ${target} svg > *:not(g)`,
-			property: false,
-			hoverProp: iconStatusHover,
+		[getShortKey('co')]: {
+			ti: capitalize(colorKey),
+			ta: ` ${target} svg > *:not(g)`,
+			p: false,
+			hp: iconStatusHover,
 		},
-		[colorKeyTwo]: {
-			title: capitalize(colorKeyTwo),
-			target: ` ${target} svg g *:not(g)`,
-			property: false,
-			hoverProp: iconStatusHover,
+		[getShortKey('co 2')]: {
+			ti: capitalize(colorKeyTwo),
+			ta: ` ${target} svg g *:not(g)`,
+			p: false,
+			hp: iconStatusHover,
 		},
 		...(!disableBackground && {
-			[backgroundKey]: {
-				title: capitalize(backgroundKey),
-				target,
-				property: 'background',
-				hoverProp: iconStatusHover,
+			[getShortKey('bg')]: {
+				ti: capitalize(backgroundKey),
+				ta: target,
+				p: 'background',
+				hp: iconStatusHover,
 			},
 		}),
 		...(!disableWidth && {
-			[widthKey]: {
-				title: capitalize(widthKey),
-				target: `${target} svg`,
-				property: ['width', 'height'],
-				hoverProp: iconStatusHover,
+			[getShortKey('w')]: {
+				ti: capitalize(widthKey),
+				ta: `${target} svg`,
+				p: ['width', 'height'],
+				hp: iconStatusHover,
 			},
 		}),
 		...(!disableBorder && {
-			[borderKey]: {
-				title: capitalize(borderKey),
-				target,
-				property: 'border',
-				hoverProp: iconStatusHover,
+			[getShortKey('bo')]: {
+				ti: capitalize(borderKey),
+				ta: target,
+				p: 'border',
+				hp: iconStatusHover,
 			},
 		}),
 	};

@@ -181,24 +181,24 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		border: {
-			title: 'Border',
-			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: ['bo', 'bo.ra'],
-			hoverProp: `${prefix}bo.sh`,
+	b: {
+		bo: {
+			ti: 'Border',
+			ta: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			p: ['border', 'border-radius'],
+			hp: `${prefix}bo.sh`,
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: 'bs',
-			hoverProp: `${prefix}bs.sh`,
+		bs: {
+			ti: 'Box shadow',
+			ta: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			p: 'box-shadow',
+			hp: `${prefix}bs.sh`,
 		},
-		'clip path': {
-			title: 'Clip path',
-			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
-			property: '_cp',
-			hoverProp: '_cp.sh',
+		cp: {
+			ti: 'Clip path',
+			ta: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			p: 'clip-path',
+			hp: '_cp.sh',
 		},
 	},
 };
@@ -216,7 +216,7 @@ const interactionBuilderSettings = {
 			label: __('Shape mask', 'maxi-blocks'),
 			attrGroupName: 'imageShape',
 			component: props => {
-				const { SVGElement } = props.blockAttributes;
+				const { _se: SVGElement } = props.blockAttributes;
 
 				return SVGElement ? (
 					<ImageShape
@@ -254,7 +254,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
-			transitionTarget: transition.block['clip path'].target,
+			transitionTarget: transition.b.cp.ta,
 			hoverProp: '_cp.sh',
 			component: props => (
 				<ClipPathControl
@@ -277,7 +277,7 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Border', 'maxi-blocks'),
-			transitionTarget: transition.block.border.target,
+			transitionTarget: transition.b.bo.ta,
 			hoverProp: 'im-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix,

@@ -38,7 +38,7 @@ export const openSidebarAccordion = (tab, accordionName) => {
 
 export const openTransitions = () => {
 	const tabNumber = () => {
-		const { uniqueID } =
+		const { _uid: uniqueID } =
 			select('core/block-editor').getSelectedBlock().attributes;
 		const checkForCanvas =
 			getBlockDataByUniqueID(uniqueID)?.customCss?.categories;

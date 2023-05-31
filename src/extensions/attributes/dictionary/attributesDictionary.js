@@ -338,6 +338,10 @@ const dictionary = {
 	transition: {
 		transition: '_t',
 		'transition-change-all': '_tca',
+		easing: '_ea',
+		'transition-delay': '_tde',
+		'transition-status': '_ts',
+		split: '_spl',
 	},
 	typography: {
 		'font-family': '_ff',
@@ -376,6 +380,51 @@ const dictionary = {
 		'z-index': '_zi',
 	},
 };
+
+const transitionObjKeys = {
+	canvas: 'c',
+	block: 'b',
+	transform: 't',
+	selected: 's',
+	border: 'bo',
+	background: 'bg',
+	button: 'bt',
+	icon: 'i',
+	svg: 's',
+	'close icon': 'ci',
+	'play icon': 'pi',
+	'box shadow': 'bs',
+	colour: 'co',
+	two: '2',
+	width: 'w',
+	typography: 'ty',
+	'background / layer': 'bl',
+	opacity: 'o',
+	title: 'ti',
+	target: 'ta',
+	property: 'p',
+	hoverProp: 'hp',
+	limitless: 'l',
+	'clip path': 'cp',
+	pane: 'pa',
+	header: 'he',
+	input: 'in',
+	reveal: 'r',
+	appear: 'a',
+	link: 'li',
+	overlay: 'ov',
+	isTransform: 'it',
+	line: 'ln',
+	content: 'cn',
+};
+
+export const reversedTransitionKeys = Object.keys(transitionObjKeys).reduce(
+	(acc, key) => {
+		acc[transitionObjKeys[key]] = key;
+		return acc;
+	},
+	{}
+);
 
 export const prefixesDictionary = {
 	'active-': 'a-',

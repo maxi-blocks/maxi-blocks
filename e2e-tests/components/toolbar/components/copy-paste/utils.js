@@ -26,7 +26,7 @@ export const block = {
 		fullWidth: 'full',
 		content:
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">Testing</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Copy</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Paste</span>',
-		'background-status-hover': false,
+		'b.sh': false,
 		'border-color-g': '',
 		'border-style-g': 'dashed',
 		'bo.sh': false,
@@ -157,7 +157,7 @@ export const block = {
 				'color-g': 'rgba(49,16,215,1)',
 			},
 		},
-		'typography-status-hover': false,
+		't.sh': false,
 	},
 	innerBlocks: [],
 	validationIssues: [],

@@ -342,10 +342,10 @@ const Inspector = props => {
 										categories: getCategoriesCss(),
 										selectors,
 									}),
-									// ...inspectorTabs.transition({
-									// 	props,
-									// 	selectors,
-									// }),
+									...inspectorTabs.transition({
+										props,
+										selectors,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

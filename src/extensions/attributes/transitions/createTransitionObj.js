@@ -5,19 +5,19 @@ const disableDefaultTransition = false;
 
 const transitionRaw = breakpointAttributesCreator({
 	obj: {
-		'transition-duration': {
+		_tdu: {
 			type: 'number',
 			default: 0.3,
 		},
-		'transition-delay': {
+		_tde: {
 			type: 'number',
 			default: 0,
 		},
-		easing: {
+		_ea: {
 			type: 'string',
 			default: 'ease',
 		},
-		'transition-status': {
+		_ts: {
 			type: 'boolean',
 			default: !disableDefaultTransition,
 		},

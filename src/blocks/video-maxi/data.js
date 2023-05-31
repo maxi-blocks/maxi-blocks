@@ -189,36 +189,38 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		border: {
-			title: 'Border',
-			target: [overlayClass, videoClass],
-			property: ['border', 'border-radius'],
-			hoverProp: 'bo.sh',
+	b: {
+		bo: {
+			ti: 'Border',
+			ta: [overlayClass, videoClass],
+			p: ['border', 'border-radius'],
+			hp: 'bo.sh',
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: [overlayClass, videoClass],
-			property: 'box-shadow',
-			hoverProp: 'bs.sh',
+		bs: {
+			ti: 'Box shadow',
+			ta: [overlayClass, videoClass],
+			p: 'box-shadow',
+			hp: 'bs.sh',
 		},
-		'overlay colour': {
-			title: 'Overlay colour',
-			target: `${overlayClass}-background`,
-			property: 'background-color',
-			hoverProp: 'overlay-background-status-hover',
+		'ov co': {
+			ti: 'Overlay colour',
+			ta: `${overlayClass}-background`,
+			p: 'background-color',
+			hp: 'o-b.sh',
 		},
 		...createIconTransitions({
 			target: ' .maxi-video-block__play-button',
-			prefix: 'play-icon-',
-			titlePrefix: 'play icon',
+			prefix: 'pl-i-',
+			titlePrefix: 'play i',
+			shortPrefix: 'pi',
 			disableBorder: true,
 			disableBackground: true,
 		}),
 		...createIconTransitions({
 			target: ' .maxi-video-block__close-button',
-			prefix: 'close-icon-',
+			prefix: 'cl-i-',
 			titlePrefix: 'close icon',
+			shortPrefix: 'ci',
 			disableBorder: true,
 			disableBackground: true,
 		}),

@@ -101,12 +101,12 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		'box shadow': {
-			title: 'Box shadow',
-			target: dividerClass,
-			property: 'bs',
-			hoverProp: `${prefix}bs.sh`,
+	b: {
+		bs: {
+			ti: 'Box shadow',
+			ta: dividerClass,
+			p: 'box-shadow',
+			hp: `${prefix}bs.sh`,
 		},
 	},
 };
@@ -114,7 +114,7 @@ const interactionBuilderSettings = {
 	block: [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
-			transitionTarget: transition.block['box shadow'].target,
+			transitionTarget: transition.b.bs.ta,
 			hoverProp: 'di-bs.sh',
 			attrGroupName: 'boxShadow',
 			prefix: 'di-',

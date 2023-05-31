@@ -238,53 +238,47 @@ const customCss = {
 	],
 };
 const transition = {
-	pane: {
-		...transitionDefault.canvas,
+	pa: {
+		...transitionDefault.c,
 	},
-	header: {
-		border: {
-			title: 'Border',
-			target: ' .maxi-pane-block__header',
-			property: 'border',
-			hoverProp: [`${headerPrefix}bo.sh`, `${headerPrefix}bo.sa`],
+	he: {
+		bo: {
+			ti: 'Border',
+			ta: ' .maxi-pane-block__header',
+			p: 'border',
+			hp: [`${headerPrefix}bo.sh`, `${headerPrefix}bo.sa`],
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: ' .maxi-pane-block__header',
-			property: 'box-shadow',
-			hoverProp: [`${headerPrefix}bs.sh`, `${headerPrefix}bs.sa`],
+		bs: {
+			ti: 'Box shadow',
+			ta: ' .maxi-pane-block__header',
+			p: 'box-shadow',
+			hp: [`${headerPrefix}bs.sh`, `${headerPrefix}bs.sa`],
 		},
-		background: {
-			title: 'Background',
-			target: ' .maxi-pane-block__header',
-			property: 'background',
-			hoverProp: [
-				`${headerPrefix}background-status-hover`,
-				`${headerPrefix}background-status-active`,
-			],
+		bg: {
+			ti: 'Background',
+			ta: ' .maxi-pane-block__header',
+			p: 'background',
+			hp: [`${headerPrefix}b.sh`, `${headerPrefix}b.sa`],
 		},
 	},
 	content: {
-		border: {
-			title: 'Border',
-			target: ' .maxi-pane-block__content',
-			property: 'border',
-			hoverProp: [`${contentPrefix}bo.sh`, `${contentPrefix}bo.sa`],
+		bo: {
+			ti: 'Border',
+			ta: ' .maxi-pane-block__content',
+			p: 'border',
+			hp: [`${contentPrefix}bo.sh`, `${contentPrefix}bo.sa`],
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: ' .maxi-pane-block__content',
-			property: 'box-shadow',
-			hoverProp: [`${contentPrefix}bs.sh`, `${contentPrefix}bs.sa`],
+		bs: {
+			ti: 'Box shadow',
+			ta: ' .maxi-pane-block__content',
+			p: 'box-shadow',
+			hp: [`${contentPrefix}bs.sh`, `${contentPrefix}bs.sa`],
 		},
-		background: {
-			title: 'Background',
-			target: ' .maxi-pane-block__content',
-			property: 'background',
-			hoverProp: [
-				`${contentPrefix}background-status-hover`,
-				`${contentPrefix}background-status-active`,
-			],
+		bg: {
+			ti: 'Background',
+			ta: ' .maxi-pane-block__content',
+			p: 'background',
+			hp: [`${contentPrefix}b.sh`, `${contentPrefix}b.sa`],
 		},
 	},
 };

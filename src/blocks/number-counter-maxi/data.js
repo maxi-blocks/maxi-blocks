@@ -93,18 +93,18 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		border: {
-			title: 'Border',
-			target: boxClass,
-			property: ['bo', 'bo.ra'],
-			hoverProp: `${prefix}bo.sh`,
+	b: {
+		bo: {
+			ti: 'Border',
+			ta: boxClass,
+			p: ['bo', 'bo.ra'],
+			hp: `${prefix}bo.sh`,
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: boxClass,
-			property: 'box-shadow',
-			hoverProp: `${prefix}bs.sh`,
+		bs: {
+			ti: 'Box shadow',
+			ta: boxClass,
+			p: 'box-shadow',
+			hp: `${prefix}bs.sh`,
 		},
 	},
 };

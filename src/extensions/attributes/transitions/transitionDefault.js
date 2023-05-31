@@ -1,28 +1,28 @@
 const transitionDefault = {
-	canvas: {
-		border: {
-			title: 'Border',
-			target: ['', ' > .maxi-background-displayer'],
-			property: ['border', 'border-radius', 'top', 'left'],
-			hoverProp: 'bo.sh',
+	c: {
+		bo: {
+			ti: 'Border',
+			ta: ['', ' > .maxi-background-displayer'],
+			p: ['border', 'border-radius', 'top', 'left'],
+			hp: 'bo.sh',
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: '',
-			property: 'box-shadow',
-			hoverProp: 'bs.sh',
+		bs: {
+			ti: 'Box shadow',
+			ta: '',
+			p: 'box-shadow',
+			hp: 'bs.sh',
 		},
-		'background / layer': {
-			title: 'Background / Layer',
-			target: ' > .maxi-background-displayer > div',
-			property: false,
-			hoverProp: 'bb.sh',
+		bl: {
+			ti: 'Background / Layer',
+			ta: ' > .maxi-background-displayer > div',
+			p: false,
+			hp: 'bb.sh',
 		},
-		opacity: {
-			title: 'Opacity',
-			target: '',
-			property: 'opacity',
-			hoverProp: '_o.sh',
+		o: {
+			ti: 'Opacity',
+			ta: '',
+			p: 'opacity',
+			hp: '_o.sh',
 		},
 	},
 };

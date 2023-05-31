@@ -258,37 +258,35 @@ const customCss = {
 const transition = {
 	...transitionDefault,
 	block: {
-		'header line': {
-			title: 'Header line',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
-			hoverProp: 'header-line-status-hover',
-			limitless: true,
+		'he ln': {
+			ti: 'Header line',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
+			hp: 'he_li.sh',
+			l: true,
 		},
-		'content line': {
-			title: 'Content line',
-			target: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
-			hoverProp: 'content-line-status-hover',
-			limitless: true,
+		'cn ln': {
+			ti: 'Content line',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
+			hp: 'c_li.sh',
+			l: true,
 		},
-		'pane title': {
-			title: 'Pane title',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
-			property: false,
-			hoverProp: [
-				'title-typography-status-hover',
-				'title-typography-status-active',
-			],
+		'pa ti': {
+			ti: 'Pane title',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
+			p: false,
+			hp: ['ti-t.sh', 'ti-t.sa'],
 		},
-		'pane title background': {
-			title: 'Pane title background',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
-			property: 'background-color',
-			hoverProp: 'title-background-status-hover',
+		'pa ti bg': {
+			ti: 'Pane title background',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
+			p: 'background-color',
+			hp: 'ti-b.sh',
 		},
 		...createIconTransitions({
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
-			prefix: 'icon-',
+			prefix: 'i-',
 			titlePrefix: 'icon',
+			shortPrefix: 'i',
 		}),
 	},
 };

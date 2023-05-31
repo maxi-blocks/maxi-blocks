@@ -11,14 +11,14 @@ const isEligible = blockAttributes =>
 	!!blockAttributes?.transition?.block?.icon;
 
 const migrate = newAttributes => {
-	if (newAttributes.transition.block.icon) {
+	if (newAttributes.transition.b.i) {
 		NEW_KEYS.forEach(key => {
-			newAttributes.transition.block[key] = {
-				...newAttributes.transition.block.icon,
+			newAttributes.transition.b[key] = {
+				...newAttributes.transition.b.i,
 			};
 		});
 
-		delete newAttributes.transition.block.icon;
+		delete newAttributes.transition.b.i;
 	}
 
 	return newAttributes;

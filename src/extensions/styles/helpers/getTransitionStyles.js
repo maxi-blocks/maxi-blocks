@@ -22,7 +22,7 @@ import { isArray, isEmpty, isEqual, isNil } from 'lodash';
  * @param {Object} obj Block size properties
  */
 const getTransitionStyles = (props, transitionObj = transitionDefault) => {
-	const { transition } = props;
+	const { _t: transition } = props;
 
 	if (isEmpty(transition)) return null;
 
@@ -30,7 +30,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const { hoverProp: rawHoverProp, isTransform = false } = value;
+			const { hp: rawHoverProp, it: isTransform = false } = value;
 			const hoverProp =
 				!rawHoverProp || isArray(rawHoverProp)
 					? rawHoverProp
@@ -48,7 +48,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			)
 				return;
 
-			const { target: rawTarget, property: rawProperty } = value;
+			const { ta: rawTarget, p: rawProperty } = value;
 			const targets = isArray(rawTarget) ? rawTarget : [rawTarget];
 			const properties = isArray(rawProperty)
 				? rawProperty
@@ -83,13 +83,13 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						isHover = false
 					) => {
 						const lastTransitionSplit = getLastBreakpointAttribute({
-							target: 'split',
+							target: '_spl',
 							breakpoint,
 							attributes: transition[type][key],
 						});
 						const transitionSplit =
 							transition[type][key]?.[
-								getAttributeKey({ key: 'split', breakpoint })
+								getAttributeKey({ key: '_spl', breakpoint })
 							];
 
 						const isNewTransitionSplit =
@@ -125,25 +125,22 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							transitionContent?.[`${target}-${breakpoint}`];
 
 						const lastTransitionDuration =
-							getLastTransitionAttribute('transition-duration');
-						const transitionDuration = getTransitionAttribute(
-							'transition-duration'
-						);
+							getLastTransitionAttribute('_tdu');
+						const transitionDuration =
+							getTransitionAttribute('_tdu');
 
 						const lastTransitionDelay =
-							getLastTransitionAttribute('transition-delay');
-						const transitionDelay =
-							getTransitionAttribute('transition-delay');
+							getLastTransitionAttribute('_tde');
+						const transitionDelay = getTransitionAttribute('_tde');
 
 						const lastTransitionTimingFunction =
-							getLastTransitionAttribute('easing');
+							getLastTransitionAttribute('_ea');
 						const transitionTimingFunction =
-							getTransitionAttribute('easing');
+							getTransitionAttribute('_ea');
 
 						const lastTransitionStatus =
-							getLastTransitionAttribute('transition-status');
-						const transitionStatus =
-							getTransitionAttribute('transition-status');
+							getLastTransitionAttribute('_ts');
+						const transitionStatus = getTransitionAttribute('_ts');
 
 						const isSomeValue =
 							isEqual(

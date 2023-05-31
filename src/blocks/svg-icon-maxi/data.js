@@ -148,18 +148,18 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
-		border: {
-			title: 'Border',
-			target: iconClass,
-			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}bo.sh`,
+	b: {
+		bo: {
+			ti: 'Border',
+			ta: iconClass,
+			p: ['border', 'border-radius'],
+			hp: `${prefix}bo.sh`,
 		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: iconClass,
-			property: 'box-shadow',
-			hoverProp: `${prefix}bs.sh`,
+		bs: {
+			ti: 'Box shadow',
+			ta: iconClass,
+			p: 'box-shadow',
+			hp: `${prefix}bs.sh`,
 		},
 		...createIconTransitions({
 			target: iconClass,
@@ -168,11 +168,11 @@ const transition = {
 			disableBorder: true,
 			disableWidth: true,
 		}),
-		background: {
-			title: 'Background',
-			target: iconClass,
-			property: 'background',
-			hoverProp: `${prefix}b.sh`,
+		bg: {
+			ti: 'Background',
+			ta: iconClass,
+			p: 'background',
+			hp: `${prefix}b.sh`,
 		},
 	},
 };
@@ -180,10 +180,7 @@ const interactionBuilderSettings = {
 	block: [
 		{
 			label: __('Icon colour'),
-			transitionTarget: [
-				transition.block.colour.target,
-				transition.block['colour two'].target,
-			],
+			transitionTarget: [transition.b.co.ta, transition.b['co 2'].ta],
 			transitionTrigger: `${iconClass} svg`,
 			hoverProp: 's.sh',
 			attrGroupName: 'svg',
@@ -241,7 +238,7 @@ const interactionBuilderSettings = {
 		// },
 		{
 			label: __('Icon background', 'maxi-blocks'),
-			transitionTarget: transition.block.background.target,
+			transitionTarget: transition.b.bg.ta,
 			hoverProp: 's-b.sh',
 			attrGroupName: [
 				'background',
@@ -264,8 +261,8 @@ const interactionBuilderSettings = {
 		},
 		{
 			label: __('Icon border', 'maxi-blocks'),
-			transitionTarget: transition.block.border.target,
-			hoverProp: 'svg-border-status-hover',
+			transitionTarget: transition.b.bo.ta,
+			hoverProp: 's-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 's-',
 			component: props => <BorderControl {...props} />,

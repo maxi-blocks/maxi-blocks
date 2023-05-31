@@ -128,13 +128,13 @@ describe('getTransitionStyles', () => {
 				title: 'Typography',
 				target: ' .maxi-button-block__content',
 				property: false,
-				hoverProp: 'typography-status-hover',
+				hoverProp: 't.sh',
 			},
 			'button background': {
 				title: 'Button background',
 				target: ' .maxi-button-block__button',
 				property: 'background',
-				hoverProp: 'button-background-status-hover',
+				hoverProp: 'bt-b.sh',
 			},
 		},
 	};
@@ -153,8 +153,8 @@ describe('getTransitionStyles', () => {
 		'bo.sh': true,
 		'bs.sh': true,
 		'bb.sh': false,
-		'typography-status-hover': true,
-		'button-background-status-hover': false,
+		't.sh': true,
+		'bt-b.sh': false,
 		transition: {
 			block: {
 				typography: repeatedAttributesWithStatus,

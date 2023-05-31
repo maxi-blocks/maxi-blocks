@@ -146,7 +146,7 @@ const typography = ({
 								)}
 							</>
 						),
-						extraIndicators: ['typography-status-hover'],
+						extraIndicators: ['t.sh'],
 					},
 				]}
 				depth={depth}

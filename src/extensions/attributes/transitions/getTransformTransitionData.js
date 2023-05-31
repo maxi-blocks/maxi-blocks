@@ -23,10 +23,10 @@ const getTransformTransitionData = (selectors, attributes) => {
 				if (!selectorData?.normal) return;
 
 				transformTransition[selector] = {
-					title: capitalize(selectorData.normal.label),
-					target: selectorData.normal.target,
-					property: ['transform', 'transform-origin'],
-					isTransform: true,
+					ti: capitalize(selectorData.normal.label),
+					ta: selectorData.normal.target,
+					p: ['transform', 'transform-origin'],
+					it: true,
 				};
 			}
 		);

@@ -80,10 +80,7 @@ const numberCounterEffect = () => {
 					let newInnerHTML = `${count}`;
 
 					if (usePercentage) {
-						const percentageNode =
-							numberCounterElemText.nodeName === 'SPAN'
-								? '<sup>%</sup>'
-								: '<tspan baseline-shift="super">%</tspan>';
+						const percentageNode = '%';
 
 						newInnerHTML += percentageNode;
 					}

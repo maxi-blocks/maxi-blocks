@@ -176,7 +176,7 @@ const NumberCounter = attributes => {
 	} = attributes;
 	const startTimeRef = useRef(Date.now());
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
-	const endCountValue = Math.ceil((endNumber * 360) / 100);
+	const endCountValue = (endNumber * 360) / 100;
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -316,14 +316,14 @@ const NumberCounter = attributes => {
 						/>
 					</svg>
 					<span className='maxi-number-counter__box__text'>
-						{`${round((count / 360) * 100)}`}
+						{`${round((count / 360) * 100, 1)}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				</div>
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
-					{`${round((count / 360) * 100)}`}
+					{`${round((count / 360) * 100, 1)}`}
 					{usePercentage && <sup>%</sup>}
 				</span>
 			)}

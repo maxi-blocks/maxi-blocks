@@ -317,14 +317,14 @@ const NumberCounter = attributes => {
 					</svg>
 					<span className='maxi-number-counter__box__text'>
 						{`${round((count / 360) * 100)}`}
-						{usePercentage && <sup>%</sup>}
+						{usePercentage && '%'}
 					</span>
 				</div>
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
 					{`${round((count / 360) * 100)}`}
-					{usePercentage && <sup>%</sup>}
+					{usePercentage && '%'}
 				</span>
 			)}
 		</BlockResizer>

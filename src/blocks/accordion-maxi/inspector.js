@@ -259,78 +259,54 @@ const Inspector = props => {
 								items={[
 									deviceType === 'g' && {
 										...inspectorTabs.customClasses({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									deviceType === 'g' && {
 										...inspectorTabs.anchor({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.customCss({
-										props: {
-											...props,
-										},
+										props,
 										breakpoint: deviceType,
 										selectors,
 										categories,
 									}),
 									...inspectorTabs.scrollEffects({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.transform({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									deviceType !== 'g' && {
 										...inspectorTabs.responsive({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.overflow({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.flex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.zindex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.relation({
 										props,

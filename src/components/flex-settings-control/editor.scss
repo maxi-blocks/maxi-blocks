@@ -1,46 +1,42 @@
 .maxi-accordion-control__item {
-    &__flexbox{
-        .maxi-tabs-content{
-            &:not(:first-child){
-                .maxi-tabs-control__button{
-                    border-bottom: 1px solid var(--maxi-grey-1-color);
-                    padding: 6px 3px;
-                    &:first-child{
-                        max-width: 30px;
-                    }
-                    svg{
-                        width: 18px;
-                        height: 18px;
-                    }
-                    &::after{
-                        content: "";
-                        position: absolute;
-                        bottom: -1px;
-                        left: -1px;
-                        right: -1px;
-                        display: block;
-                        height: 2px;
-                        background-color: var(--maxi-secondary-color);
-                        opacity: 0;
-                    }
-                    &--selected {
-                        &::after{
-                            opacity: 1;
-                        }
-                        svg {
-                            path {
-                                fill: var(--maxi-secondary-color);
-                            }
-                        }
-                    }
-                }
-                .maxi-flex-options__wrap{
-                    .maxi-base-control__label{
-                        margin-bottom: 3px !important;
-                    }
-                }
-            }
-        }
-
-    }
+	&__flexbox {
+		.maxi-tabs-content {
+			&:not(:first-child) {
+				.maxi-tabs-control__button {
+					border-bottom: 1px solid var(--maxi-grey-1-color);
+					padding: 6px 3px;
+					svg {
+						width: 18px;
+						height: 18px;
+					}
+					&::after {
+						content: '';
+						position: absolute;
+						bottom: -1px;
+						left: -1px;
+						right: -1px;
+						display: block;
+						height: 2px;
+						background-color: var(--maxi-secondary-color);
+						opacity: 0;
+					}
+					&--selected {
+						&::after {
+							opacity: 1;
+						}
+						svg {
+							path {
+								fill: var(--maxi-secondary-color);
+							}
+						}
+					}
+				}
+				.maxi-flex-options__wrap {
+					.maxi-base-control__label {
+						margin-bottom: 3px !important;
+					}
+				}
+			}
+		}
+	}
 }

@@ -2,17 +2,17 @@ import moment from 'moment';
 
 export const formatDateOptions = props => {
 	const {
-		'dc-day': day,
-		'dc-era': era,
-		'dc-hour': hour,
-		'dc-hour12': hour12,
-		'dc-minute': minute,
-		'dc-month': month,
-		'dc-second': second,
-		'dc-timezone': timeZone,
-		'dc-timezone-name': timeZoneName,
-		'dc-weekday': weekday,
-		'dc-year': year,
+		day,
+		era,
+		hour,
+		hour12,
+		minute,
+		month,
+		second,
+		timezone: timeZone,
+		timezoneName: timeZoneName,
+		weekday,
+		year,
 	} = props;
 
 	return {
@@ -51,7 +51,7 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 			M: 'MMMM',
 			y: 'YY',
 			Y: 'YYYY',
-			t: 'HH:MM:SS',
+			t: 'HH:mm',
 		};
 		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 		content = moment(NewDate).format(newFormat);

@@ -25,11 +25,6 @@ import { getBreakpoints } from '../../extensions/styles/helpers';
 import { copyPasteMapping } from './data';
 
 /**
- * External dependencies
- */
-import { round } from 'lodash';
-
-/**
  * Content
  */
 class edit extends MaxiBlockComponent {
@@ -176,7 +171,7 @@ const NumberCounter = attributes => {
 	} = attributes;
 	const startTimeRef = useRef(Date.now());
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
-	const endCountValue = (endNumber * 360) / 100;
+	const endCountValue = Number((endNumber * 360) / 100).toFixed(2);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -315,15 +310,19 @@ const NumberCounter = attributes => {
 							)} ${circumference}`}
 						/>
 					</svg>
-					<span className='maxi-number-counter__box__text'>
-						{`${round((count / 360) * 100, 1)}`}
+					<span className='maxi-number-counter__box__text rrr'>
+						{`${Number((count / 360) * 100)
+							.toFixed(2)
+							.replace(/\.?0+$/, '')}`}
 						{usePercentage && <sup>%</sup>}
 					</span>
 				</div>
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
-					{`${round((count / 360) * 100, 1)}`}
+					{`${Number((count / 360) * 100)
+						.toFixed(2)
+						.replace(/\.?0+$/, '')}`}
 					{usePercentage && <sup>%</sup>}
 				</span>
 			)}

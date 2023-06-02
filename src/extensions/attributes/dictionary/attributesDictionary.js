@@ -381,10 +381,10 @@ const dictionary = {
 	},
 };
 
-const transitionObjKeys = {
+export const selectorKeys = {
 	canvas: 'c',
 	block: 'b',
-	transform: 't',
+	transform: 'tr',
 	selected: 's',
 	border: 'bo',
 	background: 'bg',
@@ -416,11 +416,53 @@ const transitionObjKeys = {
 	isTransform: 'it',
 	line: 'ln',
 	content: 'cn',
+	before: 'be',
+	after: 'a',
+	accordion: 'ac',
+	hover: 'h',
+	normal: 'n',
+	scale: '_sc',
+	'hover-status': 'hs',
+	translate: '_tr',
+	rotate: '_rot',
+	origin: '_ori',
+	unit: '.u',
+	column: 'cl',
+	container: 'ct',
+	top: 't',
+	bottom: 'bot',
+	shape: 'sh',
+	divider: 'd',
+	group: 'g',
+	image: 'im',
+	map: 'm',
+	popup: 'po',
+	arrow: 'ar',
+	description: 'de',
+	number: 'nu',
+	circle: 'cr',
+	row: 'ro',
+	placeholder: 'pl',
+	slide: 'sl',
+	slider: 'sr',
+	first: 'f',
+	second: 'se',
+	all: 'al',
+	dot: 'do',
+	dots: 'ds',
+	each: 'e',
+	text: 'te',
+	links: 'ls',
+	ordered: 'or',
+	list: 'lt',
+	wrapper: 'wr',
+	unordered: 'u',
+	video: 'v',
 };
 
-export const reversedTransitionKeys = Object.keys(transitionObjKeys).reduce(
+export const reversedSelectorKeys = Object.keys(selectorKeys).reduce(
 	(acc, key) => {
-		acc[transitionObjKeys[key]] = key;
+		acc[selectorKeys[key]] = key;
 		return acc;
 	},
 	{}

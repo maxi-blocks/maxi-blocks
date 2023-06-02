@@ -139,11 +139,11 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			canvas: '',
-			button: buttonClass,
+			c: '',
+			bt: buttonClass,
 		}),
-		icon: {
-			normal: {
+		i: {
+			n: {
 				label: 'icon',
 				target: iconClass,
 			},
@@ -159,7 +159,7 @@ const customCss = {
 				label: "svg's path",
 				target: `${iconClass} svg path`,
 			},
-			hover: {
+			h: {
 				label: 'icon on hover',
 				target: `${iconClass}:hover`,
 			},
@@ -177,17 +177,7 @@ const customCss = {
 			},
 		},
 	},
-	categories: [
-		'canvas',
-		'before canvas',
-		'after canvas',
-		'button',
-		'before button',
-		'after button',
-		'icon',
-		'background',
-		'background hover',
-	],
+	categories: ['c', 'be c', 'a c', 'bt', 'be bt', 'a bt', 'i', 'bg', 'bg h'],
 };
 const transition = {
 	...transitionDefault,

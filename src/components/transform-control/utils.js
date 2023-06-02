@@ -8,6 +8,7 @@ import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
  */
 import { isEmpty, pickBy, uniq, without } from 'lodash';
 import { getAttributesValue } from '../../extensions/attributes';
+import { getSelectorKeyLongLabel } from '../../extensions/attributes/dictionary/objectKeyParsers';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(
@@ -21,7 +22,7 @@ const getKey = key => {
 	switch (key) {
 		case 'background-displayer':
 			// Exception for background wrapper, as it existed before with the label 'background'
-			return 'background';
+			return 'bg';
 		default:
 			return key;
 	}
@@ -44,12 +45,12 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 			Object.entries(selectors).reduce(
 				(acc, [key, obj]) => ({
 					...acc,
-					[key]: ['normal', 'hover'].reduce(
+					[key]: ['n', 'h'].reduce(
 						(acc, type) => ({
 							...acc,
 							[type]: {
 								...obj[type],
-								label: key,
+								label: getSelectorKeyLongLabel(key),
 							},
 						}),
 						{}
@@ -69,8 +70,8 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 			)
 				acc[getKey(key)] = pickBy(
 					{
-						normal: bgLayerSelectors,
-						hover: bgLayerHoverSelectors,
+						n: bgLayerSelectors,
+						h: bgLayerHoverSelectors,
 					},
 					value => !isEmpty(value)
 				);
@@ -93,11 +94,11 @@ export const getTransformCategories = (categories, attributes) => {
 
 	return without(
 		[
-			...without(categories, 'background', 'background hover'),
+			...without(categories, 'bg', 'bg h'),
 			...getBgLayersSelectorsKeys(bgLayersSelectors).map(key =>
 				getKey(key)
 			),
 		],
-		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background'
+		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'bg'
 	);
 };

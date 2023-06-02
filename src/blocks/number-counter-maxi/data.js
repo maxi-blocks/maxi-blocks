@@ -69,27 +69,17 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			canvas: '',
-			number: `${boxClass}__text`,
+			c: '',
+			nu: `${boxClass}__text`,
 		}),
 		...createSelectors(
 			{
-				circle: `${boxClass}__circle`,
+				cr: `${boxClass}__circle`,
 			},
 			false
 		),
 	},
-	categories: [
-		'canvas',
-		'before canvas',
-		'after canvas',
-		'number',
-		'before number',
-		'after number',
-		'circle',
-		'background',
-		'background hover',
-	],
+	categories: ['c', 'be c', 'a c', 'nu', 'be nu', 'a nu', 'cr', 'bg', 'bg h'],
 };
 const transition = {
 	...transitionDefault,

@@ -61,15 +61,9 @@ const copyPasteMapping = {
 };
 const customCss = {
 	selectors: createSelectors({
-		column: '',
+		cl: '',
 	}),
-	categories: [
-		'column',
-		'before column',
-		'after column',
-		'background',
-		'background hover',
-	],
+	categories: ['cl', 'be cl', 'a cl', 'bg', 'bg h'],
 };
 const interactionBuilderSettings = {
 	block: [

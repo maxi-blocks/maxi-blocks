@@ -47,15 +47,9 @@ const copyPasteMapping = {
 };
 const customCss = {
 	selectors: createSelectors({
-		group: '',
+		g: '',
 	}),
-	categories: [
-		'group',
-		'before group',
-		'after group',
-		'background',
-		'background hover',
-	],
+	categories: ['g', 'be g', 'a g', 'bg', 'bg h'],
 };
 const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),

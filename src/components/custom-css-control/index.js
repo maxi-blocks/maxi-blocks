@@ -23,6 +23,7 @@ import SelectControl from '../select-control';
  */
 import './editor.scss';
 import { getAttributeKey } from '../../extensions/attributes';
+import { getSelectorKeyLongLabel } from '../../extensions/attributes/dictionary/objectKeyParsers';
 
 /**
  * Component
@@ -62,7 +63,7 @@ const CustomCssControl = props => {
 				: 'maxi-option__not-in-use';
 
 			options.push({
-				label: capitalize(category),
+				label: capitalize(getSelectorKeyLongLabel(category)),
 				value: category,
 				className: optionClass,
 			});

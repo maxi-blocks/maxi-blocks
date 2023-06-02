@@ -30,16 +30,10 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			slide: '',
+			sl: '',
 		}),
 	},
-	categories: [
-		'slide',
-		'before slide',
-		'after slide',
-		'background',
-		'background hover',
-	],
+	categories: ['sl', 'be sl', 'a sl', 'bg', 'bg h'],
 };
 const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 

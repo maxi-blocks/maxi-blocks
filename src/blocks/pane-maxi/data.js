@@ -64,12 +64,12 @@ const targets = {
 
 const customCss = {
 	selectors: {
-		pane: {
-			normal: {
+		pa: {
+			n: {
 				label: 'pane',
 				target: '',
 			},
-			hover: {
+			h: {
 				label: 'pane on hover',
 				target: ':hover',
 			},
@@ -78,40 +78,40 @@ const customCss = {
 				target: activePaneTarget,
 			},
 		},
-		'before pane': {
-			normal: {
+		'be pa': {
+			n: {
 				label: 'pane ::before',
 				target: '::before',
 			},
-			hover: {
+			h: {
 				label: 'pane ::before on hover',
-				target: ':hover::before',
+				target: ':h::before',
 			},
 			active: {
 				label: 'pane ::before on active state',
 				target: `${activePaneTarget}::before`,
 			},
 		},
-		'after pane': {
-			normal: {
+		'a pa': {
+			n: {
 				label: 'pane ::after',
 				target: '::after',
 			},
-			hover: {
+			h: {
 				label: 'pane ::after on hover',
-				target: ':hover::after',
+				target: ':h::after',
 			},
 			active: {
 				label: 'pane ::after on active state',
 				target: `${activePaneTarget}::after`,
 			},
 		},
-		header: {
-			normal: {
+		he: {
+			n: {
 				label: 'pane header',
 				target: `${normalPaneTarget} .maxi-pane-block__header`,
 			},
-			hover: {
+			h: {
 				label: 'pane header on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__header:hover`,
 			},
@@ -120,12 +120,12 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__header`,
 			},
 		},
-		'header content': {
-			normal: {
+		'he cn': {
+			n: {
 				label: 'header content',
 				target: `${normalPaneTarget} .maxi-pane-block__header-content`,
 			},
-			hover: {
+			h: {
 				label: 'header content on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover`,
 			},
@@ -134,12 +134,12 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__header-content`,
 			},
 		},
-		'header line': {
-			normal: {
+		'he ln': {
+			n: {
 				label: 'header line',
 				target: `${normalPaneTarget} .maxi-pane-block__header-line`,
 			},
-			hover: {
+			h: {
 				label: 'header line on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__header-line:hover`,
 			},
@@ -148,12 +148,12 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__header-line`,
 			},
 		},
-		'content line': {
-			normal: {
+		'cn ln': {
+			n: {
 				label: 'content line',
 				target: `${normalPaneTarget} .maxi-pane-block__content-line`,
 			},
-			hover: {
+			h: {
 				label: 'content line on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__content-line:hover`,
 			},
@@ -162,8 +162,8 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__content-line`,
 			},
 		},
-		icon: {
-			normal: {
+		i: {
+			n: {
 				label: 'icon',
 				target: `${normalPaneTarget} .maxi-pane-block__icon`,
 			},
@@ -179,7 +179,7 @@ const customCss = {
 				label: "svg's path",
 				target: `${normalPaneTarget} .maxi-pane-block__icon svg path`,
 			},
-			hover: {
+			h: {
 				label: 'icon on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover`,
 			},
@@ -212,29 +212,29 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__icon svg path`,
 			},
 		},
-		content: {
-			normal: {
+		cn: {
+			n: {
 				label: 'pane content',
 				target: `${normalPaneTarget} .maxi-pane-block__content`,
 			},
-			hover: {
+			h: {
 				label: 'pane content on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover`,
 			},
 		},
 	},
 	categories: [
-		'pane',
-		'before pane',
-		'after pane',
-		'header',
-		'header content',
-		'header line',
-		'content line',
-		'content',
-		'icon',
-		'background',
-		'background hover',
+		'pa',
+		'be pa',
+		'a pa',
+		'he',
+		'he cn',
+		'he ln',
+		'cn ln',
+		'cn',
+		'i',
+		'bg',
+		'bg h',
 	],
 };
 const transition = {
@@ -261,7 +261,7 @@ const transition = {
 			hp: [`${headerPrefix}b.sh`, `${headerPrefix}b.sa`],
 		},
 	},
-	content: {
+	cn: {
 		bo: {
 			ti: 'Border',
 			ta: ' .maxi-pane-block__content',

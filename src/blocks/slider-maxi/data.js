@@ -75,59 +75,59 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			slider: '',
+			sr: '',
 		}),
 		...createSelectors(
 			{
-				'first arrow': ' .maxi-slider-block__arrow--prev',
-				'second arrow': ' .maxi-slider-block__arrow--next',
-				'all dots': ' .maxi-slider-block__dots',
-				'each dot': ' .maxi-slider-block__dot',
+				'f ar': ' .maxi-slider-block__arrow--prev',
+				'se ar': ' .maxi-slider-block__arrow--next',
+				'al ds': ' .maxi-slider-block__dots',
+				'e do': ' .maxi-slider-block__dot',
 			},
 			false
 		),
-		'first arrow icon': {
-			normal: {
+		'f ar i': {
+			n: {
 				label: 'first arrow icon',
 				target: ' .maxi-slider-block__arrow--prev svg',
 			},
-			hover: {
+			h: {
 				label: 'first arrow icon on hover',
 				target: ' .maxi-slider-block__arrow--prev:hover svg',
 			},
 		},
-		'second arrow icon': {
-			normal: {
+		'se ar i': {
+			n: {
 				label: 'second arrow icon',
 				target: ' .maxi-slider-block__arrow--next svg',
 			},
-			hover: {
+			h: {
 				label: 'second arrow icon on hover',
 				target: ' .maxi-slider-block__arrow--next:hover svg',
 			},
 		},
-		'dot icon': {
-			normal: {
+		'do i': {
+			n: {
 				label: 'Each dot icon',
 				target: ' .maxi-slider-block__dot svg',
 			},
-			hover: {
+			h: {
 				label: 'Each dot icon on hover',
 				target: ' .maxi-slider-block__dot:hover svg',
 			},
 		},
 	},
 	categories: [
-		'slider',
-		'before slider',
-		'after slider',
-		'first arrow',
-		'second arrow',
-		'first arrow icon',
-		'second arrow icon',
-		'all dots',
-		'dot',
-		'dot icon',
+		'sr',
+		'be sr',
+		'a sr',
+		'f ar',
+		'se ar',
+		'f ar i',
+		'se ar i',
+		'all ds',
+		'do',
+		'do i',
 	],
 };
 const interactionBuilderSettings = getCanvasSettings({ name, customCss });

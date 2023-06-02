@@ -1,24 +1,28 @@
-const PSEUDO_ELEMENTS = ['before', 'after'];
+import { getSelectorKeyLongLabel } from '../dictionary/objectKeyParsers';
+
+const PSEUDO_ELEMENTS = ['b', 'a'];
 
 const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
 	const getNormalAndHoverSelectors = ({ label, target }) => {
 		const pseudoElement = PSEUDO_ELEMENTS.find(pseudo =>
-			label.includes(pseudo)
+			label.includes(getSelectorKeyLongLabel(pseudo))
 		);
 		const targetWithoutPseudoElement = target.replace(
-			`::${pseudoElement}`,
+			`::${getSelectorKeyLongLabel(pseudoElement)}`,
 			''
 		);
 
 		return {
-			normal: {
+			n: {
 				label,
 				target,
 			},
-			hover: {
+			h: {
 				label: `${label} on hover`,
 				target: `${targetWithoutPseudoElement}:hover${
-					pseudoElement ? `::${pseudoElement}` : ''
+					pseudoElement
+						? `::${getSelectorKeyLongLabel(pseudoElement)}`
+						: ''
 				}`,
 			},
 		};
@@ -31,15 +35,15 @@ const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
 		obj
 	) => {
 		obj[`${pseudoElement} ${key}`] = {
-			label: `${label} ::${pseudoElement}`,
-			target: `${target}::${pseudoElement}`,
+			label: `${label} ::${getSelectorKeyLongLabel(pseudoElement)}`,
+			target: `${target}::${getSelectorKeyLongLabel(pseudoElement)}`,
 		};
 	};
 
 	const selectors = Object.entries(rawSelectors).reduce(
 		(acc, [label, target]) => {
 			acc[label] = {
-				label,
+				label: getSelectorKeyLongLabel(label),
 				target,
 			};
 			return acc;

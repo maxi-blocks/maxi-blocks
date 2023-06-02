@@ -73,38 +73,30 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			container: '',
+			ct: '',
 		}),
-		'top shape divider': {
-			normal: {
+		't sh d': {
+			n: {
 				label: 'top shape divider',
 				target: ' .maxi-shape-divider__top',
 			},
-			hover: {
+			h: {
 				label: 'top shape divider on hover',
 				target: ' .maxi-shape-divider__top:hover',
 			},
 		},
-		'bottom shape divider': {
-			normal: {
+		'bot sh d': {
+			n: {
 				label: 'bottom shape divider',
 				target: ' .maxi-shape-divider__bottom',
 			},
-			hover: {
+			h: {
 				label: 'bottom shape divider on hover',
 				target: ' .maxi-shape-divider__bottom:hover',
 			},
 		},
 	},
-	categories: [
-		'container',
-		'before container',
-		'after container',
-		'top shape divider',
-		'bottom shape divider',
-		'background',
-		'background hover',
-	],
+	categories: ['ct', 'be ct', 'a ct', 't sh d', 'bot sh d', 'bg', 'bg h'],
 };
 const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),

@@ -133,7 +133,7 @@ const Inspector = props => {
 			props: attributes,
 		});
 
-		return without(categories, isEmpty(iconContent) && 'icon');
+		return without(categories, isEmpty(iconContent) && 'i');
 	};
 
 	const alignmentLabel = __('Button', 'maxi-blocks');

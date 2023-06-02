@@ -204,7 +204,7 @@ const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
 	const transitionSelectors = {
 		...(data?.transition || transitionDefault),
-		transform: getTransformTransitionData(selectors, props),
+		tr: getTransformTransitionData(selectors, props),
 	};
 
 	const styles = cloneDeep(obj);

@@ -47,17 +47,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getScaleString = index => {
 		let scaleString = '';
 		if (
-			index === 'hover' &&
+			index === 'h' &&
 			!getLastBreakpointTransformAttribute({
-				target: 'transform-scale',
-				keys: [category, 'hover-status'],
+				target: 'tr_sc',
+				keys: [category, 'hs'],
 			})
 		)
 			return getScaleString('normal');
 
 		const [x, y] = ['x', 'y'].map(key =>
 			getLastBreakpointTransformAttribute({
-				target: 'transform-scale',
+				target: 'tr_sc',
 				key,
 				hoverSelected: index,
 			})
@@ -71,17 +71,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getTranslateString = index => {
 		let translateString = '';
 		if (
-			index === 'hover' &&
+			index === 'h' &&
 			!getLastBreakpointTransformAttribute({
-				target: 'transform-translate',
-				keys: [category, 'hover-status'],
+				target: 'tr_tr',
+				keys: [category, 'hs'],
 			})
 		)
 			return getTranslateString('normal');
 
-		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x.u', 'y.u'].map(key =>
 			getLastBreakpointTransformAttribute({
-				target: 'transform-translate',
+				target: 'tr_tr',
 				key,
 				hoverSelected: index,
 			})
@@ -95,17 +95,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getRotateString = index => {
 		let rotateString = '';
 		if (
-			index === 'hover' &&
+			index === 'h' &&
 			!getLastBreakpointTransformAttribute({
-				target: 'transform-rotate',
-				keys: [category, 'hover-status'],
+				target: 'tr_rot',
+				keys: [category, 'hs'],
 			})
 		)
 			return getRotateString('normal');
 
 		const [x, y, z] = ['x', 'y', 'z'].map(key =>
 			getLastBreakpointTransformAttribute({
-				target: 'transform-rotate',
+				target: 'tr_rot',
 				key,
 				hoverSelected: index,
 			})
@@ -122,17 +122,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		let originString = '';
 
 		if (
-			index === 'hover' &&
+			index === 'h' &&
 			!getLastBreakpointTransformAttribute({
-				target: 'transform-origin',
-				keys: [category, 'hover-status'],
+				target: 'tr_ori',
+				keys: [category, 'hs'],
 			})
 		)
 			return originString;
 
-		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x.u', 'y.u'].map(key =>
 			getLastBreakpointTransformAttribute({
-				target: 'transform-origin',
+				target: 'tr_ori',
 				key,
 				hoverSelected: index,
 			})

@@ -18,7 +18,7 @@ const transitionAttributesCreator = ({
 		transitionObj ? Object.keys(transitionObj) : null;
 
 	if (!isEmpty(selectors))
-		transition.transform = getTransformTransitionData(selectors);
+		transition.tr = getTransformTransitionData(selectors);
 
 	const transitionRawObj = createTransitionObj();
 
@@ -44,7 +44,7 @@ const transitionAttributesCreator = ({
 
 	const createTransitionSelectedAttributes = transitionObj =>
 		Object.keys(transitionObj).reduce((acc, type) => {
-			acc[`t-${type}-s`] = {
+			acc[`tr-${type}-s`] = {
 				type: 'string',
 				default: 'none',
 			};

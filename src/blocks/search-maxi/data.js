@@ -115,22 +115,22 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			block: '',
-			button: buttonClass,
-			input: inputClass,
+			b: '',
+			bt: buttonClass,
+			in: inputClass,
 		}),
-		'placeholder input': {
-			normal: {
+		'pl in': {
+			n: {
 				label: 'input ::placeholder',
 				target: ' .maxi-search-block__input::placeholder',
 			},
-			hover: {
+			h: {
 				label: 'input ::placeholder on hover',
-				target: ' .maxi-search-block__input:hover::placeholder',
+				target: ' .maxi-search-block__input:h::placeholder',
 			},
 		},
-		icon: {
-			normal: {
+		i: {
+			n: {
 				label: 'icon',
 				target: ' .maxi-search-block__button__default-icon',
 			},
@@ -146,7 +146,7 @@ const customCss = {
 				label: "svg's path",
 				target: ' .maxi-search-block__button__default-icon svg path',
 			},
-			hover: {
+			h: {
 				label: 'icon on hover',
 				target: ' .maxi-search-block__button__default-icon:hover',
 			},
@@ -163,8 +163,8 @@ const customCss = {
 				target: ' .maxi-search-block__button__default-icon:hover svg path',
 			},
 		},
-		'close icon': {
-			normal: {
+		ci: {
+			n: {
 				label: 'icon',
 				target: ' .maxi-search-block__button__close-icon',
 			},
@@ -180,7 +180,7 @@ const customCss = {
 				label: "svg's path",
 				target: ' .maxi-search-block__button__close-icon svg path',
 			},
-			hover: {
+			h: {
 				label: 'icon on hover',
 				target: ' .maxi-search-block__button__close-icon:hover',
 			},
@@ -199,18 +199,18 @@ const customCss = {
 		},
 	},
 	categories: [
-		'block',
-		'before block',
-		'after block',
-		'button',
-		'before button',
-		'after button',
-		'input',
-		'before input',
-		'after input',
-		'placeholder input',
-		'icon',
-		'close icon',
+		'b',
+		'be b',
+		'a b',
+		'bt',
+		'be bt',
+		'a bt',
+		'in',
+		'be in',
+		'a in',
+		'pl in',
+		'i',
+		'ci',
 	],
 };
 const transition = {

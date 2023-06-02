@@ -84,20 +84,11 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			canvas: '',
-			divider: dividerClass,
+			c: '',
+			d: dividerClass,
 		}),
 	},
-	categories: [
-		'canvas',
-		'before canvas',
-		'after canvas',
-		'divider',
-		'before divider',
-		'after divider',
-		'background',
-		'background hover',
-	],
+	categories: ['c', 'be c', 'a c', 'd', 'be d', 'a d', 'bg', 'bg h'],
 };
 const transition = {
 	...transitionDefault,

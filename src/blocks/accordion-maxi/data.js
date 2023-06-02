@@ -122,14 +122,14 @@ const { normalPaneTarget, activePaneTarget } = paneTargets;
 const customCss = {
 	selectors: {
 		...createSelectors({
-			accordion: '',
+			ac: '',
 		}),
-		'pane header': {
-			normal: {
+		'pa he': {
+			n: {
 				label: 'pane header',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header`,
 			},
-			hover: {
+			h: {
 				label: 'pane header on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header:hover`,
 			},
@@ -138,12 +138,12 @@ const customCss = {
 				target: ` ${activePaneTarget} .maxi-pane-block__header`,
 			},
 		},
-		'pane header content': {
-			normal: {
+		'pa he cn': {
+			n: {
 				label: 'header content',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-content`,
 			},
-			hover: {
+			h: {
 				label: 'header content on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-content:hover`,
 			},
@@ -152,12 +152,12 @@ const customCss = {
 				target: ` ${activePaneTarget} .maxi-pane-block__header-content`,
 			},
 		},
-		'pane header line': {
-			normal: {
+		'pa he ln': {
+			n: {
 				label: 'header line',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-line`,
 			},
-			hover: {
+			h: {
 				label: 'header line on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-line:hover`,
 			},
@@ -166,12 +166,12 @@ const customCss = {
 				target: ` ${activePaneTarget} .maxi-pane-block__header-line`,
 			},
 		},
-		'pane content line': {
-			normal: {
+		'pa cn ln': {
+			n: {
 				label: 'content line',
 				target: ` ${normalPaneTarget} .maxi-pane-block__content-line`,
 			},
-			hover: {
+			h: {
 				label: 'content line on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__content-line:hover`,
 			},
@@ -180,8 +180,8 @@ const customCss = {
 				target: ` ${activePaneTarget} .maxi-pane-block__content-line`,
 			},
 		},
-		'pane icon': {
-			normal: {
+		'pa i': {
+			n: {
 				label: 'icon',
 				target: ` ${normalPaneTarget} .maxi-pane-block__icon`,
 			},
@@ -197,7 +197,7 @@ const customCss = {
 				label: "svg's path",
 				target: ` ${normalPaneTarget} .maxi-pane-block__icon svg path`,
 			},
-			hover: {
+			h: {
 				label: 'icon on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__icon:hover`,
 			},
@@ -230,29 +230,29 @@ const customCss = {
 				target: ` ${activePaneTarget} .maxi-pane-block__icon svg path`,
 			},
 		},
-		'pane content': {
-			normal: {
+		'pa cn': {
+			n: {
 				label: 'pane content',
 				target: ` ${normalPaneTarget} .maxi-pane-block__content`,
 			},
-			hover: {
+			h: {
 				label: 'pane content on hover',
 				target: ` ${normalPaneTarget} .maxi-pane-block__content:hover`,
 			},
 		},
 	},
 	categories: [
-		'accordion',
-		'before accordion',
-		'after accordion',
-		'pane header',
-		'pane header content',
-		'pane header line',
-		'pane content line',
-		'pane content',
-		'pane icon',
-		'background',
-		'background hover',
+		'ac',
+		'b ac',
+		'a ac',
+		'pa he',
+		'pa he cn',
+		'pa he ln',
+		'pa cn ln',
+		'pa cn',
+		'pa i',
+		'bg',
+		'bg h',
 	],
 };
 const transition = {

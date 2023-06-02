@@ -132,27 +132,27 @@ const customCss = {
 	selectors: {
 		...createSelectors(
 			{
-				'text wrapper': '',
-				links: linkClass,
-				'ordered list': ' ol.maxi-text-block__content',
-				'unordered list': ' ul.maxi-text-block__content',
+				'te w': '',
+				ls: linkClass,
+				'or lt': ' ol.maxi-text-block__content',
+				'u lt': ' ul.maxi-text-block__content',
 			},
 			false
 		),
 		...createSelectors({
-			text: contentClass,
+			te: contentClass,
 		}),
 	},
 	categories: [
-		'text wrapper',
-		'text',
-		'links',
-		'ordered list',
-		'unordered list',
-		'before text',
-		'after text',
-		'background',
-		'background hover',
+		'te w',
+		'te',
+		'ls',
+		'or lt',
+		'u lt',
+		'be te',
+		'a te',
+		'bg',
+		'bg h',
 	],
 };
 const transition = {

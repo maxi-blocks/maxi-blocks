@@ -4,7 +4,7 @@ import transitionDefault from './transitionDefault';
 
 const getTransitionData = (name, selectors, attributes) => ({
 	...(getBlockData(name)?.transition || transitionDefault),
-	transform: getTransformTransitionData(selectors, attributes),
+	tr: getTransformTransitionData(selectors, attributes),
 });
 
 export default getTransitionData;

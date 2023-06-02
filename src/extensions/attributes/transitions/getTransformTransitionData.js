@@ -20,11 +20,11 @@ const getTransformTransitionData = (selectors, attributes) => {
 
 		Object.entries(transformSelectors).forEach(
 			([selector, selectorData]) => {
-				if (!selectorData?.normal) return;
+				if (!selectorData?.n) return;
 
 				transformTransition[selector] = {
-					ti: capitalize(selectorData.normal.label),
-					ta: selectorData.normal.target,
+					ti: capitalize(selectorData.n.label),
+					ta: selectorData.n.target,
 					p: ['transform', 'transform-origin'],
 					it: true,
 				};

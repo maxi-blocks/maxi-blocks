@@ -536,8 +536,8 @@ const BackgroundLayersControl = ({
 				? {
 						_t: {
 							...transition,
-							transform: {
-								...transition.transform,
+							tr: {
+								...transition.tr,
 								[`_${layer.id}`]: createTransitionObj(),
 							},
 						},
@@ -563,9 +563,9 @@ const BackgroundLayersControl = ({
 		onChange({
 			[getAttributeKey({ key: 'b_ly', isHover: isHoverLayer })]:
 				newLayers,
-			transition: {
+			_t: {
 				...transition,
-				transform: omit(transition.transform, `_${idOfRemovedLayer}`),
+				tr: omit(transition.tr, `_${idOfRemovedLayer}`),
 			},
 		});
 	};

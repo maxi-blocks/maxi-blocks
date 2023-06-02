@@ -31,6 +31,8 @@ import { capitalize, isBoolean, isEmpty, isNil, toLower } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { getSelectorKeyLongLabel } from '../../extensions/attributes/dictionary/objectKeyParsers';
+import { selectorKeys } from '../../extensions/attributes/dictionary/attributesDictionary';
 
 /**
  * Component
@@ -44,14 +46,14 @@ const TransformControl = props => {
 		depth,
 		categories,
 		selectors,
-		tt: transformTarget,
+		tr_tar: transformTarget,
 		disableHover = false,
 	} = props;
 
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
-	const [hoverSelected, setHoverSelected] = useState('normal');
+	const [hoverSelected, setHoverSelected] = useState('n');
 	const latestTarget = useRef();
 
 	useEffect(() => {
@@ -67,7 +69,7 @@ const TransformControl = props => {
 	const isTransformed = () =>
 		Object.values(transformOptions).some(val => !isNil(val));
 
-	const [transformStatus, setTransformStatus] = useState('scale');
+	const [transformStatus, setTransformStatus] = useState('sc');
 
 	const getLastBreakpointTransformAttribute = ({
 		target,
@@ -76,18 +78,28 @@ const TransformControl = props => {
 		attributes = props,
 	}) => {
 		const getLastBreakpointAttributeWrapper = isHover =>
-			getLastBreakpointAttribute({
-				target,
-				breakpoint,
-				attributes,
-				keys: keys ?? [
-					transformTarget,
-					isHover ? 'hover' : 'normal',
-					key,
-				],
-			});
+			target === ''
+				? getLastBreakpointAttribute({
+						target: breakpoint,
+						attributes,
+						keys: keys ?? [
+							transformTarget,
+							isHover ? 'h' : 'n',
+							key,
+						],
+				  })
+				: getLastBreakpointAttribute({
+						target,
+						breakpoint,
+						attributes,
+						keys: keys ?? [
+							transformTarget,
+							isHover ? 'h' : 'n',
+							key,
+						],
+				  });
 
-		if (hoverSelected !== 'hover')
+		if (hoverSelected !== 'h')
 			return getLastBreakpointAttributeWrapper(false);
 
 		/**
@@ -150,7 +162,7 @@ const TransformControl = props => {
 		});
 		const transformOrigin = getLastBreakpointTransformAttribute({
 			target: '',
-			keys: ['transform-origin'],
+			keys: ['tr_ori'],
 			attributes: targetTransformObj,
 		});
 
@@ -182,7 +194,7 @@ const TransformControl = props => {
 
 		const isUsed = category => {
 			const typeObj =
-				transformOptions[`transform-${transformStatus}-${breakpoint}`];
+				transformOptions[`tr_${transformStatus}-${breakpoint}`];
 
 			const isCategoryEmpty = () => {
 				return Object.values(typeObj[category] ?? {}).every(val => {
@@ -206,6 +218,7 @@ const TransformControl = props => {
 					className: optionClass,
 				});
 		});
+
 		return options;
 	};
 
@@ -213,8 +226,12 @@ const TransformControl = props => {
 
 	useEffect(() => {
 		const activeStatusName = getActiveTabName(depth);
+
 		if (activeStatusName) {
-			setTransformStatus(toLower(activeStatusName));
+			const transformStatus = selectorKeys[
+				toLower(activeStatusName)
+			]?.replace('_', '');
+			setTransformStatus(toLower(transformStatus));
 		}
 	});
 
@@ -228,22 +245,22 @@ const TransformControl = props => {
 				items={[
 					{
 						label: __('Scale', 'maxi-blocks'),
-						value: 'scale',
+						value: 'sc',
 						extraIndicatorsResponsive: ['transform-scale'],
 					},
 					{
 						label: __('Translate', 'maxi-blocks'),
-						value: 'translate',
+						value: 'tr',
 						extraIndicatorsResponsive: ['transform-translate'],
 					},
 					{
 						label: __('Rotate', 'maxi-blocks'),
-						value: 'rotate',
+						value: 'rot',
 						extraIndicatorsResponsive: ['transform-rotate'],
 					},
 					{
 						label: __('Origin', 'maxi-blocks'),
-						value: 'origin',
+						value: 'ori',
 						hidden: !isTransformed(),
 						extraIndicatorsResponsive: ['transform-origin'],
 					},
@@ -255,12 +272,14 @@ const TransformControl = props => {
 			<SelectControl
 				className='maxi-transform-control__target-select'
 				label={__(
-					`${capitalize(transformStatus)} target`,
+					`${capitalize(
+						getSelectorKeyLongLabel(`_${transformStatus}`)
+					)} target`,
 					'maxi-blocks'
 				)}
 				value={transformTarget ?? 'none'}
 				onChange={val => {
-					onChange({ tt: val });
+					onChange({ tr_tar: val });
 				}}
 				options={getOptions()}
 			/>
@@ -275,44 +294,44 @@ const TransformControl = props => {
 							items={[
 								{
 									label: __('Normal state', 'maxi-blocks'),
-									value: 'normal',
+									value: 'n',
 								},
 								{
 									label: __('Hover state', 'maxi-blocks'),
-									value: 'hover',
+									value: 'h',
 								},
 							]}
 							onChange={val => setHoverSelected(val)}
 							hasBorder
 						/>
 					)}
-					{!disableHover && hoverSelected === 'hover' && (
+					{!disableHover && hoverSelected === 'h' && (
 						<ToggleSwitch
 							label={__('Enable hover', 'maxi-blocks')}
 							selected={getLastBreakpointTransformAttribute({
-								target: `transform-${transformStatus}`,
-								keys: [transformTarget, 'hover-status'],
+								target: `tr_${transformStatus}`,
+								keys: [transformTarget, 'hs'],
 							})}
 							onChange={val => {
 								const transformTargetOptions =
 									transformOptions[
-										`transform-${transformStatus}-${breakpoint}`
+										`tr_${transformStatus}-${breakpoint}`
 									]?.[transformTarget];
 								onChangeTransform({
-									[`transform-${transformStatus}`]: {
+									[`tr_${transformStatus}`]: {
 										[`${latestTarget.current.transformTarget}`]:
 											{
-												'hover-status': val,
+												hs: val,
 												...(transformTargetOptions &&
 												isEmpty(
-													transformTargetOptions.hover
+													transformTargetOptions.h
 												) &&
 												!isEmpty(
-													transformTargetOptions.normal
+													transformTargetOptions.n
 												)
 													? {
-															hover: {
-																...transformTargetOptions.normal,
+															h: {
+																...transformTargetOptions.n,
 															},
 													  }
 													: {}),
@@ -321,10 +340,10 @@ const TransformControl = props => {
 								});
 								onChange(
 									{
-										[`transform-${transformStatus}-${breakpoint}`]:
+										[`tr_${transformStatus}-${breakpoint}`]:
 											{
 												...transformOptions[
-													`transform-${transformStatus}-${breakpoint}`
+													`tr_${transformStatus}-${breakpoint}`
 												],
 											},
 									},
@@ -335,26 +354,26 @@ const TransformControl = props => {
 							}}
 						/>
 					)}
-					{(hoverSelected === 'normal' ||
+					{(hoverSelected === 'n' ||
 						getLastBreakpointTransformAttribute({
-							target: `transform-${transformStatus}`,
-							keys: [transformTarget, 'hover-status'],
+							target: `tr_${transformStatus}`,
+							keys: [transformTarget, 'hs'],
 						})) && (
 						<>
-							{transformStatus === 'scale' && (
+							{transformStatus === 'sc' && (
 								<SquareControl
 									x={getLastBreakpointTransformAttribute({
-										target: 'transform-scale',
+										target: 'tr_sc',
 										key: 'x',
 									})}
 									y={getLastBreakpointTransformAttribute({
-										target: 'transform-scale',
+										target: 'tr_sc',
 										key: 'y',
 									})}
 									breakpoint={breakpoint}
 									onChange={(x, y) => {
 										onChangeTransform({
-											'transform-scale': {
+											tr_sc: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
@@ -368,7 +387,7 @@ const TransformControl = props => {
 									}}
 									onSave={(x, y) => {
 										onChangeTransform({
-											'transform-scale': {
+											tr_sc: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
@@ -381,12 +400,11 @@ const TransformControl = props => {
 										});
 										onChange(
 											{
-												[`transform-scale-${breakpoint}`]:
-													{
-														...transformOptions[
-															`transform-scale-${breakpoint}`
-														],
-													},
+												[`tr_sc-${breakpoint}`]: {
+													...transformOptions[
+														`tr_sc-${breakpoint}`
+													],
+												},
 											},
 											...getInlineTargetAndPseudoElement(
 												latestTarget.current
@@ -396,45 +414,45 @@ const TransformControl = props => {
 									}}
 								/>
 							)}
-							{transformStatus === 'translate' && (
+							{transformStatus === 'tr' && (
 								<SquareControl
 									type='drag'
 									x={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
+											target: 'tr_tr',
 											key: 'x',
 										}) ?? 0
 									}
 									y={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
+											target: 'tr_tr',
 											key: 'y',
 										}) ?? 0
 									}
 									xUnit={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
-											key: 'x-unit',
+											target: 'tr_tr',
+											key: 'x.u',
 										}) ?? '%'
 									}
 									yUnit={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
-											key: 'y-unit',
+											target: 'tr_tr',
+											key: 'y.u',
 										}) ?? '%'
 									}
 									breakpoint={breakpoint}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
-											'transform-translate': {
+											tr_tr: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
 															{
 																x,
 																y,
-																'x-unit': xUnit,
-																'y-unit': yUnit,
+																'x.u': xUnit,
+																'y.u': yUnit,
 															},
 													},
 											},
@@ -442,27 +460,26 @@ const TransformControl = props => {
 									}}
 									onSave={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
-											'transform-translate': {
+											tr_tr: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
 															{
 																x,
 																y,
-																'x-unit': xUnit,
-																'y-unit': yUnit,
+																'x.u': xUnit,
+																'y.u': yUnit,
 															},
 													},
 											},
 										});
 										onChange(
 											{
-												[`transform-translate-${breakpoint}`]:
-													{
-														...transformOptions[
-															`transform-translate-${breakpoint}`
-														],
-													},
+												[`tr_tr-${breakpoint}`]: {
+													...transformOptions[
+														`tr_tr-${breakpoint}`
+													],
+												},
 											},
 											...getInlineTargetAndPseudoElement(
 												latestTarget.current
@@ -472,23 +489,23 @@ const TransformControl = props => {
 									}}
 								/>
 							)}
-							{transformStatus === 'rotate' && (
+							{transformStatus === 'rot' && (
 								<RotateControl
 									x={getLastBreakpointTransformAttribute({
-										target: 'transform-rotate',
+										target: 'tr_rot',
 										key: 'x',
 									})}
 									y={getLastBreakpointTransformAttribute({
-										target: 'transform-rotate',
+										target: 'tr_rot',
 										key: 'y',
 									})}
 									z={getLastBreakpointTransformAttribute({
-										target: 'transform-rotate',
+										target: 'tr_rot',
 										key: 'z',
 									})}
 									onChange={(x, y, z) => {
 										onChangeTransform({
-											'transform-rotate': {
+											tr_rot: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
@@ -502,12 +519,11 @@ const TransformControl = props => {
 										});
 										onChange(
 											{
-												[`transform-rotate-${breakpoint}`]:
-													{
-														...transformOptions[
-															`transform-rotate-${breakpoint}`
-														],
-													},
+												[`tr_rot-${breakpoint}`]: {
+													...transformOptions[
+														`tr_rot-${breakpoint}`
+													],
+												},
 											},
 											...getInlineTargetAndPseudoElement(
 												latestTarget.current
@@ -517,45 +533,45 @@ const TransformControl = props => {
 									}}
 								/>
 							)}
-							{transformStatus === 'origin' && (
+							{transformStatus === 'ori' && (
 								<SquareControl
 									type='origin'
 									x={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-origin',
+											target: 'tr_ori',
 											key: 'x',
 										}) || 'middle'
 									}
 									y={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-origin',
+											target: 'tr_ori',
 											key: 'y',
 										}) || 'center'
 									}
 									xUnit={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-origin',
-											key: 'x-unit',
+											target: 'tr_ori',
+											key: 'x.u',
 										}) ?? '%'
 									}
 									yUnit={
 										getLastBreakpointTransformAttribute({
-											target: 'transform-origin',
-											key: 'y-unit',
+											target: 'tr_ori',
+											key: 'y.u',
 										}) ?? '%'
 									}
 									breakpoint={breakpoint}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
-											'transform-origin': {
+											tr_ori: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
 															{
 																x,
 																y,
-																'x-unit': xUnit,
-																'y-unit': yUnit,
+																'x.u': xUnit,
+																'y.u': yUnit,
 															},
 													},
 											},
@@ -563,27 +579,26 @@ const TransformControl = props => {
 									}}
 									onSave={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
-											'transform-origin': {
+											tr_ori: {
 												[`${latestTarget.current.transformTarget}`]:
 													{
 														[`${latestTarget.current.hoverSelected}`]:
 															{
 																x,
 																y,
-																'x-unit': xUnit,
-																'y-unit': yUnit,
+																'x.u': xUnit,
+																'y.u': yUnit,
 															},
 													},
 											},
 										});
 										onChange(
 											{
-												[`transform-origin-${breakpoint}`]:
-													{
-														...transformOptions[
-															`transform-origin-${breakpoint}`
-														],
-													},
+												[`tr_ori-${breakpoint}`]: {
+													...transformOptions[
+														`tr_ori-${breakpoint}`
+													],
+												},
 											},
 											...getInlineTargetAndPseudoElement(
 												latestTarget.current

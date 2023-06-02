@@ -27,6 +27,7 @@ import TransitionControl from '../transition-control';
  * External dependencies
  */
 import { capitalize, cloneDeep, isArray, isEmpty } from 'lodash';
+import { getSelectorKeyLongLabel } from '../../extensions/attributes/dictionary/objectKeyParsers';
 import { reversedTransitionKeys } from '../../extensions/attributes/dictionary/attributesDictionary';
 
 /**
@@ -43,7 +44,7 @@ const TransitionControlWrapper = props => {
 		transitionData,
 	} = props;
 	const [transitionChangeAll, transitionTypeSelect] = getAttributesValue({
-		target: ['_tca', `t-${type}-s`],
+		target: ['_tca', `tr-${type}-s`],
 		props: attributes,
 	});
 
@@ -120,7 +121,7 @@ const TransitionControlWrapper = props => {
 		return {
 			...getGroupAttributes(attributes, 'transition'),
 			...Object.entries(attributes).reduce((acc, [key, value]) => {
-				if (key.startsWith('_t') && key.endsWith('-s')) {
+				if (key.startsWith('tr') && key.endsWith('-s')) {
 					acc[key] = value;
 				}
 
@@ -157,7 +158,7 @@ const TransitionControlWrapper = props => {
 					]}
 					onChange={val => {
 						maxiSetAttributes({
-							[`t-${type}-s`]: val,
+							[`tr-${type}-s`]: val,
 						});
 					}}
 				/>
@@ -180,7 +181,7 @@ const TransitionControlWrapper = props => {
 			// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 			message={__(
 				`No transition ${
-					!isOneType ? `${type}` : ''
+					!isOneType ? `${getSelectorKeyLongLabel(type)}` : ''
 				} settings available. Please turn on some hover settings.`,
 				'maxi-blocks'
 			)}
@@ -232,10 +233,10 @@ const transition = ({
 				['_sc', '_rot', '_tr', '_ori'].every(
 					prop =>
 						!getLastBreakpointAttribute({
-							target: `_t${prop}`,
+							target: `tr${prop}`,
 							breakpoint: deviceType,
 							attributes,
-							keys: [key.replace('transform ', ''), '.sh'],
+							keys: [key.replace('transform ', ''), 'hs'],
 						})
 				)
 			)
@@ -247,8 +248,7 @@ const transition = ({
 		type => !isEmpty(transition[type])
 	)[0];
 
-	const getLongLabel = type =>
-		capitalize(reversedTransitionKeys[type] || type);
+	const getLongLabel = type => reversedTransitionKeys[type] || type;
 
 	return {
 		label,
@@ -277,17 +277,19 @@ const transition = ({
 						breakpoint={deviceType}
 						items={Object.keys(rawTransition).map(type => ({
 							label: __(
-								getLongLabel(
-									// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
-									// To avoid confusion with labeling, display the `block` instead of the `canvas`
-									// if the `block` transition attribute is missing.
+								capitalize(
+									getLongLabel(
+										// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
+										// To avoid confusion with labeling, display the `block` instead of the `canvas`
+										// if the `block` transition attribute is missing.
 
-									type === 'c' &&
-										!Object.keys(rawTransition).includes(
-											'b'
-										)
-										? 'b'
-										: type
+										type === 'c' &&
+											!Object.keys(
+												rawTransition
+											).includes('b')
+											? 'b'
+											: type
+									)
 								),
 								'maxi-blocks'
 							),

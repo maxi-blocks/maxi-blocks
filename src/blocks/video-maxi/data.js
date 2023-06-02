@@ -102,14 +102,14 @@ const copyPasteMapping = {
 const customCss = {
 	selectors: {
 		...createSelectors({
-			canvas: '',
+			c: '',
 		}),
 		...createSelectors({
-			video: videoClass,
-			overlay: overlayClass,
+			v: videoClass,
+			ov: overlayClass,
 		}),
-		'close icon': {
-			normal: {
+		ci: {
+			n: {
 				label: 'close icon',
 				target: ' .maxi-video-block__close-button',
 			},
@@ -125,7 +125,7 @@ const customCss = {
 				label: "svg's path",
 				target: ' .maxi-video-block__close-button svg path',
 			},
-			hover: {
+			h: {
 				label: 'close icon on hover',
 				target: ' .maxi-video-block__close-button:hover',
 			},
@@ -142,8 +142,8 @@ const customCss = {
 				target: ' .maxi-video-block__close-button:hover svg path',
 			},
 		},
-		'play icon': {
-			normal: {
+		pi: {
+			n: {
 				label: 'play icon',
 				target: ' .maxi-video-block__play-button',
 			},
@@ -159,7 +159,7 @@ const customCss = {
 				label: "svg's path",
 				target: ' .maxi-video-block__play-button svg path',
 			},
-			hover: {
+			h: {
 				label: 'play icon on hover',
 				target: ' .maxi-video-block__play-button:hover',
 			},
@@ -177,15 +177,7 @@ const customCss = {
 			},
 		},
 	},
-	categories: [
-		'canvas',
-		'before canvas',
-		'after canvas',
-		'video',
-		'overlay',
-		'close icon',
-		'play icon',
-	],
+	categories: ['c', 'be c', 'a c', 'v', 'ov', 'ci', 'pi'],
 };
 const transition = {
 	...transitionDefault,

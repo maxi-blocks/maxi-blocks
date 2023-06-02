@@ -28,7 +28,7 @@ import TransitionControl from '../transition-control';
  */
 import { capitalize, cloneDeep, isArray, isEmpty } from 'lodash';
 import { getSelectorKeyLongLabel } from '../../extensions/attributes/dictionary/objectKeyParsers';
-import { reversedTransitionKeys } from '../../extensions/attributes/dictionary/attributesDictionary';
+import { reversedSelectorKeys } from '../../extensions/attributes/dictionary/attributesDictionary';
 
 /**
  * Component
@@ -248,7 +248,7 @@ const transition = ({
 		type => !isEmpty(transition[type])
 	)[0];
 
-	const getLongLabel = type => reversedTransitionKeys[type] || type;
+	const getLongLabel = type => reversedSelectorKeys[type] || type;
 
 	return {
 		label,

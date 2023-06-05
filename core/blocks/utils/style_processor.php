@@ -17,7 +17,7 @@ function repeated_breakpoint_cleaner($obj)
     $response = $obj;
 
     $breakpoints = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'general'];
-    
+
     foreach ($breakpoints as $i => $breakpoint) {
         if (!isset($obj[$breakpoint])) {
             continue;
@@ -167,8 +167,18 @@ function style_cleaner($styles)
     return $styles;
 }
 
+function write_log($log)
+{
+    if (is_array($log) || is_object($log)) {
+        error_log(print_r($log, true));
+    } else {
+        error_log($log);
+    }
+}
+
 function style_processor($obj, $data, $props)
 {
+    write_log('style_processor');
     $selectors = $data['custom_css']['selectors'] ?? null;
     $transition_selectors = $data['transition'] ?? null;
 
@@ -207,6 +217,8 @@ function style_processor($obj, $data, $props)
     //         array_merge_recursive_with($styles, $transform_object, $merge_callback);
     //     }
     // }
+
+    write_log('style_processor end');
 
     return style_cleaner($styles);
 }

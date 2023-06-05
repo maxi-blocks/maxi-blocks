@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Text link Check text link 1`] = `"<a href=\\"test.com\\" rel=\\"noreferrer noopener nofollow sponsored ugc\\" target=\\"_blank\\" title=\\"\\" class=\\"maxi-text-block--link\\">Testing Text Maxi</a>"`;
+exports[`Text link Check text link 1`] = `"<a href=\\"https://test.com\\" rel=\\"noreferrer noopener nofollow sponsored ugc\\" target=\\"_blank\\" title=\\"\\" class=\\"maxi-text-block--link\\">Testing Text Maxi</a>"`;

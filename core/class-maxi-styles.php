@@ -16,6 +16,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_resolver.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/frontend_style_generator.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_row_gap_attributes.php';
+
 
 // Blocks
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
@@ -57,6 +59,15 @@ class MaxiBlocks_Styles
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
+    }
+
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
     }
 
     /**
@@ -365,8 +376,8 @@ class MaxiBlocks_Styles
 
                 if ($prev_content) {
                     if ($prev_content !== $styles_test) {
-                        var_dump($prev_content);
-                        var_dump($styles_test);
+                        // var_dump($prev_content);
+                        // var_dump($styles_test);
                     }
                 }
 
@@ -390,6 +401,7 @@ class MaxiBlocks_Styles
 
     public function get_styles_from_blocks()
     {
+        //$this->write_log('get_styles_from_blocks');
         global $post;
 
         if (!$post || !isset($post->ID)) {
@@ -404,36 +416,57 @@ class MaxiBlocks_Styles
 
         $styles = [];
 
+        // foreach ($blocks as $block) {
+        //     $styles = array_merge($styles, $this->get_styles_from_block($block));
+        // }
+
+        $tempStyles = array();
         foreach ($blocks as $block) {
-            $styles = array_merge($styles, $this->get_styles_from_block($block));
+            $tempStyles[] = $this->get_styles_from_block($block);
         }
+
+        $styles = array_merge($styles, ...$tempStyles);
 
         if (!$styles || empty($styles)) {
             return false;
         }
 
         $resolved_styles = style_resolver($styles);
+        //$this->write_log('resolved_styles');
+        //$this->write_log($resolved_styles);
         $frontend_styles = frontend_style_generator($resolved_styles);
+
+        //$this->write_log('$frontend_styles');
+        //$this->write_log($frontend_styles);
+
+        //$this->write_log('get_styles_from_blocks END');
 
         return $frontend_styles;
     }
 
     public function get_styles_from_block($block, $context = null)
     {
+
         $styles = [];
 
+        if(empty($block)) {
+            return $styles;
+        }
+
         $block_name = $block['blockName'];
-        
-        if (strpos($block_name, 'maxi-blocks') === false) {
+
+        //$this->write_log('get_styles_from_block '.$block_name);
+
+        if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
             return $styles;
         }
 
         $props = $block['attrs'];
         $block_style = $props['blockStyle'];
 
-
         $block_instance = null;
 
+        $start_time1 = microtime(true);
         switch($block_name) {
             case 'maxi-blocks/group-maxi':
                 if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
@@ -496,11 +529,51 @@ class MaxiBlocks_Styles
                 }
                 break;
         }
+        $end_time1 = microtime(true);
 
+        $execution_time1 = $end_time1 - $start_time1;
+        $execution_time1 = number_format($execution_time1, 2, '.', '');
+
+
+        $this->write_log('get_instance '.$block_name.' '.$execution_time1);
+
+        //$this->write_log('$props ');
+        $start_time2 = microtime(true);
         $props = $block_instance->get_block_attributes($props);
+        $end_time2 = microtime(true);
+        $execution_time2 = $end_time2 - $start_time2;
+        $execution_time2 = number_format($execution_time2, 2, '.', '');
+
+        $this->write_log('get_block_attributes '.$block_name.' '.$execution_time2);
+        //$this->write_log('$props END');
+        //$this->write_log('$customCss');
+        $start_time3 = microtime(true);
         $customCss = $block_instance->get_block_custom_css($props);
+        $end_time3 = microtime(true);
+        $execution_time3 = $end_time3 - $start_time3;
+        $execution_time3 = number_format($execution_time3, 2, '.', '');
+        $this->write_log('get_block_custom_css '.$block_name.' '.$execution_time3);
+        //$this->write_log('$customCss END');
+        //$this->write_log('$sc_props');
+        $start_time4 = microtime(true);
         $sc_props = $block_instance->get_block_sc_vars($block_style);
+        $end_time4 = microtime(true);
+        $execution_time4 = $end_time4 - $start_time4;
+        $execution_time4 = number_format($execution_time4, 2, '.', '');
+        $this->write_log('get_block_sc_vars '.$block_name.' '.$execution_time4);
+        //$this->write_log('$sc_props END');
+        //$this->write_log('$styles');
+        // //$this->write_log('$props');
+        // //$this->write_log($props);
+        $start_time5 = microtime(true);
         $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
+        $end_time5 = microtime(true);
+        $execution_time5 = $end_time5 - $start_time5;
+        $execution_time5 = number_format($execution_time5, 2, '.', '');
+
+        $this->write_log('get_styles '.$block_name.' '.$execution_time5);
+        // $styles = [];
+        //$this->write_log('$styles END');
 
         $inner_blocks = $block['innerBlocks'];
 
@@ -534,12 +607,22 @@ class MaxiBlocks_Styles
         } else {
             $context = null;
         }
+        //$this->write_log('context END');
 
+        $start_time6 = microtime(true);
         if ($inner_blocks && !empty($inner_blocks)) {
             foreach ($inner_blocks as $inner_block) {
                 $styles = array_merge($styles, $this->get_styles_from_block($inner_block, $context));
             }
         }
+        $end_time6 = microtime(true);
+        $execution_time6 = $end_time6 - $start_time6;
+        $execution_time6 = number_format($execution_time6, 2, '.', '');
+
+        $this->write_log('$inner_blocks '.$block_name.' '.$execution_time6);
+
+        //$this->write_log('get_styles_from_blocks END '.$block_name);
+        //$this->write_log('===========================================');
 
         return $styles;
     }
@@ -576,6 +659,7 @@ class MaxiBlocks_Styles
      */
     public function get_styles($content)
     {
+
         $style =
             is_preview() || is_admin()
                 ? $content['prev_css_value']

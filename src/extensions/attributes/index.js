@@ -6,3 +6,4 @@ export { default as getRowGapProps } from './getRowGapProps';
 export { default as getUpdatedBGLayersWithNewUniqueID } from './getUpdatedBGLayersWithNewUniqueID';
 export { default as handleOnReset } from './handleOnReset';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';
+export { default as generateStyleID } from './generateStyleID';

@@ -1,12 +1,4 @@
-import { uniqueId } from 'lodash';
 import breakpoints from './breakpoints';
-
-const generateStyleID = () => {
-	const id = uniqueId('maxi-');
-	const obj = { type: 'string', default: id };
-
-	return obj;
-};
 
 const global = {
 	...breakpoints,
@@ -41,7 +33,7 @@ const global = {
 		type: 'array',
 	},
 	preview: { type: 'boolean', default: false },
-	...generateStyleID(),
+	styleID: { type: 'string' },
 };
 
 export default global;

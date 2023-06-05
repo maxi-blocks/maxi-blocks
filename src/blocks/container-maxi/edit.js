@@ -21,6 +21,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import { withMaxiContextLoop } from '../../extensions/DC';
+import { generateStyleID } from '../../extensions/attributes';
 
 /**
  * General
@@ -80,7 +81,11 @@ class edit extends MaxiBlockComponent {
 			cleanInlineStyles,
 			isSelected,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy } = attributes;
+		const { uniqueID, isFirstOnHierarchy, styleID } = attributes;
+
+		if (!styleID) {
+			maxiSetAttributes({ styleID: generateStyleID() });
+		}
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

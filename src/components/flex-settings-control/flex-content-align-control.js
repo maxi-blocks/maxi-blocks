@@ -22,7 +22,6 @@ import {
 	flexAlignAround,
 	flexAlignStretch,
 	flexAlignBaseline,
-	styleNone,
 } from '../../icons';
 
 const FlexContentAlignControl = props => {
@@ -30,11 +29,6 @@ const FlexContentAlignControl = props => {
 
 	const getOptions = () => {
 		const options = [];
-
-		options.push({
-			icon: <Icon icon={styleNone} />,
-			value: 'unset',
-		});
 
 		options.push({
 			icon: <Icon icon={flexAlignStart} />,
@@ -100,7 +94,7 @@ const FlexContentAlignControl = props => {
 					target: 'align-content',
 					breakpoint,
 					attributes: props,
-				}) || getOptions()[0].value
+				}) || getOptions()[6].value
 			}
 			onChange={val =>
 				onChange({

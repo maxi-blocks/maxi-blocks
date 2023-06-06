@@ -12,28 +12,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_border_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_group_attributes.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attributes_value.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_last_breakpoint_attribute.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_prev_breakpoint.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_size_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_box_shadow_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_color_rgba_string.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_opacity_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_zindex_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_position_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_display_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_overflow_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_margin_padding_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_flex_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_background_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_palette_attributes.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_arrow_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_processor.php';
-
-
 
 
 if (!class_exists('MaxiBlocks_Container_Maxi_Block')):

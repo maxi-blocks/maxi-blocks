@@ -20,18 +20,18 @@ function get_default_attribute($prop, $block_name = null)
     //     $response = get_block_data($block_name)['maxi_attributes'][$prop];
     // }
 
-    $defaults = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/blocks/utils/default-group-attributes.json"), true);
+    // $defaults = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/blocks/utils/default-group-attributes.json"), true);
 
-    foreach (array_keys($defaults) as $key) {
-        if (isset($defaults[$key][$prop]['default'])) {
-            $response = $defaults[$key][$prop]['default'];
-        }
+    // foreach (array_keys($defaults) as $key) {
+    //     if (isset($defaults[$key][$prop]['default'])) {
+    //         $response = $defaults[$key][$prop]['default'];
+    //     }
 
-        if (isset($response)) {
-            return $response;
-        }
-    }
-    
+    //     if (isset($response)) {
+    //         return $response;
+    //     }
+    // }
+
     $blocks = [
         'accordion-maxi',
         'container-maxi',
@@ -59,7 +59,7 @@ function get_default_attribute($prop, $block_name = null)
         if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {
             $response = $block_defaults[$prop]['default'];
         }
-    
+
         if (isset($response)) {
             return $response;
         }

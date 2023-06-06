@@ -10,7 +10,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, styleID } = attributes;
 
 	const name = 'maxi-blocks/container-maxi';
 
@@ -19,6 +19,7 @@ const save = props => {
 			tagName='section'
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			data-maxi-style-id={styleID}
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${uniqueID}`}

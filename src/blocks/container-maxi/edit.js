@@ -21,7 +21,6 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import { withMaxiContextLoop } from '../../extensions/DC';
-import { generateStyleID } from '../../extensions/attributes';
 
 /**
  * General
@@ -83,9 +82,8 @@ class edit extends MaxiBlockComponent {
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, styleID } = attributes;
 
-		if (!styleID) {
-			maxiSetAttributes({ styleID: generateStyleID() });
-		}
+		console.log('styleID');
+		console.log(styleID);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -109,6 +107,7 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
+				data-maxi-style-id={styleID}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider

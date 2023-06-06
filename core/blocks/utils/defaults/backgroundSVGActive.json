@@ -1,0 +1,456 @@
+{
+  "active-background-svg-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-background-svg-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-status-xl": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-status-l": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-status-m": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-status-s": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-status-xs": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-background-svg-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "active-background-svg-palette-color-general": {
+    "type": "number",
+    "default": 6
+  },
+  "active-background-svg-palette-color-xxl": {
+    "type": "number"
+  },
+  "active-background-svg-palette-color-xl": {
+    "type": "number"
+  },
+  "active-background-svg-palette-color-l": {
+    "type": "number"
+  },
+  "active-background-svg-palette-color-m": {
+    "type": "number"
+  },
+  "active-background-svg-palette-color-s": {
+    "type": "number"
+  },
+  "active-background-svg-palette-color-xs": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-general": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-xl": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-l": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-m": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-s": {
+    "type": "number"
+  },
+  "active-background-svg-palette-opacity-xs": {
+    "type": "number"
+  },
+  "active-background-svg-color-general": {
+    "type": "string"
+  },
+  "active-background-svg-color-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-color-xl": {
+    "type": "string"
+  },
+  "active-background-svg-color-l": {
+    "type": "string"
+  },
+  "active-background-svg-color-m": {
+    "type": "string"
+  },
+  "active-background-svg-color-s": {
+    "type": "string"
+  },
+  "active-background-svg-color-xs": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-general": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-xl": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-l": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-m": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-s": {
+    "type": "string"
+  },
+  "active-background-svg-SVGElement-xs": {
+    "type": "string"
+  },
+  "active-background-svg-SVGData-general": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-xxl": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-xl": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-l": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-m": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-s": {
+    "type": "object"
+  },
+  "active-background-svg-SVGData-xs": {
+    "type": "object"
+  },
+  "active-background-svg-top-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-background-svg-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-top-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-top-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-top-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-top-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-top-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-general": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-general": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-general": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-general": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-background-svg-position-sync-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-sync-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-svg-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-top-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-svg-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-right-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-svg-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-svg-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-position-left-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-background-svg-width-xxl": {
+    "type": "number"
+  },
+  "active-background-svg-width-xl": {
+    "type": "number"
+  },
+  "active-background-svg-width-l": {
+    "type": "number"
+  },
+  "active-background-svg-width-m": {
+    "type": "number"
+  },
+  "active-background-svg-width-s": {
+    "type": "number"
+  },
+  "active-background-svg-width-xs": {
+    "type": "number"
+  },
+  "active-background-svg-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-background-svg-width-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-width-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-width-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-width-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-width-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-width-unit-xs": {
+    "type": "string"
+  },
+  "active-background-svg-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-background-svg-height-xxl": {
+    "type": "number"
+  },
+  "active-background-svg-height-xl": {
+    "type": "number"
+  },
+  "active-background-svg-height-l": {
+    "type": "number"
+  },
+  "active-background-svg-height-m": {
+    "type": "number"
+  },
+  "active-background-svg-height-s": {
+    "type": "number"
+  },
+  "active-background-svg-height-xs": {
+    "type": "number"
+  },
+  "active-background-svg-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-background-svg-height-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-svg-height-unit-xl": {
+    "type": "string"
+  },
+  "active-background-svg-height-unit-l": {
+    "type": "string"
+  },
+  "active-background-svg-height-unit-m": {
+    "type": "string"
+  },
+  "active-background-svg-height-unit-s": {
+    "type": "string"
+  },
+  "active-background-svg-height-unit-xs": {
+    "type": "string"
+  }
+}

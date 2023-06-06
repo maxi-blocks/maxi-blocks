@@ -1,0 +1,12 @@
+{
+  "height-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "height": {
+    "type": "string"
+  },
+  "force-aspect-ratio": {
+    "type": "boolean"
+  }
+}

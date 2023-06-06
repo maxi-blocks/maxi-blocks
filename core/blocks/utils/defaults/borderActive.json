@@ -1,0 +1,136 @@
+{
+  "active-border-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-border-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "active-border-palette-status-xl": {
+    "type": "boolean"
+  },
+  "active-border-palette-status-l": {
+    "type": "boolean"
+  },
+  "active-border-palette-status-m": {
+    "type": "boolean"
+  },
+  "active-border-palette-status-s": {
+    "type": "boolean"
+  },
+  "active-border-palette-status-xs": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-border-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "active-border-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "active-border-palette-color-general": {
+    "type": "number",
+    "default": 6
+  },
+  "active-border-palette-color-xxl": {
+    "type": "number"
+  },
+  "active-border-palette-color-xl": {
+    "type": "number"
+  },
+  "active-border-palette-color-l": {
+    "type": "number"
+  },
+  "active-border-palette-color-m": {
+    "type": "number"
+  },
+  "active-border-palette-color-s": {
+    "type": "number"
+  },
+  "active-border-palette-color-xs": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-general": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-xl": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-l": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-m": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-s": {
+    "type": "number"
+  },
+  "active-border-palette-opacity-xs": {
+    "type": "number"
+  },
+  "active-border-color-general": {
+    "type": "string"
+  },
+  "active-border-color-xxl": {
+    "type": "string"
+  },
+  "active-border-color-xl": {
+    "type": "string"
+  },
+  "active-border-color-l": {
+    "type": "string"
+  },
+  "active-border-color-m": {
+    "type": "string"
+  },
+  "active-border-color-s": {
+    "type": "string"
+  },
+  "active-border-color-xs": {
+    "type": "string"
+  },
+  "active-border-style-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-border-style-xxl": {
+    "type": "string"
+  },
+  "active-border-style-xl": {
+    "type": "string"
+  },
+  "active-border-style-l": {
+    "type": "string"
+  },
+  "active-border-style-m": {
+    "type": "string"
+  },
+  "active-border-style-s": {
+    "type": "string"
+  },
+  "active-border-style-xs": {
+    "type": "string"
+  },
+  "border-status-active": {
+    "type": "boolean",
+    "default": false
+  }
+}

@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Utils
-/*require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attribute_key.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attribute_key.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attributes_value.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_color_rgba_string.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php';
@@ -57,7 +57,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_svg_styles.ph
 // require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transform_styles.php';
 // require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transition_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_typography_styles.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_zindex_styles.php'; */
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_zindex_styles.php';
 
 
 if (!class_exists('MaxiBlocks_Block')):

@@ -8,7 +8,9 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+
 import uniqueIDGenerator from './uniqueIDGenerator';
+import generateStyleID from './generateStyleID';
 import { getCustomLabel } from '../maxi-block';
 
 /**
@@ -48,7 +50,7 @@ const allowedBlocks = [
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { attributes, name: blockName, clientId } = props;
-		const { uniqueID } = attributes;
+		const { uniqueID, styleID } = attributes;
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
@@ -87,6 +89,12 @@ const withAttributes = createHigherOrderComponent(
 				const { isRTL } = select('core/editor').getEditorSettings();
 
 				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
+			}
+
+			// styleID
+			if (isNil(styleID)) {
+				const newStyleID = generateStyleID();
+				attributes.styleID = newStyleID;
 			}
 		}
 

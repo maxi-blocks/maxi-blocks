@@ -1,0 +1,89 @@
+{
+  "transform-target": {
+    "type": "string"
+  },
+  "transform-scale-general": {
+    "type": "object"
+  },
+  "transform-scale-xxl": {
+    "type": "object"
+  },
+  "transform-scale-xl": {
+    "type": "object"
+  },
+  "transform-scale-l": {
+    "type": "object"
+  },
+  "transform-scale-m": {
+    "type": "object"
+  },
+  "transform-scale-s": {
+    "type": "object"
+  },
+  "transform-scale-xs": {
+    "type": "object"
+  },
+  "transform-translate-general": {
+    "type": "object"
+  },
+  "transform-translate-xxl": {
+    "type": "object"
+  },
+  "transform-translate-xl": {
+    "type": "object"
+  },
+  "transform-translate-l": {
+    "type": "object"
+  },
+  "transform-translate-m": {
+    "type": "object"
+  },
+  "transform-translate-s": {
+    "type": "object"
+  },
+  "transform-translate-xs": {
+    "type": "object"
+  },
+  "transform-rotate-general": {
+    "type": "object"
+  },
+  "transform-rotate-xxl": {
+    "type": "object"
+  },
+  "transform-rotate-xl": {
+    "type": "object"
+  },
+  "transform-rotate-l": {
+    "type": "object"
+  },
+  "transform-rotate-m": {
+    "type": "object"
+  },
+  "transform-rotate-s": {
+    "type": "object"
+  },
+  "transform-rotate-xs": {
+    "type": "object"
+  },
+  "transform-origin-general": {
+    "type": "object"
+  },
+  "transform-origin-xxl": {
+    "type": "object"
+  },
+  "transform-origin-xl": {
+    "type": "object"
+  },
+  "transform-origin-l": {
+    "type": "object"
+  },
+  "transform-origin-m": {
+    "type": "object"
+  },
+  "transform-origin-s": {
+    "type": "object"
+  },
+  "transform-origin-xs": {
+    "type": "object"
+  }
+}

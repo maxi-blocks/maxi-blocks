@@ -1,0 +1,130 @@
+{
+  "active-border-top-left-radius-general": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-xxl": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-xl": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-l": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-m": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-s": {
+    "type": "number"
+  },
+  "active-border-top-left-radius-xs": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-general": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-xxl": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-xl": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-l": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-m": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-s": {
+    "type": "number"
+  },
+  "active-border-top-right-radius-xs": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-general": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-xxl": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-xl": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-l": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-m": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-s": {
+    "type": "number"
+  },
+  "active-border-bottom-right-radius-xs": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-general": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-xxl": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-xl": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-l": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-m": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-s": {
+    "type": "number"
+  },
+  "active-border-bottom-left-radius-xs": {
+    "type": "number"
+  },
+  "active-border-sync-radius-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-border-sync-radius-xxl": {
+    "type": "string"
+  },
+  "active-border-sync-radius-xl": {
+    "type": "string"
+  },
+  "active-border-sync-radius-l": {
+    "type": "string"
+  },
+  "active-border-sync-radius-m": {
+    "type": "string"
+  },
+  "active-border-sync-radius-s": {
+    "type": "string"
+  },
+  "active-border-sync-radius-xs": {
+    "type": "string"
+  },
+  "active-border-unit-radius-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-border-unit-radius-xxl": {
+    "type": "string"
+  },
+  "active-border-unit-radius-xl": {
+    "type": "string"
+  },
+  "active-border-unit-radius-l": {
+    "type": "string"
+  },
+  "active-border-unit-radius-m": {
+    "type": "string"
+  },
+  "active-border-unit-radius-s": {
+    "type": "string"
+  },
+  "active-border-unit-radius-xs": {
+    "type": "string"
+  }
+}

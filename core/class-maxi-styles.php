@@ -59,6 +59,7 @@ class MaxiBlocks_Styles
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
+        add_action('save_post', [$this, 'get_styles_from_blocks'], 10, 4);
     }
 
     public function write_log($log)
@@ -365,24 +366,84 @@ class MaxiBlocks_Styles
         );
 
         if (!$is_template) {
-            $styles_test = self::get_styles_from_blocks();
+            //$this->write_log('get_styles_from_blocks');
+            global $post;
 
-            if (!empty($styles_test)) {
-                $prev_content = $content_array[0]->prev_css_value;
-                $content = $content_array[0];
+            if (!$post || !isset($post->ID)) {
+                return false;
+            }
 
-                $content->css_value = $styles_test;
-                $content->prev_css_value = $styles_test;
+            $blocks = parse_blocks($post->post_content);
 
-                if ($prev_content) {
-                    if ($prev_content !== $styles_test) {
-                        // var_dump($prev_content);
-                        // var_dump($styles_test);
-                    }
+            if (!$blocks || empty($blocks)) {
+                return false;
+            }
+
+            $styles = '';
+
+            // $this->write_log('blocks');
+            // $this->write_log($blocks);
+
+            foreach ($blocks as $block) {
+                // $this->write_log('block');
+                // $this->write_log($block);
+                $props = $block['attrs'];
+                if(empty($props)) {
+                    continue;
+                }
+                $style_id = $props['styleID'];
+                // $this->write_log('style id');
+                // $this->write_log($style_id);
+                if(!$style_id) {
+                    continue;
                 }
 
-                return json_decode(json_encode($content), true);
+                $block_styles = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT css_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        $style_id
+                    ),
+                );
+
+                // $this->write_log('block_styles');
+                // $this->write_log($block_styles);
+
+                $styles = $styles.$block_styles;
+
             }
+
+            // $this->write_log('styles');
+            // $this->write_log($styles);
+
+
+            if ($styles === '') {
+                return false;
+            }
+
+            $content = $content_array[0];
+
+            $content->css_value = $styles;
+            $content->prev_css_value = $styles;
+
+            return json_decode(json_encode($content), true);
+            //  $styles_test = self::get_styles_from_blocks();
+
+            // if (!empty($styles_test)) {
+            //     $prev_content = $content_array[0]->prev_css_value;
+            //     $content = $content_array[0];
+
+            //     $content->css_value = $styles_test;
+            //     $content->prev_css_value = $styles_test;
+
+            //     if ($prev_content) {
+            //         if ($prev_content !== $styles_test) {
+            //             // var_dump($prev_content);
+            //             // var_dump($styles_test);
+            //         }
+            //     }
+
+            //     return json_decode(json_encode($content), true);
+            // }
         }
 
         if (!$content_array || empty($content_array)) {
@@ -425,27 +486,28 @@ class MaxiBlocks_Styles
             $tempStyles[] = $this->get_styles_from_block($block);
         }
 
-        $styles = array_merge($styles, ...$tempStyles);
+        // $styles = array_merge($styles, ...$tempStyles);
 
-        if (!$styles || empty($styles)) {
-            return false;
-        }
+        // if (!$styles || empty($styles)) {
+        //     return false;
+        // }
 
-        $resolved_styles = style_resolver($styles);
+        // $resolved_styles = style_resolver($styles);
         //$this->write_log('resolved_styles');
         //$this->write_log($resolved_styles);
-        $frontend_styles = frontend_style_generator($resolved_styles);
+        //  $frontend_styles = frontend_style_generator($resolved_styles);
 
         //$this->write_log('$frontend_styles');
         //$this->write_log($frontend_styles);
 
         //$this->write_log('get_styles_from_blocks END');
 
-        return $frontend_styles;
+        //  return $frontend_styles;
     }
 
     public function get_styles_from_block($block, $context = null)
     {
+        global $wpdb;
 
         $styles = [];
 
@@ -455,7 +517,7 @@ class MaxiBlocks_Styles
 
         $block_name = $block['blockName'];
 
-        //$this->write_log('get_styles_from_block '.$block_name);
+        $this->write_log('get_styles_from_block '.$block_name);
 
         if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
             return $styles;
@@ -464,9 +526,13 @@ class MaxiBlocks_Styles
         $props = $block['attrs'];
         $block_style = $props['blockStyle'];
 
+        // $this->write_log('$props');
+        // $this->write_log($props);
+
+        $style_id = $props['styleID'];
+
         $block_instance = null;
 
-        $start_time1 = microtime(true);
         switch($block_name) {
             case 'maxi-blocks/group-maxi':
                 if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
@@ -529,51 +595,24 @@ class MaxiBlocks_Styles
                 }
                 break;
         }
-        $end_time1 = microtime(true);
 
-        $execution_time1 = $end_time1 - $start_time1;
-        $execution_time1 = number_format($execution_time1, 2, '.', '');
-
-
-        $this->write_log('get_instance '.$block_name.' '.$execution_time1);
+        $this->write_log('$style_id '.$block_name.' '.$style_id);
 
         //$this->write_log('$props ');
-        $start_time2 = microtime(true);
-        $props = $block_instance->get_block_attributes($props);
-        $end_time2 = microtime(true);
-        $execution_time2 = $end_time2 - $start_time2;
-        $execution_time2 = number_format($execution_time2, 2, '.', '');
 
-        $this->write_log('get_block_attributes '.$block_name.' '.$execution_time2);
+        $props = $block_instance->get_block_attributes($props);
+
+
         //$this->write_log('$props END');
         //$this->write_log('$customCss');
-        $start_time3 = microtime(true);
         $customCss = $block_instance->get_block_custom_css($props);
-        $end_time3 = microtime(true);
-        $execution_time3 = $end_time3 - $start_time3;
-        $execution_time3 = number_format($execution_time3, 2, '.', '');
-        $this->write_log('get_block_custom_css '.$block_name.' '.$execution_time3);
-        //$this->write_log('$customCss END');
-        //$this->write_log('$sc_props');
-        $start_time4 = microtime(true);
-        $sc_props = $block_instance->get_block_sc_vars($block_style);
-        $end_time4 = microtime(true);
-        $execution_time4 = $end_time4 - $start_time4;
-        $execution_time4 = number_format($execution_time4, 2, '.', '');
-        $this->write_log('get_block_sc_vars '.$block_name.' '.$execution_time4);
-        //$this->write_log('$sc_props END');
-        //$this->write_log('$styles');
-        // //$this->write_log('$props');
-        // //$this->write_log($props);
-        $start_time5 = microtime(true);
-        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
-        $end_time5 = microtime(true);
-        $execution_time5 = $end_time5 - $start_time5;
-        $execution_time5 = number_format($execution_time5, 2, '.', '');
 
-        $this->write_log('get_styles '.$block_name.' '.$execution_time5);
-        // $styles = [];
-        //$this->write_log('$styles END');
+
+        $sc_props = $block_instance->get_block_sc_vars($block_style);
+
+
+        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
+
 
         $inner_blocks = $block['innerBlocks'];
 
@@ -609,20 +648,52 @@ class MaxiBlocks_Styles
         }
         //$this->write_log('context END');
 
-        $start_time6 = microtime(true);
         if ($inner_blocks && !empty($inner_blocks)) {
             foreach ($inner_blocks as $inner_block) {
                 $styles = array_merge($styles, $this->get_styles_from_block($inner_block, $context));
             }
         }
-        $end_time6 = microtime(true);
-        $execution_time6 = $end_time6 - $start_time6;
-        $execution_time6 = number_format($execution_time6, 2, '.', '');
 
-        $this->write_log('$inner_blocks '.$block_name.' '.$execution_time6);
+        // $this->write_log('$styles');
+        // $this->write_log($styles);
 
-        //$this->write_log('get_styles_from_blocks END '.$block_name);
-        //$this->write_log('===========================================');
+        $resolved_styles = style_resolver($styles);
+        $frontend_styles = frontend_style_generator($resolved_styles);
+
+        $exists = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $style_id
+            ),
+            OBJECT
+        );
+
+        if (!empty($exists)) {
+            // Update the existing row.
+            $old_css = $exists->css_value;
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
+					SET css_value = %s, prev_css_value = %s
+					WHERE block_style_id = %s",
+                    $frontend_styles,
+                    $old_css,
+                    $style_id
+                )
+            );
+        } else {
+            // Insert a new row.
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value)
+					VALUES (%s, %s, %s)",
+                    $style_id,
+                    $frontend_styles,
+                    ''
+                )
+            );
+        }
+
 
         return $styles;
     }

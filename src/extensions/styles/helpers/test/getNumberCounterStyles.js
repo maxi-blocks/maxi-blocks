@@ -32,6 +32,7 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-status': true,
 			'number-counter-preview': true,
 			'number-counter-percentage-sign-status': false,
+			'number-counter-percentage-sign-position-status': false,
 			'number-counter-rounded-status': false,
 			'number-counter-circle-status': false,
 			'number-counter-start': 0,

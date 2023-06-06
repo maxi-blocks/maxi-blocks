@@ -590,7 +590,10 @@ const MaxiToolbar = memo(
 							blockName={name}
 							linkSettings={linkSettings}
 							onChange={(linkSettings, obj) =>
-								maxiSetAttributes({ linkSettings, ...obj })
+								maxiSetAttributes({
+									_lse: linkSettings,
+									...obj,
+								})
 							}
 							clientId={clientId}
 							textLevel={textLevel}
@@ -602,7 +605,10 @@ const MaxiToolbar = memo(
 							])}
 							blockName={name}
 							onChange={(linkSettings, obj) =>
-								maxiSetAttributes({ linkSettings, ...obj })
+								maxiSetAttributes({
+									_lse: linkSettings,
+									...obj,
+								})
 							}
 							isList={isList}
 							linkSettings={linkSettings}

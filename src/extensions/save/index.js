@@ -39,7 +39,7 @@ const allowedBlocks = [
 
 const withSave = (element, blockType, attributes) => {
 	const [linkSettings, dcStatus] = getAttributesValue({
-		target: ['_lse', , 'dc-status'],
+		target: ['_lse', 'dc.s'],
 		props: attributes,
 	});
 

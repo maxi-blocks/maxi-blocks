@@ -102,26 +102,25 @@ const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
 		if (isEmpty(newPostIdOptions)) {
-			if (relation === 'author') newValues['dc-error'] = relation;
+			if (relation === 'author') newValues.dc_er = relation;
 
 			if (['tags', 'media'].includes(type)) {
-				newValues['dc-error'] = type;
-				disabledType(type);
+				newValues.dc_er = type;
+				disabledType(type, contentType);
 			}
 
 			return { newValues, newPostIdOptions: [] };
 		}
-		if (relation === 'author') newValues['dc-error'] = '';
+		if (relation === 'author') newValues.dc_er = '';
 
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			newValues['dc-id'] = Number(data[0].id);
+			newValues.dc_id = Number(data[0].id);
 			idFields.current = data[0].id;
 		}
 
 		// Ensures first field is selected
-		if (!field)
-			newValues['dc-field'] = fieldOptions[contentType][type][0].value;
+		if (!field) newValues.dc_f = fieldOptions[contentType][type][0].value;
 
 		return { newValues, newPostIdOptions };
 	}

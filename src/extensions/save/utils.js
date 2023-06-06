@@ -6,13 +6,13 @@ const getLinkAttributesFromLinkSettings = (
 	dcLinkStatus
 ) => {
 	let rel = '';
-	if (linkSettings.nofollow) rel += ' nofollow';
-	if (linkSettings.sponsored) rel += ' sponsored';
-	if (linkSettings.ugc) rel += ' ugc';
+	if (linkSettings?.nofollow) rel += ' nofollow';
+	if (linkSettings?.sponsored) rel += ' sponsored';
+	if (linkSettings?.ugc) rel += ' ugc';
 
 	const href =
 		dcStatus && dcLinkStatus ? '$link-to-replace' : linkSettings.url;
-	const target = linkSettings.opensInNewTab ? '_blank' : '_self';
+	const target = linkSettings?.opensInNewTab ? '_blank' : '_self';
 
 	return { rel, href, target };
 };

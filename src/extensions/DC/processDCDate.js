@@ -2,17 +2,17 @@ import moment from 'moment';
 
 export const formatDateOptions = props => {
 	const {
-		'dc-day': day,
-		'dc-era': era,
-		'dc-hour': hour,
-		'dc-hour12': hour12,
-		'dc-minute': minute,
-		'dc-month': month,
-		'dc-second': second,
-		'dc-timezone': timeZone,
-		'dc-timezone-name': timeZoneName,
-		'dc-weekday': weekday,
-		'dc-year': year,
+		dc_da: day,
+		dc_era: era,
+		dc_hou: hour,
+		dc_h12: hour12,
+		dc_min: minute,
+		dc_mo: month,
+		dc_sec: second,
+		dc_tz: timeZone,
+		dc_tzn: timeZoneName,
+		dc_wd: weekday,
+		dc_y: year,
 	} = props;
 
 	return {

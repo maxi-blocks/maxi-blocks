@@ -133,10 +133,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				select('core/block-editor').getBlockAttributes(child);
 
 			if (
-				!isEmpty(attributes.linkSettings?.url) ||
+				!isEmpty(attributes._lse?.url) ||
 				(select('core/block-editor').getBlockName(child) ===
 					'maxi-blocks/text-maxi' &&
-					attributes.content.includes('<a '))
+					attributes._c.includes('<a '))
 			) {
 				childHasLink = true;
 				break;
@@ -144,15 +144,15 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}
 		if (childHasLink) {
 			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
+				_lse: {
+					...extraProps.attributes._lse,
 					disabled: true,
 				},
 			});
-		} else if (extraProps.attributes.linkSettings.disabled) {
+		} else if (extraProps.attributes._lse.disabled) {
 			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
+				_lse: {
+					...extraProps.attributes._lse,
 					disabled: false,
 				},
 			});

@@ -30,12 +30,12 @@ const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
 	const {
-		'dc-type': type,
-		'dc-field': field,
-		'dc-limit': limit,
-		'dc-custom-date': isCustomDate,
-		'dc-format': format,
-		'dc-locale': locale,
+		dc_ty: type,
+		dc_f: field,
+		dc_lim: limit,
+		dc_cd: isCustomDate,
+		dc_fo: format,
+		dc_loc: locale,
 	} = dataRequest;
 
 	let contentValue;

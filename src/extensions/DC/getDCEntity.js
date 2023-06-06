@@ -28,12 +28,12 @@ const nameDictionary = {
 
 const getDCEntity = async dataRequest => {
 	const {
-		'dc-type': type,
-		'dc-id': id,
-		'dc-error': error,
-		'dc-show': show,
-		'dc-relation': relation,
-		'dc-author': author,
+		dc_ty: type,
+		dc_id: id,
+		dc_er: error,
+		dc_sho: show,
+		dc_rel: relation,
+		dc_au: author,
 	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);

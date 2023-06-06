@@ -32,7 +32,7 @@ const save = props => {
 		dcStatus,
 		dcLinkStatus,
 	] = getAttributesValue({
-		target: ['_lse', 'i_on', 'i_c', 'i_pos', 'dc-status', 'dc-link-status'],
+		target: ['_lse', 'i_on', 'i_c', 'i_pos', 'dc.s', 'dc_l.s'],
 		props: attributes,
 	});
 

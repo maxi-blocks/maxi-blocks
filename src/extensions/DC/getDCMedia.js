@@ -12,7 +12,7 @@ import getDCEntity from './getDCEntity';
 const getDCMedia = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
-	const { 'dc-field': field } = dataRequest;
+	const { dc_f: field } = dataRequest;
 
 	if (!(field in data)) return null;
 

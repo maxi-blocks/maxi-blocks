@@ -67,7 +67,7 @@ const Link = props => {
 					select('core/block-editor').getBlockAttributes(child);
 
 				if (
-					!isEmpty(attributes.linkSettings?.url) ||
+					!isEmpty(attributes._lse?.url) ||
 					(select('core/block-editor').getBlockName(child) ===
 						'maxi-blocks/text-maxi' &&
 						attributes._c.includes('<a '))

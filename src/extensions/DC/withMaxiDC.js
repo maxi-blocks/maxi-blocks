@@ -36,13 +36,13 @@ const withMaxiDC = createHigherOrderComponent(
 			);
 
 			const {
-				'dc-status': status,
-				'dc-content': content,
-				'dc-type': type,
-				'dc-field': field,
-				'dc-id': id,
-				'dc-custom-date': isCustomDate,
-				'dc-link-status': linkStatus,
+				'dc.s': status,
+				dc_c: content,
+				dc_ty: type,
+				dc_f: field,
+				dc_id: id,
+				dc_cd: isCustomDate,
+				'dc_l.s': linkStatus,
 			} = dynamicContentProps;
 
 			const fetchDcData = useCallback(async () => {
@@ -57,8 +57,7 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent,
 					} = dispatch('core/block-editor');
 
-					const newLinkSettings =
-						ownProps.attributes.linkSettings ?? {};
+					const newLinkSettings = ownProps.attributes._lse ?? {};
 					let updateLinkSettings = false;
 					const dcLink = await getDCLink(dynamicContentProps);
 					const isSameLink = dcLink === newLinkSettings.url;
@@ -81,13 +80,12 @@ const withMaxiDC = createHigherOrderComponent(
 						if (newContent !== content) {
 							markNextChangeAsNotPersistent();
 							setAttributes({
-								'dc-content': newContent,
+								dc_c: newContent,
 								...(isCustomDate && {
-									'dc-custom-format':
-										getDCDateCustomFormat(newContent),
+									dc_cfo: getDCDateCustomFormat(newContent),
 								}),
 								...(updateLinkSettings && {
-									linkSettings: newLinkSettings,
+									_lse: newLinkSettings,
 								}),
 							});
 						}
@@ -99,10 +97,10 @@ const withMaxiDC = createHigherOrderComponent(
 						if (isNil(mediaContent)) {
 							markNextChangeAsNotPersistent();
 							setAttributes({
-								'dc-media-id': null,
-								'dc-media-url': null,
+								dc_mid: null,
+								dc_mur: null,
 								...(updateLinkSettings && {
-									linkSettings: newLinkSettings,
+									_lse: newLinkSettings,
 								}),
 							});
 						} else {
@@ -111,13 +109,13 @@ const withMaxiDC = createHigherOrderComponent(
 							if (!isNil(id) && !isNil(url)) {
 								markNextChangeAsNotPersistent();
 								setAttributes({
-									'dc-media-id': id,
-									'dc-media-url': url,
-									'dc-media-caption': sanitizeDCContent(
+									dc_mid: id,
+									dc_mur: url,
+									dc_mc: sanitizeDCContent(
 										getSimpleText(caption)
 									),
 									...(updateLinkSettings && {
-										linkSettings: newLinkSettings,
+										_lse: newLinkSettings,
 									}),
 								});
 							}

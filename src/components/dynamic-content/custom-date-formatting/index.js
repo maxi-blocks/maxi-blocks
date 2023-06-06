@@ -146,7 +146,7 @@ const DateFormatting = props => {
 				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`
 			);
 			if (regex.test(str)) {
-				changeProps({ 'dc-format': str });
+				changeProps({ dc_fo: str });
 			}
 		}
 	};

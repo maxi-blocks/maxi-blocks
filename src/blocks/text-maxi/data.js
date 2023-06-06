@@ -199,8 +199,10 @@ const interactionBuilderSettings = {
 			helper: props => getTypographyStyles({ ...props }),
 			target: contentClass,
 		},
+		getCanvasSettings({ name }).map(ibSettings => {
+			return ibSettings;
+		}),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

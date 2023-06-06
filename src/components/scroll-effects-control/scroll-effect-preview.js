@@ -1,3 +1,5 @@
+import { scrollTypes } from '../../extensions/attributes/defaults/scroll';
+
 const setTransform = (el, transform, type) => {
 	const oldTransform = el.style.transform;
 
@@ -53,7 +55,7 @@ export const applyEffect = (type, uniqueID, viewport) => {
 		`[class*='maxi-block'][uniqueID=${uniqueID}]`
 	)[0];
 
-	const scrollType = element?.getAttribute(`data-scroll-effect-${type}-g`);
+	const scrollTypeData = element?.getAttribute(`data-scroll-effect${type}-g`);
 
 	const effectSettings = data => {
 		const response = {};
@@ -71,9 +73,11 @@ export const applyEffect = (type, uniqueID, viewport) => {
 	};
 
 	const { speedValue, easingValue, delayValue, start, mid, end } =
-		effectSettings(scrollType);
+		effectSettings(scrollTypeData);
 
-	const applyStyle = (el, type, value) => {
+	const applyStyle = (el, shortType, value) => {
+		const type = scrollTypes.find(([_, short]) => short === shortType)?.[0];
+
 		switch (type) {
 			case 'rotate':
 				setTransform(el, `rotate(${value}deg)`, 'rotate');

@@ -42,42 +42,42 @@ const ScrollEffectsUniqueControl = props => {
 	const labels = ['Start', 'Mid', 'End'];
 
 	const getSpecialLabels = (type, label) => {
-		const labelLowCase = lowerCase(label);
+		const labelLowCase = label === 'Start' ? 'st' : lowerCase(label)?.[0];
 		const response = {};
 		switch (type) {
-			case 'vertical':
+			case '_v':
 				response.label = `${label} position (px)`;
-				response.attr = `offset-${labelLowCase}`;
+				response.attr = `_of.${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
-			case 'horizontal':
+			case '_ho':
 				response.label = `${label} position (px)`;
-				response.attr = `offset-${labelLowCase}`;
+				response.attr = `_of.${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
-			case 'rotate':
+			case '_rot':
 				response.label = `${label} angle (degrees)`;
-				response.attr = `rotate-${labelLowCase}`;
+				response.attr = `_rot.${labelLowCase}`;
 				response.min = -360;
 				response.max = 360;
 				break;
-			case 'scale':
+			case '_sc':
 				response.label = `${label} scale (%)`;
-				response.attr = `scale-${labelLowCase}`;
+				response.attr = `_sc.${labelLowCase}`;
 				response.min = 0;
 				response.max = 1000;
 				break;
-			case 'fade':
+			case '_fa':
 				response.label = `${label} opacity (%)`;
-				response.attr = `opacity-${labelLowCase}`;
+				response.attr = `_o.${labelLowCase}`;
 				response.min = 0;
 				response.max = 100;
 				break;
-			case 'blur':
+			case '_blu':
 				response.label = `${label} blur (px)`;
-				response.attr = `blur-${labelLowCase}`;
+				response.attr = `_blu.${labelLowCase}`;
 				response.min = 0;
 				response.max = 20;
 				break;
@@ -93,19 +93,20 @@ const ScrollEffectsUniqueControl = props => {
 			<SettingTabsControl
 				items={labels.map(label => {
 					const special = getSpecialLabels(type, label);
+
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),
 						content: (
 							<AdvancedNumberControl
 								label={__(special?.label, 'maxi-blocks')}
 								value={getLastBreakpointAttribute({
-									target: `scroll-${type}-${special?.attr}`,
+									target: `sc${type}${special?.attr}`,
 									breakpoint,
 									attributes: values,
 								})}
 								onChangeValue={val => {
 									onChange({
-										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+										[`sc${type}${special?.attr}-${breakpoint}`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
@@ -118,9 +119,9 @@ const ScrollEffectsUniqueControl = props => {
 								max={special?.max}
 								onReset={() => {
 									onChange({
-										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+										[`sc${type}${special?.attr}-${breakpoint}`]:
 											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-g`
+												`sc${type}${special?.attr}-g`
 											),
 										isReset: true,
 									});
@@ -129,12 +130,12 @@ const ScrollEffectsUniqueControl = props => {
 											type,
 											uniqueID,
 											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-g`
+												`sc${type}${special?.attr}-g`
 											)
 										);
 								}}
 								initialPosition={getDefaultAttribute(
-									`scroll-${type}-${special?.attr}-g`
+									`sc${type}${special?.attr}-g`
 								)}
 							/>
 						),

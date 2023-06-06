@@ -29,8 +29,11 @@ const save = props => {
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
-			{getAttributesValue({ target: 'divider-border-style', props }) !==
-				'none' && <hr className='maxi-divider-block__divider' />}
+			{getAttributesValue({
+				target: 'di-bo_s',
+				props: attributes,
+				breakpoint: 'g',
+			}) !== 'none' && <hr className='maxi-divider-block__divider' />}
 		</MaxiBlock.save>
 	);
 };

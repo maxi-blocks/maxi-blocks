@@ -1,32 +1,37 @@
 export const scrollTypes = [
-	'vertical',
-	'horizontal',
-	'rotate',
-	'scale',
-	'fade',
-	'blur',
+	['vertical', '_v'],
+	['horizontal', '_ho'],
+	['rotate', '_rot'],
+	['scale', '_sc'],
+	['fade', '_fa'],
+	['blur', '_blu'],
 ];
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const response = {
-	shortcutEffect: {
+	_sef: {
 		type: 'number',
 		default: 0,
+		longLabel: 'shortcutEffect',
 	},
-	shortcutEffectType: {
+	_set: {
 		type: 'object',
+		longLabel: 'shortcutEffectType',
 	},
 };
 
 const generateAttr = (
 	scrollType,
 	attr,
+	shortAttr,
 	valueType = 'number',
 	defaultValue,
 	breakpoint = 'g'
 ) => {
-	const key = `scroll-${scrollType}-${attr}-${breakpoint}`;
+	const key = `scroll-${scrollType[0]}-${attr}-${breakpoint}`;
+	const shortKey = `sc${scrollType[1]}${shortAttr}-${breakpoint}`;
+
 	const value =
 		defaultValue !== 'noDefault'
 			? {
@@ -37,7 +42,7 @@ const generateAttr = (
 					type: valueType,
 			  };
 
-	response[key] = value;
+	response[shortKey] = { ...value, longLabel: key };
 
 	return null;
 };
@@ -45,107 +50,154 @@ const generateAttr = (
 const generateUniqueAttributes = (
 	type,
 	attr,
+	shortAttr,
 	defaults = [0, 0, 0],
 	breakpoint = 'g'
 ) => {
-	generateAttr(type, `${attr}-start`, 'number', defaults[0], breakpoint);
-	generateAttr(type, `${attr}-mid`, 'number', defaults[1], breakpoint);
-	generateAttr(type, `${attr}-end`, 'number', defaults[2], breakpoint);
+	generateAttr(
+		type,
+		`${attr}-start`,
+		`${shortAttr}.st`,
+		'number',
+		defaults[0],
+		breakpoint
+	);
+	generateAttr(
+		type,
+		`${attr}-mid`,
+		`${shortAttr}.m`,
+		'number',
+		defaults[1],
+		breakpoint
+	);
+	generateAttr(
+		type,
+		`${attr}-end`,
+		`${shortAttr}.e`,
+		'number',
+		defaults[2],
+		breakpoint
+	);
 
 	return null;
 };
 
 export const scroll = (() => {
 	Object.values(scrollTypes).forEach(type => {
-		generateAttr(type, 'status', 'boolean', false);
-		generateAttr(type, 'preview-status', 'boolean', false);
-		generateAttr(type, 'easing', 'string', 'ease');
-		generateAttr(type, 'speed', 'number', 500);
-		generateAttr(type, 'delay', 'number', 0);
-		generateAttr(type, 'viewport-top', 'string', 'mid'); // 100
-		generateAttr(type, 'status-reverse', 'boolean', true);
+		generateAttr(type, 'status', '.s', 'boolean', false);
+		generateAttr(type, 'preview-status', '.ps', 'boolean', false);
+		generateAttr(type, 'easing', '_ea', 'string', 'ease');
+		generateAttr(type, 'speed', '_spe', 'number', 500);
+		generateAttr(type, 'delay', '_de', 'number', 0);
+		generateAttr(type, 'viewport-top', '_vpt', 'string', 'mid'); // 100
+		generateAttr(type, 'status-reverse', '_sr', 'boolean', true);
 
-		if (type === 'vertical') {
-			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
+		if (type[0] === 'vertical') {
+			generateUniqueAttributes(type, 'offset', '_of', [-400, 0, 400]);
 		}
 
-		if (type === 'horizontal') {
-			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
+		if (type[0] === 'horizontal') {
+			generateUniqueAttributes(type, 'offset', '_of', [-200, 0, 200]);
 		}
 
-		if (type === 'rotate') {
-			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
+		if (type[0] === 'rotate') {
+			generateUniqueAttributes(type, 'rotate', '_rot', [90, 0, 0]);
 		}
 
-		if (type === 'scale') {
-			generateUniqueAttributes(type, 'scale', [70, 100, 100]);
+		if (type[0] === 'scale') {
+			generateUniqueAttributes(type, 'scale', '_sc', [70, 100, 100]);
 		}
 
-		if (type === 'fade') {
-			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
+		if (type[0] === 'fade') {
+			generateUniqueAttributes(type, 'opacity', '_o', [0, 100, 100]);
 		}
 
-		if (type === 'blur') {
-			generateUniqueAttributes(type, 'blur', [10, 0, 0]);
+		if (type[0] === 'blur') {
+			generateUniqueAttributes(type, 'blur', '_blu', [10, 0, 0]);
 		}
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
 		Object.values(scrollTypes).forEach(type => {
-			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
-			generateAttr(type, 'easing', 'string', 'noDefault', breakpoint);
-			generateAttr(type, 'speed', 'number', 'noDefault', breakpoint);
-
 			generateAttr(
 				type,
-				'viewport-top',
+				'status',
+				'.s',
+				'boolean',
+				'noDefault',
+				breakpoint
+			);
+			generateAttr(
+				type,
+				'easing',
+				'_ea',
+				'string',
+				'noDefault',
+				breakpoint
+			);
+			generateAttr(
+				type,
+				'speed',
+				'_spe',
 				'number',
 				'noDefault',
 				breakpoint
 			);
 
-			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
+			generateAttr(
+				type,
+				'viewport-top',
+				'_vpt',
+				'number',
+				'noDefault',
+				breakpoint
+			);
 
-			if (type === 'vertical' || type === 'horizontal') {
+			if (type[0] === 'vertical' || type[0] === 'horizontal') {
 				generateUniqueAttributes(
 					type,
 					'offset',
+					'_of',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);
 			}
 
-			if (type === 'rotate') {
+			if (type[0] === 'rotate') {
 				generateUniqueAttributes(
 					type,
 					'rotate',
+					'_rot',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);
 			}
 
-			if (type === 'scale') {
+			if (type[0] === 'scale') {
 				generateUniqueAttributes(
 					type,
 					'scale',
+					'_sc',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);
 			}
 
-			if (type === 'fade') {
+			if (type[0] === 'fade') {
 				generateUniqueAttributes(
 					type,
 					'opacity',
+					'_o',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);
 			}
 
-			if (type === 'blur') {
+			if (type[0] === 'blur') {
 				generateUniqueAttributes(
 					type,
 					'blur',
+					'_blu',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);

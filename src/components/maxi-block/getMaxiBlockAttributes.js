@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
 const getMaxiBlockAttributes = props => {
 	const {
 		name,
-		deviceType,
+		deviceType = 'g',
 		baseBreakpoint,
 		attributes,
 		clientId,
@@ -45,64 +45,51 @@ const getMaxiBlockAttributes = props => {
 	const hasLink =
 		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
-	const scrollSettingsShared = [
-		'speed',
-		'delay',
-		'easing',
-		'viewport-top',
-		'status-reverse',
-	];
+	const scrollSettingsShared = ['_spe', '_de', '_ea', '_vpt', '_sr'];
 
 	const scrollSettingsVertical = [
 		...scrollSettingsShared,
-		'offset-start',
-		'offset-mid',
-		'offset-end',
+		'_of.st',
+		'_of.m',
+		'_of.e',
 	];
 
 	const scrollSettingsRotate = [
 		...scrollSettingsShared,
-		'rotate-start',
-		'rotate-mid',
-		'rotate-end',
+		'_rot.st',
+		'_rot.m',
+		'_rot.e',
 	];
 
 	const scrollSettingsFade = [
 		...scrollSettingsShared,
-		'opacity-start',
-		'opacity-mid',
-		'opacity-end',
+		'_o.st',
+		'_o.m',
+		'_o.e',
 	];
 
 	const scrollSettingsBlur = [
 		...scrollSettingsShared,
-		'blur-start',
-		'blur-mid',
-		'blur-end',
+		'_blu.st',
+		'_blu.m',
+		'_blu.e',
 	];
 
 	const scrollSettingsScale = [
 		...scrollSettingsShared,
-		'scale-start',
-		'scale-mid',
-		'scale-end',
+		'_sc.st',
+		'_sc.m',
+		'_sc.e',
 	];
 
-	const scrollTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
-	];
+	const scrollTypes = ['_v', '_ho', '_rot', '_sc', '_fa', '_blu'];
 
 	const dataScrollTypeValue = () => {
 		let responseString = '';
 		scrollTypes.forEach(type => {
 			if (
 				getAttributesValue({
-					target: `scroll-${type}-status`,
+					target: `sc${type}.s`,
 					props: attributes,
 					breakpoint: deviceType,
 				})
@@ -124,22 +111,22 @@ const getMaxiBlockAttributes = props => {
 				let scrollSettings;
 
 				switch (type) {
-					case 'vertical':
+					case '_v':
 						scrollSettings = scrollSettingsVertical;
 						break;
-					case 'horizontal':
+					case '_ho':
 						scrollSettings = scrollSettingsVertical;
 						break;
-					case 'rotate':
+					case '_rot':
 						scrollSettings = scrollSettingsRotate;
 						break;
-					case 'fade':
+					case '_fa':
 						scrollSettings = scrollSettingsFade;
 						break;
-					case 'blur':
+					case '_blu':
 						scrollSettings = scrollSettingsBlur;
 						break;
-					case 'scale':
+					case '_sc':
 						scrollSettings = scrollSettingsScale;
 						break;
 					default:
@@ -148,7 +135,7 @@ const getMaxiBlockAttributes = props => {
 
 				scrollSettings.forEach(setting => {
 					const scrollSettingValue = getAttributesValue({
-						target: `scroll-${type}-${setting}}`,
+						target: `sc${type}${setting}`,
 						props: attributes,
 						breakpoint: deviceType,
 					});
@@ -157,7 +144,7 @@ const getMaxiBlockAttributes = props => {
 				});
 
 				if (!isEmpty(responseString))
-					scroll[`data-scroll-effect-${type}-g`] =
+					scroll[`data-scroll-effect${type}-g`] =
 						responseString.trim();
 			}
 		});

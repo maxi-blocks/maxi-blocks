@@ -270,7 +270,15 @@ const dictionary = {
 		'row-pattern': '_rp',
 	},
 	scroll: {
-		// It's a whole world lol
+		'preview-status': '.ps',
+		speed: '_spe',
+		delay: '_de',
+		'viewport-top': '_vpt',
+		'status-reverse': '_sr',
+		offset: '_of',
+		fade: '_fa',
+		shortEffect: '_sef',
+		shortEffectType: '_set',
 	},
 	searchButton: {
 		buttonSkin: '_bus',
@@ -517,6 +525,7 @@ export const prefixesDictionary = {
 	'placeholder-': 'pla-',
 	'play-': 'pl-',
 	'popup-': 'p-',
+	scroll: 'sc-',
 	'second-': 'se-',
 	'shape-divider-bottom-': 'sdb-',
 	'shape-divider-top-': 'sdt-',
@@ -550,6 +559,9 @@ export const suffixesDictionary = {
 	'-sync': '.sy',
 	'-global': '.g',
 	'-all': '.a',
+	'-start': '.st',
+	'-end': '.e',
+	'-mid': '.m',
 	// '-g': '-g',
 };
 

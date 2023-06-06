@@ -78,26 +78,26 @@ class ScrollEffects {
 
 	applyStyle(el, type, value) {
 		switch (type) {
-			case 'rotate':
+			case '_rot':
 				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
 				break;
-			case 'fade':
+			case '_fa':
 				this.setOpacity(el, `${value}%`);
 				break;
-			case 'scale':
+			case '_sc':
 				this.setTransform(
 					el,
 					`scale3d(${value}%, ${value}%, ${value}%)`,
 					'scale'
 				);
 				break;
-			case 'blur':
+			case '_blu':
 				this.setBlur(el, `${value}px`);
 				break;
-			case 'vertical':
+			case '_v':
 				this.setVertical(el, value);
 				break;
-			case 'horizontal':
+			case '_ho':
 				this.setHorizontal(el, value);
 				break;
 			default:
@@ -138,7 +138,7 @@ class ScrollEffects {
 	};
 
 	getScrollData = (el, type) => {
-		return el.getAttribute(`data-scroll-effect-${type}-general`);
+		return el.getAttribute(`data-scroll-effect${type}-g`);
 	};
 
 	startingTransform(element, type) {
@@ -249,22 +249,22 @@ class ScrollEffects {
 					this.getScrollSetting(data);
 
 				switch (type) {
-					case 'vertical':
+					case '_v':
 						transition += `top ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
-					case 'horizontal':
+					case '_ho':
 						transition += `left ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
-					case 'rotate':
+					case '_rot':
 						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
-					case 'scale':
+					case '_sc':
 						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
-					case 'fade':
+					case '_fa':
 						transition += `opacity ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
-					case 'blur':
+					case '_blu':
 						transition += `filter ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					default:

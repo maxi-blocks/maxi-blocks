@@ -44,9 +44,9 @@ const getScrollEffects = (uniqueID, scroll) => {
 	const response = Object.fromEntries(
 		Object.entries(scroll).filter(
 			([key]) =>
-				key.includes('-status-') &&
-				!key.includes('reverse') &&
-				!key.includes('preview') &&
+				key.includes('.s') &&
+				!key.includes('_sr') &&
+				!key.includes('.ps') &&
 				scroll[key]
 		)
 	);

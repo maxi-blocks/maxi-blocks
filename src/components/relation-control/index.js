@@ -364,6 +364,13 @@ const RelationControl = props => {
 											)
 										}
 									/>
+									{console.log(
+										getIBOptionsFromBlockData(
+											getClientIdFromUniqueId(
+												item.uniqueID
+											)
+										)
+									)}
 									{item.uniqueID && (
 										<>
 											<SelectControl

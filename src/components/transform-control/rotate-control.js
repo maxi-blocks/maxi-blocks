@@ -47,6 +47,9 @@ const RotateControl = props => {
 						value={isNil(x) ? '' : x}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							if (!e.key.match(/^[0-9]+$/)) e.preventDefault();
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(defaultX, y, z);
@@ -87,6 +90,9 @@ const RotateControl = props => {
 						value={isNil(y) ? '' : y}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							if (!e.key.match(/^[0-9]+$/)) e.preventDefault();
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, defaultY, z);
@@ -127,6 +133,9 @@ const RotateControl = props => {
 						value={isNil(z) ? '' : z}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							if (!e.key.match(/^[0-9]+$/)) e.preventDefault();
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, y, defaultZ);

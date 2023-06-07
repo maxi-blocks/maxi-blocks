@@ -166,6 +166,10 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
+	function inpNum(e) {
+		if (!e.key.match(/^[0-9]+$/)) e.preventDefault();
+	}
+
 	return (
 		<>
 			{enableAuto && (
@@ -218,6 +222,7 @@ const AdvancedNumberControl = props => {
 							onChangeValue(result);
 						}}
 						onKeyDown={e => {
+							inpNum(e);
 							if (
 								e.key === '-' &&
 								(enableUnit ? minValue : min) >= 0

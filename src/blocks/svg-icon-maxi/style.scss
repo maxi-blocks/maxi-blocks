@@ -3,6 +3,7 @@ body.maxi-blocks--active .maxi-svg-icon-block {
 
 	.maxi-svg-icon-block__icon {
 		display: flex;
+		z-index: 20;
 
 		svg {
 			position: relative;

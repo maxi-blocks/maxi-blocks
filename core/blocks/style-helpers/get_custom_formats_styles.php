@@ -3,10 +3,10 @@
 function get_custom_formats_styles(
     $target,
     $custom_formats,
-    $is_hover = false,
+    $block_style,
     $typography,
     $text_level,
-    $block_style
+    $is_hover = false,
 ) {
     $response = [];
 

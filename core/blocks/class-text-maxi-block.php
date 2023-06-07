@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -141,18 +141,18 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                false,
+                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                $block_style
+                false,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                true,
+                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                $block_style
+                true,
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -246,7 +246,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
@@ -262,7 +262,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
             return $response;
         }
-        
+
         public static function get_typography_hover_object($props)
         {
             $response = [
@@ -452,14 +452,14 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-            
+
                 if (!is_null($paragraphSpacingNum) && !is_null($paragraphSpacingUnit)) {
                     $response['paragraphSpacing'][$breakpoint] = [
                         'margin-top' => $paragraphSpacingNum + $paragraphSpacingUnit
                     ];
                 }
             }
-            
+
             return $response;
         }
 
@@ -470,7 +470,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $list_style = $props['listStyle'];
             $list_style_custom = $props['listStyleCustom'];
             $block_style = $props['blockStyle'];
-        
+
             $palette_attributes = get_palette_attributes([
                 'obj' => $props,
                 'prefix' => 'list-'
@@ -479,7 +479,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $palette_color = $palette_attributes['paletteColor'];
             $palette_opacity = $palette_attributes['paletteOpacity'];
             $color = $palette_attributes['color'];
-        
+
             $response['color'] = [
                 'general' => [
                     'color' => $palette_status
@@ -491,7 +491,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         : $color
                 ]
             ];
-        
+
             if ($type_of_list === 'ol') {
                 $response['listContent'] = [
                     'general' => [
@@ -507,7 +507,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 ];
             }
-        
+
             if ($list_style && $type_of_list === 'ol') {
                 $response['listStyle'] = [
                     'general' => [
@@ -515,7 +515,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 ];
             }
-        
+
             if ($list_style && $type_of_list === 'ul') {
                 $general_list_style = [];
 
@@ -524,15 +524,15 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     if (!$svg) {
                         return '';
                     }
-                
+
                     $cleaned_svg = str_replace('"', "'", $svg);
                     $cleaned_svg = preg_replace('/>\s{1,}</', '><', $cleaned_svg);
                     $cleaned_svg = preg_replace('/\s{2,}/', ' ', $cleaned_svg);
-                
+
                     if (strpos($cleaned_svg, 'http://www.w3.org/2000/svg') === false) {
                         $cleaned_svg = str_replace('<svg', "<svg xmlns='http://www.w3.org/2000/svg'", $cleaned_svg);
                     }
-                
+
                     return preg_replace_callback('/[\r\n%#()<>?[\\\]^`{|}]/', 'urlencode', $cleaned_svg);
                 }
 
@@ -544,7 +544,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     $general_list_style['content'] = "\"".$list_style_custom."\"";
                 }
             }
-        
+
             $response_list_size = [];
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -556,52 +556,52 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         'breakpoint' => $breakpoint,
                         'attributes' => $props
                     ]) === 'rtl';
-        
+
                 $list_style_position = get_last_breakpoint_attribute([
                     'target' => 'list-style-position',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-        
+
                 $size_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 0;
-        
+
                 $size_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 'px';
-        
+
                 $text_position = get_last_breakpoint_attribute([
                     'target' => 'list-text-position',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? false;
-        
+
                 $indent_marker_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 0;
-        
+
                 $indent_marker_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 'px';
-        
+
                 $indent_marker_sum = $indent_marker_num + $indent_marker_unit;
                 $marker_position = $list_style_position === 'inside' ? 0 : 'calc('.(-$indent_marker_num + $indent_marker_unit.')');
-        
+
                 $line_height_marker_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-line-height',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 0;
-        
+
                 $line_height_marker_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-line-height-unit',
                     'breakpoint' => $breakpoint,
@@ -637,9 +637,9 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     $response[$breakpoint]['text-indent'] = $indent_marker_sum;
                 }
             }
-        
+
             $response['listSize'] = $response_list_size;
-        
+
             return $response;
         }
     }

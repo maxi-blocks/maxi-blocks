@@ -167,7 +167,7 @@ function get_svg_path_fill_styles($obj, $block_style, $prefix = 'svg-', $is_hove
 }
 
 
-function get_svg_path_stroke_styles($obj, $block_style, $prefix = 'svg-', $is_hover, $use_icon_color = true)
+function get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix = 'svg-', $use_icon_color = true)
 {
     $response = [
         'label' => 'SVG Path stroke',
@@ -255,7 +255,7 @@ function get_svg_styles($params)
     $icon_type = isset($params['icon_type']) ? $params['icon_type'] : '';
 
     $pathFillStyles = get_svg_path_fill_styles($obj, $blockStyle, $prefix, $is_hover);
-    $pathStrokeStyles = get_svg_path_stroke_styles($obj, $blockStyle, $prefix, $is_hover, $use_icon_color);
+    $pathStrokeStyles = get_svg_path_stroke_styles($obj, $blockStyle, $is_hover, $prefix, $use_icon_color);
     $pathStyles = get_svg_path_styles($obj, $prefix, $is_hover);
 
     $response = array();

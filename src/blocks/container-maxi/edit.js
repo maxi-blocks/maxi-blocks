@@ -82,9 +82,6 @@ class edit extends MaxiBlockComponent {
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, styleID } = attributes;
 
-		console.log('styleID');
-		console.log(styleID);
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

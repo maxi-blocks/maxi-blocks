@@ -34,6 +34,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getIsUniqueStyleIDRepeated from './getIsUniqueStyleIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import {
@@ -60,6 +61,7 @@ import { LoopContext } from '../DC';
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import generateStyleID from '../attributes/generateStyleID';
 
 /**
  * Style Component
@@ -128,7 +130,7 @@ class MaxiBlockComponent extends Component {
 		this.areFontsLoaded = createRef(false);
 
 		const { clientId, attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, styleID } = attributes;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -139,6 +141,7 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.uniqueStyleIDChecker(styleID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -646,6 +649,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		return false;
+	}
+
+	uniqueStyleIDChecker(styleIdToCheck) {
+		if (getIsUniqueStyleIDRepeated(styleIdToCheck)) {
+			const newUniqueStyleID = generateStyleID();
+
+			this.props.attributes.styleID = newUniqueStyleID;
+			return newUniqueStyleID;
+		}
+		return styleIdToCheck;
 	}
 
 	uniqueIDChecker(idToCheck) {

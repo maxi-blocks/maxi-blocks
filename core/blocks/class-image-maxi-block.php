@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -133,18 +133,18 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                false,
+                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                $block_style
+                false,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                true,
+                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                $block_style
+                true,
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -234,14 +234,14 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
         public static function get_hover_effect_details_box_object($props)
         {
             $response = [];
-        
+
             if (isset($props['hover-border-status']) && $props['hover-border-status']) {
                 $response['border'] = get_border_styles([
                     'obj' => get_group_attributes($props, [
@@ -253,17 +253,17 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                 ]);
             }
-        
+
             $response['margin'] = get_margin_padding_styles([
                 'obj' => get_group_attributes($props, 'hoverMargin'),
                 'prefix' => 'hover-',
             ]);
-        
+
             $response['padding'] = get_margin_padding_styles([
                 'obj' => get_group_attributes($props, 'hoverPadding'),
                 'prefix' => 'hover-',
             ]);
-        
+
             $response['background'] = get_hover_effects_background_styles(
                 get_group_attributes($props, [
                     'hoverBackground',
@@ -272,22 +272,22 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 ]),
                 $props['blockStyle']
             );
-        
+
             $response['size'] = get_size_styles(
                 get_group_attributes($props, 'size')
             );
-        
+
             if (isset($props['imageRatio']) && $props['imageRatio']) {
                 $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
             }
-        
+
             return $response;
         }
 
         public static function get_hover_effect_title_text_object($props)
         {
             $response = [];
-        
+
             if (isset($props['hover-title-typography-status']) && $props['hover-title-typography-status']) {
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'hoverTitleTypography'),
@@ -295,14 +295,14 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                 ]);
             }
-        
+
             return $response;
         }
 
         public static function get_hover_effect_content_text_object($props)
         {
             $response = [];
-        
+
             if (isset($props['hover-content-typography-status']) && $props['hover-content-typography-status']) {
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'hoverContentTypography'),
@@ -310,29 +310,29 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                 ]);
             }
-        
+
             return $response;
         }
 
         public static function get_image_overflow($props)
         {
             $response = [];
-        
+
             $response['overflow'] = get_overflow_styles(
                 get_group_attributes($props, 'overflow'),
             );
-        
+
             return $response;
         }
 
         public static function get_image_wrapper_object($props)
         {
             $response = [];
-        
+
             $response['alignment'] = get_alignment_flex_styles(
                 get_group_attributes($props, 'alignment'),
             );
-        
+
             if (isset($props['hover-extension']) && $props['hover-extension']) {
                 $response['hoverExtension'] = [
                     'general' => [
@@ -340,21 +340,21 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     ],
                 ];
             }
-        
+
             $response['overflow'] = get_overflow_styles(
                 get_group_attributes($props, 'overflow'),
             );
-        
+
             $response['margin'] = get_margin_padding_styles([
                 'obj' => get_group_attributes($props, 'margin', false, 'image-'),
                 'prefix' => 'image-',
             ]);
-        
+
             $response['padding'] = get_margin_padding_styles([
                 'obj' => get_group_attributes($props, 'padding', false, 'image-'),
                 'prefix' => 'image-',
             ]);
-        
+
             if (isset($props['fitParentSize']) && $props['fitParentSize']) {
                 $response['firParentSize'] = [
                     'general' => [
@@ -362,57 +362,57 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     ],
                 ];
             }
-        
+
             return $response;
         }
 
         public static function get_image_fit_wrapper($props)
         {
             $response = [];
-        
+
             $breakpoints = ['general', 'sm', 'md', 'lg', 'xl', 'xxl'];
-        
+
             foreach ($breakpoints as $breakpoint) {
                 $response[$breakpoint] = [];
-        
+
                 $object_size = get_last_breakpoint_attribute([
                     'target' => 'object-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
                 ]);
-        
+
                 $horizontal_position = get_last_breakpoint_attribute([
                     'target' => 'object-position-horizontal',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
                 ]);
-        
+
                 $vertical_position = get_last_breakpoint_attribute([
                     'target' => 'object-position-vertical',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
                 ]);
-        
+
                 $size = $object_size * 100;
-        
+
                 $response[$breakpoint]['height'] = "${size}%";
                 $response[$breakpoint]['width'] = "${size}%";
-        
+
                 $displacement_coefficient = 100 - $size;
-        
+
                 $horizontal_displacement =
                     ($displacement_coefficient * $horizontal_position) / 100;
-        
+
                 $vertical_isplacement =
                     ($displacement_coefficient * $vertical_position) / 100;
-        
+
                 $response[$breakpoint]['left'] = "$horizontal_displacement%";
                 $response[$breakpoint]['top'] = "$vertical_isplacement%";
-        
+
                 $response[$breakpoint]['object-position'] =
                     "$horizontal_position% $vertical_position%";
             }
-        
+
             return $response;
         }
 
@@ -425,7 +425,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $fit_parent_size = $props['fitParentSize'] ?? false;
             $is_first_on_hierarchy = $props['isFirstOnHierarchy'];
             $svg_element = $props['SVGElement'] ?? '';
-        
+
             $response = [
                 'border' => get_border_styles([
                     'obj' => get_group_attributes(
@@ -447,22 +447,22 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'prefix' => 'image-',
                 ]),
             ];
-        
+
             if ($image_ratio) {
                 $aspect_ratio = get_aspect_ratio($image_ratio) ?? [];
 
                 $response = array_merge($response, $aspect_ratio);
             }
-        
+
             $response['size'] = get_size_styles(
                 get_group_attributes($props, 'size', false, 'image-'),
                 'image-'
             );
-        
+
             $response['clipPath'] = get_clip_path_styles([
                 'obj' => get_group_attributes($props, 'clipPath'),
             ]);
-        
+
             if ($img_width) {
                 $response['imgWidth'] = [
                     'general' => [
@@ -470,18 +470,18 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     ],
                 ];
             }
-        
+
             if ($fit_parent_size && !$is_first_on_hierarchy) {
                 $response['fitParentSize'] = self::get_image_fit_wrapper($props);
             }
-        
+
             return $response;
         }
 
         public static function get_hover_image_object($props)
         {
             $response = [];
-        
+
             if (isset($props['image-border-status-hover']) && $props['image-border-status-hover']) {
                 $response['border'] = get_border_styles([
                     'obj' => get_group_attributes(
@@ -495,7 +495,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'prefix' => 'image-',
                 ]);
             }
-        
+
             if (isset($props['image-box-shadow-status-hover']) && $props['image-box-shadow-status-hover']) {
                 $response['boxShadow'] = get_box_shadow_styles([
                     'obj' => array_merge(
@@ -508,14 +508,14 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'prefix' => 'image-',
                 ]);
             }
-        
+
             if (isset($props['clip-path-status-hover']) && $props['clip-path-status-hover']) {
                 $response['clipPath'] = get_clip_path_styles([
                     'obj' => get_group_attributes($props, 'clipPath', true),
                     'is_hover' => true,
                 ]);
             }
-        
+
             return $response;
         }
 
@@ -524,7 +524,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $response = [];
 
             $svg_element = $props['SVGElement'] ?? 'null';
-        
+
             if (!$is_hover) {
                 $response['boxShadow'] = get_box_shadow_styles([
                     'obj' => array_merge(
@@ -538,7 +538,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'forClipPath' => true,
                 ]);
             }
-        
+
             if ($props['image-box-shadow-status-hover'] && $is_hover) {
                 $response['boxShadow'] = get_box_shadow_styles([
                     'obj' => array_merge(
@@ -553,74 +553,74 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'for_clip_path' => true,
                 ]);
             }
-        
+
             return $response;
         }
 
         public static function get_figcaption_object($props)
         {
             $response = [];
-        
+
             if (isset($props['captionType']) && $props['captionType'] !== 'none') {
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
                 ]);
             }
-        
+
             $response['textAlignment'] = get_alignment_text_styles(
                 get_group_attributes($props, 'textAlignment')
             );
-        
+
             if ($props['imgWidth']) {
                 $response['imgWidth'] = ['general' => ['width' => $props['imgWidth'] . '%']];
             }
-        
+
             $response['captionMargin'] = [];
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-        
+
             foreach ($breakpoints as $breakpoint) {
                 $num = get_last_breakpoint_attribute([
                     'target' => 'caption-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
                 ]);
-        
+
                 $unit = get_last_breakpoint_attribute([
                     'target' => 'caption-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
                 ]);
-        
+
                 if (!is_null($num) && !is_null($unit)) {
                     $marginType = ($props['captionPosition'] === 'bottom') ? 'margin-top' : 'margin-bottom';
-        
+
                     $response['captionMargin'][$breakpoint] = [
                         $marginType => $num . $unit,
                     ];
                 }
             }
-        
+
             return $response;
         }
 
         public static function get_image_shape_object($target, $props)
         {
             $response = [];
-        
+
             if (isset($props['SVGElement']) && $props['SVGElement']) {
-                $response['transform'] = get_image_shape_styles($target, get_group_attributes($props, 'imageShape'));
+                $response['transform'] = get_image_shape_styles(get_group_attributes($props, 'imageShape'), $target);
             }
-        
+
             if (isset($props['clipPath']) && $props['clipPath']) {
                 $response['image'] = ['general' => ['clip-path' => $props['clipPath']]];
             }
-        
+
             if ($target === 'svg' && isset($props['imageRatio']) && $props['imageRatio']) {
                 $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
             }
-        
+
             return $response;
         }
     }

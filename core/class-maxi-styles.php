@@ -57,7 +57,8 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        // add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_filter('the_content', [$this, 'enqueue_styles']);
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
         add_action('save_post', [$this, 'get_styles_from_blocks'], 10, 4);
     }
@@ -92,12 +93,14 @@ class MaxiBlocks_Styles
     /**
      * Enqueuing styles
      */
-    public function enqueue_styles()
+    public function enqueue_styles($content)
     {
         global $post;
 
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
+        $this->write_log('post_content');
+        $this->write_log($post_content);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
         $template_id = $this->get_id(true);
@@ -166,6 +169,8 @@ class MaxiBlocks_Styles
                 }
             }
         }
+
+        return $content;
     }
 
     public function get_template_name()
@@ -344,7 +349,7 @@ class MaxiBlocks_Styles
     /**
      * Gets content
      */
-    public function get_content($is_template = false, $id = null)
+    public function get_content($is_template = false, $id = null, $passed_content = null)
     {
         global $post;
 
@@ -357,23 +362,26 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $content_array = (array) $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-                $id
-            ),
-            OBJECT
-        );
+        // $content_array = [];
+        // $content_array = (array) $wpdb->get_results(
+        //     $wpdb->prepare(
+        //         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+        //         $id
+        //     ),
+        //     OBJECT
+        // );
 
         if (!$is_template) {
             //$this->write_log('get_styles_from_blocks');
-            global $post;
 
-            if (!$post || !isset($post->ID)) {
-                return false;
+            // $this->write_log('post');
+            // $this->write_log($post);
+
+            if($passed_content === null) {
+                $blocks = parse_blocks($post->post_content);
+            } else {
+                $blocks = parse_blocks($passed_content);
             }
-
-            $blocks = parse_blocks($post->post_content);
 
             if (!$blocks || empty($blocks)) {
                 return false;
@@ -389,6 +397,9 @@ class MaxiBlocks_Styles
                 // $this->write_log($block);
                 $props = $block['attrs'];
                 if(empty($props)) {
+                    continue;
+                }
+                if(!isset($props['styleID'])) {
                     continue;
                 }
                 $style_id = $props['styleID'];
@@ -420,10 +431,13 @@ class MaxiBlocks_Styles
                 return false;
             }
 
-            $content = $content_array[0];
+            $content = [
+                'css_value' => $styles,
+                'prev_css_value' => $styles,
+            ];
 
-            $content->css_value = $styles;
-            $content->prev_css_value = $styles;
+            // $content->css_value = $styles;
+            // $content->prev_css_value = $styles;
 
             return json_decode(json_encode($content), true);
             //  $styles_test = self::get_styles_from_blocks();

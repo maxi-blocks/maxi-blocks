@@ -90,7 +90,7 @@ function maxi_links_control($rel, $link)
 add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
 
 add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
-add_action('wp_ajax_maxi_insert_blocka', 'maxi_insert_block', 10, 2);
+add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
 
 
 //======================================================================

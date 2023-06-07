@@ -476,6 +476,24 @@ export const reversedSelectorKeys = Object.keys(selectorKeys).reduce(
 	{}
 );
 
+export const relationObjKeys = {
+	title: 't',
+	uniqueID: 'u',
+	target: 'ta',
+	trigger: 'tr',
+	action: 'a',
+	settings: 's',
+	attributes: 'at',
+	css: 'c',
+	id: 'i',
+	effects: 'e',
+	isButton: 'ibt',
+	transitionTarget: 'tt',
+	transitionTrigger: 'ttr',
+	hoverStatus: 'hs',
+	disableTransition: 'dt',
+};
+
 export const prefixesDictionary = {
 	'active-': 'a-',
 	'arrow-': 'ar-',

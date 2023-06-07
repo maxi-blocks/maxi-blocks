@@ -65,8 +65,7 @@ const getCanvasSettings = ({ name }) => [
 							const newBgLayer = pickBy(
 								bgLayer,
 								(_value, key) =>
-									!key.includes('mediaID') &&
-									!key.includes('mediaURL')
+									!key.includes('_mi') && !key.includes('_mu')
 							);
 
 							return Object.fromEntries(
@@ -87,7 +86,7 @@ const getCanvasSettings = ({ name }) => [
 					}}
 					getBounds={() =>
 						getEditorWrapper()
-							.querySelector(`.${props.attributes.uniqueID}`)
+							.querySelector(`.${props.attributes._uid}`)
 							.getBoundingClientRect()
 					}
 					getBlockClipPath={layerID => {
@@ -98,7 +97,11 @@ const getCanvasSettings = ({ name }) => [
 							layerAttributes,
 							'clipPath',
 							false,
-							`background-${layerAttributes.type}-`
+							`b${
+								layerAttributes.type === 'svg'
+									? 'sv'
+									: layerAttributes.type?.[0]
+							}-`
 						);
 					}}
 					isIB

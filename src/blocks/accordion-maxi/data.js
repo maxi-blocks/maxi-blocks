@@ -257,7 +257,7 @@ const customCss = {
 };
 const transition = {
 	...transitionDefault,
-	block: {
+	b: {
 		'he ln': {
 			ti: 'Header line',
 			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',

@@ -203,7 +203,7 @@ const interactionBuilderSettings = {
 				getSVGStyles({
 					...props,
 					target: ' .maxi-svg-icon-block__icon',
-					prefix: 's-',
+					prefix: 's',
 				}),
 		},
 		// TODO: fix #3619

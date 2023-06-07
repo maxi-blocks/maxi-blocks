@@ -7,6 +7,7 @@ export { default as getAttrKeyWithoutBreakpoint } from './getAttrKeyWithoutBreak
 export { default as getBlockData } from './getBlockData';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getBreakpointFromAttribute } from './getBreakpointFromAttribute';
+export { default as changeBreakpoint } from './changeBreakpoint';
 export { default as getClientIdFromUniqueId } from './getClientIdFromUniqueId';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';

@@ -3,18 +3,18 @@
 // Relations (IB)
 class Relation {
 	constructor(item) {
-		this.uniqueID = item?.uniqueID;
-		this.css = item?.css;
+		this.uniqueID = item?.u;
+		this.css = item?.c;
 
 		if (!this.uniqueID || this.css.length === 0) return;
 
-		this.trigger = item.trigger;
+		this.trigger = item.tr;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
 		this.blockTargetEl = document.querySelector(`#${this.uniqueID}`);
-		this.target = item.target ?? '';
-		this.fullTarget = `#${item.uniqueID} ${this.target}`;
+		this.target = item.ta ?? '';
+		this.fullTarget = `#${item.u} ${this.target}`;
 		this.targetEl = document.querySelector(this.fullTarget);
-		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
+		this.dataTarget = `#${item.u}[data-maxi-relations="true"]`;
 
 		if (!this.triggerEl || !this.targetEl) return;
 
@@ -27,28 +27,24 @@ class Relation {
 			Object.keys(item).some(key => !this.breakpoints.includes(key))
 		);
 
-		this.action = item.action;
-		this.settings = item.settings;
-		this.effects = item.effects;
-		this.attributes = item.attributes;
+		this.action = item.a;
+		this.settings = item.s;
+		this.effects = item.e;
+		this.attributes = item.at;
 
 		({ stylesObjs: this.stylesObjs, effectsObjs: this.effectsObjs } =
 			this.generateCssResponsiveObj());
 
 		this.breakpointsObj = this.generateBreakpointsObj();
 
-		this.hoverStatus = this.effects.some(item => item.hoverStatus);
+		this.hoverStatus = this.effects.some(item => item.hs);
 		this.isContained = this.triggerEl.contains(this.targetEl);
 		this.isHoveredContained = this.hoverStatus && this.isContained;
 
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
 		this.transitionTriggers = Array.from(
-			new Set(
-				this.effects.map(
-					item => !item.disableTransition && item.transitionTrigger
-				)
-			)
+			new Set(this.effects.map(item => !item.dt && item.ttr))
 		).filter(Boolean);
 		this.transitionTriggerEls =
 			this.transitionTriggers.length > 0
@@ -62,14 +58,13 @@ class Relation {
 				: [this.targetEl];
 
 		this.transitionTargetsArray = this.effects.map(item => {
-			if (item.disableTransition) return [''];
+			if (item.dt) return [''];
 
-			switch (typeof item.transitionTarget) {
+			switch (typeof item.tt) {
 				case 'string':
-					return [item.transitionTarget];
+					return [item.tt];
 				case 'object':
-					if (item.transitionTarget?.length > 0)
-						return item.transitionTarget;
+					if (item.tt?.length > 0) return item.tt;
 					return [''];
 				default:
 					return [''];
@@ -77,9 +72,9 @@ class Relation {
 		});
 
 		this.isBorderArray = this.attributes.map(attributes =>
-			Object.keys(attributes).some(attr => attr.startsWith('border'))
+			Object.keys(attributes).some(attr => attr.startsWith('bo'))
 		);
-		this.isIconArray = item.settings.map(
+		this.isIconArray = item.s.map(
 			setting => setting === 'Icon colour' || setting === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
@@ -186,12 +181,12 @@ class Relation {
 
 		const getTransitionValue = (effects, prop) =>
 			effects[
-				`transition-${prop}-${this.getLastUsableBreakpoint(
+				`_t${prop}-${this.getLastUsableBreakpoint(
 					currentBreakpoint,
 					breakpoint =>
 						Object.prototype.hasOwnProperty.call(
 							effects,
-							`transition-${prop}-${breakpoint}`
+							`_t${prop}-${breakpoint}`
 						)
 				)}`
 			];
@@ -203,11 +198,8 @@ class Relation {
 			[effects, effects?.out].forEach(effects => {
 				if (!effects) return;
 
-				const transitionDuration = getTransitionValue(
-					effects,
-					'duration'
-				);
-				const transitionDelay = getTransitionValue(effects, 'delay');
+				const transitionDuration = getTransitionValue(effects, 'du');
+				const transitionDelay = getTransitionValue(effects, 'de');
 				const transitionTimeoutTemp =
 					(transitionDuration + transitionDelay) * 1000;
 
@@ -261,16 +253,10 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				if (effects.disableTransition) return;
+				if (effects.dt) return;
 
 				const getTransitionAttributes = (isOut = false) =>
-					[
-						'split',
-						'transition-status',
-						'transition-duration',
-						'transition-delay',
-						'easing',
-					].reduce(
+					['_spl', '_ts', '_tdu', '_tde', '_ea'].reduce(
 						(prev, curr) => ({
 							...prev,
 							...getLastEffectsBreakpointAttribute(
@@ -284,7 +270,7 @@ class Relation {
 
 				effectsObj[breakpoint] = getTransitionAttributes();
 
-				if (effectsObj[breakpoint].split)
+				if (effectsObj[breakpoint]._spl)
 					effectsObj[breakpoint].out = getTransitionAttributes(true);
 			});
 
@@ -569,17 +555,13 @@ class Relation {
 
 						if (this.isBorderArray[index] && isBackground) {
 							const getBorderValue = target =>
-								this.attributes[
-									`border-width-${target}-${breakpoint}`
-								];
+								this.attributes[`bo_w${target}-${breakpoint}`];
 
-							const widthTop = getBorderValue('top');
-							const widthRight = getBorderValue('right');
-							const widthBottom = getBorderValue('bottom');
-							const widthLeft = getBorderValue('left');
-							const widthUnit =
-								this.attributes[`border-unit-${breakpoint}`] ||
-								'px';
+							const widthTop = getBorderValue('.t');
+							const widthRight = getBorderValue('.r');
+							const widthBottom = getBorderValue('.b');
+							const widthLeft = getBorderValue('.l');
+							const widthUnit = getBorderValue('.u') || 'px';
 
 							// Rounds to 2 decimals
 							const roundNumber = number =>
@@ -758,7 +740,7 @@ class Relation {
 
 							const effectsObj =
 								this.effectsObjs[index][breakpoint];
-							const { split } = effectsObj;
+							const { _spl: split } = effectsObj;
 
 							if (split) {
 								const inTransitionStringPart =
@@ -810,7 +792,7 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
-			if (this.effects[index].disableTransition) return;
+			if (this.effects[index].dt) return;
 
 			if (this.hasMultipleTargetsArray[index]) {
 				if (!this.isSVG)
@@ -867,10 +849,10 @@ class Relation {
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
 		const {
-			'transition-status': status,
-			'transition-duration': duration,
-			'transition-delay': delay,
-			easing,
+			_ts: status,
+			_tdu: duration,
+			_tde: delay,
+			_ea: easing,
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
@@ -1067,15 +1049,15 @@ class Relation {
 window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-undef
 	const relations = maxiRelations?.[0];
-	if (!relations) return;
 
+	if (!relations) return;
 	const uniqueRelations = relations.reduce(
-		(uniqueArray, { action, trigger, uniqueID, target }) => {
+		(uniqueArray, { a: action, tr: trigger, u: uniqueID, ta: target }) => {
 			const getIsUnique = relation =>
-				relation.action === action &&
-				relation.trigger === trigger &&
-				relation.uniqueID === uniqueID &&
-				relation.target === target;
+				relation.a === action &&
+				relation.tr === trigger &&
+				relation.u === uniqueID &&
+				relation.ta === target;
 
 			const isUnique = !uniqueArray.find(uniqueRelation =>
 				getIsUnique(uniqueRelation)
@@ -1088,10 +1070,10 @@ window.addEventListener('DOMContentLoaded', () => {
 					(obj, relation) => {
 						Object.keys(relation).forEach(key => {
 							if (
-								key !== 'action' &&
-								key !== 'trigger' &&
-								key !== 'uniqueID' &&
-								key !== 'target'
+								key !== 'a' &&
+								key !== 'tr' &&
+								key !== 'u' &&
+								key !== 'ta'
 							) {
 								if (!obj[key]) obj[key] = [];
 								obj[key].push(relation[key]);

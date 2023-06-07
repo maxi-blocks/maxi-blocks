@@ -28,8 +28,7 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 
 			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) =>
-						relationUniqueID !== uniqueID
+					({ u: relationUniqueID }) => relationUniqueID !== uniqueID
 				);
 
 				if (!isEqual(relations, filteredRelations)) {
@@ -37,7 +36,7 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 						dispatch('core/block-editor');
 
 					updateBlockAttributes(clientId, {
-						relations: filteredRelations,
+						_r: filteredRelations,
 					});
 
 					return true;

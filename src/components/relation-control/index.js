@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
+	changeBreakpoint,
 	getAttributesValue,
 	getBlockData,
 	getDefaultAttribute,
@@ -38,7 +39,7 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
 import './editor.scss';
 
 const RelationControl = props => {
-	const { deviceType, isButton, onChange, uniqueID } = props;
+	const { deviceType, isButton, onChange, _uid: uniqueID } = props;
 	const rawRelations = getAttributesValue({
 		target: '_r',
 		props,
@@ -53,9 +54,7 @@ const RelationControl = props => {
 
 	// Ensure that each relation of `relations` array has a valid block
 	const relations = cloneRelations(rawRelations).filter(
-		relation =>
-			isEmpty(relation.uniqueID) ||
-			!!getClientIdFromUniqueId(relation.uniqueID)
+		relation => isEmpty(relation.u) || !!getClientIdFromUniqueId(relation.u)
 	);
 
 	const getRelationId = relations => {
@@ -120,40 +119,40 @@ const RelationControl = props => {
 		const newRelations = cloneRelations(relations);
 
 		const relation = {
-			title: '',
-			uniqueID: '',
-			target: '',
-			action: '',
-			settings: '',
-			attributes: {},
-			css: {},
-			id: getRelationId(relations),
-			effects: transitionDefaultAttributes,
-			isButton,
+			t: '',
+			u: '',
+			ta: '',
+			a: '',
+			s: '',
+			at: {},
+			c: {},
+			i: getRelationId(relations),
+			e: transitionDefaultAttributes,
+			ibt: isButton,
 		};
 
-		onChange({ relations: [...newRelations, relation] });
+		onChange({ _r: [...newRelations, relation] });
 	};
 
 	const onChangeRelation = (relations, id, obj) => {
 		const newRelations = cloneRelations(relations);
 
 		newRelations.forEach(relation => {
-			if (relation.id === id) {
+			if (relation.i === id) {
 				Object.keys(obj).forEach(key => {
 					relation[key] = obj[key];
 				});
 			}
 		});
 
-		onChange({ relations: newRelations });
+		onChange({ _r: newRelations });
 	};
 
 	const onRemoveRelation = (id, relations) => {
 		const newRelations = cloneRelations(relations);
 
 		onChange({
-			relations: newRelations.filter(relation => relation.id !== id),
+			_r: newRelations.filter(relation => relation.id !== id),
 		});
 	};
 
@@ -165,12 +164,9 @@ const RelationControl = props => {
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
-		const clientId = getClientIdFromUniqueId(item.uniqueID);
+		const clientId = getClientIdFromUniqueId(item.u);
 
-		const selectedSettingsObj = getSelectedSettingsObj(
-			clientId,
-			item.settings
-		);
+		const selectedSettingsObj = getSelectedSettingsObj(clientId, item.s);
 
 		if (!selectedSettingsObj) return null;
 
@@ -199,7 +195,7 @@ const RelationControl = props => {
 		};
 
 		// Merging into empty object because lodash `merge` mutates first argument
-		const mergedAttributes = merge({}, blockAttributes, item.attributes);
+		const mergedAttributes = merge({}, blockAttributes, item.at);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'g') return {};
@@ -209,8 +205,8 @@ const RelationControl = props => {
 			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
-				if (key.includes('-g')) {
-					const newKey = key.replace('g', baseBreakpoint);
+				if (key.endsWith('-g.h') || key.endsWith('-g')) {
+					const newKey = changeBreakpoint(key, baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -220,7 +216,7 @@ const RelationControl = props => {
 		};
 
 		const getNewAttributesOnReset = obj => {
-			const newAttributes = { ...item.attributes };
+			const newAttributes = { ...item.at };
 			const resetTargets = Object.keys({
 				...obj,
 				...transformGeneralAttributesToBaseBreakpoint(obj),
@@ -245,7 +241,7 @@ const RelationControl = props => {
 				obj: newGroupAttributes,
 				isIB: true,
 				prefix,
-				blockStyle: blockAttributes.blockStyle,
+				blockStyle: blockAttributes._bs,
 				deviceType,
 				blockAttributes: {
 					...blockAttributes,
@@ -257,7 +253,7 @@ const RelationControl = props => {
 		};
 
 		const getStyles = (stylesObj, isFirst = false) => {
-			if (Object.keys(stylesObj).some(key => key.includes('g'))) {
+			if (Object.keys(stylesObj).some(key => key === 'g')) {
 				const styles = Object.keys(stylesObj).reduce((acc, key) => {
 					if (breakpoints[key] || key === 'xxl' || key === 'g') {
 						acc[key] = {
@@ -303,7 +299,7 @@ const RelationControl = props => {
 				const newAttributesObj = isReset
 					? getNewAttributesOnReset(obj)
 					: {
-							...item.attributes,
+							...item.at,
 							...obj,
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
@@ -313,19 +309,19 @@ const RelationControl = props => {
 					true
 				);
 
-				onChangeRelation(relations, item.id, {
-					attributes: newAttributesObj,
-					css: styles,
-					...(item.settings === 'Transform' && {
-						effects: {
-							...item.effects,
+				onChangeRelation(relations, item.i, {
+					at: newAttributesObj,
+					c: styles,
+					...(item.s === 'Transform' && {
+						e: {
+							...item.e,
 							transitionTarget: Object.keys(styles),
 						},
 					}),
 				});
 			},
 			prefix,
-			blockStyle: blockAttributes.blockStyle,
+			blockStyle: blockAttributes._bs,
 			breakpoint: deviceType,
 			clientId,
 		});
@@ -335,13 +331,13 @@ const RelationControl = props => {
 		const arr = [];
 		goThroughMaxiBlocks(block => {
 			if (
-				block.attributes.customLabel !==
-					getDefaultAttribute('customLabel', block.clientId) &&
-				block.attributes.uniqueID !== uniqueID
+				block.attributes._cl !==
+					getDefaultAttribute('_cl', block.clientId) &&
+				block.attributes._uid !== uniqueID
 			) {
 				arr.push({
-					label: block.attributes.customLabel,
-					value: block.attributes.uniqueID,
+					label: block.attributes._cl,
+					value: block.attributes._uid,
 				});
 			}
 		});
@@ -367,24 +363,24 @@ const RelationControl = props => {
 				<ListControl>
 					{relations.map(item => (
 						<ListItemControl
-							key={item.id}
+							key={item.i}
 							className='maxi-relation-control__item'
 							title={
-								item.title ||
+								item.t ||
 								__('Untitled interaction', 'maxi-blocks')
 							}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
-										value={item.title}
+										value={item.t}
 										placeholder={__('Give memorable name…')}
 										onChange={value =>
 											onChangeRelation(
 												relations,
-												item.id,
+												item.i,
 												{
-													title: value,
+													t: value,
 												}
 											)
 										}
@@ -403,7 +399,7 @@ const RelationControl = props => {
 											'Block to affect',
 											'maxi-blocks'
 										)}
-										value={item.uniqueID}
+										value={item.u}
 										options={[
 											{
 												label: __(
@@ -417,21 +413,21 @@ const RelationControl = props => {
 										onChange={value =>
 											onChangeRelation(
 												relations,
-												item.id,
+												item.i,
 												{
-													uniqueID: value,
+													u: value,
 												}
 											)
 										}
 									/>
-									{item.uniqueID && (
+									{item.u && (
 										<>
 											<SelectControl
 												label={__(
 													'Action',
 													'maxi-blocks'
 												)}
-												value={item.action}
+												value={item.a}
 												options={[
 													{
 														label: __(
@@ -458,9 +454,9 @@ const RelationControl = props => {
 												onChange={value =>
 													onChangeRelation(
 														relations,
-														item.id,
+														item.i,
 														{
-															action: value,
+															a: value,
 														}
 													)
 												}
@@ -470,18 +466,18 @@ const RelationControl = props => {
 													'Settings',
 													'maxi-blocks'
 												)}
-												value={item.settings}
+												value={item.s}
 												options={getParsedOptions(
 													getOptions(
 														getClientIdFromUniqueId(
-															item.uniqueID
+															item.u
 														)
 													)
 												)}
 												onChange={value => {
 													const clientId =
 														getClientIdFromUniqueId(
-															item.uniqueID
+															item.u
 														);
 
 													const selectedSettingsObj =
@@ -509,7 +505,7 @@ const RelationControl = props => {
 													const getTarget = () => {
 														const clientId =
 															getClientIdFromUniqueId(
-																item.uniqueID
+																item.u
 															);
 
 														const target =
@@ -530,9 +526,9 @@ const RelationControl = props => {
 																)?.attributes;
 
 															const {
-																isList,
-																typeOfList,
-																textLevel,
+																_ili: isList,
+																_tol: typeOfList,
+																_tl: textLevel,
 															} = blockAttributes;
 
 															const trimmedTarget =
@@ -556,20 +552,18 @@ const RelationControl = props => {
 
 													onChangeRelation(
 														relations,
-														item.id,
+														item.i,
 														{
-															attributes: {},
-															css: {},
-															target: getTarget(),
-															settings: value,
-															effects: {
-																...item.effects,
-																transitionTarget,
-																transitionTrigger,
-																hoverStatus:
-																	!!hoverStatus,
-																disableTransition:
-																	!!selectedSettingsObj?.disableTransition,
+															at: {},
+															c: {},
+															ta: getTarget(),
+															s: value,
+															e: {
+																...item.e,
+																tt: transitionTarget,
+																ttr: transitionTrigger,
+																hs: !!hoverStatus,
+																dt: !!selectedSettingsObj?.disableTransition,
 															},
 														}
 													);
@@ -580,7 +574,7 @@ const RelationControl = props => {
 													onClick={() =>
 														selectBlock(
 															getClientIdFromUniqueId(
-																item.uniqueID
+																item.u
 															),
 															openSidebarAccordion(
 																0
@@ -596,9 +590,9 @@ const RelationControl = props => {
 											</div>
 										</>
 									)}
-									{item.uniqueID &&
-										item.settings &&
-										(item.effects.disableTransition ? (
+									{item.u &&
+										item.s &&
+										(item.e.dt ? (
 											displaySelectedSetting(item)
 										) : (
 											<SettingTabsControl
@@ -628,29 +622,29 @@ const RelationControl = props => {
 																) =>
 																	onChangeRelation(
 																		relations,
-																		item.id,
+																		item.i,
 																		{
-																			effects:
+																			e:
 																				splitMode ===
 																				'out'
 																					? {
-																							...item.effects,
+																							...item.e,
 																							out: {
 																								...item
-																									.effects
+																									.e
 																									.out,
 																								...obj,
 																							},
 																					  }
 																					: {
-																							...item.effects,
+																							...item.e,
 																							...obj,
 																					  },
 																		}
 																	)
 																}
 																transition={
-																	item.effects
+																	item.e
 																}
 																getDefaultTransitionAttribute={
 																	getDefaultTransitionAttribute
@@ -666,10 +660,8 @@ const RelationControl = props => {
 										))}
 								</div>
 							}
-							id={item.id}
-							onRemove={() =>
-								onRemoveRelation(item.id, relations)
-							}
+							id={item.i}
+							onRemove={() => onRemoveRelation(item.i, relations)}
 						/>
 					))}
 				</ListControl>

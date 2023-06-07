@@ -61,7 +61,7 @@ const SvgColor = props => {
 				isHover,
 				prefix: `s${type.slice(0, 2)}-`,
 			})]: paletteStatus,
-			content: (isHover ? setSVGContentHover : setSVGContent)(
+			_c: (isHover ? setSVGContentHover : setSVGContent)(
 				content,
 				paletteStatus ? colorStr : color,
 				paletteStr

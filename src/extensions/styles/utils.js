@@ -74,8 +74,8 @@ export const getRelations = (uniqueID, relations) => {
 	const newRelations = cloneDeep(relations);
 
 	newRelations.forEach(relation => {
-		relation.trigger = `${uniqueID}${
-			relation.isButton ? ' .maxi-button-block__button' : ''
+		relation.tr = `${uniqueID}${
+			relation.ibt ? ' .maxi-button-block__button' : ''
 		}`;
 	});
 

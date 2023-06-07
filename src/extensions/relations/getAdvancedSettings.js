@@ -37,15 +37,14 @@ const getTransformControl = ({ categories, selectors }) => ({
 				isPlainObject(attribute) &&
 				Object.entries(attribute).some(
 					([objKey, obj]) =>
-						relationAttributes[attributeKey][objKey] &&
-						obj?.['hover-status']
+						relationAttributes[attributeKey][objKey] && obj?.hs
 				)
 		),
 	attrGroupName: 'transform',
 	component: props => (
 		<TransformControl
 			{...props}
-			uniqueID={props.attributes.uniqueID}
+			uniqueID={props.attributes._uid}
 			depth={2}
 			selectors={getTransformSelectors(selectors, props.attributes)}
 			categories={getTransformCategories(categories, props.attributes)}

@@ -41,10 +41,6 @@ msgstr ""
 msgid "Remove local fonts"
 msgstr ""
 
-#: src/init.php:94
-msgid "Custom CSS (for that page only)"
-msgstr ""
-
 #: src/blocks/accordion-maxi/accordion-maxi.js:29
 msgid "Accordion Maxi"
 msgstr ""

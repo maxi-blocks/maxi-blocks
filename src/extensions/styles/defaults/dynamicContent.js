@@ -82,9 +82,11 @@ const dynamicContent = {
 	},
 	'dc-weekday': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-era': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-limit': {
 		type: 'number',

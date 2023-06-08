@@ -533,7 +533,9 @@ class MaxiBlocks_DynamicContent
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            $post_data = excerpt_remove_blocks($post_data);
+            if($dc_field === 'excerpt') {
+                $post_data = excerpt_remove_blocks($post_data);
+            }
             $post_data = wp_strip_all_tags($post_data);
 
             // Ensures no double or more line breaks
@@ -653,6 +655,8 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
+
+
     }
 
     public function get_acf_content($attributes)
@@ -692,6 +696,7 @@ class MaxiBlocks_DynamicContent
 
     public function get_date($date, $attributes)
     {
+
         @list(
             'dc-format' => $dc_format,
             'dc-custom-format' => $dc_custom_format,
@@ -713,7 +718,7 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_custom_date)) {
             $dc_custom_date = false;
         }
-        if (!isset($dc_timezone)) {
+        if (!isset($dc_timezone) || !$dc_custom_date) {
             $dc_timezone = 'none';
         }
         if (!isset($dc_format)) {
@@ -755,14 +760,20 @@ class MaxiBlocks_DynamicContent
             'M' => 'F',
             'y' => 'y',
             'Y' => 'Y',
-            't' => 'H:i:s',
+            't' => 'H:i',
         );
 
-        $new_format = preg_replace_callback('/[xzcdDmMyYt]/', function ($match) use ($map) {
+        $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {
             return $map[$match[0]];
         }, $new_format);
 
-        $content = $new_date->format($new_format);
+        $content = date_i18n($new_format, $new_date->getTimestamp());
+
+        // Regular expression to match square brackets.
+        $regex = '/[\[\]]/';
+
+        // Use preg_replace to replace each match with an empty string.
+        $content = preg_replace($regex, '', $content);
 
         return $content;
     }
@@ -798,7 +809,28 @@ class MaxiBlocks_DynamicContent
           'X' => 'U'
         );
 
-        return strtr($format, $replacements);
+        $format = preg_replace_callback(
+            '/\b(' . implode('|', array_keys($replacements)) . ')\b/',
+            function ($matches) use ($replacements) {
+                return $replacements[$matches[0]];
+            },
+            $format
+        );
+
+        // Regular expression to match content inside square brackets, including brackets.
+        $regex = '/\[[^\]]*\]/';
+
+        // Use preg_replace_callback to replace each match.
+        $format = preg_replace_callback($regex, function ($matches) {
+            // Prepend each symbol with a slash.
+            $result = '';
+            for ($i = 0; $i < strlen($matches[0]); $i++) {
+                $result .= '\\' . $matches[0][$i];
+            }
+            return $result;
+        }, $format);
+
+        return $format;
     }
 
     public function get_limited_string($string, $limit)
@@ -813,6 +845,10 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
+        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+            return false;
+        }
+
         if (is_callable($defaults[$target])) {
             return $defaults[$target]($obj);
         }

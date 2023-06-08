@@ -53,7 +53,6 @@ const DynamicContent = props => {
 	const {
 		className,
 		onChange,
-		allowCustomDate = false,
 		contentType = 'text',
 		...dynamicContent
 	} = props;
@@ -66,6 +65,7 @@ const DynamicContent = props => {
 	const classes = classnames('maxi-dynamic-content', className);
 
 	const dcValues = getDCValues(dynamicContent, contextLoop);
+
 	const {
 		status,
 		source,
@@ -82,7 +82,41 @@ const DynamicContent = props => {
 		order,
 		accumulator,
 		acfFieldType,
+		customDate,
+		day,
+		era,
+		format,
+		hour,
+		hour12,
+		minute,
+		month,
+		second,
+		locale,
+		timezone,
+		timezoneName,
+		weekday,
+		year,
+		customFormat,
 	} = dcValues;
+
+	const dcValuesForDate = {
+		'dc-custom-date': customDate,
+		'dc-day': day,
+		'dc-era': era,
+		'dc-format': format,
+		'dc-hour': hour,
+		'dc-hour12': hour12,
+		'dc-minute': minute,
+		'dc-month': month,
+		'dc-second': second,
+		'dc-locale': locale,
+		'dc-timezone': timezone,
+		'dc-timezone-name': timezoneName,
+		'dc-weekday': weekday,
+		'dc-year': year,
+		'dc-custom-format': customFormat,
+	};
+
 	const delimiterOptions = [
 		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ label: __('Comma', 'maxi-blocks'), value: ',' },
@@ -335,10 +369,7 @@ const DynamicContent = props => {
 										}
 										onReset={() =>
 											changeProps({
-												'dc-id':
-													getDefaultAttribute(
-														'dc-id'
-													),
+												'dc-id': postIdOptions[0].value,
 											})
 										}
 									/>
@@ -460,9 +491,8 @@ const DynamicContent = props => {
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting
-									allowCustomDate={allowCustomDate}
 									onChange={obj => changeProps(obj)}
-									{...dcValues}
+									{...dcValuesForDate}
 								/>
 							)}
 							{(['tags', 'categories'].includes(field) ||

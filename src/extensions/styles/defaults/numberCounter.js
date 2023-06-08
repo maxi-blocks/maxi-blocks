@@ -23,6 +23,10 @@ const numberCounter = {
 		type: 'boolean',
 		default: false,
 	},
+	'number-counter-percentage-sign-position-status': {
+		type: 'boolean',
+		default: false,
+	},
 	'number-counter-rounded-status': {
 		type: 'boolean',
 		default: false,

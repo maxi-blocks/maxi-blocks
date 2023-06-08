@@ -125,10 +125,6 @@ const MaxiToolbar = memo(
 			select('core/block-editor')
 		);
 
-		const isTyping = useSelect(select =>
-			select('core/block-editor').isTyping()
-		);
-
 		const { tooltipsHide } = useSelect(select => {
 			const { receiveMaxiSettings } = select('maxiBlocks');
 
@@ -226,39 +222,37 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						{!isTyping && (
-							<div className='toolbar-block-custom-label'>
-								{!isFirstOnHierarchy && (
-									<span
-										className='breadcrumbs-pin'
-										onClick={() => {
-											setPinActive(!pinActive);
-										}}
-									>
-										<span className='breadcrumbs-pin-tooltip'>
-											{pinActive ? 'Unlock' : 'Lock'}
-										</span>
-										<span className='breadcrumbs-pin-icon'>
-											{pinActive
-												? toolbarPinLocked
-												: toolbarPin}
-										</span>
+						<div className='toolbar-block-custom-label'>
+							{!isFirstOnHierarchy && (
+								<span
+									className='breadcrumbs-pin'
+									onClick={() => {
+										setPinActive(!pinActive);
+									}}
+								>
+									<span className='breadcrumbs-pin-tooltip'>
+										{pinActive ? 'Unlock' : 'Lock'}
 									</span>
-								)}
-								{customLabel.length > 30
-									? `${customLabel.substring(0, 30)}...`
-									: customLabel}
-
-								<span className='toolbar-block-custom-label__block-style'>
-									{blockStyle ? ` | ${blockStyle}` : ''}
+									<span className='breadcrumbs-pin-icon'>
+										{pinActive
+											? toolbarPinLocked
+											: toolbarPin}
+									</span>
 								</span>
-								{!isFirstOnHierarchy && (
-									<span className='toolbar-more-indicator'>
-										&gt;
-									</span>
-								)}
-							</div>
-						)}
+							)}
+							{customLabel.length > 30
+								? `${customLabel.substring(0, 30)}...`
+								: customLabel}
+
+							<span className='toolbar-block-custom-label__block-style'>
+								{blockStyle ? ` | ${blockStyle}` : ''}
+							</span>
+							{!isFirstOnHierarchy && (
+								<span className='toolbar-more-indicator'>
+									&gt;
+								</span>
+							)}
+						</div>
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 						<ToolbarMediaUpload
 							blockName={name}

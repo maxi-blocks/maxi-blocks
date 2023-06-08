@@ -11,6 +11,8 @@ import { limitFields, limitTypes, renderedFields } from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
+import { getACFFieldContent } from './getACFData';
+import getACFContentByType from './getACFContentByType';
 
 /**
  * External dependencies
@@ -32,6 +34,7 @@ const getDCContent = async dataRequest => {
 	if (!data) return null;
 
 	const {
+		source,
 		type,
 		field,
 		limit,
@@ -40,9 +43,16 @@ const getDCContent = async dataRequest => {
 		format,
 		locale,
 		postTaxonomyLinksStatus,
+		acfFieldType,
 	} = dataRequest;
 
 	let contentValue;
+
+	if (source === 'acf') {
+		contentValue = await getACFFieldContent(field, data.id);
+
+		return getACFContentByType(contentValue, acfFieldType, dataRequest);
+	}
 
 	if (
 		renderedFields.includes(field) &&

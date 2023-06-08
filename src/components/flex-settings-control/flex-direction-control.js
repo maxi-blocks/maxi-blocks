@@ -18,7 +18,6 @@ import {
 	flexDirectionColumn,
 	flexDirectionRowReverse,
 	flexDirectionColumnReverse,
-	styleNone,
 } from '../../icons';
 
 /**
@@ -30,11 +29,6 @@ const FlexDirectionControl = props => {
 
 	const getOptions = () => {
 		const options = [];
-
-		options.push({
-			icon: <Icon icon={styleNone} />,
-			value: 'unset',
-		});
 
 		options.push({
 			icon: <Icon icon={flexDirectionRow} />,

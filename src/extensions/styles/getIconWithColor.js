@@ -24,7 +24,13 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	let icon = rawIcon ?? iconContent;
 
 	types.forEach(type => {
-		let { paletteColor, paletteOpacity, paletteStatus, color } = args;
+		let {
+			paletteColor,
+			paletteOpacity,
+			paletteStatus,
+			paletteSCStatus,
+			color,
+		} = args;
 
 		let lineColorStr = '';
 
@@ -51,6 +57,12 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					isHover,
 					props: attributes,
 				});
+			if (!paletteSCStatus)
+				paletteSCStatus = getAttributeValue({
+					target: `icon-${type}-palette-sc-status`,
+					isHover,
+					props: attributes,
+				});
 			if (!color)
 				color = getAttributeValue({
 					target: `icon-${type}-color`,
@@ -58,12 +70,24 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					props: attributes,
 				});
 
-			lineColorStr = getColorRGBAString({
-				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
+			lineColorStr = getColorRGBAString(
+				paletteSCStatus
+					? {
+							firstVar: `color-${paletteColor}${
+								isHover ? '-hover' : ''
+							}`,
+							opacity: paletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
+							secondVar: `color-${paletteColor}${
+								isHover ? '-hover' : ''
+							}`,
+							opacity: paletteOpacity,
+							blockStyle,
+					  }
+			);
 		} else {
 			if (!paletteColor)
 				paletteColor = getAttributeValue({

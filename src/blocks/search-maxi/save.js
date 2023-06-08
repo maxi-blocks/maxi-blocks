@@ -21,6 +21,7 @@ const save = props => {
 		buttonSkin,
 		placeholder,
 		skin,
+		styleID,
 	} = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
 
@@ -43,6 +44,7 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			classes={classes}
+			data-maxi-style-id={styleID}
 		>
 			<input
 				className={inputClasses}

@@ -19,7 +19,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const { attributes, deviceType, hasInnerBlocks, clientId, styleID } =
+			this.props;
 		const { uniqueID } = attributes;
 
 		/**
@@ -59,6 +60,7 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
+				data-maxi-style-id={styleID}
 			>
 				<ArrowDisplayer
 					key={`maxi-arrow-displayer__${uniqueID}`}

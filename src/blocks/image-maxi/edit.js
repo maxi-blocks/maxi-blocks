@@ -108,8 +108,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes, isSelected, deviceType } =
-			this.props;
+		const {
+			attributes,
+			maxiSetAttributes,
+			isSelected,
+			deviceType,
+			styleID,
+		} = this.props;
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
@@ -353,6 +358,7 @@ class edit extends MaxiBlockComponent {
 					tagName='figure'
 					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
+					data-maxi-style-id={styleID}
 				>
 					{showImage ? (
 						<BlockResizer

@@ -9,10 +9,13 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 const save = props => {
 	const name = 'maxi-blocks/row-maxi';
 
+	const { styleID } = props.attributes;
+
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			data-maxi-style-id={styleID}
 		/>
 	);
 };

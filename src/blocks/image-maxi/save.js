@@ -59,6 +59,7 @@ const save = props => {
 		captionPosition,
 		fitParentSize,
 		'dc-status': dcStatus,
+		styleID,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -81,6 +82,7 @@ const save = props => {
 		<MaxiBlock.save
 			tagName='figure'
 			{...getMaxiBlockAttributes({ ...props, name })}
+			data-maxi-style-id={styleID}
 		>
 			<>
 				{captionPosition === 'top' && (

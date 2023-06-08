@@ -52,11 +52,15 @@ const addAlt = (content, title, description, uniqueID) => {
 
 const save = props => {
 	const { attributes } = props;
+	const { styleID } = attributes;
 
 	const name = 'maxi-blocks/svg-icon-maxi';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({ ...props, name })}
+			data-maxi-style-id={styleID}
+		>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{addAlt(
 					attributes.content,

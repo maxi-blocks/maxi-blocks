@@ -179,6 +179,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			hasInnerBlocks,
 			clientId,
+			styleID,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -273,6 +274,7 @@ class edit extends MaxiBlockComponent {
 								: false,
 						}}
 						cleanStyles
+						data-maxi-style-id={styleID}
 					/>,
 				]}
 			</RowContext.Consumer>

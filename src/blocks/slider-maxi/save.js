@@ -25,6 +25,7 @@ const save = props => {
 		pauseOnHover,
 		pauseOnInteraction,
 		numberOfSlides,
+		styleID,
 	} = attributes;
 
 	const sliderTransition = attributes['slider-transition'];
@@ -43,6 +44,7 @@ const save = props => {
 		<MaxiBlock.save
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			data-maxi-style-id={styleID}
 			data-infinite-loop={isLoop}
 			data-autoplay={isAutoplay}
 			data-autoplay-speed={sliderAutoplaySpeed}

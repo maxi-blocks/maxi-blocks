@@ -71,7 +71,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, isSelected } = this.props;
-		const { uniqueID, 'map-provider': mapProvider } = attributes;
+		const { uniqueID, 'map-provider': mapProvider, styleID } = attributes;
 
 		return [
 			<Inspector
@@ -90,6 +90,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				className='maxi-map-block'
 				{...getMaxiBlockAttributes(this.props)}
+				data-maxi-style-id={styleID}
 			>
 				<MapContent
 					{...this.props}

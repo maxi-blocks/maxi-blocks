@@ -362,14 +362,14 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        // $content_array = [];
-        // $content_array = (array) $wpdb->get_results(
-        //     $wpdb->prepare(
-        //         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-        //         $id
-        //     ),
-        //     OBJECT
-        // );
+        //$content_array = [];
+        $content_array = (array) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                $id
+            ),
+            OBJECT
+        );
 
         if (!$is_template) {
             //$this->write_log('get_styles_from_blocks');

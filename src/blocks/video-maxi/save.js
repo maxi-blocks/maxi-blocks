@@ -36,6 +36,7 @@ const save = props => {
 		hideImage,
 		'close-icon-position': closeIconPosition,
 		popAnimation,
+		styleID,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -53,6 +54,7 @@ const save = props => {
 		<MaxiBlock.save
 			classes={`maxi-video-block--${videoType}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			data-maxi-style-id={styleID}
 		>
 			{embedUrl &&
 				videoValidation(embedUrl) &&

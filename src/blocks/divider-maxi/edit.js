@@ -119,8 +119,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, isSelected, maxiSetAttributes } =
-			this.props;
+		const {
+			attributes,
+			deviceType,
+			isSelected,
+			maxiSetAttributes,
+			styleID,
+		} = this.props;
 		const { uniqueID, lineOrientation } = attributes;
 
 		const classes = classnames(
@@ -207,6 +212,7 @@ class edit extends MaxiBlockComponent {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				cleanStyles
+				data-maxi-style-id={styleID}
 			>
 				{getLastBreakpointAttribute({
 					target: 'divider-border-style',

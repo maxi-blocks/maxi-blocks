@@ -18,6 +18,7 @@ const save = props => {
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
 		'number-counter-rounded-status': roundedStatus,
+		styleID,
 	} = attributes;
 
 	const classes = 'maxi-number-counter-block';
@@ -29,6 +30,7 @@ const save = props => {
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
+			data-maxi-style-id={styleID}
 		>
 			<div className='maxi-number-counter__box'>
 				{!circleStatus && (

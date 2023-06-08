@@ -14,7 +14,8 @@ import { WithLink } from '../../extensions/save/utils';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
+	const { title, titleLevel, accordionUniqueId, linkSettings, styleID } =
+		attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
 	return (
@@ -25,6 +26,7 @@ const save = props => {
 			className='wp-block-maxi-blocks-pane-maxi'
 			data-accordion={accordionUniqueId}
 			aria-expanded={false}
+			data-maxi-style-id={styleID}
 		>
 			<div className='maxi-pane-block__header'>
 				<div className='maxi-pane-block__header-content'>

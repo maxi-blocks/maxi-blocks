@@ -164,6 +164,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			maxiSetAttributes,
 			isSelected,
+			styleID,
 		} = this.props;
 		const { content, openFirstTime, blockStyle, uniqueID } = attributes;
 		const { isOpen } = this.state;
@@ -269,6 +270,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
+				data-maxi-style-id={styleID}
 			>
 				<>
 					{isEmptyContent && (

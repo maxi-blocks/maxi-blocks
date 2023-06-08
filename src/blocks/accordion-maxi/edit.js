@@ -78,6 +78,7 @@ class edit extends MaxiBlockComponent {
 			titleLevel,
 			isCollapsible,
 			animationDuration,
+			styleID,
 		} = attributes;
 
 		const inlineStylesTargets = {
@@ -127,6 +128,7 @@ class edit extends MaxiBlockComponent {
 						template: [['maxi-blocks/pane-maxi']],
 					}}
 					{...getMaxiBlockAttributes(this.props)}
+					data-maxi-style-id={styleID}
 				/>
 			</AccordionContext.Provider>,
 		];

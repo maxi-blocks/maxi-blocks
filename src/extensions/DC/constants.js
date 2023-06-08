@@ -28,6 +28,10 @@ export const typeOptions = {
 	group: generalTypeOptions,
 };
 
+export const ACFTypeOptions = generalTypeOptions.filter(
+	option => !['settings'].includes(option.value)
+);
+
 /**
  * Relation constants
  */

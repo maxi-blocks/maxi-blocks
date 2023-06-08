@@ -27,6 +27,7 @@ import {
 	limitTypes,
 	limitFields,
 	orderByOptions,
+	ACFTypeOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -274,7 +275,11 @@ const DynamicContent = props => {
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={typeOptions[contentType]}
+						options={
+							source === 'acf'
+								? ACFTypeOptions
+								: typeOptions[contentType]
+						}
 						onChange={value => {
 							const validatedAttributes = validationsValues(
 								value,

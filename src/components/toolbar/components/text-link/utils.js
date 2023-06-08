@@ -11,13 +11,10 @@ export const createLinkAttributes = ({
 	noFollow,
 	sponsored,
 	ugc,
-	title = '',
-	linkValue,
 }) => {
 	const attributes = {
 		url,
 		rel: '',
-		title,
 	};
 
 	if (type) attributes.type = type;
@@ -44,9 +41,6 @@ export const createLinkAttributes = ({
 
 		attributes[key] = trim(val);
 	});
-	if (url !== linkValue?.url && title === linkValue?.title)
-		attributes.title = '';
-
 	return attributes;
 };
 
@@ -54,7 +48,7 @@ export const createLinkValue = ({ formatOptions, formatValue }) => {
 	if (!formatOptions || isEmpty(formatValue)) return { url: '' };
 
 	const {
-		attributes: { url, target, id, rel, title = '' },
+		attributes: { url, target, id, rel },
 	} = formatOptions;
 
 	const value = {
@@ -64,7 +58,6 @@ export const createLinkValue = ({ formatOptions, formatValue }) => {
 		noFollow: rel && rel.indexOf('nofollow') >= 0,
 		sponsored: rel && rel.indexOf('sponsored') >= 0,
 		ugc: rel && rel.indexOf('ugc') >= 0,
-		title,
 	};
 
 	return value;

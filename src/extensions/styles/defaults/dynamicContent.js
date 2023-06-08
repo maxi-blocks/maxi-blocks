@@ -6,6 +6,10 @@ const dynamicContent = {
 	'dc-status': {
 		type: 'boolean',
 	},
+	'dc-source': {
+		type: 'string',
+		default: 'wp',
+	},
 	'dc-type': {
 		type: 'string',
 	},
@@ -121,6 +125,12 @@ const dynamicContent = {
 	},
 	'dc-accumulator': {
 		type: 'number',
+	},
+	'dc-acf-group': {
+		type: 'number',
+	},
+	'dc-acf-field-type': {
+		type: 'string',
 	},
 	'dc-contains-html': {
 		type: 'boolean',

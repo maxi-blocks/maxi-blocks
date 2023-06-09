@@ -35,6 +35,9 @@ export const processCss = async code => {
  */
 const controls = {
 	SAVE_STYLES({ isUpdate, styles }) {
+		console.log('SAVE_STYLES');
+		console.log(isUpdate);
+		console.log(styles);
 		entityRecordsWrapper(async ({ key: id, name }) => {
 			const filteredStyles = getFilteredData(styles, { id, name });
 			const parsedStyles = await processCss(

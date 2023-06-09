@@ -75,6 +75,9 @@ const StyleComponent = ({
 	isBreakpointChange,
 	currentBreakpoint,
 }) => {
+	console.log('StyleComponent');
+	console.log(uniqueID);
+	console.log(stylesObj);
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 

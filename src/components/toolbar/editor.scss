@@ -274,12 +274,12 @@
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
-	.maxi-base-control:not(.maxi-color-control__palette-label){
-		.maxi-reset-button{
+	.maxi-base-control:not(.maxi-color-control__palette-label) {
+		.maxi-reset-button {
 			padding: 8px;
 		}
 	}
-	
+
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {
@@ -615,14 +615,6 @@ body.rtl .toolbar-item__popover {
 					border-bottom-left-radius: 5px;
 				}
 			}
-		}
-	}
-}
-
-@-moz-document url-prefix() {
-	.toolbar-item__popover {
-		input[type='number'] {
-			width: 5em !important;
 		}
 	}
 }

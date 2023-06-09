@@ -24,7 +24,7 @@ import {
 } from '../../extensions/styles/helpers';
 import data, { prefixes } from './data';
 
-const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
+const { buttonPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
 	const { blockStyle } = props;
@@ -182,7 +182,6 @@ const getSearchButtonIconStyles = props => {
 		blockStyle,
 		target: ' .maxi-search-block__button__close-icon',
 		wrapperTarget: ' .maxi-search-block__button',
-		prefix: closeIconPrefix,
 	};
 
 	const response = {

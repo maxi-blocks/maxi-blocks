@@ -70,7 +70,7 @@ describe('FlexSettings', () => {
 		const attributeParent = await getAttributes([
 			'flex-direction-g',
 			'flex-wrap-g',
-			'justify-content-g',
+			'_jc-g',
 			'align-content-g',
 			'align-items-g',
 			'column-gap-g',
@@ -82,7 +82,7 @@ describe('FlexSettings', () => {
 		const expectedParentAttribute = {
 			'flex-direction-g': 'row',
 			'flex-wrap-g': 'wrap',
-			'justify-content-g': 'flex-end',
+			'_jc-g': 'flex-end',
 			'align-content-g': 'flex-start',
 			'align-items-g': 'flex-end',
 			'column-gap-g': 77,
@@ -387,7 +387,7 @@ describe('FlexSettings', () => {
 			const attributes = await getAttributes([
 				`flex-wrap-${breakpoint}`,
 				`flex-direction-${breakpoint}`,
-				`justify-content-${breakpoint}`,
+				`_jc-${breakpoint}`,
 				`align-items-${breakpoint}`,
 				`align-content-${breakpoint}`,
 				`row-gap-${breakpoint}`,
@@ -399,8 +399,7 @@ describe('FlexSettings', () => {
 			return (
 				attributes[`flex-wrap-${breakpoint}`] === flexWrap &&
 				attributes[`flex-direction-${breakpoint}`] === flexDirection &&
-				attributes[`justify-content-${breakpoint}`] ===
-					justifyContent &&
+				attributes[`_jc-${breakpoint}`] === justifyContent &&
 				attributes[`align-items-${breakpoint}`] === alignItems &&
 				attributes[`align-content-${breakpoint}`] === alignContent &&
 				attributes[`row-gap-${breakpoint}`] === rowGapValue &&

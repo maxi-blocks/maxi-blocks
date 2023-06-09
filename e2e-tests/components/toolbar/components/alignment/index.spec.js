@@ -60,21 +60,21 @@ describe('AlignmentControl', () => {
 			await changeAlignment(page, i !== 3 ? i + 1 : 0);
 
 			const attributes = await getBlockAttributes();
-			const attribute = attributes['text-alignment-g'];
+			const attribute = attributes['_ta-g'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
 
 	it('Checking alignment in toolbar responsive', async () => {
 		// check g
-		expect(await getAttributes('text-alignment-g')).toStrictEqual('left');
+		expect(await getAttributes('_ta-g')).toStrictEqual('left');
 
 		// responsive s
 		await changeResponsive(page, 's');
 
 		await changeAlignment(page, 1);
 
-		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
+		expect(await getAttributes('_ta-s')).toStrictEqual('center');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');

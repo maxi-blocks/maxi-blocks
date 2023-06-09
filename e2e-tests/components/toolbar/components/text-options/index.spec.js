@@ -35,7 +35,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('19');
 
-		expect(await getAttributes('font-size-g')).toStrictEqual(19);
+		expect(await getAttributes('_fs-g')).toStrictEqual(19);
 
 		// line height
 		await page.$eval(
@@ -57,7 +57,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12');
 
-		expect(await getAttributes('letter-spacing-g')).toStrictEqual(12);
+		expect(await getAttributes('_ls-g')).toStrictEqual(12);
 
 		// font family
 		const fontFamily = await page.$(
@@ -76,7 +76,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-g')).toStrictEqual('center');
+		expect(await getAttributes('_ta-g')).toStrictEqual('center');
 
 		// text alignment right
 		await page.$eval(
@@ -84,7 +84,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-g')).toStrictEqual('right');
+		expect(await getAttributes('_ta-g')).toStrictEqual('right');
 
 		// text alignment justify
 		await page.$eval(
@@ -92,9 +92,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-g')).toStrictEqual(
-			'justify'
-		);
+		expect(await getAttributes('_ta-g')).toStrictEqual('justify');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'typography');

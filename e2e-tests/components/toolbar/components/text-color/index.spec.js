@@ -39,12 +39,12 @@ describe('Text color', () => {
 		await page.keyboard.type('32');
 
 		const expectDivider = {
-			'palette-color-g': 5,
+			'_pc-g': 5,
 			'palette-opacity-g': 0.32,
 		};
 
 		const dividerResult = await getAttributes([
-			'palette-color-g',
+			'_pc-g',
 			'palette-opacity-g',
 		]);
 

@@ -34,7 +34,7 @@ describe('Dropdown', () => {
 		);
 
 		expect(
-			await getAttributes('shape-divider-top-shape-style')
+			await getAttributes('shape-divider.t-shape-style')
 		).toStrictEqual('waves-top');
 	});
 });

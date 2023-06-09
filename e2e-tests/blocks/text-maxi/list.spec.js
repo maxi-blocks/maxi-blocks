@@ -67,7 +67,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '31',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(31);
+		expect(await getAttributes('_lin-g')).toStrictEqual(31);
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -76,7 +76,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '21',
 		});
 
-		expect(await getAttributes('list-gap-g')).toStrictEqual(21);
+		expect(await getAttributes('_lg-g')).toStrictEqual(21);
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -87,9 +87,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '44',
 		});
 
-		expect(await getAttributes('list-paragraph-spacing-g')).toStrictEqual(
-			44
-		);
+		expect(await getAttributes('_lps-g')).toStrictEqual(44);
 
 		// Marker size
 		await editAdvancedNumberControl({
@@ -98,7 +96,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '11',
 		});
 
-		expect(await getAttributes('list-marker-size-g')).toStrictEqual(11);
+		expect(await getAttributes('_lms-g')).toStrictEqual(11);
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -109,9 +107,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '46',
 		});
 
-		expect(await getAttributes('list-marker-line-height-g')).toStrictEqual(
-			46
-		);
+		expect(await getAttributes('_lmlh-g')).toStrictEqual(46);
 
 		// Text Position
 		const textPosition = await page.$(
@@ -119,9 +115,7 @@ describe('List in Text-maxi', () => {
 		);
 		await textPosition.select('sub');
 
-		expect(await getAttributes('list-text-position-g')).toStrictEqual(
-			'sub'
-		);
+		expect(await getAttributes('_ltp-g')).toStrictEqual('sub');
 	});
 
 	it('Check options with different units', async () => {
@@ -133,8 +127,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'em',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(3);
-		expect(await getAttributes('list-indent-unit-g')).toStrictEqual('em');
+		expect(await getAttributes('_lin-g')).toStrictEqual(3);
+		expect(await getAttributes('_lin.u-g')).toStrictEqual('em');
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -144,8 +138,8 @@ describe('List in Text-maxi', () => {
 			newValue: '%',
 		});
 
-		expect(await getAttributes('list-gap-g')).toStrictEqual(21);
-		expect(await getAttributes('list-gap-unit-g')).toStrictEqual('%');
+		expect(await getAttributes('_lg-g')).toStrictEqual(21);
+		expect(await getAttributes('_lg.u-g')).toStrictEqual('%');
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -157,12 +151,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'px',
 		});
 
-		expect(await getAttributes('list-paragraph-spacing-g')).toStrictEqual(
-			44
-		);
-		expect(
-			await getAttributes('list-paragraph-spacing-unit-g')
-		).toStrictEqual('px');
+		expect(await getAttributes('_lps-g')).toStrictEqual(44);
+		expect(await getAttributes('_lps.u-g')).toStrictEqual('px');
 
 		// Marker size
 		await editAdvancedNumberControl({
@@ -172,10 +162,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'px',
 		});
 
-		expect(await getAttributes('list-marker-size-g')).toStrictEqual(11);
-		expect(await getAttributes('list-marker-size-unit-g')).toStrictEqual(
-			'px'
-		);
+		expect(await getAttributes('_lms-g')).toStrictEqual(11);
+		expect(await getAttributes('_lms.u-g')).toStrictEqual('px');
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -187,12 +175,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'vw',
 		});
 
-		expect(await getAttributes('list-marker-line-height-g')).toStrictEqual(
-			16
-		);
-		expect(
-			await getAttributes('list-marker-line-height-unit-g')
-		).toStrictEqual('vw');
+		expect(await getAttributes('_lmlh-g')).toStrictEqual(16);
+		expect(await getAttributes('_lmlh.u-g')).toStrictEqual('vw');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -218,7 +202,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '31',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(31);
+		expect(await getAttributes('_lin-g')).toStrictEqual(31);
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -227,7 +211,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '21',
 		});
 
-		expect(await getAttributes('list-gap-g')).toStrictEqual(21);
+		expect(await getAttributes('_lg-g')).toStrictEqual(21);
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -238,9 +222,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '44',
 		});
 
-		expect(await getAttributes('list-paragraph-spacing-g')).toStrictEqual(
-			44
-		);
+		expect(await getAttributes('_lps-g')).toStrictEqual(44);
 
 		// Marker size
 		await editAdvancedNumberControl({
@@ -249,7 +231,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '11',
 		});
 
-		expect(await getAttributes('list-marker-size-g')).toStrictEqual(11);
+		expect(await getAttributes('_lms-g')).toStrictEqual(11);
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -260,9 +242,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '46',
 		});
 
-		expect(await getAttributes('list-marker-line-height-g')).toStrictEqual(
-			46
-		);
+		expect(await getAttributes('_lmlh-g')).toStrictEqual(46);
 
 		// Text Position
 		const textPosition = await page.$(
@@ -270,9 +250,7 @@ describe('List in Text-maxi', () => {
 		);
 		await textPosition.select('sub');
 
-		expect(await getAttributes('list-text-position-g')).toStrictEqual(
-			'sub'
-		);
+		expect(await getAttributes('_ltp-g')).toStrictEqual('sub');
 	});
 
 	it('Check text position, style, start from in organized', async () => {
@@ -282,14 +260,14 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-start '),
 			newNumber: '-23',
 		});
-		expect(await getAttributes('listStart')).toStrictEqual(-23);
+		expect(await getAttributes('_lst')).toStrictEqual(-23);
 
 		// Style
 		const style = await page.$$('.maxi-text-inspector__list-style select');
 		await style[1].select('armenian');
 
-		expect(await getAttributes('listStyle')).toStrictEqual('armenian');
-		expect(await getAttributes('listStart')).toStrictEqual(0);
+		expect(await getAttributes('_lsty')).toStrictEqual('armenian');
+		expect(await getAttributes('_lst')).toStrictEqual(0);
 
 		await page.waitForTimeout(150);
 
@@ -300,7 +278,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '78',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(78);
+		expect(await getAttributes('_lst')).toStrictEqual(78);
 
 		await editAdvancedNumberControl({
 			page,
@@ -308,7 +286,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '-4',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(4);
+		expect(await getAttributes('_lst')).toStrictEqual(4);
 
 		// Reverse order button
 		await page.$eval('.maxi-text-inspector__list-reverse input', input =>
@@ -323,7 +301,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '-34',
 		});
 
-		expect(await getAttributes('listStart')).toStrictEqual(34);
+		expect(await getAttributes('_lst')).toStrictEqual(34);
 
 		// Reverse order button
 		await page.$eval('.maxi-text-inspector__list-reverse input', input =>
@@ -339,7 +317,7 @@ describe('List in Text-maxi', () => {
 		const listType = await page.$('.maxi-text-inspector__list-type select');
 		await listType.select('ul');
 
-		expect(await getAttributes('typeOfList')).toStrictEqual('ul');
+		expect(await getAttributes('_tol')).toStrictEqual('ul');
 
 		// style default
 		const style = await page.$$('.maxi-text-inspector__list-style select');
@@ -371,7 +349,7 @@ describe('List in Text-maxi', () => {
 		await page.keyboard.type('test');
 		await page.waitForTimeout(150);
 
-		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
+		expect(await getAttributes('_lsc')).toStrictEqual('test');
 
 		// source URL
 		// expect to be properly tested
@@ -404,7 +382,7 @@ describe('List in Text-maxi', () => {
 			colorPalette: 7,
 		});
 
-		expect(await getAttributes('list-palette-color')).toStrictEqual(7);
+		expect(await getAttributes('l_pc')).toStrictEqual(7);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -438,7 +416,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '40',
 		});
 
-		expect(await getAttributes('list-marker-indent-g')).toStrictEqual(40);
+		expect(await getAttributes('_lmi-g')).toStrictEqual(40);
 
 		// Change text indent
 		await editAdvancedNumberControl({
@@ -447,7 +425,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '23',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(23);
+		expect(await getAttributes('_lin-g')).toStrictEqual(23);
 
 		// Check styles on rtl
 		await openSidebarTab(page, 'style', 'typography');
@@ -456,7 +434,7 @@ describe('List in Text-maxi', () => {
 			direction: 'rtl',
 		});
 
-		expect(await getAttributes('text-direction-g')).toStrictEqual('rtl');
+		expect(await getAttributes('_tdi-g')).toStrictEqual('rtl');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -492,7 +470,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '4',
 		});
 
-		expect(await getAttributes('list-marker-size-g')).toStrictEqual(4);
+		expect(await getAttributes('_lms-g')).toStrictEqual(4);
 
 		// Change marker color
 		await editColorControl({
@@ -502,7 +480,7 @@ describe('List in Text-maxi', () => {
 			colorPalette: 7,
 		});
 
-		expect(await getAttributes('list-palette-color')).toStrictEqual(7);
+		expect(await getAttributes('l_pc')).toStrictEqual(7);
 
 		// Change marker indent
 		await editAdvancedNumberControl({
@@ -511,7 +489,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '10',
 		});
 
-		expect(await getAttributes('list-marker-indent-g')).toStrictEqual(10);
+		expect(await getAttributes('_lmi-g')).toStrictEqual(10);
 
 		// Change text indent
 		await editAdvancedNumberControl({
@@ -520,7 +498,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '23',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(23);
+		expect(await getAttributes('_lin-g')).toStrictEqual(23);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -530,9 +508,7 @@ describe('List in Text-maxi', () => {
 		);
 		await textStylePosition.select('outside');
 
-		expect(await getAttributes('list-style-position-g')).toStrictEqual(
-			'outside'
-		);
+		expect(await getAttributes('_lsp-g')).toStrictEqual('outside');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -548,7 +524,7 @@ describe('List in Text-maxi', () => {
 			direction: 'rtl',
 		});
 
-		expect(await getAttributes('text-direction-g')).toStrictEqual('rtl');
+		expect(await getAttributes('_tdi-g')).toStrictEqual('rtl');
 
 		await openSidebarTab(page, 'style', 'list options');
 
@@ -572,7 +548,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '23',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(23);
+		expect(await getAttributes('_lin-g')).toStrictEqual(23);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -598,7 +574,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '23',
 		});
 
-		expect(await getAttributes('list-indent-g')).toStrictEqual(23);
+		expect(await getAttributes('_lin-g')).toStrictEqual(23);
 
 		// Change marker indent
 		await editAdvancedNumberControl({
@@ -607,7 +583,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '40',
 		});
 
-		expect(await getAttributes('list-marker-indent-g')).toStrictEqual(40);
+		expect(await getAttributes('_lmi-g')).toStrictEqual(40);
 
 		// Change marker size
 		await editAdvancedNumberControl({
@@ -616,7 +592,7 @@ describe('List in Text-maxi', () => {
 			newNumber: '4',
 		});
 
-		expect(await getAttributes('list-marker-size-g')).toStrictEqual(4);
+		expect(await getAttributes('_lms-g')).toStrictEqual(4);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -46,9 +46,7 @@ describe('Icon background', () => {
 		);
 
 		// hover state
-		expect(
-			await getAttributes('svg-background-palette-color-g')
-		).toStrictEqual(6);
+		expect(await getAttributes('s-bc_pc-g')).toStrictEqual(6);
 
 		await page.$eval('.maxi-tabs-control__button-none', button =>
 			button.click()
@@ -72,9 +70,7 @@ describe('Icon background', () => {
 			button => button[6].click()
 		);
 
-		expect(
-			await getAttributes('svg-background-palette-color-g-hover')
-		).toStrictEqual(7);
+		expect(await getAttributes('s-bc_pc-g.h')).toStrictEqual(7);
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 
 		await accordion.$eval(

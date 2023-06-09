@@ -58,17 +58,17 @@ describe('Map Control', () => {
 		};
 
 		// Check that zoom is default
-		expect(await getAttributes('map-zoom')).toMatchSnapshot();
+		expect(await getAttributes('m_z')).toMatchSnapshot();
 
 		// Clicking on min zoom button multiple times to check if min zoom is working
 		const minZoomButton = await map.$('.leaflet-control-zoom-out');
 		await clickOnZoomButton(minZoomButton, 3);
-		expect(await getAttributes('map-zoom')).toMatchSnapshot();
+		expect(await getAttributes('m_z')).toMatchSnapshot();
 
 		// Clicking on max zoom button multiple times to check if max zoom is working
 		const maxZoomButton = await map.$('.leaflet-control-zoom-in');
 		await clickOnZoomButton(maxZoomButton, 5);
-		expect(await getAttributes('map-zoom')).toMatchSnapshot();
+		expect(await getAttributes('m_z')).toMatchSnapshot();
 
 		// Resetting min zoom
 		const resetMinZoom = await resettingAttributes({

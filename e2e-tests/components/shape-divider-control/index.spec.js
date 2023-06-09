@@ -78,9 +78,7 @@ describe('ShapeDividerControl', () => {
 			selectColor => selectColor[3].click()
 		);
 
-		expect(
-			await getAttributes('shape-divider-top-palette-color-g')
-		).toStrictEqual(4);
+		expect(await getAttributes('shape-divider-top_pc-g')).toStrictEqual(4);
 
 		// divider height
 		await editAdvancedNumberControl({

@@ -35,7 +35,7 @@ describe('AlignmentControl', () => {
 			await setting.click();
 
 			const attributes = await getBlockAttributes();
-			const attribute = attributes['text-alignment-g'];
+			const attribute = attributes['_ta-g'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
@@ -64,7 +64,7 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		expect(await getAttributes('text-alignment-s')).toStrictEqual('center');
+		expect(await getAttributes('_ta-s')).toStrictEqual('center');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -120,7 +120,7 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		expect(await getAttributes('alignment-s')).toStrictEqual('right');
+		expect(await getAttributes('_a-s')).toStrictEqual('right');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

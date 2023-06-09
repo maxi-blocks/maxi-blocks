@@ -43,9 +43,9 @@ describe('Video icon control', () => {
 			colorPalette: 6,
 		});
 
-		expect(
-			await getAttributes('lightbox-background-palette-color-g')
-		).toStrictEqual(6);
+		expect(await getAttributes('lightbox-background_pc-g')).toStrictEqual(
+			6
+		);
 
 		// Change opacity
 		await editAdvancedNumberControl({
@@ -56,9 +56,9 @@ describe('Video icon control', () => {
 			newNumber: '33',
 		});
 
-		expect(
-			await getAttributes('lightbox-background-palette-opacity-g')
-		).toStrictEqual(0.33);
+		expect(await getAttributes('lightbox-background_po-g')).toStrictEqual(
+			0.33
+		);
 
 		// Lightbox close button colour
 		await editColorControl({
@@ -68,9 +68,7 @@ describe('Video icon control', () => {
 			colorPalette: 3,
 		});
 
-		expect(
-			await getAttributes('close-icon-fill-palette-color')
-		).toStrictEqual(3);
+		expect(await getAttributes('close-icon-fill_pc')).toStrictEqual(3);
 
 		// Change opacity
 		await editAdvancedNumberControl({
@@ -81,9 +79,7 @@ describe('Video icon control', () => {
 			newNumber: '11',
 		});
 
-		expect(
-			await getAttributes('close-icon-fill-palette-opacity')
-		).toStrictEqual(0.11);
+		expect(await getAttributes('close-icon-fill_po')).toStrictEqual(0.11);
 
 		// Icon height
 		await editAdvancedNumberControl({
@@ -175,9 +171,9 @@ describe('Video icon control', () => {
 			colorPalette: 4,
 		});
 
-		expect(
-			await getAttributes('lightbox-background-palette-color-s')
-		).toStrictEqual(4);
+		expect(await getAttributes('lightbox-background_pc-s')).toStrictEqual(
+			4
+		);
 
 		// change xs
 		await changeResponsive(page, 'xs');

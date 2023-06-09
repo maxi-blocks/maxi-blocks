@@ -40,7 +40,7 @@ describe('DividerControl', () => {
 			await page.waitForTimeout(500);
 
 			const attributes = await getBlockAttributes();
-			const borderStyle = attributes['divider-border-style-g'];
+			const borderStyle = attributes['divider-bo_s-g'];
 
 			expect(borderStyle).toStrictEqual(dividerStyle);
 		}

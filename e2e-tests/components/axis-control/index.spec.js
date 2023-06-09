@@ -32,24 +32,24 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '66',
-			'margin-bottom-g': '66',
-			'margin-left-g': '66',
-			'margin-right-g': '66',
-			'margin-left-unit-g': '%',
-			'margin-bottom-unit-g': '%',
-			'margin-top-unit-g': '%',
-			'margin-right-unit-g': '%',
+			'_m.t-g': '66',
+			'_m.b-g': '66',
+			'_m.l-g': '66',
+			'_m.r-g': '66',
+			'_m.l.u-g': '%',
+			'_m.b.u-g': '%',
+			'_m.t.u-g': '%',
+			'_m.r.u-g': '%',
 		};
 		const marginResult = await getAttributes([
-			'margin-left-unit-g',
-			'margin-bottom-unit-g',
-			'margin-top-unit-g',
-			'margin-right-unit-g',
-			'margin-top-g',
-			'margin-bottom-g',
-			'margin-left-g',
-			'margin-right-g',
+			'_m.l.u-g',
+			'_m.b.u-g',
+			'_m.t.u-g',
+			'_m.r.u-g',
+			'_m.t-g',
+			'_m.b-g',
+			'_m.l-g',
+			'_m.r-g',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -65,13 +65,9 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
-		expect(typeof (await getAttributes('padding-bottom-g'))).toStrictEqual(
-			'string'
-		);
+		expect(typeof (await getAttributes('_p.b-g'))).toStrictEqual('string');
 
-		expect(typeof (await getAttributes('margin-bottom-g'))).toStrictEqual(
-			'string'
-		);
+		expect(typeof (await getAttributes('_m.b-g'))).toStrictEqual('string');
 	});
 
 	it('Checking responsive axisControl', async () => {
@@ -120,14 +116,14 @@ describe('AxisControl', () => {
 
 		await page.waitForTimeout(300);
 
-		expect(await getAttributes('margin-top-g')).toStrictEqual('3.5');
+		expect(await getAttributes('_m.t-g')).toStrictEqual('3.5');
 
 		const input = await page.$$('.maxi-axis-control__content__item input');
 
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('margin-top-g')).toStrictEqual('-1');
+		expect(await getAttributes('_m.t-g')).toStrictEqual('-1');
 	});
 
 	it('Checking AxisControl auto', async () => {
@@ -141,25 +137,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': 'auto',
-			'margin-bottom-g': 'auto',
-			'margin-left-g': 'auto',
-			'margin-right-g': 'auto',
-			'margin-left-unit-g': 'px',
-			'margin-bottom-unit-g': 'px',
-			'margin-top-unit-g': 'px',
-			'margin-right-unit-g': 'px',
+			'_m.t-g': 'auto',
+			'_m.b-g': 'auto',
+			'_m.l-g': 'auto',
+			'_m.r-g': 'auto',
+			'_m.l.u-g': 'px',
+			'_m.b.u-g': 'px',
+			'_m.t.u-g': 'px',
+			'_m.r.u-g': 'px',
 		};
 
 		const result = await getAttributes([
-			'margin-left-unit-g',
-			'margin-bottom-unit-g',
-			'margin-top-unit-g',
-			'margin-right-unit-g',
-			'margin-top-g',
-			'margin-bottom-g',
-			'margin-left-g',
-			'margin-right-g',
+			'_m.l.u-g',
+			'_m.b.u-g',
+			'_m.t.u-g',
+			'_m.r.u-g',
+			'_m.t-g',
+			'_m.b-g',
+			'_m.l-g',
+			'_m.r-g',
 		]);
 
 		expect(result).toStrictEqual(expectMargin);
@@ -180,25 +176,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectAxisMargin = {
-			'margin-top-g': '66',
-			'margin-bottom-g': '66',
-			'margin-left-g': '77',
-			'margin-right-g': '77',
-			'margin-left-unit-g': 'px',
-			'margin-bottom-unit-g': '%',
-			'margin-top-unit-g': '%',
-			'margin-right-unit-g': 'px',
+			'_m.t-g': '66',
+			'_m.b-g': '66',
+			'_m.l-g': '77',
+			'_m.r-g': '77',
+			'_m.l.u-g': 'px',
+			'_m.b.u-g': '%',
+			'_m.t.u-g': '%',
+			'_m.r.u-g': 'px',
 		};
 
 		const resultAxis = await getAttributes([
-			'margin-left-unit-g',
-			'margin-bottom-unit-g',
-			'margin-top-unit-g',
-			'margin-right-unit-g',
-			'margin-bottom-g',
-			'margin-left-g',
-			'margin-right-g',
-			'margin-top-g',
+			'_m.l.u-g',
+			'_m.b.u-g',
+			'_m.t.u-g',
+			'_m.r.u-g',
+			'_m.b-g',
+			'_m.l-g',
+			'_m.r-g',
+			'_m.t-g',
 		]);
 
 		expect(resultAxis).toStrictEqual(expectAxisMargin);
@@ -212,25 +208,25 @@ describe('AxisControl', () => {
 		});
 
 		const expectSyncOptionNone = {
-			'margin-top-g': '66',
-			'margin-bottom-g': '55',
-			'margin-left-g': '33',
-			'margin-right-g': '77',
-			'margin-left-unit-g': 'px',
-			'margin-bottom-unit-g': '%',
-			'margin-top-unit-g': 'px',
-			'margin-right-unit-g': 'px',
+			'_m.t-g': '66',
+			'_m.b-g': '55',
+			'_m.l-g': '33',
+			'_m.r-g': '77',
+			'_m.l.u-g': 'px',
+			'_m.b.u-g': '%',
+			'_m.t.u-g': 'px',
+			'_m.r.u-g': 'px',
 		};
 
 		const resultSyncOptionNone = await getAttributes([
-			'margin-top-g',
-			'margin-bottom-g',
-			'margin-left-g',
-			'margin-right-g',
-			'margin-left-unit-g',
-			'margin-bottom-unit-g',
-			'margin-top-unit-g',
-			'margin-right-unit-g',
+			'_m.t-g',
+			'_m.b-g',
+			'_m.l-g',
+			'_m.r-g',
+			'_m.l.u-g',
+			'_m.b.u-g',
+			'_m.t.u-g',
+			'_m.r.u-g',
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);
@@ -254,7 +250,7 @@ describe('AxisControl', () => {
 		await input.focus();
 		await pressKeyTimes('ArrowDown', '5');
 
-		expect(await getAttributes('padding-top-g')).toStrictEqual('0');
+		expect(await getAttributes('_p.t-g')).toStrictEqual('0');
 	});
 
 	it('Checking AxisControl arrows when value inherited from higher breakpoints', async () => {
@@ -295,15 +291,11 @@ describe('AxisControl', () => {
 
 			await page.keyboard.press('ArrowDown');
 
-			expect(await getAttributes('margin-top-m')).toStrictEqual(
-				`${value - 1}`
-			);
+			expect(await getAttributes('_m.t-m')).toStrictEqual(`${value - 1}`);
 
 			await page.keyboard.press('ArrowUp');
 
-			expect(await getAttributes('margin-top-m')).toStrictEqual(
-				undefined
-			);
+			expect(await getAttributes('_m.t-m')).toStrictEqual(undefined);
 		}
 	});
 });

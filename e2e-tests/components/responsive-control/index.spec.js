@@ -36,7 +36,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-xxl')).toStrictEqual('left');
+		expect(await getAttributes('_a-xxl')).toStrictEqual('left');
 
 		await changeResponsive(page, 'xl');
 		await page.$eval(
@@ -44,7 +44,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-g')).toStrictEqual('right');
+		expect(await getAttributes('_a-g')).toStrictEqual('right');
 
 		await changeResponsive(page, 'l');
 		await page.$eval(
@@ -52,7 +52,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-l')).toStrictEqual('center');
+		expect(await getAttributes('_a-l')).toStrictEqual('center');
 
 		await changeResponsive(page, 'm');
 		await page.$eval(
@@ -60,7 +60,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-m')).toStrictEqual('left');
+		expect(await getAttributes('_a-m')).toStrictEqual('left');
 
 		await changeResponsive(page, 's');
 		await page.$eval(
@@ -68,7 +68,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-s')).toStrictEqual('right');
+		expect(await getAttributes('_a-s')).toStrictEqual('right');
 
 		await changeResponsive(page, 'xs');
 		await page.$eval(
@@ -76,7 +76,7 @@ describe('ResponsiveControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('alignment-xs')).toStrictEqual('center');
+		expect(await getAttributes('_a-xs')).toStrictEqual('center');
 	});
 
 	/* it('Check Responsive to responsive control', async () => {

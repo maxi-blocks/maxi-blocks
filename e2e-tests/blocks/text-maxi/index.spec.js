@@ -54,7 +54,7 @@ describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
+		await setAttributes(page, { _uid: 'text-maxi-1' });
 	});
 
 	it('Writes a sentence on Text Maxi', async () => {
@@ -700,7 +700,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const { content: expectedContent } = await getBlockAttributes();
+		const { _c: expectedContent } = await getBlockAttributes();
 
 		expect(expectedContent).toMatchSnapshot();
 
@@ -714,7 +714,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 
-		const { 'palette-color-g': expectedColor, content: expectedContent2 } =
+		const { '_pc-g': expectedColor, _c: expectedContent2 } =
 			await getBlockAttributes();
 
 		expect(expectedColor).toBe(4);

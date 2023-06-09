@@ -55,8 +55,8 @@ const modalMock = async (
 									type: 'shape',
 									isHover: false,
 									'd-g': 'block',
-									'background-svg-palette-status-g': true,
-									'background-svg-palette-color-g': 5,
+									'background-svg_ps-g': true,
+									'background-svg_pc-g': 5,
 									'background-svg-SVGElement':
 										'<svg fill="undefined" data-fill="" viewBox="0 0 36.1 36.1" height="64px" width="64px" class="tick-13-maxi-svg" data-item="container-maxi-4748__svg"><path d="M8.2 15.9c-1.4-.3 2.8-3.2 5.2-2.8 1.4.2 3.6 2.7 4.6 5.1.8 2 1.3-5.3 10.7-13 3-2.5 4.7-2.7 4.7-2.3S31.9 4.6 30.7 6c-5.8 6.5-9.2 15-9.8 17.9-.7 3.7-3.6 3.8-4.4 2.2-2.7-5.3-5.6-9.6-8.3-10.2zm9.1 17.4a13.88 13.88 0 0 1-5.7-1.2C9.9 31.4 8.3 30.4 7 29c-1.3-1.3-2.4-2.9-3.1-4.7a13.88 13.88 0 0 1-1.2-5.7 13.88 13.88 0 0 1 1.2-5.7c.7-1.7 1.7-3.2 3.1-4.6C8.3 7 9.9 5.9 11.6 5.2c1.8-.8 3.8-1.2 5.7-1.2a14.22 14.22 0 0 1 3.6.5c.5.1.8.6.7 1.1-.1.4-.5.7-.9.7h-.2c-1-.3-2.1-.4-3.2-.4-7 0-12.8 5.7-12.8 12.8a12.76 12.76 0 0 0 12.8 12.8 12.76 12.76 0 0 0 12.8-12.8c0-1.5-.3-3-.8-4.4-.2-.5.1-1 .6-1.2s1 .1 1.2.6a14.26 14.26 0 0 1 .9 5 13.88 13.88 0 0 1-1.2 5.7c-.7 1.7-1.8 3.3-3.1 4.7-1.3 1.3-2.9 2.4-4.7 3.1s-3.7 1.1-5.7 1.1z" fill=""></path></svg>',
 									'background-svg-SVGData': {
@@ -66,13 +66,12 @@ const modalMock = async (
 											imageURL: '',
 										},
 									},
-									'background-svg-top-unit-g': '%',
+									'background-svg.t-unit-g': '%',
 									'background-svg-position-sync-g': 'all',
-									'background-svg-position-top-unit-g': 'px',
+									'background-svg-position.t-unit-g': 'px',
 									'background-svg-position-right-unit-g':
 										'px',
-									'background-svg-position-bottom-unit-g':
-										'px',
+									'background-svg-position.b-unit-g': 'px',
 									'background-svg-position-left-unit-g': 'px',
 									'background-svg-size-g': 100,
 									'background-svg-size-unit-g': '%',

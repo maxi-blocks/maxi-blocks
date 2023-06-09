@@ -342,14 +342,14 @@ describe('TypographyControl', () => {
 
 		const attributeResult = await getAttributes([
 			'line-height-g',
-			'letter-spacing-g',
-			'font-size-g',
+			'_ls-g',
+			'_fs-g',
 		]);
 
 		const expectedAttributes = {
 			'line-height-g': 22,
-			'letter-spacing-g': 10,
-			'font-size-g': 19,
+			'_ls-g': 10,
+			'_fs-g': 19,
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);

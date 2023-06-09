@@ -35,15 +35,9 @@ describe('Divider Maxi', () => {
 		await page.waitForTimeout(150);
 		await alignmentSelectors[2].select('flex-start');
 
-		expect(await getAttributes('line-orientation-g')).toStrictEqual(
-			'vertical'
-		);
-		expect(await getAttributes('line-vertical-g')).toStrictEqual(
-			'flex-start'
-		);
-		expect(await getAttributes('line-horizontal-g')).toStrictEqual(
-			'flex-start'
-		);
+		expect(await getAttributes('_lo-g')).toStrictEqual('vertical');
+		expect(await getAttributes('_lv-g')).toStrictEqual('flex-start');
+		expect(await getAttributes('_lh-g')).toStrictEqual('flex-start');
 
 		// responsive horizontal
 		// responsive S
@@ -120,13 +114,9 @@ describe('Divider Maxi', () => {
 		);
 
 		await alignmentSelectors.select('horizontal');
-		expect(await getAttributes('line-orientation-g')).toStrictEqual(
-			'horizontal'
-		);
+		expect(await getAttributes('_lo-g')).toStrictEqual('horizontal');
 
-		expect(await getAttributes('line-orientation-s')).toStrictEqual(
-			'vertical'
-		);
+		expect(await getAttributes('_lo-s')).toStrictEqual('vertical');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Divider Custom CSS', async () => {

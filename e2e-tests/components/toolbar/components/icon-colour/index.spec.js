@@ -37,7 +37,7 @@ describe('Icon colour', () => {
 			colors => colors.click()
 		);
 
-		expect(await getAttributes('svg-line-palette-color')).toStrictEqual(3);
+		expect(await getAttributes('svg-line_pc')).toStrictEqual(3);
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'icon colour');

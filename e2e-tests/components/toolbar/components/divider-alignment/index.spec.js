@@ -36,9 +36,7 @@ describe('Divider alignment from Toolbar', () => {
 
 		await selector.select('vertical');
 
-		expect(await getAttributes('line-orientation-g')).toStrictEqual(
-			'vertical'
-		);
+		expect(await getAttributes('_lo-g')).toStrictEqual('vertical');
 
 		// Check changes in sidebar
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');

@@ -30,29 +30,29 @@ describe('Responsive attributes mechanisms', () => {
 		await selector.select('solid');
 
 		const expectBorder = {
-			'border-style-g': 'solid',
-			'border-width-top-g': 2,
-			'border-width-right-g': 2,
-			'border-width-bottom-g': 2,
-			'border-width-left-g': 2,
-			'border-style-m': undefined,
-			'border-width-top-m': undefined,
-			'border-width-right-m': undefined,
-			'border-width-bottom-m': undefined,
-			'border-width-left-m': undefined,
+			'bo_s-g': 'solid',
+			'bo_w.t-g': 2,
+			'bo_w.r-g': 2,
+			'bo_w.b-g': 2,
+			'bo_w.l-g': 2,
+			'bo_s-m': undefined,
+			'bo_w.t-m': undefined,
+			'bo_w.r-m': undefined,
+			'bo_w.b-m': undefined,
+			'bo_w.l-m': undefined,
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-g',
-			'border-width-top-g',
-			'border-width-right-g',
-			'border-width-bottom-g',
-			'border-width-left-g',
-			'border-style-m',
-			'border-width-top-m',
-			'border-width-right-m',
-			'border-width-bottom-m',
-			'border-width-left-m',
+			'bo_s-g',
+			'bo_w.t-g',
+			'bo_w.r-g',
+			'bo_w.b-g',
+			'bo_w.l-g',
+			'bo_s-m',
+			'bo_w.t-m',
+			'bo_w.r-m',
+			'bo_w.b-m',
+			'bo_w.l-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -73,10 +73,10 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const firstExpect = {
-			'border-palette-status-g': false,
+			'border_ps-g': false,
 		};
 
-		const firstResult = await getAttributes(['border-palette-status-g']);
+		const firstResult = await getAttributes(['border_ps-g']);
 
 		expect(firstResult).toStrictEqual(firstExpect);
 
@@ -86,13 +86,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const secondExpect = {
-			'border-palette-status-g': true,
-			'border-palette-status-m': undefined,
+			'border_ps-g': true,
+			'border_ps-m': undefined,
 		};
 
 		const secondResult = await getAttributes([
-			'border-palette-status-g',
-			'border-palette-status-m',
+			'border_ps-g',
+			'border_ps-m',
 		]);
 
 		expect(secondResult).toStrictEqual(secondExpect);
@@ -108,37 +108,37 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-g': 'solid',
-			'border-width-top-g': 2,
-			'border-width-right-g': 2,
-			'border-width-bottom-g': 2,
-			'border-width-left-g': 2,
-			'border-width-sync-g': 'all',
-			'border-width-unit-g': 'px',
-			'border-style-m': undefined,
-			'border-width-top-m': undefined,
-			'border-width-right-m': undefined,
-			'border-width-bottom-m': undefined,
-			'border-width-left-m': undefined,
-			'border-width-sync-m': undefined,
-			'border-width-unit-m': undefined,
+			'bo_s-g': 'solid',
+			'bo_w.t-g': 2,
+			'bo_w.r-g': 2,
+			'bo_w.b-g': 2,
+			'bo_w.l-g': 2,
+			'bo_w.sy-g': 'all',
+			'bo_w.u-g': 'px',
+			'bo_s-m': undefined,
+			'bo_w.t-m': undefined,
+			'bo_w.r-m': undefined,
+			'bo_w.b-m': undefined,
+			'bo_w.l-m': undefined,
+			'bo_w.sy-m': undefined,
+			'bo_w.u-m': undefined,
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-g',
-			'border-width-top-g',
-			'border-width-right-g',
-			'border-width-bottom-g',
-			'border-width-left-g',
-			'border-width-sync-g',
-			'border-width-unit-g',
-			'border-style-m',
-			'border-width-top-m',
-			'border-width-right-m',
-			'border-width-bottom-m',
-			'border-width-left-m',
-			'border-width-sync-m',
-			'border-width-unit-m',
+			'bo_s-g',
+			'bo_w.t-g',
+			'bo_w.r-g',
+			'bo_w.b-g',
+			'bo_w.l-g',
+			'bo_w.sy-g',
+			'bo_w.u-g',
+			'bo_s-m',
+			'bo_w.t-m',
+			'bo_w.r-m',
+			'bo_w.b-m',
+			'bo_w.l-m',
+			'bo_w.sy-m',
+			'bo_w.u-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -164,14 +164,11 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '100',
-			'margin-top-xxl': undefined,
+			'_m.t-g': '100',
+			'_m.t-xxl': undefined,
 		};
 
-		const marginResult = await getAttributes([
-			'margin-top-g',
-			'margin-top-xxl',
-		]);
+		const marginResult = await getAttributes(['_m.t-g', '_m.t-xxl']);
 
 		expect(marginResult).toStrictEqual(expectMargin);
 
@@ -188,33 +185,33 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-xxl': 'solid',
-			'border-width-top-xxl': undefined,
-			'border-width-right-xxl': undefined,
-			'border-width-bottom-xxl': undefined,
-			'border-width-left-xxl': undefined,
-			'border-width-sync-xxl': undefined,
-			'border-width-unit-xxl': undefined,
-			'border-style-g': 'none',
-			'border-width-top-g': 2,
-			'border-width-right-g': 2,
-			'border-width-bottom-g': 2,
-			'border-width-left-g': 2,
+			'bo_s-xxl': 'solid',
+			'bo_w.t-xxl': undefined,
+			'bo_w.r-xxl': undefined,
+			'bo_w.b-xxl': undefined,
+			'bo_w.l-xxl': undefined,
+			'bo_w.sy-xxl': undefined,
+			'bo_w.u-xxl': undefined,
+			'bo_s-g': 'none',
+			'bo_w.t-g': 2,
+			'bo_w.r-g': 2,
+			'bo_w.b-g': 2,
+			'bo_w.l-g': 2,
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-xxl',
-			'border-width-top-xxl',
-			'border-width-right-xxl',
-			'border-width-bottom-xxl',
-			'border-width-left-xxl',
-			'border-width-sync-xxl',
-			'border-width-unit-xxl',
-			'border-style-g',
-			'border-width-top-g',
-			'border-width-right-g',
-			'border-width-bottom-g',
-			'border-width-left-g',
+			'bo_s-xxl',
+			'bo_w.t-xxl',
+			'bo_w.r-xxl',
+			'bo_w.b-xxl',
+			'bo_w.l-xxl',
+			'bo_w.sy-xxl',
+			'bo_w.u-xxl',
+			'bo_s-g',
+			'bo_w.t-g',
+			'bo_w.r-g',
+			'bo_w.b-g',
+			'bo_w.l-g',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -255,15 +252,15 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '10',
-			'margin-top-xl': '20',
-			'margin-top-m': '10',
+			'_m.t-g': '10',
+			'_m.t-xl': '20',
+			'_m.t-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-g',
-			'margin-top-xl',
-			'margin-top-m',
+			'_m.t-g',
+			'_m.t-xl',
+			'_m.t-m',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -305,15 +302,15 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '10',
-			'margin-top-xl': '20',
-			'margin-top-m': '10',
+			'_m.t-g': '10',
+			'_m.t-xl': '20',
+			'_m.t-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-g',
-			'margin-top-xl',
-			'margin-top-m',
+			'_m.t-g',
+			'_m.t-xl',
+			'_m.t-m',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -344,17 +341,17 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-xxl': 'solid',
-			'border-style-g': 'dotted',
-			'border-style-xl': 'dashed',
-			'border-style-m': 'dotted',
+			'bo_s-xxl': 'solid',
+			'bo_s-g': 'dotted',
+			'bo_s-xl': 'dashed',
+			'bo_s-m': 'dotted',
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-xxl',
-			'border-style-g',
-			'border-style-xl',
-			'border-style-m',
+			'bo_s-xxl',
+			'bo_s-g',
+			'bo_s-xl',
+			'bo_s-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -372,10 +369,10 @@ describe('Responsive attributes mechanisms', () => {
 		await selector.select('solid');
 
 		const expectBorder = {
-			'border-style-xl': 'solid',
+			'bo_s-xl': 'solid',
 		};
 
-		const borderResult = await getAttributes(['border-style-xl']);
+		const borderResult = await getAttributes(['bo_s-xl']);
 
 		expect(borderResult).toStrictEqual(expectBorder);
 
@@ -416,15 +413,15 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '10',
-			'margin-top-xl': '20',
-			'margin-top-m': '10',
+			'_m.t-g': '10',
+			'_m.t-xl': '20',
+			'_m.t-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-g',
-			'margin-top-xl',
-			'margin-top-m',
+			'_m.t-g',
+			'_m.t-xl',
+			'_m.t-m',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -451,14 +448,11 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-g': '123',
-			'margin-top-xxl': undefined,
+			'_m.t-g': '123',
+			'_m.t-xxl': undefined,
 		};
 
-		const marginResult = await getAttributes([
-			'margin-top-g',
-			'margin-top-xxl',
-		]);
+		const marginResult = await getAttributes(['_m.t-g', '_m.t-xxl']);
 
 		expect(marginResult).toStrictEqual(expectMargin);
 
@@ -475,14 +469,11 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('100', { delay: 100 });
 
 		const expectRadiusOnM = {
-			'border-radius-top-left-g': 100,
-			'border-radius-top-left-m': undefined,
+			'bo.ra.tl-g': 100,
+			'bo.ra.tl-m': undefined,
 		};
 
-		const radiusOnM = await getAttributes([
-			'border-radius-top-left-g',
-			'border-radius-top-left-m',
-		]);
+		const radiusOnM = await getAttributes(['bo.ra.tl-g', 'bo.ra.tl-m']);
 
 		expect(radiusOnM).toStrictEqual(expectRadiusOnM);
 
@@ -497,15 +488,15 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('150', { delay: 100 });
 
 		const expectRadiusOnXl = {
-			'border-radius-top-left-g': 100,
-			'border-radius-top-left-xl': 150,
-			'border-radius-top-left-m': 100,
+			'bo.ra.tl-g': 100,
+			'bo.ra.tl-xl': 150,
+			'bo.ra.tl-m': 100,
 		};
 
 		const radiusOnXl = await getAttributes([
-			'border-radius-top-left-g',
-			'border-radius-top-left-m',
-			'border-radius-top-left-xl',
+			'bo.ra.tl-g',
+			'bo.ra.tl-m',
+			'bo.ra.tl-xl',
 		]);
 
 		expect(radiusOnXl).toStrictEqual(expectRadiusOnXl);
@@ -517,15 +508,15 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnXl = {
-			'border-radius-top-left-g': 100,
-			'border-radius-top-left-m': undefined,
-			'border-radius-top-left-xl': undefined,
+			'bo.ra.tl-g': 100,
+			'bo.ra.tl-m': undefined,
+			'bo.ra.tl-xl': undefined,
 		};
 
 		const resetRadiusOnXl = await getAttributes([
-			'border-radius-top-left-g',
-			'border-radius-top-left-m',
-			'border-radius-top-left-xl',
+			'bo.ra.tl-g',
+			'bo.ra.tl-m',
+			'bo.ra.tl-xl',
 		]);
 
 		expect(resetRadiusOnXl).toStrictEqual(expectResetRadiusOnXl);
@@ -541,15 +532,15 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnM = {
-			'border-radius-top-left-g': undefined,
-			'border-radius-top-left-m': undefined,
-			'border-radius-top-left-xl': undefined,
+			'bo.ra.tl-g': undefined,
+			'bo.ra.tl-m': undefined,
+			'bo.ra.tl-xl': undefined,
 		};
 
 		const resetRadiusOnM = await getAttributes([
-			'border-radius-top-left-g',
-			'border-radius-top-left-m',
-			'border-radius-top-left-xl',
+			'bo.ra.tl-g',
+			'bo.ra.tl-m',
+			'bo.ra.tl-xl',
 		]);
 
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
@@ -578,29 +569,26 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnM = {
-			'button-padding-top-g': '10',
-			'button-padding-top-xl': undefined,
+			'bt_p.t-g': '10',
+			'bt_p.t-xl': undefined,
 		};
 
-		const paddingOnM = await getAttributes([
-			'button-padding-top-g',
-			'button-padding-top-xl',
-		]);
+		const paddingOnM = await getAttributes(['bt_p.t-g', 'bt_p.t-xl']);
 
 		expect(paddingOnM).toStrictEqual(expectPaddingOnM);
 
 		await changeResponsive(page, 'xxl');
 
 		const expectPaddingOnXl = {
-			'button-padding-top-g': '10',
-			'button-padding-top-xl': undefined,
-			'button-padding-top-xxl': '23',
+			'bt_p.t-g': '10',
+			'bt_p.t-xl': undefined,
+			'bt_p.t-xxl': '23',
 		};
 
 		const paddingOnXl = await getAttributes([
-			'button-padding-top-g',
-			'button-padding-top-xl',
-			'button-padding-top-xxl',
+			'bt_p.t-g',
+			'bt_p.t-xl',
+			'bt_p.t-xxl',
 		]);
 
 		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
@@ -616,15 +604,15 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectPaddingAfterReset = {
-			'button-padding-top-g': '15',
-			'button-padding-top-xl': undefined,
-			'button-padding-top-xxl': '23',
+			'bt_p.t-g': '15',
+			'bt_p.t-xl': undefined,
+			'bt_p.t-xxl': '23',
 		};
 
 		const paddingAfterReset = await getAttributes([
-			'button-padding-top-g',
-			'button-padding-top-xl',
-			'button-padding-top-xxl',
+			'bt_p.t-g',
+			'bt_p.t-xl',
+			'bt_p.t-xxl',
 		]);
 
 		expect(paddingAfterReset).toStrictEqual(expectPaddingAfterReset);
@@ -658,15 +646,15 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'padding-top-g': '10',
-			'padding-top-xxl': undefined,
-			'padding-top-xl': undefined,
+			'_p.t-g': '10',
+			'_p.t-xxl': undefined,
+			'_p.t-xl': undefined,
 		};
 
 		const paddingOnXl = await getAttributes([
-			'padding-top-g',
-			'padding-top-xxl',
-			'padding-top-xl',
+			'_p.t-g',
+			'_p.t-xxl',
+			'_p.t-xl',
 		]);
 
 		expect(paddingOnXl).toStrictEqual(expectPaddingOnXl);
@@ -685,15 +673,15 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectPaddingOnXxl = {
-			'padding-top-g': '15',
-			'padding-top-xl': undefined,
-			'padding-top-xxl': undefined,
+			'_p.t-g': '15',
+			'_p.t-xl': undefined,
+			'_p.t-xxl': undefined,
 		};
 
 		const paddingOnXxl = await getAttributes([
-			'padding-top-g',
-			'padding-top-xl',
-			'padding-top-xxl',
+			'_p.t-g',
+			'_p.t-xl',
+			'_p.t-xxl',
 		]);
 
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);

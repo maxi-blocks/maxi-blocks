@@ -34,23 +34,23 @@ describe('PositionControl', () => {
 		});
 
 		const expectPosition = {
-			'position-top-g': '56',
-			'position-bottom-g': '56',
+			'position.t-g': '56',
+			'position.b-g': '56',
 			'position-left-g': '56',
 			'position-right-g': '56',
-			'position-top-unit-g': '%',
-			'position-bottom-unit-g': '%',
+			'position.t-unit-g': '%',
+			'position.b-unit-g': '%',
 			'position-left-unit-g': '%',
 			'position-right-unit-g': '%',
 		};
 
 		const positionResult = await getAttributes([
-			'position-top-g',
-			'position-bottom-g',
+			'position.t-g',
+			'position.b-g',
 			'position-left-g',
 			'position-right-g',
-			'position-top-unit-g',
-			'position-bottom-unit-g',
+			'position.t-unit-g',
+			'position.b-unit-g',
 			'position-left-unit-g',
 			'position-right-unit-g',
 		]);
@@ -67,7 +67,7 @@ describe('PositionControl', () => {
 			values: '56',
 		});
 
-		expect(await getAttributes('position-top-g')).toStrictEqual('56');
+		expect(await getAttributes('position.t-g')).toStrictEqual('56');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('relative');
@@ -196,7 +196,7 @@ describe('PositionControl', () => {
 			values: '44',
 		});
 
-		expect(await getAttributes('position-top-g')).toStrictEqual('44');
+		expect(await getAttributes('position.t-g')).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('sticky');
@@ -208,7 +208,7 @@ describe('PositionControl', () => {
 			values: '12',
 		});
 
-		expect(await getAttributes('position-top-g')).toStrictEqual('12');
+		expect(await getAttributes('position.t-g')).toStrictEqual('12');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

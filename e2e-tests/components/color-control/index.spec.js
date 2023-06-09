@@ -32,13 +32,11 @@ describe('ColorControl', () => {
 			opacity: '45',
 		});
 
-		expect(
-			await getAttributes('button-background-palette-opacity-g')
-		).toStrictEqual(0.45);
+		expect(await getAttributes('button-background_po-g')).toStrictEqual(
+			0.45
+		);
 
-		expect(
-			await getAttributes('button-background-palette-color-g')
-		).toStrictEqual(3);
+		expect(await getAttributes('button-background_pc-g')).toStrictEqual(3);
 
 		// check reset button
 		await accordionPanel.$eval(
@@ -46,9 +44,7 @@ describe('ColorControl', () => {
 			resetButton => resetButton.click()
 		);
 
-		expect(
-			await getAttributes('button-background-palette-color-g')
-		).toStrictEqual(4);
+		expect(await getAttributes('button-background_pc-g')).toStrictEqual(4);
 	});
 
 	it('Checking the custom color control', async () => {
@@ -66,13 +62,13 @@ describe('ColorControl', () => {
 			opacity: '67',
 		});
 
-		expect(await getAttributes('button-background-color-g')).toStrictEqual(
+		expect(await getAttributes('button-background_cc-g')).toStrictEqual(
 			'rgba(142, 39, 39, 0.67)'
 		);
 
-		expect(
-			await getAttributes('button-background-palette-opacity-g')
-		).toStrictEqual(0.67);
+		expect(await getAttributes('button-background_po-g')).toStrictEqual(
+			0.67
+		);
 
 		// check reset button
 		await accordionPanel.$eval(
@@ -80,7 +76,7 @@ describe('ColorControl', () => {
 			resetButton => resetButton.click()
 		);
 
-		expect(await getAttributes('button-background-color-g')).toStrictEqual(
+		expect(await getAttributes('button-background_cc-g')).toStrictEqual(
 			'rgba(255,74,23,0.67)'
 		);
 	});
@@ -101,9 +97,7 @@ describe('ColorControl', () => {
 			opacity: '250',
 		});
 
-		expect(
-			await getAttributes('button-background-palette-opacity-g')
-		).toStrictEqual(1);
+		expect(await getAttributes('button-background_po-g')).toStrictEqual(1);
 
 		await editColorControl({
 			page,
@@ -112,9 +106,9 @@ describe('ColorControl', () => {
 			opacity: '-23',
 		});
 
-		expect(
-			await getAttributes('button-background-palette-opacity-g')
-		).toStrictEqual(0.23);
+		expect(await getAttributes('button-background_po-g')).toStrictEqual(
+			0.23
+		);
 	});
 
 	it('Checking the reset button', async () => {
@@ -136,9 +130,7 @@ describe('ColorControl', () => {
 			colorPalette: 5,
 		});
 
-		expect(
-			await getAttributes('button-background-palette-color-g')
-		).toStrictEqual(5);
+		expect(await getAttributes('button-background_pc-g')).toStrictEqual(5);
 
 		// reset button
 		await page.$$eval(
@@ -146,9 +138,7 @@ describe('ColorControl', () => {
 			input => input[0].click()
 		);
 
-		expect(
-			await getAttributes('button-background-palette-color-g')
-		).toStrictEqual(4);
+		expect(await getAttributes('button-background_pc-g')).toStrictEqual(4);
 
 		// custom color
 		await page.$eval(
@@ -165,7 +155,7 @@ describe('ColorControl', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('50');
-		expect(await getAttributes('button-background-color-g')).toStrictEqual(
+		expect(await getAttributes('button-background_cc-g')).toStrictEqual(
 			'rgba(255, 74, 23, 0.5)'
 		);
 
@@ -179,7 +169,7 @@ describe('ColorControl', () => {
 		await page.keyboard.type('#9A5441');
 		await page.waitForTimeout(250);
 
-		expect(await getAttributes('button-background-color-g')).toStrictEqual(
+		expect(await getAttributes('button-background_cc-g')).toStrictEqual(
 			'rgba(255, 74, 23, 0.5)'
 		);
 
@@ -190,7 +180,7 @@ describe('ColorControl', () => {
 		);
 		await page.waitForTimeout(250);
 
-		expect(await getAttributes('button-background-color-g')).toStrictEqual(
+		expect(await getAttributes('button-background_cc-g')).toStrictEqual(
 			'rgba(255,74,23,0.5)'
 		);
 	});

@@ -39,7 +39,7 @@ describe('Icon Color', () => {
 			colorPalette: 4,
 		});
 
-		expect(await getAttributes('svg-fill-palette-color')).toStrictEqual(4);
+		expect(await getAttributes('svg-fill_pc')).toStrictEqual(4);
 
 		await editColorControl({
 			page,
@@ -48,7 +48,7 @@ describe('Icon Color', () => {
 			colorPalette: 7,
 		});
 
-		expect(await getAttributes('svg-line-palette-color')).toStrictEqual(7);
+		expect(await getAttributes('svg-line_pc')).toStrictEqual(7);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});

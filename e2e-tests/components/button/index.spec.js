@@ -22,7 +22,7 @@ describe('Button', () => {
 			click[1].click()
 		);
 
-		expect(await getAttributes('text-alignment-g')).toStrictEqual('center');
+		expect(await getAttributes('_ta-g')).toStrictEqual('center');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -45,13 +45,13 @@ describe('Divider color from Toolbar', () => {
 		await page.keyboard.type('44');
 
 		const expectDivider = {
-			'divider-border-palette-color-g': 6,
-			'divider-border-palette-opacity-g': 0.44,
+			'divider-border_pc-g': 6,
+			'divider-border_po-g': 0.44,
 		};
 
 		const dividerResult = await getAttributes([
-			'divider-border-palette-color-g',
-			'divider-border-palette-opacity-g',
+			'divider-border_pc-g',
+			'divider-border_po-g',
 		]);
 
 		expect(dividerResult).toStrictEqual(expectDivider);

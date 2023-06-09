@@ -41,9 +41,7 @@ describe('Video overlay control', () => {
 			paletteStatus: true,
 			colorPalette: 8,
 		});
-		expect(
-			await getAttributes('overlay-background-palette-color-g')
-		).toStrictEqual(8);
+		expect(await getAttributes('overlay-background_pc-g')).toStrictEqual(8);
 
 		// Opacity
 		await editAdvancedNumberControl({
@@ -54,9 +52,9 @@ describe('Video overlay control', () => {
 			newNumber: '33',
 		});
 
-		expect(
-			await getAttributes('overlay-background-palette-opacity-g')
-		).toStrictEqual(0.33);
+		expect(await getAttributes('overlay-background_po-g')).toStrictEqual(
+			0.33
+		);
 
 		// Hide image(icon only)
 
@@ -92,9 +90,7 @@ describe('Video overlay control', () => {
 			colorPalette: 3,
 		});
 
-		expect(
-			await getAttributes('overlay-background-palette-color-s')
-		).toStrictEqual(3);
+		expect(await getAttributes('overlay-background_pc-s')).toStrictEqual(3);
 
 		// Change xs
 		await changeResponsive(page, 'xs');

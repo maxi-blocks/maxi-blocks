@@ -37,7 +37,7 @@ describe('Icon background', () => {
 			colors => colors.click()
 		);
 
-		expect(await getAttributes('svg-fill-palette-color')).toStrictEqual(5);
+		expect(await getAttributes('svg-fill_pc')).toStrictEqual(5);
 
 		// Check changes in sidebar
 

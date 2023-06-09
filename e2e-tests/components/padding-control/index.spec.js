@@ -30,22 +30,22 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-g': '24',
-			'padding-bottom-g': '24',
+			'_p.t-g': '24',
+			'_p.b-g': '24',
 			'padding-left-g': '24',
 			'padding-right-g': '24',
 			'padding-left-unit-g': 'em',
-			'padding-bottom-unit-g': 'em',
-			'padding-top-unit-g': 'em',
+			'_p.b-unit-g': 'em',
+			'_p.t-unit-g': 'em',
 			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
 			'padding-left-unit-g',
-			'padding-bottom-unit-g',
-			'padding-top-unit-g',
+			'_p.b-unit-g',
+			'_p.t-unit-g',
 			'padding-right-unit-g',
-			'padding-top-g',
-			'padding-bottom-g',
+			'_p.t-g',
+			'_p.b-g',
 			'padding-left-g',
 			'padding-right-g',
 		]);
@@ -85,22 +85,22 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-g': '34',
-			'padding-bottom-g': '34',
+			'_p.t-g': '34',
+			'_p.b-g': '34',
 			'padding-left-g': '44',
 			'padding-right-g': '44',
 			'padding-left-unit-g': 'em',
-			'padding-bottom-unit-g': '%',
-			'padding-top-unit-g': '%',
+			'_p.b-unit-g': '%',
+			'_p.t-unit-g': '%',
 			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
 			'padding-left-unit-g',
-			'padding-bottom-unit-g',
-			'padding-top-unit-g',
+			'_p.b-unit-g',
+			'_p.t-unit-g',
 			'padding-right-unit-g',
-			'padding-top-g',
-			'padding-bottom-g',
+			'_p.t-g',
+			'_p.b-g',
 			'padding-left-g',
 			'padding-right-g',
 		]);
@@ -151,22 +151,22 @@ describe('Padding control', () => {
 		});
 
 		const expectPadding = {
-			'padding-top-g': '10',
-			'padding-bottom-g': '30',
+			'_p.t-g': '10',
+			'_p.b-g': '30',
 			'padding-left-g': '40',
 			'padding-right-g': '20',
 			'padding-left-unit-g': '%',
-			'padding-bottom-unit-g': 'vw',
-			'padding-top-unit-g': '%',
+			'_p.b-unit-g': 'vw',
+			'_p.t-unit-g': '%',
 			'padding-right-unit-g': 'em',
 		};
 		const paddingResult = await getAttributes([
 			'padding-left-unit-g',
-			'padding-bottom-unit-g',
-			'padding-top-unit-g',
+			'_p.b-unit-g',
+			'_p.t-unit-g',
 			'padding-right-unit-g',
-			'padding-top-g',
-			'padding-bottom-g',
+			'_p.t-g',
+			'_p.b-g',
 			'padding-left-g',
 			'padding-right-g',
 		]);

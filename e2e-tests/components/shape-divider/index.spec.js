@@ -68,9 +68,7 @@ describe('Shape divider', () => {
 			colorPalette: 5,
 		});
 
-		expect(
-			await getAttributes('shape-divider-top-palette-color-g')
-		).toStrictEqual(5);
+		expect(await getAttributes('shape-divider-top_pc-g')).toStrictEqual(5);
 
 		await page.$eval(
 			'.maxi-tabs-content .maxi-shape-divider-control__height input',
@@ -108,7 +106,7 @@ describe('Shape divider', () => {
 			button => button.click()
 		);
 		expect(
-			await getAttributes('shape-divider-bottom-shape-style')
+			await getAttributes('shape-divider.b-shape-style')
 		).toStrictEqual('waves-bottom');
 
 		// Bottom attributes
@@ -117,9 +115,9 @@ describe('Shape divider', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
 
-		expect(
-			await getAttributes('shape-divider-bottom-opacity-g')
-		).toStrictEqual(0.44);
+		expect(await getAttributes('shape-divider.b-opacity-g')).toStrictEqual(
+			0.44
+		);
 
 		await editColorControl({
 			page,
@@ -130,9 +128,7 @@ describe('Shape divider', () => {
 			colorPalette: 7,
 		});
 
-		expect(
-			await getAttributes('shape-divider-bottom-palette-color-g')
-		).toStrictEqual(7);
+		expect(await getAttributes('shape-divider.b_pc-g')).toStrictEqual(7);
 
 		// Divider height
 		await page.$eval(
@@ -143,9 +139,9 @@ describe('Shape divider', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('254');
 
-		expect(
-			await getAttributes('shape-divider-bottom-height-g')
-		).toStrictEqual(254);
+		expect(await getAttributes('shape-divider.b-height-g')).toStrictEqual(
+			254
+		);
 	});
 	it('Checking the shape divider responsive', async () => {
 		// responsive bottom
@@ -183,9 +179,7 @@ describe('Shape divider', () => {
 			colorPalette: 5,
 		});
 
-		expect(
-			await getAttributes('shape-divider-bottom-palette-color-s')
-		).toStrictEqual(5);
+		expect(await getAttributes('shape-divider.b_pc-s')).toStrictEqual(5);
 		// Change xs
 		await changeResponsive(page, 'xs');
 
@@ -249,9 +243,7 @@ describe('Shape divider', () => {
 			colorPalette: 2,
 		});
 
-		expect(
-			await getAttributes('shape-divider-top-palette-color-s')
-		).toStrictEqual(2);
+		expect(await getAttributes('shape-divider-top_pc-s')).toStrictEqual(2);
 		// Change xs
 		await changeResponsive(page, 'xs');
 

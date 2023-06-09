@@ -86,7 +86,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end',
 			'number-counter-start',
 			'number-counter-stroke',
-			'number-counter-title-font-size-g',
+			'number-counter-title-_fs-g',
 		]);
 
 		const expectAttributes = {
@@ -96,7 +96,7 @@ describe('NumberCounterControl', () => {
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size-g': 19,
+			'number-counter-title-_fs-g': 19,
 		};
 
 		expect(numberResult).toStrictEqual(expectAttributes);
@@ -153,15 +153,15 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-text-palette-color-g',
-			'number-counter-circle-bar-palette-color-g',
-			'number-counter-circle-background-palette-color',
+			'number-counter-text_pc-g',
+			'number-counter-circle-bar_pc-g',
+			'number-counter-circle-background_pc',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-text-palette-color-g': 4,
-			'number-counter-circle-bar-palette-color-g': 2,
-			'number-counter-circle-background-palette-color': 3,
+			'number-counter-text_pc-g': 4,
+			'number-counter-circle-bar_pc-g': 2,
+			'number-counter-circle-background_pc': 3,
 		};
 
 		expect(colorResult).toStrictEqual(expectedColorAttributes);
@@ -339,13 +339,13 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-text-palette-color-s',
-			'number-counter-circle-bar-palette-color-s',
+			'number-counter-text_pc-s',
+			'number-counter-circle-bar_pc-s',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-text-palette-color-s': 5,
-			'number-counter-circle-bar-palette-color-s': 3,
+			'number-counter-text_pc-s': 5,
+			'number-counter-circle-bar_pc-s': 3,
 		};
 
 		expect(colorResult).toStrictEqual(expectedColorAttributes);

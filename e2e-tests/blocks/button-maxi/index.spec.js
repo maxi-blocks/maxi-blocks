@@ -105,17 +105,17 @@ describe('Button Maxi', () => {
 		);
 
 		const attributes = await getAttributes([
-			'icon-width-g',
-			'icon-stroke-g',
-			'icon-spacing-g',
-			'icon-position',
+			'i_w-g',
+			'i_str-g',
+			'i_spa-g',
+			'i_pos',
 		]);
 
 		const expectedAttributesTwo = {
-			'icon-width-g': '343',
-			'icon-stroke-g': 2,
-			'icon-spacing-g': 20,
-			'icon-position': 'bottom',
+			'i_w-g': '343',
+			'i_str-g': 2,
+			'i_spa-g': 20,
+			i_pos: 'bottom',
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -130,9 +130,7 @@ describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		expect(await getAttributes('icon-stroke-palette-color')).toStrictEqual(
-			5
-		);
+		expect(await getAttributes('i-str_pc')).toStrictEqual(5);
 
 		// Icon inherit color
 		await page.$eval('button.maxi-tabs-control__button-border', button =>
@@ -148,9 +146,7 @@ describe('Button Maxi', () => {
 			colorPalette: 6,
 		});
 
-		expect(
-			await getAttributes('icon-border-palette-color-g')
-		).toStrictEqual(6);
+		expect(await getAttributes('i-bo_pc-g')).toStrictEqual(6);
 
 		// border
 		await page.$$eval(
@@ -158,9 +154,7 @@ describe('Button Maxi', () => {
 			button => button[2].click()
 		);
 
-		expect(await getAttributes('icon-border-style-g')).toStrictEqual(
-			'dashed'
-		);
+		expect(await getAttributes('i-bo_s-g')).toStrictEqual('dashed');
 
 		// border color
 		await editColorControl({
@@ -170,9 +164,7 @@ describe('Button Maxi', () => {
 			colorPalette: 4,
 		});
 
-		expect(
-			await getAttributes('icon-border-palette-color-g')
-		).toStrictEqual(4);
+		expect(await getAttributes('i-bo_pc-g')).toStrictEqual(4);
 
 		// border width
 		await page.$$eval(
@@ -183,9 +175,7 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('59');
 
-		expect(await getAttributes('icon-border-width-bottom-g')).toStrictEqual(
-			59
-		);
+		expect(await getAttributes('i-bo_w.b-g')).toStrictEqual(59);
 
 		// check border radius
 		await page.$$eval(
@@ -196,9 +186,7 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('26');
 
-		expect(
-			await getAttributes('icon-border-radius-bottom-right-g')
-		).toStrictEqual(26);
+		expect(await getAttributes('i-bo.ra.br-g')).toStrictEqual(26);
 
 		// icon padding
 		await page.$$eval(
@@ -209,9 +197,7 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('33');
 
-		expect(await getAttributes('icon-padding-bottom-g')).toStrictEqual(
-			'33'
-		);
+		expect(await getAttributes('i_p.b-g')).toStrictEqual('33');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -243,8 +229,8 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('4');
 
-		expect(await getAttributes('icon-stroke-g-hover')).toStrictEqual(4);
-		expect(await getAttributes('icon-width-g-hover')).toStrictEqual('245');
+		expect(await getAttributes('i_str-g.h')).toStrictEqual(4);
+		expect(await getAttributes('i_w-g.h')).toStrictEqual('245');
 
 		// select border
 		await page.$eval('button.maxi-tabs-control__button-border', button =>
@@ -256,9 +242,7 @@ describe('Button Maxi', () => {
 			button => button[3].click()
 		);
 
-		expect(await getAttributes('icon-border-style-g-hover')).toStrictEqual(
-			'dotted'
-		);
+		expect(await getAttributes('i-bo_s-g.h')).toStrictEqual('dotted');
 
 		// border color
 		await editColorControl({
@@ -268,9 +252,7 @@ describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		expect(
-			await getAttributes('icon-border-palette-color-g-hover')
-		).toStrictEqual(5);
+		expect(await getAttributes('i-bo_pc-g.h')).toStrictEqual(5);
 
 		// border width
 		await page.$$eval(
@@ -281,9 +263,7 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('70');
 
-		expect(
-			await getAttributes('icon-border-width-bottom-g-hover')
-		).toStrictEqual(70);
+		expect(await getAttributes('i-bo_w.b-g.h')).toStrictEqual(70);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

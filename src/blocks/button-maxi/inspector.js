@@ -99,8 +99,8 @@ const Inspector = props => {
 			const {
 				'i-str_pc': strokePaletteColor,
 				'i-str_pc.h': strokePaletteHoverColor,
-				'icon-inherit': rawIconInherit,
-				'icon-only': rawIconOnly,
+				i_i: rawIconInherit,
+				i_on: rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
 
 			icon = getIconWithColor(attributes, {

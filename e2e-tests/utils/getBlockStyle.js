@@ -1,7 +1,7 @@
 import getBlockAttributes from './getBlockAttributes';
 
 const getBlockStyle = async page => {
-	const { uniqueID } = await getBlockAttributes();
+	const { _uid: uniqueID } = await getBlockAttributes();
 
 	const stylesString = await page.$eval(
 		`#maxi-blocks__styles--${uniqueID}`,

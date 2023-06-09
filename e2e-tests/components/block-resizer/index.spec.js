@@ -43,8 +43,6 @@ describe('BlockResizer', () => {
 		);
 		expect(blockWidth).toStrictEqual('80');
 
-		expect(await getAttributes('number-counter-width-g')).toStrictEqual(
-			'80'
-		);
+		expect(await getAttributes('nc_w-g')).toStrictEqual('80');
 	});
 });

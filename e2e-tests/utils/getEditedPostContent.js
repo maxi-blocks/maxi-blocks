@@ -9,10 +9,7 @@ import { getEditedPostContent as getWordPressEditedPostContent } from '@wordpres
 import waitForAttribute from './waitForAttribute';
 
 const getEditedPostContent = async page => {
-	await waitForAttribute(page, [
-		'maxi-version-current',
-		'maxi-version-origin',
-	]);
+	await waitForAttribute(page, ['_mvc', '_mvo']);
 
 	return getWordPressEditedPostContent();
 };

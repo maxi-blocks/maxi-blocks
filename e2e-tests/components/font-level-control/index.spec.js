@@ -45,7 +45,7 @@ describe('FontLevelControl', () => {
 
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;
-			const paletteColor = attributes['palette-color-g'];
+			const paletteColor = attributes['_pc-g'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
 			expect(paletteColor).toStrictEqual(i !== 6 ? 5 : 3);

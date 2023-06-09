@@ -50,16 +50,14 @@ describe('Column Maxi', () => {
 
 		await page.keyboard.type('50');
 
-		expect(await getAttributes('column-size-g')).toStrictEqual(50);
+		expect(await getAttributes('_cs-g')).toStrictEqual(50);
 
 		const selector = await page.$(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
 		);
 		await selector.select('center');
 
-		expect(await getAttributes('justify-content-g')).toStrictEqual(
-			'center'
-		);
+		expect(await getAttributes('_jc-g')).toStrictEqual('center');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -85,7 +83,7 @@ describe('Column Maxi', () => {
 
 		expect(responsiveSOption).toStrictEqual('9');
 
-		expect(await getAttributes('column-size-s')).toStrictEqual(9);
+		expect(await getAttributes('_cs-s')).toStrictEqual(9);
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -139,16 +137,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectBorder = {
-			'border-radius-bottom-left-g': 25,
-			'border-radius-bottom-right-g': 24,
-			'border-radius-top-left-g': 16,
-			'border-radius-top-right-g': 15,
+			'bo.ra.bl-g': 25,
+			'bo.ra.br-g': 24,
+			'bo.ra.tl-g': 16,
+			'bo.ra.tr-g': 15,
 		};
 		const borderResult = await getAttributes([
-			'border-radius-bottom-left-g',
-			'border-radius-bottom-right-g',
-			'border-radius-top-left-g',
-			'border-radius-top-right-g',
+			'bo.ra.bl-g',
+			'bo.ra.br-g',
+			'bo.ra.tl-g',
+			'bo.ra.tr-g',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -177,16 +175,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectHoverBorder = {
-			'border-radius-bottom-left-g-hover': 12,
-			'border-radius-bottom-right-g-hover': 55,
-			'border-radius-top-left-g-hover': 33,
-			'border-radius-top-right-g-hover': 25,
+			'bo.ra.bl-g.h': 12,
+			'bo.ra.br-g.h': 55,
+			'bo.ra.tl-g.h': 33,
+			'bo.ra.tr-g.h': 25,
 		};
 		const borderHoverResult = await getAttributes([
-			'border-radius-bottom-left-g-hover',
-			'border-radius-bottom-right-g-hover',
-			'border-radius-top-left-g-hover',
-			'border-radius-top-right-g-hover',
+			'bo.ra.bl-g.h',
+			'bo.ra.br-g.h',
+			'bo.ra.tl-g.h',
+			'bo.ra.tr-g.h',
 		]);
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
 

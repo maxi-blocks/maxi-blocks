@@ -18,7 +18,7 @@ describe('SelectControl', () => {
 		);
 		await selector.select('dotted');
 
-		expect(await getAttributes('border-style-g')).toStrictEqual('dotted');
+		expect(await getAttributes('bo_s-g')).toStrictEqual('dotted');
 
 		// Reset
 		await page.$eval(
@@ -26,6 +26,6 @@ describe('SelectControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('border-style-g')).toStrictEqual('none');
+		expect(await getAttributes('bo_s-g')).toStrictEqual('none');
 	});
 });

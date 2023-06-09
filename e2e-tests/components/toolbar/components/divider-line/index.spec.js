@@ -56,14 +56,14 @@ describe('Divider line from Toolbar', () => {
 		await page.keyboard.type('45');
 
 		const expectDivider = {
-			'divider-border-style-g': 'dashed',
-			'divider-border-top-g': 12,
+			'divider-bo_s-g': 'dashed',
+			'divider-border.t-g': 12,
 			'divider-width-g': 45,
 		};
 
 		const dividerResult = await getAttributes([
-			'divider-border-style-g',
-			'divider-border-top-g',
+			'divider-bo_s-g',
+			'divider-border.t-g',
 			'divider-width-g',
 		]);
 

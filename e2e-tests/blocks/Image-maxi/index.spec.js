@@ -110,7 +110,7 @@ describe.skip('Image Maxi', () => {
 			colorPalette: 4,
 		});
 
-		expect(await getAttributes('link-palette-color-g')).toStrictEqual(4);
+		expect(await getAttributes('link_pc-g')).toStrictEqual(4);
 
 		// alignment
 		await accordionPanel.$$eval(
@@ -118,7 +118,7 @@ describe.skip('Image Maxi', () => {
 			alignment => alignment[1].click()
 		);
 
-		expect(await getAttributes('text-alignment-g')).toStrictEqual('center');
+		expect(await getAttributes('_ta-g')).toStrictEqual('center');
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -132,15 +132,15 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const attributes = await getAttributes([
-			'font-size-g',
+			'_fs-g',
 			'line-height-g',
-			'letter-spacing-g',
+			'_ls-g',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-size-g': 19,
+			'_fs-g': 19,
 			'line-height-g': 4,
-			'letter-spacing-g': 11,
+			'_ls-g': 11,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -258,17 +258,17 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const expectedValues = {
-			'link-palette-color-g': 2,
-			'link-hover-palette-color-g': 3,
-			'link-active-palette-color-g': 4,
-			'link-visited-palette-color-g': 5,
+			'link_pc-g': 2,
+			'link-hover_pc-g': 3,
+			'link-active_pc-g': 4,
+			'link-visited_pc-g': 5,
 		};
 
 		const linkAttributes = await getAttributes([
-			'link-palette-color-g',
-			'link-hover-palette-color-g',
-			'link-active-palette-color-g',
-			'link-visited-palette-color-g',
+			'link_pc-g',
+			'link-hover_pc-g',
+			'link-active_pc-g',
+			'link-visited_pc-g',
 		]);
 
 		expect(linkAttributes).toStrictEqual(expectedValues);

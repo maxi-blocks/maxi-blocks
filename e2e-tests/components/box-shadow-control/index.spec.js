@@ -128,24 +128,24 @@ describe('BoxShadowControl', () => {
 
 		const expectBoxShadow = {
 			'bs_blu-g': 0,
-			'bs_blu-g-hover': undefined,
+			'bs_blu-g.h': undefined,
 			'bs_ho-g': 0,
-			'bs_ho-g-hover': undefined,
+			'bs_ho-g.h': undefined,
 			'bs_sp-g': 0,
-			'bs_sp-g-hover': undefined,
+			'bs_sp-g.h': undefined,
 			'bs_v-g': 0,
-			'bs_v-g-hover': undefined,
+			'bs_v-g.h': undefined,
 		};
 
 		const boxShadowResult = await getAttributes([
 			'bs_blu-g',
-			'bs_blu-g-hover',
+			'bs_blu-g.h',
 			'bs_ho-g',
-			'bs_ho-g-hover',
+			'bs_ho-g.h',
 			'bs_sp-g',
-			'bs_sp-g-hover',
+			'bs_sp-g.h',
 			'bs_v-g',
-			'bs_v-g-hover',
+			'bs_v-g.h',
 		]);
 
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);

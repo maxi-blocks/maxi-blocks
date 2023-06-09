@@ -47,9 +47,7 @@ const popupTest = async map => {
 	await popupDescription.type('Description test');
 	await page.waitForTimeout(150);
 
-	expect(
-		roundMarkersCoords(await getAttributes('map-markers'))
-	).toMatchSnapshot();
+	expect(roundMarkersCoords(await getAttributes('m_mar'))).toMatchSnapshot();
 
 	// Testing marker removal
 	const popupRemove = await popupContent.$(
@@ -58,9 +56,7 @@ const popupTest = async map => {
 
 	await popupRemove.click();
 
-	expect(
-		roundMarkersCoords(await getAttributes('map-markers'))
-	).toMatchSnapshot();
+	expect(roundMarkersCoords(await getAttributes('m_mar'))).toMatchSnapshot();
 };
 
 describe('Map Maxi', () => {
@@ -104,7 +100,7 @@ describe('Map Maxi', () => {
 		await page.mouse.up();
 
 		expect(
-			roundMarkersCoords(await getAttributes('map-markers'))
+			roundMarkersCoords(await getAttributes('m_mar'))
 		).toMatchSnapshot();
 
 		await popupTest(map);
@@ -140,7 +136,7 @@ describe('Map Maxi', () => {
 		await searchBoxResultsButton.click();
 
 		expect(
-			roundMarkersCoords(await getAttributes('map-markers'))
+			roundMarkersCoords(await getAttributes('m_mar'))
 		).toMatchSnapshot();
 
 		await popupTest(map);

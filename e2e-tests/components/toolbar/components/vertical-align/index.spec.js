@@ -46,9 +46,7 @@ describe('Vertical align align from Toolbar', () => {
 
 		await selector.select('center');
 
-		expect(await getAttributes('justify-content-g')).toStrictEqual(
-			'center'
-		);
+		expect(await getAttributes('_jc-g')).toStrictEqual('center');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'column settings');

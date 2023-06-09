@@ -35,13 +35,13 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		expect(await getAttributes('icon-width-g')).toStrictEqual('340');
+		expect(await getAttributes('i_w-g')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();
 		await page.keyboard.type('5');
 
-		expect(await getAttributes('icon-stroke-g')).toStrictEqual(5);
+		expect(await getAttributes('i_str-g')).toStrictEqual(5);
 
 		// icon spacing
 		await inputs[4].click();
@@ -73,8 +73,6 @@ describe('IconControl', () => {
 		);
 
 		// expects
-		expect(await getAttributes('icon-border-style-g')).toStrictEqual(
-			'dashed'
-		);
+		expect(await getAttributes('icon-bo_s-g')).toStrictEqual('dashed');
 	});
 });

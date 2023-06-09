@@ -37,7 +37,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '31',
 		});
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
+		expect(await getAttributes('_ls-m')).toStrictEqual(30);
 
 		// Min value
 		await accordionPanel.$eval(
@@ -52,7 +52,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('4');
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-4);
+		expect(await getAttributes('_ls-m')).toStrictEqual(-4);
 
 		// Reset value
 		await editAdvancedNumberControl({
@@ -66,9 +66,7 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
-			undefined
-		);
+		expect(await getAttributes('_ls-m')).toStrictEqual(undefined);
 
 		// Check max value change
 		await editAdvancedNumberControl({
@@ -82,7 +80,7 @@ describe('Advanced Number Control', () => {
 		);
 
 		await selector.select('em');
-		expect(await getAttributes('font-size-m')).toStrictEqual(100);
+		expect(await getAttributes('_fs-m')).toStrictEqual(100);
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');
@@ -148,7 +146,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowUp', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('999');
 
 		// check px min rangue
 		await editAdvancedNumberControl({
@@ -165,7 +163,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowDown', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-999');
 
 		// px min default value
 		await editAdvancedNumberControl({
@@ -175,7 +173,7 @@ describe('Advanced Number Control', () => {
 			),
 			newNumber: '-4000',
 		});
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-999');
 
 		// em min default value
 		const marginSelector = await page.$(
@@ -192,7 +190,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '-9999',
 		});
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-999');
 
 		// check em max rangue
 		await editAdvancedNumberControl({
@@ -209,7 +207,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowUp', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('300');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('300');
 
 		// check em min rangue
 		await editAdvancedNumberControl({
@@ -226,7 +224,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowDown', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-300');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-300');
 
 		// vw min default value
 		await marginSelector.select('vw');
@@ -239,7 +237,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '-9999',
 		});
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-999');
 
 		// check vw max rangue
 		await editAdvancedNumberControl({
@@ -256,7 +254,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowUp', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('300');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('300');
 
 		// check vw min rangue
 		await editAdvancedNumberControl({
@@ -273,7 +271,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowDown', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-300');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-300');
 
 		// % min default value
 		await marginSelector.select('%');
@@ -286,7 +284,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '-9999',
 		});
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-999');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-999');
 
 		// check % max rangue
 		await editAdvancedNumberControl({
@@ -303,7 +301,7 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowUp', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('100');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('100');
 
 		// check % min rangue
 		await editAdvancedNumberControl({
@@ -320,6 +318,6 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowDown', '3');
 
-		expect(await getAttributes('margin-bottom-g')).toStrictEqual('-100');
+		expect(await getAttributes('_m.b-g')).toStrictEqual('-100');
 	});
 });

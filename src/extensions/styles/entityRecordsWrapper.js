@@ -23,6 +23,8 @@ const entityRecordsWrapper = (callback, addClearEntity = false) => {
 	const { __experimentalGetDirtyEntityRecords } = select('core');
 	const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
 
+	console.log(dirtyEntityRecords);
+
 	if (!isEmpty(dirtyEntityRecords)) dirtyEntityRecords.forEach(callback);
 
 	if (addClearEntity) {

@@ -99,8 +99,8 @@ class MaxiBlocks_Styles
 
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
-        $this->write_log('post_content');
-        $this->write_log($post_content);
+        // $this->write_log('post_content');
+        // $this->write_log($post_content);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
         $template_id = $this->get_id(true);
@@ -362,14 +362,14 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        //$content_array = [];
-        $content_array = (array) $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-                $id
-            ),
-            OBJECT
-        );
+        $content_array = [];
+        // $content_array = (array) $wpdb->get_results(
+        //     $wpdb->prepare(
+        //         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+        //         $id
+        //     ),
+        //     OBJECT
+        // );
 
         if (!$is_template) {
             //$this->write_log('get_styles_from_blocks');

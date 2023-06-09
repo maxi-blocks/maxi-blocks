@@ -53,9 +53,9 @@ if (!class_exists('MaxiBlocks_DB')):
             $db_custom_prefix = 'maxi_blocks_';
 
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
-            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
+            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles_blocks';
             $db_css_templates_table_name = $db_css_table_name . '_templates';
-            $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data';
+            $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data_blocks';
             $db_custom_data_templates_table_name = $db_custom_data_table_name . '_templates';
 
             $charset_collate = $wpdb->get_charset_collate();
@@ -82,7 +82,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_css_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						post_id bigint(20) UNIQUE NOT NULL,
+						block_style_id varchar(255) UNIQUE NOT NULL,
 						prev_css_value longtext,
 						css_value longtext,
                         prev_fonts_value longtext,
@@ -103,7 +103,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_css_templates_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						template_id varchar(255) UNIQUE NOT NULL,
+						block_style_template_id varchar(255) UNIQUE NOT NULL,
 						prev_css_value longtext,
 						css_value longtext,
                         prev_fonts_value longtext,
@@ -125,7 +125,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_custom_data_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						post_id bigint(20) UNIQUE NOT NULL,
+						block_style_id varchar(255) UNIQUE NOT NULL,
 						prev_custom_data_value longtext,
 						custom_data_value longtext,
 						UNIQUE (id)
@@ -142,7 +142,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_custom_data_templates_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						template_id varchar(255) UNIQUE NOT NULL,
+						block_style_template_id varchar(255) UNIQUE NOT NULL,
 						prev_custom_data_value longtext,
 						custom_data_value longtext,
 						UNIQUE (id)

@@ -120,6 +120,34 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__header`,
 			},
 		},
+		'before header': {
+			normal: {
+				label: 'pane header ::before',
+				target: '::before',
+			},
+			hover: {
+				label: 'pane header ::before on hover',
+				target: ':hover::before',
+			},
+			active: {
+				label: 'pane header ::before on active state',
+				target: `${activePaneTarget}::before`,
+			},
+		},
+		'after header': {
+			normal: {
+				label: 'pane header ::after',
+				target: '::after',
+			},
+			hover: {
+				label: 'pane header ::after on hover',
+				target: ':hover::after',
+			},
+			active: {
+				label: 'pane header ::after on active state',
+				target: `${activePaneTarget}::after`,
+			},
+		},
 		'header content': {
 			normal: {
 				label: 'header content',
@@ -228,6 +256,8 @@ const customCss = {
 		'before pane',
 		'after pane',
 		'header',
+		'before header',
+		'after header',
 		'header content',
 		'header line',
 		'content line',

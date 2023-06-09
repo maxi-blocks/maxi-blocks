@@ -1,13 +1,18 @@
-const checkForDoubleHyphen = key => key?.includes('--');
+const checkForDoubleSymbol = key =>
+	key?.includes('--') ||
+	key?.includes('-_') ||
+	key?.includes('__') ||
+	key?.includes('-.');
 
 const getCleanKey = key => {
 	const cleanedKey = key
 		.replaceAll('--', '-')
 		.replaceAll('-_', '_')
 		.replaceAll('-.', '.')
+		.replaceAll('__', '_')
 		.replaceAll('.s.h', '.sh');
 
-	if (checkForDoubleHyphen(cleanedKey)) return getCleanKey(cleanedKey);
+	if (checkForDoubleSymbol(cleanedKey)) return getCleanKey(cleanedKey);
 	return cleanedKey;
 };
 

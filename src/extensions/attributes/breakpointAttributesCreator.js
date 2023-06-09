@@ -19,7 +19,9 @@ const breakpointAttributesCreator = ({
 			const newKey = `${key}-${breakpoint}`;
 			const newVal = {
 				...val,
-				longLabel: `${val.longLabel}-${breakpoint}`,
+				longLabel: `${val.longLabel}-${
+					breakpoint === 'g' ? 'general' : breakpoint
+				}`,
 			};
 
 			if (diffValAttrKeys.includes(newKey))

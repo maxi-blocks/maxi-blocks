@@ -4,7 +4,7 @@ exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] 
 Object {
   "bt_p.b-g": Object {
     "default": 30,
-    "longLabel": "button-padding-bottom-g",
+    "longLabel": "button-padding-bottom-general",
     "type": "string",
   },
   "bt_p.b-l": Object {
@@ -33,7 +33,7 @@ Object {
   },
   "bt_p.b.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-bottom-unit-g",
+    "longLabel": "button-padding-bottom-unit-general",
     "type": "string",
   },
   "bt_p.b.u-l": Object {
@@ -61,7 +61,7 @@ Object {
     "type": "string",
   },
   "bt_p.l-g": Object {
-    "longLabel": "button-padding-left-g",
+    "longLabel": "button-padding-left-general",
     "type": "string",
   },
   "bt_p.l-l": Object {
@@ -90,7 +90,7 @@ Object {
   },
   "bt_p.l.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-left-unit-g",
+    "longLabel": "button-padding-left-unit-general",
     "type": "string",
   },
   "bt_p.l.u-l": Object {
@@ -118,7 +118,7 @@ Object {
     "type": "string",
   },
   "bt_p.r-g": Object {
-    "longLabel": "button-padding-right-g",
+    "longLabel": "button-padding-right-general",
     "type": "string",
   },
   "bt_p.r-l": Object {
@@ -147,7 +147,7 @@ Object {
   },
   "bt_p.r.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-right-unit-g",
+    "longLabel": "button-padding-right-unit-general",
     "type": "string",
   },
   "bt_p.r.u-l": Object {
@@ -176,7 +176,7 @@ Object {
   },
   "bt_p.sy-g": Object {
     "default": "all",
-    "longLabel": "button-padding-sync-g",
+    "longLabel": "button-padding-sync-general",
     "type": "string",
   },
   "bt_p.sy-l": Object {
@@ -204,7 +204,7 @@ Object {
     "type": "string",
   },
   "bt_p.t-g": Object {
-    "longLabel": "button-padding-top-g",
+    "longLabel": "button-padding-top-general",
     "type": "string",
   },
   "bt_p.t-l": Object {
@@ -233,7 +233,7 @@ Object {
   },
   "bt_p.t.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-top-unit-g",
+    "longLabel": "button-padding-top-unit-general",
     "type": "string",
   },
   "bt_p.t.u-l": Object {
@@ -267,7 +267,7 @@ exports[`prefixAttributesCreator Returns prefixed object with default values 1`]
 Object {
   "bt-bo_w.b-g": Object {
     "default": 2,
-    "longLabel": "button-border-width-bottom-g",
+    "longLabel": "button-border-width-bottom-general",
     "type": "number",
   },
   "bt-bo_w.b-l": Object {
@@ -296,7 +296,7 @@ Object {
   },
   "bt-bo_w.l-g": Object {
     "default": 2,
-    "longLabel": "button-border-width-left-g",
+    "longLabel": "button-border-width-left-general",
     "type": "number",
   },
   "bt-bo_w.l-l": Object {
@@ -325,7 +325,7 @@ Object {
   },
   "bt-bo_w.r-g": Object {
     "default": 2,
-    "longLabel": "button-border-width-right-g",
+    "longLabel": "button-border-width-right-general",
     "type": "number",
   },
   "bt-bo_w.r-l": Object {
@@ -354,7 +354,7 @@ Object {
   },
   "bt-bo_w.sy-g": Object {
     "default": "all",
-    "longLabel": "button-border-width-sync-g",
+    "longLabel": "button-border-width-sync-general",
     "type": "string",
   },
   "bt-bo_w.sy-l": Object {
@@ -383,7 +383,7 @@ Object {
   },
   "bt-bo_w.t-g": Object {
     "default": 2,
-    "longLabel": "button-border-width-top-g",
+    "longLabel": "button-border-width-top-general",
     "type": "number",
   },
   "bt-bo_w.t-l": Object {
@@ -412,7 +412,7 @@ Object {
   },
   "bt-bo_w.u-g": Object {
     "default": "px",
-    "longLabel": "button-border-width-unit-g",
+    "longLabel": "button-border-width-unit-general",
     "type": "string",
   },
   "bt-bo_w.u-l": Object {
@@ -445,7 +445,7 @@ Object {
     "type": "boolean",
   },
   "bt-bs_blu-g.h": Object {
-    "longLabel": "button-box-shadow-blur-g-hover",
+    "longLabel": "button-box-shadow-blur-general-hover",
     "type": "number",
   },
   "bt-bs_blu-l.h": Object {
@@ -473,7 +473,7 @@ Object {
     "type": "number",
   },
   "bt-bs_blu.u-g.h": Object {
-    "longLabel": "button-box-shadow-blur-unit-g-hover",
+    "longLabel": "button-box-shadow-blur-unit-general-hover",
     "type": "string",
   },
   "bt-bs_blu.u-l.h": Object {
@@ -501,7 +501,7 @@ Object {
     "type": "string",
   },
   "bt-bs_cc-g.h": Object {
-    "longLabel": "button-box-shadow-custom-color-g-hover",
+    "longLabel": "button-box-shadow-custom-color-general-hover",
     "type": "string",
   },
   "bt-bs_cc-l.h": Object {
@@ -529,7 +529,7 @@ Object {
     "type": "string",
   },
   "bt-bs_ho-g.h": Object {
-    "longLabel": "button-box-shadow-horizontal-g-hover",
+    "longLabel": "button-box-shadow-horizontal-general-hover",
     "type": "number",
   },
   "bt-bs_ho-l.h": Object {
@@ -557,7 +557,7 @@ Object {
     "type": "number",
   },
   "bt-bs_ho.u-g.h": Object {
-    "longLabel": "button-box-shadow-horizontal-unit-g-hover",
+    "longLabel": "button-box-shadow-horizontal-unit-general-hover",
     "type": "string",
   },
   "bt-bs_ho.u-l.h": Object {
@@ -585,7 +585,7 @@ Object {
     "type": "string",
   },
   "bt-bs_in-g.h": Object {
-    "longLabel": "button-box-shadow-inset-g-hover",
+    "longLabel": "button-box-shadow-inset-general-hover",
     "type": "boolean",
   },
   "bt-bs_in-l.h": Object {
@@ -614,7 +614,7 @@ Object {
   },
   "bt-bs_pc-g.h": Object {
     "default": 6,
-    "longLabel": "button-box-shadow-palette-color-g-hover",
+    "longLabel": "button-box-shadow-palette-color-general-hover",
     "type": "number",
   },
   "bt-bs_pc-l.h": Object {
@@ -642,7 +642,7 @@ Object {
     "type": "number",
   },
   "bt-bs_po-g.h": Object {
-    "longLabel": "button-box-shadow-palette-opacity-g-hover",
+    "longLabel": "button-box-shadow-palette-opacity-general-hover",
     "type": "number",
   },
   "bt-bs_po-l.h": Object {
@@ -670,7 +670,7 @@ Object {
     "type": "number",
   },
   "bt-bs_ps-g.h": Object {
-    "longLabel": "button-box-shadow-palette-status-g-hover",
+    "longLabel": "button-box-shadow-palette-status-general-hover",
     "type": "boolean",
   },
   "bt-bs_ps-l.h": Object {
@@ -698,7 +698,7 @@ Object {
     "type": "boolean",
   },
   "bt-bs_sp-g.h": Object {
-    "longLabel": "button-box-shadow-spread-g-hover",
+    "longLabel": "button-box-shadow-spread-general-hover",
     "type": "number",
   },
   "bt-bs_sp-l.h": Object {
@@ -726,7 +726,7 @@ Object {
     "type": "number",
   },
   "bt-bs_sp.u-g.h": Object {
-    "longLabel": "button-box-shadow-spread-unit-g-hover",
+    "longLabel": "button-box-shadow-spread-unit-general-hover",
     "type": "string",
   },
   "bt-bs_sp.u-l.h": Object {
@@ -754,7 +754,7 @@ Object {
     "type": "string",
   },
   "bt-bs_v-g.h": Object {
-    "longLabel": "button-box-shadow-vertical-g-hover",
+    "longLabel": "button-box-shadow-vertical-general-hover",
     "type": "number",
   },
   "bt-bs_v-l.h": Object {
@@ -782,7 +782,7 @@ Object {
     "type": "number",
   },
   "bt-bs_v.u-g.h": Object {
-    "longLabel": "button-box-shadow-vertical-unit-g-hover",
+    "longLabel": "button-box-shadow-vertical-unit-general-hover",
     "type": "string",
   },
   "bt-bs_v.u-l.h": Object {
@@ -810,7 +810,7 @@ Object {
     "type": "string",
   },
   "bt_m.b-g": Object {
-    "longLabel": "button-margin-bottom-g",
+    "longLabel": "button-margin-bottom-general",
     "type": "string",
   },
   "bt_m.b-l": Object {
@@ -839,7 +839,7 @@ Object {
   },
   "bt_m.b.u-g": Object {
     "default": "px",
-    "longLabel": "button-margin-bottom-unit-g",
+    "longLabel": "button-margin-bottom-unit-general",
     "type": "string",
   },
   "bt_m.b.u-l": Object {
@@ -867,7 +867,7 @@ Object {
     "type": "string",
   },
   "bt_m.l-g": Object {
-    "longLabel": "button-margin-left-g",
+    "longLabel": "button-margin-left-general",
     "type": "string",
   },
   "bt_m.l-l": Object {
@@ -896,7 +896,7 @@ Object {
   },
   "bt_m.l.u-g": Object {
     "default": "px",
-    "longLabel": "button-margin-left-unit-g",
+    "longLabel": "button-margin-left-unit-general",
     "type": "string",
   },
   "bt_m.l.u-l": Object {
@@ -924,7 +924,7 @@ Object {
     "type": "string",
   },
   "bt_m.r-g": Object {
-    "longLabel": "button-margin-right-g",
+    "longLabel": "button-margin-right-general",
     "type": "string",
   },
   "bt_m.r-l": Object {
@@ -953,7 +953,7 @@ Object {
   },
   "bt_m.r.u-g": Object {
     "default": "px",
-    "longLabel": "button-margin-right-unit-g",
+    "longLabel": "button-margin-right-unit-general",
     "type": "string",
   },
   "bt_m.r.u-l": Object {
@@ -982,7 +982,7 @@ Object {
   },
   "bt_m.sy-g": Object {
     "default": "all",
-    "longLabel": "button-margin-sync-g",
+    "longLabel": "button-margin-sync-general",
     "type": "string",
   },
   "bt_m.sy-l": Object {
@@ -1010,7 +1010,7 @@ Object {
     "type": "string",
   },
   "bt_m.t-g": Object {
-    "longLabel": "button-margin-top-g",
+    "longLabel": "button-margin-top-general",
     "type": "string",
   },
   "bt_m.t-l": Object {
@@ -1039,7 +1039,7 @@ Object {
   },
   "bt_m.t.u-g": Object {
     "default": "px",
-    "longLabel": "button-margin-top-unit-g",
+    "longLabel": "button-margin-top-unit-general",
     "type": "string",
   },
   "bt_m.t.u-l": Object {
@@ -1072,7 +1072,7 @@ Object {
 exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`] = `
 Object {
   "bt_p.l-g": Object {
-    "longLabel": "button-padding-left-g",
+    "longLabel": "button-padding-left-general",
     "type": "string",
   },
   "bt_p.l-l": Object {
@@ -1101,7 +1101,7 @@ Object {
   },
   "bt_p.l.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-left-unit-g",
+    "longLabel": "button-padding-left-unit-general",
     "type": "string",
   },
   "bt_p.l.u-l": Object {
@@ -1129,7 +1129,7 @@ Object {
     "type": "string",
   },
   "bt_p.r-g": Object {
-    "longLabel": "button-padding-right-g",
+    "longLabel": "button-padding-right-general",
     "type": "string",
   },
   "bt_p.r-l": Object {
@@ -1158,7 +1158,7 @@ Object {
   },
   "bt_p.r.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-right-unit-g",
+    "longLabel": "button-padding-right-unit-general",
     "type": "string",
   },
   "bt_p.r.u-l": Object {
@@ -1187,7 +1187,7 @@ Object {
   },
   "bt_p.sy-g": Object {
     "default": "all",
-    "longLabel": "button-padding-sync-g",
+    "longLabel": "button-padding-sync-general",
     "type": "string",
   },
   "bt_p.sy-l": Object {
@@ -1215,7 +1215,7 @@ Object {
     "type": "string",
   },
   "bt_p.t-g": Object {
-    "longLabel": "button-padding-top-g",
+    "longLabel": "button-padding-top-general",
     "type": "string",
   },
   "bt_p.t-l": Object {
@@ -1244,7 +1244,7 @@ Object {
   },
   "bt_p.t.u-g": Object {
     "default": "px",
-    "longLabel": "button-padding-top-unit-g",
+    "longLabel": "button-padding-top-unit-general",
     "type": "string",
   },
   "bt_p.t.u-l": Object {

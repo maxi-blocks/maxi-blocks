@@ -287,7 +287,7 @@ const getPaneHeaderObject = props => {
 			},
 		},
 		...(getAttributesValue({
-			target: '_li.sa',
+			target: 'li.sa',
 			prefix: 'he-',
 			props,
 		}) && {
@@ -305,7 +305,7 @@ const getPaneHeaderObject = props => {
 			},
 		}),
 		...(getAttributesValue({
-			target: '_li.s',
+			target: 'li.s',
 			prefix: 'he-',
 			isHover: true,
 			props,
@@ -387,7 +387,7 @@ const getPaneContentObject = props => {
 				},
 			},
 			...(getAttributesValue({
-				target: '_li.sa',
+				target: 'li.sa',
 				prefix: 'c-',
 				props,
 			}) && {
@@ -405,7 +405,7 @@ const getPaneContentObject = props => {
 				},
 			}),
 			...(getAttributesValue({
-				target: '_li.s',
+				target: 'li.s',
 				prefix: 'c-',
 				isHover: true,
 				props,

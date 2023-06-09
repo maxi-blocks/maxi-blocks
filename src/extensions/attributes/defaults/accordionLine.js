@@ -3,12 +3,12 @@ import divider from './divider';
 import dividerHover from './dividerHover';
 
 const accordionLineAttributes = {
-	'_li.sh': {
+	'li.sh': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'line-status-hover',
 	},
-	'_li.sa': {
+	'li.sa': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'line-status-active',
@@ -20,18 +20,18 @@ const rawAccordionLine = {
 	'di-bo_pc-g': {
 		type: 'number',
 		default: 3,
-		longLabel: 'divider-border-palette-color-g',
+		longLabel: 'divider-border-palette-color-general',
 	},
 	'di_w-g': {
 		type: 'number',
 		default: 100,
-		longLabel: 'divider-width-g',
+		longLabel: 'divider-width-general',
 	},
 	...dividerHover,
 	'di_w-g.h': {
 		type: 'number',
 		default: 100,
-		longLabel: 'divider-width-g-hover',
+		longLabel: 'divider-width-general-hover',
 	},
 	...accordionLineAttributes,
 	...prefixAttributesCreator({

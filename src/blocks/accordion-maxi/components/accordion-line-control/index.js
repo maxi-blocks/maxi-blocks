@@ -83,21 +83,21 @@ const AccordionLineControl = props => {
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: '_li.sh',
+										target: 'li.sh',
 										prefix,
 										props,
 									})}
 									onChange={val =>
 										onChange({
 											[getAttributeKey({
-												key: '_li.sh',
+												key: 'li.sh',
 												prefix,
 											})]: val,
 										})
 									}
 								/>
 								{getAttributesValue({
-									target: '_li.sh',
+									target: 'li.sh',
 									prefix,
 									isHover: true,
 									props,
@@ -118,21 +118,21 @@ const AccordionLineControl = props => {
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
 									selected={getAttributesValue({
-										target: '_li.sa',
+										target: 'li.sa',
 										prefix,
 										props,
 									})}
 									onChange={val =>
 										onChange({
 											[getAttributeKey({
-												key: '_li.sa',
+												key: 'li.sa',
 												prefix,
 											})]: val,
 										})
 									}
 								/>
 								{getAttributesValue({
-									target: '_li.sa',
+									target: 'li.sa',
 									prefix,
 									props,
 								}) && (

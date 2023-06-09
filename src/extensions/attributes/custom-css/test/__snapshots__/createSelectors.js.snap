@@ -2,62 +2,62 @@
 
 exports[`createSelectors Should create selectors 1`] = `
 Object {
-  "after button": Object {
-    "hover": Object {
+  "a bt": Object {
+    "h": Object {
       "label": "button ::after on hover",
       "target": "buttonClassName:hover::after",
     },
-    "normal": Object {
+    "n": Object {
       "label": "button ::after",
       "target": "buttonClassName::after",
     },
   },
-  "after canvas": Object {
-    "hover": Object {
+  "a c": Object {
+    "h": Object {
       "label": "canvas ::after on hover",
       "target": ":hover::after",
     },
-    "normal": Object {
+    "n": Object {
       "label": "canvas ::after",
       "target": "::after",
     },
   },
-  "before button": Object {
-    "hover": Object {
-      "label": "button ::before on hover",
-      "target": "buttonClassName:hover::before",
+  "b bt": Object {
+    "h": Object {
+      "label": "button ::block on hover",
+      "target": "buttonClassName:hover::block",
     },
-    "normal": Object {
-      "label": "button ::before",
-      "target": "buttonClassName::before",
-    },
-  },
-  "before canvas": Object {
-    "hover": Object {
-      "label": "canvas ::before on hover",
-      "target": ":hover::before",
-    },
-    "normal": Object {
-      "label": "canvas ::before",
-      "target": "::before",
+    "n": Object {
+      "label": "button ::block",
+      "target": "buttonClassName::block",
     },
   },
-  "button": Object {
-    "hover": Object {
+  "b c": Object {
+    "h": Object {
+      "label": "canvas ::block on hover",
+      "target": ":hover::block",
+    },
+    "n": Object {
+      "label": "canvas ::block",
+      "target": "::block",
+    },
+  },
+  "bt": Object {
+    "h": Object {
       "label": "button on hover",
       "target": "buttonClassName:hover",
     },
-    "normal": Object {
+    "n": Object {
       "label": "button",
       "target": "buttonClassName",
     },
   },
-  "canvas": Object {
-    "hover": Object {
+  "c": Object {
+    "h": Object {
       "label": "canvas on hover",
       "target": ":hover",
     },
-    "normal": Object {
+    "n": Object {
       "label": "canvas",
       "target": "",
     },
@@ -67,22 +67,22 @@ Object {
 
 exports[`createSelectors Should create selectors without pseudo elements 1`] = `
 Object {
-  "button": Object {
-    "hover": Object {
+  "bt": Object {
+    "h": Object {
       "label": "button on hover",
       "target": "buttonClassName:hover",
     },
-    "normal": Object {
+    "n": Object {
       "label": "button",
       "target": "buttonClassName",
     },
   },
-  "canvas": Object {
-    "hover": Object {
+  "c": Object {
+    "h": Object {
       "label": "canvas on hover",
       "target": ":hover",
     },
-    "normal": Object {
+    "n": Object {
       "label": "canvas",
       "target": "",
     },

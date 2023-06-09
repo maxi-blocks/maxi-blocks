@@ -872,6 +872,211 @@ Object {
 }
 `;
 
+exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "g": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "g": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+    "image": Object {
+      "g": Object {
+        "bottom": "10px",
+        "display": "block",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "l": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "label": "Background layer wrapper",
+      "m": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "s": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "xl": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "xs": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+      "xxl": Object {
+        "bottom": "10px",
+        "height": "100%",
+        "left": "10px",
+        "right": "10px",
+        "top": "10px",
+        "width": "100%",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+    "video": Object {
+      "g": Object {
+        "display": "block",
+        "opacity": 1,
+      },
+      "l": Object {
+        "opacity": 1,
+      },
+      "label": "Video Background",
+      "m": Object {
+        "opacity": 1,
+      },
+      "s": Object {
+        "opacity": 1,
+      },
+      "xl": Object {
+        "opacity": 1,
+      },
+      "xs": Object {
+        "opacity": 1,
+      },
+      "xxl": Object {
+        "opacity": 1,
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+    "gradient": Object {
+      "g": Object {
+        "display": "block",
+      },
+      "l": Object {},
+      "label": "Background gradient",
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+    "shape": Object {
+      "g": Object {
+        "display": "block",
+        "width": "100%",
+      },
+      "l": Object {
+        "width": "100%",
+      },
+      "label": "Background layer wrapper",
+      "m": Object {
+        "width": "100%",
+      },
+      "s": Object {
+        "width": "100%",
+      },
+      "xl": Object {
+        "width": "100%",
+      },
+      "xs": Object {
+        "width": "100%",
+      },
+      "xxl": Object {
+        "width": "100%",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child": Object {
+    "shape": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child pattern image": Object {
+    "shape": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+    "shape": Object {
+      "g": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "label": "Icon background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+    },
+  },
+}
+`;
+
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {

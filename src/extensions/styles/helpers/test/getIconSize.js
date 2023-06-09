@@ -110,9 +110,9 @@ describe('getIconSize', () => {
 			'i_wfc-l': false,
 			'i_w-m': '36',
 			'i_wfc-m': true,
-			'i_str-g': '1',
-			'i_str-l': '3',
-			'i_str-m': '4',
+			'i-str-g': '1',
+			'i-str-l': '3',
+			'i-str-m': '4',
 		};
 
 		expect(getIconSize(attributes, false, '', 3)).toMatchSnapshot();
@@ -127,9 +127,9 @@ describe('getIconSize', () => {
 			'i_wfc-l': false,
 			'i_w-m': '36',
 			'i_wfc-m': true,
-			'i_str-g': '1',
-			'i_str-l': '3',
-			'i_str-m': '4',
+			'i-str-g': '1',
+			'i-str-l': '3',
+			'i-str-m': '4',
 		};
 
 		expect(getIconSize(attributes, false, '', 0.5)).toMatchSnapshot();

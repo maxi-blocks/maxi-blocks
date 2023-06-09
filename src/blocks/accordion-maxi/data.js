@@ -260,14 +260,14 @@ const transition = {
 	b: {
 		'he ln': {
 			ti: 'Header line',
-			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
-			hp: 'he_li.sh',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block_-line',
+			hp: 'he-li.sh',
 			l: true,
 		},
 		'cn ln': {
 			ti: 'Content line',
-			ta: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
-			hp: 'c_li.sh',
+			ta: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block_-line-container .maxi-pane-block_-line',
+			hp: 'c-li.sh',
 			l: true,
 		},
 		'pa ti': {

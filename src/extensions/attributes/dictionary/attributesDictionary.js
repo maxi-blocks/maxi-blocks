@@ -22,6 +22,8 @@ const dictionary = {
 		mediaURL: '_mu',
 		SVGElement: '_se',
 		SVGData: '_sd',
+		start: '_sta',
+		end: '_e',
 	},
 	accordion: {
 		accordionLayout: '_acl',
@@ -30,10 +32,6 @@ const dictionary = {
 		animationDuration: '_ad',
 	},
 	accordionTitle: { titleLevel: '_tle' },
-	accordionIcon: {},
-	accordionLine: {
-		line: '_li',
-	},
 	alignment: {
 		alignment: '_a',
 	},
@@ -249,8 +247,6 @@ const dictionary = {
 		'percentage-sign': '_psi',
 		rounded: '_rou',
 		circle: '_ci',
-		start: '_sta',
-		end: '_e',
 		duration: '_du',
 		'start-animation': '_san',
 		'start-animation-offset': '_saof',
@@ -270,15 +266,14 @@ const dictionary = {
 		'row-pattern': '_rp',
 	},
 	scroll: {
-		'preview-status': '.ps',
 		speed: '_spe',
 		delay: '_de',
 		'viewport-top': '_vpt',
 		'status-reverse': '_sr',
 		offset: '_of',
 		fade: '_fa',
-		shortEffect: '_sef',
-		shortEffectType: '_set',
+		shortcutEffect: '_sef',
+		shortcutEffectType: '_set',
 	},
 	searchButton: {
 		buttonSkin: '_bus',
@@ -561,6 +556,7 @@ export const prefixesDictionary = {
 
 export const suffixesDictionary = {
 	'-status': '.s',
+	'-preview-status': '.ps',
 	'-status-hover': '.sh',
 	'-status-active': '.sa',
 	'-hover': '.h',
@@ -577,10 +573,8 @@ export const suffixesDictionary = {
 	'-sync': '.sy',
 	'-global': '.g',
 	'-all': '.a',
-	'-start': '.st',
-	'-end': '.e',
 	'-mid': '.m',
-	// '-g': '-g',
+	'-general': '-g',
 };
 
 export const colorDictionary = {

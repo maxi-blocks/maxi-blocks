@@ -3,54 +3,54 @@ import getTransformStyles from '../getTransformStyles';
 
 describe('getTransformStyles', () => {
 	const selectors = createSelectors({
-		canvas: '',
+		c: '',
 	});
 
 	it('Get a correct transform styles', () => {
 		const object = {
-			'transform-origin-g': {
-				canvas: {
-					normal: {
+			'tr_ori-g': {
+				c: {
+					n: {
 						x: 'left',
 						y: 'top',
-						'x-unit': '%',
-						'y-unit': '%',
+						'x.u': '%',
+						'y.u': '%',
 					},
 				},
 			},
-			'transform-rotate-g': {
-				canvas: {
-					'hover-status': true,
-					hover: {
+			'tr_rot-g': {
+				c: {
+					hs: true,
+					h: {
 						z: 90,
 					},
 				},
 			},
-			'transform-scale-g': {
-				canvas: {
-					normal: {
+			'tr_sc-g': {
+				c: {
+					n: {
 						y: 200,
 					},
-					'hover-status': true,
-					hover: {
+					hs: true,
+					h: {
 						x: 200,
 					},
 				},
 			},
-			'transform-translate-g': {
-				canvas: {
-					normal: {
+			'tr_tr-g': {
+				c: {
+					n: {
 						x: -20,
 						y: -10,
-						'x-unit': '%',
-						'y-unit': '%',
+						'x.u': '%',
+						'y.u': '%',
 					},
-					'hover-status': true,
-					hover: {
+					hs: true,
+					h: {
 						x: 20,
 						y: 10,
-						'x-unit': '%',
-						'y-unit': '%',
+						'x.u': '%',
+						'y.u': '%',
 					},
 				},
 			},
@@ -62,43 +62,43 @@ describe('getTransformStyles', () => {
 
 	it('Get a correct default hover transform styles', () => {
 		const object = {
-			'transform-origin-g': {
-				canvas: {
-					'hover-status': true,
-					normal: {
+			'tr_ori-g': {
+				c: {
+					hs: true,
+					n: {
 						x: 'left',
 						y: 'top',
-						'x-unit': '%',
-						'y-unit': '%',
+						'x.u': '%',
+						'y.u': '%',
 					},
 				},
 			},
-			'transform-rotate-g': {
-				canvas: {
-					'hover-status': true,
-					normal: {
+			'tr_rot-g': {
+				c: {
+					hs: true,
+					n: {
 						x: 30,
 						y: 60,
 						z: 90,
 					},
 				},
 			},
-			'transform-scale-g': {
-				canvas: {
-					'hover-status': true,
-					normal: {
+			'tr_sc-g': {
+				c: {
+					hs: true,
+					n: {
 						y: 200,
 					},
 				},
 			},
-			'transform-translate-g': {
-				canvas: {
-					'hover-status': true,
-					normal: {
+			'tr_tr-g': {
+				c: {
+					hs: true,
+					n: {
 						x: -20,
 						y: -10,
-						'x-unit': '%',
-						'y-unit': '%',
+						'x.u': '%',
+						'y.u': '%',
 					},
 				},
 			},

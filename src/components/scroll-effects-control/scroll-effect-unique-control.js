@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { lowerCase } from 'lodash';
 
 /**
  * Internal dependencies
@@ -41,43 +40,55 @@ const ScrollEffectsUniqueControl = props => {
 
 	const labels = ['Start', 'Mid', 'End'];
 
+	const getKey = label => {
+		switch (label) {
+			case 'Start':
+				return '_sta';
+			case 'Mid':
+				return '.m';
+			case 'End':
+				return '_e';
+			default:
+				return label;
+		}
+	};
 	const getSpecialLabels = (type, label) => {
-		const labelLowCase = label === 'Start' ? 'st' : lowerCase(label)?.[0];
+		const labelLowCase = getKey(label);
 		const response = {};
 		switch (type) {
 			case '_v':
 				response.label = `${label} position (px)`;
-				response.attr = `_of.${labelLowCase}`;
+				response.attr = `_of${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case '_ho':
 				response.label = `${label} position (px)`;
-				response.attr = `_of.${labelLowCase}`;
+				response.attr = `_of${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case '_rot':
 				response.label = `${label} angle (degrees)`;
-				response.attr = `_rot.${labelLowCase}`;
+				response.attr = `_rot${labelLowCase}`;
 				response.min = -360;
 				response.max = 360;
 				break;
 			case '_sc':
 				response.label = `${label} scale (%)`;
-				response.attr = `_sc.${labelLowCase}`;
+				response.attr = `_sc${labelLowCase}`;
 				response.min = 0;
 				response.max = 1000;
 				break;
 			case '_fa':
 				response.label = `${label} opacity (%)`;
-				response.attr = `_o.${labelLowCase}`;
+				response.attr = `_o${labelLowCase}`;
 				response.min = 0;
 				response.max = 100;
 				break;
 			case '_blu':
 				response.label = `${label} blur (px)`;
-				response.attr = `_blu.${labelLowCase}`;
+				response.attr = `_blu${labelLowCase}`;
 				response.min = 0;
 				response.max = 20;
 				break;

@@ -215,29 +215,29 @@ describe('styleCleaner', () => {
 			'bs_v-g.h': 30,
 			'bs_v.u-g': 'px',
 			'bs_v.u-g.h': 'px',
-			transition: {
-				block: {},
-				canvas: {
-					border: {
-						'transition-duration-g': 0.3,
-						'transition-delay-g': 0,
-						'easing-g': 'ease',
-						'transition-status-g': true,
-						hoverProp: 'bo.sh',
+			_t: {
+				b: {},
+				c: {
+					bo: {
+						'_tdu-g': 0.3,
+						'_tde-g': 0,
+						'_ea-g': 'ease',
+						'_ts-g': true,
+						hp: 'bo.sh',
 					},
-					'box shadow': {
-						'transition-duration-g': 0.3,
-						'transition-delay-g': 0,
-						'easing-g': 'ease',
-						'transition-status-g': true,
-						hoverProp: 'bs.sh',
+					bs: {
+						'_tdu-g': 0.3,
+						'_tde-g': 0,
+						'_ea-g': 'ease',
+						'_ts-g': true,
+						hp: 'bs.sh',
 					},
-					'background / layer': {
-						'transition-duration-g': 0.3,
-						'transition-delay-g': 0,
-						'easing-g': 'ease',
-						'transition-status-g': true,
-						hoverProp: 'bb.sh',
+					bl: {
+						'_tdu-g': 0.3,
+						'_tde-g': 0,
+						'_ea-g': 'ease',
+						'_ts-g': true,
+						hp: 'bb.sh',
 					},
 				},
 			},

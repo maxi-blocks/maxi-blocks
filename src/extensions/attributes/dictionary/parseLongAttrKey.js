@@ -1,3 +1,4 @@
+import getCleanKey from '../getCleanKey';
 import {
 	colorDictionary,
 	noTypeDictionary,
@@ -39,7 +40,7 @@ const parseLongAttrKey = attrKey => {
 				if (key.includes('-') && key.endsWith('-'))
 					cleanedKey = cleanedKey.replace(/-([^/-]*)$/, '');
 				// Suffixes clean
-				if (val.includes('.') && val.startsWith('.'))
+				if ((val.includes('.') && val.startsWith('.')) || val === '-g')
 					cleanedKey = cleanedKey.replace('-', '');
 
 				const regex = new RegExp(`(^|\\W)(${cleanedKey})(\\W|$)`);
@@ -61,6 +62,8 @@ const parseLongAttrKey = attrKey => {
 					}
 
 					if (canReplace) newKey = newKey.replace(cleanedKey, val);
+					// exception for scroll attributes e.g. scroll-rotate-rotate...
+					if (canReplace) newKey = newKey.replace(cleanedKey, val);
 				}
 			});
 
@@ -70,11 +73,7 @@ const parseLongAttrKey = attrKey => {
 		dictionaryReplacer(noTypeDictionary, longestKey - i);
 		dictionaryReplacer(suffixesDictionary, longestKey - i);
 	}
-
-	return newKey
-		.replaceAll('--', '-')
-		.replaceAll('-_', '_')
-		.replaceAll('-.', '.');
+	return getCleanKey(newKey);
 };
 
 export default parseLongAttrKey;

@@ -18,9 +18,6 @@ describe('attributesDictionary', () => {
 	it('All attributes label coincide with the longLabel when are parsed, and vice versa', () => {
 		const test = Object.entries(attributes).map(([attrKey, attrType]) =>
 			Object.entries(attrType).map(([label, { longLabel }]) => {
-				// Scroll hasn't been update yet
-				if (attrKey === 'scroll') return true;
-
 				const parsedLabel = parseShortAttrKey(label);
 				const parsedLongLabel = parseLongAttrKey(longLabel);
 
@@ -32,7 +29,7 @@ describe('attributesDictionary', () => {
 
 				return parsedLabel === longLabel && parsedLongLabel === label
 					? true
-					: label;
+					: { label, parsedLabel, longLabel, parsedLongLabel };
 			})
 		);
 

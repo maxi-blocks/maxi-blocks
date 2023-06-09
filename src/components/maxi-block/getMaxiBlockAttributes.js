@@ -49,37 +49,37 @@ const getMaxiBlockAttributes = props => {
 
 	const scrollSettingsVertical = [
 		...scrollSettingsShared,
-		'_of.st',
+		'_of_sta',
 		'_of.m',
-		'_of.e',
+		'_of_e',
 	];
 
 	const scrollSettingsRotate = [
 		...scrollSettingsShared,
-		'_rot.st',
+		'_rot_sta',
 		'_rot.m',
-		'_rot.e',
+		'_rot_e',
 	];
 
 	const scrollSettingsFade = [
 		...scrollSettingsShared,
-		'_o.st',
+		'_o_sta',
 		'_o.m',
-		'_o.e',
+		'_o_e',
 	];
 
 	const scrollSettingsBlur = [
 		...scrollSettingsShared,
-		'_blu.st',
+		'_blu_sta',
 		'_blu.m',
-		'_blu.e',
+		'_blu_e',
 	];
 
 	const scrollSettingsScale = [
 		...scrollSettingsShared,
-		'_sc.st',
+		'_sc_sta',
 		'_sc.m',
-		'_sc.e',
+		'_sc_e',
 	];
 
 	const scrollTypes = ['_v', '_ho', '_rot', '_sc', '_fa', '_blu'];

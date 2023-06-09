@@ -12,7 +12,7 @@ const mapPopupText = {
 		'_pc-g': {
 			type: 'number',
 			default: 4,
-			longLabel: 'palette-color-g',
+			longLabel: 'palette-color-general',
 		},
 	},
 	...prefixAttributesCreator({

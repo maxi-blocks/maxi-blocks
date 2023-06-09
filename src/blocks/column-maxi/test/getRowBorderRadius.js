@@ -4,10 +4,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius with one nested column', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1'],
 			'id-1'
@@ -19,10 +19,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius for left column with two nested columns', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1', 'id-2'],
 			'id-1'
@@ -34,10 +34,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius for right column with two nested columns', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1', 'id-2'],
 			'id-2'
@@ -49,10 +49,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius for left column with three and more nested columns', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1', 'id-2', 'id-3'],
 			'id-1'
@@ -64,10 +64,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius for not lateral column with three and more nested columns', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1', 'id-2', 'id-3'],
 			'id-2'
@@ -79,10 +79,10 @@ describe('getRowBorderRadius', () => {
 	it('Get correct row border radius for right column with three and more nested columns', () => {
 		const result = getRowBorderRadius(
 			{
-				'border-radius-top-left': 180,
-				'border-radius-top-right': 181,
-				'border-radius-bottom-left': 182,
-				'border-radius-bottom-right': 183,
+				'bo.ra.tl': 180,
+				'bo.ra.tr': 181,
+				'bo.ra.bl': 182,
+				'bo.ra.br': 183,
 			},
 			['id-1', 'id-2', 'id-3'],
 			'id-3'

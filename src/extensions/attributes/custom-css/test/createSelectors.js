@@ -2,8 +2,8 @@ import createSelectors from '../createSelectors';
 
 describe('createSelectors', () => {
 	const selectors = {
-		canvas: '',
-		button: 'buttonClassName',
+		c: '',
+		bt: 'buttonClassName',
 	};
 
 	it('Should create selectors', () => {

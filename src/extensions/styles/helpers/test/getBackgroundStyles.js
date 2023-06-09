@@ -95,7 +95,10 @@ const getGeneralSizeAndPositionAttributes = ({
 						}
 					else value = rawValue;
 
-					const key = `${rawKey.replace('g', breakpoint)}${suffix}`;
+					const key = `${rawKey.replace(
+						'-g',
+						`-${breakpoint}`
+					)}${suffix}`;
 					response[key] = value;
 				}
 			);

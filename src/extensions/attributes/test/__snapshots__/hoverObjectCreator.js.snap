@@ -3,7 +3,7 @@
 exports[`hoverAttributesCreator Returns a color bg object 1`] = `
 Object {
   "bc_cc-g.h": Object {
-    "longLabel": "background-color-custom-color-g-hover",
+    "longLabel": "background-color-custom-color-general-hover",
     "type": "string",
   },
   "bc_cc-l.h": Object {
@@ -31,7 +31,7 @@ Object {
     "type": "string",
   },
   "bc_cp-g.h": Object {
-    "longLabel": "background-color-clip-path-g-hover",
+    "longLabel": "background-color-clip-path-general-hover",
     "type": "string",
   },
   "bc_cp-l.h": Object {
@@ -59,7 +59,7 @@ Object {
     "type": "string",
   },
   "bc_cp.s-g.h": Object {
-    "longLabel": "background-color-clip-path-status-g-hover",
+    "longLabel": "background-color-clip-path-status-general-hover",
     "type": "boolean",
   },
   "bc_cp.s-l.h": Object {
@@ -88,7 +88,7 @@ Object {
   },
   "bc_pc-g.h": Object {
     "default": 6,
-    "longLabel": "background-color-palette-color-g-hover",
+    "longLabel": "background-color-palette-color-general-hover",
     "type": "number",
   },
   "bc_pc-l.h": Object {
@@ -116,7 +116,7 @@ Object {
     "type": "number",
   },
   "bc_po-g.h": Object {
-    "longLabel": "background-color-palette-opacity-g-hover",
+    "longLabel": "background-color-palette-opacity-general-hover",
     "type": "number",
   },
   "bc_po-l.h": Object {
@@ -145,7 +145,7 @@ Object {
   },
   "bc_ps-g.h": Object {
     "default": true,
-    "longLabel": "background-color-palette-status-g-hover",
+    "longLabel": "background-color-palette-status-general-hover",
     "type": "boolean",
   },
   "bc_ps-l.h": Object {
@@ -173,7 +173,7 @@ Object {
     "type": "boolean",
   },
   "bcw_h-g.h": Object {
-    "longLabel": "background-color-wrapper-height-g-hover",
+    "longLabel": "background-color-wrapper-height-general-hover",
     "type": "number",
   },
   "bcw_h-l.h": Object {
@@ -201,7 +201,7 @@ Object {
     "type": "number",
   },
   "bcw_h.u-g.h": Object {
-    "longLabel": "background-color-wrapper-height-unit-g-hover",
+    "longLabel": "background-color-wrapper-height-unit-general-hover",
     "type": "string",
   },
   "bcw_h.u-l.h": Object {
@@ -229,7 +229,7 @@ Object {
     "type": "string",
   },
   "bcw_pos-g.h": Object {
-    "longLabel": "background-color-wrapper-position-g-hover",
+    "longLabel": "background-color-wrapper-position-general-hover",
     "type": "string",
   },
   "bcw_pos-l.h": Object {
@@ -257,7 +257,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.b-g.h": Object {
-    "longLabel": "background-color-wrapper-position-bottom-g-hover",
+    "longLabel": "background-color-wrapper-position-bottom-general-hover",
     "type": "string",
   },
   "bcw_pos.b-l.h": Object {
@@ -285,7 +285,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.b.u-g.h": Object {
-    "longLabel": "background-color-wrapper-position-bottom-unit-g-hover",
+    "longLabel": "background-color-wrapper-position-bottom-unit-general-hover",
     "type": "string",
   },
   "bcw_pos.b.u-l.h": Object {
@@ -313,7 +313,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.l-g.h": Object {
-    "longLabel": "background-color-wrapper-position-left-g-hover",
+    "longLabel": "background-color-wrapper-position-left-general-hover",
     "type": "string",
   },
   "bcw_pos.l-l.h": Object {
@@ -341,7 +341,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.l.u-g.h": Object {
-    "longLabel": "background-color-wrapper-position-left-unit-g-hover",
+    "longLabel": "background-color-wrapper-position-left-unit-general-hover",
     "type": "string",
   },
   "bcw_pos.l.u-l.h": Object {
@@ -369,7 +369,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.r-g.h": Object {
-    "longLabel": "background-color-wrapper-position-right-g-hover",
+    "longLabel": "background-color-wrapper-position-right-general-hover",
     "type": "string",
   },
   "bcw_pos.r-l.h": Object {
@@ -397,7 +397,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.r.u-g.h": Object {
-    "longLabel": "background-color-wrapper-position-right-unit-g-hover",
+    "longLabel": "background-color-wrapper-position-right-unit-general-hover",
     "type": "string",
   },
   "bcw_pos.r.u-l.h": Object {
@@ -425,7 +425,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.sy-g.h": Object {
-    "longLabel": "background-color-wrapper-position-sync-g-hover",
+    "longLabel": "background-color-wrapper-position-sync-general-hover",
     "type": "string",
   },
   "bcw_pos.sy-l.h": Object {
@@ -453,7 +453,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.t-g.h": Object {
-    "longLabel": "background-color-wrapper-position-top-g-hover",
+    "longLabel": "background-color-wrapper-position-top-general-hover",
     "type": "string",
   },
   "bcw_pos.t-l.h": Object {
@@ -481,7 +481,7 @@ Object {
     "type": "string",
   },
   "bcw_pos.t.u-g.h": Object {
-    "longLabel": "background-color-wrapper-position-top-unit-g-hover",
+    "longLabel": "background-color-wrapper-position-top-unit-general-hover",
     "type": "string",
   },
   "bcw_pos.t.u-l.h": Object {
@@ -509,7 +509,7 @@ Object {
     "type": "string",
   },
   "bcw_w-g.h": Object {
-    "longLabel": "background-color-wrapper-width-g-hover",
+    "longLabel": "background-color-wrapper-width-general-hover",
     "type": "number",
   },
   "bcw_w-l.h": Object {
@@ -537,7 +537,7 @@ Object {
     "type": "number",
   },
   "bcw_w.u-g.h": Object {
-    "longLabel": "background-color-wrapper-width-unit-g-hover",
+    "longLabel": "background-color-wrapper-width-unit-general-hover",
     "type": "string",
   },
   "bcw_w.u-l.h": Object {
@@ -574,7 +574,7 @@ Object {
     "type": "boolean",
   },
   "b_am-g.h": Object {
-    "longLabel": "background-active-media-g-hover",
+    "longLabel": "background-active-media-general-hover",
     "type": "string",
   },
   "b_am-l.h": Object {

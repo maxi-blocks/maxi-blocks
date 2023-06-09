@@ -4,7 +4,7 @@ exports[`breakpointAttributesCreator Returns an image bg object 1`] = `
 Object {
   "bi_at-g": Object {
     "default": "scroll",
-    "longLabel": "background-image-attachment-g",
+    "longLabel": "background-image-attachment-general",
     "type": "string",
   },
   "bi_at-l": Object {
@@ -33,7 +33,7 @@ Object {
   },
   "bi_clp-g": Object {
     "default": "border-box",
-    "longLabel": "background-image-clip-g",
+    "longLabel": "background-image-clip-general",
     "type": "string",
   },
   "bi_clp-l": Object {
@@ -61,7 +61,7 @@ Object {
     "type": "string",
   },
   "bi_co-g": Object {
-    "longLabel": "background-image-crop-options-g",
+    "longLabel": "background-image-crop-options-general",
     "type": "object",
   },
   "bi_co-l": Object {
@@ -90,7 +90,7 @@ Object {
   },
   "bi_cp-g": Object {
     "default": "none",
-    "longLabel": "background-image-clip-path-g",
+    "longLabel": "background-image-clip-path-general",
     "type": "string",
   },
   "bi_cp-l": Object {
@@ -119,7 +119,7 @@ Object {
   },
   "bi_cp.s-g": Object {
     "default": false,
-    "longLabel": "background-image-clip-path-status-g",
+    "longLabel": "background-image-clip-path-status-general",
     "type": "boolean",
   },
   "bi_cp.s-l": Object {
@@ -148,7 +148,7 @@ Object {
   },
   "bi_h-g": Object {
     "default": 100,
-    "longLabel": "background-image-height-g",
+    "longLabel": "background-image-height-general",
     "type": "number",
   },
   "bi_h-l": Object {
@@ -177,7 +177,7 @@ Object {
   },
   "bi_h.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-height-unit-g",
+    "longLabel": "background-image-height-unit-general",
     "type": "string",
   },
   "bi_h.u-l": Object {
@@ -214,7 +214,7 @@ Object {
   },
   "bi_o-g": Object {
     "default": 1,
-    "longLabel": "background-image-opacity-g",
+    "longLabel": "background-image-opacity-general",
     "type": "number",
   },
   "bi_o-l": Object {
@@ -243,7 +243,7 @@ Object {
   },
   "bi_ori-g": Object {
     "default": "padding-box",
-    "longLabel": "background-image-origin-g",
+    "longLabel": "background-image-origin-general",
     "type": "string",
   },
   "bi_ori-l": Object {
@@ -272,7 +272,7 @@ Object {
   },
   "bi_pa.s-g": Object {
     "default": false,
-    "longLabel": "background-image-parallax-status-g",
+    "longLabel": "background-image-parallax-status-general",
     "type": "boolean",
   },
   "bi_pa.s-l": Object {
@@ -309,7 +309,7 @@ Object {
   },
   "bi_pd-g": Object {
     "default": "down",
-    "longLabel": "background-image-parallax-direction-g",
+    "longLabel": "background-image-parallax-direction-general",
     "type": "string",
   },
   "bi_pd-l": Object {
@@ -338,7 +338,7 @@ Object {
   },
   "bi_pos-g": Object {
     "default": "center center",
-    "longLabel": "background-image-position-g",
+    "longLabel": "background-image-position-general",
     "type": "string",
   },
   "bi_pos-l": Object {
@@ -367,7 +367,7 @@ Object {
   },
   "bi_pos_h-g": Object {
     "default": 0,
-    "longLabel": "background-image-position-height-g",
+    "longLabel": "background-image-position-height-general",
     "type": "number",
   },
   "bi_pos_h-l": Object {
@@ -396,7 +396,7 @@ Object {
   },
   "bi_pos_h.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-position-height-unit-g",
+    "longLabel": "background-image-position-height-unit-general",
     "type": "string",
   },
   "bi_pos_h.u-l": Object {
@@ -425,7 +425,7 @@ Object {
   },
   "bi_pos_w-g": Object {
     "default": 0,
-    "longLabel": "background-image-position-width-g",
+    "longLabel": "background-image-position-width-general",
     "type": "number",
   },
   "bi_pos_w-l": Object {
@@ -454,7 +454,7 @@ Object {
   },
   "bi_pos_w.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-position-width-unit-g",
+    "longLabel": "background-image-position-width-unit-general",
     "type": "string",
   },
   "bi_pos_w.u-l": Object {
@@ -483,7 +483,7 @@ Object {
   },
   "bi_psp-g": Object {
     "default": 4,
-    "longLabel": "background-image-parallax-speed-g",
+    "longLabel": "background-image-parallax-speed-general",
     "type": "number",
   },
   "bi_psp-l": Object {
@@ -512,7 +512,7 @@ Object {
   },
   "bi_re-g": Object {
     "default": "no-repeat",
-    "longLabel": "background-image-repeat-g",
+    "longLabel": "background-image-repeat-general",
     "type": "string",
   },
   "bi_re-l": Object {
@@ -541,7 +541,7 @@ Object {
   },
   "bi_si-g": Object {
     "default": "auto",
-    "longLabel": "background-image-size-g",
+    "longLabel": "background-image-size-general",
     "type": "string",
   },
   "bi_si-l": Object {
@@ -570,7 +570,7 @@ Object {
   },
   "bi_w-g": Object {
     "default": 100,
-    "longLabel": "background-image-width-g",
+    "longLabel": "background-image-width-general",
     "type": "number",
   },
   "bi_w-l": Object {
@@ -599,7 +599,7 @@ Object {
   },
   "bi_w.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-width-unit-g",
+    "longLabel": "background-image-width-unit-general",
     "type": "string",
   },
   "bi_w.u-l": Object {
@@ -628,7 +628,7 @@ Object {
   },
   "biw_h-g": Object {
     "default": 100,
-    "longLabel": "background-image-wrapper-height-g",
+    "longLabel": "background-image-wrapper-height-general",
     "type": "number",
   },
   "biw_h-l": Object {
@@ -657,7 +657,7 @@ Object {
   },
   "biw_h.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-wrapper-height-unit-g",
+    "longLabel": "background-image-wrapper-height-unit-general",
     "type": "string",
   },
   "biw_h.u-l": Object {
@@ -686,7 +686,7 @@ Object {
   },
   "biw_pos-g": Object {
     "default": "inherit",
-    "longLabel": "background-image-wrapper-position-g",
+    "longLabel": "background-image-wrapper-position-general",
     "type": "string",
   },
   "biw_pos-l": Object {
@@ -714,7 +714,7 @@ Object {
     "type": "string",
   },
   "biw_pos.b-g": Object {
-    "longLabel": "background-image-wrapper-position-bottom-g",
+    "longLabel": "background-image-wrapper-position-bottom-general",
     "type": "string",
   },
   "biw_pos.b-l": Object {
@@ -743,7 +743,7 @@ Object {
   },
   "biw_pos.b.u-g": Object {
     "default": "px",
-    "longLabel": "background-image-wrapper-position-bottom-unit-g",
+    "longLabel": "background-image-wrapper-position-bottom-unit-general",
     "type": "string",
   },
   "biw_pos.b.u-l": Object {
@@ -771,7 +771,7 @@ Object {
     "type": "string",
   },
   "biw_pos.l-g": Object {
-    "longLabel": "background-image-wrapper-position-left-g",
+    "longLabel": "background-image-wrapper-position-left-general",
     "type": "string",
   },
   "biw_pos.l-l": Object {
@@ -800,7 +800,7 @@ Object {
   },
   "biw_pos.l.u-g": Object {
     "default": "px",
-    "longLabel": "background-image-wrapper-position-left-unit-g",
+    "longLabel": "background-image-wrapper-position-left-unit-general",
     "type": "string",
   },
   "biw_pos.l.u-l": Object {
@@ -828,7 +828,7 @@ Object {
     "type": "string",
   },
   "biw_pos.r-g": Object {
-    "longLabel": "background-image-wrapper-position-right-g",
+    "longLabel": "background-image-wrapper-position-right-general",
     "type": "string",
   },
   "biw_pos.r-l": Object {
@@ -857,7 +857,7 @@ Object {
   },
   "biw_pos.r.u-g": Object {
     "default": "px",
-    "longLabel": "background-image-wrapper-position-right-unit-g",
+    "longLabel": "background-image-wrapper-position-right-unit-general",
     "type": "string",
   },
   "biw_pos.r.u-l": Object {
@@ -886,7 +886,7 @@ Object {
   },
   "biw_pos.sy-g": Object {
     "default": "all",
-    "longLabel": "background-image-wrapper-position-sync-g",
+    "longLabel": "background-image-wrapper-position-sync-general",
     "type": "string",
   },
   "biw_pos.sy-l": Object {
@@ -914,7 +914,7 @@ Object {
     "type": "string",
   },
   "biw_pos.t-g": Object {
-    "longLabel": "background-image-wrapper-position-top-g",
+    "longLabel": "background-image-wrapper-position-top-general",
     "type": "string",
   },
   "biw_pos.t-l": Object {
@@ -943,7 +943,7 @@ Object {
   },
   "biw_pos.t.u-g": Object {
     "default": "px",
-    "longLabel": "background-image-wrapper-position-top-unit-g",
+    "longLabel": "background-image-wrapper-position-top-unit-general",
     "type": "string",
   },
   "biw_pos.t.u-l": Object {
@@ -972,7 +972,7 @@ Object {
   },
   "biw_w-g": Object {
     "default": 100,
-    "longLabel": "background-image-wrapper-width-g",
+    "longLabel": "background-image-wrapper-width-general",
     "type": "number",
   },
   "biw_w-l": Object {
@@ -1001,7 +1001,7 @@ Object {
   },
   "biw_w.u-g": Object {
     "default": "%",
-    "longLabel": "background-image-wrapper-width-unit-g",
+    "longLabel": "background-image-wrapper-width-unit-general",
     "type": "string",
   },
   "biw_w.u-l": Object {

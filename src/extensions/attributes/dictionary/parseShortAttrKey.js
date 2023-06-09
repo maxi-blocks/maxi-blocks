@@ -49,7 +49,9 @@ const parseShortAttrKey = attrKey => {
 	if (breakpoint) cleanedKey = getAttrKeyWithoutBreakpoint(cleanedKey);
 	return getCleanKey(
 		findLongKeys(cleanedKey).reverse().join('-') +
-			(breakpoint ? `-${breakpoint}` : '') +
+			(breakpoint
+				? `-${breakpoint === 'g' ? 'general' : breakpoint}`
+				: '') +
 			(isHover ? '-hover' : '')
 	);
 };

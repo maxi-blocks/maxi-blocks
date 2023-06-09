@@ -2,15 +2,15 @@
 
 exports[`getRowBorderRadius Get correct row border radius for left column with three and more nested columns 1`] = `
 Object {
-  "border-bottom-left-radius": 182,
-  "border-top-left-radius": 180,
+  "bo.ra.bl": 182,
+  "bo.ra.tl": 180,
 }
 `;
 
 exports[`getRowBorderRadius Get correct row border radius for left column with two nested columns 1`] = `
 Object {
-  "border-bottom-left-radius": 182,
-  "border-top-left-radius": 180,
+  "bo.ra.bl": 182,
+  "bo.ra.tl": 180,
 }
 `;
 
@@ -18,23 +18,23 @@ exports[`getRowBorderRadius Get correct row border radius for not lateral column
 
 exports[`getRowBorderRadius Get correct row border radius for right column with three and more nested columns 1`] = `
 Object {
-  "border-bottom-right-radius": 183,
-  "border-top-right-radius": 181,
+  "bo.ra.br": 183,
+  "bo.ra.tr": 181,
 }
 `;
 
 exports[`getRowBorderRadius Get correct row border radius for right column with two nested columns 1`] = `
 Object {
-  "border-bottom-right-radius": 183,
-  "border-top-right-radius": 181,
+  "bo.ra.br": 183,
+  "bo.ra.tr": 181,
 }
 `;
 
 exports[`getRowBorderRadius Get correct row border radius with one nested column 1`] = `
 Object {
-  "border-bottom-left-radius": 182,
-  "border-bottom-right-radius": 183,
-  "border-top-left-radius": 180,
-  "border-top-right-radius": 181,
+  "bo.ra.bl": 182,
+  "bo.ra.br": 183,
+  "bo.ra.tl": 180,
+  "bo.ra.tr": 181,
 }
 `;

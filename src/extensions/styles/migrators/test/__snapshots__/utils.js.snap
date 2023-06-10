@@ -711,6 +711,20 @@ Object {
 
 exports[`getBlockSelectorsByUniqueID Should return pane selectors 1`] = `
 Object {
+  "after header": Object {
+    "active": Object {
+      "label": "pane header ::after on active state",
+      "target": ".maxi-pane-block[aria-expanded=true]::after",
+    },
+    "hover": Object {
+      "label": "pane header ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "pane header ::after",
+      "target": "::after",
+    },
+  },
   "after pane": Object {
     "active": Object {
       "label": "pane ::after on active state",
@@ -723,6 +737,20 @@ Object {
     "normal": Object {
       "label": "pane ::after",
       "target": "::after",
+    },
+  },
+  "before header": Object {
+    "active": Object {
+      "label": "pane header ::before on active state",
+      "target": ".maxi-pane-block[aria-expanded=true]::before",
+    },
+    "hover": Object {
+      "label": "pane header ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "pane header ::before",
+      "target": "::before",
     },
   },
   "before pane": Object {

@@ -311,6 +311,9 @@ class MaxiBlocks_Styles
     {
         $need_custom_meta = false;
 
+        $this->write_log('need_custom_meta');
+        $this->write_log($contents);
+
         if ($contents) {
             foreach ($contents as $contentData) {
                 $content = $contentData['content'] ?? null;
@@ -342,6 +345,7 @@ class MaxiBlocks_Styles
                 }
             }
         }
+        $this->write_log($need_custom_meta);
 
         return $need_custom_meta;
     }
@@ -362,14 +366,14 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        $content_array = [];
-        // $content_array = (array) $wpdb->get_results(
-        //     $wpdb->prepare(
-        //         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-        //         $id
-        //     ),
-        //     OBJECT
-        // );
+        //$content_array = [];
+        $content_array = (array) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                $id
+            ),
+            OBJECT
+        );
 
         if (!$is_template) {
             //$this->write_log('get_styles_from_blocks');

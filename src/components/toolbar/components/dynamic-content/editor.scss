@@ -18,6 +18,11 @@
 				display: flex;
 			}
 		}
+		.maxi-select-control__input {
+			text-overflow: ellipsis;
+			max-width: 130px;
+			padding-right: 20px;
+		}
 	}
 	.maxi-base-control {
 		input[type='text'],

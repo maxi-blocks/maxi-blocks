@@ -59,10 +59,22 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
             return self::$instance;
         }
 
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
+
+            // self::write_log('NC get styles props');
+            // self::write_log($props);
 
             $data = [
                 'customCss' => $customCss,
@@ -79,6 +91,8 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
 
             $number_counter_styles = get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style);
 
+            self::write_log('$number_counter_styles');
+            self::write_log($number_counter_styles);
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -109,7 +123,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 )
             );
 
-            $styles_obj = array_merge_recursive(
+            $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $number_counter_styles,
                 $background_styles,
@@ -121,6 +135,9 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 $data,
                 $props,
             );
+
+            self::write_log('number_counter processed styles');
+            self::write_log($response);
 
             return $response;
         }
@@ -191,7 +208,6 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
 
         public static function get_box_object($props)
         {
-            $font_size = $props['number-counter-title-font-size'];
             $end_count_value = ceil(($props['number-counter-end'] * 360) / 100);
 
             $size = array_merge(
@@ -202,11 +218,6 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 get_group_attributes($props, 'numberCounter')
             );
 
-            foreach ($size as $key => $val) {
-                if (strpos($key, 'min-width') !== false && !$val) {
-                    $size[$key] = $font_size * (strlen((string)$end_count_value) - 1);
-                }
-            }
 
             $block_style = $props['blockStyle'];
 

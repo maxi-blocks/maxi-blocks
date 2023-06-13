@@ -116,8 +116,9 @@ function get_sup_styles($obj)
     foreach ($breakpoints as $breakpoint) {
         if (isset($obj["number-counter-title-font-size-{$breakpoint}"])) {
             $val = $obj["number-counter-title-font-size-{$breakpoint}"];
+            $use_val = round((float)$val/1.5, 2);
 
-            $response['general']['font-size'] = "{" . $val . "/ 1.5}px";
+            $response['general']['font-size'] =  $use_val.'px';
         }
     }
 

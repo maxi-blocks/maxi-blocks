@@ -233,12 +233,6 @@ const getImageWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin', false, 'image-'),
-			},
-			prefix: 'image-',
-		}),
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'image-'),
@@ -328,6 +322,12 @@ const getImageObject = props => {
 				SVGElement: props.SVGElement,
 			},
 			blockStyle: props.blockStyle,
+			prefix: 'image-',
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin', false, 'image-'),
+			},
 			prefix: 'image-',
 		}),
 		...(imageRatio && getAspectRatio(imageRatio)),

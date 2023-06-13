@@ -72,10 +72,12 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 $uniqueID => [
                     '' => self::get_wrapper_object($props),
                     ':hover' => self::get_hover_wrapper_object($props),
-                    ' hr.maxi-divider-block__divider:hover' => self::get_hover_object($props),
-                    ' hr.maxi-divider-block__divider' => self::get_number_counter_object($props),
+                    ':hover .maxi-number-counter__box' => self::get_hover_box_object($props),
+                    ' .maxi-number-counter__box'=> self::get_box_object($props),
                 ],
             ];
+
+            $number_counter_styles = get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style);
 
             $background_styles = get_block_background_styles(
                 array_merge(
@@ -107,8 +109,9 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
+            $styles_obj = array_merge_recursive(
                 $styles_obj[$uniqueID],
+                $number_counter_styles,
                 $background_styles,
                 $background_hover_styles,
             );
@@ -126,35 +129,34 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
 
-            $response =
-                [
-                    'border' => get_border_styles(array(
-                        'obj' => get_group_attributes($props, array(
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        )),
-                        'block_style' => $block_style,
-                    )),
-                    'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => get_group_attributes($props, 'boxShadow'),
-                        'block_style' => $block_style,
-                    )),
-                    'size' => get_size_styles(get_group_attributes($props, 'size')),
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
+            $response = [
+                'alignment' => get_alignment_flex_styles(get_group_attributes($props, 'alignment')),
+                'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                'position' => get_position_styles(get_group_attributes($props, 'position')),
+                'display' => get_display_styles(get_group_attributes($props, 'display')),
+                'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                'margin' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'margin')
+                ]),
+                'padding' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'padding')
+                ]),
+                'border' => get_border_styles([
+                    'obj' => get_group_attributes($props, [
+                        'border',
+                        'borderWidth',
+                        'borderRadius'
                     ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
-                    'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
-                    'position' => get_position_styles(get_group_attributes($props, 'position')),
-                    'display' => get_display_styles(get_group_attributes($props, 'display')),
-                    'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
-                    'numberCounter' => get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style),
-                    'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
-                    'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
-                ];
+                    'block_style' => $block_style
+                ]),
+                'boxShadow' => get_box_shadow_styles([
+                    'obj' => get_group_attributes($props, 'boxShadow'),
+                    'block_style' => $block_style
+                ]),
+                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'flex' => get_flex_styles(get_group_attributes($props, 'flex'))
+            ];
 
             return $response;
         }
@@ -164,56 +166,129 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $response = [
-                'border' => array_key_exists('border-status-hover', $props) && $props['border-status-hover'] ? get_border_styles([
-                    'obj' => get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'], true),
-                    'is_hover' => true,
-                    'block_style' => $block_style
-                ]) : null,
-                'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
-                    'obj' => get_group_attributes($props, 'boxShadow', true),
-                    'is_hover' => true,
-                    'block_style' => $block_style
-                ]) : null,
-                'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
-                    get_group_attributes($props, 'opacity', true),
-                    true
-                ) : null,
+                'border' => isset($props['border-status-hover']) ?
+                            get_border_styles([
+                                'obj' => get_group_attributes($props, [
+                                    'border',
+                                    'borderWidth',
+                                    'borderRadius'
+                                ], true),
+                                'isHover' => true,
+                                'block_style' => $block_style
+                            ]) : null,
+                'boxShadow' => isset($props['box-shadow-status-hover']) ?
+                               get_box_shadow_styles([
+                                   'obj' => get_group_attributes($props, 'boxShadow', true),
+                                   'isHover' => true,
+                                   'block_style' => $block_style
+                               ]) : null,
+                'opacity' => isset($props['opacity-status-hover']) ?
+                             get_opacity_styles(get_group_attributes($props, 'opacity', true), true) : null
             ];
 
             return $response;
         }
 
-        public static function get_number_counter_object($props)
+        public static function get_box_object($props)
+        {
+            $font_size = $props['number-counter-title-font-size'];
+            $end_count_value = ceil(($props['number-counter-end'] * 360) / 100);
+
+            $size = array_merge(
+                get_size_styles(
+                    get_group_attributes($props, 'size', false, 'number-counter-'),
+                    'number-counter-'
+                ),
+                get_group_attributes($props, 'numberCounter')
+            );
+
+            foreach ($size as $key => $val) {
+                if (strpos($key, 'min-width') !== false && !$val) {
+                    $size[$key] = $font_size * (strlen((string)$end_count_value) - 1);
+                }
+            }
+
+            $block_style = $props['blockStyle'];
+
+            $response = [
+                'size' => $size,
+                'margin' => get_margin_padding_styles([
+                    'obj' => get_group_attributes(
+                        $props,
+                        'margin',
+                        false,
+                        'number-counter-'
+                    ),
+                    'prefix' => 'number-counter-',
+                ]),
+                'padding' => get_margin_padding_styles([
+                    'obj' => get_group_attributes(
+                        $props,
+                        'padding',
+                        false,
+                        'number-counter-'
+                    ),
+                    'prefix' => 'number-counter-',
+        ]),
+                'boxShadow' => get_box_shadow_styles([
+                    'obj' => get_group_attributes(
+                        $props,
+                        'boxShadow',
+                        false,
+                        'number-counter-'
+                    ),
+                    'block_style' => $block_style,
+                    'prefix' => 'number-counter-',
+        ]),
+                'border' => get_border_styles([
+                    'obj' => get_group_attributes(
+                        $props,
+                        ['border', 'borderWidth', 'borderRadius'],
+                        false,
+                        'number-counter-'
+                    ),
+                    'block_style' => $block_style,
+                    'prefix' => 'number-counter-',
+        ]),
+            ];
+
+            return $response;
+        }
+
+        public static function get_hover_box_object($props)
         {
             $block_style = $props['blockStyle'];
 
             $response = [
-                'boxShadow' => get_box_shadow_styles(array(
-                    'obj' => get_group_attributes($props, 'boxShadow', false, 'number-counter-'),
-                    'block_style' => $block_style,
-                    'prefix' => 'number-counter-',
-                )),
-                'numberCounter' => get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style),
+                'border' => isset($props['number-counter-border-status-hover']) ?
+                            get_border_styles([
+                                'obj' => get_group_attributes(
+                                    $props,
+                                    ['border', 'borderWidth', 'borderRadius'],
+                                    true,
+                                    'number-counter-'
+                                ),
+                                'isHover' => true,
+                                'block_style' => $block_style,
+                                'prefix' => 'number-counter-',
+                            ]) : null,
+                'boxShadow' => isset($props['number-counter-box-shadow-status-hover']) ?
+                               get_box_shadow_styles([
+                                   'obj' => get_group_attributes(
+                                       $props,
+                                       'boxShadow',
+                                       true,
+                                       'number-counter-'
+                                   ),
+                                   'isHover' => true,
+                                   'block_style' => $block_style,
+                                   'prefix' => 'number-counter-',
+                       ]) : null,
             ];
 
             return $response;
         }
 
-        public static function get_hover_object($props)
-        {
-            $block_style = $props['blockStyle'];
-
-            $response = [
-                'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
-                    'obj' => get_group_attributes($props, 'boxShadow', true, 'number-counter-'),
-                    'is_hover' => true,
-                    'block_style' => $block_style,
-                    'prefix' => 'number-counter-',
-                ]) : null,
-            ];
-
-            return $response;
-        }
     }
 
 

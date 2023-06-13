@@ -46,7 +46,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_icon_styles.p
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_image_shape_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_link_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_margin_padding_styles.php';
-// require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_number_counter_styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_number_counter_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_opacity_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_overflow_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_position_styles.php';

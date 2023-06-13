@@ -1077,7 +1077,6 @@ function get_block_background_styles($args)
     $end_time = microtime(true);
     $execution_time = ($end_time - $start_time);
     $execution_time = number_format($execution_time, 5, '.', '');
-    write_log('get_basic_response_object execution_time: '.$execution_time);
 
     if ($is_hover && !$args[$prefix . 'block-background-status-hover']) {
         return $response;
@@ -1092,7 +1091,6 @@ function get_block_background_styles($args)
     $end_time = microtime(true);
     $execution_time = ($end_time - $start_time);
     $execution_time = number_format($execution_time, 5, '.', '');
-    write_log('$layers execution_time: '.$execution_time);
 
     if ($is_hover) {
         $layers = [
@@ -1131,16 +1129,16 @@ function get_block_background_styles($args)
             $end_time = microtime(true);
             $execution_time = ($end_time - $start_time);
             $execution_time = number_format($execution_time, 5, '.', '');
-            write_log($breakpoint.' execution_time: '.$execution_time);
         }
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
         $execution_time = number_format($execution_time, 5, '.', '');
-        write_log('$breakpoints as $breakpoint execution_time: '.$execution_time);
     }
 
     return $response;
 }
+
+
 
 
 function get_background_styles($args)
@@ -1155,6 +1153,8 @@ function get_background_styles($args)
     $props = $args;
 
     $response = [];
+
+    $response['background'] = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -1171,7 +1171,8 @@ function get_background_styles($args)
         }
 
         if ($current_active_media === 'color') {
-            $response['background'] = get_color_background_object(
+
+            $response['background'] = array_merge($response['background'], get_color_background_object(
                 array_merge(
                     get_group_attributes(
                         $props,
@@ -1190,10 +1191,10 @@ function get_background_styles($args)
                         'background_color_property' => $background_color_property,
                     ]
                 )
-            );
+            ));
         }
         if ($current_active_media === 'gradient') {
-            $response['background'] = get_gradient_background_object(
+            $response['background'] = array_merge($response['background'], get_gradient_background_object(
                 array(
                     ...get_group_attributes(
                         $props,
@@ -1209,7 +1210,7 @@ function get_background_styles($args)
                     'is_icon_inherit' => $is_icon_inherit,
                     'sc_values' => $sc_values,
                 )
-            );
+            ));
         }
     }
 

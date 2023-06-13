@@ -58,7 +58,16 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public static function get_styles($props, $customCss, $sc_values)
         {
             $uniqueID = $props['uniqueID'];
@@ -80,17 +89,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 ],
             ];
 
-            $background_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes($props, [
-                        'blockBackground',
-                        'border',
-                        'borderWidth',
-                        'borderRadius',
-                    ]),
-                    [ 'block_style' => $block_style,]
-                )
-            );
             $button_icon_styles = get_button_icon_styles([
                 'obj' => $props,
                 'block_style' => $block_style,
@@ -98,24 +96,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'wrapper_target' => '.maxi-button-block__button',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
             ]);
-            $background_hover_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes(
-                        $props,
-                        [
-                            'blockBackground',
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        ],
-                        true
-                    ),
-                    [
-                        'block_style' => $block_style,
-                        'is_hover' => true,
-                    ]
-                )
-            );
+
             $button_icon_hover_styles = get_button_icon_styles([
                 'obj' => $props,
                 'block_style' => $block_style,
@@ -127,11 +108,10 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
 
             $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
-                $background_styles,
-                $background_hover_styles,
                 $button_icon_styles,
                 $button_icon_hover_styles
             );
+
 
             $response = style_processor(
                 $styles_obj,
@@ -205,7 +185,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
@@ -213,7 +193,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
             $prefix = 'button-';
-            
+
             $response = [
                 'size' => get_size_styles(array_merge(get_group_attributes($props, 'size', false, $prefix)), $prefix),
                 'border' => get_border_styles(array(
@@ -266,6 +246,10 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 )
             );
 
+            // self::write_log('$response button-maxi-block');
+            // self::write_log($response);
+            // self::write_log('========================');
+
             return $response;
         }
 
@@ -311,7 +295,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     )
                 )
             );
-        
+
+
             return $response;
         }
 

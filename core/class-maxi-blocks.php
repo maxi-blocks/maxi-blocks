@@ -23,6 +23,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
@@ -142,6 +143,9 @@ if (!class_exists('MaxiBlocks_Blocks')):
             if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
                 MaxiBlocks_Video_Maxi_Block::register();
             }
+            if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
+                MaxiBlocks_Number_Counter_Maxi_Block::register();
+            }
         }
 
         public function maxi_add_image_taxonomy()
@@ -156,7 +160,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
             'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
         );
-    
+
             $args = array(
             'labels' => $labels,
             'hierarchical' => false,
@@ -167,10 +171,10 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'show_ui' => false,
             'show_in_rest' => true
         );
-    
+
             register_taxonomy('maxi-image-type', 'attachment', $args);
         }
-    
+
         public function maxi_add_image_taxonomy_term()
         {
             if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {

@@ -32,6 +32,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
 
 class MaxiBlocks_Styles
 {
@@ -311,8 +312,8 @@ class MaxiBlocks_Styles
     {
         $need_custom_meta = false;
 
-        $this->write_log('need_custom_meta');
-        $this->write_log($contents);
+        // $this->write_log('need_custom_meta');
+        // $this->write_log($contents);
 
         if ($contents) {
             foreach ($contents as $contentData) {
@@ -345,7 +346,7 @@ class MaxiBlocks_Styles
                 }
             }
         }
-        $this->write_log($need_custom_meta);
+        //$this->write_log($need_custom_meta);
 
         return $need_custom_meta;
     }
@@ -544,8 +545,8 @@ class MaxiBlocks_Styles
         $props = $block['attrs'];
         $block_style = $props['blockStyle'];
 
-        // $this->write_log('$props');
-        // $this->write_log($props);
+        $this->write_log('$props');
+        $this->write_log($props);
 
         $style_id = $props['styleID'];
 
@@ -612,6 +613,18 @@ class MaxiBlocks_Styles
                     $block_instance = MaxiBlocks_Video_Maxi_Block::get_instance();
                 }
                 break;
+            case 'maxi-blocks/number-counter-maxi':
+                $this->write_log('number-counter-maxi');
+                if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
+                    $this->write_log('class exists');
+                    $block_instance = MaxiBlocks_Number_Counter_Maxi_Block::get_instance();
+                }
+                break;
+        }
+
+        if($block_instance === null) {
+            $this->write_log('block_instance is null');
+            return $styles;
         }
 
         $this->write_log('$style_id '.$block_name.' '.$style_id);

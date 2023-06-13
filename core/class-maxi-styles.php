@@ -408,8 +408,8 @@ class MaxiBlocks_Styles
                     continue;
                 }
                 $style_id = $props['styleID'];
-                // $this->write_log('style id');
-                // $this->write_log($style_id);
+                $this->write_log('style id');
+                $this->write_log($style_id);
                 if(!$style_id) {
                     continue;
                 }
@@ -421,10 +421,10 @@ class MaxiBlocks_Styles
                     ),
                 );
 
-                // $this->write_log('block_styles');
-                // $this->write_log($block_styles);
+                $this->write_log('block_styles');
+                $this->write_log($block_styles);
 
-                $styles = $styles.$block_styles;
+                $styles = $styles.' '.$block_styles;
 
             }
 
@@ -726,7 +726,7 @@ class MaxiBlocks_Styles
         }
 
 
-        return $styles;
+        return $frontend_styles;
     }
 
     /**

@@ -10,7 +10,7 @@ const setTransform = (el, transform, type) => {
 	const oldTransformArray = oldTransform.split(') ');
 
 	oldTransformArray.forEach((transform, key) => {
-		if (transform.includes(type)) oldTransformArray.splice(key, 1);
+		if (transform.includes(type)) oldTransformArray.splice(key, 2);
 	});
 
 	el.style.transform = oldTransformArray.join(' ') + transform;
@@ -37,10 +37,10 @@ export const removeEffect = (type, uniqueID) => {
 			el.style.filter = '';
 			break;
 		case 'vertical':
-			el.style.top = '';
+			setTransform(el, '', 'vertical');
 			break;
 		case 'horizontal':
-			el.style.left = '';
+			setTransform(el, '', 'horizontal');
 			break;
 		default:
 			break;
@@ -94,10 +94,10 @@ export const applyEffect = (type, uniqueID, viewport) => {
 				el.style.filter = `blur(${value}px)`;
 				break;
 			case 'vertical':
-				el.style.top = `${value}px`;
+				setTransform(el, `translateY(${value}px)`, 'vertical');
 				break;
 			case 'horizontal':
-				el.style.left = `${value}px`;
+				setTransform(el, `translateX(${value}px)`, 'horizontal');
 				break;
 			default:
 				break;
@@ -110,10 +110,10 @@ export const applyEffect = (type, uniqueID, viewport) => {
 
 	switch (type) {
 		case 'vertical':
-			transition = `top ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+			transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 			break;
 		case 'horizontal':
-			transition = `left ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+			transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 			break;
 		case 'rotate':
 			transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;

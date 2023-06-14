@@ -263,13 +263,13 @@ class ScrollEffects {
 
 				switch (type) {
 					case 'vertical':
-						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'horizontal':
-						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'rotate':
-						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'scale':
 						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;

@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { getCanvasSettings } from '../../extensions/relations';
+import { getAdvancedSettings } from '../../extensions/relations';
 
 /**
  * Classnames
@@ -122,7 +122,7 @@ const customCss = {
 	],
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

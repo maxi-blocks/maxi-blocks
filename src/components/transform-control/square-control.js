@@ -650,7 +650,10 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={!isNumber(yAxis) ? '' : yAxis}
 								onKeyDown={e => {
-									if (!e.key.match(/^[0-9]+$/))
+									if (
+										e.key !== '-' &&
+										!e.key.match(/^[0-9]+$/)
+									)
 										e.preventDefault();
 								}}
 								onChange={e => {
@@ -736,7 +739,10 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={!isNumber(xAxis) ? '' : xAxis}
 								onKeyDown={e => {
-									if (!e.key.match(/^[0-9]+$/))
+									if (
+										e.key !== '-' &&
+										!e.key.match(/^[0-9]+$/)
+									)
 										e.preventDefault();
 								}}
 								onChange={e => {

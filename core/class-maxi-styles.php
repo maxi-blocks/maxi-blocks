@@ -17,6 +17,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_resolver.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/frontend_style_generator.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_row_gap_attributes.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_custom_data.php';
 
 
 // Blocks
@@ -61,7 +62,7 @@ class MaxiBlocks_Styles
         // add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_filter('the_content', [$this, 'enqueue_styles']);
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
-        add_action('save_post', [$this, 'get_styles_from_blocks'], 10, 4);
+        add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
 
     public function write_log($log)
@@ -323,8 +324,8 @@ class MaxiBlocks_Styles
 
                 if ($content) {
                     if (
-                        ((int) $content['prev_active_custom_data'] === 1 ||
-                        (int) $content['active_custom_data'] === 1)
+                        ((isset($content['prev_active_custom_data']) && (int) $content['prev_active_custom_data'] === 1) ||
+                        (isset($content['active_custom_data']) && (int) $content['active_custom_data'] === 1))
                     ) {
                         $need_custom_meta = true;
                         break;
@@ -377,7 +378,7 @@ class MaxiBlocks_Styles
         );
 
         if (!$is_template) {
-            //$this->write_log('get_styles_from_blocks');
+            //$this->write_log('get_styles_meta_fonts_from_blocks');
 
             // $this->write_log('post');
             // $this->write_log($post);
@@ -445,7 +446,7 @@ class MaxiBlocks_Styles
             // $content->prev_css_value = $styles;
 
             return json_decode(json_encode($content), true);
-            //  $styles_test = self::get_styles_from_blocks();
+            //  $styles_test = self::get_styles_meta_fonts_from_blocks();
 
             // if (!empty($styles_test)) {
             //     $prev_content = $content_array[0]->prev_css_value;
@@ -479,9 +480,9 @@ class MaxiBlocks_Styles
     }
 
 
-    public function get_styles_from_blocks()
+    public function get_styles_meta_fonts_from_blocks()
     {
-        //$this->write_log('get_styles_from_blocks');
+        //$this->write_log('get_styles_meta_fonts_from_blocks');
         global $post;
 
         if (!$post || !isset($post->ID)) {
@@ -497,12 +498,12 @@ class MaxiBlocks_Styles
         $styles = [];
 
         // foreach ($blocks as $block) {
-        //     $styles = array_merge($styles, $this->get_styles_from_block($block));
+        //     $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($block));
         // }
 
         $tempStyles = array();
         foreach ($blocks as $block) {
-            $tempStyles[] = $this->get_styles_from_block($block);
+            $tempStyles[] = $this->get_styles_meta_fonts_from_block($block);
         }
 
         // $styles = array_merge($styles, ...$tempStyles);
@@ -519,12 +520,77 @@ class MaxiBlocks_Styles
         //$this->write_log('$frontend_styles');
         //$this->write_log($frontend_styles);
 
-        //$this->write_log('get_styles_from_blocks END');
+        //$this->write_log('get_styles_meta_fonts_from_blocks END');
 
         //  return $frontend_styles;
     }
 
-    public function get_styles_from_block($block, $context = null)
+    public function get_maxi_custom_data_from_block($block_name, $props)
+    {
+        $unique_id = $props['uniqueID'];
+
+        switch ($block_name) {
+            case 'number_counter':
+                $response = [
+                    'number_counter' => [
+                        $unique_id => array_merge(
+                            get_group_attributes($attributes, 'numberCounter'),
+                            ['breakpoints' => get_breakpoints($attributes)]
+                        )
+                    ]
+                ];
+
+                return $response;
+
+            default:
+                # code...
+                break;
+        }
+
+        return [];
+
+    }
+
+
+    public function get_custom_data($block_name, $props, $context = null)
+    {
+        $unique_id = $props['uniqueID'];
+        $dc_status = isset($props['dc-status']) ? $props['dc-status'] : false;
+        $bg_layers = isset($props['background-layers']) ? $props['background-layers'] : [];
+        $relations_raw = isset($props['relations']) ? $props['relations'] : [];
+        $context_loop = isset($context['contextLoop']) ? $context['contextLoop'] : null;
+
+        $scroll = get_group_attributes(
+            $props,
+            'scroll',
+            false,
+            '',
+            true
+        );
+
+        $bg_parallax_layers = !empty($bg_layers) ? get_parallax_layers($unique_id, $bg_layers) : [];
+        $has_video = get_has_video($unique_id, $bg_layers);
+        $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
+        $relations = get_relations($unique_id, $relations_raw);
+
+        $response = [
+            $unique_id => array_merge(
+                !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
+                isset($relations) ? ['relations' => $relations] : [],
+                $has_video ? ['bg_video' => true] : [],
+                $has_scroll_effects ? ['scroll_effects' => true] : [],
+                $dc_status && isset($context_loop['cl-status'])
+                    ? ['dynamic_content' => [$unique_id => $context_loop]]
+                    : [],
+                $this->get_maxi_custom_data_from_block($block_name, $props)
+            ),
+        ];
+
+        return $response;
+    }
+
+
+    public function get_styles_meta_fonts_from_block($block, $context = null)
     {
         global $wpdb;
 
@@ -536,7 +602,7 @@ class MaxiBlocks_Styles
 
         $block_name = $block['blockName'];
 
-        $this->write_log('get_styles_from_block '.$block_name);
+        $this->write_log('get_styles_meta_fonts_from_block '.$block_name);
 
         if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
             return $styles;
@@ -637,11 +703,7 @@ class MaxiBlocks_Styles
         //$this->write_log('$props END');
         //$this->write_log('$customCss');
         $customCss = $block_instance->get_block_custom_css($props);
-
-
         $sc_props = $block_instance->get_block_sc_vars($block_style);
-
-
         $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
 
 
@@ -681,16 +743,28 @@ class MaxiBlocks_Styles
 
         if ($inner_blocks && !empty($inner_blocks)) {
             foreach ($inner_blocks as $inner_block) {
-                $styles = array_merge($styles, $this->get_styles_from_block($inner_block, $context));
+                $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
             }
         }
 
         // $this->write_log('$styles');
         // $this->write_log($styles);
 
+        // styles
         $resolved_styles = style_resolver($styles);
         $frontend_styles = frontend_style_generator($resolved_styles);
 
+        // custom meta
+
+        $custom_meta = $this->get_custom_data($block_name, $props, $context);
+
+        $this->write_log('CUSTOM META');
+        $this->write_log($custom_meta);
+        $this->write_log('CUSTOM META END');
+
+
+
+        // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
@@ -726,7 +800,7 @@ class MaxiBlocks_Styles
         }
 
 
-        return $frontend_styles;
+        return $styles;
     }
 
     /**
@@ -781,6 +855,9 @@ class MaxiBlocks_Styles
      */
     public function get_fonts($content)
     {
+        if(!isset($content['fonts_value'])) {
+            return false;
+        }
         $fonts =
             is_preview() || is_admin()
                 ? $content['prev_fonts_value']
@@ -796,7 +873,7 @@ class MaxiBlocks_Styles
     /**
      * Returns default breakpoints values in case breakpoints are not set
      */
-    public function getBreakpoints($breakpoints)
+    public function get_breakpoints($breakpoints)
     {
         if (!empty((array) $breakpoints)) {
             return $breakpoints;

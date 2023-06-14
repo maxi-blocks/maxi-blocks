@@ -703,8 +703,8 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        // TODO: This is a temporary solution to fix the issue with the bg_video and scroll_effects meta
-        if (in_array($metaJs, ['bg_video', 'scroll_effects'])) {
+        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
             return [ true ];
         }
 
@@ -806,6 +806,13 @@ class MaxiBlocks_Styles
                     $new_style
                 );
             }
+
+            // Replaces all ,1)),1) to ,1)
+            $new_style = preg_replace(
+                '/,1\)\),1\)/',
+                ',1)',
+                $new_style
+            );
 
             return $new_style;
         }

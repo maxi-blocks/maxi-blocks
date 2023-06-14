@@ -44,12 +44,12 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 
 		this.state = {
-			isOpen: this.getIsOpen(),
+			isOpen: this.getIsOpenFirstTime(),
 		};
 	}
 
-	getIsOpen() {
-		if (this.props.repeaterStatus) {
+	getIsOpenFirstTime() {
+		if (this.props.repeaterStatus && this.props.attributes.openFirstTime) {
 			const parentColumnClientId = select(
 				'core/block-editor'
 			).getBlockParentsByBlockName(
@@ -216,7 +216,7 @@ class edit extends MaxiBlockComponent {
 			type: 'svg',
 			isOpen,
 			style: blockStyle,
-			openFirstTime: isSelected ? this.getIsOpen() : false,
+			openFirstTime: isSelected ? this.getIsOpenFirstTime() : false,
 			onOpen: obj => {
 				maxiSetAttributes(obj);
 

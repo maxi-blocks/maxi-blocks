@@ -20,8 +20,8 @@ const excludeAttributes = (
 	rawAttributesToExclude,
 	attributes,
 	copyPasteMapping,
-	shouldExcludeEmpty = true,
-	isRepeater = false
+	isRepeater = false,
+	blockName
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
 
@@ -33,9 +33,10 @@ const excludeAttributes = (
 	keysToExclude.forEach(prop => {
 		if (
 			attributesToExclude[prop] &&
-			(shouldExcludeEmpty ||
-				(!shouldExcludeEmpty &&
-					(TEXT_CONTENT_EXCLUDE.includes(prop) ||
+			(!isRepeater ||
+				(isRepeater &&
+					((blockName !== 'maxi-blocks/svg-icon-maxi' &&
+						TEXT_CONTENT_EXCLUDE.includes(prop)) ||
 						attributes?.[prop] !== getDefaultAttribute(prop))))
 		)
 			delete attributesToExclude[prop];

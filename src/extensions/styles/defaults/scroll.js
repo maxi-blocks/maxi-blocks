@@ -66,11 +66,11 @@ export const scroll = (() => {
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical') {
-			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
+			generateUniqueAttributes(type, 'vertical', [-400, 0, 400]);
 		}
 
 		if (type === 'horizontal') {
-			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
+			generateUniqueAttributes(type, 'horizontal', [-200, 0, 200]);
 		}
 
 		if (type === 'rotate') {
@@ -106,10 +106,19 @@ export const scroll = (() => {
 
 			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 
-			if (type === 'vertical' || type === 'horizontal') {
+			if (type === 'vertical') {
 				generateUniqueAttributes(
 					type,
-					'offset',
+					'vertical',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
+
+			if (type === 'horizontal') {
+				generateUniqueAttributes(
+					type,
+					'horizontal',
 					['noDefault', 'noDefault', 'noDefault'],
 					breakpoint
 				);

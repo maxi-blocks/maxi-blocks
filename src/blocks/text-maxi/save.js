@@ -32,6 +32,7 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content
+				style={dcStatus && { display: 'none' }}
 				className={className}
 				value={dcStatus ? '$text-to-replace' : value}
 				// TODO: avoid DC for lists

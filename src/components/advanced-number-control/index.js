@@ -167,7 +167,7 @@ const AdvancedNumberControl = props => {
 	};
 
 	function inpNum(e) {
-		if (!e.key.match(/^[0-9]+$/)) e.preventDefault();
+		if (e.key !== '-' && !e.key.match(/^[0-9]+$/)) e.preventDefault();
 	}
 
 	return (

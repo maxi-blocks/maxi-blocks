@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -14,7 +14,12 @@ import getLastChangedBlocks from './getLastChangedBlocks';
  */
 import { cloneDeep, isEmpty, isEqual, isArray } from 'lodash';
 
-const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
+const propagateNewUniqueID = (
+	oldUniqueID,
+	newUniqueID,
+	repeaterStatus,
+	bgLayers
+) => {
 	const blockAttributesUpdate = {};
 	const lastChangedBlocks = getLastChangedBlocks();
 
@@ -29,6 +34,8 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 
 	const updateRelations = () => {
 		if (isEmpty(lastChangedBlocks)) return;
+
+		let firstColumnToModifyClientId = null;
 
 		const updateNewUniqueID = block => {
 			if (!block) return;
@@ -49,7 +56,24 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 				const newRelations = cloneDeep(relations).map(relation => {
 					const { uniqueID } = relation;
 
-					if (uniqueID === oldUniqueID) {
+					const { getBlockParentsByBlockName } =
+						select('core/block-editor');
+					const columnClientId = getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+					)[0];
+
+					if (
+						uniqueID === oldUniqueID &&
+						(!repeaterStatus ||
+							!columnClientId ||
+							(repeaterStatus &&
+								(!firstColumnToModifyClientId ||
+									firstColumnToModifyClientId ===
+										columnClientId)))
+					) {
+						firstColumnToModifyClientId = columnClientId;
+
 						relation.uniqueID = newUniqueID;
 					}
 

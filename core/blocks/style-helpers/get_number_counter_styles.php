@@ -14,11 +14,11 @@ function get_circle_bar_styles($obj, $blockStyle)
             'breakpoint' => $breakpoint
         ]);
 
-        if (!$palette['paletteStatus'] && isset($palette['color'])) {
+        if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
             return $palette['color'];
         }
 
-        if ($palette['paletteStatus'] && isset($palette['paletteColor'])) {
+        if (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
             return get_color_rgba_string(
                 "color-{$palette['paletteColor']}",
                 $palette['paletteOpacity'],
@@ -50,9 +50,9 @@ function get_circle_background_styles($obj, $blockStyle)
         'prefix' => 'number-counter-circle-background-'
     ]);
 
-    if (!$palette['paletteStatus'] && isset($palette['color'])) {
+    if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
         $response['general']['stroke'] = $palette['color'];
-    } elseif ($palette['paletteStatus'] && isset($palette['paletteColor'])) {
+    } elseif (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
         $response['general']['stroke'] = get_color_rgba_string(
             "color-{$palette['paletteColor']}",
             $palette['paletteOpacity'],
@@ -77,11 +77,11 @@ function get_text_styles($obj, $blockStyle)
             'breakpoint' => $breakpoint
         ]);
 
-        if (!$palette['paletteStatus'] && isset($palette['color'])) {
+        if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
             return $palette['color'];
         }
 
-        if ($palette['paletteStatus'] && isset($palette['paletteColor'])) {
+        if (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
             return get_color_rgba_string(
                 "color-{$palette['paletteColor']}",
                 $palette['paletteOpacity'],

@@ -442,12 +442,34 @@ class MaxiBlockComponent extends Component {
 			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
 
 			// Repeater
-			removeBlockFromColumns(
-				this.props.blockPositionFromColumn,
-				this.props.parentColumnClientId,
-				this.props.parentInnerBlocksCount,
-				this.props.updateInnerBlocksPositions
-			);
+			if (this.props.repeaterStatus) {
+				const { getBlockParentsByBlockName } =
+					select('core/block-editor');
+				const parentRows = getBlockParentsByBlockName(
+					this.props.parentColumnClientId,
+					'maxi-blocks/row-maxi'
+				);
+
+				const isRepeaterWasUndo = parentRows.every(
+					parentRowClientId => {
+						const parentRowAttributes =
+							select('core/block-editor').getBlockAttributes(
+								parentRowClientId
+							);
+
+						return !parentRowAttributes['repeater-status'];
+					}
+				);
+
+				if (!isRepeaterWasUndo) {
+					removeBlockFromColumns(
+						this.props.blockPositionFromColumn,
+						this.props.parentColumnClientId,
+						this.props.parentInnerBlocksCount,
+						this.props.updateInnerBlocksPositions
+					);
+				}
+			}
 		}
 		// If repeater is turned on and block was moved
 		// outwards, remove it from the columns

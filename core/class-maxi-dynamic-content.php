@@ -38,6 +38,10 @@ class MaxiBlocks_DynamicContent
         'dc-status' => [
             'type' => 'boolean',
         ],
+        'dc-source' => [
+            'type' => 'string',
+            'default' => 'wp',
+        ],
         'dc-type' => [
             'type' => 'string',
         ],
@@ -146,6 +150,12 @@ class MaxiBlocks_DynamicContent
             'type' => 'string',
             'default' => '',
         ],
+        'dc-acf-group' => [
+            'type' => 'string',
+        ],
+        'dc-acf-field-type' => [
+            'type' => 'string',
+        ],
         'dc-order' => [
             'type' => 'string',
         ],
@@ -251,6 +261,7 @@ class MaxiBlocks_DynamicContent
     public function render_dc_content($attributes, $content)
     {
         @list(
+            'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
@@ -269,7 +280,9 @@ class MaxiBlocks_DynamicContent
 
         $response = '';
 
-        if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        if ($dc_source === 'acf') {
+            $response = self::get_acf_content($attributes);
+        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $response = self::get_post_or_page_content($attributes);
         } elseif ($dc_type === 'settings') { // Site settings
             $response = self::get_site_content($dc_field);
@@ -297,6 +310,7 @@ class MaxiBlocks_DynamicContent
     public function render_dc_image($attributes, $content)
     {
         @list(
+            'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
@@ -317,7 +331,11 @@ class MaxiBlocks_DynamicContent
         $media_caption = '';
 
         // Get media ID
-        if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        if ($dc_source === 'acf') {
+            $image = self::get_acf_content($attributes);
+
+            $media_id = is_array($image) && $image['id'];
+        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
             $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
@@ -637,10 +655,48 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
+
+
+    }
+
+    public function get_acf_content($attributes)
+    {
+        if (!function_exists('get_field_object')) {
+            return '';
+        }
+
+        @list(
+            'dc-field' => $dc_field,
+            'dc-acf-field-type' => $dc_acf_field_type,
+            'dc-limit' => $dc_limit,
+            'dc-delimiter-content' => $dc_delimiter,
+        ) = $attributes;
+
+        $post = $this->get_post($attributes);
+        $acf_data = get_field_object($dc_field, $post->ID);
+        $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
+        $content = null;
+
+        switch ($dc_acf_field_type) {
+            case 'select':
+            case 'radio':
+                $content = is_array($acf_value) ? $acf_value['label'] : $acf_value;
+                break;
+            case 'checkbox':
+                $content = implode("$dc_delimiter ", array_map(function ($item) {
+                    return is_array($item) ? $item['label'] : $item;
+                }, $acf_value));
+                break;
+            default:
+                $content = $acf_value;
+        }
+
+        return $content;
     }
 
     public function get_date($date, $attributes)
     {
+
         @list(
             'dc-format' => $dc_format,
             'dc-custom-format' => $dc_custom_format,
@@ -662,7 +718,7 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_custom_date)) {
             $dc_custom_date = false;
         }
-        if (!isset($dc_timezone)) {
+        if (!isset($dc_timezone) || !$dc_custom_date) {
             $dc_timezone = 'none';
         }
         if (!isset($dc_format)) {
@@ -704,14 +760,20 @@ class MaxiBlocks_DynamicContent
             'M' => 'F',
             'y' => 'y',
             'Y' => 'Y',
-            't' => 'H:i:s',
+            't' => 'H:i',
         );
 
-        $new_format = preg_replace_callback('/[xzcdDmMyYt]/', function ($match) use ($map) {
+        $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {
             return $map[$match[0]];
         }, $new_format);
 
-        $content = $new_date->format($new_format);
+        $content = date_i18n($new_format, $new_date->getTimestamp());
+
+        // Regular expression to match square brackets.
+        $regex = '/[\[\]]/';
+
+        // Use preg_replace to replace each match with an empty string.
+        $content = preg_replace($regex, '', $content);
 
         return $content;
     }
@@ -747,7 +809,28 @@ class MaxiBlocks_DynamicContent
           'X' => 'U'
         );
 
-        return strtr($format, $replacements);
+        $format = preg_replace_callback(
+            '/\b(' . implode('|', array_keys($replacements)) . ')\b/',
+            function ($matches) use ($replacements) {
+                return $replacements[$matches[0]];
+            },
+            $format
+        );
+
+        // Regular expression to match content inside square brackets, including brackets.
+        $regex = '/\[[^\]]*\]/';
+
+        // Use preg_replace_callback to replace each match.
+        $format = preg_replace_callback($regex, function ($matches) {
+            // Prepend each symbol with a slash.
+            $result = '';
+            for ($i = 0; $i < strlen($matches[0]); $i++) {
+                $result .= '\\' . $matches[0][$i];
+            }
+            return $result;
+        }, $format);
+
+        return $format;
     }
 
     public function get_limited_string($string, $limit)

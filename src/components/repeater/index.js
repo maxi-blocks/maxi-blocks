@@ -29,6 +29,7 @@ const Repeater = ({
 		<div className={classes}>
 			{!isRepeaterInherited && (
 				<ToggleSwitch
+					className={`${classes}__toggle`}
 					label={__('Enable repeater', 'maxi-blocks')}
 					selected={repeaterStatus}
 					onChange={val => {

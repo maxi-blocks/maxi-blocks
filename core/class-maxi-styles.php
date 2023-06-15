@@ -529,13 +529,18 @@ class MaxiBlocks_Styles
     {
         $unique_id = $props['uniqueID'];
 
+        $this->write_log('get_maxi_custom_data_from_block');
+        $this->write_log('$block_name');
+        $this->write_log($block_name);
+
+
         switch ($block_name) {
-            case 'number_counter':
+            case 'maxi-blocks/number-counter-maxi':
                 $response = [
                     'number_counter' => [
                         $unique_id => array_merge(
-                            get_group_attributes($attributes, 'numberCounter'),
-                            ['breakpoints' => get_breakpoints($attributes)]
+                            get_group_attributes($props, 'numberCounter'),
+                            ['breakpoints' => $this->get_breakpoints($props)]
                         )
                     ]
                 ];
@@ -573,18 +578,16 @@ class MaxiBlocks_Styles
         $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
         $relations = get_relations($unique_id, $relations_raw);
 
-        $response = [
-            $unique_id => array_merge(
-                !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
-                isset($relations) ? ['relations' => $relations] : [],
-                $has_video ? ['bg_video' => true] : [],
-                $has_scroll_effects ? ['scroll_effects' => true] : [],
-                $dc_status && isset($context_loop['cl-status'])
+        $response = array_merge(
+            !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
+            isset($relations) ? ['relations' => $relations] : [],
+            $has_video ? ['bg_video' => true] : [],
+            $has_scroll_effects ? ['scroll_effects' => true] : [],
+            $dc_status && isset($context_loop['cl-status'])
                     ? ['dynamic_content' => [$unique_id => $context_loop]]
                     : [],
-                $this->get_maxi_custom_data_from_block($block_name, $props)
-            ),
-        ];
+            $this->get_maxi_custom_data_from_block($block_name, $props)
+        );
 
         return $response;
     }
@@ -757,11 +760,46 @@ class MaxiBlocks_Styles
         // custom meta
 
         $custom_meta = $this->get_custom_data($block_name, $props, $context);
+        if(!empty($custom_meta)) {
+            $custom_meta_json = json_encode($custom_meta);
+            $exists = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                    $style_id
+                ),
+                OBJECT
+            );
 
-        $this->write_log('CUSTOM META');
-        $this->write_log($custom_meta);
-        $this->write_log('CUSTOM META END');
+            if (!empty($exists)) {
+                // Update the existing row.
+                $old_custom_meta = $exists->custom_data_value;
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "UPDATE {$wpdb->prefix}maxi_blocks_custom_data_blocks
+						SET custom_data_value = %s, prev_custom_data_value = %s
+						WHERE block_style_id = %s",
+                        $custom_meta_json,
+                        $old_custom_meta,
+                        $style_id
+                    )
+                );
+            } else {
+                // Insert a new row.
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
+						VALUES (%s, %s, %s)",
+                        $style_id,
+                        $custom_meta_json,
+                        ''
+                    )
+                );
+            }
 
+            $this->write_log('CUSTOM META');
+            $this->write_log($custom_meta_json);
+            $this->write_log('CUSTOM META END');
+        }
 
 
         // save to DB

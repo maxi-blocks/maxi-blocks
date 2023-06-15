@@ -470,47 +470,51 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-		}
-		// If repeater is turned on and block was moved
-		// outwards, remove it from the columns
-		else if (
-			this.props.repeaterStatus &&
-			!select('core/block-editor').getBlockParentsByBlockName(
-				this.props.clientId,
-				'maxi-blocks/column-maxi'
-			)[0]
-		) {
-			// Repeater
-			removeBlockFromColumns(
-				this.props.blockPositionFromColumn,
-				this.props.parentColumnClientId,
-				this.props.parentInnerBlocksCount,
-				this.props.updateInnerBlocksPositions
-			);
-		}
-		// If repeater is turned on and block was moved
-		// inwards, validate the structure
-		else if (
-			select('core/block-editor').getBlockAttributes(
-				select('core/block-editor').getBlockParentsByBlockName(
-					this.props.clientId,
-					'maxi-blocks/row-maxi'
-				)[0]
-			)?.['repeater-status'] &&
-			!this.props.repeaterStatus
-		) {
-			validateRowColumnsStructure(
-				select('core/block-editor').getBlockParentsByBlockName(
-					this.props.clientId,
-					'maxi-blocks/row-maxi'
-				)[0],
-				this.props.getInnerBlocksPositions?.(),
-				select('core/block-editor').getBlockParentsByBlockName(
+		} else {
+			const { getBlockAttributes, getBlockParentsByBlockName } =
+				select('core/block-editor');
+
+			// If repeater is turned on and block was moved
+			// outwards, remove it from the columns
+			if (
+				this.props.repeaterStatus &&
+				!getBlockParentsByBlockName(
 					this.props.clientId,
 					'maxi-blocks/column-maxi'
-				)[0],
-				true
-			);
+				)[0]
+			) {
+				// Repeater
+				removeBlockFromColumns(
+					this.props.blockPositionFromColumn,
+					this.props.parentColumnClientId,
+					this.props.parentInnerBlocksCount,
+					this.props.updateInnerBlocksPositions
+				);
+			}
+			// If repeater is turned on and block was moved
+			// inwards, validate the structure
+			else if (
+				getBlockAttributes(
+					getBlockParentsByBlockName(
+						this.props.clientId,
+						'maxi-blocks/row-maxi'
+					)[0]
+				)?.['repeater-status'] &&
+				!this.props.repeaterStatus
+			) {
+				validateRowColumnsStructure(
+					getBlockParentsByBlockName(
+						this.props.clientId,
+						'maxi-blocks/row-maxi'
+					)[0],
+					this.props.getInnerBlocksPositions?.(),
+					getBlockParentsByBlockName(
+						this.props.clientId,
+						'maxi-blocks/column-maxi'
+					)[0],
+					true
+				);
+			}
 		}
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);

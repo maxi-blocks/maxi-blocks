@@ -704,8 +704,8 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        // TODO: This is a temporary solution to fix the issue with the bg_video and scroll_effects meta
-        if (in_array($metaJs, ['bg_video', 'scroll_effects'])) {
+        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
             return [ true ];
         }
 

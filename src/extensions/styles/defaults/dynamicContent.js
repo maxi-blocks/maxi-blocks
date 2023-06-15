@@ -6,6 +6,10 @@ const dynamicContent = {
 	'dc-status': {
 		type: 'boolean',
 	},
+	'dc-source': {
+		type: 'string',
+		default: 'wp',
+	},
 	'dc-type': {
 		type: 'string',
 	},
@@ -78,9 +82,11 @@ const dynamicContent = {
 	},
 	'dc-weekday': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-era': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-limit': {
 		type: 'number',
@@ -119,6 +125,12 @@ const dynamicContent = {
 	},
 	'dc-accumulator': {
 		type: 'number',
+	},
+	'dc-acf-group': {
+		type: 'number',
+	},
+	'dc-acf-field-type': {
+		type: 'string',
 	},
 	'dc-contains-html': {
 		type: 'boolean',

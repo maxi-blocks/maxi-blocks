@@ -122,7 +122,7 @@ const LinkContent = props => {
 		return formatValue;
 	};
 
-	const setLinkFormat = attributes => {
+	const setLinkFormat = (attributes, newLinkValue) => {
 		const { start, end } = formatValue;
 
 		const isWholeContent = start === end;
@@ -131,10 +131,7 @@ const LinkContent = props => {
 			formatValue,
 			attributes
 		);
-		const newLinkAttributes = createLinkAttributes({
-			...attributes,
-			linkValue,
-		});
+
 		const obj = applyLinkFormat({
 			formatValue: isWholeContent
 				? {
@@ -146,7 +143,7 @@ const LinkContent = props => {
 			typography,
 			linkAttributes: createLinkAttributes({
 				...attributes,
-				linkValue,
+				newLinkValue,
 			}),
 			isList,
 			textLevel,
@@ -161,7 +158,8 @@ const LinkContent = props => {
 			end: updatedFormatValue.end,
 		});
 		delete obj.formatValue;
-		onChange(newLinkAttributes, obj);
+
+		onChange(newLinkValue, obj);
 	};
 
 	const removeLinkFormatHandle = () => {
@@ -213,15 +211,15 @@ const LinkContent = props => {
 
 	const onClick = attributes => {
 		const newAttributes = forceSSL(attributes);
-
-		if (!formatOptions && !isEmpty(newAttributes.url))
-			setLinkFormat(newAttributes);
-		else updateLinkString(newAttributes);
-
 		const newLinkAttributes = createLinkAttributes({
 			...newAttributes,
 			linkValue,
 		});
+
+		if (!formatOptions && !isEmpty(newAttributes.url))
+			setLinkFormat(newAttributes, newLinkAttributes);
+		else updateLinkString(newAttributes);
+
 		const newLinkValue = createLinkValue({
 			formatOptions: { attributes: newLinkAttributes },
 			formatValue,

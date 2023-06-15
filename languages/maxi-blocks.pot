@@ -52,7 +52,7 @@ msgstr ""
 msgid "Read about Crisp GDPR terms"
 msgstr ""
 
-#: src/blocks/accordion-maxi/accordion-maxi.js:30
+#: src/blocks/accordion-maxi/accordion-maxi.js:29
 msgid "Accordion Maxi"
 msgstr ""
 

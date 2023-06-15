@@ -17,6 +17,7 @@ const versions = [
 	'1.0.0',
 	'1.0.1',
 	'1.1.0',
+	'1.1.1',
 ];
 
 const prefixes = ['button-', 'image-', 'video-'];

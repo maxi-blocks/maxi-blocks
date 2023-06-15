@@ -14,7 +14,7 @@ import { findTargetParent, getChildColumns, goThroughColumns } from './utils';
 import { isEqual } from 'lodash';
 
 const handleBlockMove = (
-	rawBlock,
+	clientId,
 	prevPosition,
 	nextPosition,
 	innerBlockPositions
@@ -24,7 +24,7 @@ const handleBlockMove = (
 	const { getBlock, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
-	const block = getBlock(rawBlock.clientId);
+	const block = getBlock(clientId);
 
 	if (!block) return;
 

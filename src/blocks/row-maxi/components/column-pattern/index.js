@@ -16,9 +16,11 @@ import {
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
 import {
+	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 
 /**
  * External dependencies
@@ -30,7 +32,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 
 /**
  * Column patterns
@@ -233,8 +234,12 @@ const ColumnPattern = props => {
 								}
 
 								onChange({
-									[`row-pattern-${breakpoint}`]:
-										newRowPattern,
+									[getAttributeKey(
+										'row-pattern',
+										false,
+										null,
+										breakpoint
+									)]: newRowPattern,
 								});
 							}}
 						>

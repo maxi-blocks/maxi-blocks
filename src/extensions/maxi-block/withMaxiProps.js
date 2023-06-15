@@ -263,7 +263,7 @@ const withMaxiProps = createHigherOrderComponent(
 						)
 					) {
 						handleBlockMove(
-							ownProps,
+							clientId,
 							blockPositionFromInnerBlocks,
 							blockPositionFromColumn,
 							innerBlocksPositions

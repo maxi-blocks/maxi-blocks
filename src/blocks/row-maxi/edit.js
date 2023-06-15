@@ -1,9 +1,4 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-
-/**
- * WordPress dependencies.
- */
-import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
@@ -16,6 +11,11 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+
+/**
+ * External dependencies
+ */
+import { withMaxiContextLoop } from '../../extensions/DC';
 import { RowBlockTemplate } from './components';
 
 /**
@@ -62,20 +62,6 @@ class edit extends MaxiBlockComponent {
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-row--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.row_preview}
-						alt={__('Row block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -146,4 +132,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

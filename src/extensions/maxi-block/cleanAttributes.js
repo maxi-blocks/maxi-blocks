@@ -66,7 +66,8 @@ const flatSameAsPrev = (
 	newAttributes,
 	attributes,
 	clientId,
-	defaultAttributes
+	defaultAttributes,
+	allowXXLOverGeneral
 ) => {
 	const result = {};
 
@@ -91,6 +92,8 @@ const flatSameAsPrev = (
 			const generalAttr = attributes[generalKey];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
+				if (allowXXLOverGeneral) return;
+
 				const generalDefaultValue =
 					defaultAttributes?.[generalKey] ??
 					getDefaultAttribute(generalKey, clientId, true);
@@ -184,7 +187,8 @@ const flatWithGeneral = (
 	newAttributes,
 	attributes,
 	clientId,
-	defaultAttributes
+	defaultAttributes,
+	allowXXLOverGeneral
 ) => {
 	const result = {};
 
@@ -320,7 +324,11 @@ const flatWithGeneral = (
 		const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
 		const attrOnXXL = attributes[keyOnXXL];
 
-		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL))
+		if (
+			!isNil(attrOnXXL) &&
+			isEqual(value, attrOnXXL) &&
+			!allowXXLOverGeneral
+		)
 			result[keyOnXXL] = undefined;
 
 		let breakpointLock = false;
@@ -388,6 +396,11 @@ const flatNewAttributes = (
 
 			if (shouldPreserveAttribute) result[key] = value;
 			else {
+				if (breakpoint === 'xxl' && value === generalAttr) {
+					result[key] = undefined;
+					return;
+				}
+
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -644,6 +657,7 @@ const cleanAttributes = ({
 	attributes,
 	clientId,
 	defaultAttributes,
+	allowXXLOverGeneral = false,
 }) => {
 	const containsBreakpoint = Object.keys(newAttributes).some(
 		key => !!getBreakpointFromAttribute(key)
@@ -664,11 +678,23 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatSameAsPrev(result, attributes, clientId, defaultAttributes),
+		...flatSameAsPrev(
+			result,
+			attributes,
+			clientId,
+			defaultAttributes,
+			allowXXLOverGeneral
+		),
 	};
 	result = {
 		...result,
-		...flatWithGeneral(result, attributes, clientId, defaultAttributes),
+		...flatWithGeneral(
+			result,
+			attributes,
+			clientId,
+			defaultAttributes,
+			allowXXLOverGeneral
+		),
 	};
 	result = {
 		...result,
@@ -694,6 +720,7 @@ const cleanAttributes = ({
 			});
 
 			return (
+				!isNil(value) &&
 				value !== attributes[key] &&
 				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);

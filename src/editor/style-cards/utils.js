@@ -7,7 +7,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import standardSC from '../../../core/utils/defaultSC.json';
+import standardSC from '../../../core/defaults/defaultSC.json';
 
 /**
  * External dependencies

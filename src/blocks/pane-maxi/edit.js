@@ -52,6 +52,7 @@ const Content = forwardRef((props, ref) => {
 					'maxi-blocks/column-maxi',
 					'maxi-blocks/pane-maxi',
 					'maxi-blocks/maxi-cloud',
+					'maxi-blocks/slide-maxi',
 				].indexOf(blockName) === -1
 		);
 
@@ -171,7 +172,7 @@ class edit extends MaxiBlockComponent {
 			hasSelectedChild,
 			hasInnerBlocks,
 		} = this.props;
-		const { uniqueID, title, preview } = attributes;
+		const { uniqueID, title } = attributes;
 		const {
 			paneIcon,
 			paneIconActive,
@@ -181,21 +182,6 @@ class edit extends MaxiBlockComponent {
 			onOpen,
 			onClose,
 		} = this?.context || {};
-
-		if (preview)
-			return (
-				<MaxiBlock
-					className={`maxi-pane-block--${accordionLayout}-layout`}
-					key={`maxi-pane--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.pane_preview}
-						alt={__('Pane block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

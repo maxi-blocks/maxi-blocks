@@ -58,6 +58,12 @@ const getTransformControl = ({ categories, selectors }) => ({
 			props.obj,
 			getTransformSelectors(selectors, props.blockAttributes)
 		),
+	styleAttrs: [
+		'transform-scale',
+		'transform-translate',
+		'transform-rotate',
+		'transform-origin',
+	],
 });
 
 const getAdvancedSettings = ({ customCss }) => [

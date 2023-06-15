@@ -1367,9 +1367,22 @@ exports[`getIBDataItem Should return the IB setting 1`] = `
 Object {
   "attrGroupName": "boxShadow",
   "component": [Function],
+  "forceTempPalette": [Function],
+  "forceTempPalettePrefix": "box-shadow-",
   "helper": [Function],
   "hoverProp": "box-shadow-status-hover",
   "label": "Box shadow",
+  "relatedAttributes": Array [
+    "box-shadow-inset",
+    "box-shadow-horizontal",
+    "box-shadow-horizontal-unit",
+    "box-shadow-vertical",
+    "box-shadow-vertical-unit",
+    "box-shadow-blur",
+    "box-shadow-blur-unit",
+    "box-shadow-spread",
+    "box-shadow-spread-unit",
+  ],
   "sid": "bs",
 }
 `;
@@ -1392,6 +1405,10 @@ Object {
   "hoverProp": "icon-status-hover",
   "label": "Button icon",
   "sid": "bi",
+  "styleAttrs": Array [
+    "icon-content",
+    "icon-background-active-media",
+  ],
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg > *:not(g)",
     " .maxi-button-block__icon svg",
@@ -1419,6 +1436,10 @@ Object {
   "hoverProp": "icon-status-hover",
   "label": "Button icon",
   "sid": "bi",
+  "styleAttrs": Array [
+    "icon-content",
+    "icon-background-active-media",
+  ],
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg > *:not(g)",
     " .maxi-button-block__icon svg",

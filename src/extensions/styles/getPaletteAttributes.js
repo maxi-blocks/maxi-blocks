@@ -26,6 +26,7 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 
 	return {
 		paletteStatus: getValue('palette-status'),
+		paletteSCStatus: getValue('palette-sc-status'),
 		paletteColor: getValue('palette-color'),
 		paletteOpacity: getValue('palette-opacity'),
 		color: getValue('color'),

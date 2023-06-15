@@ -2,7 +2,7 @@ import getSizeStyles from '../getSizeStyles';
 
 jest.mock('../../getDefaultAttribute', () => {
 	return jest.fn(attribute => {
-		return attribute.includes('general') ? 'normal' : undefined;
+		return attribute.includes('general') ? false : undefined;
 	});
 });
 
@@ -273,8 +273,8 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width', () => {
 		const object = {
-			'full-width-general': 'full',
-			'full-width-l': 'normal',
+			'full-width-general': true,
+			'full-width-l': false,
 		};
 
 		const result = getSizeStyles(object);
@@ -284,12 +284,12 @@ describe('getSizeStyles', () => {
 	it('Get a correct size styles with full width 2', () => {
 		const object = {
 			'size-advanced-options': true,
-			'full-width-general': 'full',
-			'full-width-xl': 'normal',
-			'full-width-l': 'full',
+			'full-width-general': true,
+			'full-width-xl': false,
+			'full-width-l': true,
 			'min-width-l': '2',
 			'min-width-unit-l': 'px',
-			'full-width-m': 'normal',
+			'full-width-m': false,
 			'min-width-m': '3',
 			'min-width-s': '0',
 		};
@@ -300,7 +300,7 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width 3', () => {
 		const object = {
-			'full-width-general': 'full',
+			'full-width-general': true,
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -322,7 +322,7 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width responsive', () => {
 		const object = {
-			'full-width-general': 'full',
+			'full-width-general': true,
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -336,7 +336,7 @@ describe('getSizeStyles', () => {
 			'height-general': '4',
 			'min-height-unit-general': 'px',
 			'min-height-general': '1',
-			'full-width-xxl': 'normal',
+			'full-width-xxl': false,
 			'max-width-unit-xxl': 'px',
 			'max-width-xxl': '2',
 			'width-unit-xxl': 'px',
@@ -349,7 +349,7 @@ describe('getSizeStyles', () => {
 			'height-xxl': '2',
 			'min-height-unit-xxl': 'px',
 			'min-height-xxl': '2',
-			'full-width-xl': 'full',
+			'full-width-xl': true,
 			'max-width-unit-xl': 'px',
 			'max-width-xl': '3',
 			'width-unit-xl': 'px',
@@ -360,7 +360,7 @@ describe('getSizeStyles', () => {
 			'max-height-xl': '2',
 			'min-height-unit-xl': 'px',
 			'min-height-xl': '4',
-			'full-width-l': 'normal',
+			'full-width-l': false,
 			'max-width-unit-l': 'px',
 			'max-width-l': '2',
 			'width-unit-l': 'px',
@@ -371,7 +371,7 @@ describe('getSizeStyles', () => {
 			'max-height-l': '2',
 			'min-height-unit-l': 'px',
 			'min-height-l': '1',
-			'full-width-m': 'full',
+			'full-width-m': true,
 			'max-width-unit-m': 'px',
 			'max-width-m': '2',
 			'width-unit-m': 'px',
@@ -382,7 +382,7 @@ describe('getSizeStyles', () => {
 			'max-height-m': '1',
 			'min-height-unit-m': 'px',
 			'min-height-m': '2',
-			'full-width-s': 'normal',
+			'full-width-s': false,
 			'max-width-unit-s': 'px',
 			'max-width-s': '3',
 			'width-unit-s': 'px',
@@ -395,7 +395,7 @@ describe('getSizeStyles', () => {
 			'height-s': '1',
 			'min-height-unit-s': 'px',
 			'min-height-s': '2',
-			'full-width-xs': 'full',
+			'full-width-xs': true,
 			'max-width-unit-xs': 'px',
 			'max-width-xs': '3',
 			'width-unit-xs': 'px',
@@ -417,7 +417,7 @@ describe('getSizeStyles', () => {
 
 	it('Get a correct size styles with full width responsive 2', () => {
 		const object = {
-			'full-width-general': 'normal',
+			'full-width-general': false,
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -431,7 +431,7 @@ describe('getSizeStyles', () => {
 			'height-general': '4',
 			'min-height-unit-general': 'px',
 			'min-height-general': '1',
-			'full-width-xxl': 'full',
+			'full-width-xxl': true,
 			'max-width-unit-xxl': 'px',
 			'max-width-xxl': '2',
 			'width-unit-xxl': 'px',
@@ -444,7 +444,7 @@ describe('getSizeStyles', () => {
 			'height-xxl': '2',
 			'min-height-unit-xxl': 'px',
 			'min-height-xxl': '2',
-			'full-width-xl': 'normal',
+			'full-width-xl': false,
 			'max-width-unit-xl': 'px',
 			'max-width-xl': '3',
 			'width-unit-xl': 'px',
@@ -455,7 +455,7 @@ describe('getSizeStyles', () => {
 			'max-height-xl': '2',
 			'min-height-unit-xl': 'px',
 			'min-height-xl': '4',
-			'full-width-l': 'full',
+			'full-width-l': true,
 			'max-width-unit-l': 'px',
 			'max-width-l': '2',
 			'width-unit-l': 'px',
@@ -466,7 +466,7 @@ describe('getSizeStyles', () => {
 			'max-height-l': '2',
 			'min-height-unit-l': 'px',
 			'min-height-l': '1',
-			'full-width-m': 'normal',
+			'full-width-m': false,
 			'max-width-unit-m': 'px',
 			'max-width-m': '2',
 			'width-unit-m': 'px',
@@ -475,7 +475,7 @@ describe('getSizeStyles', () => {
 			'max-height-m': '1',
 			'min-height-unit-m': 'px',
 			'min-height-m': '2',
-			'full-width-s': 'full',
+			'full-width-s': true,
 			'max-width-unit-s': 'px',
 			'max-width-s': '3',
 			'width-unit-s': 'px',
@@ -486,7 +486,7 @@ describe('getSizeStyles', () => {
 			'height-s': '1',
 			'min-height-unit-s': 'px',
 			'min-height-s': '2',
-			'full-width-xs': 'normal',
+			'full-width-xs': false,
 			'max-width-unit-xs': 'px',
 			'max-width-xs': '3',
 			'width-unit-xs': 'px',

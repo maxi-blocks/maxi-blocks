@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -110,20 +109,6 @@ class edit extends MaxiBlockComponent {
 
 		const handleReset = () => this.resetNumberHelper();
 
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-number-counter--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.nc_preview}
-						alt={__('Number counter block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -183,6 +168,7 @@ const NumberCounter = attributes => {
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
 		'number-counter-percentage-sign-status': usePercentage,
+		'number-counter-percentage-sign-position-status': centeredPercentage,
 		'number-counter-start': startNumber,
 		'number-counter-end': endNumber,
 		deviceType,
@@ -332,14 +318,15 @@ const NumberCounter = attributes => {
 					</svg>
 					<span className='maxi-number-counter__box__text'>
 						{`${round((count / 360) * 100)}`}
-						{usePercentage && <sup>%</sup>}
+						{usePercentage &&
+							(centeredPercentage ? '%' : <sup>%</sup>)}
 					</span>
 				</div>
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
 					{`${round((count / 360) * 100)}`}
-					{usePercentage && <sup>%</sup>}
+					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>
 			)}
 		</BlockResizer>

@@ -6,6 +6,7 @@ export { default as BoxShadow } from './box-shadow';
 export { default as ColumnMover } from './column-mover';
 export { default as ColumnsHandlers } from './columns-handlers';
 export { default as ColumnSize } from './column-size';
+export { default as ContextLoop } from './context-loop';
 export { default as CopyPaste } from './copy-paste';
 export { default as Delete } from './delete';
 export { default as Divider } from './divider-line';

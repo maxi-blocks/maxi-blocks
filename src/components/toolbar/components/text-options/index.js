@@ -247,7 +247,7 @@ const TextOptions = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 300,
+			max: 999,
 		},
 		em: {
 			min: 0,
@@ -287,7 +287,7 @@ const TextOptions = props => {
 			<ToolbarPopover
 				tooltip={__('Edit text', 'maxi-blocks')}
 				text={__('Edit', 'maxi-blocks')}
-				advancedOptions='typography'
+				advancedOptions={isCaptionToolbar ? 'caption' : 'typography'}
 			>
 				<div className='toolbar-item__popover__font-options'>
 					<ResponsiveTabsControl

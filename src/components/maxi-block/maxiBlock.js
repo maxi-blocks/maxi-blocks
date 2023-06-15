@@ -19,6 +19,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -52,7 +53,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 			attributes,
 		});
 
-	const isFullWidth = getValue('full-width') === 'full';
+	const isFullWidth = getValue('full-width');
 
 	if (!isFullWidth) return '';
 
@@ -121,17 +122,17 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	// To forbid the use of links for container blocks from having links when their child has one
 	if (!isSave && useInnerBlocks && hasLink) {
 		let childHasLink = false;
-		const children = select('core/block-editor').getClientIdsOfDescendants([
-			clientId,
-		]);
+		const childrenClientIds = select(
+			'core/block-editor'
+		).getClientIdsOfDescendants([clientId]);
 
-		for (const child of children) {
+		for (const childClientId of childrenClientIds) {
 			const attributes =
-				select('core/block-editor').getBlockAttributes(child);
+				select('core/block-editor').getBlockAttributes(childClientId);
 
 			if (
 				!isEmpty(attributes.linkSettings?.url) ||
-				(select('core/block-editor').getBlockName(child) ===
+				(select('core/block-editor').getBlockName(childClientId) ===
 					'maxi-blocks/text-maxi' &&
 					attributes.content.includes('<a '))
 			) {
@@ -139,30 +140,31 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				break;
 			}
 		}
-		if (childHasLink) {
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
-					disabled: true,
-				},
-			});
-		} else if (extraProps.attributes.linkSettings.disabled) {
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
-					disabled: false,
-				},
-			});
-		}
+		setTimeout(() => {
+			if (childHasLink) {
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					linkSettings: {
+						...extraProps?.attributes?.linkSettings,
+						disabled: true,
+					},
+				});
+			} else if (extraProps?.attributes?.linkSettings.disabled) {
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					linkSettings: {
+						...extraProps.attributes.linkSettings,
+						disabled: false,
+					},
+				});
+			}
+		}, 10);
 	}
 
 	// Gets if the block is full-width
-	const isFullWidth =
-		getLastBreakpointAttribute({
-			target: 'full-width',
-			breakpoint: extraProps.deviceType,
-			attributes: extraProps.attributes,
-		}) === 'full';
+	const isFullWidth = getLastBreakpointAttribute({
+		target: 'full-width',
+		breakpoint: extraProps.deviceType,
+		attributes: extraProps.attributes,
+	});
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
@@ -318,7 +320,12 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const marginValue = select('maxiBlocks/styles').getBlockMarginValue();
+
+		const isHoverPreview = getIsHoverPreview();
+
+		const marginValue = !isHoverPreview
+			? select('maxiBlocks/styles').getBlockMarginValue()
+			: 0;
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
@@ -372,6 +379,8 @@ const MaxiBlock = memo(
 
 		// Check differences between children
 		if (rawOldProps?.children || rawNewProps?.children) {
+			// TODO: check this part of the code, seems is always returning false,
+			// so the block is always re-rendering
 			const areChildrenEqual = isEqual(
 				rawOldProps.children,
 				rawNewProps.children

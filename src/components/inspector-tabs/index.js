@@ -7,6 +7,7 @@ export { default as border } from './inspector-border';
 export { default as boxShadow } from './inspector-box-shadow';
 export { default as calloutArrow } from './inspector-callout-arrow';
 export { default as clipPath } from './inspector-clip-path';
+export { default as contextLoop } from './inspector-context-loop';
 export { default as customClasses } from './inspector-custom-classes';
 export { default as customCss } from './inspector-custom-css';
 export { default as dc } from './inspector-dc';

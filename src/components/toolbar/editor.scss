@@ -274,6 +274,11 @@
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
+	.maxi-base-control:not(.maxi-color-control__palette-label) {
+		.maxi-reset-button {
+			padding: 8px;
+		}
+	}
 
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {

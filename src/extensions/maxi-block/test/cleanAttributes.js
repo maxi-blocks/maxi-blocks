@@ -1667,4 +1667,65 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Random test 17', () => {
+		const obj = {
+			newAttributes: {
+				'font-size-unit-general': 'em',
+				'font-size-unit-xxl': 'px',
+			},
+			attributes: {
+				'font-size-unit-general': 'px',
+				'font-size-unit-xxl': 'em',
+			},
+			defaultAttributes: {},
+			allowXXLOverGeneral: true,
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'font-size-unit-general': 'em',
+			'font-size-unit-xxl': 'px',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('On XXL baseBreakpoint and general breakpoint, when modifying a XXL attribute and there is a general attribute, if coincide, return undefined for XXL', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xxl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': '5',
+				'test-xxl': '5',
+			},
+			attributes: {
+				'test-general': '3',
+				'test-xxl': '4',
+			},
+			defaultAttributes: {
+				'test-general': '3',
+				'test-xxl': '4',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '5',
+			'test-xxl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

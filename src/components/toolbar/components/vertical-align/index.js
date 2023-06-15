@@ -27,7 +27,7 @@ const VerticalAlign = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__vertical-align'
-			tooltip={__('Vertical Align', 'maxi-blocks')}
+			tooltip={__('Vertical align', 'maxi-blocks')}
 			icon={toolbarVerticalAlign}
 			advancedOptions='column settings'
 		>

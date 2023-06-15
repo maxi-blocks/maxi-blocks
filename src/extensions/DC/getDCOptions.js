@@ -7,17 +7,12 @@ import { store as coreStore } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import {
-	fieldOptions,
-	idFields,
-	idOptionByField,
-	typeOptions,
-} from './constants';
+import { fieldOptions, idFields, idOptionByField } from './constants';
 
 /**
  * External dependencies
  */
-import { isEmpty, find, isEqual } from 'lodash';
+import { find, isEmpty, isEqual } from 'lodash';
 import { limitString } from './utils';
 
 export const getIdOptions = async (type, relation, author) => {
@@ -62,23 +57,32 @@ export const getIdOptions = async (type, relation, author) => {
 	return data;
 };
 
-const disabledType = (valueType, contentType) => {
-	const hide = options =>
-		Object.keys(options).forEach(key => {
-			if (options[key].value === valueType) {
-				options[key].disabled = true;
-			}
-		});
+// TODO: looks like it's not necessary
+// const disabledType = (valueType, contentType) => {
+// 	const hide = options =>
+// 		Object.keys(options).forEach(key => {
+// 			if (options[key].value === valueType) {
+// 				options[key].disabled = true;
+// 			}
+// 		});
 
-	hide(typeOptions[contentType]);
-};
+// 	hide(typeOptions[contentType]);
+// };
 
-const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
+const getDCOptions = async (
+	dataRequest,
+	postIdOptions,
+	contentType,
+	isCL = false,
+	contextLoop
+) => {
 	const { type, id, field, relation, author } = dataRequest;
 
 	const data = await getIdOptions(type, relation, author);
 
 	if (!data) return null;
+
+	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const newValues = {};
 
@@ -91,37 +95,49 @@ const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 		}
 
 		return {
-			label: `${item.id} - ${limitString(
+			label: `${item.id} - ${
 				item[idOptionByField[type]]?.rendered ??
-					item[idOptionByField[type]],
-				10
-			)}`,
+				item[idOptionByField[type]]
+			}`,
 			value: +item.id,
 		};
 	});
 
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
-		if (isEmpty(newPostIdOptions)) {
-			if (relation === 'author') newValues['dc-error'] = relation;
-
-			if (['tags', 'media'].includes(type)) {
-				newValues['dc-error'] = type;
-				disabledType(type);
-			}
-
-			return { newValues, newPostIdOptions: [] };
-		}
-		if (relation === 'author') newValues['dc-error'] = '';
-
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			newValues['dc-id'] = Number(data[0].id);
-			idFields.current = data[0].id;
+			if (
+				!contextLoop?.['cl-status'] ||
+				(contextLoop?.['cl-status'] &&
+					type !== contextLoop?.['cl-type'])
+			) {
+				newValues[`${prefix}id`] = Number(data[0].id);
+				idFields.current = data[0].id;
+			} else {
+				newValues[`${prefix}id`] = undefined;
+			}
 		}
 
-		// Ensures first field is selected
-		if (!field)
-			newValues['dc-field'] = fieldOptions[contentType][type][0].value;
+		if (!isCL) {
+			if (isEmpty(newPostIdOptions)) {
+				if (relation === 'author')
+					newValues[`${prefix}error`] = relation;
+
+				if (['tags', 'media'].includes(type)) {
+					newValues[`${prefix}error`] = type;
+					// TODO: this does not work without the second parameter, so it never works ^_^
+					// disabledType(type);
+				}
+
+				return { newValues, newPostIdOptions: [] };
+			}
+			if (relation === 'author') newValues[`${prefix}error`] = '';
+
+			// Ensures first field is selected
+			if (!field)
+				newValues[`${prefix}field`] =
+					fieldOptions[contentType][type][0].value;
+		}
 
 		return { newValues, newPostIdOptions };
 	}

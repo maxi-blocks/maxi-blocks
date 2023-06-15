@@ -5,9 +5,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,6 +23,7 @@ import {
 	getFormatPosition,
 	textContext,
 } from '../../../../extensions/text/formats';
+import Link from '../link';
 
 /**
  * External dependencies
@@ -35,7 +35,6 @@ import { isEmpty, isEqual, isNil } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
-import Link from '../link';
 
 /**
  * TextLink
@@ -44,21 +43,36 @@ import Link from '../link';
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
 		props;
+	const typography = { ...getGroupAttributes(props, 'typography') };
+	const formatName = 'maxi-blocks/text-link';
 
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
-	const formatName = 'maxi-blocks/text-link';
+	const getFormatOptions = () => {
+		// Checks if the whole text string is under same link
+		let linkChecker;
+		const isWholeLink =
+			isEqual(
+				getFormatPosition({
+					formatValue,
+					formatName: 'maxi-blocks/text-link',
+					formatClassName: null,
+					formatAttributes: null,
+				}),
+				[0, formatValue.formats.length]
+			) &&
+			formatValue.formats.every(formatArray => {
+				return formatArray.every(format => {
+					if (format.type !== formatName) return true;
 
-	const { formatOptions } = useSelect(() => {
-		const isWholeLink = isEqual(
-			getFormatPosition({
-				formatValue,
-				formatName: 'maxi-blocks/text-link',
-				formatClassName: null,
-				formatAttributes: null,
-			}),
-			[0, formatValue.formats.length]
-		);
+					if (!linkChecker) linkChecker = format.attributes.url;
+
+					return (
+						format.type === 'maxi-blocks/text-link' &&
+						format.attributes.url === linkChecker
+					);
+				});
+			});
 		const end = formatValue.formats.length + 1;
 		const start =
 			isWholeLink && formatValue.start === formatValue.end
@@ -69,24 +83,24 @@ const LinkContent = props => {
 			formatName
 		);
 
-		return {
-			formatOptions,
-		};
-	}, [getActiveFormat, formatValue, formatName]);
+		return formatOptions;
+	};
 
-	const typography = { ...getGroupAttributes(props, 'typography') };
+	const formatOptions = useRef(getFormatOptions());
 
 	const [linkValue, setLinkValue] = useState(
 		createLinkValue({
-			formatOptions,
+			formatOptions: formatOptions.current,
 			formatValue,
 		})
 	);
 
 	useEffect(() => {
-		if (formatOptions) {
+		formatOptions.current = getFormatOptions();
+
+		if (formatOptions.current) {
 			const newLinkValue = createLinkValue({
-				formatOptions,
+				formatOptions: formatOptions.current,
 				formatValue,
 			});
 
@@ -100,23 +114,19 @@ const LinkContent = props => {
 	}, [linkValue.url]);
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
-		const [posStart, posEnd] = getFormatPosition({
+		const [posStart] = getFormatPosition({
 			formatValue,
-			formatName: 'maxi-blocks/text-link',
+			formatName,
 			formatClassName: null,
-		}) || [0, 0];
+			formatAttributes: formatOptions.current?.attributes,
+		}) || [formatValue.start ?? 0];
 
-		formatValue.formats = formatValue.formats.map((formatEl, i) => {
-			return formatEl.map(format => {
-				if (
-					format.type === 'maxi-blocks/text-link' &&
-					posStart <= i &&
-					i - 1 <= posEnd
-				)
-					format.attributes = attributes;
-
-				return format;
-			});
+		// Just need to change one format to change the rest with the same structure,
+		// as they share THE SAME object. For example, a word in a sentence that shares same link
+		// with position from 5 to 10, will mean format[5] === format[6] === format[7]...=== format[10]
+		formatValue?.formats?.[posStart]?.forEach((format, j) => {
+			if (format.type === 'maxi-blocks/text-link')
+				formatValue.formats[posStart][j].attributes = attributes;
 		});
 
 		return formatValue;
@@ -188,10 +198,19 @@ const LinkContent = props => {
 		onChange(newLinkAttributes, obj);
 	};
 
-	const forceSSL = attributes => {
+	const prepareUrl = attributes => {
 		const { url } = attributes;
 
-		attributes.url = url.replace(/^http:\/\//i, 'https://');
+		if (
+			url?.startsWith('#') ||
+			url?.startsWith('http') ||
+			url.startsWith('localhost')
+		)
+			return attributes;
+
+		if (!url.includes('http:')) attributes.url = `https://${url}`;
+		else if (url.includes('http:'))
+			attributes.url = url.replace(/^http:\/\//i, 'https://');
 
 		return attributes;
 	};
@@ -210,13 +229,13 @@ const LinkContent = props => {
 	};
 
 	const onClick = attributes => {
-		const newAttributes = forceSSL(attributes);
+		const newAttributes = prepareUrl(attributes);
 		const newLinkAttributes = createLinkAttributes({
 			...newAttributes,
 			linkValue,
 		});
 
-		if (!formatOptions && !isEmpty(newAttributes.url))
+		if (!formatOptions.current && !isEmpty(newAttributes.url))
 			setLinkFormat(newAttributes, newLinkAttributes);
 		else updateLinkString(newAttributes);
 

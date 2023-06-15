@@ -22,6 +22,7 @@ import {
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { customCss } from './data';
+import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -264,4 +265,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

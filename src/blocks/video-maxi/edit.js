@@ -188,17 +188,6 @@ class edit extends MaxiBlockComponent {
 			overlay: '.maxi-video-block__overlay-background',
 		};
 
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-video--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img src={previews.video_preview} />
-				</MaxiBlock>
-			);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

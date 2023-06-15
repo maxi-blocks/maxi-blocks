@@ -4,7 +4,7 @@ exports[`getTypographyStyles Get a correct typography styles 1`] = `
 Object {
   "general": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "3",
@@ -18,7 +18,7 @@ Object {
   },
   "l": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -32,7 +32,7 @@ Object {
   },
   "m": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -46,7 +46,7 @@ Object {
   },
   "s": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -60,7 +60,7 @@ Object {
   },
   "xl": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -74,7 +74,7 @@ Object {
   },
   "xs": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -88,7 +88,7 @@ Object {
   },
   "xxl": Object {
     "color": "rgb(255, 99, 71)",
-    "font-family": "roboto",
+    "font-family": "\\"roboto\\"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",

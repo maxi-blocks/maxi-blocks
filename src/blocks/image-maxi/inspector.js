@@ -111,9 +111,9 @@ const Inspector = props => {
 								isSecondary
 								items={[
 									deviceType === 'general' &&
-										attributes[
+										!attributes[
 											'image-full-width-general'
-										] !== 'full' && {
+										] && {
 											label: __(
 												'Dimension',
 												'maxi-blocks'

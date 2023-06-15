@@ -63,6 +63,11 @@ const DividerColor = props => {
 						breakpoint,
 						attributes: props,
 					})}
+					paletteSCStatus={getLastBreakpointAttribute({
+						target: 'divider-border-palette-sc-status',
+						breakpoint,
+						attributes: props,
+					})}
 					onChangeInline={({ color }) =>
 						onChangeInline({ 'border-color': color })
 					}
@@ -70,6 +75,7 @@ const DividerColor = props => {
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) => {
 						onChange({
@@ -80,6 +86,8 @@ const DividerColor = props => {
 								paletteOpacity,
 							[`divider-border-palette-status-${breakpoint}`]:
 								paletteStatus,
+							[`divider-border-palette-status-sc-${breakpoint}`]:
+								paletteSCStatus,
 						});
 					}}
 					deviceType={breakpoint}

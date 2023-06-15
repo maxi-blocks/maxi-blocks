@@ -3,7 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useEffect, useCallback } from '@wordpress/element';
+import { useCallback, useContext, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,9 +14,13 @@ import {
 	getDCDateCustomFormat,
 	getSimpleText,
 	sanitizeDCContent,
+	validationsValues,
 } from './utils';
+import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
+import getDCValues from './getDCValues';
+import LoopContext from './loopContext';
 
 /**
  * External dependencies
@@ -26,26 +30,80 @@ import { isNil } from 'lodash';
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { setAttributes, attributes } = ownProps;
+			const { attributes, name, setAttributes } = ownProps;
+
+			const contextLoop = useContext(LoopContext)?.contextLoop;
 
 			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 
-			const dynamicContentProps = getGroupAttributes(
+			const dynamicContent = getGroupAttributes(
 				attributes,
 				'dynamicContent'
 			);
 
+			const dynamicContentProps = getDCValues(
+				dynamicContent,
+				contextLoop
+			);
+
 			const {
-				'dc-status': status,
-				'dc-content': content,
-				'dc-type': type,
-				'dc-field': field,
-				'dc-id': id,
-				'dc-custom-date': isCustomDate,
-				'dc-link-status': linkStatus,
+				relation,
+				status,
+				source,
+				content,
+				type,
+				field,
+				id,
+				customDate,
+				linkStatus,
+				postTaxonomyLinksStatus,
+				containsHTML,
 			} = dynamicContentProps;
 
-			const fetchDcData = useCallback(async () => {
+			const contentType = name
+				.replace(/maxi-blocks\//, '')
+				.replace(/-maxi/, '');
+
+			/**
+			 * Synchronize attributes between context loop and dynamic content.
+			 */
+			const getSynchronizedDCAttributes = useCallback(async () => {
+				const dcOptions = await getDCOptions(
+					dynamicContentProps,
+					dynamicContentProps.id,
+					contentType,
+					false,
+					contextLoop
+				);
+				const validatedAttributes = validationsValues(
+					type,
+					field,
+					relation,
+					contentType,
+					source
+				);
+
+				if (dcOptions?.newValues || validatedAttributes) {
+					const newAttributes = {
+						...dcOptions?.newValues,
+						...validatedAttributes,
+					};
+
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
+
+					markNextChangeAsNotPersistent();
+					setAttributes(newAttributes);
+
+					return newAttributes;
+				}
+
+				return null;
+			}, [dynamicContentProps, contextLoop]);
+
+			const fetchAndUpdateDCData = useCallback(async () => {
 				if (
 					status &&
 					!isNil(type) &&
@@ -57,12 +115,31 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent,
 					} = dispatch('core/block-editor');
 
+					const synchronizedAttributes =
+						getSynchronizedDCAttributes();
+					let isSynchronizedAttributesUpdated = false;
+
+					const lastDynamicContentProps = getDCValues(
+						{
+							...dynamicContent,
+							...synchronizedAttributes,
+						},
+						contextLoop
+					);
+
 					const newLinkSettings =
 						ownProps.attributes.linkSettings ?? {};
 					let updateLinkSettings = false;
-					const dcLink = await getDCLink(dynamicContentProps);
+					const dcLink = await getDCLink(lastDynamicContentProps);
 					const isSameLink = dcLink === newLinkSettings.url;
 
+					if (
+						postTaxonomyLinksStatus !== !!newLinkSettings.disabled
+					) {
+						newLinkSettings.disabled = postTaxonomyLinksStatus;
+
+						updateLinkSettings = true;
+					}
 					if (!isSameLink && linkStatus && !isNil(dcLink)) {
 						newLinkSettings.url = dcLink;
 
@@ -74,29 +151,45 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 
 					if (!isImageMaxi) {
-						const newContent = sanitizeDCContent(
-							await getDCContent(dynamicContentProps)
+						let newContent = await getDCContent(
+							lastDynamicContentProps
 						);
+						const newContainsHTML =
+							postTaxonomyLinksStatus &&
+							type === 'posts' &&
+							['categories', 'tags'].includes(field);
+
+						if (!newContainsHTML) {
+							newContent = sanitizeDCContent(newContent);
+						}
 
 						if (newContent !== content) {
+							isSynchronizedAttributesUpdated = true;
+
 							markNextChangeAsNotPersistent();
 							setAttributes({
 								'dc-content': newContent,
-								...(isCustomDate && {
+								...(customDate && {
 									'dc-custom-format':
 										getDCDateCustomFormat(newContent),
 								}),
 								...(updateLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),
+								...synchronizedAttributes,
+								...(newContainsHTML !== containsHTML && {
+									'dc-contains-html': newContainsHTML,
+								}),
 							});
 						}
 					} else {
 						const mediaContent = await getDCMedia(
-							dynamicContentProps
+							lastDynamicContentProps
 						);
 
 						if (isNil(mediaContent)) {
+							isSynchronizedAttributesUpdated = true;
+
 							markNextChangeAsNotPersistent();
 							setAttributes({
 								'dc-media-id': null,
@@ -104,11 +197,14 @@ const withMaxiDC = createHigherOrderComponent(
 								...(updateLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),
+								...synchronizedAttributes,
 							});
 						} else {
 							const { id, url, caption } = mediaContent;
 
 							if (!isNil(id) && !isNil(url)) {
+								isSynchronizedAttributesUpdated = true;
+
 								markNextChangeAsNotPersistent();
 								setAttributes({
 									'dc-media-id': id,
@@ -119,16 +215,25 @@ const withMaxiDC = createHigherOrderComponent(
 									...(updateLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),
+									...synchronizedAttributes,
 								});
 							}
 						}
+					}
+
+					if (
+						!isSynchronizedAttributesUpdated &&
+						synchronizedAttributes
+					) {
+						markNextChangeAsNotPersistent();
+						setAttributes(synchronizedAttributes);
 					}
 				}
 			});
 
 			useEffect(() => {
-				fetchDcData().catch(console.error);
-			}, [fetchDcData]);
+				fetchAndUpdateDCData().catch(console.error);
+			}, [fetchAndUpdateDCData, dynamicContentProps]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

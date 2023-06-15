@@ -1,3 +1,15 @@
+/**
+ * WordPress dependencies
+ */
+import '@wordpress/rich-text';
+
+/**
+ * Internal dependencies
+ */
+import { createSCStyleString } from '../updateSCOnEditor';
+import standardSC from '../../../../core/defaults/defaultSC.json';
+import getSCVariablesObject from '../getSCVariablesObject';
+
 jest.mock('@wordpress/blocks', () => {
 	return {
 		getBlockAttributes: jest.fn(),
@@ -5,12 +17,6 @@ jest.mock('@wordpress/blocks', () => {
 });
 jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
 jest.mock('../../attributes/getBlockData.js', () => jest.fn());
-
-/**
- * Internal dependencies
- */
-import { getSCVariablesObject } from '../updateSCOnEditor';
-import '@wordpress/rich-text';
 
 describe('getSCVariablesObject', () => {
 	it('Return an object with variables ready to update on `document.documentElement`', () => {
@@ -614,5 +620,12 @@ describe('getSCVariablesObject', () => {
 		const result = getSCVariablesObject(styleCards);
 
 		expect(result).toMatchSnapshot();
+	});
+
+	it('Return an object variables from default SC', () => {
+		const varSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+		const parsedSC = createSCStyleString(varSC);
+
+		expect(parsedSC).toMatchSnapshot();
 	});
 });

@@ -13,6 +13,7 @@ export { default as breakpoints } from './breakpoints';
 export { default as clipPath } from './clipPath';
 export { default as clipPathHover } from './clipPathHover';
 export { default as columnSize } from './columnSize';
+export { default as contextLoop } from './contextLoop';
 export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';

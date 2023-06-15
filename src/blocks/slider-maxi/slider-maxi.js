@@ -24,6 +24,7 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
  * Block
@@ -53,6 +54,6 @@ registerBlockType('maxi-blocks/slider-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiLoader(edit),
+	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 });

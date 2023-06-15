@@ -25,6 +25,8 @@ describe('Column Maxi', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
 
+		await page.waitForSelector('.maxi-row-block__template button');
+		await page.waitForTimeout(100);
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
@@ -115,6 +117,7 @@ describe('Column Maxi', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
+		await page.waitForTimeout(100);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);

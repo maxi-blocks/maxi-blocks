@@ -1,14 +1,18 @@
 body.maxi-blocks--active .maxi-search-block {
 	position: relative;
 	display: flex;
-	align-items: stretch;
+	align-items: center;
 	height: auto;
+	overflow: hidden;
 
 	&--icon-left {
 		justify-content: flex-start;
 
 		.maxi-search-block__button {
 			order: 0;
+		}
+		input {
+			margin-left: -25px !important;
 		}
 	}
 
@@ -17,10 +21,17 @@ body.maxi-blocks--active .maxi-search-block {
 
 		.maxi-search-block__button {
 			order: 1;
-
-			.maxi-search-block__input--hidden + & {
-				margin: 0 !important;
-			}
+		}
+		.maxi-search-block__input {
+			margin-right: -25px !important;
+		}
+		.maxi-search-block__input--hidden {
+			margin-right: 0 !important;
+			margin-left: 0 !important;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			border-left-width: 0 !important;
+			border-right-width: 0 !important;
 		}
 	}
 
@@ -29,6 +40,9 @@ body.maxi-blocks--active .maxi-search-block {
 
 		.maxi-search-block__button {
 			order: 2;
+		}
+		input {
+			margin-right: -25px !important;
 		}
 	}
 
@@ -39,6 +53,8 @@ body.maxi-blocks--active .maxi-search-block {
 		display: flex;
 		align-items: center;
 		outline: none;
+		border-width: 0;
+		border-radius: 0;
 		margin: 0;
 		padding: 0;
 

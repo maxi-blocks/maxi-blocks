@@ -11,6 +11,8 @@ import { limitFields, limitTypes, renderedFields } from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
+import { getACFFieldContent } from './getACFData';
+import getACFContentByType from './getACFContentByType';
 
 /**
  * External dependencies
@@ -29,16 +31,28 @@ const nameDictionary = {
 const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
+	if (!data) return null;
+
 	const {
-		'dc-type': type,
-		'dc-field': field,
-		'dc-limit': limit,
-		'dc-custom-date': isCustomDate,
-		'dc-format': format,
-		'dc-locale': locale,
+		source,
+		type,
+		field,
+		limit,
+		delimiterContent,
+		customDate,
+		format,
+		locale,
+		postTaxonomyLinksStatus,
+		acfFieldType,
 	} = dataRequest;
 
 	let contentValue;
+
+	if (source === 'acf') {
+		contentValue = await getACFFieldContent(field, data.id);
+
+		return getACFContentByType(contentValue, acfFieldType, dataRequest);
+	}
 
 	if (
 		renderedFields.includes(field) &&
@@ -55,7 +69,7 @@ const getDCContent = async dataRequest => {
 
 		contentValue = processDCDate(
 			contentValue,
-			isCustomDate,
+			customDate,
 			format,
 			locale,
 			options
@@ -95,6 +109,31 @@ const getDCContent = async dataRequest => {
 
 			contentValue = parent[0].name;
 		}
+	}
+	if (['tags', 'categories'].includes(field)) {
+		const { getEntityRecord } = resolveSelect('core');
+		const idArray = contentValue;
+
+		const getItemContent = item =>
+			postTaxonomyLinksStatus
+				? `<a class="maxi-text-block--link"><span>${item.name}</span></a>`
+				: item.name;
+
+		const namesArray = await Promise.all(
+			idArray.map(async id => {
+				const taxonomyItem = await getEntityRecord(
+					'taxonomy',
+					nameDictionary[field],
+					id
+				);
+
+				return getItemContent(taxonomyItem);
+			})
+		);
+
+		contentValue = postTaxonomyLinksStatus
+			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
+			: namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

@@ -547,6 +547,7 @@ const ListOptionsControl = props => {
 					label={__('Marker', 'maxi-blocks')}
 					color={attributes['list-color']}
 					paletteStatus={attributes['list-palette-status']}
+					paletteSCStatus={attributes['list-palette-sc-status']}
 					paletteColor={attributes['list-palette-color']}
 					paletteOpacity={attributes['list-palette-opacity']}
 					prefix='list-'
@@ -561,6 +562,7 @@ const ListOptionsControl = props => {
 					}
 					onChange={({
 						paletteStatus,
+						paletteSCStatus,
 						paletteColor,
 						paletteOpacity,
 						color,
@@ -575,6 +577,7 @@ const ListOptionsControl = props => {
 
 						maxiSetAttributes({
 							'list-palette-status': paletteStatus,
+							'list-palette-sc-status': paletteSCStatus,
 							'list-palette-color': paletteColor,
 							'list-palette-opacity': paletteOpacity,
 							'list-color': color,

@@ -22,13 +22,18 @@ import {
 	getMarginPaddingStyles,
 	getSizeStyles,
 } from '../styles/helpers';
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getPaletteAttributes,
+} from '../styles';
 import { getEditorWrapper } from '../dom';
+import getRelatedAttributes from './getRelatedAttributes';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, pickBy } from 'lodash';
+import { isEmpty, isEqual, pickBy, isNil } from 'lodash';
 
 const getCanvasSettings = ({ name }) => [
 	{
@@ -60,7 +65,7 @@ const getCanvasSettings = ({ name }) => [
 									!key.includes('mediaURL')
 							);
 
-							return Object.fromEntries(
+							const IBAttributes = Object.fromEntries(
 								Object.entries(newBgLayer).filter(
 									([key, attr]) =>
 										!isEqual(
@@ -69,6 +74,21 @@ const getCanvasSettings = ({ name }) => [
 										)
 								)
 							);
+
+							const { order, type } = blockBgLayers[index];
+
+							return {
+								...getRelatedAttributes({
+									props: blockBgLayers[index],
+									IBAttributes,
+									relatedAttributes: [
+										'background-gradient-opacity',
+										'background-gradient',
+									],
+								}),
+								order,
+								type,
+							};
 						});
 
 						onChange({
@@ -107,6 +127,7 @@ const getCanvasSettings = ({ name }) => [
 				blockStyle,
 				ignoreMediaAttributes: true,
 			}),
+		styleAttrs: ['type', 'order', 'id'],
 	},
 	{
 		sid: 'b',
@@ -116,6 +137,16 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),
+		forceTempPalette: (attributes, breakpoint) => {
+			const borderStyle = getLastBreakpointAttribute({
+				target: 'border-style',
+				attributes,
+				breakpoint,
+			});
+
+			return borderStyle && borderStyle === 'none';
+		},
+		styleAttrs: ['border-style'],
 	},
 	{
 		sid: 'bs',
@@ -124,19 +155,38 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
+		relatedAttributes: [
+			'box-shadow-inset',
+			'box-shadow-horizontal',
+			'box-shadow-horizontal-unit',
+			'box-shadow-vertical',
+			'box-shadow-vertical-unit',
+			'box-shadow-blur',
+			'box-shadow-blur-unit',
+			'box-shadow-spread',
+			'box-shadow-spread-unit',
+		],
+		forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+			const paletteAttributes = getPaletteAttributes({
+				obj: IBAttributes,
+				prefix: 'box-shadow-',
+				breakpoint,
+			});
+
+			return Object.values(paletteAttributes).every(attr => isNil(attr));
+		},
+		forceTempPalettePrefix: 'box-shadow-',
 	},
 	{
 		sid: 's',
 		label: __('Height / Width', 'maxi-blocks'),
 		attrGroupName: 'size',
 		component: props => {
-			const fullWidth = getLastBreakpointAttribute({
+			const isBlockFullWidth = getLastBreakpointAttribute({
 				target: 'full-width',
 				breakpoint: props.breakpoint,
 				attributes: getGroupAttributes(props, 'size'),
 			});
-
-			const isBlockFullWidth = fullWidth === 'full';
 
 			return (
 				<FullSizeControl
@@ -148,6 +198,7 @@ const getCanvasSettings = ({ name }) => [
 			);
 		},
 		helper: props => getSizeStyles(props.obj, props.prefix),
+		styleAttrs: ['size-advanced-options'],
 	},
 	{
 		sid: 'mp',

@@ -17,6 +17,12 @@ import {
 	getAdvancedSettings,
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { getPaletteAttributes } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  * Classnames
@@ -127,6 +133,29 @@ const interactionBuilderSettings = {
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: dividerClass,
+			relatedAttributes: [
+				'box-shadow-inset',
+				'box-shadow-horizontal',
+				'box-shadow-horizontal-unit',
+				'box-shadow-vertical',
+				'box-shadow-vertical-unit',
+				'box-shadow-blur',
+				'box-shadow-blur-unit',
+				'box-shadow-spread',
+				'box-shadow-spread-unit',
+			],
+			forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+				const paletteAttributes = getPaletteAttributes({
+					obj: IBAttributes,
+					prefix: 'box-shadow-',
+					breakpoint,
+				});
+
+				return Object.values(paletteAttributes).every(attr =>
+					isNil(attr)
+				);
+			},
+			forceTempPalettePrefix: 'box-shadow-',
 		},
 		{
 			sid: 'dls',
@@ -136,6 +165,7 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getDividerStyles(props.obj, 'line', props.blockStyle),
 			target: dividerClass,
+			styleAttrs: ['line-orientation', 'divider-border-style'],
 		},
 	],
 	canvas: getCanvasSettings({ name }),

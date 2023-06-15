@@ -1,53 +1,68 @@
 /**
  * WordPress dependencies
  */
-import { useDispatch, useSelect, dispatch, select } from '@wordpress/data';
 import {
-	useEffect,
-	render,
-	createRoot,
-	useLayoutEffect,
-} from '@wordpress/element';
+	useDispatch,
+	useSelect,
+	dispatch,
+	select,
+	subscribe,
+} from '@wordpress/data';
+import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
+import { getIsSiteEditor, getIsTemplatePart } from '../../extensions/fse';
 
 /**
  * Component
  */
 const BlockStylesSaver = () => {
-	const { isSaving, isPreviewing, isDraft, isCodeEditor } = useSelect(
-		select => {
-			const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
-				select('core/editor');
-			const {
-				__experimentalGetDirtyEntityRecords,
-				isSavingEntityRecord,
-			} = select('core');
-			const { getEditorMode } =
-				select('core/edit-site') || select('core/edit-post');
+	const {
+		isSaving,
+		isPreviewing,
+		isDraft,
+		isCodeEditor,
+		allStylesAreSaved,
+		isPageLoaded,
+		hasTemplateChanged,
+	} = useSelect(select => {
+		const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
+			select('core/editor');
+		const { __experimentalGetDirtyEntityRecords, isSavingEntityRecord } =
+			select('core');
+		const { getEditorMode } =
+			select('core/edit-site') || select('core/edit-post');
+		const { getIsPageLoaded } = select('maxiBlocks');
+		const { getAllStylesAreSaved } = select('maxiBlocks/styles');
 
-			const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
+		const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
 
-			const isSaving =
-				isSavingPost() ||
-				dirtyEntityRecords.some(record =>
-					isSavingEntityRecord(record.kind, record.name, record.key)
-				);
-			const isPreviewing = isPreviewingPost();
-			const isDraft = getCurrentPostAttribute('status') === 'draft';
-			const isCodeEditor = getEditorMode() === 'text';
+		const isSaving =
+			isSavingPost() ||
+			dirtyEntityRecords.some(record =>
+				isSavingEntityRecord(record.kind, record.name, record.key)
+			);
+		const isPreviewing = isPreviewingPost();
+		const isDraft = getCurrentPostAttribute('status') === 'draft';
+		const isCodeEditor = getEditorMode() === 'text';
+		const allStylesAreSaved = getAllStylesAreSaved();
+		const isPageLoaded = getIsPageLoaded();
 
-			return {
-				isSaving,
-				isPreviewing,
-				isDraft,
-				isCodeEditor,
-			};
-		}
-	);
+		const hasTemplateChanged = getIsSiteEditor() && getIsTemplatePart();
+
+		return {
+			isSaving,
+			isPreviewing,
+			isDraft,
+			isCodeEditor,
+			allStylesAreSaved,
+			isPageLoaded,
+			hasTemplateChanged,
+		};
+	});
 
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
@@ -67,10 +82,21 @@ const BlockStylesSaver = () => {
 		}
 	});
 
-	useLayoutEffect(() => {
-		const { getIsPageLoaded } = select('maxiBlocks');
+	// When swapping to code editor, as all blocks are unmounted, we need to set the `isPageLoaded`
+	// to false to ensure a good UX when coming back to the visual editor.
+	useEffect(() => {
+		if (isCodeEditor) dispatch('maxiBlocks').setIsPageLoaded(false);
+	}, [isCodeEditor]);
 
-		if (!getIsPageLoaded()) {
+	// In FSE, when the template part is changed, we need to set the `isPageLoaded` to false to ensure
+	// a good UX as with the `isPageLoaded` equal to false the load of the editor is smoother.
+	useEffect(() => {
+		if (getIsSiteEditor() && isPageLoaded)
+			dispatch('maxiBlocks').setIsPageLoaded(false);
+	}, [hasTemplateChanged]);
+
+	useLayoutEffect(() => {
+		if (!isPageLoaded) {
 			const isMaxiBlock = block => {
 				if (block.name.includes('maxi-blocks/')) return true;
 
@@ -97,6 +123,54 @@ const BlockStylesSaver = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (!allStylesAreSaved) {
+			const forbidUpdateUnsubscribe = subscribe(() => {
+				const publishButton = document.querySelector(
+					'.editor-post-publish-button'
+				);
+
+				if (publishButton)
+					publishButton.setAttribute('aria-disabled', 'true');
+
+				const saveDraftButton = document.querySelector(
+					'.editor-post-save-draft'
+				);
+
+				if (saveDraftButton)
+					saveDraftButton.setAttribute('aria-disabled', 'true');
+
+				const previewButton = document.querySelector(
+					'.editor-post-preview'
+				);
+
+				if (previewButton)
+					previewButton.setAttribute('aria-disabled', 'true');
+			});
+
+			return () => forbidUpdateUnsubscribe();
+		}
+
+		const publishButton = document.querySelector(
+			'.editor-post-publish-button'
+		);
+
+		if (publishButton) publishButton.setAttribute('aria-disabled', 'false');
+
+		const saveDraftButton = document.querySelector(
+			'.editor-post-save-draft'
+		);
+
+		if (saveDraftButton)
+			saveDraftButton.setAttribute('aria-disabled', 'false');
+
+		const previewButton = document.querySelector('.editor-post-preview');
+
+		if (previewButton) previewButton.setAttribute('aria-disabled', 'false');
+
+		return () => {};
+	}, [allStylesAreSaved]);
+
 	return null;
 };
 
@@ -107,13 +181,7 @@ wp.domReady(() => {
 
 		document.head.appendChild(wrapper);
 
-		// check if createRoot is available (since React 18)
-		if (typeof createRoot === 'function') {
-			const root = createRoot(wrapper);
-			root.render(<BlockStylesSaver />);
-		} else {
-			// for React 17 and below
-			render(<BlockStylesSaver />, wrapper);
-		}
+		const root = createRoot(wrapper);
+		root.render(<BlockStylesSaver />);
 	}
 });

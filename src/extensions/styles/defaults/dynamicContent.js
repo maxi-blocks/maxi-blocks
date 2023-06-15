@@ -5,15 +5,16 @@ const dynamicContent = {
 	},
 	'dc-status': {
 		type: 'boolean',
-		default: false,
+	},
+	'dc-source': {
+		type: 'string',
+		default: 'wp',
 	},
 	'dc-type': {
 		type: 'string',
-		default: 'posts',
 	},
 	'dc-relation': {
 		type: 'string',
-		default: 'by-id',
 	},
 	'dc-id': {
 		type: 'number',
@@ -81,9 +82,11 @@ const dynamicContent = {
 	},
 	'dc-weekday': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-era': {
 		type: 'string',
+		default: 'none',
 	},
 	'dc-limit': {
 		type: 'number',
@@ -107,13 +110,31 @@ const dynamicContent = {
 	'dc-link-url': {
 		type: 'string',
 	},
+	'dc-post-taxonomy-links-status': {
+		type: 'boolean',
+	},
+	'dc-custom-delimiter-status': {
+		type: 'boolean',
+	},
+	'dc-delimiter-content': {
+		type: 'string',
+		default: '',
+	},
 	'dc-order': {
 		type: 'string',
-		default: 'desc',
 	},
 	'dc-accumulator': {
 		type: 'number',
-		default: 0,
+	},
+	'dc-acf-group': {
+		type: 'number',
+	},
+	'dc-acf-field-type': {
+		type: 'string',
+	},
+	'dc-contains-html': {
+		type: 'boolean',
+		default: false,
 	},
 };
 

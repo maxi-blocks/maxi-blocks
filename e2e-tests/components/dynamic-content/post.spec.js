@@ -41,12 +41,16 @@ describe('Dynamic content', () => {
 			excerpt:
 				'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!',
 			author: 'admin',
+			categories: 'Uncategorized',
+			tags: 'No content found',
 		};
 
 		const titleBlocks = ['text-maxi-1', 'text-maxi-15'];
 		const contentBlocks = ['text-maxi-2', 'text-maxi-16'];
 		const excerptBlocks = ['text-maxi-3', 'text-maxi-17'];
 		const authorBlocks = ['text-maxi-5', 'text-maxi-19'];
+		const categoriesBlocks = ['text-maxi-9'];
+		const tagBlocks = ['text-maxi-10'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
@@ -67,12 +71,22 @@ describe('Dynamic content', () => {
 		const authorResults = await Promise.all(
 			authorBlocks.map(async block => getBackResults(block, 'author'))
 		);
+		const categoriesResults = await Promise.all(
+			categoriesBlocks.map(async block =>
+				getBackResults(block, 'categories')
+			)
+		);
+		const tagResults = await Promise.all(
+			tagBlocks.map(async block => getBackResults(block, 'tags'))
+		);
 
 		const results = [
 			...titleResults,
 			...contentResults,
 			...excerptResults,
 			...authorResults,
+			...categoriesResults,
+			...tagResults,
 		];
 
 		expect(results.every(result => result)).toBe(true);

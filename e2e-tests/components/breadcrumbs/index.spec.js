@@ -12,6 +12,8 @@ describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await page.waitForSelector('.maxi-row-block__template button');
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);

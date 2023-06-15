@@ -1,5 +1,7 @@
 <?php
 require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
+
 
 class MaxiBlocks_StyleCards
 {
@@ -34,20 +36,31 @@ class MaxiBlocks_StyleCards
      */
     public function enqueue_styles()
     {
-        $vars = $this->getStylesString();
+        $vars = $this->get_style_card_variables();
 
-        // Inline styles
+        // SC variables
         if ($vars) {
             wp_register_style('maxi-blocks-sc-vars', false);
             wp_enqueue_style('maxi-blocks-sc-vars');
             wp_add_inline_style('maxi-blocks-sc-vars', $vars);
         }
+
+        $styles = $this->get_style_card_styles();
+
+        // MVP: ensure no margin-bottom for button
+        if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+            $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+        }
+
+        // SC styles
+        if ($styles) {
+            wp_register_style('maxi-blocks-sc-styles', false);
+            wp_enqueue_style('maxi-blocks-sc-styles');
+            wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+        }
     }
 
-    /**
-     * Get SC
-     */
-    public function getStylesString()
+    public function get_style_card_object_from_db()
     {
         global $wpdb;
         $style_card = maybe_unserialize(
@@ -59,7 +72,21 @@ class MaxiBlocks_StyleCards
             )
         );
 
+        return $style_card;
+    }
+
+    /**
+     * Get SC
+     */
+    public function get_style_card_variables()
+    {
+        $style_card = $this->get_style_card_object_from_db();
+
         if (!$style_card) {
+            if(isset($GLOBALS['default_sc_variables_string'])) {
+                return $GLOBALS['default_sc_variables_string'];
+            }
+
             return false;
         }
 
@@ -80,11 +107,69 @@ class MaxiBlocks_StyleCards
                     : $style_card['_maxi_blocks_style_card_preview'];
         }
 
-        if (!$style || empty($style)) {
+        if (!$style || empty($style) || $style === ':root{--maxi-active-sc-color:0,0,0;}') { // ':root{--maxi-active-sc-color:0,0,0;}' is the default value
+            if(isset($GLOBALS['default_sc_variables_string'])) {
+                return $GLOBALS['default_sc_variables_string'];
+            }
+        
             return false;
         }
 
         return $style;
+    }
+
+    public function get_style_card_styles()
+    {
+        $style_card = $this->get_style_card_object_from_db();
+
+        if (!$style_card) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
+                return $GLOBALS['default_sc_styles_string'];
+            }
+
+            return false;
+        }
+
+        if (
+            !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
+            array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
+        ) {
+            $style_card['_maxi_blocks_style_card_styles'] =
+                $style_card['_maxi_blocks_style_card_styles_preview'];
+        }
+
+        if (
+            !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
+            !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
+        ) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
+                return $GLOBALS['default_sc_styles_string'];
+            }
+            
+            return false;
+        }
+
+        $sc_variables =
+            is_preview() || is_admin()
+                ? $style_card['_maxi_blocks_style_card_styles_preview']
+                : $style_card['_maxi_blocks_style_card_styles'];
+
+        if (!$sc_variables || empty($sc_variables)) {
+            $sc_variables =
+                is_preview() || is_admin() // If one fail, let's test the other one!
+                    ? $style_card['_maxi_blocks_style_card_styles']
+                    : $style_card['_maxi_blocks_style_card_styles_preview'];
+        }
+
+        if (!$sc_variables || empty($sc_variables)) {
+            if(isset($GLOBALS['default_sc_styles_string'])) {
+                return $GLOBALS['default_sc_styles_string'];
+            }
+
+            return false;
+        }
+
+        return $sc_variables;
     }
 
     public static function get_maxi_blocks_current_style_cards()
@@ -105,9 +190,9 @@ class MaxiBlocks_StyleCards
         ) {
             return $maxi_blocks_style_cards_current;
         } else {
-            $default_style_card = self::getDefaultStyleCard();
+            $default_style_card = self::get_default_style_card();
 
-            $wpdb->replace($table_name, [
+            $wpdb->replace($wpdb->prefix . "maxi_blocks_general", [
                 'id' => 'style_cards_current',
                 'object' => $default_style_card
             ]);
@@ -153,7 +238,21 @@ class MaxiBlocks_StyleCards
 
         $text_level_values = (object) $style_card_values->$text_level;
 
+
+        if(!property_exists($text_level_values, 'font-family-general')) {
+            $text_level_values = (object) $default_values[$text_level];
+        }
+
         $font = $text_level_values->{'font-family-general'};
+        
+        /**
+         * Button case has an exception for font-family. If it's empty, it will use the
+         * font-family of the paragraph text level.
+         */
+        if ($text_level === 'button' && (empty($font) || empty(str_replace('"', '', $font)) || str_contains($font, 'undefined'))) {
+            $font = $style_card_values->p['font-family-general'];
+        }
+
         $font_weights = [];
         $font_styles = [];
 
@@ -170,9 +269,9 @@ class MaxiBlocks_StyleCards
     }
 
 
-    public static function getDefaultStyleCard()
+    public static function get_default_style_card()
     {
-        $json = file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/utils/defaultSC.json");
+        $json = file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json");
 
         return $json;
     }

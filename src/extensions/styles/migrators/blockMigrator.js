@@ -23,6 +23,7 @@ import disableTransitionIBMigrator from './disableTransitionIBMigrator';
 import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator';
 import bottomGapMigrator from './bottomGapMigrator';
 import transitionMigrator from './transitionMigrator';
+import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
 import IBLabelToIDMigrator from './IBLabelToIDMigrator';
 
 /**
@@ -82,6 +83,23 @@ export const handleBlockMigrator = ({
 
 		if (!newMigrator.save) newMigrator.save = save;
 
+		const originalSave = newMigrator.save;
+		if (originalSave) {
+			newMigrator.save = props => {
+				const { uniqueID } = props.attributes;
+
+				const prevAttr =
+					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+
+				if (!isNil(prevAttr))
+					Object.keys(prevAttr).forEach(key => {
+						props.attributes[key] = prevAttr[key];
+					});
+
+				return originalSave(props);
+			};
+		}
+
 		return newMigrator;
 	});
 
@@ -104,6 +122,7 @@ const blockMigrator = blockMigratorProps => {
 		corruptedHoverAttributesMigrator,
 		bottomGapMigrator,
 		transitionMigrator,
+		fullWidthAttributeMigrator,
 		IBLabelToIDMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];

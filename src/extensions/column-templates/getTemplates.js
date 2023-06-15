@@ -6,7 +6,8 @@ import columnTemplates from './columnTemplates';
 /**
  * Get templates based on the number of columns and device
  *
- * @param {Integer} columnsNumber Number of columns
+ * @param {boolean} onlyEqualColumns Whether to return only templates with equal columns
+ * @param {Integer} columnsNumber    Number of columns
  * @return {Array} Array of templates for the corresponding columns number
  */
 function getTemplates(

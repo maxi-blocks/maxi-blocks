@@ -41,8 +41,8 @@ const retrieveInnerBlocksPositions = columnsClientIds => {
 	columnsClientIds.forEach(columnClientId => {
 		const column = select('core/block-editor').getBlock(columnClientId);
 
-		innerBlocksPositions['-1'] = [
-			...(innerBlocksPositions['-1'] || []),
+		innerBlocksPositions[[-1]] = [
+			...(innerBlocksPositions[[-1]] || []),
 			columnClientId,
 		];
 

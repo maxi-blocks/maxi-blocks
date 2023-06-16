@@ -18,8 +18,11 @@ import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import { getDefaultAttribute } from '../../extensions/styles';
 import {
+	orderByRelations,
 	orderByOptions,
-	orderByRelationTypes,
+	orderOptions,
+	orderRelations,
+	orderTypes,
 	relationOptions,
 	relationTypes,
 	typeOptions,
@@ -53,6 +56,7 @@ const ContextLoop = props => {
 		'cl-id': id,
 		'cl-field': field,
 		'cl-author': author,
+		'cl-order-by': orderBy,
 		'cl-order': order,
 		'cl-accumulator': accumulator,
 	} = getCLAttributes(contextLoop);
@@ -205,10 +209,12 @@ const ContextLoop = props => {
 								)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
-								['author', 'by-id'].includes(relation) && (
+								orderByRelations.includes(relation) && (
 									<SelectControl
 										label={__(
-											`${capitalize(type)} id`,
+											orderByRelations.includes(relation)
+												? `${capitalize(relation)} id`
+												: `${capitalize(type)} id`,
 											'maxi-blocks'
 										)}
 										value={id}
@@ -228,15 +234,46 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{orderByRelationTypes.includes(type) &&
-								['by-date', 'alphabetical'].includes(
-									relation
-								) && (
+							{orderTypes.includes(type) &&
+								orderRelations.includes(relation) && (
 									<>
+										{orderByRelations.includes(
+											relation
+										) && (
+											<SelectControl
+												label={__(
+													'Order by',
+													'maxi-blocks'
+												)}
+												value={orderBy}
+												options={orderByOptions}
+												onChange={value =>
+													changeProps({
+														'cl-order-by': value,
+													})
+												}
+												onReset={() =>
+													changeProps({
+														'cl-order-by':
+															getDefaultAttribute(
+																'cl-order-by'
+															),
+													})
+												}
+											/>
+										)}
 										<SelectControl
 											label={__('Order', 'maxi-blocks')}
 											value={order}
-											options={orderByOptions[relation]}
+											options={
+												orderOptions[
+													orderByRelations.includes(
+														relation
+													)
+														? orderBy
+														: relation
+												]
+											}
 											onChange={value =>
 												changeProps({
 													'cl-order': value,

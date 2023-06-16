@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { fieldOptions, relationOptions } from './constants';
+import { fieldOptions, relationOptions, orderByRelations } from './constants';
 
 /**
  * External dependencies
@@ -72,3 +72,16 @@ export const validationsValues = (
 };
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);
+
+export const getDCOrderBy = (relation, orderBy) => {
+	const dictionary = {
+		'by-date': 'date',
+		'by-title': 'title',
+	};
+
+	if (orderByRelations.includes(relation)) {
+		return dictionary[orderBy];
+	}
+
+	return dictionary[relation];
+};

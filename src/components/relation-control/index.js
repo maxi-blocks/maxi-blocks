@@ -197,7 +197,7 @@ const RelationControl = props => {
 			});
 
 			resetTargets.forEach(target => {
-				delete newAttributes[target];
+				newAttributes[target] = undefined;
 			});
 
 			return newAttributes;

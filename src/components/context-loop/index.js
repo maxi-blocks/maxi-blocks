@@ -32,6 +32,7 @@ import {
 	getDCOptions,
 	LoopContext,
 } from '../../extensions/DC';
+import { validationsValues } from '../../extensions/DC/utils';
 
 /**
  * External dependencies
@@ -149,8 +150,18 @@ const ContextLoop = props => {
 						value={type}
 						options={typeOptions[contentType]}
 						onChange={value => {
+							const validatedAttributes = validationsValues(
+								value,
+								field,
+								relation,
+								contentType,
+								'wp', // TODO: add support for ACF
+								true
+							);
+
 							changeProps({
 								'cl-type': value,
+								...validatedAttributes,
 							});
 						}}
 						onReset={() =>

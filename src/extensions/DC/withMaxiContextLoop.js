@@ -9,13 +9,13 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
+import { orderRelations } from './constants';
 import LoopContext from './loopContext';
 
 /**
  * External dependencies
  */
 import { merge } from 'lodash';
-import { orderRelations } from './constants';
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>

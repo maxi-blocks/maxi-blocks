@@ -191,11 +191,6 @@ const ResponsiveSelector = props => {
 			}
 
 			if (editorWrapper) {
-				editorWrapper.setAttribute(
-					'maxi-blocks-responsive',
-					tabletPreview ? 's' : 'xs'
-				);
-
 				if (
 					iframe &&
 					!iframeDocument.body.classList.contains(

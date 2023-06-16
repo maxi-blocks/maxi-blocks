@@ -6,8 +6,9 @@ import { resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { orderByRelationTypes, relationTypes } from './constants';
 import getDCErrors from './getDCErrors';
+import { getDCOrderBy } from './utils';
+import { orderRelations, orderTypes, relationTypes } from './constants';
 
 const kindDictionary = {
 	posts: 'postType',
@@ -27,8 +28,17 @@ const nameDictionary = {
 };
 
 const getDCEntity = async dataRequest => {
-	const { type, id, error, show, relation, author, order, accumulator } =
-		dataRequest;
+	const {
+		type,
+		id,
+		error,
+		show,
+		relation,
+		author,
+		orderBy,
+		order,
+		accumulator,
+	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
 
@@ -79,10 +89,8 @@ const getDCEntity = async dataRequest => {
 
 		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
-	if (
-		orderByRelationTypes.includes(type) &&
-		['by-date', 'alphabetical'].includes(relation)
-	) {
+
+	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
 		const entities = await resolveSelect('core').getEntityRecords(
 			kindDictionary[type],
 			nameDictionary[type],
@@ -90,7 +98,10 @@ const getDCEntity = async dataRequest => {
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,
-				orderby: relation === 'by-date' ? 'date' : 'title',
+				orderby: getDCOrderBy(relation, orderBy),
+				...(relation === 'by-category' && { categories: id }),
+				...(relation === 'by-author' && { author: id }),
+				...(relation === 'by-tag' && { tags: id }),
 			}
 		);
 

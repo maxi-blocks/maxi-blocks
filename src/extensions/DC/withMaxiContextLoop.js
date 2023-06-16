@@ -15,6 +15,7 @@ import LoopContext from './loopContext';
  * External dependencies
  */
 import { merge } from 'lodash';
+import { orderRelations } from './constants';
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
@@ -36,9 +37,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>
-					['by-date', 'alphabetical'].includes(
-						attributes?.['cl-relation']
-					);
+					orderRelations.includes(attributes?.['cl-relation']);
 
 				const isCurrentAccumulator = getIsAccumulator(
 					contextLoopAttributes

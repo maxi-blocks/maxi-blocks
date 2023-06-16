@@ -394,6 +394,7 @@ class MaxiBlocks_Styles
             }
 
             $styles = '';
+            $prev_styles = '';
 
             // $this->write_log('blocks');
             // $this->write_log($blocks);
@@ -422,10 +423,18 @@ class MaxiBlocks_Styles
                     ),
                 );
 
+                $prev_block_styles = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        $style_id
+                    ),
+                );
+
                 $this->write_log('block_styles');
                 $this->write_log($block_styles);
 
                 $styles = $styles.' '.$block_styles;
+                $prev_styles = $ $prev_styles.' '.$prev_block_styles;
 
             }
 
@@ -439,7 +448,7 @@ class MaxiBlocks_Styles
 
             $content = [
                 'css_value' => $styles,
-                'prev_css_value' => $styles,
+                'prev_css_value' => $prev_styles,
             ];
 
             // $content->css_value = $styles;

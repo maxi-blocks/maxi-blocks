@@ -81,29 +81,29 @@ const customCss = {
 		'before pane': {
 			normal: {
 				label: 'pane ::before',
-				target: '::before',
+				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block::before',
 			},
 			hover: {
 				label: 'pane ::before on hover',
-				target: ':hover::before',
+				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block:hover::before',
 			},
 			active: {
 				label: 'pane ::before on active state',
-				target: `${activePaneTarget}::before`,
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block::before`,
 			},
 		},
 		'after pane': {
 			normal: {
 				label: 'pane ::after',
-				target: '::after',
+				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block::after',
 			},
 			hover: {
 				label: 'pane ::after on hover',
-				target: ':hover::after',
+				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block:hover::after',
 			},
 			active: {
 				label: 'pane ::after on active state',
-				target: `${activePaneTarget}::after`,
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block::after`,
 			},
 		},
 		header: {
@@ -123,29 +123,29 @@ const customCss = {
 		'before header': {
 			normal: {
 				label: 'pane header ::before',
-				target: '::before',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before`,
 			},
 			hover: {
 				label: 'pane header ::before on hover',
-				target: ':hover::before',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::before`,
 			},
 			active: {
 				label: 'pane header ::before on active state',
-				target: `${activePaneTarget}::before`,
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before`,
 			},
 		},
 		'after header': {
 			normal: {
 				label: 'pane header ::after',
-				target: '::after',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after`,
 			},
 			hover: {
 				label: 'pane header ::after on hover',
-				target: ':hover::after',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::after`,
 			},
 			active: {
 				label: 'pane header ::after on active state',
-				target: `${activePaneTarget}::after`,
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after`,
 			},
 		},
 		'header content': {
@@ -240,6 +240,34 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__icon svg path`,
 			},
 		},
+		'before icon': {
+			normal: {
+				label: 'icon ::before',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before`,
+			},
+			hover: {
+				label: 'icon ::before on hover',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::before`,
+			},
+			active: {
+				label: 'icon ::before on active state',
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before`,
+			},
+		},
+		'after icon': {
+			normal: {
+				label: 'icon ::after',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after`,
+			},
+			hover: {
+				label: 'icon ::after on hover',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::after`,
+			},
+			active: {
+				label: 'icon ::after on active state',
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after`,
+			},
+		},
 		content: {
 			normal: {
 				label: 'pane content',
@@ -248,6 +276,34 @@ const customCss = {
 			hover: {
 				label: 'pane content on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover`,
+			},
+		},
+		'before content': {
+			normal: {
+				label: 'pane content ::before',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before`,
+			},
+			hover: {
+				label: 'pane content ::before on hover',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::before`,
+			},
+			active: {
+				label: 'pane content ::before on active state',
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before`,
+			},
+		},
+		'after content': {
+			normal: {
+				label: 'pane content ::after',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after`,
+			},
+			hover: {
+				label: 'pane content ::after on hover',
+				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::after`,
+			},
+			active: {
+				label: 'pane content ::after on active state',
+				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after`,
 			},
 		},
 	},
@@ -262,7 +318,11 @@ const customCss = {
 		'header line',
 		'content line',
 		'content',
+		'before content',
+		'after content',
 		'icon',
+		'before icon',
+		'after icon',
 		'background',
 		'background hover',
 	],

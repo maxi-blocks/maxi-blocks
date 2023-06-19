@@ -131,11 +131,12 @@ const CopyPaste = props => {
 			});
 		}
 
-		copiedAttributes['background-layers'] =
-			getUpdatedBGLayersWithNewUniqueID(
-				copiedAttributes['background-layers'],
-				attributes.uniqueID
-			);
+		if (copiedAttributes['background-layers'])
+			copiedAttributes['background-layers'] =
+				getUpdatedBGLayersWithNewUniqueID(
+					copiedAttributes['background-layers'],
+					attributes.uniqueID
+				);
 	};
 
 	const onCopyStyles = () => {

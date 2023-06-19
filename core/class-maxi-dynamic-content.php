@@ -935,7 +935,7 @@ class MaxiBlocks_DynamicContent
         } else {
             $dictionary = [
                 'by-date' => 'date',
-                'by-title' => 'title',
+                'alphabetical' => 'title',
             ];
 
 

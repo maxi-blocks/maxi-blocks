@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.1.1
 Tested up to: 6.2
 Requires PHP: 7.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -267,6 +267,25 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
+_Updates: 19 June 2023_
+
+* Update: Advanced Custom Fields integration into Dynamic content
+* Update: Add % to min and max height settings for all Maxi blocks
+* Update: Add options for Number Counter to align the percentage sign
+* Update: Remove redundant init.php file and /src folder
+* Update: Remove "Custom CSS (for that page only)" meta box from the page sidebar
+* Update: Remove that  'unset' option in flex settings that was the same as the default option
+* Update: Add https / http for external links
+* Update: Custom date for Dynamic content  - removed extended options that were not working
+* Fix: Row dropping Full size option in some cases
+* Fix: Links for Text Block
+* Fix: Post ID reset for Dynamic content
+* Fix: Z-index for Icon Block background
+* Fix: Breadcrumbs visibility for Text Block
+* Fix: Disallowed new background layer on hover
+* Fix: Popover position for tablet and mobile preview
+* Fix: UI for long labels in Dynamic content
+
 _Updates: 16 May 2023_
 
 * Update: Option to serve the Google Fonts files locally
@@ -297,12 +316,6 @@ _Updates: 16 May 2023_
 * Fix: button icon palette
 * Fix: Style card colour on frontend
 * Fix: Dynamic content, content for Site Editing
-
-
-_Updates: 8 May 2023_
-
-* Fix: Pro library sign-in, better compatibility for email addresses with unconventional TLDs
-* Fix: Improve authentication for installations located in /subfolders/ or with custom /wp-admin/ paths
 
 
 == Upgrade Notice ==

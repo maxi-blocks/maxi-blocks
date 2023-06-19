@@ -119,7 +119,7 @@ class edit extends MaxiBlockComponent {
 		const {
 			status: dcStatus,
 			content: dcContent,
-			containsHTML: dcContainsHTML,
+			containsHtml: dcContainsHTML,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.context?.contextLoop

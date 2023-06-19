@@ -244,10 +244,7 @@ const ContextLoop = props => {
 										}
 										onReset={() =>
 											changeProps({
-												'cl-id':
-													getDefaultAttribute(
-														'cl-id'
-													),
+												'cl-id': postIdOptions[0].value,
 											})
 										}
 									/>

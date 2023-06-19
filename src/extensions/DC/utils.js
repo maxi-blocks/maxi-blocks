@@ -79,10 +79,10 @@ export const validationsValues = (
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);
 
-export const getDCOrderBy = (relation, orderBy) => {
+export const getDCOrder = (relation, orderBy) => {
 	const dictionary = {
 		'by-date': 'date',
-		'by-title': 'title',
+		alphabetical: 'title',
 	};
 
 	if (orderByRelations.includes(relation)) {

@@ -462,9 +462,17 @@ export const attributeDefaults = {
 	relation: 'by-id',
 	'order-by': 'by-date',
 	order: attributes => {
-		// TODO: support order by
+		const dictionary = {
+			'by-date': 'desc',
+			alphabetical: 'asc',
+		};
+
 		const relation = attributes?.relation ?? attributes?.['cl-relation'];
-		return relation === 'by-date' ? 'desc' : 'asc';
+		if (orderByRelations.includes(relation)) {
+			return dictionary[attributes?.orderBy];
+		}
+
+		return dictionary[relation];
 	},
 	accumulator: 0,
 };

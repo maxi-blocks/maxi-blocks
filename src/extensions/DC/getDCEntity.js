@@ -7,7 +7,7 @@ import { resolveSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import getDCErrors from './getDCErrors';
-import { getDCOrderBy } from './utils';
+import { getDCOrder } from './utils';
 import { orderRelations, orderTypes, relationTypes } from './constants';
 
 const kindDictionary = {
@@ -98,7 +98,7 @@ const getDCEntity = async dataRequest => {
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,
-				orderby: getDCOrderBy(relation, orderBy),
+				orderby: getDCOrder(relation, orderBy),
 				...(relation === 'by-category' && { categories: id }),
 				...(relation === 'by-author' && { author: id }),
 				...(relation === 'by-tag' && { tags: id }),

@@ -416,19 +416,17 @@ class MaxiBlocks_Styles
                     continue;
                 }
 
-                $block_styles = $wpdb->get_var(
+                $content_array_block = $wpdb->get_var(
                     $wpdb->prepare(
-                        "SELECT css_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
                         $style_id
                     ),
                 );
 
-                $prev_block_styles = $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT prev_css_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                        $style_id
-                    ),
-                );
+
+                $block_styles = $content_array_block['css_value'];
+                $prev_block_styles = $content_array_block['prev_css_value'];
+                $active_custom_data = $content_array_block['active_custom_data'];
 
                 $this->write_log('block_styles');
                 $this->write_log($block_styles);

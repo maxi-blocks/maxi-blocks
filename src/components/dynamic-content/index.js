@@ -365,9 +365,16 @@ const DynamicContent = props => {
 								orderByRelations.includes(relation) && (
 									<SelectControl
 										label={__(
-											orderByRelations.includes(relation)
-												? `${capitalize(relation)} id`
-												: `${capitalize(type)} id`,
+											`${capitalize(
+												orderByRelations.includes(
+													relation
+												)
+													? relation.replace(
+															'by-',
+															''
+													  )
+													: type
+											)} id`,
 											'maxi-blocks'
 										)}
 										value={id}

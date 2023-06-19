@@ -21,7 +21,7 @@ import {
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
 } from '../../../../extensions/styles';
-import { setSVGColor, setSVGSize } from '../../../../extensions/svg';
+import { setSVGColor } from '../../../../extensions/svg';
 import MaxiModal from '../../../../editor/library/modal';
 
 /**
@@ -129,19 +129,6 @@ const ListOptionsControl = props => {
 				value: style,
 			};
 		});
-	};
-
-	const getSVGElement = (size, unit) => {
-		let svgElement = null;
-
-		if (typeOfList === 'ul' && listStyleSource === 'icon') {
-			svgElement = setSVGSize({
-				svg: listStyleCustom,
-				size: size + unit,
-			});
-		}
-
-		return svgElement;
 	};
 
 	return (
@@ -366,19 +353,9 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeValue={val => {
-					const unit = getLastBreakpointAttribute({
-						target: 'list-marker-size-unit',
-						breakpoint: deviceType,
-						attributes,
-					});
-					const svgElement = getSVGElement(val, unit);
-
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]:
 							val !== undefined && val !== '' ? val : '',
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 					});
 				}}
 				enableUnit
@@ -388,18 +365,8 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeUnit={val => {
-					const size = getLastBreakpointAttribute({
-						target: 'list-marker-size',
-						breakpoint: deviceType,
-						attributes,
-					});
-					const svgElement = getSVGElement(size, val);
-
 					maxiSetAttributes({
 						[`list-marker-size-unit-${deviceType}`]: val,
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 					});
 				}}
 				breakpoint={deviceType}
@@ -422,13 +389,6 @@ const ListOptionsControl = props => {
 					},
 				}}
 				onReset={() => {
-					const defaultSize = getDefaultAttribute(
-						`list-marker-size-${deviceType}`
-					);
-					const defaultUnit = getDefaultAttribute(
-						`list-marker-size-unit-${deviceType}`
-					);
-					const svgElement = getSVGElement(defaultSize, defaultUnit);
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
 							`list-marker-size-${deviceType}`
@@ -437,9 +397,6 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-size-unit-${deviceType}`
 							),
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 						isReset: true,
 					});
 				}}
@@ -825,27 +782,10 @@ const ListOptionsControl = props => {
 											  })
 											: color;
 
-										let SVGElement = setSVGColor({
+										const SVGElement = setSVGColor({
 											svg: obj.SVGElement,
 											color: colorStr,
 											type: 'fill',
-										});
-
-										const size =
-											getLastBreakpointAttribute({
-												target: 'list-marker-size',
-												breakpoint: deviceType,
-												attributes,
-											}) +
-											getLastBreakpointAttribute({
-												target: 'list-marker-size-unit',
-												breakpoint: deviceType,
-												attributes,
-											});
-
-										SVGElement = setSVGSize({
-											svg: SVGElement,
-											size,
 										});
 
 										maxiSetAttributes({

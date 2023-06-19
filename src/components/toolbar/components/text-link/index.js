@@ -28,7 +28,7 @@ import Link from '../link';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Icons
@@ -39,6 +39,7 @@ import { toolbarLink } from '../../../../icons';
 /**
  * TextLink
  */
+
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
 		props;
@@ -131,7 +132,7 @@ const LinkContent = props => {
 		return formatValue;
 	};
 
-	const setLinkFormat = attributes => {
+	const setLinkFormat = (attributes, newLinkValue) => {
 		const { start, end } = formatValue;
 
 		const isWholeContent = start === end;
@@ -152,7 +153,7 @@ const LinkContent = props => {
 			typography,
 			linkAttributes: createLinkAttributes({
 				...attributes,
-				linkValue,
+				newLinkValue,
 			}),
 			isList,
 			textLevel,
@@ -168,7 +169,7 @@ const LinkContent = props => {
 		});
 		delete obj.formatValue;
 
-		onChange(linkValue, obj);
+		onChange(newLinkValue, obj);
 	};
 
 	const removeLinkFormatHandle = () => {
@@ -229,15 +230,15 @@ const LinkContent = props => {
 
 	const onClick = attributes => {
 		const newAttributes = prepareUrl(attributes);
-
-		if (!formatOptions.current && !isEmpty(newAttributes.url))
-			setLinkFormat(newAttributes);
-		else updateLinkString(newAttributes);
-
 		const newLinkAttributes = createLinkAttributes({
 			...newAttributes,
 			linkValue,
 		});
+
+		if (!formatOptions.current && !isEmpty(newAttributes.url))
+			setLinkFormat(newAttributes, newLinkAttributes);
+		else updateLinkString(newAttributes);
+
 		const newLinkValue = createLinkValue({
 			formatOptions: { attributes: newLinkAttributes },
 			formatValue,
@@ -287,6 +288,7 @@ const TextLink = props => {
 		blockName,
 		isCaptionToolbar = false,
 		'dc-status': dcStatus = false,
+		linkSettings,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
@@ -296,7 +298,11 @@ const TextLink = props => {
 			<ToolbarPopover
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
-				className='toolbar-item__text-link'
+				className={
+					!isNil(linkSettings) && !isEmpty(linkSettings.url)
+						? 'toolbar-item__link--active toolbar-item__text-link'
+						: 'toolbar-item__text-link'
+				}
 			>
 				<ToolbarContext.Consumer>
 					{({ isOpen, onClose }) => {

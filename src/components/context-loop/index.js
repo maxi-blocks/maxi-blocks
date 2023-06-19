@@ -155,7 +155,7 @@ const ContextLoop = props => {
 								field,
 								relation,
 								contentType,
-								'wp', // TODO: add support for ACF
+								'wp',
 								true
 							);
 

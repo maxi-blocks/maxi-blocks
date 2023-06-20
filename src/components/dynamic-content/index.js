@@ -362,7 +362,8 @@ const DynamicContent = props => {
 							)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
-								orderByRelations.includes(relation) && (
+								(orderByRelations.includes(relation) ||
+									relation === 'by-id') && (
 									<SelectControl
 										label={__(
 											`${capitalize(

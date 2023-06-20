@@ -34,7 +34,7 @@ import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisp
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, omitBy, isNil } from 'lodash';
 
 /**
  * Styles
@@ -248,10 +248,13 @@ const RelationControl = props => {
 				});
 
 				onChangeRelation(relations, item.id, {
-					attributes: {
-						...item.attributes,
-						...cleanAttributesObject,
-					},
+					attributes: omitBy(
+						{
+							...item.attributes,
+							...cleanAttributesObject,
+						},
+						isNil
+					),
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

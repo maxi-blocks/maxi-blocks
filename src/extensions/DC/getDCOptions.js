@@ -108,11 +108,7 @@ const getDCOptions = async (
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			if (
-				!contextLoop?.['cl-status'] ||
-				(contextLoop?.['cl-status'] &&
-					type !== contextLoop?.['cl-type'])
-			) {
+			if (!contextLoop?.['cl-status']) {
 				newValues[`${prefix}id`] = Number(data[0].id);
 				idFields.current = data[0].id;
 			} else {

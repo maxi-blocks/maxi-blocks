@@ -37,7 +37,7 @@ const handleBlockMove = (
 		return;
 	}
 
-	const prevBlockIndex = prevPosition[prevPosition.length - 1];
+	const prevBlockIndex = prevPosition.at(-1);
 
 	const childColumns = getChildColumns(block.clientId);
 
@@ -68,8 +68,7 @@ const handleBlockMove = (
 		)
 			return;
 
-		const nextBlockIndex =
-			modifiedNextPosition[modifiedNextPosition.length - 1];
+		const nextBlockIndex = modifiedNextPosition.at(-1);
 
 		const {
 			moveBlockToPosition,

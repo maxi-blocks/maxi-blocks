@@ -80,13 +80,36 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 	return null;
 };
 
+const replaceColumnInnerBlocks = (
+	columnClientId,
+	columnToValidateByClientId,
+	innerBlocksPositions
+) => {
+	const {
+		replaceInnerBlocks,
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = dispatch('core/block-editor');
+
+	const { getBlock } = select('core/block-editor');
+
+	const column = getBlock(columnClientId);
+
+	validateAttributes(column, column, innerBlocksPositions);
+
+	markNextChangeAsNotPersistent();
+	replaceInnerBlocks(
+		columnClientId,
+		cleanInnerBlocks(getBlock(columnToValidateByClientId).innerBlocks),
+		false
+	);
+};
+
 const validateRowColumnsStructure = (
 	rowClientId,
 	innerBlocksPositions,
 	rawColumnToValidateByClientId
 ) => {
 	const {
-		replaceInnerBlocks,
 		removeBlock,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = dispatch('core/block-editor');
@@ -110,21 +133,6 @@ const validateRowColumnsStructure = (
 
 	const columnToValidateByStructure = [];
 
-	const handleReplaceColumn = columnClientId => {
-		const { getBlock } = select('core/block-editor');
-
-		const column = getBlock(columnClientId);
-
-		validateAttributes(column, column, innerBlocksPositions);
-
-		markNextChangeAsNotPersistent();
-		replaceInnerBlocks(
-			columnClientId,
-			cleanInnerBlocks(getBlock(columnToValidateByClientId).innerBlocks),
-			false
-		);
-	};
-
 	const pushToStructure = (block, structureArray) => {
 		if (DISALLOWED_BLOCKS.includes(block.name)) {
 			markNextChangeAsNotPersistent();
@@ -143,7 +151,11 @@ const validateRowColumnsStructure = (
 			column.clientId === columnToValidateBy.clientId;
 
 		if (!isColumnToValidateBy && columnInnerBlocks.length === 0) {
-			return handleReplaceColumn(column.clientId);
+			return replaceColumnInnerBlocks(
+				column.clientId,
+				columnToValidateByClientId,
+				innerBlocksPositions
+			);
 		}
 
 		const columnStructure = [];
@@ -165,7 +177,11 @@ const validateRowColumnsStructure = (
 		}
 
 		if (!isEqual(columnToValidateByStructure, columnStructure)) {
-			return handleReplaceColumn(column.clientId);
+			return replaceColumnInnerBlocks(
+				column.clientId,
+				columnToValidateByClientId,
+				innerBlocksPositions
+			);
 		}
 
 		validateAttributes(column, column, innerBlocksPositions);

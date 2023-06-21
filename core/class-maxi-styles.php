@@ -59,9 +59,10 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        // add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_filter('the_content', [$this, 'enqueue_styles']);
-        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
+        //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
+        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+
+        add_filter('the_content', [$this, 'process_content']);
         add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
 
@@ -75,6 +76,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Get block data
      */
     public function get_block_data($js_var, $meta)
@@ -93,16 +95,16 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Enqueuing styles
      */
-    public function enqueue_styles($content)
+
+    public function enqueue_styles()
     {
         global $post;
 
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
-        // $this->write_log('post_content');
-        // $this->write_log($post_content);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
         $template_id = $this->get_id(true);
@@ -171,10 +173,9 @@ class MaxiBlocks_Styles
                 }
             }
         }
-
-        return $content;
     }
 
+    // Legacy function
     public function get_template_name()
     {
         $template_name = wp_get_theme()->stylesheet ?? get_template();
@@ -182,6 +183,7 @@ class MaxiBlocks_Styles
         return $template_name;
     }
 
+    // Legacy function
     public function get_template_parts($content)
     {
         if ($content && array_key_exists('template_parts', $content)) {
@@ -204,6 +206,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Apply content
      */
     public function apply_content($name, $content, $id)
@@ -243,6 +246,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Get id
      */
     public function get_id($is_template = false)
@@ -307,8 +311,9 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Get need custom meta
-     */
+    */
     public function need_custom_meta($contents)
     {
         $need_custom_meta = false;
@@ -353,9 +358,10 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Gets content
      */
-    public function get_content($is_template = false, $id = null, $passed_content = null)
+    public function get_content($is_template = false, $id = null)
     {
         global $post;
 
@@ -368,7 +374,6 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        //$content_array = [];
         $content_array = (array) $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
@@ -376,102 +381,6 @@ class MaxiBlocks_Styles
             ),
             OBJECT
         );
-
-        if (!$is_template) {
-            //$this->write_log('get_styles_meta_fonts_from_blocks');
-
-            // $this->write_log('post');
-            // $this->write_log($post);
-
-            if($passed_content === null) {
-                $blocks = parse_blocks($post->post_content);
-            } else {
-                $blocks = parse_blocks($passed_content);
-            }
-
-            if (!$blocks || empty($blocks)) {
-                return false;
-            }
-
-            $styles = '';
-            $prev_styles = '';
-
-            // $this->write_log('blocks');
-            // $this->write_log($blocks);
-
-            foreach ($blocks as $block) {
-                // $this->write_log('block');
-                // $this->write_log($block);
-                $props = $block['attrs'];
-                if(empty($props)) {
-                    continue;
-                }
-                if(!isset($props['styleID'])) {
-                    continue;
-                }
-                $style_id = $props['styleID'];
-                $this->write_log('style id');
-                $this->write_log($style_id);
-                if(!$style_id) {
-                    continue;
-                }
-
-                $content_array_block = $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                        $style_id
-                    ),
-                );
-
-
-                $block_styles = $content_array_block['css_value'];
-                $prev_block_styles = $content_array_block['prev_css_value'];
-                $active_custom_data = $content_array_block['active_custom_data'];
-
-                $this->write_log('block_styles');
-                $this->write_log($block_styles);
-
-                $styles = $styles.' '.$block_styles;
-                $prev_styles = $ $prev_styles.' '.$prev_block_styles;
-
-            }
-
-            // $this->write_log('styles');
-            // $this->write_log($styles);
-
-
-            if ($styles === '') {
-                return false;
-            }
-
-            $content = [
-                'css_value' => $styles,
-                'prev_css_value' => $prev_styles,
-            ];
-
-            // $content->css_value = $styles;
-            // $content->prev_css_value = $styles;
-
-            return json_decode(json_encode($content), true);
-            //  $styles_test = self::get_styles_meta_fonts_from_blocks();
-
-            // if (!empty($styles_test)) {
-            //     $prev_content = $content_array[0]->prev_css_value;
-            //     $content = $content_array[0];
-
-            //     $content->css_value = $styles_test;
-            //     $content->prev_css_value = $styles_test;
-
-            //     if ($prev_content) {
-            //         if ($prev_content !== $styles_test) {
-            //             // var_dump($prev_content);
-            //             // var_dump($styles_test);
-            //         }
-            //     }
-
-            //     return json_decode(json_encode($content), true);
-            // }
-        }
 
         if (!$content_array || empty($content_array)) {
             return false;
@@ -486,369 +395,8 @@ class MaxiBlocks_Styles
         return json_decode(json_encode($content), true);
     }
 
-
-    public function get_styles_meta_fonts_from_blocks()
-    {
-        //$this->write_log('get_styles_meta_fonts_from_blocks');
-        global $post;
-
-        if (!$post || !isset($post->ID)) {
-            return false;
-        }
-
-        $blocks = parse_blocks($post->post_content);
-
-        if (!$blocks || empty($blocks)) {
-            return false;
-        }
-
-        $styles = [];
-
-        // foreach ($blocks as $block) {
-        //     $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($block));
-        // }
-
-        $tempStyles = array();
-        foreach ($blocks as $block) {
-            $tempStyles[] = $this->get_styles_meta_fonts_from_block($block);
-        }
-
-        // $styles = array_merge($styles, ...$tempStyles);
-
-        // if (!$styles || empty($styles)) {
-        //     return false;
-        // }
-
-        // $resolved_styles = style_resolver($styles);
-        //$this->write_log('resolved_styles');
-        //$this->write_log($resolved_styles);
-        //  $frontend_styles = frontend_style_generator($resolved_styles);
-
-        //$this->write_log('$frontend_styles');
-        //$this->write_log($frontend_styles);
-
-        //$this->write_log('get_styles_meta_fonts_from_blocks END');
-
-        //  return $frontend_styles;
-    }
-
-    public function get_maxi_custom_data_from_block($block_name, $props)
-    {
-        $unique_id = $props['uniqueID'];
-
-        $this->write_log('get_maxi_custom_data_from_block');
-        $this->write_log('$block_name');
-        $this->write_log($block_name);
-
-
-        switch ($block_name) {
-            case 'maxi-blocks/number-counter-maxi':
-                $response = [
-                    'number_counter' => [
-                        $unique_id => array_merge(
-                            get_group_attributes($props, 'numberCounter'),
-                            ['breakpoints' => $this->get_breakpoints($props)]
-                        )
-                    ]
-                ];
-
-                return $response;
-
-            default:
-                # code...
-                break;
-        }
-
-        return [];
-
-    }
-
-
-    public function get_custom_data($block_name, $props, $context = null)
-    {
-        $unique_id = $props['uniqueID'];
-        $dc_status = isset($props['dc-status']) ? $props['dc-status'] : false;
-        $bg_layers = isset($props['background-layers']) ? $props['background-layers'] : [];
-        $relations_raw = isset($props['relations']) ? $props['relations'] : [];
-        $context_loop = isset($context['contextLoop']) ? $context['contextLoop'] : null;
-
-        $scroll = get_group_attributes(
-            $props,
-            'scroll',
-            false,
-            '',
-            true
-        );
-
-        $bg_parallax_layers = !empty($bg_layers) ? get_parallax_layers($unique_id, $bg_layers) : [];
-        $has_video = get_has_video($unique_id, $bg_layers);
-        $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
-        $relations = get_relations($unique_id, $relations_raw);
-
-        $response = array_merge(
-            !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
-            isset($relations) ? ['relations' => $relations] : [],
-            $has_video ? ['bg_video' => true] : [],
-            $has_scroll_effects ? ['scroll_effects' => true] : [],
-            $dc_status && isset($context_loop['cl-status'])
-                    ? ['dynamic_content' => [$unique_id => $context_loop]]
-                    : [],
-            $this->get_maxi_custom_data_from_block($block_name, $props)
-        );
-
-        return $response;
-    }
-
-
-    public function get_styles_meta_fonts_from_block($block, $context = null)
-    {
-        global $wpdb;
-
-        $styles = [];
-
-        if(empty($block)) {
-            return $styles;
-        }
-
-        $block_name = $block['blockName'];
-
-        $this->write_log('get_styles_meta_fonts_from_block '.$block_name);
-
-        if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
-            return $styles;
-        }
-
-        $props = $block['attrs'];
-        $block_style = $props['blockStyle'];
-
-        $this->write_log('$props');
-        $this->write_log($props);
-
-        $style_id = $props['styleID'];
-
-        $block_instance = null;
-
-        switch($block_name) {
-            case 'maxi-blocks/group-maxi':
-                if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Group_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/container-maxi':
-                if (class_exists('MaxiBlocks_Container_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Container_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/row-maxi':
-                if (class_exists('MaxiBlocks_Row_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Row_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/column-maxi':
-                if (class_exists('MaxiBlocks_Column_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Column_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/accordion-maxi':
-                if (class_exists('MaxiBlocks_Accordion_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Accordion_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/pane-maxi':
-                if (class_exists('MaxiBlocks_Pane_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Pane_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/button-maxi':
-                if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Button_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/divider-maxi':
-                if (class_exists('MaxiBlocks_Divider_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Divider_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/image-maxi':
-                if (class_exists('MaxiBlocks_Image_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Image_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/svg-icon-maxi':
-                if (class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_SVG_Icon_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/text-maxi':
-                if (class_exists('MaxiBlocks_Text_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Text_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/video-maxi':
-                if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
-                    $block_instance = MaxiBlocks_Video_Maxi_Block::get_instance();
-                }
-                break;
-            case 'maxi-blocks/number-counter-maxi':
-                $this->write_log('number-counter-maxi');
-                if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
-                    $this->write_log('class exists');
-                    $block_instance = MaxiBlocks_Number_Counter_Maxi_Block::get_instance();
-                }
-                break;
-        }
-
-        if($block_instance === null) {
-            $this->write_log('block_instance is null');
-            return $styles;
-        }
-
-        $this->write_log('$style_id '.$block_name.' '.$style_id);
-
-        //$this->write_log('$props ');
-
-        $props = $block_instance->get_block_attributes($props);
-
-
-        //$this->write_log('$props END');
-        //$this->write_log('$customCss');
-        $customCss = $block_instance->get_block_custom_css($props);
-        $sc_props = $block_instance->get_block_sc_vars($block_style);
-        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
-
-
-        $inner_blocks = $block['innerBlocks'];
-
-        // Context creator
-        if ($block_name === 'maxi-blocks/row-maxi') {
-            $column_size = [];
-
-            if ($inner_blocks && !empty($inner_blocks)) {
-                foreach ($inner_blocks as $inner_block) {
-                    $attrs = $inner_block['attrs'];
-                    $column_size_attrs = get_group_attributes($attrs, 'columnSize');
-                    $unique_id = $attrs['uniqueID'];
-
-                    $column_size[$unique_id] = $column_size_attrs;
-                }
-            }
-
-            $context = [
-                'row_gap_props' => array_merge(
-                    get_row_gap_attributes($props),
-                    [
-                        'column_num' => count($inner_blocks),
-                        'column_size' => $column_size,
-                    ]
-                ),
-                'row_border_radius'=> get_group_attributes(
-                    $props,
-                    'borderRadius'
-                ),
-            ];
-        } else {
-            $context = null;
-        }
-        //$this->write_log('context END');
-
-        if ($inner_blocks && !empty($inner_blocks)) {
-            foreach ($inner_blocks as $inner_block) {
-                $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
-            }
-        }
-
-        // $this->write_log('$styles');
-        // $this->write_log($styles);
-
-        // styles
-        $resolved_styles = style_resolver($styles);
-        $frontend_styles = frontend_style_generator($resolved_styles);
-
-        // custom meta
-
-        $custom_meta = $this->get_custom_data($block_name, $props, $context);
-        if(!empty($custom_meta)) {
-            $custom_meta_json = json_encode($custom_meta);
-            $exists = $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                    $style_id
-                ),
-                OBJECT
-            );
-
-            if (!empty($exists)) {
-                // Update the existing row.
-                $old_custom_meta = $exists->custom_data_value;
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "UPDATE {$wpdb->prefix}maxi_blocks_custom_data_blocks
-						SET custom_data_value = %s, prev_custom_data_value = %s
-						WHERE block_style_id = %s",
-                        $custom_meta_json,
-                        $old_custom_meta,
-                        $style_id
-                    )
-                );
-            } else {
-                // Insert a new row.
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
-						VALUES (%s, %s, %s)",
-                        $style_id,
-                        $custom_meta_json,
-                        ''
-                    )
-                );
-            }
-
-            $this->write_log('CUSTOM META');
-            $this->write_log($custom_meta_json);
-            $this->write_log('CUSTOM META END');
-        }
-
-
-        // save to DB
-        $exists = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $style_id
-            ),
-            OBJECT
-        );
-
-        if (!empty($exists)) {
-            // Update the existing row.
-            $old_css = $exists->css_value;
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
-					SET css_value = %s, prev_css_value = %s
-					WHERE block_style_id = %s",
-                    $frontend_styles,
-                    $old_css,
-                    $style_id
-                )
-            );
-        } else {
-            // Insert a new row.
-            $wpdb->query(
-                $wpdb->prepare(
-                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value)
-					VALUES (%s, %s, %s)",
-                    $style_id,
-                    $frontend_styles,
-                    ''
-                )
-            );
-        }
-
-
-        return $styles;
-    }
-
     /**
+     * Legacy function
      * Gets post meta
      */
     public function get_meta($id, $is_template = false)
@@ -876,6 +424,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Gets post styles content
      */
     public function get_styles($content)
@@ -896,7 +445,8 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Gets post styles content
+     * Legacy function
+     * Gets font styles content
      */
     public function get_fonts($content)
     {
@@ -916,6 +466,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Returns default breakpoints values in case breakpoints are not set
      */
     public function get_breakpoints($breakpoints)
@@ -935,6 +486,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Check font url status code
      */
     public function check_font_url($font_url)
@@ -957,6 +509,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Post fonts
      *
      * @return object   Font name with font options
@@ -1183,6 +736,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Custom Meta
      */
     public function custom_meta($metaJs, $is_template = false, $id = null)
@@ -1228,6 +782,7 @@ class MaxiBlocks_Styles
         return $result_decoded;
     }
 
+    // Legacy function
     public function update_color_palette_backups($style)
     {
         global $wpdb;
@@ -1330,7 +885,9 @@ class MaxiBlocks_Styles
             return $new_style;
         }
     }
+
     /**
+     * Legacy function
      * Set styles and custom data from home template to front-page template
      */
     public function set_home_to_front_page($post_id, $post, $update)
@@ -1377,5 +934,624 @@ class MaxiBlocks_Styles
                 'update' => true,
             ], false);
         }
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Processing content for blocks
+     */
+    public function process_content($content)
+    {
+        global $post;
+
+        $post_id = $this->get_id();
+        $post_content = $this->get_content_for_blocks(false, $post_id)['content'];
+        $post_meta = $this->get_content_for_blocks(false, $post_id)['meta'];
+        // $this->write_log('post_content');
+        // $this->write_log($post_content);
+        $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
+
+        $template_id = $this->get_id(true);
+        $template_content = $this->get_content_for_blocks(true, $template_id)['content'];
+        $template_meta = $this->get_content_for_blocks(false, $template_id)['meta'];
+        $this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
+
+        if ($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
+            $scripts = [
+                'hover-effects',
+                'bg-video',
+                'parallax',
+                'scroll-effects',
+                'number-counter',
+                'shape-divider',
+                'relations',
+                'video',
+                'search',
+                'map',
+                'accordion',
+                'slider'
+            ];
+
+            $template_parts = $this->get_template_parts($template_content);
+
+            foreach ($scripts as &$script) {
+                $js_var = str_replace('-', '_', $script);
+                $js_var_to_pass =
+                    'maxi' .
+                    str_replace(
+                        ' ',
+                        '',
+                        ucwords(str_replace('-', ' ', $script))
+                    );
+                $js_script_name = 'maxi-' . $script;
+                $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+
+                $post_meta = $this->custom_meta($js_var, false);
+                $this->write_log('post_meta');
+                $this->write_log($post_meta);
+                $template_meta = $this->custom_meta($js_var, true);
+                $template_parts_meta = [];
+
+                if ($template_parts && !empty($template_parts)) {
+                    foreach ($template_parts as $template_part_id) {
+                        $template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
+                    }
+                }
+
+                $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+
+                if (!empty($meta)) {
+                    if ($script === 'number-counter') {
+                        wp_enqueue_script(
+                            'maxi-waypoints-js',
+                            plugins_url(
+                                '/js/waypoints.min.js',
+                                dirname(__FILE__)
+                            )
+                        );
+                    }
+
+                    wp_enqueue_script(
+                        $js_script_name,
+                        plugins_url($js_script_path, dirname(__FILE__))
+                    );
+
+                    wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+                }
+            }
+        }
+
+        return $content;
+    }
+
+    public function block_needs_custom_meta($style_id)
+    {
+        $needs = false;
+
+        $active_custom_data = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT active_custom_data FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $style_id
+            ),
+        );
+
+        if($active_custom_data) {
+            $needs = true;
+        }
+
+        return $needs;
+    }
+
+     /**
+     * Gets content per blocks
+     */
+    public function get_content_for_blocks($is_template = false, $id = null, $passed_content = null)
+    {
+        global $post;
+
+        if (!$is_template && (!$post || !isset($post->ID))) {
+            return false;
+        }
+
+        if (!$id) {
+            return false;
+        }
+
+        global $wpdb;
+        //$content_array = [];
+        $content_array = (array) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                $id
+            ),
+            OBJECT
+        );
+
+        $this->write_log('$content_array');
+        $this->write_log($content_array);
+
+        $active_custom_data = 0;
+
+        if (!$is_template) {
+            //$this->write_log('get_styles_meta_fonts_from_blocks');
+
+            // $this->write_log('post');
+            // $this->write_log($post);
+
+            if($passed_content === null) {
+                $blocks = parse_blocks($post->post_content);
+            } else {
+                $blocks = parse_blocks($passed_content);
+            }
+
+            if (!$blocks || empty($blocks)) {
+                return false;
+            }
+
+            $styles = '';
+            $prev_styles = '';
+
+            // $this->write_log('blocks');
+            // $this->write_log($blocks);
+
+            foreach ($blocks as $block) {
+                // $this->write_log('block');
+                // $this->write_log($block);
+                $props = $block['attrs'];
+                if(empty($props)) {
+                    continue;
+                }
+                if(!isset($props['styleID'])) {
+                    continue;
+                }
+                $style_id = $props['styleID'];
+                $this->write_log('style id');
+                $this->write_log($style_id);
+                if(!$style_id) {
+                    continue;
+                }
+
+                $content_array_block = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        $style_id
+                    ),
+                    ARRAY_A
+                );
+
+                if(!isset($content_array_block[0]) || empty($content_array_block[0])) {
+                    return false;
+                }
+
+
+                $block_styles = $content_array_block[0]['css_value'];
+                $prev_block_styles = $content_array_block[0]['prev_css_value'];
+                $active_custom_data = $content_array_block[0]['active_custom_data'];
+
+                $this->write_log('block_styles');
+                $this->write_log($block_styles);
+
+                $styles = $styles.' '.$block_styles;
+                $prev_styles = $prev_styles.' '.$prev_block_styles;
+
+            }
+
+            // $this->write_log('styles');
+            // $this->write_log($styles);
+
+
+            if ($styles === '') {
+                return false;
+            }
+
+            $content = [
+                'css_value' => $styles,
+                'prev_css_value' => $prev_styles,
+            ];
+
+            // $content->css_value = $styles;
+            // $content->prev_css_value = $styles;
+
+            return ['content'=>json_decode(json_encode($content), true),'meta'=>$active_custom_data];
+
+
+        }
+
+        if (!$content_array || empty($content_array)) {
+            return false;
+        }
+
+        $content = $content_array[0];
+
+        if (!$content || empty($content)) {
+            return false;
+        }
+
+        return json_decode(json_encode($content), true);
+    }
+
+
+    public function get_styles_meta_fonts_from_blocks()
+    {
+        //$this->write_log('get_styles_meta_fonts_from_blocks');
+        global $post;
+
+        if (!$post || !isset($post->ID)) {
+            return false;
+        }
+
+        $blocks = parse_blocks($post->post_content);
+
+        if (!$blocks || empty($blocks)) {
+            return false;
+        }
+
+        $styles = [];
+
+        // foreach ($blocks as $block) {
+        //     $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($block));
+        // }
+
+        $tempStyles = array();
+        foreach ($blocks as $block) {
+            $tempStyles[] = $this->get_styles_meta_fonts_from_block($block);
+        }
+
+        // $styles = array_merge($styles, ...$tempStyles);
+
+        // if (!$styles || empty($styles)) {
+        //     return false;
+        // }
+
+        // $resolved_styles = style_resolver($styles);
+        //$this->write_log('resolved_styles');
+        //$this->write_log($resolved_styles);
+        //  $frontend_styles = frontend_style_generator($resolved_styles);
+
+        //$this->write_log('$frontend_styles');
+        //$this->write_log($frontend_styles);
+
+        //$this->write_log('get_styles_meta_fonts_from_blocks END');
+
+        //  return $frontend_styles;
+    }
+
+    public function get_maxi_custom_data_from_block($block_name, $props)
+    {
+        $unique_id = $props['uniqueID'];
+
+        $this->write_log('get_maxi_custom_data_from_block');
+        $this->write_log('$block_name');
+        $this->write_log($block_name);
+
+
+        switch ($block_name) {
+            case 'maxi-blocks/number-counter-maxi':
+                $response = [
+                    'number_counter' => [
+                        $unique_id => array_merge(
+                            get_group_attributes($props, 'numberCounter'),
+                            ['breakpoints' => $this->get_breakpoints($props)]
+                        )
+                    ]
+                ];
+
+                return $response;
+
+            default:
+                # code...
+                break;
+        }
+
+        return [];
+
+    }
+
+
+    public function get_custom_data_from_block($block_name, $props, $context = null)
+    {
+        $unique_id = $props['uniqueID'];
+        $dc_status = isset($props['dc-status']) ? $props['dc-status'] : false;
+        $bg_layers = isset($props['background-layers']) ? $props['background-layers'] : [];
+        $relations_raw = isset($props['relations']) ? $props['relations'] : [];
+        $context_loop = isset($context['contextLoop']) ? $context['contextLoop'] : null;
+
+        $scroll = get_group_attributes(
+            $props,
+            'scroll',
+            false,
+            '',
+            true
+        );
+
+        $bg_parallax_layers = !empty($bg_layers) ? get_parallax_layers($unique_id, $bg_layers) : [];
+        $has_video = get_has_video($unique_id, $bg_layers);
+        $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
+        $relations = get_relations($unique_id, $relations_raw);
+
+        $response = array_merge(
+            !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
+            isset($relations) ? ['relations' => $relations] : [],
+            $has_video ? ['bg_video' => true] : [],
+            $has_scroll_effects ? ['scroll_effects' => true] : [],
+            $dc_status && isset($context_loop['cl-status'])
+                    ? ['dynamic_content' => [$unique_id => $context_loop]]
+                    : [],
+            $this->get_maxi_custom_data_from_block($block_name, $props)
+        );
+
+        return $response;
+    }
+
+
+    public function get_styles_meta_fonts_from_block($block, $context = null)
+    {
+        global $wpdb;
+
+        $styles = [];
+
+        if(empty($block)) {
+            return $styles;
+        }
+
+        $block_name = $block['blockName'];
+
+        $this->write_log('get_styles_meta_fonts_from_block '.$block_name);
+
+        if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
+            return $styles;
+        }
+
+        $props = $block['attrs'];
+        $block_style = $props['blockStyle'];
+
+        $this->write_log('$props');
+        $this->write_log($props);
+
+        $style_id = $props['styleID'];
+
+        $block_instance = null;
+
+        switch($block_name) {
+            case 'maxi-blocks/group-maxi':
+                if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Group_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/container-maxi':
+                if (class_exists('MaxiBlocks_Container_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Container_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/row-maxi':
+                if (class_exists('MaxiBlocks_Row_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Row_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/column-maxi':
+                if (class_exists('MaxiBlocks_Column_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Column_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/accordion-maxi':
+                if (class_exists('MaxiBlocks_Accordion_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Accordion_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/pane-maxi':
+                if (class_exists('MaxiBlocks_Pane_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Pane_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/button-maxi':
+                if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Button_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/divider-maxi':
+                if (class_exists('MaxiBlocks_Divider_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Divider_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/image-maxi':
+                if (class_exists('MaxiBlocks_Image_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Image_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/svg-icon-maxi':
+                if (class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_SVG_Icon_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/text-maxi':
+                if (class_exists('MaxiBlocks_Text_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Text_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/video-maxi':
+                if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Video_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/number-counter-maxi':
+                $this->write_log('number-counter-maxi');
+                if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
+                    $this->write_log('class exists');
+                    $block_instance = MaxiBlocks_Number_Counter_Maxi_Block::get_instance();
+                }
+                break;
+        }
+
+        if($block_instance === null) {
+            $this->write_log('block_instance is null');
+            return $styles;
+        }
+
+        $this->write_log('$style_id '.$block_name.' '.$style_id);
+
+        //$this->write_log('$props ');
+
+        $props = $block_instance->get_block_attributes($props);
+
+
+        //$this->write_log('$props END');
+        //$this->write_log('$customCss');
+        $customCss = $block_instance->get_block_custom_css($props);
+        $sc_props = $block_instance->get_block_sc_vars($block_style);
+        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
+
+
+        $inner_blocks = $block['innerBlocks'];
+
+        // Context creator
+        if ($block_name === 'maxi-blocks/row-maxi') {
+            $column_size = [];
+
+            if ($inner_blocks && !empty($inner_blocks)) {
+                foreach ($inner_blocks as $inner_block) {
+                    $attrs = $inner_block['attrs'];
+                    $column_size_attrs = get_group_attributes($attrs, 'columnSize');
+                    $unique_id = $attrs['uniqueID'];
+
+                    $column_size[$unique_id] = $column_size_attrs;
+                }
+            }
+
+            $context = [
+                'row_gap_props' => array_merge(
+                    get_row_gap_attributes($props),
+                    [
+                        'column_num' => count($inner_blocks),
+                        'column_size' => $column_size,
+                    ]
+                ),
+                'row_border_radius'=> get_group_attributes(
+                    $props,
+                    'borderRadius'
+                ),
+            ];
+        } else {
+            $context = null;
+        }
+        //$this->write_log('context END');
+
+        if ($inner_blocks && !empty($inner_blocks)) {
+            foreach ($inner_blocks as $inner_block) {
+                $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
+            }
+        }
+
+        // $this->write_log('$styles');
+        // $this->write_log($styles);
+
+        // styles
+        $resolved_styles = style_resolver($styles);
+        $frontend_styles = frontend_style_generator($resolved_styles);
+
+        // custom meta
+
+        $custom_meta_block = 0;
+
+        $meta_blocks = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/video-maxi',
+            'maxi-blocks/search-maxi',
+            'maxi-blocks/map-maxi',
+            'maxi-blocks/accordion-maxi',
+            'maxi-blocks/pane-maxi',
+
+        ];
+
+        if(in_array($block_name, $meta_blocks)) {
+            $custom_meta_block = 1;
+        }
+
+
+        $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+        if(!empty($custom_meta)) {
+            $custom_meta_json = json_encode($custom_meta);
+            $exists = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                    $style_id
+                ),
+                OBJECT
+            );
+
+            if (!empty($exists)) {
+                // Update the existing row.
+                $old_custom_meta = $exists->custom_data_value;
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "UPDATE {$wpdb->prefix}maxi_blocks_custom_data_blocks
+						SET custom_data_value = %s, prev_custom_data_value = %s
+						WHERE block_style_id = %s",
+                        $custom_meta_json,
+                        $old_custom_meta,
+                        $style_id
+                    )
+                );
+            } else {
+                // Insert a new row.
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
+						VALUES (%s, %s, %s)",
+                        $style_id,
+                        $custom_meta_json,
+                        ''
+                    )
+                );
+            }
+
+            $this->write_log('CUSTOM META');
+            $this->write_log($custom_meta_json);
+            $this->write_log('CUSTOM META END');
+        }
+
+
+        // save to DB
+        $exists = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $style_id
+            ),
+            OBJECT
+        );
+
+        if (!empty($exists)) {
+            // Update the existing row.
+            $old_css = $exists->css_value;
+            $old_custom_meta = $exists->active_custom_data;
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
+					SET css_value = %s, prev_css_value = %s, active_custom_data = %d, prev_active_custom_data = %d
+					WHERE block_style_id = %s",
+                    $frontend_styles,
+                    $old_css,
+                    $custom_meta_block,
+                    $old_custom_meta,
+                    $style_id
+                )
+            );
+        } else {
+            // Insert a new row.
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, active_custom_data, prev_active_custom_data)
+					VALUES (%s, %s, %s, %d, %d)",
+                    $style_id,
+                    $frontend_styles,
+                    '',
+                    $custom_meta_block,
+                    0
+                )
+            );
+        }
+
+
+        return $styles;
     }
 }

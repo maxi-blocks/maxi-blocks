@@ -517,6 +517,12 @@ const getMarkerObject = props => {
 					listStyleCustom.includes('</svg>')
 						? {
 								width: sizeNum + sizeUnit,
+								'font-size': sizeNum + sizeUnit,
+								height:
+									lineHeightMarkerNum +
+									(lineHeightMarkerUnit !== '-'
+										? lineHeightMarkerUnit
+										: ''),
 						  }
 						: { 'font-size': sizeNum + sizeUnit }),
 					'line-height':

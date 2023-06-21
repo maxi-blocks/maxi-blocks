@@ -105,6 +105,7 @@ class edit extends MaxiBlockComponent {
 				target: 'repeater-status',
 				props: attributes,
 			}),
+			repeaterRowClientId: clientId,
 			getInnerBlocksPositions: this.getInnerBlocksPositions,
 			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
 			...(this.context?.repeaterStatus && this.context),
@@ -115,6 +116,7 @@ class edit extends MaxiBlockComponent {
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				repeaterStatus={repeaterContext.repeaterStatus}
+				repeaterRowClientId={repeaterContext.repeaterRowClientId}
 				isRepeaterInherited={this.isRepeaterInherited}
 				getInnerBlocksPositions={
 					repeaterContext.getInnerBlocksPositions
@@ -133,6 +135,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				copyPasteMapping={copyPasteMapping}
 				repeaterStatus={repeaterContext.repeaterStatus}
+				repeaterRowClientId={repeaterContext.repeaterRowClientId}
 				getInnerBlocksPositions={this.getInnerBlocksPositions}
 				{...this.props}
 			/>,

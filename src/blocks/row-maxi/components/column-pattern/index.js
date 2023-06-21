@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
-import { select } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { dispatch, select } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,6 +21,8 @@ import {
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 import { validateRowColumnsStructure } from '../../../../extensions/repeater';
+import { getBlockPosition } from '../../../../extensions/repeater/utils';
+import { cleanInnerBlocks } from '../../../../extensions/copy-paste';
 
 /**
  * External dependencies
@@ -43,6 +45,7 @@ const ColumnPattern = props => {
 		onChange,
 		breakpoint,
 		repeaterStatus,
+		repeaterRowClientId,
 		getInnerBlocksPositions,
 		toolbar = false,
 	} = props;
@@ -222,15 +225,56 @@ const ColumnPattern = props => {
 								const sanitizeRowPattern = pattern =>
 									toNumber(pattern.replace(/[^0-9]/g, '')[0]);
 
-								if (
-									repeaterStatus &&
-									sanitizeRowPattern(prevRowPattern) <
-										sanitizeRowPattern(newRowPattern)
-								) {
-									validateRowColumnsStructure(
-										clientId,
-										getInnerBlocksPositions()
-									);
+								if (repeaterStatus) {
+									const innerBlockPositions =
+										getInnerBlocksPositions();
+
+									if (
+										sanitizeRowPattern(prevRowPattern) <
+											sanitizeRowPattern(newRowPattern) &&
+										clientId === repeaterRowClientId
+									) {
+										validateRowColumnsStructure(
+											repeaterRowClientId,
+											innerBlockPositions
+										);
+									} else if (
+										clientId !== repeaterRowClientId
+									) {
+										const blockPosition = getBlockPosition(
+											clientId,
+											innerBlockPositions
+										);
+
+										const { getBlock } =
+											select('core/block-editor');
+										const {
+											__unstableMarkNextChangeAsNotPersistent:
+												markNextChangeAsNotPersistent,
+											replaceInnerBlocks,
+										} = dispatch('core/block-editor');
+
+										const rowToValidateByInnerBlocks =
+											getBlock(clientId).innerBlocks;
+
+										innerBlockPositions[
+											blockPosition
+										].forEach(rowClientId => {
+											if (rowClientId === clientId)
+												return;
+
+											const clonedInnerBlocks =
+												cleanInnerBlocks(
+													rowToValidateByInnerBlocks
+												);
+
+											markNextChangeAsNotPersistent();
+											replaceInnerBlocks(
+												rowClientId,
+												clonedInnerBlocks
+											);
+										});
+									}
 								}
 
 								onChange({

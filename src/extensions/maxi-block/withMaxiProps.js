@@ -133,10 +133,7 @@ const withMaxiProps = createHigherOrderComponent(
 
 						const clientIds =
 							innerBlocksPositions?.[
-								`${getBlockPosition(
-									clientId,
-									innerBlocksPositions
-								)}`
+								getBlockPosition(clientId, innerBlocksPositions)
 							];
 
 						if (clientIds) {

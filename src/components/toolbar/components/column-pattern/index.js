@@ -23,6 +23,7 @@ const ToolbarColumnPattern = props => {
 		onChange,
 		breakpoint,
 		repeaterStatus,
+		repeaterRowClientId,
 		getInnerBlocksPositions,
 	} = props;
 
@@ -44,6 +45,7 @@ const ToolbarColumnPattern = props => {
 					}}
 					breakpoint={breakpoint}
 					repeaterStatus={repeaterStatus}
+					repeaterRowClientId={repeaterRowClientId}
 					getInnerBlocksPositions={getInnerBlocksPositions}
 					toolbar
 				/>

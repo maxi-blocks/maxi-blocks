@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useContext, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,6 +19,8 @@ import {
 } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
+import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -51,6 +53,8 @@ const WRAPPER_BLOCKS = [
 
 const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
+
+	const repeaterContext = useContext(RepeaterContext);
 
 	const {
 		attributes,
@@ -156,6 +160,21 @@ const CopyPaste = props => {
 	};
 	const onPasteBlocks = () => {
 		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
+
+		if (
+			repeaterContext?.repeaterStatus &&
+			blockName === 'maxi-blocks/column-maxi'
+		) {
+			validateRowColumnsStructure(
+				select('core/block-editor').getBlockParentsByBlockName(
+					clientId,
+					'maxi-blocks/row-maxi'
+				)[0],
+				repeaterContext?.getInnerBlocksPositions(),
+				clientId
+			);
+		}
+
 		closeMoreSettings();
 	};
 

@@ -109,6 +109,7 @@ const MaxiToolbar = memo(
 			dropShadow,
 			disableInset,
 			repeaterStatus,
+			repeaterRowClientId,
 			getInnerBlocksPositions,
 		} = props;
 		const {
@@ -518,6 +519,7 @@ const MaxiToolbar = memo(
 							{...getGroupAttributes(attributes, 'rowPattern')}
 							onChange={obj => maxiSetAttributes(obj)}
 							repeaterStatus={repeaterStatus}
+							repeaterRowClientId={repeaterRowClientId}
 							getInnerBlocksPositions={getInnerBlocksPositions}
 							breakpoint={breakpoint}
 						/>

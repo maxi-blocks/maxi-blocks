@@ -25,6 +25,7 @@ function ColumnPicker(props) {
 		attributes,
 		deviceType,
 		repeaterStatus,
+		repeaterRowClientId,
 		getInnerBlocksPositions,
 		maxiSetAttributes,
 	} = props;
@@ -37,6 +38,7 @@ function ColumnPicker(props) {
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 				repeaterStatus={repeaterStatus}
+				repeaterRowClientId={repeaterRowClientId}
 				getInnerBlocksPositions={getInnerBlocksPositions}
 			/>
 			<FlexGapControl

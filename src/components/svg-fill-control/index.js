@@ -47,6 +47,12 @@ const ColorContent = ({
 				attributes: SVGOptions,
 				isHover,
 			})}
+			paletteSCStatus={getLastBreakpointAttribute({
+				target: 'background-svg-palette-sc-status',
+				breakpoint,
+				attributes: SVGOptions,
+				isHover,
+			})}
 			paletteColor={getLastBreakpointAttribute({
 				target: 'background-svg-palette-color',
 				breakpoint,
@@ -67,6 +73,7 @@ const ColorContent = ({
 			})}
 			onChange={({
 				paletteStatus,
+				paletteSCStatus,
 				paletteColor,
 				paletteOpacity,
 				color,
@@ -87,6 +94,12 @@ const ColorContent = ({
 						false,
 						breakpoint
 					)]: paletteStatus,
+					[getAttributeKey(
+						'background-svg-palette-sc-status',
+						isHover,
+						false,
+						breakpoint
+					)]: paletteSCStatus,
 					[getAttributeKey(
 						'background-svg-palette-color',
 						isHover,

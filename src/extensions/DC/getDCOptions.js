@@ -7,12 +7,7 @@ import { store as coreStore } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import {
-	fieldOptions,
-	idFields,
-	idOptionByField,
-	typeOptions,
-} from './constants';
+import { fieldOptions, idFields, idOptionByField } from './constants';
 
 /**
  * External dependencies
@@ -100,11 +95,10 @@ const getDCOptions = async (
 		}
 
 		return {
-			label: `${item.id} - ${limitString(
+			label: `${item.id} - ${
 				item[idOptionByField[type]]?.rendered ??
-					item[idOptionByField[type]],
-				10
-			)}`,
+				item[idOptionByField[type]]
+			}`,
 			value: +item.id,
 		};
 	});

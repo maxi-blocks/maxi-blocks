@@ -383,7 +383,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh']}
+						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 					<AdvancedNumberControl
@@ -424,7 +424,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh']}
+						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 				</>

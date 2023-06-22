@@ -15,6 +15,7 @@ import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
 
 const IconColor = props => {
 	const { prefix, colorType, isHover = false, onChange, blockStyle } = props;
+
 	return (
 		<ColorControl
 			label={__(`Icon ${colorType}`, 'maxi-blocks')}
@@ -44,18 +45,33 @@ const IconColor = props => {
 				isHover,
 				prefix,
 			})}
+			paletteSCStatus={getAttributeValue({
+				target: `${colorType}-palette-sc-status`,
+				props,
+				isHover,
+				prefix,
+			})}
 			onChange={({
 				color,
 				paletteColor,
 				paletteStatus,
+				paletteSCStatus,
 				paletteOpacity,
 			}) => {
-				const lineColorStr = getColorRGBAString({
-					firstVar: `${prefix}${colorType}`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				});
+				const lineColorStr = getColorRGBAString(
+					paletteSCStatus
+						? {
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: `${prefix}${colorType}`,
+								secondVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+				);
 
 				onChange({
 					[`${prefix}${colorType}-color${isHover ? '-hover' : ''}`]:
@@ -66,6 +82,9 @@ const IconColor = props => {
 					[`${prefix}${colorType}-palette-status${
 						isHover ? '-hover' : ''
 					}`]: paletteStatus,
+					[`${prefix}${colorType}-palette-sc-status${
+						isHover ? '-hover' : ''
+					}`]: paletteSCStatus,
 					[`${prefix}${colorType}-palette-opacity${
 						isHover ? '-hover' : ''
 					}`]: paletteOpacity,

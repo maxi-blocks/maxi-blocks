@@ -12,6 +12,10 @@ const paletteAttributesCreator = ({
 			type: 'boolean',
 			default: status ?? true,
 		},
+		[`${prefix}palette-sc-status`]: {
+			type: 'boolean',
+			default: false,
+		},
 		[`${prefix}palette-color`]: {
 			type: 'number',
 			...(isNumber(palette) && { default: palette }),

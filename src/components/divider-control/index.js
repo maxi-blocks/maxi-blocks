@@ -252,6 +252,12 @@ const DividerControl = props => {
 						attributes: props,
 						isHover,
 					})}
+					paletteSCStatus={getLastBreakpointAttribute({
+						target: `${prefix}divider-border-palette-sc-status`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
 					onChangeInline={({ color }) =>
 						!isHover && onChangeInline({ 'border-color': color })
 					}
@@ -259,6 +265,7 @@ const DividerControl = props => {
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) =>
 						onChange({
@@ -280,6 +287,12 @@ const DividerControl = props => {
 								prefix,
 								breakpoint
 							)]: paletteStatus,
+							[getAttributeKey(
+								'divider-border-palette-sc-status',
+								isHover,
+								prefix,
+								breakpoint
+							)]: paletteSCStatus,
 							[getAttributeKey(
 								'divider-border-palette-opacity',
 								isHover,

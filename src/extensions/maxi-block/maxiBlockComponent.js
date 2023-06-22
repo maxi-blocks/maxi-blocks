@@ -465,7 +465,8 @@ class MaxiBlockComponent extends Component {
 					removeBlockFromColumns(
 						this.props.blockPositionFromColumn,
 						this.props.parentColumnClientId,
-						this.props.parentInnerBlocksCount,
+						this.props.clientId,
+						this.props.getInnerBlocksPositions(),
 						this.props.updateInnerBlocksPositions
 					);
 				}
@@ -487,7 +488,8 @@ class MaxiBlockComponent extends Component {
 				removeBlockFromColumns(
 					this.props.blockPositionFromColumn,
 					this.props.parentColumnClientId,
-					this.props.parentInnerBlocksCount,
+					this.props.clientId,
+					this.props.getInnerBlocksPositions(),
 					this.props.updateInnerBlocksPositions
 				);
 			}

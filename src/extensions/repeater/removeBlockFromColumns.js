@@ -4,11 +4,6 @@
 import { dispatch, select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import { findTargetParent, getChildColumns, goThroughColumns } from './utils';
-
-/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -16,7 +11,8 @@ import { isEmpty } from 'lodash';
 const removeBlockFromColumns = (
 	blockPosition,
 	parentColumnClientId,
-	parentInnerBlocksCount,
+	clientId,
+	innerBlocksPositions,
 	updateInnerBlocksPositions
 ) => {
 	const { getBlock } = select('core/block-editor');
@@ -27,33 +23,24 @@ const removeBlockFromColumns = (
 		return;
 	}
 
-	const childColumns = getChildColumns(parentColumnClientId);
-
-	const blockIndex = blockPosition[blockPosition.length - 1];
-
 	const clientIdsToRemove = [];
-	let wasBlockRemoved = false;
 
-	goThroughColumns(childColumns, parentColumnClientId, column => {
-		const targetParent = findTargetParent(blockPosition, column);
+	const newInnerBlocksPositions = updateInnerBlocksPositions?.();
 
-		if (!targetParent) {
-			return;
-		}
-
-		const blockToRemoveClientId =
-			targetParent.innerBlocks[blockIndex]?.clientId;
-
-		if (blockToRemoveClientId && targetParent.innerBlocks[blockIndex]) {
-			if (targetParent.innerBlocks.length !== parentInnerBlocksCount) {
-				wasBlockRemoved = true;
+	if (
+		!newInnerBlocksPositions?.[blockPosition].includes(clientId) &&
+		innerBlocksPositions?.[blockPosition]?.includes(clientId)
+	) {
+		newInnerBlocksPositions?.[blockPosition]?.forEach(currentClientId => {
+			if (
+				innerBlocksPositions[blockPosition]?.includes(currentClientId)
+			) {
+				clientIdsToRemove.push(currentClientId);
 			}
+		});
+	}
 
-			clientIdsToRemove.push(blockToRemoveClientId);
-		}
-	});
-
-	if (!wasBlockRemoved && !isEmpty(clientIdsToRemove)) {
+	if (!isEmpty(clientIdsToRemove)) {
 		const {
 			replaceInnerBlocks,
 			__unstableMarkNextChangeAsNotPersistent:

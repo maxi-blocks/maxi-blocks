@@ -33,7 +33,10 @@ const save = props => {
 
 	return (
 		<MaxiBlock.save
-			classes={classnames(isList && 'maxi-list-block')}
+			classes={classnames(
+				isList && 'maxi-list-block',
+				dcStatus && 'maxi-text-block__dc'
+			)}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content

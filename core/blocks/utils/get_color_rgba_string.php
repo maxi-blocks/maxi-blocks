@@ -11,8 +11,6 @@ function get_var_with_color($block_style, $variable)
 
 function get_color_rgba_string($args)
 {
-    write_log('get_color_rgba_string');
-    write_log($args);
     $block_style = $args['block_style'];
     $first_var = $args['first_var'];
     $opacity = $args['opacity'];

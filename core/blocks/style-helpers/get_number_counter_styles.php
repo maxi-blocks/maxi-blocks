@@ -1,29 +1,35 @@
 <?php
 
-function get_circle_bar_styles($obj, $blockStyle)
+function get_circle_bar_styles($obj, $block_style)
 {
+    write_log('get_circle_bar_styles');
+    write_log($obj);
+
     $response = [
         'label' => 'Number Counter',
         'general' => []
     ];
 
-    $get_color = function ($breakpoint) use ($obj, $blockStyle) {
+    $get_color = function ($breakpoint) use ($obj, $block_style) {
         $palette = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'number-counter-circle-bar-',
             'breakpoint' => $breakpoint
         ]);
 
-        if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
+        write_log('get_palette_attributes');
+        write_log($palette);
+
+        if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
             return $palette['color'];
         }
 
-        if (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
-            return get_color_rgba_string(
-                "color-{$palette['paletteColor']}",
-                $palette['paletteOpacity'],
-                $blockStyle
-            );
+        if (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
+            return get_color_rgba_string([
+                'first_var' => 'color-' . $palette['palette_color'],
+                'opacity' => $palette['palette_opacity'],
+                'block_style' => $block_style,
+            ]);
         }
     };
 
@@ -38,7 +44,7 @@ function get_circle_bar_styles($obj, $blockStyle)
     return ['numberCounterCircleBar' => $response];
 }
 
-function get_circle_background_styles($obj, $blockStyle)
+function get_circle_background_styles($obj, $block_style)
 {
     $response = [
         'label' => 'Number Counter',
@@ -50,43 +56,43 @@ function get_circle_background_styles($obj, $blockStyle)
         'prefix' => 'number-counter-circle-background-'
     ]);
 
-    if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
+    if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
         $response['general']['stroke'] = $palette['color'];
-    } elseif (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
-        $response['general']['stroke'] = get_color_rgba_string(
-            "color-{$palette['paletteColor']}",
-            $palette['paletteOpacity'],
-            $blockStyle
-        );
+    } elseif (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
+        $response['general']['stroke'] = get_color_rgba_string([
+            'first_var'=> "color-{$palette['palette_color']}",
+            'opacity' => $palette['palette_opacity'],
+            'block_style' => $block_style
+        ]);
     }
 
     return ['numberCounterBackground' => $response];
 }
 
-function get_text_styles($obj, $blockStyle)
+function get_text_styles($obj, $block_style)
 {
     $response = [
         'label' => 'Number Counter',
         'general' => []
     ];
 
-    $get_color = function ($breakpoint) use ($obj, $blockStyle) {
+    $get_color = function ($breakpoint) use ($obj, $block_style) {
         $palette = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'number-counter-text-',
             'breakpoint' => $breakpoint
         ]);
 
-        if ((!isset($palette['paletteStatus']) || !$palette['paletteStatus']) && isset($palette['color'])) {
+        if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
             return $palette['color'];
         }
 
-        if (isset($palette['paletteStatus']) && $palette['paletteStatus'] && isset($palette['paletteColor'])) {
-            return get_color_rgba_string(
-                "color-{$palette['paletteColor']}",
-                $palette['paletteOpacity'],
-                $blockStyle
-            );
+        if (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
+            return get_color_rgba_string([
+                'first_var'=> "color-{$palette['palette_color']}",
+                'opacity'=>$palette['palette_opacity'],
+                'block_style'=>$block_style
+            ]);
         }
     };
 
@@ -125,12 +131,17 @@ function get_sup_styles($obj)
     return ['numberCounterSup' => $response];
 }
 
-function get_number_counter_styles($obj, $target, $blockStyle)
+function get_number_counter_styles($obj, $target, $block_style)
 {
+    write_log('get_number_counter_styles');
+    write_log($obj);
+    write_log($target);
+    write_log($block_style);
+    write_log('get_number_counter_styles ends');
     $response = [
-        " {$target} .maxi-number-counter__box__circle" => get_circle_bar_styles($obj, $blockStyle),
-        " {$target} .maxi-number-counter__box__background" => get_circle_background_styles($obj, $blockStyle),
-        " {$target} .maxi-number-counter__box__text" => get_text_styles($obj, $blockStyle),
+        " {$target} .maxi-number-counter__box__circle" => get_circle_bar_styles($obj, $block_style),
+        " {$target} .maxi-number-counter__box__background" => get_circle_background_styles($obj, $block_style),
+        " {$target} .maxi-number-counter__box__text" => get_text_styles($obj, $block_style),
         " {$target} .maxi-number-counter__box__text tspan" => get_sup_styles($obj)
     ];
 

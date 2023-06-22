@@ -957,7 +957,10 @@ class MaxiBlocks_Styles
         $template_meta = $this->get_content_for_blocks(false, $template_id)['meta'];
         $this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
 
-        if ($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
+        // $this->write_log('$post_meta');
+        // $this->write_log($post_meta);
+
+        if ($post_meta && !empty($post_meta) || ($template_meta && !empty($template_meta))) {
             $scripts = [
                 'hover-effects',
                 'bg-video',
@@ -988,8 +991,7 @@ class MaxiBlocks_Styles
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
 
                 $post_meta = $this->custom_meta($js_var, false);
-                $this->write_log('post_meta');
-                $this->write_log($post_meta);
+
                 $template_meta = $this->custom_meta($js_var, true);
                 $template_parts_meta = [];
 
@@ -1000,6 +1002,9 @@ class MaxiBlocks_Styles
                 }
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+
+                // $this->write_log('meta');
+                // $this->write_log($meta);
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -1046,6 +1051,85 @@ class MaxiBlocks_Styles
      /**
      * Gets content per blocks
      */
+    public function process_block($block, &$styles, &$prev_styles, &$active_custom_data_array)
+    {
+        global $wpdb;
+
+        $props = $block['attrs'];
+        if(empty($props)) {
+            return;
+        }
+        if(!isset($props['styleID'])) {
+            return;
+        }
+        $style_id = $props['styleID'];
+        if(!$style_id) {
+            return;
+        }
+
+        $content_array_block = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $style_id
+            ),
+            ARRAY_A
+        );
+
+        if(!isset($content_array_block[0])) {
+            return;
+        }
+
+        $content_block = $content_array_block[0];
+
+        if(empty($content_block)) {
+            return;
+        }
+
+        $block_styles = $content_block['css_value'];
+        $prev_block_styles = $content_block['prev_css_value'];
+
+        $styles = $styles.' '.$block_styles;
+        $prev_styles = $prev_styles.' '.$prev_block_styles;
+
+        // custom meta per a block
+        $active_custom_data = $content_block['active_custom_data'];
+
+        if($active_custom_data) {
+
+            $block_name = $block['blockName'];
+
+            $block_meta = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                    $style_id
+                )
+            );
+
+            if(!empty($block_meta)) {
+                if(isset($active_custom_data_array[$block_name])) {
+                    array_push($active_custom_data_array[$block_name], [$style_id => $block_meta]);
+                } else {
+                    $active_custom_data_array[$block_name] = [$style_id => $block_meta];
+                }
+            }
+        }
+
+        // Process inner blocks, if any
+        if (isset($block['innerBlocks']) && !empty($block['innerBlocks'])) {
+            //  $this->write_log('innerBlocks!!!');
+            foreach ($block['innerBlocks'] as $innerBlock) {
+                // $this->write_log('$innerBlock: ');
+                // $this->write_log($innerBlock);
+                $this->process_block($innerBlock, $styles, $prev_styles, $active_custom_data_array);
+                // $this->write_log('$styles:');
+                // $this->write_log($styles);
+                // $this->write_log('$active_custom_data_array:');
+                // $this->write_log($active_custom_data_array);
+                // $this->write_log('==========================================');
+            }
+        }
+    }
+
     public function get_content_for_blocks($is_template = false, $id = null, $passed_content = null)
     {
         global $post;
@@ -1059,26 +1143,11 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        //$content_array = [];
-        $content_array = (array) $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-                $id
-            ),
-            OBJECT
-        );
-
-        $this->write_log('$content_array');
-        $this->write_log($content_array);
 
         $active_custom_data = 0;
+        $active_custom_data_array = [];
 
         if (!$is_template) {
-            //$this->write_log('get_styles_meta_fonts_from_blocks');
-
-            // $this->write_log('post');
-            // $this->write_log($post);
-
             if($passed_content === null) {
                 $blocks = parse_blocks($post->post_content);
             } else {
@@ -1092,57 +1161,8 @@ class MaxiBlocks_Styles
             $styles = '';
             $prev_styles = '';
 
-            // $this->write_log('blocks');
-            // $this->write_log($blocks);
-
             foreach ($blocks as $block) {
-                // $this->write_log('block');
-                // $this->write_log($block);
-                $props = $block['attrs'];
-                if(empty($props)) {
-                    continue;
-                }
-                if(!isset($props['styleID'])) {
-                    continue;
-                }
-                $style_id = $props['styleID'];
-                $this->write_log('style id');
-                $this->write_log($style_id);
-                if(!$style_id) {
-                    continue;
-                }
-
-                $content_array_block = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                        $style_id
-                    ),
-                    ARRAY_A
-                );
-
-                if(!isset($content_array_block[0]) || empty($content_array_block[0])) {
-                    return false;
-                }
-
-
-                $block_styles = $content_array_block[0]['css_value'];
-                $prev_block_styles = $content_array_block[0]['prev_css_value'];
-                $active_custom_data = $content_array_block[0]['active_custom_data'];
-
-                $this->write_log('block_styles');
-                $this->write_log($block_styles);
-
-                $styles = $styles.' '.$block_styles;
-                $prev_styles = $prev_styles.' '.$prev_block_styles;
-
-            }
-
-            // $this->write_log('styles');
-            // $this->write_log($styles);
-
-
-            if ($styles === '') {
-                return false;
+                $this->process_block($block, $styles, $prev_styles, $active_custom_data_array);
             }
 
             $content = [
@@ -1150,26 +1170,10 @@ class MaxiBlocks_Styles
                 'prev_css_value' => $prev_styles,
             ];
 
-            // $content->css_value = $styles;
-            // $content->prev_css_value = $styles;
-
-            return ['content'=>json_decode(json_encode($content), true),'meta'=>$active_custom_data];
-
-
+            return ['content'=>json_decode(json_encode($content), true),'meta'=>$active_custom_data_array];
         }
-
-        if (!$content_array || empty($content_array)) {
-            return false;
-        }
-
-        $content = $content_array[0];
-
-        if (!$content || empty($content)) {
-            return false;
-        }
-
-        return json_decode(json_encode($content), true);
     }
+
 
 
     public function get_styles_meta_fonts_from_blocks()
@@ -1221,9 +1225,9 @@ class MaxiBlocks_Styles
     {
         $unique_id = $props['uniqueID'];
 
-        $this->write_log('get_maxi_custom_data_from_block');
-        $this->write_log('$block_name');
-        $this->write_log($block_name);
+        // $this->write_log('get_maxi_custom_data_from_block');
+        // $this->write_log('$block_name');
+        // $this->write_log($block_name);
 
 
         switch ($block_name) {
@@ -1297,7 +1301,7 @@ class MaxiBlocks_Styles
 
         $block_name = $block['blockName'];
 
-        $this->write_log('get_styles_meta_fonts_from_block '.$block_name);
+        //$this->write_log('get_styles_meta_fonts_from_block '.$block_name);
 
         if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
             return $styles;
@@ -1306,8 +1310,8 @@ class MaxiBlocks_Styles
         $props = $block['attrs'];
         $block_style = $props['blockStyle'];
 
-        $this->write_log('$props');
-        $this->write_log($props);
+        // $this->write_log('$props');
+        // $this->write_log($props);
 
         $style_id = $props['styleID'];
 
@@ -1388,7 +1392,7 @@ class MaxiBlocks_Styles
             return $styles;
         }
 
-        $this->write_log('$style_id '.$block_name.' '.$style_id);
+        //$this->write_log('$style_id '.$block_name.' '.$style_id);
 
         //$this->write_log('$props ');
 
@@ -1505,9 +1509,9 @@ class MaxiBlocks_Styles
                 );
             }
 
-            $this->write_log('CUSTOM META');
-            $this->write_log($custom_meta_json);
-            $this->write_log('CUSTOM META END');
+            // $this->write_log('CUSTOM META');
+            // $this->write_log($custom_meta_json);
+            // $this->write_log('CUSTOM META END');
         }
 
 

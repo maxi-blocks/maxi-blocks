@@ -165,7 +165,6 @@ const RelationControl = props => {
 		const prefix = selectedSettings?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = getCleanDisplayIBAttributes(
 			blockAttributes,
 			item.attributes
@@ -236,10 +235,13 @@ const RelationControl = props => {
 					stylesObj: getIBStylesObj({
 						clientId,
 						sid: item.sid,
-						attributes: {
-							...cleanAttributesObject,
-							...tempAttributes,
-						},
+						attributes: omitBy(
+							{
+								...cleanAttributesObject,
+								...tempAttributes,
+							},
+							val => val === undefined
+						),
 						blockAttributes,
 						breakpoint: deviceType,
 					}),

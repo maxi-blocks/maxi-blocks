@@ -67,7 +67,14 @@ const getRelatedAttributes = ({
 				`-unit-${breakpoint}`
 			);
 
-			if (propsToCheck[unitKey]) result[unitKey] = propsToCheck[unitKey];
+			if (
+				breakpoint === 'xxl' &&
+				IBAttributes[unitKey.replace('-xxl', '-general')]
+			) {
+				result[unitKey] =
+					IBAttributes[unitKey.replace('-xxl', '-general')];
+			} else if (propsToCheck[unitKey])
+				result[unitKey] = propsToCheck[unitKey];
 
 			// Ensure the palette attributes pack is passed if the modified value is related
 			if (key.includes('palette')) {

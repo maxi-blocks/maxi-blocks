@@ -28,7 +28,7 @@ const removeBlockFromColumns = (
 	const newInnerBlocksPositions = updateInnerBlocksPositions?.();
 
 	if (
-		!newInnerBlocksPositions?.[blockPosition].includes(clientId) &&
+		!newInnerBlocksPositions?.[blockPosition]?.includes(clientId) &&
 		innerBlocksPositions?.[blockPosition]?.includes(clientId)
 	) {
 		newInnerBlocksPositions?.[blockPosition]?.forEach(currentClientId => {

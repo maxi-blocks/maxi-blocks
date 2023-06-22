@@ -16,7 +16,7 @@ import DISALLOWED_BLOCKS from './disallowedBlocks';
 /**
  * External dependencies
  */
-import { isEqual } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 
 const validateAttributes = (block, column, innerBlocksPositions) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
@@ -115,6 +115,10 @@ const validateRowColumnsStructure = (
 	} = dispatch('core/block-editor');
 
 	let childColumns = getChildColumns(rowClientId, true);
+
+	if (isEmpty(childColumns)) {
+		return;
+	}
 
 	const columnToValidateBy = rawColumnToValidateByClientId
 		? childColumns.find(

@@ -2,9 +2,6 @@
 
 function get_circle_bar_styles($obj, $block_style)
 {
-    write_log('get_circle_bar_styles');
-    write_log($obj);
-
     $response = [
         'label' => 'Number Counter',
         'general' => []
@@ -16,9 +13,6 @@ function get_circle_bar_styles($obj, $block_style)
             'prefix' => 'number-counter-circle-bar-',
             'breakpoint' => $breakpoint
         ]);
-
-        write_log('get_palette_attributes');
-        write_log($palette);
 
         if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
             return $palette['color'];
@@ -133,11 +127,6 @@ function get_sup_styles($obj)
 
 function get_number_counter_styles($obj, $target, $block_style)
 {
-    write_log('get_number_counter_styles');
-    write_log($obj);
-    write_log($target);
-    write_log($block_style);
-    write_log('get_number_counter_styles ends');
     $response = [
         " {$target} .maxi-number-counter__box__circle" => get_circle_bar_styles($obj, $block_style),
         " {$target} .maxi-number-counter__box__background" => get_circle_background_styles($obj, $block_style),

@@ -1379,16 +1379,13 @@ class MaxiBlocks_Styles
                 }
                 break;
             case 'maxi-blocks/number-counter-maxi':
-                $this->write_log('number-counter-maxi');
                 if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
-                    $this->write_log('class exists');
                     $block_instance = MaxiBlocks_Number_Counter_Maxi_Block::get_instance();
                 }
                 break;
         }
 
         if($block_instance === null) {
-            $this->write_log('block_instance is null');
             return $styles;
         }
 

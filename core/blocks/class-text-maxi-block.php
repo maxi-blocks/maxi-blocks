@@ -61,6 +61,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_styles($props, $customCss, $sc_props)
         {
+
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $is_list = $props['isList'];
@@ -280,9 +281,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_object($props)
         {
-            $listStyle = $props['listStyle'];
-            $listStart = $props['listStart'];
-            $listReversed = $props['listReversed'];
+            $listStyle = $props['listStyle'] ?? false;
+            $listStart = $props['listStart'] ?? false;
+            $listReversed = $props['listReversed'] ?? false;
+
+
             $content = $props['content'];
 
             $counterReset = null;
@@ -316,13 +319,12 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
             foreach ($breakpoints as $breakpoint) {
-                $isRTL =
-                    $props['isRTL'] ||
-                    get_last_breakpoint_attribute([
-                        'target' => 'text-direction',
-                        'breakpoint' => $breakpoint,
-                        'attributes' => $props
-                    ]) === 'rtl';
+                $isRTL = ($props['isRTL'] ?? false) ||
+                (get_last_breakpoint_attribute([
+                    'target' => 'text-direction',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                ]) === 'rtl' ? true : false);
 
                 $gapNum = get_last_breakpoint_attribute([
                     'target' => 'list-gap',
@@ -399,7 +401,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_item_object($props)
         {
-            $listReversed = $props['listReversed'];
+
+
+            $listReversed = $props['listReversed'] ?? false;
+
+
 
             $response = [];
 
@@ -463,28 +469,40 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             return $response;
         }
 
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public static function get_marker_object($props)
         {
+
             $response = [];
-            $type_of_list = $props['typeOfList'];
-            $list_style = $props['listStyle'];
-            $list_style_custom = $props['listStyleCustom'];
+            $list_style = $props['listStyle'] ?? false;
+            $type_of_list = $props['typeOfList'] ?? false;
+            $list_style_custom = $props['listStyleCustom'] ?? false;
             $block_style = $props['blockStyle'];
 
             $palette_attributes = get_palette_attributes([
                 'obj' => $props,
                 'prefix' => 'list-'
             ]);
-            $palette_status = $palette_attributes['paletteStatus'];
-            $palette_color = $palette_attributes['paletteColor'];
-            $palette_opacity = $palette_attributes['paletteOpacity'];
+            self::write_log('$palette_attributes');
+            self::write_log($palette_attributes);
+            $palette_status = $palette_attributes['palette_status'];
+            $palette_color = $palette_attributes['palette_color'];
+            $palette_opacity = $palette_attributes['palette_opacity'];
             $color = $palette_attributes['color'];
 
             $response['color'] = [
                 'general' => [
                     'color' => $palette_status
                         ? get_color_rgba_string([
-                                'firstVar' => 'color-'.$palette_color,
+                                'first_var' => 'color-'.$palette_color,
                                 'opacity' => $palette_opacity,
                                 'block_style' => $block_style
                             ])
@@ -550,12 +568,13 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
             foreach ($breakpoints as $breakpoint) {
-                $is_rtl = $props['isRTL']
-                    || get_last_breakpoint_attribute([
+                $is_rtl = ($props['isRTL'] ??
+                    (get_last_breakpoint_attribute([
                         'target' => 'text-direction',
                         'breakpoint' => $breakpoint,
                         'attributes' => $props
-                    ]) === 'rtl';
+                    ]) === 'rtl')) ? true : false;
+
 
                 $list_style_position = get_last_breakpoint_attribute([
                     'target' => 'list-style-position',
@@ -593,8 +612,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'attributes' => $props
                     ]) ?? 'px';
 
-                $indent_marker_sum = $indent_marker_num + $indent_marker_unit;
-                $marker_position = $list_style_position === 'inside' ? 0 : 'calc('.(-$indent_marker_num + $indent_marker_unit.')');
+                $indent_marker_sum = $indent_marker_num . $indent_marker_unit;
+                $marker_position = $list_style_position === 'inside' ? 0 : 'calc(-'.$indent_marker_num . $indent_marker_unit.')';
 
                 $line_height_marker_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-line-height',
@@ -613,9 +632,9 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 && $list_style === 'custom'
                 && $list_style_custom
                 && strpos($list_style_custom, '</svg>') !== false) {
-                    $response[$breakpoint]['width'] = $size_num + $size_unit;
+                    $response[$breakpoint]['width'] = $size_num . $size_unit;
                 } else {
-                    $response[$breakpoint]['font-size'] = $size_num + $size_unit;
+                    $response[$breakpoint]['font-size'] = $size_num . $size_unit;
                 }
 
                 if($is_rtl) {
@@ -628,7 +647,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     $response[$breakpoint]['width'] = '1em';
                     $response[$breakpoint]['margin-left'] = '-1em';
                 } elseif($list_style_position === 'outside' && $list_style === 'custom') {
-                    $response[$breakpoint]['margin-left'] = -$size_num + $size_unit;
+                    $response[$breakpoint]['margin-left'] = '-'.$size_num . $size_unit;
                 }
 
                 if($list_style_position === 'inside') {

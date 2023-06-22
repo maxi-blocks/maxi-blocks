@@ -236,7 +236,8 @@ class edit extends MaxiBlockComponent {
 						isEmpty(content)
 							? 'maxi-text-block__empty'
 							: 'maxi-text-block__has-text',
-						isList && 'maxi-list-block'
+						isList && 'maxi-list-block',
+						dcStatus && 'maxi-text-block__dc'
 					)}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}

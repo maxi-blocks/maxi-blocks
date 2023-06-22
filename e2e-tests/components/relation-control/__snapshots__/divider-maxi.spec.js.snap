@@ -12,6 +12,7 @@ Array [
       "divider-box-shadow-inset-general": false,
       "divider-box-shadow-palette-color-general": 8,
       "divider-box-shadow-palette-opacity-general": 0.11,
+      "divider-box-shadow-palette-sc-status-general": false,
       "divider-box-shadow-palette-status-general": true,
       "divider-box-shadow-spread-general": 55,
       "divider-box-shadow-spread-unit-general": "px",
@@ -58,6 +59,7 @@ Array [
     "attributes": Object {
       "divider-border-palette-color-general": 8,
       "divider-border-palette-opacity-general": 0.5,
+      "divider-border-palette-sc-status-general": false,
       "divider-border-palette-status-general": true,
       "divider-border-style-general": "dashed",
       "divider-border-top-width-general": 22,

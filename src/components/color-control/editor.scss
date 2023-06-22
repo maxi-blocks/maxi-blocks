@@ -56,6 +56,37 @@
 			}
 		}
 	}
+	&--disabled {
+		position: relative;
+
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			cursor: not-allowed;
+			background-color: #fff;
+			background: repeating-linear-gradient(
+				-45deg,
+				var(--maxi-grey-6-color),
+				var(--maxi-grey-6-color) 2px,
+				#fff 2px,
+				#fff 10px
+			);
+			opacity: 0.1;
+		}
+
+		.maxi-color-control__palette-box,
+		.maxi-opacity-control input[type='number'],
+		.maxi-opacity-control .components-maxi-control__reset-button,
+		.maxi-opacity-control .components-range-control {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+	}
 	&__palette {
 		display: flex;
 		flex-wrap: wrap;
@@ -126,37 +157,6 @@
 			height: 20px;
 			border: 1px solid var(--maxi-black-1-color);
 		}
-		&--disabled {
-			position: relative;
-
-			&:before {
-				content: '';
-				position: absolute;
-				z-index: 2;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				cursor: not-allowed;
-				background-color: #fff;
-				background: repeating-linear-gradient(
-					-45deg,
-					var(--maxi-grey-6-color),
-					var(--maxi-grey-6-color) 2px,
-					#fff 2px,
-					#fff 10px
-				);
-				opacity: 0.1;
-			}
-
-			.maxi-color-control__palette-box,
-			.maxi-opacity-control input[type='number'],
-			.maxi-opacity-control .components-maxi-control__reset-button,
-			.maxi-opacity-control .components-range-control {
-				cursor: not-allowed;
-				opacity: 0.5;
-			}
-		}
 	}
 	&__opacity {
 		.maxi-base-control__field {
@@ -202,12 +202,16 @@
 /*******************************
 * RTL
 *******************************/
-html[dir="rtl"]  {
-	.maxi-color-control__palette-label .maxi-base-control__field .components-maxi-control__reset-button {
+html[dir='rtl'] {
+	.maxi-color-control__palette-label
+		.maxi-base-control__field
+		.components-maxi-control__reset-button {
 		right: unset;
 		left: 0;
 	}
-	.maxi-color-control__palette-label .maxi-base-control__field .components-maxi-control__reset-button {
+	.maxi-color-control__palette-label
+		.maxi-base-control__field
+		.components-maxi-control__reset-button {
 		right: unset;
 		left: 0;
 	}

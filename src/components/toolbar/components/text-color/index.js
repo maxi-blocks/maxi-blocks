@@ -67,6 +67,14 @@ const TextColor = props => {
 		textLevel,
 		styleCard,
 	});
+	const colorPaletteSCStatus = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'palette-sc-status',
+		breakpoint,
+		textLevel,
+		styleCard,
+	});
 	const colorPalette = getCustomFormatValue({
 		typography,
 		formatValue,
@@ -139,6 +147,7 @@ const TextColor = props => {
 					color={color}
 					paletteColor={colorPalette}
 					paletteStatus={colorPaletteStatus}
+					paletteSCStatus={colorPaletteSCStatus}
 					paletteOpacity={colorOpacity}
 					onChangeInline={({ color }) => {
 						onChangeInline({ color });
@@ -148,12 +157,14 @@ const TextColor = props => {
 						color,
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 					}) =>
 						onChangeFormat({
 							color,
 							'palette-color': paletteColor,
 							'palette-status': paletteStatus,
+							'palette-sc-status': paletteSCStatus,
 							'palette-opacity': paletteOpacity,
 						})
 					}

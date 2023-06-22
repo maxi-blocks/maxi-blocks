@@ -113,7 +113,7 @@ class edit extends MaxiBlockComponent {
 		const {
 			status: dcStatus,
 			content: dcContent,
-			containsHTML: dcContainsHTML,
+			containsHtml: dcContainsHTML,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.context?.contextLoop
@@ -133,6 +133,7 @@ class edit extends MaxiBlockComponent {
 			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
 			 * Does not replace spaces, which inside of HTML tags
 			 */
+
 			const replaceSpaces = content =>
 				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 
@@ -200,6 +201,7 @@ class edit extends MaxiBlockComponent {
 					},
 					onChangeTextFormat: newFormatValue => {
 						!dcStatus && this.state.onChangeFormat(newFormatValue);
+
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,

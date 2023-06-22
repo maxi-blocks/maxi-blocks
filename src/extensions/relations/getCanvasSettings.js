@@ -198,6 +198,7 @@ const getCanvasSettings = ({ name }) => [
 			);
 		},
 		helper: props => getSizeStyles(props.obj, props.prefix),
+		styleAttrs: ['size-advanced-options'],
 	},
 	{
 		sid: 'mp',

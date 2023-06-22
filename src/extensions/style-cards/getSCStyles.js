@@ -158,10 +158,10 @@ const getSentencesByBreakpoint = ({
 	return sentences;
 };
 
-const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
+const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 	let response = '';
 
-	const addStylesByBreakpoint = breakpoint => {
+	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
 		const breakpointLevelSentences = getSentencesByBreakpoint({
 			organizedValues,
 			style,
@@ -172,11 +172,11 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 		Object.entries({ ...breakpointLevelSentences }).forEach(
 			([level, sentences]) => {
 				const targets = [
-					`${prefix} .maxi-${style}.maxi-block.maxi-text-block`,
-					`${prefix} .maxi-${style} .maxi-block.maxi-text-block`,
-					`${prefix} .maxi-${style}.maxi-map-block__popup__content`,
-					`${prefix} .maxi-${style} .maxi-map-block__popup__content`,
-					`${prefix} .maxi-${style} .maxi-pane-block .maxi-pane-block__header`,
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block`,
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-map-block__popup__content`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-map-block__popup__content`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-pane-block .maxi-pane-block__header`,
 				];
 
 				// Remove margin-bottom sentences
@@ -193,18 +193,18 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 
 				if (marginSentence) {
 					// margin-bottom for Text Maxi
-					response += `${prefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
-					response += `${prefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					response += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					response += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
 				}
 			}
 		);
 
 		// Text Maxi list styles
 		[
-			`${prefix} .maxi-${style}maxi-list-block ul.maxi-text-block__content`,
-			`${prefix} .maxi-${style} .maxi-list-block ul.maxi-text-block__content`,
-			`${prefix} .maxi-${style}maxi-list-block ol.maxi-text-block__content`,
-			`${prefix} .maxi-${style} .maxi-list-block ol.maxi-text-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style}maxi-list-block ul.maxi-text-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-list-block ul.maxi-text-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style}maxi-list-block ol.maxi-text-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-list-block ol.maxi-text-block__content`,
 		].forEach(target => {
 			const sentences = [...breakpointLevelSentences.p];
 
@@ -216,8 +216,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 		});
 
 		[
-			`${prefix} .maxi-${style}.maxi-block.maxi-text-block li`,
-			`${prefix} .maxi-${style} .maxi-block.maxi-text-block li`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block li`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block li`,
 		].forEach(target => {
 			const sentences = [...breakpointLevelSentences.p];
 
@@ -233,7 +233,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 		});
 
 		// Text Maxi when has link
-		const textMaxiLinkPrefix = `${prefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__content`;
+		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__content`;
 
 		response += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
 		response += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
@@ -242,8 +242,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 		response += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
 
 		[
-			`${prefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
-			`${prefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,
 		].forEach(target => {
 			response += `${target} { color: var(--maxi-${style}-link); }`;
 			response += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
@@ -258,8 +258,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 
 		// Image Maxi
 		[
-			`${prefix} .maxi-${style}.maxi-image-block .maxi-hover-details`,
-			`${prefix} .maxi-${style} .maxi-image-block .maxi-hover-details`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-image-block .maxi-hover-details`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-image-block .maxi-hover-details`,
 		].forEach(target => {
 			const imageSentences = {
 				h4: [...breakpointLevelSentences.h4],
@@ -286,8 +286,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 
 		// Image Maxi caption
 		[
-			`${prefix} .maxi-${style}.maxi-image-block figcaption`,
-			`${prefix} .maxi-${style} .maxi-image-block figcaption`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-image-block figcaption`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-image-block figcaption`,
 		].forEach(target => {
 			const sentences = [...breakpointLevelSentences.p];
 
@@ -304,10 +304,10 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 
 		// Search Maxi
 		[
-			`${prefix} .maxi-${style}.maxi-search-block .maxi-search-block__input`,
-			`${prefix} .maxi-${style} .maxi-search-block .maxi-search-block__input`,
-			`${prefix} .maxi-${style}.maxi-search-block .maxi-search-block__button__content`,
-			`${prefix} .maxi-${style} .maxi-search-block .maxi-search-block__button__content`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-search-block .maxi-search-block__input`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-search-block .maxi-search-block__input`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-search-block .maxi-search-block__button__content`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-search-block .maxi-search-block__button__content`,
 		].forEach(target => {
 			const sentences = [...breakpointLevelSentences.p];
 
@@ -327,12 +327,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 			organizedValues,
 			style,
 			breakpoint,
-			targets: ['button	'],
+			targets: ['button'],
 		});
 
 		[
-			`${prefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
-			`${prefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,
 		].forEach(target => {
 			const sentences = [...buttonSentences.button];
 
@@ -376,13 +376,20 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style }) => {
 
 	// Media queries
 	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
-		response += `@media (${
-			breakpoint !== 'xxl' ? 'max' : 'min'
-		}-width: ${breakpointValue}px) {`;
+		if (isBackend)
+			addStylesByBreakpoint(
+				breakpoint,
+				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
+			);
+		else {
+			response += `@media (${
+				breakpoint !== 'xxl' ? 'max' : 'min'
+			}-width: ${breakpointValue}px) {`;
 
-		addStylesByBreakpoint(breakpoint);
+			addStylesByBreakpoint(breakpoint);
 
-		response += '}';
+			response += '}';
+		}
 	});
 
 	return response;
@@ -543,7 +550,12 @@ const getSCStyles = async (styleCard, isBackend = false) => {
 		response += getLinkColorsString({ organizedValues, prefix, style });
 
 		// Maxi styles
-		response += getMaxiSCStyles({ organizedValues, prefix, style });
+		response += getMaxiSCStyles({
+			organizedValues,
+			prefix,
+			style,
+			isBackend,
+		});
 
 		// WP native blocks styles
 

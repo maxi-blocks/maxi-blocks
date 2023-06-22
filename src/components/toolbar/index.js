@@ -528,11 +528,14 @@ const MaxiToolbar = memo(
 							blockName={name}
 							tooltipsHide={tooltipsHide}
 						/>
-						<ColumnsHandlers
+						{
+							// TODO: fix #4873
+							/* <ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 							tooltipsHide={tooltipsHide}
-						/>
+						/> */
+						}
 						<Size
 							blockName={name}
 							{...getGroupAttributes(

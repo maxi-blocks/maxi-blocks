@@ -28,7 +28,7 @@ function get_group_attributes(
     }
 
     $response = array();
-    // $defaults = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/blocks/utils/default-group-attributes.json"), true);
+    //$defaults = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/blocks/utils/default-group-attributes.json"), true);
 
     if ($is_hover) {
         $hover_attributes = get_group_attributes(

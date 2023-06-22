@@ -89,10 +89,13 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 ],
             ];
 
+            self::write_log('get_group_attributes($props, numberCounter)');
+            self::write_log(get_group_attributes($props, 'numberCounter'));
+
             $number_counter_styles = get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style);
 
-            // self::write_log('$number_counter_styles');
-            // self::write_log($number_counter_styles);
+            self::write_log('$number_counter_styles');
+            self::write_log($number_counter_styles);
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -129,6 +132,9 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 $background_styles,
                 $background_hover_styles,
             );
+
+            self::write_log('$styles_obj');
+            self::write_log($styles_obj);
 
             $response = style_processor(
                 $styles_obj,

@@ -480,6 +480,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_marker_object($props)
         {
+            self::write_log('get_marker_object');
+            self::write_log($props);
 
             $response = [];
             $list_style = $props['listStyle'] ?? false;
@@ -491,8 +493,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 'obj' => $props,
                 'prefix' => 'list-'
             ]);
-            self::write_log('$palette_attributes');
-            self::write_log($palette_attributes);
+
             $palette_status = $palette_attributes['palette_status'];
             $palette_color = $palette_attributes['palette_color'];
             $palette_opacity = $palette_attributes['palette_opacity'];
@@ -525,6 +526,9 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 ];
             }
+
+            self::write_log('$response[listContent]');
+            self::write_log($response['listContent']);
 
             if ($list_style && $type_of_list === 'ol') {
                 $response['listStyle'] = [
@@ -561,7 +565,15 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 } elseif (!is_link($list_style_custom) && !strpos($list_style_custom, '</svg>')) {
                     $general_list_style['content'] = "\"".$list_style_custom."\"";
                 }
+
+                self::write_log('$general_list_style[content]');
+                self::write_log($general_list_style['content']);
+
+                $response['listContent']['general'] = $general_list_style;
+
             }
+
+
 
             $response_list_size = [];
 

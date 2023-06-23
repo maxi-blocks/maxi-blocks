@@ -59,8 +59,42 @@ const { normalPaneTarget, activePaneTarget } = paneTargets;
 const customCss = {
 	selectors: {
 		...createSelectors({
-			accordion: '',
+			accordion: '.maxi-accordion-block',
 		}),
+		'before accordion': {
+			normal: {
+				label: 'before',
+				target: '.maxi-accordion-block::before',
+			},
+			hover: {
+				label: '::before on hover',
+				target: '.maxi-accordion-block:hover::before',
+			},
+		},
+		'after accordion': {
+			normal: {
+				label: 'after',
+				target: '.maxi-accordion-block::after',
+			},
+			hover: {
+				label: '::after on hover',
+				target: '.maxi-accordion-block:hover::after',
+			},
+		},
+		pane: {
+			normal: {
+				label: 'pane',
+				target: ' .maxi-pane-block',
+			},
+			hover: {
+				label: 'pane on hover',
+				target: ' .maxi-pane-block:hover',
+			},
+			active: {
+				label: 'pane on active state',
+				target: ` ${activePaneTarget}`,
+			},
+		},
 		'before pane': {
 			normal: {
 				label: 'pane ::before',
@@ -129,6 +163,34 @@ const customCss = {
 			active: {
 				label: 'pane header ::after on active state',
 				target: `${activePaneTarget} .maxi-pane-block__header::after`,
+			},
+		},
+		'before header content': {
+			normal: {
+				label: 'pane header content::before',
+				target: `${normalPaneTarget} .maxi-pane-block__header-content::before`,
+			},
+			hover: {
+				label: 'pane header content::before on hover',
+				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover::before`,
+			},
+			active: {
+				label: 'pane header content::before on active state',
+				target: `${activePaneTarget} .maxi-pane-block__header-content::before`,
+			},
+		},
+		'after header content': {
+			normal: {
+				label: 'pane header content::after',
+				target: `${normalPaneTarget} .maxi-pane-block__header-content::after`,
+			},
+			hover: {
+				label: 'pane header content::after on hover',
+				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover::after`,
+			},
+			active: {
+				label: 'pane header content::after on active state',
+				target: `${activePaneTarget} .maxi-pane-block__header-content::after`,
 			},
 		},
 		icon: {
@@ -294,6 +356,7 @@ const customCss = {
 		'accordion',
 		'before accordion',
 		'after accordion',
+		'pane',
 		'before pane',
 		'after pane',
 		'pane header',
@@ -305,6 +368,8 @@ const customCss = {
 		'pane content',
 		'before content',
 		'after content',
+		'before header content',
+		'after header content',
 		'pane icon',
 		'before icon',
 		'after icon',

@@ -280,6 +280,10 @@ const customCss = {
 				label: 'pane content on hover',
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover`,
 			},
+			active: {
+				label: 'pane content active state',
+				target: `${activePaneTarget} .maxi-pane-block__content`,
+			},
 		},
 		'before content': {
 			normal: {

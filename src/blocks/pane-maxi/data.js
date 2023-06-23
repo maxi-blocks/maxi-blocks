@@ -67,25 +67,25 @@ const customCss = {
 		pane: {
 			normal: {
 				label: 'pane',
-				target: '',
+				target: `${normalPaneTarget}.maxi-block`,
 			},
 			hover: {
 				label: 'pane on hover',
-				target: ':hover',
+				target: `.maxi-block${normalPaneTarget}:hover`,
 			},
 			active: {
 				label: 'pane on active state',
-				target: activePaneTarget,
+				target: `.maxi-block${activePaneTarget}`,
 			},
 		},
 		'before pane': {
 			normal: {
 				label: 'pane ::before',
-				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block::before',
+				target: `.wp-block-maxi-blocks-pane-maxi.${normalPaneTarget}::before`,
 			},
 			hover: {
 				label: 'pane ::before on hover',
-				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block:hover::before',
+				target: `.wp-block-maxi-blocks-pane-maxi.${normalPaneTarget}:hover::before`,
 			},
 			active: {
 				label: 'pane ::before on active state',
@@ -95,11 +95,11 @@ const customCss = {
 		'after pane': {
 			normal: {
 				label: 'pane ::after',
-				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block::after',
+				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}::after`,
 			},
 			hover: {
 				label: 'pane ::after on hover',
-				target: '.wp-block-maxi-blocks-pane-maxi.maxi-block:hover::after',
+				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}:hover::after`,
 			},
 			active: {
 				label: 'pane ::after on active state',
@@ -188,6 +188,34 @@ const customCss = {
 			active: {
 				label: 'content line on active state',
 				target: `${activePaneTarget} .maxi-pane-block__content-line`,
+			},
+		},
+		'before header content': {
+			normal: {
+				label: 'accordion pane header content::before',
+				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before`,
+			},
+			hover: {
+				label: 'accordion pane header content::before on hover',
+				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::before`,
+			},
+			active: {
+				label: 'accordion pane header content::before on active state',
+				target: `${activePaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before`,
+			},
+		},
+		'after header content': {
+			normal: {
+				label: 'accordion pane header content::after',
+				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after`,
+			},
+			hover: {
+				label: 'pane header content::after on hover',
+				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::after`,
+			},
+			active: {
+				label: 'pane header content::after on active state',
+				target: `${activePaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after`,
 			},
 		},
 		icon: {
@@ -320,6 +348,8 @@ const customCss = {
 		'content',
 		'before content',
 		'after content',
+		'before header content',
+		'after header content',
 		'icon',
 		'before icon',
 		'after icon',

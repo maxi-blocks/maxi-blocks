@@ -595,7 +595,7 @@ const BackgroundLayersControl = ({
 						})}
 					</ListControl>
 				)}
-				{!disableAddLayer && (
+				{!disableAddLayer && !isHover && (
 					<SelectControl
 						className='maxi-background-control__add-layer'
 						value='Add new layer'

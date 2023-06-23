@@ -28,6 +28,10 @@ export const typeOptions = {
 	group: generalTypeOptions,
 };
 
+export const ACFTypeOptions = generalTypeOptions.filter(
+	option => !['settings'].includes(option.value)
+);
+
 /**
  * Relation constants
  */
@@ -210,6 +214,27 @@ const mediaAuthorFields = [
 	{ label: __('Avatar', 'maxi-blocks'), value: 'avatar' },
 ];
 
+const textACFFieldTypes = [
+	'text',
+	'textarea',
+	'number',
+	'email',
+	'url',
+	'password',
+	'range',
+	'date_picker',
+	'date_time_picker',
+	'time_picker',
+	'select',
+	'radio',
+	'checkbox',
+	'button_group',
+];
+
+const mediaACFFieldTypes = ['image'];
+
+const buttonACFFieldTypes = textACFFieldTypes;
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -236,6 +261,12 @@ export const fieldOptions = {
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
 	},
+};
+
+export const acfFieldTypes = {
+	text: textACFFieldTypes,
+	button: buttonACFFieldTypes,
+	image: mediaACFFieldTypes,
 };
 
 export const mediaFieldOptions = Object.values(fieldOptions.image).map(

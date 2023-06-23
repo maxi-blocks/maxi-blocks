@@ -78,20 +78,14 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
             $data = [
                 'customCss' => $customCss,
             ];
-            //$this->write_log('$styles_obj');
-            $start_time = microtime(true);
+
             $styles_obj = [
                 $uniqueID => [
                     '' => self::get_normal_object($props),
                     ':hover' => self::get_hover_object($props),
                 ],
             ];
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$styles_obj execution_time: '.$execution_time);
-            //$this->write_log('$shape_divider_top_styles');
-            $start_time = microtime(true);
+
             $shape_divider_top_styles =
                 array_key_exists('shape-divider-top-status', $props) &&
                 $props['shape-divider-top-status'] ?
@@ -122,12 +116,6 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                         ]
                         ]
                     ] : [];
-            //$this->write_log('$shape_divider_bottom_styles');
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$shape_divider_top_styles execution_time: '.$execution_time);
-            $start_time = microtime(true);
             $shape_divider_bottom_styles =
                 array_key_exists('shape-divider-bottom-status', $props) &&
                 $props['shape-divider-bottom-status'] ?
@@ -158,25 +146,16 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 ]
                 ]
             ] : [];
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$shape_divider_bottom_styles execution_time: '.$execution_time);
-            //$this->write_log('$background_styles');
 
-            $start_time = microtime(true);
+
+
             $test = get_group_attributes($props, [
                 'blockBackground',
                 'border',
                 'borderWidth',
                 'borderRadius',
             ]);
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('get_group_attributes for BG execution_time: '.$execution_time);
 
-            $start_time = microtime(true);
             $test2 = array_merge(
                 get_group_attributes($props, [
                     'blockBackground',
@@ -186,12 +165,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 ]),
                 [ 'block_style' => $block_style,]
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('array_merge execution_time: '.$execution_time);
 
-            $start_time = microtime(true);
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -203,12 +177,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                     [ 'block_style' => $block_style,]
                 )
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$background_styles execution_time: '.$execution_time);
-            //$this->write_log('$background_hover_styles');
-            $start_time = microtime(true);
+
             $background_hover_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes(
@@ -227,12 +196,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                     ]
                 )
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$background_hover_styles execution_time: '.$execution_time);
-            //$this->write_log('$arrow_styles');
-            $start_time = microtime(true);
+
             $arrow_styles = get_arrow_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -246,12 +210,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                     [ 'block_style' => $block_style,]
                 )
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$arrow_styles execution_time: '.$execution_time);
-            //$this->write_log('$arrow_hover_styles');
-            $start_time = microtime(true);
+
             $arrow_hover_styles =  get_arrow_styles(
                 array_merge(
                     get_group_attributes(
@@ -273,12 +232,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                     ]
                 )
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$arrow_hover_styles execution_time: '.$execution_time);
-            //$this->write_log('$styles_obj[$uniqueID]');
-            $start_time = microtime(true);
+
             $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $shape_divider_top_styles,
@@ -288,23 +242,13 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 $arrow_styles,
                 $arrow_hover_styles
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('$styles_obj[$uniqueID] execution_time: '.$execution_time);
 
-            //$this->write_log('response');
-            $start_time = microtime(true);
             $response = style_processor(
                 $styles_obj,
                 $data,
                 $props,
             );
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
-            $this->write_log('style_processor execution_time: '.$execution_time);
-            //$this->write_log('get_styles END');
+
             return $response;
         }
 

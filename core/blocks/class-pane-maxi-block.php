@@ -58,7 +58,16 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -186,7 +195,7 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
@@ -277,7 +286,7 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                     )
                 );
             }
-        
+
             return $response;
         }
 
@@ -314,7 +323,9 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                     )
                 );
             }
-        
+
+
+
             return $response;
         }
     }

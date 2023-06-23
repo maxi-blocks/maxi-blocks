@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -99,7 +99,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         'borderWidth',
                         'borderRadius',
                     ]),
-                    [ 'block_style' => $block_style,]
+                    [ 'block_style' => $block_style, 'prefix' => 'svg-']
                 )
             );
             $background_hover_styles = get_block_background_styles(
@@ -116,6 +116,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     ),
                     [
                         'block_style' => $block_style,
+                        'prefix' => 'svg-',
                         'is_hover' => true,
                     ]
                 )
@@ -198,7 +199,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 

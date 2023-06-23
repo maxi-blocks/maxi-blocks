@@ -91,43 +91,12 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 'block_style' => $block_style,
                 'is_hover' => true,
             ]) : [];
-            $background_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes($props, [
-                        'blockBackground',
-                        'border',
-                        'borderWidth',
-                        'borderRadius',
-                    ]),
-                    [ 'block_style' => $block_style, 'prefix' => 'svg-']
-                )
-            );
-            $background_hover_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes(
-                        $props,
-                        [
-                            'blockBackground',
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        ],
-                        true
-                    ),
-                    [
-                        'block_style' => $block_style,
-                        'prefix' => 'svg-',
-                        'is_hover' => true,
-                    ]
-                )
-            );
+
 
             $styles_obj[$uniqueID] = array_merge_recursive(
                 $styles_obj[$uniqueID],
                 $svg_styles,
                 $svg_hover_styles,
-                $background_styles,
-                $background_hover_styles,
             );
 
             $response = style_processor(
@@ -241,16 +210,20 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'prefix' => 'svg-',
                     'iconWidthHeightRatio' => $icon_width_height_ratio
                 ]),
-                get_background_styles([
-                    'obj' => get_group_attributes(
-                        $props,
-                        ['background', 'backgroundColor', 'backgroundGradient'],
-                        false,
-                        'svg-'
-                    ),
-                    'block_style' => $block_style,
-                    'prefix' => 'svg-'
-                ])
+                get_background_styles(
+                    array_merge(
+                        get_group_attributes(
+                            $props,
+                            array('background', 'backgroundColor', 'backgroundGradient'),
+                            false,
+                            'svg-'
+                        ),
+                        [
+                            'block_style' => $props['blockStyle'],
+                            'prefix' => 'svg-'
+                        ]
+                    )
+                )
             );
 
             return $response;
@@ -277,19 +250,28 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'isHover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'svg-'
-                ]) : null,
-                ...get_background_styles([
-                    'obj' => get_group_attributes(
-                        $props,
-                        ['background', 'backgroundColor', 'backgroundGradient'],
-                        true,
-                        'svg-'
-                    ),
-                    'block_style' => $block_style,
-                    'isHover' => true,
-                    'prefix' => 'svg-'
-                ])
+                ]) : null
             ];
+
+            $response = array_merge(
+                $response,
+                get_background_styles(
+                    array_merge(
+                        get_group_attributes(
+                            $props,
+                            array('background', 'backgroundColor', 'backgroundGradient'),
+                            true,
+                            'svg-'
+                        ),
+                        [
+                            'is_hover' => true,
+                            'block_style' => $props['blockStyle'],
+                            'prefix' => 'svg-'
+                        ]
+                    )
+                )
+            );
+
 
             return $response;
         }

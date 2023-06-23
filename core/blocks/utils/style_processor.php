@@ -178,7 +178,6 @@ function write_log($log)
 
 function style_processor($obj, $data, $props)
 {
-    write_log('style_processor');
     $selectors = $data['custom_css']['selectors'] ?? null;
     $transition_selectors = $data['transition'] ?? null;
 
@@ -217,8 +216,6 @@ function style_processor($obj, $data, $props)
     //         array_merge_recursive_with($styles, $transform_object, $merge_callback);
     //     }
     // }
-
-    write_log('style_processor end');
 
     return style_cleaner($styles);
 }

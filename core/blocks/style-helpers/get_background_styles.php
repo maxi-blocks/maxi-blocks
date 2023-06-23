@@ -1070,27 +1070,17 @@ function get_block_background_styles($args)
     $block_style = $args['block_style'];
     $ignore_media_attributes = $args['ignore_media_attributes'] ?? false;
 
-    $start_time = microtime(true);
-
     $response = get_basic_response_object($args);
-
-    $end_time = microtime(true);
-    $execution_time = ($end_time - $start_time);
-    $execution_time = number_format($execution_time, 5, '.', '');
 
     if ($is_hover && !$args[$prefix . 'block-background-status-hover']) {
         return $response;
     }
 
-    $start_time = microtime(true);
     $layers = get_attributes_value([
             'target' => 'background-layers',
             'props' => $args,
             'prefix' => $prefix,
         ]);
-    $end_time = microtime(true);
-    $execution_time = ($end_time - $start_time);
-    $execution_time = number_format($execution_time, 5, '.', '');
 
     if ($is_hover) {
         $layers = [
@@ -1113,9 +1103,7 @@ function get_block_background_styles($args)
     if ($layers && count($layers) > 0) {
         $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-        $start_time = microtime(true);
         foreach ($breakpoints as $breakpoint) {
-            $start_time = microtime(true);
             $response =  get_background_layers([
                     'response' => $response,
                     'layers' => $layers,
@@ -1126,13 +1114,9 @@ function get_block_background_styles($args)
                     'breakpoint' => $breakpoint,
                     'ignore_media_attributes' => $ignore_media_attributes,
             ]);
-            $end_time = microtime(true);
-            $execution_time = ($end_time - $start_time);
-            $execution_time = number_format($execution_time, 5, '.', '');
+
         }
-        $end_time = microtime(true);
-        $execution_time = ($end_time - $start_time);
-        $execution_time = number_format($execution_time, 5, '.', '');
+
     }
 
     return $response;

@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -116,10 +116,14 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 $icon_styles
             );
 
-            $styles_obj[`$uniqueID .maxi-pane-block[data-accordion="$uniqueID"]`] = array_merge(
+            $styles_obj[$uniqueID.' .maxi-pane-block[data-accordion="$uniqueID"]'] = array_merge(
                 self::get_pane_header_object($props),
                 self::get_pane_content_object($props),
             );
+
+
+            self::write_log('$styles_obj');
+            self::write_log($styles_obj);
 
             $response = style_processor(
                 $styles_obj,
@@ -190,7 +194,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
@@ -207,14 +211,14 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     'hover_on_icon' => true,
                 ]);
             };
-        
+
             $response = array_merge(
                 $get_icon_styles(),
                 ($props['icon-status-hover'] ? $get_icon_styles(true) : []),
                 $get_icon_styles(false, true),
                 ($props['active-icon-status-hover'] ? $get_icon_styles(true, true) : [])
             );
-        
+
             return $response;
         }
 
@@ -224,23 +228,23 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             $prefix = $params['prefix'];
             $is_hover = $params['is_hover'];
             $breakpoint = $params['breakpoint'];
-        
+
             $palette_attributes = get_palette_attributes([
                 'obj' => $props,
                 ...(isset($prefix) ? ['prefix' => $prefix] : []),
                 ...(isset($is_hover) ? ['is_hover' => $is_hover] : []),
                 ...(isset($breakpoint) ? ['breakpoint' => $breakpoint] : []),
             ]);
-        
+
             $palette_status = $palette_attributes['palette_status'];
             $palette_color = $palette_attributes['palette_color'];
             $palette_opacity = $palette_attributes['palette_opacity'];
             $color = $palette_attributes['color'];
-        
+
             if (!$palette_status && !is_null($color)) {
                 return $color;
             }
-        
+
             if ($palette_status && $palette_color) {
                 return get_color_rgba_string([
                     'first_var' => "color-{$palette_color}",
@@ -248,19 +252,19 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     'block_style' => $props['block_style'],
                 ]);
             }
-        
+
             return null;
         }
 
         public static function get_pane_content_wrapper_styles($props)
         {
             $animationDuration = $props['animationDuration'];
-        
+
             function get_pane_content_transition($duration)
             {
                 return "max-height {$duration}s, padding-top {$duration}s, padding-bottom {$duration}s";
             }
-        
+
             $response = [
                 'paneTransition' => [
                     'label' => 'Pane transition',
@@ -269,7 +273,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     ],
                 ],
             ];
-        
+
             return $response;
         }
 
@@ -294,16 +298,26 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             $response = [
                 'typography' => $typography_styles,
             ];
-        
+
             return $response;
+        }
+
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
         }
 
         public static function get_pane_header_styles($props, $prefix, $is_hover = false)
         {
+
             $response = [];
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-        
+
             foreach ($breakpoints as $breakpoint) {
                 $bgStatus = get_attributes_value([
                     'target' => 'title-background-status',
@@ -322,7 +336,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     ];
                 }
             }
-        
+
             return $response;
         }
 
@@ -402,7 +416,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             if (isset($props['title-typography-status-hover']) && $props['title-typography-status-hover']) {
                 $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title'] = $hover_pane_title_styles;
             }
-        
+
             return $response;
         }
 
@@ -458,7 +472,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     ];
                 }
             }
-        
+
             return $response;
         }
     }

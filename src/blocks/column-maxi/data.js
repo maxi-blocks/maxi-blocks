@@ -128,8 +128,8 @@ const interactionBuilderSettings = {
 				);
 			},
 		},
+		...getCanvasSettings({ name }),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

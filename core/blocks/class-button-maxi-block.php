@@ -59,15 +59,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public static function get_styles($props, $customCss, $sc_values)
         {
             $uniqueID = $props['uniqueID'];
@@ -246,10 +237,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 )
             );
 
-            // self::write_log('$response button-maxi-block');
-            // self::write_log($response);
-            // self::write_log('========================');
-
             return $response;
         }
 
@@ -282,7 +269,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                         get_group_attributes(
                             $props,
                             array('background', 'backgroundColor', 'backgroundGradient'),
-                            false,
+                            true,
                             $prefix
                         ),
                         [

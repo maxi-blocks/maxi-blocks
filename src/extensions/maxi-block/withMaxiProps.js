@@ -296,6 +296,9 @@ const withMaxiProps = createHigherOrderComponent(
 						}
 						hasSelectedChild={hasSelectedChild}
 						repeaterStatus={repeaterContext?.repeaterStatus}
+						repeaterRowClientId={
+							repeaterContext?.repeaterRowClientId
+						}
 						getInnerBlocksPositions={
 							repeaterContext?.getInnerBlocksPositions
 						}

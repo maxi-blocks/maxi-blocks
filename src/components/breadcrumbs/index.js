@@ -17,7 +17,7 @@ import './editor.scss';
 /**
  * Component
  */
-const MaxiBreadcrumbs = repeaterStatus => {
+const MaxiBreadcrumbs = ({ repeaterStatus }) => {
 	const { originalNestedBlocks } = useSelect(select => {
 		const { getSelectedBlockClientId, getBlockParents } =
 			select('core/block-editor');

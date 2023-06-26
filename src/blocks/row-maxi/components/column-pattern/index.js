@@ -105,7 +105,6 @@ const ColumnPattern = props => {
 	 * @param {Array} sizes array of columns widths
 	 * @return {Array} Array of objects
 	 */
-
 	const getColumnsPositions = sizes => {
 		const columnsPositions = [];
 

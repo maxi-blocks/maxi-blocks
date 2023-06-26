@@ -11,12 +11,14 @@ import { getChildColumns, goThroughColumns, findBlockPosition } from './utils';
 import { goThroughMaxiBlocks } from '../maxi-block';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
+import loadColumnsTemplate from '../column-templates/loadColumnsTemplate';
+import { getTemplates } from '../column-templates';
 import DISALLOWED_BLOCKS from './disallowedBlocks';
 
 /**
  * External dependencies
  */
-import { isEqual, isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 const validateAttributes = (block, column, innerBlocksPositions) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
@@ -126,6 +128,20 @@ const validateRowColumnsStructure = (
 		  )
 		: childColumns[0];
 	const columnToValidateByClientId = columnToValidateBy.clientId;
+
+	const equalTemplateName = getTemplates(
+		true,
+		'general',
+		childColumns.length
+	)[0].name;
+
+	loadColumnsTemplate(
+		equalTemplateName,
+		rowClientId,
+		'general',
+		childColumns.length,
+		true
+	);
 
 	// Make sure that column to validate by is first in childColumns array
 	if (columnToValidateBy.clientId !== childColumns[0].clientId) {

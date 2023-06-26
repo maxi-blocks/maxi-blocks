@@ -25,12 +25,15 @@ const repeaterInfoBox = ({ props }) => {
 			<InfoBox
 				className='maxi-repeater-info-box'
 				message={__(
-					'Repeater is turned on for row, in which this block is placed. Changes made to this block will be applied to all repeated blocks.',
+					'Repeater enabled. Style and block edits are synchronized to all blocks inside the same row.',
 					'maxi-blocks'
 				)}
 				links={[
 					{
-						title: __('You can disable it here', 'maxi-blocks'),
+						title: __(
+							'Click here to disable repeater',
+							'maxi-blocks'
+						),
 						panel: 'repeater',
 						clientId: repeaterRowClientId,
 					},

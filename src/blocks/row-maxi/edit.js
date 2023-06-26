@@ -134,10 +134,10 @@ class edit extends MaxiBlockComponent {
 					});
 				}}
 				copyPasteMapping={copyPasteMapping}
+				{...this.props}
 				repeaterStatus={repeaterContext.repeaterStatus}
 				repeaterRowClientId={repeaterContext.repeaterRowClientId}
 				getInnerBlocksPositions={this.getInnerBlocksPositions}
-				{...this.props}
 			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
@@ -173,7 +173,10 @@ class edit extends MaxiBlockComponent {
 						key={`maxi-row--${uniqueID}`}
 						ref={this.blockRef}
 						classes={emptyRowClass}
-						{...getMaxiBlockAttributes(this.props)}
+						{...getMaxiBlockAttributes({
+							...this.props,
+							...repeaterContext,
+						})}
 						useInnerBlocks
 						innerBlocksSettings={{
 							...(hasInnerBlocks && { templateLock: 'insert' }),

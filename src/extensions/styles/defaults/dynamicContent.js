@@ -120,6 +120,9 @@ const dynamicContent = {
 		type: 'string',
 		default: '',
 	},
+	'dc-order-by': {
+		type: 'string',
+	},
 	'dc-order': {
 		type: 'string',
 	},

@@ -4,11 +4,11 @@
  */
 import {
 	forwardRef,
-	useEffect,
-	useState,
 	memo,
 	useCallback,
+	useEffect,
 	useReducer,
+	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -112,6 +112,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink,
 		useInnerBlocks = false,
 		hasInnerBlocks = false,
+		isRepeater,
 		isSelected,
 		hasSelectedChild,
 		isHovered,
@@ -236,6 +237,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
+		isRepeater && 'maxi-block--repeater',
 		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width'
 	);

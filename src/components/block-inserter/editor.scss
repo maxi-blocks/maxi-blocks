@@ -134,6 +134,16 @@
 	}
 
 	&__button-wrapper {
+		&--repeater {
+			.maxi-block-inserter__button {
+				background: #7a00df !important;
+			}
+
+			&:before {
+				background: #7a00df;
+			}
+		}
+
 		&:before {
 			content: '';
 			position: absolute;

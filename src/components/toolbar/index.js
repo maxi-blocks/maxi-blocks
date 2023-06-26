@@ -34,7 +34,7 @@ import {
 	Border,
 	BoxShadow,
 	ColumnMover,
-	ColumnsHandlers,
+	// ColumnsHandlers,
 	ColumnSize,
 	Divider,
 	DividerAlignment,
@@ -95,7 +95,7 @@ const MaxiToolbar = memo(
 			name,
 			maxiSetAttributes,
 			onModalOpen,
-			toggleHandlers,
+			// toggleHandlers,
 			rowPattern,
 			prefix = '',
 			backgroundGlobalProps,
@@ -225,7 +225,14 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						<div className='toolbar-block-custom-label'>
+						<div
+							className={classnames(
+								'toolbar-block-custom-label',
+								!!breadcrumbStatus() &&
+									repeaterStatus &&
+									'toolbar-block-custom-label--repeater'
+							)}
+						>
 							{!isFirstOnHierarchy && (
 								<span
 									className='breadcrumbs-pin'
@@ -251,12 +258,21 @@ const MaxiToolbar = memo(
 								{blockStyle ? ` | ${blockStyle}` : ''}
 							</span>
 							{!isFirstOnHierarchy && (
-								<span className='toolbar-more-indicator'>
+								<span
+									className={classnames(
+										'toolbar-more-indicator',
+										repeaterStatus &&
+											'toolbar-more-indicator--repeater'
+									)}
+								>
 									&gt;
 								</span>
 							)}
 						</div>
-						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+						<Breadcrumbs
+							key={`breadcrumbs-${uniqueID}`}
+							repeaterStatus={repeaterStatus}
+						/>
 						<ToolbarMediaUpload
 							blockName={name}
 							maxiSetAttributes={maxiSetAttributes}

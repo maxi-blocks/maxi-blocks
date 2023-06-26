@@ -895,7 +895,7 @@ class MaxiBlocks_DynamicContent
             'alphabetical' => 'asc',
         ];
 
-        $relation = isset($attributes['dc-relation']) ? $attributes['dc-relation'] : null;
+        $relation = $attributes['dc-relation'] ?? null;
 
         if (in_array($relation, self::$order_by_relations)) {
             if (isset($attributes['dc-order-by'])) {

@@ -10,20 +10,21 @@ import Repeater from '../repeater';
 import { getGroupAttributes } from '../../extensions/styles';
 
 const repeater = ({
-	props: { attributes, clientId, maxiSetAttributes },
+	props: { attributes, clientId, deviceType, maxiSetAttributes },
 	isRepeaterInherited,
 	updateInnerBlocksPositions,
-}) => ({
-	label: __('Repeater', 'maxi-blocks'),
-	content: (
-		<Repeater
-			{...getGroupAttributes(attributes, 'repeater')}
-			clientId={clientId}
-			isRepeaterInherited={isRepeaterInherited}
-			updateInnerBlocksPositions={updateInnerBlocksPositions}
-			onChange={maxiSetAttributes}
-		/>
-	),
-});
+}) =>
+	deviceType === 'general' && {
+		label: __('Repeater', 'maxi-blocks'),
+		content: (
+			<Repeater
+				{...getGroupAttributes(attributes, 'repeater')}
+				clientId={clientId}
+				isRepeaterInherited={isRepeaterInherited}
+				updateInnerBlocksPositions={updateInnerBlocksPositions}
+				onChange={maxiSetAttributes}
+			/>
+		),
+	};
 
 export default repeater;

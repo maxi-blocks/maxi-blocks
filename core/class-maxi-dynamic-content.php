@@ -159,10 +159,16 @@ class MaxiBlocks_DynamicContent
         'dc-order' => [
             'type' => 'string',
         ],
+        'dc-order-by' => [
+            'type' => 'string',
+        ],
         'dc-accumulator' => [
             'type' => 'number',
         ],
     ];
+
+    private static $order_by_relations =
+        ['by-category', 'by-author', 'by-tag'];
 
     /**
      * Constructor
@@ -884,8 +890,22 @@ class MaxiBlocks_DynamicContent
 
     public function order_callback($attributes)
     {
-        $relation = $attributes['dc-relation'] ?? null;
-        return $relation === 'by-date' ? 'desc' : 'asc';
+        $dictionary = [
+            'by-date' => 'desc',
+            'alphabetical' => 'asc',
+        ];
+
+        $relation = isset($attributes['dc-relation']) ? $attributes['dc-relation'] : null;
+
+        if (in_array($relation, self::$order_by_relations)) {
+            if (isset($attributes['dc-order-by'])) {
+                return $dictionary[$attributes['dc-order-by']];
+            }
+
+            return $dictionary['by-date'];
+        }
+
+        return $dictionary[$relation];
     }
 
     /**
@@ -939,7 +959,7 @@ class MaxiBlocks_DynamicContent
             ];
 
 
-            if(in_array($relation, ['by-category', 'by-author', 'by-tag'])) {
+            if(in_array($relation, self::$order_by_relations)) {
                 $order_by_arg = $dictionary[$order_by];
             } else {
                 $order_by_arg = $dictionary[$relation];

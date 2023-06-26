@@ -39,6 +39,8 @@ const BlockInserter = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const repeaterStatus = useContext(RepeaterContext)?.repeaterStatus;
+
 	const classes = classnames('maxi-block-inserter', className);
 
 	return (
@@ -51,7 +53,11 @@ const BlockInserter = props => {
 		>
 			<ButtonBlockAppender
 				rootClientId={clientId}
-				className='maxi-components-button maxi-block-inserter__button'
+				className={classnames(
+					'maxi-components-button',
+					'maxi-block-inserter__button',
+					repeaterStatus && 'maxi-block-inserter__button--repeater'
+				)}
 			/>
 		</div>
 	);
@@ -76,8 +82,6 @@ const ButtonInserter = props => {
 					className={classnames(
 						'maxi-wrapper-block-inserter__button',
 						'maxi-block-inserter__button'
-						// repeaterStatus &&
-						// 	'maxi-block-inserter__button--repeater'
 					)}
 					onClick={onToggle}
 				>

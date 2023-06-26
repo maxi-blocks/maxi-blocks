@@ -23,7 +23,7 @@
 		}
 	}
 
-	&__button.maxi-components-button {
+	&__button {
 		display: block;
 		position: relative;
 		width: 16px;
@@ -34,6 +34,10 @@
 		box-shadow: none;
 		border-radius: 0;
 		transition: all 0s ease;
+
+		&--repeater {
+			background: #7a00df !important;
+		}
 
 		@at-root .rtl #{&} {
 			right: 50%;

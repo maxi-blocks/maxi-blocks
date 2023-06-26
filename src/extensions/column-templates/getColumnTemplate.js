@@ -19,7 +19,7 @@ const getColumnContent = (columns, breakpoint) => {
 		},
 	};
 };
-
+// TODO: hide repeater on non general
 const getColumnTemplate = (templateName, breakpoint, numCol) => {
 	let template = null;
 

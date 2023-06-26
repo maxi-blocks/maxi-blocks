@@ -62,8 +62,7 @@ const getRelatedAttributes = ({
 					IBAttributes[key.replace('-xxl', '-general')]
 				) {
 					result[key] = IBAttributes[key.replace('-xxl', '-general')];
-				}
-				if (propsToCheck[key]) {
+				} else if (propsToCheck[key]) {
 					result[key] = propsToCheck[key];
 				}
 			};

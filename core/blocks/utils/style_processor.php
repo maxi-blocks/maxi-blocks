@@ -1,6 +1,11 @@
 <?php
 function objects_cleaner($obj)
 {
+    if(is_null($obj)) {
+        return false;
+    }
+
+
     $response = $obj;
 
     foreach ($response as $key => $val) {
@@ -139,7 +144,9 @@ function style_cleaner($styles)
         if (strpos($target, ':hover') !== false) {
             $normal_key = str_replace(':hover', '', $target);
 
-            $styles[$target] = hover_styles_cleaner($styles[$normal_key], $val);
+            if(isset($styles[$normal_key])) {
+                $styles[$target] = hover_styles_cleaner($styles[$normal_key], $val);
+            }
         }
 
         // Clean empty breakpoints

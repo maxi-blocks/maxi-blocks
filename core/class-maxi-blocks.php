@@ -24,6 +24,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
@@ -145,6 +147,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
             }
             if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
                 MaxiBlocks_Number_Counter_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Search_Maxi_Block')) {
+                MaxiBlocks_Search_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Map_Maxi_Block')) {
+                MaxiBlocks_Map_Maxi_Block::register();
             }
         }
 

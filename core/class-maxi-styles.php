@@ -34,6 +34,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
 
 class MaxiBlocks_Styles
 {
@@ -59,7 +61,7 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
+        //  add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         add_filter('the_content', [$this, 'process_content']);
@@ -1049,9 +1051,9 @@ class MaxiBlocks_Styles
         return $needs;
     }
 
-     /**
-     * Gets content per blocks
-     */
+    /**
+    * Gets content per blocks
+    */
     public function process_block($block, &$styles, &$prev_styles, &$active_custom_data_array)
     {
         global $wpdb;
@@ -1229,9 +1231,9 @@ class MaxiBlocks_Styles
     {
         $unique_id = $props['uniqueID'];
 
-        // $this->write_log('get_maxi_custom_data_from_block');
-        // $this->write_log('$block_name');
-        // $this->write_log($block_name);
+        $this->write_log('get_maxi_custom_data_from_block');
+        $this->write_log('$block_name');
+        $this->write_log($block_name);
 
 
         switch ($block_name) {
@@ -1255,6 +1257,21 @@ class MaxiBlocks_Styles
                         )
                     ]
                 ];
+
+                return $response;
+
+            case 'maxi-blocks/map-maxi':
+                $response = [
+                    'maxiMap' => [
+                        $unique_id => array_merge(
+                            get_group_attributes($props, 'map'),
+                            ['breakpoints' => $this->get_breakpoints($props)]
+                        )
+                    ]
+                ];
+
+                $this->write_log('$response meta');
+                $this->write_log('$response');
 
                 return $response;
 
@@ -1398,6 +1415,16 @@ class MaxiBlocks_Styles
                     $block_instance = MaxiBlocks_Number_Counter_Maxi_Block::get_instance();
                 }
                 break;
+            case 'maxi-blocks/search-maxi':
+                if (class_exists('MaxiBlocks_Search_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Search_Maxi_Block::get_instance();
+                }
+                break;
+            case 'maxi-blocks/map-maxi':
+                if (class_exists('MaxiBlocks_Map_Maxi_Block')) {
+                    $block_instance = MaxiBlocks_Map_Maxi_Block::get_instance();
+                }
+                break;
         }
 
         if($block_instance === null) {
@@ -1521,9 +1548,9 @@ class MaxiBlocks_Styles
                 );
             }
 
-            // $this->write_log('CUSTOM META');
-            // $this->write_log($custom_meta_json);
-            // $this->write_log('CUSTOM META END');
+            $this->write_log('CUSTOM META');
+            $this->write_log($custom_meta_json);
+            $this->write_log('CUSTOM META END');
         }
 
 

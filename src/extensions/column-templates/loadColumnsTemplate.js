@@ -33,7 +33,8 @@ const updateTemplate = (
 	template,
 	columnsBlockObjects,
 	clientId,
-	noLeftoverInsertion = false
+	noLeftoverInsertion = false,
+	isMarkNextChangeAsNotPersistent = false
 ) => {
 	const templateLength = template.content.length;
 	const newAttributes = template.attributes;
@@ -68,6 +69,13 @@ const updateTemplate = (
 	});
 
 	const rowBlock = select('core/block-editor').getBlock(clientId);
+	if (isMarkNextChangeAsNotPersistent) {
+		const {
+			__unstableMarkNextChangeAsNotPersistent:
+				markNextChangeAsNotPersistent,
+		} = dispatch('core/block-editor');
+		markNextChangeAsNotPersistent();
+	}
 	dispatch('core/block-editor').replaceBlock(clientId, {
 		...rowBlock,
 		attributes: {
@@ -83,7 +91,8 @@ const loadColumnsTemplate = (
 	clientId,
 	breakpoint,
 	numCol,
-	noLeftoverInsertion
+	noLeftoverInsertion,
+	isMarkNextChangeAsNotPersistent
 ) => {
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
@@ -105,7 +114,8 @@ const loadColumnsTemplate = (
 				columnsBlockObjects,
 				clientId,
 				numCol,
-				noLeftoverInsertion
+				noLeftoverInsertion,
+				isMarkNextChangeAsNotPersistent
 		  );
 };
 

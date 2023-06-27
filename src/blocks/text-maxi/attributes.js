@@ -79,7 +79,6 @@ const attributes = {
 			},
 			'list-marker-height': {
 				type: 'number',
-				default: 1,
 			},
 			'list-marker-height-unit': {
 				type: 'string',

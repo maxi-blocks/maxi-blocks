@@ -1270,8 +1270,17 @@ class MaxiBlocks_Styles
                     ]
                 ];
 
-                $this->write_log('$response meta');
-                $this->write_log('$response');
+                return $response;
+
+            case 'maxi-blocks/video-maxi':
+                $response = [
+                    'video' => [
+                        $unique_id => array_merge(
+                            get_group_attributes($props, 'video'),
+                            ['breakpoints' => $this->get_breakpoints($props)]
+                        )
+                    ]
+                ];
 
                 return $response;
 

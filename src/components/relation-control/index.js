@@ -51,6 +51,7 @@ const RelationControl = props => {
 	const repeaterContext = useContext(RepeaterContext);
 
 	const {
+		name,
 		clientId,
 		deviceType,
 		isButton,
@@ -287,8 +288,12 @@ const RelationControl = props => {
 			getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')[0];
 
 		const parentColumnClientId =
-			repeaterContext?.repeaterStatus &&
-			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')[0];
+			(repeaterContext?.repeaterStatus &&
+				getBlockParentsByBlockName(
+					clientId,
+					'maxi-blocks/column-maxi'
+				)[0]) ||
+			(name === 'maxi-blocks/column-maxi' && clientId);
 
 		goThroughMaxiBlocks(block => {
 			if (

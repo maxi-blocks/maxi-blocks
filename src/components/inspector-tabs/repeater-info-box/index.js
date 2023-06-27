@@ -30,10 +30,7 @@ const repeaterInfoBox = ({ props }) => {
 				)}
 				links={[
 					{
-						title: __(
-							'Click here to disable repeater',
-							'maxi-blocks'
-						),
+						title: __('Change setting', 'maxi-blocks'),
 						panel: 'repeater',
 						clientId: repeaterRowClientId,
 					},

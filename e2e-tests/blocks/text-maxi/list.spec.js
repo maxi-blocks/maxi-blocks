@@ -550,6 +550,30 @@ describe('List in Text-maxi', () => {
 			await getAttributes('list-style-position-general')
 		).toStrictEqual('outside');
 
+		// Change marker height
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-height'),
+			newNumber: '20',
+		});
+
+		expect(await getAttributes('list-marker-height-general')).toStrictEqual(
+			20
+		);
+
+		// Change marker line height
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-text-inspector__list-marker-line-height'
+			),
+			newNumber: '20',
+		});
+
+		expect(
+			await getAttributes('list-marker-line-height-general')
+		).toStrictEqual(20);
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

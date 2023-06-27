@@ -469,12 +469,11 @@ const getMarkerObject = props => {
 					}) || 'px';
 
 				// List marker height
-				const heightNum =
-					getLastBreakpointAttribute({
-						target: 'list-marker-height',
-						breakpoint,
-						attributes: props,
-					}) || 0;
+				const heightNum = getLastBreakpointAttribute({
+					target: 'list-marker-height',
+					breakpoint,
+					attributes: props,
+				});
 				const heightUnit =
 					getLastBreakpointAttribute({
 						target: 'list-marker-height-unit',
@@ -531,7 +530,9 @@ const getMarkerObject = props => {
 					listStyleCustom.includes('</svg>')
 						? {
 								width: sizeNum + sizeUnit,
-								height: heightNum + heightUnit,
+								...(!isNil(heightNum) && {
+									height: heightNum + heightUnit,
+								}),
 						  }
 						: {
 								'font-size': sizeNum + sizeUnit,

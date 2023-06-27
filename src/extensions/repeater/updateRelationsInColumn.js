@@ -37,19 +37,32 @@ const updateRelationsInColumn = (
 		newClientId,
 	].map(
 		clientId =>
-			getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')[0]
+			getBlockParentsByBlockName(
+				clientId,
+				'maxi-blocks/column-maxi'
+			)[0] ||
+			(getBlock(clientId)?.name === 'maxi-blocks/column-maxi' && clientId)
 	);
 
 	attributes.relations = attributes.relations.map(relation => {
 		const { uniqueID } = relation;
 
-		const relationClientId = getClientIdFromUniqueId(uniqueID);
-		const relationClientIdColumn = getBlockParentsByBlockName(
-			relationClientId,
-			'maxi-blocks/column-maxi'
-		)[0];
+		if (!uniqueID) {
+			return relation;
+		}
 
-		if (relationClientIdColumn !== oldClientIdColumn) {
+		const relationClientId = getClientIdFromUniqueId(uniqueID);
+		const relationClientIdColumn =
+			getBlockParentsByBlockName(
+				relationClientId,
+				'maxi-blocks/column-maxi'
+			)[0] ||
+			(uniqueID.includes('column-maxi') && relationClientId);
+
+		if (
+			!relationClientIdColumn ||
+			relationClientIdColumn !== oldClientIdColumn
+		) {
 			return relation;
 		}
 
@@ -57,6 +70,10 @@ const updateRelationsInColumn = (
 			relationClientId,
 			innerBlocksPositions
 		);
+
+		if (!blockPosition || !innerBlocksPositions?.[blockPosition]) {
+			return relation;
+		}
 
 		const newRelationClientId = innerBlocksPositions[blockPosition].find(
 			clientId => {

@@ -46,6 +46,11 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
+	const isSVGMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		listStyleCustom.includes('</svg>');
 	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
 		(listStyleCustom?.includes('<svg ') && 'icon') ||
@@ -345,7 +350,11 @@ const ListOptionsControl = props => {
 				}}
 			/>
 			<AdvancedNumberControl
-				label={__('Marker size', 'maxi-blocks')}
+				label={
+					isSVGMarker
+						? __('Marker width', 'maxi-blocks')
+						: __('Marker size', 'maxi-blocks')
+				}
 				className='maxi-text-inspector__list-marker-size'
 				value={getLastBreakpointAttribute({
 					target: 'list-marker-size',
@@ -401,6 +410,48 @@ const ListOptionsControl = props => {
 					});
 				}}
 			/>
+			{isSVGMarker && (
+				<AdvancedNumberControl
+					label={__('Marker height', 'maxi-blocks')}
+					className='maxi-text-inspector__list-marker-height'
+					placeholder={getLastBreakpointAttribute({
+						target: 'list-marker-height',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					value={attributes[`list-marker-height-${deviceType}`]}
+					onChangeValue={val =>
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]: val,
+						})
+					}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'list-marker-height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					onChangeUnit={val =>
+						maxiSetAttributes({
+							[`list-marker-height-unit-${deviceType}`]: val,
+						})
+					}
+					onReset={() => {
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-${deviceType}`
+								),
+							[`list-marker-height-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-unit-${deviceType}`
+								),
+							isReset: true,
+						});
+					}}
+					allowedUnits={['px', 'em', 'vw', '%', '-']}
+				/>
+			)}
 			<AdvancedNumberControl
 				label={__('Marker line-height', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-line-height'

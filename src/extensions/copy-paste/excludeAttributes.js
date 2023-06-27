@@ -52,9 +52,7 @@ const excludeAttributes = (
 		['background-layers', 'background-layers-hover'].forEach(key => {
 			if (!attributesToExclude[key]) return;
 
-			attributesToExclude[key] = cloneDeep(
-				attributesToExclude['background-layers']
-			);
+			attributesToExclude[key] = cloneDeep(attributesToExclude[key]);
 
 			attributesToExclude[key].forEach((layer, index) => {
 				if (layer.type !== 'image') {

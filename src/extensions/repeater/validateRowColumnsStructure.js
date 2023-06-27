@@ -140,6 +140,7 @@ const validateRowColumnsStructure = (
 		rowClientId,
 		'general',
 		childColumns.length,
+		true,
 		true
 	);
 

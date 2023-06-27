@@ -108,7 +108,7 @@ describe('Repeater', () => {
 		// Add code editor
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 
 		// Select row
 		await page.$eval('.maxi-row-block', block =>
@@ -136,7 +136,7 @@ describe('Repeater', () => {
 		// Add code editor
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 
 		// Select text from second column
 		await page.$eval(

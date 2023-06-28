@@ -59,15 +59,6 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -104,9 +95,6 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                 self::get_arrow_icon_object($props),
                 $arrow_icon_hover_status ? self::get_arrow_icon_object($props, true) : [],
             );
-
-            self::write_log('$styles_obj');
-            self::write_log($styles_obj);
 
 
             $response = style_processor(
@@ -330,8 +318,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
 
             $response['iconResponsive'] = $responsive;
 
-            // self::write_log('get_icon_spacing');
-            // self::write_log($response);
+
 
             return $response;
         }

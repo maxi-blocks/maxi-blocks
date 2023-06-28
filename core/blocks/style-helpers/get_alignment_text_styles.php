@@ -15,10 +15,15 @@ function get_alignment_text_styles($obj, $type = 'text')
                     ];
                     break;
                 case 'center':
-                    $response[$breakpoint] = [
-                        $type === 'list' ? 'list-style-position' : 'text-align' =>
-                            $type === 'list' ? 'inside' : 'initial',
-                    ];
+                    if ($type === 'list') {
+                        $response[$breakpoint] = [
+                            'list-style-position' => $type === 'list' ? 'inside' : 'initial',
+                        ];
+                    } else {
+                        $response[$breakpoint] = [
+                            'text-align' => 'center',
+                        ];
+                    }
                     break;
                 case 'justify':
                     $response[$breakpoint] = [

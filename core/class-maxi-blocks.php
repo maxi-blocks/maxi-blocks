@@ -26,6 +26,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slide-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slider-maxi-block.php';
 
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks

@@ -61,7 +61,7 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
 
         public function get_styles($props, $customCss, $sc_props)
         {
-            $unique_id = $props['uniqueID'];
+            $uniqueID = $props['uniqueID'];
 
             $data = [
                 'customCss' => $customCss,
@@ -111,7 +111,7 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'margin')
                 )),
                 'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
-                'zIndex' => get_z_index_styles(get_group_attributes($props, 'zIndex')),
+                'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
                 'display' => get_display_styles(get_group_attributes($props, 'display')),
                 'size' => get_size_styles(get_group_attributes($props, 'size')),
                 'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),

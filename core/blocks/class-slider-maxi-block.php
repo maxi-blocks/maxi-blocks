@@ -326,7 +326,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
 
                 $attributeName = $prefix . 'icon-spacing-between-' . $breakpoint . ($isHover ? '-hover' : '');
 
-                if(!is_null($props[$attributeName])) {
+                if(isset($props[$attributeName])) {
                     $responsive[$breakpoint]['margin-right'] = get_last_breakpoint_attribute(array(
                         'target' => $prefix . 'icon-spacing-between',
                         'breakpoint' => $breakpoint,

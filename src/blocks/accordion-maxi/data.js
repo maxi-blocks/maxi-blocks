@@ -123,7 +123,7 @@ const customCss = {
 				target: `${activePaneTarget}::after`,
 			},
 		},
-		header: {
+		'pane header': {
 			normal: {
 				label: 'pane header',
 				target: `${normalPaneTarget} .maxi-pane-block__header`,
@@ -193,7 +193,7 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__header-content::after`,
 			},
 		},
-		icon: {
+		'pane icon': {
 			normal: {
 				label: 'icon',
 				target: `${normalPaneTarget} .maxi-pane-block__icon`,
@@ -271,7 +271,7 @@ const customCss = {
 				target: `${activePaneTarget} .maxi-pane-block__icon::after`,
 			},
 		},
-		content: {
+		'pane content': {
 			normal: {
 				label: 'pane content',
 				target: `${normalPaneTarget} .maxi-pane-block__content`,

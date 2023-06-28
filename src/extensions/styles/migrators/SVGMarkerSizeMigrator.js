@@ -38,10 +38,9 @@ const migrate = newAttributes => {
 
 	return {
 		...newAttributes,
-		listStyleCustom: listStyleCustom.replace(
-			/(height|width)=('|").*?('|")/g,
-			''
-		),
+		listStyleCustom: listStyleCustom
+			.replace(/(height|width)=('|").*?('|")/g, '')
+			.replace(/\s+/g, ' '),
 	};
 };
 

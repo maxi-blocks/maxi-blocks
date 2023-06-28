@@ -395,7 +395,13 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 	return response;
 };
 
-const getWPNativeStyles = ({ organizedValues, prefix, style, isBackend }) => {
+const getWPNativeStyles = ({
+	organizedValues,
+	styleCard,
+	prefix,
+	style,
+	isBackend,
+}) => {
 	let response = '';
 	const nativeWPPrefix = isBackend ? 'wp-block' : 'maxi-block--use-sc';
 
@@ -439,11 +445,19 @@ const getWPNativeStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		// WP native block when has link
 		const WPNativeLinkPrefix = `${prefix} .maxi-${style} .${nativeWPPrefix} a`;
 
-		response += `${WPNativeLinkPrefix} { color: var(--maxi-${style}-link); }`;
-		response += `${WPNativeLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
-		response += `${WPNativeLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
-		response += `${WPNativeLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
-		response += `${WPNativeLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+		['', ' span'].forEach(suffix => {
+			response += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
+			if (styleCard['--maxi-light-link-hover']) {
+				response += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
+				response += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
+			}
+			if (styleCard['--maxi-light-link-active']) {
+				response += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
+			}
+			if (styleCard['--maxi-light-link-visited']) {
+				response += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
+			}
+		});
 
 		// Button Maxi
 		const buttonSentences = [
@@ -558,10 +572,10 @@ const getSCStyles = async (styleCard, isBackend = false) => {
 		});
 
 		// WP native blocks styles
-
 		if (scGutenbergBlocks === '1')
 			response += getWPNativeStyles({
 				organizedValues,
+				styleCard,
 				prefix,
 				style,
 				isBackend,

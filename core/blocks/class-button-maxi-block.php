@@ -103,7 +103,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 $button_icon_hover_styles
             );
 
-
             $response = style_processor(
                 $styles_obj,
                 $data,

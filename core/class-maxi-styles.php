@@ -36,6 +36,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slide-maxi-block.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slider-maxi-block.php';
 
 class MaxiBlocks_Styles
 {
@@ -952,10 +954,11 @@ class MaxiBlocks_Styles
         $contentAndMeta = $this->get_content_and_meta($post_id, false, 'maxi-blocks-styles');
 
         $template_id = $this->get_id(true);
-        $this->get_content_and_meta($template_id, true, 'maxi-blocks-styles-templates');
+        $templateContentAndMeta = $this->get_content_and_meta($template_id, true, 'maxi-blocks-styles-templates');
 
         if ($contentAndMeta['meta'] !== null || $contentAndMeta['template_meta'] !== null) {
-            $this->process_scripts($contentAndMeta['meta'], $contentAndMeta['template_meta'], $contentAndMeta['template_content']);
+            $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
+            $this->process_scripts($contentAndMeta['meta'], $contentAndMeta['template_meta'], $templateContent);
         }
 
         return $content;
@@ -971,9 +974,16 @@ class MaxiBlocks_Styles
     private function get_content_and_meta($id, $template, $content_key)
     {
         $data = $this->get_content_for_blocks($template, $id);
-        if(!is_empty($data)) {
+        if(!empty($data) && isset($data['content']) && isset($data['meta'])) {
             $this->apply_content($content_key, $data['content'], $id);
-            return ['content' => $data['content'], 'meta' => $data['meta'], 'template_meta' => $this->get_content_for_blocks(!$template, $id)['meta']];
+            $contentForBlocks = $this->get_content_for_blocks(!$template, $id);
+            $templateMeta = isset($contentForBlocks['meta']) ? $contentForBlocks['meta'] : null;
+
+            return [
+                'content' => $data['content'],
+                'meta' => $data['meta'],
+                'template_meta' => $templateMeta
+            ];
         }
         return ['content' => null, 'meta' => null, 'template_meta' => null];
     }
@@ -1275,6 +1285,8 @@ class MaxiBlocks_Styles
             'maxi-blocks/number-counter-maxi' => 'MaxiBlocks_Number_Counter_Maxi_Block',
             'maxi-blocks/search-maxi' => 'MaxiBlocks_Search_Maxi_Block',
             'maxi-blocks/map-maxi' => 'MaxiBlocks_Map_Maxi_Block',
+            'maxi-blocks/slider-maxi' => 'MaxiBlocks_Slider_Maxi_Block',
+            'maxi-blocks/slide-maxi' => 'MaxiBlocks_Slide_Maxi_Block',
         ];
 
         if (class_exists($blockClasses[$block_name])) {
@@ -1350,6 +1362,7 @@ class MaxiBlocks_Styles
             'maxi-blocks/map-maxi',
             'maxi-blocks/accordion-maxi',
             'maxi-blocks/pane-maxi',
+            'maxi-blocks/slider-maxi',
 
         ];
 
@@ -1463,6 +1476,7 @@ class MaxiBlocks_Styles
             'maxi-blocks/accordion-maxi' => 'accordion',
             'maxi-blocks/map-maxi' => 'map',
             'maxi-blocks/video-maxi' => 'video',
+            'maxi-blocks/slider-maxi' => 'slider',
         ];
 
         // Get the unique ID from props

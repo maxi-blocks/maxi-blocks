@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, resolveSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -150,7 +150,7 @@ const mergeDeep = (target, source) => {
 	return target;
 };
 
-export const getPageFonts = (onlyBackend = false) => {
+export const getPageFonts = async (onlyBackend = false) => {
 	let response = {};
 	let oldResponse = {};
 	let mergedResponse = {};
@@ -230,6 +230,47 @@ export const getPageFonts = (onlyBackend = false) => {
 			oldResponse = cloneDeep(mergedResponse);
 		}
 	});
+
+	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
+		'maxiBlocks'
+	).receiveMaxiSettings();
+
+	if (scGutenbergBlocks === '1') {
+		// TODO: optimization, use one `goThroughMaxiBlocks` call
+		goThroughMaxiBlocks(({ clientId, attributes, name }) => {
+			if (!name.includes('core/')) return;
+
+			const parentsClientIds =
+				select('core/block-editor').getBlockParents(clientId);
+			const isBlockInMaxiBlock = parentsClientIds.some(parentClientId =>
+				select('core/block-editor')
+					.getBlockName(parentClientId)
+					.includes('maxi-blocks/')
+			);
+
+			if (!isBlockInMaxiBlock) return;
+
+			const { level } = attributes;
+
+			const textLevel = level ? `h${level}` : 'p';
+
+			response = getAllFonts(
+				{},
+				false,
+				false,
+				textLevel,
+				undefined,
+				onlyBackend
+			);
+
+			mergedResponse = mergeDeep(
+				cloneDeep(oldResponse),
+				cloneDeep(response)
+			);
+
+			oldResponse = cloneDeep(mergedResponse);
+		}, true);
+	}
 
 	return mergedResponse;
 };

@@ -59,9 +59,18 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             return self::$instance;
         }
 
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public function get_styles($props, $customCss, $sc_props)
         {
-            $unique_id = $props['uniqueID'];
+            $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $arrow_icon_hover_status = $props['navigation-arrow-both-icon-status-hover'];
 
@@ -70,28 +79,42 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                 'customCss' => $customCss,
             ];
 
-
-            $response = [
-                $unique_id => style_processor(
-                    array_merge(
-                        ['' => self::get_normal_object($props)],
-                        [':hover' => self::get_hover_object($props)],
-                        get_block_background_styles(array_merge(
-                            get_group_attributes($props, ['blockBackground', 'border', 'borderWidth', 'borderRadius']),
-                            ['block_style' => $block_style]
-                        )),
-                        get_block_background_styles(array_merge(
-                            get_group_attributes($props, ['blockBackground', 'border', 'borderWidth', 'borderRadius'], true),
-                            ['is_hover' => true, 'block_style' => $block_style]
-                        )),
-                        self::get_arrow_icon_object($props),
-                        $arrow_icon_hover_status ? self::get_arrow_icon_object($props, true) : [],
-                        self::get_dots_icon_object($props)
-                    ),
-                    $data,
-                    $props
-                ),
+            $styles_obj = [
+                $uniqueID => [
+                    '' => self::get_normal_object($props),
+                    ':hover' => self::get_hover_object($props),
+                ],
             ];
+
+            $background_styles = get_block_background_styles(array_merge(
+                get_group_attributes($props, ['blockBackground', 'border', 'borderWidth', 'borderRadius']),
+                ['block_style' => $block_style]
+            ));
+
+            $background_hover_styles = get_block_background_styles(array_merge(
+                get_group_attributes($props, ['blockBackground', 'border', 'borderWidth', 'borderRadius'], true),
+                ['is_hover' => true, 'block_style' => $block_style]
+            ));
+
+            $styles_obj[$uniqueID] = array_merge_recursive(
+                $styles_obj[$uniqueID],
+                $background_styles,
+                $background_hover_styles,
+                self::get_dots_icon_object($props),
+                self::get_arrow_icon_object($props),
+                $arrow_icon_hover_status ? self::get_arrow_icon_object($props, true) : [],
+            );
+
+            self::write_log('$styles_obj');
+            self::write_log($styles_obj);
+
+
+            $response = style_processor(
+                $styles_obj,
+                $data,
+                $props
+            );
+
 
             return $response;
         }
@@ -290,10 +313,10 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
 
                 if(!is_null($horizontalSpacing)) {
                     if($icon === 'prev') {
-                        $responsive[$breakpoint]['left'] = '-' . $horizontalSpacing . 'px';
+                        $responsive[$breakpoint]['left'] =  -(float)$horizontalSpacing . 'px';
                     }
                     if($icon === 'next') {
-                        $responsive[$breakpoint]['right'] = '-' . $horizontalSpacing . 'px';
+                        $responsive[$breakpoint]['right'] =  -(float)$horizontalSpacing . 'px';
                     }
                     if($icon === 'dots') {
                         $responsive[$breakpoint]['left'] = $horizontalSpacing . '%';
@@ -306,6 +329,9 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             }
 
             $response['iconResponsive'] = $responsive;
+
+            // self::write_log('get_icon_spacing');
+            // self::write_log($response);
 
             return $response;
         }
@@ -409,7 +435,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
         {
             $hover_flag = $is_hover ? ':hover' : '';
             $prefix = 'navigation-arrow-both-';
-            $target = '.maxi-slider-block__arrow';
+            $target = ' .maxi-slider-block__arrow';
 
             $response = array();
 
@@ -428,21 +454,23 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             $dot_icon_hover_status = $props['navigation-dot-icon-status-hover'];
             $dot_icon_active_status = $props['active-navigation-dot-icon-status'];
 
+
+
             $response = array(
-                '.maxi-navigation-dot-icon-block__icon' => get_icon_size($props, false, $prefix),
-                '.maxi-navigation-dot-icon-block__icon > div' => get_icon_size($props, false, $prefix),
-                '.maxi-slider-block__dot:not(:last-child)' => self::get_icon_spacing_between($props, 'navigation-dot-', false),
-                '.maxi-slider-block__dots' => self::get_icon_spacing($props, 'dots', false, $prefix)
+                ' .maxi-navigation-dot-icon-block__icon' => get_icon_size($props, false, $prefix),
+                ' .maxi-navigation-dot-icon-block__icon > div' => get_icon_size($props, false, $prefix),
+                ' .maxi-slider-block__dot:not(:last-child)' => self::get_icon_spacing_between($props, 'navigation-dot-', false),
+                ' .maxi-slider-block__dots' => self::get_icon_spacing($props, 'dots', false, $prefix)
             );
 
-            $response = array_merge($response, self::get_icon_object($props, $prefix, '.maxi-slider-block__dot'));
+            $response = array_merge($response, self::get_icon_object($props, $prefix, ' .maxi-slider-block__dot'));
 
             if ($dot_icon_hover_status) {
-                $response = array_merge($response, self::get_icon_object($props, $prefix, '.maxi-slider-block__dot:not(.maxi-slider-block__dot--active)', true));
+                $response = array_merge($response, self::get_icon_object($props, $prefix, ' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active)', true));
             }
 
             if ($dot_icon_active_status) {
-                $response = array_merge($response, self::get_icon_object($props, 'active-' . $prefix, '.maxi-slider-block__dot--active'));
+                $response = array_merge($response, self::get_icon_object($props, 'active-' . $prefix, ' .maxi-slider-block__dot--active'));
             }
 
             return $response;

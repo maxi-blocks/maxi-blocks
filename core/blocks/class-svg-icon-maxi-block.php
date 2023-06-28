@@ -108,9 +108,21 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             return $response;
         }
 
+        public static function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+
+
+
 
             $response =
                 [
@@ -135,6 +147,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
                     'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
+                    'alignment' => get_alignment_flex_styles(array_merge(get_group_attributes($props, 'alignment'))),
                     'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),

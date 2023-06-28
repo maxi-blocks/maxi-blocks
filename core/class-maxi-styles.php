@@ -1408,9 +1408,7 @@ class MaxiBlocks_Styles
                 );
             }
 
-            $this->write_log('CUSTOM META');
-            $this->write_log($custom_meta_json);
-            $this->write_log('CUSTOM META END');
+
         }
 
 

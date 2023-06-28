@@ -395,8 +395,9 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
                 $size = $object_size * 100;
 
-                $response[$breakpoint]['height'] = "${size}%";
-                $response[$breakpoint]['width'] = "${size}%";
+                $response[$breakpoint]['height'] = "{$size}%";
+                $response[$breakpoint]['width'] = "{$size}%";
+
 
                 $displacement_coefficient = 100 - $size;
 

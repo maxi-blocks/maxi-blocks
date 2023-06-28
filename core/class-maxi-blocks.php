@@ -156,6 +156,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
             if (class_exists('MaxiBlocks_Map_Maxi_Block')) {
                 MaxiBlocks_Map_Maxi_Block::register();
             }
+            if (class_exists('MaxiBlocks_Slide_Maxi_Block')) {
+                MaxiBlocks_Slide_Maxi_Block::register();
+            }
+            if (class_exists('MaxiBlocks_Slider_Maxi_Block')) {
+                MaxiBlocks_Slider_Maxi_Block::register();
+            }
         }
 
         public function maxi_add_image_taxonomy()

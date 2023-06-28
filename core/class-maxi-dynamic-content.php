@@ -905,7 +905,7 @@ class MaxiBlocks_DynamicContent
             return $dictionary['by-date'];
         }
 
-        return $dictionary[$relation];
+        return array_key_exists($relation, $dictionary) ? $dictionary[$relation] : null;
     }
 
     /**

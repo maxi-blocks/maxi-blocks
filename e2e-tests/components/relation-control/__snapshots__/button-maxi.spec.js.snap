@@ -836,6 +836,42 @@ Array [
           "writing-mode": "vertical-rl",
         },
       },
+      "l": Object {
+        "breakpoint": 1366,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "m": Object {
+        "breakpoint": 1024,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "s": Object {
+        "breakpoint": 767,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "xs": Object {
+        "breakpoint": 480,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "xxl": Object {
+        "breakpoint": 1921,
+        "styles": Object {
+          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
     },
     "effects": Object {
       "disableTransition": false,
@@ -857,7 +893,7 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (min-width: 1922px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
 
 exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s, font-size 0.3s ease 0s, line-height 0.3s ease 0s, letter-spacing 0.3s ease 0s, font-weight 0.3s ease 0s, text-transform 0.3s ease 0s, font-style 0.3s ease 0s, text-decoration 0.3s ease 0s, text-indent 0.3s ease 0s, writing-mode 0.3s ease 0s, text-orientation 0.3s ease 0s, direction 0.3s ease 0s;}"`;
 

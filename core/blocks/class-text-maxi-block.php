@@ -140,32 +140,36 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 )
             );
             $custom_formats_styles = get_custom_formats_styles(
-                ' .maxi-image-block__caption',
+                !$is_list
+                        ? ' .maxi-text-block__content'
+                        : ' .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
                 $block_style,
                 get_group_attributes($props, 'typography'),
-                'p',
+                $text_level,
                 false,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
-                ' .maxi-image-block__caption',
+                !$is_list
+                ? ':hover .maxi-text-block__content'
+                : ':hover .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
                 $block_style,
                 get_group_attributes($props, 'typography'),
-                'p',
+                $text_level,
                 true,
             );
             $link_styles = array_merge(
                 get_link_styles(
                     get_group_attributes($props, 'link'),
-                    ' a figcaption.maxi-image-block__caption',
+                    ' a '.$element.'.maxi-text-block__content',
                     $block_style,
                 ),
                 get_link_styles(
                     get_group_attributes($props, 'link'),
-                    ' a figcaption.maxi-image-block__caption',
+                    ' '.$element.'.maxi-text-block__content a',
                     $block_style,
-                )
+                ),
             );
 
             $styles_obj[$uniqueID] = array_merge(

@@ -1379,10 +1379,10 @@ class MaxiBlocks_Styles
         // $this->write_log($styles);
 
         // styles
-        $this->write_log('=============== '.$block_name.' ===============');
-        $this->write_log('before style resolver');
+        // $this->write_log('=============== '.$block_name.' ===============');
+        // $this->write_log('before style resolver');
         $resolved_styles = style_resolver($styles);
-        $this->write_log('before frontend_style_generator');
+        // $this->write_log('before frontend_style_generator');
         $frontend_styles = frontend_style_generator($resolved_styles);
 
         // custom meta
@@ -1404,9 +1404,9 @@ class MaxiBlocks_Styles
             $custom_meta_block = 1;
         }
 
-        $this->write_log('before custom meta');
+        // $this->write_log('before custom meta');
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
-        $this->write_log('before putting custom meta into DB');
+        // $this->write_log('before putting custom meta into DB');
         if(!empty($custom_meta)) {
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(
@@ -1446,7 +1446,7 @@ class MaxiBlocks_Styles
 
         }
 
-        $this->write_log('before putting styles into DB');
+        // $this->write_log('before putting styles into DB');
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(
@@ -1487,7 +1487,7 @@ class MaxiBlocks_Styles
             );
         }
 
-        $this->write_log('=========================================');
+        //  $this->write_log('=========================================');
 
         return $styles;
     }

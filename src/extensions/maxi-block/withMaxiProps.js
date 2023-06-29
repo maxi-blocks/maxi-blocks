@@ -34,6 +34,7 @@ import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+import { fromListToText, fromTextToList } from '../text/formats';
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
@@ -151,6 +152,26 @@ const withMaxiProps = createHigherOrderComponent(
 									true,
 									currentBlock.name
 								);
+
+								if ('isList' in obj) {
+									if (
+										obj.isList &&
+										!currentAttributes.isList
+									) {
+										nonExcludedAttributes.content =
+											fromTextToList(
+												currentAttributes.content
+											);
+									} else if (
+										!obj.isList &&
+										currentAttributes.isList
+									) {
+										nonExcludedAttributes.content =
+											fromListToText(
+												currentAttributes.content
+											);
+									}
+								}
 
 								updateRelationsInColumn(
 									nonExcludedAttributes,

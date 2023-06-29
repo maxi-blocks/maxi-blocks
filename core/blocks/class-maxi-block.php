@@ -51,11 +51,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_opacity_style
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_overflow_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_position_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_shape_divider_styles.php';
-// require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_shape_styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_shape_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_size_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_svg_styles.php';
-// require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transform_styles.php';
-// require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transition_styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transform_styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_transition_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_typography_styles.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/get_zindex_styles.php';
 

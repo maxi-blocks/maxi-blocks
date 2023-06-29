@@ -28,17 +28,18 @@ function get_link_styles($obj, $target, $blockStyle)
             $response[$target]['link'][$breakpoint]['text-decoration'] = $decoration;
         }
 
-        $linkPaletteStatus = $linkPaletteSCStatus = $linkPaletteColor = $linkPaletteOpacity = $linkColor = null;
-        get_palette_attributes([
+        $paletteAttributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'link-',
-            'breakpoint' => $breakpoint,
-            'linkPaletteStatus' => $linkPaletteStatus,
-            'linkPaletteSCStatus' => $linkPaletteSCStatus,
-            'linkPaletteColor' => $linkPaletteColor,
-            'linkPaletteOpacity' => $linkPaletteOpacity,
-            'linkColor' => $linkColor,
+            'breakpoint' => $breakpoint
         ]);
+
+        $linkPaletteStatus = $paletteAttributes['palette_status'];
+        $linkPaletteSCStatus = $paletteAttributes['palette_sc_status'];
+        $linkPaletteColor = $paletteAttributes['palette_color'];
+        $linkPaletteOpacity = $paletteAttributes['palette_opacity'];
+        $linkColor = $paletteAttributes['color'];
+
 
         if (is_bool($linkPaletteStatus) && !$linkPaletteStatus) {
             $response[".block-editor-block-list__block {$target}:visited"]['link'][$breakpoint] = [];
@@ -51,13 +52,13 @@ function get_link_styles($obj, $target, $blockStyle)
             $colorString = get_color_rgba_string(
                 $linkPaletteSCStatus
                     ? [
-                        'firstVar' => "color-{$linkPaletteColor}",
+                        'first_var' => "color-{$linkPaletteColor}",
                         'opacity' => $linkPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
                     : [
-                        'firstVar' => 'link',
-                        'secondVar' => "color-{$linkPaletteColor}",
+                        'first_var' => 'link',
+                        'second_var' => "color-{$linkPaletteColor}",
                         'opacity' => $linkPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
@@ -73,17 +74,17 @@ function get_link_styles($obj, $target, $blockStyle)
             $response[$target]['link'][$breakpoint]['text-decoration'] = $hoverDecoration;
         }
 
-        $linkHoverPaletteStatus = $linkHoverPaletteSCStatus = $linkHoverPaletteColor = $linkHoverPaletteOpacity = $linkHoverColor = null;
-        get_palette_attributes([
+        $hoverPaletteAttributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'link-hover-',
-            'breakpoint' => $breakpoint,
-            'linkPaletteStatus' => $linkHoverPaletteStatus,
-            'linkPaletteSCStatus' => $linkHoverPaletteSCStatus,
-            'linkPaletteColor' => $linkHoverPaletteColor,
-            'linkPaletteOpacity' => $linkHoverPaletteOpacity,
-            'linkColor' => $linkHoverColor,
+            'breakpoint' => $breakpoint
         ]);
+
+        $linkHoverPaletteStatus = $hoverPaletteAttributes['palette_status'];
+        $linkHoverPaletteSCStatus = $hoverPaletteAttributes['palette_sc_status'];
+        $linkHoverPaletteColor = $hoverPaletteAttributes['palette_color'];
+        $linkHoverPaletteOpacity = $hoverPaletteAttributes['palette_opacity'];
+        $linkHoverColor = $hoverPaletteAttributes['color'];
 
         if (is_bool($linkHoverPaletteStatus) && !$linkHoverPaletteStatus) {
             $response["{$target}:visited:hover"]['link'][$breakpoint] = [];
@@ -94,13 +95,13 @@ function get_link_styles($obj, $target, $blockStyle)
             $color = get_color_rgba_string(
                 $linkHoverPaletteSCStatus
                     ? [
-                        'firstVar' => "color-{$linkHoverPaletteColor}",
+                        'first_var' => "color-{$linkHoverPaletteColor}",
                         'opacity' => $linkHoverPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
                     : [
-                        'firstVar' => 'link-hover',
-                        'secondVar' => "color-{$linkHoverPaletteColor}",
+                        'first_var' => 'link-hover',
+                        'second_var' => "color-{$linkHoverPaletteColor}",
                         'opacity' => $linkHoverPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
@@ -111,17 +112,17 @@ function get_link_styles($obj, $target, $blockStyle)
             $response["{$target}:visited:hover"]['link'][$breakpoint] = ['color' => $color];
         }
 
-        $linkActivePaletteStatus = $linkActivePaletteSCStatus = $linkActivePaletteColor = $linkActivePaletteOpacity = $linkActiveColor = null;
-        get_palette_attributes([
+        $activePaletteAttributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'link-active-',
-            'breakpoint' => $breakpoint,
-            'linkPaletteStatus' => $linkActivePaletteStatus,
-            'linkPaletteSCStatus' => $linkActivePaletteSCStatus,
-            'linkPaletteColor' => $linkActivePaletteColor,
-            'linkPaletteOpacity' => $linkActivePaletteOpacity,
-            'linkColor' => $linkActiveColor,
+            'breakpoint' => $breakpoint
         ]);
+
+        $linkActivePaletteStatus = $activePaletteAttributes['palette_status'];
+        $linkActivePaletteSCStatus = $activePaletteAttributes['palette_sc_status'];
+        $linkActivePaletteColor = $activePaletteAttributes['palette_color'];
+        $linkActivePaletteOpacity = $activePaletteAttributes['palette_opacity'];
+        $linkActiveColor = $activePaletteAttributes['color'];
 
         if (is_bool($linkActivePaletteStatus) && !$linkActivePaletteStatus) {
             $response["{$target}:active"]['link'][$breakpoint] = [];
@@ -133,13 +134,13 @@ function get_link_styles($obj, $target, $blockStyle)
             $color = get_color_rgba_string(
                 $linkActivePaletteSCStatus
                     ? [
-                        'firstVar' => "color-{$linkActivePaletteColor}",
+                        'first_var' => "color-{$linkActivePaletteColor}",
                         'opacity' => $linkActivePaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
                     : [
-                        'firstVar' => 'link-active',
-                        'secondVar' => "color-{$linkActivePaletteColor}",
+                        'first_var' => 'link-active',
+                        'second_var' => "color-{$linkActivePaletteColor}",
                         'opacity' => $linkActivePaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
@@ -149,17 +150,17 @@ function get_link_styles($obj, $target, $blockStyle)
             $response["{$target}:active span"]['link'][$breakpoint] = ['color' => $color];
         }
 
-        $linkVisitedPaletteStatus = $linkVisitedPaletteSCStatus = $linkVisitedPaletteColor = $linkVisitedPaletteOpacity = $linkVisitedColor = null;
-        get_palette_attributes([
+        $visitedPaletteAttributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => 'link-visited-',
-            'breakpoint' => $breakpoint,
-            'linkPaletteStatus' => $linkVisitedPaletteStatus,
-            'linkPaletteSCStatus' => $linkVisitedPaletteSCStatus,
-            'linkPaletteColor' => $linkVisitedPaletteColor,
-            'linkPaletteOpacity' => $linkVisitedPaletteOpacity,
-            'linkColor' => $linkVisitedColor,
+            'breakpoint' => $breakpoint
         ]);
+
+        $linkVisitedPaletteStatus = $visitedPaletteAttributes['palette_status'];
+        $linkVisitedPaletteSCStatus = $visitedPaletteAttributes['palette_sc_status'];
+        $linkVisitedPaletteColor = $visitedPaletteAttributes['palette_color'];
+        $linkVisitedPaletteOpacity = $visitedPaletteAttributes['palette_opacity'];
+        $linkVisitedColor = $visitedPaletteAttributes['color'];
 
         if (is_bool($linkVisitedPaletteStatus) && !$linkVisitedPaletteStatus) {
             $response["{$target}:visited"]['link'][$breakpoint] = [];
@@ -171,13 +172,13 @@ function get_link_styles($obj, $target, $blockStyle)
             $color = get_color_rgba_string(
                 $linkVisitedPaletteSCStatus
                     ? [
-                        'firstVar' => "color-{$linkVisitedPaletteColor}",
+                        'first_var' => "color-{$linkVisitedPaletteColor}",
                         'opacity' => $linkVisitedPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]
                     : [
-                        'firstVar' => 'link-visited',
-                        'secondVar' => "color-{$linkVisitedPaletteColor}",
+                        'first_var' => 'link-visited',
+                        'second_var' => "color-{$linkVisitedPaletteColor}",
                         'opacity' => $linkVisitedPaletteOpacity,
                         'block_style' => $blockStyle,
                     ]

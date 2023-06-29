@@ -199,8 +199,8 @@ const interactionBuilderSettings = {
 			helper: props => getTypographyStyles({ ...props }),
 			target: contentClass,
 		},
+		...getCanvasSettings({ name }),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

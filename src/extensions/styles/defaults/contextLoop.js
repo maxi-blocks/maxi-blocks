@@ -14,6 +14,9 @@ const contextLoop = {
 	'cl-author': {
 		type: 'number',
 	},
+	'cl-order-by': {
+		type: 'string',
+	},
 	'cl-order': {
 		type: 'string',
 	},

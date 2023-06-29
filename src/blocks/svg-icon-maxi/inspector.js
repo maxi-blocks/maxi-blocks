@@ -44,8 +44,6 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.repeaterInfoBox({ props })}
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{deviceType === 'general' && (
 				<div className='maxi-tab-content__box sidebar-block-info'>
 					<CustomLabel
@@ -125,6 +123,8 @@ const Inspector = props => {
 					/>
 				</div>
 			)}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding

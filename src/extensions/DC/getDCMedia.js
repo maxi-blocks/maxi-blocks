@@ -10,8 +10,8 @@ import { isNil } from 'lodash';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 
-const getDCMedia = async dataRequest => {
-	const data = await getDCEntity(dataRequest);
+const getDCMedia = async (dataRequest, clientId) => {
+	const data = await getDCEntity(dataRequest, clientId);
 
 	const { field, source } = dataRequest;
 

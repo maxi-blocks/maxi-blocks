@@ -86,20 +86,15 @@ const getRelatedAttributes = ({
 					'color'
 				);
 
-				if (propsToCheck[paletteStatusKey] && !attrs[paletteStatusKey])
-					result[paletteStatusKey] = propsToCheck[paletteStatusKey];
-
-				if (propsToCheck[paletteColorKey] && !attrs[paletteColorKey])
-					result[paletteColorKey] = propsToCheck[paletteColorKey];
-
-				if (
-					propsToCheck[paletteOpacityKey] &&
-					!attrs[paletteOpacityKey]
-				)
-					result[paletteOpacityKey] = propsToCheck[paletteOpacityKey];
-
-				if (propsToCheck[colorKey] && !attrs[colorKey])
-					result[colorKey] = propsToCheck[colorKey];
+				[
+					paletteStatusKey,
+					paletteColorKey,
+					paletteOpacityKey,
+					colorKey,
+				].forEach(key => {
+					if (!isNil(propsToCheck[key]) && isNil(attrs[key]))
+						result[key] = propsToCheck[key];
+				});
 			}
 		});
 

@@ -68,6 +68,8 @@ class MaxiBlocks_Styles
 
         add_filter('the_content', [$this, 'process_content']);
         add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+        // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+        // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
 
     public function write_log($log)
@@ -1234,9 +1236,25 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        foreach ($blocks as $block) {
-            $this->get_styles_meta_fonts_from_block($block);
+        //Get PHP maximum execution time
+        $max_execution_time = ini_get('max_execution_time');
+        //Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Process each block in the current chunk
+            $this->write_log('block_chunk');
+            foreach($block_chunk as $block) {
+                $this->get_styles_meta_fonts_from_block($block);
+            }
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($max_execution_time != 0) {
+                set_time_limit($max_execution_time - 2);
+            }
+            $this->write_log('block_chunk END');
         }
+
     }
 
     /**
@@ -1339,8 +1357,21 @@ class MaxiBlocks_Styles
         //$this->write_log('context END');
 
         if ($inner_blocks && !empty($inner_blocks)) {
-            foreach ($inner_blocks as $inner_block) {
-                $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
+            // Get PHP maximum execution time
+            $max_execution_time = ini_get('max_execution_time');
+            //Split inner_blocks array into chunks of 3
+            $inner_block_chunks = array_chunk($inner_blocks, 3);
+
+            foreach ($inner_block_chunks as $inner_block_chunk) {
+                // Process each block in the current chunk
+                foreach($inner_block_chunk as $inner_block) {
+                    $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
+                }
+
+                // Reset PHP maximum execution time for each chunk to avoid a timeout
+                if ($max_execution_time != 0) {
+                    set_time_limit($max_execution_time - 2);
+                }
             }
         }
 
@@ -1348,7 +1379,10 @@ class MaxiBlocks_Styles
         // $this->write_log($styles);
 
         // styles
+        $this->write_log('=============== '.$block_name.' ===============');
+        $this->write_log('before style resolver');
         $resolved_styles = style_resolver($styles);
+        $this->write_log('before frontend_style_generator');
         $frontend_styles = frontend_style_generator($resolved_styles);
 
         // custom meta
@@ -1370,8 +1404,9 @@ class MaxiBlocks_Styles
             $custom_meta_block = 1;
         }
 
-
+        $this->write_log('before custom meta');
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+        $this->write_log('before putting custom meta into DB');
         if(!empty($custom_meta)) {
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(
@@ -1411,7 +1446,7 @@ class MaxiBlocks_Styles
 
         }
 
-
+        $this->write_log('before putting styles into DB');
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(
@@ -1452,6 +1487,7 @@ class MaxiBlocks_Styles
             );
         }
 
+        $this->write_log('=========================================');
 
         return $styles;
     }

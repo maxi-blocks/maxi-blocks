@@ -112,15 +112,15 @@ const customCss = {
 		'after pane': {
 			normal: {
 				label: 'pane ::after',
-				target: '::after',
+				target: ' .maxi-pane-block::after',
 			},
 			hover: {
 				label: 'pane ::after on hover',
-				target: ':hover::after',
+				target: ' .maxi-pane-block:hover::after',
 			},
 			active: {
 				label: 'pane ::after on active state',
-				target: `${activePaneTarget}::after`,
+				target: ` ${activePaneTarget}::after`,
 			},
 		},
 		'pane header': {

@@ -18,6 +18,8 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_resolver.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/frontend_style_generator.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_row_gap_attributes.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_custom_data.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_custom_format_value.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_all_fonts.php';
 
 
 // Blocks
@@ -1243,7 +1245,7 @@ class MaxiBlocks_Styles
 
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
-            $this->write_log('block_chunk');
+
             foreach($block_chunk as $block) {
                 $this->get_styles_meta_fonts_from_block($block);
             }
@@ -1252,9 +1254,45 @@ class MaxiBlocks_Styles
             if ($max_execution_time != 0) {
                 set_time_limit($max_execution_time - 2);
             }
-            $this->write_log('block_chunk END');
         }
 
+    }
+
+    public function get_block_fonts($block_name, $props, $only_backend = false)
+    {
+        $response = [];
+
+        $typography = [];
+        $typography_hover = [];
+        $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
+        $block_style = $props['blockStyle'];
+
+        switch ($block_name) {
+            case 'maxi-blocks/number-counter-maxi':
+                $typography = get_group_attributes($props, 'numberCounter');
+                break;
+            case 'maxi-blocks/button-maxi':
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                $text_level = 'button';
+                break;
+            default:
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                break;
+        }
+
+        if (isset($typography_hover['typography-status-hover'])) {
+            $response = array_merge_recursive(
+                get_all_fonts($typography, false, false, $text_level, $block_style, $only_backend),
+                get_all_fonts($typography_hover, false, true, $text_level, $block_style, $only_backend)
+            );
+        } else {
+            $response = get_all_fonts($typography, false, false, $text_level, $block_style, $only_backend);
+        }
+
+
+        return $response;
     }
 
     /**
@@ -1375,18 +1413,11 @@ class MaxiBlocks_Styles
             }
         }
 
-        // $this->write_log('$styles');
-        // $this->write_log($styles);
 
-        // styles
-        // $this->write_log('=============== '.$block_name.' ===============');
-        // $this->write_log('before style resolver');
         $resolved_styles = style_resolver($styles);
-        // $this->write_log('before frontend_style_generator');
         $frontend_styles = frontend_style_generator($resolved_styles);
 
         // custom meta
-
         $custom_meta_block = 0;
 
         $meta_blocks = [
@@ -1404,9 +1435,7 @@ class MaxiBlocks_Styles
             $custom_meta_block = 1;
         }
 
-        // $this->write_log('before custom meta');
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
-        // $this->write_log('before putting custom meta into DB');
         if(!empty($custom_meta)) {
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(
@@ -1446,7 +1475,24 @@ class MaxiBlocks_Styles
 
         }
 
-        // $this->write_log('before putting styles into DB');
+        // fonts
+
+        $blocks_with_fonts = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/button-maxi',
+            'maxi-blocks/text-maxi',
+            'maxi-blocks/image-maxi',
+        ];
+
+        if (in_array($block_name, $blocks_with_fonts) && !empty($props)) {
+            $fonts = json_encode($this->get_block_fonts($block_name, $props));
+        } else {
+            $fonts = '';
+        }
+
+        $this->write_log('fonts');
+        $this->write_log($fonts);
+
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(
@@ -1460,13 +1506,16 @@ class MaxiBlocks_Styles
             // Update the existing row.
             $old_css = $exists->css_value;
             $old_custom_meta = $exists->active_custom_data;
+            $old_fonts = $exists->fonts_value;
             $wpdb->query(
                 $wpdb->prepare(
                     "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
-					SET css_value = %s, prev_css_value = %s, active_custom_data = %d, prev_active_custom_data = %d
+					SET css_value = %s, prev_css_value = %s, prev_fonts_value = %s, fonts_value = %s, active_custom_data = %d, prev_active_custom_data = %d
 					WHERE block_style_id = %s",
                     $frontend_styles,
                     $old_css,
+                    $old_fonts,
+                    $fonts,
                     $custom_meta_block,
                     $old_custom_meta,
                     $style_id
@@ -1476,18 +1525,18 @@ class MaxiBlocks_Styles
             // Insert a new row.
             $wpdb->query(
                 $wpdb->prepare(
-                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, active_custom_data, prev_active_custom_data)
-					VALUES (%s, %s, %s, %d, %d)",
+                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)
+					VALUES (%s, %s, %s, %s, %s, %d, %d)",
                     $style_id,
                     $frontend_styles,
+                    '',
+                    $fonts,
                     '',
                     $custom_meta_block,
                     0
                 )
             );
         }
-
-        //  $this->write_log('=========================================');
 
         return $styles;
     }

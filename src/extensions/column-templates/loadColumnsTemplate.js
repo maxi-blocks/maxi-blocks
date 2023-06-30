@@ -113,7 +113,6 @@ const loadColumnsTemplate = (
 				template,
 				columnsBlockObjects,
 				clientId,
-				numCol,
 				noLeftoverInsertion,
 				isMarkNextChangeAsNotPersistent
 		  );

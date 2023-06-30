@@ -139,12 +139,9 @@
 
 	&__button-wrapper {
 		&--repeater {
-			.maxi-block-inserter__button {
-				background: #7a00df !important;
-			}
-
+			.maxi-block-inserter__button,
 			&:before {
-				background: #7a00df;
+				background: #7a00df !important;
 			}
 		}
 

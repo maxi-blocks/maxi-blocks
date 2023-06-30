@@ -92,7 +92,8 @@ const loadColumnsTemplate = (
 	breakpoint,
 	numCol,
 	noLeftoverInsertion,
-	isMarkNextChangeAsNotPersistent
+	isMarkNextChangeAsNotPersistent,
+	avoidRowAttributesChange
 ) => {
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
@@ -103,7 +104,8 @@ const loadColumnsTemplate = (
 		getColumnTemplate(
 			templateName,
 			isRowEmpty ? 'general' : breakpoint,
-			numCol
+			numCol,
+			avoidRowAttributesChange
 		)
 	);
 

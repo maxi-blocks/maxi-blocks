@@ -52,12 +52,16 @@ const getRelatedAttributes = ({
 		const result = {};
 		const propsToCheck = alternativeProps ?? props;
 
+		const shouldAddAttribute = key =>
+			!isNil(propsToCheck[key]) && isNil(attrs[key]);
+
 		Object.keys(attrs).forEach(key => {
 			// Ensure the value for unit attributes is saved if the modified value is related
 			if (key.includes('-unit')) {
 				const newKey = key.replace('-unit', '');
 
-				if (propsToCheck[newKey]) result[newKey] = propsToCheck[newKey];
+				if (shouldAddAttribute(newKey))
+					result[newKey] = propsToCheck[newKey];
 			}
 
 			const breakpoint = getBreakpointFromAttribute(key);
@@ -67,7 +71,8 @@ const getRelatedAttributes = ({
 				`-unit-${breakpoint}`
 			);
 
-			if (propsToCheck[unitKey]) result[unitKey] = propsToCheck[unitKey];
+			if (shouldAddAttribute(unitKey))
+				result[unitKey] = propsToCheck[unitKey];
 
 			// Ensure the palette attributes pack is passed if the modified value is related
 			if (key.includes('palette')) {
@@ -86,20 +91,15 @@ const getRelatedAttributes = ({
 					'color'
 				);
 
-				if (propsToCheck[paletteStatusKey] && !attrs[paletteStatusKey])
-					result[paletteStatusKey] = propsToCheck[paletteStatusKey];
-
-				if (propsToCheck[paletteColorKey] && !attrs[paletteColorKey])
-					result[paletteColorKey] = propsToCheck[paletteColorKey];
-
-				if (
-					propsToCheck[paletteOpacityKey] &&
-					!attrs[paletteOpacityKey]
-				)
-					result[paletteOpacityKey] = propsToCheck[paletteOpacityKey];
-
-				if (propsToCheck[colorKey] && !attrs[colorKey])
-					result[colorKey] = propsToCheck[colorKey];
+				[
+					paletteStatusKey,
+					paletteColorKey,
+					paletteOpacityKey,
+					colorKey,
+				].forEach(key => {
+					if (shouldAddAttribute(key))
+						result[key] = propsToCheck[key];
+				});
 			}
 		});
 

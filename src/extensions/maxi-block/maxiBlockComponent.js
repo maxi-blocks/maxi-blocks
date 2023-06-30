@@ -61,6 +61,7 @@ import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
 import {
 	removeBlockFromColumns,
+	retrieveInnerBlocksPositions,
 	validateRowColumnsStructure,
 } from '../repeater';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
@@ -472,24 +473,28 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 		} else {
-			const { getBlockAttributes, getBlockParentsByBlockName } =
+			const { getBlock, getBlockAttributes, getBlockParentsByBlockName } =
 				select('core/block-editor');
+
+			const innerBlocksPositions = this.props.getInnerBlocksPositions?.();
 
 			// If repeater is turned on and block was moved
 			// outwards, remove it from the columns
 			if (
 				this.props.repeaterStatus &&
-				!getBlockParentsByBlockName(
-					this.props.clientId,
-					'maxi-blocks/column-maxi'
-				)[0]
+				!innerBlocksPositions[[-1]].includes(
+					getBlockParentsByBlockName(
+						this.props.clientId,
+						'maxi-blocks/column-maxi'
+					)[0]
+				)
 			) {
 				// Repeater
 				removeBlockFromColumns(
 					this.props.blockPositionFromColumn,
 					this.props.parentColumnClientId,
 					this.props.clientId,
-					this.props.getInnerBlocksPositions(),
+					innerBlocksPositions,
 					this.props.updateInnerBlocksPositions
 				);
 			}
@@ -504,12 +509,21 @@ class MaxiBlockComponent extends Component {
 				)?.['repeater-status'] &&
 				!this.props.repeaterStatus
 			) {
+				const parentRowClientId = getBlockParentsByBlockName(
+					this.props.clientId,
+					'maxi-blocks/row-maxi'
+				)[0];
+
+				const columnsClientIds = getBlock(
+					parentRowClientId
+				).innerBlocks.map(({ clientId }) => clientId);
+
+				const newInnerBlocksPositions =
+					retrieveInnerBlocksPositions(columnsClientIds);
+
 				validateRowColumnsStructure(
-					getBlockParentsByBlockName(
-						this.props.clientId,
-						'maxi-blocks/row-maxi'
-					)[0],
-					this.props.getInnerBlocksPositions?.(),
+					parentRowClientId,
+					newInnerBlocksPositions,
 					getBlockParentsByBlockName(
 						this.props.clientId,
 						'maxi-blocks/column-maxi'

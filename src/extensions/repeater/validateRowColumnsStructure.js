@@ -7,7 +7,12 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import { cleanInnerBlocks, excludeAttributes } from '../copy-paste';
-import { getChildColumns, goThroughColumns, findBlockPosition } from './utils';
+import {
+	findBlockPosition,
+	findTarget,
+	getChildColumns,
+	goThroughColumns,
+} from './utils';
 import { goThroughMaxiBlocks } from '../maxi-block';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
@@ -98,12 +103,31 @@ const replaceColumnInnerBlocks = (
 
 	validateAttributes(column, column, innerBlocksPositions);
 
-	markNextChangeAsNotPersistent();
-	replaceInnerBlocks(
-		columnClientId,
-		cleanInnerBlocks(getBlock(columnToValidateByClientId).innerBlocks),
-		false
+	const newInnerBlocks = cleanInnerBlocks(
+		getBlock(columnToValidateByClientId).innerBlocks
 	);
+
+	const newColumn = {
+		...column,
+		innerBlocks: newInnerBlocks,
+	};
+
+	goThroughMaxiBlocks(block => {
+		const blockPosition = findBlockPosition(block.clientId, newColumn);
+
+		const oldBlock = findTarget(blockPosition, column);
+
+		if (!oldBlock) {
+			return;
+		}
+
+		if (oldBlock.name === block.name) {
+			block.clientId = oldBlock.clientId;
+		}
+	}, newInnerBlocks);
+
+	markNextChangeAsNotPersistent();
+	replaceInnerBlocks(columnClientId, newInnerBlocks, false);
 };
 
 const validateRowColumnsStructure = (

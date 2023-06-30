@@ -165,6 +165,7 @@ const validateRowColumnsStructure = (
 		'general',
 		childColumns.length,
 		true,
+		true,
 		true
 	);
 

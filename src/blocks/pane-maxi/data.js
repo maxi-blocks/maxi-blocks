@@ -81,11 +81,11 @@ const customCss = {
 		'before pane': {
 			normal: {
 				label: 'pane ::before',
-				target: `.wp-block-maxi-blocks-pane-maxi.${normalPaneTarget}::before`,
+				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}::before`,
 			},
 			hover: {
 				label: 'pane ::before on hover',
-				target: `.wp-block-maxi-blocks-pane-maxi.${normalPaneTarget}:hover::before`,
+				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}:hover::before`,
 			},
 			active: {
 				label: 'pane ::before on active state',

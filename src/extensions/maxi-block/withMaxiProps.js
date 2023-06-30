@@ -23,11 +23,7 @@ import { excludeAttributes } from '../copy-paste';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
 import { handleBlockMove, updateRelationsInColumn } from '../repeater';
-import {
-	findBlockPosition,
-	findTargetParent,
-	getBlockPosition,
-} from '../repeater/utils';
+import { findBlockPosition, getBlockPosition } from '../repeater/utils';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
@@ -101,19 +97,6 @@ const withMaxiProps = createHigherOrderComponent(
 						clientId,
 						getBlock(parentColumnClientId)
 					);
-				}
-
-				return null;
-			}, [blockIndex, blockRootClientId, parentColumnClientId]);
-
-			const parentInnerBlocksCount = useMemo(() => {
-				const targetParent = findTargetParent(
-					blockPositionFromColumn,
-					getBlock(parentColumnClientId)
-				);
-
-				if (targetParent) {
-					return targetParent.innerBlocks.length;
 				}
 
 				return null;
@@ -307,7 +290,6 @@ const withMaxiProps = createHigherOrderComponent(
 						hasInnerBlocks={hasInnerBlocks}
 						parentColumnClientId={parentColumnClientId}
 						blockPositionFromColumn={blockPositionFromColumn}
-						parentInnerBlocksCount={parentInnerBlocksCount}
 						isChild={
 							!isEmpty(
 								getBlockParents(clientId).filter(

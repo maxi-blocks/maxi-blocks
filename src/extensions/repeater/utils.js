@@ -56,6 +56,14 @@ export const findTargetParent = (blockPosition, column) => {
 	return currentBlock;
 };
 
+export const findTarget = (blockPosition, column) => {
+	if (!blockPosition || !column) return null;
+
+	const targetParent = findTargetParent(blockPosition, column);
+
+	return targetParent?.innerBlocks[blockPosition.at(-1)];
+};
+
 export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
 	if (innerBlocksPositions) {
 		for (const [position, clientIds] of Object.entries(

@@ -69,8 +69,7 @@ const OpacityControl = props => {
 						getDefaultAttribute(opacityAttributeKey)
 					);
 				return onChange({
-					[opacityAttributeKey]:
-						getDefaultAttribute(opacityAttributeKey),
+					[opacityAttributeKey]: 1,
 					isReset: true,
 				});
 			}}

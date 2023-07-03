@@ -29,7 +29,7 @@ const updateRelationsInColumn = (
 		return;
 	}
 
-	const { getBlock, getBlockParentsByBlockName } =
+	const { getBlock, getBlockName, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
 	const [oldClientIdColumn, newClientIdColumn] = [
@@ -41,7 +41,7 @@ const updateRelationsInColumn = (
 				clientId,
 				'maxi-blocks/column-maxi'
 			)[0] ||
-			(getBlock(clientId)?.name === 'maxi-blocks/column-maxi' && clientId)
+			(getBlockName(clientId) === 'maxi-blocks/column-maxi' && clientId)
 	);
 
 	attributes.relations = attributes.relations.map(relation => {

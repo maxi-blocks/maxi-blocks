@@ -25,7 +25,12 @@ import DISALLOWED_BLOCKS from './disallowedBlocks';
  */
 import { isEmpty, isEqual } from 'lodash';
 
-const validateAttributes = (block, column, innerBlocksPositions) => {
+const validateAttributes = (
+	block,
+	column,
+	innerBlocksPositions,
+	disableRelationsUpdate = false
+) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
 
 	const blockPosition = findBlockPosition(block.clientId, column);
@@ -44,12 +49,16 @@ const validateAttributes = (block, column, innerBlocksPositions) => {
 		true,
 		block.name
 	);
-	updateRelationsInColumn(
-		nonExcludedRefAttributes,
-		refClientId,
-		block.clientId,
-		innerBlocksPositions
-	);
+
+	if (!disableRelationsUpdate) {
+		updateRelationsInColumn(
+			nonExcludedRefAttributes,
+			refClientId,
+			block.clientId,
+			innerBlocksPositions
+		);
+	}
+
 	if (
 		'SVGData' in nonExcludedRefAttributes &&
 		'SVGElement' in nonExcludedRefAttributes
@@ -101,7 +110,7 @@ const replaceColumnInnerBlocks = (
 
 	const column = getBlock(columnClientId);
 
-	validateAttributes(column, column, innerBlocksPositions);
+	validateAttributes(column, column, innerBlocksPositions, true);
 
 	const newInnerBlocks = cleanInnerBlocks(
 		getBlock(columnToValidateByClientId).innerBlocks

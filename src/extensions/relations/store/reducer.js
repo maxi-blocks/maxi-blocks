@@ -71,11 +71,15 @@ const reducer = (
 				if (uniqueID in triggerBlockRelations) {
 					delete triggerBlockRelations[uniqueID];
 
-					const { relations: blockRelations } = select(
+					const blockAttributes = select(
 						'core/block-editor'
 					).getBlockAttributes(
 						state.relations[triggerUniqueID].clientId
 					);
+
+					if (!blockAttributes) return;
+
+					const { relations: blockRelations } = blockAttributes;
 
 					if (blockRelations) {
 						const newRelations = blockRelations.filter(

@@ -356,8 +356,12 @@ class MaxiBlockComponent extends Component {
 				const { relations } = this.props.attributes;
 
 				if (
-					select('maxiBlocks/relations').receiveRelations(uniqueID)
-						.length !== relations.length
+					relations &&
+					Object.values(
+						select('maxiBlocks/relations').receiveRelations(
+							uniqueID
+						)
+					).length !== relations.length
 				) {
 					relations.forEach(({ uniqueID: targetUniqueID }) =>
 						dispatch('maxiBlocks/relations').addRelation(

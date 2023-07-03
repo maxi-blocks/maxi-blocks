@@ -193,13 +193,13 @@ const transition = {
 			title: 'Border',
 			target: [overlayClass, videoClass],
 			property: ['border', 'border-radius'],
-			hoverProp: 'border-status-hover',
+			hoverProp: 'video-border-status-hover',
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
-			hoverProp: 'box-shadow-status-hover',
+			hoverProp: 'video-box-shadow-status-hover',
 		},
 		'overlay colour': {
 			title: 'Overlay colour',

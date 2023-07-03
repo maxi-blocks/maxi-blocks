@@ -1284,11 +1284,11 @@ class MaxiBlocks_Styles
 
         if (isset($typography_hover['typography-status-hover'])) {
             $response = array_merge_recursive(
-                get_all_fonts($typography, false, false, $text_level, $block_style, $only_backend),
-                get_all_fonts($typography_hover, false, true, $text_level, $block_style, $only_backend)
+                get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend),
+                get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend)
             );
         } else {
-            $response = get_all_fonts($typography, false, false, $text_level, $block_style, $only_backend);
+            $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend);
         }
 
 

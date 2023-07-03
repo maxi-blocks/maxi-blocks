@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { select } from '@wordpress/data';
 import { getClientIdFromUniqueId } from '../attributes';
 import { handleSetAttributes } from '../maxi-block';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
@@ -59,8 +60,12 @@ const getCleanResponseIBAttributes = (
 	if (newUndefinedAttrs.length) {
 		newUndefinedAttrs.forEach(attr => {
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (attrBreakpoint !== 'general') {
+			if (
+				attrBreakpoint !== 'general' &&
+				attrBreakpoint !== baseBreakpoint
+			) {
 				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
 					cleanAttributesObject[attr] = newAttributesObj[attr];
 				}

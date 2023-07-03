@@ -525,6 +525,8 @@ class MaxiBlocks_Styles
      */
     public function enqueue_fonts($fonts, $name)
     {
+        self::write_log('enqueue_fonts');
+        self::write_log($fonts);
         if (empty($fonts) || !is_array($fonts)) {
             return;
         }
@@ -955,14 +957,14 @@ class MaxiBlocks_Styles
     public function process_content($content)
     {
         $post_id = $this->get_id();
-        $contentAndMeta = $this->get_content_and_meta($post_id, false, 'maxi-blocks-styles');
+        $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
         $template_id = $this->get_id(true);
-        $templateContentAndMeta = $this->get_content_and_meta($template_id, true, 'maxi-blocks-styles-templates');
+        $templateContentAndMeta = $this->get_content_meta_fonts($template_id, true, 'maxi-blocks-styles-templates');
 
-        if ($contentAndMeta['meta'] !== null || $contentAndMeta['template_meta'] !== null) {
+        if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
             $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
-            $this->process_scripts($contentAndMeta['meta'], $contentAndMeta['template_meta'], $templateContent);
+            $this->process_scripts($contentMetaFonts['meta'], $contentMetaFonts['template_meta'], $templateContent);
         }
 
         return $content;
@@ -975,21 +977,23 @@ class MaxiBlocks_Styles
      * @param  string $content_key
      * @return array
      */
-    private function get_content_and_meta($id, $template, $content_key)
+    private function get_content_meta_fonts($id, $template, $content_key)
     {
         $data = $this->get_content_for_blocks($template, $id);
-        if(!empty($data) && isset($data['content']) && isset($data['meta'])) {
+        if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
+            $this->enqueue_fonts($data['fonts'], $content_key);
             $contentForBlocks = $this->get_content_for_blocks(!$template, $id);
             $templateMeta = isset($contentForBlocks['meta']) ? $contentForBlocks['meta'] : null;
 
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
-                'template_meta' => $templateMeta
+                'template_meta' => $templateMeta,
+                'fonts' => $data['fonts'],
             ];
         }
-        return ['content' => null, 'meta' => null, 'template_meta' => null];
+        return ['content' => null, 'meta' => null, 'template_meta' => null, 'fonts' => null];
     }
 
 
@@ -1108,7 +1112,7 @@ class MaxiBlocks_Styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block(array $block, string &$styles, string &$prev_styles, array &$active_custom_data_array)
+    public function process_block(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array)
     {
         global $wpdb;
 
@@ -1140,10 +1144,20 @@ class MaxiBlocks_Styles
             $this->process_custom_data($block, $style_id, $active_custom_data_array);
         }
 
+        // fonts
+        $fonts_json = $content_block['fonts_value'];
+        if($fonts_json !== '') {
+            $fonts_array = json_decode($fonts_json, true) ?? [];
+        } else {
+            $fonts_array = [];
+        }
+
+        $fonts = array_merge($fonts, $fonts_array);
+
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as $innerBlock) {
-                $this->process_block($innerBlock, $styles, $prev_styles, $active_custom_data_array);
+                $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
             }
         }
     }
@@ -1206,9 +1220,10 @@ class MaxiBlocks_Styles
         $styles = '';
         $prev_styles = '';
         $active_custom_data_array = [];
+        $fonts = [];
 
         foreach ($blocks as $block) {
-            $this->process_block($block, $styles, $prev_styles, $active_custom_data_array);
+            $this->process_block($block, $fonts, $styles, $prev_styles, $active_custom_data_array);
         }
 
         $content = [
@@ -1216,7 +1231,7 @@ class MaxiBlocks_Styles
             'prev_css_value' => $prev_styles,
         ];
 
-        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array];
+        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
     }
 
     /**
@@ -1489,10 +1504,6 @@ class MaxiBlocks_Styles
         } else {
             $fonts = '';
         }
-
-        $this->write_log('fonts');
-        $this->write_log($fonts);
-
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(

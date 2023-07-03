@@ -12,6 +12,7 @@ import { SettingTabsControl } from '../../../../components';
 import Button from '../../../button';
 import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
+import { goThroughMaxiBlocks } from '../../../../extensions/maxi-block';
 import {
 	cleanInnerBlocks,
 	excludeAttributes,
@@ -20,6 +21,10 @@ import {
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
 import { validateRowColumnsStructure } from '../../../../extensions/repeater';
+import {
+	findTarget,
+	findBlockPosition,
+} from '../../../../extensions/repeater/utils';
 import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
 /**
@@ -159,19 +164,51 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 	const onPasteBlocks = () => {
-		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
+		const newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
 
-		if (
-			repeaterContext?.repeaterStatus &&
-			blockName === 'maxi-blocks/column-maxi'
-		) {
+		if (!repeaterContext?.repeaterStatus) {
+			replaceInnerBlocks(clientId, newCopiedBlocks);
+		}
+
+		if (repeaterContext?.repeaterStatus) {
+			const oldParentBlock = {
+				name: blockName,
+				clientId,
+				innerBlocks,
+			};
+			const newParentBlock = {
+				...oldParentBlock,
+				innerBlocks: newCopiedBlocks,
+			};
+
+			goThroughMaxiBlocks(block => {
+				const blockPosition = findBlockPosition(
+					block.clientId,
+					oldParentBlock
+				);
+
+				const newBlock = findTarget(blockPosition, newParentBlock);
+
+				if (!newBlock) {
+					return;
+				}
+
+				if (block.name === newBlock.name) {
+					newBlock.clientId = block.clientId;
+				}
+			}, innerBlocks);
+
+			replaceInnerBlocks(clientId, newCopiedBlocks);
+
+			const { getBlockParentsByBlockName } = select('core/block-editor');
+
 			validateRowColumnsStructure(
-				select('core/block-editor').getBlockParentsByBlockName(
-					clientId,
-					'maxi-blocks/row-maxi'
-				)[0],
+				getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')[0],
 				repeaterContext?.getInnerBlocksPositions(),
-				clientId
+				getBlockParentsByBlockName(
+					clientId,
+					'maxi-blocks/column-maxi'
+				)[0]
 			);
 		}
 

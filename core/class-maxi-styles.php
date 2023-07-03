@@ -525,10 +525,17 @@ class MaxiBlocks_Styles
      */
     public function enqueue_fonts($fonts, $name)
     {
-        self::write_log('enqueue_fonts');
-        self::write_log($fonts);
+
         if (empty($fonts) || !is_array($fonts)) {
             return;
+        }
+
+        foreach ($fonts as $font => $values) {
+            foreach ($values as $attribute => $value) {
+                if (is_array($value)) {
+                    $fonts[$font][$attribute] = array_values(array_unique($value))[0];
+                }
+            }
         }
 
         if (str_contains($name, '-templates-')) {
@@ -695,6 +702,7 @@ class MaxiBlocks_Styles
                             if (!$use_local_fonts) {
                                 if ($font_url) {
                                     if ($this->check_font_url($font_url)) {
+
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
                                             $font_url,

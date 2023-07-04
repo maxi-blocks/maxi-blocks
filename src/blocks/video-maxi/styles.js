@@ -79,20 +79,21 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			props[`${videoPrefix}border-status-hover`] &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
-						true
+						true,
+						videoPrefix
 					),
 				},
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			props[`${videoPrefix}box-shadow-status-hover`] &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -380,7 +381,7 @@ const getStyles = props => {
 					? {
 							' .maxi-video-block__video-player':
 								getVideoStyles(props),
-							' .maxi-video-block__video-player:hover':
+							' .maxi-video-block__video-container:hover .maxi-video-block__video-player':
 								getVideoStyles(props, true),
 							' .maxi-video-block__video-container':
 								getAspectRatioStyles(props),

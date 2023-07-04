@@ -6,10 +6,17 @@ Array [
     "action": "hover",
     "attributes": Object {
       "text-alignment-general": "right",
+      "text-alignment-xl": "right",
     },
     "css": Object {
       "general": Object {
         "breakpoint": null,
+        "styles": Object {
+          "text-align": "right",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
         "styles": Object {
           "text-align": "right",
         },
@@ -33,7 +40,7 @@ Array [
 ]
 `;
 
-exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}"`;
+exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}}"`;
 
 exports[`Text Maxi hover simple actions Typography 1`] = `
 Array [

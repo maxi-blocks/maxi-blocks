@@ -11,24 +11,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-container-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-row-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-divider-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slide-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slider-maxi-block.php';
-
 if (!class_exists('MaxiBlocks_Blocks')):
     class MaxiBlocks_Blocks
     {
@@ -38,6 +20,32 @@ if (!class_exists('MaxiBlocks_Blocks')):
          * @var MaxiBlocks_Blocks
          */
         private static $instance;
+
+        /**
+         * Array of all the block classes in MaxiBlocks.
+         *
+         * @var array
+         */
+        private $blocks_classes = [
+            'Group_Maxi_Block',
+            'Container_Maxi_Block',
+            'Row_Maxi_Block',
+            'Column_Maxi_Block',
+            'Accordion_Maxi_Block',
+            'Pane_Maxi_Block',
+            'Button_Maxi_Block',
+            'Divider_Maxi_Block',
+            'Image_Maxi_Block',
+            'SVG_Icon_Maxi_Block',
+            'Text_Maxi_Block',
+            'Video_Maxi_Block',
+            'Number_Counter_Maxi_Block',
+            'Search_Maxi_Block',
+            'Map_Maxi_Block',
+            'Slide_Maxi_Block',
+            'Slider_Maxi_Block',
+        ];
+
 
         /**
          * Registers the plugin.
@@ -54,6 +62,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         public function __construct()
         {
+            $this->include_block_classes(); // Includes all block classes.
+
             // Enqueue blocks styles and scripts
             add_action('init', [$this, 'enqueue_blocks_assets']);
 
@@ -66,6 +76,19 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
+        }
+
+        /**
+         * Includes all the block classes.
+         */
+        private function include_block_classes()
+        {
+            foreach ($this->blocks_classes as $class) {
+                $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-' . strtolower(str_replace('_', '-', $class)) . '.php';
+                if (file_exists($file_path)) {
+                    require_once $file_path;
+                }
+            }
         }
 
         public function enqueue_blocks_assets()
@@ -109,58 +132,16 @@ if (!class_exists('MaxiBlocks_Blocks')):
             wp_enqueue_style('maxi-blocks-block');
         }
 
+        /**
+         * Registers the block classes.
+         */
         public function register_blocks()
         {
-            if (class_exists('MaxiBlocks_Group_Maxi_Block')) {
-                MaxiBlocks_Group_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Container_Maxi_Block')) {
-                MaxiBlocks_Container_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Row_Maxi_Block')) {
-                MaxiBlocks_Row_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Column_Maxi_Block')) {
-                MaxiBlocks_Column_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Accordion_Maxi_Block')) {
-                MaxiBlocks_Accordion_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Pane_Maxi_Block')) {
-                MaxiBlocks_Pane_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Button_Maxi_Block')) {
-                MaxiBlocks_Button_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Divider_Maxi_Block')) {
-                MaxiBlocks_Divider_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Image_Maxi_Block')) {
-                MaxiBlocks_Image_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')) {
-                MaxiBlocks_SVG_Icon_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Text_Maxi_Block')) {
-                MaxiBlocks_Text_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Video_Maxi_Block')) {
-                MaxiBlocks_Video_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Number_Counter_Maxi_Block')) {
-                MaxiBlocks_Number_Counter_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Search_Maxi_Block')) {
-                MaxiBlocks_Search_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Map_Maxi_Block')) {
-                MaxiBlocks_Map_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Slide_Maxi_Block')) {
-                MaxiBlocks_Slide_Maxi_Block::register();
-            }
-            if (class_exists('MaxiBlocks_Slider_Maxi_Block')) {
-                MaxiBlocks_Slider_Maxi_Block::register();
+            foreach ($this->blocks_classes as $class) {
+                $full_class_name = 'MaxiBlocks_' . $class;
+                if (class_exists($full_class_name)) {
+                    call_user_func([$full_class_name, 'register']);
+                }
             }
         }
 

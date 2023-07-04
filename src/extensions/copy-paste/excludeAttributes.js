@@ -14,12 +14,14 @@ const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
 	key => key !== 'customLabel'
 );
 
-const TEXT_CONTENT_EXCLUDE = [
+const ALL_TIME_EXCLUDE = [
 	'content',
 	'buttonContent',
 	'captionContent',
 	'altTitle',
 	'altDescription',
+	'number-counter-start',
+	'number-counter-end',
 ];
 
 const excludeAttributes = (
@@ -45,7 +47,7 @@ const excludeAttributes = (
 						blockName === 'maxi-blocks/svg-icon-maxi' &&
 						prop === 'content'
 					) &&
-						TEXT_CONTENT_EXCLUDE.includes(prop)) ||
+						ALL_TIME_EXCLUDE.includes(prop)) ||
 						attributes?.[prop] !== getDefaultAttribute(prop))))
 		)
 			delete attributesToExclude[prop];

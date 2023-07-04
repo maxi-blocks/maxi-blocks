@@ -70,6 +70,14 @@ const updateSCStyles = async (element, SCObject) => {
 		const SCStyles = await getSCStyles(SCObject, true);
 
 		SCStylesEl.innerHTML = SCStyles;
+	} else {
+		const SCStyles = await getSCStyles(SCObject);
+
+		const newSCStylesEl = element.createElement('style');
+		newSCStylesEl.id = 'maxi-blocks-sc-styles-inline-css';
+		newSCStylesEl.innerHTML = SCStyles;
+
+		element.head.appendChild(newSCStylesEl);
 	}
 };
 
@@ -87,7 +95,7 @@ const updateSCOnEditor = (
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
-	elements.forEach((element, i) => {
+	elements.forEach(element => {
 		if (!element) return;
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');

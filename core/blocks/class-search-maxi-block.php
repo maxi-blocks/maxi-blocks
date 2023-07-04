@@ -251,9 +251,6 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                 ))
             );
 
-            self::write_log('$response');
-            self::write_log($response);
-
             return $response;
         }
 

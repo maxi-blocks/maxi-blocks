@@ -53,21 +53,32 @@ const getRelatedAttributes = ({
 		const propsToCheck = alternativeProps ?? props;
 
 		Object.keys(attrs).forEach(key => {
+			const breakpoint = getBreakpointFromAttribute(key);
+
+			const replaceAttribute = key => {
+				// For XXL attributes, general IB attribute is default even if block attribute is defined
+				if (
+					breakpoint === 'xxl' &&
+					IBAttributes[key.replace('-xxl', '-general')]
+				) {
+					result[key] = IBAttributes[key.replace('-xxl', '-general')];
+				} else if (propsToCheck[key]) {
+					result[key] = propsToCheck[key];
+				}
+			};
+
 			// Ensure the value for unit attributes is saved if the modified value is related
 			if (key.includes('-unit')) {
 				const newKey = key.replace('-unit', '');
 
-				if (propsToCheck[newKey]) result[newKey] = propsToCheck[newKey];
+				replaceAttribute(newKey);
 			}
-
-			const breakpoint = getBreakpointFromAttribute(key);
 
 			const unitKey = key.replace(
 				`-${breakpoint}`,
 				`-unit-${breakpoint}`
 			);
-
-			if (propsToCheck[unitKey]) result[unitKey] = propsToCheck[unitKey];
+			replaceAttribute(unitKey);
 
 			// Ensure the palette attributes pack is passed if the modified value is related
 			if (key.includes('palette')) {

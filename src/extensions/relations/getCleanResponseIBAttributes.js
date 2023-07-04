@@ -3,6 +3,7 @@
  */
 import { getClientIdFromUniqueId } from '../attributes';
 import { handleSetAttributes } from '../maxi-block';
+import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
 
@@ -57,7 +58,9 @@ const getCleanResponseIBAttributes = (
 
 	if (newUndefinedAttrs.length) {
 		newUndefinedAttrs.forEach(attr => {
-			if (breakpoint !== 'general') {
+			const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+			if (attrBreakpoint !== 'general') {
 				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
 					cleanAttributesObject[attr] = newAttributesObj[attr];
 				}

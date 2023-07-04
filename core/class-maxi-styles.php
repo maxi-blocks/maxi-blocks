@@ -11,35 +11,47 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/style_resolver.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/frontend_style_generator.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_row_gap_attributes.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_custom_data.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_custom_format_value.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_all_fonts.php';
+$coreClasses = [
+    'class-maxi-local-fonts',
+    'class-maxi-style-cards',
+    'class-maxi-api',
+    'blocks/utils/style_resolver',
+    'blocks/utils/frontend_style_generator',
+    'blocks/utils/get_row_gap_attributes',
+    'blocks/utils/get_custom_data',
+    'blocks/utils/get_custom_format_value',
+    'blocks/utils/get_all_fonts',
+    'blocks/utils/create_selectors',
+];
 
+foreach($coreClasses as $coreClass) {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/' . $coreClass . '.php';
+}
 
-// Blocks
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-group-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-container-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-row-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-column-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-accordion-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-pane-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-button-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-divider-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-image-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-svg-icon-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-text-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-video-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-number-counter-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-search-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-map-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slide-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-slider-maxi-block.php';
+$blockClasses = [
+    'class-group-maxi-block',
+    'class-container-maxi-block',
+    'class-row-maxi-block',
+    'class-column-maxi-block',
+    'class-accordion-maxi-block',
+    'class-pane-maxi-block',
+    'class-button-maxi-block',
+    'class-divider-maxi-block',
+    'class-image-maxi-block',
+    'class-svg-icon-maxi-block',
+    'class-text-maxi-block',
+    'class-video-maxi-block',
+    'class-number-counter-maxi-block',
+    'class-search-maxi-block',
+    'class-map-maxi-block',
+    'class-slide-maxi-block',
+    'class-slider-maxi-block'
+];
+
+foreach($blockClasses as $blockClass) {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/' . $blockClass . '.php';
+}
+
 
 class MaxiBlocks_Styles
 {

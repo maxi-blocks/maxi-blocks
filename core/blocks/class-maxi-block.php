@@ -112,10 +112,11 @@ if (!class_exists('MaxiBlocks_Block')):
         public function get_block_metadata()
         {
             // If the block metadata is not yet retrieved, read it from the block.json file.
-            return $this->block_metadata ??= json_decode(
+            return $this->block_metadata = (!empty($this->block_metadata) ? $this->block_metadata : json_decode(
                 file_get_contents(MAXI_PLUGIN_DIR_PATH . 'src/blocks/' . $this->block_name . '/block.json'),
                 true
-            );
+            ));
+
         }
 
         public function get_block_attributes($props)
@@ -133,7 +134,8 @@ if (!class_exists('MaxiBlocks_Block')):
         public function get_block_custom_css()
         {
             // If the custom CSS is not yet retrieved, get it from the block metadata.
-            return $this->block_custom_css ??= $this->get_block_metadata()['customCss'] ?? [];
+            return $this->block_custom_css = (!empty($this->block_custom_css) ? $this->block_custom_css : $this->get_block_metadata()['customCss'] ?? []);
+
         }
 
 

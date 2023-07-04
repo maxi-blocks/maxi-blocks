@@ -71,7 +71,6 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
         public function get_styles($props, $customCss, $sc_props)
         {
 
-            //$this->write_log('get_styles');
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 

@@ -502,22 +502,21 @@ class MaxiBlockComponent extends Component {
 					this.props.updateInnerBlocksPositions
 				);
 			}
+
+			const parentRowClientId = getBlockParentsByBlockName(
+				this.props.clientId,
+				'maxi-blocks/row-maxi'
+			)[0];
+			const parentRowAttributes = getBlockAttributes(parentRowClientId);
+
 			// If repeater is turned on and block was moved
 			// inwards, validate the structure
-			else if (
-				getBlockAttributes(
-					getBlockParentsByBlockName(
-						this.props.clientId,
-						'maxi-blocks/row-maxi'
-					)[0]
-				)?.['repeater-status'] &&
-				!this.props.repeaterStatus
+			if (
+				(parentRowAttributes?.['repeater-status'] &&
+					!this.props.repeaterStatus) ||
+				(!!parentRowAttributes &&
+					this.props.repeaterRowClientId !== parentRowClientId)
 			) {
-				const parentRowClientId = getBlockParentsByBlockName(
-					this.props.clientId,
-					'maxi-blocks/row-maxi'
-				)[0];
-
 				const columnsClientIds = getBlock(
 					parentRowClientId
 				).innerBlocks.map(({ clientId }) => clientId);

@@ -532,6 +532,11 @@ const getMarkerObject = props => {
 								width: sizeNum + sizeUnit,
 								...(!isNil(heightNum) && {
 									height: heightNum + heightUnit,
+									...(textPosition === 'middle' && {
+										top: `calc(${
+											heightNum / 2 + heightUnit
+										} - (${sizeNum / 2 + sizeUnit}))`,
+									}),
 								}),
 						  }
 						: {

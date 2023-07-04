@@ -449,7 +449,7 @@ const ListOptionsControl = props => {
 							isReset: true,
 						});
 					}}
-					allowedUnits={['px', 'em', 'vw', '%', '-']}
+					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
 			)}
 			<AdvancedNumberControl

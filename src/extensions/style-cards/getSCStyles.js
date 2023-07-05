@@ -447,14 +447,14 @@ const getWPNativeStyles = ({
 
 		['', ' span'].forEach(suffix => {
 			response += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
-			if (styleCard['--maxi-light-link-hover']) {
+			if (styleCard[`--maxi-${style}-link-hover`]) {
 				response += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
 				response += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
 			}
-			if (styleCard['--maxi-light-link-active']) {
+			if (styleCard[`--maxi-${style}-link-active`]) {
 				response += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
 			}
-			if (styleCard['--maxi-light-link-visited']) {
+			if (styleCard[`--maxi-${style}-link-visited`]) {
 				response += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
 			}
 		});
@@ -507,8 +507,16 @@ const getWPNativeStyles = ({
 
 		response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
 			...buttonSentences,
-			`color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
+			styleCard[`--maxi-${style}-button-color`]
+				? `color: var(--maxi-${style}-button-color);`
+				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
 		]?.join(' ')}}`;
+
+		if (styleCard[`--maxi-${style}-button-color-hover`]) {
+			response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
+				color: var(--maxi-${style}-button-color-hover);
+			}`;
+		}
 
 		// General color
 		response += `${prefix} .maxi-${style} .${nativeWPPrefix} {
@@ -526,6 +534,13 @@ const getWPNativeStyles = ({
 		response += `${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
 			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
 		}`;
+
+		// Button color hover
+		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {
+			response += `${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
+				background: var(--maxi-${style}-button-background-color-hover);
+			}`;
+		}
 	};
 
 	// General

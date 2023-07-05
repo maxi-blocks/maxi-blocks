@@ -170,6 +170,7 @@ class edit extends MaxiBlockComponent {
 					newAttributes = {
 						...attributes,
 						content: value,
+						...(!isOriginal && { uniqueID: null }),
 					};
 				}
 

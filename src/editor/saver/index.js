@@ -70,7 +70,13 @@ const BlockStylesSaver = () => {
 
 	useEffect(() => {
 		if (isSaving && !isCodeEditor) {
-			loadFonts(getPageFonts(), false);
+			const loadFontsWrapper = async () => {
+				const fonts = await getPageFonts();
+				loadFonts(fonts, false);
+			};
+
+			loadFontsWrapper();
+
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);
 				saveCustomData(true);

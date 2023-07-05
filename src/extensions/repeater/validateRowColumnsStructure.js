@@ -18,6 +18,7 @@ import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
 import loadColumnsTemplate from '../column-templates/loadColumnsTemplate';
 import { getTemplates } from '../column-templates';
+import { getLastBreakpointAttribute } from '../styles';
 import DISALLOWED_BLOCKS from './disallowedBlocks';
 
 /**
@@ -168,15 +169,45 @@ const validateRowColumnsStructure = (
 		childColumns.length
 	)[0].name;
 
-	loadColumnsTemplate(
-		equalTemplateName,
-		rowClientId,
-		'general',
-		childColumns.length,
-		true,
-		true,
-		true
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+	let isEqualTemplate = true;
+	let firstColumnWidth;
+
+	breakpoints.forEach(breakpoint =>
+		childColumns.forEach((column, index) => {
+			if (!isEqualTemplate) {
+				return;
+			}
+
+			const columnWidth = getLastBreakpointAttribute({
+				target: 'column-size',
+				breakpoint,
+				attributes: column.attributes,
+			});
+
+			if (index === 0) {
+				firstColumnWidth = columnWidth;
+				return;
+			}
+
+			if (columnWidth !== firstColumnWidth) {
+				isEqualTemplate = false;
+			}
+		})
 	);
+
+	if (!isEqualTemplate) {
+		loadColumnsTemplate(
+			equalTemplateName,
+			rowClientId,
+			'general',
+			childColumns.length,
+			true,
+			true,
+			true
+		);
+	}
 
 	// Make sure that column to validate by is first in childColumns array
 	if (columnToValidateBy.clientId !== childColumns[0].clientId) {

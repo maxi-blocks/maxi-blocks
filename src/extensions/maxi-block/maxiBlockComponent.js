@@ -512,9 +512,8 @@ class MaxiBlockComponent extends Component {
 			// If repeater is turned on and block was moved
 			// inwards, validate the structure
 			if (
-				(parentRowAttributes?.['repeater-status'] &&
-					!this.props.repeaterStatus) ||
-				(!!parentRowAttributes &&
+				parentRowAttributes?.['repeater-status'] &&
+				(!this.props.repeaterStatus ||
 					this.props.repeaterRowClientId !== parentRowClientId)
 			) {
 				const columnsClientIds = getBlock(

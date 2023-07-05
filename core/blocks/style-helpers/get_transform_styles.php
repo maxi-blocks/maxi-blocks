@@ -24,6 +24,7 @@ function validate_origin_value($val)
 function get_transform_strings($category, $breakpoint, $index, $obj)
 {
     $get_last_breakpoint_transform_attribute = function ($target, $key, $hover_selected, $keys = null) use ($breakpoint, $obj, $category) {
+
         return get_last_breakpoint_attribute(
             array(
             'target' => $target,
@@ -49,104 +50,112 @@ function get_transform_strings($category, $breakpoint, $index, $obj)
         }
     };
 
-    $get_scale_string = function ($index) use ($get_last_breakpoint_transform_attribute, $category) {
+    $get_scale_string = function ($index) use ($obj, $breakpoint, $get_last_breakpoint_transform_attribute, $category) {
         $scale_string = '';
-        if (
-            $index === 'hover' &&
-            !$get_last_breakpoint_transform_attribute('transform-scale', null, 'hover-status', [$category, 'hover-status'])
-        ) {
-            $index = 'normal';
-        }
+        if (isset($obj['transform-scale-'.$breakpoint])) {
+            if (
+                $index === 'hover' &&
+                !$get_last_breakpoint_transform_attribute('transform-scale', null, 'hover-status', [$category, 'hover-status'])
+            ) {
+                $index = 'normal';
+            }
 
-        [$x, $y] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
-            return $get_last_breakpoint_transform_attribute('transform-scale', $key, $index);
-        }, ['x', 'y']);
+            [$x, $y] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
+                return $get_last_breakpoint_transform_attribute('transform-scale', $key, $index);
+            }, ['x', 'y']);
 
-        if (is_int($x)) {
-            $scale_string .= 'scaleX(' . ($x / 100) . ') ';
-        }
-        if (is_int($y)) {
-            $scale_string .= 'scaleY(' . ($y / 100) . ') ';
+            if (is_int($x)) {
+                $scale_string .= 'scaleX(' . ($x / 100) . ') ';
+            }
+            if (is_int($y)) {
+                $scale_string .= 'scaleY(' . ($y / 100) . ') ';
+            }
         }
 
         return $scale_string;
     };
 
-    $get_translate_string = function ($index) use ($get_last_breakpoint_transform_attribute, $category) {
+    $get_translate_string = function ($index) use ($obj, $breakpoint, $get_last_breakpoint_transform_attribute, $category) {
         $translate_string = '';
-        if (
-            $index === 'hover' &&
-            !$get_last_breakpoint_transform_attribute('transform-translate', null, 'hover-status', [$category, 'hover-status'])
-        ) {
-            $index = 'normal';
-        }
+        if (isset($obj['transform-translate-'.$breakpoint])) {
+            if (
+                $index === 'hover' &&
+                !$get_last_breakpoint_transform_attribute('transform-translate', null, 'hover-status', [$category, 'hover-status'])
+            ) {
+                $index = 'normal';
+            }
 
-        [$x, $y, $x_unit, $y_unit] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
-            return $get_last_breakpoint_transform_attribute('transform-translate', $key, $index);
-        }, ['x', 'y', 'x-unit', 'y-unit']);
+            [$x, $y, $x_unit, $y_unit] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
+                return $get_last_breakpoint_transform_attribute('transform-translate', $key, $index);
+            }, ['x', 'y', 'x-unit', 'y-unit']);
 
-        if (is_int($x)) {
-            $translate_string .= 'translateX(' . $x . ($x_unit ?? '%') . ') ';
-        }
-        if (is_int($y)) {
-            $translate_string .= 'translateY(' . $y . ($y_unit ?? '%') . ') ';
+            if (is_int($x)) {
+                $translate_string .= 'translateX(' . $x . ($x_unit ?? '%') . ') ';
+            }
+            if (is_int($y)) {
+                $translate_string .= 'translateY(' . $y . ($y_unit ?? '%') . ') ';
+            }
         }
 
         return $translate_string;
     };
 
-    $get_rotate_string = function ($index) use ($get_last_breakpoint_transform_attribute, $category) {
+    $get_rotate_string = function ($index) use ($obj, $breakpoint, $get_last_breakpoint_transform_attribute, $category) {
         $rotate_string = '';
-        if (
-            $index === 'hover' &&
-            !$get_last_breakpoint_transform_attribute('transform-rotate', null, 'hover-status', [$category, 'hover-status'])
-        ) {
-            $index = 'normal';
-        }
+        if (isset($obj['transform-rotate-'.$breakpoint])) {
 
-        [$x, $y, $z] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
-            return $get_last_breakpoint_transform_attribute('transform-rotate', $key, $index);
-        }, ['x', 'y', 'z'], );
+            if (
+                $index === 'hover' &&
+                !$get_last_breakpoint_transform_attribute('transform-rotate', null, 'hover-status', [$category, 'hover-status'])
+            ) {
+                $index = 'normal';
+            }
 
-        if (is_int($x)) {
-            $rotate_string .= 'rotateX(' . $x . 'deg) ';
-        }
-        if (is_int($y)) {
-            $rotate_string .= 'rotateY(' . $y . 'deg) ';
-        }
-        if (is_int($z)) {
-            $rotate_string .= 'rotateZ(' . $z . 'deg) ';
+            [$x, $y, $z] = array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
+                return $get_last_breakpoint_transform_attribute('transform-rotate', $key, $index);
+            }, ['x', 'y', 'z'], );
+
+            if (is_int($x)) {
+                $rotate_string .= 'rotateX(' . $x . 'deg) ';
+            }
+            if (is_int($y)) {
+                $rotate_string .= 'rotateY(' . $y . 'deg) ';
+            }
+            if (is_int($z)) {
+                $rotate_string .= 'rotateZ(' . $z . 'deg) ';
+            }
         }
 
         return $rotate_string;
     };
 
-    $get_origin_string = function ($index) use ($get_last_breakpoint_transform_attribute, $origin_value_to_number, $category) {
+    $get_origin_string = function ($index) use ($obj, $breakpoint, $get_last_breakpoint_transform_attribute, $origin_value_to_number, $category) {
         $origin_string = '';
+        if (isset($obj['transform-origin-'.$breakpoint])) {
+            if (
+                $index === 'hover' &&
+                !$get_last_breakpoint_transform_attribute('transform-origin', null, 'hover-status', [$category, 'hover-status'])
+            ) {
+                return $origin_string;
+            }
 
-        if (
-            $index === 'hover' &&
-            !$get_last_breakpoint_transform_attribute('transform-origin', null, 'hover-status', [$category, 'hover-status'])
-        ) {
-            return $origin_string;
-        }
+            [$x, $y, $x_unit, $y_unit]= array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
+                return $get_last_breakpoint_transform_attribute('transform-origin', $key, $index);
+            }, ['x', 'y', 'x-unit', 'y-unit']);
 
-        [$x, $y, $x_unit, $y_unit]= array_map(function ($key) use ($get_last_breakpoint_transform_attribute, $index) {
-            return $get_last_breakpoint_transform_attribute('transform-origin', $key, $index);
-        }, ['x', 'y', 'x-unit', 'y-unit']);
+            if (is_string(validate_origin_value($x))) {
+                $origin_string .= $origin_value_to_number($x) . '% ';
+            }
+            if (is_string(validate_origin_value($y))) {
+                $origin_string .= $origin_value_to_number($y) . '% ';
+            }
 
-        if (is_string(validate_origin_value($x))) {
-            $origin_string .= $origin_value_to_number($x) . '% ';
-        }
-        if (is_string(validate_origin_value($y))) {
-            $origin_string .= $origin_value_to_number($y) . '% ';
-        }
-
-        if (is_int(validate_origin_value($x))) {
-            $origin_string .= $x . ($x_unit ?? '%') . ' ';
-        }
-        if (is_int(validate_origin_value($y))) {
-            $origin_string .= $y . ($y_unit ?? '%') . ' ';
+            if (is_int(validate_origin_value($x))) {
+                $origin_string .= $x . ($x_unit ?? '%') . ' ';
+            }
+            if (is_int(validate_origin_value($y))) {
+                $origin_string .= $y . ($y_unit ?? '%') . ' ';
+            }
         }
 
         return $origin_string;
@@ -167,13 +176,13 @@ function get_transform_value($obj, $category, $index)
     foreach ($breakpoints as $breakpoint) {
         [$transform_string, $transform_origin_string] = get_transform_strings($category, $breakpoint, $index, $obj);
 
-        $transform_obj = (object) [];
+        $transform_obj = [];
 
         if (!empty($transform_string)) {
-            $transform_obj->transform = $transform_string;
+            $transform_obj['transform'] = $transform_string;
         }
         if (!empty($transform_origin_string)) {
-            $transform_obj->{'transform-origin'} = $transform_origin_string;
+            $transform_obj['transform-origin'] = $transform_origin_string;
         }
 
         if (!empty($transform_obj)) {
@@ -198,5 +207,8 @@ function get_transform_styles($obj, $selectors)
         }
     }
 
+    write_log('get_transform_styles');
+    write_log($response);
+    write_log('====================');
     return $response;
 }

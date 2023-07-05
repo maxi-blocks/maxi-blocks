@@ -5,10 +5,10 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
 function get_transition_styles($props, $transition_obj)
 {
 
-    if(!empty($transition_obj)) {
-        write_log('$transition_props');
-        write_log($transition_obj);
-    }
+    // if(!empty($transition_obj)) {
+    //     write_log('$transition_props');
+    //     write_log($transition_obj);
+    // }
 
     if(empty($transition_obj)) {
         $defaults = new StylesDefaults();
@@ -140,9 +140,6 @@ function get_transition_styles($props, $transition_obj)
             }
         }
     }
-
-    write_log('$response');
-    write_log($response);
 
     return $response;
 }

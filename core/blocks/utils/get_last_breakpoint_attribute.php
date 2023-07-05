@@ -42,6 +42,7 @@ function get_last_breakpoint_attribute(
         ($current_breakpoint === 'general' ||
             ($base_breakpoint !== 'xxl' && $current_breakpoint !== $base_breakpoint))
     ) {
+
         $base_breakpoint_attr = get_last_breakpoint_attribute([
             'target' => $target,
             'breakpoint' => $base_breakpoint,
@@ -52,6 +53,7 @@ function get_last_breakpoint_attribute(
         ]);
 
         if ($attr_filter($base_breakpoint_attr)) {
+
             return $base_breakpoint_attr;
         }
     }
@@ -72,6 +74,7 @@ function get_last_breakpoint_attribute(
     if ($attr_filter($current_attr) &&
         ($base_breakpoint !== 'xxl' || $breakpoint === 'xxl')
     ) {
+
         return $current_attr;
     }
 
@@ -85,6 +88,7 @@ function get_last_breakpoint_attribute(
         $breakpoint_position -= 1;
 
         if (!($avoid_xxl && $breakpoints[$breakpoint_position] === 'xxl')) {
+
             $current_attr = isset($attributes[
                 (!empty($target) ? $target . '-' : '') .
                 $breakpoints[$breakpoint_position] .
@@ -101,6 +105,7 @@ function get_last_breakpoint_attribute(
     }
 
     if ($is_hover && !$attr_filter($current_attr)) {
+
         $current_attr = get_last_breakpoint_attribute(
             ['target' => $target,
             'breakpoint' => $breakpoint,
@@ -112,6 +117,7 @@ function get_last_breakpoint_attribute(
     }
 
     if (!$current_attr && $breakpoint === 'general' && $base_breakpoint) {
+
         $current_attr = get_last_breakpoint_attribute([
             'target' => $target,
             'breakpoint' => $base_breakpoint,

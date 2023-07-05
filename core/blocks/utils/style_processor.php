@@ -356,13 +356,16 @@ function style_cleaner($styles)
  */
 function get_bg_layers_selectors_keys($bg_layers_selectors)
 {
-    return array_unique(
-        array_merge(
-            array_keys($bg_layers_selectors['background hover']),
-            array_keys($bg_layers_selectors['background'])
-        )
-    );
+    if (!is_array($bg_layers_selectors)) {
+        return [];
+    }
+
+    $hover_keys = array_keys($bg_layers_selectors['background hover'] ?? []);
+    $background_keys = array_keys($bg_layers_selectors['background'] ?? []);
+
+    return array_unique(array_merge($hover_keys, $background_keys));
 }
+
 
 /**
  * Retrieve the appropriate key based on a provided key.
@@ -441,10 +444,14 @@ function get_transform_selectors($selectors, $attributes = [])
 
 function write_log($log)
 {
-    if (is_array($log) || is_object($log)) {
-        error_log(print_r($log, true));
+    if($log !== null) {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
     } else {
-        error_log($log);
+        error_log('NULL LOG');
     }
 }
 
@@ -464,6 +471,19 @@ function array_merge_recursive_with($arr1, $arr2, $customizer)
     return $merged;
 }
 
+function deepMergeArrays($arr1, $arr2)
+{
+    foreach ($arr2 as $key => $value) {
+        if (isset($arr1[$key]) && is_array($value)) {
+            $arr1[$key] = deepMergeArrays($arr1[$key], $value);
+        } else {
+            $arr1[$key] = $value;
+        }
+    }
+
+    return $arr1;
+}
+
 function style_processor($obj, $data, $props)
 {
 
@@ -473,10 +493,15 @@ function style_processor($obj, $data, $props)
 
     $styles = $obj;
 
-    // TODO: migrate functions to php
     $transition_object = get_transition_styles($props, $transition_selectors);
     if (!empty($transition_object)) {
-        $styles = array_merge($styles, $transition_object);
+        foreach ($styles as $key => &$value) {
+            if (is_array($value)) {
+                $value = deepMergeArrays($value, $transition_object);
+            }
+        }
+
+        unset($value);  // Unset reference to avoid unexpected behavior
     }
 
 
@@ -484,14 +509,25 @@ function style_processor($obj, $data, $props)
     $new_css_selectors = get_selectors_css($selectors, $props);
     $new_transform_selectors = get_transform_selectors($selectors, $props);
 
+    // write_log('$new_transform_selectors');
+    // write_log($new_transform_selectors);
+
     if (!empty($new_css_selectors)) {
         $custom_css_object = get_custom_css_object($new_css_selectors, $props);
         if (!empty($custom_css_object)) {
-            $styles = array_merge($styles, $custom_css_object);
+            foreach ($styles as $key => &$value) {
+                if (is_array($value)) {
+                    $value = deepMergeArrays($value, $custom_css_object);
+                }
+            }
+
+            unset($value);  // Unset reference to avoid unexpected behavior
         }
     }
     if (!empty($new_transform_selectors)) {
         $transform_object = get_transform_styles($props, $new_transform_selectors);
+        // write_log('$transform_object');
+        // write_log($transform_object);
 
         if (!empty($transform_object)) {
             $is_transform_string = function ($string) {
@@ -504,7 +540,23 @@ function style_processor($obj, $data, $props)
                 }
             };
 
-            array_merge_recursive_with($styles, $transform_object, $merge_callback);
+
+
+            //array_merge_recursive_with($styles, $transform_object, $merge_callback);
+            // $styles = deepMergeArrays($styles, $transform_object);
+
+            foreach ($styles as $key => &$value) {
+                if (is_array($value)) {
+                    $value = deepMergeArrays($value, $transform_object);
+                }
+            }
+
+            unset($value);  // Unset reference to avoid unexpected behavior
+
+            write_log('$styles');
+            write_log($styles);
+            write_log('=======================');
+
         }
     }
 

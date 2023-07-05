@@ -30,6 +30,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.dynamicContentLink,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,

@@ -170,6 +170,14 @@ class MaxiBlocks_DynamicContent
     private static $order_by_relations =
         ['by-category', 'by-author', 'by-tag'];
 
+    private static $link_only_blocks = [
+        'group-maxi',
+        'column-maxi',
+        'row-maxi',
+        'slide-maxi',
+        'pane-maxi',
+    ];
+
     /**
      * Constructor
      */
@@ -189,6 +197,36 @@ class MaxiBlocks_DynamicContent
             'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/image-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/group-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/column-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/row-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/slide-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/pane-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
@@ -232,7 +270,9 @@ class MaxiBlocks_DynamicContent
 
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
 
-        if ($block_name !== 'image-maxi') {
+        if (in_array($block_name, self::$link_only_blocks)) {
+            return $content;
+        } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
             $content = self::render_dc_image($attributes, $content);

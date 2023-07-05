@@ -22,6 +22,8 @@ const ALL_TIME_EXCLUDE = [
 	'altDescription',
 	'number-counter-start',
 	'number-counter-end',
+	'url',
+	'embedUrl',
 ];
 
 const excludeAttributes = (

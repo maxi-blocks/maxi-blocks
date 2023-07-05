@@ -58,6 +58,7 @@ const OpacityControl = props => {
 				return onChange({ [getOpacityAttributeKey()]: val });
 			}}
 			min={0}
+			placeholder={100}
 			max={100}
 			onReset={() => {
 				if (isFunction(onReset)) return onReset();
@@ -69,7 +70,8 @@ const OpacityControl = props => {
 						getDefaultAttribute(opacityAttributeKey)
 					);
 				return onChange({
-					[opacityAttributeKey]: 1,
+					[opacityAttributeKey]:
+						getDefaultAttribute(opacityAttributeKey),
 					isReset: true,
 				});
 			}}

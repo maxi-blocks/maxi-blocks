@@ -15,6 +15,7 @@ import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
 import { copyPasteMapping } from './data';
+import { withMaxiLoopContext } from '../../extensions/DC';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,
@@ -268,4 +269,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiLoopContext(withMaxiProps(edit));

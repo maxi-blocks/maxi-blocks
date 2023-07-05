@@ -10,3 +10,4 @@ export { default as LoopContext } from './loopContext';
 export { default as processDCDate } from './processDCDate';
 export { default as withMaxiContextLoop } from './withMaxiContextLoop';
 export { default as witMaxiDC } from './withMaxiDC';
+export { default as withMaxiLoopContext } from './withMaxiLoopContext';

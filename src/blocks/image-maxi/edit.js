@@ -31,7 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
-import { getDCValues } from '../../extensions/DC';
+import { getDCValues, withMaxiLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -135,7 +135,7 @@ class edit extends MaxiBlockComponent {
 			mediaCaption: dcMediaCaption,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.context?.contextLoop
+			this.props.loopContext.conextLoop
 		);
 		const { isExternalClass, isUploaderOpen } = this.state;
 
@@ -574,4 +574,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiLoopContext(withMaxiDC(withMaxiProps(edit)));

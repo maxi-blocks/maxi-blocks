@@ -567,7 +567,7 @@ const getSCStyles = async (styleCard, isBackend = false) => {
 	let response = '';
 	const prefix = 'body.maxi-blocks--active';
 
-	const organizedValues = getOrganizedValues(styleCard);
+	const organizedValues = getOrganizedValues({ ...styleCard });
 
 	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
 		'maxiBlocks'

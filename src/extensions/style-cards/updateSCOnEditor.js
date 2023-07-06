@@ -66,13 +66,11 @@ const updateSCStyles = async (element, SCObject) => {
 		'maxi-blocks-sc-styles-inline-css'
 	);
 
-	if (SCStylesEl) {
-		const SCStyles = await getSCStyles(SCObject, true);
+	const SCStyles = await getSCStyles(SCObject, true);
 
+	if (SCStylesEl) {
 		SCStylesEl.innerHTML = SCStyles;
 	} else {
-		const SCStyles = await getSCStyles(SCObject);
-
 		const newSCStylesEl = element.createElement('style');
 		newSCStylesEl.id = 'maxi-blocks-sc-styles-inline-css';
 		newSCStylesEl.innerHTML = SCStyles;

@@ -150,7 +150,7 @@ wp.domReady(() => {
 	let isNewEditorContentObserver = true;
 	let isNewObserver = true;
 	let isSCLoaded = false;
-	let type = null;
+	let id = null;
 
 	const editorContentUnsubscribe = subscribe(() => {
 		const resizeObserverTarget = document.querySelector(
@@ -161,7 +161,7 @@ wp.domReady(() => {
 		}
 
 		if (isSiteEditor) {
-			const currentType = select('core/edit-site').getEditedPostType();
+			const currentId = select('core/edit-site').getEditedPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
 
@@ -179,7 +179,7 @@ wp.domReady(() => {
 				isNewEditorContentObserver = false;
 				resizeObserver.observe(resizeObserverTarget);
 			} else if (
-				(isTemplatesListOpened || type !== currentType) &&
+				(isTemplatesListOpened || id !== currentId) &&
 				!isNewEditorContentObserver
 			) {
 				isNewEditorContentObserver = true;
@@ -195,10 +195,7 @@ wp.domReady(() => {
 			)
 				siteEditorIframeBody.classList.add('maxi-blocks--active');
 
-			if (
-				(getIsTemplatesListOpened() || type !== currentType) &&
-				isSCLoaded
-			)
+			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
 				isSCLoaded = false;
 
 			// Adding the SC styles after switching between the templates
@@ -229,7 +226,7 @@ wp.domReady(() => {
 					isNewObserver = false;
 					templatePartResizeObserver.observe(resizableBox);
 				} else if (
-					(isTemplatesListOpened || type !== currentType) &&
+					(isTemplatesListOpened || id !== currentId) &&
 					!isNewObserver
 				) {
 					isNewObserver = true;
@@ -237,7 +234,7 @@ wp.domReady(() => {
 				}
 			}
 
-			type = currentType;
+			id = currentId;
 		} else {
 			if (!resizeObserverTarget) return;
 

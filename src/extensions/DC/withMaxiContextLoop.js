@@ -27,7 +27,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			if (!attributes.isFirstOnHierarchy) {
 				const context = useContext(LoopContext);
 
-				prevContextLoopAttributes = context.contextLoop;
+				if (context) prevContextLoopAttributes = context.contextLoop;
 			}
 
 			const contextLoopAttributes = getGroupAttributes(

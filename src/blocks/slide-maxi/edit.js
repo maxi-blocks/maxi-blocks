@@ -19,7 +19,7 @@ import SliderContext from '../slider-maxi/context';
  */
 import classnames from 'classnames';
 import { copyPasteMapping } from './data';
-import { withMaxiLoopContext } from '../../extensions/DC';
+import { withMaxiContextLoop, withMaxiLoopContext } from '../../extensions/DC';
 
 /**
  * Editor
@@ -126,4 +126,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiLoopContext(withMaxiProps(edit));
+export default withMaxiContextLoop(withMaxiLoopContext(withMaxiProps(edit)));

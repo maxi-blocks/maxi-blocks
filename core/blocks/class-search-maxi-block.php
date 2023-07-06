@@ -59,15 +59,6 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public function get_styles($props, $customCss)
         {
             $uniqueID = $props['uniqueID'];

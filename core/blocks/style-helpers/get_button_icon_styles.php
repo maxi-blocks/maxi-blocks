@@ -151,17 +151,23 @@ function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
     return $response;
 }
 
+/**
+ * Function to get button icon styles.
+ *
+ * @param array $params The array of parameters.
+ * @return array The button icon styles.
+ */
 function get_button_icon_styles($params)
 {
-    $obj = $params['obj'];
-    $block_style = $params['block_style'];
-    $is_hover = isset($params['is_hover']) ? $params['is_hover'] : false;
-    $is_IB = isset($params['is_IB']) ? $params['is_IB'] : false;
-    $target = isset($params['target']) ? $params['target'] : '';
-    $wrapper_target = isset($params['wrapper_target']) ? $params['wrapper_target'] : '';
-    $prefix = isset($params['prefix']) ? $params['prefix'] : '';
-    $icon_width_height_ratio = isset($params['icon_width_height_ratio']) ? $params['icon_width_height_ratio'] : null;
-    $hover_on_icon = isset($params['hover_on_icon']) ? $params['hover_on_icon'] : false;
+    $obj = $params['obj'] ?? null;
+    $block_style = $params['block_style'] ?? null;
+    $is_hover = $params['is_hover'] ?? false;
+    $is_IB = $params['is_IB'] ?? false;
+    $target = $params['target'] ?? '';
+    $wrapper_target = $params['wrapper_target'] ?? '';
+    $prefix = $params['prefix'] ?? '';
+    $icon_width_height_ratio = $params['icon_width_height_ratio'] ?? null;
+    $hover_on_icon = $params['hover_on_icon'] ?? false;
 
     $has_icon = isset($obj[$prefix . 'icon_content']) ? !!$obj[$prefix . 'icon_content'] : false;
     $icon_inherit = $obj[$prefix . 'icon_inherit'] ?? false;
@@ -171,11 +177,11 @@ function get_button_icon_styles($params)
     $normal_target = $wrapper_target . ' ' . $target;
     $hover_target = $hover_on_icon ? $wrapper_target . ' ' . $target . ':hover' : $wrapper_target . ':hover ' . $target;
 
-    $icon_type = isset($obj['svg_type']) ? strtolower($obj['svg_type']) : false;
+    $icon_type = isset($obj['svg_type']) ? strtolower($obj['svg_type']) : null;
 
-    $response = [
-        ...(!!$has_icon && !$is_hover ? [
-            ...get_svg_styles([
+    $response = array_merge(
+        $has_icon && !$is_hover ? array_merge(
+            get_svg_styles([
                 'obj' => $obj,
                 'target' => $normal_target,
                 'block_style' => $block_style,
@@ -183,51 +189,59 @@ function get_button_icon_styles($params)
                 'use_icon_color' => $use_icon_color,
                 'icon_type' => $icon_type
             ]),
-            ' ' . $wrapper_target . ' ' . $target => get_icon_object($obj, 'icon', $prefix, $is_IB),
-            ' ' . $wrapper_target . ' ' . $target . ' svg' => get_icon_size($obj, false, $prefix, $icon_width_height_ratio),
-            ' ' . $wrapper_target . ' ' . $target . ' svg > *' => get_icon_object($obj, 'svg', $prefix),
-            ' ' . $wrapper_target . ' ' . $target . ' svg path' => get_icon_path_styles($obj, false, $prefix)
-        ] : []),
-        ...(!!$icon_hover_status ?
-            array_merge(
-                [
-                    ' ' . $hover_target => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
-                    ' ' . $hover_target . ' svg > *' => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
-                    ' ' . $hover_target . ' svg' => get_icon_size($obj, true, $prefix, $icon_width_height_ratio),
-                    ' ' . $hover_target . ' svg path' => get_icon_path_styles($obj, true),
-                ],
-                get_svg_styles([
-                    'obj' => $obj,
-                    'target' => $hover_target,
-                    'block_style' => $block_style,
-                    'prefix' => $prefix . 'icon_',
-                    'use_icon_color' => $use_icon_color,
-                    'is_hover' => true,
-                    'icon_type' => $icon_type
-                ])
-            )
-         : []),
-        ' ' . $normal_target . ' svg path' => get_icon_path_styles($obj, false),
-        ' ' . $hover_target => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
-        ' ' . $hover_target . ' svg > *' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
-        ' ' . $hover_target . ' svg' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_size($obj, true, $prefix, $icon_width_height_ratio) : null,
-        ' ' . $hover_target . ' svg path' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_path_styles($obj, true) : null,
-    ];
+            [
+                ' ' . $wrapper_target . ' ' . $target => get_icon_object($obj, 'icon', $prefix, $is_IB),
+                ' ' . $wrapper_target . ' ' . $target . ' svg' => get_icon_size($obj, false, $prefix, $icon_width_height_ratio),
+                ' ' . $wrapper_target . ' ' . $target . ' svg > *' => get_icon_object($obj, 'svg', $prefix),
+                ' ' . $wrapper_target . ' ' . $target . ' svg path' => get_icon_path_styles($obj, false, $prefix)
+            ]
+        ) : [],
+        $icon_hover_status ? array_merge(
+            [
+                ' ' . $hover_target => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
+                ' ' . $hover_target . ' svg > *' => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
+                ' ' . $hover_target . ' svg' => get_icon_size($obj, true, $prefix, $icon_width_height_ratio),
+                ' ' . $hover_target . ' svg path' => get_icon_path_styles($obj, true),
+            ],
+            get_svg_styles([
+                'obj' => $obj,
+                'target' => $hover_target,
+                'block_style' => $block_style,
+                'prefix' => $prefix . 'icon_',
+                'use_icon_color' => $use_icon_color,
+                'is_hover' => true,
+                'icon_type' => $icon_type
+            ])
+        ) : [],
+        [
+            ' ' . $normal_target . ' svg path' => get_icon_path_styles($obj, false),
+            ' ' . $hover_target => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
+            ' ' . $hover_target . ' svg > *' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
+            ' ' . $hover_target . ' svg' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_size($obj, true, $prefix, $icon_width_height_ratio) : null,
+            ' ' . $hover_target . ' svg path' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_path_styles($obj, true) : null,
+        ]
+    );
+
+    write_log('get_group_attributes:');
+    write_log(get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix));
 
     $response = array_merge(
         $response,
-        get_block_background_styles(
+        get_background_styles(
             array_merge(
-                get_group_attributes($obj, ['blockBackground', 'border', 'borderWidth', 'borderRadius']),
-                ['block_style' => $block_style]
+                get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix),
+                ['block_style' => $block_style, 'prefix' => $prefix, 'is_button' => true]
             )
         ),
-        get_block_background_styles(
+        get_background_styles(
             array_merge(
-                get_group_attributes($obj, ['blockBackground', 'border', 'borderWidth', 'borderRadius'], true),
+                get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], true, $prefix),
                 [
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'prefix' => $prefix,
+                    'is_button' => true
+
                 ]
             )
         )

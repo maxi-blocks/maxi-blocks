@@ -206,9 +206,5 @@ function get_transform_styles($obj, $selectors)
             }
         }
     }
-
-    write_log('get_transform_styles');
-    write_log($response);
-    write_log('====================');
     return $response;
 }

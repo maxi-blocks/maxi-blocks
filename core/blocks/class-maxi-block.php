@@ -15,6 +15,7 @@ if (!defined('ABSPATH')) {
 $utilsDir = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/';
 $styleHelpersDir = MAXI_PLUGIN_DIR_PATH . 'core/blocks/style-helpers/';
 
+
 // Load the utility files.
 foreach (glob($utilsDir . '*.php') as $file) {
     require_once $file;
@@ -24,6 +25,8 @@ foreach (glob($utilsDir . '*.php') as $file) {
 foreach (glob($styleHelpersDir . '*.php') as $file) {
     require_once $file;
 }
+
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
 
 // Check if the class is already defined.
 if (!class_exists('MaxiBlocks_Block')):

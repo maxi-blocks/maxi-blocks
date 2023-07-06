@@ -1166,7 +1166,7 @@ class MaxiBlocks_Styles
 
         // fonts
         $fonts_json = $content_block['fonts_value'];
-        if($fonts_json !== '') {
+        if($fonts_json !== '' && $fonts_json !== null) {
             $fonts_array = json_decode($fonts_json, true) ?? [];
         } else {
             $fonts_array = [];

@@ -28,7 +28,6 @@ function get_group_attributes(
     }
 
     $response = array();
-    //$defaults = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/blocks/utils/default-group-attributes.json"), true);
 
     if ($is_hover) {
         $hover_attributes = get_group_attributes(
@@ -46,10 +45,6 @@ function get_group_attributes(
 
     if (is_string($target)) {
         $default_attributes = json_file_to_array($target, $is_hover);
-        //$default_attributes = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/'.$target . ($is_hover ? 'Hover' : '').'.json'), true);
-        // $default_attributes =
-        //     $defaults[$target . ($is_hover ? 'Hover' : '')] ??
-        //     $defaults[$target];
 
         if (isset($default_attributes) && is_array($default_attributes)) {
             foreach (array_keys($default_attributes) as $key) {
@@ -63,12 +58,11 @@ function get_group_attributes(
     } else {
         foreach ($target as $el) {
             $default_attributes = json_file_to_array($el, $is_hover);
-            // $default_attributes =
-            //     $defaults[$el . ($is_hover ? 'Hover' : '')] ??
-            //     $defaults[$el];
 
             if (isset($default_attributes) && is_array($default_attributes)) {
+
                 foreach (array_keys($default_attributes) as $key) {
+
                     if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
                         $response[$prefix . $key] = $attributes[$prefix . $key];
                     } elseif (isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {

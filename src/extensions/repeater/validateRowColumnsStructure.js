@@ -36,6 +36,7 @@ const validateAttributes = (
 
 	const blockPosition = findBlockPosition(block.clientId, column);
 	const refClientId = innerBlocksPositions?.[blockPosition]?.at(0);
+	const refColumnClientId = innerBlocksPositions?.[[-1]]?.at(0);
 
 	if (!refClientId) {
 		return false;
@@ -54,8 +55,8 @@ const validateAttributes = (
 	if (!disableRelationsUpdate) {
 		updateRelationsInColumn(
 			nonExcludedRefAttributes,
-			refClientId,
-			block.clientId,
+			refColumnClientId,
+			column.clientId,
 			innerBlocksPositions
 		);
 	}
@@ -163,12 +164,6 @@ const validateRowColumnsStructure = (
 		: childColumns[0];
 	const columnToValidateByClientId = columnToValidateBy.clientId;
 
-	const equalTemplateName = getTemplates(
-		true,
-		'general',
-		childColumns.length
-	)[0].name;
-
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 	let isEqualTemplate = true;
@@ -198,6 +193,12 @@ const validateRowColumnsStructure = (
 	);
 
 	if (!isEqualTemplate) {
+		const equalTemplateName = getTemplates(
+			true,
+			'general',
+			childColumns.length
+		)[0].name;
+
 		loadColumnsTemplate(
 			equalTemplateName,
 			rowClientId,

@@ -30,7 +30,7 @@ import { isNil } from 'lodash';
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { attributes, name, setAttributes } = ownProps;
+			const { attributes, name, setAttributes, clientId } = ownProps;
 
 			const contextLoop = useContext(LoopContext)?.contextLoop;
 
@@ -130,7 +130,10 @@ const withMaxiDC = createHigherOrderComponent(
 					const newLinkSettings =
 						ownProps.attributes.linkSettings ?? {};
 					let updateLinkSettings = false;
-					const dcLink = await getDCLink(lastDynamicContentProps);
+					const dcLink = await getDCLink(
+						lastDynamicContentProps,
+						clientId
+					);
 					const isSameLink = dcLink === newLinkSettings.url;
 
 					if (
@@ -152,7 +155,8 @@ const withMaxiDC = createHigherOrderComponent(
 
 					if (!isImageMaxi) {
 						let newContent = await getDCContent(
-							lastDynamicContentProps
+							lastDynamicContentProps,
+							clientId
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
@@ -184,7 +188,8 @@ const withMaxiDC = createHigherOrderComponent(
 						}
 					} else {
 						const mediaContent = await getDCMedia(
-							lastDynamicContentProps
+							lastDynamicContentProps,
+							clientId
 						);
 
 						if (isNil(mediaContent)) {

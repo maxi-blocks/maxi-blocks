@@ -189,13 +189,11 @@ const Popover = (
 		const { defaultView } = ownerDocument;
 		const { frameElement } = defaultView;
 
-		const iframeRect = frameElement?.getBoundingClientRect();
-
 		return (
 			frameElement &&
 			ownerDocument !== document && {
-				x: iframeRect.left,
-				y: iframeRect.top,
+				x: 0,
+				y: 0,
 			}
 		);
 	}, [ownerDocument]);

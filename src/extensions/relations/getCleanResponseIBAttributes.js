@@ -1,14 +1,8 @@
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import { getClientIdFromUniqueId } from '../attributes';
 import { handleSetAttributes } from '../maxi-block';
-import { replaceAttrKeyBreakpoint } from '../styles';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
@@ -16,7 +10,7 @@ import getTempAttributes from './getTempAttributes';
 /**
  * External dependencies
  */
-import { compact, isNil } from 'lodash';
+import { compact } from 'lodash';
 
 const getCleanResponseIBAttributes = (
 	newAttributesObj,
@@ -54,8 +48,6 @@ const getCleanResponseIBAttributes = (
 	 * display the value from the block attributes on XXL, which is 20.
 	 */
 
-	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-
 	const newUndefinedAttrs = compact(
 		Object.entries(cleanAttributesObject).map(([key, value]) => {
 			if (value === undefined) return key;
@@ -66,37 +58,13 @@ const getCleanResponseIBAttributes = (
 
 	if (newUndefinedAttrs.length) {
 		newUndefinedAttrs.forEach(attr => {
-			if (breakpoint !== 'general') {
-				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
-					cleanAttributesObject[attr] = newAttributesObj[attr];
-					return;
-				}
-
-				const breakpointAttrKey = replaceAttrKeyBreakpoint(
-					attr,
-					breakpoint
-				);
-
-				if (
-					isNil(cleanAttributesObject[attr]) &&
-					cleanAttributesObject[breakpointAttrKey]
-				)
-					cleanAttributesObject[attr] =
-						cleanAttributesObject[breakpointAttrKey];
-
-				const attrBreakpoint = getBreakpointFromAttribute(attr);
-
-				if (baseBreakpoint !== attrBreakpoint)
-					delete cleanAttributesObject[attr];
-			}
-
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
 
-			if (
-				attrBreakpoint !== 'general' &&
-				baseBreakpoint !== attrBreakpoint
-			)
-				delete cleanAttributesObject[attr];
+			if (attrBreakpoint !== 'general') {
+				if (newAttributesObj[attr] !== cleanAttributesObject[attr]) {
+					cleanAttributesObject[attr] = newAttributesObj[attr];
+				}
+			}
 		});
 	}
 

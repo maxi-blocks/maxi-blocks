@@ -85,7 +85,7 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
         }
     }
 
-    $response['icon-responsive'] = $responsive;
+    $response['iconResponsive'] = $responsive;
 
     return $response;
 }
@@ -93,8 +93,7 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
 {
     $icon_hover_status = $props[$prefix . 'icon-status-hover'] ?? false;
-    write_log('$icon_hover_status');
-    write_log($icon_hover_status);
+
     if($icon_hover_status) {
         $icon_hover_active_media = get_attribute_value(
             'iconBackgroundActiveMedia',
@@ -162,9 +161,6 @@ function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
         $response = null;
     }
 
-    write_log('$response');
-    write_log($response);
-
     return $response;
 }
 
@@ -218,7 +214,7 @@ function get_button_icon_styles($params)
                 ' ' . $hover_target => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
                 ' ' . $hover_target . ' svg > *' => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
                 ' ' . $hover_target . ' svg' => get_icon_size($obj, true, $prefix, $icon_width_height_ratio),
-                ' ' . $hover_target . ' svg path' => get_icon_path_styles($obj, true),
+                ' ' . $hover_target . ' svg path' => get_icon_path_styles($obj, true, $prefix),
             ],
             get_svg_styles([
                 'obj' => $obj,
@@ -238,28 +234,6 @@ function get_button_icon_styles($params)
             ' ' . $hover_target . ' svg path' => isset($obj['icon-status-hover']) && $obj['icon-status-hover'] ? get_icon_path_styles($obj, true) : null,
         ]
     );
-
-    // $response = array_merge(
-    //     $response,
-    //     get_background_styles(
-    //         array_merge(
-    //             get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix),
-    //             ['block_style' => $block_style, 'prefix' => $prefix, 'is_button' => true]
-    //         )
-    //     ),
-    //     get_background_styles(
-    //         array_merge(
-    //             get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], true, $prefix),
-    //             [
-    //                 'is_hover' => true,
-    //                 'block_style' => $block_style,
-    //                 'prefix' => $prefix,
-    //                 'is_button' => true
-
-    //             ]
-    //         )
-    //     )
-    // );
 
     return $response;
 }

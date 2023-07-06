@@ -12,6 +12,7 @@ import { useEffect, useState } from '@wordpress/element';
 import { AdvancedNumberControl, Button, Icon } from '../../../../components';
 import {
 	getNumCol,
+	getTemplateObject,
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
@@ -27,7 +28,7 @@ import { cleanInnerBlocks } from '../../../../extensions/copy-paste';
 /**
  * External dependencies
  */
-import { floor, isEqual, isNil, toNumber, uniqueId } from 'lodash';
+import { floor, isEqual, isNil, uniqueId } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -211,7 +212,7 @@ const ColumnPattern = props => {
 									repeaterStatus
 								);
 
-								const prevRowPattern = getAttributeValue({
+								const oldRowPattern = getAttributeValue({
 									target: 'row-pattern',
 									props,
 									breakpoint,
@@ -221,16 +222,15 @@ const ColumnPattern = props => {
 										? numCol.toString()
 										: template.name;
 
-								const sanitizeRowPattern = pattern =>
-									toNumber(pattern.replace(/[^0-9]/g, '')[0]);
-
 								if (repeaterStatus) {
 									const innerBlockPositions =
 										getInnerBlocksPositions();
 
 									if (
-										sanitizeRowPattern(prevRowPattern) <
-											sanitizeRowPattern(newRowPattern) &&
+										getTemplateObject(oldRowPattern).sizes
+											.length <
+											getTemplateObject(newRowPattern)
+												.sizes.length &&
 										clientId === repeaterRowClientId
 									) {
 										validateRowColumnsStructure(

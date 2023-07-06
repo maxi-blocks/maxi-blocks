@@ -57,12 +57,29 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
-			const parentColumnClientId =
-				repeaterContext?.repeaterStatus &&
-				getBlockParentsByBlockName(
-					clientId,
-					'maxi-blocks/column-maxi'
-				)[0];
+			const parentColumnClientId = useMemo(() => {
+				if (repeaterContext?.repeaterStatus) {
+					const innerBlockPositions =
+						repeaterContext?.getInnerBlocksPositions();
+
+					if (innerBlockPositions?.[[-1]]?.includes(clientId)) {
+						return clientId;
+					}
+
+					return getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+					).find(parentClientId =>
+						innerBlockPositions?.[[-1]]?.includes(parentClientId)
+					);
+				}
+
+				return null;
+			}, [
+				repeaterContext?.repeaterStatus,
+				clientId,
+				repeaterContext?.getInnerBlocksPositions,
+			]);
 
 			const {
 				deviceType,
@@ -156,10 +173,28 @@ const withMaxiProps = createHigherOrderComponent(
 									}
 								}
 
+								const columnClientId =
+									innerBlocksPositions[[-1]][
+										innerBlocksPositions[
+											blockPositionFromColumn
+										].indexOf(clientId)
+									];
+
+								const currentPosition = getBlockPosition(
+									currentClientId,
+									innerBlocksPositions
+								);
+								const currentColumnClientId =
+									innerBlocksPositions[[-1]][
+										innerBlocksPositions[
+											currentPosition
+										].indexOf(currentClientId)
+									];
+
 								updateRelationsInColumn(
 									nonExcludedAttributes,
-									clientId,
-									currentClientId,
+									columnClientId,
+									currentColumnClientId,
 									innerBlocksPositions
 								);
 

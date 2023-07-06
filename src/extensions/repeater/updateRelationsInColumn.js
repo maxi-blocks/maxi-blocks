@@ -15,34 +15,22 @@ import { getBlockPosition } from './utils';
  * but in the new column, if trigger is in the old column.
  *
  * @param {Object<string, any>}      attributes
- * @param {string}                   oldClientId
- * @param {string}                   newClientId
+ * @param {string}                   oldColumnClientId
+ * @param {string}                   newColumnClientId
  * @param {Object<string, string[]>} innerBlocksPositions
  */
 const updateRelationsInColumn = (
 	attributes,
-	oldClientId,
-	newClientId,
+	oldColumnClientId,
+	newColumnClientId,
 	innerBlocksPositions
 ) => {
 	if (!attributes.relations) {
 		return;
 	}
 
-	const { getBlock, getBlockName, getBlockParentsByBlockName } =
+	const { getBlock, getBlockParentsByBlockName } =
 		select('core/block-editor');
-
-	const [oldClientIdColumn, newClientIdColumn] = [
-		oldClientId,
-		newClientId,
-	].map(
-		clientId =>
-			getBlockParentsByBlockName(
-				clientId,
-				'maxi-blocks/column-maxi'
-			)[0] ||
-			(getBlockName(clientId) === 'maxi-blocks/column-maxi' && clientId)
-	);
 
 	attributes.relations = attributes.relations.map(relation => {
 		const { uniqueID } = relation;
@@ -52,16 +40,13 @@ const updateRelationsInColumn = (
 		}
 
 		const relationClientId = getClientIdFromUniqueId(uniqueID);
-		const relationClientIdColumn =
-			getBlockParentsByBlockName(
-				relationClientId,
-				'maxi-blocks/column-maxi'
-			)[0] ||
-			(uniqueID.includes('column-maxi') && relationClientId);
 
 		if (
-			!relationClientIdColumn ||
-			relationClientIdColumn !== oldClientIdColumn
+			relationClientId !== oldColumnClientId &&
+			!getBlockParentsByBlockName(
+				relationClientId,
+				'maxi-blocks/column-maxi'
+			).includes(oldColumnClientId)
 		) {
 			return relation;
 		}
@@ -76,14 +61,11 @@ const updateRelationsInColumn = (
 		}
 
 		const newRelationClientId = innerBlocksPositions[blockPosition].find(
-			clientId => {
-				const clientIdColumn = getBlockParentsByBlockName(
+			clientId =>
+				getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
-				)[0];
-
-				return clientIdColumn === newClientIdColumn;
-			}
+				).includes(newColumnClientId)
 		);
 
 		const newBlock = getBlock(newRelationClientId);

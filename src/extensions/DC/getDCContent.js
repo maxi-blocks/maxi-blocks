@@ -28,8 +28,8 @@ const nameDictionary = {
 	tags: 'post_tag',
 };
 
-const getDCContent = async dataRequest => {
-	const data = await getDCEntity(dataRequest);
+const getDCContent = async (dataRequest, clientId) => {
+	const data = await getDCEntity(dataRequest, clientId);
 
 	if (!data) return null;
 

@@ -12,7 +12,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
 
 
 
@@ -75,23 +74,23 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
             // transition
             $defaults = new StylesDefaults();
-            $transitionDefaultCanvas = $defaults->transitionDefault['canvas'];
+            $transition_default_canvas = $defaults->transitionDefault['canvas'];
 
-            $blockClass = ' .maxi-text-block';
-            $contentClass = $blockClass . '__content';
-            $linkClass = $blockClass . '--link';
+            $block_class = ' .maxi-text-block';
+            $content_class = $block_class . '__content';
+            $link_class = $block_class . '--link';
 
             $transition = [
-                'canvas' => array_merge($transitionDefaultCanvas, [
+                'canvas' => array_merge($transition_default_canvas, [
                     'typography' => [
                         'title' => 'Typography',
-                        'target' => [$contentClass, $contentClass . ' li', $contentClass . ' ol'],
+                        'target' => [$content_class, $content_class . ' li', $content_class . ' ol'],
                         'property' => false,
                         'hoverProp' => 'typography-status-hover',
                     ],
                     'link' => [
                         'title' => 'Link',
-                        'target' => [$linkClass, $linkClass . ' span'],
+                        'target' => [$link_class, $link_class . ' span'],
                         'property' => 'color',
                     ],
                 ]),

@@ -75,9 +75,6 @@ const StyleComponent = ({
 	isBreakpointChange,
 	currentBreakpoint,
 }) => {
-	console.log('StyleComponent');
-	console.log('stylesObj');
-	console.log(stylesObj);
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -111,13 +108,7 @@ const StyleComponent = ({
 		breakpoints: getBreakpoints(),
 	});
 
-	console.log('styles');
-	console.log(styles);
-
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
-
-	console.log('styleContent');
-	console.log(styleContent);
 
 	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 

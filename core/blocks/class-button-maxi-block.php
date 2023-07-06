@@ -64,8 +64,57 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
+            // transition
+            $defaults = new StylesDefaults();
+            $transition_default = $defaults->transitionDefault;
+
+            $button_wrapper_class = ' .maxi-button-block';
+            $button_class = $button_wrapper_class . '__button';
+            $icon_class = $button_wrapper_class . '__icon';
+            $content_class = $button_wrapper_class . '__content';
+            $prefix = 'button-';
+
+            $transition = array_merge($transition_default, [
+                'block' => [
+                    'typography' => [
+                        'title' => 'Typography',
+                        'target' => $content_class,
+                        'property' => false,
+                        'hover_prop' => 'typography-status-hover',
+                    ],
+                    'button background' => [
+                        'title' => 'Button background',
+                        'target' => $button_class,
+                        'property' => 'background',
+                        'hover_prop' => $prefix . 'background-status-hover',
+                    ],
+                    'border' => [
+                        'title' => 'Border',
+                        'target' => $button_class,
+                        'property' => ['border', 'border-radius'],
+                        'hover_prop' => $prefix . 'border-status-hover',
+                    ],
+                    'box shadow' => [
+                        'title' => 'Box shadow',
+                        'target' => $button_class,
+                        'property' => 'box-shadow',
+                        'hover_prop' => $prefix . 'box-shadow-status-hover',
+                    ],
+                ]
+            ]);
+
+            // Call the create_icon_transitions function and merge its results into the 'block' array
+            $icon_transitions = create_icon_transitions([
+                'target' => ' ' . $icon_class,
+                'prefix' => 'icon-',
+                'title_prefix' => 'icon',
+            ]);
+
+            $transition['block'] = array_merge($transition['block'], $icon_transitions);
+
             $data = [
                 'customCss' => $customCss,
+                'transition' => $transition,
             ];
 
             $styles_obj = [
@@ -85,8 +134,13 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'block_style' => $block_style,
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
+                'is_hover' => false,
+                'prefix' => 'icon-',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
             ]);
+
+            write_log('$button_icon_styles');
+            write_log($button_icon_styles);
 
             $button_icon_hover_styles = get_button_icon_styles([
                 'obj' => $props,
@@ -95,6 +149,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'wrapper_target' => '.maxi-button-block__button',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
                 'is_hover' => true,
+                'prefix' => 'icon-',
             ]);
 
             $styles_obj[$uniqueID] = array_merge_recursive(

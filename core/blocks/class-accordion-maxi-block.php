@@ -64,8 +64,54 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
+            // transition
+            $defaults = new StylesDefaults();
+            $transition_default = $defaults->transitionDefault;
+
+            $transition = array_merge($transition_default, [
+                'block' => [
+                    'header line' => [
+                        'title' => 'Header line',
+                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
+                        'hoverProp' => 'header-line-status-hover',
+                        'limitless' => true,
+                    ],
+                    'content line' => [
+                        'title' => 'Content line',
+                        'target' => ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
+                        'hoverProp' => 'content-line-status-hover',
+                        'limitless' => true,
+                    ],
+                    'pane title' => [
+                        'title' => 'Pane title',
+                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
+                        'property' => false,
+                        'hoverProp' => [
+                            'title-typography-status-hover',
+                            'title-typography-status-active',
+                        ],
+                    ],
+                    'pane title background' => [
+                        'title' => 'Pane title background',
+                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
+                        'property' => 'background-color',
+                        'hoverProp' => 'title-background-status-hover',
+                    ]
+                ]
+            ]);
+
+            // Call the create_icon_transitions function and merge its results into the 'block' array
+            $icon_transitions = create_icon_transitions([
+                'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
+                'prefix' => 'icon-',
+                'title_prefix' => 'icon',
+            ]);
+
+            $transition['block'] = array_merge($transition['block'], $icon_transitions);
+
             $data = [
                 'customCss' => $customCss,
+                'transition' => $transition,
             ];
 
             $styles_obj = [
@@ -120,10 +166,6 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 self::get_pane_header_object($props),
                 self::get_pane_content_object($props),
             );
-
-
-            self::write_log('$styles_obj');
-            self::write_log($styles_obj);
 
             $response = style_processor(
                 $styles_obj,

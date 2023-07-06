@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props, $context = [])
         {
             $uniqueID = $props['uniqueID'];
@@ -191,7 +191,7 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
     }

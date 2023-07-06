@@ -2,53 +2,55 @@
 
 function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 {
+    $background = $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object(array_merge(
+        get_group_attributes(
+            $props,
+            ['icon', 'background', 'iconBackgroundColor'],
+            false,
+            $prefix
+        ),
+        get_group_attributes(
+            $props,
+            'backgroundColor',
+            false,
+            'button-'
+        ),
+        [
+            'prefix' => $prefix . 'icon-',
+            'block_style' => $props['blockStyle'],
+            'is_icon_inherit' => $props[$prefix . 'icon-inherit'],
+            'is_icon' => true
+        ]
+    )) : null;
+
     $response = [
-        'background' => $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object([
-            ...get_group_attributes(
+        'background' => $background,
+        'gradient' => $props[$prefix . 'icon-background-active-media-general'] === 'gradient' ? get_gradient_background_object(array_merge(
+            get_group_attributes(
                 $props,
-                ['icon', 'background', 'icon_background_color'],
+                ['icon', 'iconBackground', 'iconBackgroundGradient'],
                 false,
                 $prefix
             ),
-            ...get_group_attributes(
-                $props,
-                'background_color',
-                false,
-                'button_'
-            ),
-            'prefix' => $prefix . 'icon_',
-            'block_style' => $props['block_style'],
-            'is_icon_inherit' => $props[$prefix . 'icon_inherit'],
-            'is_icon' => true
-        ]) : null,
-        'gradient' => $props[$prefix . 'icon-background-active-media-general'] === 'gradient' ? get_gradient_background_object([
-            ...get_group_attributes(
-                $props,
-                ['icon', 'icon_background', 'icon_background_gradient'],
-                false,
-                $prefix
-            ),
-            'prefix' => $prefix . 'icon_',
-            'block_style' => $props['block_style'],
-            'is_icon' => true
-        ]) : null,
+            [
+                'prefix' => $prefix . 'icon-',
+                'block_style' => $props['blockStyle'],
+                'is_icon' => true
+            ]
+        )) : null,
         'padding' => $target === 'icon' ? get_margin_padding_styles([
-            'obj' => [
-                ...get_group_attributes($props, 'icon_padding', false, $prefix)
-            ],
-            'prefix' => $prefix . 'icon_'
+            'obj' => get_group_attributes($props, 'iconPadding', false, $prefix),
+            'prefix' => $prefix . 'icon-'
         ]) : null,
         'border' => $target === 'icon' ? get_border_styles([
-            'obj' => [
-                ...get_group_attributes(
-                    $props,
-                    ['icon_border', 'icon_border_width', 'icon_border_radius'],
-                    false,
-                    $prefix
-                )
-            ],
-            'prefix' => $prefix . 'icon_',
-            'block_style' => $props['block_style'],
+            'obj' => get_group_attributes(
+                $props,
+                ['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+                false,
+                $prefix
+            ),
+            'prefix' => $prefix . 'icon-',
+            'block_style' => $props['blockStyle'],
             'is_IB' => $is_IB
         ]) : null
     ];
@@ -64,89 +66,104 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
         $responsive[$breakpoint] = [];
 
         if (
-            !is_null($props[$prefix . 'icon_spacing_' . $breakpoint]) &&
-            !is_null($props[$prefix . 'icon_position'])
+            isset($props[$prefix . 'icon-spacing-' . $breakpoint]) &&
+            isset($props[$prefix . 'icon-position'])
         ) {
-            if ($props[$prefix . 'icon_position'] === 'left' || $props[$prefix . 'icon_position'] === 'right') {
-                $responsive[$breakpoint]['margin_' . ($props[$prefix . 'icon_position'] === 'right' ? 'left' : 'right')] = $props[$prefix . 'icon_only'] ? '0' : get_last_breakpoint_attribute(
-                    $prefix . 'icon_spacing',
-                    $breakpoint,
-                    $props
-                ) . 'px';
+            if ($props[$prefix . 'icon-position'] === 'left' || $props[$prefix . 'icon-position'] === 'right') {
+                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'right' ? 'left' : 'right')] = $props[$prefix . 'icon-only'] ? '0' : get_last_breakpoint_attribute([
+                    'target' => $prefix . 'icon-spacing',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                ]) . 'px';
             } else {
-                $responsive[$breakpoint]['margin_' . ($props[$prefix . 'icon_position'] === 'top' ? 'bottom' : 'top')] = $props[$prefix . 'icon_only'] ? '0' : get_last_breakpoint_attribute(
-                    $prefix . 'icon_spacing',
-                    $breakpoint,
-                    $props
-                ) . 'px';
+                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'top' ? 'bottom' : 'top')] = $props[$prefix . 'icon-only'] ? '0' : get_last_breakpoint_attribute([
+                    'prefix' => $prefix . 'icon-spacing',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                ]) . 'px';
             }
         }
     }
 
-    $response['icon_responsive'] = $responsive;
+    $response['icon-responsive'] = $responsive;
 
     return $response;
 }
 
 function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
 {
-    $icon_hover_status = $props[$prefix . 'icon_status_hover'];
-    $icon_hover_active_media = get_attribute_value(
-        'icon_background_active_media',
-        $prefix,
-        true,
-        'general',
-        $props
-    );
+    $icon_hover_status = $props[$prefix . 'icon-status-hover'] ?? false;
+    write_log('$icon_hover_status');
+    write_log($icon_hover_status);
+    if($icon_hover_status) {
+        $icon_hover_active_media = get_attribute_value(
+            'iconBackgroundActiveMedia',
+            $props,
+            true,
+            'general',
+            $prefix,
+        );
 
-    $response = [
-        'icon' => $icon_hover_status ? get_icon_styles([
-            ...get_group_attributes(
-                $props,
-                ['icon_hover', 'typography'],
-                true,
-                $prefix
-            )
-        ], $props['block_style'], $props[$prefix . 'icon_inherit'], true, $iconType) : null,
-        'background' => $icon_hover_status && $icon_hover_active_media === 'color' && $target === 'iconHover' ? get_color_background_object([
-            ...get_group_attributes(
-                $props,
-                ['icon', 'icon_background_color', 'background', 'background_color'],
-                true,
-                $prefix
-            ),
-            'prefix' => $prefix . 'icon_',
-            'block_style' => $props['block_style'],
-            'is_icon_inherit' => $props[$prefix . 'icon_inherit'],
-            'is_hover' => true,
-            'is_icon' => true
-        ]) : null,
-        'gradient' => $icon_hover_status && $icon_hover_active_media === 'gradient' && $target === 'iconHover' ? get_gradient_background_object([
-            ...get_group_attributes(
-                $props,
-                ['icon', 'icon_background', 'icon_background_gradient'],
-                true,
-                $prefix
-            ),
-            'prefix' => $prefix . 'icon_',
-            'is_hover' => true,
-            'block_style' => $props['block_style'],
-            'is_icon' => true
-        ]) : null,
-        'border' => $icon_hover_status && $target === 'iconHover' ? get_border_styles([
-            'obj' => [
-                ...get_group_attributes(
+        $response = [
+            'icon' => $icon_hover_status ? get_icon_styles(
+                get_group_attributes(
                     $props,
-                    ['icon_border', 'icon_border_width', 'icon_border_radius'],
+                    ['iconHover', 'typography'],
                     true,
                     $prefix
-                )
-            ],
-            'prefix' => $prefix . 'icon_',
-            'block_style' => $props['block_style'],
-            'is_hover' => true
-        ]) : null
-    ];
+                ),
+                $props['blockStyle'],
+                $props[$prefix . 'icon-inherit'],
+                true,
+                $iconType
+            ) : null,
+            'background' => $icon_hover_status && $icon_hover_active_media === 'color' && $target === 'iconHover' ? get_color_background_object(array_merge(
+                get_group_attributes(
+                    $props,
+                    ['icon', 'iconBackgroundColor', 'background', 'backgroundColor'],
+                    true,
+                    $prefix
+                ),
+                [
+                    'prefix' => $prefix . 'icon-',
+                    'block_style' => $props['blockStyle'],
+                    'is_icon_inherit' => $props[$prefix . 'icon-inherit'],
+                    'is_hover' => true,
+                    'is_icon' => true
+                ]
+            )) : null,
+            'gradient' => $icon_hover_status && $icon_hover_active_media === 'gradient' && $target === 'iconHover' ? get_gradient_background_object(array_merge(
+                get_group_attributes(
+                    $props,
+                    ['icon', 'iconBackground', 'iconBackgroundGradient'],
+                    true,
+                    $prefix
+                ),
+                [
+                    'prefix' => $prefix . 'icon-',
+                    'is_hover' => true,
+                    'block_style' => $props['blockStyle'],
+                    'is_icon' => true
+                ]
+            )) : null,
+            'border' => $icon_hover_status && $target === 'iconHover' ? get_border_styles([
+                'obj' => get_group_attributes(
+                    $props,
+                    ['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+                    true,
+                    $prefix
+                ),
+                'prefix' => $prefix . 'icon-',
+                'block_style' => $props['blockStyle'],
+                'is_hover' => true
+            ]) : null
+            ];
+    } else {
+        $response = null;
+    }
+
+    write_log('$response');
+    write_log($response);
 
     return $response;
 }
@@ -169,15 +186,15 @@ function get_button_icon_styles($params)
     $icon_width_height_ratio = $params['icon_width_height_ratio'] ?? null;
     $hover_on_icon = $params['hover_on_icon'] ?? false;
 
-    $has_icon = isset($obj[$prefix . 'icon_content']) ? !!$obj[$prefix . 'icon_content'] : false;
-    $icon_inherit = $obj[$prefix . 'icon_inherit'] ?? false;
-    $icon_hover_status = $obj[$prefix . 'icon_status_hover'] ?? false;
+    $has_icon = isset($obj[$prefix . 'icon-content']) ? !!$obj[$prefix . 'icon-content'] : false;
+    $icon_inherit = $obj[$prefix . 'icon-inherit'] ?? false;
+    $icon_hover_status = $obj[$prefix . 'icon-status-hover'] ?? false;
 
     $use_icon_color = !$icon_inherit;
     $normal_target = $wrapper_target . ' ' . $target;
     $hover_target = $hover_on_icon ? $wrapper_target . ' ' . $target . ':hover' : $wrapper_target . ':hover ' . $target;
 
-    $icon_type = isset($obj['svg_type']) ? strtolower($obj['svg_type']) : null;
+    $icon_type = isset($obj['svgType']) ? strtolower($obj['svgType']) : null;
 
     $response = array_merge(
         $has_icon && !$is_hover ? array_merge(
@@ -185,7 +202,7 @@ function get_button_icon_styles($params)
                 'obj' => $obj,
                 'target' => $normal_target,
                 'block_style' => $block_style,
-                'prefix' => $prefix . 'icon_',
+                'prefix' => $prefix . 'icon-',
                 'use_icon_color' => $use_icon_color,
                 'icon_type' => $icon_type
             ]),
@@ -207,7 +224,7 @@ function get_button_icon_styles($params)
                 'obj' => $obj,
                 'target' => $hover_target,
                 'block_style' => $block_style,
-                'prefix' => $prefix . 'icon_',
+                'prefix' => $prefix . 'icon-',
                 'use_icon_color' => $use_icon_color,
                 'is_hover' => true,
                 'icon_type' => $icon_type
@@ -215,37 +232,34 @@ function get_button_icon_styles($params)
         ) : [],
         [
             ' ' . $normal_target . ' svg path' => get_icon_path_styles($obj, false),
-            ' ' . $hover_target => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
-            ' ' . $hover_target . ' svg > *' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
-            ' ' . $hover_target . ' svg' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_size($obj, true, $prefix, $icon_width_height_ratio) : null,
-            ' ' . $hover_target . ' svg path' => isset($obj['icon_status_hover']) && $obj['icon_status_hover'] ? get_icon_path_styles($obj, true) : null,
+            ' ' . $hover_target => isset($obj['icon-status-hover']) && $obj['icon-status-hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
+            ' ' . $hover_target . ' svg > *' => isset($obj['icon-status-hover']) && $obj['icon-status-hover'] ? get_icon_hover_object($obj, 'iconHover') : null,
+            ' ' . $hover_target . ' svg' => isset($obj['icon-status-hover']) && $obj['icon-status-hover'] ? get_icon_size($obj, true, $prefix, $icon_width_height_ratio) : null,
+            ' ' . $hover_target . ' svg path' => isset($obj['icon-status-hover']) && $obj['icon-status-hover'] ? get_icon_path_styles($obj, true) : null,
         ]
     );
 
-    write_log('get_group_attributes:');
-    write_log(get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix));
+    // $response = array_merge(
+    //     $response,
+    //     get_background_styles(
+    //         array_merge(
+    //             get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix),
+    //             ['block_style' => $block_style, 'prefix' => $prefix, 'is_button' => true]
+    //         )
+    //     ),
+    //     get_background_styles(
+    //         array_merge(
+    //             get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], true, $prefix),
+    //             [
+    //                 'is_hover' => true,
+    //                 'block_style' => $block_style,
+    //                 'prefix' => $prefix,
+    //                 'is_button' => true
 
-    $response = array_merge(
-        $response,
-        get_background_styles(
-            array_merge(
-                get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], false, $prefix),
-                ['block_style' => $block_style, 'prefix' => $prefix, 'is_button' => true]
-            )
-        ),
-        get_background_styles(
-            array_merge(
-                get_group_attributes($obj, ['background', 'border', 'borderWidth', 'borderRadius'], true, $prefix),
-                [
-                    'is_hover' => true,
-                    'block_style' => $block_style,
-                    'prefix' => $prefix,
-                    'is_button' => true
-
-                ]
-            )
-        )
-    );
+    //             ]
+    //         )
+    //     )
+    // );
 
     return $response;
 }

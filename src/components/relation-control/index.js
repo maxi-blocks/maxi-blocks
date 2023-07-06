@@ -51,7 +51,6 @@ const RelationControl = props => {
 	const repeaterContext = useContext(RepeaterContext);
 
 	const {
-		name,
 		clientId,
 		deviceType,
 		isButton,
@@ -288,17 +287,18 @@ const RelationControl = props => {
 			getBlockParentsByBlockName,
 		} = select('core/block-editor');
 
-		const parentRowClientId =
-			repeaterContext?.repeaterStatus &&
-			getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')[0];
+		const innerBlockPositions =
+			repeaterContext?.getInnerBlocksPositions?.();
 
-		const parentColumnClientId =
-			(repeaterContext?.repeaterStatus &&
+		const triggerParentRepeaterColumnClientId =
+			repeaterContext?.repeaterStatus &&
+			(innerBlockPositions?.[[-1]]?.includes(clientId) ||
 				getBlockParentsByBlockName(
 					clientId,
 					'maxi-blocks/column-maxi'
-				)[0]) ||
-			(name === 'maxi-blocks/column-maxi' && clientId);
+				).find(clientId =>
+					innerBlockPositions?.[[-1]]?.includes(clientId)
+				));
 
 		goThroughMaxiBlocks(block => {
 			if (
@@ -306,29 +306,37 @@ const RelationControl = props => {
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID
 			) {
-				const currentParentRowClientId = getBlockParentsByBlockName(
+				const targetParentRows = getBlockParentsByBlockName(
 					block.clientId,
 					'maxi-blocks/row-maxi'
-				)[0];
-				const currentParentColumnClientId =
-					block.name === 'maxi-blocks/column-maxi'
-						? block.clientId
-						: getBlockParentsByBlockName(
-								block.clientId,
-								'maxi-blocks/column-maxi'
-						  )[0];
+				);
+
+				const targetParentRepeaterRowClientId = targetParentRows.find(
+					clientId => getBlockAttributes(clientId)['repeater-status']
+				);
+
+				const targetParentRepeaterColumnClientId =
+					getBlockParentsByBlockName(
+						block.clientId,
+						'maxi-blocks/column-maxi'
+					)[
+						targetParentRows.indexOf(
+							targetParentRepeaterRowClientId
+						)
+					] ||
+					(block.name === 'maxi-blocks/column-maxi' &&
+						block.clientId);
 
 				const isBlockInRepeaterAndInAnotherColumn =
 					repeaterContext?.repeaterStatus &&
-					parentRowClientId === currentParentRowClientId &&
-					parentColumnClientId !== currentParentColumnClientId;
+					repeaterContext?.repeaterRowClientId ===
+						targetParentRepeaterRowClientId &&
+					triggerParentRepeaterColumnClientId !==
+						targetParentRepeaterColumnClientId;
 
 				const isTargetInRepeaterAndTriggerNot =
 					!repeaterContext?.repeaterStatus &&
-					currentParentRowClientId &&
-					getBlockAttributes(currentParentRowClientId)[
-						'repeater-status'
-					];
+					targetParentRepeaterRowClientId;
 
 				if (isBlockInRepeaterAndInAnotherColumn) {
 					return;
@@ -339,8 +347,10 @@ const RelationControl = props => {
 						isTargetInRepeaterAndTriggerNot
 							? `(${
 									getBlockOrder(
-										currentParentRowClientId
-									).indexOf(currentParentColumnClientId) + 1
+										targetParentRepeaterRowClientId
+									).indexOf(
+										targetParentRepeaterColumnClientId
+									) + 1
 							  })`
 							: ''
 					}`,

@@ -174,10 +174,10 @@ const withMaxiProps = createHigherOrderComponent(
 								}
 
 								const columnClientId =
-									innerBlocksPositions[[-1]][
-										innerBlocksPositions[
+									innerBlocksPositions?.[[-1]]?.[
+										innerBlocksPositions?.[
 											blockPositionFromColumn
-										].indexOf(clientId)
+										]?.indexOf(clientId)
 									];
 
 								const currentPosition = getBlockPosition(
@@ -185,10 +185,10 @@ const withMaxiProps = createHigherOrderComponent(
 									innerBlocksPositions
 								);
 								const currentColumnClientId =
-									innerBlocksPositions[[-1]][
-										innerBlocksPositions[
+									innerBlocksPositions?.[[-1]]?.[
+										innerBlocksPositions?.[
 											currentPosition
-										].indexOf(currentClientId)
+										]?.indexOf(currentClientId)
 									];
 
 								updateRelationsInColumn(

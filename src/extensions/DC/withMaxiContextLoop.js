@@ -9,6 +9,7 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
+import { orderRelations } from './constants';
 import LoopContext from './loopContext';
 
 /**
@@ -36,9 +37,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>
-					['by-date', 'alphabetical'].includes(
-						attributes?.['cl-relation']
-					);
+					orderRelations.includes(attributes?.['cl-relation']);
 
 				const isCurrentAccumulator = getIsAccumulator(
 					contextLoopAttributes

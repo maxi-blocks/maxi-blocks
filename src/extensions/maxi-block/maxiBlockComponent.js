@@ -538,7 +538,7 @@ class MaxiBlockComponent extends Component {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
-	getRootEl() {
+	getRootEl(iframe) {
 		const { uniqueID } = this.props.attributes;
 
 		const getStylesWrapper = (element, onCreateWrapper) => {
@@ -556,7 +556,7 @@ class MaxiBlockComponent extends Component {
 			return wrapper;
 		};
 
-		const getPreviewWrapper = element => {
+		const getPreviewWrapper = (element, changeBreakpoint = true) => {
 			const elementHead = Array.from(
 				element.querySelectorAll('head')
 			).pop();
@@ -567,12 +567,14 @@ class MaxiBlockComponent extends Component {
 
 			elementBody.classList.add('maxi-blocks--active');
 
-			const width =
-				elementBody.querySelector('.is-root-container').offsetWidth;
-			elementBody.setAttribute(
-				'maxi-blocks-responsive',
-				getWinBreakpoint(width)
-			);
+			if (changeBreakpoint) {
+				const width =
+					elementBody.querySelector('.is-root-container').offsetWidth;
+				elementBody.setAttribute(
+					'maxi-blocks-responsive',
+					getWinBreakpoint(width)
+				);
+			}
 
 			return getStylesWrapper(elementHead, () => {
 				if (!element.getElementById('maxi-blocks-sc-vars-inline-css')) {
@@ -608,6 +610,12 @@ class MaxiBlockComponent extends Component {
 
 				wrapper = getStylesWrapper(iframeHead);
 			}
+		} else if (iframe) {
+			wrapper = getPreviewWrapper(iframe.contentDocument, false);
+			iframe.contentDocument.body.setAttribute(
+				'maxi-blocks-responsive',
+				document.querySelector('.is-tablet-preview') ? 's' : 'xs'
+			);
 		} else wrapper = getStylesWrapper(document.head);
 
 		if (
@@ -799,8 +807,11 @@ class MaxiBlockComponent extends Component {
 	 */
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
+		const iframe = document.querySelector(
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+		);
 
-		this.rootSlot = this.getRootEl();
+		this.rootSlot = this.getRootEl(iframe);
 
 		let obj;
 		let breakpoints;
@@ -833,6 +844,7 @@ class MaxiBlockComponent extends Component {
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
 						isPreview={this.isTemplatePartPreview}
+						isIframe={!!iframe}
 					/>
 				);
 

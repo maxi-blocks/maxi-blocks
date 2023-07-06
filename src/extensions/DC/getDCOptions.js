@@ -7,22 +7,21 @@ import { store as coreStore } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
+import { limitString } from './utils';
 import {
 	fieldOptions,
 	idFields,
 	idOptionByField,
-	typeOptions,
+	orderByRelations,
 } from './constants';
 
 /**
  * External dependencies
  */
 import { find, isEmpty, isEqual } from 'lodash';
-import { limitString } from './utils';
 
 export const getIdOptions = async (type, relation, author) => {
-	if (!idFields.includes(type) || (relation === 'author' && !author))
-		return false;
+	if (!idFields.includes(type)) return false;
 
 	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
@@ -37,7 +36,7 @@ export const getIdOptions = async (type, relation, author) => {
 		per_page: -1,
 	};
 
-	if (type === 'users') {
+	if (type === 'users' || relation === 'by-author') {
 		const users = await getUsers();
 
 		if (users) {
@@ -46,15 +45,10 @@ export const getIdOptions = async (type, relation, author) => {
 				name,
 			}));
 		}
-	} else if (type === 'categories') {
+	} else if (type === 'categories' || relation === 'by-category') {
 		data = await getEntityRecords('taxonomy', 'category', args);
-	} else if (type === 'tags') {
+	} else if (type === 'tags' || relation === 'by-tag') {
 		data = await getEntityRecords('taxonomy', 'post_tag', args);
-	} else if (relation === 'author') {
-		data = await getEntityRecords('postType', dictionary[type], {
-			...args,
-			author,
-		});
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
@@ -92,7 +86,10 @@ const getDCOptions = async (
 	const newValues = {};
 
 	const newPostIdOptions = data.map(item => {
-		if (['tags', 'categories'].includes(type)) {
+		if (
+			['tags', 'categories'].includes(type) ||
+			orderByRelations.includes(relation)
+		) {
 			return {
 				label: limitString(item.name, 10),
 				value: +item.id,
@@ -100,11 +97,10 @@ const getDCOptions = async (
 		}
 
 		return {
-			label: `${item.id} - ${limitString(
+			label: `${item.id} - ${
 				item[idOptionByField[type]]?.rendered ??
-					item[idOptionByField[type]],
-				10
-			)}`,
+				item[idOptionByField[type]]
+			}`,
 			value: +item.id,
 		};
 	});
@@ -112,11 +108,7 @@ const getDCOptions = async (
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			if (
-				!contextLoop?.['cl-status'] ||
-				(contextLoop?.['cl-status'] &&
-					type !== contextLoop?.['cl-type'])
-			) {
+			if (!contextLoop?.['cl-status']) {
 				newValues[`${prefix}id`] = Number(data[0].id);
 				idFields.current = data[0].id;
 			} else {
@@ -126,7 +118,7 @@ const getDCOptions = async (
 
 		if (!isCL) {
 			if (isEmpty(newPostIdOptions)) {
-				if (relation === 'author')
+				if (relation === 'by-author')
 					newValues[`${prefix}error`] = relation;
 
 				if (['tags', 'media'].includes(type)) {
@@ -137,7 +129,7 @@ const getDCOptions = async (
 
 				return { newValues, newPostIdOptions: [] };
 			}
-			if (relation === 'author') newValues[`${prefix}error`] = '';
+			if (relation === 'by-author') newValues[`${prefix}error`] = '';
 
 			// Ensures first field is selected
 			if (!field)

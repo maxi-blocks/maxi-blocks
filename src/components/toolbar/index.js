@@ -122,6 +122,7 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			svgType,
+			'dc-status': dcStatus,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -156,7 +157,6 @@ const MaxiToolbar = memo(
 				styleCard,
 			};
 		});
-
 		const popoverRef = useRef(null);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
@@ -340,12 +340,14 @@ const MaxiToolbar = memo(
 							isList={isList}
 							onChange={obj => maxiSetAttributes(obj)}
 						/>
-						<TextListOptions
-							blockName={name}
-							isList={isList}
-							typeOfList={typeOfList}
-							onChange={obj => maxiSetAttributes(obj)}
-						/>
+						{!dcStatus && (
+							<TextListOptions
+								blockName={name}
+								isList={isList}
+								typeOfList={typeOfList}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<>
 								{svgType !== 'Line' && (

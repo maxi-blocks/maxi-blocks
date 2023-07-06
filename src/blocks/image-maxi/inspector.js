@@ -418,11 +418,6 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 										prefix: 'image-',
-										customLabel: __(
-											'Padding',
-											'maxi-blocks'
-										),
-										disableMargin: true,
 									}),
 								]}
 							/>

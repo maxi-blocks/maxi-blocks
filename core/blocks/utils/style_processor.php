@@ -553,12 +553,10 @@ function style_processor($obj, $data, $props)
 
             unset($value);  // Unset reference to avoid unexpected behavior
 
-            write_log('$styles');
-            write_log($styles);
-            write_log('=======================');
-
         }
     }
+
+
 
     return style_cleaner($styles);
 }

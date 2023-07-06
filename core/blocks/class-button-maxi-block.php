@@ -135,12 +135,12 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
                 'is_hover' => false,
-                'prefix' => 'icon-',
+                // 'prefix' => 'icon-',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
             ]);
 
-            write_log('$button_icon_styles');
-            write_log($button_icon_styles);
+            // write_log('$button_icon_styles');
+            // write_log($button_icon_styles);
 
             $button_icon_hover_styles = get_button_icon_styles([
                 'obj' => $props,
@@ -149,7 +149,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'wrapper_target' => '.maxi-button-block__button',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
                 'is_hover' => true,
-                'prefix' => 'icon-',
+                // 'prefix' => 'icon-',
             ]);
 
             $styles_obj[$uniqueID] = array_merge_recursive(

@@ -563,11 +563,13 @@ const getWPNativeStyles = ({
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = async (styleCard, isBackend = false) => {
+const getSCStyles = async (rawStyleCard, isBackend = false) => {
+	const styleCard = { ...rawStyleCard };
+
 	let response = '';
 	const prefix = 'body.maxi-blocks--active';
 
-	const organizedValues = getOrganizedValues({ ...styleCard });
+	const organizedValues = getOrganizedValues(styleCard);
 
 	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
 		'maxiBlocks'

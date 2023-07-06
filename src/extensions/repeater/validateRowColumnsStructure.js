@@ -76,6 +76,11 @@ const validateAttributes = (
 		nonExcludedRefAttributes.SVGElement = SVGElement;
 	}
 
+	// Disable repeater for nested rows
+	if (block.name === 'maxi-blocks/row-maxi') {
+		nonExcludedRefAttributes['repeater-status'] = false;
+	}
+
 	const nonExcludedBlockAttributes = excludeAttributes(
 		block.attributes,
 		block.attributes,

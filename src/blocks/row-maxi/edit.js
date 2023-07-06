@@ -53,6 +53,8 @@ class edit extends MaxiBlockComponent {
 				displayHandlers: false,
 			});
 		}
+
+		this.isRepeaterInherited = !!this.context?.repeaterStatus;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -77,6 +79,14 @@ class edit extends MaxiBlockComponent {
 	};
 
 	getInnerBlocksPositions = () => {
+		if (
+			!getAttributeValue({
+				target: 'repeater-status',
+				props: this.props.attributes,
+			})
+		)
+			return {};
+
 		if (isEmpty(this.state.innerBlocksPositions)) {
 			return this.updateInnerBlocksPositions();
 		}

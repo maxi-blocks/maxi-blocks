@@ -1,15 +1,15 @@
-import { createHigherOrderComponent } from '@wordpress/compose';
+import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import LoopContext from './loopContext';
 
 const withMaxiLoopContext = createHigherOrderComponent(
-	WrappedComponent => props =>
-		(
+	WrappedComponent =>
+		pure(props => (
 			<LoopContext.Consumer>
 				{context => (
 					<WrappedComponent loopContext={context} {...props} />
 				)}
 			</LoopContext.Consumer>
-		),
+		)),
 	'withMaxiLoopContext'
 );
 

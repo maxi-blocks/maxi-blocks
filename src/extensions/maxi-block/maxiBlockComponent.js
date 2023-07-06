@@ -65,6 +65,7 @@ import {
 	validateRowColumnsStructure,
 } from '../repeater';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import { getInitialColumn } from '../repeater/utils';
 
 /**
  * Style Component
@@ -506,7 +507,13 @@ class MaxiBlockComponent extends Component {
 			const parentRowClientId = getBlockParentsByBlockName(
 				this.props.clientId,
 				'maxi-blocks/row-maxi'
-			)[0];
+			).find(currentParentRowClientId => {
+				const currentParentRowAttributes = getBlockAttributes(
+					currentParentRowClientId
+				);
+
+				return currentParentRowAttributes['repeater-status'];
+			});
 			const parentRowAttributes = getBlockAttributes(parentRowClientId);
 
 			// If repeater is turned on and block was moved
@@ -523,13 +530,15 @@ class MaxiBlockComponent extends Component {
 				const newInnerBlocksPositions =
 					retrieveInnerBlocksPositions(columnsClientIds);
 
+				const initialColumn = getInitialColumn(
+					this.props.clientId,
+					newInnerBlocksPositions?.[[-1]]
+				);
+
 				validateRowColumnsStructure(
 					parentRowClientId,
 					newInnerBlocksPositions,
-					getBlockParentsByBlockName(
-						this.props.clientId,
-						'maxi-blocks/column-maxi'
-					)[0],
+					initialColumn.clientId,
 					true
 				);
 			}

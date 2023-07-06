@@ -78,27 +78,23 @@ export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
 	return null;
 };
 
-export const getChildColumns = (blockClientId, isRowClientId = false) => {
+/**
+ *
+ * @param {string}  clientId      The client id of repeater column or row if isRowClientId is true
+ * @param {boolean} isRowClientId
+ * @returns {Object<string, any>[]} Array of child columns
+ */
+export const getChildColumns = (clientId, isRowClientId = false) => {
 	const { getBlock, getBlocks, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
-	const getParentRow = () => {
-		const rowBlock = getBlock(
-			getBlockParentsByBlockName(blockClientId, 'maxi-blocks/row-maxi')[0]
-		);
-		if (rowBlock) {
-			return rowBlock;
-		}
-
-		const block = getBlock(blockClientId);
-		if (block?.name === 'maxi-blocks/row-maxi') {
-			return block;
-		}
-
-		return null;
-	};
-
-	const parentRow = isRowClientId ? getBlock(blockClientId) : getParentRow();
+	const parentRow = isRowClientId
+		? getBlock(clientId)
+		: getBlock(
+				getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi').at(
+					-1
+				)
+		  );
 
 	// Check if the selected block is a child of your custom row block
 	if (parentRow) {
@@ -118,3 +114,14 @@ export const goThroughColumns = (columns, blockClientId, callback) =>
 			callback(column);
 		}
 	});
+
+export const getInitialColumn = (clientId, repeaterColumnsClientIds) => {
+	const { getBlock, getBlockParentsByBlockName } =
+		select('core/block-editor');
+
+	return getBlock(
+		getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi').find(
+			clientId => repeaterColumnsClientIds.includes(clientId)
+		)
+	);
+};

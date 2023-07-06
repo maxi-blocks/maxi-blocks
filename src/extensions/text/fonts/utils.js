@@ -161,7 +161,11 @@ export const getPageFonts = async (onlyBackend = false) => {
 		'maxi-blocks/image-maxi',
 	];
 
-	goThroughMaxiBlocks(({ attributes, name }) => {
+	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
+		'maxiBlocks'
+	).receiveMaxiSettings();
+
+	goThroughMaxiBlocks(({ clientId, attributes, name }) => {
 		if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
 			let typography = {};
 			let typographyHover = {};
@@ -229,17 +233,8 @@ export const getPageFonts = async (onlyBackend = false) => {
 
 			oldResponse = cloneDeep(mergedResponse);
 		}
-	});
 
-	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
-		'maxiBlocks'
-	).receiveMaxiSettings();
-
-	if (scGutenbergBlocks === '1') {
-		// TODO: optimization, use one `goThroughMaxiBlocks` call
-		goThroughMaxiBlocks(({ clientId, attributes, name }) => {
-			if (!name.includes('core/')) return;
-
+		if (scGutenbergBlocks === '1' && name.includes('core/')) {
 			const parentsClientIds =
 				select('core/block-editor').getBlockParents(clientId);
 			const isBlockInMaxiBlock = parentsClientIds.some(parentClientId =>
@@ -248,29 +243,29 @@ export const getPageFonts = async (onlyBackend = false) => {
 					.includes('maxi-blocks/')
 			);
 
-			if (!isBlockInMaxiBlock) return;
+			if (isBlockInMaxiBlock) {
+				const { level } = attributes;
 
-			const { level } = attributes;
+				const textLevel = level ? `h${level}` : 'p';
 
-			const textLevel = level ? `h${level}` : 'p';
+				response = getAllFonts(
+					{},
+					false,
+					false,
+					textLevel,
+					undefined,
+					onlyBackend
+				);
 
-			response = getAllFonts(
-				{},
-				false,
-				false,
-				textLevel,
-				undefined,
-				onlyBackend
-			);
+				mergedResponse = mergeDeep(
+					cloneDeep(oldResponse),
+					cloneDeep(response)
+				);
 
-			mergedResponse = mergeDeep(
-				cloneDeep(oldResponse),
-				cloneDeep(response)
-			);
-
-			oldResponse = cloneDeep(mergedResponse);
-		}, true);
-	}
+				oldResponse = cloneDeep(mergedResponse);
+			}
+		}
+	}, true);
 
 	return mergedResponse;
 };

@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  */
 import { createTemplatePartId } from '../fse';
 
-const goThroughMaxiBlocks = (callback, goThroughAll = false) => {
+const goThroughMaxiBlocks = (callback, goThroughAllBlocks = false) => {
 	const blocks = select('core/block-editor').getBlocks();
 
 	const goThroughBlocks = blocks =>
@@ -17,7 +17,7 @@ const goThroughMaxiBlocks = (callback, goThroughAll = false) => {
 				return acc;
 			}
 
-			if (goThroughAll || block.name.startsWith('maxi-blocks/')) {
+			if (goThroughAllBlocks || block.name.startsWith('maxi-blocks/')) {
 				const callbackResult = callback(block);
 				if (callbackResult) {
 					return callbackResult;

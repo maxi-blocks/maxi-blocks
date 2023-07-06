@@ -100,6 +100,14 @@ const attributes = {
 				type: 'string',
 				default: 'em',
 			},
+			'list-marker-vertical-offset': {
+				type: 'number',
+				default: 0,
+			},
+			'list-marker-vertical-offset-unit': {
+				type: 'string',
+				default: 'px',
+			},
 			'list-text-position': {
 				type: 'string',
 				default: 'middle',

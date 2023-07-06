@@ -523,6 +523,20 @@ const getMarkerObject = props => {
 						attributes: props,
 					}) || 'px';
 
+				// Marker vertical offset
+				const verticalOffsetMarkerNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-vertical-offset',
+						breakpoint,
+						attributes: props,
+					}) || 0;
+				const verticalOffsetMarkerUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-vertical-offset-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
+
 				response.listSize[breakpoint] = {
 					...(typeOfList === 'ul' &&
 					listStyle === 'custom' &&
@@ -532,6 +546,7 @@ const getMarkerObject = props => {
 								width: sizeNum + sizeUnit,
 								...(!isNil(heightNum) && {
 									height: heightNum + heightUnit,
+									// Vertically center the SVG marker content if the height is set
 									...(textPosition === 'middle' && {
 										top: `calc(${
 											heightNum / 2 + heightUnit
@@ -547,6 +562,9 @@ const getMarkerObject = props => {
 						(lineHeightMarkerUnit !== '-'
 							? lineHeightMarkerUnit
 							: ''),
+					...(verticalOffsetMarkerNum && {
+						transform: `translateY(${verticalOffsetMarkerNum}${verticalOffsetMarkerUnit})`,
+					}),
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
 						(listStyle !== 'custom'

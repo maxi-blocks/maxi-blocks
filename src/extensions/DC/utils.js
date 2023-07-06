@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { fieldOptions, relationOptions } from './constants';
+import { fieldOptions, relationOptions, orderByRelations } from './constants';
 
 /**
  * External dependencies
@@ -50,9 +50,12 @@ export const validationsValues = (
 	field,
 	relation,
 	contentType,
-	source
+	source,
+	isCL = false
 ) => {
 	if (source === 'acf') return {};
+
+	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
 		x => x.value
@@ -62,13 +65,29 @@ export const validationsValues = (
 	);
 
 	return {
-		...(fieldResult &&
-			!fieldResult.includes(field) && { 'dc-field': fieldResult[0] }),
+		...(!isCL &&
+			fieldResult &&
+			!fieldResult.includes(field) && {
+				[`${prefix}field`]: fieldResult[0],
+			}),
 		...(relationResult &&
 			!relationResult.includes(relation) && {
-				'dc-relation': relationResult[0],
+				[`${prefix}relation`]: relationResult[0],
 			}),
 	};
 };
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);
+
+export const getDCOrder = (relation, orderBy) => {
+	const dictionary = {
+		'by-date': 'date',
+		alphabetical: 'title',
+	};
+
+	if (orderByRelations.includes(relation)) {
+		return dictionary[orderBy];
+	}
+
+	return dictionary[relation];
+};

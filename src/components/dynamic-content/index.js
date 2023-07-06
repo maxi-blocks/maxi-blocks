@@ -26,7 +26,11 @@ import {
 	limitOptions,
 	limitTypes,
 	limitFields,
+	orderOptions,
 	orderByOptions,
+	orderByRelations,
+	orderRelations,
+	orderTypes,
 	ACFTypeOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
@@ -81,6 +85,7 @@ const DynamicContent = props => {
 		postTaxonomyLinksStatus,
 		error,
 		order,
+		orderBy,
 		accumulator,
 		acfFieldType,
 		customDate,
@@ -320,7 +325,7 @@ const DynamicContent = props => {
 												'alphabetical',
 											].includes(value) && {
 												'dc-order':
-													orderByOptions[value][0]
+													orderOptions[value][0]
 														.value,
 											}),
 										})
@@ -357,10 +362,20 @@ const DynamicContent = props => {
 							)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
-								['author', 'by-id'].includes(relation) && (
+								(orderByRelations.includes(relation) ||
+									relation === 'by-id') && (
 									<SelectControl
 										label={__(
-											`${capitalize(type)} id`,
+											`${capitalize(
+												orderByRelations.includes(
+													relation
+												)
+													? relation.replace(
+															'by-',
+															''
+													  )
+													: type
+											)} id`,
 											'maxi-blocks'
 										)}
 										value={id}
@@ -379,17 +394,46 @@ const DynamicContent = props => {
 										}
 									/>
 								)}
-							{['posts', 'pages', 'media', 'users'].includes(
-								type
-							) &&
-								['by-date', 'alphabetical'].includes(
-									relation
-								) && (
+							{orderTypes.includes(type) &&
+								orderRelations.includes(relation) && (
 									<>
+										{orderByRelations.includes(
+											relation
+										) && (
+											<SelectControl
+												label={__(
+													'Order by',
+													'maxi-blocks'
+												)}
+												value={orderBy}
+												options={orderByOptions}
+												onChange={value =>
+													changeProps({
+														'dc-order-by': value,
+													})
+												}
+												onReset={() =>
+													changeProps({
+														'dc-order-by':
+															getDefaultAttribute(
+																'dc-order-by'
+															),
+													})
+												}
+											/>
+										)}
 										<SelectControl
 											label={__('Order', 'maxi-blocks')}
 											value={order}
-											options={orderByOptions[relation]}
+											options={
+												orderOptions[
+													orderByRelations.includes(
+														relation
+													)
+														? orderBy
+														: relation
+												]
+											}
 											onChange={value =>
 												changeProps({
 													'dc-order': value,
@@ -430,14 +474,13 @@ const DynamicContent = props => {
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
-									(relation === 'author' &&
+									(relation === 'by-author' &&
 										!isEmpty(postIdOptions)) ||
 									[
 										'date',
 										'modified',
 										'random',
-										'by-date',
-										'alphabetical',
+										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}

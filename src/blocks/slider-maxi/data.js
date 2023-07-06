@@ -138,7 +138,7 @@ const customCss = {
 	],
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name }),
+	block: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

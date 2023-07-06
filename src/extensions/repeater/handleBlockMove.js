@@ -6,7 +6,12 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { findTargetParent, getChildColumns, goThroughColumns } from './utils';
+import {
+	findTargetParent,
+	getChildColumns,
+	getInitialColumn,
+	goThroughColumns,
+} from './utils';
 
 /**
  * External dependencies
@@ -21,16 +26,15 @@ const handleBlockMove = (
 ) => {
 	if (isEqual(prevPosition, nextPosition)) return;
 
-	const { getBlock, getBlockParentsByBlockName } =
-		select('core/block-editor');
+	const { getBlock } = select('core/block-editor');
 
 	const block = getBlock(clientId);
 
 	if (!block) return;
 
-	// Get the index of the selected block within the initial column
-	const initialColumn = getBlock(
-		getBlockParentsByBlockName(block.clientId, 'maxi-blocks/column-maxi')[0]
+	const initialColumn = getInitialColumn(
+		block.clientId,
+		innerBlockPositions?.[[-1]]
 	);
 
 	if (!initialColumn?.innerBlocks) {
@@ -39,7 +43,7 @@ const handleBlockMove = (
 
 	const prevBlockIndex = prevPosition.at(-1);
 
-	const childColumns = getChildColumns(block.clientId);
+	const childColumns = getChildColumns(initialColumn.clientId);
 
 	const modifiedNextPosition = [...nextPosition];
 

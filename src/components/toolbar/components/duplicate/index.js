@@ -42,7 +42,12 @@ const Duplicate = props => {
 						)[0];
 
 						if (repeaterContext?.repeaterStatus) {
-							insertBlockIntoColumns(duplicatedBlockClientId);
+							insertBlockIntoColumns(
+								duplicatedBlockClientId,
+								repeaterContext?.getInnerBlocksPositions?.()?.[
+									[-1]
+								]
+							);
 						}
 					}}
 				>

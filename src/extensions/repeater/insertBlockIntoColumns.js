@@ -5,12 +5,12 @@ import {
 	findBlockPosition,
 	findTargetParent,
 	getChildColumns,
+	getInitialColumn,
 	goThroughColumns,
 } from './utils';
 
-const insertBlockIntoColumns = clientId => {
-	const { getBlock, getBlockParentsByBlockName } =
-		select('core/block-editor');
+const insertBlockIntoColumns = (clientId, repeaterColumnsClientIds) => {
+	const { getBlock } = select('core/block-editor');
 
 	const block = getBlock(clientId);
 
@@ -18,15 +18,16 @@ const insertBlockIntoColumns = clientId => {
 		return;
 	}
 
-	const initialColumn = getBlock(
-		getBlockParentsByBlockName(block.clientId, 'maxi-blocks/column-maxi')[0]
+	const initialColumn = getInitialColumn(
+		block.clientId,
+		repeaterColumnsClientIds
 	);
 
 	if (!initialColumn?.innerBlocks) {
 		return;
 	}
 
-	const childColumns = getChildColumns(block.clientId);
+	const childColumns = getChildColumns(initialColumn.clientId);
 
 	const blockPosition = findBlockPosition(block.clientId, initialColumn);
 	const blockIndex = blockPosition[blockPosition.length - 1];

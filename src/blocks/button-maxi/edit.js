@@ -98,7 +98,7 @@ class edit extends MaxiBlockComponent {
 			field: dcField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.props.loopContext.contextLoop
+			this.props.loopContext?.contextLoop
 		);
 		const { scValues } = this.state;
 

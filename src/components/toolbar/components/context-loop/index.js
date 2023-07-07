@@ -26,6 +26,8 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/pane-maxi',
 	'maxi-blocks/slide-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/slider-maxi',
 ];
 
 const ContextLoopToolbar = props => {
@@ -40,6 +42,8 @@ const ContextLoopToolbar = props => {
 		'maxi-blocks/group-maxi': 'group',
 		'maxi-blocks/pane-maxi': 'pane',
 		'maxi-blocks/slide-maxi': 'slide',
+		'maxi-blocks/accordion-maxi': 'accordion',
+		'maxi-blocks/slider-maxi': 'slider',
 	};
 
 	return (

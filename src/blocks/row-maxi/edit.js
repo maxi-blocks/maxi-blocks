@@ -1,6 +1,11 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -64,7 +69,9 @@ class edit extends MaxiBlockComponent {
 
 	updateInnerBlocksPositions = () => {
 		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
-			this.columnsClientIds
+			!isEmpty(this.columnsClientIds)
+				? this.columnsClientIds
+				: select('core/block-editor').getBlockOrder(this.props.clientId)
 		);
 
 		if (

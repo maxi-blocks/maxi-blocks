@@ -478,8 +478,11 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 		} else {
-			const { getBlock, getBlockAttributes, getBlockParentsByBlockName } =
-				select('core/block-editor');
+			const {
+				getBlockOrder,
+				getBlockAttributes,
+				getBlockParentsByBlockName,
+			} = select('core/block-editor');
 
 			const innerBlocksPositions = this.props.getInnerBlocksPositions?.();
 
@@ -523,9 +526,7 @@ class MaxiBlockComponent extends Component {
 				(!this.props.repeaterStatus ||
 					this.props.repeaterRowClientId !== parentRowClientId)
 			) {
-				const columnsClientIds = getBlock(
-					parentRowClientId
-				).innerBlocks.map(({ clientId }) => clientId);
+				const columnsClientIds = getBlockOrder(parentRowClientId);
 
 				const newInnerBlocksPositions =
 					retrieveInnerBlocksPositions(columnsClientIds);
@@ -538,8 +539,7 @@ class MaxiBlockComponent extends Component {
 				validateRowColumnsStructure(
 					parentRowClientId,
 					newInnerBlocksPositions,
-					initialColumn.clientId,
-					true
+					initialColumn.clientId
 				);
 			}
 		}

@@ -57,30 +57,6 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
-			const parentColumnClientId = useMemo(() => {
-				if (repeaterContext?.repeaterStatus) {
-					const innerBlockPositions =
-						repeaterContext?.getInnerBlocksPositions();
-
-					if (innerBlockPositions?.[[-1]]?.includes(clientId)) {
-						return clientId;
-					}
-
-					return getBlockParentsByBlockName(
-						clientId,
-						'maxi-blocks/column-maxi'
-					).find(parentClientId =>
-						innerBlockPositions?.[[-1]]?.includes(parentClientId)
-					);
-				}
-
-				return null;
-			}, [
-				repeaterContext?.repeaterStatus,
-				clientId,
-				repeaterContext?.getInnerBlocksPositions,
-			]);
-
 			const {
 				deviceType,
 				baseBreakpoint,
@@ -107,6 +83,31 @@ const withMaxiProps = createHigherOrderComponent(
 					blockRootClientId: getBlockRootClientId(clientId),
 				};
 			});
+
+			const parentColumnClientId = useMemo(() => {
+				if (repeaterContext?.repeaterStatus) {
+					const innerBlockPositions =
+						repeaterContext?.getInnerBlocksPositions();
+
+					if (innerBlockPositions?.[[-1]]?.includes(clientId)) {
+						return clientId;
+					}
+
+					return getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+					).find(parentClientId =>
+						innerBlockPositions?.[[-1]]?.includes(parentClientId)
+					);
+				}
+
+				return null;
+			}, [
+				clientId,
+				blockRootClientId,
+				repeaterContext?.repeaterStatus,
+				repeaterContext?.getInnerBlocksPositions,
+			]);
 
 			const blockPositionFromColumn = useMemo(() => {
 				if (parentColumnClientId) {

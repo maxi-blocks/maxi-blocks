@@ -313,13 +313,13 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        public function get_query_params($table, $is_template)
+        public function get_query_params($table)
         {
             global $wpdb;
 
-            $table = $wpdb->prefix . $table . ($is_template ? '_templates' : '');
-            $id_key = $is_template ? 'template_id' : 'post_id';
-            $where_clause = $id_key . ' = %' . ($is_template ? 's' : 'd');
+            $table = $wpdb->prefix . $table;
+            $id_key = 'block_style_id';
+            $where_clause = $id_key . ' = %s';
 
             return [
                 'table' => $table,
@@ -349,7 +349,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
             $fonts = json_encode(array_merge_recursive(...$fonts_arr));
 
-            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles', $is_template);
+            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
 
             if ((empty($styles) || $styles === '{}') && !$is_template) {
                 $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
@@ -365,19 +365,18 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             $dictionary = array(
-                "{$id_key}" => $id,
+                'block_style_id' => $id,
                 'prev_css_value' => $styles,
                 'css_value' => $styles,
                 'prev_fonts_value' => $fonts,
                 'fonts_value' => $fonts,
-                'template_parts' => $template_parts,
             );
 
             $get_array = function ($keys, $dictionary) {
                 $array = [];
 
                 foreach ($keys as $key) {
-                    if (($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
+                    if (($dictionary[$key] !== 'null')) {
                         $array[$key] = $dictionary[$key];
                     }
                 }
@@ -388,27 +387,27 @@ if (!class_exists('MaxiBlocks_API')):
             if (!empty($exists)) {
                 if ($data['update']) {
                     $wpdb->update("{$table}", $get_array([
-                        "{$id_key}",
+                        'block_style_id',
                         'prev_css_value',
                         'css_value',
                         'prev_fonts_value',
                         'fonts_value',
                         'template_parts',
                     ], $dictionary), [
-                        "{$id_key}" => $id,
+                        'block_style_id' => $id,
                     ]);
                 } else {
                     $wpdb->update("{$table}", $get_array([
-                        "{$id_key}",
+                        'block_style_id',
                         'prev_css_value',
                         'prev_fonts_value',
                         'template_parts',
-                    ], $dictionary), ["{$id_key}" => $id]);
+                    ], $dictionary), ['block_style_id' => $id]);
                 }
             } else {
                 if ($data['update']) {
                     $wpdb->insert("{$table}", $get_array([
-                        "{$id_key}",
+                        'block_style_id',
                         'prev_css_value',
                         'css_value',
                         'prev_fonts_value',
@@ -417,7 +416,7 @@ if (!class_exists('MaxiBlocks_API')):
                     ], $dictionary));
                 } else {
                     $wpdb->insert("{$table}", $get_array([
-                        "{$id_key}",
+                        'block_style_id',
                         'prev_css_value',
                         'prev_fonts_value',
                         'template_parts',
@@ -683,8 +682,8 @@ if (!class_exists('MaxiBlocks_API')):
             $data_val = $data['data'];
             $is_template = $data['isTemplate'];
 
-            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data', $is_template);
-            ['table' => $styles_table] = $this->get_query_params('maxi_blocks_styles', $is_template);
+            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data_blocks');
+            ['table' => $styles_table] = $this->get_query_params('maxi_blocks_styles_blocks');
 
             if (empty($data_val) || $data_val === '{}') {
                 $wpdb->update("{$styles_table}", array(

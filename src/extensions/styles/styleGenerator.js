@@ -24,6 +24,10 @@ const getTarget = target => {
 	return target.replace('__$', ' .');
 };
 
+const addStyleID = (target, styleID) => {
+	return `${target}[data-maxi-style-id=${styleID}]`;
+};
+
 /**
  * Retrieve each one of the styles CSS props
  *
@@ -98,6 +102,7 @@ const styleStringGenerator = (
 
 const styleGenerator = (
 	rawStyles,
+	styleID,
 	isIframe = false,
 	isSiteEditor = false,
 	breakpoint
@@ -112,7 +117,10 @@ const styleGenerator = (
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
-			const target = getTarget(key);
+			//const target = getTarget(key);
+			const target = addStyleID(getTarget(key), styleID);
+			// console.log('{ target, key, value }');
+			// console.log({ target, key, value });
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!props[breakpoint]) return;
@@ -158,6 +166,8 @@ const styleGenerator = (
 			});
 		});
 	});
+
+	console.log({ response });
 
 	return response;
 };

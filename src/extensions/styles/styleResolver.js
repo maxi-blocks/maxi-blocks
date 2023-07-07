@@ -53,12 +53,15 @@ const getCleanContent = content => {
 	return newContent;
 };
 
-const styleResolver = ({ styles, remover = false, breakpoints }) => {
+const styleResolver = ({ styles, remover = false, breakpoints, styleID }) => {
 	if (!styles) return {};
+
+	// console.log('styleResolver', { styles, remover, breakpoints });
 
 	const response = (remover && []) || {};
 
 	Object.entries(styles).forEach(([target, props]) => {
+		const fullTarget = `${target}[data-maxi-style-id=${styleID}]`;
 		if (!remover) {
 			if (!response[target])
 				response[target] = {
@@ -78,6 +81,8 @@ const styleResolver = ({ styles, remover = false, breakpoints }) => {
 			dispatch('maxiBlocks/styles').updateStyles(target, response);
 		else dispatch('maxiBlocks/styles').removeStyles(response);
 	});
+
+	// console.log('styleResolver', { response });
 
 	return response;
 };

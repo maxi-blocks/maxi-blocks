@@ -36,28 +36,29 @@ export const processCss = async code => {
 const controls = {
 	SAVE_STYLES({ isUpdate, styles }) {
 		entityRecordsWrapper(async ({ key: id, name }) => {
-			// console.log('SAVE_STYLES', { isUpdate, styles, id, name });
-			const filteredStyles = getFilteredData(styles, { id, name });
-			const parsedStyles = await processCss(
-				frontendStyleGenerator(filteredStyles)
+			const parsedStyles = {};
+			const blockStyles = Object.entries(styles);
+
+			await Promise.all(
+				blockStyles.map(async blockStyle => {
+					const { styleID } = blockStyle[1];
+					parsedStyles[styleID] = await processCss(
+						frontendStyleGenerator(blockStyle)
+					);
+				})
 			);
+
 			const fonts = select('maxiBlocks/text').getPostFonts();
 
 			await apiFetch({
 				path: '/maxi-blocks/v1.0/styles',
 				method: 'POST',
 				data: {
-					id,
+					styles: JSON.stringify(parsedStyles),
 					meta: JSON.stringify({
-						styles: parsedStyles,
 						fonts,
 					}),
 					update: isUpdate,
-					isTemplate: getIsSiteEditor(),
-					templateParts: JSON.stringify(
-						name === 'wp_template' ? getTemplatePartsIds() : null
-					),
-					templatePart: name === 'wp_template_part' ? id : null,
 				},
 			}).catch(err => {
 				console.error('Error saving styles. Code error: ', err);

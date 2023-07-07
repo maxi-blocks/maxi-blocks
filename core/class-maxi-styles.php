@@ -77,7 +77,7 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        //  add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
+        //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         add_filter('the_content', [$this, 'process_content']);

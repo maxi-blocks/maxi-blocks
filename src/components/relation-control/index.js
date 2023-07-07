@@ -292,13 +292,14 @@ const RelationControl = props => {
 
 		const triggerParentRepeaterColumnClientId =
 			repeaterContext?.repeaterStatus &&
-			(innerBlockPositions?.[[-1]]?.includes(clientId) ||
-				getBlockParentsByBlockName(
-					clientId,
-					'maxi-blocks/column-maxi'
-				).find(clientId =>
-					innerBlockPositions?.[[-1]]?.includes(clientId)
-				));
+			(innerBlockPositions?.[[-1]]?.includes(clientId)
+				? clientId
+				: getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+				  ).find(clientId =>
+						innerBlockPositions?.[[-1]]?.includes(clientId)
+				  ));
 
 		goThroughMaxiBlocks(block => {
 			if (

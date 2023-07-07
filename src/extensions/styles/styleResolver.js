@@ -61,10 +61,10 @@ const styleResolver = ({ styles, remover = false, breakpoints, styleID }) => {
 	const response = (remover && []) || {};
 
 	Object.entries(styles).forEach(([target, props]) => {
-		const fullTarget = `${target}[data-maxi-style-id=${styleID}]`;
 		if (!remover) {
 			if (!response[target])
 				response[target] = {
+					styleID,
 					breakpoints,
 					content: {},
 				};

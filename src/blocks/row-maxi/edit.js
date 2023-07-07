@@ -15,7 +15,10 @@ import { copyPasteMapping, maxiAttributes } from './data';
 /**
  * External dependencies
  */
-import { withMaxiContextLoop, withMaxiLoopContext } from '../../extensions/DC';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 import { RowBlockTemplate } from './components';
 
 /**
@@ -132,4 +135,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(withMaxiLoopContext(withMaxiProps(edit)));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

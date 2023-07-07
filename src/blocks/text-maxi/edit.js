@@ -24,7 +24,7 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
-import { getDCValues, withMaxiLoopContext } from '../../extensions/DC';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -374,4 +374,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiLoopContext(withMaxiDC(withMaxiProps(edit)));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

@@ -31,7 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
-import { getDCValues, withMaxiLoopContext } from '../../extensions/DC';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -574,4 +574,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiLoopContext(withMaxiDC(withMaxiProps(edit)));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

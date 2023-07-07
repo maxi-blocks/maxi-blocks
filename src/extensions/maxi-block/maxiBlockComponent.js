@@ -68,6 +68,7 @@ import generateStyleID from '../attributes/generateStyleID';
  */
 const StyleComponent = ({
 	uniqueID,
+	styleID,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
@@ -75,6 +76,9 @@ const StyleComponent = ({
 	isBreakpointChange,
 	currentBreakpoint,
 }) => {
+	// add styleID to stylesObj
+	// console.log('stylesObj');
+	// console.log(stylesObj);
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -86,10 +90,10 @@ const StyleComponent = ({
 	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
 
 	if (isBreakpointChange) {
-		const styleContent =
-			select('maxiBlocks/styles').getCSSCache(uniqueID)[
-				currentBreakpoint
-			];
+		const styleContent = select('maxiBlocks/styles').getCSSCache(
+			uniqueID,
+			styleID
+		)[currentBreakpoint];
 
 		return <style>{styleContent}</style>;
 	}
@@ -106,11 +110,17 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
+		styleID,
 	});
 
-	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
+	const styleContent = styleGenerator(
+		styles,
+		styleID,
+		isIframe,
+		isSiteEditor
+	);
 
-	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
+	saveCSSCache(uniqueID, styleID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -712,7 +722,7 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles(isBreakpointChange = false) {
-		const { uniqueID } = this.props.attributes;
+		const { uniqueID, styleID } = this.props.attributes;
 
 		this.rootSlot = this.getRootEl();
 
@@ -741,6 +751,7 @@ class MaxiBlockComponent extends Component {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
+						styleID={styleID}
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}

@@ -17,7 +17,6 @@ import {
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
-import { getPageFonts, loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
@@ -297,8 +296,6 @@ wp.domReady(() => {
 					'Style Cards gutenberg_blocks_status has been set to default.'
 				);
 			}
-
-			loadFonts(getPageFonts(), false);
 
 			const SCStyles = await apiFetch({
 				path: '/maxi-blocks/v1.0/style-card/',

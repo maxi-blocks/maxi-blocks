@@ -93,7 +93,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
 
-		const user = await getUsers({ p: contentValue });
+		const user = await getUsers({ include: contentValue });
 
 		contentValue = getItemLinkContent(user[0].name);
 	}

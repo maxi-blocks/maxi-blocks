@@ -398,6 +398,15 @@ export const relationTypes = [
 	'users', // TODO: Add support for users
 ];
 
+// Fields that can lead to different locations from post
+export const linkFields = ['categories', 'tags', 'author'];
+
+export const linkFieldsLabels = {
+	categories: __('use categories links', 'maxi-blocks'),
+	tags: __('use tags links', 'maxi-blocks'),
+	author: __('use author link', 'maxi-blocks'),
+};
+
 export const descriptionOfErrors = {
 	next: __(
 		'Sorry, there is no next post, please choose something else.',

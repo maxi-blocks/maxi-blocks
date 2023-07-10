@@ -54,6 +54,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
+	const getItemLinkContent = item =>
+		postTaxonomyLinksStatus
+			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
+			: item;
+
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
@@ -90,7 +95,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		const user = await getUsers({ p: contentValue });
 
-		contentValue = user[0].name;
+		contentValue = getItemLinkContent(user[0].name);
 	}
 	if (['tags', 'categories'].includes(type) && field === 'parent') {
 		if (!contentValue || contentValue === 0)
@@ -114,11 +119,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		const { getEntityRecord } = resolveSelect('core');
 		const idArray = contentValue;
 
-		const getItemContent = item =>
-			postTaxonomyLinksStatus
-				? `<a class="maxi-text-block--link"><span>${item.name}</span></a>`
-				: item.name;
-
 		const namesArray = await Promise.all(
 			idArray.map(async id => {
 				const taxonomyItem = await getEntityRecord(
@@ -127,7 +127,7 @@ const getDCContent = async (dataRequest, clientId) => {
 					id
 				);
 
-				return getItemContent(taxonomyItem);
+				return getItemLinkContent(taxonomyItem.name);
 			})
 		);
 

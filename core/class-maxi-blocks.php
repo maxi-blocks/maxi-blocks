@@ -1,4 +1,6 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+
 /**
  * MaxiBlocks Core Class
  *
@@ -46,8 +48,10 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
 
-            // Experimental: allow StyleCards to affect native WP blocks nested on Maxi Blocks
-            if(get_option('maxi_sc_gutenberg_blocks')) {
+            $style_cards = new MaxiBlocks_StyleCards();
+            $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
+
+            if($current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards)) {
                 add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
             }
 
@@ -106,7 +110,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
             'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
         );
-    
+
             $args = array(
             'labels' => $labels,
             'hierarchical' => false,
@@ -117,10 +121,10 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'show_ui' => false,
             'show_in_rest' => true
         );
-    
+
             register_taxonomy('maxi-image-type', 'attachment', $args);
         }
-    
+
         public function maxi_add_image_taxonomy_term()
         {
             if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {
@@ -154,13 +158,13 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 // We create a new DOMDocument object
                 $dom = new DOMDocument();
                 @$dom->loadHTML(mb_convert_encoding($block_content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                
+
                 // Using XPath to find the elements we want to change
                 $xpath = new DOMXPath($dom);
-                
+
                 // Look for all elements
                 $elements = $xpath->query('//*');
-                
+
                 foreach ($elements as $element) {
                     $classes = $element->getAttribute('class');
 
@@ -174,9 +178,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         }
                     }
                 }
-                
+
                 $block_content = $dom->saveHTML();
-            
 
                 return $block_content;
             }

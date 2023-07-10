@@ -327,10 +327,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= $this->generate_item_header('Experimental preferences', false);
 
-            $description = '<h4>'.__('Allow StyleCards to affect Gutenberg native blocks', self::$maxi_text_domain).'</h4>';
-            $description .= '<p>'.__('Allows to add StyleCard styles to WordPress native blocks nested inside MaxiBlocks', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_sc_gutenberg_blocks');
-
             $description = '<h4>'.__('Enable settings indicators', self::$maxi_text_domain).'</h4>';
             $description .= '<p>'.__('Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'maxi_show_indicators');

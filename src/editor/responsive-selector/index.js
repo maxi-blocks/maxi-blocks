@@ -210,12 +210,7 @@ const ResponsiveSelector = props => {
 						'none';
 
 					// Copy all fonts to iframe
-					const loadFontsWrapper = async () => {
-						const fonts = await getPageFonts();
-						loadFonts(fonts, true, iframeDocument);
-					};
-
-					loadFontsWrapper();
+					loadFonts(getPageFonts(), true, iframeDocument);
 
 					// Get all Maxi blocks <style> from <head>
 					// and move to new iframe

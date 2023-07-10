@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { resolveSelect } from '@wordpress/data';
 import { processCss } from '../styles/store/controls';
 
 /**
@@ -563,17 +562,17 @@ const getWPNativeStyles = ({
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = async (rawStyleCard, isBackend = false) => {
+const getSCStyles = async (
+	rawStyleCard,
+	gutenbergBlocksStatus,
+	isBackend = false
+) => {
 	const styleCard = { ...rawStyleCard };
 
 	let response = '';
 	const prefix = 'body.maxi-blocks--active';
 
 	const organizedValues = getOrganizedValues(styleCard);
-
-	const { sc_gutenberg_blocks: scGutenbergBlocks } = await resolveSelect(
-		'maxiBlocks'
-	).receiveMaxiSettings();
 
 	// Create styles
 	styles.forEach(style => {
@@ -589,7 +588,7 @@ const getSCStyles = async (rawStyleCard, isBackend = false) => {
 		});
 
 		// WP native blocks styles
-		if (scGutenbergBlocks === '1')
+		if (gutenbergBlocksStatus) {
 			response += getWPNativeStyles({
 				organizedValues,
 				styleCard,
@@ -597,6 +596,7 @@ const getSCStyles = async (rawStyleCard, isBackend = false) => {
 				style,
 				isBackend,
 			});
+		}
 	});
 
 	return processCss(response);

@@ -513,11 +513,24 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $link_status)
+    public function get_field_link($item, $field)
+    {
+        switch ($field) {
+            case 'author':
+                return get_author_posts_url($item);
+            case 'category':
+            case 'post_tag':
+                return get_term_link($item);
+            default:
+                return '';
+        }
+    }
+
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
     {
         return ($link_status)
-            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
-            : $item->name;
+            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
+            : $content;
     }
 
     public function get_post_or_page_content($attributes)
@@ -564,7 +577,12 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $post->post_author);
+            $post_data = $this->get_post_taxonomy_item_content(
+                $post->post_author,
+                get_the_author_meta('display_name', $post->post_author),
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {
@@ -578,7 +596,12 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content = [];
 
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                    $taxonomy_item,
+                    $taxonomy_item->name,
+                    $dc_post_taxonomy_links_status,
+                    $dc_field
+                );
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);

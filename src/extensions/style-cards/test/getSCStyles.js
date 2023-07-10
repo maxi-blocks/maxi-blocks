@@ -388,14 +388,44 @@ describe('getSCStyles', () => {
 
 	it('Should return correct frontend styles for SC from default SC', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		const cleanSCStyles = await getSCStyles(cleanVarSC);
+		const cleanSCStyles = await getSCStyles(cleanVarSC, true);
 
 		expect(cleanSCStyles).toMatchSnapshot();
 	});
 
 	it('Should return correct frontend styles for SC from default SC for backend', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		const cleanSCStyles = await getSCStyles(cleanVarSC, true);
+		const cleanSCStyles = await getSCStyles(cleanVarSC, true, true);
+
+		expect(cleanSCStyles).toMatchSnapshot();
+	});
+
+	const styleCardWithTurnedOffGutenbergBlocks = {
+		...standardSC,
+		sc_maxi: {
+			...standardSC.sc_maxi,
+			gutenberg_blocks_status: false,
+		},
+	};
+
+	it('Should return correct frontend styles for SC from default SC (without gutenberg blocks styles)', async () => {
+		const cleanVarSC = getSCVariablesObject(
+			styleCardWithTurnedOffGutenbergBlocks.sc_maxi,
+			null,
+			true
+		);
+		const cleanSCStyles = await getSCStyles(cleanVarSC, false);
+
+		expect(cleanSCStyles).toMatchSnapshot();
+	});
+
+	it('Should return correct frontend styles for SC from default SC for backend (without gutenberg blocks styles)', async () => {
+		const cleanVarSC = getSCVariablesObject(
+			styleCardWithTurnedOffGutenbergBlocks.sc_maxi,
+			null,
+			true
+		);
+		const cleanSCStyles = await getSCStyles(cleanVarSC, false, true);
 
 		expect(cleanSCStyles).toMatchSnapshot();
 	});

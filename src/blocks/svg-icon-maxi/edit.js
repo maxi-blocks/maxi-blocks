@@ -164,9 +164,9 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			maxiSetAttributes,
 			isSelected,
-			styleID,
 		} = this.props;
-		const { content, openFirstTime, blockStyle, uniqueID } = attributes;
+		const { content, openFirstTime, blockStyle, uniqueID, styleID } =
+			attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);

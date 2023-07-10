@@ -85,14 +85,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			maxiSetAttributes,
-			deviceType,
-			isSelected,
-			styleID,
-		} = this.props;
-		const { uniqueID } = attributes;
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
+			this.props;
+		const { uniqueID, styleID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 

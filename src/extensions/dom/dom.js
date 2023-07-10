@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select, dispatch, subscribe } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -14,13 +15,14 @@ import {
 	getSiteEditorIframeBody,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
+import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
+import { getPageFonts, loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getEditorWrapper from './getEditorWrapper';
 
 /**
  * General
@@ -252,5 +254,76 @@ wp.domReady(() => {
 
 			editorContentUnsubscribe();
 		}
+	});
+
+	let shouldSCMigratorRun = true;
+
+	const unsubscribe = subscribe(async () => {
+		if (!shouldSCMigratorRun) {
+			return;
+		}
+
+		shouldSCMigratorRun = false;
+
+		const { receiveMaxiActiveStyleCard, receiveMaxiStyleCards } = select(
+			'maxiBlocks/style-cards'
+		);
+
+		const styleCard = receiveMaxiActiveStyleCard();
+		const styleCards = receiveMaxiStyleCards();
+
+		if (
+			styleCard &&
+			styleCards &&
+			styleCard?.value.gutenberg_blocks_status !== false
+		) {
+			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
+				'maxiBlocks/style-cards'
+			);
+
+			if (!('gutenberg_blocks_status' in styleCard.value)) {
+				const newStyleCards = {
+					...styleCards,
+					[styleCard.key]: {
+						...styleCard.value,
+						gutenberg_blocks_status: true,
+					},
+				};
+				await saveMaxiStyleCards(newStyleCards, true);
+				updateSCOnEditor(newStyleCards[styleCard.key]);
+
+				// eslint-disable-next-line no-console
+				console.log(
+					'Style Cards gutenberg_blocks_status has been set to default.'
+				);
+			}
+
+			loadFonts(getPageFonts(), false);
+
+			const SCStyles = await apiFetch({
+				path: '/maxi-blocks/v1.0/style-card/',
+				method: 'GET',
+			});
+
+			if (SCStyles) {
+				if (
+					[
+						'_maxi_blocks_style_card_styles',
+						'_maxi_blocks_style_card_styles_preview',
+					].some(key => !SCStyles[key].includes('maxi-block--use-sc'))
+				) {
+					await saveSCStyles(true);
+
+					// eslint-disable-next-line no-console
+					console.log(
+						'Style Cards migrator has been successfully used to update the styles.'
+					);
+				}
+			}
+
+			unsubscribe();
+		}
+
+		shouldSCMigratorRun = true;
 	});
 });

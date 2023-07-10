@@ -307,7 +307,6 @@ if (!class_exists('MaxiBlocks_API')):
                 'hide_tooltips' => get_option('hide_tooltips'),
                 'swap_cloud_images' => get_option('swap_cloud_images'),
                 'placeholder_url' => MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
-                'sc_gutenberg_blocks' => get_option('maxi_sc_gutenberg_blocks'),
                 'show_indicators' => get_option('maxi_show_indicators')
             ];
 

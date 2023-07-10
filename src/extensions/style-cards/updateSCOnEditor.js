@@ -34,7 +34,7 @@ const getSCFontsData = obj => {
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
-			fontName = val.replaceAll('"', '');
+			if (val) fontName = val.replaceAll('"', '');
 			response[fontName] = response[fontName] ?? {
 				weight: [],
 				style: [],
@@ -61,12 +61,12 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCStyles = async (element, SCObject) => {
+const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 	const SCStylesEl = element.getElementById(
 		'maxi-blocks-sc-styles-inline-css'
 	);
 
-	const SCStyles = await getSCStyles(SCObject, true);
+	const SCStyles = await getSCStyles(SCObject, gutenbergBlocksStatus, true);
 
 	if (SCStylesEl) {
 		SCStylesEl.innerHTML = SCStyles;
@@ -116,7 +116,11 @@ const updateSCOnEditor = (
 		} else {
 			SCVarEl.innerHTML = SCVariableString;
 
-			updateSCStyles(element, SCObject);
+			updateSCStyles(
+				element,
+				SCObject,
+				styleCards.gutenberg_blocks_status
+			);
 		}
 
 		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);

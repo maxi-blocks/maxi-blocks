@@ -108,13 +108,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			maxiSetAttributes,
-			isSelected,
-			deviceType,
-			styleID,
-		} = this.props;
+		const { attributes, maxiSetAttributes, isSelected, deviceType } =
+			this.props;
 		const {
 			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
@@ -132,6 +127,7 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
+			styleID,
 		} = attributes;
 		const {
 			status: dcStatus,

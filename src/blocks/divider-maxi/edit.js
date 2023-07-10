@@ -119,14 +119,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			deviceType,
-			isSelected,
-			maxiSetAttributes,
-			styleID,
-		} = this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { attributes, deviceType, isSelected, maxiSetAttributes } =
+			this.props;
+		const { uniqueID, lineOrientation, styleID } = attributes;
 
 		const classes = classnames(
 			lineOrientation === 'vertical'

@@ -201,7 +201,8 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						!dcStatus && this.state.onChangeFormat(newFormatValue);
+						!dcStatus &&
+							this.state.onChangeFormat?.(newFormatValue);
 
 						onChangeRichText({
 							attributes,

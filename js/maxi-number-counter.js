@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
 	const { breakpoints } = maxiNumberCounter[0][numberID];
@@ -12,7 +13,25 @@ const checkMediaQuery = numberID => {
 	}
 	breakpoint = breakpoint === 'xl' ? 'general' : breakpoint;
 
+	// eslint-disable-next-line consistent-return
 	return breakpoint;
+};
+
+const getTitleFontSize = (numberData, breakpoint) => {
+	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
+	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
+		return numberData[`number-counter-title-font-size-${breakpoint}`];
+	}
+	const winIndex = breakpoints.indexOf(breakpoint);
+	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
+};
+
+const setNewDyAttribute = (elem, numberData, breakpoint) => {
+	const fontSize = getTitleFontSize(numberData, breakpoint);
+	elem.setAttribute(
+		'dy',
+		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
+	);
 };
 // Number Counter Effects
 const numberCounterEffect = () => {
@@ -139,24 +158,6 @@ const numberCounterEffect = () => {
 			}
 		}
 	});
-};
-
-// eslint-disable-next-line @wordpress/no-global-event-listener
-const setNewDyAttribute = (elem, numberData, breakpoint) => {
-	const fontSize = getTitleFontSize(numberData, breakpoint);
-	elem.setAttribute(
-		'dy',
-		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
-	);
-};
-
-const getTitleFontSize = (numberData, breakpoint) => {
-	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
-	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
-		return numberData[`number-counter-title-font-size-${breakpoint}`];
-	}
-	const winIndex = breakpoints.indexOf(breakpoint);
-	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 };
 
 window.addEventListener('load', numberCounterEffect);

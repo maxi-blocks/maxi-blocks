@@ -8,6 +8,7 @@ import { injectImgSVG } from '../svg';
  * @param {Object} attributes
  * @param {string} uniqueID
  * @param {string} prefix
+ * @param {string} imageURL
  * @returns {Object} Object with new SVGData and SVGElement.
  */
 const getUpdatedSVGDataAndElement = (

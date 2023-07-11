@@ -4,5 +4,6 @@ export { default as removeBlockFromColumns } from './removeBlockFromColumns';
 export { default as retrieveInnerBlocksPositions } from './retrieveInnerBlocksPositions';
 export { default as updateNCLimits } from './updateNCLimits';
 export { default as updateRelationsInColumn } from './updateRelationsInColumn';
+export { default as updateSVG } from './updateSVG';
 export { default as validateRowColumnsStructure } from './validateRowColumnsStructure';
 export { default as DISALLOWED_BLOCKS } from './disallowedBlocks';

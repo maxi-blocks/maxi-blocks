@@ -13,6 +13,7 @@ import {
 	getChildColumns,
 	goThroughColumns,
 } from './utils';
+import updateNCLimits from './updateNCLimits';
 import { goThroughMaxiBlocks } from '../maxi-block';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import updateRelationsInColumn from './updateRelationsInColumn';
@@ -60,6 +61,8 @@ const validateAttributes = (
 			innerBlocksPositions
 		);
 	}
+
+	updateNCLimits(nonExcludedRefAttributes, block.attributes);
 
 	if (
 		'SVGData' in nonExcludedRefAttributes &&

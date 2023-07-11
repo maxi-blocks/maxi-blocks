@@ -366,7 +366,7 @@ const NumberCounterControl = props => {
 								'number-counter-end': 100,
 							}),
 							...(props['number-counter-start'] > 100 && {
-								'number-counter-start': 100,
+								'number-counter-start': 0,
 							}),
 						}),
 					});

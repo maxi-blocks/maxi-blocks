@@ -402,9 +402,9 @@ export const relationTypes = [
 export const linkFields = ['categories', 'tags', 'author'];
 
 export const linkFieldsLabels = {
-	categories: __('use categories links', 'maxi-blocks'),
-	tags: __('use tags links', 'maxi-blocks'),
-	author: __('use author link', 'maxi-blocks'),
+	categories: __('Use categories links', 'maxi-blocks'),
+	tags: __('Use tags links', 'maxi-blocks'),
+	author: __('Use author link', 'maxi-blocks'),
 };
 
 export const descriptionOfErrors = {

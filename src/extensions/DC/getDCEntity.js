@@ -10,6 +10,11 @@ import getDCErrors from './getDCErrors';
 import { getDCOrder } from './utils';
 import { orderRelations, orderTypes, relationTypes } from './constants';
 
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
 const kindDictionary = {
 	posts: 'postType',
 	pages: 'postType',
@@ -27,7 +32,23 @@ const nameDictionary = {
 	tags: 'post_tag',
 };
 
-const getDCEntity = async dataRequest => {
+const randomEntityIndexes = {};
+
+// Gets a random entity from a list of entities and stores the index per block
+const getRandomEntity = (entities, clientId) => {
+	if (
+		isNil(randomEntityIndexes[clientId]) ||
+		randomEntityIndexes[clientId] > entities.length
+	) {
+		randomEntityIndexes[clientId] = Math.floor(
+			Math.random() * entities.length
+		);
+	}
+
+	return entities[randomEntityIndexes[clientId]];
+};
+
+const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
 		id,
@@ -52,13 +73,14 @@ const getDCEntity = async dataRequest => {
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			const randomUser = await getUsers({
-				who: 'authors',
-				per_page: 100,
-				hide_empty: false,
-			});
-
-			return randomUser[Math.floor(Math.random() * randomUser.length)];
+			return getRandomEntity(
+				await getUsers({
+					who: 'authors',
+					per_page: 100,
+					hide_empty: false,
+				}),
+				clientId
+			);
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
@@ -78,16 +100,17 @@ const getDCEntity = async dataRequest => {
 		return user;
 	}
 	if (relationTypes.includes(type) && relation === 'random') {
-		const randomEntity = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
-			{
-				per_page: 100,
-				hide_empty: false,
-			}
+		return getRandomEntity(
+			await resolveSelect('core').getEntityRecords(
+				kindDictionary[type],
+				nameDictionary[type],
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			),
+			clientId
 		);
-
-		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {

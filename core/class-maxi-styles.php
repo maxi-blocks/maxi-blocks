@@ -1005,7 +1005,6 @@ class MaxiBlocks_Styles
             $this->enqueue_fonts($data['fonts'], $content_key);
             $contentForBlocks = $this->get_content_for_blocks(!$template, $id);
             $templateMeta = isset($contentForBlocks['meta']) ? $contentForBlocks['meta'] : null;
-
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
@@ -1049,7 +1048,7 @@ class MaxiBlocks_Styles
             $js_script_name = 'maxi-' . $script;
             $js_script_path = '//js//min//' . $js_script_name . '.min.js';
 
-            $post_meta = $this->custom_meta($js_var, false);
+            $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
             $template_parts_meta = [];
 
@@ -1058,9 +1057,21 @@ class MaxiBlocks_Styles
             }
 
             $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+            $match = false;
+            $block_name = '';
 
-            if ($meta !== []) {
-                $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta);
+            foreach ($meta as $key => $value) {
+                write_log('key: '.$key);
+                write_log('script: '.$script);
+                if(str_contains($key, $script)) {
+                    $match = true;
+                    $block_name = $key;
+                }
+            }
+
+            if ($match) {
+                $meta_to_pass = $meta[$block_name];
+                $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
             }
         }
     }
@@ -1450,7 +1461,10 @@ class MaxiBlocks_Styles
 
 
         $resolved_styles = style_resolver($styles);
-        $frontend_styles = frontend_style_generator($resolved_styles);
+        $frontend_styles = frontend_style_generator($resolved_styles, $style_id);
+
+        write_log('$frontend_styles');
+        write_log($frontend_styles);
 
         // custom meta
         $custom_meta_block = 0;

@@ -27,7 +27,7 @@ function get_media_query_string($breakpoint, $media)
     return "@media only screen and ({$max_width}:{$value}px){";
 }
 
-function frontend_style_generator($styles)
+function frontend_style_generator($styles, $style_id)
 {
     if (is_null($styles) || empty($styles)) {
         return false;
@@ -43,7 +43,7 @@ function frontend_style_generator($styles)
 
             foreach ($content as $suffix => $props) {
                 if (isset($props[$breakpoint]) && !empty($props[$breakpoint])) {
-                    $breakpointResponse .= "body.maxi-blocks--active #{$target}{$suffix}{";
+                    $breakpointResponse .= "body.maxi-blocks--active #{$target}[data-maxi-style-id={$style_id}]{$suffix}{";
                     $breakpointResponse .= get_styles($props[$breakpoint]);
                     $breakpointResponse .= '}';
                 }

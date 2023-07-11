@@ -492,9 +492,6 @@ class MaxiBlocks_Styles
      */
     public function get_breakpoints($breakpoints)
     {
-        if (!empty((array) $breakpoints)) {
-            return $breakpoints;
-        }
 
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
@@ -1004,7 +1001,7 @@ class MaxiBlocks_Styles
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
             $contentForBlocks = $this->get_content_for_blocks(!$template, $id);
-            $templateMeta = isset($contentForBlocks['meta']) ? $contentForBlocks['meta'] : null;
+            $templateMeta = $contentForBlocks['meta'] ?? null;
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
@@ -1046,7 +1043,8 @@ class MaxiBlocks_Styles
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
             $js_script_name = 'maxi-' . $script;
-            $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            //$js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            $js_script_path = '//js//' . $js_script_name . '.js';
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
@@ -1463,9 +1461,6 @@ class MaxiBlocks_Styles
         $resolved_styles = style_resolver($styles);
         $frontend_styles = frontend_style_generator($resolved_styles, $style_id);
 
-        write_log('$frontend_styles');
-        write_log($frontend_styles);
-
         // custom meta
         $custom_meta_block = 0;
 
@@ -1485,6 +1480,11 @@ class MaxiBlocks_Styles
         }
 
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+        write_log('custom_meta');
+        write_log($custom_meta);
+        write_log('custom_meta_json');
+        write_log(json_encode($custom_meta));
+        write_log('=========================');
         if(!empty($custom_meta)) {
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(
@@ -1614,15 +1614,12 @@ class MaxiBlocks_Styles
         foreach ($block_types as $block_type => $attr_group) {
             // If the block name matches the current block type
             if ($block_name === $block_type) {
-                // Construct and return the response array using the current attribute group
-                return [
-                    $attr_group => [
-                        $unique_id => array_merge(
-                            get_group_attributes($props, $attr_group),
-                            ['breakpoints' => $this->get_breakpoints($props)]
-                        )
-                    ]
-                ];
+                // Construct and return the response array
+                return
+                   array_merge(
+                       get_group_attributes($props, $attr_group),
+                       ['breakpoints' => $this->get_breakpoints($props)]
+                   );
             }
         }
 

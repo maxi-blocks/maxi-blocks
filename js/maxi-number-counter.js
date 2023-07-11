@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
-	const { breakpoints } = maxiNumberCounter[0][numberID];
+	const { breakpoints } = JSON.parse(maxiNumberCounter[0][numberID]);
 	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
 	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
@@ -39,26 +39,26 @@ const numberCounterEffect = () => {
 	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
-		const numberID = elem.id;
+		const numberID = elem.dataset.maxiStyleId;
 
 		const numberData =
 			// eslint-disable-next-line no-undef
 			maxiNumberCounter[0][numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiNumberCounter[0][numberID]
+				  JSON.parse(maxiNumberCounter[0][numberID])
 				: null;
 
 		if (numberData !== null) {
 			// Number Counter
 			if ('number-counter-status' in numberData) {
 				const numberCounterElem = document.querySelector(
-					`#${numberID} .maxi-number-counter__box`
+					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box`
 				);
 				const numberCounterElemText = document.querySelector(
-					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__text`
+					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box .maxi-number-counter__box__text`
 				);
 				const numberCounterElemCircle = document.querySelector(
-					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__circle`
+					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box .maxi-number-counter__box__circle`
 				);
 
 				const radius = 90;

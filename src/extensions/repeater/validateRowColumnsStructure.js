@@ -14,9 +14,10 @@ import {
 	goThroughColumns,
 } from './utils';
 import updateNCLimits from './updateNCLimits';
-import { goThroughMaxiBlocks } from '../maxi-block';
-import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
+import updateSVG from './updateSVG';
 import updateRelationsInColumn from './updateRelationsInColumn';
+import { goThroughMaxiBlocks } from '../maxi-block';
+import { getBlockData } from '../attributes';
 import loadColumnsTemplate from '../column-templates/loadColumnsTemplate';
 import { getTemplates } from '../column-templates';
 import { getLastBreakpointAttribute } from '../styles';
@@ -63,21 +64,7 @@ const validateAttributes = (
 	}
 
 	updateNCLimits(nonExcludedRefAttributes, block.attributes);
-
-	if (
-		'SVGData' in nonExcludedRefAttributes &&
-		'SVGElement' in nonExcludedRefAttributes
-	) {
-		const { SVGData, SVGElement } = getUpdatedSVGDataAndElement(
-			nonExcludedRefAttributes,
-			block.attributes.uniqueID,
-			'',
-			block.attributes.mediaURL
-		);
-
-		nonExcludedRefAttributes.SVGData = SVGData;
-		nonExcludedRefAttributes.SVGElement = SVGElement;
-	}
+	updateSVG(nonExcludedRefAttributes, block.attributes);
 
 	// Disable repeater for nested rows
 	if (block.name === 'maxi-blocks/row-maxi') {

@@ -22,10 +22,18 @@ import {
 import { excludeAttributes } from '../copy-paste';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
+import { fromListToText, fromTextToList } from '../text/formats';
+import {
+	getSVGPosition,
+	getSVGRatio,
+	setSVGPosition,
+	setSVGRatio,
+} from '../svg';
 import {
 	handleBlockMove,
 	updateNCLimits,
 	updateRelationsInColumn,
+	updateSVG,
 } from '../repeater';
 import { findBlockPosition, getBlockPosition } from '../repeater/utils';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
@@ -34,7 +42,6 @@ import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
-import { fromListToText, fromTextToList } from '../text/formats';
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
@@ -163,6 +170,11 @@ const withMaxiProps = createHigherOrderComponent(
 									currentAttributes
 								);
 
+								updateSVG(
+									nonExcludedAttributes,
+									currentAttributes
+								);
+
 								if ('isList' in obj) {
 									if (
 										obj.isList &&
@@ -207,23 +219,6 @@ const withMaxiProps = createHigherOrderComponent(
 									currentColumnClientId,
 									innerBlocksPositions
 								);
-
-								if (
-									'SVGData' in nonExcludedAttributes &&
-									'SVGElement' in nonExcludedAttributes
-								) {
-									const { SVGData, SVGElement } =
-										getUpdatedSVGDataAndElement(
-											nonExcludedAttributes,
-											currentAttributes.uniqueID,
-											'',
-											currentAttributes.mediaURL
-										);
-
-									nonExcludedAttributes.SVGData = SVGData;
-									nonExcludedAttributes.SVGElement =
-										SVGElement;
-								}
 
 								if (!isEmpty(nonExcludedAttributes)) {
 									updateBlockAttributes(

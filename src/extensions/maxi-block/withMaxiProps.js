@@ -22,7 +22,11 @@ import {
 import { excludeAttributes } from '../copy-paste';
 import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
-import { handleBlockMove, updateRelationsInColumn } from '../repeater';
+import {
+	handleBlockMove,
+	updateNCLimits,
+	updateRelationsInColumn,
+} from '../repeater';
 import { findBlockPosition, getBlockPosition } from '../repeater/utils';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
@@ -152,6 +156,11 @@ const withMaxiProps = createHigherOrderComponent(
 									copyPasteMapping,
 									true,
 									currentBlock.name
+								);
+
+								updateNCLimits(
+									nonExcludedAttributes,
+									currentAttributes
 								);
 
 								if ('isList' in obj) {

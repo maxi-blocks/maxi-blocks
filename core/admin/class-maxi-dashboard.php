@@ -50,10 +50,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_admin_scripts_styles'
             ));
 
-            // add_action('admin_notices', array(
-            //     $this,
-            //     'generate_styles_button'
-            // ));
+            add_action('admin_notices', array(
+                $this,
+                'generate_styles_button'
+            ));
 
             $this->allow_svg_json_uploads();
         }
@@ -529,8 +529,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             echo '
 			<script type="text/javascript">
 				document.addEventListener("DOMContentLoaded", function() {
-					document.getElementById("maxi-regenerate-styles-button").addEventListener("click", function() {
-						var button = document.getElementById("maxi-regenerate-styles-button");
+					var button = document.getElementById("maxi-regenerate-styles-button");
+
+					if(button) document.getElementById("maxi-regenerate-styles-button").addEventListener("click", function() {
 						button.disabled = true; // disable the button
 
 						var loadingMessage = document.createElement("div");

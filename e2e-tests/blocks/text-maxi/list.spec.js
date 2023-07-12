@@ -550,6 +550,30 @@ describe('List in Text-maxi', () => {
 			await getAttributes('list-style-position-general')
 		).toStrictEqual('outside');
 
+		// Change marker height
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-height'),
+			newNumber: '20',
+		});
+
+		expect(await getAttributes('list-marker-height-general')).toStrictEqual(
+			20
+		);
+
+		// Change marker line height
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-text-inspector__list-marker-line-height'
+			),
+			newNumber: '20',
+		});
+
+		expect(
+			await getAttributes('list-marker-line-height-general')
+		).toStrictEqual(20);
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -641,6 +665,30 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			4
 		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check marker vertical offset options', async () => {
+		await createNewPost();
+		await createTextWithList();
+
+		await openSidebarTab(page, 'style', 'list options');
+
+		// Change vertical offset
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-offset'),
+			newNumber: '20',
+			newValue: 'em',
+		});
+
+		expect(
+			await getAttributes('list-marker-vertical-offset-general')
+		).toStrictEqual(20);
+		expect(
+			await getAttributes('list-marker-vertical-offset-unit-general')
+		).toStrictEqual('em');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

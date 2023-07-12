@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { sprintf, __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
 	useCallback,
 	useContext,
@@ -32,6 +32,8 @@ import {
 	orderRelations,
 	orderTypes,
 	ACFTypeOptions,
+	linkFields,
+	linkFieldsLabels,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -543,33 +545,23 @@ const DynamicContent = props => {
 									{...dcValuesForDate}
 								/>
 							)}
+							{linkFields.includes(field) && (
+								<ToggleSwitch
+									label={linkFieldsLabels[field]}
+									selected={postTaxonomyLinksStatus}
+									onChange={value =>
+										changeProps({
+											'dc-post-taxonomy-links-status':
+												value,
+										})
+									}
+								/>
+							)}
 							{(['tags', 'categories'].includes(field) ||
 								(source === 'acf' &&
 									acfFieldType === 'checkbox')) &&
 								!error && (
 									<>
-										{['tags', 'categories'].includes(
-											field
-										) && (
-											<ToggleSwitch
-												label={__(
-													sprintf(
-														'Use %s links',
-														field
-													),
-													'maxi-blocks'
-												)}
-												selected={
-													postTaxonomyLinksStatus
-												}
-												onChange={value =>
-													changeProps({
-														'dc-post-taxonomy-links-status':
-															value,
-													})
-												}
-											/>
-										)}
 										<SelectControl
 											label={__(
 												'Delimiter',

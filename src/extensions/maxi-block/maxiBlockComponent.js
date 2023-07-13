@@ -386,7 +386,8 @@ class MaxiBlockComponent extends Component {
 		if (!shouldDisplayStyles)
 			this.displayStyles(
 				this.props.deviceType !== prevProps.deviceType ||
-					this.props.baseBreakpoint !== prevProps.baseBreakpoint
+					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint)
 			);
 
 		if (this.maxiBlockDidUpdate)

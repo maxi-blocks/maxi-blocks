@@ -134,7 +134,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				!isEmpty(attributes.linkSettings?.url) ||
 				(select('core/block-editor').getBlockName(childClientId) ===
 					'maxi-blocks/text-maxi' &&
-					attributes.content.includes('<a '))
+					(attributes.content.includes('<a ') ||
+						attributes['dc-content']?.includes('<a ')))
 			) {
 				childHasLink = true;
 				break;

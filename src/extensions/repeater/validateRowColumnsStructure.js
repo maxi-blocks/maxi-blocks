@@ -32,13 +32,16 @@ const validateAttributes = (
 	block,
 	column,
 	innerBlocksPositions,
+	indexToValidateBy = 0,
 	disableRelationsUpdate = false
 ) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
 
 	const blockPosition = findBlockPosition(block.clientId, column);
-	const refClientId = innerBlocksPositions?.[blockPosition]?.at(0);
-	const refColumnClientId = innerBlocksPositions?.[[-1]]?.at(0);
+	const refClientId =
+		innerBlocksPositions?.[blockPosition]?.at(indexToValidateBy);
+	const refColumnClientId =
+		innerBlocksPositions?.[[-1]]?.at(indexToValidateBy);
 
 	if (!refClientId) {
 		return false;
@@ -96,6 +99,7 @@ const validateAttributes = (
 const replaceColumnInnerBlocks = (
 	columnClientId,
 	columnToValidateByClientId,
+	columnToValidateByIndex,
 	innerBlocksPositions
 ) => {
 	const {
@@ -107,7 +111,13 @@ const replaceColumnInnerBlocks = (
 
 	const column = getBlock(columnClientId);
 
-	validateAttributes(column, column, innerBlocksPositions, true);
+	validateAttributes(
+		column,
+		column,
+		innerBlocksPositions,
+		columnToValidateByIndex,
+		true
+	);
 
 	const newInnerBlocks = cleanInnerBlocks(
 		getBlock(columnToValidateByClientId).innerBlocks
@@ -152,10 +162,17 @@ const validateRowColumnsStructure = (
 		return;
 	}
 
+	let columnToValidateByIndex = 0;
+
 	const columnToValidateBy = rawColumnToValidateByClientId
-		? childColumns.find(
-				column => column.clientId === rawColumnToValidateByClientId
-		  )
+		? childColumns.find((column, index) => {
+				if (column.clientId === rawColumnToValidateByClientId) {
+					columnToValidateByIndex = index;
+					return true;
+				}
+
+				return false;
+		  })
 		: childColumns[0];
 	const columnToValidateByClientId = columnToValidateBy.clientId;
 
@@ -236,6 +253,7 @@ const validateRowColumnsStructure = (
 			return replaceColumnInnerBlocks(
 				column.clientId,
 				columnToValidateByClientId,
+				columnToValidateByIndex,
 				innerBlocksPositions
 			);
 		}
@@ -262,14 +280,26 @@ const validateRowColumnsStructure = (
 			return replaceColumnInnerBlocks(
 				column.clientId,
 				columnToValidateByClientId,
+				columnToValidateByIndex,
 				innerBlocksPositions
 			);
 		}
 
-		validateAttributes(column, column, innerBlocksPositions);
+		validateAttributes(
+			column,
+			column,
+			innerBlocksPositions,
+			columnToValidateByIndex
+		);
 
 		goThroughMaxiBlocks(
-			block => validateAttributes(block, column, innerBlocksPositions),
+			block =>
+				validateAttributes(
+					block,
+					column,
+					innerBlocksPositions,
+					columnToValidateByIndex
+				),
 			columnInnerBlocks
 		);
 

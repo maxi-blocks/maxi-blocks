@@ -81,6 +81,9 @@ const selectors = {
 		return false;
 	},
 	receiveMaxiUniqueID(state) {
+		console.log('***************************');
+		console.log('receiveMaxiUniqueID STATE');
+		console.log(state);
 		if (state) return state.uniqueID;
 		return false;
 	},

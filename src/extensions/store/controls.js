@@ -39,7 +39,7 @@ const controls = {
 		const response = await apiFetch({
 			path: `/maxi-blocks/v1.0/unique-id/${block}`,
 		});
-		console.log('test', response);
+		console.log('response', response);
 		return response;
 	},
 	// async SEND_UNIQUE_ID(uniqueID) {

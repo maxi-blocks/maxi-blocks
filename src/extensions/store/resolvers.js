@@ -19,6 +19,9 @@ const resolvers = {
 	},
 	*receiveMaxiUniqueID(blockName) {
 		const maxiUniqueID = yield actions.receiveMaxiUniqueID(blockName);
+		console.log('maxiUniqueID', maxiUniqueID);
+		console.log(actions.sendMaxiUniqueID(maxiUniqueID));
+		console.log('=========================');
 		return actions.sendMaxiUniqueID(maxiUniqueID);
 	},
 };

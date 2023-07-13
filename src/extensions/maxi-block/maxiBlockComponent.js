@@ -668,32 +668,27 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { clientId, name: blockName } = this.props;
+		const { name: blockName } = this.props;
 
 		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(blockName);
-			// const newUniqueID = uniqueIDGenerator({
-			// 	blockName,
-			// 	diff: 1,
-			// 	clientId,
-			// });
+			uniqueIDGenerator(blockName).then(newUniqueID => {
+				propagateNewUniqueID(
+					idToCheck,
+					newUniqueID,
+					this.props.attributes['background-layers']
+				);
 
-			propagateNewUniqueID(
-				idToCheck,
-				newUniqueID,
-				this.props.attributes['background-layers']
-			);
+				this.props.attributes.uniqueID = newUniqueID;
+				this.props.attributes.customLabel = getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				);
 
-			this.props.attributes.uniqueID = newUniqueID;
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
+				if (this.maxiBlockDidChangeUniqueID)
+					this.maxiBlockDidChangeUniqueID(newUniqueID);
 
-			if (this.maxiBlockDidChangeUniqueID)
-				this.maxiBlockDidChangeUniqueID(newUniqueID);
-
-			return newUniqueID;
+				return newUniqueID;
+			});
 		}
 
 		return idToCheck;

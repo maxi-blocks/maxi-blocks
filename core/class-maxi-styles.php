@@ -1059,8 +1059,8 @@ class MaxiBlocks_Styles
             $block_name = '';
 
             foreach ($meta as $key => $value) {
-                write_log('key: '.$key);
-                write_log('script: '.$script);
+                // write_log('key: '.$key);
+                // write_log('script: '.$script);
                 if(str_contains($key, $script)) {
                     $match = true;
                     $block_name = $key;

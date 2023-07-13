@@ -108,6 +108,7 @@ const reducer = (
 		blocksToRender: [],
 		isPageLoaded: false,
 		blockName: {},
+		uniqueID: {},
 	},
 	action
 ) => {
@@ -226,10 +227,15 @@ const reducer = (
 				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
 			};
-		case 'RECEIVE_MAXI_UNIQUE_ID':
+		case 'RECEIVE_UNIQUE_ID':
 			return {
 				...state,
 				blockName: action.blockName,
+			};
+		case 'SEND_UNIQUE_ID':
+			return {
+				...state,
+				uniqueID: action.uniqueID,
 			};
 		default:
 			return state;

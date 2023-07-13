@@ -17,6 +17,10 @@ const resolvers = {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
 		return actions.sendMaxiDeviceType(maxiDeviceType);
 	},
+	*receiveMaxiUniqueID() {
+		const maxiUniqueID = yield actions.receiveMaxiUniqueID();
+		return actions.sendMaxiUniqueID(maxiUniqueID);
+	},
 };
 
 export default resolvers;

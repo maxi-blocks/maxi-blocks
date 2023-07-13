@@ -215,6 +215,20 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/unique-id/(?P<block_name>[a-z-]+)$', [
+                'methods' => 'GET',
+                'callback' => [$this, 'create_maxi_blocks_unique_id'],
+                'args' => [
+                    'block_name' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -713,6 +727,56 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $new_custom_data;
+        }
+        public function create_maxi_blocks_unique_id($request)
+        {
+            global $wpdb;
+            write_log('create_maxi_blocks_unique_id');
+
+            // $block_name = $data['blockName'];
+            $block_name = $request->get_param('block_name');
+            write_log($block_name);
+
+            if(!$block_name || $block_name === '') {
+                return new WP_Error(
+                    'no_block_name',
+                    'No block name provided',
+                    'no_block_name'
+                );
+            }
+
+
+            $db_custom_prefix = 'maxi_blocks_';
+            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles_blocks';
+
+            // Insert a new row
+            $wpdb->insert(
+                $db_css_table_name,
+                array(
+                    'block_style_id' => 'temporary', // Temporary value
+                ),
+                array(
+                    '%s',
+                )
+            );
+
+            // Get the ID of the newly inserted row
+            $new_id = $wpdb->insert_id;
+
+            // Create the final block_style_id
+            $block_style_id = $block_name . '-' . $new_id;
+
+            // Update the newly inserted row with the final block_style_id
+            $wpdb->update(
+                $db_css_table_name,
+                array('block_style_id' => $block_style_id), // data to update
+                array('id' => $new_id), // where clause
+                array('%s'), // data format
+                array('%d') // where format; '%d' stands for integer
+            );
+
+            return $block_style_id;
+
         }
     }
 endif;

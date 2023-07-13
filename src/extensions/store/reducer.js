@@ -107,6 +107,7 @@ const reducer = (
 		deprecatedBlocks: {},
 		blocksToRender: [],
 		isPageLoaded: false,
+		blockName: {},
 	},
 	action
 ) => {
@@ -224,6 +225,11 @@ const reducer = (
 				...state,
 				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
+			};
+		case 'RECEIVE_MAXI_UNIQUE_ID':
+			return {
+				...state,
+				blockName: action.blockName,
 			};
 		default:
 			return state;

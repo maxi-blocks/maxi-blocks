@@ -32,6 +32,11 @@ const controls = {
 			? 'general'
 			: originalDeviceType;
 	},
+	async RECEIVE_MAXI_UNIQUE_ID(blockName) {
+		return apiFetch({
+			path: `/maxi-blocks/v1.0/unique-id/${blockName?.blockName}`,
+		});
+	},
 };
 
 export default controls;

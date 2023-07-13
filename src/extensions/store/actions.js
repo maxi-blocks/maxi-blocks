@@ -153,5 +153,17 @@ const actions = {
 			isPageLoaded,
 		};
 	},
+	receiveMaxiUniqueID(blockName) {
+		return {
+			type: 'RECEIVE_MAXI_UNIQUE_ID',
+			blockName,
+		};
+	},
+	sendMaxiUniqueID(uniqueID) {
+		return {
+			type: 'SEND_UNIQUE_ID',
+			uniqueID,
+		};
+	},
 };
 export default actions;

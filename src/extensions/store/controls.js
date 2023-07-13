@@ -32,29 +32,6 @@ const controls = {
 			? 'general'
 			: originalDeviceType;
 	},
-	async RECEIVE_UNIQUE_ID(blockName) {
-		console.log('RECEIVE_UNIQUE_ID');
-		console.log('blockName', blockName);
-		const block = blockName?.blockName;
-		const response = await apiFetch({
-			path: `/maxi-blocks/v1.0/unique-id/${block}`,
-		});
-		console.log('response', response);
-		return response;
-	},
-	// async SEND_UNIQUE_ID(uniqueID) {
-	// 	console.log('SEND_UNIQUE_ID');
-	// 	console.log('uniqueID', uniqueID);
-	// 	return apiFetch({
-	// 		path: '/maxi-blocks/v1.0/unique-id/',
-	// 		method: 'POST',
-	// 		data: {
-	// 			uniqueID,
-	// 		},
-	// 	}).catch(err => {
-	// 		console.error('Error sending unique id. Code error: ', err);
-	// 	});
-	// },
 };
 
 export default controls;

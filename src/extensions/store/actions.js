@@ -153,19 +153,5 @@ const actions = {
 			isPageLoaded,
 		};
 	},
-	receiveMaxiUniqueID(blockName) {
-		console.log('receiveMaxiUniqueID');
-		console.log('blockName', blockName);
-		return {
-			type: 'RECEIVE_UNIQUE_ID',
-			blockName,
-		};
-	},
-	sendMaxiUniqueID(uniqueID) {
-		return {
-			type: 'SEND_UNIQUE_ID',
-			uniqueID,
-		};
-	},
 };
 export default actions;

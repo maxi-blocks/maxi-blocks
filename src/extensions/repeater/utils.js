@@ -116,12 +116,13 @@ export const goThroughColumns = (columns, blockClientId, callback) =>
 	});
 
 export const getInitialColumn = (clientId, repeaterColumnsClientIds) => {
-	const { getBlock, getBlockParentsByBlockName } =
+	const { getBlock, getBlockName, getBlockParentsByBlockName } =
 		select('core/block-editor');
 
 	return getBlock(
-		getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi').find(
-			clientId => repeaterColumnsClientIds.includes(clientId)
-		)
+		(getBlockName(clientId) === 'maxi-blocks/column-maxi'
+			? [clientId]
+			: getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi')
+		).find(clientId => repeaterColumnsClientIds.includes(clientId))
 	);
 };

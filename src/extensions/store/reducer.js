@@ -227,12 +227,9 @@ const reducer = (
 				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
 			};
-		case 'RECEIVE_UNIQUE_ID':
-			return {
-				...state,
-				blockName: action.blockName,
-			};
 		case 'SEND_UNIQUE_ID':
+			console.log('*****SEND_UNIQUE_ID*****');
+			console.log('action', action);
 			return {
 				...state,
 				uniqueID: action.uniqueID,

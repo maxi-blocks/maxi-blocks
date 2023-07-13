@@ -60,7 +60,6 @@ import { LoopContext } from '../DC';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import generateStyleID from '../attributes/generateStyleID';
 
 /**
@@ -671,15 +670,13 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		const { clientId, name: blockName } = this.props;
 
-		if (
-			getIsUniqueIDRepeated(idToCheck) ||
-			!uniqueIDStructureChecker(idToCheck, clientId)
-		) {
-			const newUniqueID = uniqueIDGenerator({
-				blockName,
-				diff: 1,
-				clientId,
-			});
+		if (getIsUniqueIDRepeated(idToCheck)) {
+			const newUniqueID = uniqueIDGenerator(blockName);
+			// const newUniqueID = uniqueIDGenerator({
+			// 	blockName,
+			// 	diff: 1,
+			// 	clientId,
+			// });
 
 			propagateNewUniqueID(
 				idToCheck,

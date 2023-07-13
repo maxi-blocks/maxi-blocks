@@ -1614,6 +1614,10 @@ class MaxiBlocks_Styles
         foreach ($block_types as $block_type => $attr_group) {
             // If the block name matches the current block type
             if ($block_name === $block_type) {
+                if($attr_group === 'accordion') {
+                    write_log('ACCORDION PANE');
+                    write_log(get_group_attributes($props, 'pane'));
+                }
                 // Construct and return the response array
                 return
                    array_merge(

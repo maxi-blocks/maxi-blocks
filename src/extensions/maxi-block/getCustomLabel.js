@@ -7,7 +7,9 @@ const removeCustomLabelNumber = customLabelToReplace =>
 	customLabelToReplace.replace(/_(\d+)\s*$/, '').trim();
 
 const getCustomLabel = (previousCustomLabel, uniqueID) => {
-	const customLabelFromUniqueID = capitalize(uniqueID.replace('-maxi-', '_'));
+	const customLabelFromUniqueID = capitalize(
+		uniqueID?.replace('-maxi-', '_')
+	);
 	if (
 		isEmpty(previousCustomLabel) ||
 		removeCustomLabelNumber(previousCustomLabel) ===
@@ -15,7 +17,7 @@ const getCustomLabel = (previousCustomLabel, uniqueID) => {
 	)
 		return customLabelFromUniqueID;
 
-	const number = uniqueID.match(/-(\d+)$/)[1];
+	const number = uniqueID?.match(/-(\d+)$/)[1];
 	return `${removeCustomLabelNumber(previousCustomLabel)}_${number}`;
 };
 

@@ -8,9 +8,11 @@ const videoEvents = () => {
 			return;
 		}
 
-		const videoID = video.id;
+		const videoID = video.dataset.maxiStyleId;
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const { videoType } = videoData;
 		const videoEnd = videoData.endTime;
@@ -46,10 +48,12 @@ const handleYoutubeVideos = () => {
 		'.maxi-video-block--youtube'
 	);
 	youtubeVideos.forEach(video => {
-		const videoID = video.id;
+		const videoID = video.dataset.maxiStyleId;
 
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const popupContent =
 			videoData.playerType === 'popup' && insertPopup(video);
@@ -84,10 +88,12 @@ const handleYoutubeVideos = () => {
 function handleVimeoVideos() {
 	const vimeoVideos = document.querySelectorAll('.maxi-video-block--vimeo');
 	vimeoVideos.forEach(video => {
-		const videoID = video.id;
+		const videoID = video.dataset.maxiStyleId;
 
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const popupContent =
 			videoData.playerType === 'popup' && insertPopup(video);
@@ -119,7 +125,7 @@ function insertPopup(video) {
 	const popupContent = video
 		.querySelector('.maxi-video-block__popup-wrapper')
 		.cloneNode(true);
-	const uniqueID = video.id;
+	const uniqueID = video.dataset.maxiStyleId;
 	const popupSlot = document.getElementById('maxi-popup-slot');
 
 	const createPopup = () => {

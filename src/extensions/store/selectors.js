@@ -80,6 +80,10 @@ const selectors = {
 
 		return false;
 	},
+	receiveMaxiUniqueID(state) {
+		if (state) return state.uniqueID;
+		return false;
+	},
 };
 
 export default selectors;

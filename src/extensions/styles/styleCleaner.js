@@ -1,8 +1,4 @@
 /**
- * Internal dependencies
- */
-
-/**
  * External dependencies
  */
 import { cloneDeep, isEmpty, isEqual, isNil, isObject } from 'lodash';

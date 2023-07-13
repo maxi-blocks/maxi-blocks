@@ -444,7 +444,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, hasInnerBlocks } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		const emptySliderClass = `maxi-slide-block__${
 			hasInnerBlocks ? 'has-innerBlock' : 'empty'
@@ -503,14 +503,12 @@ class edit extends MaxiBlockComponent {
 					// Used to force render on slides when slider width changes, to update slidesWidth
 					sliderWidth: this.state.sliderWidth,
 				}}
-				data-maxi-style-id={styleID}
 			>
 				<MaxiBlock
 					key={`maxi-slider--${uniqueID}`}
 					ref={this.blockRef}
 					classes={emptySliderClass}
 					{...getMaxiBlockAttributes(this.props)}
-					data-maxi-style-id={styleID}
 				>
 					<div className='maxi-slider-block__tracker'>
 						<SliderWrapper

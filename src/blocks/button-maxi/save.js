@@ -30,7 +30,6 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 		'dc-field': dcField,
-		styleID,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/button-maxi';
@@ -51,10 +50,7 @@ const save = props => {
 	const showDCContent = dcStatus && dcField !== 'static_text';
 
 	return (
-		<MaxiBlock.save
-			{...getMaxiBlockAttributes({ ...props, name })}
-			data-maxi-style-id={styleID}
-		>
+		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
 				className={buttonClasses}
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}

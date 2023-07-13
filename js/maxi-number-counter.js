@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
-	const { breakpoints } = JSON.parse(maxiNumberCounter[0][numberID]);
+	const { breakpoints } = maxiNumberCounter[0][numberID];
 	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
 	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
@@ -13,25 +12,7 @@ const checkMediaQuery = numberID => {
 	}
 	breakpoint = breakpoint === 'xl' ? 'general' : breakpoint;
 
-	// eslint-disable-next-line consistent-return
 	return breakpoint;
-};
-
-const getTitleFontSize = (numberData, breakpoint) => {
-	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
-	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
-		return numberData[`number-counter-title-font-size-${breakpoint}`];
-	}
-	const winIndex = breakpoints.indexOf(breakpoint);
-	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
-};
-
-const setNewDyAttribute = (elem, numberData, breakpoint) => {
-	const fontSize = getTitleFontSize(numberData, breakpoint);
-	elem.setAttribute(
-		'dy',
-		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
-	);
 };
 // Number Counter Effects
 const numberCounterEffect = () => {
@@ -39,26 +20,26 @@ const numberCounterEffect = () => {
 	numberElements.forEach(elem => {
 		// eslint-disable-next-line no-undef
 		if (!maxiNumberCounter) return;
-		const numberID = elem.dataset.maxiStyleId;
+		const numberID = elem.id;
 
 		const numberData =
 			// eslint-disable-next-line no-undef
 			maxiNumberCounter[0][numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  JSON.parse(maxiNumberCounter[0][numberID])
+				  maxiNumberCounter[0][numberID]
 				: null;
 
 		if (numberData !== null) {
 			// Number Counter
 			if ('number-counter-status' in numberData) {
 				const numberCounterElem = document.querySelector(
-					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box`
+					`#${numberID} .maxi-number-counter__box`
 				);
 				const numberCounterElemText = document.querySelector(
-					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box .maxi-number-counter__box__text`
+					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__text`
 				);
 				const numberCounterElemCircle = document.querySelector(
-					`[data-maxi-style-id=${numberID}] .maxi-number-counter__box .maxi-number-counter__box__circle`
+					`#${numberID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 				);
 
 				const radius = 90;
@@ -68,6 +49,8 @@ const numberCounterEffect = () => {
 					'number-counter-end': numberCounterEnd,
 					'number-counter-duration': numberCounterDuration,
 					'number-counter-percentage-sign-status': usePercentage,
+					'number-counter-percentage-sign-position-status':
+						centeredPercentage,
 					'number-counter-start-animation': startAnimation,
 					'number-counter-start-animation-offset':
 						startAnimationOffset,
@@ -99,10 +82,9 @@ const numberCounterEffect = () => {
 					let newInnerHTML = `${count}`;
 
 					if (usePercentage) {
-						const percentageNode =
-							numberCounterElemText.nodeName === 'SPAN'
-								? '<sup>%</sup>'
-								: '<tspan baseline-shift="super">%</tspan>';
+						const percentageNode = centeredPercentage
+							? '%'
+							: '<sup>%</sup>';
 
 						newInnerHTML += percentageNode;
 					}
@@ -158,6 +140,24 @@ const numberCounterEffect = () => {
 			}
 		}
 	});
+};
+
+// eslint-disable-next-line @wordpress/no-global-event-listener
+const setNewDyAttribute = (elem, numberData, breakpoint) => {
+	const fontSize = getTitleFontSize(numberData, breakpoint);
+	elem.setAttribute(
+		'dy',
+		`${Math.round((fontSize / 4 + Number.EPSILON) * 100) / 100}px`
+	);
+};
+
+const getTitleFontSize = (numberData, breakpoint) => {
+	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
+	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
+		return numberData[`number-counter-title-font-size-${breakpoint}`];
+	}
+	const winIndex = breakpoints.indexOf(breakpoint);
+	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 };
 
 window.addEventListener('load', numberCounterEffect);

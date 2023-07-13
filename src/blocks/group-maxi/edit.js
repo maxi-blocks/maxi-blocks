@@ -20,7 +20,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -59,7 +59,6 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
-				data-maxi-style-id={styleID}
 			>
 				<ArrowDisplayer
 					key={`maxi-arrow-displayer__${uniqueID}`}

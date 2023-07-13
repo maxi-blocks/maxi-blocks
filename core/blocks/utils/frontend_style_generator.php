@@ -43,7 +43,7 @@ function frontend_style_generator($styles, $style_id)
 
             foreach ($content as $suffix => $props) {
                 if (isset($props[$breakpoint]) && !empty($props[$breakpoint])) {
-                    $breakpointResponse .= "body.maxi-blocks--active #{$target}[data-maxi-style-id={$style_id}]{$suffix}{";
+                    $breakpointResponse .= "body.maxi-blocks--active #{$target}{$suffix}{";
                     $breakpointResponse .= get_styles($props[$breakpoint]);
                     $breakpointResponse .= '}';
                 }

@@ -180,7 +180,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			clientId,
 		} = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
@@ -224,7 +224,6 @@ class edit extends MaxiBlockComponent {
 					<MaxiBlock
 						key={`maxi-column--${uniqueID}`}
 						ref={this.blockRef}
-						data-maxi-style-id={styleID}
 						{...getMaxiBlockAttributes(this.props)}
 						isOverflowHidden={getIsOverflowHidden(
 							attributes,

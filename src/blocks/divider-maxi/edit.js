@@ -121,7 +121,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
-		const { uniqueID, lineOrientation, styleID } = attributes;
+		const { uniqueID, lineOrientation } = attributes;
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
@@ -207,7 +207,6 @@ class edit extends MaxiBlockComponent {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				cleanStyles
-				data-maxi-style-id={styleID}
 			>
 				{getLastBreakpointAttribute({
 					target: 'divider-border-style',

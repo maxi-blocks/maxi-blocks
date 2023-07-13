@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
@@ -104,7 +104,6 @@ class edit extends MaxiBlockComponent {
 						'borderRadius'
 					),
 				}}
-				data-maxi-style-id={styleID}
 			>
 				<MaxiBlock
 					key={`maxi-row--${uniqueID}`}
@@ -127,7 +126,6 @@ class edit extends MaxiBlockComponent {
 							: false,
 					}}
 					renderWrapperInserter={false}
-					data-maxi-style-id={styleID}
 				/>
 			</RowContext.Provider>,
 		];

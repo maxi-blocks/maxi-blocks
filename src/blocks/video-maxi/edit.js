@@ -177,7 +177,6 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaAlt': overlayMediaAlt,
 			'overlay-altSelector': altSelector,
 			hideImage,
-			styleID,
 		} = attributes;
 
 		const { isUploaderOpen } = this.state;
@@ -260,7 +259,6 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
-				data-maxi-style-id={styleID}
 			>
 				{embedUrl &&
 					videoValidation(embedUrl) &&

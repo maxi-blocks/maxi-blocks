@@ -41,8 +41,8 @@ const controls = {
 
 			await Promise.all(
 				blockStyles.map(async blockStyle => {
-					const { styleID } = blockStyle[1];
-					parsedStyles[styleID] = await processCss(
+					const { uniqueID } = blockStyle[1];
+					parsedStyles[uniqueID] = await processCss(
 						frontendStyleGenerator(blockStyle)
 					);
 				})

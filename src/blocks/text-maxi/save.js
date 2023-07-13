@@ -20,7 +20,6 @@ const save = props => {
 		listReversed,
 		listStart,
 		'dc-status': dcStatus,
-		styleID,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
@@ -31,7 +30,6 @@ const save = props => {
 		<MaxiBlock.save
 			classes={`${isList ? 'maxi-list-block' : ''}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			data-maxi-style-id={styleID}
 		>
 			<RichText.Content
 				className={className}

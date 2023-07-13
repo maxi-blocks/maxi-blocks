@@ -1115,18 +1115,18 @@ class MaxiBlocks_Styles
     /**
      * Check if block needs custom meta
      *
-     * @param  string $style_id
+     * @param  string $unique_id
      * @return bool
      */
 
-    public function block_needs_custom_meta($style_id)
+    public function block_needs_custom_meta($unique_id)
     {
         global $wpdb;
 
         $active_custom_data = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT active_custom_data FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $style_id
+                $unique_id
             )
         );
 
@@ -1146,16 +1146,16 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         $props = $block['attrs'] ?? [];
-        $style_id = $props['styleID'] ?? null;
+        $unique_id = $props['uniqueID'] ?? null;
 
-        if (empty($props) || !isset($style_id) || !$style_id) {
+        if (empty($props) || !isset($unique_id) || !$unique_id) {
             return;
         }
 
         $content_array_block = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $style_id
+                $unique_id
             ),
             ARRAY_A
         );
@@ -1170,7 +1170,7 @@ class MaxiBlocks_Styles
         $prev_styles .= ' ' . $content_block['prev_css_value'];
 
         if ($content_block['active_custom_data']) {
-            $this->process_custom_data($block, $style_id, $active_custom_data_array);
+            $this->process_custom_data($block, $unique_id, $active_custom_data_array);
         }
 
         // fonts
@@ -1195,10 +1195,10 @@ class MaxiBlocks_Styles
      * Process custom data
      *
      * @param array $block
-     * @param string $style_id
+     * @param string $unique_id
      * @param array &$active_custom_data_array
      */
-    private function process_custom_data(array $block, string $style_id, array &$active_custom_data_array)
+    private function process_custom_data(array $block, string $unique_id, array &$active_custom_data_array)
     {
         global $wpdb;
 
@@ -1207,15 +1207,15 @@ class MaxiBlocks_Styles
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                $style_id
+                $unique_id
             )
         );
 
         if (!empty($block_meta)) {
             if (isset($active_custom_data_array[$block_name])) {
-                $active_custom_data_array[$block_name][] = [$style_id => $block_meta];
+                $active_custom_data_array[$block_name][] = [$unique_id => $block_meta];
             } else {
-                $active_custom_data_array[$block_name] = [$style_id => $block_meta];
+                $active_custom_data_array[$block_name] = [$unique_id => $block_meta];
             }
         }
     }
@@ -1365,7 +1365,7 @@ class MaxiBlocks_Styles
         $props = $block['attrs'];
         $block_style = $props['blockStyle'];
 
-        $style_id = $props['styleID'];
+        $unique_id = $props['uniqueID'];
 
         $block_instance = null;
 
@@ -1459,7 +1459,7 @@ class MaxiBlocks_Styles
 
 
         $resolved_styles = style_resolver($styles);
-        $frontend_styles = frontend_style_generator($resolved_styles, $style_id);
+        $frontend_styles = frontend_style_generator($resolved_styles, $unique_id);
 
         // custom meta
         $custom_meta_block = 0;
@@ -1490,7 +1490,7 @@ class MaxiBlocks_Styles
             $exists = $wpdb->get_row(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                    $style_id
+                    $unique_id
                 ),
                 OBJECT
             );
@@ -1505,7 +1505,7 @@ class MaxiBlocks_Styles
 						WHERE block_style_id = %s",
                         $custom_meta_json,
                         $old_custom_meta,
-                        $style_id
+                        $unique_id
                     )
                 );
             } else {
@@ -1514,7 +1514,7 @@ class MaxiBlocks_Styles
                     $wpdb->prepare(
                         "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
 						VALUES (%s, %s, %s)",
-                        $style_id,
+                        $unique_id,
                         $custom_meta_json,
                         ''
                     )
@@ -1542,7 +1542,7 @@ class MaxiBlocks_Styles
         $exists = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $style_id
+                $unique_id
             ),
             OBJECT
         );
@@ -1563,7 +1563,7 @@ class MaxiBlocks_Styles
                     $fonts,
                     $custom_meta_block,
                     $old_custom_meta,
-                    $style_id
+                    $unique_id
                 )
             );
         } else {
@@ -1572,7 +1572,7 @@ class MaxiBlocks_Styles
                 $wpdb->prepare(
                     "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)
 					VALUES (%s, %s, %s, %s, %s, %d, %d)",
-                    $style_id,
+                    $unique_id,
                     $frontend_styles,
                     '',
                     $fonts,

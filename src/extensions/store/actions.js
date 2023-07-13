@@ -154,8 +154,10 @@ const actions = {
 		};
 	},
 	receiveMaxiUniqueID(blockName) {
+		console.log('receiveMaxiUniqueID');
+		console.log('blockName', blockName);
 		return {
-			type: 'RECEIVE_MAXI_UNIQUE_ID',
+			type: 'RECEIVE_UNIQUE_ID',
 			blockName,
 		};
 	},

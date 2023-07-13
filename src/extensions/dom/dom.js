@@ -88,7 +88,7 @@ wp.domReady(() => {
 
 	const resizeObserverSelector = '.interface-interface-skeleton__content';
 
-	const resizeObserver = new ResizeObserver(() => {
+	const setBaseBreakpoint = () => {
 		const resizeObserverTarget = document.querySelector(
 			resizeObserverSelector
 		);
@@ -98,6 +98,10 @@ wp.domReady(() => {
 				.getBoundingClientRect();
 			dispatch('maxiBlocks').setEditorContentSize({ width, height });
 		}
+	};
+
+	const resizeObserver = new ResizeObserver(() => {
+		setBaseBreakpoint();
 
 		// On changing the canvas editor size, we must update the winBreakpoint
 		// to add the necessary attributes to display styles. The observer can't
@@ -179,6 +183,7 @@ wp.domReady(() => {
 
 				isNewEditorContentObserver = false;
 				resizeObserver.observe(resizeObserverTarget);
+				setBaseBreakpoint();
 			} else if (
 				(isTemplatesListOpened || id !== currentId) &&
 				!isNewEditorContentObserver

@@ -163,7 +163,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		const classes = classnames(
 			'maxi-search-block',
@@ -186,7 +186,6 @@ class edit extends MaxiBlockComponent {
 				classes={classes}
 				key={`maxi-search--${uniqueID}`}
 				ref={this.blockRef}
-				data-maxi-style-id={styleID}
 			>
 				<SearchBlock {...this.props} />
 			</MaxiBlock>,

@@ -35,11 +35,11 @@ const frontendStyleGenerator = styles => {
 		const value = styles?.[1];
 
 		let breakpointResponse = '';
-		const { breakpoints, content, styleID } = value;
+		const { breakpoints, content } = value;
 
 		Object.entries(content).forEach(([suffix, props]) => {
 			if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
-				breakpointResponse += `body.maxi-blocks--active #${target}[data-maxi-style-id=${styleID}]${suffix}{`;
+				breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
 				breakpointResponse += getStyles(props[breakpoint]);
 				breakpointResponse += '}';
 			}

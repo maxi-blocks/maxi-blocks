@@ -172,7 +172,7 @@ class edit extends MaxiBlockComponent {
 			hasSelectedChild,
 			hasInnerBlocks,
 		} = this.props;
-		const { uniqueID, title, styleID } = attributes;
+		const { uniqueID, title } = attributes;
 		const {
 			paneIcon,
 			paneIconActive,
@@ -199,7 +199,6 @@ class edit extends MaxiBlockComponent {
 				data-accordion={accordionUniqueId}
 				{...getMaxiBlockAttributes(this.props)}
 				aria-expanded={this.state.isOpen}
-				data-maxi-style-id={styleID}
 			>
 				<div
 					className='maxi-pane-block__header'

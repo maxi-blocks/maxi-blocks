@@ -34,7 +34,6 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
-import getIsUniqueStyleIDRepeated from './getIsUniqueStyleIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import {
@@ -60,14 +59,12 @@ import { LoopContext } from '../DC';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import generateStyleID from '../attributes/generateStyleID';
 
 /**
  * Style Component
  */
 const StyleComponent = ({
 	uniqueID,
-	styleID,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
@@ -86,10 +83,10 @@ const StyleComponent = ({
 	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
 
 	if (isBreakpointChange) {
-		const styleContent = select('maxiBlocks/styles').getCSSCache(
-			uniqueID,
-			styleID
-		)[currentBreakpoint];
+		const styleContent =
+			select('maxiBlocks/styles').getCSSCache(uniqueID)[
+				currentBreakpoint
+			];
 
 		return <style>{styleContent}</style>;
 	}
@@ -106,17 +103,17 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
-		styleID,
+		uniqueID,
 	});
 
 	const styleContent = styleGenerator(
 		styles,
-		styleID,
+		uniqueID,
 		isIframe,
 		isSiteEditor
 	);
 
-	saveCSSCache(uniqueID, styleID, styles, isIframe, isSiteEditor);
+	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -136,7 +133,7 @@ class MaxiBlockComponent extends Component {
 		this.areFontsLoaded = createRef(false);
 
 		const { clientId, attributes } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -147,7 +144,6 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.uniqueStyleIDChecker(styleID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -657,16 +653,6 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
-	uniqueStyleIDChecker(styleIdToCheck) {
-		if (getIsUniqueStyleIDRepeated(styleIdToCheck)) {
-			const newUniqueStyleID = generateStyleID();
-
-			this.props.attributes.styleID = newUniqueStyleID;
-			return newUniqueStyleID;
-		}
-		return styleIdToCheck;
-	}
-
 	uniqueIDChecker(idToCheck) {
 		const { name: blockName } = this.props;
 
@@ -711,7 +697,7 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles(isBreakpointChange = false) {
-		const { uniqueID, styleID } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		this.rootSlot = this.getRootEl();
 
@@ -740,7 +726,6 @@ class MaxiBlockComponent extends Component {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
-						styleID={styleID}
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}

@@ -33,7 +33,6 @@ const global = {
 		type: 'array',
 	},
 	preview: { type: 'boolean', default: false },
-	styleID: { type: 'string' },
 };
 
 export default global;

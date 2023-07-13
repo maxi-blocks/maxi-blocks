@@ -127,7 +127,6 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
-			styleID,
 		} = attributes;
 		const {
 			status: dcStatus,
@@ -354,7 +353,6 @@ class edit extends MaxiBlockComponent {
 					tagName='figure'
 					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
-					data-maxi-style-id={styleID}
 				>
 					{showImage ? (
 						<BlockResizer

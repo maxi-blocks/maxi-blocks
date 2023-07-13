@@ -13,7 +13,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { lineOrientation, styleID } = attributes;
+	const { lineOrientation } = attributes;
 
 	const name = 'maxi-blocks/divider-maxi';
 
@@ -27,7 +27,6 @@ const save = props => {
 		<MaxiBlock.save
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			data-maxi-style-id={styleID}
 		>
 			{attributes['divider-border-style'] !== 'none' && (
 				<hr className='maxi-divider-block__divider' />

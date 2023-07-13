@@ -81,7 +81,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 		const {
 			status: dcStatus,
 			content: dcContent,
@@ -137,7 +137,6 @@ class edit extends MaxiBlockComponent {
 				{...(attributes['icon-only'] && {
 					'aria-label': getAreaLabel(attributes['icon-content']),
 				})}
-				data-maxi-style-id={styleID}
 			>
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (

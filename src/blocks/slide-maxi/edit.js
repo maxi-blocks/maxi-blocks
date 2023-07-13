@@ -60,7 +60,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID, styleID } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
@@ -120,7 +120,6 @@ class edit extends MaxiBlockComponent {
 						? () => <BlockInserter clientId={clientId} />
 						: false,
 				}}
-				data-maxi-style-id={styleID}
 			/>,
 		];
 	}

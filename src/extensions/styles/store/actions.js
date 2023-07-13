@@ -45,17 +45,10 @@ export function savePrevSavedAttrs(prevSavedAttrs) {
 	};
 }
 
-export const saveCSSCache = (
-	uniqueID,
-	styleID,
-	stylesObj,
-	isIframe,
-	isSiteEditor
-) => {
+export const saveCSSCache = (uniqueID, stylesObj, isIframe, isSiteEditor) => {
 	return {
 		type: 'SAVE_CSS_CACHE',
 		uniqueID,
-		styleID,
 		stylesObj,
 		isIframe,
 		isSiteEditor,

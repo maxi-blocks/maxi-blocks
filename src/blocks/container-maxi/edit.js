@@ -80,7 +80,7 @@ class edit extends MaxiBlockComponent {
 			cleanInlineStyles,
 			isSelected,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy, styleID } = attributes;
+		const { uniqueID, isFirstOnHierarchy } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -104,7 +104,6 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
-				data-maxi-style-id={styleID}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider

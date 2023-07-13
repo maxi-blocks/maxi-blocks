@@ -105,7 +105,6 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
-			styleID,
 		} = attributes;
 
 		const {
@@ -209,7 +208,6 @@ class edit extends MaxiBlockComponent {
 						});
 					},
 				}}
-				data-maxi-style-id={styleID}
 			>
 				<Inspector
 					key={`block-settings-${uniqueID}`}
@@ -232,7 +230,6 @@ class edit extends MaxiBlockComponent {
 					} ${isList ? 'maxi-list-block' : ''}`}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
-					data-maxi-style-id={styleID}
 				>
 					{!dcStatus && !isList && (
 						<RichText

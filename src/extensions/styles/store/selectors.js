@@ -30,14 +30,11 @@ export const getPrevSavedAttrs = state => {
 	return false;
 };
 
-export const getCSSCache = (state, uniqueID, styleID) => {
-	if (state.cssCache && state.cssCache[styleID])
-		return state.cssCache[styleID];
-
+export const getCSSCache = (state, uniqueID) => {
 	if (state.cssCache && state.cssCache[uniqueID])
 		return state.cssCache[uniqueID];
 
-	if (state.cssCache && !styleID && !uniqueID) return state.cssCache;
+	if (state.cssCache && !uniqueID) return state.cssCache;
 
 	return false;
 };

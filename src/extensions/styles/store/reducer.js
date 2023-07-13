@@ -54,8 +54,7 @@ function reducer(
 				prevSavedAttrs: action.prevSavedAttrs,
 			};
 		case 'SAVE_CSS_CACHE': {
-			const { uniqueID, styleID, stylesObj, isIframe, isSiteEditor } =
-				action;
+			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
 
 			return {
 				...state,
@@ -67,7 +66,7 @@ function reducer(
 								...acc,
 								[breakpoint]: styleGenerator(
 									stylesObj,
-									styleID,
+									uniqueID,
 									isIframe,
 									isSiteEditor,
 									breakpoint

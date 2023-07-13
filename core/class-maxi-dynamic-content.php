@@ -518,8 +518,8 @@ class MaxiBlocks_DynamicContent
         switch ($field) {
             case 'author':
                 return get_author_posts_url($item);
-            case 'category':
-            case 'post_tag':
+            case 'categories':
+            case 'tags':
                 return get_term_link($item);
             default:
                 return '';

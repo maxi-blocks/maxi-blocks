@@ -2,11 +2,6 @@ body.maxi-blocks--active .maxi-text-block {
 	& * {
 		border-color: inherit;
 	}
-	a.maxi-text-block--link {
-		&:visited span {
-			color: inherit !important;
-		}
-	}
 	&.maxi-list-block {
 		overflow: visible;
 

@@ -227,10 +227,11 @@ const ColumnPattern = props => {
 										getInnerBlocksPositions();
 
 									if (
-										getTemplateObject(oldRowPattern).sizes
-											.length <
-											getTemplateObject(newRowPattern)
-												.sizes.length &&
+										(getTemplateObject(oldRowPattern)?.sizes
+											.length ?? Number(oldRowPattern)) <
+											(getTemplateObject(newRowPattern)
+												?.sizes.length ??
+												Number(newRowPattern)) &&
 										clientId === repeaterRowClientId
 									) {
 										validateRowColumnsStructure(

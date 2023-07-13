@@ -73,6 +73,10 @@ function getTemplates(
 
 	if (onlyEqualColumns) {
 		templates = templates.filter(template => {
+			if (template.isMoreThanEightColumns) {
+				return true;
+			}
+
 			const { sizes } = template;
 			const firstSize = sizes[0];
 			return sizes.every(size => size === firstSize);

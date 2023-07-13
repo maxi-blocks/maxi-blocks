@@ -20,10 +20,14 @@ import {
 } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
-import { validateRowColumnsStructure } from '../../../../extensions/repeater';
+import {
+	validateAttributes,
+	validateRowColumnsStructure,
+} from '../../../../extensions/repeater';
 import {
 	findTarget,
 	findBlockPosition,
+	getInitialColumn,
 } from '../../../../extensions/repeater/utils';
 import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
@@ -146,6 +150,28 @@ const CopyPaste = props => {
 		closeMoreSettings();
 		copyStyles(blockAttributes);
 	};
+
+	const onPasteStylesIntoRepeaterBlock = () => {
+		if (!repeaterContext.repeaterStatus) return;
+
+		const { getBlock } = select('core/block-editor');
+
+		const innerBlocksPositions = repeaterContext?.getInnerBlocksPositions();
+
+		const blockPosition = findBlockPosition(
+			clientId,
+			getInitialColumn(clientId, innerBlocksPositions[[-1]])
+		);
+
+		innerBlocksPositions[blockPosition].forEach(currentClientId =>
+			validateAttributes(
+				getBlock(currentClientId),
+				getInitialColumn(currentClientId, innerBlocksPositions[[-1]]),
+				innerBlocksPositions
+			)
+		);
+	};
+
 	const onPasteStyles = () => {
 		const styles = excludeAttributes(
 			copiedStyles,
@@ -158,6 +184,8 @@ const CopyPaste = props => {
 		handleAttributesOnPaste(styles);
 
 		updateBlockAttributes(clientId, styles);
+
+		onPasteStylesIntoRepeaterBlock();
 	};
 
 	const onCopyBlocks = () => {
@@ -201,15 +229,13 @@ const CopyPaste = props => {
 
 			replaceInnerBlocks(clientId, newCopiedBlocks);
 
-			const { getBlockParentsByBlockName } = select('core/block-editor');
+			const innerBlocksPositions =
+				repeaterContext?.getInnerBlocksPositions();
 
 			validateRowColumnsStructure(
-				getBlockParentsByBlockName(clientId, 'maxi-blocks/row-maxi')[0],
-				repeaterContext?.getInnerBlocksPositions(),
-				getBlockParentsByBlockName(
-					clientId,
-					'maxi-blocks/column-maxi'
-				)[0]
+				repeaterContext?.repeaterRowClientId,
+				innerBlocksPositions,
+				getInitialColumn(clientId, innerBlocksPositions[[-1]])
 			);
 		}
 
@@ -271,6 +297,8 @@ const CopyPaste = props => {
 		handleAttributesOnPaste(res);
 
 		updateBlockAttributes(clientId, res);
+
+		onPasteStylesIntoRepeaterBlock();
 	};
 
 	const getTabItems = () => {

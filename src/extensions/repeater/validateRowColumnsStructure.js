@@ -277,4 +277,5 @@ const validateRowColumnsStructure = (
 	});
 };
 
+export { validateAttributes };
 export default validateRowColumnsStructure;

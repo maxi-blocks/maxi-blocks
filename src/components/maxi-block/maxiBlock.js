@@ -141,18 +141,19 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				break;
 			}
 		}
+		const attributes = extraProps?.attributes || {};
 		setTimeout(() => {
 			if (childHasLink) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps?.attributes?.linkSettings,
+						...attributes?.linkSettings,
 						disabled: true,
 					},
 				});
-			} else if (extraProps?.attributes?.linkSettings.disabled) {
+			} else if (attributes?.linkSettings.disabled) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps.attributes.linkSettings,
+						...attributes.linkSettings,
 						disabled: false,
 					},
 				});

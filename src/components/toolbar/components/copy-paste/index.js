@@ -163,11 +163,16 @@ const CopyPaste = props => {
 			getInitialColumn(clientId, innerBlocksPositions[[-1]])
 		);
 
+		const indexToValidateBy = innerBlocksPositions[blockPosition].findIndex(
+			currentClientId => currentClientId === clientId
+		);
+
 		innerBlocksPositions[blockPosition].forEach(currentClientId =>
 			validateAttributes(
 				getBlock(currentClientId),
 				getInitialColumn(currentClientId, innerBlocksPositions[[-1]]),
-				innerBlocksPositions
+				innerBlocksPositions,
+				indexToValidateBy
 			)
 		);
 	};
@@ -235,7 +240,7 @@ const CopyPaste = props => {
 			validateRowColumnsStructure(
 				repeaterContext?.repeaterRowClientId,
 				innerBlocksPositions,
-				getInitialColumn(clientId, innerBlocksPositions[[-1]])
+				getInitialColumn(clientId, innerBlocksPositions[[-1]]).clientId
 			);
 		}
 

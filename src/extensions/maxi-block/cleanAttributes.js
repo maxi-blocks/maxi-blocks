@@ -720,7 +720,6 @@ const cleanAttributes = ({
 			});
 
 			return (
-				!isNil(value) &&
 				value !== attributes[key] &&
 				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);

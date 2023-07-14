@@ -66,7 +66,6 @@ function reducer(
 								...acc,
 								[breakpoint]: styleGenerator(
 									stylesObj,
-									uniqueID,
 									isIframe,
 									isSiteEditor,
 									breakpoint

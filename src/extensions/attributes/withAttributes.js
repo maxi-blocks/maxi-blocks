@@ -8,8 +8,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-
-import uniqueIDGenerator from './uniqueIDGenerator';
+import temporalIDGenerator from './temporalIDGenerator';
 import { getCustomLabel } from '../maxi-block';
 
 /**
@@ -54,15 +53,15 @@ const withAttributes = createHigherOrderComponent(
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
-				uniqueIDGenerator(blockName).then(newUniqueID => {
-					console.log('newUniqueID', newUniqueID);
-					attributes.uniqueID = newUniqueID;
-					attributes.customLabel = getCustomLabel(
-						attributes.customLabel,
-						newUniqueID
-					);
+				const newUniqueID = temporalIDGenerator({
+					blockName,
+					clientId,
 				});
-				// const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+				attributes.uniqueID = newUniqueID;
+				attributes.customLabel = getCustomLabel(
+					attributes.customLabel,
+					newUniqueID
+				);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

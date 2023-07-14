@@ -45,7 +45,11 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
+import {
+	getClientIdFromUniqueId,
+	uniqueIDGenerator,
+	temporalIDGenerator,
+} from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
@@ -53,6 +57,7 @@ import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import { LoopContext } from '../DC';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
  * External dependencies
@@ -106,12 +111,7 @@ const StyleComponent = ({
 		uniqueID,
 	});
 
-	const styleContent = styleGenerator(
-		styles,
-		uniqueID,
-		isIframe,
-		isSiteEditor
-	);
+	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
 	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
 
@@ -133,7 +133,7 @@ class MaxiBlockComponent extends Component {
 		this.areFontsLoaded = createRef(false);
 
 		const { clientId, attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID } = this.props.attributes;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -654,6 +654,40 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
+		const { clientId, name: blockName } = this.props;
+
+		if (
+			getIsUniqueIDRepeated(idToCheck) ||
+			!uniqueIDStructureChecker(idToCheck, clientId)
+		) {
+			const newUniqueID = temporalIDGenerator({
+				blockName,
+				diff: 1,
+				clientId,
+			});
+
+			propagateNewUniqueID(
+				idToCheck,
+				newUniqueID,
+				this.props.attributes['background-layers']
+			);
+
+			this.props.attributes.uniqueID = newUniqueID;
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
+
+			if (this.maxiBlockDidChangeUniqueID)
+				this.maxiBlockDidChangeUniqueID(newUniqueID);
+
+			return newUniqueID;
+		}
+
+		return idToCheck;
+	}
+
+	uniqueIDProcessor(idToCheck) {
 		const { name: blockName } = this.props;
 
 		if (getIsUniqueIDRepeated(idToCheck)) {

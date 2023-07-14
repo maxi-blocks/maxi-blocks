@@ -13,7 +13,7 @@ const hovers = () => {
 			// eslint-disable-next-line no-undef
 			maxiHoverEffects[0][hoverID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiHoverEffects[0][hoverID]
+				  JSON.parse(maxiHoverEffects[0][hoverID])
 				: null;
 
 		if (hoverData !== null) {

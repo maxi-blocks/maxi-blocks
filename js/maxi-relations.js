@@ -1118,7 +1118,7 @@ class Relation {
 
 window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-undef
-	const relations = maxiRelations?.[0];
+	const relations = JSON.parse(maxiRelations?.[0]);
 	if (!relations) return;
 
 	const uniqueRelations = relations.reduce(

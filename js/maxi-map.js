@@ -1,8 +1,11 @@
 window.onload = () => {
+	const mapID = document.querySelector('.maxi-map-block').id;
 	const apiKey = maxiMap[1];
-	const mapItems = maxiMap[0];
+	const mapItems = JSON.parse(maxiMap[0][mapID]);
 
-	const isGoogleProvider = mapItems.some(
+	console.log('mapItems', mapItems);
+
+	const isGoogleProvider = Object.keys(mapItems).some(
 		item => item['map-provider'] === 'googlemaps'
 	);
 	const isGoogleScriptsNeeded = isGoogleProvider && apiKey;
@@ -75,7 +78,7 @@ window.onload = () => {
 			},
 		],
 		() => {
-			mapItems.map(item => {
+			Object.keys(mapItems).map(item => {
 				const {
 					uniqueID,
 					'map-dragging': mapDragging,
@@ -126,7 +129,7 @@ window.onload = () => {
 						${
 							heading &&
 							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
-						}				
+						}
 						${
 							description &&
 							`<p class='maxi-map-block__popup__content__description'>${description}</p>`

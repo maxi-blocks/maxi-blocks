@@ -144,6 +144,18 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.uniqueIDProcessor(newUniqueID)
+			.then(newID => {
+				console.log('newID');
+				console.log(newID);
+				this.props.attributes.uniqueID = newID; // or this.props.attributes.uniqueID = newID; if you're directly modifying the props
+				dispatch('maxiBlocks/blocks').addBlock(
+					newID,
+					clientId,
+					this.rootSlot
+				);
+			})
+			.catch(err => console.error(err));
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -687,29 +699,27 @@ class MaxiBlockComponent extends Component {
 		return idToCheck;
 	}
 
-	uniqueIDProcessor(idToCheck) {
+	async uniqueIDProcessor(idToCheck) {
 		const { name: blockName } = this.props;
 
-		if (getIsUniqueIDRepeated(idToCheck)) {
-			uniqueIDGenerator(blockName).then(newUniqueID => {
-				propagateNewUniqueID(
-					idToCheck,
-					newUniqueID,
-					this.props.attributes['background-layers']
-				);
+		uniqueIDGenerator(blockName).then(newUniqueID => {
+			propagateNewUniqueID(
+				idToCheck,
+				newUniqueID,
+				this.props.attributes['background-layers']
+			);
 
-				this.props.attributes.uniqueID = newUniqueID;
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
+			this.props.attributes.uniqueID = newUniqueID;
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 
-				if (this.maxiBlockDidChangeUniqueID)
-					this.maxiBlockDidChangeUniqueID(newUniqueID);
+			if (this.maxiBlockDidChangeUniqueID)
+				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
-				return newUniqueID;
-			});
-		}
+			return newUniqueID;
+		});
 
 		return idToCheck;
 	}

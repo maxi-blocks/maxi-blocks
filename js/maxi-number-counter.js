@@ -1,6 +1,6 @@
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
-	const { breakpoints } = maxiNumberCounter[0][numberID];
+	const { breakpoints } = JSON.parse(maxiNumberCounter[0][numberID]);
 	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
 	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
@@ -22,11 +22,14 @@ const numberCounterEffect = () => {
 		if (!maxiNumberCounter) return;
 		const numberID = elem.id;
 
+		console.log('numberID', numberID);
+		console.log('maxiNumberCounter[0]', maxiNumberCounter[0]);
+
 		const numberData =
 			// eslint-disable-next-line no-undef
 			maxiNumberCounter[0][numberID] !== undefined
 				? // eslint-disable-next-line no-undef
-				  maxiNumberCounter[0][numberID]
+				  JSON.parse(maxiNumberCounter[0][numberID])
 				: null;
 
 		if (numberData !== null) {

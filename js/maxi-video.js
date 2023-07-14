@@ -10,7 +10,9 @@ const videoEvents = () => {
 
 		const videoID = video.id;
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const { videoType } = videoData;
 		const videoEnd = videoData.endTime;
@@ -49,7 +51,9 @@ const handleYoutubeVideos = () => {
 		const videoID = video.id;
 
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const popupContent =
 			videoData.playerType === 'popup' && insertPopup(video);
@@ -87,7 +91,9 @@ function handleVimeoVideos() {
 		const videoID = video.id;
 
 		const videoData =
-			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
+			maxiVideo[0][videoID] !== undefined
+				? JSON.parse(maxiVideo[0][videoID])
+				: null;
 
 		const popupContent =
 			videoData.playerType === 'popup' && insertPopup(video);

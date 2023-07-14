@@ -135,7 +135,7 @@ class edit extends MaxiBlockComponent {
 			mediaCaption: dcMediaCaption,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.props.loopContext?.contextLoop
+			this.props.contextLoopContext?.contextLoop
 		);
 		const { isExternalClass, isUploaderOpen } = this.state;
 

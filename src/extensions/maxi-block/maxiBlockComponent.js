@@ -602,7 +602,7 @@ class MaxiBlockComponent extends Component {
 			relations: relationsRaw,
 		} = this.props.attributes;
 
-		const { contextLoop } = this.props.loopContext ?? {};
+		const { contextLoop } = this.props.contextLoopContext ?? {};
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,

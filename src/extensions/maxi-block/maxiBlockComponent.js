@@ -144,18 +144,6 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.uniqueIDProcessor(newUniqueID)
-			.then(newID => {
-				console.log('newID');
-				console.log(newID);
-				this.props.attributes.uniqueID = newID; // or this.props.attributes.uniqueID = newID; if you're directly modifying the props
-				dispatch('maxiBlocks/blocks').addBlock(
-					newID,
-					clientId,
-					this.rootSlot
-				);
-			})
-			.catch(err => console.error(err));
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -179,6 +167,21 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const { clientId } = this.props;
+		const { uniqueID } = this.props.attributes;
+		if (uniqueID.includes('temporal'))
+			this.uniqueIDProcessor(uniqueID)
+				.then(newID => {
+					console.log('newID');
+					console.log(newID);
+					this.props.attributes.uniqueID = newID; // or this.props.attributes.uniqueID = newID; if you're directly modifying the props
+					dispatch('maxiBlocks/blocks').addBlock(
+						newID,
+						clientId,
+						this.rootSlot
+					);
+				})
+				.catch(err => console.error(err));
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(

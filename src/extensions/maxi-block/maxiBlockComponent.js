@@ -172,8 +172,6 @@ class MaxiBlockComponent extends Component {
 		if (uniqueID.includes('temporal'))
 			this.uniqueIDProcessor(uniqueID)
 				.then(newID => {
-					console.log('newID');
-					console.log(newID);
 					this.props.attributes.uniqueID = newID; // or this.props.attributes.uniqueID = newID; if you're directly modifying the props
 					dispatch('maxiBlocks/blocks').addBlock(
 						newID,

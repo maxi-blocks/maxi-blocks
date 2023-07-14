@@ -13,6 +13,7 @@ import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
 import { validateOriginValue, getIsValid } from '../../extensions/styles';
 import ResetButton from '../reset-control';
+import validateNumberInput from '../advanced-number-control/utils';
 
 /**
  * External dependencies
@@ -650,11 +651,7 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={!isNumber(yAxis) ? '' : yAxis}
 								onKeyDown={e => {
-									if (
-										e.key !== '-' &&
-										!e.key.match(/^[0-9]+$/)
-									)
-										e.preventDefault();
+									validateNumberInput(e);
 								}}
 								onChange={e => {
 									const newValue = getNewValueFromEmpty(
@@ -739,11 +736,7 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={!isNumber(xAxis) ? '' : xAxis}
 								onKeyDown={e => {
-									if (
-										e.key !== '-' &&
-										!e.key.match(/^[0-9]+$/)
-									)
-										e.preventDefault();
+									validateNumberInput(e);
 								}}
 								onChange={e => {
 									const newValue = getNewValueFromEmpty(

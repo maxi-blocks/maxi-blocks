@@ -13,6 +13,7 @@ import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import ToggleSwitch from '../toggle-switch';
 import ResetButton from '../reset-control';
+import validateNumberInput from './utils';
 
 /**
  * External dependencies
@@ -166,10 +167,6 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	function inpNum(e) {
-		if (e.key !== '-' && !e.key.match(/^[0-9]+$/)) e.preventDefault();
-	}
-
 	return (
 		<>
 			{enableAuto && (
@@ -222,7 +219,7 @@ const AdvancedNumberControl = props => {
 							onChangeValue(result);
 						}}
 						onKeyDown={e => {
-							inpNum(e);
+							validateNumberInput(e);
 							if (
 								e.key === '-' &&
 								(enableUnit ? minValue : min) >= 0

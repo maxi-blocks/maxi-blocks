@@ -21,6 +21,7 @@ import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 import getDCValues from './getDCValues';
 import LoopContext from './loopContext';
+import { linkFields } from './constants';
 
 /**
  * External dependencies
@@ -161,7 +162,7 @@ const withMaxiDC = createHigherOrderComponent(
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
 							type === 'posts' &&
-							['categories', 'tags'].includes(field);
+							linkFields.includes(field);
 
 						if (!newContainsHTML) {
 							newContent = sanitizeDCContent(newContent);

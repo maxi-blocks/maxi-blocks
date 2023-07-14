@@ -6,7 +6,7 @@ const withMaxiContextLoopContext = createHigherOrderComponent(
 		pure(props => (
 			<LoopContext.Consumer>
 				{context => (
-					<WrappedComponent loopContext={context} {...props} />
+					<WrappedComponent contextLoopContext={context} {...props} />
 				)}
 			</LoopContext.Consumer>
 		)),

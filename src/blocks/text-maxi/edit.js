@@ -116,7 +116,7 @@ class edit extends MaxiBlockComponent {
 			containsHtml: dcContainsHTML,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.context?.contextLoop
+			this.props?.contextLoopContext?.contextLoop
 		);
 
 		const className = 'maxi-text-block__content';

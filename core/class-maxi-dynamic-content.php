@@ -159,10 +159,16 @@ class MaxiBlocks_DynamicContent
         'dc-order' => [
             'type' => 'string',
         ],
+        'dc-order-by' => [
+            'type' => 'string',
+        ],
         'dc-accumulator' => [
             'type' => 'number',
         ],
     ];
+
+    private static $order_by_relations =
+        ['by-category', 'by-author', 'by-tag'];
 
     /**
      * Constructor
@@ -384,7 +390,8 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-author' => $dc_author,
-            'dc-order' => $dc_order_by,
+            'dc-order-by' => $dc_order_by,
+            'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
@@ -397,11 +404,14 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_accumulator)) {
             $dc_accumulator = 0;
         }
+        if(empty($dc_order_by)) {
+            $dc_order_by = 'by-date';
+        }
         if (empty($dc_order)) {
             $dc_order = 'desc';
         }
 
-        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical']);
+        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
         if (in_array($dc_type, ['posts', 'pages'])) {
@@ -420,7 +430,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             }
 
             $query = new WP_Query($args);
@@ -443,7 +453,7 @@ class MaxiBlocks_DynamicContent
                 ];
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             }
 
             $query = new WP_Query($args);
@@ -486,7 +496,7 @@ class MaxiBlocks_DynamicContent
             ];
 
             if ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             } elseif ($dc_relation === 'by-id') {
                 $args['include'] = $dc_author ?? $dc_id;
             }
@@ -503,11 +513,24 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $link_status)
+    public function get_field_link($item, $field)
+    {
+        switch ($field) {
+            case 'author':
+                return get_author_posts_url($item);
+            case 'category':
+            case 'post_tag':
+                return get_term_link($item);
+            default:
+                return '';
+        }
+    }
+
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
     {
         return ($link_status)
-            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
-            : $item->name;
+            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
+            : $content;
     }
 
     public function get_post_or_page_content($attributes)
@@ -554,7 +577,12 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $post->post_author);
+            $post_data = $this->get_post_taxonomy_item_content(
+                $post->post_author,
+                get_the_author_meta('display_name', $post->post_author),
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {
@@ -568,7 +596,12 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content = [];
 
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                    $taxonomy_item,
+                    $taxonomy_item->name,
+                    $dc_post_taxonomy_links_status,
+                    $dc_field
+                );
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);
@@ -880,8 +913,22 @@ class MaxiBlocks_DynamicContent
 
     public function order_callback($attributes)
     {
+        $dictionary = [
+            'by-date' => 'desc',
+            'alphabetical' => 'asc',
+        ];
+
         $relation = $attributes['dc-relation'] ?? null;
-        return $relation === 'by-date' ? 'desc' : 'asc';
+
+        if (in_array($relation, self::$order_by_relations)) {
+            if (isset($attributes['dc-order-by'])) {
+                return $dictionary[$attributes['dc-order-by']];
+            }
+
+            return $dictionary['by-date'];
+        }
+
+        return array_key_exists($relation, $dictionary) ? $dictionary[$relation] : null;
     }
 
     /**
@@ -923,20 +970,41 @@ class MaxiBlocks_DynamicContent
         return $result;
     }
 
-    public function get_order_by_args($relation, $order, $accumulator, $dc_type)
+    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id)
     {
-        if ($dc_type === 'users') {
-            $order_by = $relation === 'by-date' ? 'user_registered' : 'display_name';
+        if ($type === 'users') {
+            $order_by_arg = $relation === 'by-date' ? 'user_registered' : 'display_name';
             $limit_key = 'number';
         } else {
-            $order_by = $relation === 'by-date' ? 'date' : 'title';
+            $dictionary = [
+                'by-date' => 'date',
+                'alphabetical' => 'title',
+            ];
+
+
+            if(in_array($relation, self::$order_by_relations)) {
+                $order_by_arg = $dictionary[$order_by];
+            } else {
+                $order_by_arg = $dictionary[$relation];
+            }
+
             $limit_key = 'posts_per_page';
         }
 
-        return [
-            'orderby' => $order_by,
+        $args = [
+            'orderby' => $order_by_arg,
             'order' => $order,
             $limit_key => $accumulator + 1,
         ];
+
+        if($relation === 'by-category') {
+            $args['cat'] = $id;
+        } elseif($relation === 'by-author') {
+            $args['author'] = $id;
+        } elseif($relation === 'by-tag') {
+            $args['tag_id'] = $id;
+        }
+
+        return $args;
     }
 }

@@ -422,9 +422,11 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix} {${sentences?.join(
-					' '
-				)}}`;
+				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix}${
+					level === 'h3' && isBackend
+						? `, ${prefix} .maxi-${style} ${level}.comment-reply-title`
+						: ''
+				} {${sentences?.join(' ')}}`;
 				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type {${sentences?.join(
 					' '
 				)}}`;
@@ -524,7 +526,11 @@ const getWPNativeStyles = ({
 
 		// Headings color
 		headings.forEach(heading => {
-			response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix} {
+			response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix}${
+				isBackend && heading === 'h3'
+					? `,${prefix} .maxi-${style} ${heading}.comment-reply-title`
+					: ''
+			} {
 				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
 			}`;
 		});

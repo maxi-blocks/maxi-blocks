@@ -234,7 +234,11 @@ const ColorControl = props => {
 			paletteSCStatus,
 			paletteColor,
 			paletteOpacity: opacity,
-			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
+			...(color && {
+				color: `rgba(${getColorRGBAParts(color).color},${
+					opacity || 1
+				})`,
+			}),
 			isReset: true,
 		});
 	};

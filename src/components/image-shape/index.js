@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import {
 	AdvancedNumberControl,
-	ResponsiveTabsControl,
 	SelectControl,
 	ToggleSwitch,
 } from '../../components';
@@ -146,115 +145,78 @@ const ImageShape = props => {
 					icon={icon}
 				/>
 			)}
-			{icon && (
+			{icon && breakpoint === 'general' && (
 				<>
-					{breakpoint === 'general' && (
-						<>
-							{!disableImageRatio && (
-								<SelectControl
-									label={__('Image ratio', 'maxi-blocks')}
-									value={shapeRatio || ''}
-									options={[
-										{
-											label: __('Fit', 'maxi-blocks'),
-											value: 'meet',
-										},
-										{
-											label: __('Fill', 'maxi-blocks'),
-											value: 'slice',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											SVGElement: setSVGRatio(icon, val),
-										})
-									}
-								/>
-							)}
-							{!disableImagePosition && (
-								<SelectControl
-									label={__('Image position', 'maxi-blocks')}
-									value={shapePosition || 'xMidYMid'}
-									options={[
-										{
-											label: __(
-												'Center center',
-												'maxi-blocks'
-											),
-											value: 'xMidYMid',
-										},
-										{
-											label: __(
-												'Left center',
-												'maxi-blocks'
-											),
-											value: 'xMinYMid',
-										},
-										{
-											label: __(
-												'Right center',
-												'maxi-blocks'
-											),
-											value: 'xMaxYMid',
-										},
-										{
-											label: __(
-												'Center top',
-												'maxi-blocks'
-											),
-											value: 'xMidYMax',
-										},
-										{
-											label: __(
-												'Center bottom',
-												'maxi-blocks'
-											),
-											value: 'xMidYMin',
-										},
-										{
-											label: __(
-												'Left bottom',
-												'maxi-blocks'
-											),
-											value: 'xMinYMin',
-										},
-										{
-											label: __(
-												'Right bottom',
-												'maxi-blocks'
-											),
-											value: 'xMaxYMin',
-										},
-										{
-											label: __(
-												'Left top',
-												'maxi-blocks'
-											),
-											value: 'xMinYMax',
-										},
-										{
-											label: __(
-												'Right top',
-												'maxi-blocks'
-											),
-											value: 'xMaxYMax',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											SVGElement: setSVGPosition(
-												icon,
-												val
-											),
-										})
-									}
-								/>
-							)}
-						</>
+					{!disableImageRatio && (
+						<SelectControl
+							label={__('Image ratio', 'maxi-blocks')}
+							value={shapeRatio || ''}
+							options={[
+								{
+									label: __('Fit', 'maxi-blocks'),
+									value: 'meet',
+								},
+								{
+									label: __('Fill', 'maxi-blocks'),
+									value: 'slice',
+								},
+							]}
+							onChange={val =>
+								onChange({
+									SVGElement: setSVGRatio(icon, val),
+								})
+							}
+						/>
 					)}
-					<ResponsiveTabsControl breakpoint={breakpoint}>
-						<ImageShapeResponsiveSettings {...props} />
-					</ResponsiveTabsControl>
+					{!disableImagePosition && (
+						<SelectControl
+							label={__('Image position', 'maxi-blocks')}
+							value={shapePosition || 'xMidYMid'}
+							options={[
+								{
+									label: __('Center center', 'maxi-blocks'),
+									value: 'xMidYMid',
+								},
+								{
+									label: __('Left center', 'maxi-blocks'),
+									value: 'xMinYMid',
+								},
+								{
+									label: __('Right center', 'maxi-blocks'),
+									value: 'xMaxYMid',
+								},
+								{
+									label: __('Center top', 'maxi-blocks'),
+									value: 'xMidYMax',
+								},
+								{
+									label: __('Center bottom', 'maxi-blocks'),
+									value: 'xMidYMin',
+								},
+								{
+									label: __('Left bottom', 'maxi-blocks'),
+									value: 'xMinYMin',
+								},
+								{
+									label: __('Right bottom', 'maxi-blocks'),
+									value: 'xMaxYMin',
+								},
+								{
+									label: __('Left top', 'maxi-blocks'),
+									value: 'xMinYMax',
+								},
+								{
+									label: __('Right top', 'maxi-blocks'),
+									value: 'xMaxYMax',
+								},
+							]}
+							onChange={val =>
+								onChange({
+									SVGElement: setSVGPosition(icon, val),
+								})
+							}
+						/>
+					)}
 				</>
 			)}
 		</>

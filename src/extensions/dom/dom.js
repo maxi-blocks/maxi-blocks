@@ -279,7 +279,9 @@ wp.domReady(() => {
 		if (
 			styleCard &&
 			styleCards &&
-			styleCard?.value.gutenberg_blocks_status !== false
+			(styleCard.key === 'sc_maxi'
+				? styleCard?.value.gutenberg_blocks_status !== false
+				: !('gutenberg_blocks_status' in styleCard.value))
 		) {
 			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
 				'maxiBlocks/style-cards'
@@ -312,7 +314,9 @@ wp.domReady(() => {
 					[
 						'_maxi_blocks_style_card_styles',
 						'_maxi_blocks_style_card_styles_preview',
-					].some(key => !SCStyles[key].includes('maxi-block--use-sc'))
+					].some(
+						key => !SCStyles[key]?.includes('maxi-block--use-sc')
+					)
 				) {
 					await saveSCStyles(true);
 

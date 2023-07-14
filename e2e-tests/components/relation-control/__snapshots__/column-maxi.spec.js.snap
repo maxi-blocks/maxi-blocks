@@ -17,54 +17,6 @@ Array [
           "width": "calc(50% - 0px)",
         },
       },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
     },
     "effects": Object {
       "disableTransition": false,

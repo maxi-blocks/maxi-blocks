@@ -161,8 +161,8 @@ const styleGenerator = (
 		});
 	});
 
-	console.log('styleGenerator response');
-	console.log(response);
+	// console.log('styleGenerator response');
+	// console.log(response);
 
 	return response;
 };

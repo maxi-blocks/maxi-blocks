@@ -17,42 +17,6 @@ Array [
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
         },
       },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
     },
     "effects": Object {
       "disableTransition": false,
@@ -92,42 +56,6 @@ Array [
     "css": Object {
       "general": Object {
         "breakpoint": null,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
         "styles": Object {
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
         },
@@ -222,96 +150,6 @@ Array [
     "css": Object {
       "general": Object {
         "breakpoint": null,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
         "styles": Object {
           "border-bottom-left-radius": "11px",
           "border-bottom-right-radius": "11px",
@@ -691,30 +529,6 @@ Array [
           "padding-right": "2px",
           "padding-top": "2px",
         },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {},
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {},
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {},
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {},
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {},
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {},
       },
     },
     "effects": Object {

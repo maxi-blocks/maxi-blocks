@@ -22,21 +22,23 @@ const getIBStylesObj = ({
 		prefix
 	);
 
-	return styleCleaner(
-		selectedSettings?.helper({
-			obj: newGroupAttributes,
-			isIB: true,
-			prefix,
-			blockStyle: blockAttributes.blockStyle,
-			breakpoint,
-			blockAttributes: {
-				...blockAttributes,
-				...attributes,
-			},
-			target: selectedSettings?.target,
-			clientId,
-		})
-	);
+	return styleCleaner({
+		target: {
+			result: selectedSettings?.helper({
+				obj: newGroupAttributes,
+				isIB: true,
+				prefix,
+				blockStyle: blockAttributes.blockStyle,
+				breakpoint,
+				blockAttributes: {
+					...blockAttributes,
+					...attributes,
+				},
+				target: selectedSettings?.target,
+				clientId,
+			}),
+		},
+	}).target.result;
 };
 
 export default getIBStylesObj;

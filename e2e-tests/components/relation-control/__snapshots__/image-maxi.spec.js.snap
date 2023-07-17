@@ -15,12 +15,6 @@ Array [
           "justify-content": "flex-end",
         },
       },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "justify-content": "flex-end",
-        },
-      },
     },
     "effects": Object {
       "disableTransition": true,
@@ -40,4 +34,4 @@ Array [
 ]
 `;
 
-exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}}"`;
+exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}"`;

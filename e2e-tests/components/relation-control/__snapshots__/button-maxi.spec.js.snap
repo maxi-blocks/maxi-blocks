@@ -21,42 +21,6 @@ Array [
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
         },
       },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
     },
     "effects": Object {
       "disableTransition": false,
@@ -100,42 +64,6 @@ Array [
     "css": Object {
       "general": Object {
         "breakpoint": null,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
         "styles": Object {
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
         },
@@ -256,96 +184,6 @@ Array [
     "css": Object {
       "general": Object {
         "breakpoint": null,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "border-bottom-left-radius": "11px",
-          "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2px",
-          "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2px",
-          "border-right-width": "2px",
-          "border-style": "solid",
-          "border-top-left-radius": "11px",
-          "border-top-right-radius": "11px",
-          "border-top-width": "2px",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
         "styles": Object {
           "border-bottom-left-radius": "11px",
           "border-bottom-right-radius": "11px",
@@ -759,39 +597,6 @@ Array [
           "padding-top": "2px",
         },
       },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {},
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {},
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {},
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "margin-bottom": "1px",
-          "margin-left": "1px",
-          "margin-right": "1px",
-          "margin-top": "1px",
-          "padding-bottom": "2px",
-          "padding-left": "2px",
-          "padding-right": "2px",
-          "padding-top": "2px",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {},
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {},
-      },
     },
     "effects": Object {
       "disableTransition": false,
@@ -811,7 +616,7 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}}"`;
+exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}"`;
 
 exports[`Button Maxi hover simple actions Button margin/padding 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, margin-top 0.3s ease 0s, margin-right 0.3s ease 0s, margin-bottom 0.3s ease 0s, margin-left 0.3s ease 0s, padding-top 0.3s ease 0s, padding-right 0.3s ease 0s, padding-bottom 0.3s ease 0s, padding-left 0.3s ease 0s;}"`;
 
@@ -940,53 +745,6 @@ Array [
           "writing-mode": "vertical-rl",
         },
       },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-          "direction": "rtl",
-          "font-size": "24px",
-          "font-style": "italic",
-          "font-weight": "",
-          "letter-spacing": "15px",
-          "line-height": "60%",
-          "text-decoration": "underline",
-          "text-indent": "20px",
-          "text-orientation": "sideways",
-          "text-transform": "capitalize",
-          "writing-mode": "vertical-rl",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {
-          "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
-        },
-      },
     },
     "effects": Object {
       "disableTransition": false,
@@ -1008,7 +766,7 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (min-width: 1922px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
+exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
 
 exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s, font-size 0.3s ease 0s, line-height 0.3s ease 0s, letter-spacing 0.3s ease 0s, font-weight 0.3s ease 0s, text-transform 0.3s ease 0s, font-style 0.3s ease 0s, text-decoration 0.3s ease 0s, text-indent 0.3s ease 0s, writing-mode 0.3s ease 0s, text-orientation 0.3s ease 0s, direction 0.3s ease 0s;}"`;
 

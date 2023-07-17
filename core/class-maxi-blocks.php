@@ -165,17 +165,18 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 // Look for all elements
                 $elements = $xpath->query('//*');
 
-                foreach ($elements as $element) {
-                    $classes = $element->getAttribute('class');
+                // Pick the first element
+                $element = $elements[0];
 
-                    if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
-                        if(!str_contains($classes, 'maxi-block--use-sc')) {
-                            $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
-                        }
+                $classes = $element->getAttribute('class');
 
-                        if(!isset($classes) || empty($classes)) {
-                            $element->setAttribute('class', 'maxi-block--use-sc');
-                        }
+                if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
+                    if(!str_contains($classes, 'maxi-block--use-sc')) {
+                        $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
+                    }
+
+                    if(!isset($classes) || empty($classes)) {
+                        $element->setAttribute('class', 'maxi-block--use-sc');
                     }
                 }
 

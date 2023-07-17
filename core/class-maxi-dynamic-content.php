@@ -170,6 +170,14 @@ class MaxiBlocks_DynamicContent
     private static $order_by_relations =
         ['by-category', 'by-author', 'by-tag'];
 
+    private static $link_only_blocks = [
+        'group-maxi',
+        'column-maxi',
+        'row-maxi',
+        'slide-maxi',
+        'pane-maxi',
+    ];
+
     /**
      * Constructor
      */
@@ -189,6 +197,36 @@ class MaxiBlocks_DynamicContent
             'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/image-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/group-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/column-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/row-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/slide-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/pane-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
@@ -232,7 +270,9 @@ class MaxiBlocks_DynamicContent
 
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
 
-        if ($block_name !== 'image-maxi') {
+        if (in_array($block_name, self::$link_only_blocks)) {
+            return $content;
+        } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
             $content = self::render_dc_image($attributes, $content);
@@ -513,11 +553,24 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $link_status)
+    public function get_field_link($item, $field)
+    {
+        switch ($field) {
+            case 'author':
+                return get_author_posts_url($item);
+            case 'categories':
+            case 'tags':
+                return get_term_link($item);
+            default:
+                return '';
+        }
+    }
+
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
     {
         return ($link_status)
-            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
-            : $item->name;
+            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
+            : $content;
     }
 
     public function get_post_or_page_content($attributes)
@@ -564,7 +617,12 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $post->post_author);
+            $post_data = $this->get_post_taxonomy_item_content(
+                $post->post_author,
+                get_the_author_meta('display_name', $post->post_author),
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {
@@ -578,7 +636,12 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content = [];
 
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                    $taxonomy_item,
+                    $taxonomy_item->name,
+                    $dc_post_taxonomy_links_status,
+                    $dc_field
+                );
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);

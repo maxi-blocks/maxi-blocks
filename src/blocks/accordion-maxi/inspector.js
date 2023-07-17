@@ -241,6 +241,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'accordion',
+									}),
 									...inspectorTabs.scrollEffects({
 										props: {
 											...props,

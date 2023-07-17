@@ -14,7 +14,7 @@ const uniqueIDGenerator = async blockName => {
 	if (!blockName) return null;
 	const modifiedBlockName = blockName.replace('maxi-blocks/', '');
 	const newID = await generateUniqueID(modifiedBlockName);
-	return `${newID}-u`;
+	return `${newID}`;
 };
 
 export default uniqueIDGenerator;

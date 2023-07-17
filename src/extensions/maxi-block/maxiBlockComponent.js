@@ -172,7 +172,6 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = this.props.attributes;
 		if (!uniqueID.endsWith('-u')) {
 			const oldID = uniqueID;
-			console.log('oldID', oldID);
 			this.uniqueIDProcessor(uniqueID)
 				.then(newID => {
 					this.props.attributes.uniqueID = newID;
@@ -181,10 +180,7 @@ class MaxiBlockComponent extends Component {
 						clientId,
 						this.rootSlot
 					);
-					// this.uniqueIDProcessor(oldID, true).then(response => {
-					// 	console.log('response on remove');
-					// 	console.log(response);
-					// });
+					this.uniqueIDProcessor(oldID, true);
 				})
 				.catch(err => console.error(err));
 		}
@@ -462,6 +458,9 @@ class MaxiBlockComponent extends Component {
 
 			// CSSCache
 			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+
+			// DB
+			this.uniqueIDProcessor(uniqueID, true);
 		}
 
 		if (this.maxiBlockWillUnmount)

@@ -8,6 +8,7 @@ import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import { WithLink } from '../../extensions/save/utils';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Save
@@ -15,6 +16,8 @@ import { WithLink } from '../../extensions/save/utils';
 const save = props => {
 	const { attributes } = props;
 	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
+	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
+
 	const name = 'maxi-blocks/pane-maxi';
 
 	return (
@@ -28,7 +31,10 @@ const save = props => {
 		>
 			<div className='maxi-pane-block__header'>
 				<div className='maxi-pane-block__header-content'>
-					<WithLink linkSettings={linkSettings}>
+					<WithLink
+						linkSettings={linkSettings ?? {}}
+						dynamicContent={dynamicContent}
+					>
 						<RichText.Content
 							className='maxi-pane-block__title'
 							value={title}

@@ -20,7 +20,7 @@ import {
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import { getDCValues } from '../../extensions/DC';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -98,7 +98,7 @@ class edit extends MaxiBlockComponent {
 			field: dcField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.context?.contextLoop
+			this.props.contextLoopContext?.contextLoop
 		);
 		const { scValues } = this.state;
 
@@ -209,4 +209,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

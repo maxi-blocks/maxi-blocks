@@ -796,16 +796,11 @@ if (!class_exists('MaxiBlocks_API')):
         public function remove_maxi_blocks_unique_id($request)
         {
             global $wpdb;
-
             // $block_name = $data['blockName'];
             $unique_id = $request->get_param('unique_id');
 
             if(!$unique_id || $unique_id === '') {
-                return new WP_Error(
-                    'no_unique_id',
-                    'No unique id to remove provided',
-                    'no_unique_id'
-                );
+                return false;
             }
 
 
@@ -830,6 +825,7 @@ if (!class_exists('MaxiBlocks_API')):
             } else {
                 $wpdb->query("ROLLBACK");
             }
+            return true;
 
         }
     }

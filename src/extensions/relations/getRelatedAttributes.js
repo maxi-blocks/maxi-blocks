@@ -52,6 +52,9 @@ const getRelatedAttributes = ({
 		const result = {};
 		const propsToCheck = alternativeProps ?? props;
 
+		const shouldAddAttribute = key =>
+			!isNil(propsToCheck[key]) && isNil(attrs[key]);
+
 		Object.keys(attrs).forEach(key => {
 			const breakpoint = getBreakpointFromAttribute(key);
 
@@ -62,7 +65,7 @@ const getRelatedAttributes = ({
 					IBAttributes[key.replace('-xxl', '-general')]
 				) {
 					result[key] = IBAttributes[key.replace('-xxl', '-general')];
-				} else if (propsToCheck[key]) {
+				} else if (shouldAddAttribute(key)) {
 					result[key] = propsToCheck[key];
 				}
 			};
@@ -97,20 +100,15 @@ const getRelatedAttributes = ({
 					'color'
 				);
 
-				if (propsToCheck[paletteStatusKey] && !attrs[paletteStatusKey])
-					result[paletteStatusKey] = propsToCheck[paletteStatusKey];
-
-				if (propsToCheck[paletteColorKey] && !attrs[paletteColorKey])
-					result[paletteColorKey] = propsToCheck[paletteColorKey];
-
-				if (
-					propsToCheck[paletteOpacityKey] &&
-					!attrs[paletteOpacityKey]
-				)
-					result[paletteOpacityKey] = propsToCheck[paletteOpacityKey];
-
-				if (propsToCheck[colorKey] && !attrs[colorKey])
-					result[colorKey] = propsToCheck[colorKey];
+				[
+					paletteStatusKey,
+					paletteColorKey,
+					paletteOpacityKey,
+					colorKey,
+				].forEach(key => {
+					if (shouldAddAttribute(key))
+						result[key] = propsToCheck[key];
+				});
 			}
 		});
 

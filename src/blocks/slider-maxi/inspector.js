@@ -209,6 +209,10 @@ const Inspector = props => {
 										selectors: customCss.selectors,
 										categories: customCss.categories,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'slider',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

@@ -62,7 +62,8 @@ const getTempAttributes = (
 			if (sid && sid === 'bgl') {
 				if ('background-layers' in cleanAttributesObject) {
 					if (!('background-layers' in tempAttributes))
-						tempAttributes['background-layers'] = [];
+						tempAttributes['background-layers'] =
+							cleanAttributesObject['background-layers'];
 
 					cleanAttributesObject['background-layers'].forEach(
 						(layer, i) => {

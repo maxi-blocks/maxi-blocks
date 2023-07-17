@@ -135,24 +135,26 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				!isEmpty(attributes.linkSettings?.url) ||
 				(select('core/block-editor').getBlockName(childClientId) ===
 					'maxi-blocks/text-maxi' &&
-					attributes.content.includes('<a '))
+					(attributes.content.includes('<a ') ||
+						attributes['dc-content']?.includes('<a ')))
 			) {
 				childHasLink = true;
 				break;
 			}
 		}
+		const attributes = extraProps?.attributes || {};
 		setTimeout(() => {
 			if (childHasLink) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps?.attributes?.linkSettings,
+						...attributes?.linkSettings,
 						disabled: true,
 					},
 				});
-			} else if (extraProps?.attributes?.linkSettings.disabled) {
+			} else if (attributes?.linkSettings.disabled) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps.attributes.linkSettings,
+						...attributes.linkSettings,
 						disabled: false,
 					},
 				});

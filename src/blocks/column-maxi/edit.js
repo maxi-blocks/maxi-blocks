@@ -20,7 +20,10 @@ import {
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
-import { withMaxiContextLoop } from '../../extensions/DC';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
@@ -287,4 +290,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(withMaxiProps(edit));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

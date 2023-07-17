@@ -52,7 +52,6 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
-import { LoopContext } from '../DC';
 
 /**
  * External dependencies
@@ -396,7 +395,8 @@ class MaxiBlockComponent extends Component {
 		if (!shouldDisplayStyles)
 			this.displayStyles(
 				this.props.deviceType !== prevProps.deviceType ||
-					this.props.baseBreakpoint !== prevProps.baseBreakpoint
+					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint)
 			);
 
 		if (this.maxiBlockDidUpdate)
@@ -708,7 +708,7 @@ class MaxiBlockComponent extends Component {
 			relations: relationsRaw,
 		} = this.props.attributes;
 
-		const contextLoop = this.context?.contextLoop;
+		const { contextLoop } = this.props.contextLoopContext ?? {};
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -903,7 +903,5 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 }
-
-MaxiBlockComponent.contextType = LoopContext;
 
 export default MaxiBlockComponent;

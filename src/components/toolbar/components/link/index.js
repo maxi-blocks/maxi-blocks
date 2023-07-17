@@ -6,6 +6,7 @@
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 import { select } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,6 +15,7 @@ import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToggleSwitch from '../../../toggle-switch';
+import { LoopContext } from '../../../../extensions/DC';
 
 /**
  * External dependencies
@@ -25,6 +27,14 @@ import { isNil, isEmpty } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
+
+const DC_LINK_BLOCKS = [
+	'maxi-blocks/group-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/slide-maxi',
+	'maxi-blocks/pane-maxi',
+];
 
 /**
  * Link
@@ -39,6 +49,10 @@ const Link = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 	} = props;
+
+	const { contextLoop } = useContext(LoopContext) ?? {};
+	const { 'cl-status': clStatus } = contextLoop ?? {};
+	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
 
 	if (
 		(blockName === 'maxi-blocks/divider-maxi' ||
@@ -92,7 +106,7 @@ const Link = props => {
 			>
 				{!childHasLink && (
 					<>
-						{dcStatus && (
+						{(dcStatus || showDCLink) && (
 							<ToggleSwitch
 								label={__(
 									'Use dynamic content link',
@@ -102,6 +116,10 @@ const Link = props => {
 								onChange={value => {
 									onChange(linkSettings, {
 										'dc-link-status': value,
+										...(showDCLink && {
+											// If DC link is enabled in blocks without DC, that should enable DC for the block
+											'dc-status': value,
+										}),
 									});
 								}}
 							/>

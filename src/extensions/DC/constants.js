@@ -26,6 +26,10 @@ export const typeOptions = {
 	row: generalTypeOptions,
 	column: generalTypeOptions,
 	group: generalTypeOptions,
+	pane: generalTypeOptions,
+	slide: generalTypeOptions,
+	accordion: generalTypeOptions,
+	slider: generalTypeOptions,
 };
 
 export const ACFTypeOptions = generalTypeOptions.filter(
@@ -90,6 +94,10 @@ export const relationOptions = {
 	row: generalRelationOptions,
 	column: generalRelationOptions,
 	group: generalRelationOptions,
+	pane: generalRelationOptions,
+	slide: generalRelationOptions,
+	accordion: generalRelationOptions,
+	slider: generalRelationOptions,
 };
 
 /**

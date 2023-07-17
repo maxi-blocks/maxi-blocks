@@ -8,7 +8,7 @@ const removeCustomLabelNumber = customLabelToReplace =>
 
 const getCustomLabel = (previousCustomLabel, uniqueID) => {
 	const customLabelFromUniqueID = capitalize(
-		uniqueID?.replace('-maxi-', '_').replace('-temporal', '')
+		uniqueID?.replace('-maxi-', '_').replace('-u', '')
 	);
 	if (
 		isEmpty(previousCustomLabel) ||

@@ -70,7 +70,8 @@ const Link = props => {
 					!isEmpty(attributes.linkSettings?.url) ||
 					(select('core/block-editor').getBlockName(child) ===
 						'maxi-blocks/text-maxi' &&
-						attributes.content.includes('<a '))
+						(attributes.content.includes('<a ') ||
+							attributes['dc-content']?.includes('<a ')))
 				)
 					childHasLink = true;
 			});

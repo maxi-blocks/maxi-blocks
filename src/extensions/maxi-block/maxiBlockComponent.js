@@ -49,6 +49,7 @@ import {
 	getClientIdFromUniqueId,
 	uniqueIDGenerator,
 	temporalIDGenerator,
+	uniqueIDRemover,
 } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
@@ -169,17 +170,24 @@ class MaxiBlockComponent extends Component {
 	componentDidMount() {
 		const { clientId } = this.props;
 		const { uniqueID } = this.props.attributes;
-		if (uniqueID.includes('temporal'))
+		if (!uniqueID.endsWith('-u')) {
+			const oldID = uniqueID;
+			console.log('oldID', oldID);
 			this.uniqueIDProcessor(uniqueID)
 				.then(newID => {
-					this.props.attributes.uniqueID = newID; // or this.props.attributes.uniqueID = newID; if you're directly modifying the props
+					this.props.attributes.uniqueID = newID;
 					dispatch('maxiBlocks/blocks').addBlock(
 						newID,
 						clientId,
 						this.rootSlot
 					);
+					// this.uniqueIDProcessor(oldID, true).then(response => {
+					// 	console.log('response on remove');
+					// 	console.log(response);
+					// });
 				})
 				.catch(err => console.error(err));
+		}
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -700,8 +708,13 @@ class MaxiBlockComponent extends Component {
 		return idToCheck;
 	}
 
-	async uniqueIDProcessor(idToCheck) {
+	async uniqueIDProcessor(idToCheck, remove = false) {
 		const { name: blockName } = this.props;
+
+		if (remove) {
+			await uniqueIDRemover(idToCheck);
+			return idToCheck;
+		}
 
 		uniqueIDGenerator(blockName).then(newUniqueID => {
 			propagateNewUniqueID(

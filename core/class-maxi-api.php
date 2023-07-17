@@ -229,6 +229,20 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/unique-id/remove/(?P<unique_id>[a-z0-9-]+)$', [
+                'methods' => 'GET',
+                'callback' => [$this, 'remove_maxi_blocks_unique_id'],
+                'args' => [
+                    'unique_id' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return true;
+                },
+            ]);
         }
 
         /**
@@ -764,7 +778,7 @@ if (!class_exists('MaxiBlocks_API')):
             $new_id = $wpdb->insert_id;
 
             // Create the final block_style_id
-            $block_style_id = $block_name . '-' . $new_id;
+            $block_style_id = $block_name . '-' . $new_id . '-u';
 
             // Update the newly inserted row with the final block_style_id
             $wpdb->update(
@@ -776,6 +790,46 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             return $block_style_id;
+
+        }
+
+        public function remove_maxi_blocks_unique_id($request)
+        {
+            global $wpdb;
+
+            // $block_name = $data['blockName'];
+            $unique_id = $request->get_param('unique_id');
+
+            if(!$unique_id || $unique_id === '') {
+                return new WP_Error(
+                    'no_unique_id',
+                    'No unique id to remove provided',
+                    'no_unique_id'
+                );
+            }
+
+
+            $db_custom_prefix = 'maxi_blocks_';
+            $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles_blocks';
+            $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data_blocks';
+
+            $wpdb->query("START TRANSACTION");
+
+            $delete_css_table = $wpdb->delete(
+                $db_css_table_name,
+                array('block_style_id' => $unique_id)
+            );
+
+            $delete_custom_data_table = $wpdb->delete(
+                $db_custom_data_table_name,
+                array('block_style_id' => $unique_id)
+            );
+
+            if ($delete_css_table !== false && $delete_custom_data_table !== false) {
+                $wpdb->query("COMMIT");
+            } else {
+                $wpdb->query("ROLLBACK");
+            }
 
         }
     }

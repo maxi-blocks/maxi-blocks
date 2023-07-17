@@ -8,3 +8,4 @@ export { default as handleOnReset } from './handleOnReset';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';
 export { default as generateStyleID } from './generateStyleID';
 export { default as temporalIDGenerator } from './temporalIDGenerator';
+export { default as uniqueIDRemover } from './uniqueIDRemover';

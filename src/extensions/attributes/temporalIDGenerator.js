@@ -7,7 +7,7 @@ import { getIsSiteEditor, getTemplatePartSlug } from '../fse';
 const generateTemporalID = (blockName, diff = 1) => {
 	const newID = `${blockName
 		.replace('maxi-blocks/', '')
-		.replace(/[0-9]/g, '')}-${diff}-temporal`;
+		.replace(/[0-9]/g, '')}-${diff}`;
 	if (getIsUniqueIDRepeated(newID, 0))
 		return generateTemporalID(blockName, diff + 1);
 	return newID;

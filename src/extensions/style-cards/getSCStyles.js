@@ -402,7 +402,9 @@ const getWPNativeStyles = ({
 	isBackend,
 }) => {
 	let response = '';
-	const nativeWPPrefix = isBackend ? 'wp-block' : 'maxi-block--use-sc';
+	const nativeWPPrefix = isBackend
+		? 'wp-block[data-type^="core/"]'
+		: 'maxi-block--use-sc';
 
 	const addStylesByBreakpoint = breakpoint => {
 		const breakpointLevelSentences = getSentencesByBreakpoint({
@@ -422,14 +424,13 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix}${
-					level === 'h3' && isBackend
-						? `, ${prefix} .maxi-${style} ${level}.comment-reply-title`
+				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix} {
+					${sentences?.join(' ')}}`;
+				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix}a:first-of-type${
+					level === 'p'
+						? `, ${prefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type`
 						: ''
 				} {${sentences?.join(' ')}}`;
-				response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type {${sentences?.join(
-					' '
-				)}}`;
 
 				// In case the level is paragraph, we add the same styles for lists
 				if (level === 'p')
@@ -526,11 +527,7 @@ const getWPNativeStyles = ({
 
 		// Headings color
 		headings.forEach(heading => {
-			response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix}${
-				isBackend && heading === 'h3'
-					? `,${prefix} .maxi-${style} ${heading}.comment-reply-title`
-					: ''
-			} {
+			response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
 				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
 			}`;
 		});

@@ -129,8 +129,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		if (
 			!isEqual(currentSC, savedSC) ||
-			styleCards[keySC].gutenberg_blocks_status !==
-				savedStyleCards[keySC].gutenberg_blocks_status
+			styleCards[keySC]?.gutenberg_blocks_status !==
+				savedStyleCards[keySC]?.gutenberg_blocks_status
 		)
 			return true;
 

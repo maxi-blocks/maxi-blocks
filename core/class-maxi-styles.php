@@ -1480,7 +1480,7 @@ class MaxiBlocks_Styles
         }
 
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
-        write_log('custom_meta');
+        write_log('custom_meta for '.$block_name);
         write_log($custom_meta);
         write_log('custom_meta_json');
         write_log(json_encode($custom_meta));
@@ -1593,22 +1593,21 @@ class MaxiBlocks_Styles
      * on the block type. If the block type is not supported, the function returns an empty array.
      *
      * @param string $block_name The name of the block, e.g., 'maxi-blocks/number-counter-maxi'.
-     * @param array $props An associative array of properties for the block.
+     * @param array $attributes An associative array of attributes for the block.
      * @return array An array containing the custom data from the block.
      */
-    public function get_maxi_custom_data_from_block($block_name, $props)
+    public function get_maxi_custom_data_from_block($block_name, $attributes)
     {
         // Define the block types and their corresponding attribute groups
         $block_types = [
-            'maxi-blocks/number-counter-maxi' => 'numberCounter',
             'maxi-blocks/accordion-maxi' => 'accordion',
+            'maxi-blocks/container-maxi' => 'container',
             'maxi-blocks/map-maxi' => 'map',
-            'maxi-blocks/video-maxi' => 'video',
+            'maxi-blocks/number-counter-maxi' => 'numberCounter',
+            'maxi-blocks/search-maxi' => 'search',
             'maxi-blocks/slider-maxi' => 'slider',
+            'maxi-blocks/video-maxi' => 'video',
         ];
-
-        // Get the unique ID from props
-        $unique_id = $props['uniqueID'];
 
         // Iterate over the block types array
         foreach ($block_types as $block_type => $attr_group) {
@@ -1616,13 +1615,78 @@ class MaxiBlocks_Styles
             if ($block_name === $block_type) {
                 if($attr_group === 'accordion') {
                     write_log('ACCORDION PANE');
-                    write_log(get_group_attributes($props, 'pane'));
+                    write_log(get_group_attributes($attributes, 'pane'));
+                }
+                switch ($attr_group) {
+                    case 'accordion':
+                        $pane_icon = $attributes['icon-content'] ?? null;
+                        $pane_icon_active = $attributes['active-icon-content'] ?? null;
+                        $accordion_layout = $attributes['accordionLayout'] ?? null;
+                        $auto_pane_close = $attributes['autoPaneClose'] ?? null;
+                        $is_collapsible = $attributes['isCollapsible'] ?? null;
+                        $animation_duration = $attributes['animationDuration'] ?? null;
+
+                        $unique_custom_data = [
+                            'paneIcon' => $pane_icon,
+                            'paneIconActive' => $pane_icon_active,
+                            'accordionLayout' => $accordion_layout,
+                            'autoPaneClose' => $auto_pane_close,
+                            'isCollapsible' => $is_collapsible,
+                            'animationDuration' => $animation_duration,
+                        ];
+
+                        break;
+                    case 'container':
+                        $shape_divider_top_status = $attributes['shape-divider-top-status'] ?? null;
+                        $shape_divider_bottom_status = $attributes['shape-divider-bottom-status'] ?? null;
+                        $shape_status = $shape_divider_top_status ?? $shape_divider_bottom_status;
+
+                        $unique_custom_data = $shape_status ? get_group_attributes($attributes, 'shapeDivider') : [];
+
+                        break;
+                    case 'map':
+                        $unique_custom_data = get_group_attributes($attributes, [
+                            'mapInteraction',
+                            'mapMarker',
+                            'mapPopup',
+                            'mapPopupText',
+                        ]);
+
+                        break;
+                    case 'search':
+                        $close_icon_prefix = 'close-';
+                        $button_icon_content = $attributes['icon-content'] ?? null;
+                        $button_close_icon_content = $attributes[$close_icon_prefix . 'icon-content'] ?? null;
+                        $button_content = $attributes['buttonContent'] ?? null;
+                        $button_content_close = $attributes['buttonContentClose'] ?? null;
+                        $button_skin = $attributes['buttonSkin'] ?? null;
+                        $icon_reveal_action = $attributes['iconRevealAction'] ?? null;
+                        $skin = $attributes['skin'] ?? null;
+                        $unique_custom_data = [
+                            'icon-content' => $button_icon_content,
+                            $close_icon_prefix . 'icon-content' => $button_close_icon_content,
+                            'buttonContent' => $button_content,
+                            'buttonContentClose' => $button_content_close,
+                            'buttonSkin' => $button_skin,
+                            'iconRevealAction' => $icon_reveal_action,
+                            'skin' => $skin,
+                        ];
+
+                        break;
+                    case 'slider':
+                        $unique_custom_data = ['slider'=> true];
+
+                        break;
+                    default:
+                        $unique_custom_data = [];
+                        break;
                 }
                 // Construct and return the response array
                 return
                    array_merge(
-                       get_group_attributes($props, $attr_group),
-                       ['breakpoints' => $this->get_breakpoints($props)]
+                       get_group_attributes($attributes, $attr_group),
+                       $unique_custom_data,
+                       ['breakpoints' => $this->get_breakpoints($attributes)]
                    );
             }
         }

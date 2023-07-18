@@ -2,7 +2,7 @@
 
 function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 {
-    $background = $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object(array_merge(
+    $background = isset($props[$prefix . 'icon-background-active-media-general']) && $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object(array_merge(
         get_group_attributes(
             $props,
             ['icon', 'background', 'iconBackgroundColor'],
@@ -25,7 +25,7 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 
     $response = [
         'background' => $background,
-        'gradient' => $props[$prefix . 'icon-background-active-media-general'] === 'gradient' ? get_gradient_background_object(array_merge(
+        'gradient' =>isset($props[$prefix . 'icon-background-active-media-general']) && $props[$prefix . 'icon-background-active-media-general'] === 'gradient' ? get_gradient_background_object(array_merge(
             get_group_attributes(
                 $props,
                 ['icon', 'iconBackground', 'iconBackgroundGradient'],

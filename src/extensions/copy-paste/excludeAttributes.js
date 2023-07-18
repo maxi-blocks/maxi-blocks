@@ -6,7 +6,7 @@ import { getAttributeKey, getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 
 const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel'];
 
@@ -24,6 +24,7 @@ const ALL_TIME_EXCLUDE = [
 	'number-counter-end',
 	'url',
 	'embedUrl',
+	'linkSettings',
 ];
 
 const excludeAttributes = (
@@ -50,7 +51,10 @@ const excludeAttributes = (
 						prop === 'content'
 					) &&
 						ALL_TIME_EXCLUDE.includes(prop)) ||
-						attributes?.[prop] !== getDefaultAttribute(prop))))
+						!isEqual(
+							attributes?.[prop],
+							getDefaultAttribute(prop)
+						))))
 		)
 			delete attributesToExclude[prop];
 	});

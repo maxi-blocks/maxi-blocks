@@ -246,7 +246,13 @@ export const getPageFonts = (onlyBackend = false) => {
 			if (isBlockInMaxiBlock) {
 				const { level } = attributes;
 
-				const textLevel = level ? `h${level}` : 'p';
+				const getTextLevel = () => {
+					if (name === 'core/button') return 'button';
+					if (level) return `h${level}`;
+					return 'p';
+				};
+
+				const textLevel = getTextLevel();
 
 				response = getAllFonts(
 					{},

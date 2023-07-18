@@ -58,76 +58,68 @@ const onRevealEvent = (
 };
 
 const search = () => {
-	Object.entries(maxiSearch[0]).forEach(
-		([
-			uniqueID,
-			{
-				buttonIconContent,
-				buttonCloseIconContent,
-				buttonContent,
-				buttonContentClose,
-				buttonSkin,
-				iconRevealAction,
-				skin,
-			},
-		]) => {
-			const searchBlock = document.getElementById(uniqueID);
+	Object.entries(maxiSearch[0]).forEach(([uniqueID, json]) => {
+		const {
+			'icon-content': buttonIconContent,
+			'close-icon-content': buttonCloseIconContent,
+			buttonContent,
+			buttonContentClose,
+			buttonSkin,
+			iconRevealAction,
+			skin,
+		} = JSON.parse(json);
 
-			if (!searchBlock) return;
+		const searchBlock = document.getElementById(uniqueID);
 
-			const button = searchBlock.querySelector(
-				'.maxi-search-block__button'
-			);
-			const buttonIcon = searchBlock.querySelector(
-				'.maxi-search-block__button__icon'
-			);
-			const buttonText = searchBlock.querySelector(
-				'.maxi-search-block__button__content'
-			);
-			const input = searchBlock.querySelector(
-				'.maxi-search-block__input'
-			);
+		if (!searchBlock) return;
 
-			const isIcon = buttonSkin === 'icon';
+		const button = searchBlock.querySelector('.maxi-search-block__button');
+		const buttonIcon = searchBlock.querySelector(
+			'.maxi-search-block__button__icon'
+		);
+		const buttonText = searchBlock.querySelector(
+			'.maxi-search-block__button__content'
+		);
+		const input = searchBlock.querySelector('.maxi-search-block__input');
 
-			const content = isIcon ? buttonIconContent : buttonContent;
-			const contentClose = isIcon
-				? buttonCloseIconContent
-				: buttonContentClose;
-			const wrapper = isIcon ? buttonIcon : buttonText;
+		const isIcon = buttonSkin === 'icon';
 
-			if (skin === 'icon-reveal') {
-				const events = [
-					'click',
-					...(iconRevealAction === 'hover'
-						? ['mouseover', 'mouseleave']
-						: []),
-				];
+		const content = isIcon ? buttonIconContent : buttonContent;
+		const contentClose = isIcon
+			? buttonCloseIconContent
+			: buttonContentClose;
+		const wrapper = isIcon ? buttonIcon : buttonText;
 
-				events.forEach(event => {
-					const eventTarget =
-						event === 'click' ? document : searchBlock;
+		if (skin === 'icon-reveal') {
+			const events = [
+				'click',
+				...(iconRevealAction === 'hover'
+					? ['mouseover', 'mouseleave']
+					: []),
+			];
 
-					eventTarget.addEventListener(event, event =>
-						onRevealEvent(
-							event,
-							input,
-							{ wrapper, content, contentClose, isIcon },
-							searchBlock
-						)
-					);
-				});
-			} else {
-				button.addEventListener('click', () => onSearchEvent(input));
-			}
+			events.forEach(event => {
+				const eventTarget = event === 'click' ? document : searchBlock;
 
-			input.addEventListener('keypress', event => {
-				if (event.key === 'Enter') {
-					onSearchEvent(input);
-				}
+				eventTarget.addEventListener(event, event =>
+					onRevealEvent(
+						event,
+						input,
+						{ wrapper, content, contentClose, isIcon },
+						searchBlock
+					)
+				);
 			});
+		} else {
+			button.addEventListener('click', () => onSearchEvent(input));
 		}
-	);
+
+		input.addEventListener('keypress', event => {
+			if (event.key === 'Enter') {
+				onSearchEvent(input);
+			}
+		});
+	});
 };
 
 window.addEventListener('DOMContentLoaded', search);

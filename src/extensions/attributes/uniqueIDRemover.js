@@ -16,8 +16,8 @@ const uniqueIDRemover = async uniqueID => {
 		});
 
 		if (response === false) {
-			console.error(`Could not remove block ${uniqueID} from the DB`);
-		} else {
+			throw new Error(`Could not remove block ${uniqueID} from the DB`);
+		} else if (response !== true) {
 			throw new Error(
 				`Unexpected response data: ${JSON.stringify(response)}`
 			);

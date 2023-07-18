@@ -22,9 +22,6 @@ const numberCounterEffect = () => {
 		if (!maxiNumberCounter) return;
 		const numberID = elem.id;
 
-		console.log('numberID', numberID);
-		console.log('maxiNumberCounter[0]', maxiNumberCounter[0]);
-
 		const numberData =
 			// eslint-disable-next-line no-undef
 			maxiNumberCounter[0][numberID] !== undefined

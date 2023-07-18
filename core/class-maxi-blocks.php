@@ -51,7 +51,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             $style_cards = new MaxiBlocks_StyleCards();
             $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
-            if($current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards)) {
+            if($current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status']) {
                 add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
             }
 

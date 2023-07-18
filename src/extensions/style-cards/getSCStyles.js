@@ -424,9 +424,9 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix} {
-					${sentences?.join(' ')}}`;
-				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix}a:first-of-type${
+				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix}
+					{${sentences?.join(' ')}}`;
+				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
 					level === 'p'
 						? `, ${prefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type`
 						: ''

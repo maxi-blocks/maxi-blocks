@@ -428,7 +428,7 @@ const getWPNativeStyles = ({
 					{${sentences?.join(' ')}}`;
 				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
 					level === 'p'
-						? `, ${prefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type`
+						? `, ${prefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type:not(.wp-element-button)`
 						: ''
 				} {${sentences?.join(' ')}}`;
 

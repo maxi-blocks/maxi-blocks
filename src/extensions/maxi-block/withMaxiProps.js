@@ -20,15 +20,9 @@ import {
 	handleCleanInlineStyles,
 } from './inlineStyles';
 import { excludeAttributes } from '../copy-paste';
-import { getBlockData, getUpdatedSVGDataAndElement } from '../attributes';
+import { getBlockData } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
 import { fromListToText, fromTextToList } from '../text/formats';
-import {
-	getSVGPosition,
-	getSVGRatio,
-	setSVGPosition,
-	setSVGRatio,
-} from '../svg';
 import {
 	handleBlockMove,
 	updateNCLimits,

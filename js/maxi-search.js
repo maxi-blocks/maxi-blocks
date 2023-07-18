@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const onSearchEvent = input => {
 	const searchLink = maxiSearch[1];
 	const inputValue = input.value;
@@ -38,6 +39,7 @@ const onRevealEvent = (
 	const isInputHidden = input.classList.contains(
 		'maxi-search-block__input--hidden'
 	);
+	// eslint-disable-next-line @wordpress/no-global-active-element
 	const isInputFocussed = input === document.activeElement;
 
 	if (

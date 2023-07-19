@@ -81,7 +81,7 @@ class MaxiBlocks_Styles
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         add_filter('the_content', [$this, 'process_content']);
-        add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+        //   add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
@@ -976,8 +976,8 @@ class MaxiBlocks_Styles
         $post_id = $this->get_id();
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
-        $template_id = $this->get_id(true);
-        $templateContentAndMeta = $this->get_content_meta_fonts($template_id, true, 'maxi-blocks-styles-templates');
+        // $template_id = $this->get_id(true);
+        //    $templateContentAndMeta = $this->get_content_meta_fonts($template_id, true, 'maxi-blocks-styles-templates');
 
         if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
             $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
@@ -996,12 +996,14 @@ class MaxiBlocks_Styles
      */
     private function get_content_meta_fonts($id, $template, $content_key)
     {
+
         $data = $this->get_content_for_blocks($template, $id);
+
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
-            $contentForBlocks = $this->get_content_for_blocks(!$template, $id);
-            $templateMeta = $contentForBlocks['meta'] ?? null;
+            $templateMeta = $data['template_meta'] ?? null;
+
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
@@ -1149,7 +1151,16 @@ class MaxiBlocks_Styles
         $unique_id = $props['uniqueID'] ?? null;
 
         if (empty($props) || !isset($unique_id) || !$unique_id) {
-            return;
+
+            if (!empty($block['innerBlocks'])) {
+                foreach ($block['innerBlocks'] as $innerBlock) {
+
+                    $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
+                }
+            } else {
+                return;
+            }
+
         }
 
         $content_array_block = $wpdb->get_results(
@@ -1163,7 +1174,15 @@ class MaxiBlocks_Styles
         $content_block = $content_array_block[0] ?? null;
 
         if (!isset($content_block) || empty($content_block)) {
-            return;
+            if (!empty($block['innerBlocks'])) {
+                foreach ($block['innerBlocks'] as $innerBlock) {
+
+                    $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
+                }
+            } else {
+                return;
+            }
+
         }
 
         $styles .= ' ' . $content_block['css_value'];
@@ -1230,17 +1249,32 @@ class MaxiBlocks_Styles
      */
     public function get_content_for_blocks(bool $is_template = false, $id = null, string $passed_content = null)
     {
-        global $post, $wpdb;
+        global $post;
+        $blocks = [];
+        $blocks_template = [];
+        $styles = '';
+        $prev_styles = '';
+        $active_custom_data_array = [];
+        $fonts = [];
 
         if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
             return [];
         }
 
-        if ($is_template) {
-            return [];
+        global $wpdb;
+
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_status = 'publish'";
+        $template_parts = $wpdb->get_results($query);
+
+        foreach ($template_parts as $template_part) {
+            $blocks_part = parse_blocks($template_part->post_content);
+            $blocks_template = array_merge_recursive($blocks_template, $blocks_part);
         }
 
-        $blocks = parse_blocks($passed_content ?? $post->post_content);
+        $blocks_post = parse_blocks($passed_content ?? $post->post_content);
+
+        $blocks = array_merge_recursive($blocks_template, $blocks_post);
+
 
         if (empty($blocks)) {
             return [];
@@ -1480,11 +1514,7 @@ class MaxiBlocks_Styles
         }
 
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
-        write_log('custom_meta for '.$block_name);
-        write_log($custom_meta);
-        write_log('custom_meta_json');
-        write_log(json_encode($custom_meta));
-        write_log('=========================');
+
         if(!empty($custom_meta)) {
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(

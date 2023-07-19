@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
-import { getIsSiteEditor, getTemplatePartSlug } from '../fse';
 
 const generateTemporalID = (blockName, diff = 1) => {
 	const newID = `${blockName
@@ -14,23 +13,7 @@ const generateTemporalID = (blockName, diff = 1) => {
 };
 
 const temporalIDGenerator = ({ blockName, diff = 1, clientId }) => {
-	const isSiteEditor = getIsSiteEditor();
-
-	let modifiedBlockName = blockName;
-
-	if (isSiteEditor) {
-		const templatePartSlug = getTemplatePartSlug(clientId);
-
-		if (templatePartSlug) {
-			modifiedBlockName += `-${templatePartSlug}`;
-		}
-
-		modifiedBlockName += '-template';
-
-		if (templatePartSlug) modifiedBlockName += '-part';
-	}
-
-	return generateTemporalID(modifiedBlockName, diff);
+	return generateTemporalID(blockName, diff);
 };
 
 export default temporalIDGenerator;

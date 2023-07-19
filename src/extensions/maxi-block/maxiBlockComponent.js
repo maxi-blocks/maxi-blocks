@@ -58,7 +58,6 @@ import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import { LoopContext } from '../DC';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
  * External dependencies
@@ -676,10 +675,7 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		const { clientId, name: blockName } = this.props;
 
-		if (
-			getIsUniqueIDRepeated(idToCheck) ||
-			!uniqueIDStructureChecker(idToCheck, clientId)
-		) {
+		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = temporalIDGenerator({
 				blockName,
 				diff: 1,

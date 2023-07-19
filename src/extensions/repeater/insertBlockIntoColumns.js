@@ -1,5 +1,12 @@
+/**
+ * WordPress dependencies
+ */
 import { dispatch, select } from '@wordpress/data';
 import { cloneBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
 import { uniqueIDGenerator } from '../attributes';
 import {
 	findBlockPosition,
@@ -30,7 +37,7 @@ const insertBlockIntoColumns = (clientId, repeaterColumnsClientIds) => {
 	const childColumns = getChildColumns(initialColumn.clientId);
 
 	const blockPosition = findBlockPosition(block.clientId, initialColumn);
-	const blockIndex = blockPosition[blockPosition.length - 1];
+	const blockIndex = blockPosition.at(-1);
 
 	goThroughColumns(childColumns, initialColumn.clientId, column => {
 		const targetParent = findTargetParent(blockPosition, column);

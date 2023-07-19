@@ -436,25 +436,7 @@ if (!class_exists('MaxiBlocks_API')):
                 new MaxiBlocks_Local_Fonts();
             }
 
-            // Check if Maxi Blocks Theme is installed and active
-            // if (get_template() === 'maxi-theme') {
-            //     $template_part = $data['templatePart'];
-            //     $is_template_part = isset($template_part) && strpos($template_part, 'maxi-theme//') !== false;
 
-            //     if ($is_template_part || $is_template) {
-            //         $template_name;
-
-            //         if ($is_template) {
-            //             $template_name = $id;
-            //         } else {
-            //             $template_name = $template_part;
-            //         }
-
-            //         $template_name = str_replace('maxi-theme//', '', $template_name);
-
-            //         do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
-            //     }
-            // }
 
             $updated_meta = (array)$wpdb->get_results(
                 $wpdb->prepare(
@@ -745,11 +727,8 @@ if (!class_exists('MaxiBlocks_API')):
         public function create_maxi_blocks_unique_id($request)
         {
             global $wpdb;
-            write_log('create_maxi_blocks_unique_id');
 
-            // $block_name = $data['blockName'];
             $block_name = $request->get_param('block_name');
-            write_log($block_name);
 
             if(!$block_name || $block_name === '') {
                 return new WP_Error(

@@ -213,6 +213,12 @@ class edit extends MaxiBlockComponent {
 											repeaterStatus={
 												repeaterContext.repeaterStatus
 											}
+											repeaterRowClientId={
+												repeaterContext.repeaterRowClientId
+											}
+											getInnerBlocksPositions={
+												repeaterContext.getInnerBlocksPositions
+											}
 										/>
 								  )
 								: false,

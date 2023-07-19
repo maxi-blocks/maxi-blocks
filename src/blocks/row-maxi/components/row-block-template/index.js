@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,12 +15,16 @@ import loadColumnsTemplate from '../../../../extensions/column-templates/loadCol
  * External dependencies
  */
 import { uniqueId } from 'lodash';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 
 const RowBlockTemplate = ({
 	clientId,
 	maxiSetAttributes,
 	deviceType,
 	repeaterStatus,
+	repeaterRowClientId,
+	innerBlockPositions,
+	getInnerBlocksPositions,
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
@@ -49,6 +53,33 @@ const RowBlockTemplate = ({
 									clientId,
 									deviceType
 								);
+
+								if (
+									repeaterStatus &&
+									clientId !== repeaterRowClientId
+								) {
+									const innerBlockPositions =
+										getInnerBlocksPositions();
+
+									const parentRepeaterColumnClientId = select(
+										'core/block-editor'
+									)
+										.getBlockParentsByBlockName(
+											clientId,
+											'maxi-blocks/column-maxi'
+										)
+										.find(columnClientId =>
+											innerBlockPositions[[-1]].includes(
+												columnClientId
+											)
+										);
+
+									validateRowColumnsStructure(
+										repeaterRowClientId,
+										innerBlockPositions,
+										parentRepeaterColumnClientId
+									);
+								}
 							}}
 						>
 							<Icon

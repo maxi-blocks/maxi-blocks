@@ -263,10 +263,30 @@ const ColumnPattern = props => {
 											if (rowClientId === clientId)
 												return;
 
+											const oldInnerBlocks =
+												getBlock(
+													rowClientId
+												).innerBlocks;
+
 											const clonedInnerBlocks =
 												cleanInnerBlocks(
 													rowToValidateByInnerBlocks
 												);
+
+											clonedInnerBlocks.forEach(
+												(column, i) => {
+													if (
+														i >=
+														oldInnerBlocks.length
+													)
+														return;
+
+													column.clientId =
+														oldInnerBlocks[
+															i
+														].clientId;
+												}
+											);
 
 											markNextChangeAsNotPersistent();
 											replaceInnerBlocks(

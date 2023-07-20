@@ -132,6 +132,30 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 	return response;
 };
 
+const addStylesByBreakpoints = (response, addStylesByBreakpoint, isBackend) => {
+	// General
+	addStylesByBreakpoint('general');
+
+	// Media queries
+	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
+		if (isBackend)
+			addStylesByBreakpoint(
+				breakpoint,
+				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
+			);
+		else {
+			// eslint-disable-next-line no-param-reassign
+			response += `@media (${
+				breakpoint !== 'xxl' ? 'max' : 'min'
+			}-width: ${breakpointValue}px) {`;
+
+			addStylesByBreakpoint(breakpoint);
+			// eslint-disable-next-line no-param-reassign
+			response += '}';
+		}
+	});
+};
+
 const getSentencesByBreakpoint = ({
 	organizedValues,
 	style,
@@ -370,26 +394,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		});
 	};
 
-	// General
-	addStylesByBreakpoint('general');
-
-	// Media queries
-	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
-		if (isBackend)
-			addStylesByBreakpoint(
-				breakpoint,
-				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
-			);
-		else {
-			response += `@media (${
-				breakpoint !== 'xxl' ? 'max' : 'min'
-			}-width: ${breakpointValue}px) {`;
-
-			addStylesByBreakpoint(breakpoint);
-
-			response += '}';
-		}
-	});
+	addStylesByBreakpoints(response, addStylesByBreakpoint, isBackend);
 
 	return response;
 };
@@ -406,7 +411,7 @@ const getWPNativeStyles = ({
 		? 'wp-block[data-type^="core/"]'
 		: 'maxi-block--use-sc';
 
-	const addStylesByBreakpoint = breakpoint => {
+	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
 		const breakpointLevelSentences = getSentencesByBreakpoint({
 			organizedValues,
 			style,
@@ -424,28 +429,28 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix}
+				response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}
 					{${sentences?.join(' ')}}`;
-				response += `${prefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
+				response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
 					level === 'p'
-						? `, ${prefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type:not(.wp-element-button)`
+						? `, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type:not(.wp-element-button)`
 						: ''
 				} {${sentences?.join(' ')}}`;
 
 				// In case the level is paragraph, we add the same styles for lists
 				if (level === 'p')
-					response += `${prefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
+					response += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
 						' '
 					)}}`;
 
 				// Adds margin-bottom sentence to all elements except the last one
 				if (marginSentence)
-					response += `${prefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
+					response += `${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
 			}
 		);
 
 		// WP native block when has link
-		const WPNativeLinkPrefix = `${prefix} .maxi-${style} .${nativeWPPrefix} a`;
+		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;
 
 		['', ' span'].forEach(suffix => {
 			response += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
@@ -507,7 +512,7 @@ const getWPNativeStyles = ({
 				1
 			);
 
-		response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
+		response += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
 			...buttonSentences,
 			styleCard[`--maxi-${style}-button-color`]
 				? `color: var(--maxi-${style}-button-color);`
@@ -515,50 +520,38 @@ const getWPNativeStyles = ({
 		]?.join(' ')}}`;
 
 		if (styleCard[`--maxi-${style}-button-color-hover`]) {
-			response += `${`${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
+			response += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
 				color: var(--maxi-${style}-button-color-hover);
 			}`;
 		}
 
 		// General color
-		response += `${prefix} .maxi-${style} .${nativeWPPrefix} {
+		response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} {
 			color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
 		}`;
 
 		// Headings color
 		headings.forEach(heading => {
-			response += `${prefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
+			response += `${prefix} ${secondPrefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
 				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
 			}`;
 		});
 
 		// Button color
-		response += `${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
+		response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
 			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
 		}`;
 
 		// Button color hover
 		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {
-			response += `${prefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
+			response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
 				background: var(--maxi-${style}-button-background-color-hover);
 			}`;
 		}
 	};
 
-	// General
-	addStylesByBreakpoint('general');
-
-	// Media queries
-	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
-		response += `@media (${
-			breakpoint !== 'xxl' ? 'max' : 'min'
-		}-width: ${breakpointValue}px) {`;
-
-		addStylesByBreakpoint(breakpoint);
-
-		response += '}';
-	});
-
+	addStylesByBreakpoints(response, addStylesByBreakpoint, isBackend);
+	console.log('response', response);
 	return response;
 };
 

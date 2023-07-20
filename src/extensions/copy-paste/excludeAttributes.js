@@ -8,7 +8,14 @@ import { getAttributeKey, getDefaultAttribute } from '../styles';
  */
 import { cloneDeep, isEqual } from 'lodash';
 
-const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel', 'dc-id'];
+const GLOBAL_EXCLUDE = [
+	'uniqueID',
+	'customLabel',
+	'dc-id',
+	'cl-id',
+	'dc-accumulator',
+	'cl-accumulator',
+];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
 	key => key !== 'customLabel'
@@ -26,6 +33,9 @@ const ALL_TIME_EXCLUDE = [
 	'embedUrl',
 	'linkSettings',
 	'custom-formats',
+	'dc-accumulator',
+	'cl-id',
+	'cl-accumulator',
 ];
 
 const excludeAttributes = (

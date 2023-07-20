@@ -170,9 +170,12 @@ class MaxiBlockComponent extends Component {
 		const { clientId } = this.props;
 		const { uniqueID } = this.props.attributes;
 		if (!uniqueID.endsWith('-u')) {
+			console.log('Maxi Blocks: Updating uniqueID');
 			const oldID = uniqueID;
 			this.uniqueIDProcessor(uniqueID)
 				.then(newID => {
+					console.log('newID:');
+					console.log(newID);
 					this.props.attributes.uniqueID = newID;
 					dispatch('maxiBlocks/blocks').addBlock(
 						newID,

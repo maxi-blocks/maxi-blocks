@@ -58,13 +58,8 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import {
-	removeBlockFromColumns,
-	retrieveInnerBlocksPositions,
-	validateRowColumnsStructure,
-} from '../repeater';
+import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
-import { getInitialColumn } from '../repeater/utils';
 
 /**
  * Style Component
@@ -527,20 +522,7 @@ class MaxiBlockComponent extends Component {
 					this.props.repeaterRowClientId !== parentRowClientId)
 			) {
 				const columnsClientIds = getBlockOrder(parentRowClientId);
-
-				const newInnerBlocksPositions =
-					retrieveInnerBlocksPositions(columnsClientIds);
-
-				const initialColumn = getInitialColumn(
-					this.props.clientId,
-					newInnerBlocksPositions?.[[-1]]
-				);
-
-				validateRowColumnsStructure(
-					parentRowClientId,
-					newInnerBlocksPositions,
-					initialColumn.clientId
-				);
+				insertBlockIntoColumns(this.props.clientId, columnsClientIds);
 			}
 		}
 		if (this.maxiBlockWillUnmount)

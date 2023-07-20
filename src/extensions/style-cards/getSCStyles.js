@@ -551,7 +551,7 @@ const getWPNativeStyles = ({
 	};
 
 	addStylesByBreakpoints(response, addStylesByBreakpoint, isBackend);
-	console.log('response', response);
+
 	return response;
 };
 

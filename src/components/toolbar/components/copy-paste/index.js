@@ -152,7 +152,7 @@ const CopyPaste = props => {
 	};
 
 	const onPasteStylesIntoRepeaterBlock = () => {
-		if (!repeaterContext.repeaterStatus) return;
+		if (!repeaterContext?.repeaterStatus) return;
 
 		const { getBlock } = select('core/block-editor');
 

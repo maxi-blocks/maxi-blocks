@@ -547,7 +547,7 @@ const MaxiToolbar = memo(
 							tooltipsHide={tooltipsHide}
 						/>
 						{
-							// TODO: fix #4873
+							// TODO: fix #4863
 							/* <ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}

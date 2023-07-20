@@ -132,28 +132,29 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 	return response;
 };
 
-const addStylesByBreakpoints = (response, addStylesByBreakpoint, isBackend) => {
+const addStylesByBreakpoints = (addStylesByBreakpoint, isBackend) => {
+	let addedResponse = '';
+
 	// General
-	addStylesByBreakpoint('general');
+	addedResponse += addStylesByBreakpoint('general');
 
 	// Media queries
 	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
 		if (isBackend)
-			addStylesByBreakpoint(
+			addedResponse += addStylesByBreakpoint(
 				breakpoint,
 				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
 			);
 		else {
-			// eslint-disable-next-line no-param-reassign
-			response += `@media (${
+			addedResponse += `@media (${
 				breakpoint !== 'xxl' ? 'max' : 'min'
 			}-width: ${breakpointValue}px) {`;
-
-			addStylesByBreakpoint(breakpoint);
-			// eslint-disable-next-line no-param-reassign
-			response += '}';
+			addedResponse += addStylesByBreakpoint(breakpoint);
+			addedResponse += '}';
 		}
 	});
+
+	return addedResponse;
 };
 
 const getSentencesByBreakpoint = ({
@@ -185,6 +186,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
+		let addedResponse = '';
+
 		const breakpointLevelSentences = getSentencesByBreakpoint({
 			organizedValues,
 			style,
@@ -211,13 +214,15 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
 				targets.forEach(target => {
-					response += `${target} ${level} {${sentences?.join(' ')}}`;
+					addedResponse += `${target} ${level} {${sentences?.join(
+						' '
+					)}}`;
 				});
 
 				if (marginSentence) {
 					// margin-bottom for Text Maxi
-					response += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
-					response += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
 				}
 			}
 		);
@@ -235,7 +240,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				sentence => sentence?.indexOf('margin-bottom') > -1
 			);
 
-			if (marginSentence) response += `${target} ${marginSentence}`;
+			if (marginSentence) addedResponse += `${target} ${marginSentence}`;
 		});
 
 		[
@@ -252,31 +257,31 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Text Maxi when has link
 		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__content`;
 
-		response += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
-		response += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
-		response += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
-		response += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
-		response += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+		addedResponse += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
+		addedResponse += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
+		addedResponse += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
+		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
+		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
 
 		[
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,
 		].forEach(target => {
-			response += `${target} { color: var(--maxi-${style}-link); }`;
-			response += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:hover span { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:focus { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:focus span { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:active { color: var(--maxi-${style}-link-active); }`;
-			response += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
-			response += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
-			response += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
+			addedResponse += `${target} { color: var(--maxi-${style}-link); }`;
+			addedResponse += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:focus { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:focus span { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:active { color: var(--maxi-${style}-link-active); }`;
+			addedResponse += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
+			addedResponse += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
+			addedResponse += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
 		});
 
 		// Image Maxi
@@ -303,7 +308,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 						);
 				}
 
-				response += `${target} ${level} {${sentences?.join(' ')}}`;
+				addedResponse += `${target} ${level} {${sentences?.join(' ')}}`;
 			});
 		});
 
@@ -322,7 +327,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Search Maxi
@@ -342,7 +347,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Button Maxi
@@ -390,11 +395,13 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
+
+		return addedResponse;
 	};
 
-	addStylesByBreakpoints(response, addStylesByBreakpoint, isBackend);
+	response += addStylesByBreakpoints(addStylesByBreakpoint, isBackend);
 
 	return response;
 };
@@ -412,6 +419,8 @@ const getWPNativeStyles = ({
 		: 'maxi-block--use-sc';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
+		let addedResponse = '';
+
 		const breakpointLevelSentences = getSentencesByBreakpoint({
 			organizedValues,
 			style,
@@ -429,9 +438,9 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}
+				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}
 					{${sentences?.join(' ')}}`;
-				response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
+				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
 					level === 'p'
 						? `, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type:not(.wp-element-button)`
 						: ''
@@ -439,13 +448,13 @@ const getWPNativeStyles = ({
 
 				// In case the level is paragraph, we add the same styles for lists
 				if (level === 'p')
-					response += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
 						' '
 					)}}`;
 
 				// Adds margin-bottom sentence to all elements except the last one
 				if (marginSentence)
-					response += `${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
 			}
 		);
 
@@ -453,16 +462,16 @@ const getWPNativeStyles = ({
 		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;
 
 		['', ' span'].forEach(suffix => {
-			response += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
+			addedResponse += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
 			if (styleCard[`--maxi-${style}-link-hover`]) {
-				response += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
-				response += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
 			}
 			if (styleCard[`--maxi-${style}-link-active`]) {
-				response += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
 			}
 			if (styleCard[`--maxi-${style}-link-visited`]) {
-				response += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
 			}
 		});
 
@@ -512,45 +521,47 @@ const getWPNativeStyles = ({
 				1
 			);
 
-		response += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
+		addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
 			...buttonSentences,
 			styleCard[`--maxi-${style}-button-color`]
 				? `color: var(--maxi-${style}-button-color);`
 				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
 		]?.join(' ')}}`;
 
-		if (styleCard[`--maxi-${style}-button-color-hover`]) {
-			response += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
+		if (addedResponse[`--maxi-${style}-button-color-hover`]) {
+			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
 				color: var(--maxi-${style}-button-color-hover);
 			}`;
 		}
 
 		// General color
-		response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} {
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} {
 			color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
 		}`;
 
 		// Headings color
 		headings.forEach(heading => {
-			response += `${prefix} ${secondPrefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
 				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
 			}`;
 		});
 
 		// Button color
-		response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
 			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
 		}`;
 
 		// Button color hover
 		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {
-			response += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
 				background: var(--maxi-${style}-button-background-color-hover);
 			}`;
 		}
+
+		return addedResponse;
 	};
 
-	addStylesByBreakpoints(response, addStylesByBreakpoint, isBackend);
+	response += addStylesByBreakpoints(addStylesByBreakpoint, isBackend);
 
 	return response;
 };

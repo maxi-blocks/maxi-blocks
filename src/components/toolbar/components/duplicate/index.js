@@ -12,13 +12,13 @@ import { Tooltip } from '@wordpress/components';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
+import { insertBlockIntoColumns } from '../../../../extensions/repeater';
 import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
 /**
  * Icons
  */
 import { toolbarDuplicate } from '../../../../icons';
-import { insertBlockIntoColumns } from '../../../../extensions/repeater';
 
 /**
  * Duplicate

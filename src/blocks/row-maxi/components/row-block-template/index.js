@@ -9,13 +9,13 @@ import { select, useDispatch } from '@wordpress/data';
  */
 import { Button, Icon } from '../../../../components';
 import { getTemplates } from '../../../../extensions/column-templates';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * External dependencies
  */
 import { uniqueId } from 'lodash';
-import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 
 const RowBlockTemplate = ({
 	clientId,

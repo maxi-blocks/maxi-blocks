@@ -6,7 +6,7 @@ import { getAttributeKey, getDefaultAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual, isNil } from 'lodash';
 
 const GLOBAL_EXCLUDE = [
 	'uniqueID',
@@ -55,7 +55,7 @@ const excludeAttributes = (
 
 	keysToExclude.forEach(prop => {
 		if (
-			attributesToExclude[prop] &&
+			!isNil(attributesToExclude[prop]) &&
 			(!isRepeater ||
 				(isRepeater &&
 					((!(

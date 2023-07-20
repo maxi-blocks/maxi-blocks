@@ -40,8 +40,14 @@ import { isEmpty, isEqual } from 'lodash';
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { setAttributes, attributes, name, clientId, isSelected } =
-				ownProps;
+			const {
+				setAttributes,
+				attributes,
+				name,
+				clientId,
+				isSelected,
+				contextLoopContext,
+			} = ownProps;
 
 			const repeaterContext = useContext(RepeaterContext);
 
@@ -156,7 +162,10 @@ const withMaxiProps = createHigherOrderComponent(
 									currentAttributes,
 									copyPasteMapping,
 									true,
-									currentBlock.name
+									currentBlock.name,
+									contextLoopContext.contextLoop?.[
+										'cl-status'
+									] && ['dc-id']
 								);
 
 								updateNCLimits(

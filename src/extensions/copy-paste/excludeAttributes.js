@@ -8,7 +8,7 @@ import { getAttributeKey, getDefaultAttribute } from '../styles';
  */
 import { cloneDeep, isEqual } from 'lodash';
 
-const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel'];
+const GLOBAL_EXCLUDE = ['uniqueID', 'customLabel', 'dc-id'];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
 	key => key !== 'customLabel'
@@ -25,6 +25,7 @@ const ALL_TIME_EXCLUDE = [
 	'url',
 	'embedUrl',
 	'linkSettings',
+	'custom-formats',
 ];
 
 const excludeAttributes = (
@@ -32,7 +33,8 @@ const excludeAttributes = (
 	attributes,
 	copyPasteMapping,
 	isRepeater = false,
-	blockName
+	blockName,
+	customAllTimeExclude = []
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
 
@@ -50,7 +52,9 @@ const excludeAttributes = (
 						blockName === 'maxi-blocks/svg-icon-maxi' &&
 						prop === 'content'
 					) &&
-						ALL_TIME_EXCLUDE.includes(prop)) ||
+						[...ALL_TIME_EXCLUDE, ...customAllTimeExclude].includes(
+							prop
+						)) ||
 						!isEqual(
 							attributes?.[prop],
 							getDefaultAttribute(prop)

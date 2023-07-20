@@ -52,7 +52,8 @@ const Repeater = ({
 			{isRepeaterInherited && (
 				<InfoBox
 					message={__(
-						'Inherited from parent row. To edit, please disable higher level repeater.'
+						'Inherited from parent row. To edit, please disable higher level repeater.',
+						'maxi-blocks'
 					)}
 				/>
 			)}

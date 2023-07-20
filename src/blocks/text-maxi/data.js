@@ -30,7 +30,7 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
-	_exclude: ['content', 'linkSettings'],
+	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',

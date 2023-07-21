@@ -667,63 +667,72 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
 
-            $id = $data['id'];
+            write_log('$data');
+            write_log($data);
+
             $update = $data['update'];
-            $data_val = $data['data'];
-            $is_template = $data['isTemplate'];
+
+            $dataArray = json_decode($data['data'], true);
+
+            $processed_data = array();
+            foreach($dataArray as $key => $value) {
+                $processed_data[$key] = json_encode($value);
+            }
 
             ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data_blocks');
             ['table' => $styles_table] = $this->get_query_params('maxi_blocks_styles_blocks');
 
-            if (empty($data_val) || $data_val === '{}') {
-                $wpdb->update("{$styles_table}", array(
-                    'prev_active_custom_data' =>  null,
-                    'active_custom_data' =>  null,
-                ), ["{$id_key}" => $id]);
+            foreach($processed_data as $id => $data_val) {
+                if (empty($data_val) || $data_val === '{}') {
+                    $wpdb->update("{$styles_table}", array(
+                        'prev_active_custom_data' =>  null,
+                        'active_custom_data' =>  null,
+                    ), ["{$id_key}" => $id]);
 
-                $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
+                    $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
 
-                return '{}';
-            }
+                    continue;
+                }
 
-            $exists = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM $table WHERE $where_clause",
-                    $id
-                ),
-                OBJECT
-            );
+                $exists = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM $table WHERE $where_clause",
+                        $id
+                    ),
+                    OBJECT
+                );
 
-            if ($update) {
-                if($is_json) {
-                    $array_new_data = $is_json ? json_decode($data_val, true) : $data_val;
-                    $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
-                } else {
+                if ($update) {
                     $new_custom_data = $data_val;
-                }
-
-                $wpdb->update("{$styles_table}", array(
-                    'prev_active_custom_data' =>  1,
-                    'active_custom_data' =>  1,
-                ), ["{$id_key}" => $id]);
 
 
-                if (!empty($exists)) {
-                    $wpdb->update("{$table}", array(
-                        'prev_custom_data_value' =>  $new_custom_data,
-                        'custom_data_value' =>  $new_custom_data,
-                    ), ["{$id_key}" =>  $id]);
-                } else {
-                    $wpdb->insert("{$table}", array(
-                        $id_key => $id,
-                        'prev_custom_data_value' =>  $new_custom_data,
-                        'custom_data_value' => $new_custom_data,
-                    ));
+                    $wpdb->update("{$styles_table}", array(
+                        'prev_active_custom_data' =>  1,
+                        'active_custom_data' =>  1,
+                    ), ["{$id_key}" => $id]);
+
+
+                    if (!empty($exists)) {
+                        $old_custom_data = $exists[0]->custom_data_value;
+
+                        $wpdb->update("{$table}", array(
+                            'prev_custom_data_value' =>$old_custom_data,
+                            'custom_data_value' =>  $new_custom_data,
+                        ), ["{$id_key}" =>  $id]);
+                    } else {
+                        $wpdb->insert("{$table}", array(
+                            $id_key => $id,
+                            'prev_custom_data_value' =>  '',
+                            'custom_data_value' => $new_custom_data,
+                        ));
+                    }
                 }
             }
+
 
             return $new_custom_data;
         }
+
         public function create_maxi_blocks_unique_id($request)
         {
             global $wpdb;

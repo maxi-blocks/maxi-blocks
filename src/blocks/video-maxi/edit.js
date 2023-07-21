@@ -155,10 +155,8 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID } = attributes;
 
 		const response = {
-			video: {
-				[uniqueID]: {
-					...getGroupAttributes(attributes, 'video'),
-				},
+			[uniqueID]: {
+				...getGroupAttributes(attributes, 'video'),
 			},
 		};
 

@@ -62,9 +62,10 @@ const getInnerBlocksChild = ({
 				/>
 			)),
 			...(children ?? children),
-			cloneElement(innerBlocksChildren, {
-				key: `maxi-inner-content__${uniqueID}`,
-			}),
+			...(!!innerBlocksChildren &&
+				cloneElement(innerBlocksChildren, {
+					key: `maxi-inner-content__${uniqueID}`,
+				})),
 			...(showWrapperInserter && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
@@ -102,9 +103,10 @@ const getInnerBlocksChild = ({
 			/>
 		)),
 		...firstGroup,
-		...cloneElement(innerBlocksChildren, {
-			key: `maxi-inner-content__${uniqueID}`,
-		}),
+		...(!!innerBlocksChildren &&
+			cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			})),
 		...secondGroup,
 		...(showWrapperInserter && (
 			<BlockInserter.WrapperInserter

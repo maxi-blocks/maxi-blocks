@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import temporalIDGenerator from './temporalIDGenerator';
+import uniqueIDGenerator from './uniqueIDGenerator';
 import { getCustomLabel } from '../maxi-block';
 
 /**
@@ -53,10 +53,7 @@ const withAttributes = createHigherOrderComponent(
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
-				const newUniqueID = temporalIDGenerator({
-					blockName,
-					clientId,
-				});
+				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,

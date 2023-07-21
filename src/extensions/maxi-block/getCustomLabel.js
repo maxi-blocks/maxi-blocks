@@ -17,7 +17,7 @@ const getCustomLabel = (previousCustomLabel, uniqueID) => {
 	)
 		return customLabelFromUniqueID;
 
-	const number = uniqueID?.match(/-(\d+)$/)[1];
+	const number = uniqueID?.replace('-u', '').match(/-(\w+)$/)[1];
 	return `${removeCustomLabelNumber(previousCustomLabel)}_${number}`;
 };
 

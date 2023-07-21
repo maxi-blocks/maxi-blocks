@@ -2,7 +2,7 @@ import './store';
 
 export { default as getCustomLabel } from './getCustomLabel';
 export { default as getIsHoverPreview } from './getIsHoverPreview';
-export { default as getIsUniqueIDRepeated } from './getIsUniqueIDRepeated';
+export { default as getIsIDTrulyUnique } from './getIsIDTrulyUnique';
 export { default as goThroughMaxiBlocks } from './goThroughMaxiBlocks';
 export { default as handleSetAttributes } from './handleSetAttributes';
 export { default as MaxiBlockComponent } from './maxiBlockComponent';

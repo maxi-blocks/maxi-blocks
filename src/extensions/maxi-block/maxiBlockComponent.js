@@ -33,7 +33,7 @@ import {
 	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import {
@@ -45,19 +45,13 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import {
-	getClientIdFromUniqueId,
-	uniqueIDGenerator,
-	temporalIDGenerator,
-	uniqueIDRemover,
-} from '../attributes';
+import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
-import { LoopContext } from '../DC';
 
 /**
  * External dependencies
@@ -108,7 +102,6 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
-		uniqueID,
 	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
@@ -133,7 +126,7 @@ class MaxiBlockComponent extends Component {
 		this.areFontsLoaded = createRef(false);
 
 		const { clientId, attributes } = this.props;
-		const { uniqueID } = this.props.attributes;
+		const { uniqueID } = attributes;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -167,25 +160,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		const { clientId } = this.props;
-		const { uniqueID } = this.props.attributes;
-		if (!uniqueID.endsWith('-u')) {
-			console.log('Maxi Blocks: Updating uniqueID');
-			const oldID = uniqueID;
-			this.uniqueIDProcessor(uniqueID)
-				.then(newID => {
-					console.log('newID:');
-					console.log(newID);
-					this.props.attributes.uniqueID = newID;
-					dispatch('maxiBlocks/blocks').addBlock(
-						newID,
-						clientId,
-						this.rootSlot
-					);
-					this.uniqueIDProcessor(oldID, true);
-				})
-				.catch(err => console.error(err));
-		}
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -410,7 +384,8 @@ class MaxiBlockComponent extends Component {
 		if (!shouldDisplayStyles)
 			this.displayStyles(
 				this.props.deviceType !== prevProps.deviceType ||
-					this.props.baseBreakpoint !== prevProps.baseBreakpoint
+					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint)
 			);
 
 		if (this.maxiBlockDidUpdate)
@@ -460,16 +435,13 @@ class MaxiBlockComponent extends Component {
 
 			// CSSCache
 			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-
-			// DB
-			this.uniqueIDProcessor(uniqueID, true);
 		}
 
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
-	getRootEl() {
+	getRootEl(iframe) {
 		const { uniqueID } = this.props.attributes;
 
 		const getStylesWrapper = (element, onCreateWrapper) => {
@@ -487,7 +459,7 @@ class MaxiBlockComponent extends Component {
 			return wrapper;
 		};
 
-		const getPreviewWrapper = element => {
+		const getPreviewWrapper = (element, changeBreakpoint = true) => {
 			const elementHead = Array.from(
 				element.querySelectorAll('head')
 			).pop();
@@ -498,12 +470,14 @@ class MaxiBlockComponent extends Component {
 
 			elementBody.classList.add('maxi-blocks--active');
 
-			const width =
-				elementBody.querySelector('.is-root-container').offsetWidth;
-			elementBody.setAttribute(
-				'maxi-blocks-responsive',
-				getWinBreakpoint(width)
-			);
+			if (changeBreakpoint) {
+				const width =
+					elementBody.querySelector('.is-root-container').offsetWidth;
+				elementBody.setAttribute(
+					'maxi-blocks-responsive',
+					getWinBreakpoint(width)
+				);
+			}
 
 			return getStylesWrapper(elementHead, () => {
 				if (!element.getElementById('maxi-blocks-sc-vars-inline-css')) {
@@ -539,6 +513,12 @@ class MaxiBlockComponent extends Component {
 
 				wrapper = getStylesWrapper(iframeHead);
 			}
+		} else if (iframe) {
+			wrapper = getPreviewWrapper(iframe.contentDocument, false);
+			iframe.contentDocument.body.setAttribute(
+				'maxi-blocks-responsive',
+				document.querySelector('.is-tablet-preview') ? 's' : 'xs'
+			);
 		} else wrapper = getStylesWrapper(document.head);
 
 		if (
@@ -622,7 +602,7 @@ class MaxiBlockComponent extends Component {
 			relations: relationsRaw,
 		} = this.props.attributes;
 
-		const contextLoop = this.context?.contextLoop;
+		const { contextLoop } = this.props.contextLoopContext ?? {};
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -678,8 +658,8 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		const { clientId, name: blockName } = this.props;
 
-		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = temporalIDGenerator({
+		if (!getIsIDTrulyUnique(idToCheck)) {
+			const newUniqueID = uniqueIDGenerator({
 				blockName,
 				diff: 1,
 				clientId,
@@ -706,34 +686,6 @@ class MaxiBlockComponent extends Component {
 		return idToCheck;
 	}
 
-	async uniqueIDProcessor(idToCheck, remove = false) {
-		const { name: blockName } = this.props;
-
-		if (remove) {
-			await uniqueIDRemover(idToCheck);
-			return idToCheck;
-		}
-
-		if (!remove)
-			uniqueIDGenerator(blockName).then(newUniqueID => {
-				console.log('newUniqueID:');
-				console.log(newUniqueID);
-				propagateNewUniqueID(
-					idToCheck,
-					newUniqueID,
-					this.props.attributes['background-layers']
-				);
-
-				this.props.attributes.uniqueID = newUniqueID;
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-
-				return newUniqueID;
-			});
-	}
-
 	loadFonts() {
 		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
@@ -752,8 +704,11 @@ class MaxiBlockComponent extends Component {
 	 */
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
+		const iframe = document.querySelector(
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+		);
 
-		this.rootSlot = this.getRootEl();
+		this.rootSlot = this.getRootEl(iframe);
 
 		let obj;
 		let breakpoints;
@@ -786,6 +741,7 @@ class MaxiBlockComponent extends Component {
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
 						isPreview={this.isTemplatePartPreview}
+						isIframe={!!iframe}
 					/>
 				);
 
@@ -835,7 +791,5 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 }
-
-MaxiBlockComponent.contextType = LoopContext;
 
 export default MaxiBlockComponent;

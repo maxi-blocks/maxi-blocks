@@ -25,6 +25,7 @@ import bottomGapMigrator from './bottomGapMigrator';
 import transitionMigrator from './transitionMigrator';
 import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
 import IBLabelToIDMigrator from './IBLabelToIDMigrator';
+import uniqueIDMigrator from './uniqueIDMigrator';
 
 /**
  * External dependencies
@@ -124,6 +125,7 @@ const blockMigrator = blockMigratorProps => {
 		transitionMigrator,
 		fullWidthAttributeMigrator,
 		IBLabelToIDMigrator,
+		uniqueIDMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

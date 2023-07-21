@@ -1,20 +1,17 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import apiFetch from '@wordpress/api-fetch';
 
-const generateUniqueID = async blockName => {
-	const newID = await apiFetch({
-		path: `/maxi-blocks/v1.0/unique-id/${blockName}`,
-	});
-	return newID;
+import { v4 as uuidv4 } from 'uuid';
+
+const generateUniqueID = blockName => {
+	const name = blockName.replace('maxi-blocks/', '');
+	const uniquePart = uuidv4().split('-')[0];
+	return `${name}-${uniquePart}-u`;
 };
 
-const uniqueIDGenerator = async blockName => {
-	if (!blockName) return null;
-	const modifiedBlockName = blockName.replace('maxi-blocks/', '');
-	const newID = await generateUniqueID(modifiedBlockName);
-	return `${newID}`;
+const uniqueIDGenerator = ({ blockName }) => {
+	return generateUniqueID(blockName);
 };
 
 export default uniqueIDGenerator;

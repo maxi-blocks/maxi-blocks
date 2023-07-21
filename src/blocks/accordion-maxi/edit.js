@@ -29,15 +29,13 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 		const response = {
-			accordion: {
-				[uniqueID]: {
-					paneIcon: attributes['icon-content'],
-					paneIconActive: attributes['active-icon-content'],
-					accordionLayout: attributes.accordionLayout,
-					autoPaneClose: attributes.autoPaneClose,
-					isCollapsible: attributes.isCollapsible,
-					animationDuration: attributes.animationDuration,
-				},
+			[uniqueID]: {
+				paneIcon: attributes['icon-content'],
+				paneIconActive: attributes['active-icon-content'],
+				accordionLayout: attributes.accordionLayout,
+				autoPaneClose: attributes.autoPaneClose,
+				isCollapsible: attributes.isCollapsible,
+				animationDuration: attributes.animationDuration,
 			},
 		};
 

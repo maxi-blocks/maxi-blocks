@@ -35,18 +35,14 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 
 		return {
-			map: [
-				{
-					uniqueID: attributes.uniqueID,
-					...getGroupAttributes(attributes, [
-						'map',
-						'mapInteraction',
-						'mapMarker',
-						'mapPopup',
-						'mapPopupText',
-					]),
-				},
-			],
+			uniqueID: attributes.uniqueID,
+			...getGroupAttributes(attributes, [
+				'map',
+				'mapInteraction',
+				'mapMarker',
+				'mapPopup',
+				'mapPopupText',
+			]),
 		};
 	}
 

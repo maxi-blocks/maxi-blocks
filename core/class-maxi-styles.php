@@ -1185,15 +1185,20 @@ class MaxiBlocks_Styles
 
         }
 
-        $styles .= ' ' . $content_block['css_value'];
-        $prev_styles .= ' ' . $content_block['prev_css_value'];
+        if (isset($content_block['css_value'])) {
+            $styles .= ' ' . $content_block['css_value'];
+        }
 
-        if ($content_block['active_custom_data']) {
+        if (isset($content_block['prev_css_value'])) {
+            $prev_styles .= ' ' . $content_block['prev_css_value'];
+        }
+
+        if (isset($content_block['active_custom_data'])) {
             $this->process_custom_data($block, $unique_id, $active_custom_data_array);
         }
 
         // fonts
-        $fonts_json = $content_block['fonts_value'];
+        $fonts_json = $content_block['fonts_value'] ?? null;
         if($fonts_json !== '' && $fonts_json !== null) {
             $fonts_array = json_decode($fonts_json, true) ?? [];
         } else {

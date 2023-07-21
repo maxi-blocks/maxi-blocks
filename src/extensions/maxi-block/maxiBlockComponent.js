@@ -102,6 +102,7 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
+		uniqueID,
 	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);

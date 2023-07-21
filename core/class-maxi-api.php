@@ -350,8 +350,8 @@ if (!class_exists('MaxiBlocks_API')):
 
             $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-            write_log('$styles from post styles');
-            write_log($styles_arr);
+            // write_log('$styles from post styles');
+            // write_log($styles_arr);
             // $is_template = $data['isTemplate'];
             // $template_parts = $data['templateParts'];
 

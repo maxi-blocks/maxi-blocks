@@ -1644,8 +1644,8 @@ class MaxiBlocks_Styles
             // If the block name matches the current block type
             if ($block_name === $block_type) {
                 if($attr_group === 'accordion') {
-                    write_log('ACCORDION PANE');
-                    write_log(get_group_attributes($attributes, 'pane'));
+                    // write_log('ACCORDION PANE');
+                    // write_log(get_group_attributes($attributes, 'pane'));
                 }
                 switch ($attr_group) {
                     case 'accordion':

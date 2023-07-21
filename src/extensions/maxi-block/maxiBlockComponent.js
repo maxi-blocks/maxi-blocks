@@ -714,23 +714,24 @@ class MaxiBlockComponent extends Component {
 			return idToCheck;
 		}
 
-		uniqueIDGenerator(blockName).then(newUniqueID => {
-			propagateNewUniqueID(
-				idToCheck,
-				newUniqueID,
-				this.props.attributes['background-layers']
-			);
+		if (!remove)
+			uniqueIDGenerator(blockName).then(newUniqueID => {
+				console.log('newUniqueID:');
+				console.log(newUniqueID);
+				propagateNewUniqueID(
+					idToCheck,
+					newUniqueID,
+					this.props.attributes['background-layers']
+				);
 
-			this.props.attributes.uniqueID = newUniqueID;
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
+				this.props.attributes.uniqueID = newUniqueID;
+				this.props.attributes.customLabel = getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				);
 
-			return newUniqueID;
-		});
-
-		return idToCheck;
+				return newUniqueID;
+			});
 	}
 
 	loadFonts() {

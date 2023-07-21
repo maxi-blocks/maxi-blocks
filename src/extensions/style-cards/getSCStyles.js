@@ -440,9 +440,9 @@ const getWPNativeStyles = ({
 
 				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}
 					{${sentences?.join(' ')}}`;
-				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a:first-of-type, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a:first-of-type${
+				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a${
 					level === 'p'
-						? `, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a:first-of-type:not(.wp-element-button)`
+						? `, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a:not(.wp-element-button), ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} span`
 						: ''
 				} {${sentences?.join(' ')}}`;
 

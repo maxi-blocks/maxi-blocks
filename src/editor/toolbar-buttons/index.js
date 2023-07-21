@@ -77,8 +77,14 @@ wp.domReady(() => {
 			const toolbarButtonsWrapper = document.createElement('div');
 			toolbarButtonsWrapper.id = 'maxi-blocks__toolbar-buttons';
 
-			parentNode.appendChild(toolbarButtonsWrapper);
-
+			if (parentNode.children.length > 1) {
+				parentNode.insertBefore(
+					toolbarButtonsWrapper,
+					parentNode.children[1]
+				);
+			} else {
+				parentNode.appendChild(toolbarButtonsWrapper);
+			}
 			// check if createRoot is available (since React 18)
 			if (typeof createRoot === 'function') {
 				const root = createRoot(toolbarButtonsWrapper);

@@ -690,7 +690,7 @@ const ScrollEffectsControl = props => {
 									<ToggleSwitch
 										label={__(
 											'Simulate scroll effect live (test)',
-											'maxi-block'
+											'maxi-blocks'
 										)}
 										selected={isPreviewEnabled}
 										onChange={val => {

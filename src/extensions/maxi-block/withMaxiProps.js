@@ -163,7 +163,7 @@ const withMaxiProps = createHigherOrderComponent(
 									copyPasteMapping,
 									true,
 									currentBlock.name,
-									contextLoopContext.contextLoop?.[
+									contextLoopContext?.contextLoop?.[
 										'cl-status'
 									] && ['dc-id']
 								);

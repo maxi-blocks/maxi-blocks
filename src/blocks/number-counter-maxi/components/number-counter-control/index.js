@@ -118,7 +118,7 @@ const NumberCounterControl = props => {
 				</>
 			)}
 			<ToggleSwitch
-				label={__('Preview', 'maxi-block')}
+				label={__('Preview', 'maxi-blocks')}
 				selected={props['number-counter-preview']}
 				onChange={val =>
 					onChange({
@@ -356,7 +356,7 @@ const NumberCounterControl = props => {
 			)}
 			<ToggleSwitch
 				className='number-counter-circle-status'
-				label={__('Hide circle', 'maxi-block')}
+				label={__('Hide circle', 'maxi-blocks')}
 				selected={props['number-counter-circle-status']}
 				onChange={val => {
 					onChange({

@@ -95,7 +95,7 @@ const MaxiToolbar = memo(
 			name,
 			maxiSetAttributes,
 			onModalOpen,
-			// toggleHandlers,
+			// toggleHandlers, TODO: fix #4863
 			rowPattern,
 			prefix = '',
 			backgroundGlobalProps,

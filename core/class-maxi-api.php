@@ -350,8 +350,8 @@ if (!class_exists('MaxiBlocks_API')):
 
             $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-            // write_log('$styles from post styles');
-            // write_log($styles_arr);
+            write_log('$styles from post styles');
+            write_log($styles_arr);
             // $is_template = $data['isTemplate'];
             // $template_parts = $data['templateParts'];
 
@@ -363,7 +363,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
             $fonts = json_encode(array_merge_recursive(...$fonts_arr));
 
-            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
+            ['table' => $table, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
 
             foreach ($styles_arr as $id => $styles) {
                 $exists = $wpdb->get_results(

@@ -979,6 +979,8 @@ class MaxiBlocks_Styles
         // $template_id = $this->get_id(true);
         //    $templateContentAndMeta = $this->get_content_meta_fonts($template_id, true, 'maxi-blocks-styles-templates');
 
+        write_log('$contentMetaFonts[meta]');
+        write_log($contentMetaFonts['meta']);
         if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
             $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
             $this->process_scripts($contentMetaFonts['meta'], $contentMetaFonts['template_meta'], $templateContent);
@@ -1003,6 +1005,10 @@ class MaxiBlocks_Styles
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
             $templateMeta = $data['template_meta'] ?? null;
+            write_log('templateMeta');
+            write_log($templateMeta);
+            write_log('data meta');
+            write_log($data['meta']);
 
             return [
                 'content' => $data['content'],
@@ -1194,6 +1200,12 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['active_custom_data'])) {
+            write_log('ACD');
+            write_log($unique_id);
+            if($unique_id === 'number-counter-maxi-7803aea7-u') {
+                write_log('ACD for number-counter-maxi-7803aea7-u');
+                write_log($this->process_custom_data($block, $unique_id, $active_custom_data_array));
+            }
             $this->process_custom_data($block, $unique_id, $active_custom_data_array);
         }
 
@@ -1228,6 +1240,8 @@ class MaxiBlocks_Styles
 
         $block_name = $block['blockName'];
 
+
+
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
@@ -1237,7 +1251,7 @@ class MaxiBlocks_Styles
 
         if (!empty($block_meta)) {
             if (isset($active_custom_data_array[$block_name])) {
-                $active_custom_data_array[$block_name][] = [$unique_id => $block_meta];
+                $active_custom_data_array[$block_name] = array_merge($active_custom_data_array[$block_name], [$unique_id => $block_meta]);
             } else {
                 $active_custom_data_array[$block_name] = [$unique_id => $block_meta];
             }
@@ -1267,6 +1281,7 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
+        write_log('THIS');
 
         $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_status = 'publish'";
         $template_parts = $wpdb->get_results($query);
@@ -1277,6 +1292,8 @@ class MaxiBlocks_Styles
         }
 
         $blocks_post = parse_blocks($passed_content ?? $post->post_content);
+        write_log('blocks_post');
+        write_log($blocks_post);
 
         $blocks = array_merge_recursive($blocks_template, $blocks_post);
 
@@ -1648,10 +1665,6 @@ class MaxiBlocks_Styles
         foreach ($block_types as $block_type => $attr_group) {
             // If the block name matches the current block type
             if ($block_name === $block_type) {
-                if($attr_group === 'accordion') {
-                    // write_log('ACCORDION PANE');
-                    // write_log(get_group_attributes($attributes, 'pane'));
-                }
                 switch ($attr_group) {
                     case 'accordion':
                         $pane_icon = $attributes['icon-content'] ?? null;

@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { select } from '@wordpress/data';
+import { useContext, useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
@@ -20,6 +21,8 @@ import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
 import { getActiveTabName } from '../../extensions/inspector';
+import { getBlockPosition } from '../../extensions/repeater/utils';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -45,12 +48,16 @@ import './editor.scss';
  */
 const ScrollEffectsControl = props => {
 	const {
+		clientId,
 		className,
 		onChange,
 		breakpoint = 'general',
 		uniqueID,
 		depth,
 	} = props;
+
+	const repeaterContext = useContext(RepeaterContext);
+
 	const classes = classnames('maxi-scroll-effects-control', className);
 
 	const activeTabName = getActiveTabName(depth);
@@ -690,7 +697,7 @@ const ScrollEffectsControl = props => {
 									<ToggleSwitch
 										label={__(
 											'Simulate scroll effect live (test)',
-											'maxi-block'
+											'maxi-blocks'
 										)}
 										selected={isPreviewEnabled}
 										onChange={val => {
@@ -698,14 +705,67 @@ const ScrollEffectsControl = props => {
 												[`scroll-${type}-preview-status-general`]:
 													val,
 											});
-											val &&
-												applyEffect(
-													type,
-													uniqueID,
-													'Start'
-												);
-											!val &&
-												removeEffect(type, uniqueID);
+
+											const handlePreviewStatusChange =
+												uniqueIDToAffect => {
+													if (val) {
+														applyEffect(
+															type,
+															uniqueIDToAffect,
+															'Start'
+														);
+													} else {
+														removeEffect(
+															type,
+															uniqueIDToAffect
+														);
+													}
+												};
+
+											handlePreviewStatusChange(uniqueID);
+
+											if (
+												repeaterContext?.repeaterStatus
+											) {
+												const innerBlockPositions =
+													repeaterContext?.getInnerBlocksPositions?.();
+
+												const blockPosition =
+													getBlockPosition(
+														clientId,
+														innerBlockPositions
+													);
+
+												if (
+													innerBlockPositions?.[
+														blockPosition
+													]
+												) {
+													innerBlockPositions[
+														blockPosition
+													].forEach(blockClientId => {
+														if (
+															blockClientId ===
+															clientId
+														)
+															return;
+
+														const blockUniqueId =
+															select(
+																'core/block-editor'
+															).getBlock(
+																blockClientId
+															)?.attributes
+																?.uniqueID;
+
+														if (blockUniqueId) {
+															handlePreviewStatusChange(
+																blockUniqueId
+															);
+														}
+													});
+												}
+											}
 										}}
 									/>
 									<ScrollEffectUniqueControl

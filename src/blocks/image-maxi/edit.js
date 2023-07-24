@@ -12,6 +12,7 @@ import { createRef } from '@wordpress/element';
 import getStyles from './styles';
 import Inspector from './inspector';
 import {
+	getAttributeValue,
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
@@ -38,7 +39,7 @@ import withMaxiDC from '../../extensions/DC/withMaxiDC';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round, isNumber, uniqueId } from 'lodash';
+import { isEmpty, isNil, isNumber, round, toNumber, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -104,6 +105,24 @@ class edit extends MaxiBlockComponent {
 				SVGElement: resEl.outerHTML,
 				SVGData: resData,
 			});
+		}
+	}
+
+	maxiBlockDidUpdate() {
+		if (this.resizableObject.current) {
+			const imgWidth = getAttributeValue({
+				target: 'imgWidth',
+				props: this.props.attributes,
+			});
+			const resizableWidth = toNumber(
+				this.resizableObject.current.state.width
+			);
+
+			if (imgWidth !== resizableWidth) {
+				this.resizableObject.current.updateSize({
+					width: `${imgWidth}%`,
+				});
+			}
 		}
 	}
 

@@ -437,7 +437,7 @@ const HoverEffectControl = props => {
 						}
 					/>
 					<ToggleSwitch
-						label={__('Custom hover text', 'maxi-block')}
+						label={__('Custom hover text', 'maxi-blocks')}
 						selected={props['hover-title-typography-status']}
 						onChange={val =>
 							onChange({
@@ -487,7 +487,7 @@ const HoverEffectControl = props => {
 						}
 					/>
 					<ToggleSwitch
-						label={__('Custom content text', 'maxi-block')}
+						label={__('Custom content text', 'maxi-blocks')}
 						selected={props['hover-content-typography-status']}
 						onChange={val =>
 							onChange({
@@ -536,7 +536,7 @@ const HoverEffectControl = props => {
 						clientId={clientId}
 					/>
 					<ToggleSwitch
-						label={__('Custom border', 'maxi-block')}
+						label={__('Custom border', 'maxi-blocks')}
 						selected={props['hover-border-status']}
 						onChange={val =>
 							onChange({
@@ -564,7 +564,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__('Custom padding', 'maxi-block')}
+						label={__('Custom padding', 'maxi-blocks')}
 						selected={props['hover-padding-status']}
 						onChange={val =>
 							onChange({
@@ -583,7 +583,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__('Custom margin', 'maxi-block')}
+						label={__('Custom margin', 'maxi-blocks')}
 						selected={props['hover-margin-status']}
 						onChange={val =>
 							onChange({

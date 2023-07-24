@@ -128,19 +128,23 @@ const replaceColumnInnerBlocks = (
 		innerBlocks: newInnerBlocks,
 	};
 
-	goThroughMaxiBlocks(block => {
-		const blockPosition = findBlockPosition(block.clientId, newColumn);
+	goThroughMaxiBlocks(
+		block => {
+			const blockPosition = findBlockPosition(block.clientId, newColumn);
 
-		const oldBlock = findTarget(blockPosition, column);
+			const oldBlock = findTarget(blockPosition, column);
 
-		if (!oldBlock) {
-			return;
-		}
+			if (!oldBlock) {
+				return;
+			}
 
-		if (oldBlock.name === block.name) {
-			block.clientId = oldBlock.clientId;
-		}
-	}, newInnerBlocks);
+			if (oldBlock.name === block.name) {
+				block.clientId = oldBlock.clientId;
+			}
+		},
+		false,
+		newInnerBlocks
+	);
 
 	markNextChangeAsNotPersistent();
 	replaceInnerBlocks(columnClientId, newInnerBlocks, false);
@@ -260,17 +264,21 @@ const validateRowColumnsStructure = (
 
 		const columnStructure = [];
 
-		goThroughMaxiBlocks(block => {
-			if (isColumnToValidateBy) {
-				pushToStructure(block, columnToValidateByStructure);
+		goThroughMaxiBlocks(
+			block => {
+				if (isColumnToValidateBy) {
+					pushToStructure(block, columnToValidateByStructure);
 
-				return false;
-			}
+					return false;
+				}
 
-			pushToStructure(block, columnStructure);
+				pushToStructure(block, columnStructure);
 
-			return null;
-		}, columnInnerBlocks);
+				return null;
+			},
+			false,
+			columnInnerBlocks
+		);
 
 		if (isColumnToValidateBy) {
 			return null;
@@ -300,6 +308,7 @@ const validateRowColumnsStructure = (
 					innerBlocksPositions,
 					columnToValidateByIndex
 				),
+			false,
 			columnInnerBlocks
 		);
 

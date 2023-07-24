@@ -18,6 +18,7 @@ export { default as marginPadding } from './inspector-margin-padding';
 export { default as opacity } from './inspector-opacity';
 export { default as overflow } from './inspector-overflow';
 export { default as position } from './inspector-position';
+export { default as prompt } from './inspector-prompt';
 export { default as relation } from './inspector-relation';
 export { default as responsive } from './inspector-responsive';
 export { default as responsiveInfoBox } from './inspector-responsive-info-box';

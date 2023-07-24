@@ -148,6 +148,7 @@ const attributes = {
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
 	/**

@@ -21,6 +21,7 @@ import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 import getDCValues from './getDCValues';
 import LoopContext from './loopContext';
+import { linkFields } from './constants';
 
 /**
  * External dependencies
@@ -30,7 +31,7 @@ import { isNil } from 'lodash';
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { attributes, name, setAttributes } = ownProps;
+			const { attributes, name, setAttributes, clientId } = ownProps;
 
 			const contextLoop = useContext(LoopContext)?.contextLoop;
 
@@ -130,7 +131,10 @@ const withMaxiDC = createHigherOrderComponent(
 					const newLinkSettings =
 						ownProps.attributes.linkSettings ?? {};
 					let updateLinkSettings = false;
-					const dcLink = await getDCLink(lastDynamicContentProps);
+					const dcLink = await getDCLink(
+						lastDynamicContentProps,
+						clientId
+					);
 					const isSameLink = dcLink === newLinkSettings.url;
 
 					if (
@@ -152,12 +156,13 @@ const withMaxiDC = createHigherOrderComponent(
 
 					if (!isImageMaxi) {
 						let newContent = await getDCContent(
-							lastDynamicContentProps
+							lastDynamicContentProps,
+							clientId
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
 							type === 'posts' &&
-							['categories', 'tags'].includes(field);
+							linkFields.includes(field);
 
 						if (!newContainsHTML) {
 							newContent = sanitizeDCContent(newContent);
@@ -184,7 +189,8 @@ const withMaxiDC = createHigherOrderComponent(
 						}
 					} else {
 						const mediaContent = await getDCMedia(
-							lastDynamicContentProps
+							lastDynamicContentProps,
+							clientId
 						);
 
 						if (isNil(mediaContent)) {

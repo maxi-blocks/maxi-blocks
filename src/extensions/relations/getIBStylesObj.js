@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes, styleCleaner } from '../styles';
 import { getSelectedIBSettings } from './utils';
 
 const getIBStylesObj = ({
@@ -22,19 +22,23 @@ const getIBStylesObj = ({
 		prefix
 	);
 
-	return selectedSettings?.helper({
-		obj: newGroupAttributes,
-		isIB: true,
-		prefix,
-		blockStyle: blockAttributes.blockStyle,
-		breakpoint,
-		blockAttributes: {
-			...blockAttributes,
-			...attributes,
+	return styleCleaner({
+		target: {
+			result: selectedSettings?.helper({
+				obj: newGroupAttributes,
+				isIB: true,
+				prefix,
+				blockStyle: blockAttributes.blockStyle,
+				breakpoint,
+				blockAttributes: {
+					...blockAttributes,
+					...attributes,
+				},
+				target: selectedSettings?.target,
+				clientId,
+			}),
 		},
-		target: selectedSettings?.target,
-		clientId,
-	});
+	}).target.result;
 };
 
 export default getIBStylesObj;

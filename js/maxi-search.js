@@ -61,6 +61,22 @@ const onRevealEvent = (
 
 const search = () => {
 	Object.entries(maxiSearch[0]).forEach(([uniqueID, json]) => {
+		let parsedJson;
+
+		if (typeof json === 'string') {
+			try {
+				parsedJson = JSON.parse(json);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				return;
+			}
+		} else if (typeof json === 'object' && json !== null) {
+			parsedJson = json;
+		} else {
+			console.error('json is neither an object nor a string');
+			return;
+		}
+
 		const {
 			buttonIconContent,
 			buttonCloseIconContent,
@@ -69,7 +85,7 @@ const search = () => {
 			buttonSkin,
 			iconRevealAction,
 			skin,
-		} = JSON.parse(json);
+		} = parsedJson;
 
 		const searchBlock = document.getElementById(uniqueID);
 

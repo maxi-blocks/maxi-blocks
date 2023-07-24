@@ -62,8 +62,8 @@ const onRevealEvent = (
 const search = () => {
 	Object.entries(maxiSearch[0]).forEach(([uniqueID, json]) => {
 		const {
-			'icon-content': buttonIconContent,
-			'close-icon-content': buttonCloseIconContent,
+			buttonIconContent,
+			buttonCloseIconContent,
 			buttonContent,
 			buttonContentClose,
 			buttonSkin,

@@ -190,6 +190,8 @@ class MaxiBlocks_Styles
                         plugins_url($js_script_path, dirname(__FILE__))
                     );
 
+
+
                     wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
                 }
             }
@@ -976,11 +978,6 @@ class MaxiBlocks_Styles
         $post_id = $this->get_id();
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
-        // $template_id = $this->get_id(true);
-        //    $templateContentAndMeta = $this->get_content_meta_fonts($template_id, true, 'maxi-blocks-styles-templates');
-
-        write_log('$contentMetaFonts[meta]');
-        write_log($contentMetaFonts['meta']);
         if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
             $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
             $this->process_scripts($contentMetaFonts['meta'], $contentMetaFonts['template_meta'], $templateContent);
@@ -1005,10 +1002,6 @@ class MaxiBlocks_Styles
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
             $templateMeta = $data['template_meta'] ?? null;
-            write_log('templateMeta');
-            write_log($templateMeta);
-            write_log('data meta');
-            write_log($data['meta']);
 
             return [
                 'content' => $data['content'],
@@ -1062,7 +1055,9 @@ class MaxiBlocks_Styles
                 $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
             }
 
-            $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+            $meta = array_merge($post_meta, $block_meta, $template_meta, $template_parts_meta);
+            write_log('$meta');
+            write_log($meta);
             $match = false;
             $block_name = '';
 
@@ -1200,12 +1195,6 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['active_custom_data'])) {
-            write_log('ACD');
-            write_log($unique_id);
-            if($unique_id === 'number-counter-maxi-7803aea7-u') {
-                write_log('ACD for number-counter-maxi-7803aea7-u');
-                write_log($this->process_custom_data($block, $unique_id, $active_custom_data_array));
-            }
             $this->process_custom_data($block, $unique_id, $active_custom_data_array);
         }
 
@@ -1239,8 +1228,6 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         $block_name = $block['blockName'];
-
-
 
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
@@ -1281,7 +1268,6 @@ class MaxiBlocks_Styles
         }
 
         global $wpdb;
-        write_log('THIS');
 
         $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_status = 'publish'";
         $template_parts = $wpdb->get_results($query);
@@ -1292,8 +1278,6 @@ class MaxiBlocks_Styles
         }
 
         $blocks_post = parse_blocks($passed_content ?? $post->post_content);
-        write_log('blocks_post');
-        write_log($blocks_post);
 
         $blocks = array_merge_recursive($blocks_template, $blocks_post);
 

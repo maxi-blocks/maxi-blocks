@@ -24,7 +24,7 @@ import './editor.scss';
 import Button from '../button';
 
 const configuration = new Configuration({
-	apiKey: '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',
+	apiKey: '#######',
 });
 
 export const openAI = new OpenAIApi(configuration);

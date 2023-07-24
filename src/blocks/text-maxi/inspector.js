@@ -51,6 +51,9 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
+									...inspectorTabs.prompt({
+										props,
+									}),
 									deviceType === 'general' &&
 										!isList && {
 											label: __(

@@ -528,7 +528,7 @@ const getWPNativeStyles = ({
 				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
 		]?.join(' ')}}`;
 
-		if (addedResponse[`--maxi-${style}-button-color-hover`]) {
+		if (styleCard[`--maxi-${style}-button-color-hover`]) {
 			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
 				color: var(--maxi-${style}-button-color-hover);
 			}`;

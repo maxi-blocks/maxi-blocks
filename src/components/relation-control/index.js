@@ -34,7 +34,7 @@ import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisp
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
 
 /**
  * Styles
@@ -165,7 +165,6 @@ const RelationControl = props => {
 		const prefix = selectedSettings?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = getCleanDisplayIBAttributes(
 			blockAttributes,
 			item.attributes
@@ -197,7 +196,7 @@ const RelationControl = props => {
 			});
 
 			resetTargets.forEach(target => {
-				delete newAttributes[target];
+				newAttributes[target] = undefined;
 			});
 
 			return newAttributes;
@@ -236,10 +235,13 @@ const RelationControl = props => {
 					stylesObj: getIBStylesObj({
 						clientId,
 						sid: item.sid,
-						attributes: {
-							...cleanAttributesObject,
-							...tempAttributes,
-						},
+						attributes: omitBy(
+							{
+								...cleanAttributesObject,
+								...tempAttributes,
+							},
+							val => val === undefined
+						),
 						blockAttributes,
 						breakpoint: deviceType,
 					}),
@@ -248,10 +250,13 @@ const RelationControl = props => {
 				});
 
 				onChangeRelation(relations, item.id, {
-					attributes: {
-						...item.attributes,
-						...cleanAttributesObject,
-					},
+					attributes: omitBy(
+						{
+							...item.attributes,
+							...cleanAttributesObject,
+						},
+						val => val === undefined
+					),
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

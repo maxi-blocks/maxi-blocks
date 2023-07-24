@@ -6,8 +6,14 @@ import { resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { orderByRelationTypes, relationTypes } from './constants';
 import getDCErrors from './getDCErrors';
+import { getDCOrder } from './utils';
+import { orderRelations, orderTypes, relationTypes } from './constants';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 const kindDictionary = {
 	posts: 'postType',
@@ -26,9 +32,34 @@ const nameDictionary = {
 	tags: 'post_tag',
 };
 
-const getDCEntity = async dataRequest => {
-	const { type, id, error, show, relation, author, order, accumulator } =
-		dataRequest;
+const randomEntityIndexes = {};
+
+// Gets a random entity from a list of entities and stores the index per block
+const getRandomEntity = (entities, clientId) => {
+	if (
+		isNil(randomEntityIndexes[clientId]) ||
+		randomEntityIndexes[clientId] > entities.length
+	) {
+		randomEntityIndexes[clientId] = Math.floor(
+			Math.random() * entities.length
+		);
+	}
+
+	return entities[randomEntityIndexes[clientId]];
+};
+
+const getDCEntity = async (dataRequest, clientId) => {
+	const {
+		type,
+		id,
+		error,
+		show,
+		relation,
+		author,
+		orderBy,
+		order,
+		accumulator,
+	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
 
@@ -42,13 +73,14 @@ const getDCEntity = async dataRequest => {
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			const randomUser = await getUsers({
-				who: 'authors',
-				per_page: 100,
-				hide_empty: false,
-			});
-
-			return randomUser[Math.floor(Math.random() * randomUser.length)];
+			return getRandomEntity(
+				await getUsers({
+					who: 'authors',
+					per_page: 100,
+					hide_empty: false,
+				}),
+				clientId
+			);
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
@@ -68,21 +100,20 @@ const getDCEntity = async dataRequest => {
 		return user;
 	}
 	if (relationTypes.includes(type) && relation === 'random') {
-		const randomEntity = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
-			{
-				per_page: 100,
-				hide_empty: false,
-			}
+		return getRandomEntity(
+			await resolveSelect('core').getEntityRecords(
+				kindDictionary[type],
+				nameDictionary[type],
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			),
+			clientId
 		);
-
-		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
-	if (
-		orderByRelationTypes.includes(type) &&
-		['by-date', 'alphabetical'].includes(relation)
-	) {
+
+	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
 		const entities = await resolveSelect('core').getEntityRecords(
 			kindDictionary[type],
 			nameDictionary[type],
@@ -90,7 +121,10 @@ const getDCEntity = async dataRequest => {
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,
-				orderby: relation === 'by-date' ? 'date' : 'title',
+				orderby: getDCOrder(relation, orderBy),
+				...(relation === 'by-category' && { categories: id }),
+				...(relation === 'by-author' && { author: id }),
+				...(relation === 'by-tag' && { tags: id }),
 			}
 		);
 

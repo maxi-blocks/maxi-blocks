@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+console.log('maxiNumberCounter', maxiNumberCounter);
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
 	const { breakpoints } = JSON.parse(maxiNumberCounter[0][numberID]);

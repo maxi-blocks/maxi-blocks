@@ -25,6 +25,7 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
+		console.log('SAVE_CUSTOM_DATA');
 		entityRecordsWrapper(async ({ key: id, name }) => {
 			const blockData = Object.entries(customData);
 			const filteredCustomData = {};
@@ -39,17 +40,21 @@ const controls = {
 				})
 			);
 
-			await apiFetch({
-				path: '/maxi-blocks/v1.0/custom-data',
-				method: 'POST',
-				data: {
-					data: JSON.stringify(filteredCustomData),
-					update: isUpdate,
-					isTemplate: getIsSiteEditor(),
-				},
-			}).catch(err => {
-				console.error('Error saving Custom Data. Code error: ', err);
-			});
+			if (!isEmpty(filteredCustomData))
+				await apiFetch({
+					path: '/maxi-blocks/v1.0/custom-data',
+					method: 'POST',
+					data: {
+						data: JSON.stringify(filteredCustomData),
+						update: isUpdate,
+						isTemplate: getIsSiteEditor(),
+					},
+				}).catch(err => {
+					console.error(
+						'Error saving Custom Data. Code error: ',
+						err
+					);
+				});
 		});
 	},
 };

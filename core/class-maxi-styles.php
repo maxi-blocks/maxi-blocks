@@ -1286,6 +1286,44 @@ class MaxiBlocks_Styles
             return [];
         }
 
+        // Reusable blocks
+        // Filter blocks to get only reusable blocks and extract their IDs
+        $reusable_block_ids = array_map(
+            function ($block) {
+                return $block['attrs']['ref'];
+            },
+            array_filter(
+                $blocks,
+                function ($block) {
+                    return $block['blockName'] === 'core/block' && !empty($block['attrs']['ref']);
+                }
+            )
+        );
+
+        // Create an empty array to collect all parsed blocks
+        $all_parsed_blocks = array();
+
+        if(!empty($reusable_block_ids)) {
+            // Remove duplicates
+            $reusable_block_ids = array_unique($reusable_block_ids);
+
+            // Fetch and parse each reusable block
+            foreach ($reusable_block_ids as $block_id) {
+                $block = get_post($block_id);
+                if ($block) {
+                    $parsed_blocks = parse_blocks($block->post_content);
+                }
+
+                // Merge the parsed blocks into the collector array
+                $all_parsed_blocks = array_merge($all_parsed_blocks, $parsed_blocks);
+
+            }
+        }
+
+        if(!empty($all_parsed_blocks)) {
+            $blocks = array_merge_recursive($blocks, $all_parsed_blocks);
+        }
+
         $styles = '';
         $prev_styles = '';
         $active_custom_data_array = [];

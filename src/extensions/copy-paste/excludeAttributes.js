@@ -11,6 +11,7 @@ import { cloneDeep, isEqual, isNil } from 'lodash';
 const GLOBAL_EXCLUDE = [
 	'uniqueID',
 	'customLabel',
+	'dc-status',
 	'dc-id',
 	'cl-id',
 	'dc-accumulator',
@@ -33,6 +34,7 @@ const ALL_TIME_EXCLUDE = [
 	'embedUrl',
 	'linkSettings',
 	'custom-formats',
+	'dc-status',
 	'dc-accumulator',
 	'cl-id',
 	'cl-accumulator',

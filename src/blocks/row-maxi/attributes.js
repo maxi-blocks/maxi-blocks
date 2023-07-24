@@ -15,6 +15,7 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.rowPattern,
+	...attributesData.repeater,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,

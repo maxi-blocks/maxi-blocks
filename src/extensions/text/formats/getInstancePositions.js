@@ -16,6 +16,8 @@ const getInstancePositions = (
 	formatClassName,
 	formatAttributes
 ) => {
+	if (!formatValue?.formats) return [];
+
 	const locatedInstances = formatValue.formats.map((formatEl, i) => {
 		if (
 			formatEl.some(format => {

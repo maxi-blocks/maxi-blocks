@@ -46,6 +46,7 @@
 		"leaflet": "^1.8.0",
 		"masonry-layout": "^4.2.2",
 		"moment-parseformat": "^4.0.0",
+		"openai": "^3.3.0",
 		"re-resizable": "^6.9.9",
 		"react-accessible-accordion": "^5.0.0",
 		"react-color": "^2.19.3",

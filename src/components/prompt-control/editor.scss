@@ -1,0 +1,8 @@
+.maxi-prompt-control {
+	&__textarea {
+		.maxi-base-control__field {
+			flex-direction: column;
+			align-items: baseline;
+		}
+	}
+}

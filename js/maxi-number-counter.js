@@ -1,8 +1,22 @@
 /* eslint-disable no-undef */
-console.log('maxiNumberCounter', maxiNumberCounter);
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
-	const { breakpoints } = JSON.parse(maxiNumberCounter[0][numberID]);
+	let breakpoints;
+
+	if (typeof maxiNumberCounter[0][numberID] === 'string') {
+		try {
+			const parsed = JSON.parse(maxiNumberCounter[0][numberID]);
+			breakpoints = parsed.breakpoints;
+		} catch (e) {
+			console.error('Invalid JSON string', e);
+		}
+	} else if (
+		typeof maxiNumberCounter[0][numberID] === 'object' &&
+		maxiNumberCounter[0][numberID] !== null
+	) {
+		breakpoints = maxiNumberCounter[0][numberID].breakpoints;
+	}
+
 	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
 	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
@@ -41,12 +55,23 @@ const numberCounterEffect = () => {
 		if (!maxiNumberCounter) return;
 		const numberID = elem.id;
 
-		const numberData =
-			// eslint-disable-next-line no-undef
-			maxiNumberCounter[0][numberID] !== undefined
-				? // eslint-disable-next-line no-undef
-				  JSON.parse(maxiNumberCounter[0][numberID])
-				: null;
+		let numberData;
+
+		if (typeof maxiNumberCounter[0][numberID] === 'string') {
+			try {
+				numberData = JSON.parse(maxiNumberCounter[0][numberID]);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				numberData = null;
+			}
+		} else if (
+			typeof maxiNumberCounter[0][numberID] === 'object' &&
+			maxiNumberCounter[0][numberID] !== null
+		) {
+			numberData = maxiNumberCounter[0][numberID];
+		} else {
+			numberData = null;
+		}
 
 		if (numberData !== null) {
 			// Number Counter

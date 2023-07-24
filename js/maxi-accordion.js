@@ -1,16 +1,40 @@
+/* eslint-disable no-undef */
 class Accordion {
 	constructor(el) {
 		this.openPanes = [];
 		this.accordion = el;
 		this.uniqueID = el.id;
+
+		let parsedMaxiAccordion;
+
+		if (typeof maxiAccordion[0][this.uniqueID] === 'string') {
+			try {
+				parsedMaxiAccordion = JSON.parse(
+					maxiAccordion[0][this.uniqueID]
+				);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				return;
+			}
+		} else if (
+			typeof maxiAccordion[0][this.uniqueID] === 'object' &&
+			maxiAccordion[0][this.uniqueID] !== null
+		) {
+			parsedMaxiAccordion = maxiAccordion[0][this.uniqueID];
+		} else {
+			console.error(
+				'maxiAccordion[0][this.uniqueID] is neither an object nor a string'
+			);
+			return;
+		}
 		({
 			paneIcon: this.paneIcon,
 			paneIconActive: this.paneIconActive,
 			accordionLayout: this.accordionLayout,
 			autoPaneClose: this.autoPaneClose,
 			isCollapsible: this.isCollapsible,
-			// eslint-disable-next-line no-undef
-		} = JSON.parse(maxiAccordion[0][this.uniqueID]));
+		} = parsedMaxiAccordion);
+
 		this.panes = Array.from(
 			el.querySelectorAll(
 				`.maxi-pane-block[data-accordion="${this.uniqueID}"]`
@@ -39,10 +63,12 @@ class Accordion {
 		});
 	}
 
+	/* eslint-disable class-methods-use-this */
 	cleanAnimationStyles(contentWrapper) {
 		contentWrapper.style.overflow = null;
 		contentWrapper.style.maxHeight = null;
 	}
+	/* eslint-enable class-methods-use-this */
 
 	triggerAnimation(pane, isClose = false) {
 		const contentWrapper = pane.querySelector(

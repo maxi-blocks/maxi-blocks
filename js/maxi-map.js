@@ -1,11 +1,38 @@
+/* eslint-disable no-undef */
 window.onload = () => {
 	const apiKey = maxiMap[1];
 	const mapItems = [];
 
 	for (const key in maxiMap[0]) {
-		const obj = JSON.parse(maxiMap[0][key]);
-		obj.id = key; // Save the key (map id) in the object
-		mapItems.push(obj);
+		// Filtering unwanted properties from the prototype
+		if (!Object.prototype.hasOwnProperty.call(maxiMap[0], key)) {
+			console.warn('Skipping prototype property', key);
+		} else {
+			let obj;
+
+			if (typeof maxiMap[0][key] === 'string') {
+				try {
+					obj = JSON.parse(maxiMap[0][key]);
+				} catch (e) {
+					console.error('Invalid JSON string', e);
+				}
+			} else if (
+				typeof maxiMap[0][key] === 'object' &&
+				maxiMap[0][key] !== null
+			) {
+				obj = maxiMap[0][key];
+			} else {
+				console.error(
+					'The value is neither an object nor a string',
+					maxiMap[0][key]
+				);
+			}
+
+			if (obj) {
+				obj.id = key; // Save the key (map id) in the object
+				mapItems.push(obj);
+			}
+		}
 	}
 
 	const isGoogleProvider = mapItems.some(

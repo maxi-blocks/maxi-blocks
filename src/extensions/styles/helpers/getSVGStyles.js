@@ -205,9 +205,9 @@ const getSVGPathStrokeStyles = (
 		response[breakpoint] = {};
 
 		let linePrefix = '';
-
 		switch (prefix) {
 			case 'icon-':
+			case 'close-icon-':
 			case 'active-icon-':
 			case 'navigation-arrow-both-icon-':
 			case 'navigation-dot-icon-':
@@ -286,7 +286,6 @@ export const getSVGStyles = ({
 		useIconColor
 	);
 	const pathStyles = getSVGPathStyles(obj, prefix, isHover);
-
 	const response = {
 		...(iconType !== 'line' && {
 			[` ${target} svg[data-fill]:not([fill^="none"])`]: pathFillStyles,

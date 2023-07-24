@@ -18,11 +18,20 @@
 				border-color: #ff4a17 !important;
 			}
 		}
+
+		&.maxi-block--repeater {
+			&.has-child-selected {
+				&::after {
+					opacity: 1;
+					border-color: #7a00df !important;
+				}
+			}
+		}
 	}
 }
 
-.maxi-column-block{
-	& > .wp-block{
+.maxi-column-block {
+	& > .wp-block {
 		width: 100%;
 	}
 }

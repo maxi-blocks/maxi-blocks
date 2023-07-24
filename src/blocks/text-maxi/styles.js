@@ -699,7 +699,7 @@ const getStyles = props => {
 							]),
 						},
 						[
-							`.maxi-text-block__dc.maxi-block--has-link ${element}.maxi-text-block__content`,
+							`.maxi-block--has-link ${element}.maxi-text-block__content`,
 						],
 						props.blockStyle
 					),

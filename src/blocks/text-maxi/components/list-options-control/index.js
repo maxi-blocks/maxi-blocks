@@ -46,6 +46,11 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
+	const isSVGMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		listStyleCustom.includes('</svg>');
 	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
 		(listStyleCustom?.includes('<svg ') && 'icon') ||
@@ -345,7 +350,11 @@ const ListOptionsControl = props => {
 				}}
 			/>
 			<AdvancedNumberControl
-				label={__('Marker size', 'maxi-blocks')}
+				label={
+					isSVGMarker
+						? __('Marker width', 'maxi-blocks')
+						: __('Marker size', 'maxi-blocks')
+				}
 				className='maxi-text-inspector__list-marker-size'
 				value={getLastBreakpointAttribute({
 					target: 'list-marker-size',
@@ -401,6 +410,48 @@ const ListOptionsControl = props => {
 					});
 				}}
 			/>
+			{isSVGMarker && (
+				<AdvancedNumberControl
+					label={__('Marker height', 'maxi-blocks')}
+					className='maxi-text-inspector__list-marker-height'
+					placeholder={getLastBreakpointAttribute({
+						target: 'list-marker-height',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					value={attributes[`list-marker-height-${deviceType}`]}
+					onChangeValue={val =>
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]: val,
+						})
+					}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'list-marker-height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					onChangeUnit={val =>
+						maxiSetAttributes({
+							[`list-marker-height-unit-${deviceType}`]: val,
+						})
+					}
+					onReset={() => {
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-${deviceType}`
+								),
+							[`list-marker-height-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-unit-${deviceType}`
+								),
+							isReset: true,
+						});
+					}}
+					allowedUnits={['px', 'em', 'vw', '%']}
+				/>
+			)}
 			<AdvancedNumberControl
 				label={__('Marker line-height', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-line-height'
@@ -440,6 +491,63 @@ const ListOptionsControl = props => {
 					});
 				}}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
+			/>
+			<AdvancedNumberControl
+				label={__('Marker vertical offset', 'maxi-blocks')}
+				className='maxi-text-inspector__list-marker-offset'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-marker-vertical-offset-${deviceType}`]}
+				onChangeValue={val =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]: val,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-${deviceType}`
+							),
+						[`list-marker-vertical-offset-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+				minMaxSettings={{
+					px: {
+						min: -999,
+						max: 999,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
 			/>
 			<AdvancedNumberControl
 				label={__('Marker indent', 'maxi-blocks')}

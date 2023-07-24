@@ -13,6 +13,7 @@ import Inspector from './inspector';
 import { Toolbar } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { withMaxiContextLoop } from '../../extensions/DC';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
@@ -526,4 +527,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withInstanceId, withMaxiProps)(edit);
+export default withMaxiContextLoop(
+	compose(withInstanceId, withMaxiProps)(edit)
+);

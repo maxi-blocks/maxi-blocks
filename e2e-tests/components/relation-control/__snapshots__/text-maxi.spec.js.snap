@@ -6,6 +6,7 @@ Array [
     "action": "hover",
     "attributes": Object {
       "text-alignment-general": "right",
+      "text-alignment-xl": "right",
     },
     "css": Object {
       "general": Object {

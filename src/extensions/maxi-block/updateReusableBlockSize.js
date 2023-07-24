@@ -11,13 +11,6 @@ const updateReusableBlockSize = (target, uniqueID, clientId) => {
 	sizeElement.style =
 		'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
 	target.parentNode.insertAdjacentElement('afterend', sizeElement);
-
-	const widthObserver = new ResizeObserver(entries => {
-		target.style.width = `${entries[0].contentRect.width}px`;
-	});
-	widthObserver.observe(sizeElement);
-
-	return widthObserver;
 };
 
 export default updateReusableBlockSize;

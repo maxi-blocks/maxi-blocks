@@ -6,10 +6,15 @@ import columnTemplates from './columnTemplates';
 /**
  * Get templates based on the number of columns and device
  *
- * @param {Integer} columnsNumber Number of columns
+ * @param {boolean} onlyEqualColumns Whether to return only templates with equal columns
+ * @param {Integer} columnsNumber    Number of columns
  * @return {Array} Array of templates for the corresponding columns number
  */
-function getTemplates(deviceType = 'general', columnsNumber = undefined) {
+function getTemplates(
+	onlyEqualColumns = false,
+	deviceType = 'general',
+	columnsNumber = undefined
+) {
 	const responsiveSnappingScreens = ['m', 's', 'xs'];
 
 	const {
@@ -24,62 +29,61 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 		moreThanEightColumns,
 	} = columnTemplates;
 
-	switch (columnsNumber) {
-		case 1:
-			return oneColumn.default.concat(oneColumn.responsive);
+	const getResponsiveOrDefault = columnObject => {
+		if (responsiveSnappingScreens.includes(deviceType)) {
+			return columnObject.default.concat(columnObject.responsive);
+		}
+		return columnObject.default;
+	};
 
-		case 2:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return twoColumns.default.concat(twoColumns.responsive);
-			}
-			return columnTemplates.twoColumns.default;
+	const getTemplatesByColumnsNumber = () => {
+		switch (columnsNumber) {
+			case 1:
+				return oneColumn.default.concat(oneColumn.responsive);
+			case 2:
+				return getResponsiveOrDefault(twoColumns);
+			case 3:
+				return getResponsiveOrDefault(threeColumns);
+			case 4:
+				return getResponsiveOrDefault(fourColumns);
+			case 5:
+				return getResponsiveOrDefault(fiveColumns);
+			case 6:
+				return getResponsiveOrDefault(sixColumns);
+			case 7:
+				return getResponsiveOrDefault(sevenColumns);
+			case 8:
+				return getResponsiveOrDefault(eightColumns);
+			case undefined:
+				return oneColumn.default.concat(
+					twoColumns.default,
+					threeColumns.default,
+					fourColumns.default,
+					fiveColumns.default,
+					sixColumns.default,
+					sevenColumns.default,
+					eightColumns.default
+				);
+			default:
+				return moreThanEightColumns.default;
+		}
+	};
 
-		case 3:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return threeColumns.default.concat(threeColumns.responsive);
-			}
-			return columnTemplates.threeColumns.default;
+	let templates = getTemplatesByColumnsNumber();
 
-		case 4:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return fourColumns.default.concat(fourColumns.responsive);
+	if (onlyEqualColumns) {
+		templates = templates.filter(template => {
+			if (template.isMoreThanEightColumns) {
+				return true;
 			}
-			return fourColumns.default;
 
-		case 5:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return fiveColumns.default.concat(fiveColumns.responsive);
-			}
-			return fiveColumns.default;
-		case 6:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return sixColumns.default.concat(sixColumns.responsive);
-			}
-			return sixColumns.default;
-		case 7:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return sevenColumns.default.concat(sevenColumns.responsive);
-			}
-			return sevenColumns.default;
-		case 8:
-			if (responsiveSnappingScreens.includes(deviceType)) {
-				return eightColumns.default.concat(eightColumns.responsive);
-			}
-			return eightColumns.default;
-
-		case undefined:
-			return oneColumn.default.concat(
-				twoColumns.default,
-				threeColumns.default,
-				fourColumns.default,
-				fiveColumns.default,
-				sixColumns.default,
-				sevenColumns.default,
-				eightColumns.default
-			);
-		default:
-			return moreThanEightColumns.default;
+			const { sizes } = template;
+			const firstSize = sizes[0];
+			return sizes.every(size => size === firstSize);
+		});
 	}
+
+	return templates;
 }
 
 export default getTemplates;

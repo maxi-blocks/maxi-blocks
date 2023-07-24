@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { Button, Icon } from '../../../../components';
 import { getTemplates } from '../../../../extensions/column-templates';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
 
 /**
@@ -16,7 +17,15 @@ import loadColumnsTemplate from '../../../../extensions/column-templates/loadCol
  */
 import { uniqueId } from 'lodash';
 
-const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
+const RowBlockTemplate = ({
+	clientId,
+	maxiSetAttributes,
+	deviceType,
+	repeaterStatus,
+	repeaterRowClientId,
+	innerBlockPositions,
+	getInnerBlocksPositions,
+}) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
@@ -29,7 +38,7 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 				onClick={() => selectBlock(clientId)}
 				key={`maxi-row-block--${clientId}`}
 			>
-				{getTemplates().map(template => {
+				{getTemplates(repeaterStatus).map(template => {
 					return (
 						<Button
 							key={uniqueId(`maxi-row-block--${clientId}--`)}
@@ -44,6 +53,33 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 									clientId,
 									deviceType
 								);
+
+								if (
+									repeaterStatus &&
+									clientId !== repeaterRowClientId
+								) {
+									const innerBlockPositions =
+										getInnerBlocksPositions();
+
+									const parentRepeaterColumnClientId = select(
+										'core/block-editor'
+									)
+										.getBlockParentsByBlockName(
+											clientId,
+											'maxi-blocks/column-maxi'
+										)
+										.find(columnClientId =>
+											innerBlockPositions[[-1]].includes(
+												columnClientId
+											)
+										);
+
+									validateRowColumnsStructure(
+										repeaterRowClientId,
+										innerBlockPositions,
+										parentRepeaterColumnClientId
+									);
+								}
 							}}
 						>
 							<Icon

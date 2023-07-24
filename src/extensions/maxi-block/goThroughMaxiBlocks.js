@@ -8,9 +8,11 @@ import { select } from '@wordpress/data';
  */
 import { createTemplatePartId } from '../fse';
 
-const goThroughMaxiBlocks = (callback, goThroughAllBlocks = false) => {
-	const blocks = select('core/block-editor').getBlocks();
-
+const goThroughMaxiBlocks = (
+	callback,
+	goThroughAllBlocks = false,
+	blocks = select('core/block-editor').getBlocks()
+) => {
 	const goThroughBlocks = blocks =>
 		blocks.reduce((acc, block) => {
 			if (acc) {

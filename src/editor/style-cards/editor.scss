@@ -137,8 +137,7 @@ body {
 	border: 1px solid rgb(var(--maxi-light-color-4)) !important;
 }
 .maxi-style-card-settings-disabled {
-	opacity: 0.6;
-	pointer-events: none;
+	display: none;
 }
 .maxi-style-cards__active-edit-title {
 	padding-bottom: 10px;

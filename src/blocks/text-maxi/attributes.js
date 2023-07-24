@@ -77,6 +77,13 @@ const attributes = {
 				type: 'string',
 				default: 'em',
 			},
+			'list-marker-height': {
+				type: 'number',
+			},
+			'list-marker-height-unit': {
+				type: 'string',
+				default: 'em',
+			},
 			'list-marker-indent': {
 				type: 'number',
 				default: 0.5,
@@ -92,6 +99,14 @@ const attributes = {
 			'list-marker-line-height-unit': {
 				type: 'string',
 				default: 'em',
+			},
+			'list-marker-vertical-offset': {
+				type: 'number',
+				default: 0,
+			},
+			'list-marker-vertical-offset-unit': {
+				type: 'string',
+				default: 'px',
 			},
 			'list-text-position': {
 				type: 'string',

@@ -9,6 +9,7 @@ import { dispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { withMaxiContextLoop } from '../../extensions/DC';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
 import { Toolbar } from '../../components';
@@ -133,4 +134,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

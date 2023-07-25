@@ -25,7 +25,6 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		console.log('SAVE_CUSTOM_DATA');
 		entityRecordsWrapper(async ({ key: id, name }) => {
 			const blockData = Object.entries(customData);
 			const filteredCustomData = {};

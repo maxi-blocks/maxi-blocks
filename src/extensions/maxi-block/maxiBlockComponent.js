@@ -530,9 +530,11 @@ class MaxiBlockComponent extends Component {
 		)
 			return this.rootSlot;
 
-		if (wrapper) root = createRoot(wrapper);
+		if (!root && wrapper) root = createRoot(wrapper);
 
-		dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
+		if (root) {
+			dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
+		}
 
 		return root;
 	}

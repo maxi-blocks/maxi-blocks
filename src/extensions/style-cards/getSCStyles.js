@@ -563,6 +563,11 @@ const getWPNativeStyles = ({
 			}`;
 		}
 
+		// Remove form textarea background
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea {
+				background: transparent;
+		}`;
+
 		return addedResponse;
 	};
 

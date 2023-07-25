@@ -493,7 +493,7 @@ class MaxiBlockComponent extends Component {
 		};
 
 		let wrapper;
-		let root;
+		let root = null;
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -525,12 +525,19 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.rootSlot &&
 			wrapper?.parentElement.isSameNode(
-				this.rootSlot._internalRoot.containerInfo.parentElement
+				this.rootSlot._internalRoot?.containerInfo?.parentElement
 			)
 		)
 			return this.rootSlot;
 
-		if (!root && wrapper) root = createRoot(wrapper);
+		if (!root && wrapper) {
+			if (wrapper._reactRoot) {
+				root = wrapper._reactRoot;
+			} else {
+				root = createRoot(wrapper);
+				wrapper._reactRoot = root; // Store the created root for later use
+			}
+		}
 
 		if (root) {
 			dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
@@ -785,7 +792,7 @@ class MaxiBlockComponent extends Component {
 		editorElement?.getElementById(this.wrapperId)?.remove();
 
 		if (this.isReusable) {
-			this.widthObserver.disconnect();
+			this.widthObserver?.disconnect();
 			editorElement
 				?.getElementById(
 					`maxi-block-size-checker-${this.props.clientId}`

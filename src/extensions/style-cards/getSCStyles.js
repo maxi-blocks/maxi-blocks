@@ -438,13 +438,16 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}
-					{${sentences?.join(' ')}}`;
-				addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a, ${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a${
-					level === 'p'
-						? `, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button), ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} time:has(> a):not(.wp-element-button), ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} span`
-						: ''
-				} {${sentences?.join(' ')}}`;
+				const selectors = [
+					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}`,
+					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}`,
+					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
+					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
+				].join(', ');
+
+				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
 
 				// In case the level is paragraph, we add the same styles for lists
 				if (level === 'p')
@@ -454,7 +457,9 @@ const getWPNativeStyles = ({
 
 				// Adds margin-bottom sentence to all elements except the last one
 				if (marginSentence)
-					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}:not(:last-child) {${marginSentence}}`;
+					addedResponse += `:is(${selectors}):not(:last-child) {
+						${marginSentence}
+					}`;
 			}
 		);
 

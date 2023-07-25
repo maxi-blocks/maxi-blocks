@@ -378,6 +378,10 @@ svg path#styleCardBoat_b,
 		opacity: 0;
 	}
 
+	&.maxi-block--repeater::after {
+		border-color: #7a00df;
+	}
+
 	&.maxi-block--full-width::after {
 		width: calc(100% - 4px);
 	}
@@ -396,7 +400,10 @@ svg path#styleCardBoat_b,
 	&.is-selected {
 		&::after {
 			opacity: 1;
-			border-color: #ff4a17;
+
+			&:not(.maxi-block--is-repeater) {
+				border-color: #ff4a17;
+			}
 		}
 		&:focus {
 			box-shadow: none;

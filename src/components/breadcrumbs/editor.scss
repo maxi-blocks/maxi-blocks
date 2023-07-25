@@ -18,6 +18,7 @@
 	transform-origin: left center;
 	height: 20px;
 	align-items: center;
+
 	&:hover {
 		transform: scaleX(1);
 		.maxi-breadcrumbs__item {
@@ -25,6 +26,11 @@
 			opacity: 1;
 		}
 	}
+
+	&--repeater {
+		background: #7a00df;
+	}
+
 	&__item {
 		display: inline;
 		min-width: max-content;

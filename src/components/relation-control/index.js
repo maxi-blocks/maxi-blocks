@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -30,6 +31,7 @@ import { getSelectedIBSettings } from '../../extensions/relations/utils';
 import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
 import getIBStyles from '../../extensions/relations/getIBStyles';
 import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -46,7 +48,10 @@ const RelationControl = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const repeaterContext = useContext(RepeaterContext);
+
 	const {
+		clientId,
 		deviceType,
 		isButton,
 		onChange,
@@ -165,7 +170,6 @@ const RelationControl = props => {
 		const prefix = selectedSettings?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = getCleanDisplayIBAttributes(
 			blockAttributes,
 			item.attributes
@@ -236,10 +240,13 @@ const RelationControl = props => {
 					stylesObj: getIBStylesObj({
 						clientId,
 						sid: item.sid,
-						attributes: {
-							...cleanAttributesObject,
-							...tempAttributes,
-						},
+						attributes: omitBy(
+							{
+								...cleanAttributesObject,
+								...tempAttributes,
+							},
+							val => val === undefined
+						),
 						blockAttributes,
 						breakpoint: deviceType,
 					}),
@@ -273,14 +280,81 @@ const RelationControl = props => {
 
 	const getBlocksToAffect = () => {
 		const arr = [];
+
+		const {
+			getBlockAttributes,
+			getBlockOrder,
+			getBlockParentsByBlockName,
+		} = select('core/block-editor');
+
+		const innerBlockPositions =
+			repeaterContext?.getInnerBlocksPositions?.();
+
+		const triggerParentRepeaterColumnClientId =
+			repeaterContext?.repeaterStatus &&
+			(innerBlockPositions?.[[-1]]?.includes(clientId)
+				? clientId
+				: getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+				  ).find(clientId =>
+						innerBlockPositions?.[[-1]]?.includes(clientId)
+				  ));
+
 		goThroughMaxiBlocks(block => {
 			if (
 				block.attributes.customLabel !==
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID
 			) {
+				const targetParentRows = getBlockParentsByBlockName(
+					block.clientId,
+					'maxi-blocks/row-maxi'
+				);
+
+				const targetParentRepeaterRowClientId = targetParentRows.find(
+					clientId => getBlockAttributes(clientId)['repeater-status']
+				);
+
+				const targetParentRepeaterColumnClientId =
+					getBlockParentsByBlockName(
+						block.clientId,
+						'maxi-blocks/column-maxi'
+					)[
+						targetParentRows.indexOf(
+							targetParentRepeaterRowClientId
+						)
+					] ||
+					(block.name === 'maxi-blocks/column-maxi' &&
+						block.clientId);
+
+				const isBlockInRepeaterAndInAnotherColumn =
+					repeaterContext?.repeaterStatus &&
+					repeaterContext?.repeaterRowClientId ===
+						targetParentRepeaterRowClientId &&
+					triggerParentRepeaterColumnClientId !==
+						targetParentRepeaterColumnClientId;
+
+				const isTargetInRepeaterAndTriggerNot =
+					!repeaterContext?.repeaterStatus &&
+					targetParentRepeaterRowClientId;
+
+				if (isBlockInRepeaterAndInAnotherColumn) {
+					return;
+				}
+
 				arr.push({
-					label: block.attributes.customLabel,
+					label: `${block.attributes.customLabel}${
+						isTargetInRepeaterAndTriggerNot
+							? `(${
+									getBlockOrder(
+										targetParentRepeaterRowClientId
+									).indexOf(
+										targetParentRepeaterColumnClientId
+									) + 1
+							  })`
+							: ''
+					}`,
 					value: block.attributes.uniqueID,
 				});
 			}

@@ -8,7 +8,11 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
-import { withMaxiContextLoop } from '../../extensions/DC';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
+import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
  * Edit
@@ -36,7 +40,13 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
+						...DISALLOWED_BLOCKS,
 					].indexOf(blockName) === -1
+			)
+			.concat(
+				this.props.repeaterStatus
+					? Array(DISALLOWED_BLOCKS.length).fill(null)
+					: DISALLOWED_BLOCKS
 			);
 
 		return [
@@ -74,4 +84,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(withMaxiProps(edit));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

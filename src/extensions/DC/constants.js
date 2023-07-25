@@ -26,6 +26,10 @@ export const typeOptions = {
 	row: generalTypeOptions,
 	column: generalTypeOptions,
 	group: generalTypeOptions,
+	pane: generalTypeOptions,
+	slide: generalTypeOptions,
+	accordion: generalTypeOptions,
+	slider: generalTypeOptions,
 };
 
 export const ACFTypeOptions = generalTypeOptions.filter(
@@ -90,6 +94,10 @@ export const relationOptions = {
 	row: generalRelationOptions,
 	column: generalRelationOptions,
 	group: generalRelationOptions,
+	pane: generalRelationOptions,
+	slide: generalRelationOptions,
+	accordion: generalRelationOptions,
+	slider: generalRelationOptions,
 };
 
 /**
@@ -397,6 +405,15 @@ export const relationTypes = [
 	'tags',
 	'users', // TODO: Add support for users
 ];
+
+// Fields that can lead to different locations from post
+export const linkFields = ['categories', 'tags', 'author'];
+
+export const linkFieldsLabels = {
+	categories: __('Use categories links', 'maxi-blocks'),
+	tags: __('Use tags links', 'maxi-blocks'),
+	author: __('Use author link', 'maxi-blocks'),
+};
 
 export const descriptionOfErrors = {
 	next: __(

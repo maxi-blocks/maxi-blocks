@@ -141,4 +141,13 @@ const dynamicContent = {
 	},
 };
 
-export default dynamicContent;
+const dynamicContentLink = {
+	'dc-status': {
+		type: 'boolean',
+	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
+};
+
+export { dynamicContent, dynamicContentLink };

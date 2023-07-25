@@ -76,6 +76,29 @@ const getNormalObject = props => {
 	return response;
 };
 
+const getWrapperObject = props => {
+	const response = {
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			blockStyle: props.blockStyle,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			blockStyle: props.blockStyle,
+		}),
+	};
+
+	return response;
+};
+
 const getHoverObject = props => {
 	const response = {
 		border:
@@ -107,6 +130,34 @@ const getHoverObject = props => {
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
 			),
+	};
+
+	return response;
+};
+const getWrapperHoverObject = props => {
+	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
 	};
 
 	return response;
@@ -351,8 +402,10 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getNormalObject(props),
-				':hover': getHoverObject(props),
+				'': getWrapperObject(props),
+				':hover': getWrapperHoverObject(props),
+				' ..maxi-video-block': getNormalObject(props),
+				' .maxi-video-block:hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

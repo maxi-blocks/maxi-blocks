@@ -404,7 +404,7 @@ const getStyles = props => {
 			{
 				'': getWrapperObject(props),
 				':hover': getWrapperHoverObject(props),
-				' ..maxi-video-block': getNormalObject(props),
+				' .maxi-video-block': getNormalObject(props),
 				' .maxi-video-block:hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				...getBlockBackgroundStyles({

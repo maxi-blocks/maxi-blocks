@@ -13,7 +13,7 @@ import transitionDefault from '../../extensions/styles/transitions/transitionDef
  * Classnames
  */
 const blockClass = ' .maxi-video-block';
-const videoClass = `${blockClass}__video-player`;
+const videoClass = `${blockClass}__video-container`;
 const overlayClass = `${blockClass}__overlay`;
 
 /**

@@ -432,11 +432,11 @@ const getStyles = props => {
 				}),
 				...(playerType === 'video'
 					? {
-							' .maxi-video-block__video-player':
-								getVideoStyles(props),
-							' .maxi-video-block__video-container:hover .maxi-video-block__video-player':
-								getVideoStyles(props, true),
 							' .maxi-video-block__video-container':
+								getVideoStyles(props),
+							' .maxi-video-block__video-container:hover ':
+								getVideoStyles(props, true),
+							' .maxi-video-block__video-player':
 								getAspectRatioStyles(props),
 					  }
 					: {

@@ -30,6 +30,7 @@ const Size = ({
 	isHover,
 	isLayer = false,
 	prefix,
+	onlyWidth = false,
 }) => {
 	const minMaxSettings = {
 		px: {
@@ -109,7 +110,11 @@ const Size = ({
 	return (
 		<div className='maxi-background-control__size'>
 			<AdvancedNumberControl
-				label={__('Width', 'maxi-blocks')}
+				label={
+					onlyWidth
+						? __('Height and Width', 'maxi-blocks')
+						: __('Width', 'maxi-blocks')
+				}
 				value={getLastBreakpointAttribute({
 					target: `${prefix}width`,
 					breakpoint,
@@ -143,45 +148,47 @@ const Size = ({
 				onReset={() => onReset('width')}
 				minMaxSettings={minMaxSettings}
 			/>
-			<AdvancedNumberControl
-				label={__('Height', 'maxi-blocks')}
-				value={getLastBreakpointAttribute({
-					target: `${prefix}height`,
-					breakpoint,
-					attributes: options,
-					isHover,
-				})}
-				allowedUnits={['px', 'em', 'vw', '%']}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: `${prefix}height-unit`,
-					breakpoint,
-					attributes: options,
-					isHover,
-				})}
-				onChangeValue={val => {
-					onChange({
-						[getAttributeKey(
-							'height',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					});
-				}}
-				onChangeUnit={val =>
-					onChange({
-						[getAttributeKey(
-							'height-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onReset={() => onReset('height')}
-				minMaxSettings={minMaxSettings}
-			/>
+			{!onlyWidth && (
+				<AdvancedNumberControl
+					label={__('Height', 'maxi-blocks')}
+					value={getLastBreakpointAttribute({
+						target: `${prefix}height`,
+						breakpoint,
+						attributes: options,
+						isHover,
+					})}
+					allowedUnits={['px', 'em', 'vw', '%']}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: `${prefix}height-unit`,
+						breakpoint,
+						attributes: options,
+						isHover,
+					})}
+					onChangeValue={val => {
+						onChange({
+							[getAttributeKey(
+								'height',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+						});
+					}}
+					onChangeUnit={val =>
+						onChange({
+							[getAttributeKey(
+								'height-unit',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
+						})
+					}
+					onReset={() => onReset('height')}
+					minMaxSettings={minMaxSettings}
+				/>
+			)}
 		</div>
 	);
 };
@@ -193,6 +200,7 @@ const SizeAndPositionLayerControl = ({
 	isHover = false,
 	isLayer = false,
 	breakpoint,
+	onlyWidth = false,
 }) => {
 	const { type } = options;
 	const prefix = `${rawPrefix}background-${
@@ -231,7 +239,12 @@ const SizeAndPositionLayerControl = ({
 
 	return (
 		<>
-			<Size {...equivalentProps} options={options} isLayer={isLayer} />
+			<Size
+				{...equivalentProps}
+				options={options}
+				isLayer={isLayer}
+				onlyWidth={onlyWidth}
+			/>
 			<PositionControl
 				{...options}
 				{...equivalentProps}

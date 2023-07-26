@@ -38,13 +38,13 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (
 					(target === 'width' || target === 'min-width') &&
-					fullWidth === 'full'
+					fullWidth
 				) {
 					return null;
 				}
 
 				if (target === 'max-width') {
-					if (fullWidth === 'full') {
+					if (fullWidth) {
 						return {
 							'min-width': '100%',
 						};
@@ -61,7 +61,7 @@ const getSizeStyles = (obj, prefix = '') => {
 							return val !== defaultVal;
 						});
 
-					if (fullWidth === 'normal' && isMinWidthNeeded) {
+					if (!fullWidth && isMinWidthNeeded) {
 						fullWidthNormalStyles = {
 							'min-width': 'initial',
 						};

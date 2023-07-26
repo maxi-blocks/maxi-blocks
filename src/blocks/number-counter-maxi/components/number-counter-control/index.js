@@ -118,7 +118,7 @@ const NumberCounterControl = props => {
 				</>
 			)}
 			<ToggleSwitch
-				label={__('Preview', 'maxi-block')}
+				label={__('Preview', 'maxi-blocks')}
 				selected={props['number-counter-preview']}
 				onChange={val =>
 					onChange({
@@ -176,6 +176,7 @@ const NumberCounterControl = props => {
 				</div>
 			)}
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('Start number', 'maxi-blocks')}
 				min={0}
 				max={props['number-counter-end']}
@@ -193,6 +194,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('End number', 'maxi-blocks')}
 				min={1}
 				max={props['number-counter-circle-status'] ? 9999999999 : 100}
@@ -304,7 +306,7 @@ const NumberCounterControl = props => {
 				className='maxi-number-counter-control__font-size'
 				label={__('Title font size', 'maxi-blocks')}
 				min={0}
-				max={99}
+				max={999}
 				initial={32}
 				step={1}
 				value={getLastBreakpointAttribute({
@@ -329,7 +331,7 @@ const NumberCounterControl = props => {
 			/>
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
-				label={__('Show percentage sign', 'maxi-block')}
+				label={__('Show percentage sign', 'maxi-blocks')}
 				selected={props['number-counter-percentage-sign-status']}
 				onChange={val =>
 					onChange({
@@ -337,9 +339,24 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			{props['number-counter-percentage-sign-status'] === true && (
+				<ToggleSwitch
+					className='number-counter-percentage-sign-position'
+					label={__('Centre percentage sign', 'maxi-blocks')}
+					selected={
+						props['number-counter-percentage-sign-position-status']
+					}
+					onChange={val =>
+						onChange({
+							'number-counter-percentage-sign-position-status':
+								val,
+						})
+					}
+				/>
+			)}
 			<ToggleSwitch
 				className='number-counter-circle-status'
-				label={__('Hide circle', 'maxi-block')}
+				label={__('Hide circle', 'maxi-blocks')}
 				selected={props['number-counter-circle-status']}
 				onChange={val => {
 					onChange({
@@ -349,7 +366,7 @@ const NumberCounterControl = props => {
 								'number-counter-end': 100,
 							}),
 							...(props['number-counter-start'] > 100 && {
-								'number-counter-start': 100,
+								'number-counter-start': 0,
 							}),
 						}),
 					});
@@ -358,7 +375,7 @@ const NumberCounterControl = props => {
 			{!props['number-counter-circle-status'] && (
 				<ToggleSwitch
 					className='number-counter-rounded-status'
-					label={__('Rounded bar', 'maxi-block')}
+					label={__('Rounded bar', 'maxi-blocks')}
 					selected={props['number-counter-rounded-status']}
 					onChange={val =>
 						onChange({
@@ -372,6 +389,11 @@ const NumberCounterControl = props => {
 				label={__('Text', 'maxi-blocks')}
 				paletteStatus={getLastBreakpointAttribute({
 					target: 'number-counter-text-palette-status',
+					breakpoint,
+					attributes: props,
+				})}
+				paletteSCStatus={getLastBreakpointAttribute({
+					target: 'number-counter-text-palette-sc-status',
 					breakpoint,
 					attributes: props,
 				})}
@@ -393,13 +415,11 @@ const NumberCounterControl = props => {
 				prefix='number-counter-text-'
 				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
-					onChangeInline(
-						{ fill: color },
-						'.maxi-number-counter__box__text'
-					)
+					onChangeInline({ color }, '.maxi-number-counter__box__text')
 				}
 				onChange={({
 					paletteStatus,
+					paletteSCStatus,
 					paletteColor,
 					paletteOpacity,
 					color,
@@ -408,6 +428,8 @@ const NumberCounterControl = props => {
 						{
 							[`number-counter-text-palette-status-${breakpoint}`]:
 								paletteStatus,
+							[`number-counter-text-palette-sc-status-${breakpoint}`]:
+								paletteSCStatus,
 							[`number-counter-text-palette-color-${breakpoint}`]:
 								paletteColor,
 							[`number-counter-text-palette-opacity-${breakpoint}`]:
@@ -428,6 +450,11 @@ const NumberCounterControl = props => {
 								'number-counter-circle-background-palette-status'
 							]
 						}
+						paletteSCStatus={
+							props[
+								'number-counter-circle-background-palette-sc-status'
+							]
+						}
 						paletteColor={
 							props[
 								'number-counter-circle-background-palette-color'
@@ -442,12 +469,13 @@ const NumberCounterControl = props => {
 						prefix='number-counter-circle-background-'
 						onChangeInline={({ color }) =>
 							onChangeInline(
-								{ fill: color },
+								{ color },
 								'.maxi-number-counter__box__background'
 							)
 						}
 						onChange={({
 							paletteStatus,
+							paletteSCStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
@@ -455,6 +483,8 @@ const NumberCounterControl = props => {
 							onChange(
 								{
 									'number-counter-circle-background-palette-status':
+										paletteStatus,
+									'number-counter-circle-background-palette-sc-status':
 										paletteStatus,
 									'number-counter-circle-background-palette-color':
 										paletteColor,
@@ -472,6 +502,11 @@ const NumberCounterControl = props => {
 						label={__('Circle bar', 'maxi-blocks')}
 						paletteStatus={getLastBreakpointAttribute({
 							target: 'number-counter-circle-bar-palette-status',
+							breakpoint,
+							attributes: props,
+						})}
+						paletteSCStatus={getLastBreakpointAttribute({
+							target: 'number-counter-circle-bar-palette-sc-status',
 							breakpoint,
 							attributes: props,
 						})}
@@ -499,6 +534,7 @@ const NumberCounterControl = props => {
 						}
 						onChange={({
 							paletteStatus,
+							paletteSCStatus,
 							paletteColor,
 							paletteOpacity,
 							color,
@@ -507,6 +543,8 @@ const NumberCounterControl = props => {
 								{
 									[`number-counter-circle-bar-palette-status-${breakpoint}`]:
 										paletteStatus,
+									[`number-counter-circle-bar-palette-sc-status-${breakpoint}`]:
+										paletteSCStatus,
 									[`number-counter-circle-bar-palette-color-${breakpoint}`]:
 										paletteColor,
 									[`number-counter-circle-bar-palette-opacity-${breakpoint}`]:

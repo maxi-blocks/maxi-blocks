@@ -11,18 +11,30 @@
 
 	&__templates {
 		margin-bottom: 5px;
+		& .components-column-pattern-apply_settings {
+			border: 1px solid var(--maxi-grey-1-color);
+			justify-content: center;
+		}
 	}
 	&__template-button {
 		width: 33.3333333333%;
 		padding: 0 5px;
 
+		&:active {
+			color: #ff4a17 !important;
+		}
+
 		&:hover {
+			border-color: #ff4a17;
+			color: #ff4a17;
 			svg path {
 				stroke: #ff4a17 !important;
 			}
 		}
 
 		&[aria-pressed='true'] {
+			color: #ff4a17;
+			border-color: #ff4a17;
 			svg path {
 				stroke: #ff4a17;
 			}

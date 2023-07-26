@@ -2,7 +2,8 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { useDispatch, select } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,12 +25,18 @@ import {
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
-import { getBlockData } from '../../extensions/attributes';
+import getCleanResponseIBAttributes from '../../extensions/relations/getCleanResponseIBAttributes';
+import getIBOptionsFromBlockData from '../../extensions/relations/getIBOptionsFromBlockData';
+import { getSelectedIBSettings } from '../../extensions/relations/utils';
+import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
+import getIBStyles from '../../extensions/relations/getIBStyles';
+import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
 
 /**
  * Styles
@@ -41,7 +48,10 @@ const RelationControl = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const repeaterContext = useContext(RepeaterContext);
+
 	const {
+		clientId,
 		deviceType,
 		isButton,
 		onChange,
@@ -69,23 +79,12 @@ const RelationControl = props => {
 			: 1;
 	};
 
-	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
-
-		// TODO: without this line, the block may break after copy/pasting
-		if (!blockName) return {};
-
-		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
-
-		return blockOptions || {};
-	};
-
 	const getParsedOptions = rawOptions => {
 		const parseOptionsArray = options =>
-			options.map(({ label }) => ({
+			options?.map(({ sid, label }) => ({
 				label,
-				value: label,
-			}));
+				value: sid,
+			})) ?? [];
 
 		const defaultSetting = {
 			label: __('Choose settings', 'maxi-blocks'),
@@ -125,7 +124,7 @@ const RelationControl = props => {
 			uniqueID: '',
 			target: '',
 			action: '',
-			settings: '',
+			sid: '',
 			attributes: {},
 			css: {},
 			id: getRelationId(relations),
@@ -158,49 +157,23 @@ const RelationControl = props => {
 		});
 	};
 
-	const getSelectedSettingsObj = (clientId, settingsLabel) =>
-		Object.values(getOptions(clientId))
-			.flat()
-			.find(option => option.label === settingsLabel);
-
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getSelectedSettingsObj(
-			clientId,
-			item.settings
-		);
+		const selectedSettings = getSelectedIBSettings(clientId, item.sid);
 
-		if (!selectedSettingsObj) return null;
+		if (!selectedSettings) return null;
 
-		const settingsComponent = selectedSettingsObj.component;
-		const prefix = selectedSettingsObj?.prefix || '';
+		const settingsComponent = selectedSettings.component;
+		const prefix = selectedSettings?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
-
-		const storeBreakpoints = receiveMaxiBreakpoints();
-		const blockBreakpoints = getGroupAttributes(
+		const mergedAttributes = getCleanDisplayIBAttributes(
 			blockAttributes,
-			'breakpoints'
+			item.attributes
 		);
-
-		const breakpoints = {
-			...storeBreakpoints,
-			xxl: receiveXXLSize(),
-			...Object.keys(blockBreakpoints).reduce((acc, key) => {
-				if (blockAttributes[key]) {
-					const newKey = key.replace('breakpoints-', '');
-					acc[newKey] = blockBreakpoints[key];
-				}
-				return acc;
-			}, {}),
-		};
-
-		// Merging into empty object because lodash `merge` mutates first argument
-		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
@@ -228,77 +201,16 @@ const RelationControl = props => {
 			});
 
 			resetTargets.forEach(target => {
-				delete newAttributes[target];
+				newAttributes[target] = undefined;
 			});
 
 			return newAttributes;
 		};
 
-		const getStylesObj = attributes => {
-			const newGroupAttributes = getGroupAttributes(
-				attributes,
-				selectedSettingsObj.attrGroupName,
-				false,
-				prefix
-			);
-
-			return selectedSettingsObj?.helper({
-				obj: newGroupAttributes,
-				isIB: true,
-				prefix,
-				blockStyle: blockAttributes.blockStyle,
-				deviceType,
-				blockAttributes: {
-					...blockAttributes,
-					...attributes,
-				},
-				target: selectedSettingsObj?.target,
-				clientId,
-			});
-		};
-
-		const getStyles = (stylesObj, isFirst = false) => {
-			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
-				const styles = Object.keys(stylesObj).reduce((acc, key) => {
-					if (
-						breakpoints[key] ||
-						key === 'xxl' ||
-						key === 'general'
-					) {
-						acc[key] = {
-							styles: stylesObj[key],
-							breakpoint: breakpoints[key] || null,
-						};
-
-						return acc;
-					}
-
-					return acc;
-				}, {});
-
-				return styles;
-			}
-
-			const styles = Object.keys(stylesObj).reduce((acc, key) => {
-				if (isFirst) {
-					if (!key.includes(':hover'))
-						acc[key] = getStyles(stylesObj[key]);
-
-					return acc;
-				}
-
-				const newAcc = merge(acc, getStyles(stylesObj[key]));
-
-				return newAcc;
-			}, {});
-
-			return styles;
-		};
-
 		return settingsComponent({
 			...getGroupAttributes(
 				mergedAttributes,
-				selectedSettingsObj.attrGroupName,
+				selectedSettings.attrGroupName,
 				false,
 				prefix
 			),
@@ -313,15 +225,45 @@ const RelationControl = props => {
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
 
-				const styles = getStyles(
-					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
-					true
-				);
+				const { cleanAttributesObject, tempAttributes } =
+					getCleanResponseIBAttributes(
+						newAttributesObj,
+						blockAttributes,
+						item.uniqueID,
+						selectedSettings,
+						deviceType,
+						prefix,
+						item.sid
+					);
+
+				const styles = getIBStyles({
+					stylesObj: getIBStylesObj({
+						clientId,
+						sid: item.sid,
+						attributes: omitBy(
+							{
+								...cleanAttributesObject,
+								...tempAttributes,
+							},
+							val => val === undefined
+						),
+						blockAttributes,
+						breakpoint: deviceType,
+					}),
+					blockAttributes,
+					isFirst: true,
+				});
 
 				onChangeRelation(relations, item.id, {
-					attributes: newAttributesObj,
+					attributes: omitBy(
+						{
+							...item.attributes,
+							...cleanAttributesObject,
+						},
+						val => val === undefined
+					),
 					css: styles,
-					...(item.settings === 'Transform' && {
+					...(item.sid === 't' && {
 						effects: {
 							...item.effects,
 							transitionTarget: Object.keys(styles),
@@ -338,14 +280,81 @@ const RelationControl = props => {
 
 	const getBlocksToAffect = () => {
 		const arr = [];
+
+		const {
+			getBlockAttributes,
+			getBlockOrder,
+			getBlockParentsByBlockName,
+		} = select('core/block-editor');
+
+		const innerBlockPositions =
+			repeaterContext?.getInnerBlocksPositions?.();
+
+		const triggerParentRepeaterColumnClientId =
+			repeaterContext?.repeaterStatus &&
+			(innerBlockPositions?.[[-1]]?.includes(clientId)
+				? clientId
+				: getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/column-maxi'
+				  ).find(clientId =>
+						innerBlockPositions?.[[-1]]?.includes(clientId)
+				  ));
+
 		goThroughMaxiBlocks(block => {
 			if (
 				block.attributes.customLabel !==
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID
 			) {
+				const targetParentRows = getBlockParentsByBlockName(
+					block.clientId,
+					'maxi-blocks/row-maxi'
+				);
+
+				const targetParentRepeaterRowClientId = targetParentRows.find(
+					clientId => getBlockAttributes(clientId)['repeater-status']
+				);
+
+				const targetParentRepeaterColumnClientId =
+					getBlockParentsByBlockName(
+						block.clientId,
+						'maxi-blocks/column-maxi'
+					)[
+						targetParentRows.indexOf(
+							targetParentRepeaterRowClientId
+						)
+					] ||
+					(block.name === 'maxi-blocks/column-maxi' &&
+						block.clientId);
+
+				const isBlockInRepeaterAndInAnotherColumn =
+					repeaterContext?.repeaterStatus &&
+					repeaterContext?.repeaterRowClientId ===
+						targetParentRepeaterRowClientId &&
+					triggerParentRepeaterColumnClientId !==
+						targetParentRepeaterColumnClientId;
+
+				const isTargetInRepeaterAndTriggerNot =
+					!repeaterContext?.repeaterStatus &&
+					targetParentRepeaterRowClientId;
+
+				if (isBlockInRepeaterAndInAnotherColumn) {
+					return;
+				}
+
 				arr.push({
-					label: block.attributes.customLabel,
+					label: `${block.attributes.customLabel}${
+						isTargetInRepeaterAndTriggerNot
+							? `(${
+									getBlockOrder(
+										targetParentRepeaterRowClientId
+									).indexOf(
+										targetParentRepeaterColumnClientId
+									) + 1
+							  })`
+							: ''
+					}`,
 					value: block.attributes.uniqueID,
 				});
 			}
@@ -384,7 +393,7 @@ const RelationControl = props => {
 										label={__('Name', 'maxi-blocks')}
 										value={item.title}
 										placeholder={__(
-											'Give memorable name',
+											'Give memorable name…',
 											'maxi-blocks'
 										)}
 										onChange={value =>
@@ -478,9 +487,9 @@ const RelationControl = props => {
 													'Settings',
 													'maxi-blocks'
 												)}
-												value={item.settings}
+												value={item.sid}
 												options={getParsedOptions(
-													getOptions(
+													getIBOptionsFromBlockData(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
@@ -492,8 +501,8 @@ const RelationControl = props => {
 															item.uniqueID
 														);
 
-													const selectedSettingsObj =
-														getSelectedSettingsObj(
+													const selectedSettings =
+														getSelectedIBSettings(
 															clientId,
 															value
 														) || {};
@@ -501,7 +510,7 @@ const RelationControl = props => {
 														transitionTarget,
 														transitionTrigger,
 														hoverProp,
-													} = selectedSettingsObj;
+													} = selectedSettings;
 
 													const blockAttributes =
 														getBlock(
@@ -521,7 +530,7 @@ const RelationControl = props => {
 															);
 
 														const target =
-															selectedSettingsObj?.target ||
+															selectedSettings?.target ||
 															'';
 
 														const textMaxiPrefix =
@@ -569,7 +578,7 @@ const RelationControl = props => {
 															attributes: {},
 															css: {},
 															target: getTarget(),
-															settings: value,
+															sid: value,
 															effects: {
 																...item.effects,
 																transitionTarget,
@@ -577,7 +586,7 @@ const RelationControl = props => {
 																hoverStatus:
 																	!!hoverStatus,
 																disableTransition:
-																	!!selectedSettingsObj?.disableTransition,
+																	!!selectedSettings?.disableTransition,
 															},
 														}
 													);
@@ -605,7 +614,7 @@ const RelationControl = props => {
 										</>
 									)}
 									{item.uniqueID &&
-										item.settings &&
+										item.sid &&
 										(item.effects.disableTransition ? (
 											displaySelectedSetting(item)
 										) : (

@@ -18,10 +18,10 @@ const flex = ({ props }) => {
 
 	const { getBlockParents, getBlockName } = select('core/block-editor');
 
-	const getParentBlockName = getBlockName(
+	const parentBlockName = getBlockName(
 		getBlockParents(clientId)
 			?.filter(id => id !== clientId)
-			?.slice(-1)
+			?.slice(-1)?.[0]
 	);
 
 	const wrapperBlocks = [
@@ -33,7 +33,7 @@ const flex = ({ props }) => {
 	];
 
 	if (
-		!wrapperBlocks.includes(getParentBlockName) &&
+		!wrapperBlocks.includes(parentBlockName) &&
 		!wrapperBlocks.includes(name)
 	)
 		return null;
@@ -48,7 +48,7 @@ const flex = ({ props }) => {
 					breakpoint={deviceType}
 					clientId={clientId}
 					name={name}
-					getParentBlockName={getParentBlockName}
+					parentBlockName={parentBlockName}
 				/>
 			</ResponsiveTabsControl>
 		),

@@ -28,7 +28,7 @@ class Relation {
 		);
 
 		this.action = item.action;
-		this.settings = item.settings;
+		this.sids = item.sid || item.settings;
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
@@ -79,8 +79,13 @@ class Relation {
 		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
 		);
-		this.isIconArray = item.settings.map(
-			setting => setting === 'Icon colour' || setting === 'Button icon'
+		this.isIconArray = this.sids.map(
+			sid =>
+				sid === 'ic' ||
+				sid === 'bi' ||
+				// support for old versions
+				sid === 'Icon colour' ||
+				sid === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
 		this.avoidHoverArray = [];
@@ -112,21 +117,21 @@ class Relation {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
-		this.stylesEl.setAttribute('data-settings', this.settings);
+		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
 		if (this.inTransitionString.length > 0) {
 			this.inTransitionEl = document.createElement('style');
 			this.inTransitionEl.id = `relations--${this.uniqueID}-in-transitions`;
 			this.inTransitionEl.setAttribute('data-type', this.action);
-			this.inTransitionEl.setAttribute('data-settings', this.settings);
+			this.inTransitionEl.setAttribute('data-sids', this.sids);
 			this.inTransitionEl.innerText = this.inTransitionString;
 		}
 		if (this.outTransitionString.length > 0) {
 			this.outTransitionEl = document.createElement('style');
 			this.outTransitionEl.id = `relations--${this.uniqueID}-out-transitions`;
 			this.outTransitionEl.setAttribute('data-type', this.action);
-			this.outTransitionEl.setAttribute('data-settings', this.settings);
+			this.outTransitionEl.setAttribute('data-sids', this.sids);
 			this.outTransitionEl.innerText = this.outTransitionString;
 		}
 	}
@@ -143,9 +148,14 @@ class Relation {
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
 		if (currentEl) {
+			const currentElSids = currentEl
+				.getAttribute('data-sids')
+				.split(',')
+				.map(item => item.trim());
+
 			if (
 				currentEl.getAttribute('data-type') === this.action &&
-				currentEl.getAttribute('data-settings') === this.settings
+				JSON.stringify(currentElSids) === JSON.stringify(this.sids)
 			)
 				currentEl.replaceWith(styleEl);
 			else currentEl.insertAdjacentElement('afterend', styleEl);
@@ -377,19 +387,22 @@ class Relation {
 
 		const getBreakpointValues = css => {
 			this.breakpoints.forEach(breakpoint => {
-				if (
-					Object.prototype.hasOwnProperty.call(css, breakpoint) &&
-					(breakpoint !== 'xxl' ||
-						Object.prototype.hasOwnProperty.call(css, 'xl'))
-				) {
+				const containsBreakpoint = Object.prototype.hasOwnProperty.call(
+					css,
+					breakpoint
+				);
+
+				if (!containsBreakpoint) return;
+
+				const hasStyles = css[breakpoint].styles.isArray
+					? css[breakpoint].styles.length > 0
+					: Object.keys(css[breakpoint].styles).length > 0;
+
+				if (hasStyles) {
 					let { breakpoint: breakpointValue } = css[breakpoint];
 
 					breakpointValue =
 						breakpoint === 'general' ? '' : breakpointValue;
-					breakpointValue =
-						breakpoint === 'xxl'
-							? css.xl.breakpoint
-							: breakpointValue;
 
 					breakpointsObj[breakpoint] = breakpointValue;
 				}
@@ -680,17 +693,64 @@ class Relation {
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
-					if (this.effectsObjs[index][breakpoint]) {
-						let currentStyleObj =
-							stylesObj[
-								this.getLastUsableBreakpoint(
-									breakpoint,
-									breakpoint =>
-										stylesObj?.[breakpoint] &&
-										Object.keys(stylesObj?.[breakpoint])
-											.length
-								)
-							];
+					let hasEffects = !!this.effectsObjs[index][breakpoint];
+					let effectsBreakpoint = breakpoint;
+
+					// Default effects will come for general breakpoint, but maybe
+					// creator has decided to affect to a concrete breakpoint, so there's
+					// no styles for general. The result is that we have styles for a concrete
+					// breakpoint and transitions for general. Need to set general transitions
+					// in that case or the transition will not work.
+					if (!hasEffects) {
+						const breakpointIndex =
+							this.breakpoints.indexOf(breakpoint);
+
+						const previousBreakpoints = this.breakpoints.slice(
+							0,
+							breakpointIndex
+						);
+
+						const prevEffectsBreakpoints =
+							previousBreakpoints.filter(
+								previousBreakpoint =>
+									this.effectsObjs[index][previousBreakpoint]
+							);
+						const prevEffectsBreakpoint = prevEffectsBreakpoints[0];
+						const prevBreakpointsHasStyles = !this.stylesObjs.some(
+							styleObj => prevEffectsBreakpoint in styleObj
+						);
+
+						if (
+							prevEffectsBreakpoints.length &&
+							prevBreakpointsHasStyles
+						)
+							hasEffects = true;
+
+						effectsBreakpoint = prevEffectsBreakpoint;
+					}
+
+					if (hasEffects) {
+						// Add style objects from current and higher breakpoints,
+						// because styles from higher breakpoints will apply for lower ones
+						// and need to add transitions for them as well.
+						let currentStyleObj = [...this.breakpoints]
+							.splice(0, this.breakpoints.indexOf(breakpoint) + 1)
+							.reduce(
+								(acc, breakpoint) => ({
+									...acc,
+									...stylesObj[
+										this.getLastUsableBreakpoint(
+											breakpoint,
+											breakpoint =>
+												stylesObj?.[breakpoint] &&
+												Object.keys(
+													stylesObj?.[breakpoint]
+												).length
+										)
+									],
+								}),
+								{}
+							);
 
 						if (this.isBorder && isBackground)
 							currentStyleObj = {
@@ -699,7 +759,7 @@ class Relation {
 								left: null,
 							};
 
-						if (currentStyleObj) {
+						if (Object.keys(currentStyleObj).length) {
 							const addTransitionString = (
 								transitionString,
 								transitionTarget,
@@ -760,7 +820,7 @@ class Relation {
 							};
 
 							const effectsObj =
-								this.effectsObjs[index][breakpoint];
+								this.effectsObjs[index][effectsBreakpoint];
 							const { split } = effectsObj;
 
 							if (split) {

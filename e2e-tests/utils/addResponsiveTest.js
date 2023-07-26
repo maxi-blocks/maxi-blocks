@@ -20,6 +20,12 @@ const addResponsiveTest = async ({
 	needFocusPlaceholder,
 }) => {
 	if (needFocus) {
+		try {
+			await page.waitForSelector(instance);
+		} catch (err) {
+			console.error(`No instance found. Error: ${err}`);
+		}
+
 		// base responsive
 		await page.$eval(`${instance}`, base => base.focus());
 
@@ -28,36 +34,60 @@ const addResponsiveTest = async ({
 			base => base.value
 		);
 
+		if (checkBaseResponsive !== baseExpect)
+			console.error(
+				'Error on `addResponsiveTest` for Base',
+				checkBaseResponsive,
+				baseExpect
+			);
 		if (checkBaseResponsive !== baseExpect) return false;
 
 		// change responsive s
 		await changeResponsive(page, 's');
 
+		await page.waitForSelector(instance);
 		await page.$eval(`${instance}`, changeValue => changeValue.focus());
+		await page.waitForTimeout(100);
 
 		await pressKeyWithModifier('primary', 'a');
 
-		await page.keyboard.type(`${newValue}`);
+		await page.keyboard.type(`${newValue}`, { delay: 100 });
 
 		// change responsive xs
 		await changeResponsive(page, 'xs');
 
+		await page.waitForSelector(instance);
 		await page.$eval(`${instance}`, xs => xs.focus());
+		await page.waitForTimeout(100);
 
 		const checkXsResponsive = await page.$eval(
 			`${instance}`,
 			xs => xs.value
 		);
 
+		if (checkXsResponsive !== xsExpect)
+			console.error(
+				'Error on `addResponsiveTest` for Xs',
+				checkXsResponsive,
+				xsExpect
+			);
 		if (checkXsResponsive !== xsExpect) return false;
 
 		// change responsive m
 		await changeResponsive(page, 'm');
 
+		await page.waitForSelector(instance);
 		await page.$eval(`${instance}`, m => m.focus());
+		await page.waitForTimeout(100);
 
 		const checkMResponsive = await page.$eval(`${instance}`, m => m.value);
 
+		if (checkMResponsive !== baseExpect)
+			console.error(
+				'Error on `addResponsiveTest` for M',
+				checkMResponsive,
+				baseExpect
+			);
 		if (checkMResponsive !== baseExpect) return false;
 
 		return true;
@@ -80,7 +110,7 @@ const addResponsiveTest = async ({
 		await page.$eval(`${instance}`, changeValue => changeValue.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(`${newValue}`);
+		await page.keyboard.type(`${newValue}`, { delay: 100 });
 
 		// change responsive xs
 		await changeResponsive(page, 'xs');

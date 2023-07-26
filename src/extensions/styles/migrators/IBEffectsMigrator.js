@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getTransitionSetting } from './utils';
+import { getIBDataItem } from './utils';
 
 /**
  * External dependencies
@@ -50,7 +50,7 @@ const settingsToMigrate = [
 const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
 	blockAttributes.relations.some(relation => {
-		const transitionSetting = getTransitionSetting(relation);
+		const transitionSetting = getIBDataItem(relation);
 		return (
 			transitionSetting &&
 			settingsToMigrate.some(({ isEligible }) =>
@@ -63,7 +63,7 @@ const migrate = newAttributes => {
 	const { relations } = newAttributes;
 
 	relations.forEach((relation, i) => {
-		const transitionSetting = getTransitionSetting(relation);
+		const transitionSetting = getIBDataItem(relation);
 
 		if (!transitionSetting) return;
 		settingsToMigrate.forEach(

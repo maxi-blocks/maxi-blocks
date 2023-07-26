@@ -8,6 +8,12 @@
 	&__block-access {
 		margin-bottom: 10px;
 	}
+	.maxi-list-item-control__title__wrapper {
+		overflow: hidden;
+		max-width: 190px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 /*******************************
 * RTL

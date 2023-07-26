@@ -1,6 +1,7 @@
 <?php
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
 
 class MaxiBlocks_Styles
 {
@@ -27,6 +28,7 @@ class MaxiBlocks_Styles
     public function __construct()
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
     }
 
     /**
@@ -126,6 +128,13 @@ class MaxiBlocks_Styles
         }
     }
 
+    public function get_template_name()
+    {
+        $template_name = wp_get_theme()->stylesheet ?? get_template();
+
+        return $template_name;
+    }
+
     public function get_template_parts($content)
     {
         if ($content && array_key_exists('template_parts', $content)) {
@@ -140,7 +149,7 @@ class MaxiBlocks_Styles
          * so it doesn't have template parts. In this case, we need to get default
          * template parts (header and footer).
          */
-        $theme_name = get_template();
+        $theme_name = $this->get_template_name();
         return [
             $theme_name . '//header',
             $theme_name . '//footer',
@@ -170,7 +179,7 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts, $name);
             }
-        } elseif (get_template() === 'maxi-theme' && $is_template_part) {
+        } elseif ($this->get_template_name() === 'maxi-theme' && $is_template_part) {
             do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
 
@@ -197,28 +206,43 @@ class MaxiBlocks_Styles
             if (!$post) {
                 return null;
             }
-        
+
             return $post->ID;
         }
 
         $template_slug = get_page_template_slug();
-        $template_id = get_template() . '//';
+        $template_id = $this->get_template_name() . '//';
 
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
         } elseif (is_home() || is_front_page()) {
-            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page']]);
+            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
 
-            $has_front_page_and_home = count($block_templates) === 2;
+            $has_front_page_and_home = count($block_templates) > 2;
 
             if ($has_front_page_and_home) {
                 if (is_home() && !is_front_page()) {
                     $template_id .= 'index';
                 } else {
-                    $template_id .= 'front-page';
+                    $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }
             } else {
-                $template_id .= $block_templates[0]->slug;
+                // Arrived here, means we are probably trying to get index.php; so if the slug is not coming from $block_templates,
+                // we need to start going down on the WP hierarchy to find the correct template.
+                // TODO: create a better way to get the correct template.
+                if($block_templates && !empty($block_templates)) {
+                    $template_id .= $block_templates[0]->slug;
+                } elseif (is_search()) {
+                    $template_id .= 'search';
+                } elseif (is_404()) {
+                    $template_id .= '404';
+                } elseif (is_archive()) {
+                    $template_id .= 'archive';
+                } elseif (is_page()) {
+                    $template_id .= 'page';
+                } else {
+                    $template_id .= 'single';
+                }
             }
         } elseif (is_search()) {
             $template_id .= 'search';
@@ -397,18 +421,48 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Check font url status code
+     */
+    public function check_font_url($font_url)
+    {
+        $font_url = str_replace(' ', '+', $font_url);
+
+        $array = @get_headers($font_url);
+
+        if(!$array) {
+            return false;
+        }
+
+        $string = $array[0];
+
+        if(strpos($string, '200')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Post fonts
      *
      * @return object   Font name with font options
      */
-
     public function enqueue_fonts($fonts, $name)
     {
         if (empty($fonts) || !is_array($fonts)) {
             return;
         }
 
+        if(str_contains($name, '-templates-')) {
+            $pattern = '/(-templates-)(\w*)/';
+            $name = preg_replace($pattern, '', $name);
+            $name = str_replace('style', 'styles', $name);
+        }
+
         $use_local_fonts = (bool) get_option('local_fonts');
+
+        $loaded_fonts = [];
+
 
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
@@ -422,6 +476,14 @@ class MaxiBlocks_Styles
                     $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level);
 
                     @list($font, $font_weights, $font_styles) = $sc_fonts;
+                }
+
+                if (isset($font_data['weight']) && !in_array($font_data['weight'], $font_weights)) {
+                    $font_weights = [[...$font_weights, intval($font_data['weight'])]];
+                }
+
+                if (isset($font_data['style']) && !in_array($font_data['style'], $font_styles)) {
+                    $font_styles = [[...$font_styles, intval($font_data['style'])]];
                 }
             }
 
@@ -450,10 +512,27 @@ class MaxiBlocks_Styles
                         );
                     }
 
-                    wp_enqueue_style(
-                        $name . '-font-' . sanitize_title_with_dashes($font),
-                        $font_url
-                    );
+                    if(!$use_local_fonts) {
+                        if($font_url) {
+                            if($this->check_font_url($font_url)) {
+                                wp_enqueue_style(
+                                    $name . '-font-' . sanitize_title_with_dashes($font),
+                                    $font_url,
+                                    array(),
+                                    null,
+                                    'all'
+                                );
+                            }
+                        }
+                    } else {
+                        if($font_url) {
+                            wp_enqueue_style(
+                                $name . '-font-' . sanitize_title_with_dashes($font),
+                                $font_url
+                            );
+                        }
+
+                    }
                 } else {
                     if (empty($font_weights)) {
                         $font_weights = [$font_data['weight']];
@@ -462,25 +541,109 @@ class MaxiBlocks_Styles
                         $font_styles = [$font_data['style']];
                     }
 
-                    $font_url = "https://fonts.googleapis.com/css2?family=$font:";
+                    if ($use_local_fonts) {
+                        $font_name_sanitized = str_replace(
+                            ' ',
+                            '',
+                            strtolower($font)
+                        );
+                        $font_url =
+                            wp_upload_dir()['baseurl'] .
+                            '/maxi/fonts/' .
+                            $font_name_sanitized .
+                            '/style.css';
+                    } else {
+                        $font_url = "https://fonts.googleapis.com/css2?family=$font";
+                    }
+
+
+                    if ($font_url && !$use_local_fonts) {
+                        $font_url .= ':';
+                    }
 
                     foreach ($font_weights as $font_weight) {
+                        if(!is_array($font_weight)) {
+                            $font_weight = [ $font_weight ];
+                        }
+
                         foreach ($font_styles as $font_style) {
+                            $already_loaded = false;
+
+                            if (in_array(
+                                [
+                                    'font' => $font,
+                                    'font_weight' => $font_weight,
+                                    'font_style' => $font_style,
+                                ],
+                                $loaded_fonts
+                            )) {
+                                $already_loaded = true;
+                            }
+
+                            foreach($font_weight as $weight) {
+                                foreach($loaded_fonts as $loaded_font) {
+                                    if(in_array($weight, $loaded_font['font_weight']) && $loaded_font['font'] === $font) {
+                                        $already_loaded = true;
+                                    }
+                                }
+                            }
+
+                            if ($already_loaded) {
+                                continue;
+                            }
+
                             $font_data = [
                                 'weight' => $font_weight,
                                 'style' => $font_style,
                             ];
 
-                            $local_fonts = new MaxiBlocks_Local_Fonts();
-                            $font_url = $local_fonts->generateFontURL(
-                                $font_url,
-                                $font_data
-                            );
+                            if (!$use_local_fonts) {
+                                $local_fonts = new MaxiBlocks_Local_Fonts();
+                                $font_url = $local_fonts->generateFontURL(
+                                    $font_url,
+                                    $font_data
+                                );
+                            }
 
-                            wp_enqueue_style(
-                                $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
-                                $font_url
-                            );
+                            $loaded_fonts[] = [
+                                'font' => $font,
+                                'font_weight' => $font_weight,
+                                'font_style' => $font_style,
+                            ];
+
+                            if (is_array($font_weight)) {
+                                $font_weight = implode('-', $font_weight);
+                            }
+
+                            if(!$use_local_fonts) {
+                                if($font_url) {
+                                    if($this->check_font_url($font_url)) {
+                                        wp_enqueue_style(
+                                            $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
+                                            $font_url,
+                                            array(),
+                                            null,
+                                            'all'
+                                        );
+                                    } else {  // Load default font weight for cases where the saved font weight doesn't exist
+                                        $font_url = strstr($font_url, ':wght', true);
+                                        wp_enqueue_style(
+                                            $name . '-font-' . sanitize_title_with_dashes($font),
+                                            $font_url,
+                                            array(),
+                                            null,
+                                            'all'
+                                        );
+                                    }
+                                }
+                            } else {
+                                if($font_url) {
+                                    wp_enqueue_style(
+                                        $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
+                                        $font_url
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -488,30 +651,28 @@ class MaxiBlocks_Styles
         }
 
         if ($use_local_fonts) {
-            add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
-            function local_fonts_preload($html, $handle)
-            {
-                if (strpos($handle, 'maxi-font-') !== false) {
-                    $html = str_replace(
-                        "rel='stylesheet'",
-                        "rel='stylesheet preload'",
-                        $html
-                    );
-                    $html = str_replace(
-                        "media='all'",
-                        "as='style' crossorigin media='all'",
-                        $html
-                    );
-                }
-                return $html;
-            }
+            add_filter(
+                'style_loader_tag',
+                function ($html, $handle) {
+                    if (strpos($handle, 'maxi-blocks-styles-font-') !== false || strpos($handle, 'maxi-blocks-style-templates-header-font-') !== false) {
+                        $html = str_replace(
+                            "rel='stylesheet'",
+                            "rel='stylesheet preload'",
+                            $html
+                        );
+                    }
+                    return $html;
+                },
+                10,
+                2
+            );
         }
     }
 
     /**
      * Custom Meta
      */
-    public function custom_meta($metaJs, $is_template, $id = null)
+    public function custom_meta($metaJs, $is_template = false, $id = null)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
@@ -542,8 +703,8 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        // TODO: This is a temporary solution to fix the issue with the bg_video and scroll_effects meta
-        if (in_array($metaJs, ['bg_video', 'scroll_effects'])) {
+        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
             return [ true ];
         }
 
@@ -646,7 +807,62 @@ class MaxiBlocks_Styles
                 );
             }
 
+            // Replaces all ,1)),1) to ,1)
+            $new_style = preg_replace(
+                '/,1\)\),1\)/',
+                ',1)',
+                $new_style
+            );
+
             return $new_style;
+        }
+    }
+    /**
+     * Set styles and custom data from home template to front-page template
+     */
+    public function set_home_to_front_page($post_id, $post, $update)
+    {
+        if (!($post->post_type === 'wp_template' && $post->post_name === 'front-page' && !$update)) {
+            return;
+        }
+
+        global $wpdb;
+
+        if (class_exists('MaxiBlocks_API')) {
+            $home_id =  $this->get_template_name() . '//' . 'home';
+            $home_content = $this->get_content(true, $home_id);
+
+            $front_page_id = $this->get_template_name() . '//' . 'front-page';
+
+            $api = new MaxiBlocks_API();
+
+            $api->post_maxi_blocks_styles([
+                'id' => $front_page_id,
+                'meta' => [
+                    'styles' => $home_content['css_value'],
+                    'fonts' => [json_decode($home_content['fonts_value'], true)],
+                ],
+                'isTemplate' => true,
+                'templateParts' => $home_content['template_parts'],
+                'update' => true,
+            ], false);
+
+            ['table' => $table, 'where_clause' => $where_clause] = $api->get_query_params('maxi_blocks_custom_data', true);
+
+            $home_custom_data = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $table WHERE $where_clause",
+                    $home_id
+                ),
+                OBJECT
+            );
+
+            $api->set_maxi_blocks_current_custom_data([
+                'id' => $front_page_id,
+                'data' => $custom_data[0]->custom_data_value,
+                'isTemplate' => true,
+                'update' => true,
+            ], false);
         }
     }
 }

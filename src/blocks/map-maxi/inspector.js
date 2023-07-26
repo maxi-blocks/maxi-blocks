@@ -22,6 +22,7 @@ import {
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { customCss } from './data';
+import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -42,10 +43,12 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.repeaterInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props,
 			})}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -264,4 +267,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

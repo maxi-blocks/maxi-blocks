@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
@@ -10,6 +9,7 @@ import { __ } from '@wordpress/i18n';
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { withMaxiContextLoop } from '../../extensions/DC';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
 import { Toolbar } from '../../components';
@@ -79,7 +79,6 @@ class edit extends MaxiBlockComponent {
 			titleLevel,
 			isCollapsible,
 			animationDuration,
-			preview,
 		} = attributes;
 
 		const inlineStylesTargets = {
@@ -90,21 +89,6 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
-
-		if (preview)
-			return (
-				<MaxiBlock
-					key={`maxi-accordion--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img
-						// eslint-disable-next-line no-undef
-						src={previews.accordion_preview}
-						alt={__('Accordion block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			<Inspector
@@ -150,4 +134,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

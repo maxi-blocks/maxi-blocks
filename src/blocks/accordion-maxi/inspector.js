@@ -17,7 +17,6 @@ import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 import { customCss } from './data';
 import {
-	AccordionIconSettings,
 	AccordionLineControl,
 	AccordionSettings,
 	AccordionTitleSettings,
@@ -38,6 +37,15 @@ const Inspector = props => {
 	} = props;
 
 	const { accordionLayout, blockStyle, titleLevel } = attributes;
+	const { selectors, categories } = customCss;
+
+	const iconTabsProps = {
+		props,
+		disableIconOnly: true,
+		disableSpacing: true,
+		disableIconInherit: true,
+		disableHeightFitContent: true,
+	};
 
 	const lineSettingsProps = {
 		...getGroupAttributes(attributes, 'accordionLine'),
@@ -64,10 +72,9 @@ const Inspector = props => {
 		clientId,
 	};
 
-	const { selectors, categories } = customCss;
-
 	return (
 		<InspectorControls>
+			{inspectorTabs.repeaterInfoBox({ props })}
 			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props: {
@@ -133,27 +140,18 @@ const Inspector = props => {
 											/>
 										),
 									},
-									{
-										label: __('Icon', 'maxi-blocks'),
-										content: (
-											<AccordionIconSettings
-												{...getGroupAttributes(
-													attributes,
-													'accordionIcon'
-												)}
-												disableIconOnly
-												disableSpacing
-												disablePosition
-												disableIconInherit
-												disableModal
-												blockStyle={blockStyle}
-												onChange={obj => {
-													maxiSetAttributes(obj);
-												}}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.icon({
+										...iconTabsProps,
+										type: 'accordion-icon',
+										disablePositionY: true,
+									}),
+									...inspectorTabs.icon({
+										...iconTabsProps,
+										label: __('Active Icon', 'maxi-blocks'),
+										prefix: 'active-',
+										type: 'accordion-icon-active',
+										disablePosition: true,
+									}),
 									{
 										label: __(
 											'Line settings',
@@ -242,6 +240,10 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
+									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'accordion',
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {

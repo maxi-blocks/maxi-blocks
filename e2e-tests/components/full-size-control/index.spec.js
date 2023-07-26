@@ -29,7 +29,7 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		expect(await getAttributes('full-width-general')).toStrictEqual('full');
+		expect(await getAttributes('full-width-general')).toStrictEqual(true);
 
 		const inputs = await accordionPanel.$(
 			'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value'
@@ -57,7 +57,7 @@ describe('FullSizeControl', () => {
 			'.maxi-toggle-switch .maxi-toggle-switch__toggle input',
 			use => use.click()
 		);
-		expect(await getAttributes('full-width-s')).toStrictEqual('normal');
+		expect(await getAttributes('full-width-s')).toStrictEqual(false);
 
 		await changeResponsive(page, 'xs');
 		const fullWidthXs = await page.$eval(
@@ -127,6 +127,8 @@ describe('FullSizeControl', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		// select 3 columns
+		await page.waitForSelector('.maxi-row-block__template button');
+		await page.waitForTimeout(100);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);

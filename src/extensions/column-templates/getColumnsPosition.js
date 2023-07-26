@@ -4,7 +4,6 @@
  * @param {Array} sizes array of columns widths
  * @return {Array} Array of objects
  */
-
 const getColumnsPosition = sizes => {
 	const columnsPositions = [];
 

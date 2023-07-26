@@ -90,9 +90,7 @@ const FullSizeControl = props => {
 						selected={isBlockFullWidth}
 						onChange={val =>
 							onChange({
-								[`full-width-${breakpoint}`]: val
-									? 'full'
-									: 'normal',
+								[`full-width-${breakpoint}`]: val,
 							})
 						}
 					/>
@@ -107,11 +105,11 @@ const FullSizeControl = props => {
 										imageSize: 'full',
 										imgWidth: 100,
 										[`${prefix}full-width-${breakpoint}`]:
-											val ? 'full' : 'normal',
+											val,
 								  })
 								: onChange({
 										[`${prefix}full-width-${breakpoint}`]:
-											val ? 'full' : 'normal',
+											val,
 								  })
 						}
 					/>
@@ -385,7 +383,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh']}
+						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 					<AdvancedNumberControl
@@ -426,7 +424,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh']}
+						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 				</>

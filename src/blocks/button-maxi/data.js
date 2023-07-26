@@ -10,6 +10,7 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	createIconTransitions,
 	getIconWithColor,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
 	BackgroundControl,
@@ -225,6 +226,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'bi',
 			label: __('Button icon', 'maxi-blocks'),
 			transitionTarget: [
 				transition.block['icon colour'].target,
@@ -252,7 +254,7 @@ const interactionBuilderSettings = {
 					<IconControl
 						{...props}
 						svgType={svgType}
-						isInteractionBuilder
+						isIB
 						getIconWithColor={args =>
 							getIconWithColor(attributes, args)
 						}
@@ -272,8 +274,10 @@ const interactionBuilderSettings = {
 					target: iconClass,
 					wrapperTarget: buttonClass,
 				}),
+			styleAttrs: ['icon-content', 'icon-background-active-media'],
 		},
 		{
+			sid: 'bty',
 			label: __('Button typography', 'maxi-blocks'),
 			transitionTarget: transition.block.typography.target,
 			transitionTrigger: buttonClass,
@@ -284,6 +288,7 @@ const interactionBuilderSettings = {
 					{...props}
 					hideAlignment
 					disableCustomFormats
+					forceIndividualChanges
 				/>
 			),
 			helper: props =>
@@ -294,6 +299,7 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__content',
 		},
 		{
+			sid: 'bb',
 			label: __('Button border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'button-border-status-hover',
@@ -302,8 +308,22 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
+			forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+				if ('button-border-style' in IBAttributes) return false;
+
+				const borderStyle = getLastBreakpointAttribute({
+					target: 'button-border-style',
+					attributes,
+					breakpoint,
+				});
+
+				return borderStyle && borderStyle === 'none';
+			},
+			forceTempPalettePrefix: 'button-border-',
+			styleAttrs: ['button-border-style'],
 		},
 		{
+			sid: 'bbg',
 			label: __('Button background', 'maxi-blocks'),
 			transitionTarget: transition.block['button background'].target,
 			hoverProp: 'button-background-status-hover',
@@ -329,8 +349,13 @@ const interactionBuilderSettings = {
 					isButton: true,
 				}).background,
 			target: '.maxi-button-block__button',
+			styleAttrs: [
+				'button-background-active-media',
+				'button-background-gradient-opacity',
+			],
 		},
 		{
+			sid: 'bbs',
 			label: __('Button box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'button-box-shadow-status-hover',
@@ -339,8 +364,24 @@ const interactionBuilderSettings = {
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: '.maxi-button-block__button',
+			relatedAttributes: [
+				'box-shadow-inset',
+				'box-shadow-horizontal',
+				'box-shadow-horizontal-unit',
+				'box-shadow-vertical',
+				'box-shadow-vertical-unit',
+				'box-shadow-blur',
+				'box-shadow-blur-unit',
+				'box-shadow-spread',
+				'box-shadow-spread-unit',
+				'box-shadow-palette-color',
+				'box-shadow-color',
+				'box-shadow-palette-status',
+				'box-shadow-palette-opacity',
+			],
 		},
 		{
+			sid: 'bmp',
 			label: __('Button margin/padding', 'maxi-blocks'),
 			attrGroupName: ['margin', 'padding'],
 			prefix: 'button-',

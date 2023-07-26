@@ -13,7 +13,7 @@ import { cloneDeep, isEmpty } from 'lodash';
 const transitionAttributesCreator = ({
 	transition = cloneDeep(transitionDefault),
 	selectors,
-}) => {
+} = {}) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj ? Object.values(transitionObj) : null;
 

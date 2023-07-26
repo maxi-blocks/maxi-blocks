@@ -11,9 +11,9 @@ body.maxi-blocks--active .maxi-map-block {
 	.leaflet-container {
 		width: 100%;
 		height: 100%;
-		.leaflet-control-container{
-			.leaflet-control-zoom{
-				a{
+		.leaflet-control-container {
+			.leaflet-control-zoom {
+				a {
 					text-decoration: none;
 				}
 			}
@@ -36,15 +36,15 @@ body.maxi-blocks--active .maxi-map-block {
 		background-color: #fff;
 		border-radius: 50%;
 		transition: 0.1s;
-		span{
+		span {
 			display: block;
-    		margin-top: -4px;
+			margin-top: -4px;
 			transition: 0.1s;
 		}
-		&:hover{
+		&:hover {
 			background-color: #000;
-			span{
-				color: #fff
+			span {
+				color: #fff;
 			}
 		}
 	}
@@ -90,7 +90,7 @@ body.maxi-blocks--active .maxi-map-block {
 			z-index: 10;
 
 			&__title {
-				margin: 0 0 10px;
+				margin: 0px auto 10px auto;
 			}
 			&__description {
 				margin: 0;

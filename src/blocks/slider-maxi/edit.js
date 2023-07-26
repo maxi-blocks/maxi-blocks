@@ -6,7 +6,6 @@ import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { useRef, useState, useEffect, RawHTML } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
@@ -14,6 +13,7 @@ import Inspector from './inspector';
 import { Toolbar } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { withMaxiContextLoop } from '../../extensions/DC';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
@@ -456,21 +456,6 @@ class edit extends MaxiBlockComponent {
 			arrow: '.maxi-slider-block__arrow',
 		};
 
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-slider--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img
-						// eslint-disable-next-line no-undef
-						src={previews.slider_preview}
-						alt={__('Slider block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -542,4 +527,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withInstanceId, withMaxiProps)(edit);
+export default withMaxiContextLoop(
+	compose(withInstanceId, withMaxiProps)(edit)
+);

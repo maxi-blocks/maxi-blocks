@@ -10,7 +10,7 @@ import { cloneElement, renderToString } from '@wordpress/element';
 import {
 	getBlockNameFromUniqueID,
 	getBlockSelectorsByUniqueID,
-	getTransitionSetting,
+	getIBDataItem,
 } from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
 
@@ -132,10 +132,10 @@ describe('getBlockSelectorsByUniqueID', () => {
 	});
 });
 
-describe('getTransitionSetting', () => {
+describe('getIBDataItem', () => {
 	it('Should return the IB setting', () =>
 		expect(
-			getTransitionSetting({
+			getIBDataItem({
 				uniqueID: 'button-maxi-5',
 				settings: __('Box shadow', 'maxi-blocks'),
 			})
@@ -143,7 +143,7 @@ describe('getTransitionSetting', () => {
 
 	it('Should return the IB setting, which has transitionTarget', () =>
 		expect(
-			getTransitionSetting({
+			getIBDataItem({
 				uniqueID: 'button-maxi-5',
 				settings: __('Button icon', 'maxi-blocks'),
 			})
@@ -151,9 +151,17 @@ describe('getTransitionSetting', () => {
 
 	it('Should return null', () =>
 		expect(
-			getTransitionSetting({
+			getIBDataItem({
 				uniqueID: 'button-maxi-5',
 				settings: __('Divider box shadow', 'maxi-blocks'),
 			})
 		).toBeNull());
+
+	it('Should support sid', () =>
+		expect(
+			getIBDataItem({
+				uniqueID: 'button-maxi-5',
+				sid: 'bi',
+			})
+		).toMatchSnapshot());
 });

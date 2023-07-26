@@ -30,7 +30,7 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
-	_exclude: ['content'],
+	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',
@@ -174,6 +174,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'a',
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'textAlignment',
 			component: props => <AlignmentControl {...props} type='text' />,
@@ -181,6 +182,7 @@ const interactionBuilderSettings = {
 			disableTransition: true,
 		},
 		{
+			sid: 'ty',
 			label: __('Typography', 'maxi-blocks'),
 			transitionTarget: transition.canvas.typography.target,
 			hoverProp: 'typography-status-hover',
@@ -191,13 +193,14 @@ const interactionBuilderSettings = {
 					styleCardPrefix=''
 					hideAlignment
 					disableCustomFormats
+					forceIndividualChanges
 				/>
 			),
 			helper: props => getTypographyStyles({ ...props }),
 			target: contentClass,
 		},
+		...getCanvasSettings({ name }),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

@@ -66,7 +66,7 @@ const MasonryItem = props => {
 				<div className='maxi-cloud-masonry-card__container maxi-open-preview'>
 					<div className='maxi-cloud-masonry-card__container__top-bar maxi-open-preview'>
 						<div className='maxi-cloud-masonry__serial-tag maxi-open-preview'>
-							{title}
+							{title || serial}
 						</div>
 					</div>
 				</div>
@@ -124,8 +124,8 @@ const MasonryItem = props => {
 							)}
 						>
 							{!isSaved
-								? __('Save', 'maxi-block')
-								: __('Saved', 'maxi-block')}
+								? __('Save', 'maxi-blocks')
+								: __('Saved', 'maxi-blocks')}
 						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags maxi-open-preview'>
@@ -191,7 +191,7 @@ const MasonryItem = props => {
 							.replace(' line', '')
 							.replace(' shape', '')}
 					</div>
-					<span>{__('Insert', 'maxi-block')}</span>
+					<span>{__('Insert', 'maxi-blocks')}</span>
 				</div>
 			)}
 		</div>

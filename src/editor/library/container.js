@@ -17,6 +17,8 @@ import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
 import useInterval from '../../extensions/dom/useInterval';
 import InfiniteHits from './InfiniteHits';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
+import { ContentLoader } from '../../components';
 
 /**
  * External dependencies
@@ -40,7 +42,6 @@ import DOMPurify from 'dompurify';
  * Icons
  */
 import { arrowIcon } from '../../icons';
-import onRequestInsertPattern from './utils/onRequestInsertPattern';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -86,7 +87,7 @@ const LoadingContent = () => (
 			width: '100%',
 		}}
 	>
-		Loading!
+		<ContentLoader />
 	</div>
 );
 
@@ -704,7 +705,7 @@ const LibraryContainer = props => {
 			if (type === 'accordion-icon-active') {
 				onSelect({
 					'active-icon-content': svgCode,
-					svgTypeActive: svgType,
+					'active-svgType': svgType,
 				});
 
 				onRequestClose();
@@ -1120,11 +1121,11 @@ const LibraryContainer = props => {
 											item => item.label === name
 										);
 										if (item) {
-											item.label = `${name} tone`;
+											item.label = name;
 											return item;
 										}
 										return {
-											label: `${name} tone`,
+											label: name,
 											value: name,
 											count: 0,
 											isRefined: false,

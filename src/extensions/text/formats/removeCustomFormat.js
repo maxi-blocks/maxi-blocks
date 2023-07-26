@@ -21,8 +21,10 @@ const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {
 			inRange(+key, start, end) &&
 			format &&
 			format.attributes.className === className
-		)
-			delete newFormatValue.formats[key];
+		) {
+			const index = value.indexOf(format);
+			newFormatValue.formats[key].splice(index, 1);
+		}
 	});
 
 	const newContent = toHTMLString({

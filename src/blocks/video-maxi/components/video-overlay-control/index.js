@@ -56,6 +56,12 @@ const OverlayColor = props => {
 				attributes: props,
 				isHover,
 			})}
+			paletteSCStatus={getLastBreakpointAttribute({
+				target: 'overlay-background-palette-sc-status',
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
 			paletteColor={getLastBreakpointAttribute({
 				target: 'overlay-background-palette-color',
 				breakpoint,
@@ -81,6 +87,7 @@ const OverlayColor = props => {
 			onChange={({
 				paletteColor,
 				paletteStatus,
+				paletteSCStatus,
 				paletteOpacity,
 				color,
 			}) => {
@@ -91,6 +98,12 @@ const OverlayColor = props => {
 						'',
 						breakpoint
 					)]: paletteStatus,
+					[getAttributeKey(
+						'overlay-background-palette-sc-status',
+						isHover,
+						'',
+						breakpoint
+					)]: paletteSCStatus,
 					[getAttributeKey(
 						'overlay-background-palette-color',
 						isHover,
@@ -181,7 +194,7 @@ const VideoOverlayControl = props => {
 					{!disableUploadImage && (
 						<MediaUploaderControl
 							className='maxi-video-overlay-control__cover-image'
-							placeholder={__('Image overlay')}
+							placeholder={__('Image overlay', 'maxi-blocks')}
 							mediaID={mediaID}
 							onSelectImage={val => {
 								const alt =

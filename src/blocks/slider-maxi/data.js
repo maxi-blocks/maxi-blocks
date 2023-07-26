@@ -1,4 +1,7 @@
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getAdvancedSettings,
+	getCanvasSettings,
+} from '../../extensions/relations';
 import { createSelectors } from '../../extensions/styles/custom-css';
 
 /**
@@ -134,7 +137,10 @@ const customCss = {
 		'dot icon',
 	],
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	block: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
+};
 
 const data = {
 	name,

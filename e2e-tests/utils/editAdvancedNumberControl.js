@@ -9,6 +9,7 @@ const editAdvancedNumberControl = async ({
 	newNumber,
 	newValue,
 }) => {
+	await instance.waitForSelector('input');
 	await instance.$eval('input', select => select.focus());
 
 	await pressKeyWithModifier('primary', 'a');

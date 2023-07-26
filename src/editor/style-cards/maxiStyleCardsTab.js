@@ -156,6 +156,10 @@ const SCAccordion = props => {
 		disableOpacity = false,
 	} = props;
 
+	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
+		tag => groupAttr === tag
+	);
+
 	return (
 		<>
 			{!disableTypography && (
@@ -169,6 +173,7 @@ const SCAccordion = props => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
 					hideTextShadow
+					showBottomGap={ifParagraphOrHeading}
 					hideAlignment
 					blockStyle={SCStyle}
 					disablePalette

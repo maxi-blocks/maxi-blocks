@@ -112,11 +112,14 @@
 			margin-bottom: 0;
 		}
 
-		.maxi-text-control__input[type='text'] {
+		.maxi-text-input[type='text'] {
 			background: transparent;
 			border: none;
 			color: #000;
 			box-shadow: none;
+			font-family: inherit;
+			padding: 0;
+			border-radius: 0;
 		}
 
 		svg.dashicon {

@@ -74,6 +74,7 @@ const customCss = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'cs',
 			label: __('Column settings', 'maxi-blocks'),
 			attrGroupName: ['columnSize', 'flex'],
 			component: props => {
@@ -81,9 +82,9 @@ const interactionBuilderSettings = {
 
 				const rowPattern = getGroupAttributes(
 					getBlockAttributes(
-						wp.data
-							.select('core/block-editor')
-							.getBlockRootClientId(props.clientId)
+						select('core/block-editor').getBlockRootClientId(
+							props.clientId
+						)
 					),
 					'rowPattern'
 				);
@@ -127,8 +128,8 @@ const interactionBuilderSettings = {
 				);
 			},
 		},
+		...getCanvasSettings({ name }),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 

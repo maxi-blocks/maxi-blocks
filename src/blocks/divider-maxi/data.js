@@ -17,6 +17,12 @@ import {
 	getAdvancedSettings,
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { getPaletteAttributes } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  * Classnames
@@ -118,6 +124,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'dbs',
 			label: __('Divider box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'divider-box-shadow-status-hover',
@@ -126,14 +133,39 @@ const interactionBuilderSettings = {
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: dividerClass,
+			relatedAttributes: [
+				'box-shadow-inset',
+				'box-shadow-horizontal',
+				'box-shadow-horizontal-unit',
+				'box-shadow-vertical',
+				'box-shadow-vertical-unit',
+				'box-shadow-blur',
+				'box-shadow-blur-unit',
+				'box-shadow-spread',
+				'box-shadow-spread-unit',
+			],
+			forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+				const paletteAttributes = getPaletteAttributes({
+					obj: IBAttributes,
+					prefix: 'box-shadow-',
+					breakpoint,
+				});
+
+				return Object.values(paletteAttributes).every(attr =>
+					isNil(attr)
+				);
+			},
+			forceTempPalettePrefix: 'box-shadow-',
 		},
 		{
+			sid: 'dls',
 			label: __('Line settings', 'maxi-blocks'),
 			attrGroupName: ['divider', 'size'],
 			component: props => <DividerControl {...props} />,
 			helper: props =>
 				getDividerStyles(props.obj, 'line', props.blockStyle),
 			target: dividerClass,
+			styleAttrs: ['line-orientation', 'divider-border-style'],
 		},
 	],
 	canvas: getCanvasSettings({ name }),

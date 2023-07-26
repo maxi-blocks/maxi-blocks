@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies.
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -13,6 +8,11 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
+import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
  * Edit
@@ -38,21 +38,15 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/container-maxi',
 						'maxi-blocks/column-maxi',
 						'maxi-blocks/pane-maxi',
+						'maxi-blocks/maxi-cloud',
+						'maxi-blocks/slide-maxi',
+						...DISALLOWED_BLOCKS,
 					].indexOf(blockName) === -1
-			);
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-group--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.group_preview}
-						alt={__('Group block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
+			)
+			.concat(
+				this.props.repeaterStatus
+					? Array(DISALLOWED_BLOCKS.length).fill(null)
+					: DISALLOWED_BLOCKS
 			);
 
 		return [
@@ -90,4 +84,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

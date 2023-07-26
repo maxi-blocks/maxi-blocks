@@ -5,14 +5,13 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { RawHTML, Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
@@ -25,6 +24,7 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -47,22 +47,6 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getMaxiCustomData() {
-		const { attributes } = this.props;
-		const { uniqueID } = attributes;
-		const { 'dc-status': dcStatus } = attributes;
-
-		return {
-			...(dcStatus && {
-				dynamic_content: {
-					[uniqueID]: {
-						...getGroupAttributes(attributes, 'dynamicContent'),
-					},
-				},
-			}),
-		};
 	}
 
 	maxiBlockDidUpdate() {
@@ -124,9 +108,16 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
 		} = attributes;
+
+		const {
+			status: dcStatus,
+			content: dcContent,
+			containsHtml: dcContainsHTML,
+		} = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.props?.contextLoopContext?.contextLoop
+		);
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
@@ -142,6 +133,7 @@ class edit extends MaxiBlockComponent {
 			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
 			 * Does not replace spaces, which inside of HTML tags
 			 */
+
 			const replaceSpaces = content =>
 				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 
@@ -178,6 +170,7 @@ class edit extends MaxiBlockComponent {
 					newAttributes = {
 						...attributes,
 						content: value,
+						...(!isOriginal && { uniqueID: null }),
 					};
 				}
 
@@ -199,20 +192,6 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-text--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.text_preview}
-						alt={__('Text block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
-
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -222,7 +201,9 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						!dcStatus && this.state.onChangeFormat(newFormatValue);
+						!dcStatus &&
+							this.state.onChangeFormat?.(newFormatValue);
+
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -293,7 +274,13 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
+						<DCTagName className={className}>
+							{dcContainsHTML ? (
+								<RawHTML>{dcContent}</RawHTML>
+							) : (
+								dcContent
+							)}
+						</DCTagName>
 					)}
 					{!dcStatus && isList && (
 						<RichText
@@ -389,4 +376,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

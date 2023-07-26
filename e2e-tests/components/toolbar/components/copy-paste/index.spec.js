@@ -282,6 +282,9 @@ describe('CopyPaste from Toolbar', () => {
 	it('Should copy nested blocks', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await page.waitForSelector('.maxi-row-block__template button');
+		await page.waitForTimeout(100);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
@@ -306,7 +309,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// focus container
 		await page.$eval(
-			'.edit-post-header__toolbar .edit-post-header-toolbar__left .edit-post-header-toolbar__list-view-toggle',
+			'.edit-post-header__toolbar .edit-post-header-toolbar__left .edit-post-header-toolbar__document-overview-toggle',
 			toolbar => toolbar.click()
 		);
 

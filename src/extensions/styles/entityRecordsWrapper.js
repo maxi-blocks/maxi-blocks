@@ -4,6 +4,11 @@
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getIsSiteEditor } from '../fse';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -21,11 +26,13 @@ const entityRecordsWrapper = (callback, addClearEntity = false) => {
 	if (!isEmpty(dirtyEntityRecords)) dirtyEntityRecords.forEach(callback);
 
 	if (addClearEntity) {
-		const { getCurrentPostId, getCurrentPostType } = select('core/editor');
+		const { getCurrentPostId } = select('core/editor');
 
 		callback({
 			key: getCurrentPostId(),
-			name: getCurrentPostType(),
+			name: getIsSiteEditor()
+				? select('core/edit-site').getEditedPostType()
+				: select('core/editor').getCurrentPostType(),
 		});
 	}
 };

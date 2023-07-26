@@ -61,6 +61,13 @@ const Dropdown = forwardRef(
 			setIsOpen(!isOpen);
 		}
 
+		const close = () => {
+			if (onClose) {
+				onClose();
+			}
+			setIsOpen(false);
+		};
+
 		/**
 		 * Closes the dropdown if a focus leaves the dropdown wrapper. This is
 		 * intentionally distinct from `onClose` since focus loss from the popover
@@ -68,7 +75,7 @@ const Dropdown = forwardRef(
 		 * case the correct behavior is to keep the dropdown closed. The same applies
 		 * in case when focus is moved to the modal dialog.
 		 */
-		function closeIfFocusOutside() {
+		const closeIfFocusOutside = () => {
 			const { ownerDocument } = containerRef.current;
 			if (
 				!containerRef.current.contains(ownerDocument.activeElement) &&
@@ -76,14 +83,7 @@ const Dropdown = forwardRef(
 			) {
 				close();
 			}
-		}
-
-		function close() {
-			if (onClose) {
-				onClose();
-			}
-			setIsOpen(false);
-		}
+		};
 
 		const args = { isOpen, onToggle: toggle, onClose: close };
 

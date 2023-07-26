@@ -134,11 +134,26 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Video headers fails sometimes
+		if (text.includes('Error with Permissions-Policy header')) {
+			return;
+		}
+
 		// CustomCSS validator returns connection errors sometimes
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;
 		}
 		if (text.includes('Failed to load resource: net::ERR_FAILED')) {
+			return;
+		}
+		if (
+			text.includes(
+				'Error validating css: Error: The request took longer than'
+			)
+		) {
+			return;
+		}
+		if (text.includes('Failed to load resource: the server responded')) {
 			return;
 		}
 
@@ -160,7 +175,10 @@ function observeConsoleLogging() {
 		}
 
 		// Sometimes favicon is not found
-		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
+		if (
+			message?._stackTraceLocations?.[0]?.url?.includes('favicon.ico') ||
+			text.includes('favicon.ico')
+		)
 			return;
 
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];

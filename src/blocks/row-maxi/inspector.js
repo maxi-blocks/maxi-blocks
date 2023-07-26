@@ -20,7 +20,15 @@ import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 function ColumnPicker(props) {
-	const { clientId, attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		clientId,
+		attributes,
+		deviceType,
+		repeaterStatus,
+		repeaterRowClientId,
+		getInnerBlocksPositions,
+		maxiSetAttributes,
+	} = props;
 
 	return (
 		<>
@@ -29,6 +37,9 @@ function ColumnPicker(props) {
 				{...getGroupAttributes(attributes, 'rowPattern')}
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
+				repeaterStatus={repeaterStatus}
+				repeaterRowClientId={repeaterRowClientId}
+				getInnerBlocksPositions={getInnerBlocksPositions}
 			/>
 			<FlexGapControl
 				{...getGroupAttributes(attributes, 'flex')}
@@ -48,15 +59,17 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const { deviceType, isRepeaterInherited, updateInnerBlocksPositions } =
+		props;
 	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props,
 			})}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -90,6 +103,11 @@ const Inspector = props => {
 											'horizontalAlign',
 										],
 									},
+									...inspectorTabs.repeater({
+										props,
+										isRepeaterInherited,
+										updateInnerBlocksPositions,
+									}),
 									...inspectorTabs.blockBackground({
 										props,
 									}),
@@ -136,6 +154,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'row',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -145,9 +167,7 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({

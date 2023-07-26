@@ -13,10 +13,14 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { getIconPositionClass } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getIconPositionClass,
+} from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -87,11 +91,15 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
+		const { uniqueID } = attributes;
 		const {
-			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
-		} = attributes;
+			status: dcStatus,
+			content: dcContent,
+			field: dcField,
+		} = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.props.contextLoopContext?.contextLoop
+		);
 		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
@@ -107,20 +115,7 @@ class edit extends MaxiBlockComponent {
 			border: '.maxi-button-block__button',
 			boxShadow: '.maxi-button-block__button',
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-button--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.button_preview}
-						alt={__('Button block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
+		const showDCContent = dcStatus && dcField !== 'static_text';
 
 		return [
 			<Inspector
@@ -156,12 +151,12 @@ class edit extends MaxiBlockComponent {
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<>
-							{dcStatus && (
+							{showDCContent && (
 								<div className='maxi-button-block__content'>
 									{dcContent}
 								</div>
 							)}
-							{!dcStatus && (
+							{!showDCContent && (
 								<RichText
 									className='maxi-button-block__content'
 									value={attributes.buttonContent}
@@ -214,4 +209,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

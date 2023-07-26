@@ -3,8 +3,8 @@
  */
 import getDCEntity from './getDCEntity';
 
-const getDCContent = async dataRequest => {
-	const data = await getDCEntity(dataRequest);
+const getDCContent = async (dataRequest, clientId) => {
+	const data = await getDCEntity(dataRequest, clientId);
 
 	const contentValue = data?.link;
 

@@ -10,6 +10,7 @@ import getTemplateObject from './getTemplateObject';
  * @return {Integer} Number of Columns for the corresponding template
  */
 function getNumCol(templateName) {
+	if (Number(templateName)) return Number(templateName);
 	let newTemplateName = templateName;
 
 	if (templateName.indexOf('custom-') !== -1) {

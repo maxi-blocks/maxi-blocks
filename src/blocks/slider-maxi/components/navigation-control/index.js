@@ -42,7 +42,7 @@ const NavigationControl = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Enable arrows')}
+				label={__('Enable arrows', 'maxi-blocks')}
 				selected={arrowsEnabled}
 				onChange={val =>
 					onChange({
@@ -51,7 +51,7 @@ const NavigationControl = props => {
 				}
 			/>
 			<ToggleSwitch
-				label={__('Enable dots')}
+				label={__('Enable dots', 'maxi-blocks')}
 				selected={dotsEnabled}
 				onChange={val =>
 					onChange({ [`${dotPrefix}status-${deviceType}`]: val })

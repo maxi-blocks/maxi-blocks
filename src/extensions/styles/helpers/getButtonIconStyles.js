@@ -232,6 +232,7 @@ const getButtonIconStyles = ({
 	wrapperTarget = '',
 	prefix = '',
 	iconWidthHeightRatio,
+	hoverOnIcon = false,
 }) => {
 	const hasIcon = !!obj[`${prefix}icon-content`];
 	const {
@@ -240,9 +241,11 @@ const getButtonIconStyles = ({
 	} = obj;
 	const useIconColor = !iconInherit;
 	const normalTarget = `${wrapperTarget} ${target}`;
-	const hoverTarget = `${wrapperTarget}:hover ${target}`;
+	const hoverTarget = hoverOnIcon
+		? `${wrapperTarget} ${target}:hover`
+		: `${wrapperTarget}:hover ${target}`;
 
-	const iconType = obj?.svgType?.toLowerCase();
+	const iconType = obj?.[`${prefix}svgType`]?.toLowerCase();
 
 	const response = {
 		...(hasIcon && !isHover

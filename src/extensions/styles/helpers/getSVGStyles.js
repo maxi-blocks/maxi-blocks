@@ -155,16 +155,29 @@ const getSVGPathFillStyles = (
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({ obj, prefix: `${prefix}fill-`, isHover });
+	const {
+		paletteStatus,
+		paletteSCStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	} = getPaletteAttributes({ obj, prefix: `${prefix}fill-`, isHover });
 
 	if (paletteStatus && paletteColor)
-		response.general.fill = getColorRGBAString({
-			firstVar: `icon-fill${isHover ? '-hover' : ''}`,
-			secondVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
-		});
+		response.general.fill = getColorRGBAString(
+			paletteSCStatus
+				? {
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle,
+				  }
+				: {
+						firstVar: `icon-fill${isHover ? '-hover' : ''}`,
+						secondVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle,
+				  }
+		);
 	else if (!paletteStatus && !isNil(color)) response.general.fill = color;
 
 	return { SVGPathFill: response };
@@ -192,9 +205,9 @@ const getSVGPathStrokeStyles = (
 		response[breakpoint] = {};
 
 		let linePrefix = '';
-
 		switch (prefix) {
 			case 'icon-':
+			case 'close-icon-':
 			case 'active-icon-':
 			case 'navigation-arrow-both-icon-':
 			case 'navigation-dot-icon-':
@@ -206,22 +219,37 @@ const getSVGPathStrokeStyles = (
 				break;
 		}
 
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj,
-				prefix: useIconColor ? linePrefix : '',
-				...(!useIconColor && { breakpoint }),
-				isHover,
-			});
+		const {
+			paletteStatus,
+			paletteSCStatus,
+			paletteColor,
+			paletteOpacity,
+			color,
+		} = getPaletteAttributes({
+			obj,
+			prefix: useIconColor ? linePrefix : '',
+			...(!useIconColor && { breakpoint }),
+			isHover,
+		});
 
 		if (paletteStatus && paletteColor) {
 			if (useIconColor)
-				response.general.stroke = getColorRGBAString({
-					firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				});
+				response.general.stroke = getColorRGBAString(
+					paletteSCStatus
+						? {
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: `icon-stroke${
+									isHover ? '-hover' : ''
+								}`,
+								secondVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle,
+						  }
+				);
 			else
 				response[breakpoint].stroke = getColorRGBAString({
 					firstVar: `color-${paletteColor}`,
@@ -258,7 +286,6 @@ export const getSVGStyles = ({
 		useIconColor
 	);
 	const pathStyles = getSVGPathStyles(obj, prefix, isHover);
-
 	const response = {
 		...(iconType !== 'line' && {
 			[` ${target} svg[data-fill]:not([fill^="none"])`]: pathFillStyles,

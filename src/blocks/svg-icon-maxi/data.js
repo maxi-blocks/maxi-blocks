@@ -38,7 +38,7 @@ const prefix = 'svg-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
-	_exclude: ['content', 'svgType'],
+	_exclude: ['content', 'svgType', 'altTitle', 'altDescription'],
 	settings: {
 		'Icon content': ['svgType', 'content'],
 		Alignment: {
@@ -181,7 +181,8 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
-			label: __('Icon colour'),
+			sid: 'ic',
+			label: __('Icon colour', 'maxi-blocks'),
 			transitionTarget: [
 				transition.block.colour.target,
 				transition.block['colour two'].target,
@@ -216,6 +217,7 @@ const interactionBuilderSettings = {
 		},
 		// TODO: fix #3619
 		// {
+		//  sid: 'ilw',
 		// 	label: __('Icon line width', 'maxi-blocks'),
 		// 	attrGroupName: 'svg',
 		// 	component: props => {
@@ -238,6 +240,7 @@ const interactionBuilderSettings = {
 		// 		}),
 		// },
 		{
+			sid: 'ibg',
 			label: __('Icon background', 'maxi-blocks'),
 			transitionTarget: transition.block.background.target,
 			hoverProp: 'svg-background-status-hover',
@@ -259,8 +262,13 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getBackgroundStyles({ ...props, ...props.obj }).background,
 			target: ' .maxi-svg-icon-block__icon',
+			styleAttrs: [
+				'svg-background-active-media',
+				'svg-background-gradient-opacity',
+			],
 		},
 		{
+			sid: 'ib',
 			label: __('Icon border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'svg-border-status-hover',

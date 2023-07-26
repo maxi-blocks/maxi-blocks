@@ -7,12 +7,12 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getSVGPosition from './getSVGPosition';
+import getSVGRatio from './getSVGRatio';
 
 /**
  * External dependencies
  */
 import { isObject, isEmpty, isElement } from 'lodash';
-import getSVGRatio from './getSVGRatio';
 
 /**
  * Utils

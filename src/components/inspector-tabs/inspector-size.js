@@ -29,7 +29,7 @@ const size = ({
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const { isFirstOnHierarchy } = attributes;
 
-	const fullWidth = getLastBreakpointAttribute({
+	const isBlockFullWidth = getLastBreakpointAttribute({
 		target: `${prefix}full-width`,
 		breakpoint: deviceType,
 		attributes,
@@ -38,7 +38,6 @@ const size = ({
 	const showFullWidth =
 		(isFirstOnHierarchy || name === 'maxi-blocks/row-maxi') &&
 		!hideFullWidth;
-	const isBlockFullWidth = fullWidth === 'full';
 
 	return {
 		label: __('Height / Width', 'maxi-blocks'),

@@ -73,8 +73,6 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const typeOfStyle = obj['number-counter-circle-status'] ? 'color' : 'fill';
-
 	const getColor = breakpoint => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
@@ -104,7 +102,7 @@ const getTextStyles = (obj, blockStyle) => {
 			...(!isNil(obj[`font-weight-${breakpoint}`]) && {
 				'font-weight': `${obj[`font-weight-${breakpoint}`]}`,
 			}),
-			[typeOfStyle]: getColor(breakpoint),
+			color: getColor(breakpoint),
 		};
 	});
 

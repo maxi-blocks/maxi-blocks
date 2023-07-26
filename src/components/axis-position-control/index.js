@@ -27,31 +27,31 @@ const AxisPositionControl = ({
 	return (
 		breakpoint === 'general' && (
 			<SettingTabsControl
-				label={__(`${label} position`, 'maxi-block')}
+				label={__(`${label} position`, 'maxi-blocks')}
 				className={classes}
 				type='buttons'
 				selected={selected}
 				items={[
 					...(!disableY && [
 						{
-							label: __('Top', 'maxi-block'),
+							label: __('Top', 'maxi-blocks'),
 							value: 'top',
 						},
 						{
-							label: __('Bottom', 'maxi-block'),
+							label: __('Bottom', 'maxi-blocks'),
 							value: 'bottom',
 						},
 					]),
 					{
-						label: __('Left', 'maxi-block'),
+						label: __('Left', 'maxi-blocks'),
 						value: 'left',
 					},
 					enableCenter && {
-						label: __('Center', 'maxi-block'),
+						label: __('Center', 'maxi-blocks'),
 						value: 'center',
 					},
 					{
-						label: __('Right', 'maxi-block'),
+						label: __('Right', 'maxi-blocks'),
 						value: 'right',
 					},
 				]}

@@ -1,9 +1,8 @@
 /**
  * WordPress dependencies
  */
+import { select, dispatch } from '@wordpress/data';
 import { createRef } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -45,8 +44,26 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 
 		this.state = {
-			isOpen: this.props.attributes.openFirstTime,
+			isOpen: this.getIsOpenFirstTime(),
 		};
+	}
+
+	getIsOpenFirstTime() {
+		if (this.props.repeaterStatus && this.props.attributes.openFirstTime) {
+			const parentColumnClientId = select(
+				'core/block-editor'
+			).getBlockParentsByBlockName(
+				this.props.clientId,
+				'maxi-blocks/column-maxi'
+			)[0];
+			const innerBlockPositions = this.props.getInnerBlocksPositions();
+
+			return (
+				innerBlockPositions?.[[-1]]?.indexOf(parentColumnClientId) === 0
+			);
+		}
+
+		return this.props.attributes.openFirstTime;
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -166,7 +183,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const { content, openFirstTime, blockStyle, uniqueID } = attributes;
+		const { content, blockStyle, uniqueID } = attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
@@ -199,7 +216,7 @@ class edit extends MaxiBlockComponent {
 			type: 'svg',
 			isOpen,
 			style: blockStyle,
-			openFirstTime: isSelected ? openFirstTime : false,
+			openFirstTime: isSelected ? this.getIsOpenFirstTime() : false,
 			onOpen: obj => {
 				maxiSetAttributes(obj);
 
@@ -234,20 +251,6 @@ class edit extends MaxiBlockComponent {
 		const inlineStylesTargets = {
 			background: '.maxi-svg-icon-block__icon',
 		};
-
-		if (attributes.preview)
-			return (
-				<MaxiBlock
-					key={`maxi-icon--${uniqueID}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					<img // eslint-disable-next-line no-undef
-						src={previews.icon_preview}
-						alt={__('SVG block preview', 'maxi-blocks')}
-					/>
-				</MaxiBlock>
-			);
 
 		return [
 			...[

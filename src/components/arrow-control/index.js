@@ -42,7 +42,7 @@ const ArrowControl = props => {
 			{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
 		];
 
-		if (!isFirstOnHierarchy || isFullWidth === 'normal')
+		if (!isFirstOnHierarchy || !isFullWidth)
 			response = response.concat([
 				{ label: __('Right', 'maxi-blocks'), value: 'right' },
 				{ label: __('Left', 'maxi-blocks'), value: 'left' },
@@ -102,7 +102,9 @@ const ArrowControl = props => {
 				props['show-warning-box'] && (
 					<InfoBox
 						message={__(
-							'Please ensure that the background color is not the same as the page background color.'
+							'Please ensure that the background colour is not the same as the page background colour.',
+							'maxi-blocks'
+
 						)}
 						onClose={() => onChange({ 'show-warning-box': false })}
 					/>

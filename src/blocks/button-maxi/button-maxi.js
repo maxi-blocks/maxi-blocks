@@ -17,9 +17,9 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import saveOld from './save-old';
 import { customCss } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
@@ -34,6 +34,7 @@ import { buttonIcon } from '../../icons';
 import {
 	blockMigrator,
 	buttonIconTransitionMigrator,
+	buttonAriaLabelMigrator,
 } from '../../extensions/styles/migrators';
 
 /**
@@ -63,19 +64,13 @@ registerBlockType('maxi-blocks/button-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiLoader(edit),
+	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
-	deprecated: [
-		{
-			attributes,
-			save: saveOld,
-		},
-		blockMigrator({
-			attributes,
-			save,
-			prefix: 'button-',
-			selectors: customCss.selectors,
-			migrators: [buttonIconTransitionMigrator],
-		}),
-	],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		prefix: 'button-',
+		selectors: customCss.selectors,
+		migrators: [buttonIconTransitionMigrator, buttonAriaLabelMigrator],
+	}),
 });

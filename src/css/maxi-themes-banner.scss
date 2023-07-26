@@ -139,3 +139,8 @@ body.maxi-blocks--active .is-reusable[data-contains-maxi-block='true'] {
 	min-width: 100%;
 	max-width: 100% !important;
 }
+
+/* Fix for links inside of map maxi */
+body.maxi-blocks--active .maxi-map-block .leaflet-bar a {
+	color: black;
+}

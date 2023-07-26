@@ -15,61 +15,6 @@ Array [
         "breakpoint": null,
         "styles": Object {
           "flex-basis": "calc(50% - 0px)",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "l": Object {
-        "breakpoint": 1366,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "m": Object {
-        "breakpoint": 1024,
-        "styles": Object {
-          "flex-basis": "100%",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "100%",
-        },
-      },
-      "s": Object {
-        "breakpoint": 767,
-        "styles": Object {
-          "flex-basis": "100%",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "100%",
-        },
-      },
-      "xl": Object {
-        "breakpoint": 1920,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "calc(50% - 0px)",
-        },
-      },
-      "xs": Object {
-        "breakpoint": 480,
-        "styles": Object {
-          "flex-basis": "100%",
-          "flex-direction": "column",
-          "justify-content": "space-between",
-          "width": "100%",
-        },
-      },
-      "xxl": Object {
-        "breakpoint": 1921,
-        "styles": Object {
-          "flex-basis": "calc(50% - 0px)",
-          "flex-direction": "column",
           "justify-content": "space-between",
           "width": "calc(50% - 0px)",
         },
@@ -85,7 +30,7 @@ Array [
     },
     "id": 1,
     "isButton": true,
-    "settings": "Column settings",
+    "sid": "cs",
     "target": "",
     "title": "Hello World!",
     "uniqueID": "column-maxi-1",
@@ -93,8 +38,8 @@ Array [
 ]
 `;
 
-exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}@media screen and (max-width: 1024px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between; flex-basis: 100%; width: 100%;}}"`;
+exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}"`;
 
-exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s, flex-direction 0.3s ease 0s;}"`;
+exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;
 
-exports[`Column Maxi hover simple actions Column size 4`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s, flex-direction 0.3s ease 0s;}"`;
+exports[`Column Maxi hover simple actions Column size 4`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;

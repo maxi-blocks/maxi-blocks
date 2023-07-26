@@ -13,7 +13,6 @@ import SettingTabsControl from '../../setting-tabs-control';
 import TextControl from '../../text-control';
 import ToggleSwitch from '../../toggle-switch';
 import DateOptions from './constants';
-import InfoBox from '../../info-box';
 
 /**
  * Styles & Icons
@@ -23,48 +22,50 @@ import './editor.scss';
 const DateHelperPopover = () => (
 	<Popover className='maxi-date-helper-popover maxi-popover-button'>
 		<p>
-			<b>{__('d', 'maxi-blocks')}</b> -
+			<b>d - </b>
 			{__('day in numeric format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('D', 'maxi-blocks')}</b> -
+			<b>D - </b>
 			{__('day in text format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('DS', 'maxi-blocks')}</b> -
+			<b>DS - </b>
 			{__('day in text format, short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('DV', 'maxi-blocks')}</b> -
+			<b>DV - </b>
 			{__('day in text format, very short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('m', 'maxi-blocks')}</b> -
+			<b>m - </b>
 			{__('month in numeric format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('M', 'maxi-blocks')}</b> -
+			<b>M - </b>
 			{__('month in text format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('MS', 'maxi-blocks')}</b> -
+			<b>MS - </b>
 			{__('month in text format, short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('y', 'maxi-blocks')}</b> -
+			<b>y - </b>
 			{__('year in short format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('Y', 'maxi-blocks')}</b> -{__('full year', 'maxi-blocks')}
+			<b>Y - </b>
+			{__('full year', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('t', 'maxi-blocks')}</b> -{__('time', 'maxi-blocks')}
+			<b>t - </b>
+			{__('time', 'maxi-blocks')}
 		</p>
 	</Popover>
 );
 
 const DateFormatting = props => {
-	const { allowCustomDate, onChange } = props;
+	const { onChange } = props;
 
 	const [showHelp, setShowHelp] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
@@ -154,13 +155,21 @@ const DateFormatting = props => {
 	return (
 		<div className='maxi-custom-date-formatting'>
 			{showHelp && <DateHelperPopover />}
-			<ToggleSwitch
+			{/* Hide custom date until we figure out moment.parseFormat for other languages */}
+			{/* <ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
 				selected={customDate}
 				onChange={value => changeProps({ 'dc-custom-date': value })}
-			/>
+			/> */}
 			{!customDate && (
 				<div className='maxi-custom-date-formatting__help-trigger'>
+					<TextControl
+						label={__('Date format', 'maxi-blocks')}
+						help={false}
+						placeholder={__('d.m.Y t', 'maxi-blocks')}
+						value={format}
+						onChange={val => validateAnchor(val)}
+					/>
 					<div
 						className='maxi-custom-date-formatting__help-icon'
 						onClick={() => setShowHelp(state => !state)}
@@ -169,173 +178,143 @@ const DateFormatting = props => {
 							i
 						</span>
 					</div>
-					<TextControl
-						label={__('Date format', 'maxi-blocks')}
-						help={false}
-						placeholder={__('d.m.Y t', 'maxi-blocks')}
-						value={format}
-						onChange={val => validateAnchor(val)}
-					/>
 				</div>
 			)}
 			{customDate && (
 				<>
-					{allowCustomDate && (
+					<SettingTabsControl
+						type='buttons'
+						fullWidthMode
+						selected={linkStatus}
+						hasBorder
+						items={[
+							{
+								label: __('Date', 'maxi-blocks'),
+								value: 'year',
+							},
+							{
+								label: __('Time', 'maxi-blocks'),
+								value: 'time',
+							},
+							{
+								label: __('Zone', 'maxi-blocks'),
+								value: 'zone',
+							},
+						]}
+						onChange={value => setLinkStatus(value)}
+					/>
+					{linkStatus === 'year' && (
 						<>
-							<SettingTabsControl
-								type='buttons'
-								fullWidthMode
-								selected={linkStatus}
-								hasBorder
-								items={[
-									{
-										label: __('Year', 'maxi-block'),
-										value: 'year',
-									},
-									{
-										label: __('Time', 'maxi-block'),
-										value: 'time',
-									},
-									{
-										label: __('Zone', 'maxi-block'),
-										value: 'zone',
-									},
-								]}
-								onChange={value => setLinkStatus(value)}
+							<SelectControl
+								label={__('Era', 'maxi-blocks')}
+								value={era}
+								options={DateOptions.era}
+								onChange={value =>
+									changeProps({ 'dc-era': value })
+								}
 							/>
-							{linkStatus === 'year' && (
-								<>
-									<SelectControl
-										label={__('Era', 'maxi-blocks')}
-										value={era}
-										options={DateOptions.era}
-										onChange={value =>
-											changeProps({ 'dc-era': value })
-										}
-									/>
-									<SelectControl
-										label={__('Years', 'maxi-blocks')}
-										value={year}
-										options={DateOptions.year}
-										onChange={value =>
-											changeProps({ 'dc-year': value })
-										}
-									/>
-									<SelectControl
-										label={__('Month', 'maxi-blocks')}
-										value={month}
-										options={DateOptions.month}
-										onChange={value =>
-											changeProps({ 'dc-month': value })
-										}
-									/>
-									<SelectControl
-										label={__('Day', 'maxi-blocks')}
-										value={day}
-										options={DateOptions.day}
-										onChange={value =>
-											changeProps({ 'dc-day': value })
-										}
-									/>
-									<SelectControl
-										label={__('Weekday', 'maxi-blocks')}
-										value={weekday}
-										options={DateOptions.weekday}
-										onChange={value =>
-											changeProps({ 'dc-weekday': value })
-										}
-									/>
-								</>
-							)}
-							{linkStatus === 'time' && (
-								<>
-									<SelectControl
-										label={__('Format', 'maxi-blocks')}
-										value={hour12}
-										options={DateOptions.hour12}
-										onChange={value =>
-											changeProps({ 'dc-hour12': value })
-										}
-									/>
-									<SelectControl
-										label={__('Hour', 'maxi-blocks')}
-										value={hour}
-										options={DateOptions.hour}
-										onChange={value =>
-											changeProps({ 'dc-hour': value })
-										}
-									/>
-									<SelectControl
-										label={__('Minute', 'maxi-blocks')}
-										value={minute}
-										options={DateOptions.minute}
-										onChange={value =>
-											changeProps({ 'dc-minute': value })
-										}
-									/>
-									<SelectControl
-										label={__('Second', 'maxi-blocks')}
-										value={second}
-										options={DateOptions.second}
-										onChange={value =>
-											changeProps({ 'dc-second': value })
-										}
-									/>
-								</>
-							)}
-							{linkStatus === 'zone' && (
-								<>
-									<SelectControl
-										label={__('Locale', 'maxi-blocks')}
-										value={locale}
-										options={DateOptions.locale}
-										onChange={value =>
-											changeProps({ 'dc-locale': value })
-										}
-									/>
-									<SelectControl
-										label={__('Timezone', 'maxi-blocks')}
-										value={timeZone}
-										options={DateOptions.timeZone}
-										onChange={value =>
-											changeProps({
-												'dc-timezone': value,
-											})
-										}
-									/>
-									<SelectControl
-										label={__(
-											'Timezone name',
-											'maxi-blocks'
-										)}
-										value={timeZoneName}
-										options={DateOptions.timeZoneName}
-										onChange={value =>
-											changeProps({
-												'dc-timezone-name': value,
-											})
-										}
-									/>
-								</>
-							)}
+							<SelectControl
+								label={__('Years', 'maxi-blocks')}
+								value={year}
+								options={DateOptions.year}
+								onChange={value =>
+									changeProps({ 'dc-year': value })
+								}
+							/>
+							<SelectControl
+								label={__('Month', 'maxi-blocks')}
+								value={month}
+								options={DateOptions.month}
+								onChange={value =>
+									changeProps({ 'dc-month': value })
+								}
+							/>
+							<SelectControl
+								label={__('Day', 'maxi-blocks')}
+								value={day}
+								options={DateOptions.day}
+								onChange={value =>
+									changeProps({ 'dc-day': value })
+								}
+							/>
+							<SelectControl
+								label={__('Weekday', 'maxi-blocks')}
+								value={weekday}
+								options={DateOptions.weekday}
+								onChange={value =>
+									changeProps({ 'dc-weekday': value })
+								}
+							/>
 						</>
 					)}
-					{!allowCustomDate && (
-						<InfoBox
-							key='maxi-custom-date-formatting__custom-date-warning'
-							message={__(
-								'To modify custom date, use the panel settings',
-								'maxi-blocks'
-							)}
-							links={[
-								{
-									title: __('Dynamic content', 'maxi-blocks'),
-									panel: 'dynamic content',
-								},
-							]}
-							tab={1}
-						/>
-					)}{' '}
+					{linkStatus === 'time' && (
+						<>
+							<SelectControl
+								label={__('Format', 'maxi-blocks')}
+								value={hour12}
+								options={DateOptions.hour12}
+								onChange={value =>
+									changeProps({ 'dc-hour12': value })
+								}
+							/>
+							<SelectControl
+								label={__('Hour', 'maxi-blocks')}
+								value={hour}
+								options={DateOptions.hour}
+								onChange={value =>
+									changeProps({ 'dc-hour': value })
+								}
+							/>
+							<SelectControl
+								label={__('Minute', 'maxi-blocks')}
+								value={minute}
+								options={DateOptions.minute}
+								onChange={value =>
+									changeProps({ 'dc-minute': value })
+								}
+							/>
+							<SelectControl
+								label={__('Second', 'maxi-blocks')}
+								value={second}
+								options={DateOptions.second}
+								onChange={value =>
+									changeProps({ 'dc-second': value })
+								}
+							/>
+						</>
+					)}
+					{linkStatus === 'zone' && (
+						<>
+							<SelectControl
+								label={__('Locale', 'maxi-blocks')}
+								value={locale}
+								options={DateOptions.locale}
+								onChange={value =>
+									changeProps({ 'dc-locale': value })
+								}
+							/>
+							<SelectControl
+								label={__('Timezone', 'maxi-blocks')}
+								value={timeZone}
+								options={DateOptions.timeZone}
+								onChange={value =>
+									changeProps({
+										'dc-timezone': value,
+									})
+								}
+							/>
+							<SelectControl
+								label={__('Timezone name', 'maxi-blocks')}
+								value={timeZoneName}
+								options={DateOptions.timeZoneName}
+								onChange={value =>
+									changeProps({
+										'dc-timezone-name': value,
+									})
+								}
+							/>
+						</>
+					)}
 				</>
 			)}
 		</div>

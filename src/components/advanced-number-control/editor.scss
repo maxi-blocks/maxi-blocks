@@ -11,6 +11,17 @@
 		width: 100%;
 		flex: 100%;
 		margin: 8px 0 0;
+
+		&.maxi-advanced-number-control__range--small {
+			.components-simple-tooltip {
+				transform: none;
+			}
+		}
+		&.maxi-advanced-number-control__range--big {
+			.components-simple-tooltip {
+				transform: translateX(-90%);
+			}
+		}
 	}
 	.maxi-base-control__label {
 		flex: 2;

@@ -4,12 +4,11 @@
  */
 import {
 	forwardRef,
-	useEffect,
-	useState,
 	memo,
 	useCallback,
+	useEffect,
 	useReducer,
-	useRef,
+	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -20,7 +19,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { marginValueCalculator } from '../../extensions/dom';
+import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -54,9 +53,9 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 			attributes,
 		});
 
-	const isFullWidth = getValue('full-width') === 'full';
+	const isFullWidth = getValue('full-width');
 
-	if (!isFullWidth) return {};
+	if (!isFullWidth) return '';
 
 	// Margin
 	const marginRight = getValue('margin-right') || 0;
@@ -113,6 +112,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink,
 		useInnerBlocks = false,
 		hasInnerBlocks = false,
+		isRepeater,
 		isSelected,
 		hasSelectedChild,
 		isHovered,
@@ -123,48 +123,51 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	// To forbid the use of links for container blocks from having links when their child has one
 	if (!isSave && useInnerBlocks && hasLink) {
 		let childHasLink = false;
-		const children = select('core/block-editor').getClientIdsOfDescendants([
-			clientId,
-		]);
+		const childrenClientIds = select(
+			'core/block-editor'
+		).getClientIdsOfDescendants([clientId]);
 
-		for (const child of children) {
+		for (const childClientId of childrenClientIds) {
 			const attributes =
-				select('core/block-editor').getBlockAttributes(child);
+				select('core/block-editor').getBlockAttributes(childClientId);
 
 			if (
 				!isEmpty(attributes.linkSettings?.url) ||
-				(select('core/block-editor').getBlockName(child) ===
+				(select('core/block-editor').getBlockName(childClientId) ===
 					'maxi-blocks/text-maxi' &&
-					attributes.content.includes('<a '))
+					(attributes.content.includes('<a ') ||
+						attributes['dc-content']?.includes('<a ')))
 			) {
 				childHasLink = true;
 				break;
 			}
 		}
-		if (childHasLink) {
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
-					disabled: true,
-				},
-			});
-		} else if (extraProps.attributes.linkSettings.disabled) {
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				linkSettings: {
-					...extraProps.attributes.linkSettings,
-					disabled: false,
-				},
-			});
-		}
+		const attributes = extraProps?.attributes || {};
+		setTimeout(() => {
+			if (childHasLink) {
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					linkSettings: {
+						...attributes?.linkSettings,
+						disabled: true,
+					},
+				});
+			} else if (attributes?.linkSettings.disabled) {
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					linkSettings: {
+						...attributes.linkSettings,
+						disabled: false,
+					},
+				});
+			}
+		}, 10);
 	}
 
 	// Gets if the block is full-width
-	const isFullWidth =
-		getLastBreakpointAttribute({
-			target: 'full-width',
-			breakpoint: extraProps.deviceType,
-			attributes: extraProps.attributes,
-		}) === 'full';
+	const isFullWidth = getLastBreakpointAttribute({
+		target: 'full-width',
+		breakpoint: extraProps.deviceType,
+		attributes: extraProps.attributes,
+	});
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
@@ -236,6 +239,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
+		isRepeater && 'maxi-block--repeater',
 		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width'
 	);
@@ -320,25 +324,20 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const getMarginValue = useRef(marginValueCalculator());
 
-		useEffect(() => {
-			return () => {
-				getMarginValue.current(true);
-			};
-		}, []);
+		const isHoverPreview = getIsHoverPreview();
+
+		const marginValue = !isHoverPreview
+			? select('maxiBlocks/styles').getBlockMarginValue()
+			: 0;
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
 		const { isFirstOnHierarchy } = attributes;
-		const styleStr = getBlockStyle(
-			attributes,
-			deviceType,
-			getMarginValue.current()
-		);
+		const styleStr = getBlockStyle(attributes, deviceType, marginValue);
 
 		useEffect(() => {
-			if (isFirstOnHierarchy) {
+			if (isFirstOnHierarchy && styleStr) {
 				const style = document.createElement('style');
 				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
 				ref.current.ownerDocument.head.appendChild(style);
@@ -347,6 +346,8 @@ const MaxiBlock = memo(
 					style.remove();
 				};
 			}
+
+			return () => {};
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (
@@ -382,6 +383,8 @@ const MaxiBlock = memo(
 
 		// Check differences between children
 		if (rawOldProps?.children || rawNewProps?.children) {
+			// TODO: check this part of the code, seems is always returning false,
+			// so the block is always re-rendering
 			const areChildrenEqual = isEqual(
 				rawOldProps.children,
 				rawNewProps.children

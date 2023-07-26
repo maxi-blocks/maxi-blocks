@@ -53,6 +53,9 @@ const MoreSettings = props => {
 				className='maxi-more-settings__settings-selector'
 				contentClassName='maxi-more-settings__popover'
 				position='right bottom'
+				popoverProps={{
+					useShift: true,
+				}}
 				renderToggle={({ onToggle }) => (
 					<Button onClick={onToggle}>
 						<Icon

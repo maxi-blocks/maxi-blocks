@@ -30,6 +30,8 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultSCValue } from '../../extensions/style-cards';
+import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import onChangeFontWeight from '../font-weight-control/utils';
 
 /**
  * External dependencies
@@ -68,7 +70,7 @@ const LinkOptions = props => {
 				hasBorder
 				items={[
 					{
-						label: __('Link', 'maxi-block'),
+						label: __('Link', 'maxi-blocks'),
 						value: 'normal_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-color`,
@@ -78,7 +80,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Hover', 'maxi-block'),
+						label: __('Hover', 'maxi-blocks'),
 						value: 'hover_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-hover-color`,
@@ -88,7 +90,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Active', 'maxi-block'),
+						label: __('Active', 'maxi-blocks'),
 						value: 'active_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-active-color`,
@@ -98,7 +100,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Visited', 'maxi-block'),
+						label: __('Visited', 'maxi-blocks'),
 						value: 'visited_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-visited-color`,
@@ -117,6 +119,7 @@ const LinkOptions = props => {
 					color={getValue('link-color')}
 					prefix={`${prefix}link-`}
 					paletteStatus={getValue('link-palette-status')}
+					paletteSCStatus={getValue('link-palette-sc-status')}
 					paletteColor={getValue('link-palette-color')}
 					paletteOpacity={getValue('link-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -125,12 +128,15 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
 						onChangeFormat(
 							{
 								[`${prefix}link-palette-status`]: paletteStatus,
+								[`${prefix}link-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-palette-color`]: paletteColor,
 								[`${prefix}link-palette-opacity`]:
 									paletteOpacity,
@@ -153,6 +159,7 @@ const LinkOptions = props => {
 					color={getValue('link-hover-color')}
 					prefix={`${prefix}link-hover-`}
 					paletteStatus={getValue('link-hover-palette-status')}
+					paletteSCStatus={getValue('link-hover-palette-sc-status')}
 					paletteColor={getValue('link-hover-palette-color')}
 					paletteOpacity={getValue('link-hover-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -161,6 +168,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -168,6 +176,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-hover-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-hover-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-hover-palette-color`]:
 									paletteColor,
 								[`${prefix}link-hover-palette-opacity`]:
@@ -191,6 +201,7 @@ const LinkOptions = props => {
 					color={getValue('link-active-color')}
 					prefix={`${prefix}link-active-`}
 					paletteStatus={getValue('link-active-palette-status')}
+					paletteSCStatus={getValue('link-active-palette-sc-status')}
 					paletteColor={getValue('link-active-palette-color')}
 					paletteOpacity={getValue('link-active-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -199,6 +210,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -206,6 +218,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-active-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-active-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-active-palette-color`]:
 									paletteColor,
 								[`${prefix}link-active-palette-opacity`]:
@@ -232,6 +246,7 @@ const LinkOptions = props => {
 					color={getValue('link-visited-color')}
 					prefix={`${prefix}link-visited-`}
 					paletteStatus={getValue('link-visited-palette-status')}
+					paletteSCStatus={getValue('link-visited-palette-sc-status')}
 					paletteColor={getValue('link-visited-palette-color')}
 					paletteOpacity={getValue('link-visited-palette-opacity')}
 					onChangeInline={({ color }) =>
@@ -240,6 +255,7 @@ const LinkOptions = props => {
 					onChange={({
 						paletteColor,
 						paletteStatus,
+						paletteSCStatus,
 						paletteOpacity,
 						color,
 					}) =>
@@ -247,6 +263,8 @@ const LinkOptions = props => {
 							{
 								[`${prefix}link-visited-palette-status`]:
 									paletteStatus,
+								[`${prefix}link-visited-palette-sc-status`]:
+									paletteSCStatus,
 								[`${prefix}link-visited-palette-color`]:
 									paletteColor,
 								[`${prefix}link-visited-palette-opacity`]:
@@ -285,7 +303,7 @@ const TypographyControl = props => {
 		prefix = '',
 		disableFormats = false,
 		disableCustomFormats = false,
-		hideBottomGap = false,
+		showBottomGap = false,
 		hideTextShadow = false,
 		isStyleCards = false,
 		disablePalette = false,
@@ -295,6 +313,7 @@ const TypographyControl = props => {
 		allowLink = false,
 		blockStyle,
 		globalProps,
+		forceIndividualChanges = false,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
@@ -333,7 +352,7 @@ const TypographyControl = props => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 300,
+			max: 999,
 		},
 		em: {
 			min: 0,
@@ -429,6 +448,18 @@ const TypographyControl = props => {
 		value,
 		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {}
 	) => {
+		if (forceIndividualChanges) {
+			const obj = Object.entries(value).reduce((acc, [key, val]) => {
+				acc[`${key}-${breakpoint}`] = val;
+
+				return acc;
+			}, {});
+
+			onChange({ ...obj, isReset });
+
+			return;
+		}
+
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -476,10 +507,39 @@ const TypographyControl = props => {
 						className='maxi-typography-control__font-family'
 						font={getValue('font-family')}
 						onChange={font => {
+							const currentWeight = getValue('font-weight');
+							const fontName =
+								font.value ?? getDefault('font-family');
+							const isInWeightOptions =
+								isNil(currentWeight) ||
+								isNil(fontName) ||
+								getWeightOptions(fontName).some(
+									({ value }) => +value === +currentWeight
+								);
+
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
+								...(!isInWeightOptions && {
+									[`${prefix}font-weight`]:
+										getClosestAvailableFontWeight(
+											fontName,
+											currentWeight
+										),
+								}),
 								[`${prefix}font-options`]: font.files,
 							});
+
+							if (!isInWeightOptions) {
+								onChangeFontWeight(
+									getClosestAvailableFontWeight(
+										fontName,
+										currentWeight
+									),
+									fontName,
+									getValue('font-style') ??
+										getDefault('font-style')
+								);
+							}
 						}}
 						fontWeight={getValue('font-weight')}
 						fontStyle={getValue('font-style')}
@@ -497,6 +557,7 @@ const TypographyControl = props => {
 							`${prefix}palette-opacity`
 						)}
 						paletteStatus={getValue('palette-status')}
+						paletteSCStatus={getValue('palette-sc-status')}
 						onChangeInline={({ color }) =>
 							onChangeInlineValue({ color })
 						}
@@ -504,12 +565,14 @@ const TypographyControl = props => {
 							color,
 							paletteColor,
 							paletteStatus,
+							paletteSCStatus,
 							paletteOpacity,
 						}) =>
 							onChangeFormat({
 								[`${prefix}color`]: color,
 								[`${prefix}palette-color`]: paletteColor,
 								[`${prefix}palette-status`]: paletteStatus,
+								[`${prefix}palette-sc-status`]: paletteSCStatus,
 								[`${prefix}palette-opacity`]: paletteOpacity,
 							})
 						}
@@ -664,7 +727,9 @@ const TypographyControl = props => {
 					}}
 					fontWeight={getValue('font-weight')}
 					defaultFontWeight={getDefault('font-weight')}
-					fontName={getValue('font-family')}
+					fontName={
+						getValue('font-family') ?? getDefault('font-family')
+					}
 					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}
 				/>
@@ -1015,7 +1080,7 @@ const TypographyControl = props => {
 					}}
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
-				{!hideBottomGap && (
+				{showBottomGap && (
 					<AdvancedNumberControl
 						className='maxi-typography-control__bottom-gap'
 						label={__('Bottom gap', 'maxi-blocks')}

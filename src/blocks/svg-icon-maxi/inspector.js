@@ -44,7 +44,6 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{deviceType === 'general' && (
 				<div className='maxi-tab-content__box sidebar-block-info'>
 					<CustomLabel
@@ -70,29 +69,51 @@ const Inspector = props => {
 								'svg-line-palette-opacity':
 									svgPaletteLineOpacity,
 								'svg-line-color': svgLineColor,
+								'svg-fill-palette-status': svgFillPaletteStatus,
+								'svg-line-palette-status': svgLinePaletteStatus,
+								'svg-fill-palette-sc-status':
+									svgFillPaletteSCStatus,
+								'svg-line-palette-sc-status':
+									svgLinePaletteSCStatus,
 							} = attributes;
 
-							const fillColorStr = getColorRGBAString({
-								firstVar: 'icon-fill',
-								secondVar: `color-${svgPaletteFillColor}`,
-								opacity: svgPaletteFillOpacity,
-								blockStyle,
-							});
-							const lineColorStr = getColorRGBAString({
-								firstVar: 'icon-stroke',
-								secondVar: `color-${svgPaletteLineColor}`,
-								opacity: svgPaletteLineOpacity,
-								blockStyle,
-							});
+							const fillColorStr = getColorRGBAString(
+								svgFillPaletteSCStatus
+									? {
+											firstVar: `color-${svgPaletteFillColor}`,
+											opacity: svgPaletteFillOpacity,
+											blockStyle,
+									  }
+									: {
+											firstVar: 'icon-fill',
+											secondVar: `color-${svgPaletteFillColor}`,
+											opacity: svgPaletteFillOpacity,
+											blockStyle,
+									  }
+							);
+							const lineColorStr = getColorRGBAString(
+								svgLinePaletteSCStatus
+									? {
+											firstVar: `color-${svgPaletteLineColor}`,
+											opacity: svgPaletteLineOpacity,
+											blockStyle,
+									  }
+									: {
+											firstVar: 'icon-stroke',
+											secondVar: `color-${svgPaletteLineColor}`,
+											opacity: svgPaletteLineOpacity,
+											blockStyle,
+									  }
+							);
 
 							maxiSetAttributes({
 								...obj,
 								content: setSVGContentWithBlockStyle(
 									attributes.content,
-									attributes['svg-fill-palette-status']
+									svgFillPaletteStatus
 										? fillColorStr
 										: svgFillColor,
-									attributes['svg-line-palette-status']
+									svgLinePaletteStatus
 										? lineColorStr
 										: svgLineColor
 								),
@@ -102,6 +123,8 @@ const Inspector = props => {
 					/>
 				</div>
 			)}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding

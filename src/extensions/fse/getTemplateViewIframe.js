@@ -17,7 +17,9 @@ const getTemplateViewIframe = uniqueID => {
 	Array.from(listItems).forEach(listItem => {
 		const listItemIframe = listItem.querySelector(
 			'.block-editor-block-preview__content iframe'
-		).contentDocument;
+		)?.contentDocument;
+
+		if (!listItemIframe) return;
 
 		if (listItemIframe.querySelector(`.${uniqueID}`))
 			templateViewIframe = listItemIframe;

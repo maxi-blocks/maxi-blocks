@@ -139,7 +139,7 @@ class ToolbarPopover extends Component {
 
 		return (
 			<div ref={this.ref}>
-				<ToolbarContext.Provider value={{ isOpen, onClose }}>
+				<ToolbarContext.Provider value={this.state}>
 					{!tooltipsHide && (
 						<Tooltip text={tooltip} position='top center'>
 							{buttonContent()}
@@ -154,6 +154,15 @@ class ToolbarPopover extends Component {
 							className='toolbar-item__popover'
 							onClose={onClose}
 							position={position}
+							useAnimationFrame
+							useFlip
+							useShift
+							shiftPadding={
+								!!advancedOptions && {
+									right: 20,
+								}
+							}
+							shiftLimit={{ mainAxis: false }}
 							isAlternate
 							noArrow
 						>

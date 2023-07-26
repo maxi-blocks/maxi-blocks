@@ -61,6 +61,7 @@ const MapPopupTextControl = ({
 									attributes['map-marker-heading-level']
 								}
 								{...typographyProps}
+								showBottomGap
 							/>
 						</>
 					),

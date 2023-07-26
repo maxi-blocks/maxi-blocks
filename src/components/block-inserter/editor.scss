@@ -23,7 +23,7 @@
 		}
 	}
 
-	&__button.maxi-components-button {
+	&__button {
 		display: block;
 		position: relative;
 		width: 16px;
@@ -129,6 +129,13 @@
 	}
 
 	&__button-wrapper {
+		&--repeater {
+			.maxi-block-inserter__button,
+			&:before {
+				background: #7a00df !important;
+			}
+		}
+
 		&:before {
 			content: '';
 			position: absolute;

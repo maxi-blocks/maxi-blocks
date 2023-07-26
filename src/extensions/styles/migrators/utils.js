@@ -24,7 +24,7 @@ export const getBlockSelectorsByUniqueID = uniqueID =>
 /**
  * Returns blocks `interactionBuilderSettings`
  */
-export const getTransitionSetting = ({ uniqueID, settings }) => {
+export const getIBDataItem = ({ uniqueID, sid, settings }) => {
 	const interactionBuilderSettings =
 		getBlockDataByUniqueID(uniqueID)?.interactionBuilderSettings;
 
@@ -33,7 +33,10 @@ export const getTransitionSetting = ({ uniqueID, settings }) => {
 	return (
 		Object.values(interactionBuilderSettings)
 			.flat()
-			.find(currentSettings => currentSettings?.label === settings) ||
-		null
+			.find(
+				item =>
+					(sid && item?.sid === sid) ||
+					(!sid && settings && item?.label === settings)
+			) || null
 	);
 };

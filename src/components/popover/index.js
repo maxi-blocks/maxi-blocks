@@ -39,6 +39,7 @@ import {
 	offset as offsetMiddleware,
 	limitShift,
 	size,
+	flip,
 } from '@floating-ui/react-dom';
 
 /**
@@ -147,6 +148,7 @@ const Popover = (
 		useShift = false,
 		shiftPadding,
 		shiftLimit,
+		useFlip = false,
 		resize = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
@@ -187,13 +189,11 @@ const Popover = (
 		const { defaultView } = ownerDocument;
 		const { frameElement } = defaultView;
 
-		const iframeRect = frameElement?.getBoundingClientRect();
-
 		return (
 			frameElement &&
 			ownerDocument !== document && {
-				x: iframeRect.left,
-				y: iframeRect.top,
+				x: 0,
+				y: 0,
 			}
 		);
 	}, [ownerDocument]);
@@ -246,6 +246,14 @@ const Popover = (
 							overflow: 'auto',
 						});
 					},
+			  })
+			: undefined,
+		useFlip
+			? flip({
+					crossAxis: false,
+					boundary: document.querySelector(
+						'.interface-interface-skeleton__content'
+					),
 			  })
 			: undefined,
 		useShift

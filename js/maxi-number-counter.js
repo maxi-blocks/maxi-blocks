@@ -49,6 +49,8 @@ const numberCounterEffect = () => {
 					'number-counter-end': numberCounterEnd,
 					'number-counter-duration': numberCounterDuration,
 					'number-counter-percentage-sign-status': usePercentage,
+					'number-counter-percentage-sign-position-status':
+						centeredPercentage,
 					'number-counter-start-animation': startAnimation,
 					'number-counter-start-animation-offset':
 						startAnimationOffset,
@@ -80,10 +82,9 @@ const numberCounterEffect = () => {
 					let newInnerHTML = `${count}`;
 
 					if (usePercentage) {
-						const percentageNode =
-							numberCounterElemText.nodeName === 'SPAN'
-								? '<sup>%</sup>'
-								: '<tspan baseline-shift="super">%</tspan>';
+						const percentageNode = centeredPercentage
+							? '%'
+							: '<sup>%</sup>';
 
 						newInnerHTML += percentageNode;
 					}

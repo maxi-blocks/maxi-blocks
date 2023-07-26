@@ -21,7 +21,7 @@ import {
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
 } from '../../../../extensions/styles';
-import { setSVGColor, setSVGSize } from '../../../../extensions/svg';
+import { setSVGColor } from '../../../../extensions/svg';
 import MaxiModal from '../../../../editor/library/modal';
 
 /**
@@ -46,6 +46,11 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
+	const isSVGMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		listStyleCustom.includes('</svg>');
 	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
 		(listStyleCustom?.includes('<svg ') && 'icon') ||
@@ -129,19 +134,6 @@ const ListOptionsControl = props => {
 				value: style,
 			};
 		});
-	};
-
-	const getSVGElement = (size, unit) => {
-		let svgElement = null;
-
-		if (typeOfList === 'ul' && listStyleSource === 'icon') {
-			svgElement = setSVGSize({
-				svg: listStyleCustom,
-				size: size + unit,
-			});
-		}
-
-		return svgElement;
 	};
 
 	return (
@@ -358,7 +350,11 @@ const ListOptionsControl = props => {
 				}}
 			/>
 			<AdvancedNumberControl
-				label={__('Marker size', 'maxi-blocks')}
+				label={
+					isSVGMarker
+						? __('Marker width', 'maxi-blocks')
+						: __('Marker size', 'maxi-blocks')
+				}
 				className='maxi-text-inspector__list-marker-size'
 				value={getLastBreakpointAttribute({
 					target: 'list-marker-size',
@@ -366,19 +362,9 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeValue={val => {
-					const unit = getLastBreakpointAttribute({
-						target: 'list-marker-size-unit',
-						breakpoint: deviceType,
-						attributes,
-					});
-					const svgElement = getSVGElement(val, unit);
-
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]:
 							val !== undefined && val !== '' ? val : '',
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 					});
 				}}
 				enableUnit
@@ -388,18 +374,8 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeUnit={val => {
-					const size = getLastBreakpointAttribute({
-						target: 'list-marker-size',
-						breakpoint: deviceType,
-						attributes,
-					});
-					const svgElement = getSVGElement(size, val);
-
 					maxiSetAttributes({
 						[`list-marker-size-unit-${deviceType}`]: val,
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 					});
 				}}
 				breakpoint={deviceType}
@@ -422,13 +398,6 @@ const ListOptionsControl = props => {
 					},
 				}}
 				onReset={() => {
-					const defaultSize = getDefaultAttribute(
-						`list-marker-size-${deviceType}`
-					);
-					const defaultUnit = getDefaultAttribute(
-						`list-marker-size-unit-${deviceType}`
-					);
-					const svgElement = getSVGElement(defaultSize, defaultUnit);
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
 							`list-marker-size-${deviceType}`
@@ -437,13 +406,52 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-size-unit-${deviceType}`
 							),
-						...(svgElement && {
-							listStyleCustom: svgElement,
-						}),
 						isReset: true,
 					});
 				}}
 			/>
+			{isSVGMarker && (
+				<AdvancedNumberControl
+					label={__('Marker height', 'maxi-blocks')}
+					className='maxi-text-inspector__list-marker-height'
+					placeholder={getLastBreakpointAttribute({
+						target: 'list-marker-height',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					value={attributes[`list-marker-height-${deviceType}`]}
+					onChangeValue={val =>
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]: val,
+						})
+					}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'list-marker-height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					onChangeUnit={val =>
+						maxiSetAttributes({
+							[`list-marker-height-unit-${deviceType}`]: val,
+						})
+					}
+					onReset={() => {
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-${deviceType}`
+								),
+							[`list-marker-height-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-unit-${deviceType}`
+								),
+							isReset: true,
+						});
+					}}
+					allowedUnits={['px', 'em', 'vw', '%']}
+				/>
+			)}
 			<AdvancedNumberControl
 				label={__('Marker line-height', 'maxi-blocks')}
 				className='maxi-text-inspector__list-marker-line-height'
@@ -483,6 +491,63 @@ const ListOptionsControl = props => {
 					});
 				}}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
+			/>
+			<AdvancedNumberControl
+				label={__('Marker vertical offset', 'maxi-blocks')}
+				className='maxi-text-inspector__list-marker-offset'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-marker-vertical-offset-${deviceType}`]}
+				onChangeValue={val =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]: val,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-${deviceType}`
+							),
+						[`list-marker-vertical-offset-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+				minMaxSettings={{
+					px: {
+						min: -999,
+						max: 999,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
 			/>
 			<AdvancedNumberControl
 				label={__('Marker indent', 'maxi-blocks')}
@@ -547,6 +612,7 @@ const ListOptionsControl = props => {
 					label={__('Marker', 'maxi-blocks')}
 					color={attributes['list-color']}
 					paletteStatus={attributes['list-palette-status']}
+					paletteSCStatus={attributes['list-palette-sc-status']}
 					paletteColor={attributes['list-palette-color']}
 					paletteOpacity={attributes['list-palette-opacity']}
 					prefix='list-'
@@ -561,6 +627,7 @@ const ListOptionsControl = props => {
 					}
 					onChange={({
 						paletteStatus,
+						paletteSCStatus,
 						paletteColor,
 						paletteOpacity,
 						color,
@@ -575,6 +642,7 @@ const ListOptionsControl = props => {
 
 						maxiSetAttributes({
 							'list-palette-status': paletteStatus,
+							'list-palette-sc-status': paletteSCStatus,
 							'list-palette-color': paletteColor,
 							'list-palette-opacity': paletteOpacity,
 							'list-color': color,
@@ -822,27 +890,10 @@ const ListOptionsControl = props => {
 											  })
 											: color;
 
-										let SVGElement = setSVGColor({
+										const SVGElement = setSVGColor({
 											svg: obj.SVGElement,
 											color: colorStr,
 											type: 'fill',
-										});
-
-										const size =
-											getLastBreakpointAttribute({
-												target: 'list-marker-size',
-												breakpoint: deviceType,
-												attributes,
-											}) +
-											getLastBreakpointAttribute({
-												target: 'list-marker-size-unit',
-												breakpoint: deviceType,
-												attributes,
-											});
-
-										SVGElement = setSVGSize({
-											svg: SVGElement,
-											size,
 										});
 
 										maxiSetAttributes({

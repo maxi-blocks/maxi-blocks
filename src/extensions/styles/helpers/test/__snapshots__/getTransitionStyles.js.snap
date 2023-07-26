@@ -23,6 +23,13 @@ Object {
       },
     },
   },
+  " > .maxi-background-displayer > div > svg": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
   " > .maxi-background-displayer:hover": Object {
     "transition": Object {
       "general": Object {
@@ -323,6 +330,13 @@ Object {
     },
   },
   " > .maxi-background-displayer > div": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
+  " > .maxi-background-displayer > div > svg": Object {
     "transition": Object {
       "general": Object {
         "transition": "all 0s 0s",

@@ -6,7 +6,9 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { getSCVariablesObject, createSCStyleString } from '../updateSCOnEditor';
+import { createSCStyleString } from '../updateSCOnEditor';
+import getSCVariablesObject from '../getSCVariablesObject';
+import getSCStyles from '../getSCStyles';
 
 /**
  * Controls
@@ -29,14 +31,16 @@ const controls = {
 		});
 	},
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
-		const varSC = getSCVariablesObject(styleCards.value);
-		const parsedSC = createSCStyleString(varSC);
+		const varSC = getSCVariablesObject(styleCards.value, null, true);
+		const varSCString = createSCStyleString(varSC);
+		const SCStyles = await getSCStyles(varSC);
 
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/style-card',
 			method: 'POST',
 			data: {
-				meta: parsedSC,
+				sc_variables: varSCString,
+				sc_styles: SCStyles,
 				update: isUpdate,
 			},
 		});

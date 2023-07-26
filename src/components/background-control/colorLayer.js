@@ -53,6 +53,7 @@ const ColorLayerContent = props => {
 		color,
 		paletteColor,
 		paletteStatus,
+		paletteSCStatus,
 		paletteOpacity,
 	}) => {
 		const response = {
@@ -62,6 +63,12 @@ const ColorLayerContent = props => {
 				prefix,
 				breakpoint
 			)]: paletteStatus,
+			[getAttributeKey(
+				'background-palette-sc-status',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteSCStatus,
 			[getAttributeKey(
 				'background-palette-color',
 				isHover,
@@ -102,6 +109,9 @@ const ColorLayerContent = props => {
 			defaultColor.paletteStatus = getResetValue(
 				`${bgPrefix}palette-status`
 			);
+			defaultColor.paletteSCStatus = getResetValue(
+				`${bgPrefix}palette-sc-status`
+			);
 			defaultColor.paletteColor = getResetValue(
 				`${bgPrefix}palette-color`
 			);
@@ -116,6 +126,10 @@ const ColorLayerContent = props => {
 		return {
 			paletteStatus: getDefaultAttribute(
 				`${bgPrefix}palette-status-${breakpoint}`,
+				clientId
+			),
+			paletteSCStatus: getDefaultAttribute(
+				`${bgPrefix}palette-sc-status-${breakpoint}`,
 				clientId
 			),
 			paletteColor: getDefaultAttribute(
@@ -136,6 +150,7 @@ const ColorLayerContent = props => {
 	const onReset = ({
 		showPalette = false,
 		paletteStatus,
+		paletteSCStatus,
 		paletteColor,
 		paletteOpacity,
 		color,
@@ -145,6 +160,7 @@ const ColorLayerContent = props => {
 		if (showPalette)
 			onChangeColor({
 				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteSCStatus: defaultColorAttr.paletteSCStatus,
 				paletteColor: defaultColorAttr.paletteColor,
 				paletteOpacity: paletteOpacity || 1,
 				color,
@@ -158,6 +174,7 @@ const ColorLayerContent = props => {
 
 			onChangeColor({
 				paletteStatus,
+				paletteSCStatus,
 				paletteColor,
 				paletteOpacity,
 				color: defaultColor,
@@ -180,6 +197,12 @@ const ColorLayerContent = props => {
 				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-status`,
+					breakpoint,
+					attributes: colorOptions,
+					isHover,
+				})}
+				paletteSCStatus={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-sc-status`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,

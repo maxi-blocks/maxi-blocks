@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
+import styleGenerator from '../styleGenerator';
 import controls from './controls';
+
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Reducer managing the styles
@@ -11,7 +14,13 @@ import controls from './controls';
  * @return {Object} Updated state.
  */
 function reducer(
-	state = { styles: {}, isUpdate: null, prevSavedAttrs: [] },
+	state = {
+		styles: {},
+		isUpdate: null,
+		prevSavedAttrs: [],
+		cssCache: {},
+		blockMarginValue: '',
+	},
 	action
 ) {
 	switch (action.type) {
@@ -42,6 +51,43 @@ function reducer(
 				...state,
 				prevSavedAttrs: action.prevSavedAttrs,
 			};
+		case 'SAVE_CSS_CACHE': {
+			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
+
+			return {
+				...state,
+				cssCache: {
+					...state.cssCache,
+					[uniqueID]: {
+						...BREAKPOINTS.reduce(
+							(acc, breakpoint) => ({
+								...acc,
+								[breakpoint]: styleGenerator(
+									stylesObj,
+									isIframe,
+									isSiteEditor,
+									breakpoint
+								),
+							}),
+							{}
+						),
+					},
+				},
+			};
+		}
+		case 'REMOVE_CSS_CACHE': {
+			const { uniqueID } = action;
+
+			delete state.cssCache[uniqueID];
+
+			return state;
+		}
+		case 'SAVE_BLOCK_MARGIN_VALUE': {
+			return {
+				...state,
+				blockMarginValue: action.blockMarginValue,
+			};
+		}
 		default:
 			return state;
 	}

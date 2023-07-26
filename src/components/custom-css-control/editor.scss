@@ -3,6 +3,10 @@
 		.maxi-base-control__field {
 			display: flex !important;
 			flex-direction: row;
+
+			.maxi-select-control__input {
+				flex: 2 !important;
+			}
 		}
 	}
 	.maxi-base-control {

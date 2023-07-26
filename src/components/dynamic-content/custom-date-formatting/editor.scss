@@ -8,15 +8,30 @@
 .maxi-custom-date-formatting {
 	&__help-trigger {
 		position: relative;
+		display: flex;
 	}
-
 	&__help-icon {
-		top: 0%;
-		bottom: 0%;
-		left: 80px;
-		right: inherit;
-		margin-top: auto;
-		margin-bottom: auto;
+		display: flex;
+		column-gap: 10px;
+		align-items: center;
+		margin-left: 20px;
+
+		.maxi-custom-date-formatting__help-icon-span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 16px;
+			height: 16px;
+			min-width: 16px;
+			margin-bottom: 8px;
+			font-size: 12px !important;
+			border-radius: 50%;
+			border: 1px solid var(--maxi-grey-1-color);
+
+			&:hover {
+				border-color: var(--maxi-grey-5-color);
+			}
+		}
 	}
 
 	.maxi-base-control__field {

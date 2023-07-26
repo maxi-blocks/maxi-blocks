@@ -139,7 +139,12 @@ if (!class_exists('MaxiBlocks_API')):
                 'methods' => 'POST',
                 'callback' => [$this, 'post_maxi_blocks_sc_string'],
                 'args' => [
-                    'meta' => [
+                    'sc_variables' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'sc_styles' => [
                         'validate_callback' => function ($param) {
                             return is_string($param);
                         },
@@ -220,6 +225,41 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_bool($param);
                         },
                     ]
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acf/get-field-groups', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_field_groups'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acf/get-group-fields/(?P<id>\d+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_group_fields'],
+                'args' => [
+                    'id' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acf/get-field-value/(?P<field_id>\w+)/(?P<post_id>\d+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_acf_field_value'],
+                'args' => [
+                    'id' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
                 ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
@@ -326,25 +366,27 @@ if (!class_exists('MaxiBlocks_API')):
         /**
          * Post the styles
          */
-        public function post_maxi_blocks_styles($data)
+        public function post_maxi_blocks_styles($data, $is_json = true)
         {
             global $wpdb;
 
             $id = $data['id'];
-            $meta = json_decode($data['meta'], true);
+            $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles = $meta['styles'];
             $is_template = $data['isTemplate'];
             $template_parts = $data['templateParts'];
 
             $fonts_arr = $meta['fonts'];
-            foreach ($fonts_arr as $key => $font) {
-                $fonts_arr[$key] = json_decode($font, true);
+            if ($is_json) {
+                foreach ($fonts_arr as $key => $font) {
+                    $fonts_arr[$key] = json_decode($font, true);
+                }
             }
             $fonts = json_encode(array_merge_recursive(...$fonts_arr));
 
             ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
-            if (empty($styles) || $styles === '{}') {
+            if ((empty($styles) || $styles === '{}') && !$is_template) {
                 $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
                 return '{}';
             }
@@ -421,23 +463,23 @@ if (!class_exists('MaxiBlocks_API')):
             if ((bool) get_option('local_fonts')) {
                 new MaxiBlocks_Local_Fonts();
             }
-            
+
             // Check if Maxi Blocks Theme is installed and active
             if (get_template() === 'maxi-theme') {
                 $template_part = $data['templatePart'];
-                $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
-    
+                $is_template_part = isset($template_part) && strpos($template_part, 'maxi-theme//') !== false;
+
                 if ($is_template_part || $is_template) {
                     $template_name;
-    
+
                     if ($is_template) {
                         $template_name = $id;
                     } else {
                         $template_name = $template_part;
                     }
-    
+
                     $template_name = str_replace('maxi-theme//', '', $template_name);
-    
+
                     do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
                 }
             }
@@ -461,7 +503,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_sc_string()
         {
             global $wpdb;
-          
+
             $response =  maybe_unserialize($wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -494,15 +536,25 @@ if (!class_exists('MaxiBlocks_API')):
 
             if ($data['update']) {
                 $new_style_card = [
-                            '_maxi_blocks_style_card' => $data['meta'],
-                            '_maxi_blocks_style_card_preview' => $data['meta'],
+                            '_maxi_blocks_style_card' => $data['sc_variables'],
+                            '_maxi_blocks_style_card_preview' => $data['sc_variables'],
+                            '_maxi_blocks_style_card_styles' => $data['sc_styles'],
+                            '_maxi_blocks_style_card_styles_preview' => $data['sc_styles'],
                         ];
             } else {
-                $new_style_card['_maxi_blocks_style_card_preview'] = $data['meta'];
+                $new_style_card['_maxi_blocks_style_card_preview'] = $data['sc_variables'];
+                $new_style_card['_maxi_blocks_style_card_styles_preview'] = $data['sc_styles'];
+
                 if ($style_card !== '' && array_key_exists('_maxi_blocks_style_card', $style_card)) {
                     $new_style_card['_maxi_blocks_style_card'] = $style_card['_maxi_blocks_style_card'];
+                    if(array_key_exists('_maxi_blocks_style_card_styles', $style_card)) {
+                        $new_style_card['_maxi_blocks_style_card_styles'] = $style_card['_maxi_blocks_style_card_styles'];
+                    }
                 } else {
-                    $new_style_card['_maxi_blocks_style_card'] = $data['meta'];
+                    $new_style_card['_maxi_blocks_style_card'] = $data['sc_variables'];
+                    if (array_key_exists('sc_styles', $data)) {
+                        $new_style_card['_maxi_blocks_style_card_styles'] = $data['sc_styles'];
+                    }
                 }
             }
 
@@ -537,7 +589,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function mb_delete_register($postId)
         {
             global $wpdb;
-            
+
             $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id=%d", $postId));
             $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $postId));
         }
@@ -569,19 +621,19 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
 
             $table_name = $wpdb->prefix . 'maxi_blocks_general';
-        
+
             $style_cards = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
                     'style_cards_current'
                 )
             );
-            
+
             if ($style_cards && !empty($style_cards)) {
                 return $style_cards;
             } else {
                 if (class_exists('MaxiBlocks_StyleCards')) {
-                    $default_style_card = MaxiBlocks_StyleCards::getDefaultStyleCard();
+                    $default_style_card = MaxiBlocks_StyleCards::get_default_style_card();
                 } else {
                     return false;
                 } // Should return an error
@@ -590,7 +642,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'id' => 'style_cards_current',
                     'object' => $default_style_card,
                 ]);
-                
+
                 $style_cards = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -607,7 +659,7 @@ if (!class_exists('MaxiBlocks_API')):
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
 
             if (class_exists('MaxiBlocks_StyleCards')) {
-                $default_style_card = MaxiBlocks_StyleCards::getDefaultStyleCard();
+                $default_style_card = MaxiBlocks_StyleCards::get_default_style_card();
             } else {
                 return false;
             } // Should return an error
@@ -657,7 +709,7 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        public function set_maxi_blocks_current_custom_data($data)
+        public function set_maxi_blocks_current_custom_data($data, $is_json = true)
         {
             global $wpdb;
 
@@ -689,8 +741,12 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if ($update) {
-                $array_new_data = json_decode($data_val, true);
-                $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
+                if($is_json) {
+                    $array_new_data = $is_json ? json_decode($data_val, true) : $data_val;
+                    $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
+                } else {
+                    $new_custom_data = $data_val;
+                }
 
                 $wpdb->update("{$styles_table}", array(
                     'prev_active_custom_data' =>  1,
@@ -713,6 +769,57 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $new_custom_data;
+        }
+
+        public function get_acf_field_groups()
+        {
+            if (!class_exists('ACF')) {
+                return [];
+            }
+
+            $acf_field_groups = get_posts(array(
+                'post_type' => 'acf-field-group',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+            ));
+
+            $acf_field_groups = array_map(function ($acf_field_group) {
+                return array(
+                    'id' => $acf_field_group->ID,
+                    'title' => $acf_field_group->post_title,
+                );
+            }, $acf_field_groups);
+
+            return json_encode($acf_field_groups);
+        }
+
+        public function get_acf_group_fields($request)
+        {
+            if (!class_exists('ACF')) {
+                return [];
+            }
+
+            $group_id = $request['id'];
+            $fields = acf_get_fields($group_id);
+
+            $fields = array_map(function ($field) {
+                return array(
+                    'id' => $field['key'],
+                    'title' => $field['label'],
+                    'type' => $field['type'],
+                );
+            }, $fields);
+
+            return json_encode($fields);
+        }
+
+        public function get_acf_field_value($request)
+        {
+            if (!class_exists('ACF')) {
+                return null;
+            }
+
+            return json_encode(get_field_object($request['field_id'], $request['post_id'])['value']);
         }
     }
 endif;

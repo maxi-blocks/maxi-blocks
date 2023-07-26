@@ -1,4 +1,12 @@
+/**
+ * WordPress dependencies
+ */
 import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import viewportUnitsProcessor from './viewportUnitsProcessor';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -76,7 +84,7 @@ const styleStringGenerator = (
 			}[maxi-blocks-responsive="${ALLOWED_BREAKPOINTS[breakpointPos]}"]${
 				isSiteEditor ? ' .is-root-container' : ''
 			} .maxi-block.maxi-block--backend.${target}${
-				breakpointPos ? ',' : '{'
+				breakpointPos > 0 ? ',' : '{'
 			}`;
 			breakpointPos -= 1;
 		} while (breakpointPos >= 0);
@@ -88,11 +96,19 @@ const styleStringGenerator = (
 	return string;
 };
 
-const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
+const styleGenerator = (
+	rawStyles,
+	isIframe = false,
+	isSiteEditor = false,
+	breakpoint
+) => {
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+	const currentBreakpoint =
+		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
+
+	const styles = viewportUnitsProcessor(rawStyles, currentBreakpoint); // replacing viewport units only for the editor
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {

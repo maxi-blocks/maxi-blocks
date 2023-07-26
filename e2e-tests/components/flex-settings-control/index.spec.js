@@ -19,37 +19,39 @@ describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
-		const accordionPanel = await openSidebarTab(
-			page,
-			'advanced',
-			'flexbox'
-		);
+		let accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
 
+		// Flex wrap to wrap reverse
 		await page.$$eval(
 			'.maxi-flex-wrap-control .maxi-tabs-control button',
 			buttons => buttons[2].click()
 		);
 
+		// Flex direction to column
 		await page.$$eval(
 			'.maxi-flex__direction .maxi-tabs-control button',
 			button => button[1].click()
 		);
 
+		// Justify content to center
 		await page.$$eval(
 			'.maxi-flex-align-control__justify-content .maxi-tabs-control button',
 			button => button[2].click()
 		);
 
+		// Align items to flex-end
 		await page.$$eval(
 			'.maxi-flex-align-control__align-items .maxi-tabs-control button',
 			button => button[2].click()
 		);
 
+		// Align content to flex-end
 		await page.$$eval(
 			'.maxi-flex__align-content .maxi-tabs-control button',
 			button => button[1].click()
 		);
 
+		// Row gap to 55vw
 		await page.waitForSelector('.maxi-gap-control__row-gap');
 		await editAdvancedNumberControl({
 			page,
@@ -58,6 +60,7 @@ describe('FlexSettings', () => {
 			newValue: 'vw',
 		});
 
+		// Column gap to 77em
 		await page.waitForSelector('.maxi-gap-control__column-gap');
 		await editAdvancedNumberControl({
 			page,
@@ -80,10 +83,10 @@ describe('FlexSettings', () => {
 		]);
 
 		const expectedParentAttribute = {
-			'flex-direction-general': 'row',
-			'flex-wrap-general': 'wrap',
-			'justify-content-general': 'flex-end',
-			'align-content-general': 'flex-start',
+			'flex-direction-general': 'column',
+			'flex-wrap-general': 'wrap-reverse',
+			'justify-content-general': 'center',
+			'align-content-general': 'flex-end',
 			'align-items-general': 'flex-end',
 			'column-gap-general': 77,
 			'column-gap-unit-general': 'em',
@@ -98,15 +101,16 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
+		await accordionPanel.waitForSelector('.maxi-warning-box');
 		const warningBox = await accordionPanel.$eval(
 			'.maxi-warning-box',
 			content => content.innerHTML
 		);
+
 		expect(warningBox).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// flex-child
-
 		await page.$$eval('.block-editor-inserter button', addBlock =>
 			addBlock[0].click()
 		);
@@ -118,35 +122,46 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(100);
+
+		accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
+
 		await accordionPanel.$eval(
 			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-child',
 			button => button.click()
 		);
 
-		await page.waitForSelector('.maxi-typography-control__order');
+		// Change order to 4
+		await page.waitForSelector('.maxi-flex-settings-control__order');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__order'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__order'
+			),
 			newNumber: '4',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-grow');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-grow'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__flex-grow'
+			),
 			newNumber: '10',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-shrink');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-shrink'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__flex-shrink'
+			),
 			newNumber: '6',
 		});
 		await page.waitForTimeout(100);
 
 		const flexBasisSelector = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await page.waitForTimeout(100);
 
@@ -171,14 +186,14 @@ describe('FlexSettings', () => {
 
 		// expect custom flex-basis
 		const flexBasisCustomSelector = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await flexBasisCustomSelector.select('custom');
 
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-typography-control__custom-flex-basis'
+				'.maxi-flex-settings-control__custom-flex-basis'
 			),
 			newNumber: '33',
 			newValue: '%',
@@ -193,31 +208,31 @@ describe('FlexSettings', () => {
 		// check s
 		await changeResponsive(page, 's');
 
-		await page.waitForSelector('.maxi-typography-control__order');
+		await page.waitForSelector('.maxi-flex-settings-control__order');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__order'),
+			instance: await page.$('.maxi-flex-settings-control__order'),
 			newNumber: '2',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-grow');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-grow'),
+			instance: await page.$('.maxi-flex-settings-control__flex-grow'),
 			newNumber: '5',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-shrink');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-shrink'),
+			instance: await page.$('.maxi-flex-settings-control__flex-shrink'),
 			newNumber: '4',
 		});
 
 		await page.waitForTimeout(100);
 
 		const flexBasisSelectorS = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await page.waitForTimeout(100);
 
@@ -240,29 +255,32 @@ describe('FlexSettings', () => {
 
 		// check xs
 		await changeResponsive(page, 'xs');
+		await page.waitForSelector(
+			'.maxi-flex-settings-control__flex-shrink input'
+		);
 		const flexShrinkXS = await page.$eval(
-			'.maxi-typography-control__flex-shrink input',
+			'.maxi-flex-settings-control__flex-shrink input',
 			input => input.value
 		);
 
 		expect(flexShrinkXS).toStrictEqual('4');
 
 		const flexGrowXS = await page.$eval(
-			'.maxi-typography-control__flex-grow input',
+			'.maxi-flex-settings-control__flex-grow input',
 			input => input.value
 		);
 
 		expect(flexGrowXS).toStrictEqual('5');
 
 		const orderXS = await page.$eval(
-			'.maxi-typography-control__order input',
+			'.maxi-flex-settings-control__order input',
 			input => input.value
 		);
 
 		expect(orderXS).toStrictEqual('2');
 
 		const flexBasisXS = await page.$eval(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input',
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input',
 			input => input.value
 		);
 
@@ -271,22 +289,25 @@ describe('FlexSettings', () => {
 		// check m
 		await changeResponsive(page, 'm');
 
+		await page.waitForSelector(
+			'.maxi-flex-settings-control__flex-shrink input'
+		);
 		const flexShrinkM = await page.$eval(
-			'.maxi-typography-control__flex-shrink input',
+			'.maxi-flex-settings-control__flex-shrink input',
 			input => input.value
 		);
 
 		expect(flexShrinkM).toStrictEqual('6');
 
 		const flexGrowM = await page.$eval(
-			'.maxi-typography-control__flex-grow input',
+			'.maxi-flex-settings-control__flex-grow input',
 			input => input.value
 		);
 
 		expect(flexGrowM).toStrictEqual('10');
 
 		const orderM = await page.$eval(
-			'.maxi-typography-control__order input',
+			'.maxi-flex-settings-control__order input',
 			input => input.value
 		);
 
@@ -295,13 +316,19 @@ describe('FlexSettings', () => {
 		await page.waitForTimeout(100);
 
 		const flexBasisM = await page.$eval(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input',
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input',
 			input => input.value
 		);
 
 		expect(flexBasisM).toStrictEqual('custom');
 
 		// warning box
+		await accordionPanel.$eval(
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-parent',
+			button => button.click()
+		);
+
+		await accordionPanel.waitForSelector('.maxi-warning-box');
 		const warningBoxFlex = await accordionPanel.$eval(
 			'.maxi-warning-box',
 			content => content.innerHTML
@@ -398,18 +425,84 @@ describe('FlexSettings', () => {
 				`column-gap-unit-${breakpoint}`,
 			]);
 
-			return (
-				attributes[`flex-wrap-${breakpoint}`] === flexWrap &&
-				attributes[`flex-direction-${breakpoint}`] === flexDirection &&
-				attributes[`justify-content-${breakpoint}`] ===
-					justifyContent &&
-				attributes[`align-items-${breakpoint}`] === alignItems &&
-				attributes[`align-content-${breakpoint}`] === alignContent &&
-				attributes[`row-gap-${breakpoint}`] === rowGapValue &&
-				attributes[`row-gap-unit-${breakpoint}`] === rowGapUnit &&
-				attributes[`column-gap-${breakpoint}`] === columnGapValue &&
-				attributes[`column-gap-unit-${breakpoint}`] === columnGapUnit
-			);
+			let result = true;
+
+			if (attributes[`flex-wrap-${breakpoint}`] !== flexWrap) {
+				console.error(
+					`flex-wrap-${breakpoint}`,
+					attributes[`flex-wrap-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`flex-direction-${breakpoint}`] !== flexDirection) {
+				console.error(
+					`flex-direction-${breakpoint}`,
+					attributes[`flex-direction-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (
+				attributes[`justify-content-${breakpoint}`] !== justifyContent
+			) {
+				console.error(
+					`justify-content-${breakpoint}`,
+					attributes[`justify-content-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`align-items-${breakpoint}`] !== alignItems) {
+				console.error(
+					`align-items-${breakpoint}`,
+					attributes[`align-items-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`align-content-${breakpoint}`] !== alignContent) {
+				console.error(
+					`align-content-${breakpoint}`,
+					attributes[`align-content-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`row-gap-${breakpoint}`] !== rowGapValue) {
+				console.error(
+					`row-gap-${breakpoint}`,
+					attributes[`row-gap-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`row-gap-unit-${breakpoint}`] !== rowGapUnit) {
+				console.error(
+					`row-gap-unit-${breakpoint}`,
+					attributes[`row-gap-unit-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`column-gap-${breakpoint}`] !== columnGapValue) {
+				console.error(
+					`column-gap-${breakpoint}`,
+					attributes[`column-gap-${breakpoint}`]
+				);
+
+				result = false;
+			}
+			if (attributes[`column-gap-unit-${breakpoint}`] !== columnGapUnit) {
+				console.error(
+					`column-gap-unit-${breakpoint}`,
+					attributes[`column-gap-unit-${breakpoint}`]
+				);
+
+				result = false;
+			}
+
+			return result;
 		};
 		const flexBoxResponsiveValuesTest = async content => {
 			const {
@@ -461,17 +554,55 @@ describe('FlexSettings', () => {
 				selector => selector.value
 			);
 
-			return (
-				flexWrapSelected &&
-				flexDirectionSelected &&
-				justifyContentSelected &&
-				alignItemsSelected &&
-				alignContentSelected &&
-				rowGapSelected === rowGapValue &&
-				rowGapUnitSelected === rowGapUnit &&
-				columnGapSelected === columnGapValue &&
-				columnGapUnitSelected === columnGapUnit
-			);
+			let result = true;
+
+			if (!flexWrapSelected) {
+				console.error('flexWrap', flexWrapSelected);
+
+				result = false;
+			}
+			if (!flexDirectionSelected) {
+				console.error('flexDirection', flexDirectionSelected);
+
+				result = false;
+			}
+			if (!justifyContentSelected) {
+				console.error('justifyContent', justifyContentSelected);
+
+				result = false;
+			}
+			if (!alignItemsSelected) {
+				console.error('alignItems', alignItemsSelected);
+
+				result = false;
+			}
+			if (!alignContentSelected) {
+				console.error('alignContent', alignContentSelected);
+
+				result = false;
+			}
+			if (rowGapSelected !== rowGapValue) {
+				console.error('rowGap', rowGapValue);
+
+				result = false;
+			}
+			if (rowGapUnitSelected !== rowGapUnit) {
+				console.error('rowGapUnit', rowGapUnit);
+
+				result = false;
+			}
+			if (columnGapSelected !== columnGapValue) {
+				console.error('columnGap', columnGapValue);
+
+				result = false;
+			}
+			if (columnGapUnitSelected !== columnGapUnit) {
+				console.error('columnGapUnit', columnGapUnit);
+
+				result = false;
+			}
+
+			return result;
 		};
 
 		// base
@@ -489,11 +620,11 @@ describe('FlexSettings', () => {
 		expect(
 			await flexBoxResponsiveExpect(
 				{
-					flexWrap: 'wrap',
-					flexDirection: 'row',
-					justifyContent: 'flex-end',
+					flexWrap: 'wrap-reverse',
+					flexDirection: 'column',
+					justifyContent: 'center',
 					alignItems: 'flex-end',
-					alignContent: 'flex-start',
+					alignContent: 'flex-end',
 					rowGapValue: 55,
 					rowGapUnit: 'vw',
 					columnGapValue: 77,
@@ -519,11 +650,11 @@ describe('FlexSettings', () => {
 		expect(
 			await flexBoxResponsiveExpect(
 				{
-					flexWrap: 'nowrap',
-					flexDirection: 'column',
-					justifyContent: 'flex-start',
+					flexWrap: 'wrap',
+					flexDirection: 'row-reverse',
+					justifyContent: 'flex-end',
 					alignItems: 'flex-start',
-					alignContent: 'flex-end',
+					alignContent: 'center',
 					rowGapValue: 23,
 					rowGapUnit: 'em',
 					columnGapValue: 34,
@@ -537,11 +668,11 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'xs');
 		expect(
 			await flexBoxResponsiveValuesTest({
-				flexWrap: 'nowrap',
-				flexDirection: 'column',
-				justifyContent: 'flex-start',
+				flexWrap: 'wrap',
+				flexDirection: 'row-reverse',
+				justifyContent: 'flex-end',
 				alignItems: 'flex-start',
-				alignContent: 'flex-end',
+				alignContent: 'center',
 				rowGapValue: 23,
 				rowGapUnit: 'em',
 				columnGapValue: 34,
@@ -553,11 +684,11 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'm');
 		expect(
 			await flexBoxResponsiveValuesTest({
-				flexWrap: 'wrap',
-				flexDirection: 'row',
-				justifyContent: 'flex-end',
+				flexWrap: 'wrap-reverse',
+				flexDirection: 'column',
+				justifyContent: 'center',
 				alignItems: 'flex-end',
-				alignContent: 'flex-start',
+				alignContent: 'flex-end',
 				rowGapValue: 55,
 				rowGapUnit: 'vw',
 				columnGapValue: 77,

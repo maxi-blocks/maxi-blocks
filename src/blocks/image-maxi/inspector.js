@@ -94,10 +94,11 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props,
 			})}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -111,9 +112,9 @@ const Inspector = props => {
 								isSecondary
 								items={[
 									deviceType === 'general' &&
-										attributes[
+										!attributes[
 											'image-full-width-general'
-										] !== 'full' && {
+										] && {
 											label: __(
 												'Dimension',
 												'maxi-blocks'
@@ -417,11 +418,6 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 										prefix: 'image-',
-										customLabel: __(
-											'Padding',
-											'maxi-blocks'
-										),
-										disableMargin: true,
 									}),
 								]}
 							/>

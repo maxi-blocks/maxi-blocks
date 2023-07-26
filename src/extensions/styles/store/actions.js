@@ -44,3 +44,27 @@ export function savePrevSavedAttrs(prevSavedAttrs) {
 		prevSavedAttrs: Object.keys(prevSavedAttrs),
 	};
 }
+
+export const saveCSSCache = (uniqueID, stylesObj, isIframe, isSiteEditor) => {
+	return {
+		type: 'SAVE_CSS_CACHE',
+		uniqueID,
+		stylesObj,
+		isIframe,
+		isSiteEditor,
+	};
+};
+
+export const removeCSSCache = uniqueID => {
+	return {
+		type: 'REMOVE_CSS_CACHE',
+		uniqueID,
+	};
+};
+
+export const saveBlockMarginValue = blockMarginValue => {
+	return {
+		type: 'SAVE_BLOCK_MARGIN_VALUE',
+		blockMarginValue,
+	};
+};

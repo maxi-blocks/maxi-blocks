@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { fieldOptions } from './constants';
+import { fieldOptions, relationOptions, orderByRelations } from './constants';
 
 /**
  * External dependencies
@@ -45,10 +45,49 @@ export const sanitizeDCContent = content =>
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
-export const validationsValues = (variableValue, field, contentType) => {
-	const result = fieldOptions[contentType][variableValue].map(x => x.value);
+export const validationsValues = (
+	variableValue,
+	field,
+	relation,
+	contentType,
+	source,
+	isCL = false
+) => {
+	if (source === 'acf') return {};
 
-	return result.includes(field) ? {} : { 'dc-field': result[0] };
+	const prefix = isCL ? 'cl-' : 'dc-';
+
+	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
+		x => x.value
+	);
+	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
+		x => x.value
+	);
+
+	return {
+		...(!isCL &&
+			fieldResult &&
+			!fieldResult.includes(field) && {
+				[`${prefix}field`]: fieldResult[0],
+			}),
+		...(relationResult &&
+			!relationResult.includes(relation) && {
+				[`${prefix}relation`]: relationResult[0],
+			}),
+	};
 };
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);
+
+export const getDCOrder = (relation, orderBy) => {
+	const dictionary = {
+		'by-date': 'date',
+		alphabetical: 'title',
+	};
+
+	if (orderByRelations.includes(relation)) {
+		return dictionary[orderBy];
+	}
+
+	return dictionary[relation];
+};

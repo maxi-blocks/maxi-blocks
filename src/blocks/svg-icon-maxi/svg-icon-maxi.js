@@ -19,6 +19,7 @@ import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
@@ -62,7 +63,7 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiLoader(edit),
+	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({
 		attributes,

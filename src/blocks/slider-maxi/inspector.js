@@ -17,6 +17,7 @@ import SliderControl from './components/slider-control';
 import NavigationControl from './components/navigation-control';
 import NavigationIconsControl from './components/navigation-control/navigation-control';
 import { customCss } from './data';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -50,10 +51,11 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props,
 			})}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -207,6 +209,10 @@ const Inspector = props => {
 										selectors: customCss.selectors,
 										categories: customCss.categories,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'slider',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -251,4 +257,4 @@ const Inspector = props => {
 	);
 };
 
-export default Inspector;
+export default withMaxiInspector(Inspector);

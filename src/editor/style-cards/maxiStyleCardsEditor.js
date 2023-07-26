@@ -18,7 +18,7 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
 import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/utils/defaultSC.json';
+import standardSC from '../../../core/defaults/defaultSC.json';
 
 /**
  * External dependencies
@@ -386,6 +386,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		for (const accordion of accordions) {
 			accordion.querySelector('[aria-expanded=true]')?.click();
 		}
+
+		return null;
 	};
 
 	return (
@@ -497,7 +499,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
-									{__('Imported card already exists.')}
+									{__(
+										'Imported card already exists.',
+										'maxi-blocks'
+									)}
 								</span>
 							</div>
 						)}

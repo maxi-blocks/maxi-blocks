@@ -53,7 +53,7 @@ const VideoLayerContent = props => {
 			{!isHover && !isIB && (
 				<MediaUploaderControl
 					className='maxi-mediauploader-control__video-fallback'
-					placeholder={__('Background fallback')}
+					placeholder={__('Background fallback', 'maxi-blocks')}
 					mediaID={getLastBreakpointAttribute({
 						target: `${prefix}background-video-fallbackID`,
 						breakpoint,

@@ -58,13 +58,18 @@ export const getColorBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({
-			obj: props,
-			prefix: `${prefix}background-`,
-			isHover,
-			breakpoint,
-		});
+	const {
+		paletteStatus,
+		paletteSCStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	} = getPaletteAttributes({
+		obj: props,
+		prefix: `${prefix}background-`,
+		isHover,
+		breakpoint,
+	});
 
 	const bgClipPath = getLastBreakpointAttribute({
 		target: `${prefix}background-color-clip-path`,
@@ -84,12 +89,22 @@ export const getColorBackgroundObject = ({
 		response[breakpoint][backgroundColorProperty] = color;
 	else if (paletteStatus && (paletteColor || paletteOpacity)) {
 		if (isButton && (!isHover || hoverStatus || globalHoverStatus))
-			response[breakpoint].background = getColorRGBAString({
-				firstVar: `button-background-color${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
+			response[breakpoint].background = getColorRGBAString(
+				paletteSCStatus
+					? {
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+					  }
+					: {
+							firstVar: `button-background-color${
+								isHover ? '-hover' : ''
+							}`,
+							secondVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+					  }
+			);
 		else
 			response[breakpoint][backgroundColorProperty] = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
@@ -106,14 +121,22 @@ export const getColorBackgroundObject = ({
 		if (hasBackground)
 			response[breakpoint][backgroundColorProperty] =
 				props['background-active-media'] !== '' && paletteStatus
-					? getColorRGBAString({
-							firstVar: `button-background-color${
-								isHover ? '-hover' : ''
-							}`,
-							secondVar: `color-${paletteColor}`,
-							opacity: paletteOpacity,
-							blockStyle,
-					  })
+					? getColorRGBAString(
+							paletteSCStatus
+								? {
+										firstVar: `color-${paletteColor}`,
+										opacity: paletteOpacity,
+										blockStyle,
+								  }
+								: {
+										firstVar: `button-background-color${
+											isHover ? '-hover' : ''
+										}`,
+										secondVar: `color-${paletteColor}`,
+										opacity: paletteOpacity,
+										blockStyle,
+								  }
+					  )
 					: color;
 		else response[breakpoint][backgroundColorProperty] = '';
 	}
@@ -528,6 +551,7 @@ const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
 	prefix = '',
+	setSameWidthAndHeight = false,
 	...props
 }) => {
 	const response = {
@@ -551,7 +575,8 @@ const getWrapperObject = ({
 				isHover,
 			});
 
-			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+			if (!(setSameWidthAndHeight && size === 'height'))
+				response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
 		}
 	});
 
@@ -877,6 +902,7 @@ const getBackgroundLayers = ({
 								breakpoint,
 								prefix: 'background-svg-',
 								isHover,
+								setSameWidthAndHeight: true,
 							}),
 							getDisplayStyles(
 								{
@@ -922,10 +948,12 @@ const getBackgroundLayers = ({
 									getGroupAttributes(
 										layer,
 										'imageShape',
-										false,
+										isHover,
 										'background-svg-'
 									),
-									'background-svg-'
+									'background-svg-',
+									false,
+									isHover
 								)
 							),
 						},

@@ -46,6 +46,11 @@ const PopupSettingsControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
+				paletteSCStatus={getLastBreakpointAttribute({
+					target: 'lightbox-background-palette-sc-status',
+					breakpoint,
+					attributes: props,
+				})}
 				paletteColor={getLastBreakpointAttribute({
 					target: 'lightbox-background-palette-color',
 					breakpoint,
@@ -60,12 +65,15 @@ const PopupSettingsControl = props => {
 				onChange={({
 					paletteColor,
 					paletteStatus,
+					paletteSCStatus,
 					paletteOpacity,
 					color,
 				}) => {
 					onChange({
 						[`lightbox-background-palette-status-${breakpoint}`]:
 							paletteStatus,
+						[`lightbox-background-palette-sc-status-${breakpoint}`]:
+							paletteSCStatus,
 						[`lightbox-background-palette-color-${breakpoint}`]:
 							paletteColor,
 						[`lightbox-background-palette-opacity-${breakpoint}`]:

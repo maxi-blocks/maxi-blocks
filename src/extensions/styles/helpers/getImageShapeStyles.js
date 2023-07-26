@@ -22,32 +22,37 @@ const getImageShapeStyles = (
 	target = 'svg',
 	obj,
 	prefix = '',
-	ignoreGeneralOmit = false
+	ignoreGeneralOmit = false,
+	isHover = false
 ) => {
 	const response = {};
 	let omitTransformScale = true;
+
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
 		const scale = getLastBreakpointAttribute({
 			target: `${prefix}image-shape-scale`,
 			breakpoint,
 			attributes: obj,
+			isHover,
 		});
 		const rotate = getLastBreakpointAttribute({
 			target: `${prefix}image-shape-rotate`,
 			breakpoint,
+			isHover,
 			attributes: obj,
 		});
 
 		const flipX = getLastBreakpointAttribute({
 			target: `${prefix}image-shape-flip-x`,
 			breakpoint,
+			isHover,
 			attributes: obj,
 		});
-
 		const flipY = getLastBreakpointAttribute({
 			target: `${prefix}image-shape-flip-y`,
 			breakpoint,
+			isHover,
 			attributes: obj,
 		});
 

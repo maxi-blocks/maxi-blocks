@@ -87,7 +87,7 @@ const ImageURL = props => {
 					<div className='maxi-editor-url-input__button-modal-line'>
 						<Button
 							icon={check}
-							label={__('Submit')}
+							label={__('Submit', 'maxi-blocks')}
 							type='submit'
 						/>
 						<URLInput
@@ -103,7 +103,7 @@ const ImageURL = props => {
 						<Button
 							className='maxi-editor-url-input__back'
 							icon={close}
-							label={__('Close')}
+							label={__('Close', 'maxi-blocks')}
 							onClick={event => {
 								event.preventDefault();
 								setHideWarning(true);

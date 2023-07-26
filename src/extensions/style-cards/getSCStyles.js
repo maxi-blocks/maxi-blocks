@@ -445,6 +445,8 @@ const getWPNativeStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 				].join(', ');
 
 				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
@@ -566,6 +568,7 @@ const getWPNativeStyles = ({
 		// Remove form textarea background
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea {
 				background: transparent;
+				color: inherit;
 		}`;
 
 		return addedResponse;

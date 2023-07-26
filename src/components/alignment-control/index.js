@@ -1,4 +1,9 @@
 /**
+ * WordPress Dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
@@ -91,6 +96,9 @@ const AlignmentControl = props => {
 	);
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
+
+	const { isRTL } = select('core/editor').getEditorSettings();
+
 	return (
 		<>
 			{showLabel && (
@@ -113,7 +121,7 @@ const AlignmentControl = props => {
 						breakpoint,
 						attributes: props,
 						isHover,
-					}) || getOptions()[0].value
+					}) || getOptions()[isRTL ? 2 : 0].value
 				}
 				onChange={val =>
 					onChange({

@@ -1,6 +1,7 @@
 body.maxi-blocks--active .maxi-button-block {
 	display: flex;
 	text-align: center;
+	direction: ltr;
 
 	&__icon {
 		box-sizing: content-box;

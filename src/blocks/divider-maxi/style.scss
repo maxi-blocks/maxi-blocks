@@ -2,6 +2,7 @@ body.maxi-blocks--active .maxi-divider-block {
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	direction: ltr;
 
 	&--horizontal {
 		hr {

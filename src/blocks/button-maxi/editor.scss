@@ -57,7 +57,10 @@ body.maxi-blocks--active .maxi-controls {
 		column-gap: 10px;
 	}
 }
+body.maxi-blocks--active .maxi-button-block {
+	direction: ltr;
 
-body.maxi-blocks--active .maxi-button-block__content.hidden {
-	display: none !important;
+	&__content.hiddena {
+		display: none !important;
+	}
 }

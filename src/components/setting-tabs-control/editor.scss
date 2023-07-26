@@ -283,14 +283,6 @@ html[dir='rtl'] {
 		border-right: 1px solid var(--maxi-grey-1-color);
 		border-left: none;
 	}
-	.maxi-settingstab-control.maxi-alignment-control
-		.maxi-tabs-control__button:nth-child(1),
-	.maxi-settingstab-control
-		.maxi-alignment-control
-		.maxi-tabs-control__button:nth-child(3) {
-		-webkit-transform: scaleX(-1);
-		transform: scaleX(-1);
-	}
 	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
 		border-left: 1px solid var(--maxi-grey-1-color);
 	}

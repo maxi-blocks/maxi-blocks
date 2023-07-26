@@ -570,7 +570,8 @@ const getMarkerObject = props => {
 						(listStyle !== 'custom'
 							? {
 									width: '1em',
-									'margin-left': '-1em',
+									[isRTL ? 'margin-right' : 'margin-left']:
+										'-1em',
 							  }
 							: {
 									'margin-left': -sizeNum + sizeUnit,

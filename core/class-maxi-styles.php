@@ -1009,6 +1009,7 @@ class MaxiBlocks_Styles
                 $templateContentFiltered = $this->filter_recursive($templateContent);
             }
 
+
             $this->process_scripts($metaFiltered, $templateFiltered, $templateContentFiltered);
         }
 
@@ -1053,9 +1054,6 @@ class MaxiBlocks_Styles
      */
     private function process_scripts($post_meta, $template_meta, $template_content)
     {
-        write_log('process_scripts');
-        // write_log('$post_meta');
-        // write_log($post_meta);
 
         $scripts = [
             'hover-effects',
@@ -1092,31 +1090,26 @@ class MaxiBlocks_Styles
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
             $template_parts_meta = [];
+            $meta_to_pass = [];
 
             if ($template_parts) {
                 $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
             }
 
             $meta = array_merge_recursive($post_meta, $block_meta, $template_meta, $template_parts_meta);
-            write_log('$meta');
-            write_log($meta);
             $match = false;
-            $block_name = '';
+            $block_names = [];
 
             foreach ($meta as $key => $value) {
-                write_log('key: '.$key);
-                write_log('script: '.$script);
                 if(str_contains($key, $script)) {
                     $match = true;
-                    $block_name = $key;
+                    $block_names[] = $key;
                 } else {
                     if(is_array($value) && in_array($script, $script_attr)) {
                         foreach ($value as $k => $v) {
-                            write_log('k: '.$k);
-                            write_log('v: '.$v);
                             if(gettype($v) === 'string' && str_contains($v, $script)) {
                                 $match = true;
-                                $block_name = $key;
+                                $block_names[] = $key;
                             }
                         }
                     }
@@ -1124,18 +1117,17 @@ class MaxiBlocks_Styles
             }
 
             if ($match) {
-                if($script === 'relations') {
-                    $meta_to_pass = [];
-
-                    foreach ($meta[$block_name] as $json) {
-                        $array = json_decode($json, true);  // Decode the JSON string into an array
-                        if (isset($array['relations'])) {
-                            $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                foreach ($block_names as $block_name) {
+                    if($script === 'relations') {
+                        foreach ($meta[$block_name] as $json) {
+                            $array = json_decode($json, true);  // Decode the JSON string into an array
+                            if (isset($array['relations'])) {
+                                $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            }
                         }
+                    } else {
+                        $meta_to_pass = $meta[$block_name];
                     }
-
-                } else {
-                    $meta_to_pass = $meta[$block_name];
                 }
                 write_log('$meta_to_pass');
                 write_log($meta_to_pass);

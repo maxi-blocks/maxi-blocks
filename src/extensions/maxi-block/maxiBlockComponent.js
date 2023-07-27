@@ -225,8 +225,10 @@ class MaxiBlockComponent extends Component {
 			// Collect all uniqueID and legacyUniqueID pairs
 			const { getBlock } = select('core/block-editor');
 			const block = getBlock(this.props.clientId);
-			const topInnerBLocks = block.innerBlocks;
-			const idPairs = collectIDs(this.props.attributes, topInnerBLocks);
+			const idPairs = collectIDs(
+				this.props.attributes,
+				block.innerBlocks
+			);
 
 			if (isEmpty(idPairs)) return;
 			// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
@@ -261,13 +263,11 @@ class MaxiBlockComponent extends Component {
 				}
 			};
 
-			const topClientID = this.props.clientId;
-
 			// Replace relation.uniqueID with legacyUniqueID in all blocks
 			replaceRelationIDs(
 				this.props.attributes,
-				topInnerBLocks,
-				topClientID
+				block.innerBlocks,
+				this.props.clientId
 			);
 		}
 

@@ -56,7 +56,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 
 /**
@@ -193,6 +193,83 @@ class MaxiBlockComponent extends Component {
 						breakpoint: this.props.deviceType,
 					});
 			});
+
+		// Migrate uniqueID for IB
+		if (this.props.attributes.isFirstOnHierarchy) {
+			const isRelationEligible = relation =>
+				isObject(relation) &&
+				'uniqueID' in relation &&
+				!relation.uniqueID.endsWith('-u');
+
+			// Function to collect all uniqueID and legacyUniqueID pairs from blocks within the hierarchy
+			const collectIDs = (attributes, innerBlocks, idPairs = {}) => {
+				const { uniqueID, legacyUniqueID } = attributes;
+
+				if (uniqueID && legacyUniqueID) {
+					idPairs[legacyUniqueID] = uniqueID;
+				}
+
+				if (isArray(innerBlocks)) {
+					innerBlocks.forEach(block => {
+						const { innerBlocks, attributes } = block;
+						collectIDs(attributes, innerBlocks, idPairs);
+					});
+				}
+
+				return idPairs;
+			};
+
+			// Collect all uniqueID and legacyUniqueID pairs
+			const { getBlock } = select('core/block-editor');
+			const block = getBlock(this.props.clientId);
+			const topInnerBLocks = block.innerBlocks;
+			const idPairs = collectIDs(this.props.attributes, topInnerBLocks);
+			console.log('idPairs', idPairs);
+
+			// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
+			const replaceRelationIDs = (attributes, innerBlocks, clientId) => {
+				const { relations } = attributes;
+
+				if (isArray(relations)) {
+					const newRelations = relations.map(relation => {
+						if (
+							isRelationEligible(relation) &&
+							idPairs[relation.uniqueID]
+						) {
+							return {
+								...relation,
+								uniqueID: idPairs[relation.uniqueID],
+							};
+						}
+						return relation;
+					});
+
+					console.log('newRelations', newRelations);
+
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+					updateBlockAttributes(clientId, {
+						relations: newRelations,
+					});
+				}
+
+				if (isArray(innerBlocks)) {
+					innerBlocks.forEach(block => {
+						const { innerBlocks, attributes, clientId } = block;
+						replaceRelationIDs(attributes, innerBlocks, clientId);
+					});
+				}
+			};
+
+			const topClientID = this.props.clientId;
+
+			// Replace relation.uniqueID with legacyUniqueID in all blocks
+			replaceRelationIDs(
+				this.props.attributes,
+				topInnerBLocks,
+				topClientID
+			);
+		}
 
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 

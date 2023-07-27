@@ -45,21 +45,3 @@ export const getIBDataItem = ({ uniqueID, sid, settings }) => {
 			) || null
 	);
 };
-
-/**
- * Get uniqueID of a block in the editor with a specific legacyUniqueID
- */
-export const getUniqueIDByLegacyUniqueID = legacyUniqueID => {
-	const blocks = select('core/block-editor').getBlocks();
-
-	for (const block of blocks) {
-		if (
-			block.name.startsWith('maxi-blocks/') &&
-			block?.attributes?.legacyUniqueID === legacyUniqueID
-		) {
-			return block?.attributes?.uniqueID; // Return uniqueID of the block
-		}
-	}
-
-	return null; // Return null if no block is found with the specified legacyUniqueID
-};

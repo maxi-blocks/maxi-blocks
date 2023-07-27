@@ -1129,8 +1129,6 @@ class MaxiBlocks_Styles
                         $meta_to_pass = $meta[$block_name];
                     }
                 }
-                write_log('$meta_to_pass');
-                write_log($meta_to_pass);
                 $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
             }
         }

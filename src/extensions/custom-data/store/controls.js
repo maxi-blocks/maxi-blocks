@@ -30,7 +30,6 @@ const controls = {
 
 		await Promise.all(
 			blockData.map(async data => {
-				console.log('data: ', data);
 				const uniqueID = data[0];
 				const [, value] = data;
 				if (!isEmpty(value)) {

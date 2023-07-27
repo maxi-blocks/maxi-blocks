@@ -195,7 +195,10 @@ class MaxiBlockComponent extends Component {
 			});
 
 		// Migrate uniqueID for IB
-		if (this.props.attributes.isFirstOnHierarchy) {
+		if (
+			this.props.attributes.isFirstOnHierarchy &&
+			this.props.attributes.legacyUniqueID
+		) {
 			const isRelationEligible = relation =>
 				isObject(relation) &&
 				'uniqueID' in relation &&
@@ -224,8 +227,8 @@ class MaxiBlockComponent extends Component {
 			const block = getBlock(this.props.clientId);
 			const topInnerBLocks = block.innerBlocks;
 			const idPairs = collectIDs(this.props.attributes, topInnerBLocks);
-			console.log('idPairs', idPairs);
 
+			if (isEmpty(idPairs)) return;
 			// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
 			const replaceRelationIDs = (attributes, innerBlocks, clientId) => {
 				const { relations } = attributes;
@@ -243,9 +246,6 @@ class MaxiBlockComponent extends Component {
 						}
 						return relation;
 					});
-
-					console.log('newRelations', newRelations);
-
 					const { updateBlockAttributes } =
 						dispatch('core/block-editor');
 					updateBlockAttributes(clientId, {

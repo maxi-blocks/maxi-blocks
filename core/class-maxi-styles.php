@@ -968,6 +968,19 @@ class MaxiBlocks_Styles
 
     /***************************** NEW CODE PER BLOCK ****************************/
 
+    private function filter_recursive($input)
+    {
+        foreach ($input as &$value) {
+            if (is_array($value)) {
+                $value = $this->filter_recursive($value);
+            }
+        }
+        return array_filter($input, function ($v) {
+            return !(is_array($v) && count($v) == 0);
+        });
+    }
+
+
     /**
      * Processing content for blocks
      * @param  string $content
@@ -980,8 +993,25 @@ class MaxiBlocks_Styles
 
         if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
             $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
-            $this->process_scripts($contentMetaFonts['meta'], $contentMetaFonts['template_meta'], $templateContent);
+
+            $metaFiltered = null;
+            if ($contentMetaFonts['meta'] !== null) {
+                $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
+            }
+
+            $templateFiltered = null;
+            if ($contentMetaFonts['template_meta'] !== null) {
+                $templateFiltered = $this->filter_recursive($contentMetaFonts['template_meta']);
+            }
+
+            $templateContentFiltered = null;
+            if ($templateContent !== null) {
+                $templateContentFiltered = $this->filter_recursive($templateContent);
+            }
+
+            $this->process_scripts($metaFiltered, $templateFiltered, $templateContentFiltered);
         }
+
 
         return $content;
     }
@@ -1023,6 +1053,10 @@ class MaxiBlocks_Styles
      */
     private function process_scripts($post_meta, $template_meta, $template_content)
     {
+        write_log('process_scripts');
+        // write_log('$post_meta');
+        // write_log($post_meta);
+
         $scripts = [
             'hover-effects',
             'bg-video',
@@ -1036,6 +1070,14 @@ class MaxiBlocks_Styles
             'map',
             'accordion',
             'slider'
+        ];
+
+        $script_attr = [
+            'bg-video',
+            'parallax',
+            'scroll-effects',
+            'shape-divider',
+            'relations',
         ];
 
         $template_parts = $this->get_template_parts($template_content);
@@ -1055,23 +1097,48 @@ class MaxiBlocks_Styles
                 $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
             }
 
-            $meta = array_merge($post_meta, $block_meta, $template_meta, $template_parts_meta);
+            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta, $template_parts_meta);
             write_log('$meta');
             write_log($meta);
             $match = false;
             $block_name = '';
 
             foreach ($meta as $key => $value) {
-                // write_log('key: '.$key);
-                // write_log('script: '.$script);
+                write_log('key: '.$key);
+                write_log('script: '.$script);
                 if(str_contains($key, $script)) {
                     $match = true;
                     $block_name = $key;
+                } else {
+                    if(is_array($value) && in_array($script, $script_attr)) {
+                        foreach ($value as $k => $v) {
+                            write_log('k: '.$k);
+                            write_log('v: '.$v);
+                            if(gettype($v) === 'string' && str_contains($v, $script)) {
+                                $match = true;
+                                $block_name = $key;
+                            }
+                        }
+                    }
                 }
             }
 
             if ($match) {
-                $meta_to_pass = $meta[$block_name];
+                if($script === 'relations') {
+                    $meta_to_pass = [];
+
+                    foreach ($meta[$block_name] as $json) {
+                        $array = json_decode($json, true);  // Decode the JSON string into an array
+                        if (isset($array['relations'])) {
+                            $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                        }
+                    }
+
+                } else {
+                    $meta_to_pass = $meta[$block_name];
+                }
+                write_log('$meta_to_pass');
+                write_log($meta_to_pass);
                 $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
             }
         }

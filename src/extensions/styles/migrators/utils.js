@@ -4,6 +4,11 @@
 import { getBlockData } from '../../attributes';
 
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Returns block name from uniqueID
  */
 export const getBlockNameFromUniqueID = uniqueID =>
@@ -39,4 +44,22 @@ export const getIBDataItem = ({ uniqueID, sid, settings }) => {
 					(!sid && settings && item?.label === settings)
 			) || null
 	);
+};
+
+/**
+ * Get uniqueID of a block in the editor with a specific legacyUniqueID
+ */
+export const getUniqueIDByLegacyUniqueID = legacyUniqueID => {
+	const blocks = select('core/block-editor').getBlocks();
+
+	for (const block of blocks) {
+		if (
+			block.name.startsWith('maxi-blocks/') &&
+			block?.attributes?.legacyUniqueID === legacyUniqueID
+		) {
+			return block?.attributes?.uniqueID; // Return uniqueID of the block
+		}
+	}
+
+	return null; // Return null if no block is found with the specified legacyUniqueID
 };

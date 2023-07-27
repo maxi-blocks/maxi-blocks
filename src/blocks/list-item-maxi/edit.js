@@ -3,7 +3,7 @@
 /**
  * WordPress dependencies
  */
-import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
+import { RichText } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -11,7 +11,7 @@ import { createBlock } from '@wordpress/blocks';
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { BlockInserter, RawHTML, Toolbar } from '../../components';
+import { RawHTML, Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
@@ -25,34 +25,6 @@ import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import { isEmpty } from 'lodash';
-
-const List = props => {
-	const { clientId, hasInnerBlocks, typeOfList, start, reversed, className } =
-		props;
-
-	const ALLOWED_BLOCKS = ['maxi-blocks/list-item-maxi'];
-	const ListTagName = typeOfList;
-
-	return (
-		<ListTagName
-			{...useInnerBlocksProps(
-				{ className, start, reversed },
-				{
-					allowedBlocks: ALLOWED_BLOCKS,
-					renderAppender: !hasInnerBlocks
-						? () => <BlockInserter clientId={clientId} />
-						: false,
-				}
-			)}
-		/>
-	);
-};
 
 /**
  * Content
@@ -120,22 +92,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			clientId,
-			onReplace,
-			maxiSetAttributes,
-			hasInnerBlocks,
-		} = this.props;
-		const {
-			content,
-			isList,
-			listReversed,
-			listStart,
-			textLevel,
-			typeOfList,
-			uniqueID,
-		} = attributes;
+		const { attributes, clientId, onReplace, maxiSetAttributes } =
+			this.props;
+		const { content, uniqueID } = attributes;
 
 		const {
 			status: dcStatus,
@@ -146,8 +105,7 @@ class edit extends MaxiBlockComponent {
 			this.props?.contextLoopContext?.contextLoop
 		);
 
-		const className = 'maxi-text-block__content';
-		const DCTagName = textLevel;
+		const className = 'maxi-list-item-block__content';
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -186,7 +144,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const commonProps = {
-			className: 'maxi-text-block__content',
+			className: 'maxi-list-item-block__content',
 			identifier: 'content',
 			value: content,
 			onChange: processContent,
@@ -202,7 +160,7 @@ class edit extends MaxiBlockComponent {
 				}
 
 				const block = createBlock(
-					'maxi-blocks/text-maxi',
+					'maxi-blocks/list-item-maxi',
 					newAttributes
 				);
 
@@ -216,12 +174,12 @@ class edit extends MaxiBlockComponent {
 			onMerge: forward => onMerge(this.props, forward),
 			// onRemove needs to be commented to avoid removing the block
 			// on pressing backspace with the content empty 👍
-			// onRemove={onRemove}
+			// onRemove,
 		};
 
 		return [
 			<textContext.Provider
-				key={`maxi-text-block__context-${uniqueID}`}
+				key={`maxi-list-item-block__context-${uniqueID}`}
 				value={{
 					content,
 					formatValue: {
@@ -254,19 +212,18 @@ class edit extends MaxiBlockComponent {
 					disableCustomFormats={dcStatus}
 				/>
 				<MaxiBlock
-					key={`maxi-text--${uniqueID}`}
-					classes={classnames(
-						isEmpty(content)
-							? 'maxi-text-block__empty'
-							: 'maxi-text-block__has-text',
-						isList && 'maxi-list-block'
-					)}
+					key={`maxi-list-item--${uniqueID}`}
 					ref={this.blockRef}
+					tagName='li'
+					classes={
+						content === ''
+							? 'maxi-list-item-block__empty'
+							: 'maxi-list-item-block__has-text'
+					}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					{!dcStatus && !isList && (
+					{!dcStatus && (
 						<RichText
-							tagName={textLevel}
 							__unstableEmbedURLOnPaste
 							withoutInteractiveFormatting
 							preserveWhiteSpace
@@ -302,23 +259,13 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 					{dcStatus && (
-						<DCTagName className={className}>
+						<div className={className}>
 							{dcContainsHTML ? (
 								<RawHTML>{dcContent}</RawHTML>
 							) : (
 								dcContent
 							)}
-						</DCTagName>
-					)}
-					{!dcStatus && isList && (
-						<List
-							typeOfList={typeOfList}
-							className={className}
-							start={listStart}
-							reversed={listReversed}
-							clientId={clientId}
-							hasInnerBlocks={hasInnerBlocks}
-						/>
+						</div>
 					)}
 				</MaxiBlock>
 			</textContext.Provider>,

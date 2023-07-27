@@ -4,11 +4,6 @@
 import { getBlockData } from '../../attributes';
 
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
  * Returns block name from uniqueID
  */
 export const getBlockNameFromUniqueID = uniqueID =>

@@ -123,6 +123,7 @@ const MaxiToolbar = memo(
 			uniqueID,
 			svgType,
 			'dc-status': dcStatus,
+			isListItem,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -343,6 +344,7 @@ const MaxiToolbar = memo(
 						{!dcStatus && (
 							<TextListOptions
 								blockName={name}
+								isListItem={isListItem}
 								isList={isList}
 								typeOfList={typeOfList}
 								onChange={obj => maxiSetAttributes(obj)}

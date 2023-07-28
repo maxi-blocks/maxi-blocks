@@ -287,7 +287,7 @@ class edit extends MaxiBlockComponent {
 					tagName={isListItem ? 'li' : 'div'}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					{!dcStatus && !isList && (
+					{!dcStatus && (!isList || isListItem) && (
 						<RichText
 							tagName={isListItem ? 'div' : textLevel}
 							__unstableEmbedURLOnPaste

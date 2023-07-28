@@ -45,13 +45,14 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, isList, typeOfList, onChange } = props;
+	const { blockName, isList, typeOfList, isListItem, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const { formatValue } = useContext(textContext);
 
 	const getContent = content => {
+		if (isListItem) return content;
 		if (!isList) return fromTextToList(content);
 		return fromListToText(content);
 	};

@@ -40,7 +40,6 @@ const allowedBlocks = [
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/search-maxi',
-	'maxi-blocks/list-item-maxi',
 ];
 
 /**

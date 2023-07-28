@@ -347,6 +347,9 @@ const getVideoStyles = (props, isHover = false) => {
 const getStyles = props => {
 	const { uniqueID, playerType } = props;
 
+	console.log('playerType');
+	console.log(playerType);
+
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
@@ -409,19 +412,24 @@ const getStyles = props => {
 			data,
 			props
 		),
-		[`popup-${uniqueID}`]: styleProcessor(
-			{
-				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				' .maxi-video-block__video-container': getAspectRatioStyles(
-					props,
-					true
-				),
-				...getIconObject('close-', props),
-			},
-			data,
-			props
-		),
+		[playerType === 'popup' ? `popup-${uniqueID}` : `${uniqueID}`]:
+			styleProcessor(
+				{
+					' .maxi-video-block__popup-wrapper':
+						getLightBoxObject(props),
+					' .maxi-video-block__video-container': getAspectRatioStyles(
+						props,
+						playerType === 'popup'
+					),
+					...getIconObject('close-', props),
+				},
+				data,
+				props
+			),
 	};
+
+	console.log('all styles');
+	console.log(response);
 
 	return response;
 };

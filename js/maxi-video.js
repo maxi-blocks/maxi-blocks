@@ -63,10 +63,23 @@ const handleYoutubeVideos = () => {
 	youtubeVideos.forEach(video => {
 		const videoID = video.id;
 
-		const videoData =
-			maxiVideo[0][videoID] !== undefined
-				? JSON.parse(maxiVideo[0][videoID])
-				: null;
+		let videoData;
+
+		if (typeof maxiVideo[0][videoID] === 'string') {
+			try {
+				videoData = JSON.parse(maxiVideo[0][videoID]);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				videoData = null;
+			}
+		} else if (
+			typeof maxiVideo[0][videoID] === 'object' &&
+			maxiVideo[0][videoID] !== null
+		) {
+			videoData = maxiVideo[0][videoID];
+		} else {
+			videoData = null;
+		}
 
 		const popupContent =
 			videoData.playerType === 'popup' && insertPopup(video);

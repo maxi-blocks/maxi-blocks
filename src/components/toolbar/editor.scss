@@ -22,6 +22,10 @@
 		display: flex;
 		width: 15px;
 		justify-content: center;
+
+		&--repeater {
+			background: #7a00df;
+		}
 	}
 	.components-popover__content {
 		overflow: visible !important;
@@ -98,6 +102,10 @@
 				line-height: 100%;
 				height: 20px;
 				white-space: pre;
+
+				&--repeater {
+					background: #7a00df;
+				}
 
 				&__block-style {
 					text-transform: capitalize;
@@ -274,12 +282,12 @@
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
-	.maxi-base-control:not(.maxi-color-control__palette-label){
-		.maxi-reset-button{
+	.maxi-base-control:not(.maxi-color-control__palette-label) {
+		.maxi-reset-button {
 			padding: 8px;
 		}
 	}
-	
+
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {

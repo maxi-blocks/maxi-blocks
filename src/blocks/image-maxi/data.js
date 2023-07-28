@@ -49,6 +49,7 @@ const copyPasteMapping = {
 		'mediaWidth',
 		'mediaHeight',
 		'mediaAlt',
+		'captionContent',
 	],
 	settings: {
 		Image: [
@@ -145,9 +146,8 @@ const copyPasteMapping = {
 			template: 'size',
 			prefix,
 		},
-		Padding: {
-			groupAttributes: 'padding',
-			prefix,
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	canvas: {

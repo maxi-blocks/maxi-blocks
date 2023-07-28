@@ -731,16 +731,27 @@ class Relation {
 					}
 
 					if (hasEffects) {
-						let currentStyleObj =
-							stylesObj[
-								this.getLastUsableBreakpoint(
-									breakpoint,
-									breakpoint =>
-										stylesObj?.[breakpoint] &&
-										Object.keys(stylesObj?.[breakpoint])
-											.length
-								)
-							];
+						// Add style objects from current and higher breakpoints,
+						// because styles from higher breakpoints will apply for lower ones
+						// and need to add transitions for them as well.
+						let currentStyleObj = [...this.breakpoints]
+							.splice(0, this.breakpoints.indexOf(breakpoint) + 1)
+							.reduce(
+								(acc, breakpoint) => ({
+									...acc,
+									...stylesObj[
+										this.getLastUsableBreakpoint(
+											breakpoint,
+											breakpoint =>
+												stylesObj?.[breakpoint] &&
+												Object.keys(
+													stylesObj?.[breakpoint]
+												).length
+										)
+									],
+								}),
+								{}
+							);
 
 						if (this.isBorder && isBackground)
 							currentStyleObj = {
@@ -749,7 +760,7 @@ class Relation {
 								left: null,
 							};
 
-						if (currentStyleObj) {
+						if (Object.keys(currentStyleObj).length) {
 							const addTransitionString = (
 								transitionString,
 								transitionTarget,

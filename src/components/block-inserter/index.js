@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useRef, forwardRef, useState } from '@wordpress/element';
+import { forwardRef, useContext, useRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -13,6 +13,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import Dropdown from '../dropdown';
 import Popover from '../popover';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -38,6 +39,8 @@ const BlockInserter = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const repeaterStatus = useContext(RepeaterContext)?.repeaterStatus;
+
 	const classes = classnames('maxi-block-inserter', className);
 
 	return (
@@ -50,7 +53,11 @@ const BlockInserter = props => {
 		>
 			<ButtonBlockAppender
 				rootClientId={clientId}
-				className='maxi-components-button maxi-block-inserter__button'
+				className={classnames(
+					'maxi-components-button',
+					'maxi-block-inserter__button',
+					repeaterStatus && 'maxi-block-inserter__button--repeater'
+				)}
 			/>
 		</div>
 	);
@@ -59,14 +66,23 @@ const BlockInserter = props => {
 const ButtonInserter = props => {
 	const { onToggle, style = {} } = props;
 
+	const repeaterStatus = useContext(RepeaterContext)?.repeaterStatus;
+
 	return (
 		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
 			<div
-				className='maxi-wrapper-block-inserter__button-wrapper'
+				className={classnames(
+					'maxi-wrapper-block-inserter__button-wrapper',
+					repeaterStatus &&
+						'maxi-wrapper-block-inserter__button-wrapper--repeater'
+				)}
 				style={style}
 			>
 				<Button
-					className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+					className={classnames(
+						'maxi-wrapper-block-inserter__button',
+						'maxi-block-inserter__button'
+					)}
 					onClick={onToggle}
 				>
 					<svg

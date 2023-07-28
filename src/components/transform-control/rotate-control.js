@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import BaseControl from '../base-control';
 import ResetButton from '../reset-control';
+import validateNumberInput from '../advanced-number-control/utils';
 
 /**
  * External dependencies
@@ -47,6 +48,9 @@ const RotateControl = props => {
 						value={isNil(x) ? '' : x}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							validateNumberInput(e);
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(defaultX, y, z);
@@ -87,6 +91,9 @@ const RotateControl = props => {
 						value={isNil(y) ? '' : y}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							validateNumberInput(e);
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, defaultY, z);
@@ -127,6 +134,10 @@ const RotateControl = props => {
 						value={isNil(z) ? '' : z}
 						min={min}
 						max={max}
+						onKeyDown={e => {
+							if (e.key !== '-' && !e.key.match(/^[0-9]+$/))
+								e.preventDefault();
+						}}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, y, defaultZ);

@@ -38,6 +38,10 @@ class MaxiBlocks_DynamicContent
         'dc-status' => [
             'type' => 'boolean',
         ],
+        'dc-source' => [
+            'type' => 'string',
+            'default' => 'wp',
+        ],
         'dc-type' => [
             'type' => 'string',
         ],
@@ -146,12 +150,32 @@ class MaxiBlocks_DynamicContent
             'type' => 'string',
             'default' => '',
         ],
+        'dc-acf-group' => [
+            'type' => 'string',
+        ],
+        'dc-acf-field-type' => [
+            'type' => 'string',
+        ],
         'dc-order' => [
+            'type' => 'string',
+        ],
+        'dc-order-by' => [
             'type' => 'string',
         ],
         'dc-accumulator' => [
             'type' => 'number',
         ],
+    ];
+
+    private static $order_by_relations =
+        ['by-category', 'by-author', 'by-tag'];
+
+    private static $link_only_blocks = [
+        'group-maxi',
+        'column-maxi',
+        'row-maxi',
+        'slide-maxi',
+        'pane-maxi',
     ];
 
     /**
@@ -160,24 +184,54 @@ class MaxiBlocks_DynamicContent
     public function __construct()
     {
         // Dynamic blocks
-        // register_block_type('maxi-blocks/text-maxi', array(
-        //     'api_version' => 2,
-        //     'editor_script' => 'maxi-blocks-block-editor',
-        //     'render_callback' => [$this, 'render_dc'],
-        //     'attributes' => self::$dynamic_content_attributes,
-        // ));
-        // register_block_type('maxi-blocks/button-maxi', array(
-        //     'api_version' => 2,
-        //     'editor_script' => 'maxi-blocks-block-editor',
-        //     'render_callback' => [$this, 'render_dc'],
-        //     'attributes' => self::$dynamic_content_attributes,
-        // ));
-        // register_block_type('maxi-blocks/image-maxi', array(
-        //     'api_version' => 2,
-        //     'editor_script' => 'maxi-blocks-block-editor',
-        //     'render_callback' => [$this, 'render_dc'],
-        //     'attributes' => self::$dynamic_content_attributes,
-        // ));
+        register_block_type('maxi-blocks/text-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/button-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/image-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/group-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/column-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/row-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/slide-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/pane-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
     }
 
     public function render_dc($attributes, $content)
@@ -189,10 +243,13 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        $unique_id = $attributes['uniqueID'];
+        $is_template = is_string($unique_id) && strpos($unique_id, '-template');
+
         if (self::$custom_data === null) {
             if (class_exists('MaxiBlocks_Styles')) {
                 $styles = new MaxiBlocks_Styles();
-                self::$custom_data = $styles->custom_meta('dynamic_content');
+                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
             } else {
                 self::$custom_data = [];
             }
@@ -200,10 +257,9 @@ class MaxiBlocks_DynamicContent
 
         $context_loop = [];
 
-        if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
-            $context_loop = self::$custom_data[$attributes['uniqueID']];
+        if (array_key_exists($unique_id, self::$custom_data)) {
+            $context_loop = self::$custom_data[$unique_id];
         }
-
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -214,9 +270,15 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
+        $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
 
-        if ($block_name !== 'image-maxi') {
+        if($is_template) {
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        }
+
+        if (in_array($block_name, self::$link_only_blocks)) {
+            return $content;
+        } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
             $content = self::render_dc_image($attributes, $content);
@@ -251,6 +313,7 @@ class MaxiBlocks_DynamicContent
     public function render_dc_content($attributes, $content)
     {
         @list(
+            'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
@@ -269,7 +332,9 @@ class MaxiBlocks_DynamicContent
 
         $response = '';
 
-        if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        if ($dc_source === 'acf') {
+            $response = self::get_acf_content($attributes);
+        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $response = self::get_post_or_page_content($attributes);
         } elseif ($dc_type === 'settings') { // Site settings
             $response = self::get_site_content($dc_field);
@@ -297,6 +362,7 @@ class MaxiBlocks_DynamicContent
     public function render_dc_image($attributes, $content)
     {
         @list(
+            'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
@@ -311,13 +377,17 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'by-id';
         }
 
-        $media_id = null;
-        $media_src = null;
+        $media_id;
+        $media_src;
         $media_alt = '';
         $media_caption = '';
 
         // Get media ID
-        if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        if ($dc_source === 'acf') {
+            $image = self::get_acf_content($attributes);
+
+            $media_id = is_array($image) && $image['id'];
+        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
             $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
@@ -366,7 +436,8 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-author' => $dc_author,
-            'dc-order' => $dc_order_by,
+            'dc-order-by' => $dc_order_by,
+            'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
@@ -379,11 +450,14 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_accumulator)) {
             $dc_accumulator = 0;
         }
+        if(empty($dc_order_by)) {
+            $dc_order_by = 'by-date';
+        }
         if (empty($dc_order)) {
             $dc_order = 'desc';
         }
 
-        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical']);
+        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
         if (in_array($dc_type, ['posts', 'pages'])) {
@@ -402,7 +476,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             }
 
             $query = new WP_Query($args);
@@ -425,12 +499,12 @@ class MaxiBlocks_DynamicContent
                 ];
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             }
 
             $query = new WP_Query($args);
 
-            $post = null;
+            $post;
 
             if ($is_random) {
                 $posts = $query->posts;
@@ -468,7 +542,7 @@ class MaxiBlocks_DynamicContent
             ];
 
             if ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator, $dc_type));
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
             } elseif ($dc_relation === 'by-id') {
                 $args['include'] = $dc_author ?? $dc_id;
             }
@@ -485,11 +559,24 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $link_status)
+    public function get_field_link($item, $field)
+    {
+        switch ($field) {
+            case 'author':
+                return get_author_posts_url($item);
+            case 'categories':
+            case 'tags':
+                return get_term_link($item);
+            default:
+                return '';
+        }
+    }
+
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
     {
         return ($link_status)
-            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
-            : $item->name;
+            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
+            : $content;
     }
 
     public function get_post_or_page_content($attributes)
@@ -498,13 +585,12 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
-            // temp
-            // 'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
 
-        if (is_null($post) || (is_bool($post) && !$post)) {
+        if (is_null($post)) {
             return '';
         }
 
@@ -516,7 +602,7 @@ class MaxiBlocks_DynamicContent
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            if ($dc_field === 'excerpt') {
+            if($dc_field === 'excerpt') {
                 $post_data = excerpt_remove_blocks($post_data);
             }
             $post_data = wp_strip_all_tags($post_data);
@@ -537,7 +623,12 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $post->post_author);
+            $post_data = $this->get_post_taxonomy_item_content(
+                $post->post_author,
+                get_the_author_meta('display_name', $post->post_author),
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {
@@ -551,7 +642,12 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content = [];
 
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                    $taxonomy_item,
+                    $taxonomy_item->name,
+                    $dc_post_taxonomy_links_status,
+                    $dc_field
+                );
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);
@@ -640,6 +736,41 @@ class MaxiBlocks_DynamicContent
         return $tax_data;
 
 
+    }
+
+    public function get_acf_content($attributes)
+    {
+        if (!function_exists('get_field_object')) {
+            return '';
+        }
+
+        @list(
+            'dc-field' => $dc_field,
+            'dc-acf-field-type' => $dc_acf_field_type,
+            'dc-limit' => $dc_limit,
+            'dc-delimiter-content' => $dc_delimiter,
+        ) = $attributes;
+
+        $post = $this->get_post($attributes);
+        $acf_data = get_field_object($dc_field, $post->ID);
+        $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
+        $content = null;
+
+        switch ($dc_acf_field_type) {
+            case 'select':
+            case 'radio':
+                $content = is_array($acf_value) ? $acf_value['label'] : $acf_value;
+                break;
+            case 'checkbox':
+                $content = implode("$dc_delimiter ", array_map(function ($item) {
+                    return is_array($item) ? $item['label'] : $item;
+                }, $acf_value));
+                break;
+            default:
+                $content = $acf_value;
+        }
+
+        return $content;
     }
 
     public function get_date($date, $attributes)
@@ -793,7 +924,7 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
-        if (!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
             return false;
         }
 
@@ -828,8 +959,22 @@ class MaxiBlocks_DynamicContent
 
     public function order_callback($attributes)
     {
+        $dictionary = [
+            'by-date' => 'desc',
+            'alphabetical' => 'asc',
+        ];
+
         $relation = $attributes['dc-relation'] ?? null;
-        return $relation === 'by-date' ? 'desc' : 'asc';
+
+        if (in_array($relation, self::$order_by_relations)) {
+            if (isset($attributes['dc-order-by'])) {
+                return $dictionary[$attributes['dc-order-by']];
+            }
+
+            return $dictionary['by-date'];
+        }
+
+        return array_key_exists($relation, $dictionary) ? $dictionary[$relation] : null;
     }
 
     /**
@@ -871,20 +1016,41 @@ class MaxiBlocks_DynamicContent
         return $result;
     }
 
-    public function get_order_by_args($relation, $order, $accumulator, $dc_type)
+    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id)
     {
-        if ($dc_type === 'users') {
-            $order_by = $relation === 'by-date' ? 'user_registered' : 'display_name';
+        if ($type === 'users') {
+            $order_by_arg = $relation === 'by-date' ? 'user_registered' : 'display_name';
             $limit_key = 'number';
         } else {
-            $order_by = $relation === 'by-date' ? 'date' : 'title';
+            $dictionary = [
+                'by-date' => 'date',
+                'alphabetical' => 'title',
+            ];
+
+
+            if(in_array($relation, self::$order_by_relations)) {
+                $order_by_arg = $dictionary[$order_by];
+            } else {
+                $order_by_arg = $dictionary[$relation];
+            }
+
             $limit_key = 'posts_per_page';
         }
 
-        return [
-            'orderby' => $order_by,
+        $args = [
+            'orderby' => $order_by_arg,
             'order' => $order,
             $limit_key => $accumulator + 1,
         ];
+
+        if($relation === 'by-category') {
+            $args['cat'] = $id;
+        } elseif($relation === 'by-author') {
+            $args['author'] = $id;
+        } elseif($relation === 'by-tag') {
+            $args['tag_id'] = $id;
+        }
+
+        return $args;
     }
 }

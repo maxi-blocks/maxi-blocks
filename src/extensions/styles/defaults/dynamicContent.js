@@ -6,6 +6,10 @@ const dynamicContent = {
 	'dc-status': {
 		type: 'boolean',
 	},
+	'dc-source': {
+		type: 'string',
+		default: 'wp',
+	},
 	'dc-type': {
 		type: 'string',
 	},
@@ -116,11 +120,20 @@ const dynamicContent = {
 		type: 'string',
 		default: '',
 	},
+	'dc-order-by': {
+		type: 'string',
+	},
 	'dc-order': {
 		type: 'string',
 	},
 	'dc-accumulator': {
 		type: 'number',
+	},
+	'dc-acf-group': {
+		type: 'number',
+	},
+	'dc-acf-field-type': {
+		type: 'string',
 	},
 	'dc-contains-html': {
 		type: 'boolean',
@@ -128,4 +141,13 @@ const dynamicContent = {
 	},
 };
 
-export default dynamicContent;
+const dynamicContentLink = {
+	'dc-status': {
+		type: 'boolean',
+	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
+};
+
+export { dynamicContent, dynamicContentLink };

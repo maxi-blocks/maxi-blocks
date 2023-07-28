@@ -62,7 +62,7 @@ const AccordionSettings = props => {
 						onChange={val => onChange({ accordionLayout: val })}
 					/>
 					<ToggleSwitch
-						label={__('Collapsible', 'maxi-block')}
+						label={__('Collapsible', 'maxi-blocks')}
 						selected={isCollapsible}
 						onChange={val =>
 							onChange({
@@ -73,7 +73,7 @@ const AccordionSettings = props => {
 					<ToggleSwitch
 						label={__(
 							'Pane closes when another opens',
-							'maxi-block'
+							'maxi-blocks'
 						)}
 						selected={autoPaneClose}
 						onChange={val =>

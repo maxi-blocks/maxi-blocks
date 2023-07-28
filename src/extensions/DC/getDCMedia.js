@@ -8,11 +8,18 @@ import { resolveSelect } from '@wordpress/data';
  */
 import { isNil } from 'lodash';
 import getDCEntity from './getDCEntity';
+import { getACFFieldContent } from './getACFData';
 
-const getDCMedia = async dataRequest => {
-	const data = await getDCEntity(dataRequest);
+const getDCMedia = async (dataRequest, clientId) => {
+	const data = await getDCEntity(dataRequest, clientId);
 
-	const { field } = dataRequest;
+	const { field, source } = dataRequest;
+
+	if (source === 'acf') {
+		const contentValue = await getACFFieldContent(field, data.id);
+
+		return contentValue;
+	}
 
 	if (!(field in data)) return null;
 

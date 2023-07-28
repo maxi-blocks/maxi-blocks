@@ -166,6 +166,7 @@ const NumberCounter = attributes => {
 		'number-counter-circle-status': circleStatus,
 		'number-counter-preview': preview,
 		'number-counter-percentage-sign-status': usePercentage,
+		'number-counter-percentage-sign-position-status': centeredPercentage,
 		'number-counter-start': startNumber,
 		'number-counter-end': endNumber,
 		deviceType,
@@ -315,14 +316,15 @@ const NumberCounter = attributes => {
 					</svg>
 					<span className='maxi-number-counter__box__text'>
 						{`${round((count / 360) * 100)}`}
-						{usePercentage && <sup>%</sup>}
+						{usePercentage &&
+							(centeredPercentage ? '%' : <sup>%</sup>)}
 					</span>
 				</div>
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
 					{`${round((count / 360) * 100)}`}
-					{usePercentage && <sup>%</sup>}
+					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>
 			)}
 		</BlockResizer>

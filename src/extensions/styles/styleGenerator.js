@@ -84,7 +84,7 @@ const styleStringGenerator = (
 			}[maxi-blocks-responsive="${ALLOWED_BREAKPOINTS[breakpointPos]}"]${
 				isSiteEditor ? ' .is-root-container' : ''
 			} .maxi-block.maxi-block--backend.${target}${
-				breakpointPos ? ',' : '{'
+				breakpointPos > 0 ? ',' : '{'
 			}`;
 			breakpointPos -= 1;
 		} while (breakpointPos >= 0);

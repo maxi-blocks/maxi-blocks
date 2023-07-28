@@ -25,6 +25,7 @@ export { default as setScreenSize } from './setScreenSize';
 export { default as setTransitionToSelectors } from './transitions/setTransitionToSelectors';
 export { default as styleGenerator } from './styleGenerator';
 export { default as transitionAttributesCreator } from './transitions/transitionAttributesCreator';
+export { default as styleCleaner } from './styleCleaner';
 export * from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
 export { default as styleProcessor } from './styleProcessor';

@@ -258,7 +258,7 @@ class MaxiBlocks_StyleCards
          * font-family of the paragraph text level.
          */
         if ($text_level === 'button' && (empty($font) || empty(str_replace('"', '', $font)) || str_contains($font, 'undefined'))) {
-            $font = $style_card_values->p['font-family-general'];
+            $font = $style_card_values->p['font-family-general'] ?? $default_values['p']['font-family-general'];          
         }
 
         $font_weights = [];

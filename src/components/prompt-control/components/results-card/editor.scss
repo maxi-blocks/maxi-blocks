@@ -1,0 +1,52 @@
+.maxi-prompt-control-results-card {
+	padding: 20px;
+	border: 2px solid var(--maxi-grey-1-color);
+	border-radius: 4px;
+	background: var(--maxi-white-3-color);
+
+	hr {
+		margin: 8px 0;
+	}
+
+	& &__variant {
+		font-weight: bold;
+	}
+
+	&__top-bar {
+		margin-bottom: 10px;
+
+		&__select-row {
+			display: flex;
+			justify-content: space-between;
+			cursor: pointer;
+
+			& &__select-text,
+			& &__id {
+				font-weight: bold;
+			}
+		}
+	}
+
+	&__modificator {
+		cursor: pointer;
+
+		& &__id {
+			font-weight: bold;
+		}
+	}
+
+	&--selected {
+		border-color: var(--maxi-secondary-color);
+
+		.maxi-prompt-control-results-card__top-bar {
+			&__select-row {
+				cursor: default;
+
+				&__select-text,
+				&__id {
+					color: var(--maxi-secondary-color);
+				}
+			}
+		}
+	}
+}

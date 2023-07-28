@@ -12,11 +12,19 @@ import PromptControl from '../prompt-control';
  * Component
  */
 const position = ({ props }) => {
-	// const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, maxiSetAttributes } = props;
+	const { content } = attributes;
 
 	return {
 		label: __('Prompt', 'maxi-blocks'),
-		content: <PromptControl />,
+		content: (
+			<PromptControl
+				content={content}
+				onChangeContent={newContent =>
+					maxiSetAttributes({ content: newContent })
+				}
+			/>
+		),
 	};
 };
 

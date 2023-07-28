@@ -140,6 +140,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null
             );
+            add_submenu_page(self::$maxi_slug_dashboard, __('Maxi Ai', self::$maxi_text_domain), __('Maxi Ai', self::$maxi_text_domain), 'manage_ai', 'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_ai', '', null);
         }
 
         // Draw option page
@@ -158,6 +159,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'Pro library',
                     self::$maxi_text_domain
                 ),
+				self::$maxi_prefix.'maxi_ai' => __(
+					'Maxi Ai',
+					self::$maxi_text_domain
+				),
             ];
 
             if (isset($_GET['tab'])) {
@@ -214,6 +219,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_pro(),
                         maxi_blocks_allowed_html()
                     );
+                } elseif($tab === self::$maxi_prefix.'maxi_ai') {
+                    echo wp_kses(
+						$this->maxi_blocks_maxi_ai(),
+						maxi_blocks_allowed_html()
+					);
                 }
             }
 
@@ -871,6 +881,20 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             $content .= '</div>';
+        public function maxi_blocks_maxi_ai()
+        {
+            $content = '<div class="maxi-dashboard_main-content">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
+            $content .= $this->generate_item_header('OpenAI API key', true);
+
+            $description = '<h4>'.__('Insert OpenAI API Key here', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_setting($description, 'openai_api_key_option');
+
+            $content .= get_submit_button();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
@@ -1049,13 +1073,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
-            if ($option === 'google_api_key_option') {
-                $content .='<div id="maxi-google-test-map"></div>';
+
+            if(str_contains($option, 'api_key_option')) {
+                $api_name = str_replace('_api_key_option', '', $option);
+
+                $content .='<div id="maxi-'.$api_name.'-test-map"></div>';
                 $content .= $this->generate_input($option, $function, $type);
-                $content .='<div id="maxi-google-test-map_validation-message"></div>';
+                $content .='<div id="maxi-'.$api_name.'-test-map_validation-message"></div>';
             } else {
                 $content .= $this->generate_toggle($option, $function);
             }
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-setting
 
             return $content;
@@ -1126,6 +1154,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'support_chat', $args);
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
+            register_setting('maxi-blocks-settings-group', 'openai_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
             register_setting(
                 'maxi-blocks-settings-group',

@@ -904,6 +904,5 @@ if (!class_exists('MaxiBlocks_API')):
 
             return json_encode(get_field_object($request['field_id'], $request['post_id'])['value']);
         }
-
     }
 endif;

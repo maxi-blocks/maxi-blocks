@@ -19,8 +19,8 @@ import {
 } from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
-import { copyPasteMapping, maxiAttributes, scProps } from './data';
-import { getDCValues } from '../../extensions/DC';
+import { copyPasteMapping, maxiAttributes } from './data';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
@@ -48,7 +48,17 @@ class edit extends MaxiBlockComponent {
 		this.iconRef = createRef(null);
 	}
 
-	scProps = scProps;
+	scProps = {
+		scElements: [
+			'hover-border-color-global',
+			'hover-border-color-all',
+			'hover-color-global',
+			'hover-color-all',
+			'hover-background-color-global',
+			'hover-background-color-all',
+		],
+		scType: 'button',
+	};
 
 	typingTimeout = 0;
 
@@ -88,7 +98,7 @@ class edit extends MaxiBlockComponent {
 			field: dcField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.context?.contextLoop
+			this.props.contextLoopContext?.contextLoop
 		);
 		const { scValues } = this.state;
 
@@ -199,4 +209,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

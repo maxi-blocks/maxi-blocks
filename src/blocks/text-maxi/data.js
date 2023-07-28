@@ -30,7 +30,7 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
-	_exclude: ['content'],
+	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',
@@ -199,8 +199,8 @@ const interactionBuilderSettings = {
 			helper: props => getTypographyStyles({ ...props }),
 			target: contentClass,
 		},
+		...getCanvasSettings({ name }),
 	],
-	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
 const scProps = {

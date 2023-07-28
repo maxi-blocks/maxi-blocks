@@ -70,7 +70,7 @@ const LinkOptions = props => {
 				hasBorder
 				items={[
 					{
-						label: __('Link', 'maxi-block'),
+						label: __('Link', 'maxi-blocks'),
 						value: 'normal_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-color`,
@@ -80,7 +80,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Hover', 'maxi-block'),
+						label: __('Hover', 'maxi-blocks'),
 						value: 'hover_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-hover-color`,
@@ -90,7 +90,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Active', 'maxi-block'),
+						label: __('Active', 'maxi-blocks'),
 						value: 'active_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-active-color`,
@@ -100,7 +100,7 @@ const LinkOptions = props => {
 						],
 					},
 					{
-						label: __('Visited', 'maxi-block'),
+						label: __('Visited', 'maxi-blocks'),
 						value: 'visited_link',
 						extraIndicatorsResponsive: [
 							`${prefix}link-visited-color`,

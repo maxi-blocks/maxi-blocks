@@ -1,13 +1,21 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
+
+/**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import RowContext from './context';
+import RowContext from './rowContext';
+import RepeaterContext from './repeaterContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
+import { retrieveInnerBlocksPositions } from '../../extensions/repeater';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -15,24 +23,37 @@ import { copyPasteMapping, maxiAttributes } from './data';
 /**
  * External dependencies
  */
-import { withMaxiContextLoop } from '../../extensions/DC';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 import { RowBlockTemplate } from './components';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, isEqual } from 'lodash';
 
 /**
  * Edit
  */
 class edit extends MaxiBlockComponent {
+	static contextType = RepeaterContext;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
 
 	state = {
 		displayHandlers: false,
+		innerBlocksPositions: {},
 	};
 
 	columnsSize = {};
 
 	columnsClientIds = [];
+
+	isRepeaterInherited = !!this.context?.repeaterStatus;
 
 	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
@@ -40,12 +61,48 @@ class edit extends MaxiBlockComponent {
 				displayHandlers: false,
 			});
 		}
+
+		this.isRepeaterInherited = !!this.context?.repeaterStatus;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
 	getMaxiAttributes() {
 		return maxiAttributes;
 	}
+
+	updateInnerBlocksPositions = () => {
+		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
+			!isEmpty(this.columnsClientIds)
+				? this.columnsClientIds
+				: select('core/block-editor').getBlockOrder(this.props.clientId)
+		);
+
+		if (
+			!isEqual(newInnerBlocksPositions, this.state.innerBlocksPositions)
+		) {
+			this.setState({
+				innerBlocksPositions: newInnerBlocksPositions,
+			});
+		}
+
+		return newInnerBlocksPositions;
+	};
+
+	getInnerBlocksPositions = () => {
+		if (
+			!getAttributeValue({
+				target: 'repeater-status',
+				props: this.props.attributes,
+			})
+		)
+			return {};
+
+		if (isEmpty(this.state.innerBlocksPositions)) {
+			return this.updateInnerBlocksPositions();
+		}
+
+		return this.state.innerBlocksPositions;
+	};
 
 	render() {
 		const {
@@ -63,8 +120,31 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
 
+		const repeaterContext = {
+			repeaterStatus: getAttributeValue({
+				target: 'repeater-status',
+				props: attributes,
+			}),
+			repeaterRowClientId: clientId,
+			getInnerBlocksPositions: this.getInnerBlocksPositions,
+			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
+			...(this.context?.repeaterStatus && this.context),
+		};
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				repeaterStatus={repeaterContext.repeaterStatus}
+				repeaterRowClientId={repeaterContext.repeaterRowClientId}
+				isRepeaterInherited={this.isRepeaterInherited}
+				getInnerBlocksPositions={
+					repeaterContext.getInnerBlocksPositions
+				}
+				updateInnerBlocksPositions={
+					repeaterContext.updateInnerBlocksPositions
+				}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -75,6 +155,9 @@ class edit extends MaxiBlockComponent {
 				}}
 				copyPasteMapping={copyPasteMapping}
 				{...this.props}
+				repeaterStatus={repeaterContext.repeaterStatus}
+				repeaterRowClientId={repeaterContext.repeaterRowClientId}
+				getInnerBlocksPositions={this.getInnerBlocksPositions}
 			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
@@ -105,31 +188,49 @@ class edit extends MaxiBlockComponent {
 					),
 				}}
 			>
-				<MaxiBlock
-					key={`maxi-row--${uniqueID}`}
-					ref={this.blockRef}
-					classes={emptyRowClass}
-					{...getMaxiBlockAttributes(this.props)}
-					useInnerBlocks
-					innerBlocksSettings={{
-						...(hasInnerBlocks && { templateLock: 'insert' }),
-						allowedBlocks: ALLOWED_BLOCKS,
-						orientation: 'horizontal',
-						renderAppender: !hasInnerBlocks
-							? () => (
-									<RowBlockTemplate
-										clientId={clientId}
-										maxiSetAttributes={maxiSetAttributes}
-										deviceType={deviceType}
-									/>
-							  )
-							: false,
-					}}
-					renderWrapperInserter={false}
-				/>
+				<RepeaterContext.Provider value={repeaterContext}>
+					<MaxiBlock
+						key={`maxi-row--${uniqueID}`}
+						ref={this.blockRef}
+						classes={emptyRowClass}
+						{...getMaxiBlockAttributes({
+							...this.props,
+							...repeaterContext,
+						})}
+						useInnerBlocks
+						innerBlocksSettings={{
+							...(hasInnerBlocks && { templateLock: 'insert' }),
+							allowedBlocks: ALLOWED_BLOCKS,
+							orientation: 'horizontal',
+							renderAppender: !hasInnerBlocks
+								? () => (
+										<RowBlockTemplate
+											clientId={clientId}
+											maxiSetAttributes={
+												maxiSetAttributes
+											}
+											deviceType={deviceType}
+											repeaterStatus={
+												repeaterContext.repeaterStatus
+											}
+											repeaterRowClientId={
+												repeaterContext.repeaterRowClientId
+											}
+											getInnerBlocksPositions={
+												repeaterContext.getInnerBlocksPositions
+											}
+										/>
+								  )
+								: false,
+						}}
+						renderWrapperInserter={false}
+					/>
+				</RepeaterContext.Provider>
 			</RowContext.Provider>,
 		];
 	}
 }
 
-export default withMaxiContextLoop(withMaxiProps(edit));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

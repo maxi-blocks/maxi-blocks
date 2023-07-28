@@ -26,44 +26,54 @@ export const typeOptions = {
 	row: generalTypeOptions,
 	column: generalTypeOptions,
 	group: generalTypeOptions,
+	pane: generalTypeOptions,
+	slide: generalTypeOptions,
+	accordion: generalTypeOptions,
+	slider: generalTypeOptions,
 };
+
+export const ACFTypeOptions = generalTypeOptions.filter(
+	option => !['settings'].includes(option.value)
+);
 
 /**
  * Relation constants
  */
 const generalRelationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
 	{ label: __('Get by date'), value: 'by-date' },
 	{ label: __('Get alphabetical'), value: 'alphabetical' },
+	{ label: __('Get by author'), value: 'by-author' },
+	{ label: __('Get by category'), value: 'by-category' },
+	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
 
 const generalRelationOptionsPages = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
-	{ label: __('Get random'), value: 'random' },
-	{ label: __('Get by date'), value: 'by-date' },
-	{ label: __('Get alphabetical'), value: 'alphabetical' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
+	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
+	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
 ];
 
 const generalRelationOptionsUsers = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get random'), value: 'random' },
-	{ label: __('Get by date'), value: 'by-date' },
-	{ label: __('Get alphabetical'), value: 'alphabetical' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
+	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 ];
 
 const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
 const generalRelationOptionsTags = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
 const generalRelationOptions = {
@@ -84,6 +94,10 @@ export const relationOptions = {
 	row: generalRelationOptions,
 	column: generalRelationOptions,
 	group: generalRelationOptions,
+	pane: generalRelationOptions,
+	slide: generalRelationOptions,
+	accordion: generalRelationOptions,
+	slider: generalRelationOptions,
 };
 
 /**
@@ -210,6 +224,27 @@ const mediaAuthorFields = [
 	{ label: __('Avatar', 'maxi-blocks'), value: 'avatar' },
 ];
 
+const textACFFieldTypes = [
+	'text',
+	'textarea',
+	'number',
+	'email',
+	'url',
+	'password',
+	'range',
+	'date_picker',
+	'date_time_picker',
+	'time_picker',
+	'select',
+	'radio',
+	'checkbox',
+	'button_group',
+];
+
+const mediaACFFieldTypes = ['image'];
+
+const buttonACFFieldTypes = textACFFieldTypes;
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -236,6 +271,12 @@ export const fieldOptions = {
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
 	},
+};
+
+export const acfFieldTypes = {
+	text: textACFFieldTypes,
+	button: buttonACFFieldTypes,
+	image: mediaACFFieldTypes,
 };
 
 export const mediaFieldOptions = Object.values(fieldOptions.image).map(
@@ -365,6 +406,15 @@ export const relationTypes = [
 	'users', // TODO: Add support for users
 ];
 
+// Fields that can lead to different locations from post
+export const linkFields = ['categories', 'tags', 'author'];
+
+export const linkFieldsLabels = {
+	categories: __('Use categories links', 'maxi-blocks'),
+	tags: __('Use tags links', 'maxi-blocks'),
+	author: __('Use author link', 'maxi-blocks'),
+};
+
 export const descriptionOfErrors = {
 	next: __(
 		'Sorry, there is no next post, please choose something else.',
@@ -401,9 +451,18 @@ export const limitOptions = {
 	max: 9999,
 };
 
-export const orderByRelationTypes = ['posts', 'pages', 'media'];
+export const orderByRelations = ['by-category', 'by-author', 'by-tag'];
 
-export const orderByOptions = {
+export const orderRelations = ['by-date', 'alphabetical', ...orderByRelations];
+
+export const orderByOptions = [
+	{ label: __('By date', 'maxi-blocks'), value: 'by-date' },
+	{ label: __('Alphabetical', 'maxi-blocks'), value: 'alphabetical' },
+];
+
+export const orderTypes = ['posts', 'pages', 'media', 'users'];
+
+export const orderOptions = {
 	'by-date': [
 		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
 		{ label: __('Old/new', 'maxi-blocks'), value: 'asc' },
@@ -418,9 +477,19 @@ export const attributeDefaults = {
 	status: false,
 	type: 'posts',
 	relation: 'by-id',
+	'order-by': 'by-date',
 	order: attributes => {
+		const dictionary = {
+			'by-date': 'desc',
+			alphabetical: 'asc',
+		};
+
 		const relation = attributes?.relation ?? attributes?.['cl-relation'];
-		return relation === 'by-date' ? 'desc' : 'asc';
+		if (orderByRelations.includes(relation)) {
+			return dictionary[attributes?.orderBy];
+		}
+
+		return dictionary[relation];
 	},
 	accumulator: 0,
 };

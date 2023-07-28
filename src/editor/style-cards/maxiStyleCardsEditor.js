@@ -386,6 +386,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		for (const accordion of accordions) {
 			accordion.querySelector('[aria-expanded=true]')?.click();
 		}
+
+		return null;
 	};
 
 	return (

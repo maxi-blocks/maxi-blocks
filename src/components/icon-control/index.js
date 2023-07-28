@@ -266,7 +266,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				<ToggleSwitch
 					label={__(
 						'Inherit stroke colour/background from button',
-						'maxi-block'
+						'maxi-blocks'
 					)}
 					className='maxi-icon-control__inherit'
 					selected={iconInherit}

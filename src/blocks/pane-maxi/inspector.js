@@ -54,6 +54,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			{inspectorTabs.repeaterInfoBox({ props })}
 			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props: {

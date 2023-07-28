@@ -297,6 +297,7 @@ if (!class_exists('MaxiBlocks_API')):
             $response = [
                 'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
+                'openai_api_key' => get_option('openai_api_key_option'),
                 'core' => [
                     'version' => $wp_version,
                 ],

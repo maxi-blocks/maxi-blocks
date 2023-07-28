@@ -2,7 +2,6 @@
 	"sc_maxi": {
 		"name": "Maxi (Default)",
 		"status": "active",
-		"gutenberg_blocks_status": true,
 		"dark": {
 			"styleCard": {},
 			"defaultStyleCard": {

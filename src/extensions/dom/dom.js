@@ -276,13 +276,7 @@ wp.domReady(() => {
 		const styleCard = receiveMaxiActiveStyleCard();
 		const styleCards = receiveMaxiStyleCards();
 
-		if (
-			styleCard &&
-			styleCards &&
-			(styleCard.key === 'sc_maxi'
-				? styleCard?.value.gutenberg_blocks_status !== false
-				: !('gutenberg_blocks_status' in styleCard.value))
-		) {
+		if (styleCard && styleCards) {
 			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
 				'maxiBlocks/style-cards'
 			);

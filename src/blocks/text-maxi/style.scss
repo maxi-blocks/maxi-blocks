@@ -47,13 +47,11 @@ body.maxi-blocks--active .maxi-text-block {
 
 		> ol li {
 			@mixin listSelectors($times) {
-				$ulChain: '';
 				$olChain: '';
 				@for $i from 1 through $times {
 					$olChain: $olChain + ' > ol > li';
 				}
 
-				#{$ulChain}::before,
 				#{$olChain}::before {
 					@content;
 				}

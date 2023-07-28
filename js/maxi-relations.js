@@ -1136,8 +1136,6 @@ window.addEventListener('DOMContentLoaded', () => {
 		relations = null;
 	}
 
-	console.log('Relations', relations);
-
 	if (!relations) return;
 
 	const uniqueRelations = relations.reduce(

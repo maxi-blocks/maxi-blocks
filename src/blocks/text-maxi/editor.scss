@@ -1,5 +1,5 @@
 .maxi-text-block {
-	&__content {
+	& > &__content {
 		outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
 
 		a.maxi-text-block--link {
@@ -13,16 +13,16 @@
 	}
 	&__has-text {
 		&:hover {
-			.maxi-text-block__content {
+			> .maxi-text-block__content {
 				outline: 1.5px dashed var(--maxi-grey-7-color) !important;
 			}
 		}
 		&.is-selected {
-			.maxi-text-block__content {
+			> .maxi-text-block__content {
 				outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
 			}
 		}
-		.maxi-text-block__content {
+		> .maxi-text-block__content {
 			outline: 1.5px dashed transparent !important;
 		}
 	}

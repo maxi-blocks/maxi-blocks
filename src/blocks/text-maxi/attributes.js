@@ -31,6 +31,10 @@ const attributes = {
 		type: 'string',
 		default: 'p',
 	},
+	isListItem: {
+		type: 'boolean',
+		default: false,
+	},
 	isList: {
 		type: 'boolean',
 		default: false,

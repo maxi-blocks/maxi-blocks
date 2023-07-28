@@ -72,6 +72,11 @@ body.maxi-blocks--active .maxi-text-block {
 		display: block;
 		margin: 0;
 	}
+	&.maxi-list-item-block .maxi-text-block__content {
+		display: inline-block;
+		width: 100%;
+	}
+
 	p:not(&__content):not(.maxi-pane-block__title) {
 		margin-left: auto;
 		margin-right: auto;

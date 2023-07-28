@@ -5,6 +5,7 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -36,7 +37,7 @@ const List = props => {
 	const { clientId, hasInnerBlocks, typeOfList, start, reversed, className } =
 		props;
 
-	const ALLOWED_BLOCKS = ['maxi-blocks/list-item-maxi'];
+	const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi'];
 	const ListTagName = typeOfList;
 
 	return (
@@ -76,10 +77,29 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	updateIsListItem() {
+		const { attributes, setAttributes, clientId } = this.props;
+		const { isListItem } = attributes;
+		const { getBlockParents, getBlockName } = select('core/block-editor');
+		const parents = getBlockParents(clientId).filter(id => id !== clientId);
+		const isParentTextMaxi =
+			getBlockName(parents.at(-1)) === 'maxi-blocks/text-maxi';
+
+		if (isListItem !== isParentTextMaxi) {
+			setAttributes({ isListItem: isParentTextMaxi });
+		}
+	}
+
+	maxiBlockDidMount() {
+		this.updateIsListItem();
+	}
+
 	maxiBlockDidUpdate() {
 		const { attributes, setAttributes } = this.props;
 		const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
 			attributes;
+
+		this.updateIsListItem();
 
 		// Ensures svg list markers change the colour when SC color changes
 		if (
@@ -135,6 +155,7 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
+			isListItem,
 		} = attributes;
 
 		const {
@@ -259,14 +280,16 @@ class edit extends MaxiBlockComponent {
 						isEmpty(content)
 							? 'maxi-text-block__empty'
 							: 'maxi-text-block__has-text',
-						isList && 'maxi-list-block'
+						isList && 'maxi-list-block',
+						isListItem && 'maxi-list-item-block'
 					)}
 					ref={this.blockRef}
+					tagName={isListItem ? 'li' : 'div'}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{!dcStatus && !isList && (
 						<RichText
-							tagName={textLevel}
+							tagName={isListItem ? 'div' : textLevel}
 							__unstableEmbedURLOnPaste
 							withoutInteractiveFormatting
 							preserveWhiteSpace

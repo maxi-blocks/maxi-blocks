@@ -28,6 +28,7 @@ const ReactSelectControl = props => {
 			borderRadius: '0px',
 			border: '1px solid rgb(var(--maxi-light-color-4))',
 			cursor: 'pointer',
+			background: '#fff',
 		}),
 		menu: base => ({
 			...base,

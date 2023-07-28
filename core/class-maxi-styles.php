@@ -1029,6 +1029,9 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks($template, $id);
 
+        write_log('$template');
+        write_log($template);
+
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
@@ -1324,9 +1327,10 @@ class MaxiBlocks_Styles
             return [];
         }
 
+        // get template parts
         global $wpdb;
 
-        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_status = 'publish'";
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE (post_type = 'wp_template_part' OR post_type = 'wp_template') AND post_status = 'publish'";
         $template_parts = $wpdb->get_results($query);
 
         foreach ($template_parts as $template_part) {

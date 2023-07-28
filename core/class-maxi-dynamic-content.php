@@ -20,9 +20,9 @@ class MaxiBlocks_DynamicContent
      */
     public static function register()
     {
-        if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_DynamicContent();
-        }
+        // if (null === self::$instance) {
+        //     self::$instance = new MaxiBlocks_DynamicContent();
+        // }
     }
 
     /**

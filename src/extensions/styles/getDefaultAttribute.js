@@ -77,11 +77,7 @@ const getDefaultAttribute = (
 				prop.replace('general', baseBreakpoint)
 			];
 
-		if (getIsValid(baseAttribute, true)) {
-			return baseAttribute;
-		}
-
-		return null;
+		if (getIsValid(baseAttribute, true)) return baseAttribute;
 	}
 
 	// Check default value

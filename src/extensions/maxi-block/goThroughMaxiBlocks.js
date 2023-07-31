@@ -10,6 +10,7 @@ import { createTemplatePartId } from '../fse';
 
 const goThroughMaxiBlocks = (
 	callback,
+	goThroughAllBlocks = false,
 	blocks = select('core/block-editor').getBlocks()
 ) => {
 	const goThroughBlocks = blocks =>
@@ -18,7 +19,7 @@ const goThroughMaxiBlocks = (
 				return acc;
 			}
 
-			if (block.name.startsWith('maxi-blocks/')) {
+			if (goThroughAllBlocks || block.name.startsWith('maxi-blocks/')) {
 				const callbackResult = callback(block);
 				if (callbackResult) {
 					return callbackResult;

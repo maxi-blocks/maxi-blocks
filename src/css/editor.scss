@@ -109,9 +109,12 @@ body {
 	.block-list-appender.wp-block {
 		position: relative;
 		width: 100%;
-		height: 100%;
 		max-width: none;
 		pointer-events: auto !important;
+
+		&:has(> .maxi-block-inserter) {
+			height: 100%;
+		}
 	}
 
 	.maxi-block .maxi-block-inserter {

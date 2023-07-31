@@ -44,27 +44,31 @@ class MaxiBlocks_StyleCards
      */
     public function enqueue_styles()
     {
-        $vars = $this->get_style_card_variables();
+        if(!wp_style_is('maxi-blocks-sc-vars', 'registered')) {
+            $vars = $this->get_style_card_variables();
 
-        // SC variables
-        if ($vars) {
-            wp_register_style('maxi-blocks-sc-vars', false);
-            wp_enqueue_style('maxi-blocks-sc-vars');
-            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+            // SC variables
+            if ($vars) {
+                wp_register_style('maxi-blocks-sc-vars', false);
+                wp_enqueue_style('maxi-blocks-sc-vars');
+                wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+            }
         }
 
-        $styles = $this->get_style_card_styles();
+        if(!wp_style_is('maxi-blocks-sc-styles', 'registered')) {
+            $styles = $this->get_style_card_styles();
 
-        // MVP: ensure no margin-bottom for button
-        if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
-            $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
-        }
+            // MVP: ensure no margin-bottom for button
+            if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+                $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+            }
 
-        // SC styles
-        if ($styles) {
-            wp_register_style('maxi-blocks-sc-styles', false);
-            wp_enqueue_style('maxi-blocks-sc-styles');
-            wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+            // SC styles
+            if ($styles) {
+                wp_register_style('maxi-blocks-sc-styles', false);
+                wp_enqueue_style('maxi-blocks-sc-styles');
+                wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+            }
         }
     }
 
@@ -119,7 +123,7 @@ class MaxiBlocks_StyleCards
             if (isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
-        
+
             return false;
         }
 
@@ -153,7 +157,7 @@ class MaxiBlocks_StyleCards
             if (isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
-            
+
             return false;
         }
 
@@ -183,7 +187,7 @@ class MaxiBlocks_StyleCards
     public static function get_maxi_blocks_current_style_cards()
     {
         global $wpdb;
-        
+
         $maxi_blocks_style_cards_current =
             $wpdb->get_var(
                 $wpdb->prepare(
@@ -191,7 +195,7 @@ class MaxiBlocks_StyleCards
                     'style_cards_current'
                 )
             );
-            
+
         if (
             $maxi_blocks_style_cards_current &&
             !empty($maxi_blocks_style_cards_current)
@@ -204,7 +208,7 @@ class MaxiBlocks_StyleCards
                 'id' => 'style_cards_current',
                 'object' => $default_style_card
             ]);
-            
+
             $maxi_blocks_style_cards_current = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -252,7 +256,7 @@ class MaxiBlocks_StyleCards
         }
 
         $font = $text_level_values->{'font-family-general'};
-        
+
         /**
          * Button case has an exception for font-family. If it's empty, it will use the
          * font-family of the paragraph text level.

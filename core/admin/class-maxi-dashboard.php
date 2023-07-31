@@ -330,12 +330,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
+            $content .= $this->generate_item_header('Experimental preferences', false);
+
+            $description = '<h4>'.__('Enable settings indicators', self::$maxi_text_domain).'</h4>';
+            $description .= '<p>'.__('Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_show_indicators');
+
+            // $description = '<h4>'.__('Accessibility: Enable focus indicator', self::$maxi_text_domain).'</h4>';
+            // $description .= '<p>'.__('Show a visual focus indicator for tabbed keyboard navigation in the page editor.', self::$maxi_text_domain).'</p>';
+            // $content .= $this->generate_setting($description, 'accessibility_option');
+
+            $content .= get_submit_button();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
             $content .= $this->generate_item_header('Automated fixes', false);
 
             $content .= '<h4>'.__('Regenerate frontend styles for site\'s content', self::$maxi_text_domain).'</h4>';
             $content .= '<p>'.__('Regenerates Maxi Blocks\' styles for all site\'s posts, pages, custom post styles, site editor... Helpful if you migrated your site, lost your database, or something went wrong with Maxi styles on frontend.', self::$maxi_text_domain).'</p>';
             $content .= '<p><button id="maxi-regenerate-styles-button">Run Function</button></p>';
             $content .= $this->generate_styles_button();
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
@@ -590,6 +606,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
             register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
+            register_setting('maxi-blocks-settings-group', 'maxi_sc_gutenberg_blocks', $args);
+            register_setting('maxi-blocks-settings-group', 'maxi_show_indicators', $args);
         }
 
         public function get_folder_size($folder)

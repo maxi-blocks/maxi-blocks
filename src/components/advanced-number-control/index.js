@@ -13,6 +13,7 @@ import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import ToggleSwitch from '../toggle-switch';
 import ResetButton from '../reset-control';
+import validateNumberInput from './utils';
 
 /**
  * External dependencies
@@ -218,6 +219,7 @@ const AdvancedNumberControl = props => {
 							onChangeValue(result);
 						}}
 						onKeyDown={e => {
+							validateNumberInput(e);
 							if (
 								e.key === '-' &&
 								(enableUnit ? minValue : min) >= 0

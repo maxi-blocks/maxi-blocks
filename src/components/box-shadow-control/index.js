@@ -367,7 +367,7 @@ const BoxShadowControl = props => {
 				<>
 					{!dropShadow && !disableInset && (
 						<ToggleSwitch
-							label={__('Inset', 'maxi-block')}
+							label={__('Inset', 'maxi-blocks')}
 							selected={getLastBreakpointAttribute({
 								target: `${prefix}box-shadow-inset`,
 								breakpoint,

@@ -4,6 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
+import { useContext } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -11,6 +12,8 @@ import { Tooltip } from '@wordpress/components';
  */
 import Button from '../../../button';
 import Icon from '../../../icon';
+import { insertBlockIntoColumns } from '../../../../extensions/repeater';
+import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
 /**
  * Icons
@@ -25,13 +28,28 @@ const Duplicate = props => {
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
+	const repeaterContext = useContext(RepeaterContext);
+
 	const { duplicateBlocks } = useDispatch('core/block-editor');
 
 	const duplicateContent = () => {
 		return (
 			<div className='toolbar-item toolbar-item__duplicate'>
 				<Button
-					onClick={() => duplicateBlocks([clientId], updateSelection)}
+					onClick={async () => {
+						const duplicatedBlockClientId = (
+							await duplicateBlocks([clientId], updateSelection)
+						)[0];
+
+						if (repeaterContext?.repeaterStatus) {
+							insertBlockIntoColumns(
+								duplicatedBlockClientId,
+								repeaterContext?.getInnerBlocksPositions?.()?.[
+									[-1]
+								]
+							);
+						}
+					}}
 				>
 					<Icon
 						className='toolbar-item__icon'

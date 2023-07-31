@@ -22,6 +22,10 @@
 		display: flex;
 		width: 15px;
 		justify-content: center;
+
+		&--repeater {
+			background: #7a00df;
+		}
 	}
 	.components-popover__content {
 		overflow: visible !important;
@@ -98,6 +102,10 @@
 				line-height: 100%;
 				height: 20px;
 				white-space: pre;
+
+				&--repeater {
+					background: #7a00df;
+				}
 
 				&__block-style {
 					text-transform: capitalize;

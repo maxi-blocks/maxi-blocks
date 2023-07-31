@@ -161,7 +161,11 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/image-maxi',
 	];
 
-	goThroughMaxiBlocks(({ attributes, name }) => {
+	const gutenbergBlocksStatus = select(
+		'maxiBlocks/style-cards'
+	).receiveMaxiActiveStyleCard().value.gutenberg_blocks_status;
+
+	goThroughMaxiBlocks(({ clientId, attributes, name }) => {
 		if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
 			let typography = {};
 			let typographyHover = {};
@@ -229,7 +233,45 @@ export const getPageFonts = (onlyBackend = false) => {
 
 			oldResponse = cloneDeep(mergedResponse);
 		}
-	});
+
+		if (gutenbergBlocksStatus && name.includes('core/')) {
+			const parentsClientIds =
+				select('core/block-editor').getBlockParents(clientId);
+			const isBlockInMaxiBlock = parentsClientIds.some(parentClientId =>
+				select('core/block-editor')
+					.getBlockName(parentClientId)
+					.includes('maxi-blocks/')
+			);
+
+			if (isBlockInMaxiBlock) {
+				const { level } = attributes;
+
+				const getTextLevel = () => {
+					if (name === 'core/button') return 'button';
+					if (level) return `h${level}`;
+					return 'p';
+				};
+
+				const textLevel = getTextLevel();
+
+				response = getAllFonts(
+					{},
+					false,
+					false,
+					textLevel,
+					undefined,
+					onlyBackend
+				);
+
+				mergedResponse = mergeDeep(
+					cloneDeep(oldResponse),
+					cloneDeep(response)
+				);
+
+				oldResponse = cloneDeep(mergedResponse);
+			}
+		}
+	}, true);
 
 	return mergedResponse;
 };

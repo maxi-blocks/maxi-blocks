@@ -197,6 +197,7 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
+						'core/list-item',
 						...DISALLOWED_BLOCKS,
 					].indexOf(blockName) === -1
 			)

@@ -144,3 +144,11 @@ body.maxi-blocks--active .is-reusable[data-contains-maxi-block='true'] {
 body.maxi-blocks--active .maxi-map-block .leaflet-bar a {
 	color: black;
 }
+
+/* Fix custom blocks display in maxi wrapper blocks with added bg layers */
+body.maxi-blocks--active
+	*
+	:has(> .maxi-background-displayer)
+	> *:not(.maxi-background-displayer) {
+	position: relative;
+}

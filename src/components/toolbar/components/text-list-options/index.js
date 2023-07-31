@@ -5,18 +5,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useContext } from '@wordpress/element';
+import { createBlock } from '@wordpress/blocks';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
-import {
-	fromListToText,
-	fromTextToList,
-	getFormattedString,
-	textContext,
-} from '../../../../extensions/text/formats';
+import { textContext } from '../../../../extensions/text/formats';
 import {
 	canIndentListItems,
 	canOutdentListItems,
@@ -40,22 +37,17 @@ import {
 	toolbarOrderedList,
 	toolbarUnorderedList,
 } from '../../../../icons';
+import { goThroughMaxiBlocks } from '../../../../extensions/maxi-block';
 
 /**
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, isList, typeOfList, isListItem, onChange } = props;
+	const { blockName, isList, typeOfList, onChange, clientId } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const { formatValue } = useContext(textContext);
-
-	const getContent = content => {
-		if (isListItem) return content;
-		if (!isList) return fromTextToList(content);
-		return fromListToText(content);
-	};
+	const { formatValue, content } = useContext(textContext);
 
 	const onChangeIndent = type => {
 		let newFormat = '';
@@ -78,32 +70,56 @@ const TextListOptions = props => {
 		onChange({ isList: true, typeOfList, content: newContent });
 	};
 
-	const onChangeList = type => {
-		const content = getFormattedString({ formatValue, isList });
+	const onChangeFromList = type => {
+		let newContent = '';
 
-		if (!isList || typeOfList === type)
-			onChange({
-				isList: !isList,
+		const { getBlocks } = select('core/block-editor');
+
+		goThroughMaxiBlocks(block => {
+			newContent += `${block.attributes.content}\n`;
+		}, getBlocks(clientId));
+
+		// Remove last \n
+		newContent = newContent.slice(0, -1);
+
+		onChange({
+			isList: false,
+			content: newContent,
+			...(type && {
 				typeOfList: type,
-				content: getContent(content),
+			}),
+		});
+	};
+
+	const onChangeList = type => {
+		if (!isList) {
+			const splitContent = content.split('\n');
+
+			const listItems = splitContent.map(content =>
+				createBlock('maxi-blocks/text-maxi', { content })
+			);
+
+			dispatch('core/block-editor').replaceInnerBlocks(
+				clientId,
+				listItems,
+				false
+			);
+
+			onChange({
+				isList: true,
+				typeOfList: type,
 			});
-		else
+		} else if (typeOfList === type) {
+			onChangeFromList(type);
+		} else
 			onChange({
 				isList,
 				typeOfList: type,
-				content,
 			});
 	};
 
 	const onChangeP = () => {
-		const content = getFormattedString({ formatValue, isList });
-
-		if (isList) {
-			onChange({
-				isList: false,
-				content: getContent(content),
-			});
-		}
+		if (isList) onChangeFromList();
 	};
 
 	return (

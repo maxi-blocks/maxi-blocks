@@ -14,5 +14,3 @@ export { default as removeLinkFormat } from './removeLinkFormat';
 export { default as setCustomFormatsWhenPaste } from './setCustomFormatsWhenPaste';
 export { default as setFormat } from './setFormat';
 export { default as textContext } from './textContext';
-export { fromListToText } from './listUtils';
-export { fromTextToList } from './listUtils';

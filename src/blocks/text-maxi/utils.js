@@ -6,15 +6,11 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	fromListToText,
-	fromTextToList,
-	getFormatsOnMerge,
-} from '../../extensions/text/formats';
+import { getFormatsOnMerge } from '../../extensions/text/formats';
 
 const onMerge = (props, forward) => {
 	const { attributes, clientId, maxiSetAttributes } = props;
-	const { isList, content, 'custom-formats': customFormats } = attributes;
+	const { content, 'custom-formats': customFormats } = attributes;
 
 	const {
 		getNextBlockClientId,
@@ -34,16 +30,10 @@ const onMerge = (props, forward) => {
 			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
 			const {
 				content: nextBlockContent,
-				isList: nextBlockIsList,
 				'custom-formats': nextBlockCustomFormats,
 			} = nextBlockAttributes;
 
-			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
-			const newNextBlockContent = nextBlockContentNeedsTransform
-				? nextBlockIsList
-					? fromListToText(nextBlockContent)
-					: fromTextToList(nextBlockContent)
-				: nextBlockContent;
+			const newNextBlockContent = nextBlockContent;
 
 			const { content: newContent, 'custom-formats': newCustomFormats } =
 				getFormatsOnMerge(
@@ -85,9 +75,7 @@ const onMerge = (props, forward) => {
 						'custom-formats': previousBlockCustomFormats,
 					},
 					{
-						content: attributes.isList
-							? fromListToText(content)
-							: content,
+						content,
 						'custom-formats': customFormats,
 					}
 				);

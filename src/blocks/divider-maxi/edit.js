@@ -113,7 +113,7 @@ class edit extends MaxiBlockComponent {
 
 			this.resizableObject.current.updateSize({
 				width: width ? `${width}${widthUnit}` : '100%',
-				height: forceAspectRatio ? width : height,
+				height: forceAspectRatio ? 'auto' : height,
 			});
 		}
 	}

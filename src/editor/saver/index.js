@@ -71,6 +71,7 @@ const BlockStylesSaver = () => {
 	useEffect(() => {
 		if (isSaving && !isCodeEditor) {
 			loadFonts(getPageFonts(), false);
+
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);
 				saveCustomData(true);

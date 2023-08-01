@@ -170,6 +170,14 @@ class MaxiBlocks_DynamicContent
     private static $order_by_relations =
         ['by-category', 'by-author', 'by-tag'];
 
+    private static $link_only_blocks = [
+        'group-maxi',
+        'column-maxi',
+        'row-maxi',
+        'slide-maxi',
+        'pane-maxi',
+    ];
+
     /**
      * Constructor
      */
@@ -194,6 +202,36 @@ class MaxiBlocks_DynamicContent
             'render_callback' => [$this, 'render_dc'],
             'attributes' => self::$dynamic_content_attributes,
         ));
+        register_block_type('maxi-blocks/group-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/column-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/row-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/slide-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/pane-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
     }
 
     public function render_dc($attributes, $content)
@@ -205,10 +243,13 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        $unique_id = $attributes['uniqueID'];
+        $is_template = is_string($unique_id) && strpos($unique_id, '-template');
+
         if (self::$custom_data === null) {
             if (class_exists('MaxiBlocks_Styles')) {
                 $styles = new MaxiBlocks_Styles();
-                self::$custom_data = $styles->custom_meta('dynamic_content');
+                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
             } else {
                 self::$custom_data = [];
             }
@@ -216,10 +257,9 @@ class MaxiBlocks_DynamicContent
 
         $context_loop = [];
 
-        if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
-            $context_loop = self::$custom_data[$attributes['uniqueID']];
+        if (array_key_exists($unique_id, self::$custom_data)) {
+            $context_loop = self::$custom_data[$unique_id];
         }
-
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -230,9 +270,15 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
+        $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
 
-        if ($block_name !== 'image-maxi') {
+        if($is_template) {
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        }
+
+        if (in_array($block_name, self::$link_only_blocks)) {
+            return $content;
+        } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
             $content = self::render_dc_image($attributes, $content);
@@ -518,8 +564,8 @@ class MaxiBlocks_DynamicContent
         switch ($field) {
             case 'author':
                 return get_author_posts_url($item);
-            case 'category':
-            case 'post_tag':
+            case 'categories':
+            case 'tags':
                 return get_term_link($item);
             default:
                 return '';

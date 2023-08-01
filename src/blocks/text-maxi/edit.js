@@ -24,8 +24,14 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
-import { getDCValues } from '../../extensions/DC';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -116,7 +122,7 @@ class edit extends MaxiBlockComponent {
 			containsHtml: dcContainsHTML,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
-			this.context?.contextLoop
+			this.props?.contextLoopContext?.contextLoop
 		);
 
 		const className = 'maxi-text-block__content';
@@ -170,6 +176,7 @@ class edit extends MaxiBlockComponent {
 					newAttributes = {
 						...attributes,
 						content: value,
+						...(!isOriginal && { uniqueID: null }),
 					};
 				}
 
@@ -200,7 +207,8 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						!dcStatus && this.state.onChangeFormat(newFormatValue);
+						!dcStatus &&
+							this.state.onChangeFormat?.(newFormatValue);
 
 						onChangeRichText({
 							attributes,
@@ -226,11 +234,12 @@ class edit extends MaxiBlockComponent {
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
-					classes={`${
-						content === ''
+					classes={classnames(
+						isEmpty(content)
 							? 'maxi-text-block__empty'
-							: 'maxi-text-block__has-text'
-					} ${isList ? 'maxi-list-block' : ''}`}
+							: 'maxi-text-block__has-text',
+						isList && 'maxi-list-block'
+					)}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
@@ -374,4 +383,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiDC(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

@@ -4,11 +4,11 @@
  */
 import {
 	forwardRef,
-	useEffect,
-	useState,
 	memo,
 	useCallback,
+	useEffect,
 	useReducer,
+	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -112,6 +112,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink,
 		useInnerBlocks = false,
 		hasInnerBlocks = false,
+		isRepeater,
 		isSelected,
 		hasSelectedChild,
 		isHovered,
@@ -134,24 +135,26 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				!isEmpty(attributes.linkSettings?.url) ||
 				(select('core/block-editor').getBlockName(childClientId) ===
 					'maxi-blocks/text-maxi' &&
-					attributes.content.includes('<a '))
+					(attributes.content.includes('<a ') ||
+						attributes['dc-content']?.includes('<a ')))
 			) {
 				childHasLink = true;
 				break;
 			}
 		}
+		const attributes = extraProps?.attributes || {};
 		setTimeout(() => {
 			if (childHasLink) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps?.attributes?.linkSettings,
+						...attributes?.linkSettings,
 						disabled: true,
 					},
 				});
-			} else if (extraProps?.attributes?.linkSettings.disabled) {
+			} else if (attributes?.linkSettings.disabled) {
 				dispatch('core/block-editor').updateBlockAttributes(clientId, {
 					linkSettings: {
-						...extraProps.attributes.linkSettings,
+						...attributes.linkSettings,
 						disabled: false,
 					},
 				});
@@ -236,6 +239,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
+		isRepeater && 'maxi-block--repeater',
 		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width'
 	);

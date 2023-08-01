@@ -54,6 +54,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			{inspectorTabs.repeaterInfoBox({ props })}
 			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props: {
@@ -166,6 +167,10 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
+									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'pane',
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {

@@ -22,9 +22,12 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
+		repeaterStatus,
 	} = props;
 	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
 		attributes;
+
+	const isRepeater = !!repeaterStatus;
 
 	const motion = {
 		...getGroupAttributes(attributes, [
@@ -178,6 +181,7 @@ const getMaxiBlockAttributes = props => {
 		background,
 		hasLink,
 		hasInnerBlocks,
+		isRepeater,
 		isChild,
 		isSelected,
 		hasSelectedChild,

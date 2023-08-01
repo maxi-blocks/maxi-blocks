@@ -422,7 +422,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
                 if (!is_null($bottomGapNum) && !is_null($bottomGapUnit)) {
                     $response['bottomGap'][$breakpoint] = [
-                        'margin-bottom' => $bottomGapNum + $bottomGapUnit
+                        'margin-bottom' => $bottomGapNum . $bottomGapUnit
                     ];
                 }
             }
@@ -464,7 +464,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
                 if (!is_null($indentNum) && !is_null($indentUnit)) {
                     $response['textIndent'][$breakpoint] = [
-                        'text-indent' => $indentNum + $indentUnit
+                        'text-indent' => $indentNum . $indentUnit
                     ];
                 }
             }
@@ -492,12 +492,29 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
                 if (!is_null($paragraphSpacingNum) && !is_null($paragraphSpacingUnit)) {
                     $response['paragraphSpacing'][$breakpoint] = [
-                        'margin-top' => $paragraphSpacingNum + $paragraphSpacingUnit
+                        'margin-top' => $paragraphSpacingNum . $paragraphSpacingUnit
                     ];
                 }
             }
 
             return $response;
+        }
+
+        public static function get_svg_list_style($svg)
+        {
+            if (!$svg) {
+                return '';
+            }
+
+            $cleaned_svg = str_replace('"', "'", $svg);
+            $cleaned_svg = preg_replace('/>\s{1,}</', '><', $cleaned_svg);
+            $cleaned_svg = preg_replace('/\s{2,}/', ' ', $cleaned_svg);
+
+            if (strpos($cleaned_svg, 'http://www.w3.org/2000/svg') === false) {
+                $cleaned_svg = str_replace('<svg', "<svg xmlns='http://www.w3.org/2000/svg'", $cleaned_svg);
+            }
+
+            return preg_replace_callback('/[\r\n%#()<>?[\\\]^`{|}]/', 'urlencode', $cleaned_svg);
         }
 
         public static function get_marker_object($props)
@@ -558,27 +575,10 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             if ($list_style && $type_of_list === 'ul') {
                 $general_list_style = [];
 
-                function get_svg_list_style($svg)
-                {
-                    if (!$svg) {
-                        return '';
-                    }
-
-                    $cleaned_svg = str_replace('"', "'", $svg);
-                    $cleaned_svg = preg_replace('/>\s{1,}</', '><', $cleaned_svg);
-                    $cleaned_svg = preg_replace('/\s{2,}/', ' ', $cleaned_svg);
-
-                    if (strpos($cleaned_svg, 'http://www.w3.org/2000/svg') === false) {
-                        $cleaned_svg = str_replace('<svg', "<svg xmlns='http://www.w3.org/2000/svg'", $cleaned_svg);
-                    }
-
-                    return preg_replace_callback('/[\r\n%#()<>?[\\\]^`{|}]/', 'urlencode', $cleaned_svg);
-                }
-
                 if($list_style === 'custom' && $list_style_custom && is_link($list_style_custom)) {
                     $general_list_style['content'] = "url('".$list_style_custom."')";
                 } elseif ($list_style_custom && strpos($list_style_custom, '</svg>') !== false) {
-                    $general_list_style['content'] = "url(\"data:image/svg+xml,".get_svg_list_style($list_style_custom)."\")";
+                    $general_list_style['content'] = "url(\"data:image/svg+xml,".self::get_svg_list_style($list_style_custom)."\")";
                 } elseif (!is_link($list_style_custom) && !strpos($list_style_custom, '</svg>')) {
                     $general_list_style['content'] = "\"".$list_style_custom."\"";
                 }

@@ -1499,11 +1499,11 @@ Object {
   "after video": Object {
     "hover": Object {
       "label": "video ::after on hover",
-      "target": " .maxi-video-block__video-player:hover::after",
+      "target": " .maxi-video-block__video-container:hover::after",
     },
     "normal": Object {
       "label": "video ::after",
-      "target": " .maxi-video-block__video-player::after",
+      "target": " .maxi-video-block__video-container::after",
     },
   },
   "before canvas": Object {
@@ -1529,11 +1529,11 @@ Object {
   "before video": Object {
     "hover": Object {
       "label": "video ::before on hover",
-      "target": " .maxi-video-block__video-player:hover::before",
+      "target": " .maxi-video-block__video-container:hover::before",
     },
     "normal": Object {
       "label": "video ::before",
-      "target": " .maxi-video-block__video-player::before",
+      "target": " .maxi-video-block__video-container::before",
     },
   },
   "canvas": Object {
@@ -1627,11 +1627,11 @@ Object {
   "video": Object {
     "hover": Object {
       "label": "video on hover",
-      "target": " .maxi-video-block__video-player:hover",
+      "target": " .maxi-video-block__video-container:hover",
     },
     "normal": Object {
       "label": "video",
-      "target": " .maxi-video-block__video-player",
+      "target": " .maxi-video-block__video-container",
     },
   },
 }

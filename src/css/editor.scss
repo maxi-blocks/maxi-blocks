@@ -109,9 +109,12 @@ body {
 	.block-list-appender.wp-block {
 		position: relative;
 		width: 100%;
-		height: 100%;
 		max-width: none;
 		pointer-events: auto !important;
+
+		&:has(> .maxi-block-inserter) {
+			height: 100%;
+		}
 	}
 
 	.maxi-block .maxi-block-inserter {
@@ -378,6 +381,10 @@ svg path#styleCardBoat_b,
 		opacity: 0;
 	}
 
+	&.maxi-block--repeater::after {
+		border-color: #7a00df;
+	}
+
 	&.maxi-block--full-width::after {
 		width: calc(100% - 4px);
 	}
@@ -396,7 +403,10 @@ svg path#styleCardBoat_b,
 	&.is-selected {
 		&::after {
 			opacity: 1;
-			border-color: #ff4a17;
+
+			&:not(.maxi-block--is-repeater) {
+				border-color: #ff4a17;
+			}
 		}
 		&:focus {
 			box-shadow: none;

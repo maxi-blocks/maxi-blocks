@@ -1,4 +1,6 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+
 /**
  * MaxiBlocks Core Class
  *
@@ -45,6 +47,14 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
+
+            $style_cards = new MaxiBlocks_StyleCards();
+            $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
+
+            if($current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status']) {
+                add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
+            }
+
         }
 
         public function enqueue_blocks_assets()
@@ -100,7 +110,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
             'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
         );
-    
+
             $args = array(
             'labels' => $labels,
             'hierarchical' => false,
@@ -111,10 +121,10 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'show_ui' => false,
             'show_in_rest' => true
         );
-    
+
             register_taxonomy('maxi-image-type', 'attachment', $args);
         }
-    
+
         public function maxi_add_image_taxonomy_term()
         {
             if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {
@@ -140,6 +150,42 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 ],
                 $categories
             );
+        }
+
+        public function maxi_add_sc_native_blocks($block_content, $block, $instance)
+        {
+            if (str_contains($block['blockName'], 'core/') && isset($block_content) && !empty($block_content)) {
+                // We create a new DOMDocument object
+                $dom = new DOMDocument();
+                @$dom->loadHTML(mb_convert_encoding($block_content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                // Using XPath to find the elements we want to change
+                $xpath = new DOMXPath($dom);
+
+                // Look for all elements
+                $elements = $xpath->query('//*');
+
+                // Pick the first element
+                $element = $elements[0];
+
+                $classes = $element->getAttribute('class');
+
+                if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
+                    if(!str_contains($classes, 'maxi-block--use-sc')) {
+                        $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
+                    }
+
+                    if(!isset($classes) || empty($classes)) {
+                        $element->setAttribute('class', 'maxi-block--use-sc');
+                    }
+                }
+
+                $block_content = $dom->saveHTML();
+
+                return $block_content;
+            }
+
+            return $block_content;
         }
     }
 endif;

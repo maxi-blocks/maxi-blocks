@@ -2,9 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { cloneBlock } from '@wordpress/blocks';
-import { useDispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useContext, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -13,9 +12,24 @@ import { SettingTabsControl } from '../../../../components';
 import Button from '../../../button';
 import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
-import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
+import { goThroughMaxiBlocks } from '../../../../extensions/maxi-block';
+import {
+	cleanInnerBlocks,
+	excludeAttributes,
+	getOrganizedAttributes,
+} from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
+import {
+	validateAttributes,
+	validateRowColumnsStructure,
+} from '../../../../extensions/repeater';
+import {
+	findTarget,
+	findBlockPosition,
+	getInitialColumn,
+} from '../../../../extensions/repeater/utils';
+import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -48,6 +62,8 @@ const WRAPPER_BLOCKS = [
 
 const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
+
+	const repeaterContext = useContext(RepeaterContext);
 
 	const {
 		attributes,
@@ -105,15 +121,6 @@ const CopyPaste = props => {
 		getDefaultSpecialPaste(organizedAttributes)
 	);
 
-	const cleanInnerBlocks = blocks =>
-		blocks.map(block => {
-			const newInnerBlocks = block.innerBlocks
-				? cleanInnerBlocks(block.innerBlocks)
-				: [];
-
-			return cloneBlock(block, null, newInnerBlocks);
-		});
-
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =
 		useDispatch('core/block-editor');
@@ -143,19 +150,47 @@ const CopyPaste = props => {
 		closeMoreSettings();
 		copyStyles(blockAttributes);
 	};
-	const onPasteStyles = () => {
-		const styles = { ...copiedStyles };
 
-		if (copyPasteMapping._exclude)
-			copyPasteMapping._exclude.forEach(prop => {
-				if (styles[prop]) delete styles[prop];
-			});
+	const onPasteStylesIntoRepeaterBlock = () => {
+		if (!repeaterContext?.repeaterStatus) return;
+
+		const { getBlock } = select('core/block-editor');
+
+		const innerBlocksPositions = repeaterContext?.getInnerBlocksPositions();
+
+		const blockPosition = findBlockPosition(
+			clientId,
+			getInitialColumn(clientId, innerBlocksPositions[[-1]])
+		);
+
+		const indexToValidateBy = innerBlocksPositions[blockPosition].findIndex(
+			currentClientId => currentClientId === clientId
+		);
+
+		innerBlocksPositions[blockPosition].forEach(currentClientId =>
+			validateAttributes(
+				getBlock(currentClientId),
+				getInitialColumn(currentClientId, innerBlocksPositions[[-1]]),
+				innerBlocksPositions,
+				indexToValidateBy
+			)
+		);
+	};
+
+	const onPasteStyles = () => {
+		const styles = excludeAttributes(
+			copiedStyles,
+			attributes,
+			copyPasteMapping
+		);
 
 		closeMoreSettings();
 
 		handleAttributesOnPaste(styles);
 
 		updateBlockAttributes(clientId, styles);
+
+		onPasteStylesIntoRepeaterBlock();
 	};
 
 	const onCopyBlocks = () => {
@@ -163,7 +198,56 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 	const onPasteBlocks = () => {
-		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
+		const newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
+
+		if (!repeaterContext?.repeaterStatus) {
+			replaceInnerBlocks(clientId, newCopiedBlocks);
+		}
+
+		if (repeaterContext?.repeaterStatus) {
+			const oldParentBlock = {
+				name: blockName,
+				clientId,
+				innerBlocks,
+			};
+			const newParentBlock = {
+				...oldParentBlock,
+				innerBlocks: newCopiedBlocks,
+			};
+
+			goThroughMaxiBlocks(
+				block => {
+					const blockPosition = findBlockPosition(
+						block.clientId,
+						oldParentBlock
+					);
+
+					const newBlock = findTarget(blockPosition, newParentBlock);
+
+					if (!newBlock) {
+						return;
+					}
+
+					if (block.name === newBlock.name) {
+						newBlock.clientId = block.clientId;
+					}
+				},
+				false,
+				innerBlocks
+			);
+
+			replaceInnerBlocks(clientId, newCopiedBlocks);
+
+			const innerBlocksPositions =
+				repeaterContext?.getInnerBlocksPositions();
+
+			validateRowColumnsStructure(
+				repeaterContext?.repeaterRowClientId,
+				innerBlocksPositions,
+				getInitialColumn(clientId, innerBlocksPositions[[-1]]).clientId
+			);
+		}
+
 		closeMoreSettings();
 	};
 
@@ -222,6 +306,8 @@ const CopyPaste = props => {
 		handleAttributesOnPaste(res);
 
 		updateBlockAttributes(clientId, res);
+
+		onPasteStylesIntoRepeaterBlock();
 	};
 
 	const getTabItems = () => {

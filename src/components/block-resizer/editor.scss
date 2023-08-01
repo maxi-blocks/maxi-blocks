@@ -21,6 +21,11 @@ body.maxi-blocks--active .maxi-block__resizer {
 				background: #ff4a17;
 				cursor: inherit;
 			}
+
+			&--repeater:after {
+				background: #7a00df;
+			}
+
 			&:before {
 				content: '';
 				display: block;

@@ -562,11 +562,15 @@ class MaxiBlocks_Styles
                     }
 
                     foreach ($font_weights as $font_weight) {
-                        if(!is_array($font_weight)) {
-                            $font_weight = [ $font_weight ];
+                        if(!$font_weight) {
+                            continue;
                         }
 
                         foreach ($font_styles as $font_style) {
+                            if(!is_array($font_weight)) {
+                                $font_weight = [ $font_weight ];
+                            }
+
                             $already_loaded = false;
 
                             if (in_array(

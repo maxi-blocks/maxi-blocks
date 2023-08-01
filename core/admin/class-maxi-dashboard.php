@@ -50,11 +50,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_admin_scripts_styles'
             ));
 
-            add_action('admin_notices', array(
-                $this,
-                'generate_styles_button'
-            ));
-
             $this->allow_svg_json_uploads();
         }
 

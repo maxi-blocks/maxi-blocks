@@ -72,6 +72,8 @@ class MaxiBlocks_Styles
         }
     }
 
+    protected $max_execution_time;
+
     /**
      * Constructor
      */
@@ -83,6 +85,8 @@ class MaxiBlocks_Styles
         add_filter('the_content', [$this, 'process_content']);
         add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
 
+        $this->max_execution_time = ini_get('max_execution_time');
+
         // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
@@ -90,6 +94,7 @@ class MaxiBlocks_Styles
 
     public function process_all_site_content()
     {
+        write_log('process_all_site_content');
         global $post;
         $args = array(
             'numberposts' => -1,
@@ -102,8 +107,10 @@ class MaxiBlocks_Styles
             // We need to setup the postdata for each post before calling the function
             setup_postdata($post);
 
+
+            write_log($post->ID);
             // Call the function here
-            self::get_styles_meta_fonts_from_blocks($post->ID);
+            $this->get_styles_meta_fonts_from_blocks($post->ID);
         }
 
         wp_reset_postdata(); // Reset Post Data after the loop
@@ -1436,12 +1443,57 @@ class MaxiBlocks_Styles
         return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
     }
 
-    public function unique_id_generator($blockName)
+    public static function generate_random_string()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < 3; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
+
+    public static function unique_id_generator($blockName)
     {
         $name = str_replace('maxi-blocks/', '', $blockName);
-        $uniquePart = uniqid();
+        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 5);
         return "{$name}-{$uniquePart}-u";
     }
+
+    public function process_block_unique_id(&$block)
+    {
+        // Check the block's uniqueID and update it if necessary
+        write_log('block');
+        write_log($block['blockName']);
+        write_log(($block['attrs']['uniqueID']));
+        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+
+            // Get the block name
+            $blockName = $block['blockName'];
+
+            // Generate a new uniqueID
+            $new_uniqueID = self::unique_id_generator($blockName);
+
+            write_log('new_uniqueID');
+            write_log($new_uniqueID);
+
+            // Replace the old uniqueID with the new one in the block
+            $block['attrs']['uniqueID'] = $new_uniqueID;
+        } else {
+            write_log('no uniqueID or it ends with -u');
+        }
+
+        // Recursively process any inner blocks
+        if (!empty($block['innerBlocks'])) {
+            foreach ($block['innerBlocks'] as &$innerBlock) {
+                $this->process_block_unique_id($innerBlock);
+            }
+        }
+    }
+
 
 
     /**
@@ -1464,40 +1516,32 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        // Get PHP maximum execution time
-        $max_execution_time = ini_get('max_execution_time');
         // Split blocks array into chunks of 3 blocks
         $block_chunks = array_chunk($blocks, 3);
 
         foreach ($block_chunks as $block_chunk) {
             // Iterate over each block and check its uniqueID
             foreach ($block_chunk as $block) {
-                // Assuming the uniqueID is an attribute of the block
-                if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
-                    // Get the old uniqueID
-                    $old_uniqueID = $block['attrs']['uniqueID'];
-
-                    // Get the block name
-                    $blockName = $block['blockName'];
-
-                    // Generate a new uniqueID
-                    $new_uniqueID = $this->unique_id_generator($blockName);
-
-                    // Replace all instances of the old uniqueID with the new one in the post content
-                    $post->post_content = str_replace($old_uniqueID, $new_uniqueID, $post->post_content);
+                foreach ($block_chunk as &$block) {
+                    $this->process_block_unique_id($block);
                 }
             }
 
-            // Save the post with the updated content
-            wp_update_post($post);
-
             // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($max_execution_time != 0) {
-                set_time_limit($max_execution_time - 2);
+            if ($this->max_execution_time != 0) {
+                write_log('max_execution_time');
+                write_log($this->max_execution_time - 2);
+                set_time_limit($this->max_execution_time - 2);
             }
         }
 
+        // Save the post with the updated blocks
+        $post->post_content = serialize_blocks($blocks);
+        wp_update_post($post);
+        sleep(1);
+
         // Parse the blocks again after the content has been updated
+        $post = get_post($post_id);
         $blocks = parse_blocks($post->post_content);
 
         // Split blocks array into chunks of 3 blocks
@@ -1506,12 +1550,15 @@ class MaxiBlocks_Styles
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
             foreach($block_chunk as $block) {
+                write_log('get_styles_meta_fonts_from_block');
                 $this->get_styles_meta_fonts_from_block($block);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($max_execution_time != 0) {
-                set_time_limit($max_execution_time - 2);
+            if ($this->max_execution_time != 0) {
+                write_log('max_execution_time');
+                write_log($this->max_execution_time - 2);
+                set_time_limit($this->max_execution_time - 2);
             }
         }
     }
@@ -1655,8 +1702,7 @@ class MaxiBlocks_Styles
         //$this->write_log('context END');
 
         if ($inner_blocks && !empty($inner_blocks)) {
-            // Get PHP maximum execution time
-            $max_execution_time = ini_get('max_execution_time');
+
             //Split inner_blocks array into chunks of 3
             $inner_block_chunks = array_chunk($inner_blocks, 3);
 
@@ -1667,8 +1713,8 @@ class MaxiBlocks_Styles
                 }
 
                 // Reset PHP maximum execution time for each chunk to avoid a timeout
-                if ($max_execution_time != 0) {
-                    set_time_limit($max_execution_time - 2);
+                if ($this->max_execution_time != 0) {
+                    set_time_limit($this->max_execution_time - 2);
                 }
             }
         }

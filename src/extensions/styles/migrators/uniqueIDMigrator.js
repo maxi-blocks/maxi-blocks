@@ -13,9 +13,12 @@ const migrate = newAttributes => {
 	const { uniqueID, customLabel } = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const newUniqueID = uniqueIDGenerator({ blockName });
-	const newCustomLabel = getCustomLabel(customLabel, newUniqueID);
+	if (!customLabel || customLabel === '') {
+		const newCustomLabel = getCustomLabel(customLabel, newUniqueID);
+		newAttributes.customLabel = newCustomLabel;
+	}
+
 	newAttributes.uniqueID = newUniqueID;
-	newAttributes.customLabel = newCustomLabel;
 	newAttributes.legacyUniqueID = uniqueID;
 
 	return newAttributes;

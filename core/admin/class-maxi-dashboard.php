@@ -560,7 +560,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 							headers: {
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
-							body: "action=my_action"
+							body: "action=maxi_process_all_site_content"
 						})
 						.then(response => response.text())
 						.then(response => {

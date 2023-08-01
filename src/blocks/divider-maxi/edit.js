@@ -200,7 +200,11 @@ class edit extends MaxiBlockComponent {
 						attributes,
 					})}`,
 				}}
-				showHandle={isSelected}
+				showHandle={
+					attributes['force-aspect-ratio-general']
+						? false
+						: isSelected
+				}
 				enable={{
 					bottom: true,
 				}}

@@ -1213,7 +1213,7 @@ class MaxiBlocks_Styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string &$maxi_block_style)
+    public function process_block(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
     {
         global $wpdb;
 
@@ -1419,7 +1419,6 @@ class MaxiBlocks_Styles
         $prev_styles = '';
         $active_custom_data_array = [];
         $fonts = [];
-        $block_style = '';
 
         $style_cards = new MaxiBlocks_StyleCards();
         $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
@@ -1427,7 +1426,7 @@ class MaxiBlocks_Styles
         $gutenberg_blocks_status = $current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status'];
 
         foreach ($blocks as $block) {
-            $this->process_block($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $block_style);
+            $this->process_block($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
         }
 
         $content = [
@@ -1445,7 +1444,7 @@ class MaxiBlocks_Styles
      */
     public function get_styles_meta_fonts_from_blocks()
     {
-		global $post;
+        global $post;
 
         if (!$post || !isset($post->ID)) {
             return false;

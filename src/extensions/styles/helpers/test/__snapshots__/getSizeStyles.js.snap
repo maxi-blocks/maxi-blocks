@@ -73,7 +73,7 @@ Object {
   },
   "l": Object {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "2px",
     "min-height": "1px",
@@ -82,7 +82,7 @@ Object {
   },
   "m": Object {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "1px",
     "max-width": "2px",
     "min-height": "2px",
@@ -91,7 +91,7 @@ Object {
   },
   "s": Object {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "1px",
     "max-width": "3px",
     "min-height": "2px",
@@ -100,7 +100,7 @@ Object {
   },
   "xl": Object {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",
@@ -109,7 +109,7 @@ Object {
   },
   "xs": Object {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",

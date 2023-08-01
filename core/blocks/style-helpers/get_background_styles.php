@@ -835,7 +835,7 @@ function get_background_layers($args)
                 if ($breakpoint === 'general') {
                     $response[$layerTarget . ' > svg:first-child'][$type] = array_replace_recursive(
                         isset($response[$layerTarget . ' > svg:first-child'][$type]) ? $response[$layerTarget . ' > svg:first-child'][$type] : [],
-                        ...get_image_shape_styles(
+                        get_image_shape_styles(
                             get_group_attributes($layer, 'imageShape', $is_hover, 'background-svg-'),
                             'svg',
                             'background-svg-',
@@ -845,7 +845,7 @@ function get_background_layers($args)
                     );
                     $response[$layerTarget . ' > svg:first-child pattern image'][$type] = array_replace_recursive(
                         isset($response[$layerTarget . ' > svg:first-child pattern image'][$type]) ? $response[$layerTarget . ' > svg:first-child pattern image'][$type] : [],
-                        ...get_image_shape_styles(
+                        get_image_shape_styles(
                             get_group_attributes($layer, 'imageShape', false, 'background-svg-'),
                             'image',
                             'background-svg-'

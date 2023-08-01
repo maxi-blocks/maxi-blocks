@@ -81,10 +81,37 @@ class MaxiBlocks_Styles
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         add_filter('the_content', [$this, 'process_content']);
-        //   add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
+
+        // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
         // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
+
+    public function process_all_site_content()
+    {
+        global $post;
+        $args = array(
+            'numberposts' => -1,
+            'post_type'   => 'post'
+        );
+
+        $all_posts = get_posts($args);
+
+        foreach ($all_posts as $post) {
+            // We need to setup the postdata for each post before calling the function
+            setup_postdata($post);
+
+            // Call the function here
+            self::get_styles_meta_fonts_from_blocks($post->ID);
+        }
+
+        wp_reset_postdata(); // Reset Post Data after the loop
+
+        echo 'Processing completed for all posts.';
+        wp_die(); // this is required to terminate immediately and return a proper response
+    }
+
 
     public function write_log($log)
     {
@@ -1409,33 +1436,75 @@ class MaxiBlocks_Styles
         return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
     }
 
+    public function unique_id_generator($blockName)
+    {
+        $name = str_replace('maxi-blocks/', '', $blockName);
+        $uniquePart = uniqid();
+        return "{$name}-{$uniquePart}-u";
+    }
+
+
     /**
      * Get styles meta fonts from blocks
      *
      * @return bool
      */
-    public function get_styles_meta_fonts_from_blocks()
+    public function get_styles_meta_fonts_from_blocks($post_id)
     {
-        global $post;
+        $post = get_post($post_id);
 
-        if (!$post || !isset($post->ID)) {
+        if (!$post_id) {
             return false;
         }
 
+        // Get all blocks from post content
         $blocks = parse_blocks($post->post_content);
 
         if (empty($blocks)) {
             return false;
         }
 
-        //Get PHP maximum execution time
+        // Get PHP maximum execution time
         $max_execution_time = ini_get('max_execution_time');
-        //Split blocks array into chunks of 3 blocks
+        // Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Iterate over each block and check its uniqueID
+            foreach ($block_chunk as $block) {
+                // Assuming the uniqueID is an attribute of the block
+                if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+                    // Get the old uniqueID
+                    $old_uniqueID = $block['attrs']['uniqueID'];
+
+                    // Get the block name
+                    $blockName = $block['blockName'];
+
+                    // Generate a new uniqueID
+                    $new_uniqueID = $this->unique_id_generator($blockName);
+
+                    // Replace all instances of the old uniqueID with the new one in the post content
+                    $post->post_content = str_replace($old_uniqueID, $new_uniqueID, $post->post_content);
+                }
+            }
+
+            // Save the post with the updated content
+            wp_update_post($post);
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($max_execution_time != 0) {
+                set_time_limit($max_execution_time - 2);
+            }
+        }
+
+        // Parse the blocks again after the content has been updated
+        $blocks = parse_blocks($post->post_content);
+
+        // Split blocks array into chunks of 3 blocks
         $block_chunks = array_chunk($blocks, 3);
 
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
-
             foreach($block_chunk as $block) {
                 $this->get_styles_meta_fonts_from_block($block);
             }
@@ -1445,8 +1514,9 @@ class MaxiBlocks_Styles
                 set_time_limit($max_execution_time - 2);
             }
         }
-
     }
+
+
 
     public function get_block_fonts($block_name, $props, $only_backend = false)
     {

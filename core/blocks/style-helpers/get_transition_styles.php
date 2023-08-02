@@ -77,7 +77,11 @@ function get_transition_styles($props, $transition_obj)
                             $response[$target] = ['transition' => []];
                         }
 
-                        $transition_content = $is_hover || !$last_transition_split ? $transition[$type][$key] : $transition[$type][$key]['out'];
+                        if (isset($transition[$type][$key])) {
+                            $transition_content = $is_hover || !$last_transition_split ? $transition[$type][$key] : $transition[$type][$key]['out'];
+                        } else {
+                            $transition_content = $is_hover || '';
+                        }
 
                         $transition_string = '';
                         $get_last_transition_attribute = function ($target) use ($breakpoint, $transition_content) {

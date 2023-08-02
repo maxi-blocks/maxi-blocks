@@ -539,32 +539,53 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             echo '
 			<script type="text/javascript">
-				document.addEventListener("DOMContentLoaded", function() {
-					var button = document.getElementById("maxi-regenerate-styles-button");
+			document.addEventListener("DOMContentLoaded", function() {
+				var button = document.getElementById("maxi-regenerate-styles-button");
 
-					if(button) document.getElementById("maxi-regenerate-styles-button").addEventListener("click", function() {
-						button.disabled = true; // disable the button
+				if (button) button.addEventListener("click", function() {
+					button.disabled = true;
 
-						var loadingMessage = document.createElement("div");
-						loadingMessage.id = "loading";
-						loadingMessage.innerHTML = "<p>Running... Please wait.</p>";
-						button.parentNode.insertBefore(loadingMessage, button.nextSibling); // show loading message
+					var loadingMessage = document.createElement("div");
+					loadingMessage.id = "loading";
+					loadingMessage.innerHTML = "<p>Running... Please wait.</p>";
+					button.parentNode.insertBefore(loadingMessage, button.nextSibling);
 
-						fetch(ajaxurl, {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/x-www-form-urlencoded"
-							},
-							body: "action=maxi_process_all_site_content"
-						})
-						.then(response => response.text())
-						.then(response => {
-							document.getElementById("loading").remove(); // remove loading message
-							button.disabled = false; // re-enable the button
-							alert(response); // alert the response from the server
+					fetch(ajaxurl, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						body: "action=maxi_process_all_site_content"
+					})
+					.then(response => {
+						const reader = response.body.getReader();
+						return new ReadableStream({
+							start(controller) {
+								function push() {
+									reader.read().then(({ done, value }) => {
+										if (done) {
+											controller.close();
+											return;
+										}
+										const text = new TextDecoder().decode(value);
+										loadingMessage.innerHTML = `<p>${text}</p>`; // Update the loadingMessage with progress
+										controller.enqueue(value);
+										push();
+									});
+								}
+								push();
+							}
 						});
+					})
+					.then(stream => {
+						return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+					})
+					.then(response => {
+						loadingMessage.innerHTML = `<p>${response}</p>`; // Final response message
+						button.disabled = false;
 					});
 				});
+			});
 			</script>
 			';
         }

@@ -101,20 +101,29 @@ class MaxiBlocks_Styles
         );
 
         $all_posts = get_posts($args);
+        $total_posts = count($all_posts);
+        $processed_posts = 0;
 
         foreach ($all_posts as $post) {
-            // We need to setup the postdata for each post before calling the function
             setup_postdata($post);
 
             $this->process_all_unique_ids($post->ID);
             $this->get_styles_meta_fonts_from_blocks($post->ID);
+
+            $processed_posts++;
+            $progress = round(($processed_posts / $total_posts) * 100);
+            echo "Processing: $progress% completed.\n";
+
+            flush(); // Send output immediately
+            ob_flush();
         }
 
-        wp_reset_postdata(); // Reset Post Data after the loop
+        wp_reset_postdata();
 
         echo 'Processing completed for all posts.';
-        wp_die(); // this is required to terminate immediately and return a proper response
+        wp_die();
     }
+
 
 
     public function write_log($log)
@@ -749,13 +758,14 @@ class MaxiBlocks_Styles
                                 if ($font_url) {
                                     if ($this->check_font_url($font_url)) {
 
-                                        wp_enqueue_style(
-                                            $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
-                                            $font_url,
-                                            array(),
-                                            null,
-                                            'all'
-                                        );
+                                        $font_str = is_array($font) ? implode('-', $font) : $font;
+                                        $font_weight_str = is_array($font_weight) ? implode('-', $font_weight) : $font_weight;
+                                        $font_style_str = is_array($font_style) ? implode('-', $font_style) : $font_style;
+
+                                        $font_identifier = $font_str . '-' . $font_weight_str . '-' . $font_style_str;
+                                        $font_key = $name . '-font-' . sanitize_title_with_dashes($font_identifier);
+                                        wp_enqueue_style($font_key, $font_url, array(), null, 'all');
+
                                     } else {  // Load default font weight for cases where the saved font weight doesn't exist
                                         $font_url = strstr($font_url, ':wght', true);
                                         wp_enqueue_style(
@@ -1439,7 +1449,7 @@ class MaxiBlocks_Styles
 
     public static function generate_random_string()
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $randomString = '';
 
         for ($i = 0; $i < 3; $i++) {
@@ -1493,7 +1503,7 @@ class MaxiBlocks_Styles
 
     public function process_block_unique_id(&$block, &$post_content)
     {
-        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) !== '-u') {
             // Get the block name
             $blockName = $block['blockName'];
 

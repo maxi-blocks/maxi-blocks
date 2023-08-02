@@ -86,9 +86,10 @@ function get_relations($unique_id, $relations)
 
     $new_relations = $relations;
     foreach ($new_relations as &$relation) {
-        $relation['trigger'] = $unique_id .
-            ($relation['isButton'] ? ' .maxi-button-block__button' : '');
+        $isButton = isset($relation['isButton']) ? $relation['isButton'] : false;
+        $relation['trigger'] = $unique_id . ($isButton ? ' .maxi-button-block__button' : '');
     }
+
 
     return $new_relations;
 }

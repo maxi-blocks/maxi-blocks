@@ -94,7 +94,6 @@ class MaxiBlocks_Styles
 
     public function process_all_site_content()
     {
-        write_log('process_all_site_content');
         global $post;
         $args = array(
             'numberposts' => -1,
@@ -107,9 +106,7 @@ class MaxiBlocks_Styles
             // We need to setup the postdata for each post before calling the function
             setup_postdata($post);
 
-
-            write_log($post->ID);
-            // Call the function here
+            $this->process_all_unique_ids($post->ID);
             $this->get_styles_meta_fonts_from_blocks($post->ID);
         }
 
@@ -1067,9 +1064,6 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks($template, $id);
 
-        write_log('$template');
-        write_log($template);
-
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
@@ -1463,36 +1457,67 @@ class MaxiBlocks_Styles
         return "{$name}-{$uniquePart}-u";
     }
 
-    public function process_block_unique_id(&$block)
+    public function process_all_unique_ids($post_id)
     {
-        // Check the block's uniqueID and update it if necessary
-        write_log('block');
-        write_log($block['blockName']);
-        write_log(($block['attrs']['uniqueID']));
-        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+        if (!$post_id) {
+            return false;
+        }
 
+        $post = get_post($post_id);
+        $post_content = $post->post_content;
+
+        // Get all blocks from post content
+        $blocks = parse_blocks($post_content);
+
+        if (empty($blocks)) {
+            return false;
+        }
+
+        // Split blocks array into chunks of 5 blocks
+        $block_chunks = array_chunk($blocks, 5);
+
+        // Process the block chunks and update the original $blocks array
+        foreach ($block_chunks as $index => $block_chunk) {
+            foreach ($block_chunk as &$block) {
+                $this->process_block_unique_id($block, $post_content);
+            }
+            // Update the original $blocks array with the processed chunk
+            array_splice($blocks, $index * 5, 5, $block_chunk);
+        }
+
+        // Save the post with the updated blocks
+        $post->post_content = $post_content;
+        wp_update_post($post);
+
+    }
+
+    public function process_block_unique_id(&$block, &$post_content)
+    {
+        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
             // Get the block name
             $blockName = $block['blockName'];
+
+            // Save the old uniqueID
+            $old_uniqueID = $block['attrs']['uniqueID'];
 
             // Generate a new uniqueID
             $new_uniqueID = self::unique_id_generator($blockName);
 
-            write_log('new_uniqueID');
-            write_log($new_uniqueID);
-
             // Replace the old uniqueID with the new one in the block
             $block['attrs']['uniqueID'] = $new_uniqueID;
-        } else {
-            write_log('no uniqueID or it ends with -u');
+
+            // Replace all occurrences of the old uniqueID with the new one in the post content
+            $post_content = str_replace($old_uniqueID, $new_uniqueID, $post_content);
         }
 
         // Recursively process any inner blocks
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as &$innerBlock) {
-                $this->process_block_unique_id($innerBlock);
+                $this->process_block_unique_id($innerBlock, $post_content);
             }
         }
     }
+
 
 
 
@@ -1503,43 +1528,6 @@ class MaxiBlocks_Styles
      */
     public function get_styles_meta_fonts_from_blocks($post_id)
     {
-        $post = get_post($post_id);
-
-        if (!$post_id) {
-            return false;
-        }
-
-        // Get all blocks from post content
-        $blocks = parse_blocks($post->post_content);
-
-        if (empty($blocks)) {
-            return false;
-        }
-
-        // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3);
-
-        foreach ($block_chunks as $block_chunk) {
-            // Iterate over each block and check its uniqueID
-            foreach ($block_chunk as $block) {
-                foreach ($block_chunk as &$block) {
-                    $this->process_block_unique_id($block);
-                }
-            }
-
-            // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($this->max_execution_time != 0) {
-                write_log('max_execution_time');
-                write_log($this->max_execution_time - 2);
-                set_time_limit($this->max_execution_time - 2);
-            }
-        }
-
-        // Save the post with the updated blocks
-        $post->post_content = serialize_blocks($blocks);
-        wp_update_post($post);
-        sleep(1);
-
         // Parse the blocks again after the content has been updated
         $post = get_post($post_id);
         $blocks = parse_blocks($post->post_content);
@@ -1550,14 +1538,11 @@ class MaxiBlocks_Styles
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
             foreach($block_chunk as $block) {
-                write_log('get_styles_meta_fonts_from_block');
                 $this->get_styles_meta_fonts_from_block($block);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
             if ($this->max_execution_time != 0) {
-                write_log('max_execution_time');
-                write_log($this->max_execution_time - 2);
                 set_time_limit($this->max_execution_time - 2);
             }
         }
@@ -1699,7 +1684,6 @@ class MaxiBlocks_Styles
         } else {
             $context = null;
         }
-        //$this->write_log('context END');
 
         if ($inner_blocks && !empty($inner_blocks)) {
 

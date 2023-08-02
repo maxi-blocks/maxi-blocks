@@ -2,23 +2,21 @@
 
 function get_styles($content)
 {
-    if (empty($content)) {
+    if (!$content) {
         return false;
     }
 
     $response = '';
 
     foreach ($content as $key => $val) {
+        if (is_array($val)) {
+            $val = implode(',', $val); // Convert array to comma-separated string
+        }
+
         if (strpos($key, 'css') !== false) {
             $response .= $val;
         } else {
-            if (is_array($val)) {
-                write_log('ARRAY!');
-                write_log($val);
-                write_log($key);
-                $val = implode(", ", $val);
-            }
-            $response .= "{$key}:{$val};";
+            $response .= "$key:$val;";
         }
     }
 

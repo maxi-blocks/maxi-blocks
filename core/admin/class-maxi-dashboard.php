@@ -343,8 +343,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_item_header('Automated fixes', false);
 
             $content .= '<h4>'.__('Regenerate frontend styles for site\'s content', self::$maxi_text_domain).'</h4>';
-            $content .= '<p>'.__('Regenerates Maxi Blocks\' styles for all site\'s posts, pages, custom post styles, site editor... Helpful if you migrated your site, lost your database, or something went wrong with Maxi styles on frontend.', self::$maxi_text_domain).'</p>';
-            $content .= '<p><button id="maxi-regenerate-styles-button">Run Function</button></p>';
+            $content .= '<p>'.__('Regenerates Maxi Blocks\' styles for all site\'s posts, pages, custom post styles, site editor... Helpful if you migrated your site, lost your database, imported content, or something went wrong with Maxi styles on frontend.', self::$maxi_text_domain).'</p>';
+            $content .= '<p><button id="maxi-regenerate-styles-button">Generate</button></p>';
             $content .= $this->generate_styles_button();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content

@@ -1,19 +1,18 @@
 <?php
 function validate_origin_value($val)
 {
-    $is_numeric = function ($val) {
+    $isNumeric = function ($val) {
         if (!is_string($val)) {
             return false;
         }
-        return !is_nan($val) && !is_nan(floatval($val));
+        return !is_nan(floatval($val));
     };
 
     $words = ['top', 'bottom', 'left', 'right', 'center', 'middle'];
 
-    if ($is_numeric($val)) {
+    if ($isNumeric($val)) {
         return floatval($val);
     }
-
     if (in_array($val, $words)) {
         return $val;
     }

@@ -47,13 +47,13 @@ const ScrollEffectsUniqueControl = props => {
 		switch (type) {
 			case 'vertical':
 				response.label = `${label} position (px)`;
-				response.attr = `vertical-${labelLowCase}`;
+				response.attr = `offset-${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case 'horizontal':
 				response.label = `${label} position (px)`;
-				response.attr = `horizontal-${labelLowCase}`;
+				response.attr = `offset-${labelLowCase}`;
 				response.min = -4000;
 				response.max = 4000;
 				break;

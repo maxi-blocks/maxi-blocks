@@ -52,18 +52,11 @@ const getMaxiBlockAttributes = props => {
 		'status-reverse',
 	];
 
-	const scrollSettingsVertical = [
+	const scrollSettingsVerticalAndHorizontal = [
 		...scrollSettingsShared,
-		'vertical-start',
-		'vertical-mid',
-		'vertical-end',
-	];
-
-	const scrollSettingsHorizontal = [
-		...scrollSettingsShared,
-		'horizontal-start',
-		'horizontal-mid',
-		'horizontal-end',
+		'offset-start',
+		'offset-mid',
+		'offset-end',
 	];
 
 	const scrollSettingsRotate = [
@@ -125,10 +118,10 @@ const getMaxiBlockAttributes = props => {
 
 				switch (type) {
 					case 'vertical':
-						scrollSettings = scrollSettingsVertical;
+						scrollSettings = scrollSettingsVerticalAndHorizontal;
 						break;
 					case 'horizontal':
-						scrollSettings = scrollSettingsHorizontal;
+						scrollSettings = scrollSettingsVerticalAndHorizontal;
 						break;
 					case 'rotate':
 						scrollSettings = scrollSettingsRotate;

@@ -5,9 +5,9 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_value_from_keys.php';
 function get_last_breakpoint_attribute(
     $args
 ) {
-    $target = $args['target'];
+    $target = $args['target'] ?? '';
     $breakpoint = $args['breakpoint'];
-    $attributes = $args['attributes'];
+    $attributes = $args['attributes'] ;
     $is_hover = $args['is_hover'] ?? false;
     $avoid_xxl = $args['avoid_xxl'] ?? true;
     $keys = $args['keys'] ?? [];

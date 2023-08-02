@@ -927,7 +927,7 @@ function get_general_background_styles(
             ) {
                 $get_size = function ($width, $target) use ($breakpoint, $widthUnit, $is_hover, $get_border_value) {
                     if (!is_numeric($width)) {
-                        return null;
+                        return [];
                     }
 
                     if ($is_hover) {
@@ -935,7 +935,7 @@ function get_general_background_styles(
                             $get_border_value($target, $breakpoint, false) === $width;
 
                         if ($isSameThanNormal) {
-                            return null;
+                            return [];
                         }
                     }
 

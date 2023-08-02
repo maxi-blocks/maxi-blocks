@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select, dispatch, subscribe } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -14,13 +15,13 @@ import {
 	getSiteEditorIframeBody,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
+import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getEditorWrapper from './getEditorWrapper';
 
 /**
  * General
@@ -154,7 +155,7 @@ wp.domReady(() => {
 	let isNewEditorContentObserver = true;
 	let isNewObserver = true;
 	let isSCLoaded = false;
-	let type = null;
+	let id = null;
 
 	const editorContentUnsubscribe = subscribe(() => {
 		const resizeObserverTarget = document.querySelector(
@@ -165,7 +166,7 @@ wp.domReady(() => {
 		}
 
 		if (isSiteEditor) {
-			const currentType = select('core/edit-site').getEditedPostType();
+			const currentId = select('core/edit-site').getEditedPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
 
@@ -184,7 +185,7 @@ wp.domReady(() => {
 				resizeObserver.observe(resizeObserverTarget);
 				setBaseBreakpoint();
 			} else if (
-				(isTemplatesListOpened || type !== currentType) &&
+				(isTemplatesListOpened || id !== currentId) &&
 				!isNewEditorContentObserver
 			) {
 				isNewEditorContentObserver = true;
@@ -200,10 +201,7 @@ wp.domReady(() => {
 			)
 				siteEditorIframeBody.classList.add('maxi-blocks--active');
 
-			if (
-				(getIsTemplatesListOpened() || type !== currentType) &&
-				isSCLoaded
-			)
+			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
 				isSCLoaded = false;
 
 			// Adding the SC styles after switching between the templates
@@ -234,7 +232,7 @@ wp.domReady(() => {
 					isNewObserver = false;
 					templatePartResizeObserver.observe(resizableBox);
 				} else if (
-					(isTemplatesListOpened || type !== currentType) &&
+					(isTemplatesListOpened || id !== currentId) &&
 					!isNewObserver
 				) {
 					isNewObserver = true;
@@ -242,7 +240,7 @@ wp.domReady(() => {
 				}
 			}
 
-			type = currentType;
+			id = currentId;
 		} else {
 			if (!resizeObserverTarget) return;
 
@@ -260,5 +258,72 @@ wp.domReady(() => {
 
 			editorContentUnsubscribe();
 		}
+	});
+
+	let shouldSCMigratorRun = true;
+
+	const unsubscribe = subscribe(async () => {
+		if (!shouldSCMigratorRun) {
+			return;
+		}
+
+		shouldSCMigratorRun = false;
+
+		const { receiveMaxiActiveStyleCard, receiveMaxiStyleCards } = select(
+			'maxiBlocks/style-cards'
+		);
+
+		const styleCard = receiveMaxiActiveStyleCard();
+		const styleCards = receiveMaxiStyleCards();
+
+		if (styleCard && styleCards) {
+			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
+				'maxiBlocks/style-cards'
+			);
+
+			if (!('gutenberg_blocks_status' in styleCard.value)) {
+				const newStyleCards = {
+					...styleCards,
+					[styleCard.key]: {
+						...styleCard.value,
+						gutenberg_blocks_status: true,
+					},
+				};
+				await saveMaxiStyleCards(newStyleCards, true);
+				updateSCOnEditor(newStyleCards[styleCard.key]);
+
+				// eslint-disable-next-line no-console
+				console.log(
+					'Style Cards gutenberg_blocks_status has been set to default.'
+				);
+			}
+
+			const SCStyles = await apiFetch({
+				path: '/maxi-blocks/v1.0/style-card/',
+				method: 'GET',
+			});
+
+			if (SCStyles) {
+				if (
+					[
+						'_maxi_blocks_style_card_styles',
+						'_maxi_blocks_style_card_styles_preview',
+					].some(
+						key => !SCStyles[key]?.includes('maxi-block--use-sc')
+					)
+				) {
+					await saveSCStyles(true);
+
+					// eslint-disable-next-line no-console
+					console.log(
+						'Style Cards migrator has been successfully used to update the styles.'
+					);
+				}
+			}
+
+			unsubscribe();
+		}
+
+		shouldSCMigratorRun = true;
 	});
 });

@@ -748,7 +748,8 @@ const LibraryContainer = props => {
 
 		const newAllSCs = {
 			...styleCards,
-			[newId]: parsedCard,
+			// gutenberg_blocks_status: true should be true by default
+			[newId]: { ...parsedCard, gutenberg_blocks_status: true },
 		};
 
 		saveMaxiStyleCards(newAllSCs);

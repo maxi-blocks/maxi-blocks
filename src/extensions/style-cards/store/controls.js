@@ -33,7 +33,10 @@ const controls = {
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
 		const varSC = getSCVariablesObject(styleCards.value, null, true);
 		const varSCString = createSCStyleString(varSC);
-		const SCStyles = await getSCStyles(varSC);
+		const SCStyles = await getSCStyles(
+			varSC,
+			styleCards.value.gutenberg_blocks_status
+		);
 
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/style-card',

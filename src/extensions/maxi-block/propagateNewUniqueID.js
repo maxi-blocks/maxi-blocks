@@ -1,13 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
-import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
@@ -16,7 +15,8 @@ import { cloneDeep, isEmpty, isEqual, isArray } from 'lodash';
 
 const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 	const blockAttributesUpdate = {};
-	const lastChangedBlocks = getLastChangedBlocks();
+	const lastChangedBlocks =
+		select('maxiBlocks/blocks').getLastInsertedBlocks();
 
 	const updateBlockAttributesUpdate = (clientId, key, value) => {
 		if (!blockAttributesUpdate[clientId])
@@ -75,7 +75,10 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 			}
 		};
 
-		lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+		lastChangedBlocks.forEach(clientId => {
+			const block = select('core/block-editor').getBlock(clientId);
+			updateNewUniqueID(block);
+		});
 	};
 
 	const updateBGLayers = () => {

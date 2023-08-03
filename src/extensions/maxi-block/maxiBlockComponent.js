@@ -501,6 +501,7 @@ class MaxiBlockComponent extends Component {
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
+			const { clientId } = this.props;
 			const { uniqueID } = this.props.attributes;
 
 			// Styles
@@ -509,7 +510,7 @@ class MaxiBlockComponent extends Component {
 			this.removeStyles();
 
 			// Block
-			dispatch('maxiBlocks/blocks').removeBlock(uniqueID);
+			dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
 
 			// Custom data
 			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);

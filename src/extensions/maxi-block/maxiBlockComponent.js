@@ -848,11 +848,11 @@ class MaxiBlockComponent extends Component {
 
 			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
 
-			const newLasInsertedBlocks = [...allClientIds].filter(
+			const newLastInsertedBlocks = [...allClientIds].filter(
 				clientId => !savedClientIds.includes(clientId)
 			);
 			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
-				newLasInsertedBlocks
+				newLastInsertedBlocks
 			);
 		}
 	}

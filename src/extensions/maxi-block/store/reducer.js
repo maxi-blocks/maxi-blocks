@@ -1,6 +1,8 @@
 const reducer = (
 	state = {
 		blocks: {},
+		lastInsertedBlocks: [],
+		blockClientIds: [],
 	},
 	action
 ) => {
@@ -38,6 +40,22 @@ const reducer = (
 						blockRoot,
 					},
 				},
+			};
+		}
+		case 'SAVE_LAST_INSERTED_BLOCKS': {
+			const { lastInsertedBlocks } = action;
+
+			return {
+				...state,
+				lastInsertedBlocks,
+			};
+		}
+		case 'SAVE_BLOCK_CLIENT_IDS': {
+			const { blockClientIds } = action;
+
+			return {
+				...state,
+				blockClientIds,
 			};
 		}
 		default:

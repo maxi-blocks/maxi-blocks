@@ -61,6 +61,8 @@ class MaxiBlocks_Styles
      * @var MaxiBlocks_Styles
      */
     private static $instance;
+    private static $maxi_text_domain = 'maxi-blocks';
+
 
     /**
      * Registers the plugin.
@@ -73,6 +75,7 @@ class MaxiBlocks_Styles
     }
 
     protected $max_execution_time;
+    protected $chunks_per_execution;
 
     /**
      * Constructor
@@ -87,9 +90,21 @@ class MaxiBlocks_Styles
 
         $this->max_execution_time = ini_get('max_execution_time');
 
-        // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+        if ($this->max_execution_time == 0) {
+            $this->chunks_per_execution = 1000;
+        } elseif ($this->max_execution_time < 31) {
+            $this->chunks_per_execution = 15;
+        } elseif ($this->max_execution_time > 119) {
+            $this->chunks_per_execution = 100;
+        } else {
+            $this->chunks_per_execution = 30;
+        }
+
+    }
+
+    public static function get_processing_text($processed_posts, $total_posts)
+    {
+        return __('Processing', self::$maxi_text_domain) . ': ' . $processed_posts . ' ' . __('of', self::$maxi_text_domain) . ' ' . $total_posts . ' ' . __('posts completed', self::$maxi_text_domain) . '<br>';
     }
 
     public function process_all_site_content()
@@ -104,6 +119,9 @@ class MaxiBlocks_Styles
         $total_posts = count($all_posts);
         $processed_posts = 0;
 
+        echo self::get_processing_text($processed_posts, $total_posts);
+
+
         foreach ($all_posts as $post) {
             setup_postdata($post);
 
@@ -111,8 +129,7 @@ class MaxiBlocks_Styles
             $this->get_styles_meta_fonts_from_blocks($post->ID);
 
             $processed_posts++;
-            $progress = round(($processed_posts / $total_posts) * 100);
-            echo "Processing: $progress% completed.\n";
+            echo self::get_processing_text($processed_posts, $total_posts);
 
             flush(); // Send output immediately
             ob_flush();
@@ -120,12 +137,12 @@ class MaxiBlocks_Styles
 
         wp_reset_postdata();
 
-        echo 'Processing completed for all posts.';
+        echo __('Processing completed for all', self::$maxi_text_domain).' '.$total_posts.' '.__('posts', self::$maxi_text_domain).'<br>';
         wp_die();
     }
 
 
-
+    // TO DO: remove this function
     public function write_log($log)
     {
         if (is_array($log) || is_object($log)) {
@@ -161,8 +178,6 @@ class MaxiBlocks_Styles
 
     public function enqueue_styles()
     {
-        global $post;
-
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
@@ -1483,8 +1498,8 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        // Split blocks array into chunks of 5 blocks
-        $block_chunks = array_chunk($blocks, 5);
+        // Split blocks array into chunks of 10 blocks
+        $block_chunks = array_chunk($blocks, 10);
 
         // Process the block chunks and update the original $blocks array
         foreach ($block_chunks as $index => $block_chunk) {
@@ -1492,7 +1507,7 @@ class MaxiBlocks_Styles
                 $this->process_block_unique_id($block, $post_content);
             }
             // Update the original $blocks array with the processed chunk
-            array_splice($blocks, $index * 5, 5, $block_chunk);
+            array_splice($blocks, $index * 10, 10, $block_chunk);
         }
 
         // Save the post with the updated blocks
@@ -1542,8 +1557,8 @@ class MaxiBlocks_Styles
         $post = get_post($post_id);
         $blocks = parse_blocks($post->post_content);
 
-        // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3);
+        // Split blocks array into chunks of $this->chunks_per_execution blocks
+        $block_chunks = array_chunk($blocks, $this->chunks_per_execution);
 
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
@@ -1553,7 +1568,7 @@ class MaxiBlocks_Styles
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
             if ($this->max_execution_time != 0) {
-                set_time_limit($this->max_execution_time - 2);
+                set_time_limit($this->max_execution_time - 1);
             }
         }
     }
@@ -1697,8 +1712,8 @@ class MaxiBlocks_Styles
 
         if ($inner_blocks && !empty($inner_blocks)) {
 
-            //Split inner_blocks array into chunks of 3
-            $inner_block_chunks = array_chunk($inner_blocks, 3);
+            //Split inner_blocks array into chunks of $this->chunks_per_execution
+            $inner_block_chunks = array_chunk($inner_blocks, $this->chunks_per_execution);
 
             foreach ($inner_block_chunks as $inner_block_chunk) {
                 // Process each block in the current chunk
@@ -1708,7 +1723,7 @@ class MaxiBlocks_Styles
 
                 // Reset PHP maximum execution time for each chunk to avoid a timeout
                 if ($this->max_execution_time != 0) {
-                    set_time_limit($this->max_execution_time - 2);
+                    set_time_limit($this->max_execution_time - 1);
                 }
             }
         }

@@ -76,13 +76,20 @@ function get_svg_width_styles($args)
 
         if (!is_null($icon_size) && !empty($icon_size)) {
             if ($icon_width_fit_content || !$disable_height) {
-                $response[$breakpoint]['height'] = $icon_width_fit_content && $icon_width_height_ratio !== 1
-                    ? round(
-                        $icon_width_height_ratio > 1
-                        ? ($icon_size * $height_to_stroke_width_coefficient) / $icon_width_height_ratio
-                        : $icon_size / ($icon_width_height_ratio * $height_to_stroke_width_coefficient)
-                    )
-                    : $icon_size;
+                if ($icon_width_fit_content && $icon_width_height_ratio !== 1) {
+                    if ($icon_width_height_ratio > 1) {
+                        $response[$breakpoint]['height'] = round(($icon_size * $height_to_stroke_width_coefficient) / $icon_width_height_ratio);
+                    } else {
+                        $denominator = $icon_width_height_ratio * $height_to_stroke_width_coefficient;
+                        if ($denominator != 0) {
+                            $response[$breakpoint]['height'] = round($icon_size / $denominator);
+                        } else {
+                            $response[$breakpoint]['height'] = 0; // Default value or handling for division by zero
+                        }
+                    }
+                } else {
+                    $response[$breakpoint]['height'] = $icon_size;
+                }
                 $response[$breakpoint]['height'] .= $icon_unit;
             }
 

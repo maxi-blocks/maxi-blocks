@@ -1,3 +1,5 @@
+import { select } from '@wordpress/data';
+
 const reducer = (
 	state = {
 		blocks: {},
@@ -43,7 +45,14 @@ const reducer = (
 			};
 		}
 		case 'SAVE_LAST_INSERTED_BLOCKS': {
-			const { lastInsertedBlocks } = action;
+			const savedClientIds =
+				select('maxiBlocks/blocks').getBlockClientIds();
+			const allClientIds =
+				select('core/block-editor').getClientIdsWithDescendants();
+
+			const lastInsertedBlocks = [...allClientIds].filter(
+				clientId => !savedClientIds.includes(clientId)
+			);
 
 			return {
 				...state,

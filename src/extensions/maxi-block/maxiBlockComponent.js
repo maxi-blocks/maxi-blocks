@@ -755,19 +755,12 @@ class MaxiBlockComponent extends Component {
 				...select('maxiBlocks/blocks').getBlockClientIds(),
 			].includes(clientId)
 		) {
-			const savedClientIds =
-				select('maxiBlocks/blocks').getBlockClientIds();
 			const allClientIds =
 				select('core/block-editor').getClientIdsWithDescendants();
 
 			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
 
-			const newLastInsertedBlocks = [...allClientIds].filter(
-				clientId => !savedClientIds.includes(clientId)
-			);
-			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
-				newLastInsertedBlocks
-			);
+			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks();
 		}
 	}
 

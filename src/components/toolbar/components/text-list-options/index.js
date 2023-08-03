@@ -64,10 +64,7 @@ const TextListOptions = props => {
 				type: typeOfList,
 			});
 
-		if (type === 'outdent')
-			newFormat = outdentListItems(formatValue, {
-				type: typeOfList,
-			});
+		if (type === 'outdent') newFormat = outdentListItems(formatValue);
 
 		const newContent = toHTMLString({
 			value: newFormat,

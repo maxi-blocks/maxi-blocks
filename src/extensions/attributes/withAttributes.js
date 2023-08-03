@@ -4,12 +4,15 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
+import { useContext, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
+import { insertBlockIntoColumns } from '../repeater';
 import { getCustomLabel } from '../maxi-block';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External Dependencies
@@ -50,15 +53,23 @@ const withAttributes = createHigherOrderComponent(
 		const { attributes, name: blockName, clientId } = props;
 		const { uniqueID } = attributes;
 
+		const wasUniqueIDAdded = useRef(false);
+
+		const repeaterContext = useContext(RepeaterContext);
+		const repeaterStatus = repeaterContext?.repeaterStatus;
+
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
 				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
 					newUniqueID
 				);
+
+				wasUniqueIDAdded.current = true;
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
@@ -89,6 +100,21 @@ const withAttributes = createHigherOrderComponent(
 				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
 			}
 		}
+
+		useEffect(() => {
+			if (repeaterStatus) {
+				repeaterContext?.updateInnerBlocksPositions();
+			}
+		}, []);
+
+		useEffect(() => {
+			if (repeaterContext?.repeaterStatus && wasUniqueIDAdded.current) {
+				insertBlockIntoColumns(
+					clientId,
+					repeaterContext?.getInnerBlocksPositions?.()?.[[-1]]
+				);
+			}
+		}, [wasUniqueIDAdded.current]);
 
 		return <BlockEdit {...props} />;
 	},

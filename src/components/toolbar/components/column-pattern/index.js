@@ -17,7 +17,15 @@ import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
 
 const ToolbarColumnPattern = props => {
-	const { clientId, blockName, onChange, breakpoint } = props;
+	const {
+		clientId,
+		blockName,
+		onChange,
+		breakpoint,
+		repeaterStatus,
+		repeaterRowClientId,
+		getInnerBlocksPositions,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/row-maxi' || !props['row-pattern-general'])
 		return null;
@@ -35,8 +43,11 @@ const ToolbarColumnPattern = props => {
 					onChange={rowPattern => {
 						onChange(rowPattern);
 					}}
-					toolbar
 					breakpoint={breakpoint}
+					repeaterStatus={repeaterStatus}
+					repeaterRowClientId={repeaterRowClientId}
+					getInnerBlocksPositions={getInnerBlocksPositions}
+					toolbar
 				/>
 			</div>
 		</ToolbarPopover>

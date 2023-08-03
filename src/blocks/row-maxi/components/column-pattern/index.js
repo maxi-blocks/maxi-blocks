@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
-import { select } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { dispatch, select } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,15 +12,23 @@ import { useState, useEffect } from '@wordpress/element';
 import { AdvancedNumberControl, Button, Icon } from '../../../../components';
 import {
 	getNumCol,
+	getTemplateObject,
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributeValue,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
+import { validateRowColumnsStructure } from '../../../../extensions/repeater';
+import { getBlockPosition } from '../../../../extensions/repeater/utils';
+import { cleanInnerBlocks } from '../../../../extensions/copy-paste';
 
 /**
  * External dependencies
  */
-import { uniqueId, isEqual, isNil, floor } from 'lodash';
+import { floor, isEqual, isNil, uniqueId } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -33,7 +41,15 @@ import './editor.scss';
  *
  */
 const ColumnPattern = props => {
-	const { clientId, onChange, breakpoint, toolbar = false } = props;
+	const {
+		clientId,
+		onChange,
+		breakpoint,
+		repeaterStatus,
+		repeaterRowClientId,
+		getInnerBlocksPositions,
+		toolbar = false,
+	} = props;
 
 	const [numCol, setNumCol] = useState(
 		!isNil(props['row-pattern-general'])
@@ -46,9 +62,11 @@ const ColumnPattern = props => {
 
 	useEffect(() => {
 		if (toolbar) {
-			setDisplayedTemplates(getTemplates());
+			setDisplayedTemplates(getTemplates(repeaterStatus));
 		} else {
-			setDisplayedTemplates(getTemplates(breakpoint, numCol));
+			setDisplayedTemplates(
+				getTemplates(repeaterStatus, breakpoint, numCol)
+			);
 		}
 	}, [breakpoint, numCol]);
 
@@ -88,7 +106,6 @@ const ColumnPattern = props => {
 	 * @param {Array} sizes array of columns widths
 	 * @return {Array} Array of objects
 	 */
-
 	const getColumnsPositions = sizes => {
 		const columnsPositions = [];
 
@@ -191,14 +208,102 @@ const ColumnPattern = props => {
 									template.name,
 									clientId,
 									breakpoint,
-									numCol
+									numCol,
+									repeaterStatus
 								);
 
+								const oldRowPattern = getAttributeValue({
+									target: 'row-pattern',
+									props,
+									breakpoint,
+								});
+								const newRowPattern =
+									template.isMoreThanEightColumns
+										? numCol.toString()
+										: template.name;
+
+								if (repeaterStatus) {
+									const innerBlockPositions =
+										getInnerBlocksPositions();
+
+									if (
+										(getTemplateObject(oldRowPattern)?.sizes
+											.length ?? Number(oldRowPattern)) <
+											(getTemplateObject(newRowPattern)
+												?.sizes.length ??
+												Number(newRowPattern)) &&
+										clientId === repeaterRowClientId
+									) {
+										validateRowColumnsStructure(
+											repeaterRowClientId,
+											innerBlockPositions
+										);
+									} else if (
+										clientId !== repeaterRowClientId
+									) {
+										const blockPosition = getBlockPosition(
+											clientId,
+											innerBlockPositions
+										);
+
+										const { getBlock } =
+											select('core/block-editor');
+										const {
+											__unstableMarkNextChangeAsNotPersistent:
+												markNextChangeAsNotPersistent,
+											replaceInnerBlocks,
+										} = dispatch('core/block-editor');
+
+										const rowToValidateByInnerBlocks =
+											getBlock(clientId).innerBlocks;
+
+										innerBlockPositions[
+											blockPosition
+										].forEach(rowClientId => {
+											if (rowClientId === clientId)
+												return;
+
+											const oldInnerBlocks =
+												getBlock(
+													rowClientId
+												).innerBlocks;
+
+											const clonedInnerBlocks =
+												cleanInnerBlocks(
+													rowToValidateByInnerBlocks
+												);
+
+											clonedInnerBlocks.forEach(
+												(column, i) => {
+													if (
+														i >=
+														oldInnerBlocks.length
+													)
+														return;
+
+													column.clientId =
+														oldInnerBlocks[
+															i
+														].clientId;
+												}
+											);
+
+											markNextChangeAsNotPersistent();
+											replaceInnerBlocks(
+												rowClientId,
+												clonedInnerBlocks
+											);
+										});
+									}
+								}
+
 								onChange({
-									[`row-pattern-${breakpoint}`]:
-										template.isMoreThanEightColumns
-											? numCol.toString()
-											: template.name,
+									[getAttributeKey(
+										'row-pattern',
+										false,
+										null,
+										breakpoint
+									)]: newRowPattern,
 								});
 							}}
 						>

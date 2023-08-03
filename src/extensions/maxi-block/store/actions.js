@@ -21,10 +21,9 @@ const actions = {
 			blockRoot,
 		};
 	},
-	saveLastInsertedBlocks(lastInsertedBlocks) {
+	saveLastInsertedBlocks() {
 		return {
 			type: 'SAVE_LAST_INSERTED_BLOCKS',
-			lastInsertedBlocks,
 		};
 	},
 	saveBlockClientIds(blockClientIds) {

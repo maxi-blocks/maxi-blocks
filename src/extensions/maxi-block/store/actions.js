@@ -21,6 +21,18 @@ const actions = {
 			blockRoot,
 		};
 	},
+	saveLastInsertedBlocks(lastInsertedBlocks) {
+		return {
+			type: 'SAVE_LAST_INSERTED_BLOCKS',
+			lastInsertedBlocks,
+		};
+	},
+	saveBlockClientIds(blockClientIds) {
+		return {
+			type: 'SAVE_BLOCK_CLIENT_IDS',
+			blockClientIds,
+		};
+	},
 };
 
 export default actions;

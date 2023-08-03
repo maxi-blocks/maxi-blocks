@@ -845,9 +845,8 @@ class MaxiBlockComponent extends Component {
 			const allClientIds =
 				select('core/block-editor').getClientIdsWithDescendants();
 
+			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
 			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
-
-			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks();
 		}
 	}
 

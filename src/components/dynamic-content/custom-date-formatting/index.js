@@ -189,15 +189,15 @@ const DateFormatting = props => {
 						hasBorder
 						items={[
 							{
-								label: __('Date', 'maxi-block'),
+								label: __('Date', 'maxi-blocks'),
 								value: 'year',
 							},
 							{
-								label: __('Time', 'maxi-block'),
+								label: __('Time', 'maxi-blocks'),
 								value: 'time',
 							},
 							{
-								label: __('Zone', 'maxi-block'),
+								label: __('Zone', 'maxi-blocks'),
 								value: 'zone',
 							},
 						]}

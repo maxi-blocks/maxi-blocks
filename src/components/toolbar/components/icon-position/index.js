@@ -33,7 +33,7 @@ const IconPosition = props => {
 		>
 			<div className='toolbar-item__icon-position__popover'>
 				<SelectControl
-					label={__('Icon position', 'maxi-block')}
+					label={__('Icon position', 'maxi-blocks')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
 					defaultValue={getDefaultAttribute('icon-position')}

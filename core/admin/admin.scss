@@ -484,6 +484,27 @@ body.toplevel_page_maxi-blocks-dashboard {
 									}
 								}
 							}
+							button#maxi-regenerate-styles-button {
+								background-color: var(--maxi-primary-color);
+								font-size: 12px;
+								border: none;
+								border-radius: 0;
+								box-shadow: none;
+								padding: 6px 22px;
+								transition: 0.3s;
+								color: #fff;
+								line-height: 2.3;
+								&:hover {
+									background-color: #000;
+								}
+								&:disabled {
+									background-color: #dbdde6;
+									color: #fff;
+									&:hover {
+										background-color: #dbdde6;
+									}
+								}
+							}
 						}
 					}
 				}

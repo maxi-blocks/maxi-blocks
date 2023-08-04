@@ -108,6 +108,7 @@
 				display: none;
 			}
 
+			// WP 6.2.2 and lower support
 			&.has-icon::before {
 				content: 'Search';
 				display: block;
@@ -142,6 +143,13 @@
 				&:hover {
 					background: var(--maxi-grey-3-color);
 				}
+			}
+
+			// WP 6.2.2 and lower support
+			&:has(.block-editor-link-control__search-submit.has-icon) {
+				position: absolute;
+				top: 2px;
+				right: 2px;
 			}
 		}
 		&__settings {
@@ -226,6 +234,7 @@
 		text-align: center;
 		color: #fff;
 		display: block;
+
 		&:hover {
 			color: var(--maxi-white-1-color);
 			background-color: var(--maxi-black-1-color) !important;

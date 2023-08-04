@@ -20,10 +20,11 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
 				props,
 			})}
+			{inspectorTabs.repeaterInfoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -80,6 +81,10 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors: customCss.selectors,
 										categories: customCss.categories,
+									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'slide',
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

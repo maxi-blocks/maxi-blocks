@@ -15,6 +15,10 @@ import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
 import { copyPasteMapping } from './data';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,
@@ -53,6 +57,7 @@ const Content = forwardRef((props, ref) => {
 					'maxi-blocks/pane-maxi',
 					'maxi-blocks/maxi-cloud',
 					'maxi-blocks/slide-maxi',
+					'core/list-item',
 				].indexOf(blockName) === -1
 		);
 
@@ -268,4 +273,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

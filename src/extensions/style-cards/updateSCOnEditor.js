@@ -34,7 +34,7 @@ const getSCFontsData = obj => {
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
-			fontName = val.replaceAll('"', '');
+			if (val) fontName = val.replaceAll('"', '');
 			response[fontName] = response[fontName] ?? {
 				weight: [],
 				style: [],
@@ -61,15 +61,21 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCStyles = async (element, SCObject) => {
+const updateSCStyles = (element, SCObject, gutenbergBlocksStatus) => {
 	const SCStylesEl = element.getElementById(
 		'maxi-blocks-sc-styles-inline-css'
 	);
 
-	if (SCStylesEl) {
-		const SCStyles = await getSCStyles(SCObject, true);
+	const SCStyles = getSCStyles(SCObject, gutenbergBlocksStatus, true);
 
+	if (SCStylesEl) {
 		SCStylesEl.innerHTML = SCStyles;
+	} else {
+		const newSCStylesEl = element.createElement('style');
+		newSCStylesEl.id = 'maxi-blocks-sc-styles-inline-css';
+		newSCStylesEl.innerHTML = SCStyles;
+
+		element.head.appendChild(newSCStylesEl);
 	}
 };
 
@@ -87,7 +93,7 @@ const updateSCOnEditor = (
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
-	elements.forEach((element, i) => {
+	elements.forEach(element => {
 		if (!element) return;
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
@@ -110,7 +116,11 @@ const updateSCOnEditor = (
 		} else {
 			SCVarEl.innerHTML = SCVariableString;
 
-			updateSCStyles(element, SCObject);
+			updateSCStyles(
+				element,
+				SCObject,
+				styleCards.gutenberg_blocks_status
+			);
 		}
 
 		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);

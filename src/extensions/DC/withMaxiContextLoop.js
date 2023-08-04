@@ -9,6 +9,7 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
+import { orderRelations } from './constants';
 import LoopContext from './loopContext';
 
 /**
@@ -26,7 +27,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			if (!attributes.isFirstOnHierarchy) {
 				const context = useContext(LoopContext);
 
-				prevContextLoopAttributes = context.contextLoop;
+				if (context) prevContextLoopAttributes = context.contextLoop;
 			}
 
 			const contextLoopAttributes = getGroupAttributes(
@@ -36,9 +37,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>
-					['by-date', 'alphabetical'].includes(
-						attributes?.['cl-relation']
-					);
+					orderRelations.includes(attributes?.['cl-relation']);
 
 				const isCurrentAccumulator = getIsAccumulator(
 					contextLoopAttributes
@@ -86,11 +85,33 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					block => block.clientId === clientId
 				);
 
-				const { name: parentOfParentName } = getBlock(
-					getBlockParents(parent.clientId)
-						.filter(id => id !== parent.clientId)
-						.at(-1)
-				);
+				if (
+					[
+						'maxi-blocks/accordion-maxi',
+						'maxi-blocks/slider-maxi',
+					].includes(parent.name) &&
+					[
+						'maxi-blocks/pane-maxi',
+						'maxi-blocks/slide-maxi',
+					].includes(name)
+				) {
+					const isParentAccumulator = getIsAccumulator(
+						parent.attributes
+					);
+					// Increase the accumulator only if context loop is enabled in the parent
+					if (isParentAccumulator && currentBlockIndex !== 0) {
+						return prevAccumulator + currentBlockIndex;
+					}
+
+					return prevAccumulator;
+				}
+
+				const { name: parentOfParentName } =
+					getBlock(
+						getBlockParents(parent.clientId)
+							.filter(id => id !== parent.clientId)
+							.at(-1)
+					) ?? {};
 
 				const isFirstOnHierarchyColumn =
 					name === 'maxi-blocks/column-maxi' &&

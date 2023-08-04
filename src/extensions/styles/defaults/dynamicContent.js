@@ -120,6 +120,9 @@ const dynamicContent = {
 		type: 'string',
 		default: '',
 	},
+	'dc-order-by': {
+		type: 'string',
+	},
 	'dc-order': {
 		type: 'string',
 	},
@@ -138,4 +141,13 @@ const dynamicContent = {
 	},
 };
 
-export default dynamicContent;
+const dynamicContentLink = {
+	'dc-status': {
+		type: 'boolean',
+	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
+};
+
+export { dynamicContent, dynamicContentLink };

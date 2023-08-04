@@ -36,27 +36,31 @@ class MaxiBlocks_StyleCards
      */
     public function enqueue_styles()
     {
-        $vars = $this->get_style_card_variables();
+        if(!wp_style_is('maxi-blocks-sc-vars', 'registered')) {
+            $vars = $this->get_style_card_variables();
 
-        // SC variables
-        if ($vars) {
-            wp_register_style('maxi-blocks-sc-vars', false);
-            wp_enqueue_style('maxi-blocks-sc-vars');
-            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+            // SC variables
+            if ($vars) {
+                wp_register_style('maxi-blocks-sc-vars', false);
+                wp_enqueue_style('maxi-blocks-sc-vars');
+                wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+            }
         }
 
-        $styles = $this->get_style_card_styles();
+        if(!wp_style_is('maxi-blocks-sc-styles', 'registered')) {
+            $styles = $this->get_style_card_styles();
 
-        // MVP: ensure no margin-bottom for button
-        if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
-            $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
-        }
+            // MVP: ensure no margin-bottom for button
+            if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+                $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+            }
 
-        // SC styles
-        if ($styles) {
-            wp_register_style('maxi-blocks-sc-styles', false);
-            wp_enqueue_style('maxi-blocks-sc-styles');
-            wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+            // SC styles
+            if ($styles) {
+                wp_register_style('maxi-blocks-sc-styles', false);
+                wp_enqueue_style('maxi-blocks-sc-styles');
+                wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+            }
         }
     }
 
@@ -250,7 +254,7 @@ class MaxiBlocks_StyleCards
          * font-family of the paragraph text level.
          */
         if ($text_level === 'button' && (empty($font) || empty(str_replace('"', '', $font)) || str_contains($font, 'undefined'))) {
-            $font = $style_card_values->p['font-family-general'];
+            $font = $style_card_values->p['font-family-general'] ?? $default_values['p']['font-family-general'];          
         }
 
         $font_weights = [];

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { forwardRef, memo, useRef } from '@wordpress/element';
+import { forwardRef, memo, useContext, useRef } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
  * Internal dependencies
  */
 import { memoChildrenComparator } from '../../extensions/maxi-block';
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * Styles and icons
@@ -38,6 +39,8 @@ const BlockResizer = memo(
 		// Needed for memo part only
 		delete rest.deviceType;
 		const hasCleanedStyles = useRef(false);
+
+		const repeaterStatus = !!useContext(RepeaterContext)?.repeaterStatus;
 
 		const classes = classnames(
 			'maxi-block__resizer',
@@ -95,7 +98,8 @@ const BlockResizer = memo(
 				handleClassName,
 				showHandlesClassName,
 				!isCorner ? sideHandleClassName : cornerHandleClassName,
-				`maxi-resizable__handle-${axis}`
+				`maxi-resizable__handle-${axis}`,
+				repeaterStatus && 'maxi-resizable__handle--repeater'
 			);
 
 		const handleClasses = {

@@ -29,22 +29,31 @@ const loadTemplate = (template, clientId) => {
 	);
 };
 
-const updateTemplate = (template, columnsBlockObjects, clientId) => {
+const updateTemplate = (
+	template,
+	columnsBlockObjects,
+	clientId,
+	noLeftoverInsertion = false,
+	isMarkNextChangeAsNotPersistent = false
+) => {
 	const templateLength = template.content.length;
 	const newAttributes = template.attributes;
-	const leftoverContent = compact(
-		columnsBlockObjects.map((column, i) => {
-			if (i < templateLength) return null;
 
-			return column.innerBlocks;
-		})
-	);
+	if (!noLeftoverInsertion) {
+		const leftoverContent = compact(
+			columnsBlockObjects.map((column, i) => {
+				if (i < templateLength) return null;
 
-	// Insert leftover content on the last column
-	if (columnsBlockObjects.length > templateLength)
-		columnsBlockObjects[templateLength - 1].innerBlocks.push(
-			...flatten(leftoverContent)
+				return column.innerBlocks;
+			})
 		);
+
+		// Insert leftover content on the last column
+		if (columnsBlockObjects.length > templateLength)
+			columnsBlockObjects[templateLength - 1].innerBlocks.push(
+				...flatten(leftoverContent)
+			);
+	}
 
 	const newTemplate = synchronizeBlocksWithTemplate(
 		columnsBlockObjects,
@@ -60,6 +69,13 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	});
 
 	const rowBlock = select('core/block-editor').getBlock(clientId);
+	if (isMarkNextChangeAsNotPersistent) {
+		const {
+			__unstableMarkNextChangeAsNotPersistent:
+				markNextChangeAsNotPersistent,
+		} = dispatch('core/block-editor');
+		markNextChangeAsNotPersistent();
+	}
 	dispatch('core/block-editor').replaceBlock(clientId, {
 		...rowBlock,
 		attributes: {
@@ -70,7 +86,15 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	});
 };
 
-const loadColumnsTemplate = (templateName, clientId, breakpoint, numCol) => {
+const loadColumnsTemplate = (
+	templateName,
+	clientId,
+	breakpoint,
+	numCol,
+	noLeftoverInsertion,
+	isMarkNextChangeAsNotPersistent,
+	avoidRowAttributesChange
+) => {
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks;
@@ -80,13 +104,20 @@ const loadColumnsTemplate = (templateName, clientId, breakpoint, numCol) => {
 		getColumnTemplate(
 			templateName,
 			isRowEmpty ? 'general' : breakpoint,
-			numCol
+			numCol,
+			avoidRowAttributesChange
 		)
 	);
 
 	isRowEmpty
 		? loadTemplate(template, clientId)
-		: updateTemplate(template, columnsBlockObjects, clientId, numCol);
+		: updateTemplate(
+				template,
+				columnsBlockObjects,
+				clientId,
+				noLeftoverInsertion,
+				isMarkNextChangeAsNotPersistent
+		  );
 };
 
 export default loadColumnsTemplate;

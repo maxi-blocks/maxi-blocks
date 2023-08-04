@@ -15,6 +15,7 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.rowPattern,
+	...attributesData.repeater,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
@@ -38,6 +39,7 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.contextLoop,
+	...attributesData.dynamicContentLink,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,

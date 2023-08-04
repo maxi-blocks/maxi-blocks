@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { openSidebarAccordion } from '../../extensions/inspector';
@@ -28,6 +33,11 @@ const InfoBox = ({ className, message, links, tab = 0, onClose }) => {
 						<a
 							key={uniqueId('maxi-warning-box__links__item')}
 							onClick={() => {
+								if (!isEmpty(item.clientId))
+									dispatch('core/block-editor').selectBlock(
+										item.clientId
+									);
+
 								if (!isEmpty(item.panel))
 									openSidebarAccordion(tab, item.panel);
 

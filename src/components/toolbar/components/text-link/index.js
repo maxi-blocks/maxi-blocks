@@ -4,15 +4,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import LinkControl from '../../../link-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
-import Button from '../../../button';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
 import { createLinkAttributes, createLinkValue } from './utils';
@@ -31,7 +30,7 @@ import Link from '../link';
 import { isEmpty, isEqual, isNil } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
@@ -46,7 +45,8 @@ const LinkContent = props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue = { formats: [] }, onChangeTextFormat } =
+		useContext(textContext);
 
 	const getFormatOptions = () => {
 		// Checks if the whole text string is under same link
@@ -172,7 +172,7 @@ const LinkContent = props => {
 		onChange(newLinkValue, obj);
 	};
 
-	const removeLinkFormatHandle = () => {
+	const onRemoveLink = () => {
 		const obj = removeLinkFormat({
 			formatValue,
 			isList,
@@ -228,7 +228,7 @@ const LinkContent = props => {
 		onChange(newLinkAttributes, { content });
 	};
 
-	const onClick = attributes => {
+	const onChangeLink = attributes => {
 		const newAttributes = prepareUrl(attributes);
 		const newLinkAttributes = createLinkAttributes({
 			...newAttributes,
@@ -248,38 +248,11 @@ const LinkContent = props => {
 	};
 
 	return (
-		<>
-			<__experimentalLinkControl
-				value={linkValue}
-				onChange={onClick}
-				settings={[
-					{
-						id: 'opensInNewTab',
-						title: __('Open in new tab', 'maxi-blocks'),
-					},
-					{
-						id: 'noFollow',
-						title: __('"nofollow"', 'maxi-blocks'),
-					},
-					{
-						id: 'sponsored',
-						title: __('"sponsored"', 'maxi-blocks'),
-					},
-					{
-						id: 'ugc',
-						title: __('"UGC"', 'maxi-blocks'),
-					},
-				]}
-			/>
-			{!isEmpty(linkValue.url) && (
-				<Button
-					className='toolbar-popover-link-destroyer'
-					onClick={removeLinkFormatHandle}
-				>
-					{__('Remove link', 'maxi-blocks')}
-				</Button>
-			)}
-		</>
+		<LinkControl
+			linkValue={linkValue}
+			onChangeLink={onChangeLink}
+			onRemoveLink={onRemoveLink}
+		/>
 	);
 };
 

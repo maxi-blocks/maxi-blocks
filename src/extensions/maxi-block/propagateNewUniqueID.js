@@ -7,7 +7,6 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
-import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
@@ -21,7 +20,8 @@ const propagateNewUniqueID = (
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};
-	const lastChangedBlocks = getLastChangedBlocks();
+	const lastChangedBlocks =
+		select('maxiBlocks/blocks').getLastInsertedBlocks();
 
 	const updateBlockAttributesUpdate = (clientId, key, value) => {
 		if (!blockAttributesUpdate[clientId])
@@ -106,7 +106,10 @@ const propagateNewUniqueID = (
 			}
 		};
 
-		lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+		lastChangedBlocks.forEach(clientId => {
+			const block = select('core/block-editor').getBlock(clientId);
+			updateNewUniqueID(block);
+		});
 	};
 
 	const updateBGLayers = () => {

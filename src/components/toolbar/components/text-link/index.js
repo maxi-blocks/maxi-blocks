@@ -45,8 +45,7 @@ const LinkContent = props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
-	const { formatValue = { formats: [] }, onChangeTextFormat } =
-		useContext(textContext);
+	const { formatValue, onChangeTextFormat } = useContext(textContext);
 
 	const getFormatOptions = () => {
 		// Checks if the whole text string is under same link
@@ -59,9 +58,9 @@ const LinkContent = props => {
 					formatClassName: null,
 					formatAttributes: null,
 				}),
-				[0, formatValue.formats.length]
+				[0, formatValue?.formats?.length]
 			) &&
-			formatValue.formats.every(formatArray => {
+			formatValue?.formats?.every(formatArray => {
 				return formatArray.every(format => {
 					if (format.type !== formatName) return true;
 
@@ -73,7 +72,7 @@ const LinkContent = props => {
 					);
 				});
 			});
-		const end = formatValue.formats.length + 1;
+		const end = (formatValue?.formats?.length || 0) + 1;
 		const start =
 			isWholeLink && formatValue.start === formatValue.end
 				? 0

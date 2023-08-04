@@ -52,6 +52,13 @@ const getTypographyStyles = ({
 				breakpoint
 			)
 		];
+	const getLastBreakpointValue = (target, breakpoint) =>
+		getLastBreakpointAttribute({
+			target: `${prefix}${target}`,
+			breakpoint,
+			attributes: obj,
+			isHover: !isCustomFormat && isHover,
+		});
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
@@ -76,9 +83,18 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
-		const paletteSCStatus = getValue('palette-sc-status', breakpoint);
-		const paletteColor = getValue('palette-color', breakpoint);
-		const paletteOpacity = getValue('palette-opacity', breakpoint);
+		const paletteSCStatus = getLastBreakpointValue(
+			'palette-sc-status',
+			breakpoint
+		);
+		const paletteColor = getLastBreakpointValue(
+			'palette-color',
+			breakpoint
+		);
+		const paletteOpacity = getLastBreakpointValue(
+			'palette-opacity',
+			breakpoint
+		);
 
 		if (
 			!paletteSCStatus &&

@@ -1134,6 +1134,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_rollback_version',
                 $args_rollback,
             );
+            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
+            register_setting('maxi-blocks-settings-group', 'maxi_sc_gutenberg_blocks', $args);
+            register_setting('maxi-blocks-settings-group', 'maxi_show_indicators', $args);
         }
 
         public function get_folder_size($folder)

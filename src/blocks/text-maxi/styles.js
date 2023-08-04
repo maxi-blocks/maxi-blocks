@@ -468,6 +468,19 @@ const getMarkerObject = props => {
 						attributes: props,
 					}) || 'px';
 
+				// List marker height
+				const heightNum = getLastBreakpointAttribute({
+					target: 'list-marker-height',
+					breakpoint,
+					attributes: props,
+				});
+				const heightUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-height-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
+
 				// Text position
 				const textPosition =
 					getLastBreakpointAttribute({
@@ -510,6 +523,20 @@ const getMarkerObject = props => {
 						attributes: props,
 					}) || 'px';
 
+				// Marker vertical offset
+				const verticalOffsetMarkerNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-vertical-offset',
+						breakpoint,
+						attributes: props,
+					}) || 0;
+				const verticalOffsetMarkerUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-vertical-offset-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
+
 				response.listSize[breakpoint] = {
 					...(typeOfList === 'ul' &&
 					listStyle === 'custom' &&
@@ -517,13 +544,27 @@ const getMarkerObject = props => {
 					listStyleCustom.includes('</svg>')
 						? {
 								width: sizeNum + sizeUnit,
+								...(!isNil(heightNum) && {
+									height: heightNum + heightUnit,
+									// Vertically center the SVG marker content if the height is set
+									...(textPosition === 'middle' && {
+										top: `calc(${
+											heightNum / 2 + heightUnit
+										} - (${sizeNum / 2 + sizeUnit}))`,
+									}),
+								}),
 						  }
-						: { 'font-size': sizeNum + sizeUnit }),
+						: {
+								'font-size': sizeNum + sizeUnit,
+						  }),
 					'line-height':
 						lineHeightMarkerNum +
 						(lineHeightMarkerUnit !== '-'
 							? lineHeightMarkerUnit
 							: ''),
+					...(verticalOffsetMarkerNum && {
+						transform: `translateY(${verticalOffsetMarkerNum}${verticalOffsetMarkerUnit})`,
+					}),
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
 						(listStyle !== 'custom'
@@ -648,6 +689,21 @@ const getStyles = props => {
 					[` ${element}.maxi-text-block__content a`],
 					props.blockStyle
 				),
+				...(props['dc-status'] && {
+					...getLinkStyles(
+						{
+							...getGroupAttributes(props, [
+								'link',
+								'typography',
+								'typographyHover',
+							]),
+						},
+						[
+							`.maxi-block--has-link ${element}.maxi-text-block__content`,
+						],
+						props.blockStyle
+					),
+				}),
 			},
 			data,
 			props

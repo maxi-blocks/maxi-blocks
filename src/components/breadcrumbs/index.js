@@ -7,6 +7,7 @@ import { useSelect, useDispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles
@@ -16,12 +17,14 @@ import './editor.scss';
 /**
  * Component
  */
-const MaxiBreadcrumbs = () => {
+const MaxiBreadcrumbs = ({ repeaterStatus }) => {
 	const { originalNestedBlocks } = useSelect(select => {
 		const { getSelectedBlockClientId, getBlockParents } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
-		const originalNestedBlocks = clientId ? getBlockParents(clientId) : [];
+		const originalNestedBlocks = clientId
+			? [...getBlockParents(clientId)]
+			: [];
 		if (!originalNestedBlocks.includes(clientId))
 			originalNestedBlocks.push(clientId);
 		return {
@@ -34,7 +37,12 @@ const MaxiBreadcrumbs = () => {
 	if (originalNestedBlocks.length <= 1) return null;
 
 	return (
-		<ul className='maxi-breadcrumbs'>
+		<ul
+			className={classnames(
+				'maxi-breadcrumbs',
+				repeaterStatus && 'maxi-breadcrumbs--repeater'
+			)}
+		>
 			{originalNestedBlocks.map(blockId => {
 				const blockName =
 					select('core/block-editor').getBlockName(blockId);

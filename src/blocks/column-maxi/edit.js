@@ -7,7 +7,7 @@ import { createRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import RowContext from '../row-maxi/context';
+import RowContext from '../row-maxi/rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
@@ -20,7 +20,11 @@ import {
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
-import { withMaxiContextLoop } from '../../extensions/DC';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
+import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
 
 /**
  * External dependencies
@@ -193,7 +197,14 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/pane-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/slide-maxi',
+						'core/list-item',
+						...DISALLOWED_BLOCKS,
 					].indexOf(blockName) === -1
+			)
+			.concat(
+				this.props.repeaterStatus
+					? Array(DISALLOWED_BLOCKS.length).fill(null)
+					: DISALLOWED_BLOCKS
 			);
 
 		const emptyColumnClass = !hasInnerBlocks
@@ -280,4 +291,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(withMaxiProps(edit));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

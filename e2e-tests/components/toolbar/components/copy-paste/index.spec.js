@@ -366,6 +366,6 @@ describe('CopyPaste from Toolbar', () => {
 					).length
 		);
 
-		expect(innerBlocksNum).toBe(4);
+		expect(innerBlocksNum).toBe(3);
 	});
 });

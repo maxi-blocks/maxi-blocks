@@ -55,8 +55,12 @@ const LinkControl = ({ linkValue = {}, onChangeLink, onRemoveLink }) => {
 									id: 'ugc',
 								},
 							],
-						].map(options => (
-							<div className='maxi-link-control__options-row'>
+						].map((options, index) => (
+							<div
+								// eslint-disable-next-line react/no-array-index-key
+								key={index}
+								className='maxi-link-control__options-row'
+							>
 								{options.map(({ label, id }) => (
 									<ToggleSwitch
 										key={id}

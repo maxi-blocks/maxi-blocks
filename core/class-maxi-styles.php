@@ -1029,26 +1029,13 @@ class MaxiBlocks_Styles
         $post_id = $this->get_id();
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
-        if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
-            $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
-
+        if ($contentMetaFonts['meta'] !== null) {
             $metaFiltered = null;
             if ($contentMetaFonts['meta'] !== null) {
                 $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
             }
 
-            $templateFiltered = null;
-            if ($contentMetaFonts['template_meta'] !== null) {
-                $templateFiltered = $this->filter_recursive($contentMetaFonts['template_meta']);
-            }
-
-            $templateContentFiltered = null;
-            if ($templateContent !== null) {
-                $templateContentFiltered = $this->filter_recursive($templateContent);
-            }
-
-
-            $this->process_scripts($metaFiltered, $templateFiltered, $templateContentFiltered);
+            $this->process_scripts($metaFiltered);
         }
 
 
@@ -1067,22 +1054,17 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks($template, $id);
 
-        write_log('$template');
-        write_log($template);
-
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
-            $templateMeta = $data['template_meta'] ?? null;
 
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
-                'template_meta' => $templateMeta,
                 'fonts' => $data['fonts'],
             ];
         }
-        return ['content' => null, 'meta' => null, 'template_meta' => null, 'fonts' => null];
+        return ['content' => null, 'meta' => null, 'fonts' => null];
     }
 
 
@@ -1093,7 +1075,7 @@ class MaxiBlocks_Styles
      * @param  string $template_content
      * @return void
      */
-    private function process_scripts($post_meta, $template_meta, $template_content)
+    private function process_scripts($post_meta)
     {
 
         $scripts = [
@@ -1119,7 +1101,6 @@ class MaxiBlocks_Styles
             'relations',
         ];
 
-        $template_parts = $this->get_template_parts($template_content);
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
@@ -1130,14 +1111,9 @@ class MaxiBlocks_Styles
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
-            $template_parts_meta = [];
             $meta_to_pass = [];
 
-            if ($template_parts) {
-                $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
-            }
-
-            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta, $template_parts_meta);
+            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
             $match = false;
             $block_names = [];
 
@@ -1538,7 +1514,6 @@ class MaxiBlocks_Styles
         // Save the post with the updated blocks
         $post->post_content = serialize_blocks($blocks);
         wp_update_post($post);
-        sleep(1);
 
         // Parse the blocks again after the content has been updated
         $post = get_post($post_id);

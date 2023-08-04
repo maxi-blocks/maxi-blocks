@@ -61,12 +61,12 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
+const updateSCStyles = (element, SCObject, gutenbergBlocksStatus) => {
 	const SCStylesEl = element.getElementById(
 		'maxi-blocks-sc-styles-inline-css'
 	);
 
-	const SCStyles = await getSCStyles(SCObject, gutenbergBlocksStatus, true);
+	const SCStyles = getSCStyles(SCObject, gutenbergBlocksStatus, true);
 
 	if (SCStylesEl) {
 		SCStylesEl.innerHTML = SCStyles;

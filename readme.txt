@@ -3,10 +3,10 @@
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
-Requires at least: 6.1.1
-Tested up to: 6.2
+Requires at least: 6.2
+Tested up to: 6.3
 Requires PHP: 7.1
-Stable tag: 1.2.1
+Stable tag: 1.3
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -267,6 +267,44 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
+_Updates: 7 August 2023_
+
+* Update: WordPress 6.3 compatibility
+* Update: Link icon added in the toolbar for Interaction builder
+* Update: Disabled list modified when Dynamic content enabled
+* Update: Marker size adjusted for responsive displays
+* Update: Image wrapper height changed from inherit to 100%
+* Update: Canvas label added for text block in Interaction builder
+* Update: New features for Dynamic content and Content loop developed, adding relations by category, author, and tag
+* Update: Marker size migrator implemented
+* Update: Consistent Dynamic content random content on the editor ensured
+* Update: Accordion Custom CSS improved
+* Update: Hide settings in Style card editor until they are available for changing
+* Update: Interaction builder implemented for background layers
+* Update: Dependencies, including tough-cookie and word-wrap versions, updated
+* Update: Styles consistency ensured on page reload
+* Update: Typography colours adjusted for responsive displays
+* Update: Links in higher blocks disabled when tags/categories links are enabled
+* Update: Dynamic content link provided for context loop blocks
+* Update: Interaction builder background transitions implemented
+* Update: Hover colour added for the search close icon
+* Update: Text strings allowed in number inputs
+* Update: Repeater functionality implemented
+* Fix: Issue with tags and categories links on the editor addressed
+* Fix: Styles on Gutenberg's responsive preview improved
+* Fix: Issue where the background layers disappeared on special paste addressed
+* Fix: Interaction builder reset issue resolved
+* Fix: PHP warning on the frontend resolved
+* Fix: Interaction builder unit bugs resolved
+* Fix: Bug with big marker size resolved
+* Fix: Temporary overlap of number attributes fixed
+* Fix: Visited links colour for custom formats fixed
+* Fix: Toolbar indent/outdent functionality fixed
+* Fix: Background gradient opacity reset issue addressed
+* Fix: Container indicators fixed
+* Fix: Issues with 'custom data' on Site editor
+* Fix: Default Style cards font-family for Button Maxi
+
 _Updates: 19 June 2023_
 
 * Update: Advanced Custom Fields integration into Dynamic content
@@ -285,38 +323,6 @@ _Updates: 19 June 2023_
 * Fix: Disallowed new background layer on hover
 * Fix: Popover position for tablet and mobile preview
 * Fix: UI for long labels in Dynamic content
-
-_Updates: 16 May 2023_
-
-* Update: Option to serve the Google Fonts files locally
-* Update: Pro account login. Allow up to 5 device sessions per user account
-* Update: Context loop integration. Speed up everyone's page-building process. It's similar to the Gutenberg "query loop block" but it's integrated with Maxi's blocks; container, row, column, and group. It works with the responsive grid and dynamic content. Required for the Blog block. Create dynamic page layout templates with advanced controls. The feature uses patterns and dynamic content to produce structured layout templates with dynamic content such as blog index, search, archives, custom posts, galleries and so on. Tutorial videos coming soon
-* Update: Constants with static text as buttons field option
-* Update: Implement static text as Dynamic content for button maxi
-* Update: Modified cleanAttributes to keep boolean attributes
-* Update: Migrated full-width attributes from string to boolean
-* Update: Dynamic content (dc), add users relation options
-* Update: Dynamic content, implement dc author on frontend
-* Update: Give updated attributes to save migrators
-* Update: Add support for style card modal in full set editing mode
-* Fix: Custom colours for style cards
-* Fix: Dialogue box for Site Editing UI
-* Fix: Style card variables for Site Editing back-end
-* Fix: Possible 404 errors for Google fonts
-* Fix: Various PHP warnings
-* Fix: Warnings on React 18
-* Fix: Better image import handling from template library for images with similar names
-* Fix: Style cards not editable on XXL breakpoint
-* Fix: Style cards bug on lower breakpoints
-* Fix: Search block icon position
-* Fix: Dynamic content, fix author on editor
-* Fix: Button hover migration bug
-* Fix: Style card variables and styles for Button Maxi
-* Fix: Undefined button font
-* Fix: button icon palette
-* Fix: Style card colour on frontend
-* Fix: Dynamic content, content for Site Editing
-
 
 == Upgrade Notice ==
 

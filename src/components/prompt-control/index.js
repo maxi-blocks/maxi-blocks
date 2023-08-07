@@ -12,24 +12,24 @@ import ContentLoader from '../content-loader';
 import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
+import { getChatPrompt, getUniqueId } from './utils';
+import { CONTENT_TYPES, LANGUAGES, TONES, WRITING_STYLES } from './constants';
 
 /**
  * External dependencies
  */
+import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { isEmpty } from 'lodash';
+import InfoBox from '../info-box';
+
+export const DEFAULT_CONFIDENCE_LEVEL = 75;
 
 const PromptControl = ({ content, onChangeContent }) => {
 	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
-	// const openAIApiKey = receiveMaxiSettings()
-	// 	.then(maxiSettings => {
-	// 		const openAIApiKey = maxiSettings?.openai_api_key;
-	// 		return openAIApiKey;
-	// 	})
-	// 	.catch(() => console.error('Maxi Blocks: Could not load settings'));
-
-	// console.log(openAIApiKey);
 	const [openAIApiKey, setOpenAIApiKey] = useState(null);
+
+	const [tab, setTab] = useState('generate'); // generate, modify
 
 	const textContext = useContext(TextContext);
 	const selectedText = content.substring(
@@ -37,8 +37,36 @@ const PromptControl = ({ content, onChangeContent }) => {
 		textContext.formatValue.end
 	);
 
-	const [isFetching, setIsFetching] = useState(false);
+	const [contentType, setContentType] = useState({
+		label: CONTENT_TYPES[0],
+		value: CONTENT_TYPES[0],
+	});
+	const [tone, setTone] = useState({ label: TONES[0], value: TONES[0] });
+	const [writingStyle, setWritingStyle] = useState({
+		label: WRITING_STYLES[0],
+		value: WRITING_STYLES[0],
+	});
+	const [characterCount, setCharacterCount] = useState(0);
+	const [confidenceLevel, setConfidenceLevel] = useState(
+		DEFAULT_CONFIDENCE_LEVEL
+	);
+	const [language, setLanguage] = useState({
+		label: LANGUAGES[0],
+		value: LANGUAGES[0],
+	});
+	const [prompt, setPrompt] = useState(
+		'Elon Musk changed twitter.com domain to x.com'
+	);
 	const [results, setResults] = useState([]);
+	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
+
+	const switchToModifyTab = () => {
+		setTab('modify');
+	};
+
+	const switchToGenerateTab = () => {
+		setTab('generate');
+	};
 
 	useEffect(() => {
 		const getOpenAIApiKey = async () => {
@@ -53,13 +81,21 @@ const PromptControl = ({ content, onChangeContent }) => {
 		};
 
 		getOpenAIApiKey();
+
+		const results = JSON.parse(localStorage.getItem('maxi-prompt-results'));
+		if (!isEmpty(results)) {
+			setResults(results);
+		}
 	}, []);
 
 	useEffect(() => {
 		if (!isEmpty(selectedText)) {
+			const newId = getUniqueId(results);
+
+			switchToModifyTab();
 			setResults([
 				{
-					id: 1,
+					id: newId,
 					content: selectedText,
 					isSelectedText: true,
 					formatValue: {
@@ -68,40 +104,209 @@ const PromptControl = ({ content, onChangeContent }) => {
 					},
 				},
 			]);
+			setSelectedResult(newId);
 		} else if (!isEmpty(results) && isEmpty(selectedText)) {
 			setResults(results.filter(result => !result.isSelectedText));
+			switchToGenerateTab();
 		}
 	}, [selectedText]);
 
-	if (isFetching || !openAIApiKey) {
+	useEffect(() => {
+		localStorage.setItem('maxi-prompt-results', JSON.stringify(results));
+	}, [results]);
+
+	if (openAIApiKey === null) {
 		return <ContentLoader />;
 	}
 
-	const goToGenerateTab = () => {
-		setResults([]);
+	if (!openAIApiKey) {
+		// TODO:
+		return <InfoBox />;
+	}
+
+	const getMessages = async () => {
+		const { value: contentTypeVal } = contentType;
+		const { value: toneVal } = tone;
+		const { value: writingStyleVal } = writingStyle;
+		const { value: languageVal } = language;
+
+		const systemTemplate = `You are a helpful assistant that generates text based on the given criteria and human message.\n
+		Content type: {content_type}\n
+		Tone: {tone}\n
+		Writing style: {writing_style}\n
+		Character count guideline: {character_count}\n
+		Language: {language}\n
+		`;
+		const humanTemplate = '{text}';
+
+		const chatPrompt = getChatPrompt(systemTemplate, humanTemplate);
+
+		const messages = await chatPrompt.formatMessages({
+			content_type: contentTypeVal,
+			tone: toneVal,
+			writing_style: writingStyleVal,
+			character_count: characterCount,
+			language: languageVal,
+			text: prompt,
+		});
+
+		return messages;
+	};
+
+	const generateContent = async () => {
+		switchToModifyTab();
+
+		try {
+			const chat = new ChatOpenAI({
+				openAIApiKey,
+				modelName: 'gpt-3.5-turbo',
+				temperature: confidenceLevel / 100,
+				streaming: true,
+			});
+
+			const messages = await getMessages();
+
+			const newId = getUniqueId(results);
+
+			setResults(prevResults => {
+				const newResults = [
+					{
+						id: newId,
+						content: '',
+						loading: true,
+					},
+					...prevResults,
+				];
+
+				return newResults;
+			});
+
+			setSelectedResult(newId);
+
+			const response = await chat.call(messages, {
+				callbacks: [
+					{
+						handleLLMNewToken(token) {
+							setResults(prevResults => {
+								const newResults = [...prevResults];
+								const addedResult = newResults.find(
+									result => result.id === newId
+								);
+
+								if (addedResult?.loading) {
+									addedResult.content += token;
+								}
+
+								return newResults;
+							});
+						},
+					},
+				],
+			});
+
+			// const response = {
+			// 	generations: [
+			// 		[
+			// 			{
+			// 				text: 'Elon Musk Transforms Twitter.com into X.com, Unveiling a New Era in Online Communication',
+			// 				message: {
+			// 					lc: 1,
+			// 					type: 'constructor',
+			// 					id: ['langchain', 'schema', 'AIMessage'],
+			// 					kwargs: {
+			// 						content:
+			// 							'Elon Musk Transforms Twitter.com into X.com, Unveiling a New Era in Online Communication',
+			// 						additional_kwargs: {},
+			// 					},
+			// 				},
+			// 			},
+			// 			// {
+			// 			// 	text: 'Elon Musk Announces Change in Twitter Domain to x.com, Showcasing His Vision for Innovation',
+			// 			// 	message: {
+			// 			// 		lc: 1,
+			// 			// 		type: 'constructor',
+			// 			// 		id: ['langchain', 'schema', 'AIMessage'],
+			// 			// 		kwargs: {
+			// 			// 			content:
+			// 			// 				'Elon Musk Announces Change in Twitter Domain to x.com, Showcasing His Vision for Innovation',
+			// 			// 			additional_kwargs: {},
+			// 			// 		},
+			// 			// 	},
+			// 			// },
+			// 		],
+			// 	],
+			// 	llmOutput: {
+			// 		tokenUsage: {
+			// 			completionTokens: 40,
+			// 			promptTokens: 59,
+			// 			totalTokens: 99,
+			// 		},
+			// 	},
+			// };
+
+			console.log(response);
+
+			setResults(prevResults => {
+				const newResults = [...prevResults];
+				const addedResult = newResults.find(
+					result => result.id === newId
+				);
+
+				if (addedResult) {
+					addedResult.content = response.content;
+					addedResult.loading = false;
+				}
+
+				return newResults;
+			});
+		} catch (error) {
+			if (error.response) {
+				console.error(error.response.data);
+				console.error(error.response.status);
+				console.error(error.response.headers);
+			} else {
+				console.error(error);
+			}
+		}
 	};
 
 	const className = 'maxi-prompt-control';
 
 	return (
 		<div className={className}>
-			{isEmpty(results) && (
+			{tab === 'generate' && (
 				<GenerateTab
+					contentType={contentType}
+					setContentType={setContentType}
+					tone={tone}
+					setTone={setTone}
+					writingStyle={writingStyle}
+					setWritingStyle={setWritingStyle}
+					characterCount={characterCount}
+					setCharacterCount={setCharacterCount}
+					language={language}
+					setLanguage={setLanguage}
+					confidenceLevel={confidenceLevel}
+					setConfidenceLevel={setConfidenceLevel}
+					prompt={prompt}
+					setPrompt={setPrompt}
+					generateContent={generateContent}
 					results={results}
 					openAIApiKey={openAIApiKey}
 					setResults={setResults}
-					setIsFetching={setIsFetching}
+					switchToModifyTab={switchToModifyTab}
 				/>
 			)}
-			{!isEmpty(results) && (
+			{tab === 'modify' && (
 				<ModifyTab
 					results={results}
 					content={content}
 					openAIApiKey={openAIApiKey}
+					selectedResult={selectedResult}
+					setSelectedResult={setSelectedResult}
 					onChangeContent={onChangeContent}
 					setResults={setResults}
-					setIsFetching={setIsFetching}
-					goToGenerateTab={goToGenerateTab}
+					switchToGenerateTab={switchToGenerateTab}
 				/>
 			)}
 		</div>

@@ -16,6 +16,7 @@ import { MODIFY_OPTIONS } from '../../constants';
  * External dependencies
  */
 import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -36,16 +37,16 @@ const ModifyTab = ({
 	results,
 	content,
 	openAIApiKey,
+	selectedResult,
+	setSelectedResult,
 	onChangeContent,
 	setResults,
-	setIsFetching,
-	goToGenerateTab,
+	switchToGenerateTab,
 }) => {
 	const [modifyOption, setModifyOption] = useState({
 		label: MODIFY_OPTIONS[0],
 		value: MODIFY_OPTIONS[0],
 	});
-	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
 
 	const getMessages = async () => {
 		const { value: modifyOptionVal } = modifyOption;
@@ -65,17 +66,54 @@ const ModifyTab = ({
 	};
 
 	const modifyContent = async () => {
-		setIsFetching(true);
-
 		try {
 			const chat = new ChatOpenAI({
 				openAIApiKey,
 				modelName: 'gpt-3.5-turbo',
 				topP: 1,
+				streaming: true,
+			});
+			const messages = await getMessages();
+
+			const newId = getUniqueId(results);
+
+			setResults(prevResults => {
+				const newResults = [
+					{
+						id: newId,
+						content: '',
+						refId: selectedResult,
+						modificationType: modifyOption.value,
+						loading: true,
+					},
+					...prevResults,
+				];
+
+				return newResults;
 			});
 
-			const messages = await getMessages();
-			const response = await chat.generate([messages]);
+			setSelectedResult(newId);
+
+			const response = await chat.call(messages, {
+				callbacks: [
+					{
+						handleLLMNewToken(token) {
+							setResults(prevResults => {
+								const newResults = [...prevResults];
+								const addedResult = newResults.find(
+									result => result.id === newId
+								);
+
+								if (addedResult?.loading) {
+									addedResult.content += token;
+								}
+
+								return newResults;
+							});
+						},
+					},
+				],
+			});
 			// const response = {
 			// 	generations: [
 			// 		[
@@ -103,19 +141,19 @@ const ModifyTab = ({
 			// 	},
 			// };
 
-			const uniqueId = getUniqueId(results);
+			setResults(prevResults => {
+				const newResults = [...prevResults];
+				const addedResult = newResults.find(
+					result => result.id === newId
+				);
 
-			setResults([
-				...response.generations[0].map(({ text }) => ({
-					id: uniqueId,
-					content: text,
-					refId: selectedResult,
-					modificationType: modifyOption.value,
-				})),
-				...results,
-			]);
+				if (addedResult) {
+					addedResult.content = response.content;
+					addedResult.loading = false;
+				}
 
-			setSelectedResult(uniqueId);
+				return newResults;
+			});
 		} catch (error) {
 			if (error.response) {
 				console.error(error.response.data);
@@ -125,25 +163,37 @@ const ModifyTab = ({
 				console.error(error);
 			}
 		}
+	};
 
-		setTimeout(() => setIsFetching(false), 1000);
+	const cleanHistory = () => {
+		setResults([]);
 	};
 
 	const className = 'maxi-prompt-control-modify-tab';
 
 	return (
 		<div className={className}>
-			<div className={`${className}__modification-options`}>
-				<ReactSelectControl
-					value={modifyOption}
-					defaultValue={modifyOption}
-					options={MODIFY_OPTIONS.map(option => ({
-						label: __(option, 'maxi-blocks'),
-						value: option,
-					}))}
-					onChange={obj => setModifyOption(obj)}
-				/>
-				<Button onClick={modifyContent}>Go!</Button>
+			<div className={`${className}__top-bar`}>
+				<div className={`${className}__modification-options`}>
+					<ReactSelectControl
+						value={modifyOption}
+						defaultValue={modifyOption}
+						options={MODIFY_OPTIONS.map(option => ({
+							label: __(option, 'maxi-blocks'),
+							value: option,
+						}))}
+						onChange={obj => setModifyOption(obj)}
+						isDisabled={isEmpty(results)}
+					/>
+					<Button onClick={modifyContent} disabled={isEmpty(results)}>
+						Go!
+					</Button>
+				</div>
+
+				{results.every(result => !result.isSelectedText) && (
+					<Button onClick={switchToGenerateTab}>Back</Button>
+				)}
+				<Button onClick={cleanHistory}>Clean history</Button>
 			</div>
 			<div className={`${className}__results`}>
 				{results.map((result, index) => {
@@ -154,8 +204,9 @@ const ModifyTab = ({
 						);
 
 					return (
-						// eslint-disable-next-line react/no-array-index-key
 						<ResultCard
+							// eslint-disable-next-line react/no-array-index-key
+							key={index}
 							index={index + 1}
 							result={result}
 							isSelected={result.id === selectedResult}
@@ -175,13 +226,20 @@ const ModifyTab = ({
 								);
 							}}
 							onSelect={(id = result.id) => setSelectedResult(id)}
+							onDelete={() => {
+								setResults(prevResults => {
+									const newResults = [...prevResults];
+									return newResults.filter(
+										deletedResult =>
+											deletedResult.id !== result.id &&
+											deletedResult.refId !== result.id
+									);
+								});
+							}}
 						/>
 					);
 				})}
 			</div>
-			{results.every(result => !result.isSelectedText) && (
-				<Button onClick={goToGenerateTab}>Back</Button>
-			)}
 		</div>
 	);
 };

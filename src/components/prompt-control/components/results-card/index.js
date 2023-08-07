@@ -24,6 +24,7 @@ const ResultCard = ({
 	isRefOfSelected,
 	onInsert,
 	onSelect,
+	onDelete,
 }) => {
 	const className = 'maxi-prompt-control-results-card';
 
@@ -76,17 +77,25 @@ const ResultCard = ({
 					</div>
 				)}
 			</div>
-			{result.content}
+			{result.content === '' ? '\u00A0' : result.content}
 			{!result.isSelectedText && (
 				<>
 					<hr />
 					<div>
 						<Button onClick={onInsert}>
 							{__(
-								isRefOfSelected ? 'Replace selection' : 'Insert'
+								isRefOfSelected
+									? 'Replace selection'
+									: 'Insert',
+								'maxi-blocks'
 							)}
 						</Button>
-						<Button onClick={handleCopy}>{__('Copy')}</Button>
+						<Button onClick={handleCopy}>
+							{__('Copy', 'maxi-blocks')}
+						</Button>
+						<Button onClick={onDelete}>
+							{__('Delete', 'maxi-blocks')}
+						</Button>
 					</div>
 				</>
 			)}

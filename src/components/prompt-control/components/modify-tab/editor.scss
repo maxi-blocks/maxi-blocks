@@ -1,4 +1,14 @@
 .maxi-prompt-control-modify-tab {
+	display: flex;
+	flex-direction: column;
+
+	&__top-bar {
+		top: 47px;
+		padding: 8px 0;
+		position: sticky;
+		background: var(--maxi-white-4-color);
+	}
+
 	&__modification-options {
 		display: flex;
 

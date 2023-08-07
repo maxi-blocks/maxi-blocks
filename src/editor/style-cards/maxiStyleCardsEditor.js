@@ -14,14 +14,10 @@ import { Popover } from '@wordpress/components';
  */
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import {
-	SettingTabsControl,
 	Button,
-	Icon,
 	DialogBox,
+	Icon,
 	ReactSelectControl,
-	Button,
-	DialogBox,
-	Icon,
 	SettingTabsControl,
 	ToggleSwitch,
 } from '../../components';

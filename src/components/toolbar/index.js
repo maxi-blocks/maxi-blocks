@@ -34,7 +34,7 @@ import {
 	Border,
 	BoxShadow,
 	ColumnMover,
-	ColumnsHandlers,
+	// ColumnsHandlers,
 	ColumnSize,
 	Divider,
 	DividerAlignment,
@@ -95,7 +95,7 @@ const MaxiToolbar = memo(
 			name,
 			maxiSetAttributes,
 			onModalOpen,
-			toggleHandlers,
+			// toggleHandlers, TODO: fix #4863
 			rowPattern,
 			prefix = '',
 			backgroundGlobalProps,
@@ -108,6 +108,9 @@ const MaxiToolbar = memo(
 			mediaPrefix,
 			dropShadow,
 			disableInset,
+			repeaterStatus,
+			repeaterRowClientId,
+			getInnerBlocksPositions,
 		} = props;
 		const {
 			blockStyle,
@@ -178,7 +181,7 @@ const MaxiToolbar = memo(
 
 		const breadcrumbStatus = () => {
 			const originalNestedBlocks = clientId
-				? getBlockParents(clientId)
+				? [...getBlockParents(clientId)]
 				: [];
 
 			if (!originalNestedBlocks.includes(clientId))
@@ -222,7 +225,14 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						<div className='toolbar-block-custom-label'>
+						<div
+							className={classnames(
+								'toolbar-block-custom-label',
+								!!breadcrumbStatus() &&
+									repeaterStatus &&
+									'toolbar-block-custom-label--repeater'
+							)}
+						>
 							{!isFirstOnHierarchy && (
 								<span
 									className='breadcrumbs-pin'
@@ -248,12 +258,21 @@ const MaxiToolbar = memo(
 								{blockStyle ? ` | ${blockStyle}` : ''}
 							</span>
 							{!isFirstOnHierarchy && (
-								<span className='toolbar-more-indicator'>
+								<span
+									className={classnames(
+										'toolbar-more-indicator',
+										repeaterStatus &&
+											'toolbar-more-indicator--repeater'
+									)}
+								>
 									&gt;
 								</span>
 							)}
 						</div>
-						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
+						<Breadcrumbs
+							key={`breadcrumbs-${uniqueID}`}
+							repeaterStatus={repeaterStatus}
+						/>
 						<ToolbarMediaUpload
 							blockName={name}
 							maxiSetAttributes={maxiSetAttributes}
@@ -517,6 +536,9 @@ const MaxiToolbar = memo(
 							blockName={name}
 							{...getGroupAttributes(attributes, 'rowPattern')}
 							onChange={obj => maxiSetAttributes(obj)}
+							repeaterStatus={repeaterStatus}
+							repeaterRowClientId={repeaterRowClientId}
+							getInnerBlocksPositions={getInnerBlocksPositions}
 							breakpoint={breakpoint}
 						/>
 						<NumberCounterReplay
@@ -524,11 +546,14 @@ const MaxiToolbar = memo(
 							blockName={name}
 							tooltipsHide={tooltipsHide}
 						/>
-						<ColumnsHandlers
+						{
+							// TODO: fix #4863
+							/* <ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 							tooltipsHide={tooltipsHide}
-						/>
+						/> */
+						}
 						<Size
 							blockName={name}
 							{...getGroupAttributes(

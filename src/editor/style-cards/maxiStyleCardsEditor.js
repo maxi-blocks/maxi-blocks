@@ -19,6 +19,11 @@ import {
 	Icon,
 	DialogBox,
 	ReactSelectControl,
+	Button,
+	DialogBox,
+	Icon,
+	SettingTabsControl,
+	ToggleSwitch,
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
@@ -126,7 +131,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			...savedStyleCards[keySC]?.dark.styleCard,
 		};
 
-		if (!isEqual(currentSC, savedSC)) return true;
+		if (
+			!isEqual(currentSC, savedSC) ||
+			styleCards[keySC]?.gutenberg_blocks_status !==
+				savedStyleCards[keySC]?.gutenberg_blocks_status
+		)
+			return true;
 
 		return false;
 	};
@@ -267,6 +277,19 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
 	};
 
+	const onChangeGutenbergBlocksStatus = value => {
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: {
+				...selectedSCValue,
+				gutenberg_blocks_status: value,
+			},
+		};
+
+		saveMaxiStyleCards(newStyleCards);
+		updateSCOnEditor(newStyleCards[selectedSCKey], activeSCColour);
+	};
+
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
 	const [importedCardExists, setImportedCardExists] = useState(false);
 
@@ -364,6 +387,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		for (const accordion of accordions) {
 			accordion.querySelector('[aria-expanded=true]')?.click();
 		}
+
+		return null;
 	};
 
 	return (
@@ -575,6 +600,18 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							}
 						/>
 					</div>
+					{!isTemplate && (
+						<ToggleSwitch
+							label={__(
+								'Affect Gutenberg native blocks inside Maxi Blocks',
+								'maxi-blocks'
+							)}
+							selected={selectedSCValue.gutenberg_blocks_status}
+							onChange={value =>
+								onChangeGutenbergBlocksStatus(value)
+							}
+						/>
+					)}
 				</div>
 
 				<div className='maxi-style-cards__sc maxi-style-cards__settings'>

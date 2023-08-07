@@ -58,6 +58,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
@@ -137,6 +138,7 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -350,8 +352,12 @@ class MaxiBlockComponent extends Component {
 				const { relations } = this.props.attributes;
 
 				if (
-					select('maxiBlocks/relations').receiveRelations(uniqueID)
-						.length !== relations.length
+					relations &&
+					Object.values(
+						select('maxiBlocks/relations').receiveRelations(
+							uniqueID
+						)
+					).length !== relations.length
 				) {
 					relations.forEach(({ uniqueID: targetUniqueID }) =>
 						dispatch('maxiBlocks/relations').addRelation(
@@ -418,6 +424,7 @@ class MaxiBlockComponent extends Component {
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
+			const { clientId } = this.props;
 			const { uniqueID } = this.props.attributes;
 
 			// Styles
@@ -426,7 +433,7 @@ class MaxiBlockComponent extends Component {
 			this.removeStyles();
 
 			// Block
-			dispatch('maxiBlocks/blocks').removeBlock(uniqueID);
+			dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
 
 			// Custom data
 			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
@@ -436,8 +443,90 @@ class MaxiBlockComponent extends Component {
 
 			// CSSCache
 			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-		}
 
+			// Repeater
+			if (this.props.repeaterStatus) {
+				const { getBlockParentsByBlockName } =
+					select('core/block-editor');
+				const parentRows = getBlockParentsByBlockName(
+					this.props.parentColumnClientId,
+					'maxi-blocks/row-maxi'
+				);
+
+				const isRepeaterWasUndo = parentRows.every(
+					parentRowClientId => {
+						const parentRowAttributes =
+							select('core/block-editor').getBlockAttributes(
+								parentRowClientId
+							);
+
+						return !parentRowAttributes['repeater-status'];
+					}
+				);
+
+				if (!isRepeaterWasUndo) {
+					removeBlockFromColumns(
+						this.props.blockPositionFromColumn,
+						this.props.parentColumnClientId,
+						this.props.clientId,
+						this.props.getInnerBlocksPositions(),
+						this.props.updateInnerBlocksPositions
+					);
+				}
+			}
+		} else {
+			const {
+				getBlockOrder,
+				getBlockAttributes,
+				getBlockParentsByBlockName,
+			} = select('core/block-editor');
+
+			const innerBlocksPositions = this.props.getInnerBlocksPositions?.();
+
+			// If repeater is turned on and block was moved
+			// outwards, remove it from the columns
+			if (
+				this.props.repeaterStatus &&
+				!innerBlocksPositions[[-1]].includes(
+					getBlockParentsByBlockName(
+						this.props.clientId,
+						'maxi-blocks/column-maxi'
+					)[0]
+				)
+			) {
+				// Repeater
+				removeBlockFromColumns(
+					this.props.blockPositionFromColumn,
+					this.props.parentColumnClientId,
+					this.props.clientId,
+					innerBlocksPositions,
+					this.props.updateInnerBlocksPositions
+				);
+			}
+
+			const parentRowClientId = getBlockParentsByBlockName(
+				this.props.clientId,
+				'maxi-blocks/row-maxi'
+			).find(currentParentRowClientId => {
+				const currentParentRowAttributes = getBlockAttributes(
+					currentParentRowClientId
+				);
+
+				return currentParentRowAttributes['repeater-status'];
+			});
+			const parentRowAttributes = getBlockAttributes(parentRowClientId);
+
+			// If repeater is turned on and block was moved
+			// inwards, validate the structure
+			if (
+				parentRowAttributes?.['repeater-status'] &&
+				(!this.props.repeaterStatus ||
+					this.props.repeaterRowClientId !== parentRowClientId)
+			) {
+				const columnsClientIds = getBlockOrder(parentRowClientId);
+				insertBlockIntoColumns(this.props.clientId, columnsClientIds);
+			}
+		}
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
@@ -656,6 +745,25 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
+	// This function saves the last inserted blocks' clientIds, so we can use them
+	// to update IB relations.
+	updateLastInsertedBlocks() {
+		const { clientId } = this.props;
+
+		if (
+			![
+				...select('maxiBlocks/blocks').getLastInsertedBlocks(),
+				...select('maxiBlocks/blocks').getBlockClientIds(),
+			].includes(clientId)
+		) {
+			const allClientIds =
+				select('core/block-editor').getClientIdsWithDescendants();
+
+			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
+			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
+		}
+	}
+
 	uniqueIDChecker(idToCheck) {
 		const { clientId, name: blockName } = this.props;
 
@@ -672,14 +780,17 @@ class MaxiBlockComponent extends Component {
 			propagateNewUniqueID(
 				idToCheck,
 				newUniqueID,
+				this.props.repeaterStatus,
 				this.props.attributes['background-layers']
 			);
 
 			this.props.attributes.uniqueID = newUniqueID;
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
+			if (!this.props.repeaterStatus) {
+				this.props.attributes.customLabel = getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				);
+			}
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);

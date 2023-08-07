@@ -62,6 +62,7 @@ export { default as PositionControl } from './position-control';
 export { default as RawHTML } from './raw-html';
 export { default as ReactSelectControl } from './react-select-control';
 export { default as RelationControl } from './relation-control';
+export { default as Repeater } from './repeater';
 export { default as ResetButton } from './reset-control';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as ResponsiveTabsControl } from './responsive-tabs-control';

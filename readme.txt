@@ -270,6 +270,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 _Updates: 7 August 2023_
 
 * Update: WordPress 6.3 compatibility
+* Update: Option to affect default Gutenberg blocks with Maxi Blocks Style cards
 * Update: Link icon added in the toolbar for Interaction builder
 * Update: Disabled list modified when Dynamic content enabled
 * Update: Marker size adjusted for responsive displays

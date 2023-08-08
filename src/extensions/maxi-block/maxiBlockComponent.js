@@ -138,6 +138,7 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -423,6 +424,7 @@ class MaxiBlockComponent extends Component {
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
+			const { clientId } = this.props;
 			const { uniqueID } = this.props.attributes;
 
 			// Styles
@@ -431,7 +433,7 @@ class MaxiBlockComponent extends Component {
 			this.removeStyles();
 
 			// Block
-			dispatch('maxiBlocks/blocks').removeBlock(uniqueID);
+			dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
 
 			// Custom data
 			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
@@ -741,6 +743,25 @@ class MaxiBlockComponent extends Component {
 		}
 
 		return false;
+	}
+
+	// This function saves the last inserted blocks' clientIds, so we can use them
+	// to update IB relations.
+	updateLastInsertedBlocks() {
+		const { clientId } = this.props;
+
+		if (
+			![
+				...select('maxiBlocks/blocks').getLastInsertedBlocks(),
+				...select('maxiBlocks/blocks').getBlockClientIds(),
+			].includes(clientId)
+		) {
+			const allClientIds =
+				select('core/block-editor').getClientIdsWithDescendants();
+
+			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
+			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
+		}
 	}
 
 	uniqueIDChecker(idToCheck) {

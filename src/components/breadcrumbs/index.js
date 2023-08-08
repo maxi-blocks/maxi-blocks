@@ -22,7 +22,9 @@ const MaxiBreadcrumbs = ({ repeaterStatus }) => {
 		const { getSelectedBlockClientId, getBlockParents } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
-		const originalNestedBlocks = clientId ? getBlockParents(clientId) : [];
+		const originalNestedBlocks = clientId
+			? [...getBlockParents(clientId)]
+			: [];
 		if (!originalNestedBlocks.includes(clientId))
 			originalNestedBlocks.push(clientId);
 		return {

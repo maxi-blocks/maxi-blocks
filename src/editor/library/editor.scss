@@ -273,6 +273,12 @@
 		&::before {
 			margin: 0;
 		}
+
+		// Gutenberg adds div without classname that wraps the modal content
+		> div:last-child {
+			height: 100%;
+		}
+
 		.components-modal__header {
 			margin-bottom: 0;
 			padding: 0;
@@ -894,7 +900,7 @@
 				}
 			}
 		}
-		&__patterns{
+		&__patterns {
 			&__sidebar {
 				overflow-x: hidden;
 			}

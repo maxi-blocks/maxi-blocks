@@ -690,6 +690,21 @@ const getStyles = props => {
 					[` ${element}.maxi-text-block__content a`],
 					props.blockStyle
 				),
+				...(props['dc-status'] && {
+					...getLinkStyles(
+						{
+							...getGroupAttributes(props, [
+								'link',
+								'typography',
+								'typographyHover',
+							]),
+						},
+						[
+							`.maxi-block--has-link ${element}.maxi-text-block__content`,
+						],
+						props.blockStyle
+					),
+				}),
 			},
 			data,
 			props

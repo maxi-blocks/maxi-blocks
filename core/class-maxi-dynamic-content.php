@@ -14,161 +14,8 @@ class MaxiBlocks_DynamicContent
      * @var MaxiBlocks_DynamicContent
      */
     private static $instance;
-
-    /**
-     * Registers the plugin.
-     */
-    public static function register()
-    {
-        // if (null === self::$instance) {
-        //     self::$instance = new MaxiBlocks_DynamicContent();
-        // }
-    }
-
-    /**
-     * Variables
-     */
     private static $custom_data = null;
-
-    private static $dynamic_content_attributes = [
-        'dc-error' => [
-            'type' => 'string',
-            'default' => '',
-        ],
-        'dc-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-source' => [
-            'type' => 'string',
-            'default' => 'wp',
-        ],
-        'dc-type' => [
-            'type' => 'string',
-        ],
-        'dc-relation' => [
-            'type' => 'string',
-        ],
-        'dc-id' => [
-            'type' => 'number',
-        ],
-        'dc-author' => [
-            'type' => 'number',
-        ],
-        'dc-show' => [
-            'type' => 'string',
-            'default' => 'current',
-        ],
-        'dc-field' => [
-            'type' => 'string',
-        ],
-        'dc-format' => [
-            'type' => 'string',
-            'default' => 'd.m.Y t',
-        ],
-        'dc-custom-format' => [
-            'type' => 'string',
-        ],
-        'dc-custom-date' => [
-            'type' => 'boolean',
-            'default' => false,
-        ],
-        'dc-year' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-month' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-day' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-hour' => [
-            'type' => 'boolean',
-            'default' => 'numeric',
-        ],
-        'dc-hour12' => [
-            'type' => 'string',
-            'default' => false,
-        ],
-        'dc-minute' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-second' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-locale' => [
-            'type' => 'string',
-            'default' => 'en',
-        ],
-        'dc-timezone' => [
-            'type' => 'string',
-            'default' => 'Europe/London',
-        ],
-        'dc-timezone-name' => [
-            'type' => 'string',
-            'default' => 'none',
-        ],
-        'dc-weekday' => [
-            'type' => 'string',
-        ],
-        'dc-era' => [
-            'type' => 'string',
-        ],
-        'dc-limit' => [
-            'type' => 'number',
-            'default' => 100,
-        ],
-        'dc-content' => [
-            'type' => 'string',
-        ],
-        'dc-media-id' => [
-            'type' => 'number',
-        ],
-        'dc-media-url' => [
-            'type' => 'string',
-        ],
-        'dc-media-caption' => [
-            'type' => 'string',
-        ],
-        'dc-link-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-link-url' => [
-            'type' => 'string',
-        ],
-        'dc-post-taxonomy-links-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-custom-delimiter-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-delimiter-content' => [
-            'type' => 'string',
-            'default' => '',
-        ],
-        'dc-acf-group' => [
-            'type' => 'string',
-        ],
-        'dc-acf-field-type' => [
-            'type' => 'string',
-        ],
-        'dc-order' => [
-            'type' => 'string',
-        ],
-        'dc-order-by' => [
-            'type' => 'string',
-        ],
-        'dc-accumulator' => [
-            'type' => 'number',
-        ],
-    ];
-
-    private static $order_by_relations =
-        ['by-category', 'by-author', 'by-tag'];
+    private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
 
     private static $link_only_blocks = [
         'group-maxi',
@@ -179,60 +26,33 @@ class MaxiBlocks_DynamicContent
     ];
 
     /**
-     * Constructor
+     * Initializes the plugin and its hooks.
+     */
+    public static function register()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+    }
+
+    /**
+    * Constructor: Registers blocks and their configurations.
      */
     public function __construct()
     {
-        // Dynamic blocks
-        register_block_type('maxi-blocks/text-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/button-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/image-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/group-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/column-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/row-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/slide-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/pane-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
+        // $blocks = ['text-maxi', 'button-maxi', 'image-maxi', 'group-maxi', 'column-maxi', 'row-maxi', 'slide-maxi', 'pane-maxi'];
+        // $config = [
+        //     'api_version' => 2,
+        //     'editor_script' => 'maxi-blocks-block-editor',
+        //     'render_callback' => [$this, 'render_dc'],
+        //     'attributes' => self::$dynamic_content_attributes,
+        // ];
+
+        // foreach ($blocks as $block) {
+        //     register_block_type("maxi-blocks/{$block}", array_merge($config, ['file' => MAXI_PLUGIN_DIR_PATH . "src/blocks/{$block}/block.json"]));
+        // }
     }
+
 
     public function render_dc($attributes, $content)
     {
@@ -312,6 +132,7 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_content($attributes, $content)
     {
+
         @list(
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
@@ -377,8 +198,6 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'by-id';
         }
 
-        $media_id;
-        $media_src;
         $media_alt = '';
         $media_caption = '';
 
@@ -503,8 +322,6 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
-
-            $post;
 
             if ($is_random) {
                 $posts = $query->posts;

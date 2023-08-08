@@ -193,7 +193,9 @@ const ModifyTab = ({
 				{results.every(result => !result.isSelectedText) && (
 					<Button onClick={switchToGenerateTab}>Back</Button>
 				)}
-				<Button onClick={cleanHistory}>Clean history</Button>
+				{!isEmpty(results) && (
+					<Button onClick={cleanHistory}>Clean history</Button>
+				)}
 			</div>
 			<div className={`${className}__results`}>
 				{results.map((result, index) => {

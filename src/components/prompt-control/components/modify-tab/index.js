@@ -194,6 +194,7 @@ const ModifyTab = ({
 					<Button onClick={switchToGenerateTab}>Back</Button>
 				)}
 				{!isEmpty(results) && (
+					// TODO: Add confirmation modal
 					<Button onClick={cleanHistory}>Clean history</Button>
 				)}
 			</div>

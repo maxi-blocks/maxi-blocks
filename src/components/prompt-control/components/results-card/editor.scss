@@ -35,6 +35,15 @@
 		}
 	}
 
+	&__scroll-to {
+		position: relative;
+
+		&__inner {
+			position: absolute;
+			top: -180px;
+		}
+	}
+
 	&--selected {
 		border-color: var(--maxi-secondary-color);
 

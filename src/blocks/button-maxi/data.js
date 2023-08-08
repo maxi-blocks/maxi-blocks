@@ -176,6 +176,26 @@ const customCss = {
 				target: `${iconClass}:hover svg path`,
 			},
 		},
+		'before icon': {
+			normal: {
+				label: 'icon ::before',
+				target: `${iconClass}::before`,
+			},
+			hover: {
+				label: 'icon ::before on hover',
+				target: `${iconClass}:hover::before`,
+			},
+		},
+		'after icon': {
+			normal: {
+				label: 'icon ::after',
+				target: `${iconClass}::after`,
+			},
+			hover: {
+				label: 'icon ::after on hover',
+				target: `${iconClass}:hover::after`,
+			},
+		},
 	},
 	categories: [
 		'canvas',
@@ -185,6 +205,8 @@ const customCss = {
 		'before button',
 		'after button',
 		'icon',
+		'before icon',
+		'after icon',
 		'background',
 		'background hover',
 	],

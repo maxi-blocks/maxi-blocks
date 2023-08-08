@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { resolveSelect } from '@wordpress/data';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -58,6 +58,9 @@ const PromptControl = ({ content, onChangeContent }) => {
 	);
 	const [results, setResults] = useState([]);
 	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
+	const [isGenerating, setIsGenerating] = useState(false);
+
+	const abortControllerRef = useRef(null);
 
 	const switchToModifyTab = () => {
 		setTab('modify');
@@ -182,7 +185,11 @@ const PromptControl = ({ content, onChangeContent }) => {
 
 			setSelectedResult(newId);
 
+			abortControllerRef.current = new AbortController();
+
+			setIsGenerating(true);
 			const response = await chat.call(messages, {
+				signal: abortControllerRef.current.signal,
 				callbacks: [
 					{
 						handleLLMNewToken(token) {
@@ -202,6 +209,9 @@ const PromptControl = ({ content, onChangeContent }) => {
 					},
 				],
 			});
+			setIsGenerating(false);
+
+			abortControllerRef.current = null;
 
 			// const response = {
 			// 	generations: [
@@ -264,10 +274,15 @@ const PromptControl = ({ content, onChangeContent }) => {
 				console.error(error.response.data);
 				console.error(error.response.status);
 				console.error(error.response.headers);
-			} else {
+			} else if (!error.name === 'AbortError') {
 				console.error(error);
 			}
 		}
+	};
+
+	const handleAbort = () => {
+		abortControllerRef.current?.abort();
+		setIsGenerating(false);
 	};
 
 	const className = 'maxi-prompt-control';
@@ -302,11 +317,15 @@ const PromptControl = ({ content, onChangeContent }) => {
 					results={results}
 					content={content}
 					openAIApiKey={openAIApiKey}
+					isGenerating={isGenerating}
+					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}
 					setSelectedResult={setSelectedResult}
 					onChangeContent={onChangeContent}
 					setResults={setResults}
 					switchToGenerateTab={switchToGenerateTab}
+					onAbort={handleAbort}
+					abortControllerRef={abortControllerRef}
 				/>
 			)}
 		</div>

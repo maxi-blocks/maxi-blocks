@@ -82,19 +82,28 @@ class MaxiBlocks_Styles
         //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
-        add_filter('the_content', [$this, 'process_content']);
-        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
+        if(!is_admin() && self::should_apply_content_filter()) {
+            add_filter('the_content', [$this, 'process_content']);
+        }
 
+        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
         $this->max_execution_time = ini_get('max_execution_time');
 
         // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+    }
+
+    private function should_apply_content_filter()
+    {
+        // Check if the REQUEST_URI contains context=edit
+        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false) {
+            return false; // Do not apply the filter for this context
+        }
+
+        return true; // Apply the filter in other cases
     }
 
     public function process_all_site_content()
     {
-        write_log('process_all_site_content');
         global $post;
         $args = array(
             'numberposts' => -1,
@@ -1027,14 +1036,12 @@ class MaxiBlocks_Styles
     public function process_content($content)
     {
         $post_id = $this->get_id();
+
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
         if ($contentMetaFonts['meta'] !== null) {
-            $metaFiltered = null;
-            if ($contentMetaFonts['meta'] !== null) {
-                $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
-            }
 
+            $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
             $this->process_scripts($metaFiltered);
         }
 

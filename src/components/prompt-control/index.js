@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { resolveSelect } from '@wordpress/data';
 import { useContext, useEffect, useState } from '@wordpress/element';
 
@@ -291,7 +290,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 					prompt={prompt}
 					setPrompt={setPrompt}
 					generateContent={generateContent}
-					results={results}
+					showHistoryButton={!isEmpty(results)}
 					openAIApiKey={openAIApiKey}
 					setResults={setResults}
 					switchToModifyTab={switchToModifyTab}

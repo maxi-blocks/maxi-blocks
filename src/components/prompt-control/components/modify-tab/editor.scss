@@ -2,11 +2,15 @@
 	display: flex;
 	flex-direction: column;
 
+	&__top-bar,
+	&__abort {
+		padding: 8px 0;
+		background: var(--maxi-white-4-color);
+	}
+
 	&__top-bar {
 		top: 47px;
-		padding: 8px 0;
 		position: sticky;
-		background: var(--maxi-white-4-color);
 	}
 
 	&__modification-options {
@@ -22,6 +26,12 @@
 		flex-direction: column;
 		gap: 20px;
 		margin-bottom: 5px;
+	}
+
+	&__abort {
+		position: sticky;
+		bottom: 0;
+		justify-content: center;
 	}
 }
 

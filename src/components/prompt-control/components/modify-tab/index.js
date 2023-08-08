@@ -37,11 +37,15 @@ const ModifyTab = ({
 	results,
 	content,
 	openAIApiKey,
+	isGenerating,
+	setIsGenerating,
 	selectedResult,
 	setSelectedResult,
 	onChangeContent,
+	onAbort,
 	setResults,
 	switchToGenerateTab,
+	abortControllerRef,
 }) => {
 	const [modifyOption, setModifyOption] = useState({
 		label: MODIFY_OPTIONS[0],
@@ -94,7 +98,11 @@ const ModifyTab = ({
 
 			setSelectedResult(newId);
 
+			abortControllerRef.current = new AbortController();
+
+			setIsGenerating(true);
 			const response = await chat.call(messages, {
+				signal: abortControllerRef.current.signal,
 				callbacks: [
 					{
 						handleLLMNewToken(token) {
@@ -114,6 +122,10 @@ const ModifyTab = ({
 					},
 				],
 			});
+			setIsGenerating(false);
+
+			abortControllerRef.current = null;
+
 			// const response = {
 			// 	generations: [
 			// 		[
@@ -243,6 +255,11 @@ const ModifyTab = ({
 					);
 				})}
 			</div>
+			{isGenerating && (
+				<Button className={`${className}__abort`} onClick={onAbort}>
+					Stop
+				</Button>
+			)}
 		</div>
 	);
 };

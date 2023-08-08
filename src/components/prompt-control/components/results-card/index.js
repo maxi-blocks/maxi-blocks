@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -18,6 +19,8 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 
+export const CONTENT_LIMIT = 100;
+
 const ResultCard = ({
 	result,
 	isSelected,
@@ -33,16 +36,51 @@ const ResultCard = ({
 		isSelected && `${className}--selected`
 	);
 
+	const ref = useRef();
+
 	const handleCopy = () => {
 		navigator.clipboard.writeText(result.content);
 	};
 
+	const limitContent = (content, limit = CONTENT_LIMIT) => {
+		if (content.length <= limit) {
+			return content;
+		}
+
+		const lastSpaceIndex = content.lastIndexOf(' ', limit);
+
+		return `${content.substring(0, lastSpaceIndex)}...`;
+	};
+
+	const [content, setContent] = useState(limitContent(result.content));
+	const [isLimited, setIsLimited] = useState(false);
+
+	useEffect(() => {
+		setContent(isSelected ? result.content : limitContent(result.content));
+		setIsLimited(
+			isSelected ? false : result.content.length > CONTENT_LIMIT
+		);
+	}, [result.content]);
+
+	const handleScrollIntoView = () => {
+		ref.current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
+	};
+
+	useEffect(() => {
+		if (isSelected) {
+			handleScrollIntoView();
+		}
+	}, [isSelected]);
+
 	return (
 		<div className={classes}>
-			<div
-				id={`maxi-prompt-${result.id}`}
-				className={`${className}__top-bar`}
-			>
+			<div className={`${className}__scroll-to`}>
+				<div ref={ref} className={`${className}__scroll-to__inner`} />
+			</div>
+			<div className={`${className}__top-bar`}>
 				<div
 					className={`${className}__top-bar__select-row`}
 					onClick={() => onSelect()}
@@ -77,7 +115,29 @@ const ResultCard = ({
 					</div>
 				)}
 			</div>
-			{result.content === '' ? '\u00A0' : result.content}
+			<p className={`${className}__content`}>
+				{result.content === '' ? '\u00A0' : content}
+			</p>
+			{result.content.length > CONTENT_LIMIT && !result.loading && (
+				<Button
+					className={`${className}__show-more`}
+					onClick={() => {
+						const newIsLimited = !isLimited;
+
+						setIsLimited(newIsLimited);
+
+						if (newIsLimited) {
+							setContent(limitContent(result.content));
+						} else {
+							setContent(result.content);
+						}
+
+						handleScrollIntoView();
+					}}
+				>
+					{__(`Show ${isLimited ? 'more' : 'less'}`, 'maxi-blocks')}
+				</Button>
+			)}
 			{!result.isSelectedText && (
 				<>
 					<hr />

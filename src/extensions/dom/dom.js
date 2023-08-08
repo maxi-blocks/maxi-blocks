@@ -206,13 +206,15 @@ wp.domReady(() => {
 
 			// Adding the SC styles after switching between the templates
 			if (siteEditorIframeBody && !isSCLoaded) {
+				isSCLoaded = true;
 				setTimeout(() => {
 					const SC = select(
 						'maxiBlocks/style-cards'
 					).receiveMaxiActiveStyleCard();
 					if (SC) {
 						updateSCOnEditor(SC.value);
-						isSCLoaded = true;
+					} else {
+						isSCLoaded = false;
 					}
 				}, 150);
 			}

@@ -335,6 +335,16 @@ Object {
       "target": "::after",
     },
   },
+  "after icon": Object {
+    "hover": Object {
+      "label": "icon ::after on hover",
+      "target": " .maxi-button-block__icon:hover::after",
+    },
+    "normal": Object {
+      "label": "icon ::after",
+      "target": " .maxi-button-block__icon::after",
+    },
+  },
   "before button": Object {
     "hover": Object {
       "label": "button ::before on hover",
@@ -353,6 +363,16 @@ Object {
     "normal": Object {
       "label": "canvas ::before",
       "target": "::before",
+    },
+  },
+  "before icon": Object {
+    "hover": Object {
+      "label": "icon ::before on hover",
+      "target": " .maxi-button-block__icon:hover::before",
+    },
+    "normal": Object {
+      "label": "icon ::before",
+      "target": " .maxi-button-block__icon::before",
     },
   },
   "button": Object {

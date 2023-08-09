@@ -46,7 +46,7 @@ const setFormat = ({
 		dispatch('core/block-editor');
 
 	if (disableCustomFormats) {
-		const newTypography = { ...typography };
+		const newTypography = {};
 
 		Object.entries(value).forEach(([key, val]) => {
 			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
@@ -79,7 +79,7 @@ const setFormat = ({
 		formatValue.start === formatValue.end ||
 		(formatValue.start === 0 && formatValue.end === formatsLength)
 	) {
-		const newTypography = { ...typography };
+		const newTypography = {};
 		const newFormatValue = {
 			...formatValue,
 			start: 0,
@@ -105,7 +105,8 @@ const setFormat = ({
 				formatValue: cleanedFormatValue,
 			} = flatFormatsWithClass({
 				formatValue: newFormatValue,
-				typography: newTypography,
+				typography: { ...typography, ...newTypography },
+				changedTypography: newTypography,
 				content,
 				isList,
 				value,

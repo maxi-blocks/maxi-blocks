@@ -72,6 +72,157 @@ if (!class_exists('MaxiBlocks_Block')):
         protected $block_sc_vars = [];
 
         /**
+         * Dynamic blocks
+         */
+        protected $dynamic_blocks = [
+            'text-maxi',
+            'button-maxi',
+            'image-maxi',
+            'group-maxi',
+            'column-maxi',
+            'row-maxi',
+            'slide-maxi',
+            'pane-maxi',
+        ];
+
+        private static $dynamic_content_attributes = [
+            'dc-error' => [
+                'type' => 'string',
+                'default' => '',
+            ],
+            'dc-status' => [
+                'type' => 'boolean',
+            ],
+            'dc-source' => [
+                'type' => 'string',
+                'default' => 'wp',
+            ],
+            'dc-type' => [
+                'type' => 'string',
+            ],
+            'dc-relation' => [
+                'type' => 'string',
+            ],
+            'dc-id' => [
+                'type' => 'number',
+            ],
+            'dc-author' => [
+                'type' => 'number',
+            ],
+            'dc-show' => [
+                'type' => 'string',
+                'default' => 'current',
+            ],
+            'dc-field' => [
+                'type' => 'string',
+            ],
+            'dc-format' => [
+                'type' => 'string',
+                'default' => 'd.m.Y t',
+            ],
+            'dc-custom-format' => [
+                'type' => 'string',
+            ],
+            'dc-custom-date' => [
+                'type' => 'boolean',
+                'default' => false,
+            ],
+            'dc-year' => [
+                'type' => 'string',
+                'default' => 'numeric',
+            ],
+            'dc-month' => [
+                'type' => 'string',
+                'default' => 'numeric',
+            ],
+            'dc-day' => [
+                'type' => 'string',
+                'default' => 'numeric',
+            ],
+            'dc-hour' => [
+                'type' => 'boolean',
+                'default' => 'numeric',
+            ],
+            'dc-hour12' => [
+                'type' => 'string',
+                'default' => false,
+            ],
+            'dc-minute' => [
+                'type' => 'string',
+                'default' => 'numeric',
+            ],
+            'dc-second' => [
+                'type' => 'string',
+                'default' => 'numeric',
+            ],
+            'dc-locale' => [
+                'type' => 'string',
+                'default' => 'en',
+            ],
+            'dc-timezone' => [
+                'type' => 'string',
+                'default' => 'Europe/London',
+            ],
+            'dc-timezone-name' => [
+                'type' => 'string',
+                'default' => 'none',
+            ],
+            'dc-weekday' => [
+                'type' => 'string',
+            ],
+            'dc-era' => [
+                'type' => 'string',
+            ],
+            'dc-limit' => [
+                'type' => 'number',
+                'default' => 100,
+            ],
+            'dc-content' => [
+                'type' => 'string',
+            ],
+            'dc-media-id' => [
+                'type' => 'number',
+            ],
+            'dc-media-url' => [
+                'type' => 'string',
+            ],
+            'dc-media-caption' => [
+                'type' => 'string',
+            ],
+            'dc-link-status' => [
+                'type' => 'boolean',
+            ],
+            'dc-link-url' => [
+                'type' => 'string',
+            ],
+            'dc-post-taxonomy-links-status' => [
+                'type' => 'boolean',
+            ],
+            'dc-custom-delimiter-status' => [
+                'type' => 'boolean',
+            ],
+            'dc-delimiter-content' => [
+                'type' => 'string',
+                'default' => '',
+            ],
+            'dc-acf-group' => [
+                'type' => 'string',
+            ],
+            'dc-acf-field-type' => [
+                'type' => 'string',
+            ],
+            'dc-order' => [
+                'type' => 'string',
+            ],
+            'dc-order-by' => [
+                'type' => 'string',
+            ],
+            'dc-accumulator' => [
+                'type' => 'number',
+            ],
+        ];
+
+        /**
          * Constructor.
          */
         public function __construct()
@@ -82,16 +233,34 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function register_block()
         {
-            $this->block = register_block_type(
-                MAXI_PLUGIN_DIR_PATH . 'src/blocks/' . $this->block_name . '/block.json',
-                [
-                   'render_callback' => [$this, 'render_block'],
-                ]
-            );
+            $config = [
+                'api_version' => 2,
+                'editor_script' => 'maxi-blocks-block-editor',
+                'render_callback' => [$this, 'render_block'],
+                'attributes' => self::$dynamic_content_attributes,
+            ];
+            // If the block should be dynamic, use MaxiBlocks_DynamicContent
+            if (in_array($this->block_name, $this->dynamic_blocks)) {
+                $this->block = register_block_type("maxi-blocks/{$this->block_name}", array_merge($config, ['file' => MAXI_PLUGIN_DIR_PATH . "src/blocks/{$this->block_name}/block.json"]));
+            } else {
+                $this->block = register_block_type(
+                    MAXI_PLUGIN_DIR_PATH . 'src/blocks/' . $this->block_name . '/block.json',
+                    [
+                       'render_callback' => [$this, 'render_block'],
+                    ]
+                );
+            }
         }
 
         public function render_block($attributes, $content)
         {
+            // If the block should be dynamic, use MaxiBlocks_DynamicContent
+            if (in_array($this->block_name, $this->dynamic_blocks)) {
+                $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);
+                return $dynamic_content->render_dc($attributes, $content);
+            }
+
+            // If not, proceed with the regular render logic
             return $content;
         }
 

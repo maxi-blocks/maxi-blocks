@@ -12,6 +12,12 @@ function get_styles($content)
         if (strpos($key, 'css') !== false) {
             $response .= $val;
         } else {
+            if (is_array($val)) {
+                write_log('ARRAY!');
+                write_log($val);
+                write_log($key);
+                $val = implode(", ", $val);
+            }
             $response .= "{$key}:{$val};";
         }
     }

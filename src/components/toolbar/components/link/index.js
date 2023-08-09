@@ -34,6 +34,7 @@ const DC_LINK_BLOCKS = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/slide-maxi',
 	'maxi-blocks/pane-maxi',
+	'maxi-blocks/svg-icon-maxi',
 ];
 
 /**

@@ -10,6 +10,18 @@ export const CONTENT_TYPES = [
 	'Product descriptions',
 ];
 
+export const DEFAULT_CHARACTER_COUNT_GUIDELINES = {
+	Headline: 50, // Typically headlines are short and to the point.
+	Subheading: 100, // Slightly longer than a headline.
+	'Body text': 500, // Arbitrary number. This could be much longer depending on context.
+	Quotes: 200, // A typical length for a direct quote.
+	'Pull quotes Testimonial': 150, // Testimonials might be a bit concise but highlighted.
+	'Calls-to-action (CTA)': 25, // CTAs are usually very short and action-oriented.
+	'Alt tag': 125, // Descriptive, but not too long, for accessibility.
+	'Image caption Page titles FAQs': 100, // Typically short descriptions or titles.
+	'Product descriptions': 300, // Might vary a lot, but a general estimate for a concise product description.
+};
+
 export const TONES = [
 	'Formal',
 	'Friendly',

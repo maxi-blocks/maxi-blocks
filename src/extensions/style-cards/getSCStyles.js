@@ -582,7 +582,7 @@ const getWPNativeStyles = ({
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = async (
+const getSCStyles = (
 	rawStyleCard,
 	gutenbergBlocksStatus,
 	isBackend = false

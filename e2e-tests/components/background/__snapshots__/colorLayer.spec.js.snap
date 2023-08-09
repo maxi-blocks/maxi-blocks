@@ -79,6 +79,7 @@ Array [
     "background-palette-opacity-general": 0.45,
     "background-palette-sc-status-general": false,
     "background-palette-status-general": true,
+    "background-palette-status-general-hover": true,
     "display-general": "block",
     "id": 1,
     "isHover": false,

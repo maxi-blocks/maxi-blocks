@@ -149,6 +149,6 @@ body.maxi-blocks--active .maxi-map-block .leaflet-bar a {
 body.maxi-blocks--active
 	*
 	:has(> .maxi-background-displayer)
-	> *:not(.maxi-background-displayer) {
+	> *:not(.maxi-background-displayer):not(.maxi-block-indicators) {
 	position: relative;
 }

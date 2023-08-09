@@ -44,6 +44,15 @@
 		}
 	}
 
+	&__end-of-content {
+		position: relative;
+
+		&__inner {
+			position: absolute;
+			bottom: -120px;
+		}
+	}
+
 	&--selected {
 		border-color: var(--maxi-secondary-color);
 

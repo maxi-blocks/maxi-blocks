@@ -37,6 +37,7 @@ const ResultCard = ({
 	);
 
 	const ref = useRef();
+	const endOfContentRef = useRef();
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(result.content);
@@ -60,6 +61,13 @@ const ResultCard = ({
 		setIsLimited(
 			isSelected ? false : result.content.length > CONTENT_LIMIT
 		);
+
+		if (result.loading) {
+			endOfContentRef.current.scrollIntoView({
+				behavior: 'instant',
+				block: 'end',
+			});
+		}
 	}, [result.content]);
 
 	const handleScrollIntoView = () => {
@@ -118,6 +126,12 @@ const ResultCard = ({
 			<p className={`${className}__content`}>
 				{result.content === '' ? '\u00A0' : content}
 			</p>
+			<div className={`${className}__end-of-content`}>
+				<div
+					ref={endOfContentRef}
+					className={`${className}__end-of-content__inner`}
+				/>
+			</div>
 			{result.content.length > CONTENT_LIMIT && !result.loading && (
 				<Button
 					className={`${className}__show-more`}

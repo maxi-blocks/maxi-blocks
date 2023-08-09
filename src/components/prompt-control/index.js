@@ -12,7 +12,13 @@ import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
 import { getChatPrompt, getUniqueId } from './utils';
-import { CONTENT_TYPES, LANGUAGES, TONES, WRITING_STYLES } from './constants';
+import {
+	CONTENT_TYPES,
+	DEFAULT_CHARACTER_COUNT_GUIDELINES,
+	LANGUAGES,
+	TONES,
+	WRITING_STYLES,
+} from './constants';
 
 /**
  * External dependencies
@@ -45,7 +51,9 @@ const PromptControl = ({ content, onChangeContent }) => {
 		label: WRITING_STYLES[0],
 		value: WRITING_STYLES[0],
 	});
-	const [characterCount, setCharacterCount] = useState(0);
+	const [characterCount, setCharacterCount] = useState(
+		DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]]
+	);
 	const [confidenceLevel, setConfidenceLevel] = useState(
 		DEFAULT_CONFIDENCE_LEVEL
 	);

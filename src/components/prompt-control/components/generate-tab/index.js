@@ -15,6 +15,7 @@ import {
 } from '../../..';
 import {
 	CONTENT_TYPES,
+	DEFAULT_CHARACTER_COUNT_GUIDELINES,
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
@@ -53,7 +54,12 @@ const GenerateTab = ({
 					label: 'Content type',
 					list: CONTENT_TYPES,
 					state: contentType,
-					setState: setContentType,
+					setState: value => {
+						setContentType(value);
+						setCharacterCount(
+							DEFAULT_CHARACTER_COUNT_GUIDELINES[value.value]
+						);
+					},
 				},
 				{
 					label: 'Tone',
@@ -92,7 +98,11 @@ const GenerateTab = ({
 				label={__('Character count guideline', 'maxi-blocks')}
 				value={characterCount}
 				onChangeValue={val => setCharacterCount(val)}
-				onReset={() => setCharacterCount(0)}
+				onReset={() =>
+					setCharacterCount(
+						DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType.value]
+					)
+				}
 			/>
 			<AdvancedNumberControl
 				label={__('Confidence level', 'maxi-blocks')}

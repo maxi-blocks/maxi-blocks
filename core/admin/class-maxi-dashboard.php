@@ -50,11 +50,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_admin_scripts_styles'
             ));
 
-            add_action('admin_notices', array(
-                $this,
-                'generate_styles_button'
-            ));
-
             $this->allow_svg_json_uploads();
         }
 
@@ -560,7 +555,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 							headers: {
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
-							body: "action=my_action"
+							body: "action=maxi_process_all_site_content"
 						})
 						.then(response => response.text())
 						.then(response => {

@@ -138,24 +138,6 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
             ] : [];
 
 
-
-            $test = get_group_attributes($props, [
-                'blockBackground',
-                'border',
-                'borderWidth',
-                'borderRadius',
-            ]);
-
-            $test2 = array_merge(
-                get_group_attributes($props, [
-                    'blockBackground',
-                    'border',
-                    'borderWidth',
-                    'borderRadius',
-                ]),
-                [ 'block_style' => $block_style,]
-            );
-
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [

@@ -74,6 +74,8 @@ class MaxiBlocks_Styles
         }
     }
 
+    protected $max_execution_time;
+
     /**
      * Constructor
      */
@@ -82,11 +84,52 @@ class MaxiBlocks_Styles
         //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
-        add_filter('the_content', [$this, 'process_content']);
+        if(!is_admin() && self::should_apply_content_filter()) {
+            add_filter('the_content', [$this, 'process_content']);
+        }
+
+        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
+        $this->max_execution_time = ini_get('max_execution_time');
+
         // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
-        // add_action('save_post_wp_template_part', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
     }
+
+    private function should_apply_content_filter()
+    {
+        // Check if the REQUEST_URI contains context=edit
+        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false) {
+            return false; // Do not apply the filter for this context
+        }
+
+        return true; // Apply the filter in other cases
+    }
+
+    public function process_all_site_content()
+    {
+        global $post;
+        $args = array(
+            'numberposts' => -1,
+            'post_type'   => 'post'
+        );
+
+        $all_posts = get_posts($args);
+
+        foreach ($all_posts as $post) {
+            // We need to setup the postdata for each post before calling the function
+            setup_postdata($post);
+
+
+            write_log($post->ID);
+            // Call the function here
+            $this->get_styles_meta_fonts_from_blocks($post->ID);
+        }
+
+        wp_reset_postdata(); // Reset Post Data after the loop
+
+        echo 'Processing completed for all posts.';
+        wp_die(); // this is required to terminate immediately and return a proper response
+    }
+
 
     public function write_log($log)
     {
@@ -995,28 +1038,13 @@ class MaxiBlocks_Styles
     public function process_content($content)
     {
         $post_id = $this->get_id();
+
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
-        if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
-            $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
+        if ($contentMetaFonts['meta'] !== null) {
 
-            $metaFiltered = null;
-            if ($contentMetaFonts['meta'] !== null) {
-                $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
-            }
-
-            $templateFiltered = null;
-            if ($contentMetaFonts['template_meta'] !== null) {
-                $templateFiltered = $this->filter_recursive($contentMetaFonts['template_meta']);
-            }
-
-            $templateContentFiltered = null;
-            if ($templateContent !== null) {
-                $templateContentFiltered = $this->filter_recursive($templateContent);
-            }
-
-
-            $this->process_scripts($metaFiltered, $templateFiltered, $templateContentFiltered);
+            $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
+            $this->process_scripts($metaFiltered);
         }
 
 
@@ -1035,22 +1063,17 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks($template, $id);
 
-        write_log('$template');
-        write_log($template);
-
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
-            $templateMeta = $data['template_meta'] ?? null;
 
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
-                'template_meta' => $templateMeta,
                 'fonts' => $data['fonts'],
             ];
         }
-        return ['content' => null, 'meta' => null, 'template_meta' => null, 'fonts' => null];
+        return ['content' => null, 'meta' => null, 'fonts' => null];
     }
 
 
@@ -1061,7 +1084,7 @@ class MaxiBlocks_Styles
      * @param  string $template_content
      * @return void
      */
-    private function process_scripts($post_meta, $template_meta, $template_content)
+    private function process_scripts($post_meta)
     {
 
         $scripts = [
@@ -1087,7 +1110,6 @@ class MaxiBlocks_Styles
             'relations',
         ];
 
-        $template_parts = $this->get_template_parts($template_content);
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
@@ -1098,14 +1120,9 @@ class MaxiBlocks_Styles
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
-            $template_parts_meta = [];
             $meta_to_pass = [];
 
-            if ($template_parts) {
-                $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
-            }
-
-            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta, $template_parts_meta);
+            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
             $match = false;
             $block_names = [];
 
@@ -1437,44 +1454,126 @@ class MaxiBlocks_Styles
         return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
     }
 
+    public static function generate_random_string()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < 3; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
+
+    public static function unique_id_generator($blockName)
+    {
+        $name = str_replace('maxi-blocks/', '', $blockName);
+        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 5);
+        return "{$name}-{$uniquePart}-u";
+    }
+
+    public function process_block_unique_id(&$block)
+    {
+        // Check the block's uniqueID and update it if necessary
+        write_log('block');
+        write_log($block['blockName']);
+        write_log(($block['attrs']['uniqueID']));
+        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+
+            // Get the block name
+            $blockName = $block['blockName'];
+
+            // Generate a new uniqueID
+            $new_uniqueID = self::unique_id_generator($blockName);
+
+            write_log('new_uniqueID');
+            write_log($new_uniqueID);
+
+            // Replace the old uniqueID with the new one in the block
+            $block['attrs']['uniqueID'] = $new_uniqueID;
+        } else {
+            write_log('no uniqueID or it ends with -u');
+        }
+
+        // Recursively process any inner blocks
+        if (!empty($block['innerBlocks'])) {
+            foreach ($block['innerBlocks'] as &$innerBlock) {
+                $this->process_block_unique_id($innerBlock);
+            }
+        }
+    }
+
+
+
     /**
      * Get styles meta fonts from blocks
      *
      * @return bool
      */
-    public function get_styles_meta_fonts_from_blocks()
+    public function get_styles_meta_fonts_from_blocks($post_id)
     {
-        global $post;
+        $post = get_post($post_id);
 
-        if (!$post || !isset($post->ID)) {
+        if (!$post_id) {
             return false;
         }
 
+        // Get all blocks from post content
         $blocks = parse_blocks($post->post_content);
 
         if (empty($blocks)) {
             return false;
         }
 
-        //Get PHP maximum execution time
-        $max_execution_time = ini_get('max_execution_time');
-        //Split blocks array into chunks of 3 blocks
+        // Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Iterate over each block and check its uniqueID
+            foreach ($block_chunk as $block) {
+                foreach ($block_chunk as &$block) {
+                    $this->process_block_unique_id($block);
+                }
+            }
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($this->max_execution_time != 0) {
+                write_log('max_execution_time');
+                write_log($this->max_execution_time - 2);
+                set_time_limit($this->max_execution_time - 2);
+            }
+        }
+
+        // Save the post with the updated blocks
+        $post->post_content = serialize_blocks($blocks);
+        wp_update_post($post);
+
+        // Parse the blocks again after the content has been updated
+        $post = get_post($post_id);
+        $blocks = parse_blocks($post->post_content);
+
+        // Split blocks array into chunks of 3 blocks
         $block_chunks = array_chunk($blocks, 3);
 
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
-
             foreach($block_chunk as $block) {
+                write_log('get_styles_meta_fonts_from_block');
                 $this->get_styles_meta_fonts_from_block($block);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($max_execution_time != 0) {
-                set_time_limit($max_execution_time - 2);
+            if ($this->max_execution_time != 0) {
+                write_log('max_execution_time');
+                write_log($this->max_execution_time - 2);
+                set_time_limit($this->max_execution_time - 2);
             }
         }
-
     }
+
+
 
     public function get_block_fonts($block_name, $props, $only_backend = false)
     {
@@ -1613,8 +1712,7 @@ class MaxiBlocks_Styles
         //$this->write_log('context END');
 
         if ($inner_blocks && !empty($inner_blocks)) {
-            // Get PHP maximum execution time
-            $max_execution_time = ini_get('max_execution_time');
+
             //Split inner_blocks array into chunks of 3
             $inner_block_chunks = array_chunk($inner_blocks, 3);
 
@@ -1625,8 +1723,8 @@ class MaxiBlocks_Styles
                 }
 
                 // Reset PHP maximum execution time for each chunk to avoid a timeout
-                if ($max_execution_time != 0) {
-                    set_time_limit($max_execution_time - 2);
+                if ($this->max_execution_time != 0) {
+                    set_time_limit($this->max_execution_time - 2);
                 }
             }
         }

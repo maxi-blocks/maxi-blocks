@@ -9,3 +9,4 @@ export { default as handleOnReset } from './handleOnReset';
 export { default as generateStyleID } from './generateStyleID';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';
 export { default as uniqueIDRemover } from './uniqueIDRemover';
+export { default as uniqueCustomLabelGenerator } from './uniqueCustomLabelGenerator';

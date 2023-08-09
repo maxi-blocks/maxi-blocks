@@ -181,7 +181,7 @@ const MaxiToolbar = memo(
 
 		const breadcrumbStatus = () => {
 			const originalNestedBlocks = clientId
-				? getBlockParents(clientId)
+				? [...getBlockParents(clientId)]
 				: [];
 
 			if (!originalNestedBlocks.includes(clientId))

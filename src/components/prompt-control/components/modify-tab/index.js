@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { Button, ReactSelectControl } from '../../../../components';
+import { Button, DialogBox, ReactSelectControl } from '../../../../components';
 import ResultCard from '../results-card';
 import { getChatPrompt, getUniqueId } from '../../utils';
 import { MODIFY_OPTIONS } from '../../constants';
@@ -179,6 +179,7 @@ const ModifyTab = ({
 
 	const cleanHistory = () => {
 		setResults([]);
+		switchToGenerateTab();
 	};
 
 	const className = 'maxi-prompt-control-modify-tab';
@@ -206,8 +207,17 @@ const ModifyTab = ({
 					<Button onClick={switchToGenerateTab}>Back</Button>
 				)}
 				{!isEmpty(results) && (
-					// TODO: Add confirmation modal
-					<Button onClick={cleanHistory}>Clean history</Button>
+					<DialogBox
+						message={__(
+							'Are you sure you want to clean the history?',
+							'maxi-blocks'
+						)}
+						cancelLabel={__('Cancel', 'maxi-blocks')}
+						confirmLabel={__('Clean', 'maxi-blocks')}
+						onConfirm={cleanHistory}
+						buttonClassName={`${className}__clean-history-button`}
+						buttonChildren={__('Clean history', 'maxi-blocks')}
+					/>
 				)}
 			</div>
 			<div className={`${className}__results`}>
@@ -243,12 +253,17 @@ const ModifyTab = ({
 							onSelect={(id = result.id) => setSelectedResult(id)}
 							onDelete={() => {
 								setResults(prevResults => {
-									const newResults = [...prevResults];
-									return newResults.filter(
+									const newResults = [...prevResults].filter(
 										deletedResult =>
 											deletedResult.id !== result.id &&
 											deletedResult.refId !== result.id
 									);
+
+									if (isEmpty(newResults)) {
+										switchToGenerateTab();
+									}
+
+									return newResults;
 								});
 							}}
 						/>

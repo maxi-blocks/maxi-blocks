@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../../../button';
+import DialogBox from '../../../dialog-box';
 
 /**
  * External dependencies
@@ -167,9 +168,17 @@ const ResultCard = ({
 						<Button onClick={handleCopy}>
 							{__('Copy', 'maxi-blocks')}
 						</Button>
-						<Button onClick={onDelete}>
-							{__('Delete', 'maxi-blocks')}
-						</Button>
+						<DialogBox
+							message={__(
+								'Are you sure you want to delete the result?',
+								'maxi-blocks'
+							)}
+							cancelLabel={__('Cancel', 'maxi-blocks')}
+							confirmLabel={__('Delete', 'maxi-blocks')}
+							onConfirm={onDelete}
+							buttonClassName={`${className}__clean-history-button`}
+							buttonChildren={__('Delete', 'maxi-blocks')}
+						/>
 					</div>
 				</>
 			)}

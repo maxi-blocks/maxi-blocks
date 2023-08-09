@@ -230,7 +230,7 @@ if (!class_exists('MaxiBlocks_API')):
                 },
             ]);
             register_rest_route($this->namespace, '/unique-id/remove/(?P<unique_id>[a-z0-9-]+)$', [
-                'methods' => 'GET',
+                'methods' => 'DELETE',
                 'callback' => [$this, 'remove_maxi_blocks_unique_id'],
                 'args' => [
                     'unique_id' => [

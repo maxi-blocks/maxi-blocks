@@ -85,9 +85,11 @@ class MaxiBlocks_Styles
         //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
-        add_filter('the_content', [$this, 'process_content']);
-        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
+        if(!is_admin() && self::should_apply_content_filter()) {
+            add_filter('the_content', [$this, 'process_content']);
+        }
 
+        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
         $this->max_execution_time = ini_get('max_execution_time');
 
         if ($this->max_execution_time == 0) {
@@ -105,6 +107,17 @@ class MaxiBlocks_Styles
     public static function get_processing_text($processed_posts, $total_posts)
     {
         return __('Processing', self::$maxi_text_domain) . ': ' . $processed_posts . ' ' . __('of', self::$maxi_text_domain) . ' ' . $total_posts . ' ' . __('posts completed', self::$maxi_text_domain) . '<br>';
+        // add_action('save_post', [$this, 'get_styles_meta_fonts_from_blocks'], 10, 4);
+    }
+
+    private function should_apply_content_filter()
+    {
+        // Check if the REQUEST_URI contains context=edit
+        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false) {
+            return false; // Do not apply the filter for this context
+        }
+
+        return true; // Apply the filter in other cases
     }
 
     public function process_all_site_content()
@@ -1049,28 +1062,13 @@ class MaxiBlocks_Styles
     public function process_content($content)
     {
         $post_id = $this->get_id();
+
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
 
-        if ($contentMetaFonts['meta'] !== null || $contentMetaFonts['template_meta'] !== null) {
-            $templateContent = isset($templateContentAndMeta['template_content']) ? $templateContentAndMeta['template_content'] : null;
+        if ($contentMetaFonts['meta'] !== null) {
 
-            $metaFiltered = null;
-            if ($contentMetaFonts['meta'] !== null) {
-                $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
-            }
-
-            $templateFiltered = null;
-            if ($contentMetaFonts['template_meta'] !== null) {
-                $templateFiltered = $this->filter_recursive($contentMetaFonts['template_meta']);
-            }
-
-            $templateContentFiltered = null;
-            if ($templateContent !== null) {
-                $templateContentFiltered = $this->filter_recursive($templateContent);
-            }
-
-
-            $this->process_scripts($metaFiltered, $templateFiltered, $templateContentFiltered);
+            $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
+            $this->process_scripts($metaFiltered);
         }
 
 
@@ -1092,16 +1090,14 @@ class MaxiBlocks_Styles
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
-            $templateMeta = $data['template_meta'] ?? null;
 
             return [
                 'content' => $data['content'],
                 'meta' => $data['meta'],
-                'template_meta' => $templateMeta,
                 'fonts' => $data['fonts'],
             ];
         }
-        return ['content' => null, 'meta' => null, 'template_meta' => null, 'fonts' => null];
+        return ['content' => null, 'meta' => null, 'fonts' => null];
     }
 
 
@@ -1112,7 +1108,7 @@ class MaxiBlocks_Styles
      * @param  string $template_content
      * @return void
      */
-    private function process_scripts($post_meta, $template_meta, $template_content)
+    private function process_scripts($post_meta)
     {
 
         $scripts = [
@@ -1138,7 +1134,6 @@ class MaxiBlocks_Styles
             'relations',
         ];
 
-        $template_parts = $this->get_template_parts($template_content);
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
@@ -1149,14 +1144,9 @@ class MaxiBlocks_Styles
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
-            $template_parts_meta = [];
             $meta_to_pass = [];
 
-            if ($template_parts) {
-                $template_parts_meta = $this->get_template_parts_meta($template_parts, $js_var);
-            }
-
-            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta, $template_parts_meta);
+            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
             $match = false;
             $block_names = [];
 
@@ -1478,8 +1468,16 @@ class MaxiBlocks_Styles
     public static function unique_id_generator($blockName)
     {
         $name = str_replace('maxi-blocks/', '', $blockName);
-        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 5);
-        return "{$name}-{$uniquePart}-u";
+
+        // Grabbing first 4 characters from uniqid
+        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 4);
+
+        // Appending a character from generate_random_string()
+        $uniquePart .= substr(self::generate_random_string(), 0, 1);
+
+        $result = $name . '-' . $uniquePart . '-u';
+        return $result;
+
     }
 
     public function process_all_unique_ids($post_id)
@@ -1548,8 +1546,6 @@ class MaxiBlocks_Styles
 
     /**
      * Get styles meta fonts from blocks
-     *
-     * @return bool
      */
     public function get_styles_meta_fonts_from_blocks($post_id)
     {

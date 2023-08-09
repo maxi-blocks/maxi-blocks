@@ -339,10 +339,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Automated fixes', false);
+            $content .= $this->generate_item_header('Style regenerator kit', false);
 
-            $content .= '<h4>'.__('Regenerate frontend styles for site\'s content', self::$maxi_text_domain).'</h4>';
-            $content .= '<p>'.__('Regenerates Maxi Blocks\' styles for all site\'s posts, pages, custom post styles, site editor... Helpful if you migrated your site, lost your database, imported content, or something went wrong with Maxi styles on frontend.', self::$maxi_text_domain).'</p>';
+            $content .= '<h4>'.__('Start an automatic process to renew all Maxi Blocks frontend styles', self::$maxi_text_domain).'</h4>';
+            $content .= '<p>'.__('When should styles be regenerated?', self::$maxi_text_domain).'</p>';
+            $content .= '<ul>';
+            $content .= '<li>'.__('Following events such as site migrations, database disturbances, or after content imports via the WordPress importer or direct copy-pasting in the code editor.', self::$maxi_text_domain).'</li>';
+            $content .= '<li>'.__('On the off chance that frontend styles appear off, opt to regenerate styles to avoid the tedious task of manually re-saving numerous pages.', self::$maxi_text_domain).'</li>';
+            $content .= '</ul>';
+            $content .= '<p>'.__('Duration? It depends on block complexity and your server\'s speed. Times can range from a brisk 20 seconds to several minutes per page. Monitor the progress bar for live updates.', self::$maxi_text_domain).'</p>';
+
             $content .= '<p><button id="maxi-regenerate-styles-button">Generate</button></p>';
             $content .= $this->generate_styles_button();
 

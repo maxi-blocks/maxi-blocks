@@ -14,6 +14,16 @@ const selectors = {
 
 		return false;
 	},
+	getLastInsertedBlocks(state) {
+		if (state) return state.lastInsertedBlocks;
+
+		return false;
+	},
+	getBlockClientIds(state) {
+		if (state) return state.blockClientIds;
+
+		return false;
+	},
 };
 
 export default selectors;

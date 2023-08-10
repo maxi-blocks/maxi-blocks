@@ -83,7 +83,7 @@ class MaxiBlocks_Styles
         add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         if(self::should_apply_content_filter()) {
-            add_filter('wp_enqueue_scripts', [$this, 'process_content']);
+            add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
         }
 
         add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
@@ -1023,24 +1023,20 @@ class MaxiBlocks_Styles
 
     /**
      * Processing content for blocks
-     * @param  string $content
      * @return string
      */
-    public function process_content($content)
+    public function process_content_frontend()
     {
 
         $post_id = $this->get_id();
 
-        $contentMetaFonts = $this->get_content_meta_fonts($post_id, 'maxi-blocks-styles');
+        $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
-        if ($contentMetaFonts['meta'] !== null) {
+        if ($content_meta_fonts['meta'] !== null) {
 
-            $metaFiltered = $this->filter_recursive($contentMetaFonts['meta']);
-            $this->process_scripts($metaFiltered);
+            $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
+            $this->process_scripts($meta_filtered);
         }
-
-
-        return $content;
     }
 
     /**
@@ -1050,10 +1046,10 @@ class MaxiBlocks_Styles
      * @param  string $content_key
      * @return array
      */
-    private function get_content_meta_fonts($id, $content_key)
+    private function get_content_meta_fonts_frontend($id, $content_key)
     {
 
-        $data = $this->get_content_for_blocks($id);
+        $data = $this->get_content_for_blocks_frontend($id);
 
 
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
@@ -1157,23 +1153,6 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Get template parts meta data
-     * @param  array $template_parts
-     * @param  string $js_var
-     * @return array
-     */
-    private function get_template_parts_meta($template_parts, $js_var)
-    {
-        $template_parts_meta = [];
-
-        foreach ($template_parts as $template_part_id) {
-            $template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
-        }
-
-        return $template_parts_meta;
-    }
-
-    /**
      * Enqueue script per block
      * @param  string $script
      * @param  string $js_script_name
@@ -1200,7 +1179,6 @@ class MaxiBlocks_Styles
      * @param  string $unique_id
      * @return bool
      */
-
     public function block_needs_custom_meta($unique_id)
     {
         global $wpdb;
@@ -1216,14 +1194,14 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Gets content per blocks
+     * Gets content for blocks
      *
      * @param array $block
      * @param string &$styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array)
+    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array)
     {
         global $wpdb;
 
@@ -1235,7 +1213,7 @@ class MaxiBlocks_Styles
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
 
-                    $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
                 }
             } else {
                 return;
@@ -1257,7 +1235,7 @@ class MaxiBlocks_Styles
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
 
-                    $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
                 }
             } else {
                 return;
@@ -1274,7 +1252,7 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['active_custom_data'])) {
-            $this->process_custom_data($block, $unique_id, $active_custom_data_array);
+            $this->process_custom_data_frontend($block, $unique_id, $active_custom_data_array);
         }
 
         // fonts
@@ -1290,7 +1268,7 @@ class MaxiBlocks_Styles
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as $innerBlock) {
-                $this->process_block($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
+                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array);
             }
         }
     }
@@ -1302,7 +1280,7 @@ class MaxiBlocks_Styles
      * @param string $unique_id
      * @param array &$active_custom_data_array
      */
-    private function process_custom_data(array $block, string $unique_id, array &$active_custom_data_array)
+    private function process_custom_data_frontend(array $block, string $unique_id, array &$active_custom_data_array)
     {
         global $wpdb;
 
@@ -1325,49 +1303,83 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Get content for blocks
+     * Fetches content for blocks with various optimizations.
      *
-     * @param bool $is_template
      * @param int|null $id
      * @param string|null $passed_content
-     * @return array|false
+     * @return array
      */
-    public function get_content_for_blocks($id = null, string $passed_content = null)
+    public function get_content_for_blocks_frontend($id = null, string $passed_content = null)
     {
         global $post;
-        $blocks = [];
-        $blocks_template = [];
-        $styles = '';
-        $prev_styles = '';
-        $active_custom_data_array = [];
-        $fonts = [];
 
+        // If no post is set and no ID is passed, return an empty array.
         if ((!$post || !isset($post->ID)) && !$id) {
             return [];
         }
 
-        // get template parts
-        global $wpdb;
+        // Fetch blocks from template parts.
+        $blocks = $this->fetch_template_parts_frontend();
 
-        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE (post_type = 'wp_template_part' OR post_type = 'wp_template') AND post_status = 'publish'";
-        $template_parts = $wpdb->get_results($query);
-
-        foreach ($template_parts as $template_part) {
-            $blocks_part = parse_blocks($template_part->post_content);
-            $blocks_template = array_merge_recursive($blocks_template, $blocks_part);
-        }
-
+        // Fetch blocks from passed content or from the global post.
         $blocks_post = parse_blocks($passed_content ?? $post->post_content);
 
-        $blocks = array_merge_recursive($blocks_template, $blocks_post);
-
+        // Merge the blocks.
+        $blocks = array_merge_recursive($blocks, $blocks_post);
 
         if (empty($blocks)) {
             return [];
         }
 
-        // Reusable blocks
-        // Filter blocks to get only reusable blocks and extract their IDs
+        // Fetch and parse reusable blocks.
+        $reusable_blocks = $this->get_parsed_reusable_blocks_frontend($blocks);
+        if (!empty($reusable_blocks)) {
+            $blocks = array_merge_recursive($blocks, $reusable_blocks);
+        }
+
+        // Process the blocks to extract styles and other metadata.
+        list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
+
+        // Construct the content array.
+        $content = [
+            'css_value' => $styles,
+            'prev_css_value' => $prev_styles,
+        ];
+
+        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+    }
+
+    /**
+     * Fetches blocks from template parts.
+     *
+     * @return array
+     */
+    private function fetch_template_parts_frontend()
+    {
+        global $wpdb;
+
+        // Query to fetch template parts from the database.
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE (post_type = 'wp_template_part' OR post_type = 'wp_template') AND post_status = 'publish'";
+        $template_parts = $wpdb->get_results($query);
+
+        $blocks_template = [];
+        foreach ($template_parts as $template_part) {
+            $blocks_part = parse_blocks($template_part->post_content);
+            $blocks_template = array_merge_recursive($blocks_template, $blocks_part);
+        }
+
+        return $blocks_template;
+    }
+
+    /**
+     * Fetches and parses reusable blocks from the provided blocks.
+     *
+     * @param array $blocks
+     * @return array
+     */
+    private function get_parsed_reusable_blocks_frontend($blocks)
+    {
+        // Extract reusable block IDs from the provided blocks.
         $reusable_block_ids = array_map(
             function ($block) {
                 return $block['attrs']['ref'];
@@ -1380,41 +1392,42 @@ class MaxiBlocks_Styles
             )
         );
 
-        // Create an empty array to collect all parsed blocks
-        $all_parsed_blocks = array();
+        // Remove duplicates from the block IDs.
+        $reusable_block_ids = array_unique($reusable_block_ids);
+        $all_parsed_blocks = [];
 
-        if(!empty($reusable_block_ids)) {
-            // Remove duplicates
-            $reusable_block_ids = array_unique($reusable_block_ids);
-
-            // Fetch and parse each reusable block
-            foreach ($reusable_block_ids as $block_id) {
-                $block = get_post($block_id);
-                if ($block) {
-                    $parsed_blocks = parse_blocks($block->post_content);
-                }
-
-                // Merge the parsed blocks into the collector array
+        // Fetch and parse each reusable block by its ID.
+        foreach ($reusable_block_ids as $block_id) {
+            $block = get_post($block_id);
+            if ($block) {
+                $parsed_blocks = parse_blocks($block->post_content);
                 $all_parsed_blocks = array_merge($all_parsed_blocks, $parsed_blocks);
-
             }
         }
 
-        if(!empty($all_parsed_blocks)) {
-            $blocks = array_merge_recursive($blocks, $all_parsed_blocks);
-        }
+        return $all_parsed_blocks;
+    }
+
+    /**
+     * Processes the provided blocks to extract styles, fonts, and other metadata.
+     *
+     * @param array $blocks
+     * @return array
+     */
+    private function process_blocks_frontend($blocks)
+    {
+        $styles = '';
+        $prev_styles = '';
+        $active_custom_data_array = [];
+        $fonts = [];
 
         foreach ($blocks as $block) {
-            $this->process_block($block, $fonts, $styles, $prev_styles, $active_custom_data_array);
+            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array);
         }
 
-        $content = [
-            'css_value' => $styles,
-            'prev_css_value' => $prev_styles,
-        ];
-
-        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+        return [$styles, $prev_styles, $active_custom_data_array, $fonts];
     }
+
 
     public static function generate_random_string()
     {

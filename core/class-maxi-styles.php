@@ -1452,9 +1452,6 @@ class MaxiBlocks_Styles
     public function process_block_unique_id(&$block)
     {
         // Check the block's uniqueID and update it if necessary
-        write_log('block');
-        write_log($block['blockName']);
-        write_log(($block['attrs']['uniqueID']));
         if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
 
             // Get the block name
@@ -1463,13 +1460,8 @@ class MaxiBlocks_Styles
             // Generate a new uniqueID
             $new_uniqueID = self::unique_id_generator($blockName);
 
-            write_log('new_uniqueID');
-            write_log($new_uniqueID);
-
             // Replace the old uniqueID with the new one in the block
             $block['attrs']['uniqueID'] = $new_uniqueID;
-        } else {
-            write_log('no uniqueID or it ends with -u');
         }
 
         // Recursively process any inner blocks
@@ -1763,7 +1755,6 @@ class MaxiBlocks_Styles
         }
 
         // fonts
-
         $blocks_with_fonts = [
             'maxi-blocks/number-counter-maxi',
             'maxi-blocks/button-maxi',

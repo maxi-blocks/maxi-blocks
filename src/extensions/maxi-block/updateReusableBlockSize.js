@@ -4,6 +4,7 @@
 // The size of the clone if observed to get the width of the real block.
 const updateReusableBlockSize = (target, uniqueID, clientId) => {
 	target.parentNode.dataset.containsMaxiBlock = true;
+	target.parentNode.parentNode.dataset.containsMaxiBlock = true;
 
 	const sizeElement = document.createElement('div');
 	sizeElement.classList.add(uniqueID, 'maxi-block', 'maxi-block--backend');

@@ -290,7 +290,12 @@ class MaxiBlockComponent extends Component {
 
 		// Check if the block is reusable
 		this.isReusable =
-			this.blockRef.current.parentNode.classList.contains('is-reusable');
+			this.blockRef.current.parentNode.classList.contains(
+				'is-reusable'
+			) ||
+			this.blockRef.current.parentNode.parentNode.classList.contains(
+				'is-reusable'
+			);
 
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(

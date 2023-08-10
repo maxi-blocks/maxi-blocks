@@ -269,7 +269,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">'.__('Google Maps API Quickstart', self::$maxi_text_domain).'</a> which will handle the setup of your account and generate the API key that you can insert below.', self::$maxi_text_domain).'</p>';
 
             $description = '<h4>'.__('Insert Google Maps API Key here', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'google_api_key_option');
+            $content .= $this->generate_setting($description, 'google_api_key_option', '', 'text');
 
             $content .= get_submit_button();
 
@@ -383,10 +383,66 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            $content .= $this->generate_item_header('OpenAI API key', true);
+            $content .= $this->generate_item_header('Integrations', false);
 
             $description = '<h4>'.__('Insert OpenAI API Key here', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'openai_api_key_option');
+            $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'text');
+
+            $description = '<h4>'.__('ChatGPT AI Model', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', [
+                'gpt-4',
+                'gpt-4-32k',
+                'gpt-3.5-turbo',
+                'gpt-3.5-turbo-16k',
+            ]);
+
+            $ai_constants = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/ai.json"), true);
+
+            $languages = $ai_constants['languages'];
+            $description = '<h4>'.__('Default language', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_setting($description, 'maxi_ai_language', '', 'dropdown', $languages);
+
+            $tones = $ai_constants['tones'];
+            $description = '<h4>'.__('Default tone', self::$maxi_text_domain).'</h4>';
+            $content .= $this->generate_setting($description, 'maxi_ai_tone', '', 'dropdown', $tones);
+
+            $content .= get_submit_button();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Website identity', false);
+
+            $description = '
+				<h4>'.__('Tell us about your site', self::$maxi_text_domain).'</h4>
+				<p>'.__('What is the primary goal of your website? (e.g. shopping platform, offering
+				services, showcasing work, journaling)', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_site_description', '', 'text');
+
+            $description = '
+				<h4>'.__('Who is your target audience?', self::$maxi_text_domain).'</h4>
+				<p>'.__('Group of people you want to connect with or offer services to.', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_audience', '', 'text');
+
+            $description = '
+				<h4>'.__('What is the goal of the website?', self::$maxi_text_domain).'</h4>
+				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_site_goal', '', 'text');
+
+            $description = '
+				<h4>'.__('What services do you offer?', self::$maxi_text_domain).'</h4>
+				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_services', '', 'text');
+
+            $description = '
+				<h4>'.__('What is your website or business name?', self::$maxi_text_domain).'</h4>
+				<p>'.__('The name will be used for writing content. Optional.', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'text');
+
+            $description = '
+				<h4>'.__('Anything else we should know?', self::$maxi_text_domain).'</h4>
+				<p>'.__('Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience.', self::$maxi_text_domain).'</p>';
+            $content .= $this->generate_setting($description, 'maxi_ai_business_info', '', 'text');
 
             $content .= get_submit_button();
 
@@ -508,6 +564,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
+        public function generate_custom_dropdown($option, $list)
+        {
+            $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+            $dropdown .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
+            $dropdown .= '<select name="'.$option.'" id="'.$option.'" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+
+            $option_value = get_option($option) ? get_option($option) : 'gpt-3.5-turbo';
+
+            if(($key = array_search($option_value, $list)) !== false) {
+                unset($list[$key]);
+                array_unshift($list, $option_value);
+            }
+
+
+            foreach($list as $value) {
+                $dropdown .= '<option value="'.$value.'">'.$value.'</option>';
+            }
+
+            $dropdown .= '</select>';
+
+            $dropdown .= $this->generate_input($option, '', 'hidden');
+
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
+            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+
+            return $dropdown;
+        }
+
+
         // TO DO: uncomment this when we have a list of versions
         // public function generate_dropdown()
         // {
@@ -531,19 +616,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         //     return $dropdown;
         // }
 
-        public function generate_setting($description, $option, $function = '', $type = 'text')
+        public function generate_setting($description, $option, $function = '', $type = 'toggle', $list = [])
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
 
-            if(str_contains($option, 'api_key_option')) {
-                $api_name = str_replace('_api_key_option', '', $option);
+            if($type === 'dropdown') {
+                $content .= $this->generate_custom_dropdown($option, $list);
+            } elseif($type === 'text') {
+                if(str_contains($option, 'api_key_option')) {
+                    $api_name = str_replace('_api_key_option', '', $option);
+                    $content .='<div id="maxi-'.$api_name.'-test-map"></div>';
+                }
 
-                $content .='<div id="maxi-'.$api_name.'-test-map"></div>';
                 $content .= $this->generate_input($option, $function, $type);
-                $content .='<div id="maxi-'.$api_name.'-test-map_validation-message"></div>';
+
+                if(str_contains($option, 'api_key_option')) {
+                    $content .='<div id="maxi-'.$api_name.'-test-map_validation-message"></div>';
+                }
             } else {
                 $content .= $this->generate_toggle($option, $function);
             }
@@ -574,6 +666,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'default' => 'current',
             );
 
+            $args_ai_model = array(
+                'type' => 'string',
+                'default' => 'gpt-3.5-turbo',
+            );
+
+            $args_ai_language = array(
+                'type' => 'string',
+                'default' => 'English (United Kingdom)',
+            );
+
+            $args_ai_tone = array(
+                'type' => 'string',
+                'default' => 'Formal',
+            );
+
+            $args_ai_description = array(
+                'type' => 'string',
+                'default' => '',
+            );
+
             register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
@@ -583,6 +695,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'openai_api_key_option');
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_model', $args_ai_model);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_language', $args_ai_language);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_tone', $args_ai_tone);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_site_description', $args_ai_description);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_audience', $args_ai_description);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_site_goal', $args_ai_description);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_services', $args_ai_description);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_business_name', $args_ai_description);
+            register_setting('maxi-blocks-settings-group', 'maxi_ai_business_info', $args_ai_description);
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
             register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
             register_setting('maxi-blocks-settings-group', 'maxi_sc_gutenberg_blocks', $args);

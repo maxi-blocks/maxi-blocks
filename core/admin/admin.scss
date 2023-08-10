@@ -200,7 +200,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								}
 								~ .maxi-dashboard_main-content_accordion-item-content {
 									border-top-width: 1px;
-									max-height: 100vh;
+									max-height: 200vh;
 								}
 							}
 						}
@@ -230,9 +230,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 										border-color: #dbdde6;
 									}
 
-									label:not(
-											label[for='maxi-breakpoint-maxi-versions']
-										) {
+									label:not(label[for='maxi-breakpoint-maxi-versions']) {
 										text-transform: uppercase;
 										width: 20px;
 										display: inline-block;

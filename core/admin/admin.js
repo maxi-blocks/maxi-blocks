@@ -37,6 +37,22 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		version.value = value;
 	});
 
+	const dropdowns = document.querySelectorAll(
+		'.maxi-dashboard_main-content_accordion-item-content-switcher__dropdown select'
+	);
+
+	if (dropdowns) {
+		Array.from(dropdowns)?.forEach(dropdown => {
+			const dropdownInput = document.querySelector(
+				`input#${dropdown.id}`
+			);
+
+			dropdown.addEventListener('change', function updateInputs() {
+				dropdownInput.value = dropdown.value;
+			});
+		});
+	}
+
 	// test map for google api key
 	// Initialize and add the map
 	const initTestMap = () => {
@@ -53,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		// The marker, positioned at Uluru
 		const marker = new google.maps.Marker({
 			position: uluru,
-			map: map,
+			map,
 		});
 	};
 
@@ -114,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 	const catchGoogleMapsApiErrors = () => {
 		// based on http://tobyho.com/2012/07/27/taking-over-console-log/
-		const console = window.console;
+		const { console } = window;
 		if (!console) return;
 
 		const intercept = method => {

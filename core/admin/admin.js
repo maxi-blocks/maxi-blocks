@@ -51,6 +51,22 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		version.value = value;
 	});
 
+	const dropdowns = document.querySelectorAll(
+		'.maxi-dashboard_main-content_accordion-item-content-switcher__dropdown select'
+	);
+
+	if (dropdowns) {
+		Array.from(dropdowns)?.forEach(dropdown => {
+			const dropdownInput = document.querySelector(
+				`input#${dropdown.id}`
+			);
+
+			dropdown.addEventListener('change', function updateInputs() {
+				dropdownInput.value = dropdown.value;
+			});
+		});
+	}
+
 	// test map for google api key
 	// Initialize and add the map
 	const initTestMap = () => {

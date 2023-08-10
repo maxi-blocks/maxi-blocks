@@ -82,7 +82,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 		const getOpenAIApiKey = async () => {
 			try {
 				const maxiSettings = await receiveMaxiSettings();
-				const openAIApiKey = maxiSettings?.openai_api_key;
+				const openAIApiKey = maxiSettings?.ai_settings?.openai_api_key;
 
 				setOpenAIApiKey(openAIApiKey);
 			} catch (error) {

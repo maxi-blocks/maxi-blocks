@@ -80,7 +80,7 @@ class MaxiBlocks_Styles
     public function __construct()
     {
         //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
-        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+        //add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
         if(!is_admin() && self::should_apply_content_filter()) {
             add_filter('the_content', [$this, 'process_content']);
@@ -1035,6 +1035,7 @@ class MaxiBlocks_Styles
      */
     public function process_content($content)
     {
+
         $post_id = $this->get_id();
 
         $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');

@@ -18,7 +18,7 @@ import ToggleSwitch from '../toggle-switch';
 import { isEmpty } from 'lodash';
 
 /**
- * Icons
+ * Styles
  */
 import './editor.scss';
 

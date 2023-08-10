@@ -79,11 +79,11 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
-        //add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
+        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
 
-        if(!is_admin() && self::should_apply_content_filter()) {
-            add_filter('the_content', [$this, 'process_content']);
+        if(self::should_apply_content_filter()) {
+            add_filter('wp_enqueue_scripts', [$this, 'process_content']);
         }
 
         add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
@@ -117,7 +117,6 @@ class MaxiBlocks_Styles
             setup_postdata($post);
 
 
-            write_log($post->ID);
             // Call the function here
             $this->get_styles_meta_fonts_from_blocks($post->ID);
         }
@@ -384,9 +383,6 @@ class MaxiBlocks_Styles
     {
         $need_custom_meta = false;
 
-        // $this->write_log('need_custom_meta');
-        // $this->write_log($contents);
-
         if ($contents) {
             foreach ($contents as $contentData) {
                 $content = $contentData['content'] ?? null;
@@ -418,7 +414,6 @@ class MaxiBlocks_Styles
                 }
             }
         }
-        //$this->write_log($need_custom_meta);
 
         return $need_custom_meta;
     }
@@ -602,7 +597,6 @@ class MaxiBlocks_Styles
 
         $loaded_fonts = [];
 
-
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
 
@@ -613,7 +607,6 @@ class MaxiBlocks_Styles
 
                 if (class_exists('MaxiBlocks_StyleCards')) {
                     $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level);
-
                     @list($font, $font_weights, $font_styles) = $sc_fonts;
                 }
 
@@ -758,9 +751,9 @@ class MaxiBlocks_Styles
                             }
 
                             if (!$use_local_fonts) {
+
                                 if ($font_url) {
                                     if ($this->check_font_url($font_url)) {
-
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
                                             $font_url,
@@ -1038,7 +1031,7 @@ class MaxiBlocks_Styles
 
         $post_id = $this->get_id();
 
-        $contentMetaFonts = $this->get_content_meta_fonts($post_id, false, 'maxi-blocks-styles');
+        $contentMetaFonts = $this->get_content_meta_fonts($post_id, 'maxi-blocks-styles');
 
         if ($contentMetaFonts['meta'] !== null) {
 
@@ -1057,10 +1050,11 @@ class MaxiBlocks_Styles
      * @param  string $content_key
      * @return array
      */
-    private function get_content_meta_fonts($id, $template, $content_key)
+    private function get_content_meta_fonts($id, $content_key)
     {
 
-        $data = $this->get_content_for_blocks($template, $id);
+        $data = $this->get_content_for_blocks($id);
+
 
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
@@ -1338,7 +1332,7 @@ class MaxiBlocks_Styles
      * @param string|null $passed_content
      * @return array|false
      */
-    public function get_content_for_blocks(bool $is_template = false, $id = null, string $passed_content = null)
+    public function get_content_for_blocks($id = null, string $passed_content = null)
     {
         global $post;
         $blocks = [];
@@ -1348,7 +1342,7 @@ class MaxiBlocks_Styles
         $active_custom_data_array = [];
         $fonts = [];
 
-        if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
+        if ((!$post || !isset($post->ID)) && !$id) {
             return [];
         }
 
@@ -1409,11 +1403,6 @@ class MaxiBlocks_Styles
         if(!empty($all_parsed_blocks)) {
             $blocks = array_merge_recursive($blocks, $all_parsed_blocks);
         }
-
-        $styles = '';
-        $prev_styles = '';
-        $active_custom_data_array = [];
-        $fonts = [];
 
         foreach ($blocks as $block) {
             $this->process_block($block, $fonts, $styles, $prev_styles, $active_custom_data_array);
@@ -1513,8 +1502,7 @@ class MaxiBlocks_Styles
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
             if ($this->max_execution_time != 0) {
-                write_log('max_execution_time');
-                write_log($this->max_execution_time - 2);
+
                 set_time_limit($this->max_execution_time - 2);
             }
         }
@@ -1533,14 +1521,11 @@ class MaxiBlocks_Styles
         foreach ($block_chunks as $block_chunk) {
             // Process each block in the current chunk
             foreach($block_chunk as $block) {
-                write_log('get_styles_meta_fonts_from_block');
                 $this->get_styles_meta_fonts_from_block($block);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
             if ($this->max_execution_time != 0) {
-                write_log('max_execution_time');
-                write_log($this->max_execution_time - 2);
                 set_time_limit($this->max_execution_time - 2);
             }
         }
@@ -1682,7 +1667,6 @@ class MaxiBlocks_Styles
         } else {
             $context = null;
         }
-        //$this->write_log('context END');
 
         if ($inner_blocks && !empty($inner_blocks)) {
 

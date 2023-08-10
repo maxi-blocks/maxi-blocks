@@ -36,21 +36,10 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
-    * Constructor: Registers blocks and their configurations.
+    * Constructor: empty
      */
     public function __construct()
     {
-        // $blocks = ['text-maxi', 'button-maxi', 'image-maxi', 'group-maxi', 'column-maxi', 'row-maxi', 'slide-maxi', 'pane-maxi'];
-        // $config = [
-        //     'api_version' => 2,
-        //     'editor_script' => 'maxi-blocks-block-editor',
-        //     'render_callback' => [$this, 'render_dc'],
-        //     'attributes' => self::$dynamic_content_attributes,
-        // ];
-
-        // foreach ($blocks as $block) {
-        //     register_block_type("maxi-blocks/{$block}", array_merge($config, ['file' => MAXI_PLUGIN_DIR_PATH . "src/blocks/{$block}/block.json"]));
-        // }
     }
 
 
@@ -90,7 +79,12 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
+        if (str_ends_with($unique_id, '-u')) {
+            $block_name = substr($unique_id, 0, -2);
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        } else {
+            $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
+        }
 
         if($is_template) {
             $block_name = substr($block_name, 0, strrpos($block_name, '-'));
@@ -186,9 +180,7 @@ class MaxiBlocks_DynamicContent
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
-            'dc-field' => $dc_field,
             'dc-id' => $dc_id,
-            'dc-author' => $dc_author,
         ) = $attributes;
 
         if (empty($dc_type)) {

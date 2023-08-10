@@ -301,7 +301,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page
-			.waitForSelector('.toolbar-popover-link-destroyer')
+			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const selectMaxiTextDiv = await page.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -315,10 +315,12 @@ describe('TextMaxi', () => {
 				);
 				await page.waitForTimeout(150);
 
-				await page.waitForSelector('.toolbar-popover-link-destroyer');
+				await page.waitForSelector(
+					'.maxi-link-control__link-destroyer'
+				);
 			});
 
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -353,7 +355,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -395,7 +397,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -458,7 +460,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page
-			.waitForSelector('.toolbar-popover-link-destroyer')
+			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const selectMaxiTextDiv = await page.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -479,10 +481,12 @@ describe('TextMaxi', () => {
 				);
 				await page.waitForTimeout(150);
 
-				await page.waitForSelector('.toolbar-popover-link-destroyer');
+				await page.waitForSelector(
+					'.maxi-link-control__link-destroyer'
+				);
 			});
 
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(200);

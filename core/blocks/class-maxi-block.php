@@ -241,13 +241,14 @@ if (!class_exists('MaxiBlocks_Block')):
             ];
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
-                $this->block = register_block_type("maxi-blocks/{$this->block_name}", array_merge($config, ['file' => MAXI_PLUGIN_DIR_PATH . "src/blocks/{$this->block_name}/block.json"]));
+                $this->block = register_block_type("maxi-blocks/{$this->block_name}", array_merge(json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "src/blocks/{$this->block_name}/block.json"), true), $config));
             } else {
                 $this->block = register_block_type(
-                    MAXI_PLUGIN_DIR_PATH . 'src/blocks/' . $this->block_name . '/block.json',
-                    [
-                       'render_callback' => [$this, 'render_block'],
-                    ]
+                    "maxi-blocks/{$this->block_name}",
+                    array_merge(
+                        json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . 'src/blocks/' . $this->block_name . '/block.json'), true),
+                        [ 'render_callback' => [$this, 'render_block']]
+                    )
                 );
             }
         }

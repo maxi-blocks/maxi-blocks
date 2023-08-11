@@ -301,7 +301,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page
-			.waitForSelector('.toolbar-popover-link-destroyer')
+			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const selectMaxiTextDiv = await page.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -315,10 +315,12 @@ describe('TextMaxi', () => {
 				);
 				await page.waitForTimeout(150);
 
-				await page.waitForSelector('.toolbar-popover-link-destroyer');
+				await page.waitForSelector(
+					'.maxi-link-control__link-destroyer'
+				);
 			});
 
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -353,7 +355,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -395,7 +397,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(150);
@@ -458,7 +460,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page
-			.waitForSelector('.toolbar-popover-link-destroyer')
+			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const selectMaxiTextDiv = await page.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
@@ -479,10 +481,12 @@ describe('TextMaxi', () => {
 				);
 				await page.waitForTimeout(150);
 
-				await page.waitForSelector('.toolbar-popover-link-destroyer');
+				await page.waitForSelector(
+					'.maxi-link-control__link-destroyer'
+				);
 			});
 
-		await page.$eval('.toolbar-popover-link-destroyer', button =>
+		await page.$eval('.maxi-link-control__link-destroyer', button =>
 			button.click()
 		);
 		await page.waitForTimeout(200);
@@ -503,32 +507,10 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		await page.$$eval(
-			'.block-editor-link-control__setting',
-			linkSettings => {
-				linkSettings.forEach(linkSetting => {
-					linkSetting
-						.querySelector('.components-form-toggle__input')
-						.click();
-				});
-			}
+			'.maxi-link-control__options .maxi-toggle-switch input',
+			inputs => inputs.forEach(input => input.click())
 		);
-		await page.waitForTimeout(200);
 
-		// Test is faster than human being in terms of clicking lol
-		// Needs to check as the last option doesn't have time enough to be registered 👍
-		await page.$$eval(
-			'.block-editor-link-control__setting',
-			linkSettings => {
-				linkSettings.forEach(linkSetting => {
-					const item = linkSetting.querySelector(
-						'.components-form-toggle__input'
-					);
-					const { checked } = item;
-
-					if (!checked) item.click();
-				});
-			}
-		);
 		await page.waitForTimeout(200);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
@@ -592,11 +574,10 @@ describe('TextMaxi', () => {
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.waitForTimeout(150);
 
-		const linkSettings = await page.$$(
-			'.block-editor-link-control__setting'
-		);
-		await linkSettings[0].$eval('.components-form-toggle__input', setting =>
-			setting.click()
+		// Click on first option
+		await page.$eval(
+			'.maxi-link-control__options .maxi-toggle-switch input',
+			input => input.click()
 		);
 		await page.waitForTimeout(150);
 

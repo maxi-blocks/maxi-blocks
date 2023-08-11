@@ -4,17 +4,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 import { select } from '@wordpress/data';
 import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import ToolbarPopover from '../toolbar-popover';
-import ToolbarContext from '../toolbar-popover/toolbarContext';
+import LinkControl from '../../../link-control';
 import ToggleSwitch from '../../../toggle-switch';
+import ToolbarContext from '../toolbar-popover/toolbarContext';
+import ToolbarPopover from '../toolbar-popover';
 import { LoopContext } from '../../../../extensions/DC';
 
 /**
@@ -125,46 +124,18 @@ const Link = props => {
 								}}
 							/>
 						)}
-						<LinkControl
-							searchInputPlaceholder='Search or type URL'
-							value={linkSettings}
-							onChange={value => {
-								onChange(value);
-							}}
-							settings={[
-								{
-									id: 'opensInNewTab',
-									title: __('Open in new tab', 'maxi-blocks'),
-								},
-								{
-									id: 'noFollow',
-									title: __('"nofollow"', 'maxi-blocks'),
-								},
-								{
-									id: 'sponsored',
-									title: __('"sponsored"', 'maxi-blocks'),
-								},
-								{
-									id: 'ugc',
-									title: __('"UGC"', 'maxi-blocks'),
-								},
-							]}
-						/>
-						{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-							<ToolbarContext.Consumer>
-								{context => (
-									<Button
-										className='toolbar-popover-link-destroyer'
-										onClick={() => {
-											removeLinkHandle();
-											context.onClose();
-										}}
-									>
-										{__('Remove link', 'maxi-blocks')}
-									</Button>
-								)}
-							</ToolbarContext.Consumer>
-						)}
+						<ToolbarContext.Consumer>
+							{context => (
+								<LinkControl
+									linkValue={linkSettings}
+									onChangeLink={onChange}
+									onRemoveLink={() => {
+										removeLinkHandle();
+										context.onClose();
+									}}
+								/>
+							)}
+						</ToolbarContext.Consumer>
 					</>
 				)}
 			</ToolbarPopover>

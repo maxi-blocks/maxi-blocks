@@ -8,10 +8,11 @@ import { useContext, useEffect, useRef, useState } from '@wordpress/element';
  * Internal dependencies
  */
 import ContentLoader from '../content-loader';
+import InfoBox from '../info-box';
 import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
-import { getChatPrompt, getUniqueId } from './utils';
+import { getChatPrompt, getUniqueId, handleContent } from './utils';
 import {
 	CONTENT_TYPES,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
@@ -24,15 +25,14 @@ import {
  * External dependencies
  */
 import { ChatOpenAI } from 'langchain/chat_models/openai';
-import { isEmpty } from 'lodash';
-import InfoBox from '../info-box';
+import { camelCase, isEmpty } from 'lodash';
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
 
 const PromptControl = ({ content, onChangeContent }) => {
 	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
-	const [openAIApiKey, setOpenAIApiKey] = useState(null);
+	const [AISettings, setAISettings] = useState({});
 
 	const [tab, setTab] = useState('generate'); // generate, modify
 
@@ -42,25 +42,16 @@ const PromptControl = ({ content, onChangeContent }) => {
 		textContext.formatValue.end
 	);
 
-	const [contentType, setContentType] = useState({
-		label: CONTENT_TYPES[0],
-		value: CONTENT_TYPES[0],
-	});
-	const [tone, setTone] = useState({ label: TONES[0], value: TONES[0] });
-	const [writingStyle, setWritingStyle] = useState({
-		label: WRITING_STYLES[0],
-		value: WRITING_STYLES[0],
-	});
+	const [contentType, setContentType] = useState(CONTENT_TYPES[0]);
+	const [tone, setTone] = useState(TONES[0]);
+	const [writingStyle, setWritingStyle] = useState(WRITING_STYLES[0]);
 	const [characterCount, setCharacterCount] = useState(
 		DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]]
 	);
 	const [confidenceLevel, setConfidenceLevel] = useState(
 		DEFAULT_CONFIDENCE_LEVEL
 	);
-	const [language, setLanguage] = useState({
-		label: LANGUAGES[0],
-		value: LANGUAGES[0],
-	});
+	const [language, setLanguage] = useState(LANGUAGES[0]);
 	const [prompt, setPrompt] = useState(
 		'Elon Musk changed twitter.com domain to x.com'
 	);
@@ -82,9 +73,16 @@ const PromptControl = ({ content, onChangeContent }) => {
 		const getOpenAIApiKey = async () => {
 			try {
 				const maxiSettings = await receiveMaxiSettings();
-				const openAIApiKey = maxiSettings?.ai_settings?.openai_api_key;
 
-				setOpenAIApiKey(openAIApiKey);
+				const AISettings = Object.entries(
+					maxiSettings?.ai_settings
+				).reduce((acc, [key, value]) => {
+					const newKey = camelCase(key);
+					acc[newKey] = value;
+					return acc;
+				}, {});
+				console.log(AISettings);
+				setAISettings(AISettings);
 			} catch (error) {
 				console.error('Maxi Blocks: Could not load settings');
 			}
@@ -125,21 +123,21 @@ const PromptControl = ({ content, onChangeContent }) => {
 		localStorage.setItem('maxi-prompt-results', JSON.stringify(results));
 	}, [results]);
 
-	if (openAIApiKey === null) {
+	useEffect(() => {
+		setTone(AISettings.tone);
+		setLanguage(AISettings.language);
+	}, [AISettings]);
+
+	if (AISettings.openaiApiKey === null) {
 		return <ContentLoader />;
 	}
 
-	if (!openAIApiKey) {
+	if (!AISettings.openaiApiKey) {
 		// TODO:
 		return <InfoBox />;
 	}
 
 	const getMessages = async () => {
-		const { value: contentTypeVal } = contentType;
-		const { value: toneVal } = tone;
-		const { value: writingStyleVal } = writingStyle;
-		const { value: languageVal } = language;
-
 		const systemTemplate = `You are a helpful assistant that generates text based on the given criteria and human message.\n
 		Content type: {content_type}\n
 		Tone: {tone}\n
@@ -152,11 +150,11 @@ const PromptControl = ({ content, onChangeContent }) => {
 		const chatPrompt = getChatPrompt(systemTemplate, humanTemplate);
 
 		const messages = await chatPrompt.formatMessages({
-			content_type: contentTypeVal,
-			tone: toneVal,
-			writing_style: writingStyleVal,
+			content_type: contentType,
+			tone,
+			writing_style: writingStyle,
 			character_count: characterCount,
-			language: languageVal,
+			language,
 			text: prompt,
 		});
 
@@ -166,126 +164,19 @@ const PromptControl = ({ content, onChangeContent }) => {
 	const generateContent = async () => {
 		switchToModifyTab();
 
-		try {
-			const chat = new ChatOpenAI({
-				openAIApiKey,
-				modelName: 'gpt-3.5-turbo',
+		handleContent({
+			openAIApiKey: AISettings.openaiApiKey,
+			modelName: AISettings.modelName,
+			additionalParams: {
 				temperature: confidenceLevel / 100,
-				streaming: true,
-			});
-
-			const messages = await getMessages();
-
-			const newId = getUniqueId(results);
-
-			setResults(prevResults => {
-				const newResults = [
-					{
-						id: newId,
-						content: '',
-						loading: true,
-					},
-					...prevResults,
-				];
-
-				return newResults;
-			});
-
-			setSelectedResult(newId);
-
-			abortControllerRef.current = new AbortController();
-
-			setIsGenerating(true);
-			const response = await chat.call(messages, {
-				signal: abortControllerRef.current.signal,
-				callbacks: [
-					{
-						handleLLMNewToken(token) {
-							setResults(prevResults => {
-								const newResults = [...prevResults];
-								const addedResult = newResults.find(
-									result => result.id === newId
-								);
-
-								if (addedResult?.loading) {
-									addedResult.content += token;
-								}
-
-								return newResults;
-							});
-						},
-					},
-				],
-			});
-			setIsGenerating(false);
-
-			abortControllerRef.current = null;
-
-			// const response = {
-			// 	generations: [
-			// 		[
-			// 			{
-			// 				text: 'Elon Musk Transforms Twitter.com into X.com, Unveiling a New Era in Online Communication',
-			// 				message: {
-			// 					lc: 1,
-			// 					type: 'constructor',
-			// 					id: ['langchain', 'schema', 'AIMessage'],
-			// 					kwargs: {
-			// 						content:
-			// 							'Elon Musk Transforms Twitter.com into X.com, Unveiling a New Era in Online Communication',
-			// 						additional_kwargs: {},
-			// 					},
-			// 				},
-			// 			},
-			// 			// {
-			// 			// 	text: 'Elon Musk Announces Change in Twitter Domain to x.com, Showcasing His Vision for Innovation',
-			// 			// 	message: {
-			// 			// 		lc: 1,
-			// 			// 		type: 'constructor',
-			// 			// 		id: ['langchain', 'schema', 'AIMessage'],
-			// 			// 		kwargs: {
-			// 			// 			content:
-			// 			// 				'Elon Musk Announces Change in Twitter Domain to x.com, Showcasing His Vision for Innovation',
-			// 			// 			additional_kwargs: {},
-			// 			// 		},
-			// 			// 	},
-			// 			// },
-			// 		],
-			// 	],
-			// 	llmOutput: {
-			// 		tokenUsage: {
-			// 			completionTokens: 40,
-			// 			promptTokens: 59,
-			// 			totalTokens: 99,
-			// 		},
-			// 	},
-			// };
-
-			// eslint-disable-next-line no-console
-			console.log(response);
-
-			setResults(prevResults => {
-				const newResults = [...prevResults];
-				const addedResult = newResults.find(
-					result => result.id === newId
-				);
-
-				if (addedResult) {
-					addedResult.content = response.content;
-					addedResult.loading = false;
-				}
-
-				return newResults;
-			});
-		} catch (error) {
-			if (error.response) {
-				console.error(error.response.data);
-				console.error(error.response.status);
-				console.error(error.response.headers);
-			} else if (!error.name === 'AbortError') {
-				console.error(error);
-			}
-		}
+			},
+			results,
+			abortControllerRef,
+			getMessages,
+			setResults,
+			setSelectedResult,
+			setIsGenerating,
+		});
 	};
 
 	const handleAbort = () => {
@@ -315,7 +206,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 					setPrompt={setPrompt}
 					generateContent={generateContent}
 					showHistoryButton={!isEmpty(results)}
-					openAIApiKey={openAIApiKey}
+					openAIApiKey={AISettings.openaiApiKey}
 					setResults={setResults}
 					switchToModifyTab={switchToModifyTab}
 				/>
@@ -324,7 +215,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 				<ModifyTab
 					results={results}
 					content={content}
-					openAIApiKey={openAIApiKey}
+					AISettings={AISettings}
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}

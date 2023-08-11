@@ -33,7 +33,6 @@ const Delete = props => {
 			<div className='toolbar-item toolbar-item__delete'>
 				<Button
 					onClick={() => {
-						console.log('Remove block');
 						removeBlock(clientId);
 						uniqueIDRemover(uniqueID, innerBlocks);
 					}}

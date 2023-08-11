@@ -40,6 +40,7 @@ const ModifyTab = ({
 	results,
 	content,
 	AISettings,
+	settings,
 	isGenerating,
 	setIsGenerating,
 	selectedResult,
@@ -47,6 +48,7 @@ const ModifyTab = ({
 	onChangeContent,
 	onAbort,
 	setResults,
+	setSettings,
 	switchToGenerateTab,
 	abortControllerRef,
 }) => {
@@ -72,6 +74,7 @@ ${getSiteInformation(AISettings)}`;
 			additionalData: {
 				refId: selectedResult,
 				modificationType: modifyOption,
+				settings,
 			},
 			results,
 			abortControllerRef,
@@ -168,6 +171,11 @@ ${getSiteInformation(AISettings)}`;
 								);
 							}}
 							onSelect={(id = result.id) => setSelectedResult(id)}
+							onUseSettings={() => {
+								setSettings(result.settings);
+
+								switchToGenerateTab();
+							}}
 							onDelete={() => {
 								setResults(prevResults => {
 									const newResults = [...prevResults].filter(

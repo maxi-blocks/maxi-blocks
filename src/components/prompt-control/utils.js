@@ -7,10 +7,30 @@ import {
 	HumanMessagePromptTemplate,
 	SystemMessagePromptTemplate,
 } from 'langchain/prompts';
-import { isEmpty } from 'lodash';
+import { isEmpty, startCase } from 'lodash';
 
-// eslint-disable-next-line import/prefer-default-export
-export const getChatPrompt = (systemMessageTemplate, humanMessageTemplate) => {
+export const getSiteInformation = AISettings => {
+	const AISettingsKeys = [
+		'siteDescription',
+		'audience',
+		'siteGoal',
+		'services',
+		'businessName',
+		'businessInfo',
+	];
+
+	return AISettingsKeys.map(
+		key =>
+			!isEmpty(AISettings[key]) && `${startCase(key)}: ${AISettings[key]}`
+	)
+		.filter(Boolean)
+		.join('\n');
+};
+
+export const getFormattedMessages = async (
+	systemMessageTemplate,
+	humanMessageTemplate
+) => {
 	const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
 		systemMessageTemplate
 	);
@@ -18,10 +38,14 @@ export const getChatPrompt = (systemMessageTemplate, humanMessageTemplate) => {
 	const humanMessagePrompt =
 		HumanMessagePromptTemplate.fromTemplate(humanMessageTemplate);
 
-	return ChatPromptTemplate.fromPromptMessages([
+	const chatPrompt = ChatPromptTemplate.fromPromptMessages([
 		systemMessagePrompt,
 		humanMessagePrompt,
 	]);
+
+	const messages = await chatPrompt.formatMessages({});
+
+	return messages;
 };
 
 export const getUniqueId = results =>

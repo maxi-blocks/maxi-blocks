@@ -12,7 +12,12 @@ import InfoBox from '../info-box';
 import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
-import { getChatPrompt, getUniqueId, handleContent } from './utils';
+import {
+	getFormattedMessages,
+	getSiteInformation,
+	getUniqueId,
+	handleContent,
+} from './utils';
 import {
 	CONTENT_TYPES,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
@@ -24,7 +29,6 @@ import {
 /**
  * External dependencies
  */
-import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { camelCase, isEmpty } from 'lodash';
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
@@ -52,9 +56,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 		DEFAULT_CONFIDENCE_LEVEL
 	);
 	const [language, setLanguage] = useState(LANGUAGES[0]);
-	const [prompt, setPrompt] = useState(
-		'Elon Musk changed twitter.com domain to x.com'
-	);
+	const [prompt, setPrompt] = useState('');
 	const [results, setResults] = useState([]);
 	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -138,27 +140,20 @@ const PromptControl = ({ content, onChangeContent }) => {
 	}
 
 	const getMessages = async () => {
-		const systemTemplate = `You are a helpful assistant that generates text based on the given criteria and human message.\n
-		Content type: {content_type}\n
-		Tone: {tone}\n
-		Writing style: {writing_style}\n
-		Character count guideline: {character_count}\n
-		Language: {language}\n
-		`;
-		const humanTemplate = '{text}';
+		const systemTemplate = `You are a helpful assistant generating text for a website. Your task is to create content that can be placed on the site directly, without further modification. Adherence to the following guidelines is essential:
+		- Approximate length: ${characterCount} characters
+		- Site Information:
+		${getSiteInformation(AISettings)}
+		- Content type: ${contentType}
+		- Tone: ${tone}
+		- Writing style: ${writingStyle}
+		- Language: ${language}
 
-		const chatPrompt = getChatPrompt(systemTemplate, humanTemplate);
+		Please ensure that the text aligns with the site's goal, audience, and content guidelines, and is ready to be published on the site as-is. The length of the text is a vital aspect of this task, and it should be close to the specified character count.`;
 
-		const messages = await chatPrompt.formatMessages({
-			content_type: contentType,
-			tone,
-			writing_style: writingStyle,
-			character_count: characterCount,
-			language,
-			text: prompt,
-		});
+		const humanTemplate = prompt;
 
-		return messages;
+		return getFormattedMessages(systemTemplate, humanTemplate);
 	};
 
 	const generateContent = async () => {

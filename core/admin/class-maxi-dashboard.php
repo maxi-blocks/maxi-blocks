@@ -1227,63 +1227,69 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function register_maxi_blocks_settings()
         {
-            $args = [
+            // Define the arguments
+            $args = array(
                 'type' => 'boolean',
                 'default' => false,
-            ];
-
-            $args_rollback = [
+            );
+            $args_rollback = array(
                 'type' => 'string',
                 'default' => 'current',
-            ];
-
+            );
             $args_ai_model = array(
                 'type' => 'string',
                 'default' => 'gpt-3.5-turbo',
             );
-
             $args_ai_language = array(
                 'type' => 'string',
                 'default' => 'English (United Kingdom)',
             );
-
             $args_ai_tone = array(
                 'type' => 'string',
                 'default' => 'Formal',
             );
-
             $args_ai_description = array(
                 'type' => 'string',
-                'default' => '',
             );
 
-            register_setting('maxi-blocks-settings-group', 'accessibility_option', $args);
-            register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
-            register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
-            register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
-            register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
-            register_setting('maxi-blocks-settings-group', 'support_chat', $args);
-            register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
-            register_setting('maxi-blocks-settings-group', 'google_api_key_option');
-            register_setting('maxi-blocks-settings-group', 'openai_api_key_option');
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_model', $args_ai_model);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_language', $args_ai_language);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_tone', $args_ai_tone);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_site_description', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_audience', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_site_goal', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_services', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_business_name', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_ai_business_info', $args_ai_description);
-            register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
-            register_setting(
-                'maxi-blocks-settings-group',
-                'maxi_rollback_version',
-                $args_rollback,
+            // List of settings and corresponding arguments
+            $settings = array(
+                'accessibility_option' => $args,
+                'local_fonts' => $args,
+                'local_fonts_uploaded' => $args,
+                'remove_local_fonts' => $args,
+                'allow_svg_json_uploads' => $args,
+                'hide_tooltips' => $args,
+                'swap_cloud_images' => $args,
+                'google_api_key_option' => null,
+                'openai_api_key_option' => null,
+                'maxi_ai_model' => $args_ai_model,
+                'maxi_ai_language' => $args_ai_language,
+                'maxi_ai_tone' => $args_ai_tone,
+                'maxi_ai_site_description' => $args_ai_description,
+                'maxi_ai_audience' => $args_ai_description,
+                'maxi_ai_site_goal' => $args_ai_description,
+                'maxi_ai_services' => $args_ai_description,
+                'maxi_ai_business_name' => $args_ai_description,
+                'maxi_ai_business_info' => $args_ai_description,
+                'maxi_breakpoints' => null,
+                'maxi_rollback_version' => $args_rollback,
+                'maxi_sc_gutenberg_blocks' => $args,
+                'maxi_show_indicators' => $args,
             );
-            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
-            register_setting('maxi-blocks-settings-group', 'maxi_sc_gutenberg_blocks', $args);
-            register_setting('maxi-blocks-settings-group', 'maxi_show_indicators', $args);
+
+            // Register the settings and set default values if they don't exist
+            foreach ($settings as $setting_name => $setting_args) {
+                // ! Reset saved settings/options
+                // unregister_setting('maxi-blocks-settings-group', $setting_name);
+                // delete_option($setting_name);
+
+                register_setting('maxi-blocks-settings-group', $setting_name, $setting_args);
+                if(isset($setting_args['default'])) {
+                    add_option($setting_name, $setting_args['default']);
+                }
+            }
+
         }
 
         public function get_folder_size($folder)

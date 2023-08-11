@@ -139,6 +139,16 @@ const PromptControl = ({ content, onChangeContent }) => {
 		return <InfoBox />;
 	}
 
+	const settings = {
+		prompt,
+		characterCount,
+		confidenceLevel,
+		contentType,
+		tone,
+		writingStyle,
+		language,
+	};
+
 	const getMessages = async () => {
 		const systemTemplate = `You are a helpful assistant generating text for a website. Your task is to create content that can be placed on the site directly, without further modification. Adherence to the following guidelines is essential:
 		- Approximate length: ${characterCount} characters
@@ -165,6 +175,9 @@ const PromptControl = ({ content, onChangeContent }) => {
 			additionalParams: {
 				temperature: confidenceLevel / 100,
 			},
+			additionalData: {
+				settings,
+			},
 			results,
 			abortControllerRef,
 			getMessages,
@@ -177,6 +190,26 @@ const PromptControl = ({ content, onChangeContent }) => {
 	const handleAbort = () => {
 		abortControllerRef.current?.abort();
 		setIsGenerating(false);
+	};
+
+	const setSettings = newSettings => {
+		const {
+			prompt,
+			characterCount,
+			confidenceLevel,
+			contentType,
+			tone,
+			writingStyle,
+			language,
+		} = newSettings;
+
+		setPrompt(prompt);
+		setCharacterCount(characterCount);
+		setConfidenceLevel(confidenceLevel);
+		setContentType(contentType);
+		setTone(tone);
+		setWritingStyle(writingStyle);
+		setLanguage(language);
 	};
 
 	const className = 'maxi-prompt-control';
@@ -211,12 +244,14 @@ const PromptControl = ({ content, onChangeContent }) => {
 					results={results}
 					content={content}
 					AISettings={AISettings}
+					settings={settings}
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}
 					setSelectedResult={setSelectedResult}
 					onChangeContent={onChangeContent}
 					setResults={setResults}
+					setSettings={setSettings}
 					switchToGenerateTab={switchToGenerateTab}
 					onAbort={handleAbort}
 					abortControllerRef={abortControllerRef}

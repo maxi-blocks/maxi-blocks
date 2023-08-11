@@ -28,6 +28,7 @@ const ResultCard = ({
 	isRefOfSelected,
 	onInsert,
 	onSelect,
+	onUseSettings,
 	onDelete,
 }) => {
 	const className = 'maxi-prompt-control-results-card';
@@ -167,6 +168,9 @@ const ResultCard = ({
 						</Button>
 						<Button onClick={handleCopy}>
 							{__('Copy', 'maxi-blocks')}
+						</Button>
+						<Button onClick={onUseSettings}>
+							{__('Use settings', 'maxi-blocks')}
 						</Button>
 						<DialogBox
 							message={__(

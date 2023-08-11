@@ -57,7 +57,7 @@ const GenerateTab = ({
 					setState: value => {
 						setContentType(value);
 						setCharacterCount(
-							DEFAULT_CHARACTER_COUNT_GUIDELINES[value.value]
+							DEFAULT_CHARACTER_COUNT_GUIDELINES[value]
 						);
 					},
 				},
@@ -84,13 +84,19 @@ const GenerateTab = ({
 				<Fragment key={index}>
 					<label>{__(label, 'maxi-blocks')}</label>
 					<ReactSelectControl
-						value={state}
-						defaultValue={state}
+						value={{
+							label: __(state, 'maxi-blocks'),
+							value: state,
+						}}
+						defaultValue={{
+							label: __(state, 'maxi-blocks'),
+							value: state,
+						}}
 						options={list.map(option => ({
 							label: __(option, 'maxi-blocks'),
 							value: option,
 						}))}
-						onChange={obj => setState(obj)}
+						onChange={({ value }) => setState(value)}
 					/>
 				</Fragment>
 			))}
@@ -100,7 +106,7 @@ const GenerateTab = ({
 				onChangeValue={val => setCharacterCount(val)}
 				onReset={() =>
 					setCharacterCount(
-						DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType.value]
+						DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType]
 					)
 				}
 			/>

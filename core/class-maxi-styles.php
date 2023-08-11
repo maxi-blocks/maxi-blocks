@@ -1236,7 +1236,7 @@ class MaxiBlocks_Styles
         $block_name = $block['blockName'] ?? null;
         $props = $block['attrs'] ?? [];
         $unique_id = $props['uniqueID'] ?? null;
-        $is_core_block = str_starts_with($block_name, 'core/');
+        $is_core_block = isset($block_name) && str_starts_with($block_name, 'core/');
 
         if($gutenberg_blocks_status && $is_core_block && $maxi_block_style) {
             $level = $props['level'] ?? null;
@@ -1484,10 +1484,15 @@ class MaxiBlocks_Styles
     public static function generate_random_string()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $timestamp = time(); // Get the current timestamp
+
+        // Seed the random number generator with the timestamp
+        mt_srand($timestamp);
+
         $randomString = '';
 
-        for ($i = 0; $i < 3; $i++) {
-            $index = rand(0, strlen($characters) - 1);
+        for ($i = 0; $i < 8; $i++) { // Loop 8 times for 8 characters
+            $index = mt_rand(0, strlen($characters) - 1);
             $randomString .= $characters[$index];
         }
 
@@ -1498,15 +1503,12 @@ class MaxiBlocks_Styles
     {
         $name = str_replace('maxi-blocks/', '', $blockName);
 
-        // Grabbing first 4 characters from uniqid
-        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 4);
-
-        // Appending a character from generate_random_string()
+        // Generate the unique part without numbers at the end
+        $uniquePart = self::generate_random_string();
         $uniquePart .= substr(self::generate_random_string(), 0, 1);
 
         $result = $name . '-' . $uniquePart . '-u';
         return $result;
-
     }
 
     public function process_all_unique_ids($post_id)

@@ -2,14 +2,18 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { Button, DialogBox, ReactSelectControl } from '../../../../components';
 import ResultCard from '../results-card';
-import { getChatPrompt, handleContent } from '../../utils';
+import {
+	getFormattedMessages,
+	getSiteInformation,
+	handleContent,
+} from '../../utils';
 import { MODIFY_OPTIONS } from '../../constants';
 
 /**
@@ -49,18 +53,13 @@ const ModifyTab = ({
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 
 	const getMessages = async () => {
-		const systemTemplate =
-			'You are a helpful assistant that {modify_option} given text.';
-		const humanTemplate = '{text}';
+		const systemTemplate = `You are a helpful assistant that ${modifyOption.toLowerCase()}s the given text for a website. Please follow the specific instructions for the "${modifyOption}" option and consider the following site information:
+${getSiteInformation(AISettings)}`;
+		const humanTemplate = results.find(
+			result => result.id === selectedResult
+		).content;
 
-		const chatPrompt = getChatPrompt(systemTemplate, humanTemplate);
-
-		const messages = await chatPrompt.formatMessages({
-			modify_option: `${modifyOption.toLowerCase()}s`,
-			text: results.find(result => result.id === selectedResult).content,
-		});
-
-		return messages;
+		return getFormattedMessages(systemTemplate, humanTemplate);
 	};
 
 	const modifyContent = async () => {
@@ -69,6 +68,10 @@ const ModifyTab = ({
 			modelName: AISettings.modelName,
 			additionalParams: {
 				topP: 1,
+			},
+			additionalData: {
+				refId: selectedResult,
+				modificationType: modifyOption,
 			},
 			results,
 			abortControllerRef,
@@ -83,6 +86,12 @@ const ModifyTab = ({
 		setResults([]);
 		switchToGenerateTab();
 	};
+
+	useEffect(() => {
+		if (!selectedResult) {
+			setSelectedResult(results[0]?.id);
+		}
+	}, []);
 
 	const className = 'maxi-prompt-control-modify-tab';
 

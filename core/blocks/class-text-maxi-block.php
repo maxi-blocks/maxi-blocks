@@ -65,9 +65,9 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
-            $is_list = $props['isList'];
+            $is_list = $props['isList'] ?? false;
             $text_level = $props['textLevel'];
-            $type_of_list = $props['typeOfList'];
+            $type_of_list = $props['typeOfList'] ?? false;
             $element = $is_list ? $type_of_list : $text_level;
             $is_rtl = is_rtl();
 

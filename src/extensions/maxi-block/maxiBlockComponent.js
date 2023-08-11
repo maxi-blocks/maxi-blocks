@@ -52,6 +52,7 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 
 /**
  * External dependencies
@@ -856,7 +857,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { clientId, name: blockName } = this.props;
+		const { clientId, name: blockName, attributes } = this.props;
+		const { customLabel } = attributes;
 
 		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
@@ -884,6 +886,13 @@ class MaxiBlockComponent extends Component {
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
 			return newUniqueID;
+		}
+
+		if (getIsUniqueCustomLabelRepeated(customLabel, 0)) {
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 		}
 
 		return idToCheck;

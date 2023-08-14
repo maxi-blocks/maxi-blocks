@@ -44,6 +44,7 @@ const ModifyTab = ({
 	isGenerating,
 	setIsGenerating,
 	selectedResult,
+	historyStartId,
 	setSelectedResult,
 	onChangeContent,
 	onAbort,
@@ -154,6 +155,7 @@ ${getSiteInformation(AISettings)}`;
 							key={index}
 							index={index + 1}
 							result={result}
+							isFromPreviousSession={result.id <= historyStartId}
 							isSelected={result.id === selectedResult}
 							isRefOfSelected={refResult?.isSelectedText}
 							onInsert={() => {

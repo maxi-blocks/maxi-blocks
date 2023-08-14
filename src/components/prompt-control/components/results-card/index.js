@@ -24,6 +24,7 @@ export const CONTENT_LIMIT = 100;
 
 const ResultCard = ({
 	result,
+	isFromPreviousSession,
 	isSelected,
 	isRefOfSelected,
 	onInsert,
@@ -109,6 +110,13 @@ const ResultCard = ({
 							'maxi-blocks'
 						)}
 					</span>
+					{isFromPreviousSession && (
+						<span
+							className={`${className}__top-bar__select-row__from-previous-session`}
+						>
+							{__('From previous sessions', 'maxi-blocks')}
+						</span>
+					)}
 					<span className={`${className}__top-bar__select-row__id`}>
 						#{result.id}
 					</span>

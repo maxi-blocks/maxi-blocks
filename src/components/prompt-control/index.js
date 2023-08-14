@@ -60,6 +60,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 	const [results, setResults] = useState([]);
 	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
 	const [isGenerating, setIsGenerating] = useState(false);
+	const historyStartId = useRef(null);
 
 	const abortControllerRef = useRef(null);
 
@@ -95,6 +96,17 @@ const PromptControl = ({ content, onChangeContent }) => {
 		const results = JSON.parse(localStorage.getItem('maxi-prompt-results'));
 		if (!isEmpty(results)) {
 			setResults(results);
+
+			if (!sessionStorage.getItem('maxi-prompt-history-start-id')) {
+				sessionStorage.setItem(
+					'maxi-prompt-history-start-id',
+					results[0].id
+				);
+			}
+
+			historyStartId.current = sessionStorage.getItem(
+				'maxi-prompt-history-start-id'
+			);
 		}
 	}, []);
 
@@ -113,6 +125,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 						end: textContext.formatValue.end,
 					},
 				},
+				...results,
 			]);
 			setSelectedResult(newId);
 		} else if (!isEmpty(results) && isEmpty(selectedText)) {
@@ -248,6 +261,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}
+					historyStartId={historyStartId.current}
 					setSelectedResult={setSelectedResult}
 					onChangeContent={onChangeContent}
 					setResults={setResults}

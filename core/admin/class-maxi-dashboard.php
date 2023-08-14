@@ -1017,29 +1017,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
-        public function generate_input(
-            $option,
-            $function = '',
-            $type = 'text'
-        ) {
-            $input =
-                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $input .=
-                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
-            $input .= '<input name="';
-            $input .= $option;
-            $input .= '" id="';
-            $input .= $option;
-            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="';
-            $input .= $type;
-            $input .= '" value="';
-            $input .= get_option($option);
-            $input .= '">';
-            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__input
-            $input .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+        public function generate_input($option, $function = '', $type = 'text', $is_api_input = false)
+        {
+            $input_value = get_option($option);
+
+            $visible_input_class = str_replace('_', '-', $option).'-visible-input';
+
+            $visible_input = $is_api_input
+                ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\">"
+                : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\">";
+
+            $hidden_input = $is_api_input
+                ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\">"
+                : "";
+
+            $input = <<<HTML
+				<div class="maxi-dashboard_main-content_accordion-item-content-switcher">
+					<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
+						{$visible_input}
+						{$hidden_input}
+					</div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
+				</div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
+				HTML;
 
             return $input;
         }
+
 
         public function generate_breakpoint_input($breakpoint, $value)
         {
@@ -1161,15 +1164,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if($type === 'dropdown') {
                 $content .= $this->generate_custom_dropdown($option, $list);
             } elseif($type === 'text') {
-                if(str_contains($option, 'api_key_option')) {
+                $is_api_input = str_contains($option, 'api_key_option');
+
+                if($is_api_input) {
                     $api_name = str_replace('_api_key_option', '', $option);
-                    $content .='<div id="maxi-'.$api_name.'-test-map"></div>';
+                    $content .='<div id="maxi-api-test"></div>';
                 }
 
-                $content .= $this->generate_input($option, $function, $type);
+                $content .= $this->generate_input($option, $function, $type, $is_api_input);
 
                 if(str_contains($option, 'api_key_option')) {
-                    $content .='<div id="maxi-'.$api_name.'-test-map_validation-message"></div>';
+                    $content .='<div id="maxi-api-test__validation-message"></div>';
                 }
             } else {
                 $content .= $this->generate_toggle($option, $function);

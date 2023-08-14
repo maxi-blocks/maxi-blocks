@@ -21,8 +21,13 @@
 			cursor: pointer;
 
 			& &__select-text,
+			& &__from-previous-session,
 			& &__id {
 				font-weight: bold;
+			}
+
+			& &__from-previous-session {
+				color: var(--maxi-grey-7-color);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { resolveSelect } from '@wordpress/data';
 import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
@@ -12,6 +13,7 @@ import InfoBox from '../info-box';
 import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
+import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import {
 	getFormattedMessages,
 	getSiteInformation,
@@ -148,8 +150,23 @@ const PromptControl = ({ content, onChangeContent }) => {
 	}
 
 	if (!AISettings.openaiApiKey) {
-		// TODO:
-		return <InfoBox />;
+		return (
+			<InfoBox
+				message={__(
+					'You have not set your OpenAI API key, please navigate to the Maxi AI Options and set it',
+					'maxi-blocks'
+				)}
+				links={[
+					{
+						title: __(
+							'Integrations > OpenAI API key',
+							'maxi-blocks'
+						),
+						href: getMaxiAdminSettingsUrl('maxi_blocks_maxi_ai'),
+					},
+				]}
+			/>
+		);
 	}
 
 	const settings = {

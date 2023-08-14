@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				`input#${dropdown.id}`
 			);
 
+			dropdownInput.value = dropdown.value;
+
 			dropdown.addEventListener('change', function updateInputs() {
 				dropdownInput.value = dropdown.value;
 			});

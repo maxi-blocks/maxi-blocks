@@ -36,7 +36,7 @@ const OBSERVED_CONSOLE_MESSAGE_TYPES = {
 };
 
 // The Jest timeout is increased because these tests are a bit slow
-jest.setTimeout(PUPPETEER_TIMEOUT || 100000);
+jest.setTimeout(50000);
 
 async function setupBrowser() {
 	await setBrowserViewport({ width: 1920, height: 700 });

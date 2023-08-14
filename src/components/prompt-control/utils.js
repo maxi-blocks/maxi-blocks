@@ -145,7 +145,7 @@ export const handleContent = async ({
 	setIsGenerating,
 }) => {
 	try {
-		const messages = await getMessages();
+		const messages = await getMessages(additionalData);
 		const newId = getUniqueId(results);
 
 		// Updating results with loading state

@@ -55,9 +55,31 @@ const ModifyTab = ({
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 
-	const getMessages = async () => {
-		const systemTemplate = `You are a helpful assistant that ${modifyOption.toLowerCase()}s the given text for a website. Please follow the specific instructions for the "${modifyOption}" option and consider the following site information:
-${getSiteInformation(AISettings)}`;
+	const getMessages = async data => {
+		const {
+			modificationType,
+			settings: {
+				prompt,
+				characterCount,
+				confidenceLevel,
+				contentType,
+				tone,
+				writingStyle,
+				language,
+			},
+		} = data;
+
+		const systemTemplate = `You are a helpful assistant tasked with ${modificationType.toLowerCase()}ing the following text. Please note that the original text was generated based on the following criteria:
+- Original Prompt User Text: ${prompt}
+- Content Type: ${contentType}
+- Approximate length (for original text): ${characterCount} characters
+- Required Tone (for original text): ${tone}
+- Writing Style (for original text): ${writingStyle}
+- Language (for original text): ${language}
+- Confidence Level (for original text): ${confidenceLevel}%
+Additionally, consider the following site information:
+${getSiteInformation(AISettings)}
+Your task is to ${modificationType.toLowerCase()} the text while maintaining its original intent and context. The criteria listed above are provided to give you background information on how the original text was generated.`;
 		const humanTemplate = results.find(
 			result => result.id === selectedResult
 		).content;

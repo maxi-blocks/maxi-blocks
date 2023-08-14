@@ -34,4 +34,4 @@ Array [
 ]
 `;
 
-exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}"`;
+exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\"true\"] .maxi-image-block-wrapper { justify-content: flex-end;}"`;

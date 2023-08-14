@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		} else {
 			validationDiv.classList.remove(validationLoadingClass);
 
-			if (key === '') {
+			if (key === '' || type === 'EmptyKeyError') {
 				hiddenInput.value = '';
 				validationDiv.classList.add(errorClass);
 				validationMessage = 'Please add your API key';
@@ -103,13 +103,17 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 						validationMessage =
 							'Invalid API Key, please check your key and try again';
 						break;
-					case 'RefererNotAllowedMapError':
+					case 'RefererNotAllowedError':
 						validationMessage =
 							'Referer not allowed, please allow your domain for that key';
 						break;
 					case 'InvalidCharactersError':
 						validationMessage =
 							'Only alphabet, number, "_", "$", ".", "[", and "]" are allowed in the API key.';
+						break;
+					case 'ServerError':
+						validationMessage =
+							'Error validating API Key, please try again later';
 						break;
 					case true:
 						hiddenInput.value = key;
@@ -189,13 +193,13 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 						arguments[0].includes('InvalidKeyMapError') ||
 						arguments[0].includes('API multiple times')
 					) {
-						googleMapsCustomValidation('InvalidKeyMapError');
+						googleMapsCustomValidation('InvalidKeyError');
 					} else if (
 						arguments[0].includes('RefererNotAllowedMapError')
 					) {
-						googleMapsCustomValidation('RefererNotAllowedMapError');
+						googleMapsCustomValidation('RefererNotAllowedError');
 					} else if (arguments[0].includes('API without a key')) {
-						googleMapsCustomValidation('EmptyKeyMapError');
+						googleMapsCustomValidation('EmptyKeyError');
 					} else {
 						googleMapsCustomValidation(true);
 					}

@@ -28,6 +28,7 @@ import {
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
+import { withMaxiContextLoopContext } from '../../extensions/DC';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
@@ -341,4 +342,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoopContext(withMaxiProps(edit));

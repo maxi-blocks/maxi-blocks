@@ -87,6 +87,57 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		});
 	};
 
+	const customValidation = (
+		type,
+		getKey,
+		hiddenInput,
+		validationDiv,
+		validationLoadingClass = 'api-validation-loading',
+		errorClass = 'api-error',
+		loadingStatusMessage = 'Validating...'
+	) => {
+		const key = getKey();
+		let validationMessage = '';
+
+		if (type === 'validating') {
+			validationMessage = loadingStatusMessage;
+			validationDiv.classList.add(validationLoadingClass);
+			validationDiv.classList.remove(errorClass);
+		} else {
+			validationDiv.classList.remove(validationLoadingClass);
+
+			if (key === '') {
+				hiddenInput.value = '';
+				validationDiv.classList.add(errorClass);
+				validationMessage = 'Please add your API key';
+			} else {
+				validationDiv.classList.add(errorClass);
+				switch (type) {
+					case 'InvalidKeyError':
+						validationMessage =
+							'Invalid API Key, please check your key and try again';
+						break;
+					case 'RefererNotAllowedMapError':
+						validationMessage =
+							'Referer not allowed, please allow your domain for that key';
+						break;
+					case 'InvalidCharactersError':
+						validationMessage =
+							'Only alphabet, number, "_", "$", ".", "[", and "]" are allowed in the API key.';
+						break;
+					case true:
+						hiddenInput.value = key;
+						validationDiv.classList.remove(errorClass);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		validationDiv.innerHTML = validationMessage;
+	};
+
 	// Google API Key validation
 	const googleApiKeyVisibleInput = document.querySelector(
 		'.google-api-key-option-visible-input'
@@ -106,37 +157,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		!googleApiKey.match(/^[a-zA-Z0-9_$.[\]]+$/);
 
 	const googleMapsCustomValidation = type => {
-		const googleApiKey = getGoogleApiKey();
-		let validationMessage = '';
-
-		if (googleApiKey === '') {
-			googleApiKeyHiddenInput.value = googleApiKey;
-			validationMessage = 'Please add your Google Maps API key';
-		} else {
-			switch (type) {
-				case 'InvalidKeyMapError':
-					validationMessage =
-						'Invalid API Key, please check your key and try again';
-					break;
-				case 'RefererNotAllowedMapError':
-					validationMessage =
-						'Referer not allowed, please allow your domain for that key';
-					break;
-				case 'EmptyKeyMapError':
-					validationMessage = 'Please add your Google Maps API key';
-					break;
-				case 'InvalidCharactersError':
-					validationMessage =
-						'Only alphabet, number, "_", "$", ".", "[", and "]" are allowed in the API key.';
-					break;
-				default: // Update the hidden input with the validated API key
-					googleApiKeyHiddenInput.value = googleApiKey;
-					break;
-			}
-		}
-
-		googleValidationDiv.classList.add('api-error');
-		googleValidationDiv.innerHTML = validationMessage;
+		customValidation(
+			type,
+			getGoogleApiKey,
+			googleApiKeyHiddenInput,
+			googleValidationDiv
+		);
 	};
 
 	const testGoogleApiKey = () => {
@@ -202,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		catchGoogleMapsApiErrors();
 	});
 
+	// OpenAI API Key validation
 	const openAIApiKeyVisibleInput = document.querySelector(
 		'.openai-api-key-option-visible-input'
 	);
@@ -215,43 +242,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const getOpenAIApiKey = () => openAIApiKeyVisibleInput.value;
 
 	const openAIApiKeyCustomValidation = type => {
-		const isLoading = type === 'loading';
-
-		if (!isLoading) {
-			openAIValidationDiv.classList.remove('api-loading'); // Remove loading status
-		}
-		let validationMessage = '';
-
-		const openAIKey = getOpenAIApiKey();
-
-		if (type === true) {
-			openAIApiKeyHiddenInput.value = openAIKey;
-			openAIValidationDiv.classList.remove('api-error');
-		} else if (isLoading) {
-			validationMessage = 'Validating...'; // Loading status message
-			openAIValidationDiv.classList.add('api-loading');
-			openAIValidationDiv.classList.remove('api-error');
-		} else if (openAIKey === '') {
-			openAIApiKeyHiddenInput.value = '';
-			openAIValidationDiv.classList.add('api-error');
-			validationMessage = 'Please add your OpenAI API key';
-		} else {
-			openAIValidationDiv.classList.add('api-error');
-			switch (type) {
-				case 'InvalidKeyError':
-					validationMessage =
-						'Invalid API Key, please check your key and try again';
-					break;
-				case 'ServerError':
-					validationMessage =
-						'Error validating API Key, please try again later';
-					break;
-				default:
-					break;
-			}
-		}
-
-		openAIValidationDiv.innerHTML = validationMessage;
+		customValidation(
+			type,
+			getOpenAIApiKey,
+			openAIApiKeyHiddenInput,
+			openAIValidationDiv
+		);
 	};
 
 	const testOpenAIApiKey = () => {
@@ -262,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			return;
 		}
 
-		openAIApiKeyCustomValidation('loading');
+		openAIApiKeyCustomValidation('validating');
 
 		fetch('https://api.openai.com/v1/chat/completions', {
 			method: 'POST',

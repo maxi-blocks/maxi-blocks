@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BackgroundControl Check Background video layer 1`] = `
-Array [
-  Object {
+[
+  {
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,
@@ -41,8 +41,8 @@ exports[`BackgroundControl Check Background video layer display 1`] = `"<div cla
 exports[`BackgroundControl Check Background video layer display 2`] = `"<div class=\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\" data-start=\"55\" data-end=\"77\" data-type=\"youtube\"><div class=\"maxi-background-displayer__iframe-wrapper\"><iframe title=\"youtube video\" src=\"https://www.youtube.com/embed/ScMzIvxBSi4?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=ScMzIvxBSi4&amp;start=55&amp;end=77\" frameborder=\"0\" allow=\"autoplay\" allowfullscreen=\"\" style=\"height:100%\"></iframe></div></div>"`;
 
 exports[`BackgroundControl Check Background video layer hover 1`] = `
-Array [
-  Object {
+[
+  {
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,
@@ -110,8 +110,8 @@ exports[`BackgroundControl Check Background video layer hover responsive 1`] = `
 exports[`BackgroundControl Check Background video layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.44; width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 358.40000000000003px; top: 55em; right: 89px; bottom: 144px; left: 233px;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ opacity: 0.32; width: 778.24px; top: 67px; right: 37px; bottom: 12px; left: 7px;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 25em; top: 81.92px; right: 13px; bottom: 21px; left: 34px;}</style>"`;
 
 exports[`BackgroundControl Check Background video layer responsive 2`] = `
-Array [
-  Object {
+[
+  {
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,

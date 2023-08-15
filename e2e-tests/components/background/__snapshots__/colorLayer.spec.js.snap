@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Background Color Layer Check Background Color layer 1`] = `
-Array [
-  Object {
+[
+  {
     "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-color-clip-path-status-general": true,
     "background-color-wrapper-height-general": 100,
@@ -34,8 +34,8 @@ Array [
 exports[`Background Color Layer Check Background Color layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; background-color: rgba(var(--maxi-light-color-5,0,0,0),0.45); clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); display: block;}</style>"`;
 
 exports[`Background Color Layer Check Background Color layer hover 1`] = `
-Array [
-  Object {
+[
+  {
     "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
     "background-color-clip-path-general-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
     "background-color-clip-path-status-general": true,

@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Image Maxi hover simple actions Alignment 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "alignment-general": "right",
       "alignment-xl": "right",
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "justify-content": "flex-end",
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "disableTransition": true,
       "easing-general": "ease",
       "hoverStatus": false,

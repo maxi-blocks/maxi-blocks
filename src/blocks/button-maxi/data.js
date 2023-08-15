@@ -196,6 +196,36 @@ const customCss = {
 				target: `${iconClass}:hover::after`,
 			},
 		},
+		content: {
+			normal: {
+				label: 'content',
+				target: `${contentClass}`,
+			},
+			hover: {
+				label: 'content on hover',
+				target: `${contentClass}:hover`,
+			},
+		},
+		'before content': {
+			normal: {
+				label: 'content ::before',
+				target: `${contentClass}::before`,
+			},
+			hover: {
+				label: 'content ::before on hover',
+				target: `${contentClass}:hover::before`,
+			},
+		},
+		'after content': {
+			normal: {
+				label: 'content ::after',
+				target: `${contentClass}::after`,
+			},
+			hover: {
+				label: 'content ::after on hover',
+				target: `${contentClass}:hover::after`,
+			},
+		},
 	},
 	categories: [
 		'canvas',
@@ -204,6 +234,9 @@ const customCss = {
 		'button',
 		'before button',
 		'after button',
+		'content',
+		'before content',
+		'after content',
 		'icon',
 		'before icon',
 		'after icon',

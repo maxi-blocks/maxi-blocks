@@ -3,7 +3,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { useContext } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
@@ -14,7 +14,6 @@ import Button from '../../../button';
 import Icon from '../../../icon';
 import { insertBlockIntoColumns } from '../../../../extensions/repeater';
 import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
-import { uniqueIDGenerator } from '../../../../extensions/attributes';
 
 /**
  * Icons
@@ -31,8 +30,7 @@ const Duplicate = props => {
 
 	const repeaterContext = useContext(RepeaterContext);
 
-	const { duplicateBlocks, updateBlockAttributes } =
-		useDispatch('core/block-editor');
+	const { duplicateBlocks } = useDispatch('core/block-editor');
 
 	const duplicateContent = () => {
 		return (
@@ -42,18 +40,6 @@ const Duplicate = props => {
 						const duplicatedBlockClientId = (
 							await duplicateBlocks([clientId], updateSelection)
 						)[0];
-
-						const newUniqueID = uniqueIDGenerator({
-							blockName,
-						});
-
-						console.log('duplicatedBlockClientId');
-						console.log(duplicatedBlockClientId);
-
-						// Update the uniqueID attribute of the duplicated block
-						updateBlockAttributes(duplicatedBlockClientId, {
-							uniqueID: newUniqueID,
-						});
 
 						if (repeaterContext?.repeaterStatus) {
 							insertBlockIntoColumns(

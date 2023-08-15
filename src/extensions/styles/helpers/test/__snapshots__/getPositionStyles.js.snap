@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getPositionStyles Ensure unnecessary position styles are not added 1`] = `
-Object {
-  "m": Object {
+{
+  "m": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "s": Object {
+  "s": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "xs": Object {
+  "xs": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
@@ -27,38 +27,38 @@ Object {
 `;
 
 exports[`getPositionStyles Ensure unnecessary position styles are not added 2`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "l": Object {
+  "l": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "m": Object {
+  "m": {
     "position": "inherit",
   },
-  "s": Object {
+  "s": {
     "position": "inherit",
   },
-  "xl": Object {
+  "xl": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "xs": Object {
+  "xs": {
     "position": "inherit",
   },
-  "xxl": Object {
+  "xxl": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
@@ -69,50 +69,50 @@ Object {
 `;
 
 exports[`getPositionStyles Get a correct position styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "l": Object {
+  "l": {
     "bottom": "3vw",
     "left": "4%",
     "position": "absolute",
     "right": "2em",
     "top": "1px",
   },
-  "m": Object {
+  "m": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "s": Object {
+  "s": {
     "bottom": "3vw",
     "left": "4%",
     "position": "absolute",
     "right": "2em",
     "top": "1px",
   },
-  "xl": Object {
+  "xl": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "xs": Object {
+  "xs": {
     "bottom": "3vw",
     "left": "4%",
     "position": "relative",
     "right": "2em",
     "top": "1px",
   },
-  "xxl": Object {
+  "xxl": {
     "bottom": "3vw",
     "left": "4%",
     "position": "absolute",

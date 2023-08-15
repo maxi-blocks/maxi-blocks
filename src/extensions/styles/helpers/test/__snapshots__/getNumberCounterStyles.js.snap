@@ -1,72 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getNumberCounterStyles Returns correct styles 1`] = `
-Object {
-  " .maxi-number-counter__box .maxi-number-counter__box__background": Object {
-    "numberCounterBackground": Object {
-      "general": Object {
+{
+  " .maxi-number-counter__box .maxi-number-counter__box__background": {
+    "numberCounterBackground": {
+      "general": {
         "stroke": "rgba(var(--maxi-light-color-2,242,249,253),1)",
       },
       "label": "Number Counter",
     },
   },
-  " .maxi-number-counter__box .maxi-number-counter__box__circle": Object {
-    "numberCounterCircleBar": Object {
-      "general": Object {
+  " .maxi-number-counter__box .maxi-number-counter__box__circle": {
+    "numberCounterCircleBar": {
+      "general": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "l": Object {
+      "l": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "label": "Number Counter",
-      "m": Object {
+      "m": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "s": Object {
+      "s": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xl": Object {
+      "xl": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xs": Object {
+      "xs": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
     },
   },
-  " .maxi-number-counter__box .maxi-number-counter__box__text": Object {
-    "numberCounterText": Object {
-      "general": Object {
+  " .maxi-number-counter__box .maxi-number-counter__box__text": {
+    "numberCounterText": {
+      "general": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
         "font-family": "Roboto",
         "font-size": "40px",
       },
-      "l": Object {
+      "l": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "label": "Number Counter",
-      "m": Object {
+      "m": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "s": Object {
+      "s": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xl": Object {
+      "xl": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xs": Object {
+      "xs": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
     },
   },
-  " .maxi-number-counter__box .maxi-number-counter__box__text tspan": Object {
-    "numberCounterSup": Object {
-      "general": Object {
+  " .maxi-number-counter__box .maxi-number-counter__box__text tspan": {
+    "numberCounterSup": {
+      "general": {
         "font-size": "26.666666666666668px",
       },
       "label": "Number Counter",

@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getTypographyStyles Get a correct typography styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "3",
@@ -16,9 +16,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "l": Object {
+  "l": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -30,9 +30,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "m": Object {
+  "m": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -44,9 +44,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "s": Object {
+  "s": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -58,9 +58,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "xl": Object {
+  "xl": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -72,9 +72,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "xs": Object {
+  "xs": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -86,9 +86,9 @@ Object {
     "text-transform": "none",
     "vertical-align": "none",
   },
-  "xxl": Object {
+  "xxl": {
     "color": "rgb(255, 99, 71)",
-    "font-family": "\\"roboto\\"",
+    "font-family": ""roboto"",
     "font-size": "1px",
     "font-style": "bold",
     "font-weight": "4",
@@ -104,32 +104,32 @@ Object {
 `;
 
 exports[`getTypographyStyles Get a correct typography styles when there is a unit value set for XXL and general has no value (it has unit) 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
     "font-size": "90px",
     "line-height": "99px",
   },
-  "l": Object {
+  "l": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
   },
-  "m": Object {
+  "m": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
     "font-size": "60px",
     "line-height": "70px",
   },
-  "s": Object {
+  "s": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
     "font-size": "36px",
     "line-height": "48px",
   },
-  "xl": Object {
+  "xl": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
   },
-  "xs": Object {
+  "xs": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
   },
-  "xxl": Object {
+  "xxl": {
     "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))",
     "font-size": "6.12em",
     "line-height": "1.19em",
@@ -138,15 +138,15 @@ Object {
 `;
 
 exports[`getTypographyStyles Get a correct typography styles with hover 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-3,155,155,155),1))",
     "font-style": "italic",
     "font-weight": "500",
     "text-decoration": "overline",
     "text-transform": "uppercase",
   },
-  "l": Object {
+  "l": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-6,201,52,10),10))",
     "font-size": "10px",
     "font-style": "oblique",
@@ -156,22 +156,22 @@ Object {
     "text-decoration": "underline",
     "text-transform": "lowercase",
   },
-  "m": Object {
+  "m": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-6,201,52,10),10))",
   },
-  "s": Object {
+  "s": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-6,201,52,10),10))",
   },
-  "xl": Object {
+  "xl": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-3,155,155,155),1))",
     "font-size": "22px",
     "letter-spacing": "24.2px",
     "line-height": "4px",
   },
-  "xs": Object {
+  "xs": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-6,201,52,10),10))",
   },
-  "xxl": Object {
+  "xxl": {
     "color": "var(--maxi-light-p-color-hover,rgba(var(--maxi-light-color-3,155,155,155),1))",
   },
 }

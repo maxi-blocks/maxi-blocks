@@ -1,57 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getImageShapeStyles Ensure that ignoreOmit is working 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "transform": "scale(1) ",
   },
-  "m": Object {
+  "m": {
     "transform": "scale(0.5) ",
   },
-  "s": Object {
+  "s": {
     "transform": "scale(1) ",
   },
-  "xs": Object {
+  "xs": {
     "transform": "scale(1) ",
   },
 }
 `;
 
 exports[`getImageShapeStyles Ensure that image shape scale is working with responsive 1`] = `
-Object {
-  "m": Object {
+{
+  "m": {
     "transform": "scale(0.5) ",
   },
-  "s": Object {
+  "s": {
     "transform": "scale(1) ",
   },
-  "xs": Object {
+  "xs": {
     "transform": "scale(1) ",
   },
 }
 `;
 
 exports[`getImageShapeStyles Ensure that image shape scale is working with responsive 2`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "transform": "scale(0.5) ",
   },
-  "l": Object {
+  "l": {
     "transform": "scale(0.5) ",
   },
-  "m": Object {
+  "m": {
     "transform": "scale(1) ",
   },
-  "s": Object {
+  "s": {
     "transform": "scale(0.5) ",
   },
-  "xl": Object {
+  "xl": {
     "transform": "scale(0.5) ",
   },
-  "xs": Object {
+  "xs": {
     "transform": "scale(0.5) ",
   },
-  "xxl": Object {
+  "xxl": {
     "transform": "scale(0.5) ",
   },
 }

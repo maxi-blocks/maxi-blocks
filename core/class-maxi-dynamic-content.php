@@ -176,6 +176,7 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
+        'svg-icon-maxi',
     ];
 
     /**
@@ -227,6 +228,12 @@ class MaxiBlocks_DynamicContent
             'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/pane-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
+        register_block_type('maxi-blocks/svg-icon-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],

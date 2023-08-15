@@ -41,7 +41,6 @@ const GenerateTab = ({
 	setConfidenceLevel,
 	prompt,
 	setPrompt,
-	showHistoryButton,
 	generateContent,
 	switchToModifyTab,
 }) => {
@@ -131,15 +130,13 @@ const GenerateTab = ({
 			<Button type='button' variant='secondary' onClick={generateContent}>
 				{__('Write for me', 'maxi-blocks')}
 			</Button>
-			{showHistoryButton && (
-				<Button
-					type='button'
-					variant='secondary'
-					onClick={switchToModifyTab}
-				>
-					{__('History', 'maxi-blocks')}
-				</Button>
-			)}
+			<Button
+				type='button'
+				variant='secondary'
+				onClick={switchToModifyTab}
+			>
+				{__('History', 'maxi-blocks')}
+			</Button>
 		</>
 	);
 };

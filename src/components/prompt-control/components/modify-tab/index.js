@@ -3,12 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import { Button, DialogBox, ReactSelectControl } from '../../../../components';
 import ResultCard from '../results-card';
+import { downloadTextFile } from '../../../../editor/style-cards/utils';
 import {
 	getFormattedMessages,
 	getSiteInformation,
@@ -25,6 +27,7 @@ import { isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { download } from '@wordpress/icons';
 
 // {
 //     "generations": [
@@ -55,6 +58,12 @@ const ModifyTab = ({
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 	const [loadUntilIndex, setLoadUntilIndex] = useState(5);
+
+	useEffect(() => {
+		if (!selectedResult) {
+			setSelectedResult(results[0]?.id);
+		}
+	}, []);
 
 	const getMessages = async data => {
 		const {
@@ -109,61 +118,107 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 		});
 	};
 
+	const handleSelect = media => {
+		fetch(media.url)
+			// Need to parse the response 2 times,
+			// because it was stringified twice in the export function
+			.then(response => response.json())
+			.then(response => JSON.parse(response))
+			.then(jsonData => {
+				setResults(jsonData);
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	};
+
+	const handleExport = () => {
+		downloadTextFile(results, 'history.txt');
+	};
+
 	const cleanHistory = () => {
 		setResults([]);
 		historyStartIdRef.current = null;
 		switchToGenerateTab();
 	};
 
-	useEffect(() => {
-		if (!selectedResult) {
-			setSelectedResult(results[0]?.id);
-		}
-	}, []);
-
 	const className = 'maxi-prompt-control-modify-tab';
 
 	return (
 		<div className={className}>
-			<div className={`${className}__top-bar`}>
-				<div className={`${className}__modification-options`}>
-					<ReactSelectControl
-						value={{
-							label: __(modifyOption, 'maxi-blocks'),
-							value: modifyOption,
-						}}
-						defaultValue={{
-							label: __(modifyOption, 'maxi-blocks'),
-							value: modifyOption,
-						}}
-						options={MODIFY_OPTIONS.map(option => ({
-							label: __(option, 'maxi-blocks'),
-							value: option,
-						}))}
-						onChange={({ value }) => setModifyOption(value)}
-						isDisabled={isEmpty(results)}
-					/>
-					<Button onClick={modifyContent} disabled={isEmpty(results)}>
-						Go!
-					</Button>
-				</div>
-
-				{results.every(result => !result.isSelectedText) && (
-					<Button onClick={switchToGenerateTab}>Back</Button>
-				)}
-				{!isEmpty(results) && (
-					<DialogBox
-						message={__(
-							'Are you sure you want to clean the history?',
-							'maxi-blocks'
+			<div className={`${className}__buttons`}>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={handleSelect}
+						allowedTypes='text'
+						render={({ open }) => (
+							<Button
+								className={`${className}__button`}
+								onClick={open}
+							>
+								{__('Import history', 'maxi-blocks')}
+							</Button>
 						)}
-						cancelLabel={__('Cancel', 'maxi-blocks')}
-						confirmLabel={__('Clean', 'maxi-blocks')}
-						onConfirm={cleanHistory}
-						buttonClassName={`${className}__clean-history-button`}
-						buttonChildren={__('Clean history', 'maxi-blocks')}
 					/>
+				</MediaUploadCheck>
+				<Button
+					className={`${className}__button`}
+					onClick={handleExport}
+				>
+					{__('Export history', 'maxi-blocks')}
+				</Button>
+			</div>
+			<div className={`${className}__top-bar`}>
+				{!isEmpty(results) && (
+					<div className={`${className}__modification-options`}>
+						<ReactSelectControl
+							value={{
+								label: __(modifyOption, 'maxi-blocks'),
+								value: modifyOption,
+							}}
+							defaultValue={{
+								label: __(modifyOption, 'maxi-blocks'),
+								value: modifyOption,
+							}}
+							options={MODIFY_OPTIONS.map(option => ({
+								label: __(option, 'maxi-blocks'),
+								value: option,
+							}))}
+							onChange={({ value }) => setModifyOption(value)}
+							isDisabled={isEmpty(results)}
+						/>
+						<Button
+							className={`${className}__button`}
+							onClick={modifyContent}
+							disabled={isEmpty(results)}
+						>
+							Go!
+						</Button>
+					</div>
 				)}
+				<div className={`${className}__buttons`}>
+					{results.every(result => !result.isSelectedText) && (
+						<Button
+							className={`${className}__button`}
+							onClick={switchToGenerateTab}
+						>
+							Back
+						</Button>
+					)}
+					{!isEmpty(results) && (
+						<DialogBox
+							message={__(
+								'Are you sure you want to clean the history?',
+								'maxi-blocks'
+							)}
+							cancelLabel={__('Cancel', 'maxi-blocks')}
+							confirmLabel={__('Clean', 'maxi-blocks')}
+							onConfirm={cleanHistory}
+							buttonClassName={`${className}__button ${className}__clean-history-button`}
+							buttonChildren={__('Clean history', 'maxi-blocks')}
+						/>
+					)}
+				</div>
 			</div>
 			<div className={`${className}__results`}>
 				{results.map((result, index) => {

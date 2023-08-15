@@ -939,7 +939,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description = '
 				<h4>'.__('What is your website or business name?', self::$maxi_text_domain).'</h4>
-				<p>'.__('The name will be used for writing content. Optional.', self::$maxi_text_domain).'</p>';
+				<p>'.__('The name will be used for writing content. Optional. Takes WordPress Site Title by default', self::$maxi_text_domain).'</p>';
             $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'text');
 
             $description = '
@@ -1256,6 +1256,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $args_ai_description = array(
                 'type' => 'string',
             );
+            $args_ai_business_name = array(
+                'type' => 'string',
+                'default' => get_bloginfo('name'),
+
+            );
 
             // List of settings and corresponding arguments
             $settings = array(
@@ -1275,7 +1280,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_ai_audience' => $args_ai_description,
                 'maxi_ai_site_goal' => $args_ai_description,
                 'maxi_ai_services' => $args_ai_description,
-                'maxi_ai_business_name' => $args_ai_description,
+                'maxi_ai_business_name' => $args_ai_business_name,
                 'maxi_ai_business_info' => $args_ai_description,
                 'maxi_breakpoints' => null,
                 'maxi_rollback_version' => $args_rollback,
@@ -1285,7 +1290,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Register the settings and set default values if they don't exist
             foreach ($settings as $setting_name => $setting_args) {
-                // ! Reset saved settings/options
+                // ! For debug: reset saved settings/options
                 // unregister_setting('maxi-blocks-settings-group', $setting_name);
                 // delete_option($setting_name);
 

@@ -9,7 +9,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -31,7 +31,6 @@ import {
 	orderByRelations,
 	orderRelations,
 	orderTypes,
-	ACFTypeOptions,
 	linkFields,
 	linkFieldsLabels,
 } from '../../extensions/DC/constants';
@@ -40,6 +39,7 @@ import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
+// import WCSettingsControl from './wc-settings-control';
 
 /**
  * External dependencies
@@ -216,6 +216,13 @@ const DynamicContent = props => {
 			});
 		}
 
+		if (select('wc/store/validation')) {
+			options.push({
+				label: __('WooCommerce', 'maxi-blocks'),
+				value: 'wc',
+			});
+		}
+
 		return options;
 	}, []);
 
@@ -260,7 +267,8 @@ const DynamicContent = props => {
 									type,
 									field,
 									relation,
-									contentType
+									contentType,
+									value
 								);
 
 								changeProps({
@@ -274,18 +282,25 @@ const DynamicContent = props => {
 					)}
 					{source === 'acf' && (
 						<ACFSettingsControl
-							changeProps={changeProps}
+							onChange={onChange}
 							dynamicContent={dcValues}
 							contentType={contentType}
 						/>
 					)}
+					{/* {source === 'wc' && (
+						<WCSettingsControl
+							onChange={onChange}
+							dynamicContent={dcValues}
+							contentType={contentType}
+						/>
+					)} */}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={
-							source === 'acf'
-								? ACFTypeOptions
-								: typeOptions[contentType]
+							source === 'wp'
+								? typeOptions[contentType]
+								: typeOptions[source]
 						}
 						onChange={value => {
 							const validatedAttributes = validationsValues(
@@ -473,7 +488,7 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-							{source === 'wp' &&
+							{['wp', 'wc'].includes(source) &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
 									(relation === 'by-author' &&

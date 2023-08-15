@@ -8,11 +8,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { limitFields, limitTypes, renderedFields } from './constants';
-import { getSimpleText, limitString } from './utils';
+import { getSimpleText, limitString, parseText } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
+import getWCContent from './getWCContent';
 
 /**
  * External dependencies
@@ -29,12 +30,17 @@ const nameDictionary = {
 };
 
 const getDCContent = async (dataRequest, clientId) => {
+	const { source } = dataRequest;
+
+	if (source === 'wc') {
+		return getWCContent(dataRequest);
+	}
+
 	const data = await getDCEntity(dataRequest, clientId);
 
 	if (!data) return null;
 
 	const {
-		source,
 		type,
 		field,
 		limit,
@@ -82,9 +88,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	} else if (limitTypes.includes(type) && limitFields.includes(field)) {
 		// Parse content value
 		if (typeof contentValue === 'string') {
-			const parser = new DOMParser();
-			const doc = parser.parseFromString(contentValue, 'text/html');
-			contentValue = doc.body.textContent;
+			contentValue = parseText(contentValue);
 		}
 
 		if (field === 'content') contentValue = getSimpleText(contentValue);

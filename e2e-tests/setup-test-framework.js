@@ -10,10 +10,14 @@ import {
 	enablePageDialogAccept,
 	isOfflineMode,
 	setBrowserViewport,
-	deactivatePlugin,
 	activatePlugin,
 	activateTheme,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { deactivatePlugin } from './utils';
 
 /**
  * Timeout, in seconds, that the test should be allowed to run.

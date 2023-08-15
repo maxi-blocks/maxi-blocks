@@ -54,6 +54,7 @@ const ModifyTab = ({
 	abortControllerRef,
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
+	const [loadUntilIndex, setLoadUntilIndex] = useState(5);
 
 	const getMessages = async data => {
 		const {
@@ -166,6 +167,10 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 			</div>
 			<div className={`${className}__results`}>
 				{results.map((result, index) => {
+					if (index >= loadUntilIndex) {
+						return null;
+					}
+
 					const refResult =
 						result.refId &&
 						results.find(
@@ -226,6 +231,15 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 					);
 				})}
 			</div>
+			{results.length > loadUntilIndex && (
+				<div className={`${className}__load-more`}>
+					<Button
+						onClick={() => setLoadUntilIndex(loadUntilIndex + 5)}
+					>
+						Load more
+					</Button>
+				</div>
+			)}
 			{isGenerating && (
 				<Button className={`${className}__abort`} onClick={onAbort}>
 					Stop

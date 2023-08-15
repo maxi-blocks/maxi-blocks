@@ -15,7 +15,7 @@ function get_icon_styles(
 
     $is_shape = $icon_type !== 'shape';
 
-    if ($is_icon_inherit && !isset($obj['typography-status-hover'])) {
+    if ($is_icon_inherit && (!is_array($obj) || !isset($obj['typography-status-hover']))) {
         return $response;
     }
 

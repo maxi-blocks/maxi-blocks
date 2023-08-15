@@ -30,6 +30,7 @@ export const getIdOptions = async (type, relation, author) => {
 		posts: 'post',
 		pages: 'page',
 		media: 'attachment',
+		products: 'product',
 	};
 
 	const args = {

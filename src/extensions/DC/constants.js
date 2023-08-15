@@ -16,6 +16,14 @@ export const generalTypeOptions = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
+export const ACFTypeOptions = generalTypeOptions.filter(
+	option => !['settings'].includes(option.value)
+);
+
+export const WCTypeOptions = [
+	{ label: __('Product', 'maxi-blocks'), value: 'products' },
+];
+
 export const typeOptions = {
 	text: generalTypeOptions,
 	button: generalTypeOptions,
@@ -30,11 +38,9 @@ export const typeOptions = {
 	slide: generalTypeOptions,
 	accordion: generalTypeOptions,
 	slider: generalTypeOptions,
+	acf: ACFTypeOptions,
+	wc: WCTypeOptions,
 };
-
-export const ACFTypeOptions = generalTypeOptions.filter(
-	option => !['settings'].includes(option.value)
-);
 
 /**
  * Relation constants
@@ -84,6 +90,7 @@ const generalRelationOptions = {
 	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
+	products: generalRelationOptionsPosts,
 };
 
 export const relationOptions = {
@@ -245,6 +252,30 @@ const mediaACFFieldTypes = ['image'];
 
 const buttonACFFieldTypes = textACFFieldTypes;
 
+const generalProductFields = [
+	{ label: __('Name', 'maxi-blocks'), value: 'name' },
+	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{
+		label: __('Short description', 'maxi-blocks'),
+		value: 'short_description',
+	},
+	{ label: __('Slug', 'maxi-blocks'), value: 'slug' },
+	{ label: __('Review count', 'maxi-blocks'), value: 'review_count' },
+	{ label: __('Average rating', 'maxi-blocks'), value: 'average_rating' },
+	{ label: __('Price', 'maxi-blocks'), value: 'price' },
+	{ label: __('Regular price', 'maxi-blocks'), value: 'regular_price' },
+	{ label: __('Sale price', 'maxi-blocks'), value: 'sale_price' },
+	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
+	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
+];
+
+const buttonProductFields = generalProductFields.filter(
+	option =>
+		!['short_description', 'description', 'categories', 'tags'].includes(
+			option.value
+		)
+);
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -254,6 +285,7 @@ export const fieldOptions = {
 		users: generalUsersFields,
 		categories: generalCategoryFields,
 		tags: generalTagFields,
+		products: generalProductFields,
 	},
 	button: {
 		posts: buttonPostsPagesFields,
@@ -263,6 +295,7 @@ export const fieldOptions = {
 		users: buttonAuthorFields,
 		categories: buttonCategoryFields,
 		tags: buttonTagFields,
+		products: buttonProductFields,
 	},
 	image: {
 		posts: mediaPostsPagesFields,
@@ -370,6 +403,7 @@ export const idOptionByField = {
 	posts: 'title',
 	pages: 'title',
 	media: 'title',
+	products: 'title',
 	tags: 'name',
 	users: 'name',
 	author: 'name',
@@ -385,6 +419,7 @@ export const idFields = [
 	'categories',
 	'tags',
 	'authors',
+	'products',
 ];
 
 // Fields that have rendered and raw content
@@ -404,6 +439,7 @@ export const relationTypes = [
 	'categories',
 	'tags',
 	'users', // TODO: Add support for users
+	'products',
 ];
 
 // Fields that can lead to different locations from post

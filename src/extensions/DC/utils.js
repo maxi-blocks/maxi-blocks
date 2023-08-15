@@ -6,7 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { fieldOptions, relationOptions, orderByRelations } from './constants';
+import {
+	fieldOptions,
+	relationOptions,
+	orderByRelations,
+	typeOptions,
+} from './constants';
 
 /**
  * External dependencies
@@ -14,6 +19,12 @@ import { fieldOptions, relationOptions, orderByRelations } from './constants';
 import moment from 'moment';
 import 'moment-parseformat';
 import { isEmpty, isNumber } from 'lodash';
+
+export const parseText = value => {
+	const parser = new DOMParser();
+	const doc = parser.parseFromString(value, 'text/html');
+	return doc.body.textContent;
+};
 
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
@@ -50,7 +61,7 @@ export const validationsValues = (
 	field,
 	relation,
 	contentType,
-	source,
+	source = 'wp',
 	isCL = false
 ) => {
 	if (source === 'acf') return {};
@@ -63,6 +74,9 @@ export const validationsValues = (
 	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
+	const isTypeValid = typeOptions[source === 'wp' ? contentType : source]
+		.map(item => item.value)
+		.includes(variableValue);
 
 	return {
 		...(!isCL &&
@@ -74,6 +88,10 @@ export const validationsValues = (
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
+		...(!isTypeValid && {
+			[`${prefix}type`]:
+				typeOptions[source === 'wp' ? contentType : source][0].value,
+		}),
 	};
 };
 

@@ -860,11 +860,13 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
+		console.log('uniqueIDChecker');
+		console.log(idToCheck);
+		console.log(getIsIDTrulyUnique(idToCheck));
+
 		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
-				diff: 1,
-				clientId,
 			});
 
 			propagateNewUniqueID(

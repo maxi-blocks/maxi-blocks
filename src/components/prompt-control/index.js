@@ -31,7 +31,7 @@ import {
 /**
  * External dependencies
  */
-import { camelCase, isEmpty } from 'lodash';
+import { camelCase, isEmpty, toNumber } from 'lodash';
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
 
@@ -62,7 +62,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 	const [results, setResults] = useState([]);
 	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
 	const [isGenerating, setIsGenerating] = useState(false);
-	const historyStartId = useRef(null);
+	const historyStartIdRef = useRef(null);
 
 	const abortControllerRef = useRef(null);
 
@@ -106,8 +106,8 @@ const PromptControl = ({ content, onChangeContent }) => {
 				);
 			}
 
-			historyStartId.current = sessionStorage.getItem(
-				'maxi-prompt-history-start-id'
+			historyStartIdRef.current = toNumber(
+				sessionStorage.getItem('maxi-prompt-history-start-id')
 			);
 		}
 	}, []);
@@ -278,7 +278,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}
-					historyStartId={historyStartId.current}
+					historyStartIdRef={historyStartIdRef}
 					setSelectedResult={setSelectedResult}
 					onChangeContent={onChangeContent}
 					setResults={setResults}

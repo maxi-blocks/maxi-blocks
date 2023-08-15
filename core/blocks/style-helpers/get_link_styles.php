@@ -1,6 +1,6 @@
 <?php
 
-function get_link_styles($obj, $target, $blockStyle)
+function get_link_styles(array $obj, string $target, array $blockStyle)
 {
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
     $response = [

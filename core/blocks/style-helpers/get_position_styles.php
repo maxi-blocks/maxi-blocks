@@ -1,6 +1,6 @@
 <?php
 
-function get_position_styles($obj)
+function get_position_styles(array $obj)
 {
     $key_words = ['top', 'right', 'bottom', 'left'];
     $response = [];

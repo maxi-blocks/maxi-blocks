@@ -7,6 +7,9 @@
  */
 function create_icon_transitions($options)
 {
+    if (!isset($options['target'])) {
+        return false;
+    }
     // Options from the argument
     $target = $options['target'];
     $title_prefix = $options['title_prefix'] ?? '';

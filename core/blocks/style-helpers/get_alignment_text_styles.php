@@ -2,6 +2,10 @@
 
 function get_alignment_text_styles($obj, $type = 'text')
 {
+    if (!is_array($obj)) {
+        return false;
+    }
+
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -15,15 +19,9 @@ function get_alignment_text_styles($obj, $type = 'text')
                     ];
                     break;
                 case 'center':
-                    if ($type === 'list') {
-                        $response[$breakpoint] = [
-                            'list-style-position' => $type === 'list' ? 'inside' : 'initial',
-                        ];
-                    } else {
-                        $response[$breakpoint] = [
-                            'text-align' => 'center',
-                        ];
-                    }
+                    $response[$breakpoint] = $type === 'list'
+                       ? ['list-style-position' => 'inside']
+                       : ['text-align' => 'center'];
                     break;
                 case 'justify':
                     $response[$breakpoint] = [
@@ -46,7 +44,7 @@ function get_alignment_text_styles($obj, $type = 'text')
                         break;
                     }
                 default:
-                    return false;
+                    continue;
             }
         }
     }

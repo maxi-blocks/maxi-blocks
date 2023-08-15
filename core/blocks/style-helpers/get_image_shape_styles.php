@@ -2,6 +2,9 @@
 
 function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_general_omit = false, $is_hover = false)
 {
+    if (!is_array($obj)) {
+        return [];
+    }
     $response = [];
     $omit_transform_scale = true;
 
@@ -39,7 +42,7 @@ function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_gen
             $omit_transform_scale = $omit_transform_scale && $scale === 100;
             $calculation_numbers = $target === 'svg' ? [$scale, 100] : [100, $scale];
 
-            if (($breakpoint === 'general' && $ignore_general_omit) || !($scale === 100 && $omit_transform_scale)) {
+            if ($breakpoint === 'general' && $ignore_general_omit || $scale !== 100 || !$omit_transform_scale) {
                 $transform_string .= 'scale(' . ($calculation_numbers[0] / $calculation_numbers[1]) . ') ';
             }
         }

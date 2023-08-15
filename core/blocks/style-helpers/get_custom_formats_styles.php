@@ -10,12 +10,12 @@ function get_custom_formats_styles(
 ) {
     $response = [];
 
-    if ($custom_formats) {
+    if (is_array($custom_formats)) {
         foreach ($custom_formats as $key => $val) {
             $response[$target . ' .' . $key] = [
                 'typography' => get_typography_styles([
                     'obj' => $val,
-                    'isHover' => false,
+                    'isHover' => $is_hover,
                     'customFormatTypography' => $typography,
                     'textLevel' => $text_level,
                     'block_style' => $block_style,

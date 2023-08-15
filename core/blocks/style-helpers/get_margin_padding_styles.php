@@ -4,6 +4,9 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_last_breakpoint_attri
 
 function get_margin_padding_styles($args)
 {
+    if (!isset($args['obj'])) {
+        return [];
+    }
     $obj = $args['obj'];
     $prefix = $args['prefix'] ?? '';
 

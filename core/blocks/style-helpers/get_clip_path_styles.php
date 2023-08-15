@@ -2,6 +2,9 @@
 
 function get_clip_path_styles($params)
 {
+    if (!is_array($params) || !isset($params['obj'])) {
+        return [];
+    }
     $obj = $params['obj'];
     $is_hover = isset($params['is_hover']) ? $params['is_hover'] : false;
     $is_IB = isset($params['is_IB']) ? $params['is_IB'] : false;

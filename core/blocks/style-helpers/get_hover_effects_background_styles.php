@@ -7,20 +7,20 @@ function get_hover_effects_background_styles($props, $block_style)
     ];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-    
+
     foreach ($breakpoints as $breakpoint) {
         $current_active_media = get_last_breakpoint_attribute([
             'target' => 'hover-background-active-media',
             'breakpoint' => $breakpoint,
             'attributes' => $props,
         ]);
-    
+
         if (!$current_active_media) {
             continue;
         }
-    
-        array_merge($response, [
-            ...(boolval($current_active_media) && $current_active_media === 'color'
+
+        $response = array_merge($response, [
+            (boolval($current_active_media) && $current_active_media === 'color'
                 ? [
                     'background' => get_color_background_object([
                         ...get_group_attributes(
@@ -35,7 +35,7 @@ function get_hover_effects_background_styles($props, $block_style)
                     ]),
                 ]
                 : []),
-            ...(boolval($current_active_media) && $current_active_media === 'gradient'
+            (boolval($current_active_media) && $current_active_media === 'gradient'
                 ? [
                     'background' => get_gradient_background_object([
                         ...get_group_attributes(
@@ -50,7 +50,7 @@ function get_hover_effects_background_styles($props, $block_style)
                 ]
                 : []),
         ]);
-    
+
         if (
             $current_active_media === 'gradient' &&
             isset($response['background'][$breakpoint]['background'])
@@ -64,7 +64,7 @@ function get_hover_effects_background_styles($props, $block_style)
             );
 
             $opacity_value = $props['hover-background-gradient-opacity'] ?? 1;
-    
+
             $response['background'][$breakpoint]['background'] = preg_replace_callback(
                 '/\((\d+),(\d+),(\d+)\)/',
                 function ($matches) use ($opacity_value) {
@@ -74,6 +74,6 @@ function get_hover_effects_background_styles($props, $block_style)
             );
         }
     }
-    
+
     return $response;
 }

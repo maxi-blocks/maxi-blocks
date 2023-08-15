@@ -44,7 +44,7 @@ const ModifyTab = ({
 	isGenerating,
 	setIsGenerating,
 	selectedResult,
-	historyStartId,
+	historyStartIdRef,
 	setSelectedResult,
 	onChangeContent,
 	onAbort,
@@ -110,6 +110,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 
 	const cleanHistory = () => {
 		setResults([]);
+		historyStartIdRef.current = null;
 		switchToGenerateTab();
 	};
 
@@ -177,7 +178,9 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							key={index}
 							index={index + 1}
 							result={result}
-							isFromPreviousSession={result.id <= historyStartId}
+							isFromPreviousSession={
+								result.id <= historyStartIdRef.current
+							}
 							isSelected={result.id === selectedResult}
 							isRefOfSelected={refResult?.isSelectedText}
 							onInsert={() => {
@@ -201,6 +204,10 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 								switchToGenerateTab();
 							}}
 							onDelete={() => {
+								if (historyStartIdRef.current === result.id) {
+									historyStartIdRef.current -= 1;
+								}
+
 								setResults(prevResults => {
 									const newResults = [...prevResults].filter(
 										deletedResult =>

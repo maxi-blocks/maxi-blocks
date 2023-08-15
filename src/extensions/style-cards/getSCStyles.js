@@ -132,6 +132,31 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 	return response;
 };
 
+const addStylesByBreakpoints = (addStylesByBreakpoint, isBackend) => {
+	let addedResponse = '';
+
+	// General
+	addedResponse += addStylesByBreakpoint('general');
+
+	// Media queries
+	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
+		if (isBackend)
+			addedResponse += addStylesByBreakpoint(
+				breakpoint,
+				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
+			);
+		else {
+			addedResponse += `@media (${
+				breakpoint !== 'xxl' ? 'max' : 'min'
+			}-width: ${breakpointValue}px) {`;
+			addedResponse += addStylesByBreakpoint(breakpoint);
+			addedResponse += '}';
+		}
+	});
+
+	return addedResponse;
+};
+
 const getSentencesByBreakpoint = ({
 	organizedValues,
 	style,
@@ -161,6 +186,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
+		let addedResponse = '';
+
 		const breakpointLevelSentences = getSentencesByBreakpoint({
 			organizedValues,
 			style,
@@ -187,13 +214,15 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
 				targets.forEach(target => {
-					response += `${target} ${level} {${sentences?.join(' ')}}`;
+					addedResponse += `${target} ${level} {${sentences?.join(
+						' '
+					)}}`;
 				});
 
 				if (marginSentence) {
 					// margin-bottom for Text Maxi
-					response += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
-					response += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
 				}
 			}
 		);
@@ -211,7 +240,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				sentence => sentence?.indexOf('margin-bottom') > -1
 			);
 
-			if (marginSentence) response += `${target} ${marginSentence}`;
+			if (marginSentence) addedResponse += `${target} ${marginSentence}`;
 		});
 
 		[
@@ -228,31 +257,31 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Text Maxi when has link
 		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__content`;
 
-		response += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
-		response += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
-		response += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
-		response += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
-		response += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+		addedResponse += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
+		addedResponse += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
+		addedResponse += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
+		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
+		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
 
 		[
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,
 		].forEach(target => {
-			response += `${target} { color: var(--maxi-${style}-link); }`;
-			response += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:hover span { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:focus { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:focus span { color: var(--maxi-${style}-link-hover); }`;
-			response += `${target}:active { color: var(--maxi-${style}-link-active); }`;
-			response += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
-			response += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
-			response += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
+			addedResponse += `${target} { color: var(--maxi-${style}-link); }`;
+			addedResponse += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:focus { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:focus span { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:active { color: var(--maxi-${style}-link-active); }`;
+			addedResponse += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
+			addedResponse += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
+			addedResponse += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
 		});
 
 		// Image Maxi
@@ -279,7 +308,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 						);
 				}
 
-				response += `${target} ${level} {${sentences?.join(' ')}}`;
+				addedResponse += `${target} ${level} {${sentences?.join(' ')}}`;
 			});
 		});
 
@@ -298,7 +327,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Search Maxi
@@ -318,7 +347,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
 		// Button Maxi
@@ -366,30 +395,186 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			response += `${target} {${sentences?.join(' ')}}`;
+			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
+
+		return addedResponse;
 	};
 
-	// General
-	addStylesByBreakpoint('general');
+	response += addStylesByBreakpoints(addStylesByBreakpoint, isBackend);
 
-	// Media queries
-	Object.entries(breakpoints).forEach(([breakpoint, breakpointValue]) => {
-		if (isBackend)
-			addStylesByBreakpoint(
+	return response;
+};
+
+const getWPNativeStyles = ({
+	organizedValues,
+	styleCard,
+	prefix,
+	style,
+	isBackend,
+}) => {
+	let response = '';
+	const nativeWPPrefix = isBackend
+		? 'wp-block[data-type^="core/"]'
+		: 'maxi-block--use-sc';
+
+	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
+		let addedResponse = '';
+
+		const breakpointLevelSentences = getSentencesByBreakpoint({
+			organizedValues,
+			style,
+			breakpoint,
+			targets: levels,
+		});
+
+		Object.entries({ ...breakpointLevelSentences }).forEach(
+			([level, sentences]) => {
+				// Remove margin-bottom sentences
+				const marginSentence = sentences?.find(
+					sentence => sentence?.indexOf('margin-bottom') > -1
+				);
+
+				if (marginSentence)
+					sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
+				const selectors = [
+					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}`,
+					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}`,
+					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
+					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
+				].join(', ');
+
+				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
+
+				// In case the level is paragraph, we add the same styles for lists
+				if (level === 'p')
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
+						' '
+					)}}`;
+
+				// Adds margin-bottom sentence to all elements except the last one
+				if (marginSentence)
+					addedResponse += `:is(${selectors}):not(:last-child) {
+						${marginSentence}
+					}`;
+			}
+		);
+
+		// WP native block when has link
+		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;
+
+		['', ' span'].forEach(suffix => {
+			addedResponse += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
+			if (styleCard[`--maxi-${style}-link-hover`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
+			}
+			if (styleCard[`--maxi-${style}-link-active`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
+			}
+			if (styleCard[`--maxi-${style}-link-visited`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
+			}
+		});
+
+		// Button Maxi
+		const buttonSentences = [
+			...getSentencesByBreakpoint({
+				organizedValues,
+				style,
 				breakpoint,
-				`.edit-post-visual-editor[maxi-blocks-responsive="${breakpoint}"]`
-			);
-		else {
-			response += `@media (${
-				breakpoint !== 'xxl' ? 'max' : 'min'
-			}-width: ${breakpointValue}px) {`;
+				targets: ['button'],
+			}).button,
+		];
 
-			addStylesByBreakpoint(breakpoint);
+		// Set font-family paragraph variable as backup for the button font-family variables
+		buttonSentences.forEach((sentence, i) => {
+			if (sentence?.includes('font-family')) {
+				const pVar = sentence
+					.replace('font-family: ', '')
+					.replace('button', 'p')
+					.replace(';', '');
+				const newSentence = sentence.replace(')', `, ${pVar})`);
 
-			response += '}';
+				buttonSentences[i] = newSentence;
+			}
+		});
+
+		if (
+			!buttonSentences?.some(sentence =>
+				sentence?.includes('font-family')
+			)
+		) {
+			const pFontFamilyVar = [...breakpointLevelSentences.p]?.filter(
+				sentence => sentence?.includes('font-family')
+			)[0];
+
+			buttonSentences?.push(pFontFamilyVar);
 		}
-	});
+
+		// Remove margin-bottom sentences
+		const marginSentence = buttonSentences?.find(
+			sentence => sentence?.indexOf('margin-bottom') > -1
+		);
+
+		if (marginSentence)
+			buttonSentences?.splice(
+				buttonSentences?.indexOf(marginSentence),
+				1
+			);
+
+		addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
+			...buttonSentences,
+			styleCard[`--maxi-${style}-button-color`]
+				? `color: var(--maxi-${style}-button-color);`
+				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
+		]?.join(' ')}}`;
+
+		if (styleCard[`--maxi-${style}-button-color-hover`]) {
+			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
+				color: var(--maxi-${style}-button-color-hover);
+			}`;
+		}
+
+		// General color
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} {
+			color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
+		}`;
+
+		// Headings color
+		headings.forEach(heading => {
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
+				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
+			}`;
+		});
+
+		// Button color
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
+			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
+		}`;
+
+		// Button color hover
+		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
+				background: var(--maxi-${style}-button-background-color-hover);
+			}`;
+		}
+
+		// Remove form textarea background
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea {
+				background: transparent;
+				color: inherit;
+		}`;
+
+		return addedResponse;
+	};
+
+	response += addStylesByBreakpoints(addStylesByBreakpoint, isBackend);
 
 	return response;
 };
@@ -397,11 +582,18 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = async (styleCard, isBackend = false) => {
+const getSCStyles = (
+	rawStyleCard,
+	gutenbergBlocksStatus,
+	isBackend = false
+) => {
+	const styleCard = { ...rawStyleCard };
+
 	let response = '';
 	const prefix = 'body.maxi-blocks--active';
 
 	const organizedValues = getOrganizedValues(styleCard);
+
 	// Create styles
 	styles.forEach(style => {
 		// Link colors
@@ -414,6 +606,17 @@ const getSCStyles = async (styleCard, isBackend = false) => {
 			style,
 			isBackend,
 		});
+
+		// WP native blocks styles
+		if (gutenbergBlocksStatus) {
+			response += getWPNativeStyles({
+				organizedValues,
+				styleCard,
+				prefix,
+				style,
+				isBackend,
+			});
+		}
 	});
 
 	return processCss(response);

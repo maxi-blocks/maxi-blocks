@@ -215,22 +215,26 @@ const CopyPaste = props => {
 				innerBlocks: newCopiedBlocks,
 			};
 
-			goThroughMaxiBlocks(block => {
-				const blockPosition = findBlockPosition(
-					block.clientId,
-					oldParentBlock
-				);
+			goThroughMaxiBlocks(
+				block => {
+					const blockPosition = findBlockPosition(
+						block.clientId,
+						oldParentBlock
+					);
 
-				const newBlock = findTarget(blockPosition, newParentBlock);
+					const newBlock = findTarget(blockPosition, newParentBlock);
 
-				if (!newBlock) {
-					return;
-				}
+					if (!newBlock) {
+						return;
+					}
 
-				if (block.name === newBlock.name) {
-					newBlock.clientId = block.clientId;
-				}
-			}, innerBlocks);
+					if (block.name === newBlock.name) {
+						newBlock.clientId = block.clientId;
+					}
+				},
+				false,
+				innerBlocks
+			);
 
 			replaceInnerBlocks(clientId, newCopiedBlocks);
 

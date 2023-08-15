@@ -176,6 +176,7 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
+        'svg-icon-maxi',
     ];
 
     /**
@@ -232,6 +233,12 @@ class MaxiBlocks_DynamicContent
             'render_callback' => [$this, 'render_dc'],
             'attributes' => self::$dynamic_content_attributes,
         ));
+        register_block_type('maxi-blocks/svg-icon-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamic_content_attributes,
+        ));
     }
 
     public function render_dc($attributes, $content)
@@ -243,10 +250,13 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        $unique_id = $attributes['uniqueID'];
+        $is_template = is_string($unique_id) && strpos($unique_id, '-template');
+
         if (self::$custom_data === null) {
             if (class_exists('MaxiBlocks_Styles')) {
                 $styles = new MaxiBlocks_Styles();
-                self::$custom_data = $styles->custom_meta('dynamic_content');
+                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
             } else {
                 self::$custom_data = [];
             }
@@ -254,10 +264,9 @@ class MaxiBlocks_DynamicContent
 
         $context_loop = [];
 
-        if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
-            $context_loop = self::$custom_data[$attributes['uniqueID']];
+        if (array_key_exists($unique_id, self::$custom_data)) {
+            $context_loop = self::$custom_data[$unique_id];
         }
-
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -268,7 +277,11 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
+        $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
+
+        if($is_template) {
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        }
 
         if (in_array($block_name, self::$link_only_blocks)) {
             return $content;

@@ -14,6 +14,8 @@ import {
 } from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
 
+jest.mock('@wordpress/blocks', () => jest.fn());
+jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('src/components/index.js', () => jest.fn());
 jest.mock('src/extensions/dom/dom.js', () => jest.fn());
 

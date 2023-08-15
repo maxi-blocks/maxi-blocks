@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getSizeStyles Get a correct size styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -10,7 +10,7 @@ Object {
     "min-width": "2px",
     "width": "1px",
   },
-  "l": Object {
+  "l": {
     "height": "1px",
     "max-height": "2px",
     "max-width": "2px",
@@ -18,7 +18,7 @@ Object {
     "min-width": "3px",
     "width": "1px",
   },
-  "m": Object {
+  "m": {
     "height": "2px",
     "max-height": "1px",
     "max-width": "2px",
@@ -26,7 +26,7 @@ Object {
     "min-width": "4px",
     "width": "3px",
   },
-  "s": Object {
+  "s": {
     "height": "1px",
     "max-height": "1px",
     "max-width": "3px",
@@ -34,7 +34,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xl": Object {
+  "xl": {
     "height": "3px",
     "max-height": "2px",
     "max-width": "3px",
@@ -42,7 +42,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xs": Object {
+  "xs": {
     "height": "3px",
     "max-height": "2px",
     "max-width": "3px",
@@ -50,7 +50,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "2px",
     "max-height": "1px",
     "max-width": "2px",
@@ -62,8 +62,8 @@ Object {
 `;
 
 exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -71,7 +71,7 @@ Object {
     "min-width": "2px",
     "width": "1px",
   },
-  "l": Object {
+  "l": {
     "aspect-ratio": 1,
     "height": "auto",
     "max-height": "2px",
@@ -80,7 +80,7 @@ Object {
     "min-width": "3px",
     "width": "1px",
   },
-  "m": Object {
+  "m": {
     "aspect-ratio": 1,
     "height": "auto",
     "max-height": "1px",
@@ -89,7 +89,7 @@ Object {
     "min-width": "4px",
     "width": "3px",
   },
-  "s": Object {
+  "s": {
     "aspect-ratio": 1,
     "height": "auto",
     "max-height": "1px",
@@ -98,7 +98,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xl": Object {
+  "xl": {
     "aspect-ratio": 1,
     "height": "auto",
     "max-height": "2px",
@@ -107,7 +107,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xs": Object {
+  "xs": {
     "aspect-ratio": 1,
     "height": "auto",
     "max-height": "2px",
@@ -116,7 +116,7 @@ Object {
     "min-width": "1px",
     "width": "4px",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "2px",
     "max-height": "1px",
     "max-width": "2px",
@@ -128,96 +128,96 @@ Object {
 `;
 
 exports[`getSizeStyles Get a correct size styles with full width 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "min-width": "100%",
   },
-  "l": Object {
+  "l": {
     "min-width": "initial",
   },
-  "m": Object {
+  "m": {
     "min-width": "initial",
   },
-  "s": Object {
+  "s": {
     "min-width": "initial",
   },
-  "xl": Object {
+  "xl": {
     "min-width": "100%",
   },
-  "xs": Object {
+  "xs": {
     "min-width": "initial",
   },
-  "xxl": Object {
+  "xxl": {
     "min-width": "100%",
   },
 }
 `;
 
 exports[`getSizeStyles Get a correct size styles with full width 2 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "min-width": "100%",
   },
-  "l": Object {
+  "l": {
     "min-width": "100%",
   },
-  "m": Object {
+  "m": {
     "min-width": "3px",
   },
-  "s": Object {
+  "s": {
     "min-width": "0px",
   },
-  "xl": Object {
+  "xl": {
     "min-width": "initial",
   },
-  "xs": Object {
+  "xs": {
     "min-width": "0px",
   },
-  "xxl": Object {
+  "xxl": {
     "min-width": "100%",
   },
 }
 `;
 
 exports[`getSizeStyles Get a correct size styles with full width 3 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "l": Object {
+  "l": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "m": Object {
+  "m": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "s": Object {
+  "s": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "xl": Object {
+  "xl": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "xs": Object {
+  "xs": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
@@ -227,14 +227,14 @@ Object {
 `;
 
 exports[`getSizeStyles Get a correct size styles with full width responsive 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "l": Object {
+  "l": {
     "height": "4px",
     "max-height": "2px",
     "max-width": "2px",
@@ -242,13 +242,13 @@ Object {
     "min-width": "3px",
     "width": "fit-content",
   },
-  "m": Object {
+  "m": {
     "height": "4px",
     "max-height": "1px",
     "min-height": "2px",
     "min-width": "100%",
   },
-  "s": Object {
+  "s": {
     "height": "1px",
     "max-height": "1px",
     "max-width": "3px",
@@ -256,19 +256,19 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xl": Object {
+  "xl": {
     "height": "4px",
     "max-height": "2px",
     "min-height": "4px",
     "min-width": "100%",
   },
-  "xs": Object {
+  "xs": {
     "height": "3px",
     "max-height": "2px",
     "min-height": "4px",
     "min-width": "100%",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "2px",
     "max-height": "1px",
     "max-width": "2px",
@@ -280,8 +280,8 @@ Object {
 `;
 
 exports[`getSizeStyles Get a correct size styles with full width responsive 2 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -289,13 +289,13 @@ Object {
     "min-width": "2px",
     "width": "fit-content",
   },
-  "l": Object {
+  "l": {
     "height": "4px",
     "max-height": "2px",
     "min-height": "1px",
     "min-width": "100%",
   },
-  "m": Object {
+  "m": {
     "height": "4px",
     "max-height": "1px",
     "max-width": "2px",
@@ -303,13 +303,13 @@ Object {
     "min-width": "3px",
     "width": "fit-content",
   },
-  "s": Object {
+  "s": {
     "height": "1px",
     "max-height": "1px",
     "min-height": "2px",
     "min-width": "100%",
   },
-  "xl": Object {
+  "xl": {
     "height": "4px",
     "max-height": "2px",
     "max-width": "3px",
@@ -317,7 +317,7 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xs": Object {
+  "xs": {
     "height": "3px",
     "max-height": "2px",
     "max-width": "3px",
@@ -325,7 +325,7 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "2px",
     "max-height": "1px",
     "min-height": "2px",
@@ -335,8 +335,8 @@ Object {
 `;
 
 exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "4px",
     "max-height": "3px",
     "max-width": "2px",
@@ -344,7 +344,7 @@ Object {
     "min-width": "2px",
     "width": "fit-content",
   },
-  "l": Object {
+  "l": {
     "height": "4px",
     "max-height": "2px",
     "max-width": "2px",
@@ -352,7 +352,7 @@ Object {
     "min-width": "3px",
     "width": "fit-content",
   },
-  "m": Object {
+  "m": {
     "height": "4px",
     "max-height": "1px",
     "max-width": "2px",
@@ -360,7 +360,7 @@ Object {
     "min-width": "4px",
     "width": "fit-content",
   },
-  "s": Object {
+  "s": {
     "height": "1px",
     "max-height": "1px",
     "max-width": "3px",
@@ -368,7 +368,7 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xl": Object {
+  "xl": {
     "height": "4px",
     "max-height": "2px",
     "max-width": "3px",
@@ -376,7 +376,7 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xs": Object {
+  "xs": {
     "height": "3px",
     "max-height": "2px",
     "max-width": "3px",
@@ -384,7 +384,7 @@ Object {
     "min-width": "1px",
     "width": "fit-content",
   },
-  "xxl": Object {
+  "xxl": {
     "height": "2px",
     "max-height": "1px",
     "max-width": "2px",

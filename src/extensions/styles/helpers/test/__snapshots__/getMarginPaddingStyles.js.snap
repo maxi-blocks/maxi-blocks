@@ -1,44 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getMarginPaddingStyles Different values ​​depends on the responsive 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "margin-bottom": "11px",
     "margin-left": "11px",
     "margin-right": "11px",
     "margin-top": "11px",
   },
-  "l": Object {
+  "l": {
     "margin-bottom": "5px",
     "margin-left": "5px",
     "margin-right": "5px",
     "margin-top": "5px",
   },
-  "m": Object {
+  "m": {
     "margin-bottom": "6px",
     "margin-left": "4px",
     "margin-right": "2px",
     "margin-top": "0px",
   },
-  "s": Object {
+  "s": {
     "margin-bottom": "0%",
     "margin-left": "0%",
     "margin-right": "0%",
     "margin-top": "0%",
   },
-  "xl": Object {
+  "xl": {
     "margin-bottom": "45%",
     "margin-left": "45%",
     "margin-right": "45%",
     "margin-top": "45%",
   },
-  "xs": Object {
+  "xs": {
     "margin-bottom": "1px",
     "margin-left": "1px",
     "margin-right": "1px",
     "margin-top": "1px",
   },
-  "xxl": Object {
+  "xxl": {
     "margin-bottom": "12%",
     "margin-left": "12%",
     "margin-right": "12%",
@@ -48,44 +48,44 @@ Object {
 `;
 
 exports[`getMarginPaddingStyles Get a correct margin and padding 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
     "margin-top": "1px",
   },
-  "l": Object {
+  "l": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
     "margin-top": "1px",
   },
-  "m": Object {
+  "m": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
     "margin-top": "1px",
   },
-  "s": Object {
+  "s": {
     "margin-bottom": "3%",
     "margin-left": "4%",
     "margin-right": "2%",
     "margin-top": "1%",
   },
-  "xl": Object {
+  "xl": {
     "margin-bottom": "3%",
     "margin-left": "4%",
     "margin-right": "2%",
     "margin-top": "1%",
   },
-  "xs": Object {
+  "xs": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
     "margin-top": "1px",
   },
-  "xxl": Object {
+  "xxl": {
     "margin-bottom": "3%",
     "margin-left": "4%",
     "margin-right": "2%",
@@ -95,8 +95,8 @@ Object {
 `;
 
 exports[`getMarginPaddingStyles Get a correct margin and padding simple styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
@@ -106,10 +106,10 @@ Object {
     "padding-right": "2px",
     "padding-top": "1px",
   },
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {
     "margin-bottom": "3px",
     "margin-left": "4px",
     "margin-right": "2px",
@@ -119,39 +119,39 @@ Object {
     "padding-right": "2px",
     "padding-top": "1px",
   },
-  "xs": Object {},
-  "xxl": Object {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getMarginPaddingStyles Get a correct margin and padding styles, when only unit on some breakpoint was changed 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "margin-top": "11em",
   },
-  "l": Object {},
-  "m": Object {
+  "l": {},
+  "m": {
     "margin-top": "11%",
   },
-  "s": Object {},
-  "xl": Object {
+  "s": {},
+  "xl": {
     "margin-top": "11em",
   },
-  "xs": Object {},
-  "xxl": Object {
+  "xs": {},
+  "xxl": {
     "margin-top": "11px",
   },
 }
 `;
 
 exports[`getMarginPaddingStyles Get a correct margin and padding styles, when value is undefined but unit is defined 1`] = `
-Object {
-  "general": Object {},
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+{
+  "general": {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;

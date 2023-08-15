@@ -263,7 +263,6 @@ const PromptControl = ({ content, onChangeContent }) => {
 					prompt={prompt}
 					setPrompt={setPrompt}
 					generateContent={generateContent}
-					showHistoryButton={!isEmpty(results)}
 					openAIApiKey={AISettings.openaiApiKey}
 					setResults={setResults}
 					switchToModifyTab={switchToModifyTab}

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BackgroundControl Check Background image layer 1`] = `
-Array [
-  Object {
+[
+  {
     "background-image-attachment-general": "fixed",
     "background-image-clip-general": "content-box",
     "background-image-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
@@ -48,8 +48,8 @@ Array [
 exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; height: 100%; top: 1%; right: 2px; bottom: 3px; left: 5px; display: block;}</style>"`;
 
 exports[`BackgroundControl Check Background image layer hover 1`] = `
-Array [
-  Object {
+[
+  {
     "background-image-attachment-general": "fixed",
     "background-image-attachment-general-hover": "local",
     "background-image-attachment-s": "local",

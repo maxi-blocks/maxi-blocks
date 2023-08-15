@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SC Divider Checking divider accordion 1`] = `
-Object {
-  "divider": Object {
+{
+  "divider": {
     "color": "",
     "color-global": true,
     "palette-color": 4,

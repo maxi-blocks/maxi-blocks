@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Column Maxi hover simple actions Column size 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "column-size-general": 50,
       "column-size-xl": 50,
       "justify-content-general": "space-between",
       "justify-content-xl": "space-between",
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "flex-basis": "calc(50% - 0px)",
           "justify-content": "space-between",
           "width": "calc(50% - 0px)",
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,

@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Divider Maxi hover simple actions Divider shadow 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "divider-box-shadow-blur-general": 44,
       "divider-box-shadow-blur-unit-general": "px",
       "divider-box-shadow-blur-unit-xl": "px",
@@ -32,15 +32,15 @@ Array [
       "divider-box-shadow-vertical-unit-xl": "px",
       "divider-box-shadow-vertical-xl": 33,
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
@@ -66,10 +66,10 @@ exports[`Divider Maxi hover simple actions Divider shadow 3`] = `"body.maxi-bloc
 exports[`Divider Maxi hover simple actions Divider shadow 4`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\"true\"] .maxi-divider-block__divider { transition: all 0s ease 0s, box-shadow 0.3s ease 0s;}"`;
 
 exports[`Divider Maxi hover simple actions Line settings 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "divider-border-palette-color-general": 8,
       "divider-border-palette-color-xl": 8,
       "divider-border-palette-opacity-general": 0.5,
@@ -86,10 +86,10 @@ Array [
       "divider-width-unit-general": "%",
       "divider-width-xl": 11,
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
@@ -99,7 +99,7 @@ Array [
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,

@@ -3,16 +3,16 @@
 exports[`Custom-Css-Control Checking the custom-css 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column; background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1{ flex-direction: column; background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1::before{ background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1::before{ background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1::after{ background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xl\"] .maxi-block.maxi-block--backend.group-maxi-1::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"l\"] .maxi-block.maxi-block--backend.group-maxi-1::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"m\"] .maxi-block.maxi-block--backend.group-maxi-1::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"s\"] .maxi-block.maxi-block--backend.group-maxi-1::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\"xs\"] .maxi-block.maxi-block--backend.group-maxi-1::after{ background: red;}</style>"`;
 
 exports[`Custom-Css-Control Checking the custom-css Validation 1`] = `
-Object {
-  "after group": Object {
+{
+  "after group": {
     "hover": "background: red",
     "normal": "background: red",
   },
-  "before group": Object {
+  "before group": {
     "hover": "background: red",
     "normal": "background: red",
   },
-  "group": Object {
+  "group": {
     "hover": "background: red",
     "normal": "background: red",
   },
@@ -20,16 +20,16 @@ Object {
 `;
 
 exports[`Custom-Css-Control Checking the custom-css Validation 2`] = `
-Object {
-  "after group": Object {
+{
+  "after group": {
     "hover": "background: red",
     "normal": "background: red",
   },
-  "before group": Object {
+  "before group": {
     "hover": "background: red",
     "normal": "background: red",
   },
-  "group": Object {
+  "group": {
     "hover": "background: red",
     "normal": "VALIDATE ERRORbackground: red",
   },
@@ -37,16 +37,16 @@ Object {
 `;
 
 exports[`Custom-Css-Control Checking the custom-css Validation 3`] = `
-Object {
-  "after group": Object {
+{
+  "after group": {
     "hover": "background: red",
     "normal": "background: blue",
   },
-  "before group": Object {
+  "before group": {
     "hover": "background: red",
     "normal": "background: red",
   },
-  "group": Object {
+  "group": {
     "hover": "background: red",
     "normal": "background: red",
   },

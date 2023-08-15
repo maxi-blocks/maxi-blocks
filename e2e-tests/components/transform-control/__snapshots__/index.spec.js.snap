@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TransformControl Check transform control 1`] = `
-Object {
-  "canvas": Object {
-    "normal": Object {
+{
+  "canvas": {
+    "normal": {
       "x": 44,
       "y": 55,
     },
@@ -12,9 +12,9 @@ Object {
 `;
 
 exports[`TransformControl Check transform control 2`] = `
-Object {
-  "canvas": Object {
-    "normal": Object {
+{
+  "canvas": {
+    "normal": {
       "x": 66,
       "x-unit": "px",
       "y": 55,
@@ -25,9 +25,9 @@ Object {
 `;
 
 exports[`TransformControl Check transform control 3`] = `
-Object {
-  "canvas": Object {
-    "normal": Object {
+{
+  "canvas": {
+    "normal": {
       "x": 150,
       "y": 200,
       "z": 100,
@@ -37,9 +37,9 @@ Object {
 `;
 
 exports[`TransformControl Check transform control 4`] = `
-Object {
-  "canvas": Object {
-    "normal": Object {
+{
+  "canvas": {
+    "normal": {
       "x": "21",
       "x-unit": "%",
       "y": "81",

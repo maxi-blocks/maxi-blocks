@@ -46,6 +46,10 @@
 		&__inner {
 			position: absolute;
 			top: -180px;
+
+			&--custom {
+				top: -244px;
+			}
 		}
 	}
 

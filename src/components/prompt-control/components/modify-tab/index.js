@@ -216,7 +216,7 @@ const ModifyTab = ({
 						</Button>
 					</div>
 				)}
-				{modifyOption === 'Custom' && (
+				{modifyOption === 'custom' && (
 					<TextareaControl
 						className={`${className}__textarea`}
 						placeholder={__(
@@ -225,6 +225,7 @@ const ModifyTab = ({
 						)}
 						value={customText}
 						onChange={val => setCustomText(val)}
+						disableResize
 					/>
 				)}
 				<div className={`${className}__buttons`}>
@@ -343,6 +344,7 @@ const ModifyTab = ({
 							}
 							isSelected={result.id === selectedResult}
 							isRefOfSelected={refResult?.isSelectedText}
+							isCustom={modifyOption === 'custom'}
 							onInsert={handleResultInsertion}
 							onSelect={handleResultSelection}
 							onUseSettings={handleResultUseSettings}

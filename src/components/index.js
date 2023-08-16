@@ -47,6 +47,7 @@ export { default as ImageCropControl } from './image-crop-control';
 export { default as ImageShape } from './image-shape';
 export { default as ImageURL } from './image-url';
 export { default as InfoBox } from './info-box';
+export { default as LinkControl } from './link-control';
 export { default as ListControl } from './list-control';
 export { default as ListItemControl } from './list-control/list-item-control';
 export { default as ManageHoverTransitions } from './manage-hover-transitions';

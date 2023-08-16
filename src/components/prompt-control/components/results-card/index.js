@@ -28,6 +28,7 @@ const ResultCard = ({
 	isFromPreviousSession,
 	isSelected,
 	isRefOfSelected,
+	isCustom,
 	onInsert,
 	onSelect,
 	onUseSettings,
@@ -99,7 +100,13 @@ const ResultCard = ({
 	return (
 		<div className={classes}>
 			<div className={`${className}__scroll-to`}>
-				<div ref={ref} className={`${className}__scroll-to__inner`} />
+				<div
+					ref={ref}
+					className={classnames(
+						`${className}__scroll-to__inner`,
+						isCustom && `${className}__scroll-to__inner--custom`
+					)}
+				/>
 			</div>
 			<div className={`${className}__top-bar`}>
 				<div

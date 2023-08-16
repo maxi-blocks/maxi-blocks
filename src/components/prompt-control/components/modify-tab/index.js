@@ -232,6 +232,60 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							refResult => refResult.id === result.refId
 						);
 
+					const handleResultInsertion = () => {
+						if (!refResult?.isSelectedText) {
+							const contentBeforeSelection = content.slice(
+								0,
+								selectionStart
+							);
+							const contentAfterSelection =
+								content.slice(selectionStart);
+							const newContent =
+								contentBeforeSelection +
+								result.content +
+								contentAfterSelection;
+
+							return onContentChange(newContent);
+						}
+
+						return onContentChange(
+							content.replace(refResult.content, result.content)
+						);
+					};
+
+					const handleResultSelection = (id = result.id) =>
+						setSelectedResult(id);
+
+					const handleResultUseSettings = () => {
+						setSettings(result.settings);
+
+						switchToGenerateTab();
+					};
+
+					const handleResultDeletion = () => {
+						if (historyStartIdRef.current === result.id) {
+							historyStartIdRef.current -= 1;
+						}
+
+						setResults(prevResults => {
+							const newResults = [...prevResults].filter(
+								deletedResult =>
+									deletedResult.id !== result.id &&
+									deletedResult.refId !== result.id
+							);
+
+							if (isEmpty(newResults)) {
+								switchToGenerateTab();
+							}
+
+							return newResults;
+						});
+
+						if (selectedResult === result.id) {
+							setSelectedResult(null);
+						}
+					};
+
 					return (
 						<ResultCard
 							// eslint-disable-next-line react/no-array-index-key
@@ -243,56 +297,10 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							}
 							isSelected={result.id === selectedResult}
 							isRefOfSelected={refResult?.isSelectedText}
-							onInsert={() => {
-								if (!refResult?.isSelectedText) {
-									const contentBeforeSelection =
-										content.slice(0, selectionStart);
-									const contentAfterSelection =
-										content.slice(selectionStart);
-									const newContent =
-										contentBeforeSelection +
-										result.content +
-										contentAfterSelection;
-
-									return onContentChange(newContent);
-								}
-
-								return onContentChange(
-									content.replace(
-										refResult.content,
-										result.content
-									)
-								);
-							}}
-							onSelect={(id = result.id) => setSelectedResult(id)}
-							onUseSettings={() => {
-								setSettings(result.settings);
-
-								switchToGenerateTab();
-							}}
-							onDelete={() => {
-								if (historyStartIdRef.current === result.id) {
-									historyStartIdRef.current -= 1;
-								}
-
-								setResults(prevResults => {
-									const newResults = [...prevResults].filter(
-										deletedResult =>
-											deletedResult.id !== result.id &&
-											deletedResult.refId !== result.id
-									);
-
-									if (isEmpty(newResults)) {
-										switchToGenerateTab();
-									}
-
-									return newResults;
-								});
-
-								if (selectedResult === result.id) {
-									setSelectedResult(null);
-								}
-							}}
+							onInsert={handleResultInsertion}
+							onSelect={handleResultSelection}
+							onUseSettings={handleResultUseSettings}
+							onDelete={handleResultDeletion}
 						/>
 					);
 				})}

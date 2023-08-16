@@ -45,6 +45,7 @@ Object {
         "boxShadow": false,
       },
     },
+    "uniqueID": "test-target-7f750e3e-u",
   },
 }
 `;

@@ -7,11 +7,18 @@ const getPrice = (field, data) => {
 		const {
 			currency_prefix: currencyPrefix,
 			currency_suffix: currencySuffix,
-			currency_minor_unit: currencyMinorUnit,
+			currency_minor_unit: minorUnit,
+			currency_decimal_separator: decimalSeparator,
+			currency_thousand_separator: thousandSeparator,
 		} = data;
 
-		// TODO: add thousand and decimal separators
-		return `${currencyPrefix}${price}${currencySuffix}`;
+		// https://stackoverflow.com/a/2901298
+		const separateThousands = price =>
+			price.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+
+		return `${currencyPrefix}${separateThousands(
+			price.slice(0, -minorUnit)
+		)}${decimalSeparator}${price.slice(-minorUnit)}${currencySuffix}`;
 	};
 
 	return rawPrice ? parsePrice(rawPrice) : null;
@@ -43,7 +50,6 @@ const getWCContent = async dataRequest => {
 					.join(`${delimiterContent} `);
 			case 'image':
 			case 'featured_media':
-				// TODO: add image index option
 				return {
 					url: data.images[0].src,
 					id: data.images[0].id,

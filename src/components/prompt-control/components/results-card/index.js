@@ -86,6 +86,14 @@ const ResultCard = ({
 		}
 	}, [isSelected]);
 
+	const transformVerbToPast = verb => {
+		if (verb.endsWith('e')) {
+			return `${verb}d`;
+		}
+
+		return `${verb}ed`;
+	};
+
 	return (
 		<div className={classes}>
 			<div className={`${className}__scroll-to`}>
@@ -126,7 +134,12 @@ const ResultCard = ({
 						className={`${className}__modificator`}
 						onClick={() => onSelect(result.refId)}
 					>
-						{__(`${result.modificationType}d from`, 'maxi-blocks')}{' '}
+						{__(
+							`${transformVerbToPast(
+								result.modificationType
+							)} from`,
+							'maxi-blocks'
+						)}{' '}
 						<label className={`${className}__modificator__id`}>
 							#{result.refId}
 						</label>

@@ -13,6 +13,7 @@ import DialogBox from '../../../dialog-box';
 /**
  * External dependencies
  */
+import { capitalize } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -36,7 +37,8 @@ const ResultCard = ({
 
 	const classes = classnames(
 		className,
-		isSelected && `${className}--selected`
+		isSelected && `${className}--selected`,
+		result.error && `${className}--error`
 	);
 
 	const ref = useRef();
@@ -135,8 +137,8 @@ const ResultCard = ({
 						onClick={() => onSelect(result.refId)}
 					>
 						{__(
-							`${transformVerbToPast(
-								result.modificationType
+							`${capitalize(
+								transformVerbToPast(result.modificationType)
 							)} from`,
 							'maxi-blocks'
 						)}{' '}
@@ -147,6 +149,12 @@ const ResultCard = ({
 				)}
 			</div>
 			<p className={`${className}__content`}>
+				{result.error && (
+					<span className={`${className}__content__error`}>
+						{__('Error:', 'maxi-blocks')}
+					</span>
+				)}
+				{'\u00A0'}
 				{result.content === '' ? '\u00A0' : content}
 			</p>
 			<div className={`${className}__end-of-content`}>

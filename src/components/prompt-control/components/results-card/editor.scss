@@ -49,6 +49,12 @@
 		}
 	}
 
+	&__content {
+		&__error {
+			color: #ff3333 !important;
+		}
+	}
+
 	&__end-of-content {
 		position: relative;
 
@@ -68,6 +74,21 @@
 				&__select-text,
 				&__id {
 					color: var(--maxi-secondary-color);
+				}
+			}
+		}
+	}
+
+	&--error {
+		border-color: #ff3333;
+
+		.maxi-prompt-control-results-card__top-bar {
+			&__select-row {
+				cursor: default;
+
+				&__select-text,
+				&__id {
+					color: #ff3333;
 				}
 			}
 		}

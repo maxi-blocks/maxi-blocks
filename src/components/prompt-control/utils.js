@@ -132,7 +132,7 @@ export const callChatAndUpdateResults = async ({
 	});
 };
 
-export const handleContent = async ({
+export const handleContentGeneration = async ({
 	openAIApiKey,
 	modelName,
 	additionalParams,

@@ -14,7 +14,7 @@ import { downloadTextFile } from '../../../../editor/style-cards/utils';
 import {
 	getFormattedMessages,
 	getSiteInformation,
-	handleContent,
+	handleContentGeneration,
 } from '../../utils';
 import { MODIFY_OPTIONS } from '../../constants';
 
@@ -27,7 +27,6 @@ import { isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { download } from '@wordpress/icons';
 
 // {
 //     "generations": [
@@ -42,6 +41,7 @@ import { download } from '@wordpress/icons';
 const ModifyTab = ({
 	results,
 	content,
+	selectionStart,
 	AISettings,
 	settings,
 	isGenerating,
@@ -49,7 +49,7 @@ const ModifyTab = ({
 	selectedResult,
 	historyStartIdRef,
 	setSelectedResult,
-	onChangeContent,
+	onContentChange,
 	onAbort,
 	setResults,
 	setSettings,
@@ -98,7 +98,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 	};
 
 	const modifyContent = async () => {
-		handleContent({
+		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
 			modelName: AISettings.modelName,
 			additionalParams: {
@@ -118,7 +118,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 		});
 	};
 
-	const handleSelect = media => {
+	const handleHistorySelect = media => {
 		fetch(media.url)
 			// Need to parse the response 2 times,
 			// because it was stringified twice in the export function
@@ -132,7 +132,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 			});
 	};
 
-	const handleExport = () => {
+	const handleHistoryExport = () => {
 		downloadTextFile(results, 'history.txt');
 	};
 
@@ -149,7 +149,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 			<div className={`${className}__buttons`}>
 				<MediaUploadCheck>
 					<MediaUpload
-						onSelect={handleSelect}
+						onSelect={handleHistorySelect}
 						allowedTypes='text'
 						render={({ open }) => (
 							<Button
@@ -163,7 +163,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 				</MediaUploadCheck>
 				<Button
 					className={`${className}__button`}
-					onClick={handleExport}
+					onClick={handleHistoryExport}
 				>
 					{__('Export history', 'maxi-blocks')}
 				</Button>
@@ -245,12 +245,19 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							isRefOfSelected={refResult?.isSelectedText}
 							onInsert={() => {
 								if (!refResult?.isSelectedText) {
-									return onChangeContent(
-										`${content}\n${result.content}`
-									);
+									const contentBeforeSelection =
+										content.slice(0, selectionStart);
+									const contentAfterSelection =
+										content.slice(selectionStart);
+									const newContent =
+										contentBeforeSelection +
+										result.content +
+										contentAfterSelection;
+
+									return onContentChange(newContent);
 								}
 
-								return onChangeContent(
+								return onContentChange(
 									content.replace(
 										refResult.content,
 										result.content

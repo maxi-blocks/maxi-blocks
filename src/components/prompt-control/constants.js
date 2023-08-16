@@ -217,3 +217,5 @@ export const LANGUAGES = [
 ];
 
 export const MODIFY_OPTIONS = ['Rephrase', 'Shorten', 'Lengthen', 'Custom'];
+
+export const DEFAULT_CONFIDENCE_LEVEL = 75;

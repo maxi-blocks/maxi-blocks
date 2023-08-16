@@ -20,7 +20,7 @@ const position = ({ props }) => {
 		content: (
 			<PromptControl
 				content={content}
-				onChangeContent={newContent =>
+				onContentChange={newContent =>
 					maxiSetAttributes({ content: newContent })
 				}
 			/>

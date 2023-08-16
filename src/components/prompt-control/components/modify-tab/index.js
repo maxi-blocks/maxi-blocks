@@ -18,30 +18,21 @@ import ResultCard from '../results-card';
 import { downloadTextFile } from '../../../../editor/style-cards/utils';
 import {
 	getFormattedMessages,
+	getQuotesGuidance,
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
-import { MODIFY_OPTIONS } from '../../constants';
+import { CONTENT_TYPE_DESCRIPTIONS, MODIFY_OPTIONS } from '../../constants';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-
-// {
-//     "generations": [
-//         [
-//             {
-//                 "text": "Elon Musk revolutionizes Twitter.com into X.com, marking a new era in online communication.",
-//             }
-//         ]
-//     ],
-// }
 
 const ModifyTab = ({
 	results,
@@ -87,26 +78,30 @@ const ModifyTab = ({
 			},
 		} = data;
 
-		let modificationAction = `${modificationType.toLowerCase()}ing`;
-		let customExplanation = '';
+		const isCustom = modificationType === 'custom';
 
-		if (modificationType.toLowerCase() === 'custom') {
-			modificationAction = 'modifying';
-			customExplanation = `The user has provided custom instructions for the modification. Please follow these specific instructions: ${customText}\n`;
-		}
+		const modificationAction = isCustom
+			? 'modifying'
+			: `${modificationType}ing`;
 
-		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following text. Please note that the original text was generated based on the following criteria:
-	  - Original Prompt User Text: ${prompt}
-	  - Content Type: ${contentType}
-	  - Approximate length (for original text): ${characterCount} characters
-	  - Required Tone (for original text): ${tone}
-	  - Writing Style (for original text): ${writingStyle}
-	  - Language (for original text): ${language}
-	  - Confidence Level (for original text): ${confidenceLevel}%
-	  ${customExplanation}
-	  Additionally, consider the following site information:
-	  ${getSiteInformation(AISettings)}
-	  Your task is to ${modificationAction} the text while maintaining its original intent and context. The criteria listed above are provided to give you background information on how the original text was generated.`;
+		const customExplanation = isCustom
+			? `Custom Instructions: ${customText}\n`
+			: '';
+
+		const quoteGuidance = getQuotesGuidance(contentType);
+
+		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following text:
+		  - Original Prompt: ${prompt}
+		  - Content Attributes: Type - ${contentType} (${
+			CONTENT_TYPE_DESCRIPTIONS[contentType]
+		}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
+		  - Length: ${characterCount} characters
+		  - Confidence Level: ${confidenceLevel}%
+		  - Ready for Direct Publication: No further editing needed. ${quoteGuidance}
+		  ${customExplanation}
+		  Site Information: ${getSiteInformation(AISettings)}
+
+		  Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
 		const humanTemplate = results.find(
 			result => result.id === selectedResult
@@ -118,7 +113,7 @@ const ModifyTab = ({
 	const modifyContent = async () => {
 		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
-			modelName: AISettings.modelName,
+			modelName: AISettings.model,
 			additionalParams: {
 				topP: 1,
 			},
@@ -192,15 +187,21 @@ const ModifyTab = ({
 					<div className={`${className}__modification-options`}>
 						<ReactSelectControl
 							value={{
-								label: __(modifyOption, 'maxi-blocks'),
+								label: __(
+									capitalize(modifyOption),
+									'maxi-blocks'
+								),
 								value: modifyOption,
 							}}
 							defaultValue={{
-								label: __(modifyOption, 'maxi-blocks'),
+								label: __(
+									capitalize(modifyOption),
+									'maxi-blocks'
+								),
 								value: modifyOption,
 							}}
 							options={MODIFY_OPTIONS.map(option => ({
-								label: __(option, 'maxi-blocks'),
+								label: __(capitalize(option), 'maxi-blocks'),
 								value: option,
 							}))}
 							onChange={({ value }) => setModifyOption(value)}

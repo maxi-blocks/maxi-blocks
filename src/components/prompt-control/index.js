@@ -16,12 +16,14 @@ import ModifyTab from './components/modify-tab';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import {
 	getFormattedMessages,
+	getQuotesGuidance,
 	getSiteInformation,
 	getUniqueId,
 	handleContentGeneration,
 } from './utils';
 import {
 	CONTENT_TYPES,
+	CONTENT_TYPE_DESCRIPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
 	DEFAULT_CONFIDENCE_LEVEL,
 	LANGUAGES,
@@ -179,16 +181,17 @@ const PromptControl = ({ content, onContentChange }) => {
 	};
 
 	const getMessages = async () => {
-		const systemTemplate = `You are a helpful assistant generating text for a website. Your task is to create content that can be placed on the site directly, without further modification. Adherence to the following guidelines is essential:
-		- Approximate length: ${characterCount} characters
-		- Site Information:
-		${getSiteInformation(AISettings)}
-		- Content type: ${contentType}
-		- Tone: ${tone}
-		- Writing style: ${writingStyle}
-		- Language: ${language}
+		const quoteGuidance = getQuotesGuidance(contentType);
 
-		Please ensure that the text aligns with the site's goal, audience, and content guidelines, and is ready to be published on the site as-is. The length of the text is a vital aspect of this task, and it should be close to the specified character count.`;
+		const systemTemplate = `You are a helpful assistant generating content for a website. Adhere to these guidelines:
+				- Ready for Direct Publication: No further editing needed. ${quoteGuidance}
+				- Length: ${characterCount} characters
+				- Site Information: ${getSiteInformation(AISettings)}
+				- Content Attributes: Type - ${contentType} (${
+			CONTENT_TYPE_DESCRIPTIONS[contentType]
+		}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
+
+				Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.`;
 
 		const humanTemplate = prompt;
 
@@ -200,7 +203,7 @@ const PromptControl = ({ content, onContentChange }) => {
 
 		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
-			modelName: AISettings.modelName,
+			modelName: AISettings.model,
 			additionalParams: {
 				temperature: confidenceLevel / 100,
 			},

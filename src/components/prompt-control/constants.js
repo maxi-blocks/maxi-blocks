@@ -10,6 +10,26 @@ export const CONTENT_TYPES = [
 	'Product descriptions',
 ];
 
+export const CONTENT_TYPE_DESCRIPTIONS = {
+	Headline:
+		'Create a compelling and concise headline that captures the main theme.',
+	Subheading:
+		'Provide a descriptive subheading that supports the main headline.',
+	'Body text':
+		'Write informative and engaging body text that elaborates on the main topic.',
+	Quotes: 'Include relevant quotes that add authority or perspective. Ensure proper attribution.',
+	'Pull quotes Testimonial':
+		'Craft testimonials or pull quotes that highlight key messages or endorsements.',
+	'Calls-to-action (CTA)':
+		'Design persuasive calls-to-action that prompt the reader to take a specific step.',
+	'Alt tag':
+		'Create descriptive alt tags for images that accurately represent the visual content.',
+	'Image caption Page titles FAQs':
+		'Provide captions for images, titles for pages, or answers to frequently asked questions.',
+	'Product descriptions':
+		'Write clear and appealing product descriptions that highlight key features and benefits.',
+};
+
 export const DEFAULT_CHARACTER_COUNT_GUIDELINES = {
 	Headline: 50, // Typically headlines are short and to the point.
 	Subheading: 100, // Slightly longer than a headline.
@@ -216,6 +236,6 @@ export const LANGUAGES = [
 	'Zulu - isiZulu',
 ];
 
-export const MODIFY_OPTIONS = ['Rephrase', 'Shorten', 'Lengthen', 'Custom'];
+export const MODIFY_OPTIONS = ['rephrase', 'shorten', 'lengthen', 'custom'];
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;

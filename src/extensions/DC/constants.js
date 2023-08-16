@@ -22,6 +22,7 @@ export const ACFTypeOptions = generalTypeOptions.filter(
 
 export const WCTypeOptions = [
 	{ label: __('Product', 'maxi-blocks'), value: 'products' },
+	{ label: __('Cart', 'maxi-blocks'), value: 'cart' },
 ];
 
 export const typeOptions = {
@@ -91,6 +92,7 @@ const generalRelationOptions = {
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
 	products: generalRelationOptionsPosts,
+	cart: generalRelationOptionsPosts,
 };
 
 export const relationOptions = {
@@ -276,6 +278,37 @@ const buttonProductFields = generalProductFields.filter(
 		)
 );
 
+const imageProductFields = [
+	{ label: __('Image', 'maxi-blocks'), value: 'image' },
+];
+
+const generalCartFields = [
+	{ label: __('Items', 'maxi-blocks'), value: 'items' },
+	{ label: __('Total price', 'maxi-blocks'), value: 'total_price' },
+	{ label: __('Total tax', 'maxi-blocks'), value: 'total_tax' },
+	{ label: __('Total shipping', 'maxi-blocks'), value: 'total_shipping' },
+	{
+		label: __('Total shipping tax', 'maxi-blocks'),
+		value: 'total_shipping_tax',
+	},
+	{ label: __('Total discount', 'maxi-blocks'), value: 'total_discount' },
+	{ label: __('Total items', 'maxi-blocks'), value: 'total_items' },
+	{
+		label: __('Total items tax', 'maxi-blocks'),
+		value: 'total_items_tax',
+	},
+	{
+		label: __('Total items shipping', 'maxi-blocks'),
+		value: 'total_items_shipping',
+	},
+	{
+		label: __('Total items shipping tax', 'maxi-blocks'),
+		value: 'total_items_shipping_tax',
+	},
+	{ label: __('Total fees', 'maxi-blocks'), value: 'total_fees' },
+	{ label: __('Total fees tax', 'maxi-blocks'), value: 'total_fees_tax' },
+];
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -286,6 +319,7 @@ export const fieldOptions = {
 		categories: generalCategoryFields,
 		tags: generalTagFields,
 		products: generalProductFields,
+		cart: generalCartFields,
 	},
 	button: {
 		posts: buttonPostsPagesFields,
@@ -296,6 +330,7 @@ export const fieldOptions = {
 		categories: buttonCategoryFields,
 		tags: buttonTagFields,
 		products: buttonProductFields,
+		cart: generalCartFields,
 	},
 	image: {
 		posts: mediaPostsPagesFields,
@@ -303,6 +338,7 @@ export const fieldOptions = {
 		settings: mediaSettingsFields,
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
+		products: imageProductFields,
 	},
 };
 

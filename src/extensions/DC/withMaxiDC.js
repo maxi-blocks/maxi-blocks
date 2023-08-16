@@ -217,9 +217,11 @@ const withMaxiDC = createHigherOrderComponent(
 								setAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
-									'dc-media-caption': sanitizeDCContent(
-										getSimpleText(caption)
-									),
+									...(caption && {
+										'dc-media-caption': sanitizeDCContent(
+											getSimpleText(caption)
+										),
+									}),
 									...(updateLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),

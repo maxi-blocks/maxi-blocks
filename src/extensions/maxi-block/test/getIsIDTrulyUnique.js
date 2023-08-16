@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getIsUniqueIDRepeated from '../getIsUniqueIDRepeated';
+import getIsIDTrulyUnique from '../getIsIDTrulyUnique';
 
 jest.mock('@wordpress/data', () => {
 	return {
@@ -19,7 +19,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-1',
+								uniqueID: 'button-maxi-7f750e3e-u',
 							},
 						},
 						{
@@ -27,7 +27,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-2',
+								uniqueID: 'button-maxi-8f753e7g-u',
 							},
 						},
 						{
@@ -35,7 +35,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-2',
+								uniqueID: 'button-maxi-8f753e7g-u',
 							},
 						},
 						{
@@ -43,7 +43,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-3',
+								uniqueID: 'button-maxi-9f75ge3g-u',
 							},
 						},
 						{
@@ -51,7 +51,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-3',
+								uniqueID: 'button-maxi-9f75ge3g-u',
 							},
 						},
 						{
@@ -59,7 +59,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								uniqueID: 'button-maxi-0f75de4g-u',
 							},
 						},
 						{
@@ -67,7 +67,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								uniqueID: 'button-maxi-0f75de4g-u',
 							},
 						},
 						{
@@ -75,7 +75,7 @@ jest.mock('@wordpress/data', () => {
 							name: 'maxi-blocks/button-maxi',
 							innerBlocks: [],
 							attributes: {
-								uniqueID: 'button-maxi-4',
+								uniqueID: 'button-maxi-0f75de4g-u',
 							},
 						},
 						{
@@ -104,7 +104,7 @@ jest.mock('@wordpress/data', () => {
 															innerBlocks: [],
 															attributes: {
 																uniqueID:
-																	'column-maxi-1',
+																	'column-maxi-3eu7sf1p-uf45se4g-u',
 															},
 														},
 														{
@@ -133,27 +133,27 @@ jest.mock('@wordpress/data', () => {
 																							attributes:
 																								{
 																									uniqueID:
-																										'divider-maxi-1',
+																										'divider-maxi-2l45ss4g-u',
 																								},
 																						},
 																					],
 																				attributes:
 																					{
 																						uniqueID:
-																							'column-maxi-8',
+																							'column-maxi-il45ss6g-u',
 																					},
 																			},
 																		],
 																	attributes:
 																		{
 																			uniqueID:
-																				'row-maxi-3',
+																				'row-maxi-ql85ss8l-u',
 																		},
 																},
 															],
 															attributes: {
 																uniqueID:
-																	'column-maxi-1',
+																	'column-maxi-3eu7sf1p-uf45se4g-u',
 															},
 														},
 														{
@@ -170,23 +170,25 @@ jest.mock('@wordpress/data', () => {
 																	attributes:
 																		{
 																			uniqueID:
-																				'text-maxi-1',
+																				'text-maxi-wl35ss8l-u',
 																		},
 																},
 															],
 															attributes: {
 																uniqueID:
-																	'column-maxi-1',
+																	'column-maxi-3eu7sf1p-uf45se4g-u',
 															},
 														},
 													],
 													attributes: {
-														uniqueID: 'row-maxi-2',
+														uniqueID:
+															'row-maxi-2e35ss1p-u',
 													},
 												},
 											],
 											attributes: {
-												uniqueID: 'column-maxi-1',
+												uniqueID:
+													'column-maxi-3eu7sf1p-uf45se4g-u',
 											},
 										},
 										{
@@ -200,12 +202,14 @@ jest.mock('@wordpress/data', () => {
 													name: 'maxi-blocks/text-maxi',
 													innerBlocks: [],
 													attributes: {
-														uniqueID: 'text-maxi-1',
+														uniqueID:
+															'text-maxi-wl35ss8l-u',
 													},
 												},
 											],
 											attributes: {
-												uniqueID: 'column-maxi-2',
+												uniqueID:
+													'column-maxi-2e75sf1p-u',
 											},
 										},
 										{
@@ -214,7 +218,8 @@ jest.mock('@wordpress/data', () => {
 											name: 'maxi-blocks/column-maxi',
 											innerBlocks: [],
 											attributes: {
-												uniqueID: 'column-maxi-3',
+												uniqueID:
+													'column-maxi-3eu7sf1p-u',
 											},
 										},
 										{
@@ -223,17 +228,18 @@ jest.mock('@wordpress/data', () => {
 											name: 'maxi-blocks/column-maxi',
 											innerBlocks: [],
 											attributes: {
-												uniqueID: 'column-maxi-3',
+												uniqueID:
+													'column-maxi-3eu7sf1p-u',
 											},
 										},
 									],
 									attributes: {
-										uniqueID: 'row-maxi-1',
+										uniqueID: 'row-maxi-1ue7sf1w-u',
 									},
 								},
 							],
 							attributes: {
-								uniqueID: 'container-maxi-1',
+								uniqueID: 'container-maxi-1seusf1w-u',
 							},
 						},
 					]
@@ -243,33 +249,35 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 
-describe('getIsUniqueIDRepeated', () => {
+describe('getIsIDTrulyUnique', () => {
 	it('Should not be repeated, first on hierarchy', () => {
-		expect(getIsUniqueIDRepeated('button-maxi-1')).toBe(false);
+		expect(getIsIDTrulyUnique('button-maxi-7f750e3e-u')).toBe(true);
 	});
 
 	it('Should be repeated, first on hierarchy', () => {
-		expect(getIsUniqueIDRepeated('button-maxi-2')).toBe(true);
+		expect(getIsIDTrulyUnique('button-maxi-8f753e7g-u')).toBe(false);
 	});
 
 	it('Should be repeated only two times, first on hierarchy', () => {
-		expect(getIsUniqueIDRepeated('button-maxi-3', 2)).toBe(false);
+		expect(getIsIDTrulyUnique('button-maxi-9f75ge3g-u', 2)).toBe(true);
 	});
 
 	it('Should not be repeated only two times, first on hierarchy', () => {
-		expect(getIsUniqueIDRepeated('button-maxi-4', 2)).toBe(true);
+		expect(getIsIDTrulyUnique('button-maxi-0f75de4g-u', 2)).toBe(false);
 	});
 
 	it('Should not be repeated, nested block', () => {
-		expect(getIsUniqueIDRepeated('divider-maxi-1')).toBe(false);
+		expect(getIsIDTrulyUnique('divider-maxi-2l45ss4g-u')).toBe(true);
 	});
 
 	it('Should be repeated, nested block', () => {
-		expect(getIsUniqueIDRepeated('column-maxi-3')).toBe(true);
+		expect(getIsIDTrulyUnique('column-maxi-3eu7sf1p-u')).toBe(false);
 	});
 
 	it('Should be repeated only 4 times, nested blocks on different levels', () => {
-		expect(getIsUniqueIDRepeated('column-maxi-1', 4)).toBe(false);
+		expect(getIsIDTrulyUnique('column-maxi-3eu7sf1p-uf45se4g-u', 4)).toBe(
+			true
+		);
 	});
 
 	it('Should be repeated, when uniqueID is the same for two inner blocks with different root and parent', () => {
@@ -281,7 +289,7 @@ describe('getIsUniqueIDRepeated', () => {
 							clientId: '36d5807b-981b-4d80-88ea-21fef846647d',
 							name: 'maxi-blocks/group-maxi',
 							attributes: {
-								uniqueID: 'group-maxi-1',
+								uniqueID: 'group-maxi-1se8sf1z-u',
 							},
 							innerBlocks: [
 								{
@@ -289,7 +297,7 @@ describe('getIsUniqueIDRepeated', () => {
 										'a8db982d-4460-4092-8c34-3e7d8ff1623f',
 									name: 'maxi-blocks/text-maxi',
 									attributes: {
-										uniqueID: 'text-maxi-1',
+										uniqueID: 'text-maxi-wl35ss8l-u',
 									},
 									innerBlocks: [],
 								},
@@ -299,7 +307,7 @@ describe('getIsUniqueIDRepeated', () => {
 							clientId: '437157e6-2af5-4e6e-8b2c-f2274fff85eb',
 							name: 'maxi-blocks/group-maxi',
 							attributes: {
-								uniqueID: 'group-maxi-2',
+								uniqueID: 'group-maxi-2se8ef1z-u',
 							},
 							innerBlocks: [
 								{
@@ -307,7 +315,7 @@ describe('getIsUniqueIDRepeated', () => {
 										'687687a4-0636-4b9a-a70c-979ef4dbad60',
 									name: 'maxi-blocks/text-maxi',
 									attributes: {
-										uniqueID: 'text-maxi-1',
+										uniqueID: 'text-maxi-wl35ss8l-u',
 									},
 									innerBlocks: [],
 								},
@@ -317,6 +325,6 @@ describe('getIsUniqueIDRepeated', () => {
 			),
 			getBlock: jest.fn(() => false),
 		}));
-		expect(getIsUniqueIDRepeated('text-maxi-1')).toBe(true);
+		expect(getIsIDTrulyUnique('text-maxi-wl35ss8l-u')).toBe(false);
 	});
 });

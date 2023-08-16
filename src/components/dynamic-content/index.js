@@ -307,7 +307,8 @@ const DynamicContent = props => {
 								value,
 								field,
 								relation,
-								contentType
+								contentType,
+								source
 							);
 
 							changeProps({

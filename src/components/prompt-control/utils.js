@@ -27,6 +27,11 @@ export const getSiteInformation = AISettings => {
 		.join('\n');
 };
 
+export const getQuotesGuidance = contentType =>
+	contentType === 'Quotes' || contentType === 'Pull quotes Testimonial'
+		? 'Use quotes as necessary for this content type.'
+		: 'Avoid unnecessary quotes or special characters.';
+
 export const getFormattedMessages = async (
 	systemMessageTemplate,
 	humanMessageTemplate
@@ -144,9 +149,10 @@ export const handleContentGeneration = async ({
 	setSelectedResult,
 	setIsGenerating,
 }) => {
+	const newId = getUniqueId(results);
+
 	try {
 		const messages = await getMessages(additionalData);
-		const newId = getUniqueId(results);
 
 		// Updating results with loading state
 		setResults(prevResults =>
@@ -170,9 +176,22 @@ export const handleContentGeneration = async ({
 	} catch (error) {
 		// Error handling logic
 		if (error.response) {
-			console.error(error.response.data);
-			console.error(error.response.status);
-			console.error(error.response.headers);
+			setResults(prevResults => {
+				const newResults = [...prevResults];
+				const addedResult = newResults.find(
+					result => result.id === newId
+				);
+
+				if (addedResult) {
+					addedResult.content = error.response.data.error.message;
+					addedResult.loading = false;
+					addedResult.error = true;
+				}
+
+				return newResults;
+			});
+
+			console.error(error.response.data.error);
 		} else if (!error.name === 'AbortError') {
 			console.error(error);
 		}

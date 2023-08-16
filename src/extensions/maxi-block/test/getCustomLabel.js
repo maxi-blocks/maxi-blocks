@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getCustomLabel from '../getCustomLabel';
+import getIsUniqueCustomLabelRepeated from '../getIsUniqueCustomLabelRepeated';
 
 const mockStateBlock = {
 	blocks: {
@@ -11,7 +12,7 @@ const mockStateBlock = {
 			innerBlocks: [],
 			attributes: {
 				uniqueID: 'button-maxi-2se8ef1z-u',
-				customLabel: 'Custom button name',
+				customLabel: 'Button_1',
 			},
 		},
 		'button-maxi-3se8ef1z-u': {
@@ -20,7 +21,7 @@ const mockStateBlock = {
 			innerBlocks: [],
 			attributes: {
 				uniqueID: 'button-maxi-3se8ef1z-u',
-				customLabel: 'Custom button name',
+				customLabel: 'Button_1',
 			},
 		},
 		'button-maxi-4se8ef1z-u': {
@@ -29,25 +30,7 @@ const mockStateBlock = {
 			innerBlocks: [],
 			attributes: {
 				uniqueID: 'button-maxi-4se8ef1z-u',
-				customLabel: 'Custom button name 2  ',
-			},
-		},
-		'button-maxi-5se8ef1z-u': {
-			clientId: '87601a8a-cee9-451e-a6ae-702c91c5e343',
-			name: 'maxi-blocks/button-maxi',
-			innerBlocks: [],
-			attributes: {
-				uniqueID: 'button-maxi-5se8ef1z-u',
-				customLabel: 'Custom button name 2_2',
-			},
-		},
-		'button-maxi-6se8ef1z-u': {
-			clientId: 'aec3ceb0-18dc-4e93-909d-f9ecbdfeef85',
-			name: 'maxi-blocks/button-maxi',
-			innerBlocks: [],
-			attributes: {
-				uniqueID: 'button-maxi-6se8ef1z-u',
-				customLabel: 'Custom button name 2_2',
+				customLabel: 'Custom button name 2',
 			},
 		},
 	},
@@ -60,7 +43,7 @@ const mockStateBlocks = [
 		innerBlocks: [],
 		attributes: {
 			uniqueID: 'button-maxi-2se8ef1z-u',
-			customLabel: 'Custom button name',
+			customLabel: 'Button_1',
 		},
 	},
 	{
@@ -69,7 +52,7 @@ const mockStateBlocks = [
 		innerBlocks: [],
 		attributes: {
 			uniqueID: 'button-maxi-3se8ef1z-u',
-			customLabel: 'Custom button name',
+			customLabel: 'Button_1',
 		},
 	},
 	{
@@ -78,25 +61,7 @@ const mockStateBlocks = [
 		innerBlocks: [],
 		attributes: {
 			uniqueID: 'button-maxi-4se8ef1z-u',
-			customLabel: 'Custom button name 2  ',
-		},
-	},
-	{
-		clientId: '87601a8a-cee9-451e-a6ae-702c91c5e343',
-		name: 'maxi-blocks/button-maxi',
-		innerBlocks: [],
-		attributes: {
-			uniqueID: 'button-maxi-5se8ef1z-u',
-			customLabel: 'Custom button name 2_2',
-		},
-	},
-	{
-		clientId: 'aec3ceb0-18dc-4e93-909d-f9ecbdfeef85',
-		name: 'maxi-blocks/button-maxi',
-		innerBlocks: [],
-		attributes: {
-			uniqueID: 'button-maxi-6se8ef1z-u',
-			customLabel: 'Custom button name 2_2',
+			customLabel: 'Custom button name 2',
 		},
 	},
 ];
@@ -112,20 +77,22 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 
+const checkCustomLabel = (customLabel, uniqueID) => {
+	if (getIsUniqueCustomLabelRepeated(customLabel))
+		return getCustomLabel(customLabel, uniqueID);
+	return customLabel;
+};
+
 describe('getCustomLabel', () => {
 	it('Should return generated from uniqueID customLabel', () => {
-		expect(getCustomLabel(null, 'button-maxi-5se8ef1z-u')).toBe('Button_1');
-	});
-
-	it('Should return customLabel with number from unique id', () => {
-		expect(getCustomLabel('Button_5', 'button-maxi-6se8ef1z-u')).toBe(
-			'Button_1'
+		expect(checkCustomLabel('Button_1', 'button-maxi-3se8ef1z-u')).toBe(
+			'Button_2'
 		);
 	});
 
-	it('Should return custom customLabel with corrected number', () => {
+	it('Should return customLabel with number from unique id', () => {
 		expect(
-			getCustomLabel('Custom button name 2_2', 'button-maxi-6se8ef1z-u')
-		).toBe('Button_1');
+			checkCustomLabel('Custom button name 2', 'button-maxi-4se8ef1z-u')
+		).toBe('Custom button name 2');
 	});
 });

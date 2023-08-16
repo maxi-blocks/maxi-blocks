@@ -222,8 +222,6 @@ beforeAll(async () => {
 
 	await setupBrowser();
 
-	await page.setDefaultNavigationTimeout(60000);
-
 	await deactivatePlugin('maxi-blocks');
 	await activatePlugin('maxi-blocks');
 

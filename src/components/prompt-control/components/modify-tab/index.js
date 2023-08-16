@@ -256,11 +256,14 @@ const ModifyTab = ({
 						return null;
 					}
 
-					const refResult =
+					const refResultIndex =
 						result.refId &&
-						results.find(
+						results.findIndex(
 							refResult => refResult.id === result.refId
 						);
+
+					const refResult =
+						refResultIndex >= 0 && results[refResultIndex];
 
 					const handleResultInsertion = () => {
 						if (!refResult?.isSelectedText) {
@@ -287,8 +290,20 @@ const ModifyTab = ({
 						setSelectedResult(id);
 
 					const handleResultUseSettings = () => {
-						setSettings(result.settings);
+						if (result.refId) {
+							setModifyOption(result.modificationType);
+							setCustomText(result.customText);
 
+							if (refResultIndex >= loadUntilIndex) {
+								setLoadUntilIndex(refResultIndex + 1);
+							}
+
+							setSelectedResult(result.refId);
+
+							return;
+						}
+
+						setSettings(result.settings);
 						switchToGenerateTab();
 					};
 

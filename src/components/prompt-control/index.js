@@ -18,11 +18,12 @@ import {
 	getFormattedMessages,
 	getSiteInformation,
 	getUniqueId,
-	handleContent,
+	handleContentGeneration,
 } from './utils';
 import {
 	CONTENT_TYPES,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
+	DEFAULT_CONFIDENCE_LEVEL,
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
@@ -33,9 +34,7 @@ import {
  */
 import { camelCase, isEmpty, toNumber } from 'lodash';
 
-export const DEFAULT_CONFIDENCE_LEVEL = 75;
-
-const PromptControl = ({ content, onChangeContent }) => {
+const PromptControl = ({ content, onContentChange }) => {
 	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
 	const [AISettings, setAISettings] = useState({});
@@ -199,7 +198,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 	const generateContent = async () => {
 		switchToModifyTab();
 
-		handleContent({
+		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
 			modelName: AISettings.modelName,
 			additionalParams: {
@@ -272,6 +271,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 				<ModifyTab
 					results={results}
 					content={content}
+					selectionStart={textContext.formatValue.start}
 					AISettings={AISettings}
 					settings={settings}
 					isGenerating={isGenerating}
@@ -279,7 +279,7 @@ const PromptControl = ({ content, onChangeContent }) => {
 					selectedResult={selectedResult}
 					historyStartIdRef={historyStartIdRef}
 					setSelectedResult={setSelectedResult}
-					onChangeContent={onChangeContent}
+					onContentChange={onContentChange}
 					setResults={setResults}
 					setSettings={setSettings}
 					switchToGenerateTab={switchToGenerateTab}

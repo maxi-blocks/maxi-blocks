@@ -35,6 +35,7 @@ const getWCContent = async dataRequest => {
 			case 'slug':
 			case 'review_count':
 			case 'average_rating':
+			case 'sku':
 				return data[field];
 			case 'price':
 			case 'regular_price':
@@ -49,7 +50,6 @@ const getWCContent = async dataRequest => {
 					.map(({ name }) => name)
 					.join(`${delimiterContent} `);
 			case 'image':
-			case 'featured_media':
 				return {
 					url: data.images[0].src,
 					id: data.images[0].id,

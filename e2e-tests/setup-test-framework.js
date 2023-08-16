@@ -53,7 +53,12 @@ async function setupBrowser() {
 function observeConsoleLogging() {
 	page.on('console', message => {
 		const type = message.type();
-		if (!OBSERVED_CONSOLE_MESSAGE_TYPES.hasOwnProperty(type)) {
+		if (
+			!Object.prototype.hasOwnProperty.call(
+				OBSERVED_CONSOLE_MESSAGE_TYPES,
+				type
+			)
+		) {
 			return;
 		}
 

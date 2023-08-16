@@ -892,22 +892,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'text');
 
             $description = '<h4>'.__('ChatGPT AI Model', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', [
+            $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', ['list' => [
                 'gpt-4',
                 'gpt-4-32k',
                 'gpt-3.5-turbo',
                 'gpt-3.5-turbo-16k',
-            ]);
+            ]]);
 
             $ai_constants = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/ai.json"), true);
 
             $languages = $ai_constants['languages'];
             $description = '<h4>'.__('Default language', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_language', '', 'dropdown', $languages);
+            $content .= $this->generate_setting($description, 'maxi_ai_language', '', 'dropdown', ['list' => $languages]);
 
             $tones = $ai_constants['tones'];
             $description = '<h4>'.__('Default tone', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_tone', '', 'dropdown', $tones);
+            $content .= $this->generate_setting($description, 'maxi_ai_tone', '', 'dropdown', ['list' => $tones]);
 
             $content .= get_submit_button();
 
@@ -920,32 +920,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 				<h4>'.__('Tell us about your site', self::$maxi_text_domain).'</h4>
 				<p>'.__('What is the primary goal of your website? (e.g. shopping platform, offering
 				services, showcasing work, journaling)', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_site_description', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_site_description', '', 'text', [
+                'placeholder' => __('Example: Hairdresser, Plumber, Marketing agency', self::$maxi_text_domain),
+            ]);
 
             $description = '
 				<h4>'.__('Who is your target audience?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Group of people you want to connect with or offer services to.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_audience', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_audience', '', 'text', [
+                'placeholder' => __('Example: Ladies who need haircuts', self::$maxi_text_domain),
+            ]);
 
             $description = '
 				<h4>'.__('What is the goal of the website?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_site_goal', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_site_goal', '', 'text', [
+                'placeholder' => __('Example: Get bookings, write a blog', self::$maxi_text_domain),
+            ]);
 
             $description = '
 				<h4>'.__('What services do you offer?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_services', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_services', '', 'text', [
+                'placeholder' => __('Example: Hair cuts, blow dries, beard shave', self::$maxi_text_domain),
+            ]);
 
             $description = '
 				<h4>'.__('What is your website or business name?', self::$maxi_text_domain).'</h4>
 				<p>'.__('The name will be used for writing content. Optional. Takes WordPress Site Title by default', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'text', [
+                'placeholder' => __("Example: Mary's fabulous hair studio", self::$maxi_text_domain),
+            ]);
 
             $description = '
 				<h4>'.__('Anything else we should know?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_business_info', '', 'text');
+            $content .= $this->generate_setting($description, 'maxi_ai_business_info', '', 'text', [
+                'placeholder' => __('Example: Get bookings, write a blog', self::$maxi_text_domain),
+            ]);
 
             $content .= get_submit_button();
 
@@ -1017,22 +1029,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
-        public function generate_input($option, $function = '', $type = 'text', $is_api_input = false)
+        public function generate_input($option, $function = '', $type = 'text', $args = [])
         {
+            $is_api_input = isset($args['is_api_input']) ? $args['is_api_input'] : false;
+            $placeholder = isset($args['placeholder']) ? $args['placeholder'] : '';
+
             $input_value = get_option($option);
 
             $visible_input_class = str_replace('_', '-', $option).'-visible-input';
 
             $visible_input = $is_api_input
-                ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\">"
-                : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\">";
+                ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>"
+                : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\"/>";
 
             $hidden_input = $is_api_input
-                ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\">"
+                ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\"/>"
                 : "";
 
             $input = <<<HTML
 				<div class="maxi-dashboard_main-content_accordion-item-content-switcher">
+					<span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
 					<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
 						{$visible_input}
 						{$hidden_input}
@@ -1097,8 +1113,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
-        public function generate_custom_dropdown($option, $list)
+        public function generate_custom_dropdown($option, $args)
         {
+            $list = isset($args['list']) ? $args['list'] : [];
+
             $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
             $dropdown .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
             $dropdown .= '<select name="'.$option.'" id="'.$option.'" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
@@ -1149,12 +1167,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         //     return $dropdown;
         // }
 
-        public function generate_setting(
-			$description,
-			$option,
-			$function = '',
-			$type = 'toggle',
-			$list = [])
+        public function generate_setting($description, $option, $function = '', $type = 'toggle', $args = [])
         {
             $content = '<div class="maxi-dashboard_main-content_accordion-item-content-setting">';
             $content .= '<div class="maxi-dashboard_main-content_accordion-item-content-description">';
@@ -1162,7 +1175,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
 
             if($type === 'dropdown') {
-                $content .= $this->generate_custom_dropdown($option, $list);
+                $content .= $this->generate_custom_dropdown($option, $args);
             } elseif($type === 'text') {
                 $is_api_input = str_contains($option, 'api_key_option');
 
@@ -1171,7 +1184,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .='<div id="maxi-api-test"></div>';
                 }
 
-                $content .= $this->generate_input($option, $function, $type, $is_api_input);
+                $args['is_api_input'] = $is_api_input;
+
+                $content .= $this->generate_input($option, $function, $type, $args);
 
                 if(str_contains($option, 'api_key_option')) {
                     $content .='<div id="maxi-api-test__validation-message"></div>';

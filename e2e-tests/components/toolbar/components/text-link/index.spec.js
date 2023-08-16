@@ -19,6 +19,8 @@ describe('Text link', () => {
 			button.click()
 		);
 
+		await page.waitForSelector('.block-editor-url-input__input:focus');
+
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 

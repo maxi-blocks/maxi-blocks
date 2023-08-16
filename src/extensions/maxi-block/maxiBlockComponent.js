@@ -882,7 +882,7 @@ class MaxiBlockComponent extends Component {
 			return newUniqueID;
 		}
 
-		if (getIsUniqueCustomLabelRepeated(customLabel, 0)) {
+		if (getIsUniqueCustomLabelRepeated(customLabel)) {
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
 				this.props.attributes.uniqueID

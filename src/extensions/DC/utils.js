@@ -68,13 +68,14 @@ export const validationsValues = (
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
-		x => x.value
-	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
-		x => x.value
-	);
-	const isTypeValid = typeOptions[source === 'wp' ? contentType : source]
+	const contentTypeSelector = source === 'wp' ? contentType : source;
+	const fieldResult = fieldOptions?.[contentTypeSelector]?.[
+		variableValue
+	].map(x => x.value);
+	const relationResult = relationOptions?.[contentTypeSelector]?.[
+		variableValue
+	].map(x => x.value);
+	const isTypeValid = typeOptions[contentTypeSelector]
 		.map(item => item.value)
 		.includes(variableValue);
 
@@ -89,8 +90,7 @@ export const validationsValues = (
 				[`${prefix}relation`]: relationResult[0],
 			}),
 		...(!isTypeValid && {
-			[`${prefix}type`]:
-				typeOptions[source === 'wp' ? contentType : source][0].value,
+			[`${prefix}type`]: typeOptions[contentTypeSelector][0].value,
 		}),
 	};
 };

@@ -32,8 +32,18 @@ const getProductData = async productID => {
 	return indexedProducts[productID];
 };
 
+const getCartData = memoize(async () => {
+	return apiFetch({
+		path: '/wc/store/v1/cart',
+		method: 'GET',
+	});
+});
+
 // getProducts().then(products => {
 // 	console.log(products);
 // });
+// getCartData().then(data => {
+// 	console.log(data);
+// });
 
-export { getProducts, getProductData };
+export { getProducts, getProductData, getCartData };

@@ -279,7 +279,7 @@ const buttonProductFields = generalProductFields.filter(
 );
 
 const imageProductFields = [
-	{ label: __('Image', 'maxi-blocks'), value: 'image' },
+	{ label: __('Featured image', 'maxi-blocks'), value: 'image' },
 ];
 
 const generalCartFields = [

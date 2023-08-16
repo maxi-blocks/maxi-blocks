@@ -8,7 +8,12 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { Button, DialogBox, ReactSelectControl } from '../../../../components';
+import {
+	Button,
+	DialogBox,
+	ReactSelectControl,
+	TextareaControl,
+} from '../../../../components';
 import ResultCard from '../results-card';
 import { downloadTextFile } from '../../../../editor/style-cards/utils';
 import {
@@ -57,17 +62,20 @@ const ModifyTab = ({
 	abortControllerRef,
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
+	const [customText, setCustomText] = useState('');
 	const [loadUntilIndex, setLoadUntilIndex] = useState(5);
 
 	useEffect(() => {
 		if (!selectedResult) {
 			setSelectedResult(results[0]?.id);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getMessages = async data => {
 		const {
 			modificationType,
+			customText,
 			settings: {
 				prompt,
 				characterCount,
@@ -79,17 +87,27 @@ const ModifyTab = ({
 			},
 		} = data;
 
-		const systemTemplate = `You are a helpful assistant tasked with ${modificationType.toLowerCase()}ing the following text. Please note that the original text was generated based on the following criteria:
-- Original Prompt User Text: ${prompt}
-- Content Type: ${contentType}
-- Approximate length (for original text): ${characterCount} characters
-- Required Tone (for original text): ${tone}
-- Writing Style (for original text): ${writingStyle}
-- Language (for original text): ${language}
-- Confidence Level (for original text): ${confidenceLevel}%
-Additionally, consider the following site information:
-${getSiteInformation(AISettings)}
-Your task is to ${modificationType.toLowerCase()} the text while maintaining its original intent and context. The criteria listed above are provided to give you background information on how the original text was generated.`;
+		let modificationAction = `${modificationType.toLowerCase()}ing`;
+		let customExplanation = '';
+
+		if (modificationType.toLowerCase() === 'custom') {
+			modificationAction = 'modifying';
+			customExplanation = `The user has provided custom instructions for the modification. Please follow these specific instructions: ${customText}\n`;
+		}
+
+		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following text. Please note that the original text was generated based on the following criteria:
+	  - Original Prompt User Text: ${prompt}
+	  - Content Type: ${contentType}
+	  - Approximate length (for original text): ${characterCount} characters
+	  - Required Tone (for original text): ${tone}
+	  - Writing Style (for original text): ${writingStyle}
+	  - Language (for original text): ${language}
+	  - Confidence Level (for original text): ${confidenceLevel}%
+	  ${customExplanation}
+	  Additionally, consider the following site information:
+	  ${getSiteInformation(AISettings)}
+	  Your task is to ${modificationAction} the text while maintaining its original intent and context. The criteria listed above are provided to give you background information on how the original text was generated.`;
+
 		const humanTemplate = results.find(
 			result => result.id === selectedResult
 		).content;
@@ -107,6 +125,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 			additionalData: {
 				refId: selectedResult,
 				modificationType: modifyOption,
+				customText,
 				settings,
 			},
 			results,
@@ -195,6 +214,17 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							{__('Go!', 'maxi-blocks')}
 						</Button>
 					</div>
+				)}
+				{modifyOption === 'Custom' && (
+					<TextareaControl
+						className={`${className}__textarea`}
+						placeholder={__(
+							'More information gives better results',
+							'maxi-blocks'
+						)}
+						value={customText}
+						onChange={val => setCustomText(val)}
+					/>
 				)}
 				<div className={`${className}__buttons`}>
 					{results.every(result => !result.isSelectedText) && (

@@ -190,9 +190,9 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 						<Button
 							className={`${className}__button`}
 							onClick={modifyContent}
-							disabled={isEmpty(results)}
+							disabled={isEmpty(results) || !selectedResult}
 						>
-							Go!
+							{__('Go!', 'maxi-blocks')}
 						</Button>
 					</div>
 				)}
@@ -202,7 +202,7 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 							className={`${className}__button`}
 							onClick={switchToGenerateTab}
 						>
-							Back
+							{__('Back', 'maxi-blocks')}
 						</Button>
 					)}
 					{!isEmpty(results) && (
@@ -281,6 +281,10 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 
 									return newResults;
 								});
+
+								if (selectedResult === result.id) {
+									setSelectedResult(null);
+								}
 							}}
 						/>
 					);
@@ -291,13 +295,13 @@ Your task is to ${modificationType.toLowerCase()} the text while maintaining its
 					<Button
 						onClick={() => setLoadUntilIndex(loadUntilIndex + 5)}
 					>
-						Load more
+						{__('Load more', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
 			{isGenerating && (
 				<Button className={`${className}__abort`} onClick={onAbort}>
-					Stop
+					{__('Stop', 'maxi-blocks')}
 				</Button>
 			)}
 		</div>

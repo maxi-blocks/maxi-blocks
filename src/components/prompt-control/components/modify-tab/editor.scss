@@ -32,6 +32,7 @@
 
 	&__modification-options {
 		display: flex;
+		gap: 8px;
 
 		& > *:first-child {
 			flex-grow: 1;

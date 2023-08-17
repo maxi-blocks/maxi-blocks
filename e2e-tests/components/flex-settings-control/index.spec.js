@@ -20,7 +20,9 @@ describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
+
 		await updateAllBlockUniqueIds(page);
+
 		let accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
 
 		// Flex wrap to wrap reverse
@@ -125,6 +127,8 @@ describe('FlexSettings', () => {
 		);
 
 		await page.waitForTimeout(100);
+
+		await updateAllBlockUniqueIds(page);
 
 		accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
 
@@ -345,7 +349,9 @@ describe('FlexSettings', () => {
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
 		await insertMaxiBlock(page, 'Group Maxi');
+
 		await updateAllBlockUniqueIds(page);
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
@@ -698,6 +704,8 @@ describe('FlexSettings', () => {
 				columnGapUnit: 'em',
 			})
 		).toBe(true);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

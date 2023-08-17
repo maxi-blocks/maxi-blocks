@@ -155,7 +155,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 
 	useEffect(() => {
 		setContext(getContext(contextOption, clientId));
-		console.log(getContext(contextOption, clientId));
 	}, [contextOption]);
 
 	if (AISettings.openaiApiKey === null) {

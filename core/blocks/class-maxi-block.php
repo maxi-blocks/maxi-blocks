@@ -83,6 +83,7 @@ if (!class_exists('MaxiBlocks_Block')):
             'row-maxi',
             'slide-maxi',
             'pane-maxi',
+            'svg-icon-maxi',
         ];
 
         private static $dynamic_content_attributes = [

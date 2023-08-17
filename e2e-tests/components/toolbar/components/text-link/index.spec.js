@@ -6,12 +6,17 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, insertMaxiBlock } from '../../../../utils';
+import {
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../../../utils';
 
 describe('Text link', () => {
 	it('Check text link', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 
 		// open editor

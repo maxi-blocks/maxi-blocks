@@ -41,7 +41,6 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
-	getTemplatePartTagName,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -157,10 +156,7 @@ class MaxiBlockComponent extends Component {
 		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
 		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
 
-		this.wrapperId = getStylesWrapperId(
-			newUniqueID,
-			getTemplatePartTagName(clientId)
-		);
+		this.wrapperId = getStylesWrapperId(newUniqueID);
 	}
 
 	componentDidMount() {
@@ -857,14 +853,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { clientId, name: blockName, attributes } = this.props;
+		const { name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
 		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
-				diff: 1,
-				clientId,
 			});
 
 			propagateNewUniqueID(
@@ -888,7 +882,7 @@ class MaxiBlockComponent extends Component {
 			return newUniqueID;
 		}
 
-		if (getIsUniqueCustomLabelRepeated(customLabel, 0)) {
+		if (getIsUniqueCustomLabelRepeated(customLabel)) {
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
 				this.props.attributes.uniqueID

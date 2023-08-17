@@ -18,6 +18,7 @@ import {
 	getEditedPostContent,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -31,6 +32,8 @@ describe('Column Maxi', () => {
 			button.click()
 		);
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
@@ -122,6 +125,8 @@ describe('Column Maxi', () => {
 			button[6].click()
 		);
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Ensure we select the first Column
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>

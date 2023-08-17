@@ -29,12 +29,12 @@ Array [
     "sid": "a",
     "target": "",
     "title": "Test",
-    "uniqueID": "text-maxi-1",
+    "uniqueID": "text-maxi-1se8ef1z-u",
   },
 ]
 `;
 
-exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}"`;
+exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1se8ef1z-u[data-maxi-relations=\\"true\\"] { text-align: right;}"`;
 
 exports[`Text Maxi hover simple actions Typography 1`] = `
 Array [
@@ -131,9 +131,9 @@ Array [
     "settings": "Typography",
     "target": "p .maxi-text-block__content",
     "title": "Testmontserrat",
-    "uniqueID": "text-maxi-1",
+    "uniqueID": "text-maxi-1se8ef1z-u",
   },
 ]
 `;
 
-exports[`Text Maxi hover simple actions Typography 2`] = `"body.maxi-blocks--active #text-maxi-1 p.maxi-text-block__content[data-maxi-relations=\\"true\\"] { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease;}"`;
+exports[`Text Maxi hover simple actions Typography 2`] = `"body.maxi-blocks--active #text-maxi-1se8ef1z-u p.maxi-text-block__content[data-maxi-relations=\\"true\\"] { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease;}"`;

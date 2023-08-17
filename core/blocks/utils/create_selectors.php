@@ -22,24 +22,20 @@ function create_selectors($raw_selectors, $add_pseudo_element_selectors = true)
     {
         global $pseudo_elements;
 
-        $pseudo_element = null;
-        foreach ($pseudo_elements as $element) {
-            if (strpos($selector['label'], $element) !== false) {
-                $pseudo_element = $element;
-                break;
-            }
-        }
+        $pseudo_element = current(array_filter($pseudo_elements, function ($element) use ($selector) {
+            return strpos($selector['label'], $element) !== false;
+        }));
         $target_without_pseudo_element = str_replace("::{$pseudo_element}", '', $selector['target']);
 
         return [
-        'normal' => [
-        'label' => $selector['label'],
-        'target' => $selector['target']
-        ],
-        'hover' => [
-        'label' => "{$selector['label']} on hover",
-        'target' => "{$target_without_pseudo_element}:hover" . ($pseudo_element ? "::{$pseudo_element}" : '')
-        ]
+			'normal' => [
+				'label' => $selector['label'],
+				'target' => $selector['target']
+			],
+			'hover' => [
+				'label' => "{$selector['label']} on hover",
+				'target' => "{$target_without_pseudo_element}:hover" . ($pseudo_element ? "::{$pseudo_element}" : '')
+			]
         ];
     }
 

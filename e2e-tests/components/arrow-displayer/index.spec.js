@@ -6,12 +6,17 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('ArrowDisplay', () => {
 	it('Cheking the arrow display', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);

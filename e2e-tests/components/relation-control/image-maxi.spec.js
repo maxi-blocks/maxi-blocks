@@ -11,16 +11,19 @@ import {
 	getAttributes,
 	openPreviewPage,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+		await updateAllBlockUniqueIds(page);
 		const imageBlock = await page.$('.maxi-image-block');
 		await addImageToImageMaxi(page, imageBlock);
 
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction
@@ -35,7 +38,7 @@ describe('Image Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('image-maxi-1');
+		await selectControls[1].select('image-maxi-1se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
@@ -49,24 +52,28 @@ describe('Image Maxi hover simple actions', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		await previewPage.waitForSelector(
-			'#button-maxi-1 .maxi-button-block__button'
+			'#button-maxi-1se8ef1z-u .maxi-button-block__button'
 		);
-		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.hover(
+			'#button-maxi-1se8ef1z-u .maxi-button-block__button'
+		);
 		await previewPage.waitForTimeout(100);
 
-		await previewPage.waitForSelector('#relations--image-maxi-1-styles');
+		await previewPage.waitForSelector(
+			'#relations--image-maxi-1se8ef1z-u-styles'
+		);
 		const stylesCSS = await previewPage.$eval(
-			'#relations--image-maxi-1-styles',
+			'#relations--image-maxi-1se8ef1z-u-styles',
 			el => el.textContent
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
 		if (!disableTransition) {
 			await previewPage.waitForSelector(
-				'#relations--image-maxi-1-in-transitions'
+				'#relations--image-maxi-1se8ef1z-u-in-transitions'
 			);
 			const inTransitionsCSS = await previewPage.$eval(
-				'#relations--image-maxi-1-in-transitions',
+				'#relations--image-maxi-1se8ef1z-u-in-transitions',
 				el => el.textContent
 			);
 			expect(inTransitionsCSS).toMatchSnapshot();
@@ -74,10 +81,10 @@ describe('Image Maxi hover simple actions', () => {
 			await previewPage.mouse.move(0, 0);
 
 			await previewPage.waitForSelector(
-				'#relations--image-maxi-1-out-transitions'
+				'#relations--image-maxi-1se8ef1z-u-out-transitions'
 			);
 			const outTransitionsCSS = await previewPage.$eval(
-				'#relations--image-maxi-1-out-transitions',
+				'#relations--image-maxi-1se8ef1z-u-out-transitions',
 				el => el.textContent
 			);
 			expect(outTransitionsCSS).toMatchSnapshot();

@@ -47,7 +47,7 @@ function get_transition_styles($props, $transition_obj)
                             'target' => 'transform-' . $prop,
                             'breakpoint' => $breakpoint,
                             'attributes' => $props,
-                            'keys' => [key, 'hover-status']
+                            'keys' => [$key, 'hover-status']
                         )));
                     }, true)) {
                         continue;

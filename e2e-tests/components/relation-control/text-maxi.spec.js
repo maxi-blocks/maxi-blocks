@@ -14,6 +14,7 @@ import {
 	addTypographyStyle,
 	openPreviewPage,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Text Maxi hover simple actions', () => {
@@ -21,9 +22,13 @@ describe('Text Maxi hover simple actions', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 
+		await updateAllBlockUniqueIds(page);
+
 		await page.keyboard.type('Testing IB');
 
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
@@ -37,7 +42,7 @@ describe('Text Maxi hover simple actions', () => {
 		await page.waitForTimeout(150);
 
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('text-maxi-1');
+		await selectControls[1].select('text-maxi-1se8ef1z-u');
 
 		selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[2].select('hover');
@@ -54,23 +59,27 @@ describe('Text Maxi hover simple actions', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		await previewPage.waitForSelector(
-			'#button-maxi-1 .maxi-button-block__button'
+			'#button-maxi-1se8ef1z-u .maxi-button-block__button'
 		);
-		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.hover(
+			'#button-maxi-1se8ef1z-u .maxi-button-block__button'
+		);
 
-		await previewPage.waitForSelector('#relations--text-maxi-1-styles');
+		await previewPage.waitForSelector(
+			'#relations--text-maxi-1se8ef1z-u-styles'
+		);
 		const stylesCSS = await previewPage.$eval(
-			'#relations--text-maxi-1-styles',
+			'#relations--text-maxi-1se8ef1z-u-styles',
 			el => el.textContent
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
 		if (!disableTransition) {
 			await previewPage.waitForSelector(
-				'#relations--text-maxi-1-in-transitions'
+				'#relations--text-maxi-1se8ef1z-u-in-transitions'
 			);
 			const inTransitionsCSS = await previewPage.$eval(
-				'#relations--text-maxi-1-in-transitions',
+				'#relations--text-maxi-1se8ef1z-u-in-transitions',
 				el => el.textContent
 			);
 			expect(inTransitionsCSS).toMatchSnapshot();
@@ -78,10 +87,10 @@ describe('Text Maxi hover simple actions', () => {
 			await previewPage.mouse.move(0, 0);
 
 			await previewPage.waitForSelector(
-				'#relations--text-maxi-1-out-transitions'
+				'#relations--text-maxi-1se8ef1z-u-out-transitions'
 			);
 			const outTransitionsCSS = await previewPage.$eval(
-				'#relations--text-maxi-1-out-transitions',
+				'#relations--text-maxi-1se8ef1z-u-out-transitions',
 				el => el.textContent
 			);
 			expect(outTransitionsCSS).toMatchSnapshot();

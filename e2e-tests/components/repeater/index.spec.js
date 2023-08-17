@@ -16,6 +16,7 @@ import {
 	insertMaxiBlock,
 	openSidebarTab,
 	getBlockStyle,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 import {
 	codeEditorWithContentInFirstColumn,
@@ -49,6 +50,7 @@ describe('Repeater', () => {
 
 	it('Check basic adding/removing block and attributes changing', async () => {
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await page.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
@@ -63,6 +65,7 @@ describe('Repeater', () => {
 
 		// Add button to second column
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
+		await updateAllBlockUniqueIds(page);
 
 		// Check if button was added to all columns
 		expect(await getEditedPostContent(page)).toMatchSnapshot();

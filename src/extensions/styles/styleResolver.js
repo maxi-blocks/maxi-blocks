@@ -56,8 +56,6 @@ const getCleanContent = content => {
 const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!styles) return {};
 
-	// console.log('styleResolver', { styles, remover, breakpoints });
-
 	const response = (remover && []) || {};
 
 	Object.entries(styles).forEach(([target, props]) => {

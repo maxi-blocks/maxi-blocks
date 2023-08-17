@@ -6,12 +6,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('BlockResizer', () => {
 	it('Checking the block resizer', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Number Counter Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		const blockBaseWith = await accordionPanel.$eval(

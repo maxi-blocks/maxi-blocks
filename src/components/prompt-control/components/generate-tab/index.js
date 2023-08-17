@@ -15,7 +15,9 @@ import {
 } from '../../..';
 import {
 	CONTENT_TYPES,
+	CONTEXT_OPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
+	DEFAULT_CONFIDENCE_LEVEL,
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
@@ -39,6 +41,8 @@ const GenerateTab = ({
 	setLanguage,
 	confidenceLevel,
 	setConfidenceLevel,
+	contextOption,
+	setContextOption,
 	prompt,
 	setPrompt,
 	generateContent,
@@ -115,7 +119,25 @@ const GenerateTab = ({
 				min={0}
 				max={100}
 				onChangeValue={val => setConfidenceLevel(val)}
-				onReset={() => setConfidenceLevel(75)} // TODO
+				onReset={() => setConfidenceLevel(DEFAULT_CONFIDENCE_LEVEL)}
+			/>
+			<label>{__('Context', 'maxi-blocks')}</label>
+			<ReactSelectControl
+				value={{
+					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
+					value: contextOption,
+				}}
+				defaultValue={{
+					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
+					value: contextOption,
+				}}
+				options={Object.entries(CONTEXT_OPTIONS).map(
+					([value, label]) => ({
+						label: __(label, 'maxi-blocks'),
+						value,
+					})
+				)}
+				onChange={({ value }) => setContextOption(value)}
 			/>
 			<TextareaControl
 				className={`${className}__textarea`}

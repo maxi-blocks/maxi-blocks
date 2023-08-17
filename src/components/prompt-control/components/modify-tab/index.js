@@ -17,6 +17,7 @@ import {
 import ResultCard from '../results-card';
 import { downloadTextFile } from '../../../../editor/style-cards/utils';
 import {
+	getContextSection,
 	getFormattedMessages,
 	getQuotesGuidance,
 	getSiteInformation,
@@ -40,6 +41,7 @@ const ModifyTab = ({
 	selectionStart,
 	AISettings,
 	settings,
+	context,
 	isGenerating,
 	setIsGenerating,
 	selectedResult,
@@ -100,6 +102,7 @@ const ModifyTab = ({
 		  - Ready for Direct Publication: No further editing needed. ${quoteGuidance}
 		  ${customExplanation}
 		  Site Information: ${getSiteInformation(AISettings)}
+		  ${getContextSection(context)}
 
 		  Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 

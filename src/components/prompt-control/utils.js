@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { ChatOpenAI } from 'langchain/chat_models/openai';
@@ -8,6 +13,7 @@ import {
 	SystemMessagePromptTemplate,
 } from 'langchain/prompts';
 import { isEmpty, startCase } from 'lodash';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeys = [
@@ -31,6 +37,20 @@ export const getQuotesGuidance = contentType =>
 	contentType === 'Quotes' || contentType === 'Pull quotes Testimonial'
 		? 'Use quotes as necessary for this content type.'
 		: 'Avoid unnecessary quotes or special characters.';
+
+export const getContextSection = context => {
+	if (!context) {
+		return '';
+	}
+
+	// Format the context into a compact section with a clear explanation of the keys
+	const contextSection = context
+		.map(item => `\t\t${item.l}: "${item.c}"`)
+		.join('\n');
+
+	return `- Page Context (level: content): The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
+	${contextSection}`;
+};
 
 export const getFormattedMessages = async (
 	systemMessageTemplate,
@@ -196,4 +216,120 @@ export const handleContentGeneration = async ({
 			console.error(error);
 		}
 	}
+};
+
+export const isLoremIpsum = text => {
+	// Common Latin words and patterns found in Lorem Ipsum text
+	const loremPatterns = [
+		'dolor',
+		'amet',
+		'consectetur',
+		'adipiscing',
+		'elit',
+		'incididunt',
+		'labore',
+		'dolore',
+		'aliqua',
+		'ullamcorper',
+		'nulla',
+		'quis',
+		'nibh',
+		'donec',
+		'justo',
+		'facilisis',
+		'ultrices',
+		'fermentum',
+		'vulputate',
+		'vehicula',
+		'mauris',
+		'imperdiet',
+		'suscipit',
+		'tincidunt',
+		'tempus',
+		'venenatis',
+		'pellentesque',
+		'iaculis',
+		'cras',
+		'curabitur',
+		'lorem',
+		'ipsum',
+		'sed',
+		'do',
+		'eiusmod',
+		'magna',
+		'efficitur',
+		'metus',
+		'erat',
+		'sit',
+		'et',
+		'at',
+		'ac',
+		'cum',
+		'sem',
+		'eu',
+		'ligula',
+		'vel',
+		'nunc',
+		'leo',
+		'aenean',
+		'integer',
+		'porta',
+		'odio',
+		'viverra',
+		'morbi',
+		'quisque',
+		'pretium',
+		'non',
+		'duis',
+		'augue',
+	];
+
+	// Convert the text to lower case and split it into words
+	const words = text.toLowerCase().split(/\s+/);
+
+	// Check if any of the patterns are found in the text
+	const matches = words.filter(word => loremPatterns.includes(word));
+
+	return matches.length > 0;
+};
+
+export const getContext = (contextOption, clientId) => {
+	if (contextOption === 'false') {
+		return null;
+	}
+
+	const blocks =
+		contextOption === 'container'
+			? select('core/block-editor').getBlock(
+					select('core/block-editor').getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/container-maxi'
+					)[0]
+			  )?.innerBlocks
+			: select('core/block-editor').getBlocks();
+
+	const result = [];
+	const addedContents = new Set(); // To track added contents and avoid repetitions
+
+	const buildBlockStructure = ({ name, attributes }) => {
+		if (
+			name === 'maxi-blocks/text-maxi' &&
+			attributes.content &&
+			!isLoremIpsum(attributes.content) &&
+			!addedContents.has(attributes.content)
+		) {
+			const level = attributes.textLevel;
+
+			result.push({
+				l: level,
+				c: attributes.content,
+			});
+
+			addedContents.add(attributes.content);
+		}
+	};
+
+	goThroughMaxiBlocks(buildBlockStructure, false, blocks);
+
+	return result;
 };

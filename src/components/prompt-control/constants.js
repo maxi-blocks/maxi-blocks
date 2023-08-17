@@ -239,3 +239,9 @@ export const LANGUAGES = [
 export const MODIFY_OPTIONS = ['rephrase', 'shorten', 'lengthen', 'custom'];
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
+
+export const CONTEXT_OPTIONS = {
+	false: 'No context',
+	container: 'This container',
+	page: 'This page',
+};

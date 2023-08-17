@@ -15,6 +15,8 @@ import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import {
+	getContext,
+	getContextSection,
 	getFormattedMessages,
 	getQuotesGuidance,
 	getSiteInformation,
@@ -22,8 +24,9 @@ import {
 	handleContentGeneration,
 } from './utils';
 import {
-	CONTENT_TYPES,
 	CONTENT_TYPE_DESCRIPTIONS,
+	CONTENT_TYPES,
+	CONTEXT_OPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
 	DEFAULT_CONFIDENCE_LEVEL,
 	LANGUAGES,
@@ -36,7 +39,7 @@ import {
  */
 import { camelCase, isEmpty, toNumber } from 'lodash';
 
-const PromptControl = ({ content, onContentChange }) => {
+const PromptControl = ({ clientId, content, onContentChange }) => {
 	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
 	const [AISettings, setAISettings] = useState({});
@@ -58,6 +61,10 @@ const PromptControl = ({ content, onContentChange }) => {
 	const [confidenceLevel, setConfidenceLevel] = useState(
 		DEFAULT_CONFIDENCE_LEVEL
 	);
+	const [contextOption, setContextOption] = useState(
+		Object.keys(CONTEXT_OPTIONS)[0]
+	);
+	const [context, setContext] = useState(null);
 	const [language, setLanguage] = useState(LANGUAGES[0]);
 	const [prompt, setPrompt] = useState('');
 	const [results, setResults] = useState([]);
@@ -87,7 +94,7 @@ const PromptControl = ({ content, onContentChange }) => {
 					acc[newKey] = value;
 					return acc;
 				}, {});
-				console.log(AISettings);
+
 				setAISettings(AISettings);
 			} catch (error) {
 				console.error('Maxi Blocks: Could not load settings');
@@ -146,6 +153,11 @@ const PromptControl = ({ content, onContentChange }) => {
 		setLanguage(AISettings.language);
 	}, [AISettings]);
 
+	useEffect(() => {
+		setContext(getContext(contextOption, clientId));
+		console.log(getContext(contextOption, clientId));
+	}, [contextOption]);
+
 	if (AISettings.openaiApiKey === null) {
 		return <ContentLoader />;
 	}
@@ -182,6 +194,7 @@ const PromptControl = ({ content, onContentChange }) => {
 
 	const getMessages = async () => {
 		const quoteGuidance = getQuotesGuidance(contentType);
+		const contextSection = getContextSection(context);
 
 		const systemTemplate = `You are a helpful assistant generating content for a website. Adhere to these guidelines:
 				- Ready for Direct Publication: No further editing needed. ${quoteGuidance}
@@ -190,6 +203,7 @@ const PromptControl = ({ content, onContentChange }) => {
 				- Content Attributes: Type - ${contentType} (${
 			CONTENT_TYPE_DESCRIPTIONS[contentType]
 		}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
+				${contextSection}
 
 				Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.`;
 
@@ -262,6 +276,8 @@ const PromptControl = ({ content, onContentChange }) => {
 					setLanguage={setLanguage}
 					confidenceLevel={confidenceLevel}
 					setConfidenceLevel={setConfidenceLevel}
+					contextOption={contextOption}
+					setContextOption={setContextOption}
 					prompt={prompt}
 					setPrompt={setPrompt}
 					generateContent={generateContent}
@@ -277,6 +293,7 @@ const PromptControl = ({ content, onContentChange }) => {
 					selectionStart={textContext.formatValue.start}
 					AISettings={AISettings}
 					settings={settings}
+					context={context}
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResult={selectedResult}

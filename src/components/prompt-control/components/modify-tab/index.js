@@ -44,9 +44,9 @@ const ModifyTab = ({
 	context,
 	isGenerating,
 	setIsGenerating,
-	selectedResult,
+	selectedResultId,
 	historyStartIdRef,
-	setSelectedResult,
+	setSelectedResultId,
 	onContentChange,
 	onAbort,
 	setResults,
@@ -59,8 +59,8 @@ const ModifyTab = ({
 	const [loadUntilIndex, setLoadUntilIndex] = useState(5);
 
 	useEffect(() => {
-		if (!selectedResult) {
-			setSelectedResult(results[0]?.id);
+		if (!selectedResultId) {
+			setSelectedResultId(results[0]?.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -69,19 +69,19 @@ const ModifyTab = ({
 		const {
 			modificationType,
 			customText,
-			settings: {
-				prompt,
-				characterCount,
-				confidenceLevel,
-				contentType,
-				tone,
-				writingStyle,
-				language,
-			},
+			refFromSelectedText = false,
 		} = data;
+		const {
+			prompt,
+			characterCount,
+			confidenceLevel,
+			contentType,
+			tone,
+			writingStyle,
+			language,
+		} = settings || {};
 
 		const isCustom = modificationType === 'custom';
-
 		const modificationAction = isCustom
 			? 'modifying'
 			: `${modificationType}ing`;
@@ -92,14 +92,20 @@ const ModifyTab = ({
 
 		const quoteGuidance = getQuotesGuidance(contentType);
 
-		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following text:
-		  - Original Prompt: ${prompt}
-		  - Content Attributes: Type - ${contentType} (${
-			CONTENT_TYPE_DESCRIPTIONS[contentType]
-		}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
-		  - Length: ${characterCount} characters
-		  - Confidence Level: ${confidenceLevel}%
-		  - Ready for Direct Publication: No further editing needed. ${quoteGuidance}
+		const generatedTextExpanation = !refFromSelectedText
+			? `- Original Prompt: ${prompt}
+		- Content Attributes: Type - ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
+		- Length: ${characterCount} characters
+		- Confidence Level: ${confidenceLevel}%
+		- Ready for Direct Publication: No further editing needed. ${quoteGuidance}\n`
+			: '';
+
+		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following ${
+			refFromSelectedText
+				? 'selected on website'
+				: 'generated for website'
+		} text. Adhere to these guidelines:
+		  ${generatedTextExpanation}
 		  ${customExplanation}
 		  Site Information: ${getSiteInformation(AISettings)}
 		  ${getContextSection(context)}
@@ -107,13 +113,17 @@ const ModifyTab = ({
 		  Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
 		const humanTemplate = results.find(
-			result => result.id === selectedResult
+			result => result.id === selectedResultId
 		).content;
 
 		return getFormattedMessages(systemTemplate, humanTemplate);
 	};
 
 	const modifyContent = async () => {
+		const { isSelectedText } = results.find(
+			result => result.id === selectedResultId
+		);
+
 		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
 			modelName: AISettings.model,
@@ -121,16 +131,16 @@ const ModifyTab = ({
 				topP: 1,
 			},
 			additionalData: {
-				refId: selectedResult,
+				...(!isSelectedText && { refId: selectedResultId, settings }),
 				modificationType: modifyOption,
-				customText,
-				settings,
+				refFromSelectedText: isSelectedText,
+				...(modifyOption === 'custom' && customText),
 			},
 			results,
 			abortControllerRef,
 			getMessages,
 			setResults,
-			setSelectedResult,
+			setSelectedResultId,
 			setIsGenerating,
 		});
 	};
@@ -213,7 +223,7 @@ const ModifyTab = ({
 						<Button
 							className={`${className}__button`}
 							onClick={modifyContent}
-							disabled={isEmpty(results) || !selectedResult}
+							disabled={isEmpty(results) || !selectedResultId}
 						>
 							{__('Go!', 'maxi-blocks')}
 						</Button>
@@ -292,7 +302,7 @@ const ModifyTab = ({
 					};
 
 					const handleResultSelection = (id = result.id) =>
-						setSelectedResult(id);
+						setSelectedResultId(id);
 
 					const handleResultUseSettings = () => {
 						if (result.refId) {
@@ -303,7 +313,7 @@ const ModifyTab = ({
 								setLoadUntilIndex(refResultIndex + 1);
 							}
 
-							setSelectedResult(result.refId);
+							setSelectedResultId(result.refId);
 
 							return;
 						}
@@ -331,8 +341,8 @@ const ModifyTab = ({
 							return newResults;
 						});
 
-						if (selectedResult === result.id) {
-							setSelectedResult(null);
+						if (selectedResultId === result.id) {
+							setSelectedResultId(null);
 						}
 					};
 
@@ -345,7 +355,7 @@ const ModifyTab = ({
 							isFromPreviousSession={
 								result.id <= historyStartIdRef.current
 							}
-							isSelected={result.id === selectedResult}
+							isSelected={result.id === selectedResultId}
 							isRefOfSelected={refResult?.isSelectedText}
 							isCustom={modifyOption === 'custom'}
 							onInsert={handleResultInsertion}

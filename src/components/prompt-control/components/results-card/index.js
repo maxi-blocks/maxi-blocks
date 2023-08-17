@@ -127,16 +127,20 @@ const ResultCard = ({
 							'maxi-blocks'
 						)}
 					</span>
-					{isFromPreviousSession && (
+					{isFromPreviousSession && !result.isSelectedText && (
 						<span
 							className={`${className}__top-bar__select-row__from-previous-session`}
 						>
 							{__('From previous sessions', 'maxi-blocks')}
 						</span>
 					)}
-					<span className={`${className}__top-bar__select-row__id`}>
-						#{result.id}
-					</span>
+					{!result.isSelectedText && (
+						<span
+							className={`${className}__top-bar__select-row__id`}
+						>
+							#{result.id}
+						</span>
+					)}
 				</div>
 				{result.modificationType && (
 					<div
@@ -149,19 +153,27 @@ const ResultCard = ({
 							)} from`,
 							'maxi-blocks'
 						)}{' '}
-						<label className={`${className}__modificator__id`}>
-							#{result.refId}
-						</label>
+						{result.refId && (
+							<label className={`${className}__modificator__id`}>
+								#{result.refId}
+							</label>
+						)}
+						{result.refFromSelectedText && (
+							<span
+								className={`${className}__modificator__from-selected-text`}
+							>
+								{__('selected text', 'maxi-blocks')}
+							</span>
+						)}
 					</div>
 				)}
 			</div>
 			<p className={`${className}__content`}>
 				{result.error && (
 					<span className={`${className}__content__error`}>
-						{__('Error:', 'maxi-blocks')}
+						{__('Error: ', 'maxi-blocks')}
 					</span>
 				)}
-				{'\u00A0'}
 				{result.content === '' ? '\u00A0' : content}
 			</p>
 			<div className={`${className}__end-of-content`}>

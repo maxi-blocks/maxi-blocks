@@ -20,7 +20,6 @@ import {
 	getFormattedMessages,
 	getQuotesGuidance,
 	getSiteInformation,
-	getUniqueId,
 	handleContentGeneration,
 } from './utils';
 import {
@@ -68,7 +67,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [language, setLanguage] = useState(LANGUAGES[0]);
 	const [prompt, setPrompt] = useState('');
 	const [results, setResults] = useState([]);
-	const [selectedResult, setSelectedResult] = useState(results[0]?.id);
+	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const historyStartIdRef = useRef(null);
 
@@ -122,12 +121,10 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 
 	useEffect(() => {
 		if (!isEmpty(selectedText)) {
-			const newId = getUniqueId(results);
-
 			switchToModifyTab();
 			setResults([
 				{
-					id: newId,
+					id: -1,
 					content: selectedText,
 					isSelectedText: true,
 					formatValue: {
@@ -135,9 +132,9 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 						end: textContext.formatValue.end,
 					},
 				},
-				...results,
+				...results.filter(result => !result.isSelectedText),
 			]);
-			setSelectedResult(newId);
+			setSelectedResultId(-1);
 		} else if (!isEmpty(results) && isEmpty(selectedText)) {
 			setResults(results.filter(result => !result.isSelectedText));
 			switchToGenerateTab();
@@ -227,7 +224,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 			abortControllerRef,
 			getMessages,
 			setResults,
-			setSelectedResult,
+			setSelectedResultId,
 			setIsGenerating,
 		});
 	};
@@ -295,9 +292,9 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 					context={context}
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
-					selectedResult={selectedResult}
+					selectedResultId={selectedResultId}
 					historyStartIdRef={historyStartIdRef}
-					setSelectedResult={setSelectedResult}
+					setSelectedResultId={setSelectedResultId}
 					onContentChange={onContentChange}
 					setResults={setResults}
 					setSettings={setSettings}

@@ -166,7 +166,7 @@ export const handleContentGeneration = async ({
 	abortControllerRef,
 	getMessages,
 	setResults,
-	setSelectedResult,
+	setSelectedResultId,
 	setIsGenerating,
 }) => {
 	const newId = getUniqueId(results);
@@ -179,7 +179,7 @@ export const handleContentGeneration = async ({
 			updateResultsWithLoading(prevResults, newId, additionalData)
 		);
 
-		setSelectedResult(newId);
+		setSelectedResultId(newId);
 
 		// Chat creation and settings
 		const chat = createChat(openAIApiKey, modelName, additionalParams);

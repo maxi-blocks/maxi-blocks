@@ -642,6 +642,8 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.focus();
 
+		await updateAllBlockUniqueIds(page);
+
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

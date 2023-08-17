@@ -4,10 +4,18 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_palette_color.php';
 
 function get_var_with_color($block_style, $variable)
 {
-    $color = str_replace(' ', '', get_palette_color(str_replace('color-', '', $variable), $block_style));
+    $paletteColor = get_palette_color(str_replace('color-', '', $variable), $block_style);
+
+    if ($paletteColor === false) {
+        return "var(--maxi-" . $block_style . "-" . $variable . ")";
+    }
+
+    $color = str_replace(' ', '', $paletteColor);
+
     return "var(--maxi-" . $block_style . "-" . $variable .
         (strpos($variable, 'color-') !== false && $color ? "," . $color : "") . ")";
 }
+
 
 function get_color_rgba_string($args)
 {

@@ -247,7 +247,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $response = [
-                'border' => ($props['svg-border-status-hover']) ? get_border_styles([
+                'border' => (isset($props['svg-border-status-hover']) && $props['svg-border-status-hover']) ? get_border_styles([
                     'obj' => get_group_attributes(
                         $props,
                         ['border', 'borderWidth', 'borderRadius'],
@@ -258,12 +258,12 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'block_style' => $block_style,
                     'prefix' => 'svg-'
                 ]) : null,
-                'boxShadow' => ($props['svg-box-shadow-status-hover']) ? get_box_shadow_styles([
+                'boxShadow' => (isset($props['svg-box-shadow-status-hover']) && $props['svg-box-shadow-status-hover']) ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true, 'svg-'),
                     'isHover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'svg-'
-                ]) : null
+        ]) : null
             ];
 
             $response = array_merge(
@@ -285,9 +285,9 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 )
             );
 
-
             return $response;
         }
+
     }
 
 endif;

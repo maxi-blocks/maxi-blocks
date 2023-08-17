@@ -141,7 +141,6 @@ class MaxiBlocks_Styles
 
             $this->process_all_unique_ids($post->ID);
 
-            // Call the function here
             $this->get_styles_meta_fonts_from_blocks($post->ID);
 
             $processed_posts++;
@@ -1484,10 +1483,6 @@ class MaxiBlocks_Styles
     public static function generate_random_string()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-        $timestamp = time(); // Get the current timestamp
-
-        // Seed the random number generator with the timestamp
-        mt_srand($timestamp);
 
         $randomString = '';
 
@@ -1510,6 +1505,7 @@ class MaxiBlocks_Styles
         $result = $name . '-' . $uniquePart . '-u';
         return $result;
     }
+
 
     public function process_all_unique_ids($post_id)
     {
@@ -1865,6 +1861,9 @@ class MaxiBlocks_Styles
         } else {
             $fonts = '';
         }
+        write_log($unique_id);
+        write_log($frontend_styles);
+        write_log('==========================================');
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(

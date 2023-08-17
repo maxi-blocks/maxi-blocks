@@ -137,7 +137,7 @@ describe('getBlockAttributes', () => {
 					'transform-translate-y-unit-general': '%',
 					'position-sync-general': false,
 					'position-unit-general': 'px',
-					uniqueID: 'container-maxi-12',
+					uniqueID: 'container-maxi-4se8ef1z-u2',
 					isFirstOnHierarchy: true,
 				},
 				innerBlocks: [

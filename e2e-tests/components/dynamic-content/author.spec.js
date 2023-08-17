@@ -35,7 +35,7 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			'text-maxi-1': 'admin',
+			'text-maxi-4se8ef1z-u': 'admin',
 			'text-maxi-2': 'No content found',
 			'text-maxi-3': 'No content found',
 			'text-maxi-4': 'http://localhost:8889/?author=1',
@@ -58,7 +58,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-4se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

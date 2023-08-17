@@ -43,12 +43,12 @@ describe('Dynamic content', () => {
 			link: 'http://localhost:8889/?cat=1',
 		};
 
-		const titleBlocks = ['text-maxi-1', 'text-maxi-9'];
-		const descriptionBlocks = ['text-maxi-2', 'text-maxi-10'];
-		const slugBlocks = ['text-maxi-3', 'text-maxi-11'];
-		const parentBlocks = ['text-maxi-4', 'text-maxi-12'];
-		const countBlocks = ['text-maxi-5', 'text-maxi-13'];
-		const linkBlocks = ['text-maxi-15', 'text-maxi-14'];
+		const titleBlocks = ['text-maxi-4se8ef1z-u', 'text-maxi-9'];
+		const descriptionBlocks = ['text-maxi-2', 'text-maxi-4se8ef1z-u0'];
+		const slugBlocks = ['text-maxi-3', 'text-maxi-4se8ef1z-u1'];
+		const parentBlocks = ['text-maxi-4', 'text-maxi-4se8ef1z-u2'];
+		const countBlocks = ['text-maxi-5', 'text-maxi-4se8ef1z-u3'];
+		const linkBlocks = ['text-maxi-4se8ef1z-u5', 'text-maxi-4se8ef1z-u4'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
@@ -91,7 +91,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-4se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

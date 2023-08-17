@@ -47,7 +47,7 @@ describe('Divider Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('divider-maxi-1');
+		await selectControls[1].select('divider-maxi-4se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
@@ -61,23 +61,27 @@ describe('Divider Maxi hover simple actions', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		await previewPage.waitForSelector(
-			'#button-maxi-1 .maxi-button-block__button'
+			'#button-maxi-4se8ef1z-u .maxi-button-block__button'
 		);
-		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.hover(
+			'#button-maxi-4se8ef1z-u .maxi-button-block__button'
+		);
 		await previewPage.waitForTimeout(100);
 
-		await previewPage.waitForSelector('#relations--divider-maxi-1-styles');
+		await previewPage.waitForSelector(
+			'#relations--divider-maxi-4se8ef1z-u-styles'
+		);
 		const stylesCSS = await previewPage.$eval(
-			'#relations--divider-maxi-1-styles',
+			'#relations--divider-maxi-4se8ef1z-u-styles',
 			el => el.textContent
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
 		await previewPage.waitForSelector(
-			'#relations--divider-maxi-1-in-transitions'
+			'#relations--divider-maxi-4se8ef1z-u-in-transitions'
 		);
 		const inTransitionsCSS = await previewPage.$eval(
-			'#relations--divider-maxi-1-in-transitions',
+			'#relations--divider-maxi-4se8ef1z-u-in-transitions',
 			el => el.textContent
 		);
 		expect(inTransitionsCSS).toMatchSnapshot();
@@ -85,10 +89,10 @@ describe('Divider Maxi hover simple actions', () => {
 		await previewPage.mouse.move(0, 0);
 
 		await previewPage.waitForSelector(
-			'#relations--divider-maxi-1-out-transitions'
+			'#relations--divider-maxi-4se8ef1z-u-out-transitions'
 		);
 		const outTransitionsCSS = await previewPage.$eval(
-			'#relations--divider-maxi-1-out-transitions',
+			'#relations--divider-maxi-4se8ef1z-u-out-transitions',
 			el => el.textContent
 		);
 		expect(outTransitionsCSS).toMatchSnapshot();

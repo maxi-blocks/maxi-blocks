@@ -34,7 +34,7 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('button-maxi-1');
+		await selectControls[1].select('button-maxi-4se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
@@ -68,18 +68,20 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await previewPage.hover('#button-maxi-2 .maxi-button-block__button');
 
-		await previewPage.waitForSelector('#relations--button-maxi-1-styles');
+		await previewPage.waitForSelector(
+			'#relations--button-maxi-4se8ef1z-u-styles'
+		);
 		const stylesCSS = await previewPage.$eval(
-			'#relations--button-maxi-1-styles',
+			'#relations--button-maxi-4se8ef1z-u-styles',
 			el => el.textContent
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
 		await previewPage.waitForSelector(
-			'#relations--button-maxi-1-in-transitions'
+			'#relations--button-maxi-4se8ef1z-u-in-transitions'
 		);
 		const inTransitionsCSS = await previewPage.$eval(
-			'#relations--button-maxi-1-in-transitions',
+			'#relations--button-maxi-4se8ef1z-u-in-transitions',
 			el => el.textContent
 		);
 		expect(inTransitionsCSS).toMatchSnapshot();
@@ -87,10 +89,10 @@ describe('Button Maxi hover simple actions', () => {
 		await previewPage.mouse.move(0, 0);
 
 		await previewPage.waitForSelector(
-			'#relations--button-maxi-1-out-transitions'
+			'#relations--button-maxi-4se8ef1z-u-out-transitions'
 		);
 		const outTransitionsCSS = await previewPage.$eval(
-			'#relations--button-maxi-1-out-transitions',
+			'#relations--button-maxi-4se8ef1z-u-out-transitions',
 			el => el.textContent
 		);
 		expect(outTransitionsCSS).toMatchSnapshot();

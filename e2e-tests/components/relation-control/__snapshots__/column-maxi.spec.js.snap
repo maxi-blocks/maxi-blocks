@@ -33,13 +33,13 @@ Array [
     "sid": "cs",
     "target": "",
     "title": "Hello World!",
-    "uniqueID": "column-maxi-1",
+    "uniqueID": "column-maxi-4se8ef1z-u",
   },
 ]
 `;
 
-exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}"`;
+exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-4se8ef1z-u[data-maxi-relations=\\"true\\"] { justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}"`;
 
-exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;
+exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-4se8ef1z-u[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;
 
-exports[`Column Maxi hover simple actions Column size 4`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;
+exports[`Column Maxi hover simple actions Column size 4`] = `"body.maxi-blocks--active #column-maxi-4se8ef1z-u[data-maxi-relations=\\"true\\"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;

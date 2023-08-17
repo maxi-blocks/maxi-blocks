@@ -51,6 +51,11 @@
 		bottom: 0;
 		justify-content: center;
 	}
+
+	&__no-results {
+		font-size: larger !important;
+		font-weight: bold !important;
+	}
 }
 
 .maxi-accordion-control__item__panel:has(.maxi-prompt-control-modify-tab) {

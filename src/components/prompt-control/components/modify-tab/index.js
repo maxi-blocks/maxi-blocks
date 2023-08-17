@@ -356,6 +356,11 @@ const ModifyTab = ({
 					);
 				})}
 			</div>
+			{isEmpty(results) && (
+				<h4 className={`${className}__no-results`}>
+					{__('History is empty', 'maxi-blocks')}
+				</h4>
+			)}
 			{results.length > loadUntilIndex && (
 				<div className={`${className}__load-more`}>
 					<Button

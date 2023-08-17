@@ -11,12 +11,14 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg Icon Maxi default size', () => {
 	it('Svg Icon Maxi default size', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await modalMock(page, { type: 'svg' });
 		await page.$eval('button[aria-label="Close"]', button =>

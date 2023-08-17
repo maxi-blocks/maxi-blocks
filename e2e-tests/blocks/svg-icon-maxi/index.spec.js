@@ -12,6 +12,7 @@ import {
 	addCustomCSS,
 	getEditedPostContent,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg Icon Maxi', () => {
@@ -19,7 +20,11 @@ describe('Svg Icon Maxi', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
 
+		await updateAllBlockUniqueIds(page);
+
 		await modalMock(page, { type: 'svg' });
+
+		await page.waitForTimeout(500);
 
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()

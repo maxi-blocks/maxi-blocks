@@ -10,12 +10,15 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Padding from Toolbar', () => {
 	it('Test padding from toolbar', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

@@ -6,12 +6,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, insertMaxiBlock } from '../../../../utils';
+import {
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../../../utils';
 
 describe('Button link', () => {
 	it('Check button link', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

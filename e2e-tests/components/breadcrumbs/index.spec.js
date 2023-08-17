@@ -6,12 +6,14 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock } from '../../utils';
+import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../utils';
 
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		await page.waitForSelector('.maxi-row-block__template button');
 		await page.$eval('.maxi-row-block__template button', button =>

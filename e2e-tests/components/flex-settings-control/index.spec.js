@@ -13,12 +13,14 @@ import {
 	getAttributes,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
+		await updateAllBlockUniqueIds(page);
 		let accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
 
 		// Flex wrap to wrap reverse
@@ -343,6 +345,7 @@ describe('FlexSettings', () => {
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
 		await insertMaxiBlock(page, 'Group Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

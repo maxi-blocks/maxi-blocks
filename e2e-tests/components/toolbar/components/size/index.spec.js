@@ -10,12 +10,15 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Toolbar size', () => {
 	it('Check toolbar size', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

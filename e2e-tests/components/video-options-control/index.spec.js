@@ -11,12 +11,14 @@ import {
 	getEditedPostContent,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Video options control', () => {
 	it('Check video options control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Video Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'style', 'video options');
 

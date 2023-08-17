@@ -28,3 +28,5 @@ export { default as removeBackgroundLayers } from './removeBackgroundLayers';
 export { default as resettingAttributes } from './resettingAttributes';
 export { default as setAttributes } from './setAttributes';
 export { default as waitForAttribute } from './waitForAttribute';
+export { default as uniqueIDGenerator } from './uniqueIDGenerator';
+export { default as updateAllBlockUniqueIds } from './updateAllBlockUniqueIds';

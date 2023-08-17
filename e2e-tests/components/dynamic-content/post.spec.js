@@ -45,12 +45,12 @@ describe('Dynamic content', () => {
 			tags: 'No content found',
 		};
 
-		const titleBlocks = ['text-maxi-4se8ef1z-u', 'text-maxi-4se8ef1z-u5'];
-		const contentBlocks = ['text-maxi-2', 'text-maxi-4se8ef1z-u6'];
-		const excerptBlocks = ['text-maxi-3', 'text-maxi-4se8ef1z-u7'];
-		const authorBlocks = ['text-maxi-5', 'text-maxi-4se8ef1z-u9'];
-		const categoriesBlocks = ['text-maxi-9'];
-		const tagBlocks = ['text-maxi-4se8ef1z-u0'];
+		const titleBlocks = ['text-maxi-1se8ef1z-u', 'text-maxi-1se8ef1z-u5'];
+		const contentBlocks = ['text-maxi-2se8ef1z-u', 'text-maxi-1se8ef1z-u6'];
+		const excerptBlocks = ['text-maxi-3se8ef1z-u', 'text-maxi-1se8ef1z-u7'];
+		const authorBlocks = ['text-maxi-5se8ef1z-u', 'text-maxi-1se8ef1z-u9'];
+		const categoriesBlocks = ['text-maxi-9se8ef1z-u'];
+		const tagBlocks = ['text-maxi-1se8ef1z-u0'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
@@ -94,7 +94,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-4se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

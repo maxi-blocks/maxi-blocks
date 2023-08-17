@@ -17,12 +17,14 @@ import {
 	changeResponsive,
 	addResponsiveTest,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Number Counter Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		// Start Animation

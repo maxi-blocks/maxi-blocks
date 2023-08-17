@@ -23,7 +23,6 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	openPreviewPage,
-	setAttributes,
 	insertMaxiBlock,
 } from '../../utils';
 
@@ -54,7 +53,6 @@ describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
 	});
 
 	it('Writes a sentence on Text Maxi', async () => {

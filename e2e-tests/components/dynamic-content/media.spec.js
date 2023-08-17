@@ -64,10 +64,10 @@ describe('Dynamic content', () => {
 			author: 'admin',
 		};
 
-		const titleBlocks = ['text-maxi-1', 'text-maxi-15'];
-		const contentBlocks = ['text-maxi-2', 'text-maxi-16'];
-		const excerptBlocks = ['text-maxi-3', 'text-maxi-17'];
-		const authorBlocks = ['text-maxi-5', 'text-maxi-19'];
+		const titleBlocks = ['text-maxi-4se8ef1z-u', 'text-maxi-4se8ef1z-u5'];
+		const contentBlocks = ['text-maxi-2', 'text-maxi-4se8ef1z-u6'];
+		const excerptBlocks = ['text-maxi-3', 'text-maxi-4se8ef1z-u7'];
+		const authorBlocks = ['text-maxi-5', 'text-maxi-4se8ef1z-u9'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
@@ -101,7 +101,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-4se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

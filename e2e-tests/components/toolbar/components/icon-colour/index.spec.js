@@ -11,12 +11,15 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Icon colour', () => {
 	it('Check icon colour', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// generate icon
 		await modalMock(page, { type: 'svg' });

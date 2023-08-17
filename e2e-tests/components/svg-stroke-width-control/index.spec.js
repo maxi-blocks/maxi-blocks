@@ -13,12 +13,14 @@ import {
 	changeResponsive,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
 	it('Check svg stroke width control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+		await updateAllBlockUniqueIds(page);
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

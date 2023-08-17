@@ -14,12 +14,14 @@ import {
 	getBlockStyle,
 	addResponsiveTest,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking AxisControl util', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'margin padding');
 
 		await editAxisControl({
@@ -168,6 +170,7 @@ describe('AxisControl', () => {
 	it('Checking AxisControl async buttons', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'margin padding');
 		const axisControlInstance = await page.$('.maxi-axis-control__margin');
 
@@ -260,6 +263,7 @@ describe('AxisControl', () => {
 	it('Checking AxisControl arrows when value inherited from higher breakpoints', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

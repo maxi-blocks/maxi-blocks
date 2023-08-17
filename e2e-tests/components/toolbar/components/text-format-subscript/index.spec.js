@@ -6,12 +6,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, insertMaxiBlock } from '../../../../utils';
+import {
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../../../utils';
 
 describe('Text subscript', () => {
 	it('Check text subscript', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

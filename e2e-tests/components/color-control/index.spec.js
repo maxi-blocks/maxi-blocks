@@ -10,12 +10,14 @@ import {
 	editColorControl,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ColorControl', () => {
 	it('Checking the palette color control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -88,6 +90,7 @@ describe('ColorControl', () => {
 	it('Checking the opacity is never under 0 or more than 100', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -121,6 +124,7 @@ describe('ColorControl', () => {
 		await createNewPost();
 
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

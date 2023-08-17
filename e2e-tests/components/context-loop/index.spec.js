@@ -46,9 +46,9 @@ describe('Context Loop', () => {
 		await page.waitForTimeout(1000);
 
 		const expectedResults = {
-			'text-maxi-4se8ef1z-u': '@Post 2',
-			'text-maxi-2': '@Post 1',
-			'text-maxi-3': '@Post 3',
+			'text-maxi-1se8ef1z-u': '@Post 2',
+			'text-maxi-2se8ef1z-u': '@Post 1',
+			'text-maxi-3se8ef1z-u': '@Post 3',
 		};
 
 		const getBackResults = async block =>
@@ -72,7 +72,7 @@ describe('Context Loop', () => {
 		const previewPage = await openPreviewPage();
 
 		await previewPage.waitForSelector(
-			'#text-maxi-3.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-3se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

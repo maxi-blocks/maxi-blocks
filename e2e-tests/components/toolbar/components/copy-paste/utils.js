@@ -17,7 +17,7 @@ export const block = {
 		defaultBlockStyle: 'maxi-def-light',
 		extraClassName: '',
 		isFirstOnHierarchy: true,
-		uniqueID: 'text-maxi-581582',
+		uniqueID: 'text-maxi-5se8ef1z-u81582',
 		customLabel: 'Text',
 		textLevel: 'p',
 		isList: false,
@@ -163,5 +163,5 @@ export const block = {
 	innerBlocks: [],
 	validationIssues: [],
 	originalContent:
-		'<div id="text-maxi-581582" class="maxi-block maxi-text-block maxi-motion-effect maxi-motion-effect-text-maxi-581582 maxi-light text-maxi-581582 wp-block-maxi-blocks-text-maxi maxi-sc-light-background-color-1 maxi-sc-light-border-color-4 maxi-sc-light-box-shadow-color-3" data-align="full"><div class="maxi-background-displayer"><div class="maxi-background-displayer__layer maxi-background-displayer__color"></div></div><p class="maxi-text-block__content" data-gx_initial_block_class="maxi-def-light"><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">Testing</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Copy</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Paste</span></p></div>',
+		'<div id="text-maxi-5se8ef1z-u81582" class="maxi-block maxi-text-block maxi-motion-effect maxi-motion-effect-text-maxi-5se8ef1z-u81582 maxi-light text-maxi-5se8ef1z-u81582 wp-block-maxi-blocks-text-maxi maxi-sc-light-background-color-1 maxi-sc-light-border-color-4 maxi-sc-light-box-shadow-color-3" data-align="full"><div class="maxi-background-displayer"><div class="maxi-background-displayer__layer maxi-background-displayer__color"></div></div><p class="maxi-text-block__content" data-gx_initial_block_class="maxi-def-light"><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">Testing</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Copy</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Paste</span></p></div>',
 };

@@ -16,12 +16,16 @@ import {
 	changeResponsive,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

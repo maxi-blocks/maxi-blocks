@@ -137,7 +137,7 @@ describe('getBlockAttributes', () => {
 					'transform-translate-y-unit-general': '%',
 					'position-sync-general': false,
 					'position-unit-general': 'px',
-					uniqueID: 'container-maxi-4se8ef1z-u2',
+					uniqueID: 'container-maxi-1se8ef1z-u2',
 					isFirstOnHierarchy: true,
 				},
 				innerBlocks: [
@@ -240,7 +240,7 @@ describe('getBlockAttributes', () => {
 							'position-unit-general': 'px',
 							'transform-translate-x-unit-general': '%',
 							'transform-translate-y-unit-general': '%',
-							uniqueID: 'row-maxi-34',
+							uniqueID: 'row-maxi-3se8ef1z-u4',
 							isFirstOnHierarchy: false,
 							blockStyle: 'light',
 							'row-pattern-general': '1-1',
@@ -253,7 +253,7 @@ describe('getBlockAttributes', () => {
 								isValid: true,
 								attributes: {
 									extraClassName: '',
-									uniqueID: 'maxi-column-maxi-90',
+									uniqueID: 'maxi-column-maxi-9se8ef1z-u0',
 									customLabel: 'Column',
 									fullWidth: 'normal',
 									'column-size-general': 48.75,
@@ -329,7 +329,7 @@ describe('getBlockAttributes', () => {
 								isValid: true,
 								attributes: {
 									extraClassName: '',
-									uniqueID: 'maxi-column-maxi-91',
+									uniqueID: 'maxi-column-maxi-9se8ef1z-u1',
 									customLabel: 'Column',
 									fullWidth: 'normal',
 									'column-size-general': 48.75,

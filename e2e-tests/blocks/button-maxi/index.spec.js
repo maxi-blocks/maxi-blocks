@@ -16,12 +16,15 @@ import {
 	getEditedPostContent,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -57,6 +60,8 @@ describe('Button Maxi', () => {
 	it('Check Button Icon', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);

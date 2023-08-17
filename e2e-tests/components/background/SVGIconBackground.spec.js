@@ -12,12 +12,14 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Icon background', () => {
 	it('Check Icon background', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+		await updateAllBlockUniqueIds(page);
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

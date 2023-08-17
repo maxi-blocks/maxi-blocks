@@ -11,6 +11,7 @@ import {
 	editAxisControl,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('CopyPaste from Toolbar', () => {
@@ -18,6 +19,8 @@ describe('CopyPaste from Toolbar', () => {
 		await createNewPost();
 		await page.waitForTimeout(1000);
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -54,6 +57,8 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// open options
 		await page.$eval(
@@ -99,6 +104,8 @@ describe('CopyPaste from Toolbar', () => {
 	});
 	it('Should copy and paste styles with special paste', async () => {
 		await insertMaxiBlock(page, 'Group Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// add border attributes
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -182,6 +189,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// new block
 		await insertMaxiBlock(page, 'Group Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.waitForTimeout(500);
 
 		// open options
@@ -283,6 +291,8 @@ describe('CopyPaste from Toolbar', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
 
+		await updateAllBlockUniqueIds(page);
+
 		await page.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
 		await page.$$eval('.maxi-row-block__template button', button =>
@@ -332,6 +342,8 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// open options
 		await page.$eval(

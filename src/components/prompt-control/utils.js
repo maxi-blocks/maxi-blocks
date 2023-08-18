@@ -6,6 +6,12 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import { CONTENT_TYPE_DESCRIPTIONS, CONTENT_TYPE_EXAMPLES } from './constants';
+
+/**
+ * External dependencies
+ */
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import {
 	ChatPromptTemplate,
@@ -13,7 +19,6 @@ import {
 	SystemMessagePromptTemplate,
 } from 'langchain/prompts';
 import { isEmpty, startCase } from 'lodash';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeys = [
@@ -25,18 +30,36 @@ export const getSiteInformation = AISettings => {
 		'businessInfo',
 	];
 
-	return AISettingsKeys.map(
+	return `- **Site Information**:
+	${AISettingsKeys.map(
 		key =>
-			!isEmpty(AISettings[key]) && `${startCase(key)}: ${AISettings[key]}`
+			!isEmpty(AISettings[key]) &&
+			`\t- ${startCase(key)}: ${AISettings[key]}`
 	)
 		.filter(Boolean)
-		.join('\n');
+		.join('\n')}`;
 };
 
 export const getQuotesGuidance = contentType =>
-	contentType === 'Quotes' || contentType === 'Pull quotes Testimonial'
-		? 'Use quotes as necessary for this content type.'
-		: 'Avoid unnecessary quotes or special characters.';
+	`- **Ready for Direct Publication**: No further editing needed.
+	${
+		contentType === 'Quotes' || contentType === 'Pull quotes Testimonial'
+			? 'Use quotes as necessary for this content type, e.g., when citing someone’s words.'
+			: 'Avoid unnecessary quotes or special characters, such as using quotes around headlines or titles.'
+	}`;
+
+export const getContentAttributesSection = (
+	contentType,
+	tone,
+	writingStyle,
+	language,
+	characterCount
+) => `- **Content Attributes**:
+				- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
+				- Tone: ${tone}
+				- Style: ${writingStyle}
+				- Language: ${language}
+				- Length: ${characterCount} characters`;
 
 export const getContextSection = context => {
 	if (!context) {
@@ -45,11 +68,22 @@ export const getContextSection = context => {
 
 	// Format the context into a compact section with a clear explanation of the keys
 	const contextSection = context
-		.map(item => `\t\t${item.l}: "${item.c}"`)
+		.map(item => `\t\t**${item.l}**: "${item.c}"`)
 		.join('\n');
 
-	return `- Page Context (level: content): The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
-	${contextSection}`;
+	return `**Page Context (level: content)**: The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
+					${contextSection}`;
+};
+
+export const getExamplesSection = contentType => {
+	const examples = CONTENT_TYPE_EXAMPLES[contentType];
+	if (!examples || examples.length === 0) {
+		return '';
+	}
+
+	const formattedExamples = examples.join('\n- ');
+
+	return `Examples:\n- ${formattedExamples}`;
 };
 
 export const getFormattedMessages = async (

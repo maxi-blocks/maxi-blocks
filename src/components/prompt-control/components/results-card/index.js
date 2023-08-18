@@ -27,7 +27,7 @@ const ResultCard = ({
 	result,
 	isFromPreviousSession,
 	isSelected,
-	isRefOfSelected,
+	isSelectedText,
 	isCustom,
 	onInsert,
 	onSelect,
@@ -205,21 +205,21 @@ const ResultCard = ({
 			{!result.isSelectedText && (
 				<>
 					<hr />
-					<div>
+					<div className={`${className}__options`}>
 						<Button onClick={onInsert}>
 							{__(
-								isRefOfSelected
-									? 'Replace selection'
-									: 'Insert',
+								isSelectedText ? 'Replace selection' : 'Insert',
 								'maxi-blocks'
 							)}
 						</Button>
 						<Button onClick={handleCopy}>
 							{__('Copy', 'maxi-blocks')}
 						</Button>
-						<Button onClick={onUseSettings}>
-							{__('Use settings', 'maxi-blocks')}
-						</Button>
+						{!result.refFromSelectedText && (
+							<Button onClick={onUseSettings}>
+								{__('Use settings', 'maxi-blocks')}
+							</Button>
+						)}
 						<DialogBox
 							message={__(
 								'Are you sure you want to delete the result?',

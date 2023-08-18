@@ -2,25 +2,27 @@
  * WordPress dependencies
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { select } from '@wordpress/data';
-import { useContext, useMemo } from '@wordpress/element';
+import { dispatch, select } from '@wordpress/data';
+import { useContext, useMemo, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
-import { orderRelations } from './constants';
+import { orderByRelations, orderRelations } from './constants';
 import LoopContext from './loopContext';
+import getDCOptions from './getDCOptions';
+import getCLAttributes from './getCLAttributes';
 
 /**
  * External dependencies
  */
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { attributes, clientId, name } = ownProps;
+			const { attributes, clientId, name, setAttributes } = ownProps;
 
 			let prevContextLoopAttributes = null;
 
@@ -134,6 +136,40 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					contextLoop,
 				};
 			}, [contextLoop]);
+
+			// Check if category or tag by which the post is filtered exists
+			useEffect(() => {
+				if (!orderByRelations.includes(contextLoop['cl-relation']))
+					return;
+
+				const updateRelationIds = async () => {
+					const dataRequest = Object.fromEntries(
+						Object.entries(getCLAttributes(contextLoop)).map(
+							([key, value]) => [key.replace('cl-', ''), value]
+						)
+					);
+
+					const { newValues } =
+						(await getDCOptions(
+							dataRequest,
+							contextLoop['cl-id'],
+							undefined,
+							true
+						)) ?? {};
+
+					if (!isEmpty(newValues)) {
+						const {
+							__unstableMarkNextChangeAsNotPersistent:
+								markNextChangeAsNotPersistent,
+						} = dispatch('core/block-editor');
+
+						markNextChangeAsNotPersistent();
+						setAttributes(newValues);
+					}
+				};
+
+				updateRelationIds();
+			}, []);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

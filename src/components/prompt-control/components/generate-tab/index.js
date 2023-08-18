@@ -31,60 +31,53 @@ import './editor.scss';
 
 const GenerateTab = ({
 	clientId,
-	contentType,
-	setContentType,
-	tone,
-	setTone,
-	writingStyle,
-	setWritingStyle,
-	characterCount,
-	setCharacterCount,
-	language,
-	setLanguage,
-	confidenceLevel,
-	setConfidenceLevel,
+	settings,
 	contextOption,
 	setContextOption,
-	prompt,
-	setPrompt,
 	generateContent,
+	updateSettings,
 	switchToModifyTab,
 }) => {
+	const {
+		prompt,
+		characterCount,
+		confidenceLevel,
+		contentType,
+		tone,
+		writingStyle,
+		language,
+	} = settings;
+
 	const className = 'maxi-prompt-control-generate-tab';
 
 	return (
 		<>
 			{[
 				{
+					key: 'contentType',
 					label: 'Content type',
 					list: CONTENT_TYPES,
 					state: contentType,
-					setState: value => {
-						setContentType(value);
-						setCharacterCount(
-							DEFAULT_CHARACTER_COUNT_GUIDELINES[value]
-						);
-					},
 				},
 				{
+					key: 'tone',
 					label: 'Tone',
 					list: TONES,
 					state: tone,
-					setState: setTone,
 				},
 				{
+					key: 'writingStyle',
 					label: 'Writing style',
 					list: WRITING_STYLES,
 					state: writingStyle,
-					setState: setWritingStyle,
 				},
 				{
+					key: 'language',
 					label: 'Language',
 					list: LANGUAGES,
 					state: language,
-					setState: setLanguage,
 				},
-			].map(({ label, list, state, setState }, index) => (
+			].map(({ key, label, list, state }, index) => (
 				// eslint-disable-next-line react/no-array-index-key
 				<Fragment key={index}>
 					<label>{__(label, 'maxi-blocks')}</label>
@@ -101,18 +94,23 @@ const GenerateTab = ({
 							label: __(option, 'maxi-blocks'),
 							value: option,
 						}))}
-						onChange={({ value }) => setState(value)}
+						onChange={({ value }) =>
+							updateSettings({ [key]: value })
+						}
 					/>
 				</Fragment>
 			))}
 			<AdvancedNumberControl
 				label={__('Character count guideline', 'maxi-blocks')}
 				value={characterCount}
-				onChangeValue={val => setCharacterCount(val)}
+				onChangeValue={characterCount =>
+					updateSettings({ characterCount })
+				}
 				onReset={() =>
-					setCharacterCount(
-						DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType]
-					)
+					updateSettings({
+						characterCount:
+							DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType],
+					})
 				}
 			/>
 			<AdvancedNumberControl
@@ -120,8 +118,14 @@ const GenerateTab = ({
 				value={confidenceLevel}
 				min={0}
 				max={100}
-				onChangeValue={val => setConfidenceLevel(val)}
-				onReset={() => setConfidenceLevel(DEFAULT_CONFIDENCE_LEVEL)}
+				onChangeValue={confidenceLevel =>
+					updateSettings({ confidenceLevel })
+				}
+				onReset={() =>
+					updateSettings({
+						confidenceLevel: DEFAULT_CONFIDENCE_LEVEL,
+					})
+				}
 			/>
 			<label>{__('Context', 'maxi-blocks')}</label>
 			<ReactSelectControl
@@ -158,7 +162,7 @@ const GenerateTab = ({
 					'maxi-blocks'
 				)}
 				value={prompt}
-				onChange={val => setPrompt(val)}
+				onChange={prompt => updateSettings({ prompt })}
 			/>
 			<Button type='button' variant='secondary' onClick={generateContent}>
 				{__('Write for me', 'maxi-blocks')}

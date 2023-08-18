@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { resolveSelect } from '@wordpress/data';
 import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
@@ -14,6 +13,7 @@ import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
+import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
 	getContentAttributesSection,
 	getContext,
@@ -24,25 +24,15 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from './utils';
-import {
-	CONTENT_TYPES,
-	CONTEXT_OPTIONS,
-	DEFAULT_CHARACTER_COUNT_GUIDELINES,
-	DEFAULT_CONFIDENCE_LEVEL,
-	LANGUAGES,
-	TONES,
-	WRITING_STYLES,
-} from './constants';
+import { CONTEXT_OPTIONS } from './constants';
 
 /**
  * External dependencies
  */
-import { camelCase, isEmpty, toNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const PromptControl = ({ clientId, content, onContentChange }) => {
-	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-
-	const [AISettings, setAISettings] = useState({});
+	const AISettings = useAISettings();
 
 	const [tab, setTab] = useState('generate'); // generate, modify
 
@@ -52,25 +42,24 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		textContext.formatValue.end
 	);
 
-	const [contentType, setContentType] = useState(CONTENT_TYPES[0]);
-	const [tone, setTone] = useState(TONES[0]);
-	const [writingStyle, setWritingStyle] = useState(WRITING_STYLES[0]);
-	const [characterCount, setCharacterCount] = useState(
-		DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]]
-	);
-	const [confidenceLevel, setConfidenceLevel] = useState(
-		DEFAULT_CONFIDENCE_LEVEL
-	);
+	const { settings, updateSettings } = useSettings();
+	const {
+		prompt,
+		characterCount,
+		confidenceLevel,
+		contentType,
+		tone,
+		writingStyle,
+		language,
+	} = settings;
+
 	const [contextOption, setContextOption] = useState(
 		Object.keys(CONTEXT_OPTIONS)[0]
 	);
 	const [context, setContext] = useState(null);
-	const [language, setLanguage] = useState(LANGUAGES[0]);
-	const [prompt, setPrompt] = useState('');
-	const [results, setResults] = useState([]);
+	const [results, setResults, historyStartIdRef] = useResultsHandling();
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 	const [isGenerating, setIsGenerating] = useState(false);
-	const historyStartIdRef = useRef(null);
 
 	const abortControllerRef = useRef(null);
 
@@ -83,44 +72,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	};
 
 	useEffect(() => {
-		const getOpenAIApiKey = async () => {
-			try {
-				const maxiSettings = await receiveMaxiSettings();
-
-				const AISettings = Object.entries(
-					maxiSettings?.ai_settings
-				).reduce((acc, [key, value]) => {
-					const newKey = camelCase(key);
-					acc[newKey] = value;
-					return acc;
-				}, {});
-
-				setAISettings(AISettings);
-			} catch (error) {
-				console.error('Maxi Blocks: Could not load settings');
-			}
-		};
-
-		getOpenAIApiKey();
-
-		const results = JSON.parse(localStorage.getItem('maxi-prompt-results'));
-		if (!isEmpty(results)) {
-			setResults(results);
-
-			if (!sessionStorage.getItem('maxi-prompt-history-start-id')) {
-				sessionStorage.setItem(
-					'maxi-prompt-history-start-id',
-					results[0].id
-				);
-			}
-
-			historyStartIdRef.current = toNumber(
-				sessionStorage.getItem('maxi-prompt-history-start-id')
-			);
-		}
-	}, []);
-
-	useEffect(() => {
 		if (!isEmpty(selectedText)) {
 			switchToModifyTab();
 			setSelectedResultId('selectedText');
@@ -128,12 +79,8 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	}, [selectedText]);
 
 	useEffect(() => {
-		localStorage.setItem('maxi-prompt-results', JSON.stringify(results));
-	}, [results]);
-
-	useEffect(() => {
-		setTone(AISettings.tone);
-		setLanguage(AISettings.language);
+		const { tone, language } = AISettings;
+		updateSettings({ tone, language });
 	}, [AISettings]);
 
 	useEffect(() => {
@@ -163,16 +110,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 			/>
 		);
 	}
-
-	const settings = {
-		prompt,
-		characterCount,
-		confidenceLevel,
-		contentType,
-		tone,
-		writingStyle,
-		language,
-	};
 
 	const getMessages = async () => {
 		const quoteGuidance = getQuotesGuidance(contentType);
@@ -229,26 +166,6 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 		setIsGenerating(false);
 	};
 
-	const setSettings = newSettings => {
-		const {
-			prompt,
-			characterCount,
-			confidenceLevel,
-			contentType,
-			tone,
-			writingStyle,
-			language,
-		} = newSettings;
-
-		setPrompt(prompt);
-		setCharacterCount(characterCount);
-		setConfidenceLevel(confidenceLevel);
-		setContentType(contentType);
-		setTone(tone);
-		setWritingStyle(writingStyle);
-		setLanguage(language);
-	};
-
 	const className = 'maxi-prompt-control';
 
 	return (
@@ -256,25 +173,12 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 			{tab === 'generate' && (
 				<GenerateTab
 					clientId={clientId}
-					contentType={contentType}
-					setContentType={setContentType}
-					tone={tone}
-					setTone={setTone}
-					writingStyle={writingStyle}
-					setWritingStyle={setWritingStyle}
-					characterCount={characterCount}
-					setCharacterCount={setCharacterCount}
-					language={language}
-					setLanguage={setLanguage}
-					confidenceLevel={confidenceLevel}
-					setConfidenceLevel={setConfidenceLevel}
+					settings={settings}
 					contextOption={contextOption}
 					setContextOption={setContextOption}
 					prompt={prompt}
-					setPrompt={setPrompt}
 					generateContent={generateContent}
-					openAIApiKey={AISettings.openaiApiKey}
-					setResults={setResults}
+					updateSettings={updateSettings}
 					switchToModifyTab={switchToModifyTab}
 				/>
 			)}
@@ -295,7 +199,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 					setSelectedResultId={setSelectedResultId}
 					onContentChange={onContentChange}
 					setResults={setResults}
-					setSettings={setSettings}
+					updateSettings={updateSettings}
 					switchToGenerateTab={switchToGenerateTab}
 					onAbort={handleAbort}
 					abortControllerRef={abortControllerRef}

@@ -279,3 +279,5 @@ export const CONTEXT_OPTIONS = {
 	container: 'This container',
 	page: 'This page',
 };
+
+export const CONTENT_LIMIT = 100;

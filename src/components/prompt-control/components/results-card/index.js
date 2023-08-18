@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  */
 import Button from '../../../button';
 import DialogBox from '../../../dialog-box';
+import { CONTENT_LIMIT } from '../../constants';
 
 /**
  * External dependencies
@@ -20,8 +21,6 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
-
-export const CONTENT_LIMIT = 100;
 
 const ResultCard = ({
 	result,

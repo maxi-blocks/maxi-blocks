@@ -256,7 +256,21 @@ export const LANGUAGES = [
 	'Zulu - isiZulu',
 ];
 
-export const MODIFY_OPTIONS = ['rephrase', 'shorten', 'lengthen', 'custom'];
+export const MODIFY_OPTIONS = [
+	'rephrase',
+	'shorten',
+	'lengthen',
+	'fix spelling & grammar',
+	'custom',
+];
+
+export const MODIFICATION_ACTIONS = {
+	rephrase: 'rephrasing',
+	shorten: 'shortening',
+	lengthen: 'lengthening',
+	'fix spelling & grammar': 'fixing spelling & grammar',
+	custom: 'modifying', // Custom can be kept as a generic action
+};
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
 

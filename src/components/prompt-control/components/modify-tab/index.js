@@ -96,29 +96,31 @@ const ModifyTab = ({
 		const quoteGuidance = getQuotesGuidance(contentType);
 
 		const generatedTextExplanation = !refFromSelectedText
-			? `- **Original Prompt**: ${prompt}
-			${getContentAttributesSection(
-				contentType,
-				tone,
-				writingStyle,
-				language,
-				characterCount
-			)}
-			- **Confidence Level**: ${confidenceLevel}%
-			${quoteGuidance}\n`
+			? `
+${prompt ? `- **Original Prompt**: ${prompt}` : ''}
+${getContentAttributesSection(
+	contentType,
+	tone,
+	writingStyle,
+	language,
+	characterCount
+)}
+- **Confidence Level**: ${confidenceLevel}%
+${quoteGuidance}\n`
 			: '';
 
-		const systemTemplate = `You are a helpful assistant tasked with ${modificationAction} the following ${
+		const systemTemplate = `
+You are a helpful assistant tasked with ${modificationAction} the following ${
 			refFromSelectedText
 				? 'selected on website'
 				: 'generated for website'
 		} text. Adhere to these guidelines:
-			${generatedTextExplanation}
-			${customExplanation}
-			${getSiteInformation(AISettings)}
-			${getContextSection(context)}
+${generatedTextExplanation}
+${customExplanation}
+${getSiteInformation(AISettings)}
+${getContextSection(context)}
 
-			Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
+Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
 		const humanTemplate =
 			selectedResultId === 'selectedText'

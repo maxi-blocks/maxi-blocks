@@ -21,7 +21,7 @@ import {
 import { isEmpty, startCase } from 'lodash';
 
 export const getSiteInformation = AISettings => {
-	const AISettingsKeys = [
+	const AISettingsKeysToDisplay = [
 		'siteDescription',
 		'audience',
 		'siteGoal',
@@ -30,14 +30,19 @@ export const getSiteInformation = AISettings => {
 		'businessInfo',
 	];
 
-	return `- **Site Information**:
-	${AISettingsKeys.map(
+	const siteInformation = AISettingsKeysToDisplay.map(
 		key =>
 			!isEmpty(AISettings[key]) &&
 			`\t- ${startCase(key)}: ${AISettings[key]}`
 	)
 		.filter(Boolean)
-		.join('\n')}`;
+		.join('\n');
+
+	if (!siteInformation) {
+		return '';
+	}
+
+	return `- **Site Information**:\n${siteInformation}`;
 };
 
 export const getQuotesGuidance = contentType =>

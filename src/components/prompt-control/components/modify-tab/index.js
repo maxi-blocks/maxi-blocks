@@ -53,7 +53,7 @@ const ModifyTab = ({
 	onContentChange,
 	onAbort,
 	setResults,
-	setSettings,
+	updateSettings,
 	switchToGenerateTab,
 	abortControllerRef,
 }) => {
@@ -340,7 +340,7 @@ const ModifyTab = ({
 						}
 
 						if (result.settings) {
-							setSettings(result.settings);
+							updateSettings(result.settings);
 							switchToGenerateTab();
 						}
 					};

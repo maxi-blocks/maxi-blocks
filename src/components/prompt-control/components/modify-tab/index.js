@@ -24,7 +24,7 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
-import { MODIFY_OPTIONS } from '../../constants';
+import { MODIFICATION_ACTIONS, MODIFY_OPTIONS } from '../../constants';
 
 /**
  * External dependencies
@@ -84,14 +84,14 @@ const ModifyTab = ({
 			language,
 		} = settings || {};
 
-		const isCustom = modificationType === 'custom';
-		const modificationAction = isCustom
-			? 'modifying'
-			: `${modificationType}ing`;
+		// Use the mapping to get the appropriate action for the given modification type
+		const modificationAction =
+			MODIFICATION_ACTIONS[modificationType] || 'modifying';
 
-		const customExplanation = isCustom
-			? `- **Custom Instructions**: ${customText}\n`
-			: '';
+		const customExplanation =
+			modificationType === 'custom'
+				? `- **Custom Instructions**: ${customText}\n`
+				: '';
 
 		const quoteGuidance = getQuotesGuidance(contentType);
 

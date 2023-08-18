@@ -90,11 +90,12 @@ const ResultCard = ({
 	}, [isSelected]);
 
 	const transformVerbToPast = verb => {
-		if (verb.endsWith('e')) {
-			return `${verb}d`;
-		}
+		const words = verb.split(' ');
+		const firstWord = words[0];
 
-		return `${verb}ed`;
+		return `${
+			firstWord.endsWith('e') ? `${firstWord}d` : `${firstWord}ed`
+		} ${words.length > 1 ? words.slice(1).join(' ') : ''}`;
 	};
 
 	return (

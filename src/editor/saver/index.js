@@ -23,14 +23,19 @@ const BlockStylesSaver = () => {
 	const {
 		isSaving,
 		isPreviewing,
+		isPublishing,
 		isDraft,
 		isCodeEditor,
 		allStylesAreSaved,
 		isPageLoaded,
 		hasTemplateChanged,
 	} = useSelect(select => {
-		const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
-			select('core/editor');
+		const {
+			isSavingPost,
+			isPreviewingPost,
+			getCurrentPostAttribute,
+			isPublishingPost,
+		} = select('core/editor');
 		const { __experimentalGetDirtyEntityRecords, isSavingEntityRecord } =
 			select('core');
 		const { getEditorMode } =
@@ -45,6 +50,7 @@ const BlockStylesSaver = () => {
 			dirtyEntityRecords.some(record =>
 				isSavingEntityRecord(record.kind, record.name, record.key)
 			);
+		const isPublishing = isPublishingPost();
 		const isPreviewing = isPreviewingPost();
 		const isDraft = getCurrentPostAttribute('status') === 'auto-draft';
 		const isCodeEditor = getEditorMode() === 'text';
@@ -56,6 +62,7 @@ const BlockStylesSaver = () => {
 		return {
 			isSaving,
 			isPreviewing,
+			isPublishing,
 			isDraft,
 			isCodeEditor,
 			allStylesAreSaved,
@@ -72,7 +79,7 @@ const BlockStylesSaver = () => {
 		if (isSaving && !isCodeEditor) {
 			loadFonts(getPageFonts(), false);
 
-			if (!isPreviewing && !isDraft) {
+			if (!isPreviewing && (!isDraft || isPublishing)) {
 				saveStyles(true);
 				saveCustomData(true);
 			} else if (isPreviewing || isDraft) {

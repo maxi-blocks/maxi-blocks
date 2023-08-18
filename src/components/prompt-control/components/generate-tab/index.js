@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -29,6 +30,7 @@ import {
 import './editor.scss';
 
 const GenerateTab = ({
+	clientId,
 	contentType,
 	setContentType,
 	tone,
@@ -131,12 +133,21 @@ const GenerateTab = ({
 					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
 					value: contextOption,
 				}}
-				options={Object.entries(CONTEXT_OPTIONS).map(
-					([value, label]) => ({
-						label: __(label, 'maxi-blocks'),
-						value,
-					})
-				)}
+				options={Object.entries(CONTEXT_OPTIONS)
+					.map(
+						([value, label]) =>
+							(value !== 'container' ||
+								select(
+									'core/block-editor'
+								).getBlockParentsByBlockName(
+									clientId,
+									'maxi-blocks/container-maxi'
+								)[0]) && {
+								label: __(label, 'maxi-blocks'),
+								value,
+							}
+					)
+					.filter(Boolean)}
 				onChange={({ value }) => setContextOption(value)}
 			/>
 			<TextareaControl

@@ -30,6 +30,26 @@ export const CONTENT_TYPE_DESCRIPTIONS = {
 		'Write clear and appealing product descriptions that highlight key features and benefits.',
 };
 
+export const CONTENT_TYPE_EXAMPLES = {
+	Headline: ['Introducing Our Latest Product Line!'],
+	Subheading: ['Key Features and Benefits'],
+	'Body text': [
+		'Our products are designed with the user in mind, offering a range of innovative features...',
+	],
+	Quotes: [
+		'"The only way to do great work is to love what you do." - Steve Jobs',
+	],
+	'Pull quotes Testimonial': [
+		'"This product changed my life! Highly recommended." - Jane Doe',
+	],
+	'Calls-to-action (CTA)': ['Click Here to Learn More!'],
+	'Alt tag': ['Logo of Our Company'],
+	'Image caption Page titles FAQs': ['Image of the main office building'],
+	'Product descriptions': [
+		'Sleek and modern, this chair offers both style and comfort...',
+	],
+};
+
 export const DEFAULT_CHARACTER_COUNT_GUIDELINES = {
 	Headline: 50, // Typically headlines are short and to the point.
 	Subheading: 100, // Slightly longer than a headline.

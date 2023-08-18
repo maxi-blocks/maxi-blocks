@@ -15,15 +15,16 @@ import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import {
+	getContentAttributesSection,
 	getContext,
 	getContextSection,
+	getExamplesSection,
 	getFormattedMessages,
 	getQuotesGuidance,
 	getSiteInformation,
 	handleContentGeneration,
 } from './utils';
 import {
-	CONTENT_TYPE_DESCRIPTIONS,
 	CONTENT_TYPES,
 	CONTEXT_OPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
@@ -177,16 +178,25 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		const quoteGuidance = getQuotesGuidance(contentType);
 		const contextSection = getContextSection(context);
 
-		const systemTemplate = `You are a helpful assistant generating content for a website. Adhere to these guidelines:
-				- Ready for Direct Publication: No further editing needed. ${quoteGuidance}
-				- Length: ${characterCount} characters
-				- Site Information: ${getSiteInformation(AISettings)}
-				- Content Attributes: Type - ${contentType} (${
-			CONTENT_TYPE_DESCRIPTIONS[contentType]
-		}), Tone - ${tone}, Style - ${writingStyle}, Language - ${language}
-				${contextSection}
+		const systemTemplate = `
+You are a helpful assistant generating content for a website. Adhere to these guidelines:
 
-				Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.`;
+${quoteGuidance}
+${getSiteInformation(AISettings)}
+${getContentAttributesSection(
+	contentType,
+	tone,
+	writingStyle,
+	language,
+	characterCount
+)}
+
+${contextSection}
+
+${getExamplesSection(contentType)}
+
+Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.
+`;
 
 		const humanTemplate = prompt;
 
@@ -245,6 +255,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		<div className={className}>
 			{tab === 'generate' && (
 				<GenerateTab
+					clientId={clientId}
 					contentType={contentType}
 					setContentType={setContentType}
 					tone={tone}

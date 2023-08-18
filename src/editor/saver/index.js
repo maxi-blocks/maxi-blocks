@@ -46,7 +46,7 @@ const BlockStylesSaver = () => {
 				isSavingEntityRecord(record.kind, record.name, record.key)
 			);
 		const isPreviewing = isPreviewingPost();
-		const isDraft = getCurrentPostAttribute('status') === 'draft';
+		const isDraft = getCurrentPostAttribute('status') === 'auto-draft';
 		const isCodeEditor = getEditorMode() === 'text';
 		const allStylesAreSaved = getAllStylesAreSaved();
 		const isPageLoaded = getIsPageLoaded();

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 /**
@@ -38,10 +38,12 @@ import './editor.scss';
 const ModifyTab = ({
 	results,
 	content,
-	selectionStart,
 	AISettings,
 	settings,
 	context,
+	selectedText,
+	formatValue,
+	onChangeTextFormat,
 	isGenerating,
 	setIsGenerating,
 	selectedResultId,
@@ -112,17 +114,18 @@ const ModifyTab = ({
 
 		  Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
-		const humanTemplate = results.find(
-			result => result.id === selectedResultId
-		).content;
+		const humanTemplate =
+			selectedResultId === 'selectedText'
+				? selectedText
+				: results.find(result => result.id === selectedResultId)
+						.content;
 
 		return getFormattedMessages(systemTemplate, humanTemplate);
 	};
 
 	const modifyContent = async () => {
-		const { isSelectedText } = results.find(
-			result => result.id === selectedResultId
-		);
+		const isSelectedText =
+			selectedResultId === 'selectedText' && selectedText;
 
 		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
@@ -196,7 +199,7 @@ const ModifyTab = ({
 				</Button>
 			</div>
 			<div className={`${className}__top-bar`}>
-				{!isEmpty(results) && (
+				{(!isEmpty(results) || selectedResultId) && (
 					<div className={`${className}__modification-options`}>
 						<ReactSelectControl
 							value={{
@@ -223,7 +226,7 @@ const ModifyTab = ({
 						<Button
 							className={`${className}__button`}
 							onClick={modifyContent}
-							disabled={isEmpty(results) || !selectedResultId}
+							disabled={isEmpty(results) && !selectedResultId}
 						>
 							{__('Go!', 'maxi-blocks')}
 						</Button>
@@ -266,39 +269,45 @@ const ModifyTab = ({
 				</div>
 			</div>
 			<div className={`${className}__results`}>
+				{selectedText && (
+					<ResultCard
+						result={{
+							content: selectedText,
+							isSelectedText: true,
+						}}
+						isSelected={selectedResultId === 'selectedText'}
+						isCustom={modifyOption === 'custom'}
+						onSelect={() => setSelectedResultId('selectedText')}
+					/>
+				)}
 				{results.map((result, index) => {
 					if (index >= loadUntilIndex) {
 						return null;
 					}
 
-					const refResultIndex =
-						result.refId &&
-						results.findIndex(
-							refResult => refResult.id === result.refId
-						);
-
-					const refResult =
-						refResultIndex >= 0 && results[refResultIndex];
-
 					const handleResultInsertion = () => {
-						if (!refResult?.isSelectedText) {
-							const contentBeforeSelection = content.slice(
-								0,
-								selectionStart
-							);
-							const contentAfterSelection =
-								content.slice(selectionStart);
-							const newContent =
-								contentBeforeSelection +
-								result.content +
-								contentAfterSelection;
+						const { start: selectionStart, end: selectionEnd } =
+							formatValue;
 
-							return onContentChange(newContent);
+						const contentBeforeSelection = content.slice(
+							0,
+							selectionStart
+						);
+						const contentAfterSelection =
+							content.slice(selectionEnd);
+						const newContent =
+							contentBeforeSelection +
+							result.content +
+							contentAfterSelection;
+
+						if (selectionStart !== selectionEnd) {
+							onChangeTextFormat({
+								...formatValue,
+								end: selectionStart + result.content.length,
+							});
 						}
 
-						return onContentChange(
-							content.replace(refResult.content, result.content)
-						);
+						onContentChange(newContent);
 					};
 
 					const handleResultSelection = (id = result.id) =>
@@ -309,6 +318,12 @@ const ModifyTab = ({
 							setModifyOption(result.modificationType);
 							setCustomText(result.customText);
 
+							const refResultIndex =
+								result.refId &&
+								results.findIndex(
+									refResult => refResult.id === result.refId
+								);
+
 							if (refResultIndex >= loadUntilIndex) {
 								setLoadUntilIndex(refResultIndex + 1);
 							}
@@ -318,8 +333,10 @@ const ModifyTab = ({
 							return;
 						}
 
-						setSettings(result.settings);
-						switchToGenerateTab();
+						if (result.settings) {
+							setSettings(result.settings);
+							switchToGenerateTab();
+						}
 					};
 
 					const handleResultDeletion = () => {
@@ -356,7 +373,7 @@ const ModifyTab = ({
 								result.id <= historyStartIdRef.current
 							}
 							isSelected={result.id === selectedResultId}
-							isRefOfSelected={refResult?.isSelectedText}
+							isSelectedText={!!selectedText}
 							isCustom={modifyOption === 'custom'}
 							onInsert={handleResultInsertion}
 							onSelect={handleResultSelection}
@@ -366,7 +383,7 @@ const ModifyTab = ({
 					);
 				})}
 			</div>
-			{isEmpty(results) && (
+			{isEmpty(results) && !selectedResultId && (
 				<h4 className={`${className}__no-results`}>
 					{__('History is empty', 'maxi-blocks')}
 				</h4>

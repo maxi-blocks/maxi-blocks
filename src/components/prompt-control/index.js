@@ -122,22 +122,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	useEffect(() => {
 		if (!isEmpty(selectedText)) {
 			switchToModifyTab();
-			setResults([
-				{
-					id: -1,
-					content: selectedText,
-					isSelectedText: true,
-					formatValue: {
-						start: textContext.formatValue.start,
-						end: textContext.formatValue.end,
-					},
-				},
-				...results.filter(result => !result.isSelectedText),
-			]);
-			setSelectedResultId(-1);
-		} else if (!isEmpty(results) && isEmpty(selectedText)) {
-			setResults(results.filter(result => !result.isSelectedText));
-			switchToGenerateTab();
+			setSelectedResultId('selectedText');
 		}
 	}, [selectedText]);
 
@@ -286,10 +271,12 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 				<ModifyTab
 					results={results}
 					content={content}
-					selectionStart={textContext.formatValue.start}
 					AISettings={AISettings}
 					settings={settings}
 					context={context}
+					selectedText={selectedText}
+					formatValue={textContext.formatValue}
+					onChangeTextFormat={textContext.onChangeTextFormat}
 					isGenerating={isGenerating}
 					setIsGenerating={setIsGenerating}
 					selectedResultId={selectedResultId}

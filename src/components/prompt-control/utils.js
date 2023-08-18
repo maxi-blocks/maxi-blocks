@@ -60,11 +60,11 @@ export const getContentAttributesSection = (
 	language,
 	characterCount
 ) => `- **Content Attributes**:
-				- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
-				- Tone: ${tone}
-				- Style: ${writingStyle}
-				- Language: ${language}
-				- Length: ${characterCount} characters`;
+			- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
+			- Tone: ${tone}
+			- Style: ${writingStyle}
+			- Language: ${language}
+			- Length: ${characterCount} characters`;
 
 export const getContextSection = context => {
 	if (!context) {

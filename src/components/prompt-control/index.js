@@ -127,9 +127,7 @@ ${getContentAttributesSection(
 	language,
 	characterCount
 )}
-
 ${contextSection}
-
 ${getExamplesSection(contentType)}
 
 Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.

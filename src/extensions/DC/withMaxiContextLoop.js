@@ -3,7 +3,7 @@
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { dispatch, select } from '@wordpress/data';
-import { useContext, useMemo, useEffect } from '@wordpress/element';
+import { useContext, useMemo, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -137,24 +137,30 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				};
 			}, [contextLoop]);
 
+			const wasRelationValidated = useRef(false);
 			// Check if category or tag by which the post is filtered exists
 			useEffect(() => {
-				if (!orderByRelations.includes(contextLoop['cl-relation']))
+				if (
+					wasRelationValidated.current ||
+					!orderByRelations.includes(
+						memoizedValue.contextLoop['cl-relation']
+					)
+				)
 					return () => null;
 
 				let isCancelled = false;
 
 				const updateRelationIds = async () => {
 					const dataRequest = Object.fromEntries(
-						Object.entries(getCLAttributes(contextLoop)).map(
-							([key, value]) => [key.replace('cl-', ''), value]
-						)
+						Object.entries(
+							getCLAttributes(memoizedValue.contextLoop)
+						).map(([key, value]) => [key.replace('cl-', ''), value])
 					);
 
 					const { newValues } =
 						(await getDCOptions(
 							dataRequest,
-							contextLoop['cl-id'],
+							memoizedValue.contextLoop['cl-id'],
 							undefined,
 							true
 						)) ?? {};
@@ -168,6 +174,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						markNextChangeAsNotPersistent();
 						setAttributes(newValues);
 					}
+
+					wasRelationValidated.current = true;
 				};
 
 				updateRelationIds();
@@ -175,7 +183,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				return () => {
 					isCancelled = true;
 				};
-			}, []);
+			}, [setAttributes, memoizedValue]);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

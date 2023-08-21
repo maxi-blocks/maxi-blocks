@@ -58,8 +58,6 @@
 		"react-instantsearch": "^6.30.2",
 		"react-instantsearch-dom": "^6.30.2",
 		"react-lazy-load": "^3.1.14",
-		"react-leaflet": "^4.0.1",
-		"react-leaflet-google-layer": "^2.0.7",
 		"react-linear-gradient-picker": "^3.0.1",
 		"react-lorem-ipsum": "^1.4.10",
 		"react-paginate": "^8.1.3",

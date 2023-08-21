@@ -12,7 +12,6 @@ import InfoBox from '../info-box';
 import GenerateTab from './components/generate-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import ModifyTab from './components/modify-tab';
-import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
 	getContentAttributesSection,
@@ -30,6 +29,13 @@ import { CONTEXT_OPTIONS } from './constants';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+
+export const getMaxiAdminSettingsUrl = (tab = 'maxi_blocks_settings') => {
+	const currentUrl = window.location.href;
+	const wpAdminUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+	const maxiAdminSettingsUrl = `${wpAdminUrl}/admin.php?page=maxi-blocks-dashboard&tab=${tab}`;
+	return maxiAdminSettingsUrl;
+};
 
 const PromptControl = ({ clientId, content, onContentChange }) => {
 	const AISettings = useAISettings();

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SC svg icon Checking svg icon accordion 1`] = `
-Object {
-  "icon": Object {
+{
+  "icon": {
     "fill-color-global": true,
     "line-color": "",
     "line-color-global": true,

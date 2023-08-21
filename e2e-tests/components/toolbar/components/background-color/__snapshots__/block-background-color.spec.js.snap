@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Background color from Toolbar Test background color from toolbar 1`] = `
-Array [
-  Object {
+[
+  {
     "background-color-clip-path-general": "none",
     "background-color-clip-path-status-general": false,
     "background-color-wrapper-height-general": 100,

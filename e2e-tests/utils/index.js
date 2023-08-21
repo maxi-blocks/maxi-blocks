@@ -9,6 +9,7 @@ export { default as addTypographyOptions } from './addTypographyOptions';
 export { default as addTypographyStyle } from './addTypographyStyle';
 export { default as changeResponsive } from './changeResponsive';
 export { default as copySCToEdit } from './copySCToEdit';
+export { default as deactivatePlugin } from './deactivatePlugin';
 export { default as editAdvancedNumberControl } from './editAdvancedNumberControl';
 export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';

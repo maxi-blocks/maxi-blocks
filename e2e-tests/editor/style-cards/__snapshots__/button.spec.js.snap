@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StyleCards, Buttons Check Button 1`] = `
-Object {
-  "button": Object {
+{
+  "button": {
     "background-color": "",
     "background-color-global": true,
     "background-palette-color": 4,
@@ -69,8 +69,8 @@ Object {
 `;
 
 exports[`StyleCards, Buttons Should work on responsive 1`] = `
-Object {
-  "button": Object {
+{
+  "button": {
     "background-color": "",
     "background-color-global": true,
     "background-palette-color": 4,

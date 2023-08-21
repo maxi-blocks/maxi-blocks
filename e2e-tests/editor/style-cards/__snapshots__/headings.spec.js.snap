@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StyleCards headings Check Headings 1`] = `
-Object {
-  "h1": Object {
+{
+  "h1": {
     "bottom-gap-general": 20,
     "bottom-gap-unit-general": "px",
     "color": "",
@@ -61,8 +61,8 @@ Object {
 `;
 
 exports[`StyleCards headings Works on responsive 1`] = `
-Object {
-  "h1": Object {
+{
+  "h1": {
     "bottom-gap-general": 20,
     "bottom-gap-m": 10,
     "bottom-gap-unit-general": "px",

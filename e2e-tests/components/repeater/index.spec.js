@@ -50,7 +50,6 @@ describe('Repeater', () => {
 
 	it('Check basic adding/removing block and attributes changing', async () => {
 		await insertMaxiBlock(page, 'Container Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		await page.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
@@ -84,6 +83,8 @@ describe('Repeater', () => {
 			paletteStatus: true,
 			colorPalette: 3,
 		});
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -124,6 +125,8 @@ describe('Repeater', () => {
 		await toggleRepeater(page);
 		await page.waitForTimeout(150);
 
+		await updateAllBlockUniqueIds(page);
+
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 
@@ -156,6 +159,8 @@ describe('Repeater', () => {
 			button[1].click()
 		);
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 

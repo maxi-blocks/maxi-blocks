@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SC Link Checking link accordion 1`] = `
-Object {
-  "link": Object {
+{
+  "link": {
     "active-color-global": true,
     "hover-color-global": true,
     "link-color": "",

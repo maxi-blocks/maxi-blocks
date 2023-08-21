@@ -1,34 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getTransformStyles Get a correct default hover transform styles 1`] = `
-Object {
-  "": Object {
-    "transform": Object {
-      "general": Object {
+{
+  "": {
+    "transform": {
+      "general": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "l": Object {
+      "l": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "m": Object {
+      "m": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "s": Object {
+      "s": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "xl": Object {
+      "xl": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "xs": Object {
+      "xs": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
-      "xxl": Object {
+      "xxl": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
         "transform-origin": "0% 0% ",
       },
@@ -38,60 +38,60 @@ Object {
 `;
 
 exports[`getTransformStyles Get a correct transform styles 1`] = `
-Object {
-  "": Object {
-    "transform": Object {
-      "general": Object {
+{
+  "": {
+    "transform": {
+      "general": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "l": Object {
+      "l": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "m": Object {
+      "m": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "s": Object {
+      "s": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "xl": Object {
+      "xl": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "xs": Object {
+      "xs": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
-      "xxl": Object {
+      "xxl": {
         "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
         "transform-origin": "0% 0% ",
       },
     },
   },
-  ":hover": Object {
-    "transform": Object {
-      "general": Object {
+  ":hover": {
+    "transform": {
+      "general": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "l": Object {
+      "l": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "m": Object {
+      "m": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "s": Object {
+      "s": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "xl": Object {
+      "xl": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "xs": Object {
+      "xs": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
-      "xxl": Object {
+      "xxl": {
         "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) ",
       },
     },

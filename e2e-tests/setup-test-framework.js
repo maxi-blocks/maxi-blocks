@@ -10,10 +10,14 @@ import {
 	enablePageDialogAccept,
 	isOfflineMode,
 	setBrowserViewport,
-	deactivatePlugin,
 	activatePlugin,
 	activateTheme,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { deactivatePlugin } from './utils';
 
 /**
  * Timeout, in seconds, that the test should be allowed to run.
@@ -49,7 +53,12 @@ async function setupBrowser() {
 function observeConsoleLogging() {
 	page.on('console', message => {
 		const type = message.type();
-		if (!OBSERVED_CONSOLE_MESSAGE_TYPES.hasOwnProperty(type)) {
+		if (
+			!Object.prototype.hasOwnProperty.call(
+				OBSERVED_CONSOLE_MESSAGE_TYPES,
+				type
+			)
+		) {
 			return;
 		}
 

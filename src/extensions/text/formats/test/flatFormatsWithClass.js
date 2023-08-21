@@ -10,6 +10,8 @@ import flatFormatsWithClass, {
 /**
  * Mocks
  */
+jest.mock('@wordpress/blocks', () => jest.fn());
+jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('../../../styles/getBlockStyle', () => {
 	return jest.fn(() => {
 		return 'light';

@@ -1,43 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getShapeDividerStyles Get a correct shape divider styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "height": "1px",
     "opacity": 1,
   },
-  "l": Object {},
+  "l": {},
   "label": "Shape Divider",
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getShapeDividerStyles Get a correct shape divider styles 2`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "fill": "rgb(255, 99, 71)",
   },
-  "l": Object {
+  "l": {
     "fill": "rgb(255, 99, 71)",
   },
   "label": "Shape Divider SVG",
-  "m": Object {
+  "m": {
     "fill": "rgb(255, 99, 71)",
   },
-  "s": Object {
+  "s": {
     "fill": "rgb(255, 99, 71)",
   },
-  "xl": Object {
+  "xl": {
     "fill": "rgb(255, 99, 71)",
   },
-  "xs": Object {
+  "xs": {
     "fill": "rgb(255, 99, 71)",
   },
-  "xxl": Object {
+  "xxl": {
     "fill": "rgb(255, 99, 71)",
   },
 }

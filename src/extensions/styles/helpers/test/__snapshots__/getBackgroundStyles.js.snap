@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getBackgroundStyles Get correct block background styles for color layer different values for border on different responsive stages and hovers 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-style": "solid",
         "border-bottom-width": "15px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -15,7 +15,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "5px",
       },
-      "l": Object {
+      "l": {
         "border-bottom-style": "solid",
         "border-bottom-width": "20px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -27,7 +27,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "10px",
       },
-      "m": Object {
+      "m": {
         "border-bottom-style": "solid",
         "border-bottom-width": "20px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -39,7 +39,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "0px",
       },
-      "s": Object {
+      "s": {
         "border-bottom-style": "solid",
         "border-bottom-width": "20px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -51,7 +51,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "0px",
       },
-      "xl": Object {
+      "xl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "15px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -63,7 +63,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "5px",
       },
-      "xs": Object {
+      "xs": {
         "border-bottom-style": "solid",
         "border-bottom-width": "20px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -75,7 +75,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "0px",
       },
-      "xxl": Object {
+      "xxl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "15px",
         "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
@@ -88,54 +88,54 @@ Object {
         "border-top-width": "5px",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "bottom": "-15px",
         "left": "-20px",
         "right": "-10px",
         "top": "-5px",
       },
-      "l": Object {
+      "l": {
         "bottom": "-20px",
         "left": "-5px",
         "right": "-15px",
         "top": "-10px",
       },
-      "m": Object {
+      "m": {
         "left": "0px",
         "top": "0px",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "display": "block",
         "width": "100%",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
         "width": "100%",
       },
@@ -145,10 +145,10 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with border 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -163,23 +163,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {
-        "border-bottom-left-radius": "180px",
-        "border-bottom-right-radius": "180px",
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
-        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-style": "solid",
-        "border-top-left-radius": "180px",
-        "border-top-right-radius": "180px",
-        "border-top-style": "solid",
-        "border-top-width": "2px",
-      },
-      "m": Object {
+      "l": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -195,7 +179,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "s": Object {
+      "m": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -211,7 +195,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xl": Object {
+      "s": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -227,7 +211,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xs": Object {
+      "xl": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -243,7 +227,23 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xxl": Object {
+      "xs": {
+        "border-bottom-left-radius": "180px",
+        "border-bottom-right-radius": "180px",
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-left-radius": "180px",
+        "border-top-right-radius": "180px",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "xxl": {
         "border-bottom-left-radius": "180px",
         "border-bottom-right-radius": "180px",
         "border-bottom-style": "solid",
@@ -260,8 +260,8 @@ Object {
         "border-top-width": "2px",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
@@ -269,35 +269,35 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
       },
@@ -307,64 +307,64 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with border radius and row border radius 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
         "border-top-left-radius": "182px",
         "border-top-right-radius": "183px",
       },
-      "l": Object {
+      "l": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
-      "m": Object {
+      "m": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
-      "s": Object {
+      "s": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
-      "xl": Object {
+      "xl": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
-      "xs": Object {
+      "xs": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
-      "xxl": Object {
+      "xxl": {
         "border-bottom-left-radius": "160px",
         "border-bottom-right-radius": "200px",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
     },
@@ -373,21 +373,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -397,7 +397,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
         "bottom": "13%",
         "height": "103px",
@@ -407,7 +407,7 @@ Object {
         "width": "103px",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-5,0,0,0),0.59)",
         "bottom": "14%",
         "height": "104px",
@@ -416,7 +416,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "15%",
         "height": "105px",
@@ -425,7 +425,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "12%",
         "height": "102px",
@@ -434,7 +434,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "16%",
         "height": "106px",
@@ -443,7 +443,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
         "bottom": "11%",
         "height": "101px",
@@ -458,21 +458,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with different values on different responsive stages and hover 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -482,7 +482,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
         "bottom": "13%",
         "height": "103px",
@@ -492,7 +492,7 @@ Object {
         "width": "103px",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-5,0,0,0),0.59)",
         "bottom": "14%",
         "height": "104px",
@@ -501,7 +501,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "15%",
         "height": "105px",
@@ -510,7 +510,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "12%",
         "height": "102px",
@@ -519,7 +519,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "16%",
         "height": "106px",
@@ -528,7 +528,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
         "bottom": "11%",
         "height": "101px",
@@ -539,20 +539,20 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.59)",
         "bottom": "11%",
         "height": "101px",
@@ -561,7 +561,7 @@ Object {
         "top": "11%",
         "width": "101px",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.59)",
         "bottom": "14%",
         "height": "104px",
@@ -571,7 +571,7 @@ Object {
         "width": "104px",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.59)",
         "bottom": "15%",
         "height": "105px",
@@ -580,7 +580,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-8,150,176,203),0.59)",
         "bottom": "16%",
         "height": "106px",
@@ -589,7 +589,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.59)",
         "bottom": "13%",
         "height": "103px",
@@ -598,7 +598,7 @@ Object {
         "top": "13%",
         "width": "103px",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-8,150,176,203),0.59)",
         "bottom": "17%",
         "height": "107px",
@@ -607,7 +607,7 @@ Object {
         "top": "17%",
         "width": "107px",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-7,8,18,25),0.22)",
         "bottom": "12%",
         "height": "102px",
@@ -622,46 +622,46 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for color layer with row border radius 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-left-radius": "181px",
         "border-bottom-right-radius": "182px",
         "border-top-left-radius": "183px",
         "border-top-right-radius": "184px",
       },
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
       },
     },
@@ -670,48 +670,48 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for different layers, onces created on normal and other on hover 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": {
+    "shape": {
+      "general": {
         "bottom": "10px",
         "display": "block",
         "left": "10px",
@@ -719,7 +719,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "l": Object {
+      "l": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
@@ -727,35 +727,35 @@ Object {
         "width": "100%",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
         "top": "10px",
         "width": "100%",
       },
-      "s": Object {
+      "s": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
         "top": "10px",
         "width": "100%",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
         "top": "10px",
         "width": "100%",
       },
-      "xs": Object {
+      "xs": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
         "top": "10px",
         "width": "100%",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "10px",
         "left": "10px",
         "right": "10px",
@@ -764,61 +764,61 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 > svg:first-child": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 > svg:first-child": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 > svg:first-child pattern image": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 > svg:first-child pattern image": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 svg *": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3 svg *": {
+    "shape": {
+      "general": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "l": Object {
+      "l": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
       "label": "Icon background",
-      "m": Object {
+      "m": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "s": Object {
+      "s": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xl": Object {
+      "xl": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xs": Object {
+      "xs": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),1)",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
-    "video": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": {
+    "video": {
+      "general": {
         "display": "block",
         "opacity": 1,
       },
-      "l": Object {
+      "l": {
         "opacity": 1,
       },
       "label": "Video Background",
-      "m": Object {
+      "m": {
         "opacity": 1,
       },
-      "s": Object {
+      "s": {
         "opacity": 1,
       },
-      "xl": Object {
+      "xl": {
         "opacity": 1,
       },
-      "xs": Object {
+      "xs": {
         "opacity": 1,
       },
-      "xxl": Object {
+      "xxl": {
         "opacity": 1,
       },
     },
@@ -827,48 +827,48 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for general responsive stage 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": {
+    "image": {
+      "general": {
         "bottom": "10px",
         "display": "block",
         "height": "100%",
@@ -877,7 +877,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "l": Object {
+      "l": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -886,7 +886,7 @@ Object {
         "width": "100%",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -894,7 +894,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "s": Object {
+      "s": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -902,7 +902,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -910,7 +910,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "xs": Object {
+      "xs": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -918,7 +918,7 @@ Object {
         "top": "10px",
         "width": "100%",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "10px",
         "height": "100%",
         "left": "10px",
@@ -928,102 +928,102 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
-    "video": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": {
+    "video": {
+      "general": {
         "display": "block",
         "opacity": 1,
       },
-      "l": Object {
+      "l": {
         "opacity": 1,
       },
       "label": "Video Background",
-      "m": Object {
+      "m": {
         "opacity": 1,
       },
-      "s": Object {
+      "s": {
         "opacity": 1,
       },
-      "xl": Object {
+      "xl": {
         "opacity": 1,
       },
-      "xs": Object {
+      "xs": {
         "opacity": 1,
       },
-      "xxl": Object {
+      "xxl": {
         "opacity": 1,
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
-    "gradient": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": {
+    "gradient": {
+      "general": {
         "display": "block",
       },
-      "l": Object {},
+      "l": {},
       "label": "Background gradient",
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": {
+    "shape": {
+      "general": {
         "display": "block",
         "width": "100%",
       },
-      "l": Object {
+      "l": {
         "width": "100%",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "width": "100%",
       },
-      "s": Object {
+      "s": {
         "width": "100%",
       },
-      "xl": Object {
+      "xl": {
         "width": "100%",
       },
-      "xs": Object {
+      "xs": {
         "width": "100%",
       },
-      "xxl": Object {
+      "xxl": {
         "width": "100%",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child pattern image": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child pattern image": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": {
+    "shape": {
+      "general": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "l": Object {
+      "l": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "label": "Icon background",
-      "m": Object {
+      "m": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "s": Object {
+      "s": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xl": Object {
+      "xl": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xs": Object {
+      "xs": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
     },
@@ -1032,41 +1032,41 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "gradient": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "gradient": {
+      "general": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
       },
       "label": "Background gradient",
-      "m": Object {
+      "m": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
       },
-      "s": Object {
+      "s": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
       },
-      "xl": Object {
+      "xl": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
       },
-      "xs": Object {
+      "xs": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "radial-gradient(rgba(6,147,227,0.48) 0%,rgba(68,150,185,0.48) 52%,rgba(155,81,224,0.48) 100%)",
       },
     },
@@ -1075,21 +1075,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for gradient layer with different values on different responsive stages and hovers 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "gradient": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "gradient": {
+      "general": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "bottom": "10%",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
@@ -1100,7 +1100,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
         "bottom": "13%",
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
@@ -1111,7 +1111,7 @@ Object {
         "width": "103px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
         "bottom": "14%",
         "clip-path": "polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)",
@@ -1121,7 +1121,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
         "bottom": "15%",
         "clip-path": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
@@ -1131,7 +1131,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "bottom": "12%",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
@@ -1141,7 +1141,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
         "bottom": "16%",
         "clip-path": "polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)",
@@ -1151,7 +1151,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "radial-gradient(rgba(6,147,227,0.48) 0%,rgba(68,150,185,0.48) 52%,rgba(155,81,224,0.48) 100%)",
         "bottom": "11%",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
@@ -1163,20 +1163,20 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "gradient": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+    "gradient": {
+      "general": {
         "background": "radial-gradient(rgba(26,229,6,0.71) 0%,rgba(186,69,107,0.71) 52%,rgba(224,218,82,0.71) 100%)",
         "bottom": "11%",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
@@ -1186,7 +1186,7 @@ Object {
         "top": "11%",
         "width": "101px",
       },
-      "l": Object {
+      "l": {
         "background": "radial-gradient(rgba(26,229,6,0.37) 0%,rgba(89,136,156,0.37) 25%,rgba(186,69,107,0.37) 52%,rgba(0,114,163,0.03) 74%,rgba(224,218,82,0.37) 100%)",
         "bottom": "14%",
         "clip-path": "circle(50% at 50% 50%)",
@@ -1197,7 +1197,7 @@ Object {
         "width": "104px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "background": "radial-gradient(rgba(26,229,6,0.37) 0%,rgba(89,136,156,0.37) 25%,rgba(186,69,107,0.37) 52%,rgba(0,114,163,0.03) 74%,rgba(224,218,82,0.37) 100%)",
         "bottom": "15%",
         "clip-path": "circle(50% at 50% 50%)",
@@ -1207,7 +1207,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "s": Object {
+      "s": {
         "background": "radial-gradient(rgba(186,69,107,0.91) 52%,rgba(0,114,163,0.07) 74%,rgba(224,218,82,0.91) 100%)",
         "bottom": "16%",
         "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
@@ -1217,7 +1217,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xl": Object {
+      "xl": {
         "background": "radial-gradient(rgba(26,229,6,0.71) 0%,rgba(186,69,107,0.71) 52%,rgba(224,218,82,0.71) 100%)",
         "bottom": "13%",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
@@ -1227,7 +1227,7 @@ Object {
         "top": "13%",
         "width": "103px",
       },
-      "xs": Object {
+      "xs": {
         "background": "radial-gradient(rgba(186,69,107,0.91) 52%,rgba(0,114,163,0.07) 74%,rgba(224,218,82,0.91) 100%)",
         "bottom": "17%",
         "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
@@ -1237,7 +1237,7 @@ Object {
         "top": "17%",
         "width": "107px",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "linear-gradient(205deg,rgba(26,229,6,0.71) 0%,rgba(186,69,107,0.71) 52%,rgba(224,218,82,0.71) 100%)",
         "bottom": "12%",
         "clip-path": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
@@ -1253,21 +1253,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "image": {
+      "general": {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
@@ -1279,7 +1279,7 @@ Object {
         "display": "block",
         "opacity": 0.52,
       },
-      "l": Object {
+      "l": {
         "background-attachment": "fixed",
         "background-clip": "padding-box",
         "background-origin": "content-box",
@@ -1288,18 +1288,18 @@ Object {
         "background-size": "contain",
       },
       "label": "Background Image",
-      "m": Object {
+      "m": {
         "background-position": "right top",
         "background-size": "contain",
         "opacity": 0.91,
       },
-      "s": Object {
+      "s": {
         "background-attachment": "scroll",
         "background-position": "center top",
         "background-repeat": "repeat-x",
         "background-size": "contain",
       },
-      "xl": Object {
+      "xl": {
         "background-attachment": "local",
         "background-clip": "padding-box",
         "background-origin": "border-box",
@@ -1308,11 +1308,11 @@ Object {
         "background-size": "cover",
         "opacity": 0.52,
       },
-      "xs": Object {
+      "xs": {
         "background-position": "center top",
         "background-size": "auto",
       },
-      "xxl": Object {
+      "xxl": {
         "background-position": "left top",
         "background-size": "cover",
         "opacity": 0.11,
@@ -1323,21 +1323,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with different values on different responsive stages and hovers 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "image": {
+      "general": {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
@@ -1350,7 +1350,7 @@ Object {
         "display": "block",
         "opacity": 0.52,
       },
-      "l": Object {
+      "l": {
         "background-attachment": "fixed",
         "background-clip": "padding-box",
         "background-origin": "content-box",
@@ -1360,20 +1360,20 @@ Object {
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
       "label": "Background Image",
-      "m": Object {
+      "m": {
         "background-position": "right top",
         "background-size": "contain",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
         "opacity": 0.91,
       },
-      "s": Object {
+      "s": {
         "background-attachment": "scroll",
         "background-position": "center top",
         "background-repeat": "repeat-x",
         "background-size": "contain",
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
-      "xl": Object {
+      "xl": {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-attachment": "local",
         "background-clip": "padding-box",
@@ -1384,12 +1384,12 @@ Object {
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "opacity": 0.52,
       },
-      "xs": Object {
+      "xs": {
         "background-position": "center top",
         "background-size": "auto",
         "clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
       },
-      "xxl": Object {
+      "xxl": {
         "-webkit-transform": "translate3d(0,0,0)",
         "background-position": "left top",
         "background-size": "cover",
@@ -1398,20 +1398,20 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+    "image": {
+      "general": {
         "background-attachment": "local",
         "background-clip": "padding-box",
         "background-image": "url('http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg')",
@@ -1422,35 +1422,35 @@ Object {
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
         "opacity": 0.17,
       },
-      "l": Object {
+      "l": {
         "background-position": "right top",
         "background-size": "contain",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
         "opacity": 0.81,
       },
       "label": "Background Image",
-      "m": Object {
+      "m": {
         "background-position": "right top",
         "background-size": "contain",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
       },
-      "s": Object {
+      "s": {
         "background-position": "center top",
         "background-size": "contain",
         "clip-path": "ellipse(25% 40% at 50% 50%)",
       },
-      "xl": Object {
+      "xl": {
         "background-position": "left top",
         "background-size": "cover",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
         "opacity": 0.17,
       },
-      "xs": Object {
+      "xs": {
         "background-position": "center top",
         "background-size": "auto",
         "clip-path": "ellipse(25% 40% at 50% 50%)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-position": "left top",
         "background-size": "cover",
         "clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
@@ -1462,58 +1462,58 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for image layer with parallax and different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "image": {
+      "general": {
         "display": "block",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 img": Object {
-    "image": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 img": {
+    "image": {
+      "general": {
         "-webkit-transform": "translate3d(0,0,0)",
         "display": "block",
         "object-fit": "cover",
         "object-position": "left top",
         "opacity": 0.52,
       },
-      "l": Object {
+      "l": {
         "object-fit": "contain",
         "object-position": "right top",
       },
       "label": "Background Image",
-      "m": Object {
+      "m": {
         "object-fit": "contain",
         "object-position": "right top",
         "opacity": 0.91,
       },
-      "s": Object {
+      "s": {
         "object-fit": "contain",
         "object-position": "center top",
       },
-      "xl": Object {
+      "xl": {
         "object-fit": "cover",
         "object-position": "left top",
         "opacity": 0.52,
       },
-      "xs": Object {
+      "xs": {
         "object-fit": "auto",
         "object-position": "center top",
       },
-      "xxl": Object {
+      "xxl": {
         "object-fit": "cover",
         "object-position": "left top",
         "opacity": 0.11,
@@ -1524,21 +1524,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "shape": {
+      "general": {
         "bottom": "10%",
         "display": "block",
         "left": "10%",
@@ -1546,7 +1546,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "bottom": "13%",
         "left": "13%",
         "right": "13%",
@@ -1554,35 +1554,35 @@ Object {
         "width": "103px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "bottom": "14%",
         "left": "14%",
         "right": "14%",
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "bottom": "15%",
         "left": "15%",
         "right": "15%",
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "12%",
         "left": "12%",
         "right": "12%",
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "bottom": "16%",
         "left": "16%",
         "right": "16%",
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "11%",
         "left": "11%",
         "right": "11%",
@@ -1591,78 +1591,78 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": {
+    "shape": {
+      "general": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "l": Object {
+      "l": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "m": Object {
+      "m": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "s": Object {
+      "s": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "xl": Object {
+      "xl": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "xs": Object {
+      "xs": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
-      "xxl": Object {
+      "xxl": {
         "transform": "scale(0.72) rotate(104deg) ",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
+    "shape": {
+      "general": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "l": Object {
+      "l": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "m": Object {
+      "m": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "s": Object {
+      "s": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "xl": Object {
+      "xl": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "xs": Object {
+      "xs": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
-      "xxl": Object {
+      "xxl": {
         "transform": "scale(1.3888888888888888) rotate(-104deg) ",
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": {
+    "shape": {
+      "general": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "l": Object {
+      "l": {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "label": "Icon background",
-      "m": Object {
+      "m": {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
-      "s": Object {
+      "s": {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
-      "xl": Object {
+      "xl": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xs": Object {
+      "xs": {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
-      "xxl": Object {
+      "xxl": {
         "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
     },
@@ -1671,21 +1671,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for shape layer with different values on different responsive stages and hovers 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "shape": {
+      "general": {
         "bottom": "10%",
         "display": "block",
         "left": "10%",
@@ -1693,7 +1693,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "bottom": "13%",
         "left": "13%",
         "right": "13%",
@@ -1701,35 +1701,35 @@ Object {
         "width": "103px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "bottom": "14%",
         "left": "14%",
         "right": "14%",
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "bottom": "15%",
         "left": "15%",
         "right": "15%",
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "12%",
         "left": "12%",
         "right": "12%",
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "bottom": "16%",
         "left": "16%",
         "right": "16%",
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "11%",
         "left": "11%",
         "right": "11%",
@@ -1738,59 +1738,59 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": Object {
-    "shape": Object {},
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
+    "shape": {},
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": {
+    "shape": {
+      "general": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "l": Object {
+      "l": {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
       "label": "Icon background",
-      "m": Object {
+      "m": {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)",
       },
-      "s": Object {
+      "s": {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
-      "xl": Object {
+      "xl": {
         "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
-      "xs": Object {
+      "xs": {
         "fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)",
       },
-      "xxl": Object {
+      "xxl": {
         "fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)",
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+    "shape": {
+      "general": {
         "bottom": "11%",
         "left": "11%",
         "right": "11%",
         "top": "11%",
         "width": "101px",
       },
-      "l": Object {
+      "l": {
         "bottom": "14%",
         "left": "14%",
         "right": "14%",
@@ -1798,35 +1798,35 @@ Object {
         "width": "104px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "bottom": "15%",
         "left": "15%",
         "right": "15%",
         "top": "15%",
         "width": "105px",
       },
-      "s": Object {
+      "s": {
         "bottom": "16%",
         "left": "16%",
         "right": "16%",
         "top": "16%",
         "width": "106px",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "13%",
         "left": "13%",
         "right": "13%",
         "top": "13%",
         "width": "103px",
       },
-      "xs": Object {
+      "xs": {
         "bottom": "17%",
         "left": "17%",
         "right": "17%",
         "top": "17%",
         "width": "107px",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "12%",
         "left": "12%",
         "right": "12%",
@@ -1835,34 +1835,34 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": Object {
-    "shape": Object {},
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": {
+    "shape": {},
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": Object {
-    "shape": Object {},
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
+    "shape": {},
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 svg *": Object {
-    "shape": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 svg *": {
+    "shape": {
+      "general": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
-      "l": Object {
+      "l": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
       "label": "Icon background",
-      "m": Object {
+      "m": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
-      "s": Object {
+      "s": {
         "fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)",
       },
-      "xl": Object {
+      "xl": {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
-      "xs": Object {
+      "xs": {
         "fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)",
       },
-      "xxl": Object {
+      "xxl": {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.17)",
       },
     },
@@ -1871,21 +1871,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "video": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "video": {
+      "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "10%",
@@ -1897,7 +1897,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "13%",
@@ -1909,7 +1909,7 @@ Object {
         "width": "103px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "14%",
@@ -1920,7 +1920,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "15%",
@@ -1931,7 +1931,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "12%",
@@ -1942,7 +1942,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "16%",
@@ -1953,7 +1953,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg)",
         "background-size": "cover",
         "bottom": "11%",
@@ -1970,21 +1970,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles for video layer with different values on different responsive stages and hovers 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "video": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "video": {
+      "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "10%",
@@ -1996,7 +1996,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "13%",
@@ -2008,7 +2008,7 @@ Object {
         "width": "103px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "14%",
@@ -2019,7 +2019,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "15%",
@@ -2030,7 +2030,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "12%",
@@ -2041,7 +2041,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "16%",
@@ -2052,7 +2052,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg)",
         "background-size": "cover",
         "bottom": "11%",
@@ -2065,20 +2065,20 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "video": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+    "video": {
+      "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "11%",
@@ -2089,7 +2089,7 @@ Object {
         "top": "11%",
         "width": "101px",
       },
-      "l": Object {
+      "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "14%",
@@ -2101,7 +2101,7 @@ Object {
         "width": "104px",
       },
       "label": "Background layer wrapper",
-      "m": Object {
+      "m": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "15%",
@@ -2112,7 +2112,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "s": Object {
+      "s": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "16%",
@@ -2123,7 +2123,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xl": Object {
+      "xl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
         "bottom": "13%",
@@ -2134,7 +2134,7 @@ Object {
         "top": "13%",
         "width": "103px",
       },
-      "xs": Object {
+      "xs": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
         "background-size": "cover",
         "bottom": "17%",
@@ -2145,7 +2145,7 @@ Object {
         "top": "17%",
         "width": "107px",
       },
-      "xxl": Object {
+      "xxl": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg)",
         "background-size": "cover",
         "bottom": "12%",
@@ -2162,10 +2162,10 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles when border attributes are default, so the source is the normal attributes 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2176,19 +2176,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
-        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-style": "solid",
-        "border-top-style": "solid",
-        "border-top-width": "2px",
-      },
-      "m": Object {
+      "l": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2200,7 +2188,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "s": Object {
+      "m": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2212,7 +2200,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xl": Object {
+      "s": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2224,7 +2212,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xs": Object {
+      "xl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2236,7 +2224,19 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xxl": Object {
+      "xs": {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "xxl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "4px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2249,20 +2249,20 @@ Object {
         "border-top-width": "4px",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
         "top": "-2px",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
         "top": "-2px",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "-4px",
         "left": "-4px",
         "right": "-4px",
@@ -2270,36 +2270,36 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2310,19 +2310,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
-        "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-style": "solid",
-        "border-top-style": "solid",
-        "border-top-width": "2px",
-      },
-      "m": Object {
+      "l": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2334,7 +2322,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "s": Object {
+      "m": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2346,7 +2334,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xl": Object {
+      "s": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2358,7 +2346,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xs": Object {
+      "xl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2370,7 +2358,19 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xxl": Object {
+      "xs": {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "xxl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "4px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2384,28 +2384,28 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
     },
@@ -2414,21 +2414,21 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct block background styles when hover status is disabled, but hover attributes are set 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "10%",
         "display": "block",
@@ -2438,7 +2438,7 @@ Object {
         "top": "10%",
         "width": "100px",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
         "bottom": "13%",
         "height": "103px",
@@ -2448,7 +2448,7 @@ Object {
         "width": "103px",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-5,0,0,0),0.59)",
         "bottom": "14%",
         "height": "104px",
@@ -2457,7 +2457,7 @@ Object {
         "top": "14%",
         "width": "104px",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "15%",
         "height": "105px",
@@ -2466,7 +2466,7 @@ Object {
         "top": "15%",
         "width": "105px",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
         "bottom": "12%",
         "height": "102px",
@@ -2475,7 +2475,7 @@ Object {
         "top": "12%",
         "width": "102px",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(204,68,68,0.59)",
         "bottom": "16%",
         "height": "106px",
@@ -2484,7 +2484,7 @@ Object {
         "top": "16%",
         "width": "106px",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.2)",
         "bottom": "11%",
         "height": "101px",
@@ -2495,25 +2495,25 @@ Object {
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
     },
   },
 }
 `;
 
 exports[`getBackgroundStyles Get correct block background styles when most border attributes are default, so the source is the normal attributes and the one different 1`] = `
-Object {
-  "maxi-test > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+{
+  "maxi-test > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2524,19 +2524,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "l": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
-        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-style": "solid",
-        "border-top-style": "solid",
-        "border-top-width": "2px",
-      },
-      "m": Object {
+      "l": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2548,7 +2536,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "s": Object {
+      "m": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2560,7 +2548,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xl": Object {
+      "s": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2572,7 +2560,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xs": Object {
+      "xl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2584,7 +2572,19 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "2px",
       },
-      "xxl": Object {
+      "xs": {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-style": "solid",
+        "border-top-width": "2px",
+      },
+      "xxl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "4px",
         "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
@@ -2597,20 +2597,20 @@ Object {
         "border-top-width": "4px",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
         "top": "-2px",
       },
-      "xl": Object {
+      "xl": {
         "bottom": "-2px",
         "left": "-2px",
         "right": "-2px",
         "top": "-2px",
       },
-      "xxl": Object {
+      "xxl": {
         "bottom": "-4px",
         "left": "-4px",
         "right": "-4px",
@@ -2618,36 +2618,36 @@ Object {
       },
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2658,19 +2658,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "3px",
       },
-      "l": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
-        "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-style": "solid",
-        "border-top-style": "solid",
-        "border-top-width": "3px",
-      },
-      "m": Object {
+      "l": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2682,7 +2670,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "3px",
       },
-      "s": Object {
+      "m": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2694,7 +2682,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "3px",
       },
-      "xl": Object {
+      "s": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2706,7 +2694,7 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "3px",
       },
-      "xs": Object {
+      "xl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2718,7 +2706,19 @@ Object {
         "border-top-style": "solid",
         "border-top-width": "3px",
       },
-      "xxl": Object {
+      "xs": {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "2px",
+        "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
+        "border-left-style": "solid",
+        "border-left-width": "2px",
+        "border-right-style": "solid",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-style": "solid",
+        "border-top-width": "3px",
+      },
+      "xxl": {
         "border-bottom-style": "solid",
         "border-bottom-width": "4px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
@@ -2731,34 +2731,34 @@ Object {
         "border-top-width": "3px",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "top": "-3px",
       },
     },
   },
-  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "color": Object {
-      "general": Object {
+  "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "l": Object {
+      "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
       "label": "Background Color",
-      "m": Object {
+      "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "s": Object {
+      "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xl": Object {
+      "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xs": Object {
+      "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
-      "xxl": Object {
+      "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0)",
       },
     },
@@ -2767,28 +2767,28 @@ Object {
 `;
 
 exports[`getBackgroundStyles Get correct simple background styles 1`] = `
-Object {
-  "background": Object {
-    "general": Object {
+{
+  "background": {
+    "general": {
       "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)",
     },
-    "l": Object {
+    "l": {
       "background": "linear-gradient(135deg,rgba(6,147,227,0.29) 0%,rgba(73,131,156,0.29) 39%,rgba(155,81,224,0.29) 100%)",
     },
     "label": "Background gradient",
-    "m": Object {
+    "m": {
       "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.39)",
     },
-    "s": Object {
+    "s": {
       "background-color": "rgba(43,43,179,0.39)",
     },
-    "xl": Object {
+    "xl": {
       "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)",
     },
-    "xs": Object {
+    "xs": {
       "background": "linear-gradient(135deg,rgba(6,147,227,0.29) 0%,rgba(73,131,156,0.29) 39%,rgba(102,186,223,0.29) 67%,rgba(155,81,224,0.29) 100%)",
     },
-    "xxl": Object {
+    "xxl": {
       "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.39)",
     },
   },

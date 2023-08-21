@@ -82,7 +82,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	useEffect(() => {
 		const { tone, language } = AISettings;
 		updateSettings({ tone, language });
-	}, [AISettings]);
+	}, [AISettings, updateSettings]);
 
 	useEffect(() => {
 		setContext(getContext(contextOption, clientId));

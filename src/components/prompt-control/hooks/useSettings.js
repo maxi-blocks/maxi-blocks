@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,12 +26,12 @@ const useSettings = () => {
 		prompt: '',
 	});
 
-	const updateSettings = newSettings => {
+	const updateSettings = useCallback(newSettings => {
 		setSettings(prevSettings => ({
 			...prevSettings,
 			...newSettings,
 		}));
-	};
+	}, []);
 
 	return {
 		settings,

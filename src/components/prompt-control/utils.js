@@ -60,11 +60,11 @@ export const getContentAttributesSection = (
 	language,
 	characterCount
 ) => `- **Content Attributes**:
-			- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
-			- Tone: ${tone}
-			- Style: ${writingStyle}
-			- Language: ${language}
-			- Length: ${characterCount} characters`;
+	- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
+	- Tone: ${tone}
+	- Style: ${writingStyle}
+	- Language: ${language}
+	- Length: ${characterCount} characters`;
 
 export const getContextSection = context => {
 	if (!context) {
@@ -73,11 +73,11 @@ export const getContextSection = context => {
 
 	// Format the context into a compact section with a clear explanation of the keys
 	const contextSection = context
-		.map(item => `\t\t**${item.l}**: "${item.c}"`)
+		.map(item => `\t- ${item.l}: ${item.c}`)
 		.join('\n');
 
-	return `**Page Context (level: content)**: The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
-					${contextSection}`;
+	return `- **Page Context (level: content)**: The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
+${contextSection}`;
 };
 
 export const getExamplesSection = contentType => {
@@ -88,7 +88,7 @@ export const getExamplesSection = contentType => {
 
 	const formattedExamples = examples.join('\n- ');
 
-	return `Examples:\n- ${formattedExamples}`;
+	return `**Examples**:\n- ${formattedExamples}`;
 };
 
 export const getFormattedMessages = async (

@@ -106,7 +106,7 @@ ${getContentAttributesSection(
 	characterCount
 )}
 - **Confidence Level**: ${confidenceLevel}%
-${quoteGuidance}\n`
+${quoteGuidance}`
 			: '';
 
 		const systemTemplate = `
@@ -116,10 +116,8 @@ You are a helpful assistant tasked with ${modificationAction} the following ${
 				: 'generated for website'
 		} text. Adhere to these guidelines:
 ${generatedTextExplanation}
-${customExplanation}
-${getSiteInformation(AISettings)}
+${customExplanation}${getSiteInformation(AISettings)}
 ${getContextSection(context)}
-
 Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
 		const humanTemplate =

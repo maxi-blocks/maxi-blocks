@@ -292,6 +292,12 @@ Your task is to maintain the original intent and context while ${modificationAct
 						return null;
 					}
 
+					const refResultIndex =
+						result.refId &&
+						results.findIndex(
+							refResult => refResult.id === result.refId
+						);
+
 					const handleResultInsertion = () => {
 						const { start: selectionStart, end: selectionEnd } =
 							formatValue;
@@ -325,12 +331,6 @@ Your task is to maintain the original intent and context while ${modificationAct
 							setModifyOption(result.modificationType);
 							setCustomText(result.customText);
 
-							const refResultIndex =
-								result.refId &&
-								results.findIndex(
-									refResult => refResult.id === result.refId
-								);
-
 							if (refResultIndex >= loadUntilIndex) {
 								setLoadUntilIndex(refResultIndex + 1);
 							}
@@ -353,9 +353,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 
 						setResults(prevResults => {
 							const newResults = [...prevResults].filter(
-								deletedResult =>
-									deletedResult.id !== result.id &&
-									deletedResult.refId !== result.id
+								deletedResult => deletedResult.id !== result.id
 							);
 
 							if (isEmpty(newResults)) {
@@ -380,6 +378,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 							isSelected={result.id === selectedResultId}
 							isSelectedText={!!selectedText}
 							isCustom={modifyOption === 'custom'}
+							isRefExist={refResultIndex && refResultIndex >= 0}
 							onInsert={handleResultInsertion}
 							onSelect={handleResultSelection}
 							onUseSettings={handleResultUseSettings}

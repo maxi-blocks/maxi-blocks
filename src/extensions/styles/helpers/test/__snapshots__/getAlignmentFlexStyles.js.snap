@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getAlignmentFlexStyles Get a correct alignment flex styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "justify-content": "flex-end",
   },
-  "l": Object {
+  "l": {
     "justify-content": "flex-start",
   },
-  "m": Object {
+  "m": {
     "justify-content": "flex-end",
   },
-  "s": Object {
+  "s": {
     "justify-content": "flex-start",
   },
-  "xl": Object {
+  "xl": {
     "justify-content": "flex-end",
   },
-  "xs": Object {
+  "xs": {
     "justify-content": "flex-end",
   },
-  "xxl": Object {
+  "xxl": {
     "justify-content": "flex-start",
   },
 }

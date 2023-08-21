@@ -1,61 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects color background style 1`] = `
-Object {
-  "background": Object {
-    "general": Object {
+{
+  "background": {
+    "general": {
       "background-color": "rgb(255,99,71)",
     },
-    "l": Object {
+    "l": {
       "background-color": "rgb(255,99,71)",
     },
     "label": "Background Color",
-    "m": Object {
+    "m": {
       "background-color": "rgb(255,99,71)",
     },
-    "s": Object {
+    "s": {
       "background-color": "rgb(255,99,71)",
     },
-    "xl": Object {
+    "xl": {
       "background-color": "rgb(255,99,71)",
     },
-    "xs": Object {
+    "xs": {
       "background-color": "rgb(255,99,71)",
     },
-    "xxl": Object {
+    "xxl": {
       "background-color": "rgb(255,99,71)",
     },
   },
-  "general": Object {},
+  "general": {},
 }
 `;
 
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects gradient background style 1`] = `
-Object {
-  "background": Object {
-    "general": Object {
+{
+  "background": {
+    "general": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
-    "l": Object {
+    "l": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "label": "Background gradient",
-    "m": Object {
+    "m": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
-    "s": Object {
+    "s": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
-    "xl": Object {
+    "xl": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
-    "xs": Object {
+    "xs": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
-    "xxl": Object {
+    "xxl": {
       "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
   },
-  "general": Object {},
+  "general": {},
 }
 `;

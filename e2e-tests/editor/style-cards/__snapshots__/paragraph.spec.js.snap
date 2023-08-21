@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StyleCards Paragraph Check Paragraph 1`] = `
-Object {
-  "p": Object {
+{
+  "p": {
     "bottom-gap-general": 20,
     "bottom-gap-unit-general": "px",
     "color": "",
@@ -45,8 +45,8 @@ Object {
 `;
 
 exports[`StyleCards Paragraph Works on responsive 1`] = `
-Object {
-  "p": Object {
+{
+  "p": {
     "bottom-gap-general": 20,
     "bottom-gap-m": 10,
     "bottom-gap-unit-general": "px",

@@ -1,109 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getSVGStyles Returns correct styles 1`] = `
-Object {
-  "  .maxi-svg-icon-block__icon svg circle[data-fill]:not([fill^=\\"none\\"])": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+{
+  "  .maxi-svg-icon-block__icon svg circle[data-fill]:not([fill^="none"])": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg circle[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
     },
   },
-  "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^="none"])": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
     },
   },
-  "  .maxi-svg-icon-block__icon svg path": Object {
-    "SVGPath": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg path": {
+    "SVGPath": {
+      "general": {
         "stroke-width": 2,
       },
       "label": "SVG path",
-      "m": Object {
+      "m": {
         "stroke-width": 20,
       },
     },
   },
-  "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^="none"])": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
     },
   },
-  "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^="none"])": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
     },
   },
-  "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^=\\"none\\"])": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^="none"])": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^=\\"none\\"]) *": Object {
-    "SVGPathFill": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg[data-fill]:not([fill^="none"]) *": {
+    "SVGPathFill": {
+      "general": {
         "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
       },
       "label": "SVG path-fill",
     },
   },
-  "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
     },
   },
-  "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
-    "SVGPathStroke": Object {
-      "general": Object {
+  "  .maxi-svg-icon-block__icon svg[data-stroke]:not([stroke^="none"]) *": {
+    "SVGPathStroke": {
+      "general": {
         "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))",
       },
       "label": "SVG Path stroke",
@@ -113,28 +113,28 @@ Object {
 `;
 
 exports[`getSVGStyles Should return correct icon size 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "width": "32px",
     },
-    "l": Object {
+    "l": {
       "width": "32px",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "width": "32px",
     },
-    "s": Object {
+    "s": {
       "width": "32px",
     },
-    "xl": Object {
+    "xl": {
       "width": "32px",
     },
-    "xs": Object {
+    "xs": {
       "width": "32px",
     },
-    "xxl": Object {
+    "xxl": {
       "width": "32px",
     },
   },
@@ -142,34 +142,34 @@ Object {
 `;
 
 exports[`getSVGStyles Should return correct icon size with disableHeight: false 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32px",
       "width": "32px",
     },
-    "l": Object {
+    "l": {
       "height": "32px",
       "width": "32px",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "32px",
       "width": "32px",
     },
-    "s": Object {
+    "s": {
       "height": "32px",
       "width": "32px",
     },
-    "xl": Object {
+    "xl": {
       "height": "32px",
       "width": "32px",
     },
-    "xs": Object {
+    "xs": {
       "height": "32px",
       "width": "32px",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32px",
       "width": "32px",
     },
@@ -178,27 +178,27 @@ Object {
 `;
 
 exports[`getSVGStyles Should return right styles with height fit-content, width/height ratio < 1 with disableHeight: true 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {},
+{
+  "iconSize": {
+    "general": {},
     "label": "Icon size",
   },
 }
 `;
 
 exports[`getSVGStyles Should return right styles with height fit-content, width/height ratio > 1 with disableHeight true 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {},
+{
+  "iconSize": {
+    "general": {},
     "label": "Icon size",
   },
 }
 `;
 
 exports[`getSVGStyles Should work on responsive 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {},
+{
+  "iconSize": {
+    "general": {},
     "label": "Icon size",
   },
 }

@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getOpacityStyles Get a correct opacity styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "opacity": 1,
   },
-  "l": Object {
+  "l": {
     "opacity": 0.95,
   },
-  "m": Object {
+  "m": {
     "opacity": 0.85,
   },
-  "s": Object {
+  "s": {
     "opacity": 0.66,
   },
-  "xl": Object {
+  "xl": {
     "opacity": 0.77,
   },
-  "xs": Object {
+  "xs": {
     "opacity": 0.99,
   },
-  "xxl": Object {
+  "xxl": {
     "opacity": 0.56,
   },
 }

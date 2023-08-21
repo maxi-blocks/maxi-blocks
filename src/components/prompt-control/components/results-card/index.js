@@ -28,6 +28,7 @@ const ResultCard = ({
 	isSelected,
 	isSelectedText,
 	isCustom,
+	isRefExist,
 	onInsert,
 	onSelect,
 	onUseSettings,
@@ -153,10 +154,17 @@ const ResultCard = ({
 							)} from`,
 							'maxi-blocks'
 						)}{' '}
-						{result.refId && (
+						{result.refId && isRefExist && (
 							<label className={`${className}__modificator__id`}>
 								#{result.refId}
 							</label>
+						)}
+						{result.refId && !isRefExist && (
+							<span
+								className={`${className}__modificator__deleted`}
+							>
+								{__('deleted', 'maxi-blocks')}
+							</span>
 						)}
 						{result.refFromSelectedText && (
 							<span

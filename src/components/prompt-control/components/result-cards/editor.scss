@@ -1,0 +1,11 @@
+.maxi-prompt-control-results {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin-bottom: 5px;
+
+	&__no-results {
+		font-size: larger !important;
+		font-weight: bold !important;
+	}
+}

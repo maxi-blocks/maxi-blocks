@@ -80,8 +80,8 @@ const GenerateTab = ({
 			].map(({ key, label, list, state }, index) => (
 				// eslint-disable-next-line react/no-array-index-key
 				<Fragment key={index}>
-					<label>{__(label, 'maxi-blocks')}</label>
 					<ReactSelectControl
+						labelText={__(label, 'maxi-blocks')}
 						value={{
 							label: __(state, 'maxi-blocks'),
 							value: state,
@@ -127,8 +127,8 @@ const GenerateTab = ({
 					})
 				}
 			/>
-			<label>{__('Context', 'maxi-blocks')}</label>
 			<ReactSelectControl
+				labelText={__('Context', 'maxi-blocks')}
 				value={{
 					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
 					value: contextOption,

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-radius": "2px",
     "border-bottom-width": "2px",
     "border-color": "rgba(var(--maxi-light-color-7,8,18,25),1)",
@@ -14,21 +14,21 @@ Object {
     "border-top-radius": "2px",
     "border-top-width": "2px",
   },
-  "l": Object {},
-  "m": Object {},
-  "s": Object {
+  "l": {},
+  "m": {},
+  "s": {
     "border-right-radius": "0px",
     "border-right-width": "0px",
   },
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -40,7 +40,7 @@ Object {
     "border-top-right-radius": "10px",
     "border-top-width": "20px",
   },
-  "l": Object {
+  "l": {
     "border-bottom-width": "2px",
     "border-color": "rgba(114,52,118,0.46)",
     "border-left-width": "2px",
@@ -48,20 +48,20 @@ Object {
     "border-style": "dashed",
     "border-top-width": "2px",
   },
-  "m": Object {
+  "m": {
     "border-bottom-width": "50px",
     "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-7,8,18,25),0.46))",
     "border-left-width": "50px",
     "border-right-width": "50px",
     "border-top-width": "50px",
   },
-  "s": Object {
+  "s": {
     "border-bottom-width": "5px",
     "border-left-width": "5px",
     "border-right-width": "5px",
     "border-top-width": "5px",
   },
-  "xl": Object {
+  "xl": {
     "border-bottom-left-radius": "100px",
     "border-bottom-right-radius": "100px",
     "border-color": "rgba(197,26,209,0.46)",
@@ -70,14 +70,14 @@ Object {
     "border-top-left-radius": "100px",
     "border-top-right-radius": "100px",
   },
-  "xs": Object {
+  "xs": {
     "border-bottom-left-radius": "0px",
     "border-bottom-right-radius": "0px",
     "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2,242,249,253),0.46))",
     "border-top-left-radius": "0px",
     "border-top-right-radius": "0px",
   },
-  "xxl": Object {
+  "xxl": {
     "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-3,155,155,155),0.46))",
     "border-left-width": "0px",
     "border-right-width": "0px",
@@ -86,8 +86,8 @@ Object {
 `;
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi with hover active and non global SC settings enabled 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -99,18 +99,18 @@ Object {
     "border-top-right-radius": "10px",
     "border-top-width": "20px",
   },
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getBorderStyles Return a border styles object based on Button Maxi with hover disabled and global SC settings enabled 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-left-radius": "10px",
     "border-bottom-right-radius": "10px",
     "border-bottom-width": "20px",
@@ -122,18 +122,18 @@ Object {
     "border-top-right-radius": "10px",
     "border-top-width": "20px",
   },
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getBorderStyles Return a border styles object with hover options 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-left-radius": "0px",
     "border-bottom-right-radius": "0px",
     "border-bottom-width": "20px",
@@ -145,23 +145,23 @@ Object {
     "border-top-right-radius": "0px",
     "border-top-width": "20px",
   },
-  "l": Object {
+  "l": {
     "border-bottom-width": "0px",
     "border-color": "rgba(23, 63, 194, 0.38)",
     "border-left-width": "30px",
     "border-right-width": "0px",
     "border-top-width": "20px",
   },
-  "m": Object {
+  "m": {
     "border-bottom-width": "0px",
     "border-left-width": "0px",
     "border-right-width": "0px",
     "border-top-width": "0px",
   },
-  "s": Object {
+  "s": {
     "border-color": "rgba(51,54,62,0.38)",
   },
-  "xl": Object {
+  "xl": {
     "border-bottom-left-radius": "50px",
     "border-bottom-right-radius": "50px",
     "border-bottom-width": "30px",
@@ -170,14 +170,14 @@ Object {
     "border-top-right-radius": "50px",
     "border-top-width": "1px",
   },
-  "xs": Object {
+  "xs": {
     "border-bottom-width": "3px",
     "border-color": "rgba(var(--maxi-light-color-5,0,0,0),0.94)",
     "border-left-width": "4px",
     "border-right-width": "2px",
     "border-top-width": "1px",
   },
-  "xxl": Object {
+  "xxl": {
     "border-color": "rgba(213,14,227,0.31)",
     "border-left-width": "6px",
     "border-right-width": "6px",
@@ -186,22 +186,22 @@ Object {
 `;
 
 exports[`getBorderStyles Return an IB border styles when border-style - none 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border": "none",
   },
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getBorderStyles Return border styles object with all the settings 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-bottom-width": "2px",
     "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
     "border-left-width": "2px",
@@ -209,18 +209,18 @@ Object {
     "border-style": "solid",
     "border-top-width": "2px",
   },
-  "l": Object {
+  "l": {
     "border-bottom-width": "0px",
     "border-color": "rgba(23, 63, 194, 0.38)",
     "border-left-width": "30px",
     "border-right-width": "0px",
     "border-top-width": "20px",
   },
-  "m": Object {},
-  "s": Object {
+  "m": {},
+  "s": {
     "border-color": "rgba(51,54,62,0.38)",
   },
-  "xl": Object {
+  "xl": {
     "border-bottom-left-radius": "50px",
     "border-bottom-right-radius": "50px",
     "border-bottom-width": "3px",
@@ -229,10 +229,10 @@ Object {
     "border-top-right-radius": "50px",
     "border-top-width": "1px",
   },
-  "xs": Object {
+  "xs": {
     "border-color": "rgba(var(--maxi-light-color-5,0,0,0),0.94)",
   },
-  "xxl": Object {
+  "xxl": {
     "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
     "border-left-width": "6px",
     "border-right-width": "6px",
@@ -241,13 +241,13 @@ Object {
 `;
 
 exports[`getBorderStyles Test simple and default border attributes 1`] = `
-Object {
-  "general": Object {},
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+{
+  "general": {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;

@@ -4,7 +4,8 @@ const validateNumberInput = event => {
 		event.key !== 'e' &&
 		event.key.length === 1 &&
 		!event.ctrlKey &&
-		!event.altKey
+		!event.altKey &&
+		!event.metaKey
 	)
 		event.preventDefault();
 };

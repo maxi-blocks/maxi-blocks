@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly with image copy-paste 1`] = `
-Object {
-  "advanced": Object {
-    "Anchor": Object {
+{
+  "advanced": {
+    "Anchor": {
       "anchor": undefined,
       "linkSettings": undefined,
     },
-    "Breakpoints": Object {
+    "Breakpoints": {
       "breakpoints-general": undefined,
       "breakpoints-l": undefined,
       "breakpoints-m": undefined,
@@ -16,7 +16,7 @@ Object {
       "breakpoints-xs": undefined,
       "breakpoints-xxl": undefined,
     },
-    "Custom CSS": Object {
+    "Custom CSS": {
       "custom-css-general": undefined,
       "custom-css-l": undefined,
       "custom-css-m": undefined,
@@ -25,10 +25,10 @@ Object {
       "custom-css-xs": undefined,
       "custom-css-xxl": undefined,
     },
-    "Custom CSS classes": Object {
+    "Custom CSS classes": {
       "extraClassName": undefined,
     },
-    "Flexbox": Object {
+    "Flexbox": {
       "align-content-general": undefined,
       "align-content-l": undefined,
       "align-content-m": undefined,
@@ -128,14 +128,14 @@ Object {
       "row-gap-xs": undefined,
       "row-gap-xxl": undefined,
     },
-    "Hover transition": Object {
+    "Hover transition": {
       "transition": undefined,
       "transition-change-all": undefined,
     },
-    "Interaction": Object {
+    "Interaction": {
       "relations": undefined,
     },
-    "Overflow": Object {
+    "Overflow": {
       "overflow-x-general": undefined,
       "overflow-x-l": undefined,
       "overflow-x-m": undefined,
@@ -151,7 +151,7 @@ Object {
       "overflow-y-xs": undefined,
       "overflow-y-xxl": undefined,
     },
-    "Position": Object {
+    "Position": {
       "position-bottom-general": undefined,
       "position-bottom-l": undefined,
       "position-bottom-m": undefined,
@@ -223,7 +223,7 @@ Object {
       "position-xs": undefined,
       "position-xxl": undefined,
     },
-    "Scroll": Object {
+    "Scroll": {
       "scroll-blur-blur-end-general": 0,
       "scroll-blur-blur-end-l": undefined,
       "scroll-blur-blur-end-m": undefined,
@@ -539,7 +539,7 @@ Object {
       "shortcutEffect": 0,
       "shortcutEffectType": undefined,
     },
-    "Show/hide block": Object {
+    "Show/hide block": {
       "display-general": undefined,
       "display-l": undefined,
       "display-m": undefined,
@@ -548,7 +548,7 @@ Object {
       "display-xs": undefined,
       "display-xxl": undefined,
     },
-    "Transform": Object {
+    "Transform": {
       "transform-origin-general": undefined,
       "transform-origin-l": undefined,
       "transform-origin-m": undefined,
@@ -579,7 +579,7 @@ Object {
       "transform-translate-xs": undefined,
       "transform-translate-xxl": undefined,
     },
-    "Z-index": Object {
+    "Z-index": {
       "z-index-general": undefined,
       "z-index-l": undefined,
       "z-index-m": undefined,
@@ -590,14 +590,14 @@ Object {
     },
     "group": true,
   },
-  "canvas": Object {
-    "Background": Object {
+  "canvas": {
+    "Background": {
       "background-layers": undefined,
       "background-layers-hover": undefined,
       "block-background-status-hover": false,
     },
-    "Border": Object {
-      "Border": Object {
+    "Border": {
+      "Border": {
         "border-color-general": undefined,
         "border-color-l": undefined,
         "border-color-m": undefined,
@@ -641,7 +641,7 @@ Object {
         "border-style-xs": undefined,
         "border-style-xxl": undefined,
       },
-      "Border hover": Object {
+      "Border hover": {
         "border-color-general-hover": undefined,
         "border-color-l-hover": undefined,
         "border-color-m-hover": undefined,
@@ -686,7 +686,7 @@ Object {
         "border-style-xs-hover": undefined,
         "border-style-xxl-hover": undefined,
       },
-      "Border radius": Object {
+      "Border radius": {
         "border-bottom-left-radius-general": undefined,
         "border-bottom-left-radius-l": undefined,
         "border-bottom-left-radius-m": undefined,
@@ -730,7 +730,7 @@ Object {
         "border-unit-radius-xs": undefined,
         "border-unit-radius-xxl": undefined,
       },
-      "Border radius hover": Object {
+      "Border radius hover": {
         "border-bottom-left-radius-general-hover": undefined,
         "border-bottom-left-radius-l-hover": undefined,
         "border-bottom-left-radius-m-hover": undefined,
@@ -774,7 +774,7 @@ Object {
         "border-unit-radius-xs-hover": undefined,
         "border-unit-radius-xxl-hover": undefined,
       },
-      "Border width": Object {
+      "Border width": {
         "border-bottom-width-general": 2,
         "border-bottom-width-l": undefined,
         "border-bottom-width-m": undefined,
@@ -818,7 +818,7 @@ Object {
         "border-unit-width-xs": undefined,
         "border-unit-width-xxl": undefined,
       },
-      "Border width hover": Object {
+      "Border width hover": {
         "border-bottom-width-general-hover": undefined,
         "border-bottom-width-l-hover": undefined,
         "border-bottom-width-m-hover": undefined,
@@ -864,8 +864,8 @@ Object {
       },
       "group": true,
     },
-    "Box shadow": Object {
-      "Box shadow": Object {
+    "Box shadow": {
+      "Box shadow": {
         "box-shadow-blur-general": 50,
         "box-shadow-blur-l": undefined,
         "box-shadow-blur-m": undefined,
@@ -965,7 +965,7 @@ Object {
         "box-shadow-vertical-xs": undefined,
         "box-shadow-vertical-xxl": undefined,
       },
-      "Box shadow hover": Object {
+      "Box shadow hover": {
         "box-shadow-blur-general-hover": undefined,
         "box-shadow-blur-l-hover": undefined,
         "box-shadow-blur-m-hover": undefined,
@@ -1068,8 +1068,8 @@ Object {
       },
       "group": true,
     },
-    "Margin/Padding": Object {
-      "Margin": Object {
+    "Margin/Padding": {
+      "Margin": {
         "margin-bottom-general": undefined,
         "margin-bottom-l": undefined,
         "margin-bottom-m": undefined,
@@ -1134,7 +1134,7 @@ Object {
         "margin-top-xs": undefined,
         "margin-top-xxl": undefined,
       },
-      "Padding": Object {
+      "Padding": {
         "padding-bottom-general": undefined,
         "padding-bottom-l": undefined,
         "padding-bottom-m": undefined,
@@ -1201,7 +1201,7 @@ Object {
       },
       "group": true,
     },
-    "Opacity": Object {
+    "Opacity": {
       "opacity-general": undefined,
       "opacity-l": undefined,
       "opacity-m": undefined,
@@ -1210,11 +1210,11 @@ Object {
       "opacity-xs": undefined,
       "opacity-xxl": undefined,
     },
-    "blockSpecific": Object {},
+    "blockSpecific": {},
     "group": true,
   },
-  "settings": Object {
-    "Alignment": Object {
+  "settings": {
+    "Alignment": {
       "alignment-general": "right",
       "alignment-l": undefined,
       "alignment-m": undefined,
@@ -1223,12 +1223,12 @@ Object {
       "alignment-xs": undefined,
       "alignment-xxl": undefined,
     },
-    "Alt tag": Object {
+    "Alt tag": {
       "altSelector": "title",
       "mediaAlt": "ball",
     },
-    "Border": Object {
-      "Border": Object {
+    "Border": {
+      "Border": {
         "image-border-color-general": undefined,
         "image-border-color-l": undefined,
         "image-border-color-m": undefined,
@@ -1272,7 +1272,7 @@ Object {
         "image-border-style-xs": undefined,
         "image-border-style-xxl": undefined,
       },
-      "Border hover": Object {
+      "Border hover": {
         "image-border-color-general-hover": undefined,
         "image-border-color-l-hover": undefined,
         "image-border-color-m-hover": undefined,
@@ -1317,7 +1317,7 @@ Object {
         "image-border-style-xs-hover": undefined,
         "image-border-style-xxl-hover": undefined,
       },
-      "Border radius": Object {
+      "Border radius": {
         "image-border-bottom-left-radius-general": 71,
         "image-border-bottom-left-radius-l": undefined,
         "image-border-bottom-left-radius-m": undefined,
@@ -1361,7 +1361,7 @@ Object {
         "image-border-unit-radius-xs": undefined,
         "image-border-unit-radius-xxl": undefined,
       },
-      "Border radius hover": Object {
+      "Border radius hover": {
         "image-border-bottom-left-radius-general-hover": 71,
         "image-border-bottom-left-radius-l-hover": undefined,
         "image-border-bottom-left-radius-m-hover": undefined,
@@ -1405,7 +1405,7 @@ Object {
         "image-border-unit-radius-xs-hover": undefined,
         "image-border-unit-radius-xxl-hover": undefined,
       },
-      "Border width": Object {
+      "Border width": {
         "image-border-bottom-width-general": 3,
         "image-border-bottom-width-l": undefined,
         "image-border-bottom-width-m": undefined,
@@ -1449,7 +1449,7 @@ Object {
         "image-border-unit-width-xs": undefined,
         "image-border-unit-width-xxl": undefined,
       },
-      "Border width hover": Object {
+      "Border width hover": {
         "image-border-bottom-width-general-hover": 3,
         "image-border-bottom-width-l-hover": undefined,
         "image-border-bottom-width-m-hover": undefined,
@@ -1495,8 +1495,8 @@ Object {
       },
       "group": true,
     },
-    "Box shadow": Object {
-      "Box shadow": Object {
+    "Box shadow": {
+      "Box shadow": {
         "image-box-shadow-blur-general": undefined,
         "image-box-shadow-blur-l": undefined,
         "image-box-shadow-blur-m": undefined,
@@ -1596,7 +1596,7 @@ Object {
         "image-box-shadow-vertical-xs": undefined,
         "image-box-shadow-vertical-xxl": undefined,
       },
-      "Box shadow hover": Object {
+      "Box shadow hover": {
         "image-box-shadow-blur-general-hover": undefined,
         "image-box-shadow-blur-l-hover": undefined,
         "image-box-shadow-blur-m-hover": undefined,
@@ -1699,11 +1699,11 @@ Object {
       },
       "group": true,
     },
-    "Caption": Object {
-      "Caption content": Object {
+    "Caption": {
+      "Caption content": {
         "captionContent": "Basket Ball",
       },
-      "Caption gap": Object {
+      "Caption gap": {
         "caption-gap-general": 2,
         "caption-gap-l": undefined,
         "caption-gap-m": undefined,
@@ -1712,7 +1712,7 @@ Object {
         "caption-gap-xs": undefined,
         "caption-gap-xxl": undefined,
       },
-      "Caption gap unit": Object {
+      "Caption gap unit": {
         "caption-gap-unit-general": "em",
         "caption-gap-unit-l": undefined,
         "caption-gap-unit-m": undefined,
@@ -1721,13 +1721,13 @@ Object {
         "caption-gap-unit-xs": undefined,
         "caption-gap-unit-xxl": undefined,
       },
-      "Caption position": Object {
+      "Caption position": {
         "captionPosition": "bottom",
       },
-      "Caption type": Object {
+      "Caption type": {
         "captionType": "custom",
       },
-      "Link": Object {
+      "Link": {
         "link-active-color-general": undefined,
         "link-active-color-l": undefined,
         "link-active-color-m": undefined,
@@ -1869,7 +1869,7 @@ Object {
         "link-visited-palette-status-xs": undefined,
         "link-visited-palette-status-xxl": undefined,
       },
-      "Text alignment": Object {
+      "Text alignment": {
         "text-alignment-general": "center",
         "text-alignment-l": undefined,
         "text-alignment-m": undefined,
@@ -1878,7 +1878,7 @@ Object {
         "text-alignment-xs": undefined,
         "text-alignment-xxl": undefined,
       },
-      "Typography": Object {
+      "Typography": {
         "bottom-gap-general": undefined,
         "bottom-gap-l": undefined,
         "bottom-gap-m": undefined,
@@ -2107,7 +2107,7 @@ Object {
       },
       "group": true,
     },
-    "Clip path": Object {
+    "Clip path": {
       "clip-path-general": undefined,
       "clip-path-l": undefined,
       "clip-path-m": undefined,
@@ -2124,23 +2124,23 @@ Object {
       "clip-path-xs": undefined,
       "clip-path-xxl": undefined,
     },
-    "Dimension": Object {
-      "Image ratio": Object {
+    "Dimension": {
+      "Image ratio": {
         "imageRatio": "original",
       },
-      "Image size": Object {
+      "Image size": {
         "imageSize": "full",
       },
-      "Image width": Object {
+      "Image width": {
         "imgWidth": 82,
       },
-      "Use original size": Object {
+      "Use original size": {
         "useInitSize": undefined,
       },
       "group": true,
     },
-    "Hover effects": Object {
-      "Hover": Object {
+    "Hover effects": {
+      "Hover": {
         "hover-basic-blur-value": 2,
         "hover-basic-effect-type": "zoom-in",
         "hover-basic-rotate-value": 15,
@@ -2156,7 +2156,7 @@ Object {
         "hover-transition-easing-cubic-bezier": undefined,
         "hover-type": "none",
       },
-      "Hover background": Object {
+      "Hover background": {
         "hover-background-active-media-general": undefined,
         "hover-background-active-media-l": undefined,
         "hover-background-active-media-m": undefined,
@@ -2166,7 +2166,7 @@ Object {
         "hover-background-active-media-xxl": undefined,
         "hover-background-status": false,
       },
-      "Hover background color": Object {
+      "Hover background color": {
         "hover-background-color-clip-path-general": undefined,
         "hover-background-color-clip-path-l": undefined,
         "hover-background-color-clip-path-m": undefined,
@@ -2308,7 +2308,7 @@ Object {
         "hover-background-palette-status-xs": undefined,
         "hover-background-palette-status-xxl": undefined,
       },
-      "Hover background gradient": Object {
+      "Hover background gradient": {
         "hover-background-gradient-clip-path-general": undefined,
         "hover-background-gradient-clip-path-l": undefined,
         "hover-background-gradient-clip-path-m": undefined,
@@ -2429,7 +2429,7 @@ Object {
         "hover-background-gradient-xs": undefined,
         "hover-background-gradient-xxl": undefined,
       },
-      "Hover border": Object {
+      "Hover border": {
         "hover-border-color-general": undefined,
         "hover-border-color-l": undefined,
         "hover-border-color-m": undefined,
@@ -2474,7 +2474,7 @@ Object {
         "hover-border-style-xs": undefined,
         "hover-border-style-xxl": undefined,
       },
-      "Hover border radius": Object {
+      "Hover border radius": {
         "hover-border-bottom-left-radius-general": undefined,
         "hover-border-bottom-left-radius-l": undefined,
         "hover-border-bottom-left-radius-m": undefined,
@@ -2518,7 +2518,7 @@ Object {
         "hover-border-unit-radius-xs": undefined,
         "hover-border-unit-radius-xxl": undefined,
       },
-      "Hover border width": Object {
+      "Hover border width": {
         "hover-border-bottom-width-general": 2,
         "hover-border-bottom-width-l": undefined,
         "hover-border-bottom-width-m": undefined,
@@ -2562,7 +2562,7 @@ Object {
         "hover-border-unit-width-xs": undefined,
         "hover-border-unit-width-xxl": undefined,
       },
-      "Hover content typography": Object {
+      "Hover content typography": {
         "hover-content-bottom-gap-general": undefined,
         "hover-content-bottom-gap-l": undefined,
         "hover-content-bottom-gap-m": undefined,
@@ -2791,7 +2791,7 @@ Object {
         "hover-content-word-spacing-xs": undefined,
         "hover-content-word-spacing-xxl": undefined,
       },
-      "Hover margin": Object {
+      "Hover margin": {
         "hover-margin-bottom-general": undefined,
         "hover-margin-bottom-l": undefined,
         "hover-margin-bottom-m": undefined,
@@ -2857,7 +2857,7 @@ Object {
         "hover-margin-top-xs": undefined,
         "hover-margin-top-xxl": undefined,
       },
-      "Hover padding": Object {
+      "Hover padding": {
         "hover-padding-bottom-general": undefined,
         "hover-padding-bottom-l": undefined,
         "hover-padding-bottom-m": undefined,
@@ -2923,7 +2923,7 @@ Object {
         "hover-padding-top-xs": undefined,
         "hover-padding-top-xxl": undefined,
       },
-      "Hover title typography": Object {
+      "Hover title typography": {
         "hover-title-bottom-gap-general": undefined,
         "hover-title-bottom-gap-l": undefined,
         "hover-title-bottom-gap-m": undefined,
@@ -3154,7 +3154,7 @@ Object {
       },
       "group": true,
     },
-    "Image": Object {
+    "Image": {
       "isImageUrl": false,
       "mediaAlt": "ball",
       "mediaHeight": 225,
@@ -3162,8 +3162,8 @@ Object {
       "mediaURL": "http://localhost:8888/wp-content/uploads/2022/04/ball.jpg",
       "mediaWidth": 225,
     },
-    "Margin/Padding": Object {
-      "Margin": Object {
+    "Margin/Padding": {
+      "Margin": {
         "margin-bottom-general": undefined,
         "margin-bottom-l": undefined,
         "margin-bottom-m": undefined,
@@ -3228,7 +3228,7 @@ Object {
         "margin-top-xs": undefined,
         "margin-top-xxl": undefined,
       },
-      "Padding": Object {
+      "Padding": {
         "padding-bottom-general": undefined,
         "padding-bottom-l": undefined,
         "padding-bottom-m": undefined,
@@ -3295,7 +3295,7 @@ Object {
       },
       "group": true,
     },
-    "Size": Object {
+    "Size": {
       "image-force-aspect-ratio-general": undefined,
       "image-force-aspect-ratio-l": undefined,
       "image-force-aspect-ratio-m": undefined,
@@ -3409,7 +3409,7 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly with image copy-paste 2`] = `
-Object {
+{
   "align-content-general": undefined,
   "align-content-l": undefined,
   "align-content-m": undefined,
@@ -6527,9 +6527,9 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with group attributes 1`] = `
-Object {
-  "settings": Object {
-    "Overflow": Object {
+{
+  "settings": {
+    "Overflow": {
       "overflow-x-general": "visible",
       "overflow-x-l": "clip",
       "overflow-x-m": "scroll",
@@ -6551,9 +6551,9 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with group attributes with prefix 1`] = `
-Object {
-  "settings": Object {
-    "Overflow": Object {
+{
+  "settings": {
+    "Overflow": {
       "row-overflow-x-general": "visible",
       "row-overflow-x-l": undefined,
       "row-overflow-x-m": "scroll",
@@ -6575,13 +6575,13 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with groups 1`] = `
-Object {
-  "settings": Object {
-    "Content": Object {
-      "Content": Object {
+{
+  "settings": {
+    "Content": {
+      "Content": {
         "content": "Test",
       },
-      "Content on close": Object {
+      "Content on close": {
         "closeContent": "Test on close",
       },
       "group": true,
@@ -6592,10 +6592,10 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with multiply conditions 1`] = `
-Object {
-  "settings": Object {
-    "Color": Object {
-      "Color": Object {
+{
+  "settings": {
+    "Color": {
+      "Color": {
         "row-fill-color-general": undefined,
         "row-fill-color-l": undefined,
         "row-fill-color-m": undefined,
@@ -6667,7 +6667,7 @@ Object {
         "row-line-palette-status-xs": undefined,
         "row-line-palette-status-xxl": undefined,
       },
-      "Color on hover": Object {
+      "Color on hover": {
         "row-fill-color-general-hover": null,
         "row-fill-color-l-hover": null,
         "row-fill-color-m-hover": undefined,
@@ -6747,17 +6747,17 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with multiply nested groups 1`] = `
-Object {
-  "settings": Object {
-    "Content": Object {
-      "Content": Object {
+{
+  "settings": {
+    "Content": {
+      "Content": {
         "content": "Test",
       },
-      "Content settings": Object {
-        "Content font size": Object {
+      "Content settings": {
+        "Content font size": {
           "fontSize": "12px",
         },
-        "Content font weight": Object {
+        "Content font weight": {
           "fontWeight": "bold",
         },
         "group": true,
@@ -6770,9 +6770,9 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with palette 1`] = `
-Object {
-  "settings": Object {
-    "Color": Object {
+{
+  "settings": {
+    "Color": {
       "text-color": "#fff",
       "text-palette-color": 4,
       "text-palette-opacity": 0.5,
@@ -6785,13 +6785,13 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with prefixes 1`] = `
-Object {
-  "settings": Object {
-    "Width": Object {
-      "Column width": Object {
+{
+  "settings": {
+    "Width": {
+      "Column width": {
         "column-width": "100%",
       },
-      "Row width": Object {
+      "Row width": {
         "row-width": "80%",
       },
       "group": true,
@@ -6802,9 +6802,9 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with responsive attributes 1`] = `
-Object {
-  "settings": Object {
-    "Width": Object {
+{
+  "settings": {
+    "Width": {
       "width-general": "80%",
       "width-l": undefined,
       "width-m": "100%",
@@ -6819,21 +6819,21 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Ensure it works with simple copy paste object 1`] = `
-Object {
-  "advanced": Object {
-    "Class": Object {
+{
+  "advanced": {
+    "Class": {
       "class": "class text",
     },
-    "Style": Object {
+    "Style": {
       "style": "style text",
     },
     "group": true,
   },
-  "settings": Object {
-    "Alt": Object {
+  "settings": {
+    "Alt": {
       "alt": "Alt text",
     },
-    "Content": Object {
+    "Content": {
       "content": "Test",
     },
     "group": true,
@@ -6842,9 +6842,9 @@ Object {
 `;
 
 exports[`getOrganizedAttributes Should ignore groups, which have names that start with underscore 1`] = `
-Object {
-  "settings": Object {
-    "Width": Object {
+{
+  "settings": {
+    "Width": {
       "width-general": "80%",
       "width-l": undefined,
       "width-m": "100%",

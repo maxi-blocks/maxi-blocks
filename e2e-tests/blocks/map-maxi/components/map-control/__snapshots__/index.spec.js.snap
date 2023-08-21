@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Map Control Map Maxi custom min/max zoom 1`] = `
-Object {
+{
   "map-max-zoom": 5,
   "map-min-zoom": 3,
 }

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getBlockAttributes Return attributes of nested block 1`] = `
-Object {
+{
   "background-gradient-opacity": 1,
   "background-image-attachment": "scroll",
   "background-image-clip": "border-box",

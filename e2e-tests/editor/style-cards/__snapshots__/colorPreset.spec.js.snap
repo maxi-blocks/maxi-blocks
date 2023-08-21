@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 1`] = `
-Object {
-  "color": Object {
+{
+  "color": {
     "4": "16,109,60",
   },
 }
 `;
 
 exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 2`] = `
-Object {
-  "color": Object {
+{
+  "color": {
     "4": "255,74,23",
   },
 }

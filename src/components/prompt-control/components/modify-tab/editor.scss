@@ -19,42 +19,15 @@
 		gap: 8px;
 	}
 
-	&__top-bar,
 	&__abort {
 		padding: 8px 0;
 		background: var(--maxi-white-4-color);
-	}
-
-	&__top-bar {
-		top: 47px;
-		position: sticky;
-	}
-
-	&__modification-options {
-		display: flex;
-		gap: 8px;
-
-		& > *:first-child {
-			flex-grow: 1;
-		}
-	}
-
-	&__results {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		margin-bottom: 5px;
 	}
 
 	&__abort {
 		position: sticky;
 		bottom: 0;
 		justify-content: center;
-	}
-
-	&__no-results {
-		font-size: larger !important;
-		font-weight: bold !important;
 	}
 }
 

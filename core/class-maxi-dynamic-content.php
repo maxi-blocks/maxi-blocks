@@ -488,6 +488,10 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
+            if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
+                return $this->get_post(array_replace($attributes, ['dc-relation' => 'by-date', 'dc-order' => 'desc']));
+            }
+
             return end($query->posts);
         } elseif ($dc_type === 'media') {
             $args = [
@@ -510,6 +514,10 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
+
+            if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
+                return $this->get_post(array_replace($attributes, ['dc-relation' => 'by-date', 'dc-order' => 'desc']));
+            }
 
             $post;
 

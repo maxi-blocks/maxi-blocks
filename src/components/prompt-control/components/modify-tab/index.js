@@ -143,7 +143,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 				...(!isSelectedText && { refId: selectedResultId, settings }),
 				modificationType: modifyOption,
 				refFromSelectedText: isSelectedText,
-				...(modifyOption === 'custom' && customText),
+				...(modifyOption === 'custom' && { customText }),
 			},
 			results,
 			abortControllerRef,

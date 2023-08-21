@@ -48,8 +48,9 @@ const ModifyTab = ({
 	isGenerating,
 	setIsGenerating,
 	selectedResultId,
-	historyStartIdRef,
 	setSelectedResultId,
+	historyStartId,
+	setHistoryStartId,
 	onContentChange,
 	onAbort,
 	setResults,
@@ -174,7 +175,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 
 	const cleanHistory = () => {
 		setResults([]);
-		historyStartIdRef.current = null;
+		setHistoryStartId(null);
 		switchToGenerateTab();
 	};
 
@@ -346,8 +347,8 @@ Your task is to maintain the original intent and context while ${modificationAct
 					};
 
 					const handleResultDeletion = () => {
-						if (historyStartIdRef.current === result.id) {
-							historyStartIdRef.current -= 1;
+						if (historyStartId === result.id) {
+							setHistoryStartId(historyStartId - 1);
 						}
 
 						setResults(prevResults => {
@@ -375,9 +376,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 							key={index}
 							index={index + 1}
 							result={result}
-							isFromPreviousSession={
-								result.id <= historyStartIdRef.current
-							}
+							isFromPreviousSession={result.id <= historyStartId}
 							isSelected={result.id === selectedResultId}
 							isSelectedText={!!selectedText}
 							isCustom={modifyOption === 'custom'}

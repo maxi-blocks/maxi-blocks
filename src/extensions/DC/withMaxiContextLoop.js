@@ -140,7 +140,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			// Check if category or tag by which the post is filtered exists
 			useEffect(() => {
 				if (!orderByRelations.includes(contextLoop['cl-relation']))
-					return;
+					return () => null;
+
+				let isCancelled = false;
 
 				const updateRelationIds = async () => {
 					const dataRequest = Object.fromEntries(
@@ -157,7 +159,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 							true
 						)) ?? {};
 
-					if (!isEmpty(newValues)) {
+					if (!isEmpty(newValues) && !isCancelled) {
 						const {
 							__unstableMarkNextChangeAsNotPersistent:
 								markNextChangeAsNotPersistent,
@@ -169,6 +171,10 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				};
 
 				updateRelationIds();
+
+				return () => {
+					isCancelled = true;
+				};
 			}, []);
 
 			return (

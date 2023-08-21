@@ -3,7 +3,7 @@
  */
 import Select from 'react-select';
 
-const ReactSelectControl = props => {
+const ReactSelectControl = ({ labelText, ...props }) => {
 	const defaultStyles = {
 		option: (base, state, selected) => ({
 			...base,
@@ -36,7 +36,12 @@ const ReactSelectControl = props => {
 		}),
 	};
 
-	return <Select styles={defaultStyles} {...props} />;
+	return (
+		<>
+			{labelText && <label>{labelText}</label>}
+			<Select styles={defaultStyles} {...props} />
+		</>
+	);
 };
 
 export default ReactSelectControl;

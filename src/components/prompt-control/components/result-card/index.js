@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  */
 import Button from '../../../button';
 import DialogBox from '../../../dialog-box';
-import { CONTENT_LIMIT } from '../../constants';
+import { CONTENT_LIMIT, MODIFICATION_MODIFICATORS } from '../../constants';
 
 /**
  * External dependencies
@@ -57,9 +57,9 @@ const ResultCard = ({
 			return content;
 		}
 
-		const lastSpaceIndex = content.lastIndexOf(' ', limit);
+		const lastSpaceIndex = content.slice(0, limit).lastIndexOf(' ');
 
-		return `${content.substring(0, lastSpaceIndex)}...`;
+		return `${content.slice(0, lastSpaceIndex)}...`;
 	};
 
 	const [content, setContent] = useState(limitContent(result.content));
@@ -96,15 +96,6 @@ const ResultCard = ({
 			handleScrollIntoView();
 		}
 	}, [isSelected]);
-
-	const transformVerbToPast = verb => {
-		const words = verb.split(' ');
-		const firstWord = words[0];
-
-		return `${
-			firstWord.endsWith('e') ? `${firstWord}d` : `${firstWord}ed`
-		} ${words.length > 1 ? words.slice(1).join(' ') : ''}`;
-	};
 
 	return (
 		<div className={classes}>
@@ -160,7 +151,9 @@ const ResultCard = ({
 					>
 						{__(
 							`${capitalize(
-								transformVerbToPast(result.modificationType)
+								MODIFICATION_MODIFICATORS[
+									result.modificationType
+								]
 							)} from`,
 							'maxi-blocks'
 						)}{' '}

@@ -88,7 +88,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		setContext(getContext(contextOption, clientId));
 	}, [contextOption, clientId]);
 
-	if (AISettings.openaiApiKey === null) {
+	if (isEmpty(AISettings)) {
 		return <ContentLoader />;
 	}
 

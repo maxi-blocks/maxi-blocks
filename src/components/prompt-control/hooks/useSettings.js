@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState, useCallback } from '@wordpress/element';
+import { useCallback, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,6 +32,14 @@ const useSettings = () => {
 			...newSettings,
 		}));
 	}, []);
+
+	useEffect(() => {
+		setSettings(prevSettings => ({
+			...prevSettings,
+			characterCount:
+				DEFAULT_CHARACTER_COUNT_GUIDELINES[settings.contentType],
+		}));
+	}, [settings.contentType]);
 
 	return {
 		settings,

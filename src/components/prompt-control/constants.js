@@ -284,18 +284,23 @@ export const LANGUAGES = [
 export const MODIFY_OPTIONS_DATA = {
 	rephrase: {
 		action: 'rephrasing',
+		modificator: 'rephrased',
 	},
 	shorten: {
 		action: 'shortening',
+		modificator: 'shortened',
 	},
 	lengthen: {
 		action: 'lengthening',
+		modificator: 'lengthened',
 	},
 	'fix spelling & grammar': {
 		action: 'fixing spelling & grammar',
+		modificator: 'fixed spelling & grammar',
 	},
 	translate: {
 		action: 'translating',
+		modificator: 'translated',
 	},
 	custom: {
 		action: 'modifying',
@@ -308,6 +313,13 @@ export const MODIFICATION_ACTIONS = Object.fromEntries(
 	MODIFY_OPTIONS.map(modifyOption => [
 		modifyOption,
 		MODIFY_OPTIONS_DATA[modifyOption].action,
+	])
+);
+
+export const MODIFICATION_MODIFICATORS = Object.fromEntries(
+	MODIFY_OPTIONS.map(modifyOption => [
+		modifyOption,
+		MODIFY_OPTIONS_DATA[modifyOption].modificator,
 	])
 );
 

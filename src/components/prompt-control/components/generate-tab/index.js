@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -47,6 +47,22 @@ const GenerateTab = ({
 		writingStyle,
 		language,
 	} = settings;
+
+	const blockEditor = useSelect(select => select('core/block-editor'), []);
+
+	const contextOptions = Object.entries(CONTEXT_OPTIONS)
+		.map(([value, label]) => {
+			const hasParentBlock =
+				value !== 'container' ||
+				blockEditor.getBlockParentsByBlockName(
+					clientId,
+					'maxi-blocks/container-maxi'
+				)[0];
+			return hasParentBlock
+				? { label: __(label, 'maxi-blocks'), value }
+				: null;
+		})
+		.filter(Boolean);
 
 	const className = 'maxi-prompt-control-generate-tab';
 
@@ -137,21 +153,7 @@ const GenerateTab = ({
 					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
 					value: contextOption,
 				}}
-				options={Object.entries(CONTEXT_OPTIONS)
-					.map(
-						([value, label]) =>
-							(value !== 'container' ||
-								select(
-									'core/block-editor'
-								).getBlockParentsByBlockName(
-									clientId,
-									'maxi-blocks/container-maxi'
-								)[0]) && {
-								label: __(label, 'maxi-blocks'),
-								value,
-							}
-					)
-					.filter(Boolean)}
+				options={contextOptions}
 				onChange={({ value }) => setContextOption(value)}
 			/>
 			<TextareaControl

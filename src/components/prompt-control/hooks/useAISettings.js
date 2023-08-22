@@ -14,7 +14,7 @@ const useAISettings = () => {
 	const [AISettings, setAISettings] = useState({});
 
 	useEffect(() => {
-		const getOpenAIApiKey = async () => {
+		const fetchAISettings = async () => {
 			try {
 				const maxiSettings = await receiveMaxiSettings();
 
@@ -32,8 +32,8 @@ const useAISettings = () => {
 			}
 		};
 
-		getOpenAIApiKey();
-	}, []);
+		fetchAISettings();
+	}, [receiveMaxiSettings]);
 
 	return AISettings;
 };

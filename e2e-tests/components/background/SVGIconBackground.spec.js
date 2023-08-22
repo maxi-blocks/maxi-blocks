@@ -19,6 +19,7 @@ describe('Icon background', () => {
 	it('Check Icon background', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

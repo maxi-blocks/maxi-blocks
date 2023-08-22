@@ -81,9 +81,10 @@ const VideoPlayer = props => {
 				const script = document.createElement('script');
 				script.src = 'https://www.youtube.com/iframe_api';
 				script.id = 'maxi-youtube-sdk';
-				window.onYouTubeIframeAPIReady = handleYoutubeVideo;
+				window.onYouTubeIframeAPIReady = handleYoutubeVideo; // This function will be called once the API is ready
 				document.body.appendChild(script);
-			} else {
+			} else if (window.YT && window.YT.Player) {
+				// Make sure YT.Player is defined
 				handleYoutubeVideo();
 			}
 		} else if (videoType === 'vimeo') {

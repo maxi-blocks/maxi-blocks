@@ -11,16 +11,12 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Icon size', () => {
 	it('Check icon size', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
-
-		await updateAllBlockUniqueIds(page);
-
 		// generate icon
 		await modalMock(page, { type: 'svg' });
 		await page.$eval('button[aria-label="Close"]', button =>

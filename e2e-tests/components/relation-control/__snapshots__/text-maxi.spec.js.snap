@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Text Maxi hover simple actions Alignment 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "text-alignment-general": "right",
       "text-alignment-xl": "right",
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "text-align": "right",
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "disableTransition": true,
       "easing-general": "ease",
       "hoverStatus": false,
@@ -34,13 +34,13 @@ Array [
 ]
 `;
 
-exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}"`;
+exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\"true\"] { text-align: right;}"`;
 
 exports[`Text Maxi hover simple actions Typography 1`] = `
-Array [
-  Object {
+[
+  {
     "action": "hover",
-    "attributes": Object {
+    "attributes": {
       "color-general": null,
       "color-xl": null,
       "font-size-general": 11,
@@ -80,10 +80,10 @@ Array [
       "text-transform-general": "capitalize",
       "text-transform-xl": "capitalize",
     },
-    "css": Object {
-      "general": Object {
+    "css": {
+      "general": {
         "breakpoint": null,
-        "styles": Object {
+        "styles": {
           "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "font-size": "11px",
           "font-style": "italic",
@@ -97,9 +97,9 @@ Array [
           "writing-mode": "vertical-rl",
         },
       },
-      "xl": Object {
+      "xl": {
         "breakpoint": 1920,
-        "styles": Object {
+        "styles": {
           "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "font-size": "11px",
           "font-style": "italic",
@@ -114,13 +114,13 @@ Array [
         },
       },
     },
-    "effects": Object {
+    "effects": {
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
-      "transitionTarget": Array [
+      "transitionTarget": [
         " .maxi-text-block__content",
         " .maxi-text-block__content li",
         " .maxi-text-block__content ol",
@@ -136,4 +136,4 @@ Array [
 ]
 `;
 
-exports[`Text Maxi hover simple actions Typography 2`] = `"body.maxi-blocks--active #text-maxi-1 p.maxi-text-block__content[data-maxi-relations=\\"true\\"] { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease;}"`;
+exports[`Text Maxi hover simple actions Typography 2`] = `"body.maxi-blocks--active #text-maxi-1 p.maxi-text-block__content[data-maxi-relations=\"true\"] { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease,  color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease;}"`;

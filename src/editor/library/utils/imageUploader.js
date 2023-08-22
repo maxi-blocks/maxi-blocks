@@ -68,11 +68,19 @@ export const placeholderUploader = async () => {
 				),
 		});
 
+		// Check if comment_status is empty and set it to 'closed' if needed
+		const updatedCommentStatus =
+			response.comment_status === '' ? 'closed' : response.comment_status;
+
 		// Add maxi-image-type taxonomy
 		dispatch('core').saveEntityRecord(
 			'postType',
 			'attachment',
-			{ ...response, 'maxi-image-type': maxiTermId },
+			{
+				...response,
+				'maxi-image-type': maxiTermId,
+				comment_status: updatedCommentStatus,
+			},
 			{ throwOnError: true }
 		);
 
@@ -190,11 +198,19 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 			),
 	});
 
+	// Check if comment_status is empty and set it to 'closed' if needed
+	const updatedCommentStatus =
+		response.comment_status === '' ? 'closed' : response.comment_status;
+
 	// Add maxi-image-type taxonomy
 	dispatch('core').saveEntityRecord(
 		'postType',
 		'attachment',
-		{ ...response, 'maxi-image-type': maxiTermId },
+		{
+			...response,
+			'maxi-image-type': maxiTermId,
+			comment_status: updatedCommentStatus,
+		},
 		{ throwOnError: true }
 	);
 

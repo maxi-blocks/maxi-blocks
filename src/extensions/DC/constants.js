@@ -262,6 +262,7 @@ const generalProductFields = [
 		value: 'short_description',
 	},
 	{ label: __('Slug', 'maxi-blocks'), value: 'slug' },
+	{ label: __('SKU', 'maxi-blocks'), value: 'sku' },
 	{ label: __('Review count', 'maxi-blocks'), value: 'review_count' },
 	{ label: __('Average rating', 'maxi-blocks'), value: 'average_rating' },
 	{ label: __('Price', 'maxi-blocks'), value: 'price' },

@@ -706,7 +706,7 @@ describe('TextMaxi', () => {
 		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
 			paletteButtons[3].click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(250);
 
 		const {
 			'palette-color-general': expectedColor,

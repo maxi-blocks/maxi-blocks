@@ -1,66 +1,90 @@
-export const CONTENT_TYPES = [
-	'Headline',
-	'Subheading',
-	'Body text',
-	'Quotes',
-	'Pull quotes Testimonial',
-	'Calls-to-action (CTA)',
-	'Alt tag',
-	'Image caption Page titles FAQs',
-	'Product descriptions',
-];
-
-export const CONTENT_TYPE_DESCRIPTIONS = {
-	Headline:
-		'Create a compelling and concise headline that captures the main theme.',
-	Subheading:
-		'Provide a descriptive subheading that supports the main headline.',
-	'Body text':
-		'Write informative and engaging body text that elaborates on the main topic.',
-	Quotes: 'Include relevant quotes that add authority or perspective. Ensure proper attribution.',
-	'Pull quotes Testimonial':
-		'Craft testimonials or pull quotes that highlight key messages or endorsements.',
-	'Calls-to-action (CTA)':
-		'Design persuasive calls-to-action that prompt the reader to take a specific step.',
-	'Alt tag':
-		'Create descriptive alt tags for images that accurately represent the visual content.',
-	'Image caption Page titles FAQs':
-		'Provide captions for images, titles for pages, or answers to frequently asked questions.',
-	'Product descriptions':
-		'Write clear and appealing product descriptions that highlight key features and benefits.',
+export const CONTENT_TYPES_DATA = {
+	Headline: {
+		description:
+			'Create a compelling and concise headline that captures the main theme.',
+		examples: ['Introducing Our Latest Product Line!'],
+		defaultCharacterCountGuideline: 50, // Typically headlines are short and to the point.
+	},
+	Subheading: {
+		description:
+			'Provide a descriptive subheading that supports the main headline.',
+		examples: ['Key Features and Benefits'],
+		defaultCharacterCountGuideline: 100, // Slightly longer than a headline.
+	},
+	'Body text': {
+		description:
+			'Write informative and engaging body text that elaborates on the main topic.',
+		examples: [
+			'Our products are designed with the user in mind, offering a range of innovative features...',
+		],
+		defaultCharacterCountGuideline: 500, // Arbitrary number. This could be much longer depending on context.
+	},
+	Quotes: {
+		description:
+			'Include relevant quotes that add authority or perspective. Ensure proper attribution.',
+		examples: [
+			'"The only way to do great work is to love what you do." - Steve Jobs',
+		],
+		defaultCharacterCountGuideline: 200, // A typical length for a direct quote.
+	},
+	'Pull quotes Testimonial': {
+		description:
+			'Craft testimonials or pull quotes that highlight key messages or endorsements.',
+		examples: [
+			'"This product changed my life! Highly recommended." - Jane Doe',
+		],
+		defaultCharacterCountGuideline: 150, // Testimonials might be a bit concise but highlighted.
+	},
+	'Calls-to-action (CTA)': {
+		description:
+			'Design persuasive calls-to-action that prompt the reader to take a specific step.',
+		examples: ['Click Here to Learn More!'],
+		defaultCharacterCountGuideline: 25, // CTAs are usually very short and action-oriented.
+	},
+	'Alt tag': {
+		description:
+			'Create descriptive alt tags for images that accurately represent the visual content.',
+		examples: ['Logo of Our Company'],
+		defaultCharacterCountGuideline: 125, // Descriptive, but not too long, for accessibility.
+	},
+	'Image caption Page titles FAQs': {
+		description:
+			'Provide captions for images, titles for pages, or answers to frequently asked questions.',
+		examples: ['Image of the main office building'],
+		defaultCharacterCountGuideline: 100, // Typically short descriptions or titles.
+	},
+	'Product descriptions': {
+		description:
+			'Write clear and appealing product descriptions that highlight key features and benefits.',
+		examples: [
+			'Sleek and modern, this chair offers both style and comfort...',
+		],
+		defaultCharacterCountGuideline: 300, // Might vary a lot, but a general estimate for a concise product description.
+	},
 };
 
-export const CONTENT_TYPE_EXAMPLES = {
-	Headline: ['Introducing Our Latest Product Line!'],
-	Subheading: ['Key Features and Benefits'],
-	'Body text': [
-		'Our products are designed with the user in mind, offering a range of innovative features...',
-	],
-	Quotes: [
-		'"The only way to do great work is to love what you do." - Steve Jobs',
-	],
-	'Pull quotes Testimonial': [
-		'"This product changed my life! Highly recommended." - Jane Doe',
-	],
-	'Calls-to-action (CTA)': ['Click Here to Learn More!'],
-	'Alt tag': ['Logo of Our Company'],
-	'Image caption Page titles FAQs': ['Image of the main office building'],
-	'Product descriptions': [
-		'Sleek and modern, this chair offers both style and comfort...',
-	],
-};
+export const CONTENT_TYPES = Object.keys(CONTENT_TYPES_DATA);
 
-export const DEFAULT_CHARACTER_COUNT_GUIDELINES = {
-	Headline: 50, // Typically headlines are short and to the point.
-	Subheading: 100, // Slightly longer than a headline.
-	'Body text': 500, // Arbitrary number. This could be much longer depending on context.
-	Quotes: 200, // A typical length for a direct quote.
-	'Pull quotes Testimonial': 150, // Testimonials might be a bit concise but highlighted.
-	'Calls-to-action (CTA)': 25, // CTAs are usually very short and action-oriented.
-	'Alt tag': 125, // Descriptive, but not too long, for accessibility.
-	'Image caption Page titles FAQs': 100, // Typically short descriptions or titles.
-	'Product descriptions': 300, // Might vary a lot, but a general estimate for a concise product description.
-};
+export const CONTENT_TYPE_DESCRIPTIONS = Object.fromEntries(
+	CONTENT_TYPES.map(contentType => [
+		contentType,
+		CONTENT_TYPES_DATA[contentType].description,
+	])
+);
+
+export const CONTENT_TYPE_EXAMPLES = Object.fromEntries(
+	CONTENT_TYPES.map(contentType => [
+		contentType,
+		CONTENT_TYPES_DATA[contentType].examples,
+	])
+);
+
+export const DEFAULT_CHARACTER_COUNT_GUIDELINES = Object.fromEntries(
+	CONTENT_TYPES.map(contentType => [
+		contentType,
+		CONTENT_TYPES_DATA[contentType].defaultCharacterCountGuideline,
+	])
+);
 
 export const TONES = [
 	'Formal',
@@ -256,23 +280,35 @@ export const LANGUAGES = [
 	'Zulu - isiZulu',
 ];
 
-export const MODIFY_OPTIONS = [
-	'rephrase',
-	'shorten',
-	'lengthen',
-	'fix spelling & grammar',
-	'translate',
-	'custom',
-];
-
-export const MODIFICATION_ACTIONS = {
-	rephrase: 'rephrasing',
-	shorten: 'shortening',
-	lengthen: 'lengthening',
-	'fix spelling & grammar': 'fixing spelling & grammar',
-	translate: 'translating',
-	custom: 'modifying', // Custom can be kept as a generic action
+export const MODIFY_OPTIONS_DATA = {
+	rephrase: {
+		action: 'rephrasing',
+	},
+	shorten: {
+		action: 'shortening',
+	},
+	lengthen: {
+		action: 'lengthening',
+	},
+	'fix spelling & grammar': {
+		action: 'fixing spelling & grammar',
+	},
+	translate: {
+		action: 'translating',
+	},
+	custom: {
+		action: 'modifying',
+	},
 };
+
+export const MODIFY_OPTIONS = Object.keys(MODIFY_OPTIONS_DATA);
+
+export const MODIFICATION_ACTIONS = Object.fromEntries(
+	MODIFY_OPTIONS.map(modifyOption => [
+		modifyOption,
+		MODIFY_OPTIONS_DATA[modifyOption].action,
+	])
+);
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
 

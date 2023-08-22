@@ -3,9 +3,9 @@
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
-Requires at least: 6.2
+Requires at least: 6.2.2
 Tested up to: 6.3
-Requires PHP: 7.1
+Requires PHP: 8.0
 Stable tag: 1.3.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -269,16 +269,16 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 _Updates: 22 August 2023_
 
-* Update: Add Dynamic Content link to Icon Maxi block
-* Update: PHP code changes to avoid possible PHP warnings
-* Update: npm packages
-* Update: tests for WordPress 6.3 in the environment
-* Fix: Link Control after WordPress 6.3 update
-* Fix: Styles saving after using preview mode in Gutenberg
-* Fix: Styles saving when using autosave feature in Gutenberg
-* Fix: Maxi Database tables creation on plugin activation when the user is not admin
-* Fix: Image uploading when comments are disallowed on the site
-* Fix: Gutenberg block styles on the backend when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled.
+* Update: Added Dynamic Content link to the Icon Maxi block
+* Update: Modified PHP code to prevent potential PHP warnings
+* Update: Updated NPM packages
+* Update: Automated tests for compatibility with WordPress 6.3 in the environment
+* Fix: Restored Link Control functionality after WordPress 6.3 update
+* Fix: Fixed the saving of styles after using preview mode in Gutenberg
+* Fix: Corrected the saving of styles when using the autosave feature in Gutenberg
+* Fix: Resolved Maxi database tables creation issue on plugin activation users w/o admin permissions
+* Fix: Image uploading issue when comments we're disabled under settings/discussion
+* Fix: Gutenberg block styles in the Editing Experience when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled
 
 _Updates: 7 August 2023_
 
@@ -318,25 +318,6 @@ _Updates: 7 August 2023_
 * Fix: Container indicators fixed
 * Fix: Issues with 'custom data' on Site editor
 * Fix: Default Style cards font-family for Button Maxi
-
-_Updates: 19 June 2023_
-
-* Update: Advanced Custom Fields integration into Dynamic content
-* Update: Add % to min and max height settings for all Maxi blocks
-* Update: Add options for Number Counter to align the percentage sign
-* Update: Remove redundant init.php file and /src folder
-* Update: Remove "Custom CSS (for that page only)" meta box from the page sidebar
-* Update: Remove that  'unset' option in flex settings that was the same as the default option
-* Update: Add https / http for external links
-* Update: Custom date for Dynamic content  - removed extended options that were not working
-* Fix: Row dropping Full size option in some cases
-* Fix: Links for Text Block
-* Fix: Post ID reset for Dynamic content
-* Fix: Z-index for Icon Block background
-* Fix: Breadcrumbs visibility for Text Block
-* Fix: Disallowed new background layer on hover
-* Fix: Popover position for tablet and mobile preview
-* Fix: UI for long labels in Dynamic content
 
 == Upgrade Notice ==
 

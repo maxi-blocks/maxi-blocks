@@ -95,7 +95,9 @@ const ResultsTopBar = ({
 						label: __(customValue, 'maxi-blocks'),
 						value: customValue,
 					}}
-					options={LANGUAGES.map(option => ({
+					options={LANGUAGES.filter(
+						language => language !== 'Language of the prompt'
+					).map(option => ({
 						label: __(option, 'maxi-blocks'),
 						value: option,
 					}))}

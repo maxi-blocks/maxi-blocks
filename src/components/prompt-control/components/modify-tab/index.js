@@ -173,7 +173,11 @@ Your task is to maintain the original intent and context while ${modificationAct
 				modifyOption={modifyOption}
 				modifyContent={modifyContent}
 				customValue={customValue}
-				defaultLanguage={AISettings.language}
+				defaultLanguage={
+					AISettings.language !== 'Language of the prompt'
+						? AISettings.language
+						: 'English (United Kingdom)'
+				}
 				cleanHistory={cleanHistory}
 				setModifyOption={setModifyOption}
 				setCustomValue={setCustomValue}

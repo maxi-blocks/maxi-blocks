@@ -136,6 +136,7 @@ export const WRITING_STYLES = [
 ];
 
 export const LANGUAGES = [
+	'Language of the prompt',
 	'English (United Kingdom)',
 	'Afrikaans',
 	'Albanian - shqip',

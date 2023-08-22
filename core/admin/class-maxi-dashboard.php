@@ -1262,7 +1262,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             $args_ai_language = array(
                 'type' => 'string',
-                'default' => 'English (United Kingdom)',
+                'default' => 'Language of the prompt',
             );
             $args_ai_tone = array(
                 'type' => 'string',

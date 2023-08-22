@@ -347,9 +347,6 @@ const getVideoStyles = (props, isHover = false) => {
 const getStyles = props => {
 	const { uniqueID, playerType } = props;
 
-	console.log('playerType');
-	console.log(playerType);
-
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
@@ -427,9 +424,6 @@ const getStyles = props => {
 				props
 			),
 	};
-
-	console.log('all styles');
-	console.log(response);
 
 	return response;
 };

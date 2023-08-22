@@ -24,6 +24,7 @@ import {
 describe('Button Maxi hover simple actions', () => {
 	const addInteraction = async () => {
 		// Add interaction
+
 		await page.waitForSelector('.maxi-relation-control__button');
 		await page.$eval('.maxi-relation-control__button', el => el.click());
 
@@ -35,17 +36,38 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
+		// Iterate through the elements and log their HTML content
+
 		await selectControls[1].select('button-maxi-1se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
+
 		await selectControls[2].select('hover');
 	};
 
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
+
+		await page.waitForTimeout(500);
 
 		// Add icon
 		await openSidebarTab(page, 'style', 'quick styles');
@@ -54,9 +76,27 @@ describe('Button Maxi hover simple actions', () => {
 		);
 
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
-		await openSidebarTab(page, 'advanced', 'interaction builder');
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
 
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-2se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
+
+		await page.waitForTimeout(500);
+
+		await openSidebarTab(page, 'advanced', 'interaction builder');
 		await addInteraction();
 	});
 

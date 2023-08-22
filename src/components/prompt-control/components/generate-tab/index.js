@@ -167,16 +167,24 @@ const GenerateTab = ({
 				value={prompt}
 				onChange={prompt => updateSettings({ prompt })}
 			/>
-			<Button type='button' variant='secondary' onClick={generateContent}>
-				{__('Write for me', 'maxi-blocks')}
-			</Button>
-			<Button
-				type='button'
-				variant='secondary'
-				onClick={switchToModifyTab}
-			>
-				{__('History', 'maxi-blocks')}
-			</Button>
+			<div className='maxi-prompt-control__buttons'>
+				<Button
+					className='maxi-prompt-control__button'
+					type='button'
+					variant='secondary'
+					onClick={generateContent}
+				>
+					{__('Write for me', 'maxi-blocks')}
+				</Button>
+				<Button
+					className='maxi-prompt-control__button'
+					type='button'
+					variant='secondary'
+					onClick={switchToModifyTab}
+				>
+					{__('History', 'maxi-blocks')}
+				</Button>
+			</div>
 		</>
 	);
 };

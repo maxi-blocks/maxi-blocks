@@ -31,6 +31,11 @@ import { CONTEXT_OPTIONS } from './constants';
  */
 import { isEmpty } from 'lodash';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
 const PromptControl = ({ clientId, content, onContentChange }) => {
 	const AISettings = useAISettings();
 

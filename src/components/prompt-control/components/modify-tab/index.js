@@ -161,8 +161,8 @@ Your task is to maintain the original intent and context while ${modificationAct
 	return (
 		<div className={className}>
 			<HistoryButtons
-				className={`${className}__buttons`}
-				buttonClassName={`${className}__button`}
+				className='maxi-prompt-control__buttons'
+				buttonClassName='maxi-prompt-control__button'
 				results={results}
 				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}

@@ -64,7 +64,7 @@ const ResultsTopBar = ({
 						isDisabled={isEmpty(results)}
 					/>
 					<Button
-						className={`${className}__button maxi-prompt-control-modify-tab__button`}
+						className={`${className}__button maxi-prompt-control__button`}
 						onClick={modifyContent}
 						disabled={isEmpty(results) && !selectedResultId}
 					>
@@ -104,10 +104,10 @@ const ResultsTopBar = ({
 					onChange={({ value }) => setCustomValue(value)}
 				/>
 			)}
-			<div className='maxi-prompt-control-modify-tab__buttons'>
+			<div className='maxi-prompt-control__buttons'>
 				{results.every(result => !result.isSelectedText) && (
 					<Button
-						className='maxi-prompt-control-modify-tab__button'
+						className='maxi-prompt-control__button'
 						onClick={switchToGenerateTab}
 					>
 						{__('Back', 'maxi-blocks')}
@@ -122,7 +122,7 @@ const ResultsTopBar = ({
 						cancelLabel={__('Cancel', 'maxi-blocks')}
 						confirmLabel={__('Clean', 'maxi-blocks')}
 						onConfirm={cleanHistory}
-						buttonClassName={`maxi-prompt-control-modify-tab__button ${className}__clean-history-button`}
+						buttonClassName={`maxi-prompt-control__button ${className}__clean-history-button`}
 						buttonChildren={__('Clean history', 'maxi-blocks')}
 					/>
 				)}

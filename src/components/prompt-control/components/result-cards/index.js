@@ -166,6 +166,7 @@ const ResultCards = ({
 			{results.length > loadUntilIndex && (
 				<div className={`${className}__load-more`}>
 					<Button
+						className='maxi-prompt-control-modify-tab__button'
 						onClick={() => setLoadUntilIndex(loadUntilIndex + 5)}
 					>
 						{__('Load more', 'maxi-blocks')}

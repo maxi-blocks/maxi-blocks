@@ -30,6 +30,7 @@ const ResultsTopBar = ({
 	modifyOption,
 	modifyContent,
 	customValue,
+	defaultLanguage,
 	cleanHistory,
 	setModifyOption,
 	setCustomValue,
@@ -56,7 +57,9 @@ const ResultsTopBar = ({
 						}))}
 						onChange={({ value }) => {
 							setModifyOption(value);
-							setCustomValue('');
+							setCustomValue(
+								value === 'translate' ? defaultLanguage : ''
+							);
 						}}
 						isDisabled={isEmpty(results)}
 					/>

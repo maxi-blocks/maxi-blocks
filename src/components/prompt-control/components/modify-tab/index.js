@@ -173,6 +173,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 				modifyOption={modifyOption}
 				modifyContent={modifyContent}
 				customValue={customValue}
+				defaultLanguage={AISettings.language}
 				cleanHistory={cleanHistory}
 				setModifyOption={setModifyOption}
 				setCustomValue={setCustomValue}

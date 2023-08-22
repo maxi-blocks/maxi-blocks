@@ -1,34 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getIconSize Should return correct icon size 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "71%",
       "width": "71%",
     },
-    "l": Object {
+    "l": {
       "height": "71%",
       "width": "71%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "71%",
       "width": "71%",
     },
-    "s": Object {
+    "s": {
       "height": "71%",
       "width": "71%",
     },
-    "xl": Object {
+    "xl": {
       "height": "71%",
       "width": "71%",
     },
-    "xs": Object {
+    "xs": {
       "height": "71%",
       "width": "71%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "71%",
       "width": "71%",
     },
@@ -37,34 +37,34 @@ Object {
 `;
 
 exports[`getIconSize Should return correct icon size 2`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "123%",
       "width": "123%",
     },
-    "l": Object {
+    "l": {
       "height": "123%",
       "width": "123%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "123%",
       "width": "123%",
     },
-    "s": Object {
+    "s": {
       "height": "123%",
       "width": "123%",
     },
-    "xl": Object {
+    "xl": {
       "height": "123%",
       "width": "123%",
     },
-    "xs": Object {
+    "xs": {
       "height": "123%",
       "width": "123%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "123%",
       "width": "123%",
     },
@@ -73,34 +73,34 @@ Object {
 `;
 
 exports[`getIconSize Should return right hover styles with only unit specified on hover 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32em",
       "width": "32em",
     },
-    "l": Object {
+    "l": {
       "height": "32em",
       "width": "32em",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "32em",
       "width": "32em",
     },
-    "s": Object {
+    "s": {
       "height": "32em",
       "width": "32em",
     },
-    "xl": Object {
+    "xl": {
       "height": "32em",
       "width": "32em",
     },
-    "xs": Object {
+    "xs": {
       "height": "32em",
       "width": "32em",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32em",
       "width": "32em",
     },
@@ -109,34 +109,34 @@ Object {
 `;
 
 exports[`getIconSize Should return right hover styles with only value specified on hover (no unit) 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "64%",
       "width": "64%",
     },
-    "l": Object {
+    "l": {
       "height": "64%",
       "width": "64%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "64%",
       "width": "64%",
     },
-    "s": Object {
+    "s": {
       "height": "64%",
       "width": "64%",
     },
-    "xl": Object {
+    "xl": {
       "height": "64%",
       "width": "64%",
     },
-    "xs": Object {
+    "xs": {
       "height": "64%",
       "width": "64%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "64%",
       "width": "64%",
     },
@@ -145,34 +145,34 @@ Object {
 `;
 
 exports[`getIconSize Should return right styles with height fit-content, width/height ratio < 1 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "72%",
       "width": "36%",
     },
-    "l": Object {
+    "l": {
       "height": "32%",
       "width": "32%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "68%",
       "width": "36%",
     },
-    "s": Object {
+    "s": {
       "height": "68%",
       "width": "36%",
     },
-    "xl": Object {
+    "xl": {
       "height": "72%",
       "width": "36%",
     },
-    "xs": Object {
+    "xs": {
       "height": "68%",
       "width": "36%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "72%",
       "width": "36%",
     },
@@ -181,34 +181,34 @@ Object {
 `;
 
 exports[`getIconSize Should return right styles with height fit-content, width/height ratio > 1 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "12%",
       "width": "36%",
     },
-    "l": Object {
+    "l": {
       "height": "32%",
       "width": "32%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "16%",
       "width": "36%",
     },
-    "s": Object {
+    "s": {
       "height": "16%",
       "width": "36%",
     },
-    "xl": Object {
+    "xl": {
       "height": "12%",
       "width": "36%",
     },
-    "xs": Object {
+    "xs": {
       "height": "16%",
       "width": "36%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "12%",
       "width": "36%",
     },
@@ -217,34 +217,34 @@ Object {
 `;
 
 exports[`getIconSize Should return right styles with only unit specified on responsive 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32%",
       "width": "32%",
     },
-    "l": Object {
+    "l": {
       "height": "32em",
       "width": "32em",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "32em",
       "width": "32em",
     },
-    "s": Object {
+    "s": {
       "height": "32em",
       "width": "32em",
     },
-    "xl": Object {
+    "xl": {
       "height": "32%",
       "width": "32%",
     },
-    "xs": Object {
+    "xs": {
       "height": "32em",
       "width": "32em",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32%",
       "width": "32%",
     },
@@ -253,34 +253,34 @@ Object {
 `;
 
 exports[`getIconSize Should use height when width is not specified 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32px",
       "width": "32px",
     },
-    "l": Object {
+    "l": {
       "height": "32px",
       "width": "32px",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "32px",
       "width": "32px",
     },
-    "s": Object {
+    "s": {
       "height": "32px",
       "width": "32px",
     },
-    "xl": Object {
+    "xl": {
       "height": "32px",
       "width": "32px",
     },
-    "xs": Object {
+    "xs": {
       "height": "32px",
       "width": "32px",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32px",
       "width": "32px",
     },
@@ -289,34 +289,34 @@ Object {
 `;
 
 exports[`getIconSize Should use height when width is not specified 2`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "50%",
       "width": "50%",
     },
-    "l": Object {
+    "l": {
       "height": "50%",
       "width": "50%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "50%",
       "width": "50%",
     },
-    "s": Object {
+    "s": {
       "height": "50%",
       "width": "50%",
     },
-    "xl": Object {
+    "xl": {
       "height": "50%",
       "width": "50%",
     },
-    "xs": Object {
+    "xs": {
       "height": "50%",
       "width": "50%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "50%",
       "width": "50%",
     },
@@ -325,34 +325,34 @@ Object {
 `;
 
 exports[`getIconSize Should work on responsive 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32px",
       "width": "32px",
     },
-    "l": Object {
+    "l": {
       "height": "32px",
       "width": "32px",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "12em",
       "width": "12em",
     },
-    "s": Object {
+    "s": {
       "height": "12em",
       "width": "12em",
     },
-    "xl": Object {
+    "xl": {
       "height": "32px",
       "width": "32px",
     },
-    "xs": Object {
+    "xs": {
       "height": "12em",
       "width": "12em",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32px",
       "width": "32px",
     },
@@ -361,34 +361,34 @@ Object {
 `;
 
 exports[`getIconSize Should work on responsive 2`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "50%",
       "width": "50%",
     },
-    "l": Object {
+    "l": {
       "height": "50%",
       "width": "50%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "15px",
       "width": "15px",
     },
-    "s": Object {
+    "s": {
       "height": "15px",
       "width": "15px",
     },
-    "xl": Object {
+    "xl": {
       "height": "50%",
       "width": "50%",
     },
-    "xs": Object {
+    "xs": {
       "height": "15px",
       "width": "15px",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "50%",
       "width": "50%",
     },
@@ -397,34 +397,34 @@ Object {
 `;
 
 exports[`getIconSize Should work with prefixes 1`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "32px",
       "width": "32px",
     },
-    "l": Object {
+    "l": {
       "height": "32px",
       "width": "32px",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "32px",
       "width": "32px",
     },
-    "s": Object {
+    "s": {
       "height": "32px",
       "width": "32px",
     },
-    "xl": Object {
+    "xl": {
       "height": "32px",
       "width": "32px",
     },
-    "xs": Object {
+    "xs": {
       "height": "32px",
       "width": "32px",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "32px",
       "width": "32px",
     },
@@ -433,34 +433,34 @@ Object {
 `;
 
 exports[`getIconSize Should work with prefixes 2`] = `
-Object {
-  "iconSize": Object {
-    "general": Object {
+{
+  "iconSize": {
+    "general": {
       "height": "50%",
       "width": "50%",
     },
-    "l": Object {
+    "l": {
       "height": "50%",
       "width": "50%",
     },
     "label": "Icon size",
-    "m": Object {
+    "m": {
       "height": "50%",
       "width": "50%",
     },
-    "s": Object {
+    "s": {
       "height": "50%",
       "width": "50%",
     },
-    "xl": Object {
+    "xl": {
       "height": "50%",
       "width": "50%",
     },
-    "xs": Object {
+    "xs": {
       "height": "50%",
       "width": "50%",
     },
-    "xxl": Object {
+    "xxl": {
       "height": "50%",
       "width": "50%",
     },

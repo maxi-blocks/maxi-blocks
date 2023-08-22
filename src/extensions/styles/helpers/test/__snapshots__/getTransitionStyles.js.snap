@@ -1,45 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getTransitionStyles Get a correct in/out transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "border 0.9s 0.2s ease-out, border-radius 0.9s 0.2s ease-out, top 0.9s 0.2s ease-out, left 0.9s 0.2s ease-out, box-shadow 0.3s 0s ease",
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "transition": {
+      "general": {
         "transition": "border 0.9s 0.2s ease-out, border-radius 0.9s 0.2s ease-out, top 0.9s 0.2s ease-out, left 0.9s 0.2s ease-out",
       },
     },
   },
-  " > .maxi-background-displayer > div": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer > div": {
+    "transition": {
+      "general": {
         "transition": "all 0s 0s",
       },
     },
   },
-  " > .maxi-background-displayer > div > svg": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer > div > svg": {
+    "transition": {
+      "general": {
         "transition": "all 0s 0s",
       },
     },
   },
-  " > .maxi-background-displayer:hover": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer:hover": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
     },
   },
-  ":hover": Object {
-    "transition": Object {
-      "general": Object {
+  ":hover": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0.3s 0s ease",
       },
     },
@@ -48,91 +48,91 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct responsive in/out transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "border 1.8s 1s ease-in-out, border-radius 1.8s 1s ease-in-out, top 1.8s 1s ease-in-out, left 1.8s 1s ease-in-out, box-shadow 0s 0s",
       },
-      "l": Object {
+      "l": {
         "transition": "border 1.7s 0.9s ease-out, border-radius 1.7s 0.9s ease-out, top 1.7s 0.9s ease-out, left 1.7s 0.9s ease-out, box-shadow 0.4s 0.1s ease-in",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 1.6s 0.8s ease-in",
       },
-      "s": Object {
+      "s": {
         "transition": "border 1.5s 0.7s linear, border-radius 1.5s 0.7s linear, top 1.5s 0.7s linear, left 1.5s 0.7s linear, box-shadow 1.5s 0.7s linear",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 1.4s 0.6s ease-in-out, border-radius 1.4s 0.6s ease-in-out, top 1.4s 0.6s ease-in-out, left 1.4s 0.6s ease-in-out, box-shadow 0s 0s",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 1.3s 0.5s linear",
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "transition": {
+      "general": {
         "transition": "border 1.8s 1s ease-in-out, border-radius 1.8s 1s ease-in-out, top 1.8s 1s ease-in-out, left 1.8s 1s ease-in-out",
       },
-      "l": Object {
+      "l": {
         "transition": "border 1.7s 0.9s ease-out, border-radius 1.7s 0.9s ease-out, top 1.7s 0.9s ease-out, left 1.7s 0.9s ease-out",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "border 1.5s 0.7s linear, border-radius 1.5s 0.7s linear, top 1.5s 0.7s linear, left 1.5s 0.7s linear",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 1.4s 0.6s ease-in-out, border-radius 1.4s 0.6s ease-in-out, top 1.4s 0.6s ease-in-out, left 1.4s 0.6s ease-in-out",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
     },
   },
-  " > .maxi-background-displayer:hover": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer:hover": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
     },
   },
-  ":hover": Object {
-    "transition": Object {
-      "general": Object {
+  ":hover": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0s 0s",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.4s 0.1s ease-in",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 0s 0s",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.6s 0.3s ease-in-out",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear, box-shadow 0s 0s",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.8s 0.5s ease-in-out",
       },
     },
@@ -141,32 +141,32 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct responsive transform(mixed with others) transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "transform 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "transform 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "transform 0.5s 0.2s ease-out",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "transform 0s 0s",
       },
     },
   },
-  " .block-class": Object {
-    "transition": Object {
-      "m": Object {
+  " .block-class": {
+    "transition": {
+      "m": {
         "transition": "transform 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "transform 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "transform 0.7s 0.4s linear",
       },
     },
@@ -175,47 +175,47 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct responsive transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0s 0s",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.4s 0.1s ease-in",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 0s 0s",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.6s 0.3s ease-in-out",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear, box-shadow 0s 0s",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0.8s 0.5s ease-in-out",
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
     },
@@ -224,69 +224,69 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct responsive transition styles with custom transitionObj 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out, box-shadow 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear, box-shadow 0.7s 0.4s linear",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s, box-shadow 0s 0s",
       },
     },
   },
-  " .maxi-button-block__content": Object {
-    "transition": Object {
-      "general": Object {
+  " .maxi-button-block__content": {
+    "transition": {
+      "general": {
         "transition": "all 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "all 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "all 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "all 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "all 0.7s 0.4s linear",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "all 0s 0s",
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
-      "l": Object {
+      "l": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "m": Object {
+      "m": {
         "transition": "border 0.5s 0.2s ease-out, border-radius 0.5s 0.2s ease-out, top 0.5s 0.2s ease-out, left 0.5s 0.2s ease-out",
       },
-      "s": Object {
+      "s": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
-      "xs": Object {
+      "xs": {
         "transition": "border 0.7s 0.4s linear, border-radius 0.7s 0.4s linear, top 0.7s 0.4s linear, left 0.7s 0.4s linear",
       },
-      "xxl": Object {
+      "xxl": {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
       },
     },
@@ -295,17 +295,17 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct transform transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "transform 0.3s 0s ease",
       },
     },
   },
-  " .block-class": Object {
-    "transition": Object {
-      "general": Object {
+  " .block-class": {
+    "transition": {
+      "general": {
         "transition": "transform 0.3s 0s ease",
       },
     },
@@ -314,31 +314,31 @@ Object {
 `;
 
 exports[`getTransitionStyles Get a correct transition styles 1`] = `
-Object {
-  "": Object {
-    "transition": Object {
-      "general": Object {
+{
+  "": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "transition": {
+      "general": {
         "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease",
       },
     },
   },
-  " > .maxi-background-displayer > div": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer > div": {
+    "transition": {
+      "general": {
         "transition": "all 0s 0s",
       },
     },
   },
-  " > .maxi-background-displayer > div > svg": Object {
-    "transition": Object {
-      "general": Object {
+  " > .maxi-background-displayer > div > svg": {
+    "transition": {
+      "general": {
         "transition": "all 0s 0s",
       },
     },

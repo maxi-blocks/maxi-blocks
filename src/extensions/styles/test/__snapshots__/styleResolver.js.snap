@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`styleResolver Returns a clean style object 1`] = `
-Object {
-  "test-target": Object {
-    "breakpoints": Object {
+{
+  "test-target": {
+    "breakpoints": {
       "l": 1366,
       "m": 1024,
       "s": 767,
@@ -11,36 +11,36 @@ Object {
       "xs": 480,
       "xxl": 1920,
     },
-    "content": Object {
-      "": Object {
-        "general": Object {
+    "content": {
+      "": {
+        "general": {
           "z-index": 1,
         },
       },
-      " > .maxi-background-displayer .maxi-background-displayer__color": Object {
-        "general": Object {
+      " > .maxi-background-displayer .maxi-background-displayer__color": {
+        "general": {
           "background-color": "rgba(56,25,212,1)",
         },
       },
-      " p.maxi-text-block__content": Object {
-        "general": Object {
+      " p.maxi-text-block__content": {
+        "general": {
           "font-style": "italic",
           "font-weight": 800,
         },
       },
-      " p.maxi-text-block__content a": Object {
-        "general": Object {
+      " p.maxi-text-block__content a": {
+        "general": {
           "font-style": "italic",
           "font-weight": 800,
         },
       },
-      " p.maxi-text-block__content li": Object {
-        "general": Object {
+      " p.maxi-text-block__content li": {
+        "general": {
           "font-style": "italic",
           "font-weight": 800,
         },
       },
-      ":hover": Object {
+      ":hover": {
         "border": false,
         "boxShadow": false,
       },

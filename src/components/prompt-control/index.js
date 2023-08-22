@@ -64,6 +64,13 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 
 	const abortControllerRef = useRef(null);
 
+	useEffect(() => {
+		return () => {
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+			abortControllerRef.current?.abort();
+		};
+	}, []);
+
 	const switchToModifyTab = () => {
 		setTab('modify');
 	};

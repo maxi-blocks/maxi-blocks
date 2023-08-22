@@ -28,7 +28,7 @@ const useAISettings = () => {
 
 				setAISettings(AISettings);
 			} catch (error) {
-				console.error('Maxi Blocks: Could not load settings');
+				console.error('Maxi Blocks: Could not load settings', error);
 			}
 		};
 

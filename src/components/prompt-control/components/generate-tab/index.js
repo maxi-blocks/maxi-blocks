@@ -58,6 +58,7 @@ const GenerateTab = ({
 					clientId,
 					'maxi-blocks/container-maxi'
 				)[0];
+
 			return hasParentBlock
 				? { label: __(label, 'maxi-blocks'), value }
 				: null;

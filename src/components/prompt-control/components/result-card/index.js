@@ -48,22 +48,19 @@ const ResultCard = ({
 	const ref = useRef();
 	const endOfContentRef = useRef();
 
-	const handleCopy = () => {
-		navigator.clipboard.writeText(result.content);
-	};
-
 	const limitContent = (content, limit = CONTENT_LIMIT) => {
 		if (content.length <= limit) {
 			return content;
 		}
 
-		const lastSpaceIndex = content.slice(0, limit).lastIndexOf(' ');
+		const lastSpaceIndex = content.lastIndexOf(' ', limit);
 
 		return `${content.slice(0, lastSpaceIndex)}...`;
 	};
 
-	const [content, setContent] = useState(limitContent(result.content));
-	const [isLimited, setIsLimited] = useState(false);
+	const [isLimited, setIsLimited] = useState(
+		result.content.length > CONTENT_LIMIT
+	);
 
 	const handleScrollIntoEndOfContent = () => {
 		endOfContentRef.current.scrollIntoView({
@@ -73,16 +70,16 @@ const ResultCard = ({
 	};
 
 	useEffect(() => {
-		setContent(isSelected ? result.content : limitContent(result.content));
-		setIsLimited(
-			isSelected ? false : result.content.length > CONTENT_LIMIT
-		);
+		if (result.loading) {
+			setIsLimited(false);
+		}
+	}, [result.loading]);
 
+	useEffect(() => {
 		if (result.loading) {
 			handleScrollIntoEndOfContent();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [result.content]);
+	}, [result.content, result.loading]);
 
 	const handleScrollIntoView = () => {
 		ref.current.scrollIntoView({
@@ -96,6 +93,22 @@ const ResultCard = ({
 			handleScrollIntoView();
 		}
 	}, [isSelected]);
+
+	const handleCopy = async () => {
+		try {
+			await navigator.clipboard.writeText(result.content);
+		} catch (err) {
+			console.error('Maxi Blocks. Failed to copy text: ', err);
+		}
+	};
+
+	const getContent = () => {
+		if (isLimited) {
+			return limitContent(result.content);
+		}
+
+		return result.content;
+	};
 
 	return (
 		<div className={classes}>
@@ -185,7 +198,7 @@ const ResultCard = ({
 						{__('Error: ', 'maxi-blocks')}
 					</span>
 				)}
-				{result.content === '' ? '\u00A0' : content}
+				{result.content === '' ? '\u00A0' : getContent()}
 			</p>
 			<div className={`${className}__end-of-content`}>
 				<div
@@ -200,13 +213,6 @@ const ResultCard = ({
 						const newIsLimited = !isLimited;
 
 						setIsLimited(newIsLimited);
-
-						if (newIsLimited) {
-							setContent(limitContent(result.content));
-						} else {
-							setContent(result.content);
-						}
-
 						handleScrollIntoView();
 					}}
 				>

@@ -287,7 +287,9 @@ class MaxiBlockComponent extends Component {
 				if (!attributes['maxi-version-origin'])
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
-			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+			.catch(error =>
+				console.error('Maxi Blocks: Could not load settings', error)
+			);
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');

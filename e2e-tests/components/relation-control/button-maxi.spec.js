@@ -18,13 +18,11 @@ import {
 	addTypographyStyle,
 	openPreviewPage,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Button Maxi hover simple actions', () => {
 	const addInteraction = async () => {
 		// Add interaction
-
 		await page.waitForSelector('.maxi-relation-control__button');
 		await page.$eval('.maxi-relation-control__button', el => el.click());
 
@@ -36,19 +34,18 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
-		// Iterate through the elements and log their HTML content
 
 		await selectControls[1].select('button-maxi-1se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
-
 		await selectControls[2].select('hover');
 	};
 
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
 		await page.evaluate(() => {
 			// Get the client ID of the currently selected block
 			const clientId = wp.data
@@ -67,8 +64,6 @@ describe('Button Maxi hover simple actions', () => {
 			}
 		});
 
-		await page.waitForTimeout(500);
-
 		// Add icon
 		await openSidebarTab(page, 'style', 'quick styles');
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -76,6 +71,7 @@ describe('Button Maxi hover simple actions', () => {
 		);
 
 		await insertMaxiBlock(page, 'Button Maxi');
+
 		await page.evaluate(() => {
 			// Get the client ID of the currently selected block
 			const clientId = wp.data
@@ -94,9 +90,8 @@ describe('Button Maxi hover simple actions', () => {
 			}
 		});
 
-		await page.waitForTimeout(500);
-
 		await openSidebarTab(page, 'advanced', 'interaction builder');
+
 		await addInteraction();
 	});
 

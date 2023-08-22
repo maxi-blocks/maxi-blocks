@@ -63,8 +63,10 @@ const RelationControl = props => {
 		!isEmpty(relations) ? cloneDeep(relations) : [];
 
 	// Ensure that each relation of `relations` array has a valid block
-	const relations = cloneRelations(rawRelations).filter(relation =>
-		isEmpty(relation.uniqueID)
+	const relations = cloneRelations(rawRelations).filter(
+		relation =>
+			isEmpty(relation.uniqueID) ||
+			!!getClientIdFromUniqueId(relation.uniqueID)
 	);
 
 	const getRelationId = relations => {

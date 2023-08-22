@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.1
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -266,6 +266,19 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 22 August 2023_
+
+* Update: Add Dynamic Content link to Icon Maxi block
+* Update: PHP code changes to avoid possible PHP warnings
+* Update: npm packages
+* Update: tests for WordPress 6.3 in the environment
+* Fix: Link Control after WordPress 6.3 update
+* Fix: Styles saving after using preview mode in Gutenberg
+* Fix: Styles saving when using autosave feature in Gutenberg
+* Fix: Maxi Database tables creation on plugin activation when the user is not admin
+* Fix: Image uploading when comments are disallowed on the site
+* Fix: Gutenberg block styles on the backend when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled.
 
 _Updates: 7 August 2023_
 

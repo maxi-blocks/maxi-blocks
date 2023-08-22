@@ -41,7 +41,7 @@ const generalBreakpointCleaner = obj => {
 	const response = cloneDeep(obj);
 
 	Object.entries(response).forEach(([key, val]) => {
-		if (key === 'general') return;
+		if (key === 'general' || val == null) return; // Check if val is null or undefined
 
 		const breakpointIndex = BREAKPOINTS.indexOf(key);
 		// Is last breakpoint before general

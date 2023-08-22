@@ -350,6 +350,17 @@ export const getContext = (contextOption, clientId) => {
 	const result = [];
 	const addedContents = new Set(); // To track added contents and avoid repetitions
 
+	if (contextOption === 'page') {
+		const title = select('core/editor').getEditedPostAttribute('title');
+
+		if (title && !isLoremIpsum(title)) {
+			result.push({
+				l: 'title',
+				c: title,
+			});
+		}
+	}
+
 	const buildBlockStructure = ({ name, attributes }) => {
 		if (
 			name === 'maxi-blocks/text-maxi' &&

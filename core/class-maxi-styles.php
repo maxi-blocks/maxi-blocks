@@ -863,7 +863,7 @@ class MaxiBlocks_Styles
 
             $api->set_maxi_blocks_current_custom_data([
                 'id' => $front_page_id,
-                'data' => $custom_data[0]->custom_data_value,
+                'data' => $home_custom_data[0]->custom_data_value,
                 'isTemplate' => true,
                 'update' => true,
             ], false);

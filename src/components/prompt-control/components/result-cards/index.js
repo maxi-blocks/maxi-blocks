@@ -31,7 +31,7 @@ const ResultCards = ({
 	setResults,
 	setSelectedResultId,
 	setModifyOption,
-	setCustomText,
+	setCustomValue,
 	setHistoryStartId,
 	onContentChange,
 	onChangeTextFormat,
@@ -61,7 +61,7 @@ const ResultCards = ({
 						isSelectedText: true,
 					}}
 					isSelected={selectedResultId === 'selectedText'}
-					isCustom={modifyOption === 'custom'}
+					modifyOption={modifyOption}
 					onSelect={() => setSelectedResultId('selectedText')}
 				/>
 			)}
@@ -106,7 +106,7 @@ const ResultCards = ({
 				const handleResultUseSettings = () => {
 					if (result.refId) {
 						setModifyOption(result.modificationType);
-						setCustomText(result.customText);
+						setCustomValue(result.customValue);
 
 						if (refResultIndex >= loadUntilIndex) {
 							setLoadUntilIndex(refResultIndex + 1);
@@ -154,7 +154,7 @@ const ResultCards = ({
 						isFromPreviousSession={result.id <= historyStartId}
 						isSelected={result.id === selectedResultId}
 						isSelectedText={!!selectedText}
-						isCustom={modifyOption === 'custom'}
+						modifyOption={modifyOption}
 						isRefExist={refResultIndex && refResultIndex >= 0}
 						onInsert={handleResultInsertion}
 						onSelect={handleResultSelection}

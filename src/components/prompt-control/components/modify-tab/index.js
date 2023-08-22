@@ -49,7 +49,7 @@ const ModifyTab = ({
 	abortControllerRef,
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
-	const [customText, setCustomText] = useState('');
+	const [customValue, setCustomValue] = useState('');
 
 	useEffect(() => {
 		if (!selectedResultId) {
@@ -61,7 +61,7 @@ const ModifyTab = ({
 	const getMessages = async data => {
 		const {
 			modificationType,
-			customText,
+			customValue,
 			refFromSelectedText = false,
 		} = data;
 		const {
@@ -74,20 +74,22 @@ const ModifyTab = ({
 			language,
 		} = settings || {};
 
-		// Use the mapping to get the appropriate action for the given modification type
 		const modificationAction =
 			MODIFICATION_ACTIONS[modificationType] || 'modifying';
 
 		const customExplanation =
 			modificationType === 'custom'
-				? `- **Custom Instructions**: ${customText}\n`
+				? `- **Custom Instructions**: ${customValue}`
+				: '';
+		const languageExplanation =
+			modificationType === 'translate'
+				? `- **Language to translate to**: ${customValue}`
 				: '';
 
 		const quoteGuidance = getQuotesGuidance(contentType);
 
 		const generatedTextExplanation = !refFromSelectedText
-			? `
-${prompt ? `- **Original Prompt**: ${prompt}` : ''}
+			? `${prompt ? `- **Original Prompt**: ${prompt}` : ''}
 ${getContentAttributesSection(
 	contentType,
 	tone,
@@ -105,7 +107,8 @@ You are a helpful assistant tasked with ${modificationAction} the following ${
 				? 'selected on website'
 				: 'generated for website'
 		} text. Adhere to these guidelines:
-${generatedTextExplanation}
+
+${languageExplanation}${generatedTextExplanation}
 ${customExplanation}${getSiteInformation(AISettings)}
 ${getContextSection(context)}
 Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
@@ -133,7 +136,9 @@ Your task is to maintain the original intent and context while ${modificationAct
 				...(!isSelectedText && { refId: selectedResultId, settings }),
 				modificationType: modifyOption,
 				refFromSelectedText: isSelectedText,
-				...(modifyOption === 'custom' && { customText }),
+				...(['custom', 'translate'].includes(modifyOption) && {
+					customValue,
+				}),
 			},
 			results,
 			abortControllerRef,
@@ -167,10 +172,10 @@ Your task is to maintain the original intent and context while ${modificationAct
 				selectedResultId={selectedResultId}
 				modifyOption={modifyOption}
 				modifyContent={modifyContent}
-				customText={customText}
+				customValue={customValue}
 				cleanHistory={cleanHistory}
 				setModifyOption={setModifyOption}
-				setCustomText={setCustomText}
+				setCustomValue={setCustomValue}
 				switchToGenerateTab={switchToGenerateTab}
 			/>
 			<ResultCards
@@ -184,7 +189,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}
 				setModifyOption={setModifyOption}
-				setCustomText={setCustomText}
+				setCustomValue={setCustomValue}
 				setHistoryStartId={setHistoryStartId}
 				onContentChange={onContentChange}
 				onChangeTextFormat={onChangeTextFormat}

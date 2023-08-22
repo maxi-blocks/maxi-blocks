@@ -27,13 +27,16 @@ const ResultCard = ({
 	isFromPreviousSession,
 	isSelected,
 	isSelectedText,
-	isCustom,
+	modifyOption,
 	isRefExist,
 	onInsert,
 	onSelect,
 	onUseSettings,
 	onDelete,
 }) => {
+	const isCustom = modifyOption === 'custom';
+	const isTranslate = modifyOption === 'translate';
+
 	const className = 'maxi-prompt-control-results-card';
 
 	const classes = classnames(
@@ -62,6 +65,13 @@ const ResultCard = ({
 	const [content, setContent] = useState(limitContent(result.content));
 	const [isLimited, setIsLimited] = useState(false);
 
+	const handleScrollIntoEndOfContent = () => {
+		endOfContentRef.current.scrollIntoView({
+			behavior: 'instant',
+			block: 'end',
+		});
+	};
+
 	useEffect(() => {
 		setContent(isSelected ? result.content : limitContent(result.content));
 		setIsLimited(
@@ -69,11 +79,9 @@ const ResultCard = ({
 		);
 
 		if (result.loading) {
-			endOfContentRef.current.scrollIntoView({
-				behavior: 'instant',
-				block: 'end',
-			});
+			handleScrollIntoEndOfContent();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [result.content]);
 
 	const handleScrollIntoView = () => {
@@ -105,7 +113,9 @@ const ResultCard = ({
 					ref={ref}
 					className={classnames(
 						`${className}__scroll-to__inner`,
-						isCustom && `${className}__scroll-to__inner--custom`
+						isCustom && `${className}__scroll-to__inner--custom`,
+						isTranslate &&
+							`${className}__scroll-to__inner--translate`
 					)}
 				/>
 			</div>

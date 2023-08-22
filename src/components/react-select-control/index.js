@@ -36,11 +36,13 @@ const ReactSelectControl = ({ labelText, ...props }) => {
 		}),
 	};
 
+	const className = 'maxi-react-select-control';
+
 	return (
-		<>
+		<div className={className}>
 			{labelText && <label>{labelText}</label>}
 			<Select styles={defaultStyles} {...props} />
-		</>
+		</div>
 	);
 };
 

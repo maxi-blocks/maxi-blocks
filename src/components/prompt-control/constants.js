@@ -261,6 +261,7 @@ export const MODIFY_OPTIONS = [
 	'shorten',
 	'lengthen',
 	'fix spelling & grammar',
+	'translate',
 	'custom',
 ];
 
@@ -269,6 +270,7 @@ export const MODIFICATION_ACTIONS = {
 	shorten: 'shortening',
 	lengthen: 'lengthening',
 	'fix spelling & grammar': 'fixing spelling & grammar',
+	translate: 'translating',
 	custom: 'modifying', // Custom can be kept as a generic action
 };
 

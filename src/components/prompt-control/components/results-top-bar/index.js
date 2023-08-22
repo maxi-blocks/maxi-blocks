@@ -12,7 +12,7 @@ import {
 	ReactSelectControl,
 	TextareaControl,
 } from '../../../../components';
-import { MODIFY_OPTIONS } from '../../constants';
+import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
 
 /**
  * External dependencies
@@ -29,10 +29,10 @@ const ResultsTopBar = ({
 	selectedResultId,
 	modifyOption,
 	modifyContent,
-	customText,
+	customValue,
 	cleanHistory,
 	setModifyOption,
-	setCustomText,
+	setCustomValue,
 	switchToGenerateTab,
 }) => {
 	const className = 'maxi-prompt-control-results-top-bar';
@@ -54,11 +54,14 @@ const ResultsTopBar = ({
 							label: __(capitalize(option), 'maxi-blocks'),
 							value: option,
 						}))}
-						onChange={({ value }) => setModifyOption(value)}
+						onChange={({ value }) => {
+							setModifyOption(value);
+							setCustomValue('');
+						}}
 						isDisabled={isEmpty(results)}
 					/>
 					<Button
-						className={`${className}__button`}
+						className={`${className}__button maxi-prompt-control-modify-tab__button`}
 						onClick={modifyContent}
 						disabled={isEmpty(results) && !selectedResultId}
 					>
@@ -73,9 +76,27 @@ const ResultsTopBar = ({
 						'More information gives better results',
 						'maxi-blocks'
 					)}
-					value={customText}
-					onChange={val => setCustomText(val)}
+					value={customValue}
+					onChange={value => setCustomValue(value)}
 					disableResize
+				/>
+			)}
+			{modifyOption === 'translate' && (
+				<ReactSelectControl
+					labelText={__('Translate to', 'maxi-blocks')}
+					value={{
+						label: __(customValue, 'maxi-blocks'),
+						value: customValue,
+					}}
+					defaultValue={{
+						label: __(customValue, 'maxi-blocks'),
+						value: customValue,
+					}}
+					options={LANGUAGES.map(option => ({
+						label: __(option, 'maxi-blocks'),
+						value: option,
+					}))}
+					onChange={({ value }) => setCustomValue(value)}
 				/>
 			)}
 			<div className='maxi-prompt-control-modify-tab__buttons'>

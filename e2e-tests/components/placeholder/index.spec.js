@@ -6,7 +6,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../utils';
+import { insertMaxiBlock } from '../../utils';
 
 describe('Placeholder', () => {
 	it('Test template library placeholder', async () => {
@@ -39,7 +39,6 @@ describe('Placeholder', () => {
 
 	it('Test icon placeholder', async () => {
 		await insertMaxiBlock(page, 'Icon Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		// close modal
 		await page.$eval('.components-modal__header button', button =>
@@ -56,7 +55,6 @@ describe('Placeholder', () => {
 	});
 	it('Test image placeholder', async () => {
 		await insertMaxiBlock(page, 'Image Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		// check image placeholder
 		const placeholder = await page.$eval(

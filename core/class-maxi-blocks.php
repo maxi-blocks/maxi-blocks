@@ -211,7 +211,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
         public function maxi_add_sc_native_blocks($block_content, $block, $instance)
         {
-            if (isset($block['blockName']) && str_contains($block['blockName'], 'core/') && isset($block_content) && !empty($block_content)) {
+            if (str_contains($block['blockName'] ?? '', 'core/') && isset($block_content) && !empty($block_content)) {
                 // We create a new DOMDocument object
                 $dom = new DOMDocument();
                 @$dom->loadHTML(mb_convert_encoding($block_content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);

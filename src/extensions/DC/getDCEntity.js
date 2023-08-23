@@ -9,6 +9,7 @@ import { resolveSelect } from '@wordpress/data';
 import getDCErrors from './getDCErrors';
 import { getDCOrder } from './utils';
 import { orderRelations, orderTypes, relationTypes } from './constants';
+import { getCartData } from './getWooCommerceData';
 
 /**
  * External dependencies
@@ -22,6 +23,7 @@ const kindDictionary = {
 	settings: 'root',
 	categories: 'taxonomy',
 	tags: 'taxonomy',
+	products: 'postType',
 };
 const nameDictionary = {
 	posts: 'post',
@@ -30,6 +32,7 @@ const nameDictionary = {
 	settings: '__unstableBase',
 	categories: 'category',
 	tags: 'post_tag',
+	products: 'product',
 };
 
 const randomEntityIndexes = {};
@@ -138,6 +141,11 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 
 		return settings;
+	}
+	if (type === 'cart') {
+		const cart = await getCartData();
+
+		return cart;
 	}
 	if (['tags', 'categories'].includes(type)) {
 		const termsEntity = await resolveSelect('core').getEntityRecords(

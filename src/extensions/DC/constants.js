@@ -53,7 +53,6 @@ export const typeOptions = {
 	accordion: generalTypeOptions,
 	slider: generalTypeOptions,
 	acf: ACFTypeOptions,
-	wc: WCTypeOptions,
 };
 
 /**
@@ -309,14 +308,6 @@ const generalCartFields = [
 	{
 		label: __('Total items tax', 'maxi-blocks'),
 		value: 'total_items_tax',
-	},
-	{
-		label: __('Total items shipping', 'maxi-blocks'),
-		value: 'total_items_shipping',
-	},
-	{
-		label: __('Total items shipping tax', 'maxi-blocks'),
-		value: 'total_items_shipping_tax',
 	},
 	{ label: __('Total fees', 'maxi-blocks'), value: 'total_fees' },
 	{ label: __('Total fees tax', 'maxi-blocks'), value: 'total_fees_tax' },

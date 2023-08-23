@@ -39,6 +39,7 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
+
 		await selectControls[2].select('hover');
 	};
 
@@ -151,6 +152,8 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('11');
 
+		// console.log('after width');
+
 		const ANCs = await page.$$(
 			'.maxi-advanced-number-control .maxi-select-control__input'
 		);
@@ -164,6 +167,8 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('22');
 
+		// console.log('before spacing');
+
 		// Spacing
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -171,6 +176,8 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('33');
+
+		// console.log('before Icon stroke color');
 
 		// Icon stroke color
 		let colorControls = await page.$$('.maxi-color-control');
@@ -192,6 +199,8 @@ describe('Button Maxi hover simple actions', () => {
 			opacity: 75,
 		});
 
+		// console.log('before Icon padding');
+
 		// Icon padding
 		selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[5].select('%');
@@ -203,7 +212,11 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
 
+		// console.log('before toMatchSnapshot');
+
 		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		// console.log('before checkFrontend');
 
 		await checkFrontend();
 	});

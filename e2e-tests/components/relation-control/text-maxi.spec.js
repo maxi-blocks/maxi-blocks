@@ -14,7 +14,6 @@ import {
 	addTypographyStyle,
 	openPreviewPage,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Text Maxi hover simple actions', () => {
@@ -22,14 +21,44 @@ describe('Text Maxi hover simple actions', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
 
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'text-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		await page.keyboard.type('Testing IB');
 
 		await insertMaxiBlock(page, 'Button Maxi');
 
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
 
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		await page.waitForSelector('.maxi-relation-control__button');

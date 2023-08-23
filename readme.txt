@@ -267,7 +267,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 22 August 2023_
+_Updates: 23 August 2023_
 
 * Update: Added Dynamic Content link to the Icon Maxi block
 * Update: Modified PHP code to prevent potential PHP warnings
@@ -277,7 +277,7 @@ _Updates: 22 August 2023_
 * Fix: Fixed the saving of styles after using preview mode in Gutenberg
 * Fix: Corrected the saving of styles when using the autosave feature in Gutenberg
 * Fix: Resolved Maxi database tables creation issue on plugin activation users w/o admin permissions
-* Fix: Image uploading issue when comments we're disabled under settings/discussion
+* Fix: Image uploading issue when comments were disabled under settings/discussion
 * Fix: Gutenberg block styles in the Editing Experience when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled
 
 _Updates: 7 August 2023_

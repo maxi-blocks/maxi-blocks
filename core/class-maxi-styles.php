@@ -1207,7 +1207,7 @@ class MaxiBlocks_Styles
     {
         global $wpdb;
 
-        $block_name = $block['blockName'] ?? null;
+        $block_name = $block['blockName'] ?? '';
         $props = $block['attrs'] ?? [];
         $unique_id = $props['uniqueID'] ?? null;
         $is_core_block = str_starts_with($block_name, 'core/');

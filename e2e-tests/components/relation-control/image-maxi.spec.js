@@ -11,19 +11,50 @@ import {
 	getAttributes,
 	openPreviewPage,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
-		await updateAllBlockUniqueIds(page);
 		const imageBlock = await page.$('.maxi-image-block');
 		await addImageToImageMaxi(page, imageBlock);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'image-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction

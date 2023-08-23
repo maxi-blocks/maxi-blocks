@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Column Maxi hover simple actions Column size 1`] = `
+[
+  {
+    "action": "hover",
+    "attributes": {
+      "column-size-general": 50,
+      "column-size-xl": 50,
+      "justify-content-general": "space-between",
+      "justify-content-xl": "space-between",
+    },
+    "css": {
+      "general": {
+        "breakpoint": null,
+        "styles": {
+          "flex-basis": "calc(50% - 0px)",
+          "justify-content": "space-between",
+          "width": "calc(50% - 0px)",
+        },
+      },
+    },
+    "effects": {
+      "disableTransition": false,
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "sid": "cs",
+    "target": "",
+    "title": "Hello World!",
+    "uniqueID": "column-maxi-1se8ef1z-u",
+  },
+]
+`;
+
+exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-1se8ef1z-u[data-maxi-relations="true"] { justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}"`;
+
+exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-1se8ef1z-u[data-maxi-relations="true"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;
+
+exports[`Column Maxi hover simple actions Column size 4`] = `"body.maxi-blocks--active #column-maxi-1se8ef1z-u[data-maxi-relations="true"] { transition: width 0.3s ease 0s, flex-basis 0.3s ease 0s, justify-content 0.3s ease 0s;}"`;

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image Maxi hover simple actions Alignment 1`] = `
+[
+  {
+    "action": "hover",
+    "attributes": {
+      "alignment-general": "right",
+      "alignment-xl": "right",
+    },
+    "css": {
+      "general": {
+        "breakpoint": null,
+        "styles": {
+          "justify-content": "flex-end",
+        },
+      },
+    },
+    "effects": {
+      "disableTransition": true,
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "sid": "a",
+    "target": " .maxi-image-block-wrapper",
+    "title": "Hello World!",
+    "uniqueID": "image-maxi-1se8ef1z-u",
+  },
+]
+`;
+
+exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-image-block-wrapper { justify-content: flex-end;}"`;

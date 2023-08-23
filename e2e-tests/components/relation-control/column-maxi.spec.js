@@ -15,20 +15,50 @@ import {
 	openPreviewPage,
 	getAttributes,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Column Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		// Select one column
 		await page.$$eval(
 			'.maxi-row-block__template .maxi-row-block__template__button',
 			rowButtons => rowButtons[0].click()
 		);
+
+		await page.waitForSelector('.maxi-column-block');
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const selectedBlockClientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (selectedBlockClientId) {
+				// Get all inner blocks of the selected block
+				const innerBlocks = wp.data
+					.select('core/block-editor')
+					.getBlocks(selectedBlockClientId);
+
+				// Check if there are any inner blocks
+				if (innerBlocks && innerBlocks.length > 0) {
+					// Get the client ID of the first inner block
+					const firstInnerBlockClientId = innerBlocks[0].clientId;
+
+					// Set the new uniqueID value
+					const newValue = 'column-maxi-1se8ef1z-u';
+
+					// Update the first inner block's uniqueID attribute
+					wp.data
+						.dispatch('core/block-editor')
+						.updateBlockAttributes(firstInnerBlockClientId, {
+							uniqueID: newValue,
+						});
+				}
+			}
+		});
 
 		// Add native paragraph block
 		await selectBlockByClientId(
@@ -39,7 +69,23 @@ describe('Column Maxi hover simple actions', () => {
 		await page.keyboard.press('Enter');
 
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction

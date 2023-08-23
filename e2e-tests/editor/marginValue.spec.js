@@ -6,7 +6,7 @@ import { createNewPost, activateTheme } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock, updateAllBlockUniqueIds } from '../utils';
+import { insertMaxiBlock } from '../utils';
 
 const testContainerWidth = async () => {
 	const containerElement = await page.$('.maxi-container-block');
@@ -26,8 +26,6 @@ describe('Full width blocks', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
 
-		await updateAllBlockUniqueIds(page);
-
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
 		expect(containerWidth).toBe(editorWidth);
@@ -37,7 +35,6 @@ describe('Full width blocks', () => {
 		await activateTheme('twentytwentytwo');
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
@@ -48,7 +45,6 @@ describe('Full width blocks', () => {
 		await activateTheme('twentytwentythree');
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
-		await updateAllBlockUniqueIds(page);
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 

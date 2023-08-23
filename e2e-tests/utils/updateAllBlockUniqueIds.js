@@ -52,7 +52,7 @@ const updateAllBlockUniqueIds = async (page, innerBlocks) => {
 		}
 
 		// If the block has inner blocks, recursively call the function to update them
-		if (block.innerBlocks && block.innerBlocks.length > 0) {
+		if (block?.innerBlocks && block?.innerBlocks?.length > 0) {
 			await updateAllBlockUniqueIds(page, block.innerBlocks);
 		}
 	}

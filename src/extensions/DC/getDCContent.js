@@ -32,10 +32,6 @@ const nameDictionary = {
 const getDCContent = async (dataRequest, clientId) => {
 	const { source } = dataRequest;
 
-	if (source === 'wc') {
-		return getWCContent(dataRequest);
-	}
-
 	const data = await getDCEntity(dataRequest, clientId);
 
 	if (!data) return null;
@@ -119,7 +115,7 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue = parent[0].name;
 		}
 	}
-	if (['tags', 'categories'].includes(field)) {
+	if (['tags', 'categories'].includes(field) && type === 'posts') {
 		const { getEntityRecord } = resolveSelect('core');
 		const idArray = contentValue;
 
@@ -138,6 +134,12 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = postTaxonomyLinksStatus
 			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
 			: namesArray.join(`${delimiterContent} `);
+
+		return contentValue;
+	}
+
+	if (['products', 'cart'].includes(type)) {
+		return getWCContent(dataRequest, data);
 	}
 
 	if (contentValue) return contentValue;

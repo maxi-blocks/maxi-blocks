@@ -1,4 +1,4 @@
-import { getCartData, getProductData } from './getWooCommerceData';
+import { getProductData } from './getWooCommerceData';
 import { getSimpleText, parseText } from './utils';
 
 const getPrice = (field, data) => {
@@ -24,11 +24,11 @@ const getPrice = (field, data) => {
 	return rawPrice ? parsePrice(rawPrice) : null;
 };
 
-const getWCContent = async dataRequest => {
-	const { field, id, type, delimiterContent } = dataRequest;
+const getWCContent = async (dataRequest, entityData) => {
+	const { field, type, delimiterContent } = dataRequest;
 
 	if (type === 'products') {
-		const data = await getProductData(id);
+		const data = await getProductData(entityData.id);
 
 		switch (field) {
 			case 'name':
@@ -60,8 +60,6 @@ const getWCContent = async dataRequest => {
 	}
 
 	if (type === 'cart') {
-		const data = await getCartData();
-
 		switch (field) {
 			case 'total_price':
 			case 'total_tax':
@@ -72,7 +70,7 @@ const getWCContent = async dataRequest => {
 			case 'total_items_tax':
 			case 'total_fees':
 			case 'total_fees_tax':
-				return getPrice(field, data.totals);
+				return getPrice(field, entityData.totals);
 			default:
 				return null;
 		}

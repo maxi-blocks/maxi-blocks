@@ -74,9 +74,7 @@ export const validationsValues = (
 	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
-	const typeResult = typeOptions[source === 'wp' ? contentType : source].map(
-		item => item.value
-	);
+	const typeResult = typeOptions[contentType].map(item => item.value);
 
 	return {
 		...(!isCL &&

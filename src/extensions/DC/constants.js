@@ -2,6 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Source constants
+ */
+export const sourceOptions = [
+	{
+		label: __('WordPress', 'maxi-blocks'),
+		value: 'wp',
+	},
+];
 
 /**
  * Type constants
@@ -40,7 +51,6 @@ export const typeOptions = {
 	accordion: generalTypeOptions,
 	slider: generalTypeOptions,
 	acf: ACFTypeOptions,
-	wc: WCTypeOptions,
 };
 
 /**
@@ -297,14 +307,6 @@ const generalCartFields = [
 	{
 		label: __('Total items tax', 'maxi-blocks'),
 		value: 'total_items_tax',
-	},
-	{
-		label: __('Total items shipping', 'maxi-blocks'),
-		value: 'total_items_shipping',
-	},
-	{
-		label: __('Total items shipping tax', 'maxi-blocks'),
-		value: 'total_items_shipping_tax',
 	},
 	{ label: __('Total fees', 'maxi-blocks'), value: 'total_fees' },
 	{ label: __('Total fees tax', 'maxi-blocks'), value: 'total_fees_tax' },
@@ -566,3 +568,25 @@ export const attributeDefaults = {
 	},
 	accumulator: 0,
 };
+
+const loadIntegrationsOptions = () => {
+	apiFetch({
+		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
+		method: 'GET',
+	}).then(response => {
+		if (response) {
+			if (response.includes('acf')) {
+				sourceOptions.push({
+					label: __('ACF', 'maxi-blocks'),
+					value: 'acf',
+				});
+			}
+
+			if (response.includes('woocommerce')) {
+				generalTypeOptions.push(...WCTypeOptions);
+			}
+		}
+	});
+};
+
+loadIntegrationsOptions();

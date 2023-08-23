@@ -6,17 +6,12 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getAttributes,
-	insertMaxiBlock,
-	updateAllBlockUniqueIds,
-} from '../../../../utils';
+import { getAttributes, insertMaxiBlock } from '../../../../utils';
 
 describe('Text link', () => {
 	it('Check text link', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
-		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 
 		// open editor
@@ -24,7 +19,12 @@ describe('Text link', () => {
 			button.click()
 		);
 
-		await page.waitForSelector('.block-editor-url-input__input:focus');
+		const linkInput = await page.waitForSelector(
+			'.block-editor-url-input__input'
+		);
+
+		await linkInput.click();
+		await page.waitForTimeout(100);
 
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');

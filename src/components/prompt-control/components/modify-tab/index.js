@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -50,13 +50,6 @@ const ModifyTab = ({
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 	const [customValue, setCustomValue] = useState('');
-
-	useEffect(() => {
-		if (!selectedResultId) {
-			setSelectedResultId(results[0]?.id);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const getMessages = async data => {
 		const {
@@ -152,7 +145,6 @@ Your task is to maintain the original intent and context while ${modificationAct
 	const cleanHistory = () => {
 		setResults([]);
 		setHistoryStartId(null);
-		setSelectedResultId(null);
 		switchToGenerateTab();
 	};
 

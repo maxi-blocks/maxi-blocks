@@ -325,6 +325,8 @@ export const MODIFICATION_MODIFICATORS = Object.fromEntries(
 
 export const DEFAULT_CONFIDENCE_LEVEL = 75;
 
+export const LOAD_MORE_COUNT = 5;
+
 export const CONTEXT_OPTIONS = {
 	false: 'No context',
 	container: 'This container',

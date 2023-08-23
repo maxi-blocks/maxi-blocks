@@ -65,14 +65,22 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [results, setResults, historyStartId, setHistoryStartId] =
 		useResultsHandling();
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
+
+	useEffect(() => {
+		if (!selectedResultId) {
+			setSelectedResultId(results[0]?.id);
+		}
+	}, [tab, selectedResultId, results]);
+
 	const [isGenerating, setIsGenerating] = useState(false);
 
 	const abortControllerRef = useRef(null);
 
 	useEffect(() => {
+		const currentAbortController = abortControllerRef.current;
+
 		return () => {
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-			abortControllerRef.current?.abort();
+			currentAbortController?.abort();
 		};
 	}, []);
 
@@ -179,46 +187,45 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 
 	const className = 'maxi-prompt-control';
 
-	const renderTabContent = {
-		generate: (
-			<GenerateTab
-				clientId={clientId}
-				settings={settings}
-				contextOption={contextOption}
-				setContextOption={setContextOption}
-				prompt={prompt}
-				generateContent={generateContent}
-				updateSettings={updateSettings}
-				switchToModifyTab={switchToModifyTab}
-			/>
-		),
-		modify: (
-			<ModifyTab
-				results={results}
-				content={content}
-				AISettings={AISettings}
-				settings={settings}
-				context={context}
-				selectedText={selectedText}
-				formatValue={textContext.formatValue}
-				onChangeTextFormat={textContext.onChangeTextFormat}
-				isGenerating={isGenerating}
-				setIsGenerating={setIsGenerating}
-				selectedResultId={selectedResultId}
-				setSelectedResultId={setSelectedResultId}
-				historyStartId={historyStartId}
-				setHistoryStartId={setHistoryStartId}
-				onContentChange={onContentChange}
-				setResults={setResults}
-				updateSettings={updateSettings}
-				switchToGenerateTab={switchToGenerateTab}
-				onAbort={handleAbort}
-				abortControllerRef={abortControllerRef}
-			/>
-		),
-	};
-
-	return <div className={className}>{renderTabContent[tab]}</div>;
+	return (
+		<div className={className}>
+			{tab === 'generate' ? (
+				<GenerateTab
+					clientId={clientId}
+					settings={settings}
+					contextOption={contextOption}
+					setContextOption={setContextOption}
+					prompt={prompt}
+					generateContent={generateContent}
+					updateSettings={updateSettings}
+					switchToModifyTab={switchToModifyTab}
+				/>
+			) : (
+				<ModifyTab
+					results={results}
+					content={content}
+					AISettings={AISettings}
+					settings={settings}
+					context={context}
+					selectedText={selectedText}
+					formatValue={textContext.formatValue}
+					onChangeTextFormat={textContext.onChangeTextFormat}
+					isGenerating={isGenerating}
+					setIsGenerating={setIsGenerating}
+					selectedResultId={selectedResultId}
+					setSelectedResultId={setSelectedResultId}
+					historyStartId={historyStartId}
+					setHistoryStartId={setHistoryStartId}
+					onContentChange={onContentChange}
+					setResults={setResults}
+					updateSettings={updateSettings}
+					switchToGenerateTab={switchToGenerateTab}
+					onAbort={handleAbort}
+					abortControllerRef={abortControllerRef}
+				/>
+			)}
+		</div>
+	);
 };
 
 export default PromptControl;

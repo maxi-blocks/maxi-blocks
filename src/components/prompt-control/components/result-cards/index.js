@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import ResultCard from '../result-card';
 import Button from '../../../button';
+import { LOAD_MORE_COUNT } from '../../constants';
 
 /**
  * External dependencies
@@ -38,7 +39,7 @@ const ResultCards = ({
 	updateSettings,
 	switchToGenerateTab,
 }) => {
-	const [loadUntilIndex, setLoadUntilIndex] = useState(5);
+	const [loadUntilIndex, setLoadUntilIndex] = useState(LOAD_MORE_COUNT);
 
 	const className = 'maxi-prompt-control-results';
 
@@ -65,11 +66,7 @@ const ResultCards = ({
 					onSelect={() => setSelectedResultId('selectedText')}
 				/>
 			)}
-			{results.map((result, index) => {
-				if (index >= loadUntilIndex) {
-					return null;
-				}
-
+			{results.slice(0, loadUntilIndex).map((result, index) => {
 				const refResultIndex =
 					result.refId &&
 					results.findIndex(
@@ -147,8 +144,7 @@ const ResultCards = ({
 
 				return (
 					<ResultCard
-						// eslint-disable-next-line react/no-array-index-key
-						key={index}
+						key={result.id}
 						index={index + 1}
 						result={result}
 						isFromPreviousSession={result.id <= historyStartId}
@@ -167,7 +163,9 @@ const ResultCards = ({
 				<div className={`${className}__load-more`}>
 					<Button
 						className='maxi-prompt-control-modify-tab__button'
-						onClick={() => setLoadUntilIndex(loadUntilIndex + 5)}
+						onClick={() =>
+							setLoadUntilIndex(loadUntilIndex + LOAD_MORE_COUNT)
+						}
 					>
 						{__('Load more', 'maxi-blocks')}
 					</Button>

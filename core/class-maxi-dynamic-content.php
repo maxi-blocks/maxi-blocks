@@ -179,6 +179,12 @@ class MaxiBlocks_DynamicContent
         'svg-icon-maxi',
     ];
 
+    private static $type_to_post_type = [
+        'posts' => 'post',
+        'pages' => 'page',
+        'products' => 'product',
+    ];
+
     /**
      * Constructor
      */
@@ -351,6 +357,8 @@ class MaxiBlocks_DynamicContent
             $response = self::get_taxonomy_content($attributes);
         } elseif ($dc_type === 'users') { // Users
             $response = self::get_user_content($attributes);
+        } elseif ($dc_type === 'products') {
+            $response = self::get_product_content($attributes);
         }
 
         if ($dc_field === 'date') {
@@ -467,10 +475,10 @@ class MaxiBlocks_DynamicContent
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
-        if (in_array($dc_type, ['posts', 'pages'])) {
+        if (in_array($dc_type, ['posts', 'pages', 'products'])) {
             // Basic args
             $args = [
-                'post_type' => $dc_type === 'posts' ? 'post' : 'page',
+                'post_type' => self::$type_to_post_type[$dc_type],
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
@@ -484,6 +492,10 @@ class MaxiBlocks_DynamicContent
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
                 $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+            }
+
+            if ($dc_type === 'products') {
+                return wc_get_products($args)[0];
             }
 
             $query = new WP_Query($args);
@@ -743,6 +755,63 @@ class MaxiBlocks_DynamicContent
         return $tax_data;
 
 
+    }
+
+    public function get_price($field, $data)
+    {
+        $rawPrice = $data[$field];
+        $parsePrice = function ($price) use ($data) {
+            $currencyPrefix = $data['currency_prefix'];
+            $currencySuffix = $data['currency_suffix'];
+            $minorUnit = $data['currency_minor_unit'];
+            $decimalSeparator = $data['currency_decimal_separator'];
+            $thousandSeparator = $data['currency_thousand_separator'];
+
+            // https://stackoverflow.com/a/2901298
+            $separateThousands = function ($price) use ($thousandSeparator) {
+                return preg_replace('/\B(?=(\d{3})+(?!\d))/', $thousandSeparator, $price);
+            };
+
+            $parsedPrice = strlen($price) > $minorUnit
+                ? $separateThousands(substr($price, 0, -$minorUnit)) . $decimalSeparator . substr($price, -$minorUnit)
+                : $price;
+
+            return $currencyPrefix . $parsedPrice . $currencySuffix;
+        };
+
+        return $rawPrice ? $parsePrice($rawPrice) : null;
+    }
+
+    public function get_product_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+        ) = $attributes;
+
+        $product = $this->get_post($attributes);
+        var_dump(get_woocommerce_price_format());
+
+        switch ($dc_field) {
+            case 'name':
+            case 'slug':
+            case 'sku':
+            case 'review_count':
+            case 'average_rating':
+                return $product->get_data()[$dc_field];
+            case 'price':
+                return $product->get_price_html();
+            case 'sale_price':
+                return $product->get_sale_price();
+            case 'regular_price':
+                return $product->get_regular_price();
+            case 'description':
+                return self::get_limited_string($product->get_description(), $dc_limit);
+            case 'short_description':
+                return self::get_limited_string($product->get_short_description(), $dc_limit);
+            default:
+                return null;
+        }
     }
 
     public function get_acf_content($attributes)

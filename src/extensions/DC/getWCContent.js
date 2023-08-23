@@ -21,9 +21,14 @@ const getPrice = (field, data) => {
 		const separateThousands = price =>
 			price.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
 
-		return `${currencyPrefix}${separateThousands(
-			price.slice(0, -minorUnit)
-		)}${decimalSeparator}${price.slice(-minorUnit)}${currencySuffix}`;
+		const parsedPrice =
+			price.length > minorUnit
+				? `${separateThousands(
+						price.slice(0, -minorUnit)
+				  )}${decimalSeparator}${price.slice(-minorUnit)}`
+				: price;
+
+		return `${currencyPrefix}${parsedPrice}${currencySuffix}`;
 	};
 
 	return rawPrice && typeof rawPrice === 'string'

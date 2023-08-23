@@ -44,7 +44,7 @@ function get_alignment_text_styles($obj, $type = 'text')
                         break;
                     }
                 default:
-                    continue;
+                    continue 2;
             }
         }
     }

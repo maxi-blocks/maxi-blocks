@@ -11,7 +11,14 @@ import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
 /**
  * External dependencies
  */
-import { cloneDeep, isArray, isEmpty, isEqual, isPlainObject } from 'lodash';
+import {
+	cloneDeep,
+	isArray,
+	isEmpty,
+	isEqual,
+	isPlainObject,
+	uniq,
+} from 'lodash';
 
 const propagateNewUniqueID = (
 	oldUniqueID,
@@ -20,8 +27,11 @@ const propagateNewUniqueID = (
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};
-	const lastChangedBlocks =
+	const lastInsertedBlocks =
 		select('maxiBlocks/blocks').getLastInsertedBlocks();
+	const lastParentBlocks = repeaterStatus
+		? select('maxiBlocks/blocks').getLastParentBlocks()
+		: [];
 
 	const updateBlockAttributesUpdate = (clientId, key, value) => {
 		if (!blockAttributesUpdate[clientId])
@@ -33,18 +43,14 @@ const propagateNewUniqueID = (
 	};
 
 	const updateRelations = () => {
-		if (isEmpty(lastChangedBlocks)) return;
+		if ([lastInsertedBlocks, lastParentBlocks].every(isEmpty)) return;
 
 		let firstColumnToModifyClientId = null;
 
 		const updateNewUniqueID = block => {
 			if (!block) return;
 
-			const {
-				attributes = {},
-				innerBlocks: rawInnerBlocks = [],
-				clientId,
-			} = block;
+			const { attributes = {}, clientId } = block;
 
 			if (
 				'relations' in attributes &&
@@ -94,19 +100,14 @@ const propagateNewUniqueID = (
 						newRelations
 					);
 			}
-
-			if (!isEmpty(rawInnerBlocks)) {
-				const innerBlocks = isArray(rawInnerBlocks)
-					? rawInnerBlocks
-					: Object.values(rawInnerBlocks);
-
-				innerBlocks.forEach(innerBlock => {
-					updateNewUniqueID(innerBlock);
-				});
-			}
 		};
 
-		lastChangedBlocks.forEach(clientId => {
+		const clientIdsToUpdate = uniq([
+			...lastInsertedBlocks,
+			...lastParentBlocks,
+		]);
+
+		clientIdsToUpdate.forEach(clientId => {
 			const block = select('core/block-editor').getBlock(clientId);
 			updateNewUniqueID(block);
 		});

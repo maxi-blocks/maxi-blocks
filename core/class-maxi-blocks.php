@@ -174,14 +174,10 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     if ($element instanceof DOMElement) {
                         $classes = $element->getAttribute('class');
 
-                        if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
-                            if(!str_contains($classes, 'maxi-block--use-sc')) {
-                                $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
-                            }
-
-                            if(!isset($classes) || empty($classes)) {
-                                $element->setAttribute('class', 'maxi-block--use-sc');
-                            }
+                        if (!isset($classes) || empty($classes)) {
+                            $element->setAttribute('class', 'maxi-block--use-sc');
+                        } elseif (!str_contains($classes, 'maxi') && !str_contains($classes, 'maxi-block--use-sc')) {
+                            $element->setAttribute('class', $classes . ' maxi-block--use-sc');
                         }
                     }
 

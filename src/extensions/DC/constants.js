@@ -283,7 +283,6 @@ const imageProductFields = [
 ];
 
 const generalCartFields = [
-	{ label: __('Items', 'maxi-blocks'), value: 'items' },
 	{ label: __('Total price', 'maxi-blocks'), value: 'total_price' },
 	{ label: __('Total tax', 'maxi-blocks'), value: 'total_tax' },
 	{ label: __('Total shipping', 'maxi-blocks'), value: 'total_shipping' },

@@ -102,7 +102,10 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		const user = await getUsers({ include: contentValue });
 
-		contentValue = getItemLinkContent(user[0].name);
+		contentValue = getItemLinkContent(
+			user[0].name,
+			postTaxonomyLinksStatus
+		);
 	}
 	if (['tags', 'categories'].includes(type) && field === 'parent') {
 		if (!contentValue || contentValue === 0)

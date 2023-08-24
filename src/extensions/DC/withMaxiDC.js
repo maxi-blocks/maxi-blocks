@@ -163,7 +163,7 @@ const withMaxiDC = createHigherOrderComponent(
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
-							type === 'posts' &&
+							['posts', 'products'].includes(type) &&
 							linkFields.includes(field);
 
 						if (!newContainsHTML) {

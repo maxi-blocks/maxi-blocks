@@ -1,5 +1,5 @@
 import { getProductData } from './getWooCommerceData';
-import { getSimpleText, parseText } from './utils';
+import { getSimpleText, getTaxonomyContent, parseText } from './utils';
 
 const getPrice = (field, data) => {
 	const rawPrice = data[field];
@@ -30,7 +30,8 @@ const getPrice = (field, data) => {
 };
 
 const getWCContent = async (dataRequest, entityData) => {
-	const { field, type, delimiterContent } = dataRequest;
+	const { field, type, delimiterContent, postTaxonomyLinksStatus } =
+		dataRequest;
 
 	if (type === 'products') {
 		const data = await getProductData(entityData.id);
@@ -51,9 +52,11 @@ const getWCContent = async (dataRequest, entityData) => {
 				return getSimpleText(parseText(data[field]));
 			case 'tags':
 			case 'categories':
-				return data[field]
-					.map(({ name }) => name)
-					.join(`${delimiterContent} `);
+				return getTaxonomyContent(
+					data[field],
+					delimiterContent,
+					postTaxonomyLinksStatus
+				);
 			case 'image':
 				return {
 					url: data.images[0].src,

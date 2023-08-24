@@ -8,7 +8,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { limitFields, limitTypes, renderedFields } from './constants';
-import { getSimpleText, limitString, parseText } from './utils';
+import {
+	getItemLinkContent,
+	getSimpleText,
+	getTaxonomyContent,
+	limitString,
+	parseText,
+} from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
@@ -56,11 +62,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
-	const getItemLinkContent = item =>
-		postTaxonomyLinksStatus
-			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
-			: item;
-
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
@@ -95,7 +96,10 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		const user = await getUsers({ include: contentValue });
 
-		contentValue = getItemLinkContent(user[0].name);
+		contentValue = getItemLinkContent(
+			user[0].name,
+			postTaxonomyLinksStatus
+		);
 	}
 	if (['tags', 'categories'].includes(type) && field === 'parent') {
 		if (!contentValue || contentValue === 0)
@@ -115,27 +119,25 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue = parent[0].name;
 		}
 	}
-	if (['tags', 'categories'].includes(field) && type === 'posts') {
-		const { getEntityRecord } = resolveSelect('core');
-		const idArray = contentValue;
+	if (
+		['tags', 'categories'].includes(field) &&
+		['posts', 'products'].includes(type)
+	) {
+		const { getEntityRecords } = resolveSelect('core');
 
-		const namesArray = await Promise.all(
-			idArray.map(async id => {
-				const taxonomyItem = await getEntityRecord(
-					'taxonomy',
-					nameDictionary[field],
-					id
-				);
-
-				return getItemLinkContent(taxonomyItem.name);
-			})
+		const taxonomyArray = await getEntityRecords(
+			'taxonomy',
+			nameDictionary[field],
+			{
+				include: contentValue,
+			}
 		);
 
-		contentValue = postTaxonomyLinksStatus
-			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
-			: namesArray.join(`${delimiterContent} `);
-
-		return contentValue;
+		contentValue = getTaxonomyContent(
+			taxonomyArray,
+			delimiterContent,
+			postTaxonomyLinksStatus
+		);
 	}
 
 	if (['products', 'cart'].includes(type)) {

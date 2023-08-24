@@ -56,6 +56,25 @@ export const sanitizeDCContent = content =>
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
+export const getItemLinkContent = (item, linkStatus) =>
+	linkStatus
+		? `<a class="maxi-text-block--link"><span>${item}</span></a>`
+		: item;
+
+export const getTaxonomyContent = (
+	taxonomyArray,
+	delimiterContent,
+	linkStatus
+) => {
+	const namesArray = taxonomyArray.map(({ name }) =>
+		getItemLinkContent(name, linkStatus)
+	);
+
+	return linkStatus
+		? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
+		: namesArray.join(`${delimiterContent} `);
+};
+
 export const validationsValues = (
 	variableValue,
 	field,

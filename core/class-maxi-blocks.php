@@ -166,12 +166,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $elements = $xpath->query('//*');
 
                 // Check if elements are found
-				if(isset($elements) && !empty($elements)) {
+                if(isset($elements) && !empty($elements)) {
                     // Pick the first element
                     $element = $elements[0];
 
                     // Check if the element is not null
-					if ($element instanceof DOMElement) {
+                    if ($element instanceof DOMElement) {
                         $classes = $element->getAttribute('class');
 
                         if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {

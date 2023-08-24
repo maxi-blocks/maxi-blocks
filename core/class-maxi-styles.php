@@ -1136,7 +1136,6 @@ class MaxiBlocks_Styles
             }
 
             if ($match) {
-
                 foreach ($block_names as $block_name) {
                     if(!str_contains($block_name, 'maxi-blocks')) {
                         continue;

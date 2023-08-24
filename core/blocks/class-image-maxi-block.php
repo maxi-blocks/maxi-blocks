@@ -419,8 +419,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
         public static function get_image_object($props)
         {
-            $image_ratio = $props['imageRatio'];
-            $img_width = $props['imgWidth'];
+            $image_ratio = $props['imageRatio'] ?? false;
+            $img_width = $props['imgWidth'] ?? false;
             $use_init_size = $props['useInitSize'] ?? false;
             $media_width = $props['mediaWidth'];
             $fit_parent_size = $props['fitParentSize'] ?? false;
@@ -540,7 +540,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 ]);
             }
 
-            if ($props['image-box-shadow-status-hover'] && $is_hover) {
+            if (isset($props['image-box-shadow-status-hover']) && $props['image-box-shadow-status-hover'] && $is_hover) {
                 $response['boxShadow'] = get_box_shadow_styles([
                     'obj' => array_merge(
                         get_group_attributes($props, 'boxShadow', true, 'image-'),
@@ -573,7 +573,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 get_group_attributes($props, 'textAlignment')
             );
 
-            if ($props['imgWidth']) {
+            if (isset($props['imgWidth']) && $props['imgWidth']) {
                 $response['imgWidth'] = ['general' => ['width' => $props['imgWidth'] . '%']];
             }
 

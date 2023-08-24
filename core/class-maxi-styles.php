@@ -1869,9 +1869,12 @@ class MaxiBlocks_Styles
         } else {
             $fonts = '';
         }
-        write_log($unique_id);
-        write_log($frontend_styles);
-        write_log('==========================================');
+
+        if($block_name === 'maxi-blocks/row-maxi') {
+            write_log($unique_id);
+            write_log($frontend_styles);
+            write_log('==========================================');
+        }
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(

@@ -64,19 +64,20 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 
     foreach ($breakpoints as $breakpoint) {
         $responsive[$breakpoint] = [];
+        $icon_only = $props[$prefix . 'icon-only'] ?? false;
 
         if (
             isset($props[$prefix . 'icon-spacing-' . $breakpoint]) &&
             isset($props[$prefix . 'icon-position'])
         ) {
             if ($props[$prefix . 'icon-position'] === 'left' || $props[$prefix . 'icon-position'] === 'right') {
-                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'right' ? 'left' : 'right')] = $props[$prefix . 'icon-only'] ? '0' : get_last_breakpoint_attribute([
+                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'right' ? 'left' : 'right')] = $icon_only ? '0' : get_last_breakpoint_attribute([
                     'target' => $prefix . 'icon-spacing',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]) . 'px';
             } else {
-                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'top' ? 'bottom' : 'top')] = $props[$prefix . 'icon-only'] ? '0' : get_last_breakpoint_attribute([
+                $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'top' ? 'bottom' : 'top')] = $icon_only ? '0' : get_last_breakpoint_attribute([
                     'prefix' => $prefix . 'icon-spacing',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props

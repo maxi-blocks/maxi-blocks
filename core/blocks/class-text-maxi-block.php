@@ -66,7 +66,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $is_list = $props['isList'] ?? false;
-            $text_level = $props['textLevel'] ?? false;
+            $text_level = $props['textLevel'] ?? 'p';
             $type_of_list = $props['typeOfList'] ?? false;
             $element = $is_list ? $type_of_list : $text_level;
             $is_rtl = is_rtl();
@@ -288,7 +288,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
-                    'text_level' => $props['textLevel']
+                    'text_level' => $props['textLevel'] ?? 'p',
                 ])
             ];
 
@@ -302,7 +302,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'typography', true),
                     'is_hover' => true,
                     'block_style' => $props['blockStyle'],
-                    'text_level' => $props['textLevel'],
+                    'text_level' => $props['textLevel'] ?? 'p',
                     'normal_typography' => get_group_attributes($props, 'typography'),
                 ])
             ];

@@ -543,62 +543,61 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function generate_styles_button()
         {
             echo '
-    <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        var button = document.getElementById("maxi-regenerate-styles-button");
+				<script type="text/javascript">
+				document.addEventListener("DOMContentLoaded", function() {
+					var button = document.getElementById("maxi-regenerate-styles-button");
 
-        if (button) button.addEventListener("click", function() {
-            button.disabled = true;
+					if (button) button.addEventListener("click", function() {
+						button.disabled = true;
 
-            var loadingMessage = document.createElement("div");
-            loadingMessage.id = "loading";
-            loadingMessage.innerHTML = "<p>Running... Processed 0 posts</p>";
-            button.parentNode.insertBefore(loadingMessage, button.nextSibling);
+						var loadingMessage = document.createElement("div");
+						loadingMessage.id = "loading";
+						loadingMessage.innerHTML = "<p>Running... Processed 0 posts</p>";
+						button.parentNode.insertBefore(loadingMessage, button.nextSibling);
 
-            fetch(ajaxurl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: "action=maxi_process_all_site_content"
-            })
-            .then(response => {
-                const reader = response.body.getReader();
-                return new ReadableStream({
-                    start(controller) {
-                        function push() {
-                            reader.read().then(({ done, value }) => {
-                                if (done) {
-                                    controller.close();
-                                    return;
-                                }
-                                const text = new TextDecoder().decode(value);
-								const messages = text.split("<br>"); // Split the text into lines
-								const latestMessage = messages[messages.length - 2]; // Get the last message
-								console.log(latestMessage);
-								console.log(messages);
-								loadingMessage.innerHTML = `<p>${latestMessage}</p>`; // Update the loadingMessage with the latest message
-                                controller.enqueue(value);
-                                push();
-                            });
-                        }
-                        push();
-                    }
-                });
-            })
-            .then(stream => {
-                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
-            })
-            .then(response => {
-                loadingMessage.innerHTML = `<p>${response}</p>`; // Final response message
-                button.disabled = false;
-            });
-        });
-    });
-    </script>
-    ';
+						fetch(ajaxurl, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							body: "action=maxi_process_all_site_content"
+						})
+						.then(response => {
+							const reader = response.body.getReader();
+							return new ReadableStream({
+								start(controller) {
+									function push() {
+										reader.read().then(({ done, value }) => {
+											if (done) {
+												controller.close();
+												return;
+											}
+											const text = new TextDecoder().decode(value);
+											const messages = text.split("<br>"); // Split the text into lines
+											const latestMessage = messages[messages.length - 1]; // Get the last message
+											console.log(latestMessage);
+											console.log(messages);
+											loadingMessage.innerHTML = `<p>${latestMessage}</p>`; // Update the loadingMessage with the latest message
+											controller.enqueue(value);
+											push();
+										});
+									}
+									push();
+								}
+							});
+						})
+						.then(stream => {
+							return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+						})
+						.then(response => {
+							loadingMessage.innerHTML = `<p>${response.split("<br>").pop()}</p>`; // Final response message (last line)
+							button.disabled = false;
+						});
+					});
+				});
+				</script>
+				';
         }
-
 
 
         public function maxi_blocks_allowed_html()

@@ -411,6 +411,30 @@ class MaxiBlocks_DynamicContent
             : $content;
     }
 
+    public function get_post_taxonomy_content($attributes, $post_id, $taxonomy)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-delimiter-content' => $dc_delimiter,
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+        ) = $attributes;
+
+        $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
+
+        $taxonomy_content = [];
+
+        foreach ($taxonomy_list as $taxonomy_item) {
+            $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                $taxonomy_item,
+                $taxonomy_item->name,
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
+        }
+
+        return implode("$dc_delimiter ", $taxonomy_content);
+    }
+
     public function get_post_or_page_content($attributes)
     {
         @list(
@@ -469,20 +493,7 @@ class MaxiBlocks_DynamicContent
                 'categories' => 'category',
             ];
 
-            $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
-
-            $taxonomy_content = [];
-
-            foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
-                    $taxonomy_item,
-                    $taxonomy_item->name,
-                    $dc_post_taxonomy_links_status,
-                    $dc_field
-                );
-            }
-
-            $post_data = implode("$dc_delimiter ", $taxonomy_content);
+            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
         }
 
         return $post_data;
@@ -687,6 +698,14 @@ class MaxiBlocks_DynamicContent
                 return self::get_limited_string($product->get_description(), $dc_limit);
             case 'short_description':
                 return self::get_limited_string($product->get_short_description(), $dc_limit);
+            case 'tags':
+            case 'categories':
+                $field_name_to_taxonomy = [
+                    'tags' => 'product_tag',
+                    'categories' => 'product_cat',
+                ];
+
+                return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
             default:
                 return null;
         }

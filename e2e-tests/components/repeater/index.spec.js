@@ -64,6 +64,7 @@ describe('Repeater', () => {
 
 		// Add button to second column
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
+
 		await updateAllBlockUniqueIds(page);
 
 		// Check if button was added to all columns
@@ -96,6 +97,8 @@ describe('Repeater', () => {
 		);
 		await page.waitForTimeout(150);
 
+		await updateAllBlockUniqueIds(page);
+
 		// Check if buttons were removed from all columns
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
@@ -112,6 +115,7 @@ describe('Repeater', () => {
 		// Add code editor
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
+
 		await page.waitForTimeout(500);
 
 		// Select row
@@ -123,6 +127,7 @@ describe('Repeater', () => {
 		await page.waitForTimeout(150);
 
 		await toggleRepeater(page);
+
 		await page.waitForTimeout(150);
 
 		await updateAllBlockUniqueIds(page);
@@ -179,6 +184,8 @@ describe('Repeater', () => {
 			button.click()
 		);
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});

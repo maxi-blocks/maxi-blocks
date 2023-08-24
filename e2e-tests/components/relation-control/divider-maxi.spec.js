@@ -17,15 +17,29 @@ import {
 	getAttributes,
 	openPreviewPage,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Divider Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
 
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'divider-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		// Add native paragraph block
 		await selectBlockByClientId(
 			await page.$eval('.maxi-divider-block', el =>
@@ -35,7 +49,23 @@ describe('Divider Maxi hover simple actions', () => {
 		await page.keyboard.press('Enter');
 
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction

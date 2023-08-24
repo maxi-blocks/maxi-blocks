@@ -20,7 +20,6 @@ describe('Icon Color', () => {
 	it('Check Icon Color', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
-		await updateAllBlockUniqueIds(page);
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block
@@ -31,6 +30,8 @@ describe('Icon Color', () => {
 			'.components-modal__content .components-modal__header button',
 			svg => svg.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'style', 'icon colour');
 

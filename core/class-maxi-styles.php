@@ -229,7 +229,8 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $js_script_name = 'maxi-' . $script;
-                $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+                //$js_script_path = '//js//min//' . $js_script_name . '.min.js';
+                $js_script_path = '//js//' . $js_script_name . '.js';
 
                 $post_meta = $this->custom_meta($js_var, false);
                 $template_meta = $this->custom_meta($js_var, true);
@@ -1127,6 +1128,7 @@ class MaxiBlocks_Styles
         ];
 
 
+
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
@@ -1160,6 +1162,9 @@ class MaxiBlocks_Styles
 
             if ($match) {
                 foreach ($block_names as $block_name) {
+                    if(!str_contains($block_name, 'maxi-blocks')) {
+                        continue;
+                    }
                     if($script === 'relations') {
                         foreach ($meta[$block_name] as $json) {
                             $array = json_decode($json, true);  // Decode the JSON string into an array
@@ -1174,7 +1179,10 @@ class MaxiBlocks_Styles
                     }
 
                 }
-                $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
+
+                if(!empty($meta_to_pass)) {
+                    $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
+                }
             }
         }
     }
@@ -1232,7 +1240,7 @@ class MaxiBlocks_Styles
     {
         global $wpdb;
 
-        $block_name = $block['blockName'] ?? null;
+        $block_name = $block['blockName'] ?? '';
         $props = $block['attrs'] ?? [];
         $unique_id = $props['uniqueID'] ?? null;
         $is_core_block = isset($block_name) && str_starts_with($block_name, 'core/');

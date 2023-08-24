@@ -18,7 +18,6 @@ import {
 	addTypographyStyle,
 	openPreviewPage,
 	insertMaxiBlock,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Button Maxi hover simple actions', () => {
@@ -35,17 +34,36 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
+
 		await selectControls[1].select('button-maxi-1se8ef1z-u');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
+
 		await selectControls[2].select('hover');
 	};
 
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-1se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
 
 		// Add icon
 		await openSidebarTab(page, 'style', 'quick styles');
@@ -54,7 +72,25 @@ describe('Button Maxi hover simple actions', () => {
 		);
 
 		await insertMaxiBlock(page, 'Button Maxi');
-		await updateAllBlockUniqueIds(page);
+
+		await page.evaluate(() => {
+			// Get the client ID of the currently selected block
+			const clientId = wp.data
+				.select('core/block-editor')
+				.getSelectedBlockClientId();
+
+			// Check if a block is selected
+			if (clientId) {
+				// Set the new uniqueID value
+				const newValue = 'button-maxi-2se8ef1z-u';
+
+				// Update the block's uniqueID attribute
+				wp.data
+					.dispatch('core/block-editor')
+					.updateBlockAttributes(clientId, { uniqueID: newValue });
+			}
+		});
+
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		await addInteraction();
@@ -116,6 +152,8 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('11');
 
+		// console.log('after width');
+
 		const ANCs = await page.$$(
 			'.maxi-advanced-number-control .maxi-select-control__input'
 		);
@@ -129,6 +167,8 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('22');
 
+		// console.log('before spacing');
+
 		// Spacing
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -136,6 +176,8 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('33');
+
+		// console.log('before Icon stroke color');
 
 		// Icon stroke color
 		let colorControls = await page.$$('.maxi-color-control');
@@ -157,6 +199,8 @@ describe('Button Maxi hover simple actions', () => {
 			opacity: 75,
 		});
 
+		// console.log('before Icon padding');
+
 		// Icon padding
 		selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[5].select('%');
@@ -168,7 +212,11 @@ describe('Button Maxi hover simple actions', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
 
+		// console.log('before toMatchSnapshot');
+
 		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		// console.log('before checkFrontend');
 
 		await checkFrontend();
 	});

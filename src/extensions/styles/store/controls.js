@@ -15,9 +15,7 @@ import postcss from 'postcss';
  * Internal dependencies
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
-import { getIsSiteEditor, getTemplatePartsIds } from '../../fse';
 import entityRecordsWrapper from '../entityRecordsWrapper';
-import getFilteredData from '../getFilteredData';
 
 export const processCss = async code => {
 	if (!code) return null;
@@ -42,9 +40,17 @@ const controls = {
 			await Promise.all(
 				blockStyles.map(async blockStyle => {
 					const { uniqueID } = blockStyle[1];
-					parsedStyles[uniqueID] = await processCss(
+					const processedStyle = await processCss(
 						frontendStyleGenerator(blockStyle)
 					);
+
+					// Check if the uniqueID already exists in parsedStyles
+					// If it does, concatenate the styles; otherwise, assign the processedStyle
+					if (parsedStyles[uniqueID]) {
+						parsedStyles[uniqueID] += processedStyle;
+					} else {
+						parsedStyles[uniqueID] = processedStyle;
+					}
 				})
 			);
 

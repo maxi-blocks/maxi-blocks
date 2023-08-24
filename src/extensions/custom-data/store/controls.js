@@ -8,7 +8,6 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getIsSiteEditor } from '../../fse';
-import entityRecordsWrapper from '../../styles/entityRecordsWrapper';
 
 /**
  * External dependencies

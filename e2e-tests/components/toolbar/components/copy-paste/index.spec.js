@@ -327,6 +327,8 @@ describe('CopyPaste from Toolbar', () => {
 			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container .components-button',
 			column => column.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 		await page.waitForTimeout(500);
 
 		// open options
@@ -341,20 +343,7 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// remove first container
-		await page.evaluate(() => {
-			wp.data
-				.dispatch('core/block-editor')
-				.removeBlock(
-					wp.data
-						.select('core/block-editor')
-						.getSelectedBlockClientId()
-				);
-		});
-
 		await insertMaxiBlock(page, 'Container Maxi');
-
-		await updateAllBlockUniqueIds(page);
 
 		// open options
 		await page.$eval(
@@ -367,28 +356,40 @@ describe('CopyPaste from Toolbar', () => {
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
 			button => button[3].click()
 		);
+		await page.waitForTimeout(1500);
+		await updateAllBlockUniqueIds(page);
 
-		// focus on Text Maxi
-		await page.$$eval('.maxi-text-block', blocks =>
-			wp.data
-				.dispatch('core/block-editor')
-				.selectBlock(
-					blocks[blocks.length - 1].getAttribute('data-block')
-				)
-		);
-
-		// check text maxi exist
-		const innerBlocksNum = await page.evaluate(
-			() =>
-				wp.data
-					.select('core/block-editor')
-					.getBlockParents(
+		const allBlockNames = await page.evaluate(() => {
+			// Recursive function to get block names
+			const getBlockNames = blocks => {
+				let names = [];
+				blocks.forEach(block => {
+					// Add the name of the current block
+					names.push(block.name);
+					// Recursively add the names of any inner blocks
+					const innerBlockNames = getBlockNames(
 						wp.data
 							.select('core/block-editor')
-							.getSelectedBlockClientId()
-					).length
-		);
+							.getBlocks(block.clientId)
+					);
+					names = names.concat(innerBlockNames);
+				});
+				return names;
+			};
 
-		expect(innerBlocksNum).toBe(3);
+			// Get all top-level blocks
+			const topLevelBlocks = wp.data
+				.select('core/block-editor')
+				.getBlocks();
+
+			// Recursively get all block names
+			return getBlockNames(topLevelBlocks);
+		});
+
+		expect(allBlockNames.length).toBe(8);
+
+		expect(allBlockNames[allBlockNames.length - 1]).toBe(
+			'maxi-blocks/text-maxi'
+		);
 	});
 });

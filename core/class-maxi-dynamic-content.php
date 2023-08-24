@@ -359,6 +359,8 @@ class MaxiBlocks_DynamicContent
             $response = self::get_user_content($attributes);
         } elseif ($dc_type === 'products') {
             $response = self::get_product_content($attributes);
+        } elseif ($dc_type === 'cart') {
+            $response = self::get_cart_content($attributes);
         }
 
         if ($dc_field === 'date') {
@@ -764,8 +766,6 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
-
-
     }
 
     public function get_product_content($attributes)
@@ -800,6 +800,45 @@ class MaxiBlocks_DynamicContent
                 ];
 
                 return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
+            default:
+                return null;
+        }
+    }
+
+    public function get_cart_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+        ) = $attributes;
+
+        if (!WC()->cart) {
+            return null;
+        }
+
+        $field_to_totals = [
+            'total_price' => 'total',
+            'total_items' => 'cart_contents_total',
+            'total_items_tax' => 'cart_contents_tax',
+            'total_tax' => 'total_tax',
+            'total_shipping' => 'shipping_total',
+            'total_shipping_tax' => 'shipping_tax',
+            'total_discount' => 'discount_total',
+            'total_fees' => 'fee_total',
+            'total_fees_tax' => 'fee_tax',
+        ];
+
+        switch ($dc_field) {
+            case 'total_price':
+            case 'total_items':
+            case 'total_items_tax':
+            case 'total_tax':
+            case 'total_shipping':
+            case 'total_shipping_tax':
+            case 'total_discount':
+            case 'total_fees':
+            case 'total_fees_tax':
+                return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
             default:
                 return null;
         }

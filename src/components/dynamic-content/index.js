@@ -262,13 +262,6 @@ const DynamicContent = props => {
 							contentType={contentType}
 						/>
 					)}
-					{/* {source === 'wc' && (
-						<WCSettingsControl
-							onChange={onChange}
-							dynamicContent={dcValues}
-							contentType={contentType}
-						/>
-					)} */}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
@@ -299,7 +292,8 @@ const DynamicContent = props => {
 							})
 						}
 					/>
-					{isEmpty(postIdOptions) && type !== 'settings' ? (
+					{isEmpty(postIdOptions) &&
+					!['settings', 'cart'].includes(type) ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>

@@ -663,31 +663,6 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_price($field, $data)
-    {
-        $rawPrice = $data[$field];
-        $parsePrice = function ($price) use ($data) {
-            $currencyPrefix = $data['currency_prefix'];
-            $currencySuffix = $data['currency_suffix'];
-            $minorUnit = $data['currency_minor_unit'];
-            $decimalSeparator = $data['currency_decimal_separator'];
-            $thousandSeparator = $data['currency_thousand_separator'];
-
-            // https://stackoverflow.com/a/2901298
-            $separateThousands = function ($price) use ($thousandSeparator) {
-                return preg_replace('/\B(?=(\d{3})+(?!\d))/', $thousandSeparator, $price);
-            };
-
-            $parsedPrice = strlen($price) > $minorUnit
-                ? $separateThousands(substr($price, 0, -$minorUnit)) . $decimalSeparator . substr($price, -$minorUnit)
-                : $price;
-
-            return $currencyPrefix . $parsedPrice . $currencySuffix;
-        };
-
-        return $rawPrice ? $parsePrice($rawPrice) : null;
-    }
-
     public function get_product_content($attributes)
     {
         @list(
@@ -696,7 +671,6 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $product = $this->get_post($attributes);
-        var_dump(get_woocommerce_price_format());
 
         switch ($dc_field) {
             case 'name':
@@ -706,11 +680,9 @@ class MaxiBlocks_DynamicContent
             case 'average_rating':
                 return $product->get_data()[$dc_field];
             case 'price':
-                return $product->get_price_html();
             case 'sale_price':
-                return $product->get_sale_price();
             case 'regular_price':
-                return $product->get_regular_price();
+                return strip_tags(wc_price($product->get_data()[$dc_field]));
             case 'description':
                 return self::get_limited_string($product->get_description(), $dc_limit);
             case 'short_description':

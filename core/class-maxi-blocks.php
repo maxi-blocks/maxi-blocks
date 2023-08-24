@@ -176,7 +176,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
                         if (!isset($classes) || empty($classes)) {
                             $element->setAttribute('class', 'maxi-block--use-sc');
-                        } elseif (!str_contains($classes, 'maxi') && !str_contains($classes, 'maxi-block--use-sc')) {
+                        } elseif (!str_contains($classes, 'maxi-block--use-sc')) {
                             $element->setAttribute('class', $classes . ' maxi-block--use-sc');
                         }
                     }

@@ -166,7 +166,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $elements = $xpath->query('//*');
 
                 // Check if elements are found
-                if(isset($elements) && !empty($elements)) {
+                if(isset($elements) && $elements->length > 0) {
                     // Pick the first element
                     $element = $elements[0];
 

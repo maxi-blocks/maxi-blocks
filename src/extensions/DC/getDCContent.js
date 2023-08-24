@@ -125,6 +125,7 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue = parent[0].name;
 		}
 	}
+
 	if (['tags', 'categories'].includes(field)) {
 		contentValue = await getTaxonomyContent(
 			contentValue,

@@ -18,6 +18,7 @@ const propagateNewUniqueID = (
 	newUniqueID,
 	clientId,
 	repeaterStatus,
+	getInnerBlocksPositions,
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};
@@ -93,22 +94,37 @@ const propagateNewUniqueID = (
 			}
 		};
 
-		const parentColumnClientId =
-			lastChangedBlocks.includes(clientId) &&
-			repeaterStatus &&
-			select('core/block-editor').getBlockParentsByBlockName(
-				clientId,
-				'maxi-blocks/column-maxi'
-			)[0];
-
 		/**
 		 * In case if some of blocks was inserted into repeater (for example on validation),
 		 * then we need to check the column as well.
 		 */
-		[...lastChangedBlocks, parentColumnClientId].forEach(clientId => {
-			const block = select('core/block-editor').getBlock(clientId);
-			updateNewUniqueID(block);
-		});
+		const getRepeaterColumnClientId = () => {
+			if (!lastChangedBlocks.includes(clientId) || !repeaterStatus) {
+				return null;
+			}
+
+			const columnInnerBlocksPositions =
+				getInnerBlocksPositions()?.[[-1]];
+
+			if (!columnInnerBlocksPositions) {
+				return null;
+			}
+
+			const parentColumnsClientIds = select(
+				'core/block-editor'
+			).getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi');
+
+			return parentColumnsClientIds.find(columnClientId =>
+				columnInnerBlocksPositions.includes(columnClientId)
+			);
+		};
+
+		[...lastChangedBlocks, getRepeaterColumnClientId()].forEach(
+			clientId => {
+				const block = select('core/block-editor').getBlock(clientId);
+				updateNewUniqueID(block);
+			}
+		);
 	};
 
 	const updateBGLayers = () => {

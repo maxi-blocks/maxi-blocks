@@ -16,6 +16,7 @@ import { cloneDeep, isArray, isEmpty, isEqual, isPlainObject } from 'lodash';
 const propagateNewUniqueID = (
 	oldUniqueID,
 	newUniqueID,
+	clientId,
 	repeaterStatus,
 	bgLayers
 ) => {
@@ -106,7 +107,19 @@ const propagateNewUniqueID = (
 			}
 		};
 
-		lastChangedBlocks.forEach(clientId => {
+		const parentColumnClientId =
+			lastChangedBlocks.includes(clientId) &&
+			repeaterStatus &&
+			select('core/block-editor').getBlockParentsByBlockName(
+				clientId,
+				'maxi-blocks/column-maxi'
+			)[0];
+
+		/**
+		 * In case if some of blocks was inserted into repeater (for example on validation),
+		 * then we need to check the column as well.
+		 */
+		[...lastChangedBlocks, parentColumnClientId].forEach(clientId => {
 			const block = select('core/block-editor').getBlock(clientId);
 			updateNewUniqueID(block);
 		});

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -61,11 +62,19 @@ export const getItemLinkContent = (item, linkStatus) =>
 		? `<a class="maxi-text-block--link"><span>${item}</span></a>`
 		: item;
 
-export const getTaxonomyContent = (
-	taxonomyArray,
+export const getTaxonomyContent = async (
+	taxonomyIds,
 	delimiterContent,
-	linkStatus
+	linkStatus,
+	taxonomyType
 ) => {
+	if (!taxonomyIds) return null;
+
+	const { getEntityRecords } = resolveSelect('core');
+
+	const taxonomyArray = await getEntityRecords('taxonomy', taxonomyType, {
+		include: taxonomyIds,
+	});
 	const namesArray = taxonomyArray.map(({ name }) =>
 		getItemLinkContent(name, linkStatus)
 	);

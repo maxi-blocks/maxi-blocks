@@ -119,24 +119,12 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue = parent[0].name;
 		}
 	}
-	if (
-		['tags', 'categories'].includes(field) &&
-		['posts', 'products'].includes(type)
-	) {
-		const { getEntityRecords } = resolveSelect('core');
-
-		const taxonomyArray = await getEntityRecords(
-			'taxonomy',
-			nameDictionary[field],
-			{
-				include: contentValue,
-			}
-		);
-
-		contentValue = getTaxonomyContent(
-			taxonomyArray,
+	if (['tags', 'categories'].includes(field) && type === 'posts') {
+		contentValue = await getTaxonomyContent(
+			contentValue,
 			delimiterContent,
-			postTaxonomyLinksStatus
+			postTaxonomyLinksStatus,
+			nameDictionary[field]
 		);
 	}
 

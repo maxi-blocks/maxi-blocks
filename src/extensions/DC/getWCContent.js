@@ -36,6 +36,8 @@ const getWCContent = async (dataRequest, entityData) => {
 	if (type === 'products') {
 		const data = await getProductData(entityData.id);
 
+		const taxonomyType = field === 'tags' ? 'product_tag' : 'product_cat';
+
 		switch (field) {
 			case 'name':
 			case 'slug':
@@ -53,9 +55,10 @@ const getWCContent = async (dataRequest, entityData) => {
 			case 'tags':
 			case 'categories':
 				return getTaxonomyContent(
-					data[field],
+					entityData[taxonomyType],
 					delimiterContent,
-					postTaxonomyLinksStatus
+					postTaxonomyLinksStatus,
+					taxonomyType
 				);
 			case 'image':
 				return {

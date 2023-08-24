@@ -41,11 +41,7 @@ const propagateNewUniqueID = (
 		const updateNewUniqueID = block => {
 			if (!block) return;
 
-			const {
-				attributes = {},
-				innerBlocks: rawInnerBlocks = [],
-				clientId,
-			} = block;
+			const { attributes = {}, clientId } = block;
 
 			if (
 				'relations' in attributes &&
@@ -94,16 +90,6 @@ const propagateNewUniqueID = (
 						'relations',
 						newRelations
 					);
-			}
-
-			if (!isEmpty(rawInnerBlocks)) {
-				const innerBlocks = isArray(rawInnerBlocks)
-					? rawInnerBlocks
-					: Object.values(rawInnerBlocks);
-
-				innerBlocks.forEach(innerBlock => {
-					updateNewUniqueID(innerBlock);
-				});
 			}
 		};
 

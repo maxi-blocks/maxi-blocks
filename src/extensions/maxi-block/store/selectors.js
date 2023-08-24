@@ -19,8 +19,13 @@ const selectors = {
 
 		return false;
 	},
+	getLastParentBlocks(state) {
+		if (state) return state.lastParentBlocks;
+
+		return false;
+	},
 	getBlockClientIds(state) {
-		if (state) return state.blockClientIds;
+		if (state) return Object.keys(state.clientIdsWithBlockCount);
 
 		return false;
 	},

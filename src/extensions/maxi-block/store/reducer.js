@@ -1,8 +1,14 @@
+/**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
 const reducer = (
 	state = {
 		blocks: {},
 		lastInsertedBlocks: [],
-		blockClientIds: [],
+		lastParentBlocks: [],
+		clientIdsWithBlockCount: {},
 	},
 	action
 ) => {
@@ -25,13 +31,14 @@ const reducer = (
 			const { uniqueID, clientId } = action;
 
 			delete state.blocks[uniqueID];
+			delete state.clientIdsWithBlockCount[clientId];
 
 			return {
 				...state,
 				lastInsertedBlocks: state.lastInsertedBlocks.filter(
 					item => item !== clientId
 				),
-				blockClientIds: state.blockClientIds.filter(
+				lastParentBlocks: state.lastParentBlocks.filter(
 					item => item !== clientId
 				),
 			};
@@ -50,25 +57,42 @@ const reducer = (
 				},
 			};
 		}
-		case 'SAVE_LAST_INSERTED_BLOCKS': {
+		case 'SAVE_BLOCK_CLIENT_IDS': {
 			const { allClientIds } = action;
-			const savedClientIds = state.blockClientIds;
-
-			const lastInsertedBlocks = [...allClientIds].filter(
-				clientId => !savedClientIds.includes(clientId)
+			const { clientIdsWithBlockCount } = state;
+			const blockClientIdsSet = new Set(
+				Object.keys(clientIdsWithBlockCount)
 			);
+
+			const lastInsertedBlocks = [];
+			const lastParentBlocks = [];
+			const newClientIdsWithBlockCount = {};
+
+			const { getBlockCount } = select('core/block-editor');
+
+			allClientIds.forEach(clientId => {
+				const blockCount = getBlockCount(clientId);
+
+				if (!blockClientIdsSet.has(clientId)) {
+					lastInsertedBlocks.push(clientId);
+				}
+
+				if (
+					blockCount !== clientIdsWithBlockCount[clientId] &&
+					(clientId in clientIdsWithBlockCount || blockCount > 0)
+				) {
+					lastParentBlocks.push(clientId);
+				}
+
+				// Build new client IDs with block count
+				newClientIdsWithBlockCount[clientId] = blockCount;
+			});
 
 			return {
 				...state,
 				lastInsertedBlocks,
-			};
-		}
-		case 'SAVE_BLOCK_CLIENT_IDS': {
-			const { blockClientIds } = action;
-
-			return {
-				...state,
-				blockClientIds,
+				lastParentBlocks,
+				clientIdsWithBlockCount: newClientIdsWithBlockCount,
 			};
 		}
 		default:

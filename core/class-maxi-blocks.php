@@ -170,7 +170,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     // Pick the first element
                     $element = $elements[0];
 
-                    // Check if the element is not null
+                    // Check if the element is a DOMElement
                     if ($element instanceof DOMElement) {
                         $classes = $element->getAttribute('class');
 

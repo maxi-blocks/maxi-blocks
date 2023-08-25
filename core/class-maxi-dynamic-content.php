@@ -308,6 +308,16 @@ class MaxiBlocks_DynamicContent
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             $link = get_author_posts_url($attributes['dc-id']);
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
+            $product = self::get_post($attributes);
+
+            if (empty($product)) {
+                return $content;
+            }
+
+            $link = get_permalink($product->get_id());
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
 

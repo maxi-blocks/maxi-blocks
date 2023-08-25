@@ -509,7 +509,9 @@ class MaxiBlocks_DynamicContent
             }
 
             if ($dc_type === 'products') {
-                return wc_get_products($args)[0];
+                $products = wc_get_products($args);
+
+                return end($products);
             }
 
             $query = new WP_Query($args);

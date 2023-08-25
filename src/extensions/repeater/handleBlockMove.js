@@ -18,6 +18,12 @@ import {
  */
 import { isEqual } from 'lodash';
 
+const isBlockMovedDeeper = (prevPosition, nextPosition) =>
+	prevPosition.length < nextPosition.length &&
+	prevPosition
+		.slice(0, -1)
+		.every((value, index) => value === nextPosition[index]);
+
 const handleBlockMove = (
 	clientId,
 	prevPosition,
@@ -26,7 +32,7 @@ const handleBlockMove = (
 ) => {
 	if (
 		isEqual(prevPosition, nextPosition) ||
-		(prevPosition.length === nextPosition.length &&
+		(isBlockMovedDeeper(prevPosition, nextPosition) &&
 			prevPosition.at(-1) === nextPosition.at(-1) + 1)
 	)
 		return;
@@ -59,12 +65,7 @@ const handleBlockMove = (
 	 * the inner block index by 1 to get the correct next parent
 	 */
 	if (
-		prevPosition.length < nextPosition.length &&
-		prevPosition.every(
-			(value, index) =>
-				index === prevPosition.length - 1 ||
-				value === nextPosition[index]
-		) &&
+		isBlockMovedDeeper(prevPosition, nextPosition) &&
 		prevBlockIndex <= nextPosition[prevPosition.length - 1]
 	) {
 		modifiedNextPosition[prevPosition.length - 1] += 1;

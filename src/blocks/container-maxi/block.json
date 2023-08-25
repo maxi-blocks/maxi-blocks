@@ -1957,8 +1957,7 @@
 			"type": "string"
 		},
 		"max-width-unit-l": {
-			"type": "string",
-			"default": "%"
+			"type": "string"
 		},
 		"max-width-unit-m": {
 			"type": "string"
@@ -1973,20 +1972,13 @@
 			"type": "string"
 		},
 		"max-width-xxl": {
-			"type": "string",
-			"default": "1690"
-		},
-		"max-width-xxl": {
-			"type": "string",
-			"default": "1690"
+			"type": "string"
 		},
 		"max-width-xl": {
-			"type": "string",
-			"default": "1170"
+			"type": "string"
 		},
 		"max-width-l": {
-			"type": "string",
-			"default": "90"
+			"type": "string"
 		},
 		"max-width-m": {
 			"type": "string"
@@ -1996,10 +1988,6 @@
 		},
 		"max-width-xs": {
 			"type": "string"
-		},
-		"max-width-xxl": {
-			"type": "string",
-			"default": "1690"
 		},
 		"width-unit-general": {
 			"type": "string",
@@ -2012,8 +2000,7 @@
 			"type": "string"
 		},
 		"width-unit-l": {
-			"type": "string",
-			"default": "%"
+			"type": "string"
 		},
 		"width-unit-m": {
 			"type": "string"
@@ -2034,20 +2021,16 @@
 			"type": "string"
 		},
 		"width-l": {
-			"type": "string",
-			"default": "1170"
+			"type": "string"
 		},
 		"width-m": {
-			"type": "string",
-			"default": "1000"
+			"type": "string"
 		},
 		"width-s": {
-			"type": "string",
-			"default": "700"
+			"type": "string"
 		},
 		"width-xs": {
-			"type": "string",
-			"default": "460"
+			"type": "string"
 		},
 		"width-fit-content-general": {
 			"type": "boolean",
@@ -4604,5 +4587,18 @@
 			"background",
 			"background hover"
 		]
+	},
+	"maxiAttributes": {
+		"max-width-xxl": "1690",
+		"max-width-xl": "1170",
+		"max-width-l": "90",
+		"max-width-unit-xxl": "px",
+		"max-width-unit-xl": "px",
+		"max-width-unit-l": "%",
+		"width-l": "1170",
+		"width-m": "1000",
+		"width-s": "700",
+		"width-xs": "460",
+		"width-unit-l": "px"
 	}
 }

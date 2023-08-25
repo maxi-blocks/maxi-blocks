@@ -108,7 +108,7 @@ class MaxiBlocks_Styles
 
     public static function get_processing_text($processed_posts, $total_posts)
     {
-        return __('Processing', self::$maxi_text_domain) . ': ' . $processed_posts . ' ' . __('of', self::$maxi_text_domain) . ' ' . $total_posts . ' ' . __('posts completed', self::$maxi_text_domain) . '<br>';
+        return '<p>'.__('Processing', self::$maxi_text_domain) . ': ' . $processed_posts . ' ' . __('of', self::$maxi_text_domain) . ' ' . $total_posts . ' ' . __('posts completed', self::$maxi_text_domain) . '</p><br>';
     }
 
     private function should_apply_content_filter()
@@ -152,7 +152,7 @@ class MaxiBlocks_Styles
 
         wp_reset_postdata();
 
-        echo __('Processing completed for all', self::$maxi_text_domain).' '.$total_posts.' '.__('posts', self::$maxi_text_domain).'<br>';
+        echo '<p>'.__('Processing completed for all', self::$maxi_text_domain).' '.$total_posts.' '.__('posts', self::$maxi_text_domain).'</p><br>';
         wp_die();
     }
 
@@ -1775,27 +1775,20 @@ class MaxiBlocks_Styles
             $context = null;
         }
 
-        if ($inner_blocks && !empty($inner_blocks)) {
-
-            //Split inner_blocks array into chunks of $this->chunks_per_execution
-            $inner_block_chunks = array_chunk($inner_blocks, $this->chunks_per_execution);
-
-            foreach ($inner_block_chunks as $inner_block_chunk) {
-                // Process each block in the current chunk
-                foreach($inner_block_chunk as $inner_block) {
-                    $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
-                }
-
-                // Reset PHP maximum execution time for each chunk to avoid a timeout
-                if ($this->max_execution_time != 0) {
-                    set_time_limit($this->max_execution_time - 1);
-                }
-            }
-        }
-
-
         $resolved_styles = style_resolver($styles);
         $frontend_styles = frontend_style_generator($resolved_styles, $unique_id);
+
+        if ($block_name === 'maxi-blocks/row-maxi') {
+            write_log('$props for '. $block_name);
+            write_log($props);
+            write_log('styles for '. $block_name);
+            write_log($styles);
+            write_log('resolved_styles for '. $block_name);
+            write_log($resolved_styles);
+            write_log('frontend_styles for '. $block_name);
+            write_log($frontend_styles);
+            write_log('========================================');
+        }
 
         // custom meta
         $custom_meta_block = 0;
@@ -1870,11 +1863,7 @@ class MaxiBlocks_Styles
             $fonts = '';
         }
 
-        if($block_name === 'maxi-blocks/row-maxi') {
-            write_log($unique_id);
-            write_log($frontend_styles);
-            write_log('==========================================');
-        }
+
         // save to DB
         $exists = $wpdb->get_row(
             $wpdb->prepare(
@@ -1920,7 +1909,23 @@ class MaxiBlocks_Styles
             );
         }
 
-        return $styles;
+        if ($inner_blocks && !empty($inner_blocks)) {
+            //Split inner_blocks array into chunks of $this->chunks_per_execution
+            $inner_block_chunks = array_chunk($inner_blocks, $this->chunks_per_execution);
+
+            foreach ($inner_block_chunks as $inner_block_chunk) {
+                // Process each block in the current chunk
+                foreach($inner_block_chunk as $inner_block) {
+                    $this->get_styles_meta_fonts_from_block($inner_block, $context);
+                }
+
+                // Reset PHP maximum execution time for each chunk to avoid a timeout
+                if ($this->max_execution_time != 0) {
+                    set_time_limit($this->max_execution_time - 1);
+                }
+            }
+        }
+
     }
 
     /**

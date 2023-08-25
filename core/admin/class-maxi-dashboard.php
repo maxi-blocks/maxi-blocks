@@ -552,7 +552,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
 					var loadingMessage = document.createElement("div");
 					loadingMessage.id = "loading";
-					loadingMessage.innerHTML = "<p>Running... Processed 0 posts</p>";
+					loadingMessage.innerHTML = "<p>Running... Processed 0 posts</p><br>";
 					button.parentNode.insertBefore(loadingMessage, button.nextSibling);
 
 					fetch(ajaxurl, {
@@ -574,9 +574,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 										}
 										const text = new TextDecoder().decode(value);
 										const messages = text.split("<br>");
-										const latestMessage = messages.slice(0, -1).join("<br>"); // Get all messages except the last one
-										loadingMessage.innerHTML = `<p>${latestMessage}</p>`; // Update the loadingMessage with the latest messages
-										controller.enqueue(value);
+										console.log("messages");
+										console.log(messages);
+										const nonEmptyMessages = messages.filter(message => message !== ""); // Filter out empty messages
+										const latestMessage = nonEmptyMessages[nonEmptyMessages.length - 1]; // Get the last non-empty message
+										console.log("latestMessage");
+										console.log(latestMessage);
+										let loadingDiv = document.getElementById("loading");
+										loadingDiv.innerText = `${latestMessage}`;										controller.enqueue(value);
 										push();
 									});
 								}

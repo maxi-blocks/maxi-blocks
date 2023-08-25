@@ -24,5 +24,16 @@ function get_block_attributes($block_name)
         }
     }
 
+    if(isset($block['maxiAttributes'])) {
+        $block_maxi_attributes = $block['maxiAttributes'];
+        if (isset($block_maxi_attributes) && isset($response)) {
+            $response = array_merge($response, $block_maxi_attributes);
+        }
+    }
+
+    write_log('get_block_attributes');
+    write_log($block_name);
+    write_log($response);
+
     return $response;
 }

@@ -67,12 +67,6 @@ const getNormalObject = props => {
 		}),
 	};
 
-	console.log(
-		getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		})
-	);
-
 	return response;
 };
 

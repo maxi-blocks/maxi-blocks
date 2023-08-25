@@ -154,6 +154,10 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
 
+            write_log('Row size styles:');
+            write_log(get_group_attributes($props, 'size'));
+            write_log(get_size_styles(array_merge(get_group_attributes($props, 'size'))));
+
             return $response;
         }
 

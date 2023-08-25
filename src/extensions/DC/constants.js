@@ -541,7 +541,7 @@ export const orderByOptions = [
 	{ label: __('Alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 ];
 
-export const orderTypes = ['posts', 'pages', 'media', 'users'];
+export const orderTypes = ['posts', 'pages', 'media', 'users', 'products'];
 
 export const orderOptions = {
 	'by-date': [

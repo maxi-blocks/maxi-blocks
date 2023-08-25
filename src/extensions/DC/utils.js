@@ -11,6 +11,7 @@ import {
 	relationOptions,
 	orderByRelations,
 	typeOptions,
+	getHaveLoadedIntegrationsOptions,
 } from './constants';
 
 /**
@@ -88,9 +89,11 @@ export const validationsValues = (
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
-		...(!typeResult.includes(variableValue) && {
-			[`${prefix}type`]: typeResult[0],
-		}),
+		...(!typeResult.includes(variableValue) &&
+			// Only validate type of DC once all integrations have loaded
+			getHaveLoadedIntegrationsOptions() && {
+				[`${prefix}type`]: typeResult[0],
+			}),
 	};
 };
 

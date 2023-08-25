@@ -1,3 +1,4 @@
+export { default as shouldSetPreserveAspectRatio } from './shouldSetPreserveAspectRatio';
 export { default as getSVGHasImage } from './getSVGHasImage';
 export { default as getSVGPosition } from './getSVGPosition';
 export { default as getSVGRatio } from './getSVGRatio';

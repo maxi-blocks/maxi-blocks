@@ -24,8 +24,15 @@ const getPrice = (field, data) => {
 	return rawPrice ? parsePrice(rawPrice) : null;
 };
 
-const getWCContent = async dataRequest => {
-	const { field, id, type, delimiterContent } = dataRequest;
+const getWCContent = async (dataRequest, entityData) => {
+	const {
+		field,
+		id,
+		type,
+		delimiterContent,
+		taxonomyType,
+		postTaxonomyLinksStatus,
+	} = dataRequest;
 
 	if (type === 'products') {
 		const data = await getProductData(id);
@@ -46,14 +53,12 @@ const getWCContent = async dataRequest => {
 				return getSimpleText(parseText(data[field]));
 			case 'tags':
 			case 'categories':
-				return data[field]
-					.map(({ name }) => name)
-					.join(`${delimiterContent} `);
-			case 'image':
-				return {
-					url: data.images[0].src,
-					id: data.images[0].id,
-				};
+				return getTaxonomyContent(
+					entityData[taxonomyType],
+					delimiterContent,
+					postTaxonomyLinksStatus,
+					taxonomyType
+				);
 			default:
 				return null;
 		}

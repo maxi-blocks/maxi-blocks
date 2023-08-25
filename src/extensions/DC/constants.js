@@ -16,6 +16,10 @@ export const generalTypeOptions = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
+export const imageTypeOptions = generalTypeOptions.filter(
+	option => !['categories', 'tags'].includes(option.value)
+);
+
 export const ACFTypeOptions = generalTypeOptions.filter(
 	option => !['settings'].includes(option.value)
 );
@@ -28,9 +32,7 @@ export const WCTypeOptions = [
 export const typeOptions = {
 	text: generalTypeOptions,
 	button: generalTypeOptions,
-	image: generalTypeOptions.filter(
-		option => !['categories', 'tags'].includes(option.value)
-	),
+	image: imageTypeOptions,
 	container: generalTypeOptions,
 	row: generalTypeOptions,
 	column: generalTypeOptions,
@@ -279,7 +281,7 @@ const buttonProductFields = generalProductFields.filter(
 );
 
 const imageProductFields = [
-	{ label: __('Featured image', 'maxi-blocks'), value: 'image' },
+	{ label: __('Featured image', 'maxi-blocks'), value: 'featured_media' },
 ];
 
 const generalCartFields = [
@@ -564,3 +566,28 @@ export const attributeDefaults = {
 	},
 	accumulator: 0,
 };
+
+const loadIntegrationsOptions = () => {
+	apiFetch({
+		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
+		method: 'GET',
+	}).then(response => {
+		if (response) {
+			if (response.includes('acf')) {
+				sourceOptions.push({
+					label: __('ACF', 'maxi-blocks'),
+					value: 'acf',
+				});
+			}
+
+			if (response.includes('woocommerce')) {
+				generalTypeOptions.push(...WCTypeOptions);
+				imageTypeOptions.push(
+					...WCTypeOptions.filter(option => option.value !== 'cart')
+				);
+			}
+		}
+	});
+};
+
+loadIntegrationsOptions();

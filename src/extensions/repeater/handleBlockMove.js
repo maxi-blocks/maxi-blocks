@@ -52,8 +52,19 @@ const handleBlockMove = (
 
 	const modifiedNextPosition = [...nextPosition];
 
+	/**
+	 * If the block has been moved to an inner block,
+	 * which is inside the same parent, and the moved block
+	 * is higher than the inner block, we need to increase
+	 * the inner block index by 1 to get the correct next parent
+	 */
 	if (
 		prevPosition.length < nextPosition.length &&
+		prevPosition.every(
+			(value, index) =>
+				index === prevPosition.length - 1 ||
+				value === nextPosition[index]
+		) &&
 		prevBlockIndex <= nextPosition[prevPosition.length - 1]
 	) {
 		modifiedNextPosition[prevPosition.length - 1] += 1;

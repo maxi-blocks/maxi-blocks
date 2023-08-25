@@ -576,6 +576,11 @@ export const attributeDefaults = {
 	accumulator: 0,
 };
 
+let haveLoadedIntegrationsOptions = false;
+
+export const getHaveLoadedIntegrationsOptions = () =>
+	haveLoadedIntegrationsOptions;
+
 const loadIntegrationsOptions = () => {
 	apiFetch({
 		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
@@ -596,6 +601,8 @@ const loadIntegrationsOptions = () => {
 				);
 			}
 		}
+
+		haveLoadedIntegrationsOptions = true;
 	});
 };
 

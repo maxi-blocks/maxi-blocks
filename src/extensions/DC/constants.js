@@ -512,9 +512,14 @@ export const descriptionOfErrors = {
 	),
 };
 
-export const limitTypes = ['posts', 'pages', 'tags', 'categories'];
+export const limitTypes = ['posts', 'pages', 'tags', 'categories', 'products'];
 
-export const limitFields = ['title', 'excerpt', 'content', 'description'];
+export const limitFields = [
+	'excerpt',
+	'content',
+	'description',
+	'short_description',
+];
 
 export const limitOptions = {
 	disableReset: false,

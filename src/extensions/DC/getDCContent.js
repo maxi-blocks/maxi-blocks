@@ -13,7 +13,7 @@ import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
-import getWCContent from './getWCContent';
+import { getCartContent, getProductsContent } from './getWCContent';
 
 /**
  * External dependencies
@@ -30,17 +30,12 @@ const nameDictionary = {
 };
 
 const getDCContent = async (dataRequest, clientId) => {
-	const { source } = dataRequest;
-
-	if (source === 'wc') {
-		return getWCContent(dataRequest);
-	}
-
 	const data = await getDCEntity(dataRequest, clientId);
 
 	if (!data) return null;
 
 	const {
+		source,
 		type,
 		field,
 		limit,
@@ -75,8 +70,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = data?.[field];
 	}
 
-	if (['products', 'cart'].includes(type)) {
-		return getWCContent(dataRequest, data);
+	if (type === 'products') {
+		return getProductsContent(dataRequest, data);
+	}
+	if (type === 'cart') {
+		return getCartContent(dataRequest, data);
 	}
 
 	if (field === 'date') {

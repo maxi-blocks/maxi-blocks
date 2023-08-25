@@ -27,6 +27,10 @@ export const generalTypeOptions = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
+export const imageTypeOptions = generalTypeOptions.filter(
+	option => !['categories', 'tags'].includes(option.value)
+);
+
 export const ACFTypeOptions = generalTypeOptions.filter(
 	option => !['settings'].includes(option.value)
 );
@@ -39,9 +43,7 @@ export const WCTypeOptions = [
 export const typeOptions = {
 	text: generalTypeOptions,
 	button: generalTypeOptions,
-	image: generalTypeOptions.filter(
-		option => !['categories', 'tags'].includes(option.value)
-	),
+	image: imageTypeOptions,
 	container: generalTypeOptions,
 	row: generalTypeOptions,
 	column: generalTypeOptions,
@@ -290,7 +292,7 @@ const buttonProductFields = generalProductFields.filter(
 );
 
 const imageProductFields = [
-	{ label: __('Featured image', 'maxi-blocks'), value: 'image' },
+	{ label: __('Featured image', 'maxi-blocks'), value: 'featured_media' },
 ];
 
 const generalCartFields = [
@@ -583,6 +585,9 @@ const loadIntegrationsOptions = () => {
 
 			if (response.includes('woocommerce')) {
 				generalTypeOptions.push(...WCTypeOptions);
+				imageTypeOptions.push(
+					...WCTypeOptions.filter(option => option.value !== 'cart')
+				);
 			}
 		}
 	});

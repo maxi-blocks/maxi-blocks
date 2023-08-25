@@ -8,7 +8,6 @@ import { resolveSelect } from '@wordpress/data';
  */
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
-import getWCContent from './getWCContent';
 
 /**
  * External dependencies
@@ -24,10 +23,6 @@ const getDCMedia = async (dataRequest, clientId) => {
 		const contentValue = await getACFFieldContent(field, data.id);
 
 		return contentValue;
-	}
-
-	if (source === 'wc') {
-		return getWCContent(dataRequest);
 	}
 
 	if (!(field in data)) return null;

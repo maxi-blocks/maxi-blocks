@@ -60,11 +60,6 @@ const getWCContent = async (dataRequest, entityData) => {
 					postTaxonomyLinksStatus,
 					taxonomyType
 				);
-			case 'image':
-				return {
-					url: data.images[0].src,
-					id: data.images[0].id,
-				};
 			default:
 				return null;
 		}

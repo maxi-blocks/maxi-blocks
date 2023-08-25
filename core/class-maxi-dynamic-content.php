@@ -413,6 +413,8 @@ class MaxiBlocks_DynamicContent
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $media_id = $dc_id;
+        } elseif ($dc_type === 'products') {
+            $media_id = self::get_product_content($attributes);
         }
 
         if (!empty($media_id) && is_numeric($media_id)) {
@@ -800,6 +802,8 @@ class MaxiBlocks_DynamicContent
                 ];
 
                 return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
+            case 'featured_media':
+                return (int) $product->get_image_id();
             default:
                 return null;
         }

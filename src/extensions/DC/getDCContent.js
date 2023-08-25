@@ -72,6 +72,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = data?.[field];
 	}
 
+	if (['products', 'cart'].includes(type)) {
+		return getWCContent(dataRequest, data);
+	}
+
 	if (field === 'date') {
 		const options = formatDateOptions(dataRequest);
 
@@ -126,10 +130,6 @@ const getDCContent = async (dataRequest, clientId) => {
 			postTaxonomyLinksStatus,
 			nameDictionary[field]
 		);
-	}
-
-	if (['products', 'cart'].includes(type)) {
-		return getWCContent(dataRequest, data);
 	}
 
 	if (contentValue) return contentValue;

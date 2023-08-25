@@ -1,5 +1,10 @@
 import { getProductData } from './getWooCommerceData';
-import { getSimpleText, getTaxonomyContent, parseText } from './utils';
+import {
+	getSimpleText,
+	getTaxonomyContent,
+	limitString,
+	parseText,
+} from './utils';
 
 const getPrice = (rawPrice, data) => {
 	const parsePrice = price => {
@@ -29,7 +34,7 @@ const getPrice = (rawPrice, data) => {
 };
 
 const getWCContent = async (dataRequest, entityData) => {
-	const { field, type, delimiterContent, postTaxonomyLinksStatus } =
+	const { field, type, delimiterContent, postTaxonomyLinksStatus, limit } =
 		dataRequest;
 
 	if (type === 'products') {
@@ -66,7 +71,10 @@ const getWCContent = async (dataRequest, entityData) => {
 				return getPrice(data.prices.price, data.prices);
 			case 'description':
 			case 'short_description':
-				return getSimpleText(parseText(data[field]));
+				return limitString(
+					getSimpleText(parseText(data[field])),
+					limit
+				);
 			case 'tags':
 			case 'categories':
 				return getTaxonomyContent(

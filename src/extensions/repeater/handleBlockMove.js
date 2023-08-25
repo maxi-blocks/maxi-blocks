@@ -24,7 +24,12 @@ const handleBlockMove = (
 	nextPosition,
 	innerBlockPositions
 ) => {
-	if (isEqual(prevPosition, nextPosition)) return;
+	if (
+		isEqual(prevPosition, nextPosition) ||
+		(prevPosition.length === nextPosition.length &&
+			prevPosition.at(-1) === nextPosition.at(-1) + 1)
+	)
+		return;
 
 	const { getBlock } = select('core/block-editor');
 

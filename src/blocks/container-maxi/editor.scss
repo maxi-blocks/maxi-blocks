@@ -12,8 +12,13 @@
 	}
 }
 
-body.maxi-blocks--active .maxi-container-block {
-	&.wp-block.maxi-block.maxi-block--backend {
-		margin: 0 auto;
+body.maxi-blocks--active {
+	.maxi-container-block {
+		&.wp-block.maxi-block.maxi-block--backend {
+			margin: 0 auto;
+		}
+	}
+	div[data-type='maxi-blocks/container-maxi'] {
+		margin-block-start: 0;
 	}
 }

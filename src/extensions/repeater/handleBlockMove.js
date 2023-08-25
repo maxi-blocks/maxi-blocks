@@ -52,7 +52,10 @@ const handleBlockMove = (
 
 	const modifiedNextPosition = [...nextPosition];
 
-	if (prevPosition.length < nextPosition.length) {
+	if (
+		prevPosition.length < nextPosition.length &&
+		prevBlockIndex <= nextPosition[prevPosition.length - 1]
+	) {
 		modifiedNextPosition[prevPosition.length - 1] += 1;
 	}
 

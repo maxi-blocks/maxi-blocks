@@ -6,8 +6,7 @@ import {
 	parseText,
 } from './utils';
 
-const getPrice = (field, data) => {
-	const rawPrice = data[field];
+const getPrice = (rawPrice, data) => {
 	const parsePrice = price => {
 		const {
 			currency_prefix: currencyPrefix,

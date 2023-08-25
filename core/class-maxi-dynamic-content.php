@@ -686,43 +686,6 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_product_content($attributes)
-    {
-        @list(
-            'dc-field' => $dc_field,
-            'dc-limit' => $dc_limit,
-        ) = $attributes;
-
-        $product = $this->get_post($attributes);
-
-        switch ($dc_field) {
-            case 'name':
-            case 'slug':
-            case 'sku':
-            case 'review_count':
-            case 'average_rating':
-                return $product->get_data()[$dc_field];
-            case 'price':
-            case 'sale_price':
-            case 'regular_price':
-                return strip_tags(wc_price($product->get_data()[$dc_field]));
-            case 'description':
-                return self::get_limited_string($product->get_description(), $dc_limit);
-            case 'short_description':
-                return self::get_limited_string($product->get_short_description(), $dc_limit);
-            case 'tags':
-            case 'categories':
-                $field_name_to_taxonomy = [
-                    'tags' => 'product_tag',
-                    'categories' => 'product_cat',
-                ];
-
-                return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
-            default:
-                return null;
-        }
-    }
-
     public function get_acf_content($attributes)
     {
         if (!function_exists('get_field_object')) {

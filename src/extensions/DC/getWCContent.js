@@ -1,8 +1,7 @@
 import { getProductData } from './getWooCommerceData';
 import { getSimpleText, getTaxonomyContent, parseText } from './utils';
 
-const getPrice = (field, data) => {
-	const rawPrice = data[field];
+const getPrice = (rawPrice, data) => {
 	const parsePrice = price => {
 		const {
 			currency_prefix: currencyPrefix,
@@ -48,7 +47,23 @@ const getWCContent = async (dataRequest, entityData) => {
 			case 'price':
 			case 'regular_price':
 			case 'sale_price':
-				return getPrice(field, data.prices);
+				return getPrice(data.prices[field], data.prices);
+			case 'price_range':
+				if (
+					data.prices.price_range &&
+					data.prices.price_range.min_amount !==
+						data.prices.price_range.max_amount
+				) {
+					return `${getPrice(
+						data.prices.price_range.min_amount,
+						data.prices
+					)} \u2013 ${getPrice(
+						data.prices.price_range.max_amount,
+						data.prices
+					)}`;
+				}
+
+				return getPrice(data.prices.price, data.prices);
 			case 'description':
 			case 'short_description':
 				return getSimpleText(parseText(data[field]));
@@ -76,7 +91,7 @@ const getWCContent = async (dataRequest, entityData) => {
 			case 'total_items_tax':
 			case 'total_fees':
 			case 'total_fees_tax':
-				return getPrice(field, entityData.totals);
+				return getPrice(entityData.totals[field], entityData.totals);
 			default:
 				return null;
 		}

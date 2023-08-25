@@ -280,6 +280,7 @@ const generalProductFields = [
 	{ label: __('Price', 'maxi-blocks'), value: 'price' },
 	{ label: __('Regular price', 'maxi-blocks'), value: 'regular_price' },
 	{ label: __('Sale price', 'maxi-blocks'), value: 'sale_price' },
+	{ label: __('Price range', 'maxi-blocks'), value: 'price_range' },
 	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];

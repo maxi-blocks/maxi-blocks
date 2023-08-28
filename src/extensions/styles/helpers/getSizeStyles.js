@@ -108,6 +108,7 @@ const getSizeStyles = (obj, prefix = '') => {
 					breakpoint,
 					attributes: obj,
 				});
+
 				const unit = getLastBreakpointAttribute({
 					target: `${prefix}${target}-unit`,
 					breakpoint,
@@ -125,17 +126,24 @@ const getSizeStyles = (obj, prefix = '') => {
 								attributes: obj,
 						  }) && '100%';
 
-				if (!isNil(num) && !isNil(unit))
+				if (!isNil(num) && !isNil(unit)) {
+					console.log(`${prefix}${target}`);
+					console.log('num');
+					console.log(num);
 					return {
 						[target]: auto || num + unit,
 						...fullWidthNormalStyles,
 					};
+				}
 			}
 
 			return {
 				...fullWidthNormalStyles,
 			};
 		};
+
+		console.log("getValue('max-width')");
+		console.log(getValue('max-width'));
 
 		response[breakpoint] = {
 			...getValue('max-width'),

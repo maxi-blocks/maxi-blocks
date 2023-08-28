@@ -70,6 +70,7 @@ const getSizeStyles = (obj, prefix = '') => {
 			}
 
 			if (!obj[`${prefix}size-advanced-options`]) {
+				console.log('here');
 				if (target.includes('min')) return null;
 				if (target.includes('max')) return fullWidthNormalStyles;
 			}
@@ -141,9 +142,6 @@ const getSizeStyles = (obj, prefix = '') => {
 				...fullWidthNormalStyles,
 			};
 		};
-
-		console.log("getValue('max-width')");
-		console.log(getValue('max-width'));
 
 		response[breakpoint] = {
 			...getValue('max-width'),

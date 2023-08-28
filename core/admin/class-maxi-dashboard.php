@@ -581,7 +581,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 										console.log("latestMessage");
 										console.log(latestMessage);
 										let loadingDiv = document.getElementById("loading");
-										loadingDiv.innerText = `${latestMessage}`;										controller.enqueue(value);
+										loadingDiv.innerText = `${latestMessage}`;										
+                                        controller.enqueue(value);
 										push();
 									});
 								}
@@ -594,8 +595,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 					})
 					.then(response => {
 						const messages = response.split("<br>");
-						const finalMessage = messages.slice(0, -1).join("<br>"); // Get all messages except the last one
-						loadingMessage.innerHTML = `<p>${finalMessage}</p>`; // Final response message
+						const nonEmptyMessages = messages.filter(message => message !== ""); // Filter out empty messages
+						const latestMessage = nonEmptyMessages[nonEmptyMessages.length - 1]; // Get the last non-empty message
+						console.log("latestMessage 2");
+						console.log(latestMessage);
+						let loadingDiv = document.getElementById("loading");
+						loadingDiv.innerText = `${latestMessage}`;			
 						button.disabled = false;
 					});
 				});

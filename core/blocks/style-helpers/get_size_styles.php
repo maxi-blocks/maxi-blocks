@@ -56,13 +56,11 @@ function get_size_styles($obj, $prefix = '')
                 }
             }
 
-            if (isset($obj[$prefix . 'size-advanced-options']) && !$obj[$prefix . 'size-advanced-options']) {
-                write_log('HERE');
+            if (!$obj[$prefix . 'size-advanced-options']) {
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
                 if (strpos($target, 'max') !== false) {
-                    write_log('HERE 2');
                     return $full_width_normal_styles;
                 }
             }

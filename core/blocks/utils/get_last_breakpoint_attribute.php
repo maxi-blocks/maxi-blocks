@@ -71,6 +71,19 @@ function get_last_breakpoint_attribute(
         $keys
     ) : null;
 
+    if($target === 'max-width' || $target === 'width') {
+        write_log('get_last_breakpoint_attribute');
+        write_log('$target');
+        write_log($target);
+        write_log('$breakpoint');
+        write_log($breakpoint);
+        write_log('$attributes');
+        write_log($attributes);
+        write_log('$current_attr');
+        write_log($current_attr);
+        write_log('======================');
+    }
+
     if ($attr_filter($current_attr) &&
         ($base_breakpoint !== 'xxl' || $breakpoint === 'xxl')
     ) {
@@ -127,6 +140,15 @@ function get_last_breakpoint_attribute(
             'keys' => $keys,
         ]);
     }
+
+    if($target === 'max-width' || $target === 'width') {
+        write_log('$target');
+        write_log($target);
+        write_log('final $current_attr');
+        write_log($current_attr);
+        write_log('======================');
+    }
+
 
     return $current_attr;
 }

@@ -3,12 +3,21 @@
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_last_breakpoint_attribute.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php';
 
+/**
+ * Get styles for various size properties across different breakpoints.
+ *
+ * @param array  $obj    Array of block attributes
+ * @param string $prefix Prefix for the block attribute keys
+ * @return array         Associative array of styles for different breakpoints
+ */
 function get_size_styles($obj, $prefix = '')
 {
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+    write_log('$obj');
+    write_log($obj);
     foreach ($breakpoints as $breakpoint) {
         $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
             $full_width_normal_styles = [];
@@ -86,8 +95,10 @@ function get_size_styles($obj, $prefix = '')
                 }
             }
 
+            $num_val = isset($obj[$prefix . $target . '-' . $breakpoint]) ? $obj[$prefix . $target . '-' . $breakpoint] : null;
+            $is_numeric = $num_val !== null && is_numeric(filter_var($num_val, FILTER_SANITIZE_NUMBER_INT));
             if (
-                (array_key_exists($prefix . $target . '-' . $breakpoint, $obj) && is_numeric($obj[$prefix . $target . '-' . $breakpoint])) ||
+                $is_numeric ||
                 isset($obj[$prefix . $target . '-unit-' . $breakpoint])
             ) {
                 $num = get_last_breakpoint_attribute([
@@ -96,11 +107,26 @@ function get_size_styles($obj, $prefix = '')
                     'attributes' => $obj,
                 ]);
 
+                write_log('$prefix . $target');
+                write_log($prefix . $target);
+
+                write_log('$breakpoint');
+                write_log($breakpoint);
+
+                write_log('$obj');
+                write_log($obj);
+
+                write_log('$num');
+                write_log($num);
+
                 $unit = get_last_breakpoint_attribute([
                     'target' => $prefix . $target . '-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
                 ]);
+
+                write_log('$unit');
+                write_log($unit);
 
                 $auto = $prefix === 'number-counter-' && $target === 'width' && isset($obj['number-counter-circle-status'])
                     ? 'auto'
@@ -121,6 +147,7 @@ function get_size_styles($obj, $prefix = '')
             return $full_width_normal_styles;
         };
 
+        // Simulate array destructuring in JS
         $response[$breakpoint] = array_merge(
             $get_value('max-width') ?? [],
             $get_value('width') ?? [],
@@ -129,6 +156,8 @@ function get_size_styles($obj, $prefix = '')
             $get_value('height') ?? [],
             $get_value('min-height') ?? []
         );
+        write_log('$response[$breakpoint]');
+        write_log($response[$breakpoint]);
     }
 
     return $response;

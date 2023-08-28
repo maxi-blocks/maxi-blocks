@@ -113,7 +113,7 @@ class MaxiBlocks_Styles
         global $post;
         $args = array(
             'numberposts' => -1,
-            'post_type'   => 'post'
+            'post_type'   => get_post_types(array('public' => true), 'names')
         );
 
         $all_posts = get_posts($args);

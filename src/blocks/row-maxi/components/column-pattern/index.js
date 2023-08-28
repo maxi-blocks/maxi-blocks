@@ -60,11 +60,14 @@ const ColumnPattern = props => {
 	const instanceId = useInstanceId(ColumnPattern);
 
 	useEffect(() => {
+		const onlyEqualColumns =
+			repeaterStatus && clientId === repeaterRowClientId;
+
 		if (toolbar) {
-			setDisplayedTemplates(getTemplates(repeaterStatus));
+			setDisplayedTemplates(getTemplates(onlyEqualColumns));
 		} else {
 			setDisplayedTemplates(
-				getTemplates(repeaterStatus, breakpoint, numCol)
+				getTemplates(onlyEqualColumns, breakpoint, numCol)
 			);
 		}
 	}, [breakpoint, numCol]);

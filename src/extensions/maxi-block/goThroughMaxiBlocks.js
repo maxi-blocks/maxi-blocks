@@ -41,6 +41,11 @@ const goThroughMaxiBlocks = (
 			}
 
 			if (block.name === 'core/post-content') {
+				const callbackResult = callback(block);
+				if (callbackResult) {
+					return callbackResult;
+				}
+
 				const { postType, postId } =
 					select('core/edit-site').getEditedPostContext();
 

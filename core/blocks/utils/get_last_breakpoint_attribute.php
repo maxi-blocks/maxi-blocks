@@ -14,6 +14,14 @@ function get_last_breakpoint_attribute(
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+    if($target === 'max-width') {
+        write_log('THIS');
+        write_log($attributes);
+        write_log('$breakpoint');
+        write_log($breakpoint);
+        write_log('======================');
+    }
+
     if (!isset($attributes)) {
         return false;
     }
@@ -53,10 +61,10 @@ function get_last_breakpoint_attribute(
         ]);
 
         if ($attr_filter($base_breakpoint_attr)) {
-
             return $base_breakpoint_attr;
         }
     }
+
 
     $current_attr = isset($attributes[
         (!empty($target) ? $target . '-' : '') .
@@ -71,22 +79,18 @@ function get_last_breakpoint_attribute(
         $keys
     ) : null;
 
-    if($target === 'max-width' || $target === 'width') {
-        write_log('get_last_breakpoint_attribute');
-        write_log('$target');
-        write_log($target);
-        write_log('$breakpoint');
-        write_log($breakpoint);
-        write_log('$attributes');
-        write_log($attributes);
-        write_log('$current_attr');
-        write_log($current_attr);
-        write_log('======================');
-    }
-
     if ($attr_filter($current_attr) &&
         ($base_breakpoint !== 'xxl' || $breakpoint === 'xxl')
     ) {
+        if($target === 'max-width') {
+            write_log('THIS 2');
+            write_log($attributes);
+            write_log('$breakpoint');
+            write_log($breakpoint);
+            write_log('$current_attr');
+            write_log($current_attr);
+            write_log('======================');
+        }
 
         return $current_attr;
     }
@@ -141,9 +145,13 @@ function get_last_breakpoint_attribute(
         ]);
     }
 
-    if($target === 'max-width' || $target === 'width') {
+    if($target === 'max-width') {
         write_log('$target');
         write_log($target);
+        write_log('$breakpoint');
+        write_log($breakpoint);
+        write_log('$attributes');
+        write_log($attributes);
         write_log('final $current_attr');
         write_log($current_attr);
         write_log('======================');

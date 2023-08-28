@@ -15,9 +15,6 @@ function get_size_styles($obj, $prefix = '')
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-    write_log('$obj');
-    write_log($obj);
     foreach ($breakpoints as $breakpoint) {
         $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
             $full_width_normal_styles = [];
@@ -60,10 +57,12 @@ function get_size_styles($obj, $prefix = '')
             }
 
             if (isset($obj[$prefix . 'size-advanced-options']) && !$obj[$prefix . 'size-advanced-options']) {
+                write_log('HERE');
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
                 if (strpos($target, 'max') !== false) {
+                    write_log('HERE 2');
                     return $full_width_normal_styles;
                 }
             }
@@ -107,26 +106,18 @@ function get_size_styles($obj, $prefix = '')
                     'attributes' => $obj,
                 ]);
 
-                write_log('$prefix . $target');
-                write_log($prefix . $target);
-
-                write_log('$breakpoint');
-                write_log($breakpoint);
-
-                write_log('$obj');
-                write_log($obj);
-
-                write_log('$num');
-                write_log($num);
-
                 $unit = get_last_breakpoint_attribute([
                     'target' => $prefix . $target . '-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
                 ]);
 
-                write_log('$unit');
-                write_log($unit);
+                if ($target === 'max-width') {
+                    write_log('$num');
+                    write_log($num);
+                    write_log('$unit');
+                    write_log($unit);
+                }
 
                 $auto = $prefix === 'number-counter-' && $target === 'width' && isset($obj['number-counter-circle-status'])
                     ? 'auto'
@@ -156,8 +147,9 @@ function get_size_styles($obj, $prefix = '')
             $get_value('height') ?? [],
             $get_value('min-height') ?? []
         );
-        write_log('$response[$breakpoint]');
-        write_log($response[$breakpoint]);
+
+        // write_log('$response[$breakpoint]');
+        // write_log($response[$breakpoint]);
     }
 
     return $response;

@@ -67,6 +67,15 @@ const getNormalObject = props => {
 		}),
 	};
 
+	console.log('get row size');
+	console.log(
+		getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		})
+	);
+	console.log('get row size 2');
+	console.log(getGroupAttributes(props, 'size'));
+
 	return response;
 };
 

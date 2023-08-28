@@ -106,7 +106,7 @@ export const scroll = (() => {
 
 			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
 
-			if (type === 'vertical' || type === 'horizontal') {
+			if (['vertical', 'horizontal'].includes(type)) {
 				generateUniqueAttributes(
 					type,
 					'offset',

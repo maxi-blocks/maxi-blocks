@@ -864,7 +864,9 @@ class MaxiBlockComponent extends Component {
 			propagateNewUniqueID(
 				idToCheck,
 				newUniqueID,
+				clientId,
 				this.props.repeaterStatus,
+				this.props.getInnerBlocksPositions,
 				this.props.attributes['background-layers']
 			);
 

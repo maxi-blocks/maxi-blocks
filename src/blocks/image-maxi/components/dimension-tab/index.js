@@ -217,8 +217,9 @@ const DimensionTab = props => {
 							})
 						}
 					/>
-					{fitParentSize && (
-						<>
+
+					<>
+						{fitParentSize && (
 							<AdvancedNumberControl
 								label={__('Adjust size', 'maxi-blocks')}
 								className='maxi-image-inspector__image-size'
@@ -246,76 +247,73 @@ const DimensionTab = props => {
 								max={5}
 								step={0.1}
 							/>
-							<AdvancedNumberControl
-								label={__(
-									'Image horizontal position',
-									'maxi-blocks'
-								)}
-								className='maxi-image-inspector__image-horizontal-position'
-								placeholder={getLastBreakpointAttribute({
-									target: 'object-position-horizontal',
-									breakpoint: deviceType,
-									attributes,
-								})}
-								value={
-									attributes[
-										`object-position-horizontal-${deviceType}`
-									]
-								}
-								onChangeValue={val =>
-									maxiSetAttributes({
-										[`object-position-horizontal-${deviceType}`]:
-											val,
-									})
-								}
-								onReset={() =>
-									maxiSetAttributes({
-										[`object-position-horizontal-${deviceType}`]:
-											getDefaultAttribute(
-												`object-position-horizontal-${deviceType}`
-											),
-										isReset: true,
-									})
-								}
-								min={0}
-								max={100}
-							/>
-							<AdvancedNumberControl
-								label={__(
-									'Image vertical position',
-									'maxi-blocks'
-								)}
-								className='maxi-image-inspector__image-vertical-position'
-								placeholder={getLastBreakpointAttribute({
-									target: 'object-position-vertical',
-									breakpoint: deviceType,
-									attributes,
-								})}
-								value={
-									attributes[
-										`object-position-vertical-${deviceType}`
-									]
-								}
-								onChangeValue={val =>
-									maxiSetAttributes({
-										[`object-position-vertical-${deviceType}`]:
-											val,
-									})
-								}
-								onReset={() =>
-									maxiSetAttributes({
-										[`object-position-vertical-${deviceType}`]:
-											getDefaultAttribute(
-												`object-position-vertical-${deviceType}`
-											),
-										isReset: true,
-									})
-								}
-								min={0}
-								max={100}
-							/>
-						</>
-					)}
+						)}
+						<AdvancedNumberControl
+							label={__(
+								'Image horizontal position',
+								'maxi-blocks'
+							)}
+							className='maxi-image-inspector__image-horizontal-position'
+							placeholder={getLastBreakpointAttribute({
+								target: 'object-position-horizontal',
+								breakpoint: deviceType,
+								attributes,
+							})}
+							value={
+								attributes[
+									`object-position-horizontal-${deviceType}`
+								]
+							}
+							onChangeValue={val =>
+								maxiSetAttributes({
+									[`object-position-horizontal-${deviceType}`]:
+										val,
+								})
+							}
+							onReset={() =>
+								maxiSetAttributes({
+									[`object-position-horizontal-${deviceType}`]:
+										getDefaultAttribute(
+											`object-position-horizontal-${deviceType}`
+										),
+									isReset: true,
+								})
+							}
+							min={0}
+							max={100}
+						/>
+						<AdvancedNumberControl
+							label={__('Image vertical position', 'maxi-blocks')}
+							className='maxi-image-inspector__image-vertical-position'
+							placeholder={getLastBreakpointAttribute({
+								target: 'object-position-vertical',
+								breakpoint: deviceType,
+								attributes,
+							})}
+							value={
+								attributes[
+									`object-position-vertical-${deviceType}`
+								]
+							}
+							onChangeValue={val =>
+								maxiSetAttributes({
+									[`object-position-vertical-${deviceType}`]:
+										val,
+								})
+							}
+							onReset={() =>
+								maxiSetAttributes({
+									[`object-position-vertical-${deviceType}`]:
+										getDefaultAttribute(
+											`object-position-vertical-${deviceType}`
+										),
+									isReset: true,
+								})
+							}
+							min={0}
+							max={100}
+						/>
+					</>
 				</>
 			)}
 		</>

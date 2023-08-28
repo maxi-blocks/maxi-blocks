@@ -222,24 +222,24 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 // Look for all elements
                 $elements = $xpath->query('//*');
 
-                // Pick the first element
-                $element = $elements[0];
+                // Check if elements are found
+                if(isset($elements) && $elements->length > 0) {
+                    // Pick the first element
+                    $element = $elements[0];
 
-                $classes = $element->getAttribute('class');
+                    // Check if the element is a DOMElement
+                    if ($element instanceof DOMElement) {
+                        $classes = $element->getAttribute('class');
 
-                if(!str_contains($classes, 'maxi') || !isset($classes) || empty($classes)) {
-                    if(!str_contains($classes, 'maxi-block--use-sc')) {
-                        $element->setAttribute('class', $element->getAttribute('class') . ' maxi-block--use-sc');
+                        if (!isset($classes) || empty($classes)) {
+                            $element->setAttribute('class', 'maxi-block--use-sc');
+                        } elseif (!str_contains($classes, 'maxi-block--use-sc')) {
+                            $element->setAttribute('class', $classes . ' maxi-block--use-sc');
+                        }
                     }
 
-                    if(!isset($classes) || empty($classes)) {
-                        $element->setAttribute('class', 'maxi-block--use-sc');
-                    }
+                    $block_content = $dom->saveHTML();
                 }
-
-                $block_content = $dom->saveHTML();
-
-                return $block_content;
             }
 
             return $block_content;

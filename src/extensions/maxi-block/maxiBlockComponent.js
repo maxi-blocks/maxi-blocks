@@ -853,7 +853,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { name: blockName, attributes } = this.props;
+		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
 		if (!getIsIDTrulyUnique(idToCheck)) {

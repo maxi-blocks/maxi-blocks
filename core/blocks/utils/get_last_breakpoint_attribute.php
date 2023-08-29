@@ -14,14 +14,6 @@ function get_last_breakpoint_attribute(
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-    if($target === 'max-width') {
-        write_log('THIS');
-        write_log($attributes);
-        write_log('$breakpoint');
-        write_log($breakpoint);
-        write_log('======================');
-    }
-
     if (!isset($attributes)) {
         return false;
     }
@@ -82,15 +74,6 @@ function get_last_breakpoint_attribute(
     if ($attr_filter($current_attr) &&
         ($base_breakpoint !== 'xxl' || $breakpoint === 'xxl')
     ) {
-        if($target === 'max-width') {
-            write_log('THIS 2');
-            write_log($attributes);
-            write_log('$breakpoint');
-            write_log($breakpoint);
-            write_log('$current_attr');
-            write_log($current_attr);
-            write_log('======================');
-        }
 
         return $current_attr;
     }
@@ -144,19 +127,6 @@ function get_last_breakpoint_attribute(
             'keys' => $keys,
         ]);
     }
-
-    if($target === 'max-width') {
-        write_log('$target');
-        write_log($target);
-        write_log('$breakpoint');
-        write_log($breakpoint);
-        write_log('$attributes');
-        write_log($attributes);
-        write_log('final $current_attr');
-        write_log($current_attr);
-        write_log('======================');
-    }
-
 
     return $current_attr;
 }

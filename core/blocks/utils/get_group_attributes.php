@@ -21,7 +21,7 @@ function get_group_attributes(
     $target,
     $is_hover = false,
     $prefix = '',
-    $cleaned = false
+    $cleaned = false,
 ) {
     if (!$target) {
         return null;

@@ -10,13 +10,13 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php
  * @param string $prefix Prefix for the block attribute keys
  * @return array         Associative array of styles for different breakpoints
  */
-function get_size_styles($obj, $prefix = '')
+function get_size_styles($obj, $prefix = '', $debug = false)
 {
     $response = [];
-
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
     foreach ($breakpoints as $breakpoint) {
-        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
+        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints, $debug) {
             $full_width_normal_styles = [];
 
             if (in_array($target, ['width', 'max-width', 'min-width'])) {
@@ -24,7 +24,7 @@ function get_size_styles($obj, $prefix = '')
                     'target' => $prefix . 'full-width',
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
-                ]);
+                ]) ?? false;
 
                 if (($target === 'width' || $target === 'min-width') && $full_width) {
                     return null;
@@ -48,19 +48,25 @@ function get_size_styles($obj, $prefix = '')
                         false
                     );
 
+
                     if (!$full_width && $is_min_width_needed) {
                         $full_width_normal_styles = [
                             'min-width' => 'initial',
                         ];
                     }
+
                 }
             }
 
-            if (!$obj[$prefix . 'size-advanced-options']) {
+            $is_advanced = $obj[$prefix . 'size-advanced-options'];
+            if ($is_advanced === 'false') {
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
                 if (strpos($target, 'max') !== false) {
+                    // if ($debug) {
+                    //     write_log('returning $full_width_normal_styles');
+                    // }
                     return $full_width_normal_styles;
                 }
             }
@@ -110,13 +116,6 @@ function get_size_styles($obj, $prefix = '')
                     'attributes' => $obj,
                 ]);
 
-                if ($target === 'max-width') {
-                    write_log('$num');
-                    write_log($num);
-                    write_log('$unit');
-                    write_log($unit);
-                }
-
                 $auto = $prefix === 'number-counter-' && $target === 'width' && isset($obj['number-counter-circle-status'])
                     ? 'auto'
                     : (get_last_breakpoint_attribute([
@@ -126,15 +125,29 @@ function get_size_styles($obj, $prefix = '')
                     ]) && '100%');
 
                 if (!is_null($num) && !is_null($unit)) {
-                    return array_merge(
+                    $full_width_normal_styles = array_merge(
                         $full_width_normal_styles,
                         [$target => $auto ? $auto : $num . $unit]
                     );
+                    // if($debug) {
+                    //     write_log('!is_null($num) && !is_null($unit)');
+                    //     write_log($full_width_normal_styles);
+                    // }
+                    return $full_width_normal_styles;
                 }
             }
 
             return $full_width_normal_styles;
         };
+
+        if ($debug) {
+            write_log('===================');
+            write_log('$breakpoint');
+            write_log($breakpoint);
+            write_log('$get_value(max-width)');
+            write_log($get_value('max-width'));
+            write_log('===================');
+        }
 
         // Simulate array destructuring in JS
         $response[$breakpoint] = array_merge(

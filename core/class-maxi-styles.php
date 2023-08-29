@@ -1778,18 +1778,6 @@ class MaxiBlocks_Styles
         $resolved_styles = style_resolver($styles);
         $frontend_styles = frontend_style_generator($resolved_styles, $unique_id);
 
-        // if ($block_name === 'maxi-blocks/row-maxi') {
-        //     write_log('$props for '. $block_name);
-        //     write_log($props);
-        //     write_log('styles for '. $block_name);
-        //     write_log($styles);
-        //     write_log('resolved_styles for '. $block_name);
-        //     write_log($resolved_styles);
-        //     write_log('frontend_styles for '. $block_name);
-        //     write_log($frontend_styles);
-        //     write_log('========================================');
-        // }
-
         // custom meta
         $custom_meta_block = 0;
 

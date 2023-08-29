@@ -8,12 +8,14 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Button from '../../../button';
+import DialogBox from '../../../dialog-box';
 import { downloadTextFile } from '../../../../editor/style-cards/utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 const HistoryButtons = ({
 	className,
@@ -21,6 +23,8 @@ const HistoryButtons = ({
 	results,
 	setResults,
 	setSelectedResultId,
+	setHistoryStartId,
+	switchToGenerateTab,
 }) => {
 	const handleHistorySelect = media => {
 		fetch(media.url)
@@ -41,6 +45,12 @@ const HistoryButtons = ({
 		downloadTextFile(results, 'history.txt');
 	};
 
+	const handleHistoryClean = () => {
+		setResults([]);
+		setHistoryStartId(null);
+		switchToGenerateTab();
+	};
+
 	const classes = classnames(
 		'maxi-prompt-control-history-buttons',
 		className
@@ -59,14 +69,27 @@ const HistoryButtons = ({
 					allowedTypes='text'
 					render={({ open }) => (
 						<Button className={buttonClasses} onClick={open}>
-							{__('Import history', 'maxi-blocks')}
+							{__('Import', 'maxi-blocks')}
 						</Button>
 					)}
 				/>
 			</MediaUploadCheck>
 			<Button className={buttonClasses} onClick={handleHistoryExport}>
-				{__('Export history', 'maxi-blocks')}
+				{__('Export', 'maxi-blocks')}
 			</Button>
+			{!isEmpty(results) && (
+				<DialogBox
+					message={__(
+						'Are you sure you want to clean the history?',
+						'maxi-blocks'
+					)}
+					cancelLabel={__('Cancel', 'maxi-blocks')}
+					confirmLabel={__('Clean', 'maxi-blocks')}
+					onConfirm={handleHistoryClean}
+					buttonClassName={buttonClasses}
+					buttonChildren={__('Clean', 'maxi-blocks')}
+				/>
+			)}
 		</div>
 	);
 };

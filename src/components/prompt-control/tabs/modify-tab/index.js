@@ -2,15 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { Button } from '../../../../components';
-import HistoryButtons from '../history-buttons';
-import ResultCards from '../result-cards';
-import ResultsTopBar from '../results-top-bar';
+import ResultsTopBar from '../../components/results-top-bar';
 import {
 	getContentAttributesSection,
 	getContextSection,
@@ -25,6 +23,7 @@ import { MODIFICATION_ACTIONS, MODIFY_OPTIONS } from '../../constants';
  * Styles
  */
 import './editor.scss';
+import ResultCards from '../../components/result-cards';
 
 const ModifyTab = ({
 	results,
@@ -50,6 +49,17 @@ const ModifyTab = ({
 }) => {
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 	const [customValue, setCustomValue] = useState('');
+
+	const [selectedResult, setSelectedResult] = useState(null);
+
+	useEffect(() => {
+		if (selectedResultId !== 'selectedText') {
+			const result = results.find(
+				result => result.id === selectedResultId
+			);
+			setSelectedResult(result);
+		}
+	}, [selectedResultId, results]);
 
 	const getMessages = async data => {
 		const {
@@ -142,23 +152,10 @@ Your task is to maintain the original intent and context while ${modificationAct
 		});
 	};
 
-	const cleanHistory = () => {
-		setResults([]);
-		setHistoryStartId(null);
-		switchToGenerateTab();
-	};
-
 	const className = 'maxi-prompt-control-modify-tab';
 
 	return (
 		<div className={className}>
-			<HistoryButtons
-				className='maxi-prompt-control__buttons'
-				buttonClassName='maxi-prompt-control__button'
-				results={results}
-				setResults={setResults}
-				setSelectedResultId={setSelectedResultId}
-			/>
 			<ResultsTopBar
 				results={results}
 				selectedResultId={selectedResultId}
@@ -170,28 +167,22 @@ Your task is to maintain the original intent and context while ${modificationAct
 						? AISettings.language
 						: 'English (United Kingdom)'
 				}
-				cleanHistory={cleanHistory}
 				setModifyOption={setModifyOption}
 				setCustomValue={setCustomValue}
 				switchToGenerateTab={switchToGenerateTab}
 			/>
 			<ResultCards
-				results={results}
-				selectedText={selectedText}
-				content={content}
-				modifyOption={modifyOption}
-				formatValue={formatValue}
-				historyStartId={historyStartId}
+				results={[
+					selectedText && {
+						id: 'selectedText',
+						content: selectedText,
+						isSelectedText: true,
+					},
+					selectedResult,
+				].filter(Boolean)}
 				selectedResultId={selectedResultId}
-				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}
-				setModifyOption={setModifyOption}
-				setCustomValue={setCustomValue}
-				setHistoryStartId={setHistoryStartId}
-				onContentChange={onContentChange}
-				onChangeTextFormat={onChangeTextFormat}
-				updateSettings={updateSettings}
-				switchToGenerateTab={switchToGenerateTab}
+				isModifyTab
 			/>
 			{isGenerating && (
 				<Button className={`${className}__abort`} onClick={onAbort}>

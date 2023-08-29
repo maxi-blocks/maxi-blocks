@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import {
 	Button,
-	DialogBox,
 	ReactSelectControl,
 	TextareaControl,
 } from '../../../../components';
@@ -31,7 +30,6 @@ const ResultsTopBar = ({
 	modifyContent,
 	customValue,
 	defaultLanguage,
-	cleanHistory,
 	setModifyOption,
 	setCustomValue,
 	switchToGenerateTab,
@@ -62,6 +60,7 @@ const ResultsTopBar = ({
 							);
 						}}
 						isDisabled={isEmpty(results)}
+						menuIsOpen
 					/>
 					<Button
 						className={`${className}__button maxi-prompt-control__button`}
@@ -104,29 +103,6 @@ const ResultsTopBar = ({
 					onChange={({ value }) => setCustomValue(value)}
 				/>
 			)}
-			<div className='maxi-prompt-control__buttons'>
-				{results.every(result => !result.isSelectedText) && (
-					<Button
-						className='maxi-prompt-control__button'
-						onClick={switchToGenerateTab}
-					>
-						{__('Back', 'maxi-blocks')}
-					</Button>
-				)}
-				{!isEmpty(results) && (
-					<DialogBox
-						message={__(
-							'Are you sure you want to clean the history?',
-							'maxi-blocks'
-						)}
-						cancelLabel={__('Cancel', 'maxi-blocks')}
-						confirmLabel={__('Clean', 'maxi-blocks')}
-						onConfirm={cleanHistory}
-						buttonClassName={`maxi-prompt-control__button ${className}__clean-history-button`}
-						buttonChildren={__('Clean history', 'maxi-blocks')}
-					/>
-				)}
-			</div>
 		</div>
 	);
 };

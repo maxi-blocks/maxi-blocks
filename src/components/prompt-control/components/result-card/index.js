@@ -32,6 +32,7 @@ const ResultCard = ({
 	onInsert,
 	onSelect,
 	onUseSettings,
+	onModify,
 	onDelete,
 }) => {
 	const isCustom = modifyOption === 'custom';
@@ -237,6 +238,9 @@ const ResultCard = ({
 								{__('Use settings', 'maxi-blocks')}
 							</Button>
 						)}
+						<Button onClick={onModify}>
+							{__('Modify', 'maxi-blocks')}
+						</Button>
 						<DialogBox
 							message={__(
 								'Are you sure you want to delete the result?',

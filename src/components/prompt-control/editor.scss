@@ -1,4 +1,10 @@
 .maxi-prompt-control {
+	&__buttons {
+		display: flex;
+		gap: 8px;
+		margin-bottom: 5px;
+	}
+
 	&__button {
 		display: flex;
 		align-items: center;
@@ -9,11 +15,5 @@
 		padding: 8px;
 		color: #232533;
 		background: var(--maxi-white-3-color);
-	}
-
-	&__buttons {
-		display: flex;
-		gap: 8px;
-		margin-bottom: 5px;
 	}
 }

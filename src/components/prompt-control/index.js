@@ -9,9 +9,10 @@ import { useContext, useEffect, useRef, useState } from '@wordpress/element';
  */
 import ContentLoader from '../content-loader';
 import InfoBox from '../info-box';
-import GenerateTab from './components/generate-tab';
+import SettingTabsControl from '../setting-tabs-control';
+import GenerateTab from './tabs/generate-tab';
+import ModifyTab from './tabs/modify-tab';
 import TextContext from '../../extensions/text/formats/textContext';
-import ModifyTab from './components/modify-tab';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
@@ -24,7 +25,10 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from './utils';
-import { CONTEXT_OPTIONS } from './constants';
+import {
+	CONTEXT_OPTIONS,
+	DEFAULT_CHARACTER_COUNT_GUIDELINES,
+} from './constants';
 
 /**
  * External dependencies
@@ -35,11 +39,12 @@ import { isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import HistoryTab from './tabs/history-tab';
 
 const PromptControl = ({ clientId, content, onContentChange }) => {
 	const AISettings = useAISettings();
 
-	const [tab, setTab] = useState('generate'); // generate, modify
+	const [tab, setTab] = useState(0);
 
 	const textContext = useContext(TextContext);
 	const selectedText = content.substring(
@@ -66,12 +71,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		useResultsHandling();
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
-	useEffect(() => {
-		if (!selectedResultId) {
-			setSelectedResultId(results[0]?.id);
-		}
-	}, [tab, selectedResultId, results]);
-
 	const [isGenerating, setIsGenerating] = useState(false);
 
 	const abortControllerRef = useRef(null);
@@ -84,19 +83,29 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		};
 	}, []);
 
-	const switchToModifyTab = () => {
-		setTab('modify');
+	const switchToGenerateTab = () => {
+		setTab(0);
 	};
 
-	const switchToGenerateTab = () => {
-		setTab('generate');
+	const switchToModifyTab = () => {
+		setTab(1);
+	};
+
+	const switchToHistoryTab = () => {
+		setTab(2);
 	};
 
 	useEffect(() => {
 		if (!isEmpty(selectedText)) {
-			switchToModifyTab();
 			setSelectedResultId('selectedText');
+			updateSettings({ characterCount: selectedText.length });
+		} else {
+			setSelectedResultId(null);
+			updateSettings({
+				characterCount: DEFAULT_CHARACTER_COUNT_GUIDELINES[contentType],
+			});
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedText]);
 
 	useEffect(() => {
@@ -160,24 +169,24 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 	};
 
 	const generateContent = async () => {
-		switchToModifyTab();
+		switchToHistoryTab();
 
-		handleContentGeneration({
-			openAIApiKey: AISettings.openaiApiKey,
-			modelName: AISettings.model,
-			additionalParams: {
-				temperature: confidenceLevel / 100,
-			},
-			additionalData: {
-				settings,
-			},
-			results,
-			abortControllerRef,
-			getMessages,
-			setResults,
-			setSelectedResultId,
-			setIsGenerating,
-		});
+		// handleContentGeneration({
+		// 	openAIApiKey: AISettings.openaiApiKey,
+		// 	modelName: AISettings.model,
+		// 	additionalParams: {
+		// 		temperature: confidenceLevel / 100,
+		// 	},
+		// 	additionalData: {
+		// 		settings,
+		// 	},
+		// 	results,
+		// 	abortControllerRef,
+		// 	getMessages,
+		// 	setResults,
+		// 	setSelectedResultId,
+		// 	setIsGenerating,
+		// });
 	};
 
 	const handleAbort = () => {
@@ -189,41 +198,82 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 
 	return (
 		<div className={className}>
-			{tab === 'generate' ? (
-				<GenerateTab
-					clientId={clientId}
-					settings={settings}
-					contextOption={contextOption}
-					setContextOption={setContextOption}
-					prompt={prompt}
-					generateContent={generateContent}
-					updateSettings={updateSettings}
-					switchToModifyTab={switchToModifyTab}
-				/>
-			) : (
-				<ModifyTab
-					results={results}
-					content={content}
-					AISettings={AISettings}
-					settings={settings}
-					context={context}
-					selectedText={selectedText}
-					formatValue={textContext.formatValue}
-					onChangeTextFormat={textContext.onChangeTextFormat}
-					isGenerating={isGenerating}
-					setIsGenerating={setIsGenerating}
-					selectedResultId={selectedResultId}
-					setSelectedResultId={setSelectedResultId}
-					historyStartId={historyStartId}
-					setHistoryStartId={setHistoryStartId}
-					onContentChange={onContentChange}
-					setResults={setResults}
-					updateSettings={updateSettings}
-					switchToGenerateTab={switchToGenerateTab}
-					onAbort={handleAbort}
-					abortControllerRef={abortControllerRef}
-				/>
-			)}
+			<SettingTabsControl
+				tab={tab}
+				items={[
+					{
+						label: __('Generate', 'maxi-blocks'),
+						content: (
+							<GenerateTab
+								clientId={clientId}
+								settings={settings}
+								selectedText={selectedText}
+								contextOption={contextOption}
+								setContextOption={setContextOption}
+								prompt={prompt}
+								generateContent={generateContent}
+								updateSettings={updateSettings}
+							/>
+						),
+					},
+					{
+						label: __('Modify', 'maxi-blocks'),
+						content: (
+							<ModifyTab
+								results={results}
+								content={content}
+								AISettings={AISettings}
+								settings={settings}
+								context={context}
+								selectedText={selectedText}
+								formatValue={textContext.formatValue}
+								onChangeTextFormat={
+									textContext.onChangeTextFormat
+								}
+								isGenerating={isGenerating}
+								setIsGenerating={setIsGenerating}
+								selectedResultId={selectedResultId}
+								setSelectedResultId={setSelectedResultId}
+								historyStartId={historyStartId}
+								setHistoryStartId={setHistoryStartId}
+								onContentChange={onContentChange}
+								setResults={setResults}
+								updateSettings={updateSettings}
+								switchToGenerateTab={switchToGenerateTab}
+								onAbort={handleAbort}
+								abortControllerRef={abortControllerRef}
+							/>
+						),
+					},
+					{
+						label: __('History', 'maxi-blocks'),
+						content: (
+							<HistoryTab
+								results={results}
+								content={content}
+								// modifyOption={modifyOption}
+								formatValue={textContext.formatValue}
+								historyStartId={historyStartId}
+								selectedResultId={selectedResultId}
+								setResults={setResults}
+								// setModifyOption={setModifyOption}
+								// setCustomValue={setCustomValue}
+								setSelectedResultId={setSelectedResultId}
+								setHistoryStartId={setHistoryStartId}
+								onContentChange={onContentChange}
+								onChangeTextFormat={
+									textContext.onChangeTextFormat
+								}
+								updateSettings={updateSettings}
+								switchToGenerateTab={switchToGenerateTab}
+								switchToModifyTab={switchToModifyTab}
+							/>
+						),
+					},
+				]}
+				disablePadding
+				setTab={setTab}
+			/>
 		</div>
 	);
 };

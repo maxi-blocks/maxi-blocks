@@ -14,6 +14,7 @@ import {
 	ReactSelectControl,
 	TextareaControl,
 } from '../../..';
+import ResultCard from '../../components/result-card';
 import {
 	CONTENT_TYPES,
 	CONTEXT_OPTIONS,
@@ -32,11 +33,11 @@ import './editor.scss';
 const GenerateTab = ({
 	clientId,
 	settings,
+	selectedText,
 	contextOption,
 	setContextOption,
 	generateContent,
 	updateSettings,
-	switchToModifyTab,
 }) => {
 	const {
 		prompt,
@@ -68,7 +69,16 @@ const GenerateTab = ({
 	const className = 'maxi-prompt-control-generate-tab';
 
 	return (
-		<>
+		<div className={className}>
+			{selectedText && (
+				<ResultCard
+					result={{
+						content: selectedText,
+						isSelectedText: true,
+					}}
+					isSelected
+				/>
+			)}
 			{[
 				{
 					key: 'contentType',
@@ -176,16 +186,8 @@ const GenerateTab = ({
 				>
 					{__('Write for me', 'maxi-blocks')}
 				</Button>
-				<Button
-					className='maxi-prompt-control__button'
-					type='button'
-					variant='secondary'
-					onClick={switchToModifyTab}
-				>
-					{__('History', 'maxi-blocks')}
-				</Button>
 			</div>
-		</>
+		</div>
 	);
 };
 

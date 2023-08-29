@@ -23,7 +23,6 @@ import './editor.scss';
 
 const ResultCards = ({
 	results,
-	selectedText,
 	content,
 	modifyOption,
 	formatValue,
@@ -38,6 +37,8 @@ const ResultCards = ({
 	onChangeTextFormat,
 	updateSettings,
 	switchToGenerateTab,
+	switchToModifyTab,
+	isModifyTab = false,
 }) => {
 	const [loadUntilIndex, setLoadUntilIndex] = useState(LOAD_MORE_COUNT);
 
@@ -47,7 +48,12 @@ const ResultCards = ({
 		return (
 			<div className={className}>
 				<h4 className={`${className}__no-results`}>
-					{__('History is empty', 'maxi-blocks')}
+					{__(
+						isModifyTab
+							? 'Select text or result from history to modify'
+							: 'History is empty',
+						'maxi-blocks'
+					)}
 				</h4>
 			</div>
 		);
@@ -55,17 +61,6 @@ const ResultCards = ({
 
 	return (
 		<div className={className}>
-			{selectedText && (
-				<ResultCard
-					result={{
-						content: selectedText,
-						isSelectedText: true,
-					}}
-					isSelected={selectedResultId === 'selectedText'}
-					modifyOption={modifyOption}
-					onSelect={() => setSelectedResultId('selectedText')}
-				/>
-			)}
 			{results.slice(0, loadUntilIndex).map((result, index) => {
 				const refResultIndex =
 					result.refId &&
@@ -120,6 +115,11 @@ const ResultCards = ({
 					}
 				};
 
+				const handleResultModification = () => {
+					setSelectedResultId(result.id);
+					switchToModifyTab();
+				};
+
 				const handleResultDeletion = () => {
 					if (historyStartId === result.id) {
 						setHistoryStartId(historyStartId - 1);
@@ -149,12 +149,12 @@ const ResultCards = ({
 						result={result}
 						isFromPreviousSession={result.id <= historyStartId}
 						isSelected={result.id === selectedResultId}
-						isSelectedText={!!selectedText}
 						modifyOption={modifyOption}
 						isRefExist={refResultIndex && refResultIndex >= 0}
 						onInsert={handleResultInsertion}
 						onSelect={handleResultSelection}
 						onUseSettings={handleResultUseSettings}
+						onModify={handleResultModification}
 						onDelete={handleResultDeletion}
 					/>
 				);

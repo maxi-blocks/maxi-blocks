@@ -28,8 +28,12 @@ describe('Button link', () => {
 			button => button.click()
 		);
 
-		await page.keyboard.type('test.com', { delay: 100 });
+		await page.waitForTimeout(200);
+
+		await page.keyboard.type('test.com', { delay: 200 });
 		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(200);
 
 		// Click on all options
 		await page.$$eval(

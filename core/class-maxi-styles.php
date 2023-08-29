@@ -1342,11 +1342,6 @@ class MaxiBlocks_Styles
     {
         global $post;
 
-        // If no post is set and no ID is passed, return an empty array.
-        if ((!$post || !isset($post->ID)) && !$id) {
-            return [];
-        }
-
         // Fetch blocks from template parts.
         $blocks = $this->fetch_template_parts_frontend();
 

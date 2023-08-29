@@ -22,11 +22,15 @@ describe('Column Maxi hover simple actions', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
 
+		await page.waitForTimeout(200);
+
 		// Select one column
 		await page.$$eval(
 			'.maxi-row-block__template .maxi-row-block__template__button',
 			rowButtons => rowButtons[0].click()
 		);
+
+		await page.waitForTimeout(200);
 
 		await page.waitForSelector('.maxi-column-block');
 		await page.evaluate(() => {
@@ -59,6 +63,8 @@ describe('Column Maxi hover simple actions', () => {
 				}
 			}
 		});
+
+		await page.waitForTimeout(200);
 
 		// Add native paragraph block
 		await selectBlockByClientId(

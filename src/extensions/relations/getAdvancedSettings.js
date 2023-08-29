@@ -21,6 +21,7 @@ import {
 	getTransformSelectors,
 } from '../../components/transform-control/utils';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import { getBlockNameFromUniqueID } from '../styles/migrators/utils';
 
 /**
  * External dependencies
@@ -48,8 +49,12 @@ const getTransformControl = ({ categories, selectors }) => ({
 			{...props}
 			uniqueID={props.attributes.uniqueID}
 			depth={2}
-			selectors={getTransformSelectors(selectors, props.attributes)}
-			categories={getTransformCategories(categories, props.attributes)}
+			selectors={getTransformSelectors(selectors, props.blockAttributes)}
+			categories={getTransformCategories(
+				categories,
+				props.blockAttributes,
+				getBlockNameFromUniqueID(props.blockAttributes.uniqueID)
+			)}
 			disableHover
 		/>
 	),

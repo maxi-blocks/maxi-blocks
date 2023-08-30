@@ -23,7 +23,6 @@ import {
 } from '../../../../extensions/styles';
 import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 import { getBlockPosition } from '../../../../extensions/repeater/utils';
-import { cleanInnerBlocks } from '../../../../extensions/copy-paste';
 
 /**
  * External dependencies
@@ -61,11 +60,14 @@ const ColumnPattern = props => {
 	const instanceId = useInstanceId(ColumnPattern);
 
 	useEffect(() => {
+		const onlyEqualColumns =
+			repeaterStatus && clientId === repeaterRowClientId;
+
 		if (toolbar) {
-			setDisplayedTemplates(getTemplates(repeaterStatus));
+			setDisplayedTemplates(getTemplates(onlyEqualColumns));
 		} else {
 			setDisplayedTemplates(
-				getTemplates(repeaterStatus, breakpoint, numCol)
+				getTemplates(onlyEqualColumns, breakpoint, numCol)
 			);
 		}
 	}, [breakpoint, numCol]);
@@ -246,54 +248,28 @@ const ColumnPattern = props => {
 											innerBlockPositions
 										);
 
-										const { getBlock } =
-											select('core/block-editor');
-										const {
-											__unstableMarkNextChangeAsNotPersistent:
-												markNextChangeAsNotPersistent,
-											replaceInnerBlocks,
-										} = dispatch('core/block-editor');
-
-										const rowToValidateByInnerBlocks =
-											getBlock(clientId).innerBlocks;
-
 										innerBlockPositions[
 											blockPosition
 										].forEach(rowClientId => {
 											if (rowClientId === clientId)
 												return;
 
-											const oldInnerBlocks =
-												getBlock(
-													rowClientId
-												).innerBlocks;
-
-											const clonedInnerBlocks =
-												cleanInnerBlocks(
-													rowToValidateByInnerBlocks
-												);
-
-											clonedInnerBlocks.forEach(
-												(column, i) => {
-													if (
-														i >=
-														oldInnerBlocks.length
-													)
-														return;
-
-													column.clientId =
-														oldInnerBlocks[
-															i
-														].clientId;
-												}
-											);
-
-											markNextChangeAsNotPersistent();
-											replaceInnerBlocks(
+											loadColumnsTemplate(
+												newRowPattern,
 												rowClientId,
-												clonedInnerBlocks
+												breakpoint,
+												numCol,
+												repeaterStatus,
+												repeaterStatus
 											);
 										});
+
+										// Undo/redo fix
+										const {
+											__unstableMarkNextChangeAsNotPersistent:
+												markNextChangeAsNotPersistent,
+										} = dispatch('core/block-editor');
+										markNextChangeAsNotPersistent();
 									}
 								}
 

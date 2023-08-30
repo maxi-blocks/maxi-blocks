@@ -22,37 +22,16 @@ describe('Button link', () => {
 			button => button.click()
 		);
 
-		// select open in new tab
-		await page.$$eval(
-			'.block-editor-link-control__tools .components-base-control__field input',
-			button => button[0].click()
-		);
+		await page.waitForSelector('.block-editor-url-input__input:focus');
 
-		// select no follow
-		await page.$$eval(
-			'.block-editor-link-control__tools .components-base-control__field input',
-			button => button[1].click()
-		);
-
-		// select sponsored
-		await page.$$eval(
-			'.block-editor-link-control__tools .components-base-control__field input',
-			button => button[2].click()
-		);
-
-		// select UGC
-		await page.$$eval(
-			'.block-editor-link-control__tools .components-base-control__field input',
-			button => button[3].click()
-		);
-
-		// add Url
-		await page.$eval(
-			'.block-editor-link-control__search-input-wrapper input',
-			input => input.focus()
-		);
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
+
+		// Click on all options
+		await page.$$eval(
+			'.maxi-link-control__options .maxi-toggle-switch input',
+			inputs => inputs.forEach(input => input.click())
+		);
 
 		expect(await getAttributes('linkSettings')).toMatchSnapshot();
 	});

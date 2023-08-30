@@ -25,9 +25,11 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
+	shouldSetPreserveAspectRatio,
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
+import { withMaxiContextLoopContext } from '../../extensions/DC';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
@@ -225,15 +227,11 @@ class edit extends MaxiBlockComponent {
 			onSelect: obj => {
 				const { content } = obj;
 
-				if (content) {
-					const disableHeightFitContent = getLastBreakpointAttribute({
-						target: 'svg-width-fit-content',
-						breakpoint: deviceType,
-						attributes,
-					});
-
-					if (disableHeightFitContent)
-						obj.content = togglePreserveAspectRatio(content, true);
+				if (
+					content &&
+					shouldSetPreserveAspectRatio(attributes, 'svg-')
+				) {
+					obj.content = togglePreserveAspectRatio(content, true);
 				}
 
 				maxiSetAttributes(obj);
@@ -341,4 +339,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoopContext(withMaxiProps(edit));

@@ -6,6 +6,7 @@ jest.mock('@wordpress/blocks', () => {
 		getActiveFormat: jest.fn(),
 	};
 });
+jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
 jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
 

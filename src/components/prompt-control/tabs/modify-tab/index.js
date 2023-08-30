@@ -17,7 +17,7 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
-import { MODIFICATION_ACTIONS, MODIFY_OPTIONS } from '../../constants';
+import { MODIFICATION_ACTIONS } from '../../constants';
 
 /**
  * Styles
@@ -177,6 +177,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 					},
 					selectedResult,
 				].filter(Boolean)}
+				modifyOption={modifyOption}
 				selectedResultId={selectedResultId}
 				setSelectedResultId={setSelectedResultId}
 				setSelectedResult={setSelectedResult}

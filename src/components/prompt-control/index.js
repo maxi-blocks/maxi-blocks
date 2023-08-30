@@ -255,6 +255,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								formatValue={textContext.formatValue}
 								historyStartId={historyStartId}
 								selectedResultId={selectedResultId}
+								isSelectedText={!!selectedText}
 								setResults={setResults}
 								setModifyOption={setModifyOption}
 								setCustomValue={setCustomValue}

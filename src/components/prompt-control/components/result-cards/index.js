@@ -28,6 +28,7 @@ const ResultCards = ({
 	formatValue,
 	historyStartId,
 	selectedResultId,
+	isSelectedText,
 	setResults,
 	setSelectedResultId,
 	setSelectedResult,
@@ -103,6 +104,7 @@ const ResultCards = ({
 						setModifyOption(result.modificationType);
 						setCustomValue(result.customValue);
 
+						// TODO: add this behavior on every selectedResultId change
 						if (refResultIndex >= loadUntilIndex) {
 							setLoadUntilIndex(refResultIndex + 1);
 						}
@@ -160,6 +162,7 @@ const ResultCards = ({
 						key={result.id}
 						index={index + 1}
 						result={result}
+						isSelectedText={isSelectedText}
 						isFromPreviousSession={result.id <= historyStartId}
 						isSelected={result.id === selectedResultId}
 						modifyOption={modifyOption}

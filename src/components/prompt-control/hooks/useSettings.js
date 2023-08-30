@@ -16,14 +16,20 @@ import {
 } from '../constants';
 
 const useSettings = () => {
-	const [settings, setSettings] = useState({
-		contentType: CONTENT_TYPES[0],
-		tone: TONES[0],
-		writingStyle: WRITING_STYLES[0],
-		characterCount: DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]],
-		confidenceLevel: DEFAULT_CONFIDENCE_LEVEL,
-		language: LANGUAGES[0],
-		prompt: '',
+	const [settings, setSettings] = useState(() => {
+		const storedSettings = JSON.parse(localStorage.getItem('settings'));
+		return {
+			contentType: storedSettings.contentType || CONTENT_TYPES[0],
+			tone: storedSettings.tone || TONES[0],
+			writingStyle: storedSettings.writingStyle || WRITING_STYLES[0],
+			characterCount:
+				storedSettings.characterCount ||
+				DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]],
+			confidenceLevel:
+				storedSettings.confidenceLevel || DEFAULT_CONFIDENCE_LEVEL,
+			language: storedSettings.language || LANGUAGES[0],
+			prompt: '',
+		};
 	});
 
 	const updateSettings = useCallback(newSettings => {
@@ -34,10 +40,17 @@ const useSettings = () => {
 	}, []);
 
 	useEffect(() => {
+		const settingsToSave = { ...settings };
+		delete settingsToSave.prompt;
+
+		localStorage.setItem('settings', JSON.stringify(settingsToSave));
+	}, [settings]);
+
+	useEffect(() => {
 		setSettings(prevSettings => ({
 			...prevSettings,
 			characterCount:
-				DEFAULT_CHARACTER_COUNT_GUIDELINES[settings.contentType],
+				DEFAULT_CHARACTER_COUNT_GUIDELINES[prevSettings.contentType],
 		}));
 	}, [settings.contentType]);
 

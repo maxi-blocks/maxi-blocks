@@ -16,6 +16,7 @@ const HistoryTab = ({
 	formatValue,
 	historyStartId,
 	selectedResultId,
+	isSelectedText,
 	setResults,
 	setModifyOption,
 	setHistoryStartId,
@@ -47,6 +48,7 @@ const HistoryTab = ({
 				formatValue={formatValue}
 				historyStartId={historyStartId}
 				selectedResultId={selectedResultId}
+				isSelectedText={isSelectedText}
 				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}
 				setModifyOption={setModifyOption}

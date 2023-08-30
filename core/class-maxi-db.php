@@ -38,12 +38,10 @@ if (!class_exists('MaxiBlocks_DB')):
          */
         public function __construct()
         {
-            if (is_admin()) {
-                register_activation_hook(MAXI_PLUGIN_DIR_FILE, [
-                    $this,
-                    'add_maxi_tables',
-                ]);
-            }
+            register_activation_hook(MAXI_PLUGIN_DIR_FILE, [
+                $this,
+                'add_maxi_tables',
+            ]);
         }
 
         public function add_maxi_tables()

@@ -335,6 +335,26 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
       "target": "::after",
     },
   },
+  "after content": {
+    "hover": {
+      "label": "content ::after on hover",
+      "target": " .maxi-button-block__content:hover::after",
+    },
+    "normal": {
+      "label": "content ::after",
+      "target": " .maxi-button-block__content::after",
+    },
+  },
+  "after icon": {
+    "hover": {
+      "label": "icon ::after on hover",
+      "target": " .maxi-button-block__icon:hover::after",
+    },
+    "normal": {
+      "label": "icon ::after",
+      "target": " .maxi-button-block__icon::after",
+    },
+  },
   "before button": {
     "hover": {
       "label": "button ::before on hover",
@@ -355,6 +375,26 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
       "target": "::before",
     },
   },
+  "before content": {
+    "hover": {
+      "label": "content ::before on hover",
+      "target": " .maxi-button-block__content:hover::before",
+    },
+    "normal": {
+      "label": "content ::before",
+      "target": " .maxi-button-block__content::before",
+    },
+  },
+  "before icon": {
+    "hover": {
+      "label": "icon ::before on hover",
+      "target": " .maxi-button-block__icon:hover::before",
+    },
+    "normal": {
+      "label": "icon ::before",
+      "target": " .maxi-button-block__icon::before",
+    },
+  },
   "button": {
     "hover": {
       "label": "button on hover",
@@ -373,6 +413,16 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     "normal": {
       "label": "canvas",
       "target": "",
+    },
+  },
+  "content": {
+    "hover": {
+      "label": "content on hover",
+      "target": " .maxi-button-block__content:hover",
+    },
+    "normal": {
+      "label": "content",
+      "target": " .maxi-button-block__content",
     },
   },
   "icon": {

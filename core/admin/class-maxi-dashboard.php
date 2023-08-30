@@ -512,7 +512,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">'.__('Google Maps API Quickstart', self::$maxi_text_domain).'</a> which will handle the setup of your account and generate the API key that you can insert below.', self::$maxi_text_domain).'</p>';
 
             $description = '<h4>'.__('Insert Google Maps API Key here', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'google_api_key_option', '', 'text');
+            $content .= $this->generate_setting($description, 'google_api_key_option', '', 'password');
 
             $content .= get_submit_button();
 
@@ -889,7 +889,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_item_header('Integrations', false);
 
             $description = '<h4>'.__('Insert OpenAI API Key here', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'text');
+            $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'password');
 
             $description = '<h4>'.__('ChatGPT AI Model', self::$maxi_text_domain).'</h4>';
             $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', ['list' => [
@@ -1176,8 +1176,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if($type === 'dropdown') {
                 $content .= $this->generate_custom_dropdown($option, $args);
-            } elseif($type === 'text') {
-                $is_api_input = str_contains($option, 'api_key_option');
+            } elseif($type === 'text' || $type === 'password') {
+                $is_api_input = $type === 'password';
 
                 if($is_api_input) {
                     $api_name = str_replace('_api_key_option', '', $option);

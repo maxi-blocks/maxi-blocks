@@ -144,6 +144,18 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		validationDiv.innerHTML = validationMessage;
 	};
 
+	const makeInputPasswordVisible = input => {
+		if (!input) return;
+
+		input.addEventListener('focus', () => {
+			input.type = 'text';
+		});
+
+		input.addEventListener('blur', () => {
+			input.type = 'password';
+		});
+	};
+
 	// Google API Key validation
 	const googleApiKeyVisibleInput = document.querySelector(
 		'.google-api-key-option-visible-input'
@@ -154,6 +166,8 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const googleValidationDiv = document.getElementById(
 		'maxi-api-test__validation-message'
 	);
+
+	makeInputPasswordVisible(googleApiKeyVisibleInput);
 
 	const head = document.getElementsByTagName('head')[0];
 
@@ -244,6 +258,8 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const openAIValidationDiv = document.getElementById(
 		'maxi-api-test__validation-message'
 	);
+
+	makeInputPasswordVisible(openAIApiKeyVisibleInput);
 
 	const getOpenAIApiKey = () => openAIApiKeyVisibleInput.value;
 

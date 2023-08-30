@@ -29,6 +29,7 @@ const ResultCard = ({
 	isSelectedText,
 	modifyOption,
 	isRefExist,
+	disableButtons = false,
 	onInsert,
 	onSelect,
 	onUseSettings,
@@ -158,7 +159,7 @@ const ResultCard = ({
 						</span>
 					)}
 				</div>
-				{result.modificationType && (
+				{!disableButtons && result.modificationType && (
 					<div
 						className={`${className}__modificator`}
 						onClick={() => onSelect(result.refId)}
@@ -220,7 +221,7 @@ const ResultCard = ({
 					{__(`Show ${isLimited ? 'more' : 'less'}`, 'maxi-blocks')}
 				</Button>
 			)}
-			{!result.isSelectedText && (
+			{!disableButtons && !result.isSelectedText && (
 				<>
 					<hr />
 					<div className={`${className}__options`}>

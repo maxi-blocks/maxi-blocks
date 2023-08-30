@@ -28,6 +28,7 @@ import {
 import {
 	CONTEXT_OPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
+	MODIFY_OPTIONS,
 } from './constants';
 
 /**
@@ -72,6 +73,9 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
 	const [isGenerating, setIsGenerating] = useState(false);
+
+	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
+	const [customValue, setCustomValue] = useState('');
 
 	const abortControllerRef = useRef(null);
 
@@ -171,22 +175,22 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 	const generateContent = async () => {
 		switchToHistoryTab();
 
-		// handleContentGeneration({
-		// 	openAIApiKey: AISettings.openaiApiKey,
-		// 	modelName: AISettings.model,
-		// 	additionalParams: {
-		// 		temperature: confidenceLevel / 100,
-		// 	},
-		// 	additionalData: {
-		// 		settings,
-		// 	},
-		// 	results,
-		// 	abortControllerRef,
-		// 	getMessages,
-		// 	setResults,
-		// 	setSelectedResultId,
-		// 	setIsGenerating,
-		// });
+		handleContentGeneration({
+			openAIApiKey: AISettings.openaiApiKey,
+			modelName: AISettings.model,
+			additionalParams: {
+				temperature: confidenceLevel / 100,
+			},
+			additionalData: {
+				settings,
+			},
+			results,
+			abortControllerRef,
+			getMessages,
+			setResults,
+			setSelectedResultId,
+			setIsGenerating,
+		});
 	};
 
 	const handleAbort = () => {
@@ -221,27 +225,23 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 						content: (
 							<ModifyTab
 								results={results}
-								content={content}
 								AISettings={AISettings}
 								settings={settings}
 								context={context}
 								selectedText={selectedText}
-								formatValue={textContext.formatValue}
-								onChangeTextFormat={
-									textContext.onChangeTextFormat
-								}
+								modifyOption={modifyOption}
+								customValue={customValue}
 								isGenerating={isGenerating}
+								abortControllerRef={abortControllerRef}
+								setModifyOption={setModifyOption}
+								setCustomValue={setCustomValue}
 								setIsGenerating={setIsGenerating}
 								selectedResultId={selectedResultId}
 								setSelectedResultId={setSelectedResultId}
-								historyStartId={historyStartId}
-								setHistoryStartId={setHistoryStartId}
-								onContentChange={onContentChange}
-								setResults={setResults}
-								updateSettings={updateSettings}
-								switchToGenerateTab={switchToGenerateTab}
 								onAbort={handleAbort}
-								abortControllerRef={abortControllerRef}
+								setResults={setResults}
+								switchToGenerateTab={switchToGenerateTab}
+								switchToHistoryTab={switchToHistoryTab}
 							/>
 						),
 					},
@@ -251,13 +251,13 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 							<HistoryTab
 								results={results}
 								content={content}
-								// modifyOption={modifyOption}
+								modifyOption={modifyOption}
 								formatValue={textContext.formatValue}
 								historyStartId={historyStartId}
 								selectedResultId={selectedResultId}
 								setResults={setResults}
-								// setModifyOption={setModifyOption}
-								// setCustomValue={setCustomValue}
+								setModifyOption={setModifyOption}
+								setCustomValue={setCustomValue}
 								setSelectedResultId={setSelectedResultId}
 								setHistoryStartId={setHistoryStartId}
 								onContentChange={onContentChange}

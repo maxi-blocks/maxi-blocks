@@ -27,28 +27,25 @@ import ResultCards from '../../components/result-cards';
 
 const ModifyTab = ({
 	results,
-	content,
 	AISettings,
 	settings,
 	context,
 	selectedText,
-	formatValue,
-	onChangeTextFormat,
+	modifyOption,
+	customValue,
 	isGenerating,
+	abortControllerRef,
+	setModifyOption,
+	setCustomValue,
 	setIsGenerating,
 	selectedResultId,
 	setSelectedResultId,
-	historyStartId,
-	setHistoryStartId,
-	onContentChange,
 	onAbort,
 	setResults,
-	updateSettings,
-	switchToGenerateTab,
-	abortControllerRef,
+	switchToHistoryTab,
 }) => {
-	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
-	const [customValue, setCustomValue] = useState('');
+	const className = 'maxi-prompt-control-modify-tab';
+	const [classes, setClasses] = useState(className);
 
 	const [selectedResult, setSelectedResult] = useState(null);
 
@@ -126,6 +123,8 @@ Your task is to maintain the original intent and context while ${modificationAct
 	};
 
 	const modifyContent = async () => {
+		switchToHistoryTab();
+
 		const isSelectedText =
 			selectedResultId === 'selectedText' && selectedText;
 
@@ -152,10 +151,8 @@ Your task is to maintain the original intent and context while ${modificationAct
 		});
 	};
 
-	const className = 'maxi-prompt-control-modify-tab';
-
 	return (
-		<div className={className}>
+		<div className={classes}>
 			<ResultsTopBar
 				results={results}
 				selectedResultId={selectedResultId}
@@ -169,7 +166,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 				}
 				setModifyOption={setModifyOption}
 				setCustomValue={setCustomValue}
-				switchToGenerateTab={switchToGenerateTab}
+				setClasses={setClasses}
 			/>
 			<ResultCards
 				results={[

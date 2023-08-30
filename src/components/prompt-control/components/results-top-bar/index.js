@@ -16,6 +16,7 @@ import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty, capitalize } from 'lodash';
 
 /**
@@ -32,7 +33,7 @@ const ResultsTopBar = ({
 	defaultLanguage,
 	setModifyOption,
 	setCustomValue,
-	switchToGenerateTab,
+	setClasses,
 }) => {
 	const className = 'maxi-prompt-control-results-top-bar';
 
@@ -59,13 +60,30 @@ const ResultsTopBar = ({
 								value === 'translate' ? defaultLanguage : ''
 							);
 						}}
-						isDisabled={isEmpty(results)}
-						menuIsOpen
+						onMenuOpen={() => {
+							setClasses(prevClasses =>
+								classnames(
+									prevClasses,
+									`${prevClasses}--select-open`
+								)
+							);
+						}}
+						onMenuClose={() => {
+							setClasses((prevClasses = '') =>
+								prevClasses
+									.split(' ')
+									.filter(
+										className =>
+											!className.endsWith('--select-open')
+									)
+									.join(' ')
+							);
+						}}
 					/>
 					<Button
 						className={`${className}__button maxi-prompt-control__button`}
 						onClick={modifyContent}
-						disabled={isEmpty(results) && !selectedResultId}
+						disabled={isEmpty(results) || !selectedResultId}
 					>
 						{__('Go!', 'maxi-blocks')}
 					</Button>

@@ -1,13 +1,13 @@
 /**
- * WordPress dependencies
- */
-import { useEffect } from '@wordpress/element';
-
-/**
  * Internal dependencies
  */
 import HistoryButtons from '../../components/history-buttons';
 import ResultCards from '../../components/result-cards';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 const HistoryTab = ({
 	results,

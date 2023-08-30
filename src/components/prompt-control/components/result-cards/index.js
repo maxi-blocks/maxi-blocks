@@ -97,6 +97,8 @@ const ResultCards = ({
 
 				const handleResultUseSettings = () => {
 					if (result.refId) {
+						switchToModifyTab();
+
 						setModifyOption(result.modificationType);
 						setCustomValue(result.customValue);
 
@@ -151,6 +153,7 @@ const ResultCards = ({
 						isSelected={result.id === selectedResultId}
 						modifyOption={modifyOption}
 						isRefExist={refResultIndex && refResultIndex >= 0}
+						disableButtons={isModifyTab}
 						onInsert={handleResultInsertion}
 						onSelect={handleResultSelection}
 						onUseSettings={handleResultUseSettings}

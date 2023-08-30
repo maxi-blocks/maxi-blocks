@@ -12,4 +12,8 @@
 		bottom: 0;
 		justify-content: center;
 	}
+
+	&--select-open {
+		min-height: 280px;
+	}
 }

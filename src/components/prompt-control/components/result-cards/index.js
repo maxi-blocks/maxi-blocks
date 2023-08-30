@@ -30,6 +30,7 @@ const ResultCards = ({
 	selectedResultId,
 	setResults,
 	setSelectedResultId,
+	setSelectedResult,
 	setModifyOption,
 	setCustomValue,
 	setHistoryStartId,
@@ -123,6 +124,16 @@ const ResultCards = ({
 				};
 
 				const handleResultDeletion = () => {
+					if (isModifyTab) {
+						setSelectedResult(null);
+
+						if (result.id === selectedResultId) {
+							setSelectedResultId(null);
+						}
+
+						return;
+					}
+
 					if (historyStartId === result.id) {
 						setHistoryStartId(historyStartId - 1);
 					}

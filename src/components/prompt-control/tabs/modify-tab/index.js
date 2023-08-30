@@ -179,6 +179,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 				].filter(Boolean)}
 				selectedResultId={selectedResultId}
 				setSelectedResultId={setSelectedResultId}
+				setSelectedResult={setSelectedResult}
 				isModifyTab
 			/>
 			{isGenerating && (

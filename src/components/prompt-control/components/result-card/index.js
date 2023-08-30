@@ -256,6 +256,14 @@ const ResultCard = ({
 					</div>
 				</>
 			)}
+			{disableButtons && !result.isSelectedText && onDelete && (
+				<Button
+					className={`${className}__clean-history-button`}
+					onClick={onDelete}
+				>
+					Remove
+				</Button>
+			)}
 		</div>
 	);
 };

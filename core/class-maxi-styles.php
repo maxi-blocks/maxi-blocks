@@ -1343,7 +1343,10 @@ class MaxiBlocks_Styles
         global $post;
 
         // Fetch blocks from template parts.
-        $blocks = $this->fetch_template_parts_frontend();
+        // $blocks = $this->fetch_template_parts_frontend();
+
+        $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
+
 
         // Fetch blocks from passed content or from the global post.
         $blocks_post = parse_blocks($passed_content ?? $post->post_content);
@@ -1374,25 +1377,44 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Fetches blocks from template parts.
-     *
-     * @return array
-     */
-    private function fetch_template_parts_frontend()
+ * Fetches blocks from template and template parts based on the template slug.
+ *
+ * @param string $template_id The ID of the template you want to fetch.
+ * @return array
+ */
+    public function fetch_blocks_by_template_id($template_id)
     {
         global $wpdb;
 
-        // Query to fetch template parts from the database.
-        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE (post_type = 'wp_template_part' OR post_type = 'wp_template') AND post_status = 'publish'";
-        $template_parts = $wpdb->get_results($query);
+        $parts = explode('//', $template_id);
+        $template_slug = $parts[1];
 
-        $blocks_template = [];
-        foreach ($template_parts as $template_part) {
-            $blocks_part = parse_blocks($template_part->post_content);
-            $blocks_template = array_merge_recursive($blocks_template, $blocks_part);
+        // Initialize the array to store all the blocks.
+        $all_blocks = [];
+
+        // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+            $template_slug
+        );
+        $templates = $wpdb->get_results($query);
+
+        foreach ($templates as $template) {
+            // Parse blocks for each template.
+            $template_blocks = parse_blocks($template->post_content);
+            $all_blocks = array_merge_recursive($all_blocks, $template_blocks);
         }
 
-        return $blocks_template;
+        // Fetch the 'header' and 'footer' template parts.
+        $template_part_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_name IN ('header', 'footer') AND post_status = 'publish'";
+        $template_parts = $wpdb->get_results($template_part_query);
+
+        foreach ($template_parts as $template_part) {
+            $part_blocks = parse_blocks($template_part->post_content);
+            $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
+        }
+
+        return $all_blocks;
     }
 
     /**

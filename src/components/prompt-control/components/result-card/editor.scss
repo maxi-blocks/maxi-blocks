@@ -65,6 +65,11 @@
 		}
 	}
 
+	& &__content-length {
+		color: var(--maxi-grey-6-color);
+		text-align: end;
+	}
+
 	&__end-of-content {
 		position: relative;
 

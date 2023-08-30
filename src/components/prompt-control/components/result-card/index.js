@@ -221,6 +221,9 @@ const ResultCard = ({
 					{__(`Show ${isLimited ? 'more' : 'less'}`, 'maxi-blocks')}
 				</Button>
 			)}
+			<div className={`${className}__content-length`}>
+				{result.content.length} {__('characters', 'maxi-blocks')}
+			</div>
 			{!disableButtons && !result.isSelectedText && (
 				<>
 					<hr />

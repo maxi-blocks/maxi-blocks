@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
 
@@ -13,7 +13,8 @@ import Button from '../../components/button';
 import Icon from '../../components/icon';
 import MaxiStyleCardsEditorPopUp from '../style-cards';
 import { setScreenSize } from '../../extensions/styles';
-import { getSiteEditorIframeBody } from '../../extensions/fse';
+import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
 
 /**
@@ -356,7 +357,28 @@ const ResponsiveSelector = props => {
 	});
 
 	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+		let rootClientId;
+
+		if (getIsSiteEditor()) {
+			const { postType, postId } =
+				select('core/edit-site').getEditedPostContext();
+
+			if (postType && postId) {
+				goThroughMaxiBlocks(block => {
+					if (block.name === 'core/post-content') {
+						rootClientId = block.clientId;
+						return true;
+					}
+					return false;
+				});
+			}
+		}
+
+		insertBlock(
+			createBlock('maxi-blocks/maxi-cloud'),
+			undefined,
+			rootClientId
+		);
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);

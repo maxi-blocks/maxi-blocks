@@ -68,15 +68,27 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                 'customCss' => $customCss,
             ];
 
+            // add missing column-gap-general and row-gap-general for old blocks
+
+            // if(!isset($props['column-gap-general'])) {
+            //     $props['column-gap-general'] = 2.5;
+            // }
+            // if(!isset($props['column-gap-unit-general'])) {
+            //     $props['column-gap-unit-general'] = '%';
+            // }
+            // if(!isset($props['row-gap-general'])) {
+            //     $props['row-gap-general'] = 20;
+            // }
+            // if(!isset($props['row-gap-unit-general'])) {
+            //     $props['row-gap-unit-general'] = 'px';
+            // }
+
             $styles_obj = [
                 $uniqueID => [
                     '' => self::get_normal_object($props),
                     ':hover' => self::get_hover_object($props),
                 ],
             ];
-
-            write_log('Row styles:');
-            write_log($styles_obj);
 
             $background_styles = get_block_background_styles(
                 array_merge(
@@ -120,9 +132,6 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                 $props,
             );
 
-            write_log('Row styles:');
-            write_log($response);
-
             return $response;
         }
 
@@ -157,7 +166,7 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
                     'row' => [ 'general' => [ ]],
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
+                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, ['flex', 'row-gap', 'column-gap'])), true),
                 ];
 
             return $response;

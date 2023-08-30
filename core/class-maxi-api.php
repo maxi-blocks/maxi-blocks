@@ -386,11 +386,6 @@ if (!class_exists('MaxiBlocks_API')):
 
             $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-            // write_log('$styles from post styles');
-            // write_log($styles_arr);
-            // $is_template = $data['isTemplate'];
-            // $template_parts = $data['templateParts'];
-
             $fonts_arr = $meta['fonts'];
             if ($is_json) {
                 foreach ($fonts_arr as $key => $font) {
@@ -702,9 +697,6 @@ if (!class_exists('MaxiBlocks_API')):
         public function set_maxi_blocks_current_custom_data($data, $is_json = true)
         {
             global $wpdb;
-
-            // write_log('$data');
-            // write_log($data);
 
             $update = $data['update'];
 

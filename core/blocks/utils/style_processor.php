@@ -509,9 +509,6 @@ function style_processor($obj, $data, $props)
     $new_css_selectors = get_selectors_css($selectors, $props);
     $new_transform_selectors = get_transform_selectors($selectors, $props);
 
-    // write_log('$new_transform_selectors');
-    // write_log($new_transform_selectors);
-
     if (!empty($new_css_selectors)) {
         $custom_css_object = get_custom_css_object($new_css_selectors, $props);
         if (!empty($custom_css_object)) {
@@ -526,8 +523,6 @@ function style_processor($obj, $data, $props)
     }
     if (!empty($new_transform_selectors)) {
         $transform_object = get_transform_styles($props, $new_transform_selectors);
-        // write_log('$transform_object');
-        // write_log($transform_object);
 
         if (!empty($transform_object)) {
             $is_transform_string = function ($string) {

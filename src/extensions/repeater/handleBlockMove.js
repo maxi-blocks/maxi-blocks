@@ -18,13 +18,24 @@ import {
  */
 import { isEqual } from 'lodash';
 
+const isPositionExtendedToPenultimate = (prevPosition, nextPosition) =>
+	prevPosition.length <= nextPosition.length &&
+	prevPosition
+		.slice(0, -1)
+		.every((value, index) => value === nextPosition[index]);
+
 const handleBlockMove = (
 	clientId,
 	prevPosition,
 	nextPosition,
 	innerBlockPositions
 ) => {
-	if (isEqual(prevPosition, nextPosition)) return;
+	if (
+		isEqual(prevPosition, nextPosition) ||
+		(isPositionExtendedToPenultimate(prevPosition, nextPosition) &&
+			prevPosition.at(-1) === nextPosition.at(-1) + 1)
+	)
+		return;
 
 	const { getBlock } = select('core/block-editor');
 
@@ -47,7 +58,17 @@ const handleBlockMove = (
 
 	const modifiedNextPosition = [...nextPosition];
 
-	if (prevPosition.length < nextPosition.length) {
+	/**
+	 * If the block has been moved to an inner block,
+	 * which is inside the same parent, and the moved block
+	 * is higher than the inner block, we need to increase
+	 * the inner block index by 1 to get the correct next parent
+	 */
+	if (
+		prevPosition.length < nextPosition.length &&
+		isPositionExtendedToPenultimate(prevPosition, nextPosition) &&
+		prevBlockIndex <= nextPosition[prevPosition.length - 1]
+	) {
 		modifiedNextPosition[prevPosition.length - 1] += 1;
 	}
 

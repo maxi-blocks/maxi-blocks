@@ -70,7 +70,6 @@ const getSizeStyles = (obj, prefix = '') => {
 			}
 
 			if (!obj[`${prefix}size-advanced-options`]) {
-				console.log('here');
 				if (target.includes('min')) return null;
 				if (target.includes('max')) return fullWidthNormalStyles;
 			}
@@ -128,9 +127,6 @@ const getSizeStyles = (obj, prefix = '') => {
 						  }) && '100%';
 
 				if (!isNil(num) && !isNil(unit)) {
-					console.log(`${prefix}${target}`);
-					console.log('num');
-					console.log(num);
 					return {
 						[target]: auto || num + unit,
 						...fullWidthNormalStyles,

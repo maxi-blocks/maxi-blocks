@@ -31,9 +31,5 @@ function get_block_attributes($block_name)
         }
     }
 
-    write_log('get_block_attributes');
-    write_log($block_name);
-    write_log($response);
-
     return $response;
 }

@@ -10,13 +10,13 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php
  * @param string $prefix Prefix for the block attribute keys
  * @return array         Associative array of styles for different breakpoints
  */
-function get_size_styles($obj, $prefix = '', $debug = false)
+function get_size_styles($obj, $prefix = '')
 {
     $response = [];
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints, $debug) {
+        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
             $full_width_normal_styles = [];
 
             if (in_array($target, ['width', 'max-width', 'min-width'])) {
@@ -58,15 +58,12 @@ function get_size_styles($obj, $prefix = '', $debug = false)
                 }
             }
 
-            $is_advanced = $obj[$prefix . 'size-advanced-options'];
+            $is_advanced = $obj[$prefix . 'size-advanced-options'] ?? true;
             if ($is_advanced === 'false') {
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
                 if (strpos($target, 'max') !== false) {
-                    // if ($debug) {
-                    //     write_log('returning $full_width_normal_styles');
-                    // }
                     return $full_width_normal_styles;
                 }
             }
@@ -129,25 +126,13 @@ function get_size_styles($obj, $prefix = '', $debug = false)
                         $full_width_normal_styles,
                         [$target => $auto ? $auto : $num . $unit]
                     );
-                    // if($debug) {
-                    //     write_log('!is_null($num) && !is_null($unit)');
-                    //     write_log($full_width_normal_styles);
-                    // }
+
                     return $full_width_normal_styles;
                 }
             }
 
             return $full_width_normal_styles;
         };
-
-        if ($debug) {
-            write_log('===================');
-            write_log('$breakpoint');
-            write_log($breakpoint);
-            write_log('$get_value(max-width)');
-            write_log($get_value('max-width'));
-            write_log('===================');
-        }
 
         // Simulate array destructuring in JS
         $response[$breakpoint] = array_merge(
@@ -158,9 +143,6 @@ function get_size_styles($obj, $prefix = '', $debug = false)
             $get_value('height') ?? [],
             $get_value('min-height') ?? []
         );
-
-        // write_log('$response[$breakpoint]');
-        // write_log($response[$breakpoint]);
     }
 
     return $response;

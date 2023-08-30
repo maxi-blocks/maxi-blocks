@@ -1713,20 +1713,6 @@ class MaxiBlocks_Styles
         $sc_props = $block_instance->get_block_sc_vars($block_style);
         $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
 
-        // if($block_name === 'maxi-blocks/column-maxi') {
-        //     write_log('column-maxi');
-        //     write_log('$unique_id');
-        //     write_log($unique_id);
-        //     write_log('$styles');
-        //     write_log($styles);
-        //     write_log($context);
-        //     write_log('$context');
-        //     write_log('===============================');
-
-
-        // }
-
-
         $inner_blocks = $block['innerBlocks'];
 
         // Context creator
@@ -1863,10 +1849,6 @@ class MaxiBlocks_Styles
         );
 
         if (!empty($exists)) {
-            write_log('exists!');
-            write_log($block_name);
-            write_log($unique_id);
-            write_log('-----------------');
             // Update the existing row.
             $old_css = $exists->css_value;
             $old_custom_meta = $exists->active_custom_data;
@@ -1887,9 +1869,6 @@ class MaxiBlocks_Styles
             );
         } else {
             // Insert a new row.
-            write_log($block_name);
-            write_log($unique_id);
-            write_log('-----------------');
             $wpdb->query(
                 $wpdb->prepare(
                     "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)

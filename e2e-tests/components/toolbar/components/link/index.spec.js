@@ -28,9 +28,9 @@ describe('Button link', () => {
 			button => button.click()
 		);
 
-		await page.waitForTimeout(200);
+		await page.waitForSelector('.block-editor-url-input__input:focus');
 
-		await page.keyboard.type('test.com', { delay: 200 });
+		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 
 		await page.waitForTimeout(200);

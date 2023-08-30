@@ -22,9 +22,7 @@ describe('Button link', () => {
 			button => button.click()
 		);
 
-		await page.waitForSelector(
-			'.maxi-link-control .block-editor-url-input__input'
-		);
+		await page.waitForSelector('.block-editor-url-input__input:focus');
 
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');

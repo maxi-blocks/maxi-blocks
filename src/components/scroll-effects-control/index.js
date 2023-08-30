@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
@@ -21,8 +20,6 @@ import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
 import { getActiveTabName } from '../../extensions/inspector';
-import { getBlockPosition } from '../../extensions/repeater/utils';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies
@@ -48,15 +45,12 @@ import './editor.scss';
  */
 const ScrollEffectsControl = props => {
 	const {
-		clientId,
 		className,
 		onChange,
 		breakpoint = 'general',
 		uniqueID,
 		depth,
 	} = props;
-
-	const repeaterContext = useContext(RepeaterContext);
 
 	const classes = classnames('maxi-scroll-effects-control', className);
 
@@ -694,6 +688,8 @@ const ScrollEffectsControl = props => {
 										options={viewportOptions}
 										defaultValue='mid'
 									/>
+									{/*
+									// TODO: fix #5002
 									<ToggleSwitch
 										label={__(
 											'Simulate scroll effect live (test)',
@@ -767,7 +763,7 @@ const ScrollEffectsControl = props => {
 												}
 											}
 										}}
-									/>
+									/> */}
 									<ScrollEffectUniqueControl
 										label={__(
 											`${capitalize(type)}`,

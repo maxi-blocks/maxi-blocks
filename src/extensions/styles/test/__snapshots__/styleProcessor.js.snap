@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`styleCleaner Returns cleaned styles obj 1`] = `
-Object {
-  "": Object {
-    "border": Object {
-      "general": Object {
+{
+  "": {
+    "border": {
+      "general": {
         "border-bottom-width": "2px",
         "border-color": "var(--maxi-light-color-2)",
         "border-left-width": "2px",
@@ -13,27 +13,27 @@ Object {
         "border-top-width": "2px",
       },
     },
-    "boxShadow": Object {
-      "general": Object {
+    "boxShadow": {
+      "general": {
         "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
       },
     },
-    "transition": Object {
-      "general": Object {
+    "transition": {
+      "general": {
         "transition": "box-shadow 0.3s 0s ease",
       },
     },
   },
-  " .maxi-container-arrow": Object {
-    "shadow": Object {
-      "general": Object {
+  " .maxi-container-arrow": {
+    "shadow": {
+      "general": {
         "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-1))",
       },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
-      "general": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content:before": {
+    "border": {
+      "general": {
         "background": "var(--maxi-undefined-color-2)",
         "height": "calc(50% + 4px)",
         "left": "calc(1px)",
@@ -42,9 +42,9 @@ Object {
       },
     },
   },
-  " > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-bottom-width": "2px",
         "border-color": "var(--maxi-light-color-2)",
         "border-left-width": "2px",
@@ -54,26 +54,26 @@ Object {
       },
     },
   },
-  ":hover": Object {
-    "border": Object {
-      "general": Object {
+  ":hover": {
+    "border": {
+      "general": {
         "border-color": "var(--maxi-light-color-6)",
       },
     },
-    "boxShadow": Object {
-      "general": Object {
+    "boxShadow": {
+      "general": {
         "box-shadow": "5px 5px 0px 0px var(--maxi-light-color-6)",
       },
     },
   },
-  ":hover > .maxi-background-displayer": Object {
-    "border": Object {
-      "general": Object {
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {
         "border-color": "var(--maxi-light-color-6)",
       },
     },
-    "size": Object {
-      "general": Object {
+    "size": {
+      "general": {
         "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
       },
     },

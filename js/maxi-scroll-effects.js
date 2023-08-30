@@ -47,15 +47,28 @@ class ScrollEffects {
 			return null;
 		}
 
-		const oldTransformArray = oldTransform.split(') ');
+		const oldTransformArray = oldTransform.split(' ');
 
-		oldTransformArray.map((transform, key) => {
-			if (transform.includes(type)) oldTransformArray.splice(key, 1);
-			return null;
-		});
+		if (el.dataset.scrollEffectType.includes(type)) {
+			const transformProperty = transform.split('(')[0]; // Get the property name (e.g., translateX, translateY, rotate)
+			let propertyExists = false;
 
-		el.style.transform = oldTransformArray.join(' ') + transform;
-		el.style.WebkitTransform = oldTransformArray.join(' ') + transform;
+			const newTransformArray = oldTransformArray.map(oldTransform => {
+				const property = oldTransform.split('(')[0];
+				if (property === transformProperty) {
+					propertyExists = true;
+					return transform;
+				}
+				return oldTransform;
+			});
+
+			if (!propertyExists) {
+				newTransformArray.push(transform);
+			}
+
+			el.style.transform = newTransformArray.join(' ');
+			el.style.WebkitTransform = newTransformArray.join(' ');
+		}
 
 		return null;
 	};
@@ -95,10 +108,10 @@ class ScrollEffects {
 				this.setBlur(el, `${value}px`);
 				break;
 			case 'vertical':
-				this.setVertical(el, value);
+				this.setTransform(el, `translateY(${value}px)`, 'vertical');
 				break;
 			case 'horizontal':
-				this.setHorizontal(el, value);
+				this.setTransform(el, `translateX(${value}px)`, 'horizontal');
 				break;
 			default:
 				break;
@@ -250,13 +263,13 @@ class ScrollEffects {
 
 				switch (type) {
 					case 'vertical':
-						transition += `top ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'horizontal':
-						transition += `left ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'rotate':
-						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 						break;
 					case 'scale':
 						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;

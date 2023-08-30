@@ -1,63 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createSelectors Should create selectors 1`] = `
-Object {
-  "after button": Object {
-    "hover": Object {
+{
+  "after button": {
+    "hover": {
       "label": "button ::after on hover",
       "target": "buttonClassName:hover::after",
     },
-    "normal": Object {
+    "normal": {
       "label": "button ::after",
       "target": "buttonClassName::after",
     },
   },
-  "after canvas": Object {
-    "hover": Object {
+  "after canvas": {
+    "hover": {
       "label": "canvas ::after on hover",
       "target": ":hover::after",
     },
-    "normal": Object {
+    "normal": {
       "label": "canvas ::after",
       "target": "::after",
     },
   },
-  "before button": Object {
-    "hover": Object {
+  "before button": {
+    "hover": {
       "label": "button ::before on hover",
       "target": "buttonClassName:hover::before",
     },
-    "normal": Object {
+    "normal": {
       "label": "button ::before",
       "target": "buttonClassName::before",
     },
   },
-  "before canvas": Object {
-    "hover": Object {
+  "before canvas": {
+    "hover": {
       "label": "canvas ::before on hover",
       "target": ":hover::before",
     },
-    "normal": Object {
+    "normal": {
       "label": "canvas ::before",
       "target": "::before",
     },
   },
-  "button": Object {
-    "hover": Object {
+  "button": {
+    "hover": {
       "label": "button on hover",
       "target": "buttonClassName:hover",
     },
-    "normal": Object {
+    "normal": {
       "label": "button",
       "target": "buttonClassName",
     },
   },
-  "canvas": Object {
-    "hover": Object {
+  "canvas": {
+    "hover": {
       "label": "canvas on hover",
       "target": ":hover",
     },
-    "normal": Object {
+    "normal": {
       "label": "canvas",
       "target": "",
     },
@@ -66,23 +66,23 @@ Object {
 `;
 
 exports[`createSelectors Should create selectors without pseudo elements 1`] = `
-Object {
-  "button": Object {
-    "hover": Object {
+{
+  "button": {
+    "hover": {
       "label": "button on hover",
       "target": "buttonClassName:hover",
     },
-    "normal": Object {
+    "normal": {
       "label": "button",
       "target": "buttonClassName",
     },
   },
-  "canvas": Object {
-    "hover": Object {
+  "canvas": {
+    "hover": {
       "label": "canvas on hover",
       "target": ":hover",
     },
-    "normal": Object {
+    "normal": {
       "label": "canvas",
       "target": "",
     },

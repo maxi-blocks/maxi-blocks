@@ -1,91 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getClipPathStyles Get a correct clipPath styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
-  "l": Object {
+  "l": {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
-  "m": Object {
+  "m": {
     "clip-path": "none",
   },
-  "s": Object {},
-  "xl": Object {
+  "s": {},
+  "xl": {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
-  "xs": Object {
+  "xs": {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
-  "xxl": Object {
+  "xxl": {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
 }
 `;
 
 exports[`getClipPathStyles Get a correct hover clipPath styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "clip-path": "none",
   },
-  "l": Object {
+  "l": {
     "clip-path": "circle(50% at 50% 50%)",
   },
-  "m": Object {
+  "m": {
     "clip-path": "circle(50% at 50% 50%)",
   },
-  "s": Object {
+  "s": {
     "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
   },
-  "xl": Object {
+  "xl": {
     "clip-path": "polygon(0% 75%, 100% 25%, 62.5% 75%)",
   },
-  "xs": Object {
+  "xs": {
     "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
   },
-  "xxl": Object {
+  "xxl": {
     "clip-path": "polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%)",
   },
 }
 `;
 
 exports[`getClipPathStyles Get a none hover clipPath styles, when clipPath - none 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "clip-path": "none",
   },
-  "l": Object {
+  "l": {
     "clip-path": "none",
   },
-  "m": Object {
+  "m": {
     "clip-path": "none",
   },
-  "s": Object {
+  "s": {
     "clip-path": "none",
   },
-  "xl": Object {
+  "xl": {
     "clip-path": "none",
   },
-  "xs": Object {
+  "xs": {
     "clip-path": "none",
   },
-  "xxl": Object {
+  "xxl": {
     "clip-path": "none",
   },
 }
 `;
 
-exports[`getClipPathStyles Get an empty clipPath styles, when clipPath - none 1`] = `Object {}`;
+exports[`getClipPathStyles Get an empty clipPath styles, when clipPath - none 1`] = `{}`;
 
 exports[`getClipPathStyles Get an empty hover clipPath styles, when hover-status is false 1`] = `
-Object {
-  "general": Object {},
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+{
+  "general": {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;

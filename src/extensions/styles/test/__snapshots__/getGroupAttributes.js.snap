@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getGroupAttributes Return basic attributes from array 1`] = `
-Object {
+{
   "border-bottom-left-radius-general": 10,
   "border-bottom-left-radius-l": undefined,
   "border-bottom-left-radius-m": undefined,
@@ -132,7 +132,7 @@ Object {
 `;
 
 exports[`getGroupAttributes Return basic attributes from array with hover 1`] = `
-Object {
+{
   "border-bottom-left-radius-general": 10,
   "border-bottom-left-radius-general-hover": 100,
   "border-bottom-left-radius-l": undefined,
@@ -390,7 +390,7 @@ Object {
 `;
 
 exports[`getGroupAttributes Return basic attributes from string 1`] = `
-Object {
+{
   "border-color-general": undefined,
   "border-color-l": undefined,
   "border-color-m": undefined,
@@ -437,7 +437,7 @@ Object {
 `;
 
 exports[`getGroupAttributes Return basic attributes from string with hover 1`] = `
-Object {
+{
   "border-color-general": undefined,
   "border-color-general-hover": undefined,
   "border-color-l": undefined,
@@ -527,7 +527,7 @@ Object {
 `;
 
 exports[`getGroupAttributes Return basic attributes from string with prefix 1`] = `
-Object {
+{
   "icon-border-color-general": undefined,
   "icon-border-color-l": undefined,
   "icon-border-color-m": undefined,

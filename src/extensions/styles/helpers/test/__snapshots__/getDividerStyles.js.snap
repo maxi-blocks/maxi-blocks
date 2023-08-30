@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getDividerStyles Get a correct divider styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
     "border-right-style": "none",
     "border-top-style": "dashed",
@@ -10,7 +10,7 @@ Object {
     "height": "38px",
     "width": "79%",
   },
-  "l": Object {
+  "l": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-4,255,74,23),0.56))",
     "border-right-style": "solid",
     "border-right-width": "14px",
@@ -19,7 +19,7 @@ Object {
     "width": "14px",
   },
   "label": "Divider",
-  "m": Object {
+  "m": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-4,255,74,23),0.56))",
     "border-right-style": "solid",
     "border-right-width": "14px",
@@ -27,7 +27,7 @@ Object {
     "height": "41%",
     "width": "14px",
   },
-  "s": Object {
+  "s": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-3,155,155,155),0.56))",
     "border-right-style": "none",
     "border-top-style": "solid",
@@ -35,7 +35,7 @@ Object {
     "height": "149px",
     "width": "23%",
   },
-  "xl": Object {
+  "xl": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
     "border-right-style": "none",
     "border-top-style": "dashed",
@@ -43,7 +43,7 @@ Object {
     "height": "38px",
     "width": "79%",
   },
-  "xs": Object {
+  "xs": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-3,155,155,155),0.56))",
     "border-right-style": "none",
     "border-top-style": "solid",
@@ -51,7 +51,7 @@ Object {
     "height": "149px",
     "width": "23%",
   },
-  "xxl": Object {
+  "xxl": {
     "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
     "border-right-style": "none",
     "border-top-style": "dashed",
@@ -63,39 +63,39 @@ Object {
 `;
 
 exports[`getDividerStyles Get a correct divider styles 2`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "align-items": "flex-end",
     "flex-direction": "row",
     "justify-content": "flex-start",
   },
-  "l": Object {
+  "l": {
     "align-items": "flex-start",
     "flex-direction": "row",
     "justify-content": "center",
   },
   "label": "Divider",
-  "m": Object {
+  "m": {
     "align-items": "flex-start",
     "flex-direction": "row",
     "justify-content": "center",
   },
-  "s": Object {
+  "s": {
     "align-items": "center",
     "flex-direction": "row",
     "justify-content": "flex-start",
   },
-  "xl": Object {
+  "xl": {
     "align-items": "flex-end",
     "flex-direction": "row",
     "justify-content": "flex-start",
   },
-  "xs": Object {
+  "xs": {
     "align-items": "center",
     "flex-direction": "row",
     "justify-content": "flex-start",
   },
-  "xxl": Object {
+  "xxl": {
     "align-items": "flex-end",
     "flex-direction": "row",
     "justify-content": "flex-start",

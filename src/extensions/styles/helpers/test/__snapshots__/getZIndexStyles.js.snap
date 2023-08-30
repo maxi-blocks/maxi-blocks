@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getZIndexStyle Get a correct z-index style 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "z-index": 1,
   },
-  "l": Object {
+  "l": {
     "z-index": 4,
   },
-  "m": Object {
+  "m": {
     "z-index": 5,
   },
-  "s": Object {
+  "s": {
     "z-index": 6,
   },
-  "xl": Object {
+  "xl": {
     "z-index": 3,
   },
-  "xs": Object {
+  "xs": {
     "z-index": 7,
   },
-  "xxl": Object {
+  "xxl": {
     "z-index": 2,
   },
 }

@@ -165,6 +165,7 @@ class MaxiBlocks_Styles
 
     public function enqueue_styles()
     {
+        global $post;
 
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
@@ -1035,6 +1036,7 @@ class MaxiBlocks_Styles
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
         if ($content_meta_fonts['meta'] !== null) {
+
             $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
             $this->process_scripts($meta_filtered);
         }
@@ -1099,6 +1101,8 @@ class MaxiBlocks_Styles
             'shape-divider',
             'relations',
         ];
+
+
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
@@ -1530,7 +1534,6 @@ class MaxiBlocks_Styles
     {
         $post = get_post($post_id);
 
-        write_log('get_styles_meta_fonts_from_blocks');
         if (!$post_id) {
             return false;
         }
@@ -1746,15 +1749,24 @@ class MaxiBlocks_Styles
         // custom meta
         $custom_meta_block = 0;
 
-        $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+        $meta_blocks = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/video-maxi',
+            'maxi-blocks/search-maxi',
+            'maxi-blocks/map-maxi',
+            'maxi-blocks/accordion-maxi',
+            'maxi-blocks/pane-maxi',
+            'maxi-blocks/slider-maxi',
 
-        if($block_name === 'maxi-blocks/row-maxi' && !empty($custom_meta)) {
-            write_log('$custom_meta for row!');
-            write_log($custom_meta);
+        ];
+
+        if(in_array($block_name, $meta_blocks)) {
+            $custom_meta_block = 1;
         }
 
+        $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+
         if(!empty($custom_meta)) {
-            $custom_meta_block = 1;
             $custom_meta_json = json_encode($custom_meta);
             $exists = $wpdb->get_row(
                 $wpdb->prepare(
@@ -1789,6 +1801,8 @@ class MaxiBlocks_Styles
                     )
                 );
             }
+
+
         }
 
         // fonts
@@ -1982,9 +1996,6 @@ class MaxiBlocks_Styles
         $bg_layers = $props['background-layers'] ?? [];
         $relations_raw = $props['relations'] ?? [];
         $context_loop = $context['contextLoop'] ?? null;
-
-        write_log('$context_loop');
-        write_log($context_loop);
 
         // Calculate scroll attributes
         $scroll = get_group_attributes($props, 'scroll', false, '', true);

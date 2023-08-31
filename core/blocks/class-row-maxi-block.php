@@ -70,18 +70,18 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
 
             // add missing column-gap-general and row-gap-general for old blocks
 
-            // if(!isset($props['column-gap-general'])) {
-            //     $props['column-gap-general'] = 2.5;
-            // }
-            // if(!isset($props['column-gap-unit-general'])) {
-            //     $props['column-gap-unit-general'] = '%';
-            // }
-            // if(!isset($props['row-gap-general'])) {
-            //     $props['row-gap-general'] = 20;
-            // }
-            // if(!isset($props['row-gap-unit-general'])) {
-            //     $props['row-gap-unit-general'] = 'px';
-            // }
+            if(!isset($props['column-gap-general'])) {
+                $props['column-gap-general'] = 2.5;
+            }
+            if(!isset($props['column-gap-unit-general'])) {
+                $props['column-gap-unit-general'] = '%';
+            }
+            if(!isset($props['row-gap-general'])) {
+                $props['row-gap-general'] = 20;
+            }
+            if(!isset($props['row-gap-unit-general'])) {
+                $props['row-gap-unit-general'] = 'px';
+            }
 
             $styles_obj = [
                 $uniqueID => [

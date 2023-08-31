@@ -131,6 +131,8 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
             $block_style = $props['blockStyle'];
             $row_gap_props = $context['row_gap_props'] ?? [];
 
+
+
             $response =
                 [
                     'boxShadow' => get_box_shadow_styles(array(
@@ -163,6 +165,7 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
+
 
             return $response;
         }

@@ -50,6 +50,25 @@ function get_column_size_styles($obj, $row_gap_props, $unique_id)
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+    if(!isset($row_gap_props['row-gap-general'])) {
+        $row_gap_props['row-gap-general'] = 20;
+    }
+
+    if(!isset($row_gap_props['row-gap-unit-general'])) {
+        $row_gap_props['row-gap-unit-general'] = 'px';
+    }
+
+    if(!isset($row_gap_props['column-gap-general'])) {
+        $row_gap_props['column-gap-general'] = 2.5;
+    }
+    if(!isset($row_gap_props['column-gap-unit-general'])) {
+        $row_gap_props['column-gap-unit-general'] = '%';
+    }
+
+    write_log($unique_id);
+    write_log('$row_gap_props');
+    write_log($row_gap_props);
+
     foreach ($breakpoints as $breakpoint) {
         $fit_content = get_last_breakpoint_attribute([
             'target' => 'column-fit-content',
@@ -80,13 +99,20 @@ function get_column_size_styles($obj, $row_gap_props, $unique_id)
                 'breakpoint' => $breakpoint,
                 'attributes' => $row_gap_props,
             ]) * $gap_num) / $column_num;
+            write_log('gap');
+            write_log($gap);
             $gap_unit = get_last_breakpoint_attribute([
                 'target' => 'column-gap-unit',
                 'breakpoint' => $breakpoint,
                 'attributes' => $row_gap_props,
             ]);
+            write_log('gap_unit');
+            write_log($gap_unit);
 
             $gap_value = $gap ? round($gap, 4) . $gap_unit : '0px';
+
+            write_log('gap_value');
+            write_log($gap_value);
 
             $value = $column_size !== 100
                 ? "calc({$column_size}% - {$gap_value})"

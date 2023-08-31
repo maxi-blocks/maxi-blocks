@@ -82,7 +82,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				});
 
 				if (forceAspectRatio)
-					return { 'aspect-ratio': 1, height: 'auto' };
+					return { 'aspect-ratio': 1, height: 'auto !important' };
 				if (obj.fitParentSize) return { height: '100% !important' };
 			}
 			if (target === 'width') {

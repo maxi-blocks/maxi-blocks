@@ -1306,7 +1306,7 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['active_custom_data'])) {
-            $this->process_custom_data_frontend($block, $unique_id, $active_custom_data_array);
+            $this->process_custom_data_frontend($block_name, $unique_id, $active_custom_data_array);
         }
 
         // fonts
@@ -1334,11 +1334,9 @@ class MaxiBlocks_Styles
      * @param string $unique_id
      * @param array &$active_custom_data_array
      */
-    private function process_custom_data_frontend(array $block, string $unique_id, array &$active_custom_data_array)
+    private function process_custom_data_frontend(string $block_name, string $unique_id, array &$active_custom_data_array)
     {
         global $wpdb;
-
-        $block_name = $block['blockName'];
 
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(

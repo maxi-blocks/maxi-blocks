@@ -2,13 +2,28 @@ export const CONTENT_TYPES_DATA = {
 	Headline: {
 		description:
 			'Create a compelling and concise headline that captures the main theme.',
-		examples: ['Introducing Our Latest Product Line!'],
-		defaultCharacterCountGuideline: 50, // Typically headlines are short and to the point.
+		examples: [
+			'Improve your front-end skills by building real projects',
+			'Turn followers into customers',
+			'The simplest way to create forms',
+			'It\'s how you make podcasts',
+			'One click. No passwords. The world\'s fastest checkout.',
+			'Ace the SAT test with just 10 minutes of studying every day',
+			'You don\'t have to be an SEO to rank higher in Google',
+			'The all-in-one toolkit for working remotely',
+		],
+		defaultCharacterCountGuideline: 60, // Typically headlines are short and to the point.
 	},
 	Subheading: {
 		description:
 			'Provide a descriptive subheading that supports the main headline.',
-		examples: ['Key Features and Benefits'],
+		examples: [
+			'Key Features and benefits',
+			'Calming teas that help you relax, unwind, and drift into deep, restorative sleep',
+			'10-min micro lessons designed to boost confidence and make SAT strategies easy to remember',
+			'The best online course platform for creating, selling, and promoting your online courses. Start monetizing your skills, experiences, and your audience.',
+			'Create scholarships and grants for the people and causes you care most about',
+		],
 		defaultCharacterCountGuideline: 100, // Slightly longer than a headline.
 	},
 	'Body text': {
@@ -31,7 +46,16 @@ export const CONTENT_TYPES_DATA = {
 		description:
 			'Craft testimonials or pull quotes that highlight key messages or endorsements.',
 		examples: [
-			'"This product changed my life! Highly recommended." - Jane Doe',
+			'"This product exceeded my expectations. I can\'t imagine my life without it." - Jane Doe',
+			'"I highly recommend this service. It has made a significant impact on my business." - John Smith',
+			'"The customer support team is amazing. They went above and beyond to help me." - Emily Johnson',
+			'"I\'m so grateful for this product. It has improved my daily routine in so many ways." - Sarah Thompson',
+			'"This is the best solution I\'ve found. It has saved me time and effort." - Michael Brown',
+			'"I\'ve achieved great results with this product. It\'s a game-changer." - Jessica Davis',
+			'"I\'m impressed by the quality and performance of this product. It\'s outstanding." - David Wilson',
+			'"I\'ve seen a significant improvement since using this service. It\'s worth every penny." - Jennifer Anderson',
+			'"I\'m a satisfied customer. This product has exceeded my expectations." - Robert Martinez',
+			'"I\'ve recommended this product to all my friends. It\'s truly remarkable." - Amanda Taylor',
 		],
 		defaultCharacterCountGuideline: 150, // Testimonials might be a bit concise but highlighted.
 	},

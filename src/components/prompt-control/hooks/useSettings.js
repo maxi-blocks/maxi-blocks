@@ -15,9 +15,10 @@ import {
 	WRITING_STYLES,
 } from '../constants';
 
-const useSettings = () => {
+const useSettings = selectedText => {
 	const [settings, setSettings] = useState(() => {
-		const storedSettings = JSON.parse(localStorage.getItem('settings'));
+		const storedSettings =
+			JSON.parse(localStorage.getItem('settings')) || {};
 		return {
 			contentType: storedSettings.contentType || CONTENT_TYPES[0],
 			tone: storedSettings.tone || TONES[0],
@@ -47,11 +48,16 @@ const useSettings = () => {
 	}, [settings]);
 
 	useEffect(() => {
-		setSettings(prevSettings => ({
-			...prevSettings,
-			characterCount:
-				DEFAULT_CHARACTER_COUNT_GUIDELINES[prevSettings.contentType],
-		}));
+		if (!selectedText) {
+			setSettings(prevSettings => ({
+				...prevSettings,
+				characterCount:
+					DEFAULT_CHARACTER_COUNT_GUIDELINES[
+						prevSettings.contentType
+					],
+			}));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [settings.contentType]);
 
 	return {

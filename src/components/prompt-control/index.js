@@ -53,7 +53,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		textContext.formatValue.end
 	);
 
-	const { settings, updateSettings } = useSettings();
+	const { settings, updateSettings } = useSettings(selectedText);
 	const {
 		prompt,
 		characterCount,
@@ -231,14 +231,12 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								selectedText={selectedText}
 								modifyOption={modifyOption}
 								customValue={customValue}
-								isGenerating={isGenerating}
 								abortControllerRef={abortControllerRef}
 								setModifyOption={setModifyOption}
 								setCustomValue={setCustomValue}
 								setIsGenerating={setIsGenerating}
 								selectedResultId={selectedResultId}
 								setSelectedResultId={setSelectedResultId}
-								onAbort={handleAbort}
 								setResults={setResults}
 								switchToGenerateTab={switchToGenerateTab}
 								switchToHistoryTab={switchToHistoryTab}
@@ -256,6 +254,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								historyStartId={historyStartId}
 								selectedResultId={selectedResultId}
 								isSelectedText={!!selectedText}
+								isGenerating={isGenerating}
 								setResults={setResults}
 								setModifyOption={setModifyOption}
 								setCustomValue={setCustomValue}
@@ -265,6 +264,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								onChangeTextFormat={
 									textContext.onChangeTextFormat
 								}
+								onAbort={handleAbort}
 								updateSettings={updateSettings}
 								switchToGenerateTab={switchToGenerateTab}
 								switchToModifyTab={switchToModifyTab}

@@ -6,10 +6,10 @@ export const CONTENT_TYPES_DATA = {
 			'Improve your front-end skills by building real projects',
 			'Turn followers into customers',
 			'The simplest way to create forms',
-			'It\'s how you make podcasts',
-			'One click. No passwords. The world\'s fastest checkout.',
+			"It's how you make podcasts",
+			"One click. No passwords. The world's fastest checkout.",
 			'Ace the SAT test with just 10 minutes of studying every day',
-			'You don\'t have to be an SEO to rank higher in Google',
+			"You don't have to be an SEO to rank higher in Google",
 			'The all-in-one toolkit for working remotely',
 		],
 		defaultCharacterCountGuideline: 60, // Typically headlines are short and to the point.

@@ -75,11 +75,11 @@ function get_flex_styles(array $obj, $debug = false)
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
-        if($debug) {
-            write_log('get_flex_styles');
-            write_log('$row_gap_props');
-            write_log($row_gap_props);
-        }
+        // if($debug) {
+        //     write_log('get_flex_styles');
+        //     write_log('$row_gap_props');
+        //     write_log($row_gap_props);
+        // }
 
         $column_gap = get_last_breakpoint_attribute([
             'target' => 'column-gap',

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -43,6 +43,16 @@ const ResultCards = ({
 	isModifyTab = false,
 }) => {
 	const [loadUntilIndex, setLoadUntilIndex] = useState(LOAD_MORE_COUNT);
+
+	useEffect(() => {
+		const selectedResultIdIndex =
+			selectedResultId &&
+			results.findIndex(result => result.id === selectedResultId);
+
+		if (selectedResultIdIndex >= loadUntilIndex) {
+			setLoadUntilIndex(selectedResultIdIndex + 1);
+		}
+	}, [loadUntilIndex, results, selectedResultId]);
 
 	const className = 'maxi-prompt-control-results';
 
@@ -104,7 +114,6 @@ const ResultCards = ({
 						setModifyOption(result.modificationType);
 						setCustomValue(result.customValue);
 
-						// TODO: add this behavior on every selectedResultId change
 						if (refResultIndex >= loadUntilIndex) {
 							setLoadUntilIndex(refResultIndex + 1);
 						}

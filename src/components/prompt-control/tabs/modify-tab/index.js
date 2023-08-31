@@ -97,6 +97,11 @@ ${getContentAttributesSection(
 ${quoteGuidance}`
 			: '';
 
+		const rephraseInstruction =
+			modificationType === 'rephrase'
+				? 'The rephrased content should be approximately the same length as the original text.'
+				: '';
+
 		const systemTemplate = `
 You are a helpful assistant tasked with ${modificationAction} the following ${
 			refFromSelectedText
@@ -107,6 +112,7 @@ You are a helpful assistant tasked with ${modificationAction} the following ${
 ${languageExplanation}${generatedTextExplanation}
 ${customExplanation}${getSiteInformation(AISettings)}
 ${getContextSection(context)}
+${rephraseInstruction}
 Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 
 		const humanTemplate =

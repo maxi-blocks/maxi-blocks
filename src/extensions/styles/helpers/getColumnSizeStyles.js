@@ -49,9 +49,6 @@ export const getColumnNum = (columnsSize, clientId, breakpoint) => {
 const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 	const response = {};
 
-	console.log('rowGapProps');
-	console.log(rowGapProps);
-
 	breakpoints.forEach(breakpoint => {
 		const fitContent = getLastBreakpointAttribute({
 			target: 'column-fit-content',
@@ -94,11 +91,7 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 				attributes: rowGapProps,
 			});
 
-			console.log('gap', gap);
-
 			const gapValue = gap ? `${round(gap, 4)}${gapUnit}` : '0px';
-
-			console.log('gapValue', gapValue);
 
 			const value =
 				columnSize !== 100

@@ -42,29 +42,9 @@ class MaxiBlocks_DynamicContent
     {
     }
 
-    /**
- * Filter attributes by a given prefix.
- *
- * @param array $attributes The array containing the attributes.
- * @param string $prefix The prefix to filter by.
- *
- * @return array The filtered attributes.
- */
-    public function filter_attributes_by_prefix(array $attributes, string $prefix): array
-    {
-        return array_filter(
-            $attributes,
-            function ($key) use ($prefix) {
-                return strpos($key, $prefix) === 0;
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
 
     public function render_dc($attributes, $content)
     {
-        write_log('render_dc');
         if (!array_key_exists('dc-status', $attributes)) {
             return $content;
         }
@@ -73,38 +53,34 @@ class MaxiBlocks_DynamicContent
         }
 
         $unique_id = $attributes['uniqueID'];
-        write_log('unique_id: ' . $unique_id);
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
-        if (self::$custom_data === null) {
-            if (str_ends_with($unique_id, '-u')) {
-                self::$custom_data = $this->filter_attributes_by_prefix($attributes, 'dc-');
-                write_log(self::$custom_data);
-            } else {
-                if (class_exists('MaxiBlocks_Styles')) {
-                    $styles = new MaxiBlocks_Styles();
-                    self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
-                } else {
-                    self::$custom_data = [];
-                }
-            }
+        if (str_ends_with($unique_id, '-u')) {
+            $block_name = substr($unique_id, 0, -2);
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        } else {
+            $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
         }
 
-        write_log('self::$custom_data');
-        write_log(self::$custom_data);
+        if(str_ends_with($unique_id, '-u')) {
+            self::$custom_data = $this->get_dc_cl($unique_id);
+
+        } elseif (self::$custom_data === null) {
+
+            if (class_exists('MaxiBlocks_Styles')) {
+                $styles = new MaxiBlocks_Styles();
+                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
+            } else {
+                self::$custom_data = [];
+            }
+
+        }
 
         $context_loop = [];
 
-        if (str_ends_with($unique_id, '-u')) {
-            $context_loop = $this->filter_attributes_by_prefix($attributes, 'cl-');
-            write_log($context_loop);
-        } else {
-            if (array_key_exists($unique_id, self::$custom_data)) {
-                $context_loop = self::$custom_data[$unique_id];
-            }
+        if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
+            $context_loop = self::$custom_data[$unique_id];
         }
-        write_log('context_loop');
-        write_log($context_loop);
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -113,13 +89,6 @@ class MaxiBlocks_DynamicContent
             if ($dc_link_status) {
                 $content = self::render_dc_link($attributes, $content);
             }
-        }
-
-        if (str_ends_with($unique_id, '-u')) {
-            $block_name = substr($unique_id, 0, -2);
-            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
-        } else {
-            $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
         }
 
         if($is_template) {
@@ -898,4 +867,28 @@ class MaxiBlocks_DynamicContent
 
         return $args;
     }
+
+    /**
+    * Return DC and CL
+    *
+    * @param string $unique_id
+    */
+    public function get_dc_cl(string $id)
+    {
+        global $wpdb;
+
+        $block_meta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                $id
+            )
+        );
+
+        if (!empty($block_meta)) {
+            $block_meta_parsed = json_decode($block_meta, true);
+            $response = $block_meta_parsed['dynamic_content'] ?? [];
+            return $response;
+        }
+    }
+
 }

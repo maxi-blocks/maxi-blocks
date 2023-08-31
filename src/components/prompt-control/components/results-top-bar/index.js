@@ -83,7 +83,7 @@ const ResultsTopBar = ({
 					<Button
 						className={`${className}__button maxi-prompt-control__button`}
 						onClick={modifyContent}
-						disabled={isEmpty(results) || !selectedResultId}
+						disabled={isEmpty(results) && !selectedResultId}
 					>
 						{__('Go!', 'maxi-blocks')}
 					</Button>

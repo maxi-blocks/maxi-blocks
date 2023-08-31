@@ -441,7 +441,7 @@ export const descriptionOfErrors = {
 
 export const limitTypes = ['posts', 'pages', 'tags', 'categories'];
 
-export const limitFields = ['excerpt', 'content', 'description'];
+export const limitFields = ['title', 'excerpt', 'content', 'description'];
 
 export const limitOptions = {
 	disableReset: false,

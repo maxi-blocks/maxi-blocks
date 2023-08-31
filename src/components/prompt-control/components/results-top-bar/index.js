@@ -39,56 +39,54 @@ const ResultsTopBar = ({
 
 	return (
 		<div className={className}>
-			{(!isEmpty(results) || selectedResultId) && (
-				<div className={`${className}__modification-options`}>
-					<ReactSelectControl
-						value={{
-							label: __(capitalize(modifyOption), 'maxi-blocks'),
-							value: modifyOption,
-						}}
-						defaultValue={{
-							label: __(capitalize(modifyOption), 'maxi-blocks'),
-							value: modifyOption,
-						}}
-						options={MODIFY_OPTIONS.map(option => ({
-							label: __(capitalize(option), 'maxi-blocks'),
-							value: option,
-						}))}
-						onChange={({ value }) => {
-							setModifyOption(value);
-							setCustomValue(
-								value === 'translate' ? defaultLanguage : ''
-							);
-						}}
-						onMenuOpen={() => {
-							setClasses(prevClasses =>
-								classnames(
-									prevClasses,
-									`${prevClasses}--select-open`
+			<div className={`${className}__modification-options`}>
+				<ReactSelectControl
+					value={{
+						label: __(capitalize(modifyOption), 'maxi-blocks'),
+						value: modifyOption,
+					}}
+					defaultValue={{
+						label: __(capitalize(modifyOption), 'maxi-blocks'),
+						value: modifyOption,
+					}}
+					options={MODIFY_OPTIONS.map(option => ({
+						label: __(capitalize(option), 'maxi-blocks'),
+						value: option,
+					}))}
+					onChange={({ value }) => {
+						setModifyOption(value);
+						setCustomValue(
+							value === 'translate' ? defaultLanguage : ''
+						);
+					}}
+					onMenuOpen={() => {
+						setClasses(prevClasses =>
+							classnames(
+								prevClasses,
+								`${prevClasses}--select-open`
+							)
+						);
+					}}
+					onMenuClose={() => {
+						setClasses((prevClasses = '') =>
+							prevClasses
+								.split(' ')
+								.filter(
+									className =>
+										!className.endsWith('--select-open')
 								)
-							);
-						}}
-						onMenuClose={() => {
-							setClasses((prevClasses = '') =>
-								prevClasses
-									.split(' ')
-									.filter(
-										className =>
-											!className.endsWith('--select-open')
-									)
-									.join(' ')
-							);
-						}}
-					/>
-					<Button
-						className={`${className}__button maxi-prompt-control__button`}
-						onClick={modifyContent}
-						disabled={isEmpty(results) && !selectedResultId}
-					>
-						{__('Go!', 'maxi-blocks')}
-					</Button>
-				</div>
-			)}
+								.join(' ')
+						);
+					}}
+				/>
+				<Button
+					className={`${className}__button maxi-prompt-control__button`}
+					onClick={modifyContent}
+					disabled={isEmpty(results) && !selectedResultId}
+				>
+					{__('Go!', 'maxi-blocks')}
+				</Button>
+			</div>
 			{modifyOption === 'custom' && (
 				<TextareaControl
 					className={`${className}__textarea`}

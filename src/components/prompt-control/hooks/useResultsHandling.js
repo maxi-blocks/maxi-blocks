@@ -33,12 +33,7 @@ const useResultsHandling = () => {
 	}, []);
 
 	useEffect(() => {
-		if (historyStartId) {
-			sessionStorage.setItem(
-				'maxi-prompt-history-start-id',
-				historyStartId
-			);
-		}
+		sessionStorage.setItem('maxi-prompt-history-start-id', historyStartId);
 	}, [historyStartId]);
 
 	useEffect(() => {

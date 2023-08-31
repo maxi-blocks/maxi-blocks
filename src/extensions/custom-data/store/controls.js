@@ -27,6 +27,7 @@ const controls = {
 		const blockData = Object.entries(customData);
 		const filteredCustomData = {};
 
+		// Using Promise.all to await the entire map function
 		await Promise.all(
 			blockData.map(async data => {
 				const uniqueID = data[0];
@@ -39,6 +40,10 @@ const controls = {
 					if (value.relations)
 						filteredCustomData[uniqueID].relations =
 							value.relations;
+					if (value.dynamic_content) {
+						filteredCustomData[uniqueID].dynamic_content =
+							value.dynamic_content;
+					}
 				}
 			})
 		);

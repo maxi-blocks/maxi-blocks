@@ -1,13 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import { Button } from '../../../../components';
 import ResultsTopBar from '../../components/results-top-bar';
 import {
 	getContentAttributesSection,
@@ -33,14 +31,12 @@ const ModifyTab = ({
 	selectedText,
 	modifyOption,
 	customValue,
-	isGenerating,
 	abortControllerRef,
 	setModifyOption,
 	setCustomValue,
 	setIsGenerating,
 	selectedResultId,
 	setSelectedResultId,
-	onAbort,
 	setResults,
 	switchToHistoryTab,
 }) => {
@@ -183,11 +179,6 @@ Your task is to maintain the original intent and context while ${modificationAct
 				setSelectedResult={setSelectedResult}
 				isModifyTab
 			/>
-			{isGenerating && (
-				<Button className={`${className}__abort`} onClick={onAbort}>
-					{__('Stop', 'maxi-blocks')}
-				</Button>
-			)}
 		</div>
 	);
 };

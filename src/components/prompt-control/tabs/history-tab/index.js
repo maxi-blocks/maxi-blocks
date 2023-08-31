@@ -1,6 +1,12 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
+import { Button } from '../../..';
 import HistoryButtons from '../../components/history-buttons';
 import ResultCards from '../../components/result-cards';
 
@@ -17,6 +23,7 @@ const HistoryTab = ({
 	historyStartId,
 	selectedResultId,
 	isSelectedText,
+	isGenerating,
 	setResults,
 	setModifyOption,
 	setHistoryStartId,
@@ -24,6 +31,7 @@ const HistoryTab = ({
 	setSelectedResultId,
 	onContentChange,
 	onChangeTextFormat,
+	onAbort,
 	updateSettings,
 	switchToGenerateTab,
 	switchToModifyTab,
@@ -60,6 +68,11 @@ const HistoryTab = ({
 				switchToGenerateTab={switchToGenerateTab}
 				switchToModifyTab={switchToModifyTab}
 			/>
+			{isGenerating && (
+				<Button className={`${className}__abort`} onClick={onAbort}>
+					{__('Stop', 'maxi-blocks')}
+				</Button>
+			)}
 		</div>
 	);
 };

@@ -2,17 +2,6 @@
 	display: flex;
 	flex-direction: column;
 
-	&__abort {
-		padding: 8px 0;
-		background: var(--maxi-white-4-color);
-	}
-
-	&__abort {
-		position: sticky;
-		bottom: 0;
-		justify-content: center;
-	}
-
 	&--select-open {
 		min-height: 280px;
 	}

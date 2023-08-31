@@ -200,7 +200,13 @@ class edit extends MaxiBlockComponent {
 						attributes,
 					})}`,
 				}}
-				showHandle={isSelected}
+				showHandle={
+					!getLastBreakpointAttribute({
+						target: 'force-aspect-ratio',
+						breakpoint: deviceType,
+						attributes,
+					}) && isSelected
+				}
 				enable={{
 					bottom: true,
 				}}

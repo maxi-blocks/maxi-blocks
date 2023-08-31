@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getAlignmentTextStyles Get a correct alignment text styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "text-align": "right",
   },
-  "l": Object {
+  "l": {
     "text-align": "left",
   },
-  "m": Object {
+  "m": {
     "text-align": "right",
   },
-  "s": Object {
+  "s": {
     "text-align": "left",
   },
-  "xl": Object {
+  "xl": {
     "text-align": "right",
   },
-  "xs": Object {
+  "xs": {
     "text-align": "right",
   },
-  "xxl": Object {
+  "xxl": {
     "text-align": "left",
   },
 }

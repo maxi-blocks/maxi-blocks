@@ -961,7 +961,8 @@ class MaxiBlockComponent extends Component {
 	removeStyles() {
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
-		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
+		if (!this.isReusable && this.rootSlot)
+			setTimeout(() => this.rootSlot.unmount(), 0);
 
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID

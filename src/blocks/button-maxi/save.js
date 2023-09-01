@@ -36,11 +36,32 @@ const save = props => {
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 
+	const relValues = [];
+
 	const linkProps = {
 		...linkOpt,
 		href: dcStatus && dcLinkStatus ? '$link-to-replace' : linkOpt.url ?? '',
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
+		rel: relValues,
 	};
+
+	if (linkOpt.ugc) {
+		relValues.push('ugc');
+	}
+
+	if (linkOpt.sponsored) {
+		relValues.push('sponsored');
+	}
+
+	if (linkOpt.noFollow) {
+		relValues.push('noFollow');
+	}
+
+	if (relValues.length > 0) {
+		linkProps.rel = relValues.join(' ');
+	} else {
+		delete linkProps.rel;
+	}
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',

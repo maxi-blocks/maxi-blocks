@@ -607,7 +607,7 @@ class MaxiBlocks_DynamicContent
             $post_data = $post->post_content;
         }
         // In case is content, remove blocks and strip tags
-        if (in_array($dc_field, ['content', 'excerpt'])) {
+        if (in_array($dc_field, ['title', 'content', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
             if($dc_field === 'excerpt') {
                 $post_data = excerpt_remove_blocks($post_data);

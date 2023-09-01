@@ -189,6 +189,19 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
 
+            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+            $key_words = ['top', 'right', 'bottom', 'left'];
+            foreach ($breakpoints as $breakpoint) {
+                foreach ($key_words as $key) {
+                    if(isset($props['svg-margin-' . $key . '-' . $breakpoint]) && !isset($props['svg-margin-' . $key. '-unit-' . $breakpoint])) {
+                        $props['svg-margin-' . $key . '-unit-' . $breakpoint] = 'px';
+                    }
+                    if(isset($props['svg-padding-' . $key. '-'  . $breakpoint]) && !isset($props['svg-padding-' . $key . '-unit-' . $breakpoint])) {
+                        $props['svg-padding-' . $key. '-unit-' . $breakpoint] = 'px';
+                    }
+                }
+            }
+
             $response = [
                 'box_shadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', false, 'svg-'),
@@ -196,11 +209,11 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'prefix' => 'svg-'
                 ]),
                 'padding' => get_margin_padding_styles([
-                    'obj' => get_group_attributes($props, 'margin', false, 'svg-'),
+                    'obj' => get_group_attributes($props, 'padding', false, 'svg-'),
                     'prefix' => 'svg-'
                 ]),
                 'margin' => get_margin_padding_styles([
-                    'obj' => get_group_attributes($props, 'padding', false, 'svg-'),
+                    'obj' => get_group_attributes($props, 'margin', false, 'svg-'),
                     'prefix' => 'svg-'
                 ]),
                 'border' => get_border_styles([
@@ -215,6 +228,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 ]),
 
             ];
+
 
             $response = array_merge(
                 $response,

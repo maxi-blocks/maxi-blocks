@@ -49,8 +49,6 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		console.log('getStylesObject');
-		console.log(getStyles(this.props.attributes));
 		return getStyles(this.props.attributes);
 	}
 

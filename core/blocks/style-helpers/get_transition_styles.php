@@ -78,9 +78,9 @@ function get_transition_styles($props, $transition_obj)
                         }
 
                         if (isset($transition[$type][$key])) {
-                            $transition_content = $is_hover || !$last_transition_split ? $transition[$type][$key] : $transition[$type][$key]['out'];
+                            $transition_content = $is_hover ?? !$last_transition_split ? $transition[$type][$key] : $transition[$type][$key]['out'];
                         } else {
-                            $transition_content = $is_hover || '';
+                            $transition_content = $is_hover ?? '';
                         }
 
                         $transition_string = '';

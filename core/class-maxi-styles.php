@@ -1181,10 +1181,37 @@ class MaxiBlocks_Styles
                 }
 
                 if(!empty($meta_to_pass)) {
+                    if($script === 'relations') {
+                        $meta_to_pass = $this->deduplicateArray($meta_to_pass);
+                    }
                     $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
                 }
             }
         }
+    }
+
+    /**
+ * Deduplicate an array of arrays by keeping only unique sub-arrays.
+ *
+ * @param array $array The input array containing sub-arrays.
+ *
+ * @return array The deduplicated array.
+ */
+    public function deduplicateArray(array $array): array
+    {
+        $uniqueArrays = [];
+        $serializedArrays = [];
+
+        // Serialize each sub-array and check for uniqueness
+        foreach ($array as $subArray) {
+            $serialized = serialize($subArray);
+            if (!in_array($serialized, $serializedArrays)) {
+                $serializedArrays[] = $serialized;
+                $uniqueArrays[] = $subArray;
+            }
+        }
+
+        return $uniqueArrays;
     }
 
     /**

@@ -13,7 +13,7 @@ import { ContextLoop } from '../../..';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarDynamicContent } from '../../../../icons';
+import { toolbarContextLoop } from '../../../../icons';
 
 /**
  * Dynamic Content
@@ -50,7 +50,7 @@ const ContextLoopToolbar = props => {
 		<ToolbarPopover
 			className='toolbar-item__context-loop'
 			tooltip={__('Context loop', 'maxi-blocks')}
-			icon={toolbarDynamicContent}
+			icon={toolbarContextLoop}
 		>
 			<ContextLoop
 				className='toolbar-item__context-loop__popover'

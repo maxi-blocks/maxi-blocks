@@ -1,10 +1,6 @@
 <?php
-function get_flex_styles(array $obj, $debug = false)
+function get_flex_styles(array $obj)
 {
-    if($debug) {
-        write_log('get_flex_styles obj');
-        write_log($obj);
-    }
     $response = [];
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -75,22 +71,12 @@ function get_flex_styles(array $obj, $debug = false)
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
-        // if($debug) {
-        //     write_log('get_flex_styles');
-        //     write_log('$row_gap_props');
-        //     write_log($row_gap_props);
-        // }
 
         $column_gap = get_last_breakpoint_attribute([
             'target' => 'column-gap',
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
-
-        if($debug) {
-            write_log('$column_gap');
-            write_log($column_gap);
-        }
 
         if (isset($flex_basis) || isset($flex_grow) || isset($flex_shrink)) {
             $response[$breakpoint]['flex'] = ($flex_grow ?? '') . ' ' . ($flex_shrink ?? '') . ' ' . ($flex_basis ?? '');
@@ -116,19 +102,9 @@ function get_flex_styles(array $obj, $debug = false)
         if (isset($row_gap_props)) {
             $response[$breakpoint]['row-gap'] = ($row_gap_props ?? '') . get_last_breakpoint_attribute([ 'target' => 'row-gap-unit', 'breakpoint' => $breakpoint, 'attributes' => $obj]);
         }
-        if($debug) {
-            // write_log('$response[$breakpoint][row-gap]');
-            // write_log($response[$breakpoint]['row-gap']);
-        }
         if (isset($column_gap)) {
             $response[$breakpoint]['column-gap'] = ($column_gap ?? '') . get_last_breakpoint_attribute([ 'target' => 'column-gap-unit', 'breakpoint' => $breakpoint, 'attributes' => $obj]);
         }
-        if($debug) {
-            // write_log('$response[$breakpoint][column-gap]');
-            // write_log($response[$breakpoint]['column-gap']);
-            // write_log('==========================');
-        }
-
         if (empty($response[$breakpoint])) {
             unset($response[$breakpoint]);
         }

@@ -166,7 +166,7 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
                     'row' => [ 'general' => [ ]],
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, ['flex', 'row-gap', 'column-gap'])), true),
+                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, ['flex', 'row-gap', 'column-gap']))),
                 ];
 
             return $response;

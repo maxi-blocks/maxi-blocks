@@ -316,7 +316,6 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $listStart = $props['listStart'] ?? false;
             $listReversed = $props['listReversed'] ?? false;
 
-
             $content = $props['content'];
 
             $counterReset = null;
@@ -361,12 +360,12 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'target' => 'list-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]);
+                ]) ?? 1;
                 $gapUnit = get_last_breakpoint_attribute([
                     'target' => 'list-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]);
+                ]) ?? 'em';
 
                 $listStylePosition = get_last_breakpoint_attribute([
                     'target' => 'list-style-position',
@@ -378,34 +377,48 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'target' => 'list-marker-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
+                ]) ?? 0;
                 $sizeUnit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
                 $indentMarkerNum = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
+                ]) ?? 0;
                 $indentMarkerUnit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
-                $indentMarkerSum = $indentMarkerNum + $indentMarkerUnit;
+                $indentMarkerSum = $indentMarkerNum.$indentMarkerUnit;
 
-                $padding =
-                    $listStylePosition === 'inside'
-                        ? $gapNum + $gapUnit
-                        : "calc($gapNum + $gapUnit + $sizeNum + $sizeUnit + $indentMarkerSum)";
+                $paddingElements = [];
 
-                if (!is_null($gapNum) && !is_null($gapUnit)) {
-                    $response['listGap'][$breakpoint] = [
-                        "padding-" . ($isRTL ? 'right' : 'left') => $padding
+                if ($gapNum !== null && $gapUnit !== null) {
+                    $paddingElements[] = "$gapNum$gapUnit";
+                }
+
+                if ($sizeNum !== null && $sizeUnit !== null) {
+                    $paddingElements[] = "$sizeNum$sizeUnit";
+                }
+
+                if ($indentMarkerSum !== null) {
+                    $paddingElements[] = $indentMarkerSum;
+                }
+
+                $padding = $listStylePosition === 'inside'
+                    ? implode(' + ', $paddingElements)
+                    : 'calc(' . implode(' + ', $paddingElements) . ')';
+
+
+                if ($padding) {
+                    $response['padding'][$breakpoint] = [
+                        'padding' => $padding
                     ];
                 }
 
@@ -413,14 +426,14 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'target' => 'bottom-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]);
+                ]) ?? 0;
                 $bottomGapUnit = get_last_breakpoint_attribute([
                     'target' => 'bottom-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]);
+                ]) ?? 'px';
 
-                if (!is_null($bottomGapNum) && !is_null($bottomGapUnit)) {
+                if ($bottomGapNum !== null) {
                     $response['bottomGap'][$breakpoint] = [
                         'margin-bottom' => $bottomGapNum . $bottomGapUnit
                     ];

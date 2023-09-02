@@ -189,7 +189,7 @@ const GenerateTab = ({
 					variant='secondary'
 					onClick={generateContent}
 				>
-					{__('Write for me', 'maxi-blocks')}
+					{__('Generate', 'maxi-blocks')}
 				</Button>
 			</div>
 		</div>

@@ -899,16 +899,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'gpt-3.5-turbo-16k',
             ]]);
 
-            $ai_constants = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/ai.json"), true);
-
-            $languages = $ai_constants['languages'];
-            $description = '<h4>'.__('Default language', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_language', '', 'dropdown', ['list' => $languages]);
-
-            $tones = $ai_constants['tones'];
-            $description = '<h4>'.__('Default tone', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_tone', '', 'dropdown', ['list' => $tones]);
-
             $content .= get_submit_button();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -1260,14 +1250,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'default' => 'gpt-3.5-turbo',
             );
-            $args_ai_language = array(
-                'type' => 'string',
-                'default' => 'Language of the prompt',
-            );
-            $args_ai_tone = array(
-                'type' => 'string',
-                'default' => 'Formal',
-            );
             $args_ai_description = array(
                 'type' => 'string',
             );
@@ -1289,8 +1271,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'google_api_key_option' => null,
                 'openai_api_key_option' => null,
                 'maxi_ai_model' => $args_ai_model,
-                'maxi_ai_language' => $args_ai_language,
-                'maxi_ai_tone' => $args_ai_tone,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
                 'maxi_ai_site_goal' => $args_ai_description,

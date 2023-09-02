@@ -18,7 +18,7 @@ import {
 const useSettings = selectedText => {
 	const [settings, setSettings] = useState(() => {
 		const storedSettings =
-			JSON.parse(localStorage.getItem('settings')) || {};
+			JSON.parse(localStorage.getItem('maxi-prompt-settings')) || {};
 		return {
 			contentType: storedSettings.contentType || CONTENT_TYPES[0],
 			tone: storedSettings.tone || TONES[0],
@@ -43,7 +43,10 @@ const useSettings = selectedText => {
 		const settingsToSave = { ...settings };
 		delete settingsToSave.prompt;
 
-		localStorage.setItem('settings', JSON.stringify(settingsToSave));
+		localStorage.setItem(
+			'maxi-prompt-settings',
+			JSON.stringify(settingsToSave)
+		);
 	}, [settings]);
 
 	useEffect(() => {

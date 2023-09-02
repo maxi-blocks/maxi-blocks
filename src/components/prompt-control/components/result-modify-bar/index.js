@@ -72,7 +72,6 @@ const ResultModifyBar = ({
 					)}
 					value={customValue}
 					onChange={value => setCustomValue(value)}
-					disableResize
 				/>
 			)}
 			{modifyOption === 'translate' && (

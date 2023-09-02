@@ -228,18 +228,18 @@ const ResultCard = ({
 				<>
 					<hr />
 					<div className={`${className}__options`}>
+						<Button onClick={handleCopy}>
+							{__('Copy', 'maxi-blocks')}
+						</Button>
 						<Button onClick={onInsert}>
 							{__(
 								isSelectedText ? 'Replace selection' : 'Insert',
 								'maxi-blocks'
 							)}
 						</Button>
-						<Button onClick={handleCopy}>
-							{__('Copy', 'maxi-blocks')}
-						</Button>
 						{!result.refFromSelectedText && (
 							<Button onClick={onUseSettings}>
-								{__('Use settings', 'maxi-blocks')}
+								{__('Regenerate', 'maxi-blocks')}
 							</Button>
 						)}
 						<Button onClick={onModify}>

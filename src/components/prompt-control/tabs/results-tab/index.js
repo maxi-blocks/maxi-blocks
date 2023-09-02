@@ -15,7 +15,7 @@ import ResultCards from '../../components/result-cards';
  */
 import './editor.scss';
 
-const HistoryTab = ({
+const ResultsTab = ({
 	results,
 	content,
 	modifyOption,
@@ -77,4 +77,4 @@ const HistoryTab = ({
 	);
 };
 
-export default HistoryTab;
+export default ResultsTab;

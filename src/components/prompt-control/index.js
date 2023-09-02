@@ -11,6 +11,7 @@ import ContentLoader from '../content-loader';
 import InfoBox from '../info-box';
 import SettingTabsControl from '../setting-tabs-control';
 import GenerateTab from './tabs/generate-tab';
+import ResultsTab from './tabs/results-tab';
 import ModifyTab from './tabs/modify-tab';
 import TextContext from '../../extensions/text/formats/textContext';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
@@ -40,7 +41,6 @@ import { isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import HistoryTab from './tabs/history-tab';
 
 const PromptControl = ({ clientId, content, onContentChange }) => {
 	const AISettings = useAISettings();
@@ -221,32 +221,9 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 						),
 					},
 					{
-						label: __('Modify', 'maxi-blocks'),
+						label: __('Results', 'maxi-blocks'),
 						content: (
-							<ModifyTab
-								results={results}
-								AISettings={AISettings}
-								settings={settings}
-								context={context}
-								selectedText={selectedText}
-								modifyOption={modifyOption}
-								customValue={customValue}
-								abortControllerRef={abortControllerRef}
-								setModifyOption={setModifyOption}
-								setCustomValue={setCustomValue}
-								setIsGenerating={setIsGenerating}
-								selectedResultId={selectedResultId}
-								setSelectedResultId={setSelectedResultId}
-								setResults={setResults}
-								switchToGenerateTab={switchToGenerateTab}
-								switchToHistoryTab={switchToHistoryTab}
-							/>
-						),
-					},
-					{
-						label: __('History', 'maxi-blocks'),
-						content: (
-							<HistoryTab
+							<ResultsTab
 								results={results}
 								content={content}
 								modifyOption={modifyOption}
@@ -268,6 +245,29 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								updateSettings={updateSettings}
 								switchToGenerateTab={switchToGenerateTab}
 								switchToModifyTab={switchToModifyTab}
+							/>
+						),
+					},
+					{
+						label: __('Modify', 'maxi-blocks'),
+						content: (
+							<ModifyTab
+								results={results}
+								AISettings={AISettings}
+								settings={settings}
+								context={context}
+								selectedText={selectedText}
+								modifyOption={modifyOption}
+								customValue={customValue}
+								abortControllerRef={abortControllerRef}
+								setModifyOption={setModifyOption}
+								setCustomValue={setCustomValue}
+								setIsGenerating={setIsGenerating}
+								selectedResultId={selectedResultId}
+								setSelectedResultId={setSelectedResultId}
+								setResults={setResults}
+								switchToGenerateTab={switchToGenerateTab}
+								switchToHistoryTab={switchToHistoryTab}
 							/>
 						),
 					},

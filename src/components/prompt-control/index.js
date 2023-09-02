@@ -57,7 +57,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const {
 		prompt,
 		characterCount,
-		confidenceLevel,
+		temperature,
 		contentType,
 		tone,
 		writingStyle,
@@ -178,7 +178,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 			openAIApiKey: AISettings.openaiApiKey,
 			modelName: AISettings.model,
 			additionalParams: {
-				temperature: confidenceLevel / 100,
+				temperature,
 			},
 			additionalData: {
 				settings,

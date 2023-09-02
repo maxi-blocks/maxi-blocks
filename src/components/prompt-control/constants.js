@@ -347,7 +347,7 @@ export const MODIFICATION_MODIFICATORS = Object.fromEntries(
 	])
 );
 
-export const DEFAULT_CONFIDENCE_LEVEL = 75;
+export const DEFAULT_TEMPERATURE = 0.75;
 
 export const LOAD_MORE_COUNT = 5;
 

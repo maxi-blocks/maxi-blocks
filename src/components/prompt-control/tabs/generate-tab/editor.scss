@@ -9,4 +9,14 @@
 	.maxi-prompt-control-results-card {
 		margin: 8px 0;
 	}
+
+	&__temperature-guidance {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 5px;
+
+		span {
+			color: var(--maxi-grey-7-color);
+		}
+	}
 }

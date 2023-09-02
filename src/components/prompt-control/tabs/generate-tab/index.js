@@ -19,7 +19,7 @@ import {
 	CONTENT_TYPES,
 	CONTEXT_OPTIONS,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
-	DEFAULT_CONFIDENCE_LEVEL,
+	DEFAULT_TEMPERATURE,
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
@@ -42,7 +42,7 @@ const GenerateTab = ({
 	const {
 		prompt,
 		characterCount,
-		confidenceLevel,
+		temperature,
 		contentType,
 		tone,
 		writingStyle,
@@ -142,19 +142,23 @@ const GenerateTab = ({
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('Confidence level', 'maxi-blocks')}
-				value={confidenceLevel}
+				label={__('Temperature', 'maxi-blocks')}
+				value={temperature}
 				min={0}
-				max={100}
-				onChangeValue={confidenceLevel =>
-					updateSettings({ confidenceLevel })
-				}
+				max={1}
+				step={0.01}
+				onChangeValue={temperature => updateSettings({ temperature })}
 				onReset={() =>
 					updateSettings({
-						confidenceLevel: DEFAULT_CONFIDENCE_LEVEL,
+						temperature: DEFAULT_TEMPERATURE,
 					})
 				}
 			/>
+			<div className={`${className}__temperature-guidance`}>
+				<span>{__('Precise', 'maxi-blocks')}</span>
+				<span>{__('Neutral', 'maxi-blocks')}</span>
+				<span>{__('Creative', 'maxi-blocks')}</span>
+			</div>
 			<ReactSelectControl
 				labelText={__('Context', 'maxi-blocks')}
 				value={{

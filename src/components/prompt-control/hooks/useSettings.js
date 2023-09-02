@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from '@wordpress/element';
 import {
 	CONTENT_TYPES,
 	DEFAULT_CHARACTER_COUNT_GUIDELINES,
-	DEFAULT_CONFIDENCE_LEVEL,
+	DEFAULT_TEMPERATURE,
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
@@ -26,8 +26,7 @@ const useSettings = selectedText => {
 			characterCount:
 				storedSettings.characterCount ||
 				DEFAULT_CHARACTER_COUNT_GUIDELINES[CONTENT_TYPES[0]],
-			confidenceLevel:
-				storedSettings.confidenceLevel || DEFAULT_CONFIDENCE_LEVEL,
+			temperature: storedSettings.temperature || DEFAULT_TEMPERATURE,
 			language: storedSettings.language || LANGUAGES[0],
 			prompt: '',
 		};

@@ -100,6 +100,7 @@ const ResultCard = ({
 		if (isSelected) {
 			handleScrollIntoView();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSelected]);
 
 	const handleCopy = async () => {
@@ -127,7 +128,7 @@ const ResultCard = ({
 	};
 
 	return (
-		<div className={classes}>
+		<div className={classes} onClick={isSelected ? null : () => onSelect()}>
 			<div className={`${className}__scroll-to`}>
 				<div
 					ref={ref}
@@ -162,10 +163,7 @@ const ResultCard = ({
 				</Button>
 			)}
 			<div className={`${className}__top-bar`}>
-				<div
-					className={`${className}__top-bar__select-row`}
-					onClick={() => onSelect()}
-				>
+				<div className={`${className}__top-bar__select-row`}>
 					<div>
 						{!result.isSelectedText && (
 							<span
@@ -207,7 +205,12 @@ const ResultCard = ({
 							'maxi-blocks'
 						)}{' '}
 						{result.refId && isRefExist && (
-							<label className={`${className}__modificator__id`}>
+							<label
+								className={classnames(
+									isSelected &&
+										`${className}__modificator__id`
+								)}
+							>
 								#{result.refId}
 							</label>
 						)}
@@ -229,39 +232,48 @@ const ResultCard = ({
 				)}
 			</div>
 			{!isModifyTab && !result.isSelectedText && (
-				<>
-					<hr />
-					<div className={`${className}__options`}>
-						<Button onClick={handleCopy}>
-							{__('Copy', 'maxi-blocks')}
-						</Button>
-						<Button onClick={onInsert}>
-							{__(
-								isSelectedText ? 'Replace selection' : 'Insert',
-								'maxi-blocks'
-							)}
-						</Button>
-						{!result.refFromSelectedText && (
-							<Button onClick={onUseSettings}>
-								{__('Regenerate', 'maxi-blocks')}
-							</Button>
+				<div className={`${className}__options`}>
+					<Button
+						className='maxi-prompt-control__button'
+						onClick={handleCopy}
+					>
+						{__('Copy', 'maxi-blocks')}
+					</Button>
+					<Button
+						className='maxi-prompt-control__button'
+						onClick={onInsert}
+					>
+						{__(
+							isSelectedText ? 'Replace selection' : 'Insert',
+							'maxi-blocks'
 						)}
-						<Button onClick={onModify}>
-							{__('Modify', 'maxi-blocks')}
+					</Button>
+					{!result.refFromSelectedText && (
+						<Button
+							className='maxi-prompt-control__button'
+							onClick={onUseSettings}
+						>
+							{__('Regenerate', 'maxi-blocks')}
 						</Button>
-						<DialogBox
-							message={__(
-								'Are you sure you want to delete the result?',
-								'maxi-blocks'
-							)}
-							cancelLabel={__('Cancel', 'maxi-blocks')}
-							confirmLabel={__('Delete', 'maxi-blocks')}
-							onConfirm={onDelete}
-							buttonClassName={`${className}__clean-history-button`}
-							buttonChildren={__('Delete', 'maxi-blocks')}
-						/>
-					</div>
-				</>
+					)}
+					<Button
+						className='maxi-prompt-control__button'
+						onClick={onModify}
+					>
+						{__('Modify', 'maxi-blocks')}
+					</Button>
+					<DialogBox
+						message={__(
+							'Are you sure you want to delete the result?',
+							'maxi-blocks'
+						)}
+						cancelLabel={__('Cancel', 'maxi-blocks')}
+						confirmLabel={__('Delete', 'maxi-blocks')}
+						onConfirm={onDelete}
+						buttonClassName={`${className}__clean-history-button maxi-prompt-control__button`}
+						buttonChildren={__('Delete', 'maxi-blocks')}
+					/>
+				</div>
 			)}
 			{isSelected && isModifyTab && (
 				<ResultModifyBar

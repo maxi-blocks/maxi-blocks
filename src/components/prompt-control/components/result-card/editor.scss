@@ -3,11 +3,8 @@
 	border: 2px solid var(--maxi-grey-1-color);
 	border-radius: 4px;
 	background: var(--maxi-white-3-color);
+	cursor: pointer;
 	transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
-
-	hr {
-		margin: 8px 0;
-	}
 
 	& &__variant {
 		font-weight: bold;
@@ -73,8 +70,9 @@
 	}
 
 	&__options {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+		display: flex;
+		flex-flow: wrap;
+		gap: 8px;
 
 		.maxi-components-button {
 			padding: 6px 8px;
@@ -84,6 +82,7 @@
 	&--selected {
 		background: var(--maxi-white-4-color);
 		border-color: var(--maxi-secondary-color);
+		cursor: default;
 
 		.maxi-prompt-control-results-card__top-bar {
 			&__select-row {

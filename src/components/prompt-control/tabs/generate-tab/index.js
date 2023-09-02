@@ -160,7 +160,7 @@ const GenerateTab = ({
 				<span>{__('Creative', 'maxi-blocks')}</span>
 			</div>
 			<ReactSelectControl
-				labelText={__('Context', 'maxi-blocks')}
+				labelText={__('Grab context', 'maxi-blocks')}
 				value={{
 					label: __(CONTEXT_OPTIONS[contextOption], 'maxi-blocks'),
 					value: contextOption,

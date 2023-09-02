@@ -59,12 +59,17 @@ export const getContentAttributesSection = (
 	writingStyle,
 	language,
 	characterCount
-) => `- **Content Attributes**:
-	- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
-	- Tone: ${tone}
-	- Style: ${writingStyle}
-	- Language: ${language}
-	- Length: ${characterCount} characters`;
+) => {
+	const upperLimit = Math.ceil(characterCount * 1.2);
+	const lowerLimit = Math.floor(characterCount * 0.8);
+	return `- **Content Attributes**:
+		- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
+		- Tone: ${tone}
+		- Style: ${writingStyle}
+		- Language: ${language}
+		- Length: ${characterCount} characters
+		**CAUTION: It's crucial to adhere to the character length guideline. You have a flexibility of +/- 20%, meaning the content should ideally be between ${lowerLimit} and ${upperLimit} characters. Failing to do so will result in non-compliance.**`;
+};
 
 export const getContextSection = context => {
 	if (!context) {
@@ -76,8 +81,10 @@ export const getContextSection = context => {
 		.map(item => `\t- ${item.l}: ${item.c}`)
 		.join('\n');
 
-	return `- **Page Context (level: content)**: The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p). Use this information to align the generated content with the existing page layout.
-${contextSection}`;
+	return `- **Page Context (level: content)**:
+	**Guideline: Use this context to understand the structure and subject matter of the page, but do not directly repeat these details in your generated content.**
+	The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p).
+  ${contextSection}`;
 };
 
 export const getExamplesSection = contentType => {
@@ -85,10 +92,13 @@ export const getExamplesSection = contentType => {
 	if (!examples || examples.length === 0) {
 		return '';
 	}
+	const beforeEveryExample = '\n\t- ';
 
-	const formattedExamples = examples.join('\n- ');
+	const formattedExamples = `${beforeEveryExample}${examples.join(
+		beforeEveryExample
+	)}`;
 
-	return `**Examples**:\n- ${formattedExamples}`;
+	return `- **Examples**:${formattedExamples}`;
 };
 
 export const getFormattedMessages = async (

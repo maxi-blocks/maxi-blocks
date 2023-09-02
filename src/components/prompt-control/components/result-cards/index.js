@@ -57,7 +57,11 @@ const ResultCards = ({
 
 	const className = 'maxi-prompt-control-results';
 
-	if (isEmpty(results) && !selectedResultId) {
+	if (
+		isEmpty(results) &&
+		(!selectedResultId ||
+			(selectedResultId === 'selectedText' && !isModifyTab))
+	) {
 		return (
 			<div className={className}>
 				<h4 className={`${className}__no-results`}>

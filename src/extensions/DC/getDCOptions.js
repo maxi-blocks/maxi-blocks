@@ -108,15 +108,17 @@ const getDCOptions = async (
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			if (
-				orderByRelations.includes(relation) &&
-				!newPostIdOptions.length
-			) {
-				newValues[`${prefix}relation`] = 'by-date';
-				newValues[`${prefix}order`] = 'desc';
-			} else if (!contextLoop?.['cl-status']) {
-				newValues[`${prefix}id`] = Number(data[0].id);
-				idFields.current = data[0].id;
+			if (!contextLoop?.['cl-status']) {
+				if (
+					orderByRelations.includes(relation) &&
+					!newPostIdOptions.length
+				) {
+					newValues[`${prefix}relation`] = 'by-date';
+					newValues[`${prefix}order`] = 'desc';
+				} else {
+					newValues[`${prefix}id`] = Number(data[0].id);
+					idFields.current = data[0].id;
+				}
 			} else {
 				newValues[`${prefix}id`] = undefined;
 			}

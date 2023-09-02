@@ -125,7 +125,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				if (
 					wasRelationValidated.current ||
 					!orderByRelations.includes(
-						memoizedValue.contextLoop['cl-relation']
+						contextLoopAttributes['cl-relation']
 					)
 				)
 					return () => null;
@@ -135,14 +135,14 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				const updateRelationIds = async () => {
 					const dataRequest = Object.fromEntries(
 						Object.entries(
-							getCLAttributes(memoizedValue.contextLoop)
+							getCLAttributes(contextLoopAttributes)
 						).map(([key, value]) => [key.replace('cl-', ''), value])
 					);
 
 					const { newValues } =
 						(await getDCOptions(
 							dataRequest,
-							memoizedValue.contextLoop['cl-id'],
+							contextLoopAttributes['cl-id'],
 							undefined,
 							true
 						)) ?? {};
@@ -165,7 +165,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				return () => {
 					isCancelled = true;
 				};
-			}, [setAttributes, memoizedValue]);
+			}, [setAttributes, contextLoopAttributes]);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

@@ -71,11 +71,35 @@ export const CONTENT_TYPES_DATA = {
 		examples: ['Logo of Our Company'],
 		defaultCharacterCountGuideline: 125, // Descriptive, but not too long, for accessibility.
 	},
-	'Image caption Page titles FAQs': {
+	'Image Caption': {
 		description:
-			'Provide captions for images, titles for pages, or answers to frequently asked questions.',
-		examples: ['Image of the main office building'],
-		defaultCharacterCountGuideline: 100, // Typically short descriptions or titles.
+			'Provide captions for images that help to contextualize the image for the viewer.',
+		examples: [
+			'Image of the main office building',
+			'A team meeting in progress',
+			'CEO Jane Doe receiving an award',
+		],
+		defaultCharacterCountGuideline: 100, // Typically short descriptions for images.
+	},
+	'Page Titles': {
+		description:
+			'Craft titles for web pages that are descriptive and optimized for search engines.',
+		examples: [
+			'Home - My Company',
+			'About Us - Learn More About Our Team',
+			'Products - Browse Our Selection',
+		],
+		defaultCharacterCountGuideline: 60, // SEO-friendly length.
+	},
+	FAQs: {
+		description:
+			'Write answers to frequently asked questions that are clear and to the point.',
+		examples: [
+			'Yes, we offer free shipping on orders over $50.',
+			'Our customer service team is available 24/7.',
+			'We accept all major credit cards and PayPal.',
+		],
+		defaultCharacterCountGuideline: 200, // Enough to answer the question but not too long.
 	},
 	'Product descriptions': {
 		description:

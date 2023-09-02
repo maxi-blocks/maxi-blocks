@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getOverflowStyles Get a correct overflow styles 1`] = `
-Object {
-  "general": Object {
+{
+  "general": {
     "overflow-y": "hidden",
   },
-  "l": Object {
+  "l": {
     "overflow-x": "clip",
     "overflow-y": "auto",
   },
-  "m": Object {
+  "m": {
     "overflow-x": "scroll",
     "overflow-y": "scroll",
   },
-  "s": Object {
+  "s": {
     "overflow-x": "auto",
     "overflow-y": "auto",
   },
-  "xl": Object {
+  "xl": {
     "overflow-x": "auto",
     "overflow-y": "clip",
   },
-  "xs": Object {
+  "xs": {
     "overflow-x": "visible",
     "overflow-y": "visible",
   },
-  "xxl": Object {
+  "xxl": {
     "overflow-x": "hidden",
     "overflow-y": "visible",
   },
@@ -33,25 +33,25 @@ Object {
 `;
 
 exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `
-Object {
-  "general": Object {},
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+{
+  "general": {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 
 exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `
-Object {
-  "general": Object {},
-  "l": Object {},
-  "m": Object {},
-  "s": Object {},
-  "xl": Object {},
-  "xs": Object {},
-  "xxl": Object {},
+{
+  "general": {},
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;

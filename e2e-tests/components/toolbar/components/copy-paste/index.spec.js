@@ -331,6 +331,17 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
+		// remove first container
+		await page.evaluate(() => {
+			wp.data
+				.dispatch('core/block-editor')
+				.removeBlock(
+					wp.data
+						.select('core/block-editor')
+						.getSelectedBlockClientId()
+				);
+		});
+
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		// open options

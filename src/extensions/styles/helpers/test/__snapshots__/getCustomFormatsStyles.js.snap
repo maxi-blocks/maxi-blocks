@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getCustomFormatsStyles Get a correct custom formats styles 1`] = `
-Object {
-  "test .maxi-text-block__custom-format--0": Object {
-    "typography": Object {
-      "general": Object {
+{
+  "test .maxi-text-block__custom-format--0": {
+    "typography": {
+      "general": {
         "color": "rgba(57,28,202,1)",
         "font-style": "italic",
         "font-weight": 800,
       },
     },
   },
-  "test .maxi-text-block__custom-format--1": Object {
-    "typography": Object {
-      "general": Object {
+  "test .maxi-text-block__custom-format--1": {
+    "typography": {
+      "general": {
         "text-decoration": "underline",
       },
     },

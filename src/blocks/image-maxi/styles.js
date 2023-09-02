@@ -298,7 +298,6 @@ const getImageObject = props => {
 		imgWidth,
 		useInitSize,
 		mediaWidth,
-		fitParentSize,
 		isFirstOnHierarchy,
 	} = props;
 
@@ -349,10 +348,9 @@ const getImageObject = props => {
 				},
 			},
 		}),
-		...(fitParentSize &&
-			!isFirstOnHierarchy && {
-				fitParentSize: getImageFitWrapper(props),
-			}),
+		...(!isFirstOnHierarchy && {
+			fitParentSize: getImageFitWrapper(props),
+		}),
 	};
 };
 

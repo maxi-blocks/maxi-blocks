@@ -3,10 +3,12 @@
  */
 import { getUpdatedSVGDataAndElement } from '../attributes';
 import {
+	shouldSetPreserveAspectRatio,
 	getSVGPosition,
 	getSVGRatio,
 	setSVGPosition,
 	setSVGRatio,
+	togglePreserveAspectRatio,
 } from '../svg';
 
 /**
@@ -17,6 +19,35 @@ import {
  * @returns
  */
 const updateSVG = (updatedAttributes, blockAttributes) => {
+	const getPrefix = () => {
+		const { uniqueID } = blockAttributes;
+
+		if (uniqueID) {
+			if (uniqueID.startsWith('svg-')) return 'svg-';
+
+			if (uniqueID.startsWith('button-')) return 'icon-';
+		}
+
+		return null;
+	};
+
+	const prefix = getPrefix();
+
+	if (prefix) {
+		const contentKey = `${prefix === 'svg-' ? '' : prefix}content`;
+
+		if (
+			contentKey in blockAttributes &&
+			!(contentKey in updatedAttributes) &&
+			shouldSetPreserveAspectRatio(updatedAttributes, prefix)
+		) {
+			updatedAttributes[contentKey] = togglePreserveAspectRatio(
+				blockAttributes[contentKey],
+				true
+			);
+		}
+	}
+
 	if (!('SVGElement' in updatedAttributes)) return;
 
 	if ('SVGData' in updatedAttributes) {

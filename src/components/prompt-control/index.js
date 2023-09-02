@@ -164,8 +164,11 @@ ${contextSection}
 ${getExamplesSection(contentType)}
 
 Ensure that the content aligns with the site's audience and guidelines, and is suitable for immediate use on the website, formatted for direct pasting.
-
-Note: The user's input is the primary directive. Please provide a thoughtful and detailed response to the user's query or statement. Refer to the site's information only when it directly relates to the user's input.
+${
+	prompt
+		? "Note: The user's input is the primary directive. Please provide a thoughtful and detailed response to the user's query or statement. Refer to the site's information only when it directly relates to the user's input."
+		: ''
+}
 `;
 
 		const humanTemplate = prompt;

@@ -6,7 +6,6 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ResultsTopBar from '../../components/results-top-bar';
 import {
 	getContentAttributesSection,
 	getContextSection,
@@ -38,10 +37,9 @@ const ModifyTab = ({
 	selectedResultId,
 	setSelectedResultId,
 	setResults,
-	switchToHistoryTab,
+	switchToResultsTab,
 }) => {
 	const className = 'maxi-prompt-control-modify-tab';
-	const [classes, setClasses] = useState(className);
 
 	const [selectedResult, setSelectedResult] = useState(null);
 
@@ -125,7 +123,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 	};
 
 	const modifyContent = async () => {
-		switchToHistoryTab();
+		switchToResultsTab();
 
 		const isSelectedText =
 			selectedResultId === 'selectedText' && selectedText;
@@ -154,22 +152,7 @@ Your task is to maintain the original intent and context while ${modificationAct
 	};
 
 	return (
-		<div className={classes}>
-			<ResultsTopBar
-				results={results}
-				selectedResultId={selectedResultId}
-				modifyOption={modifyOption}
-				modifyContent={modifyContent}
-				customValue={customValue}
-				defaultLanguage={
-					AISettings.language !== 'Language of the prompt'
-						? AISettings.language
-						: 'English (United Kingdom)'
-				}
-				setModifyOption={setModifyOption}
-				setCustomValue={setCustomValue}
-				setClasses={setClasses}
-			/>
+		<div className={className}>
 			<ResultCards
 				results={[
 					selectedText && {
@@ -181,8 +164,13 @@ Your task is to maintain the original intent and context while ${modificationAct
 				].filter(Boolean)}
 				modifyOption={modifyOption}
 				selectedResultId={selectedResultId}
+				customValue={customValue}
+				AISettingsLanguage={AISettings.language}
 				setSelectedResultId={setSelectedResultId}
 				setSelectedResult={setSelectedResult}
+				setModifyOption={setModifyOption}
+				setCustomValue={setCustomValue}
+				onModifyContent={modifyContent}
 				isModifyTab
 			/>
 		</div>

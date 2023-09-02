@@ -16,26 +16,22 @@ import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
-import { isEmpty, capitalize } from 'lodash';
+import { capitalize } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
 
-const ResultsTopBar = ({
-	results,
-	selectedResultId,
+const ResultModifyBar = ({
 	modifyOption,
-	modifyContent,
+	onModifyContent,
 	customValue,
 	defaultLanguage,
 	setModifyOption,
 	setCustomValue,
-	setClasses,
 }) => {
-	const className = 'maxi-prompt-control-results-top-bar';
+	const className = 'maxi-prompt-control-result-modify-bar';
 
 	return (
 		<div className={className}>
@@ -59,32 +55,12 @@ const ResultsTopBar = ({
 							value === 'translate' ? defaultLanguage : ''
 						);
 					}}
-					onMenuOpen={() => {
-						setClasses(prevClasses =>
-							classnames(
-								prevClasses,
-								`${prevClasses}--select-open`
-							)
-						);
-					}}
-					onMenuClose={() => {
-						setClasses((prevClasses = '') =>
-							prevClasses
-								.split(' ')
-								.filter(
-									className =>
-										!className.endsWith('--select-open')
-								)
-								.join(' ')
-						);
-					}}
 				/>
 				<Button
 					className={`${className}__button maxi-prompt-control__button`}
-					onClick={modifyContent}
-					disabled={isEmpty(results) && !selectedResultId}
+					onClick={onModifyContent}
 				>
-					{__('Go!', 'maxi-blocks')}
+					{__('Modify', 'maxi-blocks')}
 				</Button>
 			</div>
 			{modifyOption === 'custom' && (
@@ -123,4 +99,4 @@ const ResultsTopBar = ({
 	);
 };
 
-export default ResultsTopBar;
+export default ResultModifyBar;

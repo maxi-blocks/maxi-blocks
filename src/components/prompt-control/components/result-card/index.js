@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  */
 import Button from '../../../button';
 import DialogBox from '../../../dialog-box';
+import ResultModifyBar from '../result-modify-bar';
 import { CONTENT_LIMIT, MODIFICATION_MODIFICATORS } from '../../constants';
 
 /**
@@ -27,17 +28,20 @@ const ResultCard = ({
 	isSelected,
 	isSelectedText,
 	modifyOption,
+	customValue,
+	AISettingsLanguage,
 	isRefExist,
-	disableButtons = false,
+	isModifyTab = false,
+	disableScrollIntoView = false,
+	setModifyOption,
+	setCustomValue,
+	onModifyContent,
 	onInsert,
 	onSelect,
 	onUseSettings,
 	onModify,
 	onDelete,
 }) => {
-	const isCustom = modifyOption === 'custom';
-	const isTranslate = modifyOption === 'translate';
-
 	const className = 'maxi-prompt-control-results-card';
 
 	const classes = classnames(
@@ -83,6 +87,9 @@ const ResultCard = ({
 	}, [result.content, result.loading]);
 
 	const handleScrollIntoView = () => {
+		if (disableScrollIntoView) {
+			return;
+		}
 		ref.current.scrollIntoView({
 			behavior: 'smooth',
 			block: 'start',
@@ -111,17 +118,20 @@ const ResultCard = ({
 		return result.content;
 	};
 
+	const getSelectTextLabel = () => {
+		if (result.isSelectedText) {
+			return `${isSelected ? 'Text' : 'Select text'} selection`;
+		}
+
+		return `${isSelected ? 'Output' : 'Select'} result`;
+	};
+
 	return (
 		<div className={classes}>
 			<div className={`${className}__scroll-to`}>
 				<div
 					ref={ref}
-					className={classnames(
-						`${className}__scroll-to__inner`,
-						isCustom && `${className}__scroll-to__inner--custom`,
-						isTranslate &&
-							`${className}__scroll-to__inner--translate`
-					)}
+					className={classnames(`${className}__scroll-to__inner`)}
 				/>
 			</div>
 			<p className={`${className}__content`}>
@@ -156,29 +166,34 @@ const ResultCard = ({
 					className={`${className}__top-bar__select-row`}
 					onClick={() => onSelect()}
 				>
-					<span
-						className={`${className}__top-bar__select-row__select-text`}
-					>
-						{__(
-							isSelected
-								? `Selected${
-										result.isSelectedText ? ' text' : ''
-								  }`
-								: result.isSelectedText
-								? 'Selected text'
-								: 'Select',
-							'maxi-blocks'
-						)}
-					</span>
-					{!result.isSelectedText && (
+					<div>
+						{!result.isSelectedText && (
+							<span
+								className={`${className}__top-bar__select-row__id`}
+							>
+								#{result.id}
+							</span>
+						)}{' '}
 						<span
-							className={`${className}__top-bar__select-row__id`}
+							className={`${className}__top-bar__select-row__select-text`}
 						>
-							#{result.id}
+							{__(
+								// isSelected
+								// 	? 'Output result'
+								// 	: result.isSelectedText
+								// 	? 'Select text selection'
+								// 	: 'Select result',
+								getSelectTextLabel(),
+								'maxi-blocks'
+							)}
 						</span>
-					)}
+					</div>
+					<div className={`${className}__content-length`}>
+						{result.content.length}{' '}
+						{__('characters', 'maxi-blocks')}
+					</div>
 				</div>
-				{!disableButtons && result.modificationType && (
+				{!isModifyTab && result.modificationType && (
 					<div
 						className={`${className}__modificator`}
 						onClick={() => onSelect(result.refId)}
@@ -213,10 +228,7 @@ const ResultCard = ({
 					</div>
 				)}
 			</div>
-			<div className={`${className}__content-length`}>
-				{result.content.length} {__('characters', 'maxi-blocks')}
-			</div>
-			{!disableButtons && !result.isSelectedText && (
+			{!isModifyTab && !result.isSelectedText && (
 				<>
 					<hr />
 					<div className={`${className}__options`}>
@@ -251,7 +263,21 @@ const ResultCard = ({
 					</div>
 				</>
 			)}
-			{disableButtons && !result.isSelectedText && onDelete && (
+			{isSelected && isModifyTab && (
+				<ResultModifyBar
+					modifyOption={modifyOption}
+					onModifyContent={onModifyContent}
+					customValue={customValue}
+					defaultLanguage={
+						AISettingsLanguage !== 'Language of the prompt'
+							? AISettingsLanguage
+							: 'English (United Kingdom)'
+					}
+					setModifyOption={setModifyOption}
+					setCustomValue={setCustomValue}
+				/>
+			)}
+			{isModifyTab && !result.isSelectedText && onDelete && (
 				<Button
 					className={`${className}__clean-history-button`}
 					onClick={onDelete}

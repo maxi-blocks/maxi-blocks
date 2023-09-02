@@ -77,6 +77,7 @@ const GenerateTab = ({
 						isSelectedText: true,
 					}}
 					isSelected
+					disableScrollIntoView
 				/>
 			)}
 			{[

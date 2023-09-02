@@ -3,6 +3,7 @@
 	border: 2px solid var(--maxi-grey-1-color);
 	border-radius: 4px;
 	background: var(--maxi-white-3-color);
+	transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
 
 	hr {
 		margin: 8px 0;
@@ -47,15 +48,7 @@
 
 		&__inner {
 			position: absolute;
-			top: -180px;
-
-			&--custom {
-				top: -244px;
-			}
-
-			&--translate {
-				top: -237px;
-			}
+			top: -80px;
 		}
 	}
 
@@ -89,6 +82,7 @@
 	}
 
 	&--selected {
+		background: var(--maxi-white-4-color);
 		border-color: var(--maxi-secondary-color);
 
 		.maxi-prompt-control-results-card__top-bar {

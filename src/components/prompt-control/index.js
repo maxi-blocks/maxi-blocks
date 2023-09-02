@@ -90,11 +90,11 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		setTab(0);
 	};
 
-	const switchToModifyTab = () => {
+	const switchToResultsTab = () => {
 		setTab(1);
 	};
 
-	const switchToHistoryTab = () => {
+	const switchToModifyTab = () => {
 		setTab(2);
 	};
 
@@ -172,7 +172,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 	};
 
 	const generateContent = async () => {
-		switchToHistoryTab();
+		switchToResultsTab();
 
 		handleContentGeneration({
 			openAIApiKey: AISettings.openaiApiKey,
@@ -264,7 +264,7 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								setSelectedResultId={setSelectedResultId}
 								setResults={setResults}
 								switchToGenerateTab={switchToGenerateTab}
-								switchToHistoryTab={switchToHistoryTab}
+								switchToResultsTab={switchToResultsTab}
 							/>
 						),
 					},

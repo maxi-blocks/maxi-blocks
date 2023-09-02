@@ -1,0 +1,10 @@
+.maxi-prompt-control-result-modify-bar {
+	&__modification-options {
+		display: flex;
+		gap: 8px;
+
+		& > *:first-child {
+			flex-grow: 1;
+		}
+	}
+}

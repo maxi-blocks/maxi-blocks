@@ -27,6 +27,8 @@ const ResultCards = ({
 	modifyOption,
 	formatValue,
 	selectedResultId,
+	customValue,
+	AISettingsLanguage,
 	isSelectedText,
 	setResults,
 	setSelectedResultId,
@@ -35,6 +37,7 @@ const ResultCards = ({
 	setCustomValue,
 	onContentChange,
 	onChangeTextFormat,
+	onModifyContent,
 	updateSettings,
 	switchToGenerateTab,
 	switchToModifyTab,
@@ -168,8 +171,13 @@ const ResultCards = ({
 						isSelectedText={isSelectedText}
 						isSelected={result.id === selectedResultId}
 						modifyOption={modifyOption}
+						customValue={customValue}
+						AISettingsLanguage={AISettingsLanguage}
 						isRefExist={refResultIndex && refResultIndex >= 0}
-						disableButtons={isModifyTab}
+						isModifyTab={isModifyTab}
+						setModifyOption={setModifyOption}
+						setCustomValue={setCustomValue}
+						onModifyContent={onModifyContent}
 						onInsert={handleResultInsertion}
 						onSelect={handleResultSelection}
 						onUseSettings={handleResultUseSettings}

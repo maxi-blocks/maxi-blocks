@@ -68,8 +68,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		Object.keys(CONTEXT_OPTIONS)[0]
 	);
 	const [context, setContext] = useState(null);
-	const [results, setResults, historyStartId, setHistoryStartId] =
-		useResultsHandling();
+	const [results, setResults] = useResultsHandling();
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -228,7 +227,6 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								content={content}
 								modifyOption={modifyOption}
 								formatValue={textContext.formatValue}
-								historyStartId={historyStartId}
 								selectedResultId={selectedResultId}
 								isSelectedText={!!selectedText}
 								isGenerating={isGenerating}
@@ -236,7 +234,6 @@ Ensure that the content aligns with the site's audience and guidelines, and is s
 								setModifyOption={setModifyOption}
 								setCustomValue={setCustomValue}
 								setSelectedResultId={setSelectedResultId}
-								setHistoryStartId={setHistoryStartId}
 								onContentChange={onContentChange}
 								onChangeTextFormat={
 									textContext.onChangeTextFormat

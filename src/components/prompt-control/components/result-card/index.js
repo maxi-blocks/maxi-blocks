@@ -24,7 +24,6 @@ import './editor.scss';
 
 const ResultCard = ({
 	result,
-	isFromPreviousSession,
 	isSelected,
 	isSelectedText,
 	modifyOption,
@@ -125,6 +124,33 @@ const ResultCard = ({
 					)}
 				/>
 			</div>
+			<p className={`${className}__content`}>
+				{result.error && (
+					<span className={`${className}__content__error`}>
+						{__('Error: ', 'maxi-blocks')}
+					</span>
+				)}
+				{result.content === '' ? '\u00A0' : getContent()}
+			</p>
+			<div className={`${className}__end-of-content`}>
+				<div
+					ref={endOfContentRef}
+					className={`${className}__end-of-content__inner`}
+				/>
+			</div>
+			{result.content.length > CONTENT_LIMIT && !result.loading && (
+				<Button
+					className={`${className}__show-more`}
+					onClick={() => {
+						const newIsLimited = !isLimited;
+
+						setIsLimited(newIsLimited);
+						handleScrollIntoView();
+					}}
+				>
+					{__(`Show ${isLimited ? 'more' : 'less'}`, 'maxi-blocks')}
+				</Button>
+			)}
 			<div className={`${className}__top-bar`}>
 				<div
 					className={`${className}__top-bar__select-row`}
@@ -144,13 +170,6 @@ const ResultCard = ({
 							'maxi-blocks'
 						)}
 					</span>
-					{isFromPreviousSession && !result.isSelectedText && (
-						<span
-							className={`${className}__top-bar__select-row__from-previous-session`}
-						>
-							{__('From previous sessions', 'maxi-blocks')}
-						</span>
-					)}
 					{!result.isSelectedText && (
 						<span
 							className={`${className}__top-bar__select-row__id`}
@@ -194,33 +213,6 @@ const ResultCard = ({
 					</div>
 				)}
 			</div>
-			<p className={`${className}__content`}>
-				{result.error && (
-					<span className={`${className}__content__error`}>
-						{__('Error: ', 'maxi-blocks')}
-					</span>
-				)}
-				{result.content === '' ? '\u00A0' : getContent()}
-			</p>
-			<div className={`${className}__end-of-content`}>
-				<div
-					ref={endOfContentRef}
-					className={`${className}__end-of-content__inner`}
-				/>
-			</div>
-			{result.content.length > CONTENT_LIMIT && !result.loading && (
-				<Button
-					className={`${className}__show-more`}
-					onClick={() => {
-						const newIsLimited = !isLimited;
-
-						setIsLimited(newIsLimited);
-						handleScrollIntoView();
-					}}
-				>
-					{__(`Show ${isLimited ? 'more' : 'less'}`, 'maxi-blocks')}
-				</Button>
-			)}
 			<div className={`${className}__content-length`}>
 				{result.content.length} {__('characters', 'maxi-blocks')}
 			</div>

@@ -23,7 +23,6 @@ const HistoryButtons = ({
 	results,
 	setResults,
 	setSelectedResultId,
-	setHistoryStartId,
 	switchToGenerateTab,
 }) => {
 	const handleHistorySelect = media => {
@@ -47,7 +46,6 @@ const HistoryButtons = ({
 
 	const handleHistoryClean = () => {
 		setResults([]);
-		setHistoryStartId(null);
 		switchToGenerateTab();
 	};
 

@@ -20,13 +20,11 @@ const ResultsTab = ({
 	content,
 	modifyOption,
 	formatValue,
-	historyStartId,
 	selectedResultId,
 	isSelectedText,
 	isGenerating,
 	setResults,
 	setModifyOption,
-	setHistoryStartId,
 	setCustomValue,
 	setSelectedResultId,
 	onContentChange,
@@ -46,7 +44,6 @@ const ResultsTab = ({
 				results={results}
 				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}
-				setHistoryStartId={setHistoryStartId}
 				switchToGenerateTab={switchToGenerateTab}
 			/>
 			<ResultCards
@@ -54,14 +51,12 @@ const ResultsTab = ({
 				content={content}
 				modifyOption={modifyOption}
 				formatValue={formatValue}
-				historyStartId={historyStartId}
 				selectedResultId={selectedResultId}
 				isSelectedText={isSelectedText}
 				setResults={setResults}
 				setSelectedResultId={setSelectedResultId}
 				setModifyOption={setModifyOption}
 				setCustomValue={setCustomValue}
-				setHistoryStartId={setHistoryStartId}
 				onContentChange={onContentChange}
 				onChangeTextFormat={onChangeTextFormat}
 				updateSettings={updateSettings}

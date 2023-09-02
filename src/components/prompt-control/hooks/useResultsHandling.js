@@ -6,11 +6,10 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { toNumber, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const useResultsHandling = () => {
 	const [results, setResults] = useState([]);
-	const [historyStartId, setHistoryStartId] = useState(null);
 
 	useEffect(() => {
 		const resultsFromLocalStorage = JSON.parse(
@@ -25,22 +24,14 @@ const useResultsHandling = () => {
 					resultsFromLocalStorage[0].id
 				);
 			}
-
-			setHistoryStartId(
-				toNumber(sessionStorage.getItem('maxi-prompt-history-start-id'))
-			);
 		}
 	}, []);
-
-	useEffect(() => {
-		sessionStorage.setItem('maxi-prompt-history-start-id', historyStartId);
-	}, [historyStartId]);
 
 	useEffect(() => {
 		localStorage.setItem('maxi-prompt-results', JSON.stringify(results));
 	}, [results]);
 
-	return [results, setResults, historyStartId, setHistoryStartId];
+	return [results, setResults];
 };
 
 export default useResultsHandling;

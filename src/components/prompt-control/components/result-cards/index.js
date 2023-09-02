@@ -26,7 +26,6 @@ const ResultCards = ({
 	content,
 	modifyOption,
 	formatValue,
-	historyStartId,
 	selectedResultId,
 	isSelectedText,
 	setResults,
@@ -34,7 +33,6 @@ const ResultCards = ({
 	setSelectedResult,
 	setModifyOption,
 	setCustomValue,
-	setHistoryStartId,
 	onContentChange,
 	onChangeTextFormat,
 	updateSettings,
@@ -145,10 +143,6 @@ const ResultCards = ({
 						return;
 					}
 
-					if (historyStartId === result.id) {
-						setHistoryStartId(historyStartId - 1);
-					}
-
 					setResults(prevResults => {
 						const newResults = [...prevResults].filter(
 							deletedResult => deletedResult.id !== result.id
@@ -172,7 +166,6 @@ const ResultCards = ({
 						index={index + 1}
 						result={result}
 						isSelectedText={isSelectedText}
-						isFromPreviousSession={result.id <= historyStartId}
 						isSelected={result.id === selectedResultId}
 						modifyOption={modifyOption}
 						isRefExist={refResultIndex && refResultIndex >= 0}

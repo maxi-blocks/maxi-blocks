@@ -286,13 +286,7 @@ class MaxiBlockComponent extends Component {
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
 		// Check if the block is reusable
-		this.isReusable =
-			this.blockRef.current.parentNode.classList.contains(
-				'is-reusable'
-			) ||
-			this.blockRef.current.parentNode.parentNode.classList.contains(
-				'is-reusable'
-			);
+		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(
@@ -998,6 +992,25 @@ class MaxiBlockComponent extends Component {
 				)
 				?.remove();
 		}
+	}
+
+	/**
+	 * Checks if any parent node of the given React ref has the specified class.
+	 *
+	 * @param {React.RefObject} ref       - The React ref to the starting element.
+	 * @param {string}          className - The class name to look for.
+	 * @returns {boolean} - True if any parent has the class, otherwise false.
+	 */
+	// eslint-disable-next-line class-methods-use-this
+	hasParentWithClass(ref, className) {
+		let parent = ref.current ? ref.current.parentNode : null;
+		while (parent) {
+			if (parent.classList && parent.classList.contains(className)) {
+				return true;
+			}
+			parent = parent.parentNode;
+		}
+		return false;
 	}
 }
 

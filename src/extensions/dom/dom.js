@@ -328,4 +328,61 @@ wp.domReady(() => {
 
 		shouldSCMigratorRun = true;
 	});
+
+	const hideMaxiReusableBlocksPreview = () => {
+		const observer = new MutationObserver(mutationsList => {
+			for (const mutation of mutationsList) {
+				if (mutation.addedNodes.length > 0) {
+					const preview = document.querySelector(
+						'.block-editor-inserter__preview-container'
+					);
+					const iframe = document.querySelector(
+						'.block-editor-inserter__preview-container iframe'
+					);
+
+					if (iframe) {
+						const iframeContent =
+							iframe.contentDocument ||
+							iframe.contentWindow.document;
+						const maxiBlock =
+							iframeContent.querySelector('.maxi-block');
+
+						if (maxiBlock) {
+							preview.style.display = 'none'; // Hide the iframe
+							observer.disconnect(); // Stop observing mutations
+						}
+					}
+				}
+			}
+		});
+
+		observer.observe(document.body, { childList: true, subtree: true });
+	};
+
+	const waitForBlockTypeItems = () => {
+		return new Promise(resolve => {
+			const observer = new MutationObserver(mutationsList => {
+				for (const mutation of mutationsList) {
+					if (mutation.addedNodes.length > 0) {
+						const blockTypeItems = document.querySelectorAll(
+							'.block-editor-block-types-list__list-item.is-synced'
+						);
+						if (blockTypeItems.length > 0) {
+							observer.disconnect();
+							resolve(blockTypeItems);
+						}
+					}
+				}
+			});
+
+			observer.observe(document.body, { childList: true, subtree: true });
+		});
+	};
+
+	waitForBlockTypeItems().then(blockTypeItems => {
+		blockTypeItems.forEach(item => {
+			item.addEventListener('mouseenter', hideMaxiReusableBlocksPreview);
+			item.addEventListener('touchstart', hideMaxiReusableBlocksPreview);
+		});
+	});
 });

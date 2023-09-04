@@ -22,6 +22,7 @@ export { default as toolbarDrop } from './drag';
 export { default as toolbarDropShadow } from './drop-shadow';
 export { default as toolbarDuplicate } from './duplicate';
 export { default as toolbarDynamicContent } from './dynamic-content';
+export { default as toolbarContextLoop } from './context-loop';
 export { default as toolbarFavorite } from './favorite';
 export { default as toolbarGlobal } from './global';
 export { default as toolbarH1 } from './h1';

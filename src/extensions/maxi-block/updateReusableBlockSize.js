@@ -10,7 +10,7 @@ const updateReusableBlockSize = (target, uniqueID, clientId) => {
 	sizeElement.classList.add(uniqueID, 'maxi-block', 'maxi-block--backend');
 	sizeElement.id = `maxi-block-size-checker-${clientId}`;
 	sizeElement.style =
-		'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
+		'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important; display:none !important;';
 	target.parentNode.insertAdjacentElement('afterend', sizeElement);
 };
 

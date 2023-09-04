@@ -18,6 +18,7 @@ jest.mock('../../../styles/getBlockStyle', () => {
 	});
 });
 jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('src/components/transform-control/utils.js', () => jest.fn());
 jest.mock('../../../style-cards/getActiveStyleCard', () => {
 	return jest.fn(() => {
 		return {

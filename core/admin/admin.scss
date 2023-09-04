@@ -392,6 +392,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 										border-color: #dbdde6;
 									}
 
+									textarea {
+										resize: none;
+									}
+
 									label:not(label[for='maxi-breakpoint-maxi-versions']) {
 										text-transform: uppercase;
 										width: 20px;

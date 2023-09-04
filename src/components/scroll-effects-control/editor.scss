@@ -5,10 +5,27 @@
 			color: #999;
 			font-size: 12px;
 		}
+		.maxi-tabs-control__button--selected svg path {
+			fill: var(--maxi-secondary-color);
+		}
+		.maxi-tabs-control__button {
+			margin-right: 5px;
+			border: 1.5px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+		}
+		.maxi-tabs-control__button[aria-pressed='true'] {
+			background-color: var(--maxi-light-blue-2-color) !important;
+			border: none !important;
+			width: 15.5% !important;
+		}
+		.maxi-tabs-control__button svg:not(.maxi-tabs-control__notification) {
+			height: 100%;
+			margin: 0;
+			fill: var(--maxi-secondary-color) !important;
+		}
 	}
 	.maxi-scroll-combinations-select .maxi-base-control__field {
 		flex-direction: column;
-		row-gap: 5px;
 		align-items: flex-start;
 	}
 	.components-button {

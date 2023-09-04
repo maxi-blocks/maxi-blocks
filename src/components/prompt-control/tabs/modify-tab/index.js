@@ -6,11 +6,11 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import ResultCards from '../../components/result-cards';
 import {
 	getContentAttributesSection,
 	getContextSection,
 	getFormattedMessages,
-	getQuotesGuidance,
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
@@ -20,7 +20,6 @@ import { MODIFICATION_ACTIONS } from '../../constants';
  * Styles
  */
 import './editor.scss';
-import ResultCards from '../../components/result-cards';
 
 const ModifyTab = ({
 	results,
@@ -80,8 +79,6 @@ const ModifyTab = ({
 				? `- **Language to translate to**: ${customValue}`
 				: '';
 
-		const quoteGuidance = getQuotesGuidance(contentType);
-
 		const generatedTextExplanation = !refFromSelectedText
 			? `${prompt ? `- **Original Prompt**: ${prompt}` : ''}
 ${getContentAttributesSection(
@@ -91,8 +88,7 @@ ${getContentAttributesSection(
 	language,
 	characterCount
 )}
-- **Confidence Level**: ${confidenceLevel}%
-${quoteGuidance}`
+- **Confidence Level**: ${confidenceLevel}%`
 			: '';
 
 		const rephraseInstruction =

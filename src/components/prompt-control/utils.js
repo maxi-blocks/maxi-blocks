@@ -21,37 +21,22 @@ import {
 import { isEmpty, startCase } from 'lodash';
 
 export const getSiteInformation = AISettings => {
-	const AISettingsKeysToDisplay = [
-		'siteDescription',
-		'audience',
-		'siteGoal',
-		'services',
-		'businessName',
-		'businessInfo',
-	];
+	const AISettingsKeysToLabels = {
+		siteDescription: 'Description',
+		audience: 'Audience',
+		siteGoal: 'Goal',
+		services: 'Services Offered',
+		businessName: 'Business Name',
+		businessInfo: 'Business Info',
+	};
 
-	const siteInformation = AISettingsKeysToDisplay.map(
-		key =>
-			!isEmpty(AISettings[key]) &&
-			`\t- ${startCase(key)}: ${AISettings[key]}`
-	)
-		.filter(Boolean)
+	const siteInformation = Object.keys(AISettingsKeysToLabels)
+		.filter(key => AISettings[key] && AISettings[key].trim() !== '')
+		.map(key => `\t- ${AISettingsKeysToLabels[key]}: ${AISettings[key]}`)
 		.join('\n');
 
-	if (!siteInformation) {
-		return '';
-	}
-
-	return `- **Site Information**:\n${siteInformation}`;
+	return siteInformation ? `- Site Information:\n${siteInformation}` : '';
 };
-
-export const getQuotesGuidance = contentType =>
-	`- **Ready for Direct Publication**: No further editing needed.
-	${
-		contentType === 'Quotes' || contentType === 'Pull quotes Testimonial'
-			? 'Use quotes as necessary for this content type, e.g., when citing someone’s words.'
-			: 'Avoid unnecessary quotes or special characters, such as using quotes around headlines or titles.'
-	}`;
 
 export const getContentAttributesSection = (
 	contentType,
@@ -62,29 +47,24 @@ export const getContentAttributesSection = (
 ) => {
 	const upperLimit = Math.ceil(characterCount * 1.2);
 	const lowerLimit = Math.floor(characterCount * 0.8);
-	return `- **Content Attributes**:
-		- Type: ${contentType} (${CONTENT_TYPE_DESCRIPTIONS[contentType]})
-		- Tone: ${tone}
-		- Style: ${writingStyle}
-		- Language: ${language}
-		- Length: ${characterCount} characters
-		**CAUTION: It's crucial to adhere to the character length guideline. You have a flexibility of +/- 20%, meaning the content should ideally be between ${lowerLimit} and ${upperLimit} characters. Failing to do so will result in non-compliance.**`;
+	return `- Content Attributes:
+	- Type: ${contentType}
+	- Tone: ${tone}
+	- Writing Style: ${writingStyle}
+	- Language: ${language}
+	- Length: ${lowerLimit}-${upperLimit} (ideal: ${characterCount}) characters`;
 };
 
 export const getContextSection = context => {
-	if (!context) {
-		return '';
-	}
+	if (!context) return '';
 
-	// Format the context into a compact section with a clear explanation of the keys
 	const contextSection = context
-		.map(item => `\t- ${item.l}: ${item.c}`)
+		.map(({ l: label, c: content }) => `\t- ${label}: ${content}`)
 		.join('\n');
 
-	return `- **Page Context (level: content)**:
-	**Guideline: Use this context to understand the structure and subject matter of the page, but do not directly repeat these details in your generated content.**
-	The context represents the structure of the page, including headings (e.g., h1, h5) and paragraphs (e.g., p).
-  ${contextSection}`;
+	return `- Page Context:
+\t[IMPORTANT: Use the context ONLY for understanding the page's theme. DO NOT directly copy or use any phrases from this section in your response.]
+${contextSection}`;
 };
 
 export const getExamplesSection = contentType => {
@@ -92,14 +72,19 @@ export const getExamplesSection = contentType => {
 	if (!examples || examples.length === 0) {
 		return '';
 	}
-	const beforeEveryExample = '\n\t- ';
 
+	const beforeEveryExample = '\n\t- ';
 	const formattedExamples = `${beforeEveryExample}${examples.join(
 		beforeEveryExample
 	)}`;
 
-	return `- **Examples**:${formattedExamples}`;
+	return `- Examples:${formattedExamples}`;
 };
+
+export const getStyleGuide = () => `- Style Guide:
+\t- Model your response based on the provided examples.
+\t- Provide ONE singular response.
+\t- DO NOT use quotes around the response.`;
 
 export const getFormattedMessages = async (
 	systemMessageTemplate,
@@ -118,7 +103,7 @@ export const getFormattedMessages = async (
 	]);
 
 	const messages = await chatPrompt.formatMessages({});
-
+	console.log(systemMessageTemplate, messages);
 	return messages;
 };
 
@@ -157,11 +142,31 @@ export const updateResultsWithLoading = (
 	return newResults;
 };
 
+export const sanitizeContent = (content, shouldRemoveQuotes) => {
+	if (!shouldRemoveQuotes) {
+		return content;
+	}
+
+	// Trim any white spaces from the start and end
+	let newContent = content.trim();
+
+	// Remove quotes from the beginning and end if they exist
+	if (content.startsWith('"') || content.startsWith("'")) {
+		newContent = content.substr(1);
+	}
+	if (content.endsWith('"') || content.endsWith("'")) {
+		newContent = content.slice(0, -1);
+	}
+
+	return newContent;
+};
+
 export const callChatAndUpdateResults = async ({
 	chat,
 	messages,
 	newId,
 	abortControllerRef,
+	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
 }) => {
@@ -180,7 +185,10 @@ export const callChatAndUpdateResults = async ({
 						);
 
 						if (addedResult?.loading) {
-							addedResult.content += token;
+							addedResult.content = sanitizeContent(
+								addedResult.content + token,
+								shouldRemoveQuotes
+							);
 						}
 
 						return newResults;
@@ -198,7 +206,10 @@ export const callChatAndUpdateResults = async ({
 		const addedResult = newResults.find(result => result.id === newId);
 
 		if (addedResult) {
-			addedResult.content = response.content;
+			addedResult.content = sanitizeContent(
+				response.content,
+				shouldRemoveQuotes
+			);
 			addedResult.loading = false;
 		}
 
@@ -239,6 +250,11 @@ export const handleContentGeneration = async ({
 			messages,
 			newId,
 			abortControllerRef,
+			shouldRemoveQuotes: additionalData?.settings?.contentType
+				? !['Quotes', 'Pull quotes Testimonial'].includes(
+						additionalData.settings.contentType
+				  )
+				: true,
 			setIsGenerating,
 			setResults,
 		});

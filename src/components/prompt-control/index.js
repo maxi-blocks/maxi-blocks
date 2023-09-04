@@ -22,8 +22,8 @@ import {
 	getContextSection,
 	getExamplesSection,
 	getFormattedMessages,
-	getQuotesGuidance,
 	getSiteInformation,
+	getStyleGuide,
 	handleContentGeneration,
 } from './utils';
 import {
@@ -140,13 +140,8 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	}
 
 	const getMessages = async () => {
-		const quoteGuidance = getQuotesGuidance(contentType);
-		const contextSection = getContextSection(context);
+		const systemTemplate = `You are tasked with generating content for a website. Please follow these guidelines:
 
-		const systemTemplate = `
-You are a helpful assistant generating content for a website. Adhere to these guidelines:
-
-${quoteGuidance}
 ${getSiteInformation(AISettings)}
 ${getContentAttributesSection(
 	contentType,
@@ -155,16 +150,14 @@ ${getContentAttributesSection(
 	language,
 	characterCount
 )}
-${contextSection}
+${getContextSection(context)}
 ${getExamplesSection(contentType)}
-
-**CRITICAL: The generated content MUST be ready for direct pasting into the website without requiring any further editing.**
-Ensure that the content aligns with the site's audience and guidelines.${
-			prompt
-				? "\nNote: The user's input is the primary directive. Please provide a thoughtful and detailed response to the user's query or statement. Refer to the site's information only when it directly relates to the user's input."
-				: ''
-		}
-`;
+${getStyleGuide()}
+${
+	prompt
+		? '\nUser Input: Prioritize user query. Use site information only if relevant.'
+		: ''
+}`;
 
 		const humanTemplate = prompt;
 

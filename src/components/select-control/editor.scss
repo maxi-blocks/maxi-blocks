@@ -22,6 +22,9 @@ body.maxi-blocks--active select.maxi-select-control__input {
 	cursor: pointer;
 	opacity: 1;
 	outline: 0;
+	svg {
+		fill: var(--maxi-grey-4-color);
+	}
 
 	.maxi-option {
 		&__in-use {

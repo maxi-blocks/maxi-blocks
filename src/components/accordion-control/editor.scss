@@ -2,7 +2,7 @@
 	margin: 0px 0 1px;
 
 	&__item {
-		background: none;
+		background: white;
 		&[data-name='box shadow'] .maxi-accordion-control__item__panel {
 			padding: 0;
 		}
@@ -26,7 +26,7 @@
 
 		&__panel {
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
-				padding: 8px 8px 0;
+				padding: 0px 8px 0;
 			}
 		}
 
@@ -43,7 +43,7 @@
 			padding: 10px;
 			border-top: 1.5px solid var(--maxi-grey-1-color);
 			margin-bottom: 0;
-			background: var(--maxi-white);
+			background: var(--maxi-white-2-color);
 
 			&:hover {
 				background: var(--maxi-grey-2-color);

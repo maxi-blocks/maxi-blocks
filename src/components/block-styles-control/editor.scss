@@ -12,8 +12,9 @@ body.maxi-blocks--active {
 		display: flex;
 
 		&__light {
-			background: #f2f2f2;
+			background: var(--maxi-grey-1-color);
 			color: #1e1e1e !important;
+			border-radius: 5px;
 		}
 		&__dark {
 			background: #1e1e1e;

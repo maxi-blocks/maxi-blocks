@@ -330,8 +330,6 @@ wp.domReady(() => {
 	});
 
 	const hideMaxiReusableBlocksPreview = () => {
-		console.log('hover');
-
 		const observer = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {
 				if (mutation.addedNodes.length > 0) {
@@ -343,8 +341,6 @@ wp.domReady(() => {
 					);
 
 					if (iframe) {
-						observer.disconnect(); // Stop observing mutations
-
 						const iframeContent =
 							iframe.contentDocument ||
 							iframe.contentWindow.document;
@@ -352,8 +348,8 @@ wp.domReady(() => {
 							iframeContent.querySelector('.maxi-block');
 
 						if (maxiBlock) {
-							console.log('Maxi Block in preview detected');
 							preview.style.display = 'none'; // Hide the iframe
+							observer.disconnect(); // Stop observing mutations
 						}
 					}
 				}
@@ -364,9 +360,7 @@ wp.domReady(() => {
 	};
 
 	const waitForBlockTypeItems = () => {
-		console.log('waitForBlockTypeItems');
 		return new Promise(resolve => {
-			console.log('waitForBlockTypeItems return');
 			const observer = new MutationObserver(mutationsList => {
 				for (const mutation of mutationsList) {
 					if (mutation.addedNodes.length > 0) {
@@ -376,7 +370,6 @@ wp.domReady(() => {
 						if (blockTypeItems.length > 0) {
 							observer.disconnect();
 							resolve(blockTypeItems);
-							console.log('resolve');
 						}
 					}
 				}
@@ -387,7 +380,6 @@ wp.domReady(() => {
 	};
 
 	waitForBlockTypeItems().then(blockTypeItems => {
-		console.log('blockTypeItems', blockTypeItems);
 		blockTypeItems.forEach(item => {
 			item.addEventListener('mouseenter', hideMaxiReusableBlocksPreview);
 			item.addEventListener('touchstart', hideMaxiReusableBlocksPreview);

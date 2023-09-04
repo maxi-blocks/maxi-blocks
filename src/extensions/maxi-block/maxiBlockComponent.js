@@ -947,7 +947,7 @@ class MaxiBlockComponent extends Component {
 					/>
 				);
 
-				if (this.isReusable) this.rootSlot.render(styleComponent);
+				this.rootSlot.render(styleComponent);
 			}
 		}
 	}

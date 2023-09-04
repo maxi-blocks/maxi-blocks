@@ -361,7 +361,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								}
 								~ .maxi-dashboard_main-content_accordion-item-content {
 									border-top-width: 1px;
-									max-height: 200vh;
+									max-height: 10000vh;
 								}
 							}
 						}
@@ -386,7 +386,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 								&__input {
 									margin-top: 5px;
 									margin-bottom: 5px;
-									input {
+									input,
+									textarea {
 										border-radius: 0;
 										border-color: #dbdde6;
 									}

@@ -910,42 +910,42 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 				<h4>'.__('Tell us about your site', self::$maxi_text_domain).'</h4>
 				<p>'.__('What is the primary goal of your website? (e.g. shopping platform, offering
 				services, showcasing work, journaling)', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_site_description', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_site_description', '', 'textarea', [
                 'placeholder' => __('Example: Hairdresser, Plumber, Marketing agency', self::$maxi_text_domain),
             ]);
 
             $description = '
 				<h4>'.__('Who is your target audience?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Group of people you want to connect with or offer services to.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_audience', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_audience', '', 'textarea', [
                 'placeholder' => __('Example: Ladies who need haircuts', self::$maxi_text_domain),
             ]);
 
             $description = '
 				<h4>'.__('What is the goal of the website?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_site_goal', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_site_goal', '', 'textarea', [
                 'placeholder' => __('Example: Get bookings, write a blog', self::$maxi_text_domain),
             ]);
 
             $description = '
 				<h4>'.__('What services do you offer?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Enter as many as you like. Separate with commas.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_services', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_services', '', 'textarea', [
                 'placeholder' => __('Example: Hair cuts, blow dries, beard shave', self::$maxi_text_domain),
             ]);
 
             $description = '
 				<h4>'.__('What is your website or business name?', self::$maxi_text_domain).'</h4>
 				<p>'.__('The name will be used for writing content. Optional. Takes WordPress Site Title by default', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_business_name', '', 'textarea', [
                 'placeholder' => __("Example: Mary's fabulous hair studio", self::$maxi_text_domain),
             ]);
 
             $description = '
 				<h4>'.__('Anything else we should know?', self::$maxi_text_domain).'</h4>
 				<p>'.__('Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_setting($description, 'maxi_ai_business_info', '', 'text', [
+            $content .= $this->generate_setting($description, 'maxi_ai_business_info', '', 'textarea', [
                 'placeholder' => __('Example: Get bookings, write a blog', self::$maxi_text_domain),
             ]);
 
@@ -1028,26 +1028,33 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $visible_input_class = str_replace('_', '-', $option).'-visible-input';
 
-            $visible_input = $is_api_input
-                ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>"
-                : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\"/>";
+            if ($type === 'textarea') {
+                $visible_input = $is_api_input
+                    ? "<textarea class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\">{$input_value}</textarea>"
+                    : "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+            } else {
+                $visible_input = $is_api_input
+                    ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>"
+                    : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\"/>";
+            }
 
             $hidden_input = $is_api_input
                 ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\"/>"
                 : "";
 
             $input = <<<HTML
-				<div class="maxi-dashboard_main-content_accordion-item-content-switcher">
-					<span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
-					<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
-						{$visible_input}
-						{$hidden_input}
-					</div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
-				</div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
-				HTML;
+        <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
+            <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
+            <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
+                {$visible_input}
+                {$hidden_input}
+            </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
+        </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
+    HTML;
 
             return $input;
         }
+
 
 
         public function generate_breakpoint_input($breakpoint, $value)
@@ -1166,7 +1173,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if($type === 'dropdown') {
                 $content .= $this->generate_custom_dropdown($option, $args);
-            } elseif($type === 'text' || $type === 'password') {
+            } elseif($type === 'text' || $type === 'password' || $type === 'textarea') {
                 $is_api_input = $type === 'password';
 
                 if($is_api_input) {

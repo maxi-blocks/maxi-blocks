@@ -312,7 +312,35 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 	};
 
-	openAIApiKeyVisibleInput?.addEventListener('input', function () {
+	openAIApiKeyVisibleInput?.addEventListener('input', () => {
 		testOpenAIApiKey();
+	});
+
+	function autoResize(textarea) {
+		const maxHeight = 300; // Set this to your preferred maximum height, e.g., 200, 300, or 400 px
+
+		textarea.style.height = 'auto';
+
+		if (textarea.scrollHeight > maxHeight) {
+			textarea.style.height = `${maxHeight}px`;
+			textarea.style.overflowY = 'scroll'; // Enable vertical scrolling
+		} else {
+			textarea.style.height = `${textarea.scrollHeight}px`;
+			textarea.style.overflowY = 'hidden'; // Hide vertical scrollbar
+		}
+	}
+
+	// Get all textareas with the given class
+	const textareas = document.querySelectorAll(
+		'textarea.maxi-dashboard_main-content_accordion-item-input'
+	);
+	Array.from(textareas).forEach(textarea => {
+		// Initialize the height
+		autoResize(textarea);
+
+		// Add the auto-resizing functionality on input event
+		textarea.addEventListener('input', () => {
+			autoResize(textarea);
+		});
 	});
 });

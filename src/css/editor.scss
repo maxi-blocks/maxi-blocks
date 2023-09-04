@@ -223,17 +223,23 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 8px;
-		border: 1px solid var(--maxi-grey-1-color);
-		border-radius: 0;
-		color: var(--maxi-grey-5-color);
+		border: 1.5px solid var(--maxi-grey-1-color);
+		border-radius: 5px !important;
+		color: var(--maxi-black-1-color);
 		background-color: #fff;
 		font-size: 12px;
 		line-height: 12px;
 
 		&:focus {
-			border-color: var(--maxi-grey-6-color);
 			box-shadow: none;
 			outline: none;
+			border: 1.5px solid var(--maxi-grey-4-color);
+		}
+		&:hover {
+			color: var(--maxi-black-1-color);
+		}
+		&:active {
+			color: var(--maxi-black-1-color);
 		}
 	}
 	input[type='number'] {

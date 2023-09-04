@@ -20,7 +20,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-1-color);
 			border-radius: 0;
 			box-shadow: none;
 		}
@@ -37,7 +37,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__control {
 			border-color: var(--maxi-grey-1-color);
 			padding: 8px;
-			border-radius: 0;
+			border-radius: 5px;
 			min-height: unset;
 			display: flex;
 			align-content: center;

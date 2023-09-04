@@ -3,6 +3,12 @@
 
 	&__item {
 		background: none;
+		&[data-name='box shadow'] .maxi-accordion-control__item__panel {
+			padding: 0;
+		}
+		&[data-name='border'] .maxi-accordion-control__item__panel {
+			padding: 0;
+		}
 
 		.maxi-accordion-tab {
 			&:after {
@@ -21,7 +27,6 @@
 		&__panel {
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
 				padding: 8px 8px 0;
-				background-color: #fff;
 			}
 		}
 
@@ -35,10 +40,10 @@
 			z-index: 2;
 			display: flex;
 			align-items: center;
-			padding: 8px;
-			border-top: 1px solid var(--maxi-grey-1-color);
+			padding: 10px;
+			border-top: 1.5px solid var(--maxi-grey-1-color);
 			margin-bottom: 0;
-			background: var(--maxi-white-2-color);
+			background: var(--maxi-white);
 
 			&:hover {
 				background: var(--maxi-grey-2-color);
@@ -67,7 +72,7 @@
 				}
 			}
 			&[aria-expanded='true'] {
-				border-bottom: 1px solid var(--maxi-grey-1-color);
+				// border-bottom: 1px solid var(--maxi-grey-1-color);
 				background: #fff;
 
 				&:after {

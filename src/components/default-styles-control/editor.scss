@@ -2,21 +2,21 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	margin-bottom: 8px;
+	margin-bottom: 10px;
 
 	.maxi-default-styles-control__button {
 		display: flex;
 		justify-content: center;
 		height: 32px;
+		width: 22.5%;
 		border: 1px solid var(--maxi-grey-1-color);
-		flex: 1;
-		border-radius: 0;
+		border-radius: 4px;
 		transition: all 0.5s;
 
 		&--active {
-			background-color: #f8fbfd;
-			border: 1px solid #dbdde6;
-			border-bottom: 2px solid var(--maxi-secondary-color);
+			background-color: var(--maxi-light-blue-2-color);
+			border: none;
+			// border-bottom: 2px solid var(--maxi-secondary-color);
 			path {
 				fill: var(--maxi-secondary-color);
 			}

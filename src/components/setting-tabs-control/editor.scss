@@ -5,7 +5,7 @@
 		& > .maxi-tabs-control {
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				&[aria-pressed='true'] {
-					border-bottom: 2px solid var(--maxi-primary-color) !important;
+					border-bottom: 1px solid var(--maxi-black-1-color) !important;
 				}
 			}
 		}

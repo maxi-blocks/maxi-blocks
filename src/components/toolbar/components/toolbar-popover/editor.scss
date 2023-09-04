@@ -76,13 +76,14 @@
 				background-color: #fff;
 				width: 35px;
 				height: 35px;
+
 				&__active,
 				&:hover {
-					border-color: #ff4a17;
+					border-color: var(--maxi-grey-1-color);
 				}
 			}
 			&-item {
-				border-color: #141516;
+				border-color: var(--maxi-grey-1-color);
 			}
 		}
 	}

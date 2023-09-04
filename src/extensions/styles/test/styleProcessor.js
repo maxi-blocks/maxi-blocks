@@ -3,6 +3,9 @@ import styleProcessor from '../styleProcessor';
 jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('src/components/transform-control/utils.js', () => ({
+	getTransformSelectors: jest.fn(),
+}));
 
 describe('styleCleaner', () => {
 	it('Returns cleaned styles obj', () => {

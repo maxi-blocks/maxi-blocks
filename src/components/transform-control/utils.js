@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
+import { prefixes as searchPrefixes } from '../../blocks/search-maxi/data';
 
 /**
  * External dependencies
@@ -79,10 +80,15 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 	};
 };
 
-export const getTransformCategories = (categories, attributes) => {
+export const getTransformCategories = (categories, attributes, blockName) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
+		'shape-divider-top-status': shapeDividerTopStatus,
+		'shape-divider-bottom-status': shapeDividerBottomStatus,
+		'icon-content': iconContent,
+		[`${searchPrefixes.closeIconPrefix}icon-content`]: closeIconContent,
+		skin,
 	} = attributes;
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
@@ -97,6 +103,16 @@ export const getTransformCategories = (categories, attributes) => {
 				getKey(key)
 			),
 		],
-		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background'
+		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background',
+		...(blockName === 'container-maxi' && [
+			!shapeDividerTopStatus && 'top shape divider',
+			!shapeDividerBottomStatus && 'bottom shape divider',
+		]),
+		...(blockName === 'button-maxi' && [isEmpty(iconContent) && 'icon']),
+		...(blockName === 'search-maxi' && [
+			isEmpty(iconContent) && 'icon',
+			isEmpty(closeIconContent) && 'close icon',
+			skin !== 'icon-reveal' && 'close icon',
+		])
 	);
 };

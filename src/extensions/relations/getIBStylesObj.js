@@ -38,7 +38,7 @@ const getIBStylesObj = ({
 				clientId,
 			}),
 		},
-	}).target.result;
+	})?.target?.result;
 };
 
 export default getIBStylesObj;

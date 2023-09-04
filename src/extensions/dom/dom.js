@@ -328,4 +328,69 @@ wp.domReady(() => {
 
 		shouldSCMigratorRun = true;
 	});
+
+	const hideMaxiReusableBlocksPreview = () => {
+		console.log('hover');
+
+		const observer = new MutationObserver(mutationsList => {
+			for (const mutation of mutationsList) {
+				if (mutation.addedNodes.length > 0) {
+					const preview = document.querySelector(
+						'.block-editor-inserter__preview-container'
+					);
+					const iframe = document.querySelector(
+						'.block-editor-inserter__preview-container iframe'
+					);
+
+					if (iframe) {
+						observer.disconnect(); // Stop observing mutations
+
+						const iframeContent =
+							iframe.contentDocument ||
+							iframe.contentWindow.document;
+						const maxiBlock =
+							iframeContent.querySelector('.maxi-block');
+
+						if (maxiBlock) {
+							console.log('Maxi Block in preview detected');
+							preview.style.display = 'none'; // Hide the iframe
+						}
+					}
+				}
+			}
+		});
+
+		observer.observe(document.body, { childList: true, subtree: true });
+	};
+
+	const waitForBlockTypeItems = () => {
+		console.log('waitForBlockTypeItems');
+		return new Promise(resolve => {
+			console.log('waitForBlockTypeItems return');
+			const observer = new MutationObserver(mutationsList => {
+				for (const mutation of mutationsList) {
+					if (mutation.addedNodes.length > 0) {
+						const blockTypeItems = document.querySelectorAll(
+							'.block-editor-block-types-list__list-item.is-synced'
+						);
+						if (blockTypeItems.length > 0) {
+							observer.disconnect();
+							resolve(blockTypeItems);
+							console.log('resolve');
+						}
+					}
+				}
+			});
+
+			observer.observe(document.body, { childList: true, subtree: true });
+		});
+	};
+
+	waitForBlockTypeItems().then(blockTypeItems => {
+		console.log('blockTypeItems', blockTypeItems);
+		blockTypeItems.forEach(item => {
+			item.addEventListener('mouseenter', hideMaxiReusableBlocksPreview);
+			item.addEventListener('touchstart', hideMaxiReusableBlocksPreview);
+		});
+	});
 });

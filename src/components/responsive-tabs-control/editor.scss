@@ -15,7 +15,7 @@
 			font-weight: 500;
 
 			&[aria-pressed='true'] {
-				border-bottom-color: var(--maxi-secondary-color);
+				// border-bottom-color: var(--maxi-secondary-color);
 				color: var(--maxi-secondary-color);
 			}
 		}
@@ -50,7 +50,6 @@
 			font-weight: 500;
 
 			&[aria-pressed='true'] {
-				border-bottom-color: var(--maxi-secondary-color);
 				color: var(--maxi-secondary-color);
 			}
 		}

@@ -84,8 +84,13 @@ class MaxiBlocks_Styles
      */
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
-        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_styles';
+
+        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
+            add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+        }
 
         if(self::should_apply_content_filter()) {
             add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
@@ -491,26 +496,30 @@ class MaxiBlocks_Styles
      */
     public function get_meta($id, $is_template = false)
     {
-        global $post;
-
-        if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
-            return false;
-        }
-
         global $wpdb;
-        $response = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-                $id
-            ),
-            OBJECT
-        );
+        $table_name = $wpdb->prefix . 'maxi_blocks_custom_data'. ($is_template ? "_templates" : "");
+        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
+            global $post;
 
-        if (!$response) {
-            $response = '';
+            if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
+                return false;
+            }
+
+            $response = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                    $id
+                ),
+                OBJECT
+            );
+
+            if (!$response) {
+                $response = '';
+            }
+
+            return $response;
         }
 
-        return $response;
     }
 
     /**

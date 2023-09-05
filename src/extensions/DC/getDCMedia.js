@@ -21,7 +21,7 @@ const getDCMedia = async (dataRequest, clientId) => {
 		return contentValue;
 	}
 
-	if (!(field in data)) return null;
+	if (!data || !(field in data)) return null;
 
 	const id = data[field];
 

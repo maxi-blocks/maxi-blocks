@@ -26,7 +26,7 @@ import DISALLOWED_BLOCKS from './disallowedBlocks';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, round } from 'lodash';
 
 const validateAttributes = (
 	block,
@@ -199,10 +199,9 @@ const validateRowColumnsStructure = (
 
 			if (index === 0) {
 				firstColumnWidth = columnWidth;
-				return;
 			}
 
-			if (columnWidth !== firstColumnWidth) {
+			if (round(columnWidth, 2) !== round(firstColumnWidth, 2)) {
 				isEqualTemplate = false;
 			}
 		})

@@ -397,7 +397,9 @@ class MaxiBlocks_DynamicContent
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
-            $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+            if (!empty($post)) {
+                $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+            }
         } elseif ($dc_type === 'settings') { // Site settings
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
@@ -597,7 +599,7 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if (is_null($post)) {
+        if(is_null($post) || !isset($post->{"post_$dc_field"})) {
             return '';
         }
 

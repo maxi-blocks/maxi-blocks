@@ -336,21 +336,8 @@ wp.domReady(() => {
 					const preview = document.querySelector(
 						'.block-editor-inserter__preview-container'
 					);
-					const iframe = document.querySelector(
-						'.block-editor-inserter__preview-container iframe'
-					);
-
-					if (iframe) {
-						const iframeContent =
-							iframe.contentDocument ||
-							iframe.contentWindow.document;
-						const maxiBlock =
-							iframeContent.querySelector('.maxi-block');
-
-						if (maxiBlock) {
-							preview.style.display = 'none'; // Hide the iframe
-							observer.disconnect(); // Stop observing mutations
-						}
+					if (preview) {
+						preview.style.display = 'none'; // Hide the preview
 					}
 				}
 			}

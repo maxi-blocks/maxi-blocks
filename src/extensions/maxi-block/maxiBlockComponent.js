@@ -168,29 +168,33 @@ class MaxiBlockComponent extends Component {
 
 		if (!isEmpty(blocksIBRelations))
 			blocksIBRelations.forEach(({ clientId }) => {
-				const { 'maxi-version-current': maxiVersionCurrent } =
-					select('core/block-editor').getBlockAttributes(clientId);
+				const maxiVersionCurrent =
+					select('core/block-editor')?.getBlockAttributes(clientId)?.[
+						'maxi-version-current'
+					];
 
-				const needUpdate = [
-					'0.0.1-SC1',
-					'0.0.1-SC2',
-					'0.0.1-SC3',
-					'0.0.1-SC4',
-					'0.0.1-SC5',
-					'0.0.1-SC6',
-					'1.0.0-RC1',
-					'1.0.0-RC2',
-					'1.0.0',
-					'1.0.1',
-				].includes(maxiVersionCurrent);
+				if (maxiVersionCurrent) {
+					const needUpdate = [
+						'0.0.1-SC1',
+						'0.0.1-SC2',
+						'0.0.1-SC3',
+						'0.0.1-SC4',
+						'0.0.1-SC5',
+						'0.0.1-SC6',
+						'1.0.0-RC1',
+						'1.0.0-RC2',
+						'1.0.0',
+						'1.0.1',
+					].includes(maxiVersionCurrent);
 
-				if (needUpdate)
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					});
+					if (needUpdate)
+						updateRelationsRemotely({
+							blockTriggerClientId: clientId,
+							blockTargetClientId: this.props.clientId,
+							blockAttributes: this.props.attributes,
+							breakpoint: this.props.deviceType,
+						});
+				}
 			});
 
 		// Migrate uniqueID for IB

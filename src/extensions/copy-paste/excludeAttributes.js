@@ -65,8 +65,14 @@ const shouldDeleteKey = (
 			getDefaultAttribute(prop)
 		);
 
+		const isDCLinkBlocksException =
+			prop === 'dc-status' && DC_LINK_BLOCKS.includes(blockName);
+
 		return (
-			(!isSvgIconMaxiException && isInAllTimeExclude) || !isEqualToDefault
+			(!isSvgIconMaxiException &&
+				!isDCLinkBlocksException &&
+				isInAllTimeExclude) ||
+			!isEqualToDefault
 		);
 	}
 

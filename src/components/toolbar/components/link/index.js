@@ -15,6 +15,7 @@ import ToggleSwitch from '../../../toggle-switch';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
 import { LoopContext } from '../../../../extensions/DC';
+import DC_LINK_BLOCKS from './dcLinkBlocks';
 
 /**
  * External dependencies
@@ -22,19 +23,10 @@ import { LoopContext } from '../../../../extensions/DC';
 import { isNil, isEmpty } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
-
-const DC_LINK_BLOCKS = [
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/slide-maxi',
-	'maxi-blocks/pane-maxi',
-	'maxi-blocks/svg-icon-maxi',
-];
 
 /**
  * Link

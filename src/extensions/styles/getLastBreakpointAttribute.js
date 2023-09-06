@@ -58,8 +58,6 @@ const getLastBreakpointAttributeSingle = (
 
 	const currentBreakpoint =
 		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
-	if (target === 'max-width')
-		console.log(`currentBreakpoint: ${currentBreakpoint}`);
 
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 

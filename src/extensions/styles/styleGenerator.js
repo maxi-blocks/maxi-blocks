@@ -113,8 +113,6 @@ const styleGenerator = (
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
 			const target = getTarget(key);
-			// console.log('{ target, key, value }');
-			// console.log({ target, key, value });
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!props[breakpoint]) return;
@@ -160,9 +158,6 @@ const styleGenerator = (
 			});
 		});
 	});
-
-	// console.log('styleGenerator response');
-	// console.log(response);
 
 	return response;
 };

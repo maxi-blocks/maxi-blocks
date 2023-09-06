@@ -45,7 +45,7 @@ const getProductsContent = async (dataRequest, entityData) => {
 		case 'review_count':
 		case 'average_rating':
 		case 'sku':
-			return data[field];
+			return data[field]?.toString();
 		case 'price':
 		case 'regular_price':
 		case 'sale_price':

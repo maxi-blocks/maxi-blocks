@@ -106,21 +106,31 @@ const Link = props => {
 								)}
 								selected={dcLinkStatus}
 								onChange={value => {
-									onChange(linkSettings, {
-										'dc-link-status': value,
-										...(showDCLink && {
-											// If DC link is enabled in blocks without DC, that should enable DC for the block
-											'dc-status': value,
-										}),
-									});
+									onChange(
+										value
+											? linkSettings
+											: {
+													...linkSettings,
+													url: null,
+											  },
+										{
+											'dc-link-status': value,
+											...(showDCLink && {
+												// If DC link is enabled in blocks without DC, that should enable DC for the block
+												'dc-status': value,
+											}),
+										}
+									);
 								}}
 							/>
 						)}
-						{!dcLinkStatus && (
+						{(!dcLinkStatus ||
+							!DC_LINK_BLOCKS.includes(blockName)) && (
 							<ToolbarContext.Consumer>
 								{context => (
 									<LinkControl
 										linkValue={linkSettings}
+										dcLinkStatus={dcLinkStatus}
 										onChangeLink={onChange}
 										onRemoveLink={() => {
 											removeLinkHandle();

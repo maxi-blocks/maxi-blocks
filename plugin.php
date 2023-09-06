@@ -172,3 +172,16 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
 if (class_exists('MaxiBlocks_DynamicContent')) {
     MaxiBlocks_DynamicContent::register();
 }
+
+//======================================================================
+// MaxiBlocks Settings link
+//======================================================================
+function maxiblocks_settings_link($links) {
+    $settings_link = '<a href="' . esc_url( admin_url( 'admin.php' ) ) . '?page=maxi-blocks-dashboard&tab=maxi_blocks_settings">Settings</a>';
+    array_push($links, $settings_link);
+    return $links;
+}
+
+$plugin_basename = plugin_basename(__FILE__);
+add_filter("plugin_action_links_$plugin_basename", 'maxiblocks_settings_link');
+

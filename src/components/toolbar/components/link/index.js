@@ -97,7 +97,7 @@ const Link = props => {
 				disabled={childHasLink}
 			>
 				{!childHasLink && (
-					<>
+					<div className='toolbar-item__link-popover'>
 						{(dcStatus || showDCLink) && (
 							<ToggleSwitch
 								label={__(
@@ -116,19 +116,21 @@ const Link = props => {
 								}}
 							/>
 						)}
-						<ToolbarContext.Consumer>
-							{context => (
-								<LinkControl
-									linkValue={linkSettings}
-									onChangeLink={onChange}
-									onRemoveLink={() => {
-										removeLinkHandle();
-										context.onClose();
-									}}
-								/>
-							)}
-						</ToolbarContext.Consumer>
-					</>
+						{!dcLinkStatus && (
+							<ToolbarContext.Consumer>
+								{context => (
+									<LinkControl
+										linkValue={linkSettings}
+										onChangeLink={onChange}
+										onRemoveLink={() => {
+											removeLinkHandle();
+											context.onClose();
+										}}
+									/>
+								)}
+							</ToolbarContext.Consumer>
+						)}
+					</div>
 				)}
 			</ToolbarPopover>
 		</div>

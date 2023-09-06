@@ -114,6 +114,13 @@ const getSizeStyles = (obj, prefix = '') => {
 					attributes: obj,
 				});
 
+				if (target === 'max-width') {
+					console.log(`max-width for ${breakpoint}`);
+					console.log('num unit');
+					console.log(num + unit);
+					console.log('===========================');
+				}
+
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&

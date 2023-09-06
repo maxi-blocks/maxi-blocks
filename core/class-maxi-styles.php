@@ -1402,8 +1402,6 @@ class MaxiBlocks_Styles
         global $post;
 
         // Fetch blocks from template parts.
-        // $blocks = $this->fetch_template_parts_frontend();
-
         $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
 
 
@@ -1419,6 +1417,7 @@ class MaxiBlocks_Styles
 
         // Fetch and parse reusable blocks.
         $reusable_blocks = $this->get_parsed_reusable_blocks_frontend($blocks);
+
         if (!empty($reusable_blocks)) {
             $blocks = array_merge_recursive($blocks, $reusable_blocks);
         }
@@ -1458,6 +1457,17 @@ class MaxiBlocks_Styles
         );
         $templates = $wpdb->get_results($query);
 
+
+        if($template_slug === 'home') {
+            // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+                'blog'
+            );
+            $templates_home = $wpdb->get_results($query);
+            $templates = array_merge($templates, $templates_home);
+        }
+
         foreach ($templates as $template) {
             // Parse blocks for each template.
             $template_blocks = parse_blocks($template->post_content);
@@ -1484,18 +1494,24 @@ class MaxiBlocks_Styles
      */
     private function get_parsed_reusable_blocks_frontend($blocks)
     {
-        // Extract reusable block IDs from the provided blocks.
-        $reusable_block_ids = array_map(
-            function ($block) {
-                return $block['attrs']['ref'];
-            },
-            array_filter(
-                $blocks,
-                function ($block) {
-                    return $block['blockName'] === 'core/block' && !empty($block['attrs']['ref']);
+        function getReusableBlockIds($blocks)
+        {
+            $reusableBlockIds = [];
+
+            foreach ($blocks as $block) {
+                if ($block['blockName'] === 'core/block' && !empty($block['attrs']['ref'])) {
+                    $reusableBlockIds[] = $block['attrs']['ref'];
                 }
-            )
-        );
+
+                if (!empty($block['innerBlocks'])) {
+                    $reusableBlockIds = array_merge($reusableBlockIds, getReusableBlockIds($block['innerBlocks']));
+                }
+            }
+
+            return $reusableBlockIds;
+        }
+
+        $reusable_block_ids = getReusableBlockIds($blocks);
 
         // Remove duplicates from the block IDs.
         $reusable_block_ids = array_unique($reusable_block_ids);

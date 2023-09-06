@@ -1,4 +1,10 @@
 .maxi-link-control {
+	&--dc {
+		.block-editor-link-control__search-item-action {
+			display: none;
+		}
+	}
+
 	.block-editor-link-control {
 		width: 280px;
 	}

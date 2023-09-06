@@ -16,15 +16,26 @@ import ToggleSwitch from '../toggle-switch';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles
  */
 import './editor.scss';
 
-const LinkControl = ({ linkValue = {}, onChangeLink, onRemoveLink }) => {
+const LinkControl = ({
+	linkValue = {},
+	dcLinkStatus,
+	onChangeLink,
+	onRemoveLink,
+}) => {
 	return (
-		<div className='maxi-link-control'>
+		<div
+			className={classnames(
+				'maxi-link-control',
+				dcLinkStatus && 'maxi-link-control--dc'
+			)}
+		>
 			<NativeLinkControl
 				searchInputPlaceholder={__('Search or type URL', 'maxi-blocks')}
 				value={linkValue}
@@ -77,12 +88,14 @@ const LinkControl = ({ linkValue = {}, onChangeLink, onRemoveLink }) => {
 							</div>
 						))}
 					</div>
-					<Button
-						className='maxi-link-control__link-destroyer'
-						onClick={onRemoveLink}
-					>
-						{__('Remove link', 'maxi-blocks')}
-					</Button>
+					{!dcLinkStatus && (
+						<Button
+							className='maxi-link-control__link-destroyer'
+							onClick={onRemoveLink}
+						>
+							{__('Remove link', 'maxi-blocks')}
+						</Button>
+					)}
 				</>
 			)}
 		</div>

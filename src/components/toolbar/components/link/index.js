@@ -90,8 +90,8 @@ const Link = props => {
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={
-					!isNil(linkSettings) &&
-					!isEmpty(linkSettings.url) &&
+					((!isNil(linkSettings) && !isEmpty(linkSettings.url)) ||
+						dcLinkStatus) &&
 					'toolbar-item__link--active'
 				}
 				disabled={childHasLink}

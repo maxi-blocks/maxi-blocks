@@ -26,6 +26,7 @@ import transitionMigrator from './transitionMigrator';
 import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
 import IBLabelToIDMigrator from './IBLabelToIDMigrator';
 import SVGMarkerSizeMigrator from './SVGMarkerSizeMigrator';
+import dcLinkBlocksMigrator from './dcLinkBlocksMigrator';
 
 /**
  * External dependencies
@@ -126,6 +127,7 @@ const blockMigrator = blockMigratorProps => {
 		fullWidthAttributeMigrator,
 		IBLabelToIDMigrator,
 		SVGMarkerSizeMigrator,
+		dcLinkBlocksMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

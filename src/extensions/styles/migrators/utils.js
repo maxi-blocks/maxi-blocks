@@ -5,6 +5,8 @@ import { getBlockData } from '../../attributes';
 
 /**
  * Returns block name from uniqueID
+ *
+ * @example uniqueID: accordion-maxi-123 -> accordion-maxi
  */
 export const getBlockNameFromUniqueID = uniqueID =>
 	uniqueID.slice(0, uniqueID.indexOf('maxi') + 4);

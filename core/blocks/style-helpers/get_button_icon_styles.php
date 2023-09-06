@@ -113,7 +113,7 @@ function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
                     $prefix
                 ),
                 $props['blockStyle'],
-                $props[$prefix . 'icon-inherit'],
+                $props[$prefix . 'icon-inherit'] ?? false,
                 true,
                 $iconType
             ) : null,

@@ -303,7 +303,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $prefix = 'button-';
 
             $response = [
-                'border' => array_key_exists('button-border-status-hover', $props) && $props['border-status-hover'] ? get_border_styles([
+                'border' => array_key_exists('button-border-status-hover', $props) && $props['button-border-status-hover'] ? get_border_styles([
                     'obj' => get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'], true, $prefix),
                     'is_hover' => true,
                     'block_style' => $block_style,
@@ -311,7 +311,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'prefix' => $prefix,
                     'sc_values' => $sc_values,
                 ]) : null,
-                'boxShadow' => array_key_exists('button-box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
+                'boxShadow' => array_key_exists('button-box-shadow-status-hover', $props) && $props['button-box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true, $prefix),
                     'is_hover' => true,
                     'block_style' => $block_style,

@@ -23,7 +23,8 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 		[]
 	);
 
-	if (getBlockOrder().indexOf(clientId) === 0) return <ContentLoader />;
+	if (getBlockOrder().indexOf(clientId) === 0)
+		return <ContentLoader cloud={false} />;
 
 	return null;
 };

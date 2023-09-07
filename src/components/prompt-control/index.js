@@ -257,6 +257,7 @@ ${getStyleGuide(prompt, context)}`;
 					},
 				]}
 				disablePadding
+				hasBorder
 				setTab={setTab}
 			/>
 		</div>

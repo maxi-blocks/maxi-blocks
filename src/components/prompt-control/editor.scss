@@ -2,18 +2,52 @@
 	&__buttons {
 		display: flex;
 		gap: 8px;
-		margin-bottom: 5px;
+		margin-bottom: 8px;
 	}
 
-	&__button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.5s;
-		border: 1px solid #dddfe1;
-		border-radius: 0;
-		padding: 8px;
-		color: #232533;
-		background: var(--maxi-white-3-color);
+	&-history-buttons{
+		padding-left: 10px;
+		column-gap: 20px;
+	}
+
+	&-history-tab,
+	&-modify-tab{
+		.maxi-prompt-control__buttons{
+			.maxi-components-button{
+				height: auto;
+				padding: 0;
+				color: var(--maxi-black-1-color);
+			}
+		}
+	}
+
+	&-generate-tab{
+		padding-top: 8px;
+		.maxi-react-select-control{
+			& > label{
+				display: block;
+				margin-bottom: 3px;
+			}
+			& > div > div{
+				border-color: var(--maxi-grey-1-color);
+			}
+		}
+		.maxi-prompt-control__buttons{
+			.maxi-components-button{
+				justify-content: center;
+				width: 100%;
+				border: 2px solid var(--maxi-secondary-color);
+				color: var(--maxi-secondary-color) !important;
+				background: var(--maxi-light-blue-2-color);
+				font-size: 16px !important;
+				font-weight: 700 !important;
+				text-align: center;
+				&:hover{
+					border-color: var(--maxi-primary-color) !important;
+					color: var(--maxi-black-1-color) !important;
+					background: var(--maxi-white-3-color);
+				}
+			}
+		}
 	}
 }

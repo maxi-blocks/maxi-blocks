@@ -11,6 +11,7 @@ import Button from '../../../button';
 import DialogBox from '../../../dialog-box';
 import ResultModifyBar from '../result-modify-bar';
 import { CONTENT_LIMIT, MODIFICATION_MODIFICATORS } from '../../constants';
+import { Icon } from '../../../../components';
 
 /**
  * External dependencies
@@ -22,6 +23,11 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
+
+/**
+ * Icons
+ */
+import { promptDelete, promptCopy } from '../../../../icons';
 
 const ResultCard = ({
 	result,
@@ -167,13 +173,17 @@ const ResultCard = ({
 					<div>
 						{!result.isSelectedText && (
 							<span
-								className={`${className}__top-bar__select-row__id`}
+								className={`${className}__top-bar__select-row__id ${className}__top-bar__select-row__id_${
+									isSelected ? 'output' : 'select'
+								}`}
 							>
 								#{result.id}
 							</span>
 						)}{' '}
 						<span
-							className={`${className}__top-bar__select-row__select-text`}
+							className={`${className}__top-bar__select-row__select-text ${className}__top-bar__select-row__select-text_${
+								isSelected ? 'output' : 'select'
+							}`}
 						>
 							{__(
 								// isSelected
@@ -234,10 +244,13 @@ const ResultCard = ({
 			{!isModifyTab && !result.isSelectedText && (
 				<div className={`${className}__options`}>
 					<Button
-						className='maxi-prompt-control__button'
+						className='maxi-prompt-control__button has-tooltip'
 						onClick={handleCopy}
 					>
-						{__('Copy', 'maxi-blocks')}
+						<span className='tooltip'>
+							{__('Copy', 'maxi-blocks')}
+						</span>
+						<Icon icon={promptCopy} />
 					</Button>
 					<Button
 						className='maxi-prompt-control__button'
@@ -270,8 +283,15 @@ const ResultCard = ({
 						cancelLabel={__('Cancel', 'maxi-blocks')}
 						confirmLabel={__('Delete', 'maxi-blocks')}
 						onConfirm={onDelete}
-						buttonClassName={`${className}__clean-history-button maxi-prompt-control__button`}
-						buttonChildren={__('Delete', 'maxi-blocks')}
+						buttonClassName={`${className}__clean-history-button maxi-prompt-control__button has-tooltip`}
+						buttonChildren={
+							<>
+								<span className='tooltip'>
+									{__('Delete', 'maxi-blocks')}
+								</span>
+								<Icon icon={promptDelete} />
+							</>
+						}
 					/>
 				</div>
 			)}

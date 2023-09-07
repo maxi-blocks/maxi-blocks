@@ -1,13 +1,26 @@
 .maxi-prompt-control-results-card {
-	padding: 20px;
+	padding: 10px;
 	border: 2px solid var(--maxi-grey-1-color);
 	border-radius: 4px;
 	background: var(--maxi-white-3-color);
 	cursor: pointer;
 	transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
 
+	& > *{
+		color: var(--maxi-black-1-color) !important;
+	}
 	& &__variant {
 		font-weight: bold;
+	}
+
+	&__show-more{
+		margin-bottom: 8px;
+		height: auto;
+		padding: 0;
+	}
+	&__clean-history-button{
+		height: auto;
+		padding: 0;
 	}
 
 	&__top-bar {
@@ -17,6 +30,12 @@
 			display: flex;
 			justify-content: space-between;
 			cursor: pointer;
+
+			& &__select-text_output,
+			& &__from-previous-session,
+			& &__id_output {
+				color: var(--maxi-secondary-color) !important;
+			}
 
 			& &__select-text,
 			& &__from-previous-session,
@@ -72,10 +91,11 @@
 	&__options {
 		display: flex;
 		flex-flow: wrap;
+		justify-content: space-between;
 		gap: 8px;
 
 		.maxi-components-button {
-			padding: 6px 8px;
+			padding: 0;
 		}
 	}
 
@@ -87,11 +107,6 @@
 		.maxi-prompt-control-results-card__top-bar {
 			&__select-row {
 				cursor: default;
-
-				&__select-text,
-				&__id {
-					color: var(--maxi-secondary-color);
-				}
 			}
 		}
 	}

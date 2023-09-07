@@ -286,10 +286,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 ]),
             ];
 
-            write_log('button padding attr');
-            write_log(get_group_attributes($props, 'padding', false, $prefix));
-            write_log('===================================');
-
             $response = array_merge(
                 $response,
                 get_background_styles(
@@ -298,7 +294,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                             $props,
                             array('background', 'backgroundColor', 'backgroundGradient'),
                             false,
-                            $prefix
                         ),
                         [
                             'block_style' => $props['blockStyle'],

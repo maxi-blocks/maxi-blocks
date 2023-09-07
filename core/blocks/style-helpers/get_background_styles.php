@@ -162,9 +162,9 @@ function get_gradient_background_object($options)
     $prefix = $options['prefix'] ?? '';
     $breakpoint = $options['breakpoint'] ?? 'general';
     $is_icon = $options['is_icon'] ?? false;
-    $block_style = $options['block_style'] ?? null;
-    $is_button = $options['is_button'] ?? null;
-    $is_icon_inherit = $options['is_icon_inherit'] ?? null;
+    $block_style = $options['block_style'] ?? 'light';
+    $is_button = $options['is_button'] ?? false;
+    $is_icon_inherit = $options['is_icon_inherit'] ?? false;
     $sc_values = $options['sc_values'] ?? null;
     $props = $options;
 
@@ -927,7 +927,7 @@ function get_general_background_styles(
             ) {
                 $get_size = function ($width, $target) use ($breakpoint, $widthUnit, $is_hover, $get_border_value) {
                     if (!is_numeric($width)) {
-                        return [];
+                        return null;
                     }
 
                     if ($is_hover) {
@@ -935,7 +935,7 @@ function get_general_background_styles(
                             $get_border_value($target, $breakpoint, false) === $width;
 
                         if ($isSameThanNormal) {
-                            return [];
+                            return null;
                         }
                     }
 
@@ -953,26 +953,24 @@ function get_general_background_styles(
     }
 
     foreach ($breakpoints as $breakpoint) {
-        if(isset($border[$breakpoint]['border-style'])) {
-            if (isset($border[$breakpoint]['border-top-width'])) {
-                $border[$breakpoint]['border-top-style'] =
-                    $border[$breakpoint]['border-style'];
-            }
+        if (isset($border[$breakpoint]['border-top-width'])) {
+            $border[$breakpoint]['border-top-style'] =
+                $border[$breakpoint]['border-style'];
+        }
 
-            if (isset($border[$breakpoint]['border-right-width'])) {
-                $border[$breakpoint]['border-right-style'] =
-                    $border[$breakpoint]['border-style'];
-            }
+        if (isset($border[$breakpoint]['border-right-width'])) {
+            $border[$breakpoint]['border-right-style'] =
+                $border[$breakpoint]['border-style'];
+        }
 
-            if (isset($border[$breakpoint]['border-bottom-width'])) {
-                $border[$breakpoint]['border-bottom-style'] =
-                    $border[$breakpoint]['border-style'];
-            }
+        if (isset($border[$breakpoint]['border-bottom-width'])) {
+            $border[$breakpoint]['border-bottom-style'] =
+                $border[$breakpoint]['border-style'];
+        }
 
-            if (isset($border[$breakpoint]['border-left-width'])) {
-                $border[$breakpoint]['border-left-style'] =
-                    $border[$breakpoint]['border-style'];
-            }
+        if (isset($border[$breakpoint]['border-left-width'])) {
+            $border[$breakpoint]['border-left-style'] =
+                $border[$breakpoint]['border-style'];
         }
     }
 

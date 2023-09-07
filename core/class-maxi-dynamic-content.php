@@ -575,9 +575,26 @@ class MaxiBlocks_DynamicContent
             case 'average_rating':
                 return strval($product->get_data()[$dc_field]);
             case 'price':
-            case 'sale_price':
             case 'regular_price':
                 return strip_tags(wc_price($product->get_data()[$dc_field]));
+            case 'sale_price':
+                if ($product->is_on_sale()) {
+                    return strip_tags(wc_price($product->get_sale_price()));
+                }
+
+                return strip_tags(wc_price($product->get_price()));
+            case 'price_range':
+                if ($product->is_type('variable')) {
+
+                    $min_price = $product->get_variation_price('min', true);
+                    $max_price = $product->get_variation_price('max', true);
+
+                    if ($min_price !== $max_price) {
+                        return wc_format_price_range($min_price, $max_price);
+                    }
+                }
+
+                return strip_tags(wc_price($product->get_price()));
             case 'description':
                 return self::get_limited_string($product->get_description(), $dc_limit);
             case 'short_description':

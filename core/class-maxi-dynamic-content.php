@@ -799,9 +799,14 @@ class MaxiBlocks_DynamicContent
             case 'average_rating':
                 return strval($product->get_data()[$dc_field]);
             case 'price':
-            case 'sale_price':
             case 'regular_price':
                 return strip_tags(wc_price($product->get_data()[$dc_field]));
+            case 'sale_price':
+                if ($product->is_on_sale()) {
+                    return strip_tags(wc_price($product->get_sale_price()));
+                }
+
+                return strip_tags(wc_price($product->get_price()));
             case 'price_range':
                 if ($product->is_type('variable')) {
 

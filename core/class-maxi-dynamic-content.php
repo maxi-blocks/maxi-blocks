@@ -377,7 +377,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_date($response, $attributes);
         }
 
-        if (empty($response)) {
+        if (empty($response) && $response !== '0') {
             $response = 'No content found';
         }
 
@@ -797,7 +797,7 @@ class MaxiBlocks_DynamicContent
             case 'sku':
             case 'review_count':
             case 'average_rating':
-                return $product->get_data()[$dc_field];
+                return strval($product->get_data()[$dc_field]);
             case 'price':
             case 'sale_price':
             case 'regular_price':

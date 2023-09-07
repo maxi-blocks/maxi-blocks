@@ -68,6 +68,10 @@ const blocksConfig = {
 	resolve: {
 		...defaultConfig.resolve,
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
+		alias: {
+			...defaultConfig.resolve.alias,
+			'react/jsx-runtime': resolve('react/jsx-runtime'),
+		},
 	},
 };
 

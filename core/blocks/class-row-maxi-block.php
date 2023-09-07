@@ -139,6 +139,11 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
 
+            // enable size-advanced-options if not full-width
+            if(!isset($props['full-width-general'])) {
+                $props['size-advanced-options'] = true;
+            }
+
             $response =
                 [
                     'boxShadow' => get_box_shadow_styles(array(

@@ -80,8 +80,6 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 		else dispatch('maxiBlocks/styles').removeStyles(response);
 	});
 
-	// console.log('styleResolver', { response });
-
 	return response;
 };
 

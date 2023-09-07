@@ -28,6 +28,13 @@
 		cursor: pointer;
 	}
 
+	.maxi-tabs-control__button {
+		svg:not(.maxi-tabs-control__notification) path {
+			fill: transparent;
+			stroke: var(--maxi-grey-1-color);
+		}
+	}
+
 	.maxi-tabs-control__button--selected,
 	.maxi-tabs-control__button--selected {
 		svg:not(.maxi-tabs-control__notification) path {

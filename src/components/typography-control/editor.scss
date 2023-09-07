@@ -12,10 +12,11 @@
 			margin-right: 5px;
 			border: 1.5px solid var(--maxi-grey-1-color);
 			border-radius: 4px;
+			transition: all 0.5s;
 		}
 		.maxi-tabs-control__button[aria-pressed='true'] {
 			background-color: var(--maxi-light-blue-2-color) !important;
-			border: none !important;
+			border-color: var(--maxi-light-blue-2-color) !important;
 		}
 	}
 

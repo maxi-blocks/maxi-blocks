@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg id="Group_1031" data-name="Group 1031" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17.644" height="17.629" viewBox="0 0 17.644 17.629">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_517" data-name="Rectangle 517" width="17.644" height="17.629" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1030" data-name="Group 1030" clip-path="url(#clip-path)">
+    <ellipse id="Ellipse_5" data-name="Ellipse 5" cx="8.072" cy="2.506" rx="8.072" ry="2.506" transform="translate(0.75 0.75)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <path id="Path_292" data-name="Path 292" d="M16.894,8.932c0,1.384-3.614,2.506-8.072,2.506S.75,10.316.75,8.932" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <path id="Path_293" data-name="Path 293" d="M16.894,14.373c0,1.384-3.614,2.506-8.072,2.506S.75,15.757.75,14.373" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <line id="Line_774" data-name="Line 774" y2="11.178" transform="translate(0.75 3.256)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <line id="Line_775" data-name="Line 775" y2="11.178" transform="translate(16.894 3.256)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+  </g>
+</svg>

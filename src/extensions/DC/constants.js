@@ -519,6 +519,7 @@ export const descriptionOfErrors = {
 export const limitTypes = ['posts', 'pages', 'tags', 'categories', 'products'];
 
 export const limitFields = [
+	'title',
 	'excerpt',
 	'content',
 	'description',

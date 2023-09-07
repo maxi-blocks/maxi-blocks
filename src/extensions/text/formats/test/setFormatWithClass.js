@@ -20,6 +20,7 @@ jest.mock('../../../styles/getBlockStyle', () => {
 	});
 });
 jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('src/components/transform-control/utils.js', () => jest.fn());
 
 const styleCard = {
 	name: 'Maxi (Default)',

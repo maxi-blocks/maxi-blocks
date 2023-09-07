@@ -22,11 +22,16 @@ const getProducts = memoize(async () => {
 });
 
 const getProductData = async productID => {
-	if (!indexedProducts) {
-		return apiFetch({
+	if (!indexedProducts?.[productID]) {
+		const product = apiFetch({
 			path: `wc/store/v1/products/${productID}`,
 			method: 'GET',
 		});
+
+		indexedProducts = {
+			...indexedProducts,
+			[productID]: product,
+		};
 	}
 
 	return indexedProducts[productID];

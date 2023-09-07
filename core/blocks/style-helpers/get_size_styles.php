@@ -58,8 +58,8 @@ function get_size_styles($obj, $prefix = '')
                 }
             }
 
-            $is_advanced = $obj[$prefix . 'size-advanced-options'] ?? true;
-            if ($is_advanced === 'false') {
+            $is_advanced = $obj[$prefix . 'size-advanced-options'] ?? false;
+            if ($is_advanced === false) {
                 if (strpos($target, 'min') !== false) {
                     return null;
                 }
@@ -112,6 +112,8 @@ function get_size_styles($obj, $prefix = '')
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
                 ]);
+
+
 
                 $auto = $prefix === 'number-counter-' && $target === 'width' && isset($obj['number-counter-circle-status'])
                     ? 'auto'

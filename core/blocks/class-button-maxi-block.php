@@ -242,6 +242,16 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $block_style = $props['blockStyle'];
             $prefix = 'button-';
 
+            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+            $key_words = ['top', 'right', 'bottom', 'left'];
+            foreach ($breakpoints as $breakpoint) {
+                foreach ($key_words as $key) {
+                    if(isset($props[$prefix.'padding-' . $key . '-' . $breakpoint]) && !isset($props[$prefix.'padding-' . $key. '-unit-' . $breakpoint])) {
+                        $props[$prefix.'padding-' . $key . '-unit-' . $breakpoint] = 'px';
+                    }
+                }
+            }
+
             $response = [
                 'size' => get_size_styles(array_merge(get_group_attributes($props, 'size', false, $prefix)), $prefix),
                 'border' => get_border_styles(array(
@@ -276,6 +286,10 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 ]),
             ];
 
+            write_log('button padding attr');
+            write_log(get_group_attributes($props, 'padding', false, $prefix));
+            write_log('===================================');
+
             $response = array_merge(
                 $response,
                 get_background_styles(
@@ -289,6 +303,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                         [
                             'block_style' => $props['blockStyle'],
                             'prefix' => $prefix,
+                            'is_button' => true,
+
                         ]
                     )
                 )

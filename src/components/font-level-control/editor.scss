@@ -11,6 +11,7 @@
 		height: 32px;
 		border: 1.5px solid var(--maxi-grey-1-color);
 		border-radius: 5px;
+		color: var(--maxi-grey-1-color) !important;
 		background-color: #fff;
 		transition: all 0.5s;
 		font-weight: 700;
@@ -28,7 +29,7 @@
 			// border-bottom: 0px solid var(--maxi-secondary-color);
 			background-color: var(--maxi-light-blue-2-color);
 			border: none;
-			color: var(--maxi-secondary-color);
+			color: var(--maxi-secondary-color) !important;
 			font-weight: 700;
 		}
 	}

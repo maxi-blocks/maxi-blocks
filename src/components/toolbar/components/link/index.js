@@ -14,7 +14,8 @@ import LinkControl from '../../../link-control';
 import ToggleSwitch from '../../../toggle-switch';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
-import { LoopContext } from '../../../../extensions/DC';
+import { getGroupAttributes } from '../../../../extensions/styles';
+import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
 import DC_LINK_BLOCKS from './dcLinkBlocks';
 
 /**
@@ -105,13 +106,30 @@ const Link = props => {
 									'maxi-blocks'
 								)}
 								selected={dcLinkStatus}
-								onChange={value => {
+								onChange={async value => {
+									const url =
+										value &&
+										(await getDCLink(
+											getDCValues(
+												getGroupAttributes(
+													props,
+													'dynamicContent'
+												)
+											),
+											clientId
+										));
+
 									onChange(
 										value
-											? linkSettings
+											? {
+													...linkSettings,
+													url,
+													title: url,
+											  }
 											: {
 													...linkSettings,
 													url: null,
+													title: null,
 											  },
 										{
 											'dc-link-status': value,
@@ -124,22 +142,20 @@ const Link = props => {
 								}}
 							/>
 						)}
-						{(!dcLinkStatus ||
-							!DC_LINK_BLOCKS.includes(blockName)) && (
-							<ToolbarContext.Consumer>
-								{context => (
-									<LinkControl
-										linkValue={linkSettings}
-										dcLinkStatus={dcLinkStatus}
-										onChangeLink={onChange}
-										onRemoveLink={() => {
-											removeLinkHandle();
-											context.onClose();
-										}}
-									/>
-								)}
-							</ToolbarContext.Consumer>
-						)}
+						<ToolbarContext.Consumer>
+							{context => (
+								<LinkControl
+									linkValue={linkSettings}
+									isDCLinkActive={dcStatus && dcLinkStatus}
+									blockName={blockName}
+									onChangeLink={onChange}
+									onRemoveLink={() => {
+										removeLinkHandle();
+										context.onClose();
+									}}
+								/>
+							)}
+						</ToolbarContext.Consumer>
 					</div>
 				)}
 			</ToolbarPopover>

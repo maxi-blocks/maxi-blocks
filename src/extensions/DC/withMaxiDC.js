@@ -146,10 +146,12 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 					if (!isSameLink && linkStatus && !isNil(dcLink)) {
 						newLinkSettings.url = dcLink;
+						newLinkSettings.title = dcLink;
 
 						updateLinkSettings = true;
 					} else if (isSameLink && !linkStatus) {
 						newLinkSettings.url = null;
+						newLinkSettings.title = null;
 
 						updateLinkSettings = true;
 					}

@@ -54,6 +54,7 @@
 		"react-icons": "^4.4.0",
 		"react-iframe": "^1.8.0",
 		"react-image-crop": "^10.0.4",
+		"react-inlinesvg": "^4.0.3",
 		"react-instantsearch": "^6.30.2",
 		"react-instantsearch-dom": "^6.30.2",
 		"react-lazy-load": "^3.1.14",

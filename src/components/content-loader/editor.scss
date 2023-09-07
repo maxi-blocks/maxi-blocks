@@ -1,0 +1,36 @@
+@keyframes changeSentence {
+	0% {
+		content: 'Loading assets';
+	}
+	25% {
+		content: 'Loading images';
+	}
+	50% {
+		content: 'Loading fonts';
+	}
+	75% {
+		content: 'Building page';
+	}
+	100% {
+		content: 'Rendering';
+	}
+}
+
+h3.maxi-text-loader {
+	margin-top: 35px;
+	font-weight: 500;
+	font-size: 16px;
+	&:before {
+		content: '';
+		display: block;
+		animation: changeSentence 15s steps(5, end) infinite;
+	}
+}
+
+.maxi-blocks-content-loader__bar {
+	span {
+		border-radius: 20px !important;
+		margin: 5px;
+		height: 15px !important;
+	}
+}

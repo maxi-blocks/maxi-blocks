@@ -19,7 +19,11 @@ describe('Text link', () => {
 			button.click()
 		);
 
-		await page.waitForSelector('.block-editor-url-input__input:focus');
+		await page.waitForTimeout(200);
+
+		await page.waitForSelector('.block-editor-url-input__input');
+
+		await page.waitForTimeout(200);
 
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');

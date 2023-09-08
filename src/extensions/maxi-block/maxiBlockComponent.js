@@ -316,31 +316,6 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
-		if (this.isReusable && this.props.name === 'maxi-blocks/row-maxi') {
-			const baseWinBreakpoint =
-				select('maxiBlocks').receiveBaseBreakpoint();
-			if (this.props.baseBreakpoint !== baseWinBreakpoint) {
-				const newMaxWidth =
-					this.props.attributes[`max-width-${baseWinBreakpoint}`];
-				const newMaxWidthUnit =
-					this.props.attributes[
-						`max-width-unit-${baseWinBreakpoint}`
-					];
-
-				if (newMaxWidth) {
-					this.props.setAttributes({
-						'max-width-general': newMaxWidth,
-					});
-					if (newMaxWidthUnit)
-						this.props.setAttributes({
-							'max-width-unit-general': newMaxWidthUnit,
-						});
-				}
-				this.displayStyles(true);
-				return true;
-			}
-		}
-
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
 			const SC = select(
@@ -490,12 +465,16 @@ class MaxiBlockComponent extends Component {
 				);
 		}
 
-		if (!shouldDisplayStyles)
-			this.displayStyles(
-				this.props.deviceType !== prevProps.deviceType ||
-					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
-						!!prevProps.baseBreakpoint)
-			);
+		if (!shouldDisplayStyles) {
+			!this.isReusable &&
+				this.displayStyles(
+					this.props.deviceType !== prevProps.deviceType ||
+						(this.props.baseBreakpoint !==
+							prevProps.baseBreakpoint &&
+							!!prevProps.baseBreakpoint)
+				);
+			this.isReusable && this.displayStyles();
+		}
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -935,6 +914,7 @@ class MaxiBlockComponent extends Component {
 	 */
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
+
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
@@ -975,7 +955,6 @@ class MaxiBlockComponent extends Component {
 						isIframe={!!iframe}
 					/>
 				);
-
 				this.rootSlot.render(styleComponent);
 			}
 		}

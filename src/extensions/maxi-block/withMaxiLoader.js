@@ -29,7 +29,8 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 		return block && block?.name.includes('maxi-blocks');
 	});
 
-	if (maxiBlocksOrder.indexOf(clientId) === 0) return <ContentLoader />;
+	if (maxiBlocksOrder.indexOf(clientId) === 0)
+		return <ContentLoader cloud={false} />;
 
 	return null;
 };

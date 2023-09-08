@@ -80,17 +80,17 @@
 				margin: 0;
 				fill: var(--maxi-grey-5-color);
 			}
-			&--active:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 10px;
-				height: 10px;
-				z-index: 1;
-				border-top: 2px solid var(--maxi-green-1-color);
-				border-left: 2px solid var(--maxi-green-1-color);
-			}
+			// &--active:before {
+			// 	content: '';
+			// 	position: absolute;
+			// 	top: 0;
+			// 	left: 0;
+			// 	width: 10px;
+			// 	height: 10px;
+			// 	z-index: 1;
+			// 	border-top: 2px solid var(--maxi-green-1-color);
+			// 	border-left: 2px solid var(--maxi-green-1-color);
+			// }
 		}
 
 		&__notification {

@@ -64,6 +64,9 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
+            write_log('get_styles button');
+            write_log($props);
+
             // transition
             $defaults = new StylesDefaults();
             $transition_default = $defaults->transitionDefault;
@@ -73,6 +76,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $icon_class = $button_wrapper_class . '__icon';
             $content_class = $button_wrapper_class . '__content';
             $prefix = 'button-';
+            $svg = $props['icon-content'] ?? null;
+            $icon_width_height_ratio = get_icon_width_height_ratio($svg);
 
             $transition = array_merge($transition_default, [
                 'block' => [
@@ -135,20 +140,16 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
                 'is_hover' => false,
-                // 'prefix' => 'icon-',
-                // 'icon_width_height_ratio' = $icon_width_height_ratio,
+                'icon_width_height_ratio' => $icon_width_height_ratio,
             ]);
-
-
 
             $button_icon_hover_styles = get_button_icon_styles([
                 'obj' => $props,
                 'block_style' => $block_style,
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
-                // 'icon_width_height_ratio' = $icon_width_height_ratio,
+                'icon_width_height_ratio' => $icon_width_height_ratio,
                 'is_hover' => true,
-                // 'prefix' => 'icon-',
             ]);
 
             $icon_styles = array_merge(

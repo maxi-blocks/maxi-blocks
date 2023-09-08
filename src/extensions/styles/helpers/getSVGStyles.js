@@ -27,6 +27,8 @@ export const getSVGWidthStyles = ({
 		general: {},
 	};
 
+	console.log('iconWidthHeightRatio: ', iconWidthHeightRatio);
+
 	const svgType = getAttributeValue({
 		target: 'svgType',
 		props: obj,

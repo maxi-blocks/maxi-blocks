@@ -65,11 +65,14 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
     foreach ($breakpoints as $breakpoint) {
         $responsive[$breakpoint] = [];
         $icon_only = $props[$prefix . 'icon-only'] ?? false;
+        write_log('get_icon_object');
+        write_log($props);
 
         if (
             isset($props[$prefix . 'icon-spacing-' . $breakpoint]) &&
             isset($props[$prefix . 'icon-position'])
         ) {
+
             if ($props[$prefix . 'icon-position'] === 'left' || $props[$prefix . 'icon-position'] === 'right') {
                 $responsive[$breakpoint]['margin-' . ($props[$prefix . 'icon-position'] === 'right' ? 'left' : 'right')] = $icon_only ? '0' : get_last_breakpoint_attribute([
                     'target' => $prefix . 'icon-spacing',
@@ -85,6 +88,10 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
             }
         }
     }
+
+    write_log('$responsive');
+    write_log($responsive);
+
 
     $response['iconResponsive'] = $responsive;
 
@@ -174,7 +181,7 @@ function get_icon_hover_object($props, $target, $prefix = '', $iconType = '')
 function get_button_icon_styles($params)
 {
     $obj = $params['obj'] ?? null;
-    $block_style = $params['block_style'] ?? null;
+    $block_style = $params['block_style'] ?? 'light';
     $is_hover = $params['is_hover'] ?? false;
     $is_IB = $params['is_IB'] ?? false;
     $target = $params['target'] ?? '';

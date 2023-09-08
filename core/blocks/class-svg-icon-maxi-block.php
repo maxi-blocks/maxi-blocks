@@ -69,7 +69,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             ];
 
             // TODO: get the correct value
-            $icon_width_height_ratio = false;
+            $svg = $props['content'] ?? null;
+            $icon_width_height_ratio = get_icon_width_height_ratio($svg);
 
             $styles_obj = [
                 $uniqueID => [

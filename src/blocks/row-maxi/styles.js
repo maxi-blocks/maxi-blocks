@@ -67,8 +67,6 @@ const getNormalObject = props => {
 		}),
 	};
 
-	console.log(response);
-
 	return response;
 };
 

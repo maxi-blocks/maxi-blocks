@@ -10,6 +10,15 @@ function get_svg_width_styles($args)
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+    write_log('get_svg_width_styles');
+    write_log('$obj');
+    write_log($obj);
+    write_log('$icon_width_height_ratio');
+    write_log($icon_width_height_ratio);
+    write_log('$disable_height');
+    write_log($disable_height);
+    write_log('====================');
+
     $response = [
         'label' => 'Icon size',
         'general' => [],
@@ -311,4 +320,146 @@ function get_svg_styles($params)
     }
 
     return $response;
+}
+
+function get_icon_width_height_ratio($svg_string)
+{
+    if (!$svg_string) {
+        return 1;
+    }
+
+    $svg_string = preg_replace('/data-stroke="[^"]*"/', '', $svg_string);
+    $svg_string = preg_replace('/data-fill="[^"]*"/', '', $svg_string);
+    $svg_string = preg_replace('/rgba\([^)]+\),1\)"/', '', $svg_string);
+    // write_log('get_icon_width_height_ratio');
+    // write_log($svg_string);
+
+    // Use SimpleXML to parse the SVG
+    $svg = new SimpleXMLElement($svg_string);
+    // write_log('svg');
+    // write_log($svg);
+
+    // Extract path data
+    $path_data = (string) $svg->path['d'];
+    // write_log('path_data');
+    // write_log($path_data);
+
+    // Initialize bounding box values
+    $min_x = PHP_INT_MAX;
+    $min_y = PHP_INT_MAX;
+    $max_x = PHP_INT_MIN;
+    $max_y = PHP_INT_MIN;
+
+    $x = 0; // Current x-coordinate
+    $y = 0; // Current y-coordinate
+
+    // Split the path data by spaces
+    $commands = preg_split('/(?=[MLlhHvVzZ])/', $path_data);
+    $commands = array_filter($commands);
+    // write_log('commands');
+    // write_log($commands);
+
+    // Parse the commands
+    foreach ($commands as $command) {
+        // Split combined commands further
+        $subcommands = preg_split('/(?=[MLlhHvVzZ])/', $command);
+        // write_log('subcommands');
+        // write_log($subcommands);
+        foreach ($subcommands as $subcommand) {
+            $parts = preg_split('/[\s,]+/', trim($subcommand));
+            if (!isset($parts[0]) || $parts[0] === '') {
+                continue; // Skip this iteration if the first part is not set or empty
+            }
+
+            $type = $parts[0][0]; // Extract the command type, which is the first character
+
+            // If the type is a command followed by its parameters (like `M19.032`), remove the command character to leave only the parameters.
+            if (strlen($parts[0]) > 1) {
+                $parts[0] = substr($parts[0], 1);
+            } else {
+                array_shift($parts); // Remove the command type
+            }
+            // write_log('type');
+            // write_log($type);
+
+            while (!empty($parts)) {
+                switch ($type) {
+                    case 'M': // Move to absolute coordinates
+                        $x = (float) array_shift($parts);
+                        $y = (float) array_shift($parts);
+                        break;
+
+                    case 'm': // Move to relative coordinates
+                        $x += (float) array_shift($parts);
+                        $y += (float) array_shift($parts);
+                        break;
+
+                    case 'L': // Line to absolute coordinates
+                        $x = (float) array_shift($parts);
+                        $y = (float) array_shift($parts);
+                        break;
+
+                    case 'l': // Line to relative coordinates
+                        $x += (float) array_shift($parts);
+                        $y += (float) array_shift($parts);
+                        break;
+
+                    case 'H': // Horizontal line absolute
+                        $x = (float) array_shift($parts);
+                        break;
+
+                    case 'h': // Horizontal line relative
+                        $x += (float) array_shift($parts);
+                        break;
+
+                    case 'V': // Vertical line absolute
+                        $y = (float) array_shift($parts);
+                        break;
+
+                    case 'v': // Vertical line relative
+                        $y += (float) array_shift($parts);
+                        break;
+
+                    case 'Z': // Close path
+                    case 'z': // Close path
+                        // No coordinate changes, but could consider logic for closing the path if necessary
+                        break;
+
+                        // Note: There are more path commands (like curves) which are not handled here.
+                        // To fully support them, you'd need to add additional cases.
+
+                    default:
+                        array_shift($parts);
+                        break;
+                }
+
+                $min_x = min($min_x, $x);
+                $max_x = max($max_x, $x);
+                $min_y = min($min_y, $y);
+                $max_y = max($max_y, $y);
+            }
+        }
+    }
+    // write_log('min_x');
+    // write_log($min_x);
+    // write_log('max_x');
+    // write_log($max_x);
+    // write_log('min_y');
+    // write_log($min_y);
+    // write_log('max_y');
+    // write_log($max_y);
+
+    // Compute the width and height
+    $width = $max_x - $min_x;
+    $height = $max_y - $min_y;
+
+    // Check for zero height
+    if ($height == 0) {
+        return $width > 0 ? PHP_INT_MAX : 1;
+    }
+
+    // Calculate aspect ratio and round to 2 decimal places
+    $aspect_ratio = round($width / $height, 2);
+
+    return $aspect_ratio;
 }

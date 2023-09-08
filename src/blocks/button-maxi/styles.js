@@ -255,6 +255,17 @@ const getHoverContentObject = (props, scValues) => {
 const getStyles = (props, scValues, iconWidthHeightRatio) => {
 	const { uniqueID, blockStyle } = props;
 
+	console.log('getButtonIconStyles');
+	console.log(
+		getButtonIconStyles({
+			obj: props,
+			blockStyle,
+			target: '.maxi-button-block__icon',
+			wrapperTarget: '.maxi-button-block__button',
+			iconWidthHeightRatio,
+		})
+	);
+
 	const response = {
 		[uniqueID]: styleProcessor(
 			{

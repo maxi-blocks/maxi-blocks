@@ -133,16 +133,6 @@ class MaxiBlocks_Styles
         wp_die(); // this is required to terminate immediately and return a proper response
     }
 
-
-    public function write_log($log)
-    {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
-    }
-
     /**
      * Legacy function
      * Get block data

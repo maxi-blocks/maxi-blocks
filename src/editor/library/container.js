@@ -505,7 +505,7 @@ const LibraryContainer = props => {
 	};
 
 	// TO DO: connect to auth later
-	const isMaxiProActive = true;
+	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';

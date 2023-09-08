@@ -508,36 +508,44 @@ const DynamicContent = props => {
 							{limitTypes.includes(type) &&
 								limitFields.includes(field) &&
 								!error && (
-									<AdvancedNumberControl
-										label={__(
-											'Character limit',
-											'maxi-blocks'
-										)}
-										value={limit}
-										onChangeValue={value =>
-											changeProps({
-												'dc-limit': Number(value),
-											})
-										}
-										disableReset={limitOptions.disableReset}
-										step={limitOptions.steps}
-										withInputField={
-											limitOptions.withInputField
-										}
-										onReset={() =>
-											changeProps({
-												'dc-limit':
-													getDefaultAttribute(
-														'dc-limit'
-													),
-											})
-										}
-										min={limitOptions.min}
-										max={limitOptions.max}
-										initialPosition={
-											limit || limitOptions.defaultValue
-										}
-									/>
+									<>
+										<AdvancedNumberControl
+											label={__(
+												'Character limit',
+												'maxi-blocks'
+											)}
+											value={limit}
+											onChangeValue={value =>
+												changeProps({
+													'dc-limit': Number(value),
+												})
+											}
+											disableReset={
+												limitOptions.disableReset
+											}
+											step={limitOptions.steps}
+											withInputField={
+												limitOptions.withInputField
+											}
+											onReset={() =>
+												changeProps({
+													'dc-limit':
+														getDefaultAttribute(
+															'dc-limit'
+														),
+												})
+											}
+											min={limitOptions.min}
+											max={limitOptions.max}
+											initialPosition={
+												limit ||
+												limitOptions.defaultValue
+											}
+										/>
+										<span className='dc-unlimited'>
+											(0 for unlimited)
+										</span>
+									</>
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting

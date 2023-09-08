@@ -2,4 +2,11 @@ body.maxi-blocks--active .maxi-dynamic-content {
 	.maxi-dynamic-content__custom-delimiter .maxi-text-input {
 		padding: 8px;
 	}
+	.dc-unlimited {
+		display: block;
+		padding-bottom: 20px;
+		margin-top: -5px;
+		color: var(--maxi-grey-6-color);
+		font-style: italic;
+	}
 }

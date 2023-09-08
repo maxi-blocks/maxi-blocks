@@ -87,7 +87,7 @@ const LoadingContent = () => (
 			width: '100%',
 		}}
 	>
-		<ContentLoader />
+		<ContentLoader cloud />
 	</div>
 );
 

@@ -515,11 +515,25 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 			{!isMaxiProActive && userName && isMaxiProExpired && (
-				<div>
+				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Expired: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
 					</h5>
+					<Button
+						key='maxi-cloud-toolbar__button__connect'
+						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+						label={__('Sign in', 'maxi-blocks')}
+						onClick={() => {
+							const url =
+								'https://my.maxiblocks.com/login?plugin';
+							window.open(url, '_blank')?.focus();
+
+							onClickConnect(userEmail);
+						}}
+					>
+						{__('Sign in', 'maxi-blocks')}
+					</Button>
 				</div>
 			)}
 			{!isMaxiProActive && userName && !isMaxiProExpired && (

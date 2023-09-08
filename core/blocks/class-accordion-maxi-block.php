@@ -344,15 +344,6 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             return $response;
         }
 
-        public static function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         public static function get_pane_header_styles($props, $prefix, $is_hover = false)
         {
 

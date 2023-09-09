@@ -13,13 +13,14 @@ import { ContextLoop } from '..';
  * Component
  */
 const contextLoop = ({
-	props: { attributes, maxiSetAttributes },
+	props: { clientId, attributes, maxiSetAttributes },
 	contentType,
 }) => ({
 	label: __('Context loop', 'maxi-blocks'),
 	content: (
 		<ContextLoop
 			{...getGroupAttributes(attributes, 'contextLoop')}
+			clientId={clientId}
 			contentType={contentType}
 			onChange={obj => maxiSetAttributes(obj)}
 		/>

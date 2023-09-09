@@ -85,48 +85,28 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					block => block.clientId === clientId
 				);
 
+				const parentChildrenNames = {
+					'maxi-blocks/row-maxi': 'maxi-blocks/column-maxi',
+					'maxi-blocks/accordion-maxi': 'maxi-blocks/pane-maxi',
+					'maxi-blocks/slider-maxi': 'maxi-blocks/slide-maxi',
+				};
+
+				// Increase the accumulator only if context loop is enabled in the parent
 				if (
-					[
-						'maxi-blocks/accordion-maxi',
-						'maxi-blocks/slider-maxi',
-					].includes(parent.name) &&
-					[
-						'maxi-blocks/pane-maxi',
-						'maxi-blocks/slide-maxi',
-					].includes(name)
+					parent.attributes['cl-status'] &&
+					parentChildrenNames[parent.name] &&
+					name === parentChildrenNames[parent.name] &&
+					currentBlockIndex !== 0
 				) {
-					const isParentAccumulator = getIsAccumulator(
-						parent.attributes
-					);
-					// Increase the accumulator only if context loop is enabled in the parent
-					if (isParentAccumulator && currentBlockIndex !== 0) {
-						return prevAccumulator + currentBlockIndex;
-					}
-
-					return prevAccumulator;
+					return prevAccumulator + currentBlockIndex;
 				}
-
-				const { name: parentOfParentName } =
-					getBlock(
-						getBlockParents(parent.clientId)
-							.filter(id => id !== parent.clientId)
-							.at(-1)
-					) ?? {};
-
-				const isFirstOnHierarchyColumn =
-					name === 'maxi-blocks/column-maxi' &&
-					parentOfParentName === 'maxi-blocks/container-maxi';
-
-				if (!isFirstOnHierarchyColumn || currentBlockIndex === 0) {
-					return prevAccumulator;
-				}
-
-				return prevAccumulator + currentBlockIndex;
+				return prevAccumulator;
 			};
 
 			const contextLoop = {
 				...merge({}, prevContextLoopAttributes, contextLoopAttributes),
 				'cl-accumulator': getAccumulator(),
+				prevContextLoopStatus: prevContextLoopAttributes?.['cl-status'],
 			};
 
 			const memoizedValue = useMemo(() => {

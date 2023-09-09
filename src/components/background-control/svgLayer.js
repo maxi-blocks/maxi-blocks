@@ -4,13 +4,13 @@
 import MaxiModal from '../../editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
-import { ImageShapeResponsiveSettings } from '../image-shape';
 
 const SVGLayer = props => {
 	const {
@@ -50,33 +50,29 @@ const SVGLayer = props => {
 					onSelect={obj => onChange(obj)}
 				/>
 			)}
-			{!isEmpty(SVGElement) && (
-				<>
-					<SVGFillControl
-						SVGOptions={SVGOptions}
-						onChange={onChange}
-						clientId={clientId}
-						isHover={isHover}
-						breakpoint={breakpoint}
-					/>
-					<ImageShapeResponsiveSettings
-						prefix='background-svg-'
-						onChange={onChange}
-						breakpoint={breakpoint}
-						{...SVGOptions}
-						isHover={isHover}
-					/>
-					<SizeAndPositionLayerControl
-						prefix={prefix}
-						options={SVGOptions}
-						onChange={onChange}
-						isHover={isHover}
-						isLayer={isLayer}
-						breakpoint={breakpoint}
-						onlyWidth
-					/>
-				</>
-			)}
+			<ResponsiveTabsControl breakpoint={breakpoint}>
+				{!isEmpty(SVGElement) && (
+					<>
+						<SVGFillControl
+							SVGOptions={SVGOptions}
+							onChange={onChange}
+							clientId={clientId}
+							isHover={isHover}
+							isLayer
+							breakpoint={breakpoint}
+						/>
+						<SizeAndPositionLayerControl
+							prefix={prefix}
+							options={SVGOptions}
+							onChange={onChange}
+							isHover={isHover}
+							isLayer={isLayer}
+							breakpoint={breakpoint}
+							onlyWidth
+						/>
+					</>
+				)}
+			</ResponsiveTabsControl>
 		</>
 	);
 };

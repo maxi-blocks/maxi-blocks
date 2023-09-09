@@ -25,17 +25,34 @@ class MaxiBlocks_Local_Fonts
      */
     private $fontsUploadDir;
 
+    // TODO: remove this function
+    public function write_log($log)
+    {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->write_log('MaxiBlocks_Local_Fonts');
         if ((bool) get_option('local_fonts')) {
+            $this-> write_log('local_fonts');
             $this->fontsUploadDir = wp_upload_dir()['basedir'] . '/maxi/fonts';
             $all_fonts = $this->getAllFontsDB();
+            $this->write_log('$all_fonts');
+            $this->write_log($all_fonts);
+
 
             if (is_array($all_fonts) && !empty($all_fonts)) {
                 $all_urls = $this->constructFontURLs($all_fonts);
+                $this->write_log('$all_urls');
+                $this->write_log($all_urls);
                 if (is_array($all_urls) && !empty($all_urls)) {
                     $this->createUploadFolder();
                     $this->uploadCssFiles($all_urls);
@@ -105,6 +122,9 @@ class MaxiBlocks_Local_Fonts
         ) {
             return false;
         }
+
+        $post_content_array = array_merge($post_content_array, $blocks_content_array);
+        $prev_post_content_array = array_merge($prev_post_content_array, $prev_blocks_content_array);
 
         foreach ($post_content_array as $font) {
             $array[] = $font->fonts_value;

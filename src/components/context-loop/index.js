@@ -69,10 +69,10 @@ const ContextLoop = props => {
 	const isOrderSettings =
 		orderTypes.includes(type) && orderRelations.includes(relation);
 
-	const changeProps = params => {
+	const changeProps = (params, alwaysSaveCLStatus = false) => {
 		const hasChangesToSave = Object.entries(contextLoop).some(
 			([key, val]) => {
-				if (key === 'cl-status') return true;
+				if (alwaysSaveCLStatus && key === 'cl-status') return true;
 
 				if (!(key in params)) return false;
 
@@ -168,9 +168,12 @@ const ContextLoop = props => {
 								)}
 								selected={props['cl-status']}
 								onChange={value =>
-									changeProps({
-										'cl-status': value || undefined,
-									})
+									changeProps(
+										{
+											'cl-status': value || undefined,
+										},
+										true
+									)
 								}
 							/>
 						)}

@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
 import {
@@ -201,18 +202,6 @@ const SVGFillControl = props => {
 						}}
 					/>
 				)}
-				{!useImage && (
-					<ColorContent
-						breakpoint={breakpoint}
-						SVGOptions={SVGOptions}
-						SVGData={SVGData}
-						isHover={isHover}
-						id={id}
-						value={value}
-						onChange={onChange}
-						clientId={clientId}
-					/>
-				)}
 				{useImage && !isHover && breakpoint === 'general' && (
 					<MediaUploaderControl
 						allowedTypes={['image']}
@@ -260,28 +249,44 @@ const SVGFillControl = props => {
 						}}
 					/>
 				)}
-				<ImageShape
-					{...SVGOptions}
-					onChange={obj => {
-						['SVGElement', 'SVGData'].forEach(el => {
-							if (el in obj) {
-								obj[`background-svg-${el}`] = obj[el];
+				<ResponsiveTabsControl breakpoint={breakpoint}>
+					<>
+						{!useImage && (
+							<ColorContent
+								breakpoint={breakpoint}
+								SVGOptions={SVGOptions}
+								SVGData={SVGData}
+								isHover={isHover}
+								id={id}
+								value={value}
+								onChange={onChange}
+								clientId={clientId}
+							/>
+						)}
+						<ImageShape
+							{...SVGOptions}
+							onChange={obj => {
+								['SVGElement', 'SVGData'].forEach(el => {
+									if (el in obj) {
+										obj[`background-svg-${el}`] = obj[el];
 
-								delete obj[el];
-							}
-						});
+										delete obj[el];
+									}
+								});
 
-						onChange(obj);
-					}}
-					icon={SVGElement}
-					breakpoint={breakpoint}
-					prefix='background-svg-'
-					isHover={isHover}
-					isLayer={isLayer}
-					disableImageRatio={!getSVGHasImage(SVGElement)}
-					disableImagePosition={!getSVGHasImage(SVGElement)}
-					disableModal
-				/>
+								onChange(obj);
+							}}
+							icon={SVGElement}
+							breakpoint={breakpoint}
+							prefix='background-svg-'
+							isHover={isHover}
+							isLayer={isLayer}
+							disableImageRatio={!getSVGHasImage(SVGElement)}
+							disableImagePosition={!getSVGHasImage(SVGElement)}
+							disableModal
+						/>
+					</>
+				</ResponsiveTabsControl>
 			</>
 		);
 	};

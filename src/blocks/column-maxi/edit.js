@@ -160,6 +160,10 @@ class edit extends MaxiBlockComponent {
 			this.context.setColumnSize(this.props.clientId, columnSize);
 	}
 
+	maxiBlockWillUnmount() {
+		this.context.removeColumnClientId(this.props.clientId);
+	}
+
 	get getStylesObject() {
 		return getStyles(
 			{

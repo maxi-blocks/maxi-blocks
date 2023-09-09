@@ -1,0 +1,689 @@
+{
+  "font-family-general": {
+    "type": "string"
+  },
+  "font-family-xxl": {
+    "type": "string"
+  },
+  "font-family-xl": {
+    "type": "string"
+  },
+  "font-family-l": {
+    "type": "string"
+  },
+  "font-family-m": {
+    "type": "string"
+  },
+  "font-family-s": {
+    "type": "string"
+  },
+  "font-family-xs": {
+    "type": "string"
+  },
+  "palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "palette-status-xxl": {
+    "type": "boolean"
+  },
+  "palette-status-xl": {
+    "type": "boolean"
+  },
+  "palette-status-l": {
+    "type": "boolean"
+  },
+  "palette-status-m": {
+    "type": "boolean"
+  },
+  "palette-status-s": {
+    "type": "boolean"
+  },
+  "palette-status-xs": {
+    "type": "boolean"
+  },
+  "palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "palette-color-general": {
+    "type": "number",
+    "default": 3
+  },
+  "palette-color-xxl": {
+    "type": "number"
+  },
+  "palette-color-xl": {
+    "type": "number"
+  },
+  "palette-color-l": {
+    "type": "number"
+  },
+  "palette-color-m": {
+    "type": "number"
+  },
+  "palette-color-s": {
+    "type": "number"
+  },
+  "palette-color-xs": {
+    "type": "number"
+  },
+  "palette-opacity-general": {
+    "type": "number"
+  },
+  "palette-opacity-xxl": {
+    "type": "number"
+  },
+  "palette-opacity-xl": {
+    "type": "number"
+  },
+  "palette-opacity-l": {
+    "type": "number"
+  },
+  "palette-opacity-m": {
+    "type": "number"
+  },
+  "palette-opacity-s": {
+    "type": "number"
+  },
+  "palette-opacity-xs": {
+    "type": "number"
+  },
+  "color-general": {
+    "type": "string"
+  },
+  "color-xxl": {
+    "type": "string"
+  },
+  "color-xl": {
+    "type": "string"
+  },
+  "color-l": {
+    "type": "string"
+  },
+  "color-m": {
+    "type": "string"
+  },
+  "color-s": {
+    "type": "string"
+  },
+  "color-xs": {
+    "type": "string"
+  },
+  "list-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "list-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "list-palette-status-xl": {
+    "type": "boolean"
+  },
+  "list-palette-status-l": {
+    "type": "boolean"
+  },
+  "list-palette-status-m": {
+    "type": "boolean"
+  },
+  "list-palette-status-s": {
+    "type": "boolean"
+  },
+  "list-palette-status-xs": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "list-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "list-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "list-palette-color-general": {
+    "type": "number",
+    "default": 4
+  },
+  "list-palette-color-xxl": {
+    "type": "number"
+  },
+  "list-palette-color-xl": {
+    "type": "number"
+  },
+  "list-palette-color-l": {
+    "type": "number"
+  },
+  "list-palette-color-m": {
+    "type": "number"
+  },
+  "list-palette-color-s": {
+    "type": "number"
+  },
+  "list-palette-color-xs": {
+    "type": "number"
+  },
+  "list-palette-opacity-general": {
+    "type": "number"
+  },
+  "list-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "list-palette-opacity-xl": {
+    "type": "number"
+  },
+  "list-palette-opacity-l": {
+    "type": "number"
+  },
+  "list-palette-opacity-m": {
+    "type": "number"
+  },
+  "list-palette-opacity-s": {
+    "type": "number"
+  },
+  "list-palette-opacity-xs": {
+    "type": "number"
+  },
+  "list-color-general": {
+    "type": "string"
+  },
+  "list-color-xxl": {
+    "type": "string"
+  },
+  "list-color-xl": {
+    "type": "string"
+  },
+  "list-color-l": {
+    "type": "string"
+  },
+  "list-color-m": {
+    "type": "string"
+  },
+  "list-color-s": {
+    "type": "string"
+  },
+  "list-color-xs": {
+    "type": "string"
+  },
+  "font-size-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "font-size-unit-xxl": {
+    "type": "string"
+  },
+  "font-size-unit-xl": {
+    "type": "string"
+  },
+  "font-size-unit-l": {
+    "type": "string"
+  },
+  "font-size-unit-m": {
+    "type": "string"
+  },
+  "font-size-unit-s": {
+    "type": "string"
+  },
+  "font-size-unit-xs": {
+    "type": "string"
+  },
+  "font-size-general": {
+    "type": "number"
+  },
+  "font-size-xxl": {
+    "type": "number"
+  },
+  "font-size-xl": {
+    "type": "number"
+  },
+  "font-size-l": {
+    "type": "number"
+  },
+  "font-size-m": {
+    "type": "number"
+  },
+  "font-size-s": {
+    "type": "number"
+  },
+  "font-size-xs": {
+    "type": "number"
+  },
+  "line-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "line-height-unit-xxl": {
+    "type": "string"
+  },
+  "line-height-unit-xl": {
+    "type": "string"
+  },
+  "line-height-unit-l": {
+    "type": "string"
+  },
+  "line-height-unit-m": {
+    "type": "string"
+  },
+  "line-height-unit-s": {
+    "type": "string"
+  },
+  "line-height-unit-xs": {
+    "type": "string"
+  },
+  "line-height-general": {
+    "type": "number"
+  },
+  "line-height-xxl": {
+    "type": "number"
+  },
+  "line-height-xl": {
+    "type": "number"
+  },
+  "line-height-l": {
+    "type": "number"
+  },
+  "line-height-m": {
+    "type": "number"
+  },
+  "line-height-s": {
+    "type": "number"
+  },
+  "line-height-xs": {
+    "type": "number"
+  },
+  "letter-spacing-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "letter-spacing-unit-xxl": {
+    "type": "string"
+  },
+  "letter-spacing-unit-xl": {
+    "type": "string"
+  },
+  "letter-spacing-unit-l": {
+    "type": "string"
+  },
+  "letter-spacing-unit-m": {
+    "type": "string"
+  },
+  "letter-spacing-unit-s": {
+    "type": "string"
+  },
+  "letter-spacing-unit-xs": {
+    "type": "string"
+  },
+  "letter-spacing-general": {
+    "type": "number"
+  },
+  "letter-spacing-xxl": {
+    "type": "number"
+  },
+  "letter-spacing-xl": {
+    "type": "number"
+  },
+  "letter-spacing-l": {
+    "type": "number"
+  },
+  "letter-spacing-m": {
+    "type": "number"
+  },
+  "letter-spacing-s": {
+    "type": "number"
+  },
+  "letter-spacing-xs": {
+    "type": "number"
+  },
+  "font-weight-general": {
+    "type": "string"
+  },
+  "font-weight-xxl": {
+    "type": "string"
+  },
+  "font-weight-xl": {
+    "type": "string"
+  },
+  "font-weight-l": {
+    "type": "string"
+  },
+  "font-weight-m": {
+    "type": "string"
+  },
+  "font-weight-s": {
+    "type": "string"
+  },
+  "font-weight-xs": {
+    "type": "string"
+  },
+  "text-transform-general": {
+    "type": "string"
+  },
+  "text-transform-xxl": {
+    "type": "string"
+  },
+  "text-transform-xl": {
+    "type": "string"
+  },
+  "text-transform-l": {
+    "type": "string"
+  },
+  "text-transform-m": {
+    "type": "string"
+  },
+  "text-transform-s": {
+    "type": "string"
+  },
+  "text-transform-xs": {
+    "type": "string"
+  },
+  "font-style-general": {
+    "type": "string"
+  },
+  "font-style-xxl": {
+    "type": "string"
+  },
+  "font-style-xl": {
+    "type": "string"
+  },
+  "font-style-l": {
+    "type": "string"
+  },
+  "font-style-m": {
+    "type": "string"
+  },
+  "font-style-s": {
+    "type": "string"
+  },
+  "font-style-xs": {
+    "type": "string"
+  },
+  "text-decoration-general": {
+    "type": "string"
+  },
+  "text-decoration-xxl": {
+    "type": "string"
+  },
+  "text-decoration-xl": {
+    "type": "string"
+  },
+  "text-decoration-l": {
+    "type": "string"
+  },
+  "text-decoration-m": {
+    "type": "string"
+  },
+  "text-decoration-s": {
+    "type": "string"
+  },
+  "text-decoration-xs": {
+    "type": "string"
+  },
+  "text-indent-general": {
+    "type": "number"
+  },
+  "text-indent-xxl": {
+    "type": "number"
+  },
+  "text-indent-xl": {
+    "type": "number"
+  },
+  "text-indent-l": {
+    "type": "number"
+  },
+  "text-indent-m": {
+    "type": "number"
+  },
+  "text-indent-s": {
+    "type": "number"
+  },
+  "text-indent-xs": {
+    "type": "number"
+  },
+  "text-indent-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "text-indent-unit-xxl": {
+    "type": "string"
+  },
+  "text-indent-unit-xl": {
+    "type": "string"
+  },
+  "text-indent-unit-l": {
+    "type": "string"
+  },
+  "text-indent-unit-m": {
+    "type": "string"
+  },
+  "text-indent-unit-s": {
+    "type": "string"
+  },
+  "text-indent-unit-xs": {
+    "type": "string"
+  },
+  "text-shadow-general": {
+    "type": "string"
+  },
+  "text-shadow-xxl": {
+    "type": "string"
+  },
+  "text-shadow-xl": {
+    "type": "string"
+  },
+  "text-shadow-l": {
+    "type": "string"
+  },
+  "text-shadow-m": {
+    "type": "string"
+  },
+  "text-shadow-s": {
+    "type": "string"
+  },
+  "text-shadow-xs": {
+    "type": "string"
+  },
+  "vertical-align-general": {
+    "type": "string"
+  },
+  "vertical-align-xxl": {
+    "type": "string"
+  },
+  "vertical-align-xl": {
+    "type": "string"
+  },
+  "vertical-align-l": {
+    "type": "string"
+  },
+  "vertical-align-m": {
+    "type": "string"
+  },
+  "vertical-align-s": {
+    "type": "string"
+  },
+  "vertical-align-xs": {
+    "type": "string"
+  },
+  "custom-formats": {
+    "type": "object"
+  },
+  "text-orientation-general": {
+    "type": "string"
+  },
+  "text-orientation-xxl": {
+    "type": "string"
+  },
+  "text-orientation-xl": {
+    "type": "string"
+  },
+  "text-orientation-l": {
+    "type": "string"
+  },
+  "text-orientation-m": {
+    "type": "string"
+  },
+  "text-orientation-s": {
+    "type": "string"
+  },
+  "text-orientation-xs": {
+    "type": "string"
+  },
+  "text-direction-general": {
+    "type": "string"
+  },
+  "text-direction-xxl": {
+    "type": "string"
+  },
+  "text-direction-xl": {
+    "type": "string"
+  },
+  "text-direction-l": {
+    "type": "string"
+  },
+  "text-direction-m": {
+    "type": "string"
+  },
+  "text-direction-s": {
+    "type": "string"
+  },
+  "text-direction-xs": {
+    "type": "string"
+  },
+  "white-space-general": {
+    "type": "string"
+  },
+  "white-space-xxl": {
+    "type": "string"
+  },
+  "white-space-xl": {
+    "type": "string"
+  },
+  "white-space-l": {
+    "type": "string"
+  },
+  "white-space-m": {
+    "type": "string"
+  },
+  "white-space-s": {
+    "type": "string"
+  },
+  "white-space-xs": {
+    "type": "string"
+  },
+  "word-spacing-general": {
+    "type": "number"
+  },
+  "word-spacing-xxl": {
+    "type": "number"
+  },
+  "word-spacing-xl": {
+    "type": "number"
+  },
+  "word-spacing-l": {
+    "type": "number"
+  },
+  "word-spacing-m": {
+    "type": "number"
+  },
+  "word-spacing-s": {
+    "type": "number"
+  },
+  "word-spacing-xs": {
+    "type": "number"
+  },
+  "word-spacing-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "word-spacing-unit-xxl": {
+    "type": "string"
+  },
+  "word-spacing-unit-xl": {
+    "type": "string"
+  },
+  "word-spacing-unit-l": {
+    "type": "string"
+  },
+  "word-spacing-unit-m": {
+    "type": "string"
+  },
+  "word-spacing-unit-s": {
+    "type": "string"
+  },
+  "word-spacing-unit-xs": {
+    "type": "string"
+  },
+  "bottom-gap-general": {
+    "type": "number"
+  },
+  "bottom-gap-xxl": {
+    "type": "number"
+  },
+  "bottom-gap-xl": {
+    "type": "number"
+  },
+  "bottom-gap-l": {
+    "type": "number"
+  },
+  "bottom-gap-m": {
+    "type": "number"
+  },
+  "bottom-gap-s": {
+    "type": "number"
+  },
+  "bottom-gap-xs": {
+    "type": "number"
+  },
+  "bottom-gap-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "bottom-gap-unit-xxl": {
+    "type": "string"
+  },
+  "bottom-gap-unit-xl": {
+    "type": "string"
+  },
+  "bottom-gap-unit-l": {
+    "type": "string"
+  },
+  "bottom-gap-unit-m": {
+    "type": "string"
+  },
+  "bottom-gap-unit-s": {
+    "type": "string"
+  },
+  "bottom-gap-unit-xs": {
+    "type": "string"
+  }
+}

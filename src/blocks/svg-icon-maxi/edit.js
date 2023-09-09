@@ -25,6 +25,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
+	shouldSetPreserveAspectRatio,
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
@@ -151,12 +152,12 @@ class edit extends MaxiBlockComponent {
 		 * when the block is duplicated.
 		 */
 		const svgClass =
-			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+			this.props.attributes.content?.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const newContent = this.props.attributes.content.replaceAll(
+		const newContent = this.props.attributes.content?.replaceAll(
 			svgClass.match(/__(\d)/)[0],
-			`__${newUniqueID.match(/-(\d+)$/).pop()}`
+			`__${newUniqueID.match(/-(\d+)$/)?.pop()}`
 		);
 		this.props.attributes.content = newContent;
 	}
@@ -226,15 +227,11 @@ class edit extends MaxiBlockComponent {
 			onSelect: obj => {
 				const { content } = obj;
 
-				if (content) {
-					const disableHeightFitContent = getLastBreakpointAttribute({
-						target: 'svg-width-fit-content',
-						breakpoint: deviceType,
-						attributes,
-					});
-
-					if (disableHeightFitContent)
-						obj.content = togglePreserveAspectRatio(content, true);
+				if (
+					content &&
+					shouldSetPreserveAspectRatio(attributes, 'svg-')
+				) {
+					obj.content = togglePreserveAspectRatio(content, true);
 				}
 
 				maxiSetAttributes(obj);

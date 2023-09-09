@@ -13,6 +13,7 @@ import { Toolbar } from '../../components';
 import { MapContent } from './components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
+import { getBreakpoints } from '../../extensions/styles/helpers';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
@@ -33,20 +34,19 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
+		const { uniqueID } = attributes;
 
 		return {
-			map: [
-				{
-					uniqueID: attributes.uniqueID,
-					...getGroupAttributes(attributes, [
-						'map',
-						'mapInteraction',
-						'mapMarker',
-						'mapPopup',
-						'mapPopupText',
-					]),
-				},
-			],
+			[uniqueID]: {
+				...getGroupAttributes(attributes, [
+					'map',
+					'mapInteraction',
+					'mapMarker',
+					'mapPopup',
+					'mapPopupText',
+				]),
+				breakpoints: { ...getBreakpoints(attributes) },
+			},
 		};
 	}
 

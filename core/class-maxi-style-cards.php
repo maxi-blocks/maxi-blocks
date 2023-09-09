@@ -23,6 +23,14 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Return the registered instance
+     */
+    public static function get_instance()
+    {
+        return self::$instance;
+    }
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -87,7 +95,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if(isset($GLOBALS['default_sc_variables_string'])) {
+            if (isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
 
@@ -112,7 +120,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$style || empty($style) || $style === ':root{--maxi-active-sc-color:0,0,0;}') { // ':root{--maxi-active-sc-color:0,0,0;}' is the default value
-            if(isset($GLOBALS['default_sc_variables_string'])) {
+            if (isset($GLOBALS['default_sc_variables_string'])) {
                 return $GLOBALS['default_sc_variables_string'];
             }
 
@@ -127,7 +135,7 @@ class MaxiBlocks_StyleCards
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
-            if(isset($GLOBALS['default_sc_styles_string'])) {
+            if (isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -146,7 +154,7 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles', $style_card) &&
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
-            if(isset($GLOBALS['default_sc_styles_string'])) {
+            if (isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -166,7 +174,7 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$sc_variables || empty($sc_variables)) {
-            if(isset($GLOBALS['default_sc_styles_string'])) {
+            if (isset($GLOBALS['default_sc_styles_string'])) {
                 return $GLOBALS['default_sc_styles_string'];
             }
 
@@ -243,7 +251,7 @@ class MaxiBlocks_StyleCards
         $text_level_values = (object) $style_card_values->$text_level;
 
 
-        if(!property_exists($text_level_values, 'font-family-general')) {
+        if (!property_exists($text_level_values, 'font-family-general')) {
             $text_level_values = (object) $default_values[$text_level];
         }
 
@@ -272,6 +280,37 @@ class MaxiBlocks_StyleCards
         return [$font, $font_weights, $font_styles];
     }
 
+    public static function get_style_cards_values($sc_props, $block_style, $sc_entry)
+    {
+        $style_card = self::get_maxi_blocks_active_style_card();
+
+        $get_sc_value = function ($target) use ($style_card, $block_style, $sc_entry) {
+            $styleCardEntry = [$style_card[$block_style]['defaultStyleCard'][$sc_entry]];
+
+            if (isset($style_card[$block_style]['styleCard'][$sc_entry])) {
+                $styleCardEntry = array_merge(
+                    $styleCardEntry,
+                    $style_card[$block_style]['styleCard'][$sc_entry]
+                );
+            }
+
+            $value = $styleCardEntry[$target] ?? null;
+    
+            return get_is_valid($value, true) ? $value : false;
+        };
+    
+        if (is_string($sc_props)) {
+            return $get_sc_value($sc_props);
+        }
+    
+        $response = [];
+    
+        foreach ($sc_props as $target) {
+            $response[$target] = $get_sc_value($target);
+        }
+    
+        return $response;
+    }
 
     public static function get_default_style_card()
     {

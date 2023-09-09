@@ -1,0 +1,130 @@
+{
+  "icon-border-top-left-radius-general": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-xxl": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-xl": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-l": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-m": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-s": {
+    "type": "number"
+  },
+  "icon-border-top-left-radius-xs": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-general": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-xxl": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-xl": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-l": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-m": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-s": {
+    "type": "number"
+  },
+  "icon-border-top-right-radius-xs": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-general": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-xxl": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-xl": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-l": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-m": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-s": {
+    "type": "number"
+  },
+  "icon-border-bottom-right-radius-xs": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-general": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-xxl": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-xl": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-l": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-m": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-s": {
+    "type": "number"
+  },
+  "icon-border-bottom-left-radius-xs": {
+    "type": "number"
+  },
+  "icon-border-sync-radius-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "icon-border-sync-radius-xxl": {
+    "type": "string"
+  },
+  "icon-border-sync-radius-xl": {
+    "type": "string"
+  },
+  "icon-border-sync-radius-l": {
+    "type": "string"
+  },
+  "icon-border-sync-radius-m": {
+    "type": "string"
+  },
+  "icon-border-sync-radius-s": {
+    "type": "string"
+  },
+  "icon-border-sync-radius-xs": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "icon-border-unit-radius-xxl": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-xl": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-l": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-m": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-s": {
+    "type": "string"
+  },
+  "icon-border-unit-radius-xs": {
+    "type": "string"
+  }
+}

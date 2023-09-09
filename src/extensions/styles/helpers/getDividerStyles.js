@@ -127,7 +127,7 @@ const getDividerStyles = (
 					isHover,
 				}) ?? 'px';
 
-			const dividerBorderRaidus = getLastBreakpointAttribute({
+			const dividerBorderRadius = getLastBreakpointAttribute({
 				target: `${prefix}divider-border-radius`,
 				breakpoint,
 				attributes: obj,
@@ -137,7 +137,7 @@ const getDividerStyles = (
 			response[breakpoint] = {
 				...getColor(breakpoint),
 				...(dividerBorderStyle === 'solid' &&
-					(dividerBorderRaidus
+					(dividerBorderRadius
 						? {
 								'border-radius': '20px',
 						  }

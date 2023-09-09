@@ -157,7 +157,9 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				repeaterStatus={repeaterContext.repeaterStatus}
 				repeaterRowClientId={repeaterContext.repeaterRowClientId}
-				getInnerBlocksPositions={this.getInnerBlocksPositions}
+				getInnerBlocksPositions={
+					repeaterContext.getInnerBlocksPositions
+				}
 			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
@@ -181,6 +183,21 @@ class edit extends MaxiBlockComponent {
 
 						this.forceUpdate();
 					},
+					removeColumnClientId: clientId => {
+						this.columnsClientIds = this.columnsClientIds.filter(
+							val => val !== clientId
+						);
+						this.columnsSize = Object.keys(this.columnsSize).reduce(
+							(acc, key) => {
+								if (key !== clientId) {
+									acc[key] = this.columnsSize[key];
+								}
+								return acc;
+							},
+							{}
+						);
+					},
+
 					rowGapProps: getRowGapProps(attributes),
 					rowBorderRadius: getGroupAttributes(
 						attributes,

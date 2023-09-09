@@ -16,14 +16,21 @@ import {
 import { ContentLoader } from '../../components';
 
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
-	useEffect(() => onMountBlock(), []);
+	useEffect(() => onMountBlock(), [onMountBlock]);
 
-	const { getBlockOrder } = useSelect(
-		select => select('core/block-editor'),
-		[]
-	);
+	const { getBlocks, getBlockOrder } = useSelect(select => {
+		const { getBlocks, getBlockOrder } = select('core/block-editor');
+		return { getBlocks, getBlockOrder };
+	}, []);
 
-	if (getBlockOrder().indexOf(clientId) === 0) return <ContentLoader />;
+	const allBlocks = getBlocks();
+	const maxiBlocksOrder = getBlockOrder().filter(id => {
+		const block = allBlocks.find(b => b.clientId === id);
+		return block && block?.name.includes('maxi-blocks');
+	});
+
+	if (maxiBlocksOrder.indexOf(clientId) === 0)
+		return <ContentLoader cloud={false} />;
 
 	return null;
 };

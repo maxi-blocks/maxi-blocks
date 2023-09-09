@@ -11,12 +11,15 @@ import {
 	getAttributes,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	it('Checking the boxShadow control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(
 			page,

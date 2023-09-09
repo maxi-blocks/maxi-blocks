@@ -19,8 +19,6 @@ import {
 import data from './data';
 
 const getWrapperObject = props => {
-	const { lineAlign, lineVertical, lineHorizontal } = props;
-
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -66,9 +64,6 @@ const getWrapperObject = props => {
 		divider: getDividerStyles(
 			{
 				...getGroupAttributes(props, 'divider'),
-				lineAlign,
-				lineVertical,
-				lineHorizontal,
 			},
 			null,
 			props.blockStyle
@@ -120,13 +115,10 @@ const getHoverWrapperObject = props => {
 };
 
 const getDividerObject = props => {
-	const { lineOrientation } = props;
-
 	const response = {
 		divider: getDividerStyles(
 			{
 				...getGroupAttributes(props, 'divider'),
-				lineOrientation,
 			},
 			'line',
 			props.blockStyle

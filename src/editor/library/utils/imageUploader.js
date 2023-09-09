@@ -70,7 +70,9 @@ export const placeholderUploader = async () => {
 
 		// Check if comment_status is empty and set it to 'closed' if needed
 		const updatedCommentStatus =
-			response.comment_status === '' ? 'closed' : response.comment_status;
+			response?.comment_status === ''
+				? 'closed'
+				: response?.comment_status;
 
 		// Add maxi-image-type taxonomy
 		dispatch('core').saveEntityRecord(

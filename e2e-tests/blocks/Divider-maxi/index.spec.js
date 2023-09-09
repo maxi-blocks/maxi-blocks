@@ -11,12 +11,15 @@ import {
 	getEditedPostContent,
 	insertMaxiBlock,
 	openSidebarTab,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
 	it('Divider Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -99,6 +102,7 @@ describe('Divider Maxi', () => {
 	it('Check responsive line orientation', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const responsiveVertical = await addResponsiveTest({

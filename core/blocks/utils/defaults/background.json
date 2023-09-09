@@ -1,0 +1,23 @@
+{
+  "background-active-media-general": {
+    "type": "string"
+  },
+  "background-active-media-xxl": {
+    "type": "string"
+  },
+  "background-active-media-xl": {
+    "type": "string"
+  },
+  "background-active-media-l": {
+    "type": "string"
+  },
+  "background-active-media-m": {
+    "type": "string"
+  },
+  "background-active-media-s": {
+    "type": "string"
+  },
+  "background-active-media-xs": {
+    "type": "string"
+  }
+}

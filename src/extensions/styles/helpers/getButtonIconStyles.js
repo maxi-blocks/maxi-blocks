@@ -315,44 +315,38 @@ const getButtonIconStyles = ({
 					};
 			  })()),
 		// Background
+		// TODO: check these lines, seems we've got an error here
+		// ...getBlockBackgroundStyles({
+		// ...getGroupAttributes(obj, 'svg'),
+		[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
+		[` ${hoverTarget}`]:
+			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
+		[` ${hoverTarget} svg > *`]:
+			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
+		[` ${hoverTarget} svg`]:
+			obj['icon-status-hover'] &&
+			getIconSize(obj, true, prefix, iconWidthHeightRatio),
+		[` ${hoverTarget} svg path`]:
+			obj['icon-status-hover'] && getIconPathStyles(obj, true),
 		...getBlockBackgroundStyles({
-			...getGroupAttributes(obj, 'svg'),
-			[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
-			[` ${hoverTarget}`]:
-				obj['icon-status-hover'] &&
-				getIconHoverObject(obj, 'iconHover'),
-			[` ${hoverTarget} svg > *`]:
-				obj['icon-status-hover'] &&
-				getIconHoverObject(obj, 'iconHover'),
-			[` ${hoverTarget} svg`]:
-				obj['icon-status-hover'] &&
-				getIconSize(obj, true, prefix, iconWidthHeightRatio),
-			[` ${hoverTarget} svg path`]:
-				obj['icon-status-hover'] && getIconPathStyles(obj, true),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(obj, [
-					'blockBackground',
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-				blockStyle,
-			}),
-			...getBlockBackgroundStyles({
-				...getGroupAttributes(
-					obj,
-					[
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					],
-					true
-				),
-				isHover: true,
-				blockStyle,
-			}),
+			...getGroupAttributes(obj, [
+				'blockBackground',
+				'border',
+				'borderWidth',
+				'borderRadius',
+			]),
+			blockStyle,
 		}),
+		...getBlockBackgroundStyles({
+			...getGroupAttributes(
+				obj,
+				['blockBackground', 'border', 'borderWidth', 'borderRadius'],
+				true
+			),
+			isHover: true,
+			blockStyle,
+		}),
+		// }),
 	};
 
 	return response;

@@ -267,7 +267,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 9 September 2023_
+_Updates: 10 September 2023_
 
 Update: Overhauled styles, metadata, and fonts management processes
 Update: Integrated PHP for block and attribute registration

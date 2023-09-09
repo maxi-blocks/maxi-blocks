@@ -1,0 +1,134 @@
+{
+  "border-top-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "border-top-width-xxl": {
+    "type": "number"
+  },
+  "border-top-width-xl": {
+    "type": "number"
+  },
+  "border-top-width-l": {
+    "type": "number"
+  },
+  "border-top-width-m": {
+    "type": "number"
+  },
+  "border-top-width-s": {
+    "type": "number"
+  },
+  "border-top-width-xs": {
+    "type": "number"
+  },
+  "border-right-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "border-right-width-xxl": {
+    "type": "number"
+  },
+  "border-right-width-xl": {
+    "type": "number"
+  },
+  "border-right-width-l": {
+    "type": "number"
+  },
+  "border-right-width-m": {
+    "type": "number"
+  },
+  "border-right-width-s": {
+    "type": "number"
+  },
+  "border-right-width-xs": {
+    "type": "number"
+  },
+  "border-bottom-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "border-bottom-width-xxl": {
+    "type": "number"
+  },
+  "border-bottom-width-xl": {
+    "type": "number"
+  },
+  "border-bottom-width-l": {
+    "type": "number"
+  },
+  "border-bottom-width-m": {
+    "type": "number"
+  },
+  "border-bottom-width-s": {
+    "type": "number"
+  },
+  "border-bottom-width-xs": {
+    "type": "number"
+  },
+  "border-left-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "border-left-width-xxl": {
+    "type": "number"
+  },
+  "border-left-width-xl": {
+    "type": "number"
+  },
+  "border-left-width-l": {
+    "type": "number"
+  },
+  "border-left-width-m": {
+    "type": "number"
+  },
+  "border-left-width-s": {
+    "type": "number"
+  },
+  "border-left-width-xs": {
+    "type": "number"
+  },
+  "border-sync-width-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "border-sync-width-xxl": {
+    "type": "string"
+  },
+  "border-sync-width-xl": {
+    "type": "string"
+  },
+  "border-sync-width-l": {
+    "type": "string"
+  },
+  "border-sync-width-m": {
+    "type": "string"
+  },
+  "border-sync-width-s": {
+    "type": "string"
+  },
+  "border-sync-width-xs": {
+    "type": "string"
+  },
+  "border-unit-width-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "border-unit-width-xxl": {
+    "type": "string"
+  },
+  "border-unit-width-xl": {
+    "type": "string"
+  },
+  "border-unit-width-l": {
+    "type": "string"
+  },
+  "border-unit-width-m": {
+    "type": "string"
+  },
+  "border-unit-width-s": {
+    "type": "string"
+  },
+  "border-unit-width-xs": {
+    "type": "string"
+  }
+}

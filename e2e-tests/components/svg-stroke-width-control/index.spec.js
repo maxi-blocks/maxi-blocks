@@ -13,6 +13,7 @@ import {
 	changeResponsive,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
@@ -29,6 +30,8 @@ describe('Svg stroke width control', () => {
 			'.components-modal__content .components-modal__header button',
 			svg => svg.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'style', 'icon line width');
 

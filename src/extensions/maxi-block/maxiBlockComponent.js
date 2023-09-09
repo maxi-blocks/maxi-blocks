@@ -33,7 +33,7 @@ import {
 	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import {
@@ -41,7 +41,6 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
-	getTemplatePartTagName,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -52,14 +51,14 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 
 /**
  * Style Component
@@ -104,6 +103,7 @@ const StyleComponent = ({
 		styles: stylesObj,
 		remove: false,
 		breakpoints: getBreakpoints(),
+		uniqueID,
 	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
@@ -156,10 +156,7 @@ class MaxiBlockComponent extends Component {
 		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
 		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
 
-		this.wrapperId = getStylesWrapperId(
-			newUniqueID,
-			getTemplatePartTagName(clientId)
-		);
+		this.wrapperId = getStylesWrapperId(newUniqueID);
 	}
 
 	componentDidMount() {
@@ -171,30 +168,111 @@ class MaxiBlockComponent extends Component {
 
 		if (!isEmpty(blocksIBRelations))
 			blocksIBRelations.forEach(({ clientId }) => {
-				const { 'maxi-version-current': maxiVersionCurrent } =
-					select('core/block-editor').getBlockAttributes(clientId);
+				const maxiVersionCurrent =
+					select('core/block-editor')?.getBlockAttributes(clientId)?.[
+						'maxi-version-current'
+					];
 
-				const needUpdate = [
-					'0.0.1-SC1',
-					'0.0.1-SC2',
-					'0.0.1-SC3',
-					'0.0.1-SC4',
-					'0.0.1-SC5',
-					'0.0.1-SC6',
-					'1.0.0-RC1',
-					'1.0.0-RC2',
-					'1.0.0',
-					'1.0.1',
-				].includes(maxiVersionCurrent);
+				if (maxiVersionCurrent) {
+					const needUpdate = [
+						'0.0.1-SC1',
+						'0.0.1-SC2',
+						'0.0.1-SC3',
+						'0.0.1-SC4',
+						'0.0.1-SC5',
+						'0.0.1-SC6',
+						'1.0.0-RC1',
+						'1.0.0-RC2',
+						'1.0.0',
+						'1.0.1',
+					].includes(maxiVersionCurrent);
 
-				if (needUpdate)
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					});
+					if (needUpdate)
+						updateRelationsRemotely({
+							blockTriggerClientId: clientId,
+							blockTargetClientId: this.props.clientId,
+							blockAttributes: this.props.attributes,
+							breakpoint: this.props.deviceType,
+						});
+				}
 			});
+
+		// Migrate uniqueID for IB
+		if (
+			this.props.attributes.isFirstOnHierarchy &&
+			this.props.attributes.legacyUniqueID
+		) {
+			const isRelationEligible = relation =>
+				isObject(relation) &&
+				'uniqueID' in relation &&
+				!relation.uniqueID.endsWith('-u');
+
+			// Function to collect all uniqueID and legacyUniqueID pairs from blocks within the hierarchy
+			const collectIDs = (attributes, innerBlocks, idPairs = {}) => {
+				const { uniqueID, legacyUniqueID } = attributes;
+
+				if (uniqueID && legacyUniqueID) {
+					idPairs[legacyUniqueID] = uniqueID;
+				}
+
+				if (isArray(innerBlocks)) {
+					innerBlocks.forEach(block => {
+						const { innerBlocks, attributes } = block;
+						collectIDs(attributes, innerBlocks, idPairs);
+					});
+				}
+
+				return idPairs;
+			};
+
+			// Collect all uniqueID and legacyUniqueID pairs
+			const { getBlock } = select('core/block-editor');
+			const block = getBlock(this.props.clientId);
+			const idPairs = collectIDs(
+				this.props.attributes,
+				block.innerBlocks
+			);
+
+			if (isEmpty(idPairs)) return;
+			// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
+			const replaceRelationIDs = (attributes, innerBlocks, clientId) => {
+				const { relations } = attributes;
+
+				if (isArray(relations)) {
+					const newRelations = relations.map(relation => {
+						if (
+							isRelationEligible(relation) &&
+							idPairs[relation.uniqueID]
+						) {
+							return {
+								...relation,
+								uniqueID: idPairs[relation.uniqueID],
+							};
+						}
+						return relation;
+					});
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+					updateBlockAttributes(clientId, {
+						relations: newRelations,
+					});
+				}
+
+				if (isArray(innerBlocks)) {
+					innerBlocks.forEach(block => {
+						const { innerBlocks, attributes, clientId } = block;
+						replaceRelationIDs(attributes, innerBlocks, clientId);
+					});
+				}
+			};
+
+			// Replace relation.uniqueID with legacyUniqueID in all blocks
+			replaceRelationIDs(
+				this.props.attributes,
+				block.innerBlocks,
+				this.props.clientId
+			);
+		}
 
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
@@ -212,8 +290,7 @@ class MaxiBlockComponent extends Component {
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
 		// Check if the block is reusable
-		this.isReusable =
-			this.blockRef.current.parentNode.classList.contains('is-reusable');
+		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.isReusable) {
 			this.widthObserver = updateReusableBlockSize(
@@ -388,12 +465,16 @@ class MaxiBlockComponent extends Component {
 				);
 		}
 
-		if (!shouldDisplayStyles)
-			this.displayStyles(
-				this.props.deviceType !== prevProps.deviceType ||
-					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
-						!!prevProps.baseBreakpoint)
-			);
+		if (!shouldDisplayStyles) {
+			!this.isReusable &&
+				this.displayStyles(
+					this.props.deviceType !== prevProps.deviceType ||
+						(this.props.baseBreakpoint !==
+							prevProps.baseBreakpoint &&
+							!!prevProps.baseBreakpoint)
+				);
+			this.isReusable && this.displayStyles();
+		}
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -582,7 +663,7 @@ class MaxiBlockComponent extends Component {
 		};
 
 		let wrapper;
-		let root;
+		let root = null;
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -614,14 +695,23 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.rootSlot &&
 			wrapper?.parentElement.isSameNode(
-				this.rootSlot._internalRoot.containerInfo.parentElement
+				this.rootSlot._internalRoot?.containerInfo?.parentElement
 			)
 		)
 			return this.rootSlot;
 
-		if (wrapper) root = createRoot(wrapper);
+		if (!root && wrapper) {
+			if (wrapper._reactRoot) {
+				root = wrapper._reactRoot;
+			} else {
+				root = createRoot(wrapper);
+				wrapper._reactRoot = root; // Store the created root for later use
+			}
+		}
 
-		dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
+		if (root) {
+			dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
+		}
 
 		return root;
 	}
@@ -765,16 +855,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		const { clientId, name: blockName } = this.props;
+		const { clientId, name: blockName, attributes } = this.props;
+		const { customLabel } = attributes;
 
-		if (
-			getIsUniqueIDRepeated(idToCheck) ||
-			!uniqueIDStructureChecker(idToCheck, clientId)
-		) {
+		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
-				diff: 1,
-				clientId,
 			});
 
 			propagateNewUniqueID(
@@ -800,6 +886,13 @@ class MaxiBlockComponent extends Component {
 			return newUniqueID;
 		}
 
+		if (getIsUniqueCustomLabelRepeated(customLabel)) {
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
+		}
+
 		return idToCheck;
 	}
 
@@ -821,6 +914,7 @@ class MaxiBlockComponent extends Component {
 	 */
 	displayStyles(isBreakpointChange = false) {
 		const { uniqueID } = this.props.attributes;
+
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
@@ -861,7 +955,6 @@ class MaxiBlockComponent extends Component {
 						isIframe={!!iframe}
 					/>
 				);
-
 				this.rootSlot.render(styleComponent);
 			}
 		}
@@ -870,7 +963,8 @@ class MaxiBlockComponent extends Component {
 	removeStyles() {
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
-		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
+		if (!this.isReusable && this.rootSlot)
+			setTimeout(() => this.rootSlot.unmount(), 0);
 
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID
@@ -899,13 +993,32 @@ class MaxiBlockComponent extends Component {
 		editorElement?.getElementById(this.wrapperId)?.remove();
 
 		if (this.isReusable) {
-			this.widthObserver.disconnect();
+			this.widthObserver?.disconnect();
 			editorElement
 				?.getElementById(
 					`maxi-block-size-checker-${this.props.clientId}`
 				)
 				?.remove();
 		}
+	}
+
+	/**
+	 * Checks if any parent node of the given React ref has the specified class.
+	 *
+	 * @param {React.RefObject} ref       - The React ref to the starting element.
+	 * @param {string}          className - The class name to look for.
+	 * @returns {boolean} - True if any parent has the class, otherwise false.
+	 */
+	// eslint-disable-next-line class-methods-use-this
+	hasParentWithClass(ref, className) {
+		let parent = ref.current ? ref.current.parentNode : null;
+		while (parent) {
+			if (parent.classList && parent.classList.contains(className)) {
+				return true;
+			}
+			parent = parent.parentNode;
+		}
+		return false;
 	}
 }
 

@@ -152,12 +152,12 @@ class edit extends MaxiBlockComponent {
 		 * when the block is duplicated.
 		 */
 		const svgClass =
-			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+			this.props.attributes.content?.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const newContent = this.props.attributes.content.replaceAll(
+		const newContent = this.props.attributes.content?.replaceAll(
 			svgClass.match(/__(\d)/)[0],
-			`__${newUniqueID.match(/-(\d+)$/).pop()}`
+			`__${newUniqueID.match(/-(\d+)$/)?.pop()}`
 		);
 		this.props.attributes.content = newContent;
 	}

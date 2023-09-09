@@ -11,12 +11,14 @@ import {
 	addResponsiveTest,
 	getBlockStyle,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('TransformControl', () => {
 	it('Check transform control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

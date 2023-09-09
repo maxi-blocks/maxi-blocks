@@ -22,7 +22,7 @@ import getStyles from './styles';
 import onMerge from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, scProps } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
@@ -42,10 +42,7 @@ class edit extends MaxiBlockComponent {
 		onChangeFormat: null,
 	};
 
-	scProps = {
-		scElements: [1, 2, 3, 4, 5, 6, 7, 8],
-		scType: 'color',
-	};
+	scProps = scProps;
 
 	typingTimeoutFormatValue = 0;
 

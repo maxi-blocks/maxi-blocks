@@ -10,12 +10,15 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Icon position', () => {
 	it('Check icon position', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

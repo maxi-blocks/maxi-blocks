@@ -1,0 +1,65 @@
+{
+  "background-gradient": {
+    "type": "string"
+  },
+  "background-gradient-opacity": {
+    "type": "number",
+    "default": 1
+  },
+  "background-gradient-clip-path": {
+    "type": "string",
+    "default": "none"
+  },
+  "background-gradient-clip-path-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-gradient-wrapper-position-top": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-gradient-wrapper-position-top-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-right-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-bottom-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-left-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-width": {
+    "type": "number",
+    "default": 100
+  },
+  "background-gradient-wrapper-width-unit": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-gradient-wrapper-height": {
+    "type": "number",
+    "default": 100
+  },
+  "background-gradient-wrapper-height-unit": {
+    "type": "string",
+    "default": "%"
+  }
+}

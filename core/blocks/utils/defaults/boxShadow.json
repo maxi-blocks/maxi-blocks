@@ -1,0 +1,309 @@
+{
+  "box-shadow-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "box-shadow-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-status-xl": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-status-l": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-status-m": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-status-s": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-status-xs": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "box-shadow-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "box-shadow-palette-color-general": {
+    "type": "number",
+    "default": 8
+  },
+  "box-shadow-palette-color-xxl": {
+    "type": "number"
+  },
+  "box-shadow-palette-color-xl": {
+    "type": "number"
+  },
+  "box-shadow-palette-color-l": {
+    "type": "number"
+  },
+  "box-shadow-palette-color-m": {
+    "type": "number"
+  },
+  "box-shadow-palette-color-s": {
+    "type": "number"
+  },
+  "box-shadow-palette-color-xs": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "box-shadow-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-xl": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-l": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-m": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-s": {
+    "type": "number"
+  },
+  "box-shadow-palette-opacity-xs": {
+    "type": "number"
+  },
+  "box-shadow-color-general": {
+    "type": "string"
+  },
+  "box-shadow-color-xxl": {
+    "type": "string"
+  },
+  "box-shadow-color-xl": {
+    "type": "string"
+  },
+  "box-shadow-color-l": {
+    "type": "string"
+  },
+  "box-shadow-color-m": {
+    "type": "string"
+  },
+  "box-shadow-color-s": {
+    "type": "string"
+  },
+  "box-shadow-color-xs": {
+    "type": "string"
+  },
+  "box-shadow-inset-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "box-shadow-inset-xxl": {
+    "type": "boolean"
+  },
+  "box-shadow-inset-xl": {
+    "type": "boolean"
+  },
+  "box-shadow-inset-l": {
+    "type": "boolean"
+  },
+  "box-shadow-inset-m": {
+    "type": "boolean"
+  },
+  "box-shadow-inset-s": {
+    "type": "boolean"
+  },
+  "box-shadow-inset-xs": {
+    "type": "boolean"
+  },
+  "box-shadow-horizontal-general": {
+    "type": "number",
+    "default": 0
+  },
+  "box-shadow-horizontal-xxl": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-xl": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-l": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-m": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-s": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-xs": {
+    "type": "number"
+  },
+  "box-shadow-horizontal-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "box-shadow-horizontal-unit-xxl": {
+    "type": "string"
+  },
+  "box-shadow-horizontal-unit-xl": {
+    "type": "string"
+  },
+  "box-shadow-horizontal-unit-l": {
+    "type": "string"
+  },
+  "box-shadow-horizontal-unit-m": {
+    "type": "string"
+  },
+  "box-shadow-horizontal-unit-s": {
+    "type": "string"
+  },
+  "box-shadow-horizontal-unit-xs": {
+    "type": "string"
+  },
+  "box-shadow-vertical-general": {
+    "type": "number",
+    "default": 0
+  },
+  "box-shadow-vertical-xxl": {
+    "type": "number"
+  },
+  "box-shadow-vertical-xl": {
+    "type": "number"
+  },
+  "box-shadow-vertical-l": {
+    "type": "number"
+  },
+  "box-shadow-vertical-m": {
+    "type": "number"
+  },
+  "box-shadow-vertical-s": {
+    "type": "number"
+  },
+  "box-shadow-vertical-xs": {
+    "type": "number"
+  },
+  "box-shadow-vertical-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "box-shadow-vertical-unit-xxl": {
+    "type": "string"
+  },
+  "box-shadow-vertical-unit-xl": {
+    "type": "string"
+  },
+  "box-shadow-vertical-unit-l": {
+    "type": "string"
+  },
+  "box-shadow-vertical-unit-m": {
+    "type": "string"
+  },
+  "box-shadow-vertical-unit-s": {
+    "type": "string"
+  },
+  "box-shadow-vertical-unit-xs": {
+    "type": "string"
+  },
+  "box-shadow-blur-general": {
+    "type": "number",
+    "default": 0
+  },
+  "box-shadow-blur-xxl": {
+    "type": "number"
+  },
+  "box-shadow-blur-xl": {
+    "type": "number"
+  },
+  "box-shadow-blur-l": {
+    "type": "number"
+  },
+  "box-shadow-blur-m": {
+    "type": "number"
+  },
+  "box-shadow-blur-s": {
+    "type": "number"
+  },
+  "box-shadow-blur-xs": {
+    "type": "number"
+  },
+  "box-shadow-blur-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "box-shadow-blur-unit-xxl": {
+    "type": "string"
+  },
+  "box-shadow-blur-unit-xl": {
+    "type": "string"
+  },
+  "box-shadow-blur-unit-l": {
+    "type": "string"
+  },
+  "box-shadow-blur-unit-m": {
+    "type": "string"
+  },
+  "box-shadow-blur-unit-s": {
+    "type": "string"
+  },
+  "box-shadow-blur-unit-xs": {
+    "type": "string"
+  },
+  "box-shadow-spread-general": {
+    "type": "number",
+    "default": 0
+  },
+  "box-shadow-spread-xxl": {
+    "type": "number"
+  },
+  "box-shadow-spread-xl": {
+    "type": "number"
+  },
+  "box-shadow-spread-l": {
+    "type": "number"
+  },
+  "box-shadow-spread-m": {
+    "type": "number"
+  },
+  "box-shadow-spread-s": {
+    "type": "number"
+  },
+  "box-shadow-spread-xs": {
+    "type": "number"
+  },
+  "box-shadow-spread-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "box-shadow-spread-unit-xxl": {
+    "type": "string"
+  },
+  "box-shadow-spread-unit-xl": {
+    "type": "string"
+  },
+  "box-shadow-spread-unit-l": {
+    "type": "string"
+  },
+  "box-shadow-spread-unit-m": {
+    "type": "string"
+  },
+  "box-shadow-spread-unit-s": {
+    "type": "string"
+  },
+  "box-shadow-spread-unit-xs": {
+    "type": "string"
+  }
+}

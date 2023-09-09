@@ -10,6 +10,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Background color from Toolbar', () => {
@@ -17,6 +18,7 @@ describe('Background color from Toolbar', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
 
+		await updateAllBlockUniqueIds(page);
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
 

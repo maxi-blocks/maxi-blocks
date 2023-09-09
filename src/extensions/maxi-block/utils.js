@@ -23,5 +23,5 @@ export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 	}
 };
 
-export const getStylesWrapperId = (uniqueID, templatePart) =>
-	`maxi-blocks__styles--${uniqueID}${templatePart ? `-${templatePart}` : ''}`;
+export const getStylesWrapperId = uniqueID =>
+	`maxi-blocks__styles--${uniqueID}`;

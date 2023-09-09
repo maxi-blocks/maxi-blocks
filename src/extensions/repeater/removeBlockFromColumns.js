@@ -19,7 +19,7 @@ const removeBlockFromColumns = (
 
 	const parentColumn = getBlock(parentColumnClientId);
 
-	if (!parentColumn?.innerBlocks) {
+	if (!parentColumn || !parentColumn.innerBlocks) {
 		return;
 	}
 
@@ -55,12 +55,14 @@ const removeBlockFromColumns = (
 			const rootBlock = getBlock(rootClientId);
 
 			markNextChangeAsNotPersistent();
-			replaceInnerBlocks(
-				rootClientId,
-				rootBlock.innerBlocks.filter(
-					innerBlock => innerBlock.clientId !== clientId
-				)
-			);
+			if (rootBlock && rootBlock.innerBlocks) {
+				replaceInnerBlocks(
+					rootClientId,
+					rootBlock.innerBlocks.filter(
+						innerBlock => innerBlock.clientId !== clientId
+					)
+				);
+			}
 
 			updateInnerBlocksPositions?.();
 		});

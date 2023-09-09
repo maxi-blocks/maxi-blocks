@@ -1,0 +1,1005 @@
+{
+  "shortcutEffect": {
+    "type": "number",
+    "default": 0
+  },
+  "shortcutEffectType": {
+    "type": "object"
+  },
+  "scroll-vertical-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-vertical-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-vertical-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-vertical-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-vertical-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-vertical-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-vertical-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-vertical-offset-start-general": {
+    "type": "number",
+    "default": -400
+  },
+  "scroll-vertical-offset-mid-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-vertical-offset-end-general": {
+    "type": "number",
+    "default": 400
+  },
+  "scroll-horizontal-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-horizontal-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-horizontal-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-horizontal-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-horizontal-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-horizontal-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-horizontal-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-horizontal-offset-start-general": {
+    "type": "number",
+    "default": -200
+  },
+  "scroll-horizontal-offset-mid-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-horizontal-offset-end-general": {
+    "type": "number",
+    "default": 200
+  },
+  "scroll-rotate-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-rotate-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-rotate-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-rotate-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-rotate-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-rotate-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-rotate-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-rotate-rotate-start-general": {
+    "type": "number",
+    "default": 90
+  },
+  "scroll-rotate-rotate-mid-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-rotate-rotate-end-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-scale-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-scale-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-scale-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-scale-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-scale-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-scale-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-scale-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-scale-scale-start-general": {
+    "type": "number",
+    "default": 70
+  },
+  "scroll-scale-scale-mid-general": {
+    "type": "number",
+    "default": 100
+  },
+  "scroll-scale-scale-end-general": {
+    "type": "number",
+    "default": 100
+  },
+  "scroll-fade-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-fade-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-fade-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-fade-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-fade-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-fade-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-fade-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-fade-opacity-start-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-fade-opacity-mid-general": {
+    "type": "number",
+    "default": 100
+  },
+  "scroll-fade-opacity-end-general": {
+    "type": "number",
+    "default": 100
+  },
+  "scroll-blur-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-blur-preview-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "scroll-blur-easing-general": {
+    "type": "string",
+    "default": "ease"
+  },
+  "scroll-blur-speed-general": {
+    "type": "number",
+    "default": 500
+  },
+  "scroll-blur-delay-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-blur-viewport-top-general": {
+    "type": "string",
+    "default": "mid"
+  },
+  "scroll-blur-status-reverse-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "scroll-blur-blur-start-general": {
+    "type": "number",
+    "default": 10
+  },
+  "scroll-blur-blur-mid-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-blur-blur-end-general": {
+    "type": "number",
+    "default": 0
+  },
+  "scroll-vertical-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-xxl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-xxl": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-xxl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-xxl": {
+    "type": "number"
+  },
+  "scroll-rotate-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-xxl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-xxl": {
+    "type": "number"
+  },
+  "scroll-scale-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-scale-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-xxl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-xxl": {
+    "type": "number"
+  },
+  "scroll-fade-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-fade-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-xxl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-xxl": {
+    "type": "number"
+  },
+  "scroll-blur-status-xxl": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-xxl": {
+    "type": "string"
+  },
+  "scroll-blur-speed-xxl": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-xxl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-xxl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-xxl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-xxl": {
+    "type": "number"
+  },
+  "scroll-vertical-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-xl": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-xl": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-xl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-xl": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-xl": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-xl": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-xl": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-xl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-xl": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-xl": {
+    "type": "number"
+  },
+  "scroll-rotate-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-xl": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-xl": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-xl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-xl": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-xl": {
+    "type": "number"
+  },
+  "scroll-scale-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-xl": {
+    "type": "string"
+  },
+  "scroll-scale-speed-xl": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-xl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-xl": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-xl": {
+    "type": "number"
+  },
+  "scroll-fade-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-xl": {
+    "type": "string"
+  },
+  "scroll-fade-speed-xl": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-xl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-xl": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-xl": {
+    "type": "number"
+  },
+  "scroll-blur-status-xl": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-xl": {
+    "type": "string"
+  },
+  "scroll-blur-speed-xl": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-xl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-xl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-xl": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-xl": {
+    "type": "number"
+  },
+  "scroll-vertical-status-l": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-l": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-l": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-l": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-l": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-l": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-l": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-l": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-l": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-l": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-l": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-l": {
+    "type": "number"
+  },
+  "scroll-rotate-status-l": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-l": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-l": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-l": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-l": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-l": {
+    "type": "number"
+  },
+  "scroll-scale-status-l": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-l": {
+    "type": "string"
+  },
+  "scroll-scale-speed-l": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-l": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-l": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-l": {
+    "type": "number"
+  },
+  "scroll-fade-status-l": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-l": {
+    "type": "string"
+  },
+  "scroll-fade-speed-l": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-l": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-l": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-l": {
+    "type": "number"
+  },
+  "scroll-blur-status-l": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-l": {
+    "type": "string"
+  },
+  "scroll-blur-speed-l": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-l": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-l": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-l": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-l": {
+    "type": "number"
+  },
+  "scroll-vertical-status-m": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-m": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-m": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-m": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-m": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-m": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-m": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-m": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-m": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-m": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-m": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-m": {
+    "type": "number"
+  },
+  "scroll-rotate-status-m": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-m": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-m": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-m": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-m": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-m": {
+    "type": "number"
+  },
+  "scroll-scale-status-m": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-m": {
+    "type": "string"
+  },
+  "scroll-scale-speed-m": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-m": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-m": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-m": {
+    "type": "number"
+  },
+  "scroll-fade-status-m": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-m": {
+    "type": "string"
+  },
+  "scroll-fade-speed-m": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-m": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-m": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-m": {
+    "type": "number"
+  },
+  "scroll-blur-status-m": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-m": {
+    "type": "string"
+  },
+  "scroll-blur-speed-m": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-m": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-m": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-m": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-m": {
+    "type": "number"
+  },
+  "scroll-vertical-status-s": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-s": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-s": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-s": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-s": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-s": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-s": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-s": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-s": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-s": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-s": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-s": {
+    "type": "number"
+  },
+  "scroll-rotate-status-s": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-s": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-s": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-s": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-s": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-s": {
+    "type": "number"
+  },
+  "scroll-scale-status-s": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-s": {
+    "type": "string"
+  },
+  "scroll-scale-speed-s": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-s": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-s": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-s": {
+    "type": "number"
+  },
+  "scroll-fade-status-s": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-s": {
+    "type": "string"
+  },
+  "scroll-fade-speed-s": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-s": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-s": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-s": {
+    "type": "number"
+  },
+  "scroll-blur-status-s": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-s": {
+    "type": "string"
+  },
+  "scroll-blur-speed-s": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-s": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-s": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-s": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-s": {
+    "type": "number"
+  },
+  "scroll-vertical-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-vertical-easing-xs": {
+    "type": "string"
+  },
+  "scroll-vertical-speed-xs": {
+    "type": "number"
+  },
+  "scroll-vertical-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-start-xs": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-mid-xs": {
+    "type": "number"
+  },
+  "scroll-vertical-offset-end-xs": {
+    "type": "number"
+  },
+  "scroll-horizontal-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-horizontal-easing-xs": {
+    "type": "string"
+  },
+  "scroll-horizontal-speed-xs": {
+    "type": "number"
+  },
+  "scroll-horizontal-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-start-xs": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-mid-xs": {
+    "type": "number"
+  },
+  "scroll-horizontal-offset-end-xs": {
+    "type": "number"
+  },
+  "scroll-rotate-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-rotate-easing-xs": {
+    "type": "string"
+  },
+  "scroll-rotate-speed-xs": {
+    "type": "number"
+  },
+  "scroll-rotate-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-start-xs": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-mid-xs": {
+    "type": "number"
+  },
+  "scroll-rotate-rotate-end-xs": {
+    "type": "number"
+  },
+  "scroll-scale-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-scale-easing-xs": {
+    "type": "string"
+  },
+  "scroll-scale-speed-xs": {
+    "type": "number"
+  },
+  "scroll-scale-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-scale-scale-start-xs": {
+    "type": "number"
+  },
+  "scroll-scale-scale-mid-xs": {
+    "type": "number"
+  },
+  "scroll-scale-scale-end-xs": {
+    "type": "number"
+  },
+  "scroll-fade-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-fade-easing-xs": {
+    "type": "string"
+  },
+  "scroll-fade-speed-xs": {
+    "type": "number"
+  },
+  "scroll-fade-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-start-xs": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-mid-xs": {
+    "type": "number"
+  },
+  "scroll-fade-opacity-end-xs": {
+    "type": "number"
+  },
+  "scroll-blur-status-xs": {
+    "type": "boolean"
+  },
+  "scroll-blur-easing-xs": {
+    "type": "string"
+  },
+  "scroll-blur-speed-xs": {
+    "type": "number"
+  },
+  "scroll-blur-viewport-top-xs": {
+    "type": "number"
+  },
+  "scroll-blur-blur-start-xs": {
+    "type": "number"
+  },
+  "scroll-blur-blur-mid-xs": {
+    "type": "number"
+  },
+  "scroll-blur-blur-end-xs": {
+    "type": "number"
+  }
+}

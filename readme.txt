@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.3
 Requires PHP: 8.0
-Stable tag: 1.3.1
+Stable tag: 1.4
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -267,6 +267,32 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
+_Updates: 9 September 2023_
+
+Update: Overhauled styles, metadata, and fonts management processes
+Update: Integrated PHP for block and attribute registration
+Update: Enhanced code optimization and general performance
+Update: Plugin's user interface for a better user experience
+Update: Maxi blocks are now compatible with Synced Patterns (formerly Reusable Blocks)
+Update: Strengthened support for Site EditorUpdate: Refined error handling for Dynamic Content
+Update: Introduced a new loading animation for the Template Library Maxi block
+Update: UI enhancements for margin and padding settings
+Update: Introduced a new Context Loop icon
+Update: Added a character limit option for titles within Dynamic Content
+Update: Updated button icon customization with "before" and "after" options in Custom CSS
+Update: Optimized native Gutenberg blocks to work seamlessly with Style Cards
+Update: Modified scroll effects to utilize the transform property instead of position for better performance
+Update: Enabled image positioning without needing the fit wrapper option.
+Fix: Corrected column width issue for Repeater
+Fix: Fixed transform target for Interaction Builder
+Fix: Implemented an option to ensure equal size for Divider canvas
+Fix: Adjusted Repeater to set height based on content
+Fix: Resolved Repeater's block movement bug
+Fix: Fixed row scheme alterations for nested blocks within rows using Repeater
+Fix: Re-introduced the sign-in button for expired plugin activations
+Fix: Addressed Interaction Builder target issues with Repeater enabled
+Fix: Rectified callout arrow positioning
+
 _Updates: 23 August 2023_
 
 * Update: Added Dynamic Content link to the Icon Maxi block
@@ -279,45 +305,6 @@ _Updates: 23 August 2023_
 * Fix: Resolved Maxi database tables creation issue on plugin activation users w/o admin permissions
 * Fix: Image uploading issue when comments were disabled under settings/discussion
 * Fix: Gutenberg block styles in the Editing Experience when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled
-
-_Updates: 7 August 2023_
-
-* Update: WordPress 6.3 compatibility
-* Update: Option to affect default Gutenberg blocks with Maxi Blocks Style cards
-* Update: Link icon added in the toolbar for Interaction builder
-* Update: Disabled list modified when Dynamic content enabled
-* Update: Marker size adjusted for responsive displays
-* Update: Image wrapper height changed from inherit to 100%
-* Update: Canvas label added for text block in Interaction builder
-* Update: New features for Dynamic content and Content loop developed, adding relations by category, author, and tag
-* Update: Marker size migrator implemented
-* Update: Consistent Dynamic content random content on the editor ensured
-* Update: Accordion Custom CSS improved
-* Update: Hide settings in Style card editor until they are available for changing
-* Update: Interaction builder implemented for background layers
-* Update: Dependencies, including tough-cookie and word-wrap versions, updated
-* Update: Styles consistency ensured on page reload
-* Update: Typography colours adjusted for responsive displays
-* Update: Links in higher blocks disabled when tags/categories links are enabled
-* Update: Dynamic content link provided for context loop blocks
-* Update: Interaction builder background transitions implemented
-* Update: Hover colour added for the search close icon
-* Update: Text strings allowed in number inputs
-* Update: Repeater functionality implemented
-* Fix: Issue with tags and categories links on the editor addressed
-* Fix: Styles on Gutenberg's responsive preview improved
-* Fix: Issue where the background layers disappeared on special paste addressed
-* Fix: Interaction builder reset issue resolved
-* Fix: PHP warning on the frontend resolved
-* Fix: Interaction builder unit bugs resolved
-* Fix: Bug with big marker size resolved
-* Fix: Temporary overlap of number attributes fixed
-* Fix: Visited links colour for custom formats fixed
-* Fix: Toolbar indent/outdent functionality fixed
-* Fix: Background gradient opacity reset issue addressed
-* Fix: Container indicators fixed
-* Fix: Issues with 'custom data' on Site editor
-* Fix: Default Style cards font-family for Button Maxi
 
 == Upgrade Notice ==
 

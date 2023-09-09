@@ -4,7 +4,6 @@
 import MaxiModal from '../../editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
@@ -50,29 +49,27 @@ const SVGLayer = props => {
 					onSelect={obj => onChange(obj)}
 				/>
 			)}
-			<ResponsiveTabsControl breakpoint={breakpoint}>
-				{!isEmpty(SVGElement) && (
-					<>
-						<SVGFillControl
-							SVGOptions={SVGOptions}
-							onChange={onChange}
-							clientId={clientId}
-							isHover={isHover}
-							isLayer
-							breakpoint={breakpoint}
-						/>
-						<SizeAndPositionLayerControl
-							prefix={prefix}
-							options={SVGOptions}
-							onChange={onChange}
-							isHover={isHover}
-							isLayer={isLayer}
-							breakpoint={breakpoint}
-							onlyWidth
-						/>
-					</>
-				)}
-			</ResponsiveTabsControl>
+			{!isEmpty(SVGElement) && (
+				<>
+					<SVGFillControl
+						SVGOptions={SVGOptions}
+						onChange={onChange}
+						clientId={clientId}
+						isHover={isHover}
+						isLayer
+						breakpoint={breakpoint}
+					/>
+					<SizeAndPositionLayerControl
+						prefix={prefix}
+						options={SVGOptions}
+						onChange={onChange}
+						isHover={isHover}
+						isLayer={isLayer}
+						breakpoint={breakpoint}
+						onlyWidth
+					/>
+				</>
+			)}
 		</>
 	);
 };

@@ -12,6 +12,7 @@ import {
 	changeResponsive,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 const changeAlignment = async (page, index = 0) => {
@@ -52,6 +53,7 @@ describe('AlignmentControl', () => {
 	it('Checking alignment in toolbar', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 
 		const alignments = ['center', 'right', 'justify', 'left'];

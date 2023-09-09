@@ -1,0 +1,371 @@
+{
+  "background-gradient-general": {
+    "type": "string"
+  },
+  "background-gradient-xxl": {
+    "type": "string"
+  },
+  "background-gradient-xl": {
+    "type": "string"
+  },
+  "background-gradient-l": {
+    "type": "string"
+  },
+  "background-gradient-m": {
+    "type": "string"
+  },
+  "background-gradient-s": {
+    "type": "string"
+  },
+  "background-gradient-xs": {
+    "type": "string"
+  },
+  "background-gradient-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "background-gradient-opacity-xxl": {
+    "type": "number"
+  },
+  "background-gradient-opacity-xl": {
+    "type": "number"
+  },
+  "background-gradient-opacity-l": {
+    "type": "number"
+  },
+  "background-gradient-opacity-m": {
+    "type": "number"
+  },
+  "background-gradient-opacity-s": {
+    "type": "number"
+  },
+  "background-gradient-opacity-xs": {
+    "type": "number"
+  },
+  "background-gradient-clip-path-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "background-gradient-clip-path-xxl": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-xl": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-l": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-m": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-s": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-xs": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-gradient-clip-path-status-xxl": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-xl": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-l": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-m": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-s": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-xs": {
+    "type": "boolean"
+  },
+  "background-gradient-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-gradient-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-gradient-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "background-gradient-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-xl": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-l": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-m": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-s": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-xs": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-gradient-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "background-gradient-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-xl": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-l": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-m": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-s": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-xs": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-gradient-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-xs": {
+    "type": "string"
+  }
+}

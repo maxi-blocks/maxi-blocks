@@ -25,6 +25,7 @@ import bottomGapMigrator from './bottomGapMigrator';
 import transitionMigrator from './transitionMigrator';
 import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
 import IBLabelToIDMigrator from './IBLabelToIDMigrator';
+import uniqueIDMigrator from './uniqueIDMigrator';
 import SVGMarkerSizeMigrator from './SVGMarkerSizeMigrator';
 
 /**
@@ -125,6 +126,7 @@ const blockMigrator = blockMigratorProps => {
 		transitionMigrator,
 		fullWidthAttributeMigrator,
 		IBLabelToIDMigrator,
+		uniqueIDMigrator,
 		SVGMarkerSizeMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];

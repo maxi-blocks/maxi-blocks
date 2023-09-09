@@ -15,12 +15,14 @@ import {
 	editAdvancedNumberControl,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Video icon control', () => {
 	it('Check video icon control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Video Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(page, 'style', 'video');
 

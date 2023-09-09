@@ -1,0 +1,24 @@
+{
+  "border-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "border-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "border-palette-color": {
+    "type": "number",
+    "default": 2
+  },
+  "border-palette-opacity": {
+    "type": "number"
+  },
+  "border-color": {
+    "type": "string"
+  },
+  "border-style": {
+    "type": "string",
+    "default": "none"
+  }
+}

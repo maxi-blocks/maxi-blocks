@@ -1,0 +1,244 @@
+{
+  "svgType-hover": {
+    "type": "string"
+  },
+  "icon-inherit-hover": {
+    "type": "boolean"
+  },
+  "icon-content-hover": {
+    "type": "string"
+  },
+  "icon-only-hover": {
+    "type": "boolean"
+  },
+  "icon-position-hover": {
+    "type": "string"
+  },
+  "icon-spacing-general-hover": {
+    "type": "number"
+  },
+  "icon-spacing-xxl-hover": {
+    "type": "number"
+  },
+  "icon-spacing-xl-hover": {
+    "type": "number"
+  },
+  "icon-spacing-l-hover": {
+    "type": "number"
+  },
+  "icon-spacing-m-hover": {
+    "type": "number"
+  },
+  "icon-spacing-s-hover": {
+    "type": "number"
+  },
+  "icon-spacing-xs-hover": {
+    "type": "number"
+  },
+  "icon-spacing-unit-general-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-xxl-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-xl-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-l-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-m-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-s-hover": {
+    "type": "string"
+  },
+  "icon-spacing-unit-xs-hover": {
+    "type": "string"
+  },
+  "icon-stroke-general-hover": {
+    "type": "number"
+  },
+  "icon-stroke-xxl-hover": {
+    "type": "number"
+  },
+  "icon-stroke-xl-hover": {
+    "type": "number"
+  },
+  "icon-stroke-l-hover": {
+    "type": "number"
+  },
+  "icon-stroke-m-hover": {
+    "type": "number"
+  },
+  "icon-stroke-s-hover": {
+    "type": "number"
+  },
+  "icon-stroke-xs-hover": {
+    "type": "number"
+  },
+  "icon-width-unit-general-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-xxl-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-xl-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-l-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-m-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-s-hover": {
+    "type": "string"
+  },
+  "icon-width-unit-xs-hover": {
+    "type": "string"
+  },
+  "icon-width-general-hover": {
+    "type": "string"
+  },
+  "icon-width-xxl-hover": {
+    "type": "string"
+  },
+  "icon-width-xl-hover": {
+    "type": "string"
+  },
+  "icon-width-l-hover": {
+    "type": "string"
+  },
+  "icon-width-m-hover": {
+    "type": "string"
+  },
+  "icon-width-s-hover": {
+    "type": "string"
+  },
+  "icon-width-xs-hover": {
+    "type": "string"
+  },
+  "icon-width-fit-content-general-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-xxl-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-xl-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-l-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-m-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-s-hover": {
+    "type": "boolean"
+  },
+  "icon-width-fit-content-xs-hover": {
+    "type": "boolean"
+  },
+  "icon-height-unit-general-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-xxl-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-xl-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-l-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-m-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-s-hover": {
+    "type": "string"
+  },
+  "icon-height-unit-xs-hover": {
+    "type": "string"
+  },
+  "icon-height-general-hover": {
+    "type": "string"
+  },
+  "icon-height-xxl-hover": {
+    "type": "string"
+  },
+  "icon-height-xl-hover": {
+    "type": "string"
+  },
+  "icon-height-l-hover": {
+    "type": "string"
+  },
+  "icon-height-m-hover": {
+    "type": "string"
+  },
+  "icon-height-s-hover": {
+    "type": "string"
+  },
+  "icon-height-xs-hover": {
+    "type": "string"
+  },
+  "icon-force-aspect-ratio-general-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-xxl-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-xl-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-l-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-m-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-s-hover": {
+    "type": "boolean"
+  },
+  "icon-force-aspect-ratio-xs-hover": {
+    "type": "boolean"
+  },
+  "icon-stroke-palette-status-hover": {
+    "type": "boolean",
+    "default": true
+  },
+  "icon-stroke-palette-sc-status-hover": {
+    "type": "boolean"
+  },
+  "icon-stroke-palette-color-hover": {
+    "type": "number",
+    "default": 6
+  },
+  "icon-stroke-palette-opacity-hover": {
+    "type": "number"
+  },
+  "icon-stroke-color-hover": {
+    "type": "string"
+  },
+  "icon-fill-palette-status-hover": {
+    "type": "boolean",
+    "default": true
+  },
+  "icon-fill-palette-sc-status-hover": {
+    "type": "boolean"
+  },
+  "icon-fill-palette-color-hover": {
+    "type": "number",
+    "default": 2
+  },
+  "icon-fill-palette-opacity-hover": {
+    "type": "number"
+  },
+  "icon-fill-color-hover": {
+    "type": "string"
+  },
+  "icon-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

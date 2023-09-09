@@ -6,12 +6,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, insertMaxiBlock } from '../../../../utils';
+import {
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../../../utils';
 
 describe.skip('Image size', () => {
 	it('Check image size', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// open settings
 		await page.$eval(

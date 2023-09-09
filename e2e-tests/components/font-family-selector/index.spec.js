@@ -11,12 +11,14 @@ import {
 	getAttributes,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,

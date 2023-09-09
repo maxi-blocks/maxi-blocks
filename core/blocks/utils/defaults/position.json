@@ -1,0 +1,218 @@
+{
+  "position-general": {
+    "type": "string",
+    "default": "inherit"
+  },
+  "position-xxl": {
+    "type": "string"
+  },
+  "position-xl": {
+    "type": "string"
+  },
+  "position-l": {
+    "type": "string"
+  },
+  "position-m": {
+    "type": "string"
+  },
+  "position-s": {
+    "type": "string"
+  },
+  "position-xs": {
+    "type": "string"
+  },
+  "position-top-general": {
+    "type": "string"
+  },
+  "position-top-xxl": {
+    "type": "string"
+  },
+  "position-top-xl": {
+    "type": "string"
+  },
+  "position-top-l": {
+    "type": "string"
+  },
+  "position-top-m": {
+    "type": "string"
+  },
+  "position-top-s": {
+    "type": "string"
+  },
+  "position-top-xs": {
+    "type": "string"
+  },
+  "position-right-general": {
+    "type": "string"
+  },
+  "position-right-xxl": {
+    "type": "string"
+  },
+  "position-right-xl": {
+    "type": "string"
+  },
+  "position-right-l": {
+    "type": "string"
+  },
+  "position-right-m": {
+    "type": "string"
+  },
+  "position-right-s": {
+    "type": "string"
+  },
+  "position-right-xs": {
+    "type": "string"
+  },
+  "position-bottom-general": {
+    "type": "string"
+  },
+  "position-bottom-xxl": {
+    "type": "string"
+  },
+  "position-bottom-xl": {
+    "type": "string"
+  },
+  "position-bottom-l": {
+    "type": "string"
+  },
+  "position-bottom-m": {
+    "type": "string"
+  },
+  "position-bottom-s": {
+    "type": "string"
+  },
+  "position-bottom-xs": {
+    "type": "string"
+  },
+  "position-left-general": {
+    "type": "string"
+  },
+  "position-left-xxl": {
+    "type": "string"
+  },
+  "position-left-xl": {
+    "type": "string"
+  },
+  "position-left-l": {
+    "type": "string"
+  },
+  "position-left-m": {
+    "type": "string"
+  },
+  "position-left-s": {
+    "type": "string"
+  },
+  "position-left-xs": {
+    "type": "string"
+  },
+  "position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "position-sync-xxl": {
+    "type": "string"
+  },
+  "position-sync-xl": {
+    "type": "string"
+  },
+  "position-sync-l": {
+    "type": "string"
+  },
+  "position-sync-m": {
+    "type": "string"
+  },
+  "position-sync-s": {
+    "type": "string"
+  },
+  "position-sync-xs": {
+    "type": "string"
+  },
+  "position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "position-top-unit-xxl": {
+    "type": "string"
+  },
+  "position-top-unit-xl": {
+    "type": "string"
+  },
+  "position-top-unit-l": {
+    "type": "string"
+  },
+  "position-top-unit-m": {
+    "type": "string"
+  },
+  "position-top-unit-s": {
+    "type": "string"
+  },
+  "position-top-unit-xs": {
+    "type": "string"
+  },
+  "position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "position-right-unit-xxl": {
+    "type": "string"
+  },
+  "position-right-unit-xl": {
+    "type": "string"
+  },
+  "position-right-unit-l": {
+    "type": "string"
+  },
+  "position-right-unit-m": {
+    "type": "string"
+  },
+  "position-right-unit-s": {
+    "type": "string"
+  },
+  "position-right-unit-xs": {
+    "type": "string"
+  },
+  "position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "position-bottom-unit-l": {
+    "type": "string"
+  },
+  "position-bottom-unit-m": {
+    "type": "string"
+  },
+  "position-bottom-unit-s": {
+    "type": "string"
+  },
+  "position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "position-left-unit-xxl": {
+    "type": "string"
+  },
+  "position-left-unit-xl": {
+    "type": "string"
+  },
+  "position-left-unit-l": {
+    "type": "string"
+  },
+  "position-left-unit-m": {
+    "type": "string"
+  },
+  "position-left-unit-s": {
+    "type": "string"
+  },
+  "position-left-unit-xs": {
+    "type": "string"
+  }
+}

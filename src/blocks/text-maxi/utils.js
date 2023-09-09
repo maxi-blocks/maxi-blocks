@@ -110,7 +110,9 @@ export const getSVGListStyle = svg => {
 	let cleanedSVG = svg
 		.replace(/"/g, "'")
 		.replace(/>\s{1,}</g, '><')
-		.replace(/\s{2,}/g, ' ');
+		.replace(/\s{2,}/g, ' ')
+		.replace("width='1em'", '')
+		.replace("height='1em'", '');
 
 	if (cleanedSVG.indexOf('http://www.w3.org/2000/svg') < 0) {
 		cleanedSVG = cleanedSVG.replace(

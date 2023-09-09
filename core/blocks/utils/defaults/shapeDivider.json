@@ -1,0 +1,372 @@
+{
+  "shape-divider-top-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "shape-divider-top-height-xxl": {
+    "type": "number"
+  },
+  "shape-divider-top-height-xl": {
+    "type": "number"
+  },
+  "shape-divider-top-height-l": {
+    "type": "number"
+  },
+  "shape-divider-top-height-m": {
+    "type": "number"
+  },
+  "shape-divider-top-height-s": {
+    "type": "number"
+  },
+  "shape-divider-top-height-xs": {
+    "type": "number"
+  },
+  "shape-divider-top-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "shape-divider-top-height-unit-xxl": {
+    "type": "string"
+  },
+  "shape-divider-top-height-unit-xl": {
+    "type": "string"
+  },
+  "shape-divider-top-height-unit-l": {
+    "type": "string"
+  },
+  "shape-divider-top-height-unit-m": {
+    "type": "string"
+  },
+  "shape-divider-top-height-unit-s": {
+    "type": "string"
+  },
+  "shape-divider-top-height-unit-xs": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "shape-divider-bottom-height-xxl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-xl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-l": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-m": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-s": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-xs": {
+    "type": "number"
+  },
+  "shape-divider-bottom-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "shape-divider-bottom-height-unit-xxl": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-unit-xl": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-unit-l": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-unit-m": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-unit-s": {
+    "type": "string"
+  },
+  "shape-divider-bottom-height-unit-xs": {
+    "type": "string"
+  },
+  "shape-divider-top-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "shape-divider-top-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-status-xl": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-status-l": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-status-m": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-status-s": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-status-xs": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-divider-top-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "shape-divider-top-palette-color-general": {
+    "type": "number",
+    "default": 5
+  },
+  "shape-divider-top-palette-color-xxl": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-color-xl": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-color-l": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-color-m": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-color-s": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-color-xs": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-general": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-xl": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-l": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-m": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-s": {
+    "type": "number"
+  },
+  "shape-divider-top-palette-opacity-xs": {
+    "type": "number"
+  },
+  "shape-divider-top-color-general": {
+    "type": "string"
+  },
+  "shape-divider-top-color-xxl": {
+    "type": "string"
+  },
+  "shape-divider-top-color-xl": {
+    "type": "string"
+  },
+  "shape-divider-top-color-l": {
+    "type": "string"
+  },
+  "shape-divider-top-color-m": {
+    "type": "string"
+  },
+  "shape-divider-top-color-s": {
+    "type": "string"
+  },
+  "shape-divider-top-color-xs": {
+    "type": "string"
+  },
+  "shape-divider-bottom-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "shape-divider-bottom-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-status-xl": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-status-l": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-status-m": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-status-s": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-status-xs": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-divider-bottom-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "shape-divider-bottom-palette-color-general": {
+    "type": "number",
+    "default": 5
+  },
+  "shape-divider-bottom-palette-color-xxl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-color-xl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-color-l": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-color-m": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-color-s": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-color-xs": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-general": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-xl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-l": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-m": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-s": {
+    "type": "number"
+  },
+  "shape-divider-bottom-palette-opacity-xs": {
+    "type": "number"
+  },
+  "shape-divider-bottom-color-general": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-xxl": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-xl": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-l": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-m": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-s": {
+    "type": "string"
+  },
+  "shape-divider-bottom-color-xs": {
+    "type": "string"
+  },
+  "shape-divider-top-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "shape-divider-top-opacity-xxl": {
+    "type": "number"
+  },
+  "shape-divider-top-opacity-xl": {
+    "type": "number"
+  },
+  "shape-divider-top-opacity-l": {
+    "type": "number"
+  },
+  "shape-divider-top-opacity-m": {
+    "type": "number"
+  },
+  "shape-divider-top-opacity-s": {
+    "type": "number"
+  },
+  "shape-divider-top-opacity-xs": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "shape-divider-bottom-opacity-xxl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-xl": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-l": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-m": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-s": {
+    "type": "number"
+  },
+  "shape-divider-bottom-opacity-xs": {
+    "type": "number"
+  },
+  "shape-divider-top-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-divider-top-shape-style": {
+    "type": "string"
+  },
+  "shape-divider-top-effects-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-divider-bottom-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-divider-bottom-shape-style": {
+    "type": "string"
+  },
+  "shape-divider-bottom-effects-status": {
+    "type": "boolean",
+    "default": false
+  }
+}

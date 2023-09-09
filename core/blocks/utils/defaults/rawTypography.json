@@ -1,0 +1,113 @@
+{
+  "font-family": {
+    "type": "string"
+  },
+  "palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "palette-color": {
+    "type": "number",
+    "default": 3
+  },
+  "palette-opacity": {
+    "type": "number"
+  },
+  "color": {
+    "type": "string"
+  },
+  "list-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "list-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "list-palette-color": {
+    "type": "number",
+    "default": 4
+  },
+  "list-palette-opacity": {
+    "type": "number"
+  },
+  "list-color": {
+    "type": "string"
+  },
+  "font-size-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "font-size": {
+    "type": "number"
+  },
+  "line-height-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "line-height": {
+    "type": "number"
+  },
+  "letter-spacing-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "letter-spacing": {
+    "type": "number"
+  },
+  "font-weight": {
+    "type": "string"
+  },
+  "text-transform": {
+    "type": "string"
+  },
+  "font-style": {
+    "type": "string"
+  },
+  "text-decoration": {
+    "type": "string"
+  },
+  "text-indent": {
+    "type": "number"
+  },
+  "text-indent-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "text-shadow": {
+    "type": "string"
+  },
+  "vertical-align": {
+    "type": "string"
+  },
+  "custom-formats": {
+    "type": "object"
+  },
+  "text-orientation": {
+    "type": "string"
+  },
+  "text-direction": {
+    "type": "string"
+  },
+  "white-space": {
+    "type": "string"
+  },
+  "word-spacing": {
+    "type": "number"
+  },
+  "word-spacing-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "bottom-gap": {
+    "type": "number"
+  },
+  "bottom-gap-unit": {
+    "type": "string",
+    "default": "px"
+  }
+}

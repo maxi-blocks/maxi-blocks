@@ -209,7 +209,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	if (!isSave && !INNER_BLOCKS.includes(blockName))
 		useEffect(() => {
 			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
-		}, [isDragging]);
+		}, [isDragging, isDragOverBlock, setIsDragOverBlock]);
 
 	const classes = classnames(
 		'maxi-block',
@@ -348,7 +348,7 @@ const MaxiBlock = memo(
 			}
 
 			return () => {};
-		}, [styleStr, isFirstOnHierarchy, clientId]);
+		}, [styleStr, isFirstOnHierarchy, clientId, ref]);
 
 		return (
 			<MaxiBlockContent

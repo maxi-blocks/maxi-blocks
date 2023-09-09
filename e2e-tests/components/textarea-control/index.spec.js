@@ -5,12 +5,18 @@ import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('TextareaControl', () => {
 	it('Check textarea control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

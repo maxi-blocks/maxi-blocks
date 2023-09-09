@@ -12,12 +12,14 @@ import {
 	getBlockStyle,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
 	it('Checking the z-index control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 		await openSidebarTab(page, 'advanced', 'z index');
 

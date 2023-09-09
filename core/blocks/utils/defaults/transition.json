@@ -1,0 +1,9 @@
+{
+  "transition": {
+    "type": "object"
+  },
+  "transition-change-all": {
+    "type": "boolean",
+    "default": true
+  }
+}

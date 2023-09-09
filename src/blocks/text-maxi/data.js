@@ -203,6 +203,10 @@ const interactionBuilderSettings = {
 	],
 	advanced: getAdvancedSettings({ customCss }),
 };
+const scProps = {
+	scElements: [1, 2, 3, 4, 5, 6, 7, 8],
+	scType: 'color',
+};
 
 const data = {
 	name,
@@ -210,7 +214,14 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	scProps,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	scProps,
+};
 export default data;

@@ -1098,6 +1098,41 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $content;
         }
 
+        public function generate_styles_button()
+        {
+            echo '
+			<script type="text/javascript">
+				document.addEventListener("DOMContentLoaded", function() {
+					var button = document.getElementById("maxi-regenerate-styles-button");
+
+					if(button) document.getElementById("maxi-regenerate-styles-button").addEventListener("click", function() {
+						button.disabled = true; // disable the button
+
+						var loadingMessage = document.createElement("div");
+						loadingMessage.id = "loading";
+						loadingMessage.innerHTML = "<p>Running... Please wait.</p>";
+						button.parentNode.insertBefore(loadingMessage, button.nextSibling); // show loading message
+
+						fetch(ajaxurl, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							body: "action=maxi_process_all_site_content"
+						})
+						.then(response => response.text())
+						.then(response => {
+							document.getElementById("loading").remove(); // remove loading message
+							button.disabled = false; // re-enable the button
+							alert(response); // alert the response from the server
+						});
+					});
+				});
+			</script>
+			';
+        }
+
+
         public function maxi_blocks_allowed_html()
         {
             if (!function_exists('maxi_blocks_allowed_html')) {

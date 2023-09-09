@@ -16,7 +16,9 @@ import { cloneDeep, isArray, isEmpty, isEqual, isPlainObject } from 'lodash';
 const propagateNewUniqueID = (
 	oldUniqueID,
 	newUniqueID,
+	clientId,
 	repeaterStatus,
+	getInnerBlocksPositions,
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};
@@ -40,11 +42,7 @@ const propagateNewUniqueID = (
 		const updateNewUniqueID = block => {
 			if (!block) return;
 
-			const {
-				attributes = {},
-				innerBlocks: rawInnerBlocks = [],
-				clientId,
-			} = block;
+			const { attributes = {}, clientId } = block;
 
 			if (
 				'relations' in attributes &&
@@ -94,22 +92,39 @@ const propagateNewUniqueID = (
 						newRelations
 					);
 			}
-
-			if (!isEmpty(rawInnerBlocks)) {
-				const innerBlocks = isArray(rawInnerBlocks)
-					? rawInnerBlocks
-					: Object.values(rawInnerBlocks);
-
-				innerBlocks.forEach(innerBlock => {
-					updateNewUniqueID(innerBlock);
-				});
-			}
 		};
 
-		lastChangedBlocks.forEach(clientId => {
-			const block = select('core/block-editor').getBlock(clientId);
-			updateNewUniqueID(block);
-		});
+		/**
+		 * In case if some of blocks was inserted into repeater (for example on validation),
+		 * then we need to check the column as well.
+		 */
+		const getRepeaterColumnClientId = () => {
+			if (!lastChangedBlocks.includes(clientId) || !repeaterStatus) {
+				return null;
+			}
+
+			const columnInnerBlocksPositions =
+				getInnerBlocksPositions()?.[[-1]];
+
+			if (!columnInnerBlocksPositions) {
+				return null;
+			}
+
+			const parentColumnsClientIds = select(
+				'core/block-editor'
+			).getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi');
+
+			return parentColumnsClientIds.find(columnClientId =>
+				columnInnerBlocksPositions.includes(columnClientId)
+			);
+		};
+
+		[...lastChangedBlocks, getRepeaterColumnClientId()].forEach(
+			clientId => {
+				const block = select('core/block-editor').getBlock(clientId);
+				updateNewUniqueID(block);
+			}
+		);
 	};
 
 	const updateBGLayers = () => {

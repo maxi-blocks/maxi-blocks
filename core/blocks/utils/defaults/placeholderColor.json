@@ -1,0 +1,110 @@
+{
+  "placeholder-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "placeholder-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "placeholder-palette-status-xl": {
+    "type": "boolean"
+  },
+  "placeholder-palette-status-l": {
+    "type": "boolean"
+  },
+  "placeholder-palette-status-m": {
+    "type": "boolean"
+  },
+  "placeholder-palette-status-s": {
+    "type": "boolean"
+  },
+  "placeholder-palette-status-xs": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "placeholder-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "placeholder-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "placeholder-palette-color-general": {
+    "type": "number",
+    "default": 3
+  },
+  "placeholder-palette-color-xxl": {
+    "type": "number"
+  },
+  "placeholder-palette-color-xl": {
+    "type": "number"
+  },
+  "placeholder-palette-color-l": {
+    "type": "number"
+  },
+  "placeholder-palette-color-m": {
+    "type": "number"
+  },
+  "placeholder-palette-color-s": {
+    "type": "number"
+  },
+  "placeholder-palette-color-xs": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-general": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-xl": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-l": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-m": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-s": {
+    "type": "number"
+  },
+  "placeholder-palette-opacity-xs": {
+    "type": "number"
+  },
+  "placeholder-color-general": {
+    "type": "string"
+  },
+  "placeholder-color-xxl": {
+    "type": "string"
+  },
+  "placeholder-color-xl": {
+    "type": "string"
+  },
+  "placeholder-color-l": {
+    "type": "string"
+  },
+  "placeholder-color-m": {
+    "type": "string"
+  },
+  "placeholder-color-s": {
+    "type": "string"
+  },
+  "placeholder-color-xs": {
+    "type": "string"
+  }
+}

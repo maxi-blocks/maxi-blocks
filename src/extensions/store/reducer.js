@@ -107,6 +107,8 @@ const reducer = (
 		deprecatedBlocks: {},
 		blocksToRender: [],
 		isPageLoaded: false,
+		blockName: {},
+		uniqueID: {},
 	},
 	action
 ) => {

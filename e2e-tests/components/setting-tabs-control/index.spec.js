@@ -10,13 +10,13 @@ import {
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock } from '../../utils';
+import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../utils';
 
 describe('SettingsTabsControl', () => {
 	it('Checking the settings tabs control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
-
+		await updateAllBlockUniqueIds(page);
 		await openDocumentSettingsSidebar();
 		await ensureSidebarOpened();
 

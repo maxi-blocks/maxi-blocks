@@ -1,0 +1,130 @@
+{
+  "hover-border-top-left-radius-general": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-xxl": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-xl": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-l": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-m": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-s": {
+    "type": "number"
+  },
+  "hover-border-top-left-radius-xs": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-general": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-xxl": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-xl": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-l": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-m": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-s": {
+    "type": "number"
+  },
+  "hover-border-top-right-radius-xs": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-general": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-xxl": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-xl": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-l": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-m": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-s": {
+    "type": "number"
+  },
+  "hover-border-bottom-right-radius-xs": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-general": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-xxl": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-xl": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-l": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-m": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-s": {
+    "type": "number"
+  },
+  "hover-border-bottom-left-radius-xs": {
+    "type": "number"
+  },
+  "hover-border-sync-radius-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "hover-border-sync-radius-xxl": {
+    "type": "string"
+  },
+  "hover-border-sync-radius-xl": {
+    "type": "string"
+  },
+  "hover-border-sync-radius-l": {
+    "type": "string"
+  },
+  "hover-border-sync-radius-m": {
+    "type": "string"
+  },
+  "hover-border-sync-radius-s": {
+    "type": "string"
+  },
+  "hover-border-sync-radius-xs": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "hover-border-unit-radius-xxl": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-xl": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-l": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-m": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-s": {
+    "type": "string"
+  },
+  "hover-border-unit-radius-xs": {
+    "type": "string"
+  }
+}

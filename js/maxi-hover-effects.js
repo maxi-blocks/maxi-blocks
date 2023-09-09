@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable @wordpress/no-global-event-listener */
 
 // Hover Effects
@@ -9,12 +10,23 @@ const hovers = () => {
 
 		const hoverID = elem.id;
 
-		const hoverData =
-			// eslint-disable-next-line no-undef
-			maxiHoverEffects[0][hoverID] !== undefined
-				? // eslint-disable-next-line no-undef
-				  maxiHoverEffects[0][hoverID]
-				: null;
+		let hoverData;
+
+		if (typeof maxiHoverEffects[0][hoverID] === 'string') {
+			try {
+				hoverData = JSON.parse(maxiHoverEffects[0][hoverID]);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				hoverData = null;
+			}
+		} else if (
+			typeof maxiHoverEffects[0][hoverID] === 'object' &&
+			maxiHoverEffects[0][hoverID] !== null
+		) {
+			hoverData = maxiHoverEffects[0][hoverID];
+		} else {
+			hoverData = null;
+		}
 
 		if (hoverData !== null) {
 			// Hover

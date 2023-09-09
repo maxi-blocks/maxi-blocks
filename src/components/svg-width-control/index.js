@@ -8,7 +8,10 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { togglePreserveAspectRatio } from '../../extensions/svg';
+import {
+	shouldSetPreserveAspectRatio,
+	togglePreserveAspectRatio,
+} from '../../extensions/svg';
 
 /**
  * Internal dependencies
@@ -141,11 +144,17 @@ const SvgWidthControl = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							[getAttributeKey(
-								'content',
-								isHover,
-								contentPrefix
-							)]: togglePreserveAspectRatio(icon, val),
+							...((val ||
+								!shouldSetPreserveAspectRatio(
+									props,
+									prefix
+								)) && {
+								[getAttributeKey(
+									'content',
+									isHover,
+									contentPrefix
+								)]: togglePreserveAspectRatio(icon, val),
+							}),
 						});
 					}}
 				/>

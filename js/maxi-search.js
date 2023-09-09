@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const onSearchEvent = input => {
 	const searchLink = maxiSearch[1];
 	const inputValue = input.value;
@@ -38,6 +39,7 @@ const onRevealEvent = (
 	const isInputHidden = input.classList.contains(
 		'maxi-search-block__input--hidden'
 	);
+	// eslint-disable-next-line @wordpress/no-global-active-element
 	const isInputFocussed = input === document.activeElement;
 
 	if (
@@ -58,76 +60,84 @@ const onRevealEvent = (
 };
 
 const search = () => {
-	Object.entries(maxiSearch[0]).forEach(
-		([
-			uniqueID,
-			{
-				buttonIconContent,
-				buttonCloseIconContent,
-				buttonContent,
-				buttonContentClose,
-				buttonSkin,
-				iconRevealAction,
-				skin,
-			},
-		]) => {
-			const searchBlock = document.getElementById(uniqueID);
+	Object.entries(maxiSearch[0]).forEach(([uniqueID, json]) => {
+		let parsedJson;
 
-			if (!searchBlock) return;
-
-			const button = searchBlock.querySelector(
-				'.maxi-search-block__button'
-			);
-			const buttonIcon = searchBlock.querySelector(
-				'.maxi-search-block__button__icon'
-			);
-			const buttonText = searchBlock.querySelector(
-				'.maxi-search-block__button__content'
-			);
-			const input = searchBlock.querySelector(
-				'.maxi-search-block__input'
-			);
-
-			const isIcon = buttonSkin === 'icon';
-
-			const content = isIcon ? buttonIconContent : buttonContent;
-			const contentClose = isIcon
-				? buttonCloseIconContent
-				: buttonContentClose;
-			const wrapper = isIcon ? buttonIcon : buttonText;
-
-			if (skin === 'icon-reveal') {
-				const events = [
-					'click',
-					...(iconRevealAction === 'hover'
-						? ['mouseover', 'mouseleave']
-						: []),
-				];
-
-				events.forEach(event => {
-					const eventTarget =
-						event === 'click' ? document : searchBlock;
-
-					eventTarget.addEventListener(event, event =>
-						onRevealEvent(
-							event,
-							input,
-							{ wrapper, content, contentClose, isIcon },
-							searchBlock
-						)
-					);
-				});
-			} else {
-				button.addEventListener('click', () => onSearchEvent(input));
+		if (typeof json === 'string') {
+			try {
+				parsedJson = JSON.parse(json);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				return;
 			}
-
-			input.addEventListener('keypress', event => {
-				if (event.key === 'Enter') {
-					onSearchEvent(input);
-				}
-			});
+		} else if (typeof json === 'object' && json !== null) {
+			parsedJson = json;
+		} else {
+			console.error('json is neither an object nor a string');
+			return;
 		}
-	);
+
+		const {
+			buttonIconContent,
+			buttonCloseIconContent,
+			buttonContent,
+			buttonContentClose,
+			buttonSkin,
+			iconRevealAction,
+			skin,
+		} = parsedJson;
+
+		const searchBlock = document.getElementById(uniqueID);
+
+		if (!searchBlock) return;
+
+		const button = searchBlock.querySelector('.maxi-search-block__button');
+		const buttonIcon = searchBlock.querySelector(
+			'.maxi-search-block__button__icon'
+		);
+		const buttonText = searchBlock.querySelector(
+			'.maxi-search-block__button__content'
+		);
+		const input = searchBlock.querySelector('.maxi-search-block__input');
+
+		const isIcon = buttonSkin === 'icon';
+
+		const content = isIcon ? buttonIconContent : buttonContent;
+		const contentClose = isIcon
+			? buttonCloseIconContent
+			: buttonContentClose;
+		const wrapper = isIcon ? buttonIcon : buttonText;
+
+		if (skin === 'icon-reveal') {
+			const events = [
+				'click',
+				...(iconRevealAction === 'hover'
+					? ['mouseover', 'mouseleave']
+					: []),
+			];
+
+			events.forEach(event => {
+				const eventTarget = event === 'click' ? document : searchBlock;
+
+				eventTarget.addEventListener(event, event =>
+					onRevealEvent(
+						event,
+						input,
+						{ wrapper, content, contentClose, isIcon },
+						searchBlock
+					)
+				);
+			});
+		} else {
+			button.addEventListener('click', () => onSearchEvent(input));
+		}
+
+		input.addEventListener('keypress', event => {
+			if (event.key === 'Enter') {
+				onSearchEvent(input);
+			}
+		});
+	});
 };
 
 window.addEventListener('DOMContentLoaded', search);

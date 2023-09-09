@@ -31,31 +31,32 @@ const frontendStyleGenerator = styles => {
 	let response = '';
 
 	BREAKPOINTS.forEach(breakpoint => {
-		Object.entries(styles).forEach(([target, value]) => {
-			let breakpointResponse = '';
-			const { breakpoints, content } = value;
+		const target = styles?.[0];
+		const value = styles?.[1];
 
-			Object.entries(content).forEach(([suffix, props]) => {
-				if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
-					breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
-					breakpointResponse += getStyles(props[breakpoint]);
-					breakpointResponse += '}';
-				}
-			});
+		let breakpointResponse = '';
+		const { breakpoints, content } = value;
 
-			if (!isEmpty(breakpointResponse)) {
-				if (breakpoint === 'xxl')
-					response += getMediaQueryString(breakpoint, breakpoints.xl);
-				else if (breakpoint !== 'general')
-					response += getMediaQueryString(
-						breakpoint,
-						breakpoints[breakpoint]
-					);
-
-				response += breakpointResponse;
-				if (breakpoint !== 'general') response += '}';
+		Object.entries(content).forEach(([suffix, props]) => {
+			if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
+				breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
+				breakpointResponse += getStyles(props[breakpoint]);
+				breakpointResponse += '}';
 			}
 		});
+
+		if (!isEmpty(breakpointResponse)) {
+			if (breakpoint === 'xxl')
+				response += getMediaQueryString(breakpoint, breakpoints.xl);
+			else if (breakpoint !== 'general')
+				response += getMediaQueryString(
+					breakpoint,
+					breakpoints[breakpoint]
+				);
+
+			response += breakpointResponse;
+			if (breakpoint !== 'general') response += '}';
+		}
 	});
 
 	return response;

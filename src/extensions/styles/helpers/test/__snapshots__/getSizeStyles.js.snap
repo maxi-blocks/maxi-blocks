@@ -73,7 +73,7 @@ exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
   },
   "l": {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "2px",
     "min-height": "1px",
@@ -82,7 +82,7 @@ exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
   },
   "m": {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "1px",
     "max-width": "2px",
     "min-height": "2px",
@@ -91,7 +91,7 @@ exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
   },
   "s": {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "1px",
     "max-width": "3px",
     "min-height": "2px",
@@ -100,7 +100,7 @@ exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
   },
   "xl": {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",
@@ -109,7 +109,7 @@ exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
   },
   "xs": {
     "aspect-ratio": 1,
-    "height": "auto",
+    "height": "auto !important",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",

@@ -10,12 +10,15 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Divider color from Toolbar', () => {
 	it('Test divider color from toolbar', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

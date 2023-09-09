@@ -1,0 +1,6 @@
+{
+  "full-width": {
+    "type": "boolean",
+    "default": false
+  }
+}

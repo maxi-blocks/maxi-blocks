@@ -10,12 +10,14 @@ import {
 	getBlockStyle,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Button', () => {
 	it('Check button', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'alignment');
 
 		await page.$$eval('.maxi-alignment-control button', click =>

@@ -73,11 +73,9 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID } = attributes;
 
 		const response = {
-			number_counter: {
-				[uniqueID]: {
-					...getGroupAttributes(attributes, 'numberCounter'),
-					breakpoints: { ...getBreakpoints(attributes) },
-				},
+			[uniqueID]: {
+				...getGroupAttributes(attributes, 'numberCounter'),
+				breakpoints: { ...getBreakpoints(attributes) },
 			},
 		};
 

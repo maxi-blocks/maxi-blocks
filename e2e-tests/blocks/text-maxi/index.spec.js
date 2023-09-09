@@ -23,8 +23,8 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	openPreviewPage,
-	setAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -54,7 +54,7 @@ describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
+		await updateAllBlockUniqueIds(page);
 	});
 
 	it('Writes a sentence on Text Maxi', async () => {
@@ -71,6 +71,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
+		await updateAllBlockUniqueIds(page);
+
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -82,6 +84,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -98,6 +102,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
 
+		await updateAllBlockUniqueIds(page);
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -112,6 +117,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -152,6 +159,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
 
+		await updateAllBlockUniqueIds(page);
+
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -190,6 +199,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -631,6 +642,8 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.focus();
 
+		await updateAllBlockUniqueIds(page);
+
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -640,6 +653,8 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');
 		await page.waitForTimeout(150);
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -691,7 +706,7 @@ describe('TextMaxi', () => {
 		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
 			paletteButtons[3].click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(250);
 
 		const {
 			'palette-color-general': expectedColor,

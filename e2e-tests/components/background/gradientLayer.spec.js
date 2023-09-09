@@ -17,6 +17,7 @@ import {
 	openPreviewPage,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
@@ -24,6 +25,8 @@ describe('BackgroundControl', () => {
 	it('Check Background gradient layer', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');

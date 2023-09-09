@@ -3,6 +3,7 @@
  */
 import styleGenerator from '../styleGenerator';
 import controls from './controls';
+import * as defaultGroupAttributes from '../defaults/index';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -20,6 +21,7 @@ function reducer(
 		prevSavedAttrs: [],
 		cssCache: {},
 		blockMarginValue: '',
+		defaultGroupAttributes: { ...defaultGroupAttributes },
 	},
 	action
 ) {

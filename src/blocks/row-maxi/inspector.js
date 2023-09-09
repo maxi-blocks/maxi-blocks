@@ -103,11 +103,6 @@ const Inspector = props => {
 											'horizontalAlign',
 										],
 									},
-									...inspectorTabs.repeater({
-										props,
-										isRepeaterInherited,
-										updateInnerBlocksPositions,
-									}),
 									...inspectorTabs.blockBackground({
 										props,
 									}),
@@ -123,6 +118,15 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
+									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'row',
+									}),
+									...inspectorTabs.repeater({
+										props,
+										isRepeaterInherited,
+										updateInnerBlocksPositions,
 									}),
 								]}
 							/>
@@ -153,10 +157,6 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
-									}),
-									...inspectorTabs.contextLoop({
-										props,
-										contentType: 'row',
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

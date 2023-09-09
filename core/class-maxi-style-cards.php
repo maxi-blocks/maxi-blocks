@@ -188,6 +188,14 @@ class MaxiBlocks_StyleCards
     {
         global $wpdb;
 
+        // Check if table exists
+        $table_name = $wpdb->prefix . 'maxi_blocks_general';
+        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+            // Table doesn't exist
+            // Handle the case here - return false, throw an exception, etc.
+            return false;
+        }
+
         $maxi_blocks_style_cards_current =
             $wpdb->get_var(
                 $wpdb->prepare(
@@ -222,6 +230,10 @@ class MaxiBlocks_StyleCards
     public static function get_maxi_blocks_active_style_card()
     {
         $maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
+
+        if(!$maxi_blocks_style_cards) {
+            return false;
+        }
 
         $maxi_blocks_style_cards_array = json_decode(
             $maxi_blocks_style_cards,
@@ -262,7 +274,7 @@ class MaxiBlocks_StyleCards
          * font-family of the paragraph text level.
          */
         if ($text_level === 'button' && (empty($font) || empty(str_replace('"', '', $font)) || str_contains($font, 'undefined'))) {
-            $font = $style_card_values->p['font-family-general'] ?? $default_values['p']['font-family-general'];          
+            $font = $style_card_values->p['font-family-general'] ?? $default_values['p']['font-family-general'];
         }
 
         $font_weights = [];
@@ -295,20 +307,20 @@ class MaxiBlocks_StyleCards
             }
 
             $value = $styleCardEntry[$target] ?? null;
-    
+
             return get_is_valid($value, true) ? $value : false;
         };
-    
+
         if (is_string($sc_props)) {
             return $get_sc_value($sc_props);
         }
-    
+
         $response = [];
-    
+
         foreach ($sc_props as $target) {
             $response[$target] = $get_sc_value($target);
         }
-    
+
         return $response;
     }
 

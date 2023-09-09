@@ -1337,12 +1337,22 @@ class MaxiBlocks_Styles
     {
         global $post;
 
+        if(!$id) {
+            $post = get_post();
+        } else {
+            $post = get_post($id);
+        }
         // Fetch blocks from template parts.
         $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
 
-
         // Fetch blocks from passed content or from the global post.
-        $blocks_post = parse_blocks($passed_content ?? $post->post_content);
+        if($passed_content) {
+            $blocks_post = parse_blocks($passed_content);
+        } elseif($post) {
+            $blocks_post = parse_blocks($post->post_content);
+        } else {
+            $blocks_post = [];
+        }
 
         // Merge the blocks.
         $blocks = array_merge_recursive($blocks, $blocks_post);

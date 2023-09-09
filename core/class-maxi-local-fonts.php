@@ -48,28 +48,59 @@ class MaxiBlocks_Local_Fonts
     public function getAllFontsDB()
     {
         global $wpdb;
-        $post_content_array = (array) $wpdb->get_results(
-            "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
-        );
 
-        $prev_post_content_array = (array) $wpdb->get_results(
-            "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
-        );
+        $post_content_array = [];
+        $post_content_templates_array = [];
+        $prev_post_content_array = [];
+        $prev_post_content_templates_array = [];
+        $blocks_content_array = [];
+        $prev_blocks_content_array = [];
+        $sc_string = '';
+
+        if($this->check_table_exists('maxi_blocks_styles')) {
+            $post_content_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
+            );
+            $prev_post_content_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
+            );
+        }
 
         // for templates
-        $post_content_templates_array = (array) $wpdb->get_results(
-            "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
-        );
+        if($this->check_table_exists('maxi_blocks_styles_templates')) {
+            $post_content_templates_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+            );
 
-        $prev_post_content_templates_array = (array) $wpdb->get_results(
-            "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
-        );
+            $prev_post_content_templates_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+            );
+        }
+
+        // blocks
+        if($this->check_table_exists('maxi_blocks_styles_blocks')) {
+            $blocks_content_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks",
+            );
+            $prev_blocks_content_array = (array) $wpdb->get_results(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks",
+            );
+        }
+
+        // $sc_string
+        if($this->check_table_exists('maxi_blocks_general')) {
+            $sc_string = $wpdb->get_var(
+                "SELECT id FROM {$wpdb->prefix}maxi_blocks_general WHERE id = 'sc_string'"
+            );
+        }
 
         if (
             empty($post_content_array) &&
             empty($prev_post_content_array) &&
             empty($post_content_templates_array) &&
             empty($prev_post_content_templates_array) &&
+            empty($blocks_content_array) &&
+            empty($prev_blocks_content_array) &&
             $sc_string === ''
         ) {
             return false;
@@ -323,5 +354,22 @@ class MaxiBlocks_Local_Fonts
                 rmdir($directory);
             }
         }
+    }
+
+    public function check_table_exists($table_name)
+    {
+        global $wpdb;
+
+        // Prepare the table name with the WP prefix
+        $full_table_name = $wpdb->prefix . $table_name;
+
+        // Check if table exists
+        if($wpdb->get_var("SHOW TABLES LIKE '$full_table_name'") != $full_table_name) {
+            // Table doesn't exist
+            return false;
+        }
+
+        // Table exists
+        return true;
     }
 }

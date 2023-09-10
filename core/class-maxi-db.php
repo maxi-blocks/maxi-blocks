@@ -42,6 +42,23 @@ if (!class_exists('MaxiBlocks_DB')):
                 $this,
                 'add_maxi_tables',
             ]);
+            add_action('plugins_loaded', [
+                $this,
+                'check_maxi_tables',
+            ]);
+        }
+
+        public function check_maxi_tables()
+        {
+            $tables_created = get_option("maxi_plugin_db_tables_created", false); // Default to false if the option doesn't exist
+
+            if (!$tables_created && version_compare(MAXI_PLUGIN_VERSION, '1.3.1', '>')) {
+                // Call your function to create/update tables
+                $this->add_maxi_tables();
+
+                // Mark that tables were created for this version
+                update_option("maxi_plugin_db_tables_created", true);
+            }
         }
 
         public function add_maxi_tables()

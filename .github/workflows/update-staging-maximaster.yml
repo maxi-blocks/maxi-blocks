@@ -39,7 +39,6 @@ jobs:
                       .prettierignore,
                       .prettierrc.json,
                       .wp-env.json,
-                      block.json,
                       package.json,
                       package-lock.json,
                       README.md,

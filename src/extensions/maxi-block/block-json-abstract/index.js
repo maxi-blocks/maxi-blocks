@@ -67,16 +67,24 @@ const blockJsonAbstracter = async () => {
 		const blockName = maxiBlock.name.replace('maxi-blocks/', '');
 
 		// Get the block.json file path
-		const blockFolderPath = path.join(`src/blocks/${blockName}`);
+		let blockFolderPath = path.join(`src/blocks/${blockName}`);
 		const blockFile = 'block.json';
-		const blockPath = path.join(blockFolderPath, blockFile);
+		let blockPath = path.join(blockFolderPath, blockFile);
 
 		// In case the block.json file does not exist, continue to the next block
 		if (!existsSync(blockPath)) {
-			console.error('❌ block.json file does not exist for ', blockName);
+			blockFolderPath = path.join(`build/blocks/${blockName}`);
+			blockPath = path.join(blockFolderPath, blockFile);
 
-			// eslint-disable-next-line no-continue
-			continue;
+			if (!existsSync(blockPath)) {
+				console.error(
+					'❌ block.json file does not exist for ',
+					blockName
+				);
+
+				// eslint-disable-next-line no-continue
+				continue;
+			}
 		}
 
 		// Get the block.json file content as an object

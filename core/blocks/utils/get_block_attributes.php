@@ -2,7 +2,7 @@
 
 function get_block_attributes($block_name)
 {
-    $path = MAXI_PLUGIN_DIR_PATH . './src/blocks/' . $block_name . '/block.json';
+    $path = MAXI_PLUGIN_DIR_PATH . './build/blocks/' . $block_name . '/block.json';
 
     if (!file_exists($path)) {
         return null;

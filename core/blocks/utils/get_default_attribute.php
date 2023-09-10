@@ -53,7 +53,7 @@ function get_default_attribute($prop, $block_name = null)
     ];
 
     foreach ($blocks as $block) {
-        $block_data = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "src/blocks/" . $block . "/block.json"), true);
+        $block_data = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json"), true);
         $block_defaults = $block_data['attributes'];
 
         if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {

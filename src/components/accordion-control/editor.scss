@@ -26,13 +26,16 @@
 
 		&__panel {
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
-				padding: 0px 8px 0;
+				padding: 0px 10px 0;
 			}
 		}
 
 		&:last-child {
 			.maxi-accordion-control__item__button {
 				border-bottom: 1px solid var(--maxi-grey-1-color);
+				&[aria-expanded='true'] {
+					border-color: transparent;
+				}
 			}
 		}
 		&__button {
@@ -57,7 +60,7 @@
 				margin-right: 8px;
 			}
 			&:after {
-				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
+				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path fill="rgba(180, 180, 180, 0.4)" d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
 				position: absolute;
 				top: 50%;
 				right: 10px;

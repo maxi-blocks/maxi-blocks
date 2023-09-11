@@ -6,6 +6,36 @@
 		width: 20%;
 		height: 31px;
 		flex: none;
+		&::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+		}
+		&:after,
+		&:before {
+		  position: absolute;
+		  right: 5px;
+		  width: 1.6em;
+		  height: .9em;
+		  font-size: 10px;
+		  pointer-events: none;
+		  background: #fff;
+		}
+
+		&:after {
+		  color: red;
+		  content: "\25B2";
+		   width:12px;
+		  background-color:green;
+		  margin-top: 1px;
+		}
+
+		&:before {
+		  color: red;
+		  width:12px;
+		  content: "\25BC";
+		   background-color:green;
+		  margin-bottom: 5px;
+		  bottom: -.5em;
+		}
 	}
 	.components-range-control {
 		width: 100%;

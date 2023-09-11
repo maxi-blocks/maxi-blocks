@@ -25,3 +25,6 @@ js/min
 .github/PULL_REQUEST_TEMPLATE/*
 .github/ISSUE_TEMPLATE/
 .github/ISSUE_TEMPLATE/*
+
+# Ignore for security reasons
+.env

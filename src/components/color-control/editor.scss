@@ -101,7 +101,7 @@
 					width: 100%;
 				}
 				.maxi-base-control__label {
-					margin-bottom: 8px;
+					margin-bottom: 10px;
 				}
 				.components-maxi-control__reset-button {
 					position: absolute;
@@ -188,7 +188,7 @@
 				width: 32px;
 				height: 32px;
 				border: 1px solid var(--maxi-grey-1-color);
-				border-radius: 0;
+				border-radius: 50%;
 				margin: auto;
 				opacity: 1;
 				float: left;

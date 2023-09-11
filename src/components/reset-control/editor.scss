@@ -5,7 +5,7 @@
 	justify-content: center;
 	height: auto;
 	min-width: 20px;
-	padding: 5px !important;
+	padding: 8px 5px !important;
 	// border: 1px solid var(--maxi-grey-1-color);
 	border-radius: 50%;
 	margin-left: 4px;
@@ -28,7 +28,7 @@
 		width: 14px;
 		height: 14px;
 		margin: auto;
-		fill: var(--maxi-grey-1-color);
+		fill: var(--maxi-grey-6-color);
 	}
 	&:hover svg {
 		fill: var(--maxi-black-1-color);

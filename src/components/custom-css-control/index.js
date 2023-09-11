@@ -220,6 +220,7 @@ const CustomCssControl = props => {
 					value={category || 'none'}
 					options={getOptions()}
 					onChange={val => onChange('custom-css-category', val)}
+					newStyle
 				/>
 				{!isEmpty(selectors?.[category]) &&
 					Object.entries(selectors?.[category])?.map(element => {

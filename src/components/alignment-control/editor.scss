@@ -1,13 +1,13 @@
 .maxi-alignment-control {
-	.maxi-tabs-control__button{
+	.maxi-tabs-control__button {
 		svg path {
 			fill: var(--maxi-grey-4-color);
 		}
-		&--selected{
+		&--selected {
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}
-		} 
+		}
 	}
 	.maxi-tabs-control__button {
 		height: 32px;

@@ -440,12 +440,14 @@ const LibraryContainer = props => {
 	}, [selectedSCKey]);
 
 	const typesenseInstantsearchAdapter = params => {
+		const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
+		const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 		return new TypesenseInstantSearchAdapter({
 			server: {
-				apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
+				apiKey, // Be sure to use an API key that only allows search operations
 				nodes: [
 					{
-						host: '24q17endjv0kacilp.a1.typesense.net',
+						host: apiHost,
 						port: '443',
 						protocol: 'https',
 					},

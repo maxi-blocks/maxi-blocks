@@ -64,15 +64,18 @@ const LibraryToolbar = props => {
 		onChangeTone,
 	} = props;
 
+	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
+	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
+
 	const client = new TypesenseSearchClient({
 		nodes: [
 			{
-				host: '24q17endjv0kacilp.a1.typesense.net',
+				host: apiHost,
 				port: '443',
 				protocol: 'https',
 			},
 		],
-		apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6',
+		apiKey,
 		connectionTimeoutSeconds: 2,
 	});
 

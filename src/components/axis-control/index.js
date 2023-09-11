@@ -386,6 +386,7 @@ const AxisControlContent = props => {
 						type='buttons'
 						className='maxi-axis-control__header maxi-axis-control__sync'
 						selected={sync}
+						hasBorder
 						items={[
 							{
 								value: 'all',

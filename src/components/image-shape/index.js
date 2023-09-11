@@ -256,11 +256,15 @@ const ImageShape = props => {
 					)}
 				</>
 			)}
-			{isLayer && <ImageShapeResponsiveSettings {...props} />}
-			{!isLayer && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
-					<ImageShapeResponsiveSettings {...props} />
-				</ResponsiveTabsControl>
+			{icon && (
+				<>
+					{isLayer && <ImageShapeResponsiveSettings {...props} />}
+					{!isLayer && (
+						<ResponsiveTabsControl breakpoint={breakpoint}>
+							<ImageShapeResponsiveSettings {...props} />
+						</ResponsiveTabsControl>
+					)}
+				</>
 			)}
 		</>
 	);

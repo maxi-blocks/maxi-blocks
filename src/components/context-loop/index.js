@@ -33,6 +33,7 @@ import {
 	LoopContext,
 } from '../../extensions/DC';
 import { validationsValues } from '../../extensions/DC/utils';
+import { ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP } from '../../extensions/DC/withMaxiContextLoop';
 
 /**
  * External dependencies
@@ -150,14 +151,20 @@ const ContextLoop = props => {
 			/>
 			{status && (
 				<>
-					{contentType === 'row' &&
-						isOrderSettings &&
+					{isOrderSettings &&
+						Object.keys(
+							ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP
+						).includes(
+							select('core/block-editor').getBlockName(clientId)
+						) &&
 						!isEmpty(
 							select(
 								'core/block-editor'
 							).getBlockParentsByBlockName(
 								clientId,
-								'maxi-blocks/row-maxi'
+								Object.keys(
+									ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP
+								)
 							)
 						) &&
 						contextLoop.prevContextLoopStatus && (

@@ -1432,6 +1432,23 @@ class MaxiBlocks_Styles
         return $all_blocks;
     }
 
+    public function get_reusable_blocks_ids($blocks)
+    {
+        $reusableBlockIds = [];
+
+        foreach ($blocks as $block) {
+            if ($block['blockName'] === 'core/block' && !empty($block['attrs']['ref'])) {
+                $reusableBlockIds[] = $block['attrs']['ref'];
+            }
+
+            if (!empty($block['innerBlocks'])) {
+                $reusableBlockIds = array_merge($reusableBlockIds, $this->get_reusable_blocks_ids($block['innerBlocks']));
+            }
+        }
+
+        return $reusableBlockIds;
+    }
+
     /**
      * Fetches and parses reusable blocks from the provided blocks.
      *
@@ -1440,24 +1457,8 @@ class MaxiBlocks_Styles
      */
     private function get_parsed_reusable_blocks_frontend($blocks)
     {
-        function getReusableBlockIds($blocks)
-        {
-            $reusableBlockIds = [];
 
-            foreach ($blocks as $block) {
-                if ($block['blockName'] === 'core/block' && !empty($block['attrs']['ref'])) {
-                    $reusableBlockIds[] = $block['attrs']['ref'];
-                }
-
-                if (!empty($block['innerBlocks'])) {
-                    $reusableBlockIds = array_merge($reusableBlockIds, getReusableBlockIds($block['innerBlocks']));
-                }
-            }
-
-            return $reusableBlockIds;
-        }
-
-        $reusable_block_ids = getReusableBlockIds($blocks);
+        $reusable_block_ids = $this->get_reusable_blocks_ids($blocks);
 
         // Remove duplicates from the block IDs.
         $reusable_block_ids = array_unique($reusable_block_ids);

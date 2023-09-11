@@ -15,7 +15,13 @@ import LoopContext from './loopContext';
 /**
  * External dependencies
  */
-import { merge } from 'lodash';
+import { isNumber, merge } from 'lodash';
+
+export const ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP = {
+	'maxi-blocks/row-maxi': 'maxi-blocks/column-maxi',
+	'maxi-blocks/accordion-maxi': 'maxi-blocks/pane-maxi',
+	'maxi-blocks/slider-maxi': 'maxi-blocks/slide-maxi',
+};
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
@@ -49,7 +55,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				const currentAccumulator =
 					contextLoopAttributes?.['cl-accumulator'];
 				if (
-					currentAccumulator &&
+					isNumber(currentAccumulator) &&
 					(isCurrentAccumulator || isPrevAccumulator)
 				) {
 					return currentAccumulator;
@@ -85,21 +91,17 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					block => block.clientId === clientId
 				);
 
-				const parentChildrenNames = {
-					'maxi-blocks/row-maxi': 'maxi-blocks/column-maxi',
-					'maxi-blocks/accordion-maxi': 'maxi-blocks/pane-maxi',
-					'maxi-blocks/slider-maxi': 'maxi-blocks/slide-maxi',
-				};
-
 				// Increase the accumulator only if context loop is enabled in the parent
 				if (
 					parent.attributes['cl-status'] &&
-					parentChildrenNames[parent.name] &&
-					name === parentChildrenNames[parent.name] &&
+					ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
+					name ===
+						ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
 					currentBlockIndex !== 0
 				) {
 					return prevAccumulator + currentBlockIndex;
 				}
+
 				return prevAccumulator;
 			};
 

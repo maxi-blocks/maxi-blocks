@@ -5,13 +5,8 @@ exports[`Image Maxi Image Custom CSS 1`] = `"<style>body.maxi-blocks--active .ed
 exports[`Image Maxi Image Dimension 1`] = `"<img class=\"maxi-image-block__image wp-image-external\" src=\"https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg\">"`;
 
 exports[`Image Maxi Image Maxi does not break 1`] = `
-<<<<<<< HEAD
-"<!-- wp:maxi-blocks/image-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"image-maxi-1se8ef1z-u\\"} -->
-<figure class=\\"wp-block-maxi-blocks-image-maxi maxi-block maxi-image-block maxi-light image-maxi-1se8ef1z-u\\" data-align=\\"normal\\" id=\\"image-maxi-1se8ef1z-u\\"><div class=\\"maxi-hover-preview maxi-image-block-wrapper\\"><img class=\\"maxi-image-block__image wp-image-undefined\\"/></div></figure>
-=======
 "<!-- wp:maxi-blocks/image-maxi {\"parentBlockStyle\":\"light\",\"blockStyle\":\"maxi-light\",\"isFirstOnHierarchy\":true,\"uniqueID\":\"image-maxi-12\"} -->
 <figure class=\"wp-block-maxi-blocks-image-maxi maxi-block maxi-image-block maxi-light image-maxi-12\" data-align=\"normal\" id=\"image-maxi-12\"><div class=\"maxi-hover-preview maxi-image-block-wrapper\"><img class=\"maxi-image-block__image wp-image-undefined\"/></div></figure>
->>>>>>> cdd47100d314f8f01ffb8623a7c8a52d76691fd0
 <!-- /wp:maxi-blocks/image-maxi -->"
 `;
 

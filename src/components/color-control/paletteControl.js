@@ -59,7 +59,7 @@ const ColorPaletteControl = props => {
 							key={`maxi-color-control__palette-box__${item}`}
 							type='button'
 							aria-label={sprintf(
-								__('Pallet box colour %s', 'maxi-blocks'),
+								__('Pallet box colour %s', 'maxi-blocks'), // translators: %s: color number
 								item
 							)}
 							className={classnames(

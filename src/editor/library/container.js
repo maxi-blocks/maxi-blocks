@@ -5,7 +5,7 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import { CheckboxControl, Button } from '@wordpress/components';
+import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -394,6 +394,8 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
+		isMaxiProActive,
+		onClickConnect,
 		layerOrder,
 		isInserting,
 		onInsert,
@@ -506,8 +508,6 @@ const LibraryContainer = props => {
 		}
 	};
 
-	// TO DO: connect to auth later
-	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
@@ -532,12 +532,12 @@ const LibraryContainer = props => {
 				taxonomies={hit.category?.[0]}
 				toneUrl={isPattern ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
-				isMaxiProActive={isMaxiProActive}
 				isSwapChecked={isSwapChecked}
 				onSelect={onSelect}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
 				onRequestInsert={async () => {
 					onInsert();
-
 					await onRequestInsertPattern(
 						hit.gutenberg_code,
 						isSwapChecked,
@@ -1100,15 +1100,6 @@ const LibraryContainer = props => {
 									return itemsReturn;
 								}}
 							/>
-							<Button
-								type='button'
-								label='Go Pro'
-								className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-								href='https://maxiblocks.com/go/pro-library'
-								target='_blank'
-							>
-								{__('Go Pro', 'maxi-blocks')}
-							</Button>
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
 							<CustomMenuSelect

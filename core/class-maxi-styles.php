@@ -805,6 +805,7 @@ class MaxiBlocks_Styles
         }
     }
 
+
     /**
      * Legacy function
      * Custom Meta

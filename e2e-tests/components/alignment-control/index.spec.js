@@ -14,12 +14,15 @@ import {
 	changeResponsive,
 	getBlockStyle,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('AlignmentControl', () => {
 	it('Return correct values on general responsive stage', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 
 		await openSidebarTab(page, 'style', 'alignment');
@@ -92,6 +95,7 @@ describe('AlignmentControl', () => {
 	it('Check Responsive alignment control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		await accordionPanel.$eval(

@@ -10,12 +10,15 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Divider alignment from Toolbar', () => {
 	it('Test divider alignment from toolbar', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

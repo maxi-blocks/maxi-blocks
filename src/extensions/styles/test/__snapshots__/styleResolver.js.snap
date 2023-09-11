@@ -45,6 +45,7 @@ exports[`styleResolver Returns a clean style object 1`] = `
         "boxShadow": false,
       },
     },
+    "uniqueID": "test-target-7f750e3e-u",
   },
 }
 `;

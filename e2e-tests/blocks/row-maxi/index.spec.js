@@ -11,12 +11,14 @@ import {
 	addCustomCSS,
 	getEditedPostContent,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Row Maxi', () => {
 	it('Row Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await page.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
@@ -24,6 +26,8 @@ describe('Row Maxi', () => {
 			button[1].click()
 		);
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

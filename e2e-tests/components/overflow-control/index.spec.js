@@ -11,12 +11,14 @@ import {
 	changeResponsive,
 	getBlockAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('OverflowControl', () => {
 	it('Checking the overflow control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'advanced', 'overflow');
 
 		const selectorX = await page.$$('.maxi-overflow-control select');

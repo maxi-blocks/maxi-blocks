@@ -1,0 +1,392 @@
+{
+  "icon-background-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "icon-background-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "icon-background-palette-status-xl": {
+    "type": "boolean"
+  },
+  "icon-background-palette-status-l": {
+    "type": "boolean"
+  },
+  "icon-background-palette-status-m": {
+    "type": "boolean"
+  },
+  "icon-background-palette-status-s": {
+    "type": "boolean"
+  },
+  "icon-background-palette-status-xs": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "icon-background-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "icon-background-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "icon-background-palette-color-general": {
+    "type": "number",
+    "default": 1
+  },
+  "icon-background-palette-color-xxl": {
+    "type": "number"
+  },
+  "icon-background-palette-color-xl": {
+    "type": "number"
+  },
+  "icon-background-palette-color-l": {
+    "type": "number"
+  },
+  "icon-background-palette-color-m": {
+    "type": "number"
+  },
+  "icon-background-palette-color-s": {
+    "type": "number"
+  },
+  "icon-background-palette-color-xs": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-general": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-xl": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-l": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-m": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-s": {
+    "type": "number"
+  },
+  "icon-background-palette-opacity-xs": {
+    "type": "number"
+  },
+  "icon-background-color-general": {
+    "type": "string"
+  },
+  "icon-background-color-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-xl": {
+    "type": "string"
+  },
+  "icon-background-color-l": {
+    "type": "string"
+  },
+  "icon-background-color-m": {
+    "type": "string"
+  },
+  "icon-background-color-s": {
+    "type": "string"
+  },
+  "icon-background-color-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "icon-background-color-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "icon-background-color-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "icon-background-color-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "icon-background-color-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "icon-background-color-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-xl": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-l": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-m": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-s": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-xs": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "icon-background-color-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "icon-background-color-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-xl": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-l": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-m": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-s": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-xs": {
+    "type": "number"
+  },
+  "icon-background-color-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "icon-background-color-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "icon-background-color-wrapper-height-unit-xs": {
+    "type": "string"
+  }
+}

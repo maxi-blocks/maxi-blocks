@@ -1,0 +1,24 @@
+{
+  "full-width-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "full-width-xxl": {
+    "type": "boolean"
+  },
+  "full-width-xl": {
+    "type": "boolean"
+  },
+  "full-width-l": {
+    "type": "boolean"
+  },
+  "full-width-m": {
+    "type": "boolean"
+  },
+  "full-width-s": {
+    "type": "boolean"
+  },
+  "full-width-xs": {
+    "type": "boolean"
+  }
+}

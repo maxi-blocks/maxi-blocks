@@ -8,8 +8,11 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getIsSiteEditor } from '../../fse';
-import entityRecordsWrapper from '../../styles/entityRecordsWrapper';
-import getFilteredData from '../../styles/getFilteredData';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 /**
  * Controls
@@ -21,17 +24,35 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		entityRecordsWrapper(async ({ key: id, name }) => {
-			const filteredCustomData = getFilteredData(customData, {
-				id,
-				name,
-			});
+		const blockData = Object.entries(customData);
+		const filteredCustomData = {};
 
+		// Using Promise.all to await the entire map function
+		await Promise.all(
+			blockData.map(async data => {
+				const uniqueID = data[0];
+				const [, value] = data;
+				if (!isEmpty(value)) {
+					filteredCustomData[uniqueID] = {};
+
+					if (value[uniqueID])
+						filteredCustomData[uniqueID] = value[uniqueID];
+					if (value.relations)
+						filteredCustomData[uniqueID].relations =
+							value.relations;
+					if (value.dynamic_content) {
+						filteredCustomData[uniqueID].dynamic_content =
+							value.dynamic_content;
+					}
+				}
+			})
+		);
+
+		if (!isEmpty(filteredCustomData)) {
 			await apiFetch({
 				path: '/maxi-blocks/v1.0/custom-data',
 				method: 'POST',
 				data: {
-					id,
 					data: JSON.stringify(filteredCustomData),
 					update: isUpdate,
 					isTemplate: getIsSiteEditor(),
@@ -39,7 +60,7 @@ const controls = {
 			}).catch(err => {
 				console.error('Error saving Custom Data. Code error: ', err);
 			});
-		});
+		}
 	},
 };
 

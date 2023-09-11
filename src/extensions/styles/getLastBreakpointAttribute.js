@@ -58,6 +58,7 @@ const getLastBreakpointAttributeSingle = (
 
 	const currentBreakpoint =
 		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
+
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 
 	const attrFilter = attr =>

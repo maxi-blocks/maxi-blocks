@@ -47,7 +47,6 @@ const videoBg = () => {
 					iframeElement.style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
 				};
 
-				// eslint-disable-next-line @wordpress/no-global-event-listener
 				window.addEventListener('resize', setVideoSize);
 				setVideoSize();
 			}
@@ -101,5 +100,4 @@ const videoBg = () => {
 	});
 };
 
-// eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('load', videoBg);

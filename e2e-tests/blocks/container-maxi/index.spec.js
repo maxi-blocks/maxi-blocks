@@ -12,12 +12,15 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Container Maxi', () => {
 	it('Container Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

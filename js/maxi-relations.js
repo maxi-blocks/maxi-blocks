@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable class-methods-use-this */
 
 // Relations (IB)
@@ -1128,8 +1129,24 @@ class Relation {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-	// eslint-disable-next-line no-undef
-	const relations = maxiRelations?.[0];
+	let relations;
+
+	if (typeof maxiRelations?.[0] === 'string') {
+		try {
+			relations = JSON.parse(maxiRelations?.[0]);
+		} catch (e) {
+			console.error('Invalid JSON string', e);
+			relations = null;
+		}
+	} else if (
+		typeof maxiRelations?.[0] === 'object' &&
+		maxiRelations?.[0] !== null
+	) {
+		relations = maxiRelations?.[0];
+	} else {
+		relations = null;
+	}
+
 	if (!relations) return;
 
 	const uniqueRelations = relations.reduce(

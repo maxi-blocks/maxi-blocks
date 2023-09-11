@@ -12,12 +12,14 @@ import {
 	getBlockAttributes,
 	getBlockStyle,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('FontLevelControl', () => {
 	it('Checking the font level control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-level', button => button.click());

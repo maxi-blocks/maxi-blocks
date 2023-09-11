@@ -129,16 +129,20 @@ const MaxiToolbar = memo(
 			select('core/block-editor')
 		);
 
-		const { tooltipsHide } = useSelect(select => {
+		const { tooltipsHide, chatSupport } = useSelect(select => {
 			const { receiveMaxiSettings } = select('maxiBlocks');
 
 			const maxiSettings = receiveMaxiSettings();
-			const { hide_tooltips: hideTooltips } = maxiSettings;
+			const { hide_tooltips: hideTooltips, support_chat: supportChat } =
+				maxiSettings;
 
 			const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
+			const chatSupport = !isEmpty(supportChat) ? supportChat : false;
+
 			return {
 				tooltipsHide,
+				chatSupport,
 			};
 		}, []);
 
@@ -721,7 +725,10 @@ const MaxiToolbar = memo(
 							tooltipsHide={tooltipsHide}
 							updateSelection={name !== 'maxi-blocks/slide-maxi'}
 						/>
-						<Help tooltipsHide={tooltipsHide} />
+						<Help
+							tooltipsHide={tooltipsHide}
+							supportChat={chatSupport}
+						/>
 						<MoreSettings
 							clientId={clientId}
 							{...getGroupAttributes(attributes, [

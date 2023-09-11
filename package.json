@@ -38,6 +38,7 @@
 		"bezier-easing-editor": "^0.8.0",
 		"caniuse-lite": "^1.0.30001491",
 		"classnames": "^2.3.1",
+		"crisp-sdk-web": "^1.0.15",
 		"css-to-react-native": "^3.0.0",
 		"deep-object-diff": "^1.1.9",
 		"dompurify": "^2.3.10",

@@ -33,7 +33,7 @@ const MasonryItem = props => {
 		className,
 		onRequestInsert,
 		isSaved = false,
-		isMaxiProActive = false,
+		isMaxiProActive,
 		isPro,
 		isBeta,
 		isSwapChecked,
@@ -87,7 +87,6 @@ const MasonryItem = props => {
 								cost={cost}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
-								isMaxiProActive={isMaxiProActive}
 								isPro={isPro}
 								isBeta={isBeta}
 								onSelect={onSelect}

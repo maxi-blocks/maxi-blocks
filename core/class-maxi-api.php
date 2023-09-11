@@ -278,6 +278,27 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/pro', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_pro_status'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/pro', [
+                'methods' => 'POST',
+                'callback' => [$this, 'set_maxi_blocks_pro_status'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+                'args' => [
+                    'data' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+            ]);
         }
 
         /**
@@ -319,8 +340,8 @@ if (!class_exists('MaxiBlocks_API')):
                 ],
                 'hide_tooltips' => get_option('hide_tooltips'),
                 'swap_cloud_images' => get_option('swap_cloud_images'),
-                'placeholder_url' => MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
-                'show_indicators' => get_option('maxi_show_indicators')
+                'support_chat' => get_option('support_chat'),
+                'placeholder_url' => MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg'
             ];
 
             return $response;
@@ -578,7 +599,7 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function mb_delete_register($postId)
         {
-            if($this->checkIfLegacyCodeNeeded('maxi_blocks_styles') || $this->checkIfLegacyCodeNeeded('maxi_blocks_custom_data')) {
+            if($this->check_if_legacy_code_needed('maxi_blocks_styles') || $this->check_if_legacy_code_needed('maxi_blocks_custom_data')) {
                 global $wpdb;
 
                 $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id=%d", $postId));
@@ -681,7 +702,7 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_maxi_blocks_current_custom_data($id)
         {
-            if($this->checkIfLegacyCodeNeeded('maxi_blocks_custom_data')) {
+            if($this->check_if_legacy_code_needed('maxi_blocks_custom_data')) {
                 if (gettype($id) === 'object') {
                     $id=$id['id'];
                 }
@@ -909,7 +930,35 @@ if (!class_exists('MaxiBlocks_API')):
             return json_encode(get_field_object($request['field_id'], $request['post_id'])['value']);
         }
 
-        public function checkIfLegacyCodeNeeded($tableName)
+        public function get_maxi_blocks_pro_status()
+        {
+            $pro = get_option('maxi_pro');
+            $default = '{"status": "no", "name": ""}';
+
+            if ($pro === false) {
+                update_option('maxi_pro', $default);
+                return $default;
+            }
+            return $pro;
+        }
+
+        public function set_maxi_blocks_pro_status($data)
+        {
+            $dataString = $data['data'];
+            $dataType = gettype($dataString);
+            if(get_option('maxi_pro')) {
+                $oldData = json_decode(get_option('maxi_pro'));
+
+            }
+
+            if($dataString) {
+                update_option('maxi_pro', $dataString);
+                return $dataString;
+            }
+            return false;
+        }
+
+        public function check_if_legacy_code_needed($tableName)
         {
             global $wpdb;
             $table_name = $wpdb->prefix . $tableName;

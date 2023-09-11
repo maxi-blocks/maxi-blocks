@@ -107,6 +107,11 @@ describe('getBlockNameFromUniqueID', () => {
 
 	it('Should return the block name, when uniqueID is big digit', () =>
 		expect(getBlockNameFromUniqueID('text-maxi-123456')).toMatchSnapshot());
+
+	it('Should return the block name, when uniqueID is from new format', () =>
+		expect(
+			getBlockNameFromUniqueID('accordion-maxi-1se8ef1z-u')
+		).toMatchSnapshot());
 });
 
 describe('getBlockSelectorsByUniqueID', () => {

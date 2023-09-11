@@ -6,7 +6,7 @@ import DC_LINK_BLOCKS from '../../../components/toolbar/components/link/dcLinkBl
 
 const name = 'DC link blocks';
 
-const versions = ['1.3', '1.3.1'];
+const versions = ['1.3', '1.3.1', '1.4.1'];
 
 const isEligible = blockAttributes => {
 	const {

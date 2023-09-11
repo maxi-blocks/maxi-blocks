@@ -11,12 +11,14 @@ import {
 	getAttributes,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		await changeResponsive(page, 'xs');
 		await openSidebarTab(page, 'advanced', 'breakpoint');
 

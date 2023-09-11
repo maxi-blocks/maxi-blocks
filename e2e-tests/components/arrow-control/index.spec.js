@@ -15,12 +15,14 @@ import {
 	getAttributes,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ArrowControl', () => {
 	it('Check the arrow control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);

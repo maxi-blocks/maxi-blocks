@@ -6,12 +6,15 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock } from '../../../../utils';
+import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../../../utils';
 
 describe('Delete block', () => {
 	it('Check delete block', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
+
 		await page.keyboard.type('Block 1', { delay: 100 });
 
 		const textContent = await page.$eval(

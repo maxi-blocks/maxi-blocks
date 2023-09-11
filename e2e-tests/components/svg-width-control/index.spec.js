@@ -11,6 +11,7 @@ import {
 	getAttributes,
 	addResponsiveTest,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg width control', () => {
@@ -27,6 +28,8 @@ describe('Svg width control', () => {
 			'.components-modal__content .components-modal__header button',
 			svg => svg.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(
 			page,

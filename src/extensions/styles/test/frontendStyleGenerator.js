@@ -2,8 +2,9 @@ import frontendStyleGenerator from '../frontendStyleGenerator';
 
 describe('frontendStyleGenerator', () => {
 	it('Returns styles', () => {
-		const styles = {
-			'text-maxi-2425': {
+		const styles = [
+			'text-maxi-2425',
+			{
 				breakpoints: {
 					xxl: 1920,
 					xl: 1920,
@@ -45,7 +46,7 @@ describe('frontendStyleGenerator', () => {
 						},
 				},
 			},
-		};
+		];
 
 		const result = frontendStyleGenerator(styles);
 

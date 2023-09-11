@@ -1,0 +1,359 @@
+{
+  "background-gradient-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-opacity-general-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-xxl-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-xl-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-l-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-m-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-s-hover": {
+    "type": "number"
+  },
+  "background-gradient-opacity-xs-hover": {
+    "type": "number"
+  },
+  "background-gradient-clip-path-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-clip-path-status-general-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-xl-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-l-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-m-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-s-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-clip-path-status-xs-hover": {
+    "type": "boolean"
+  },
+  "background-gradient-wrapper-position-top-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-sync-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-top-unit-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-right-unit-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-bottom-unit-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-position-left-unit-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-general-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-xxl-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-xl-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-l-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-m-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-s-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-xs-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-width-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-width-unit-xs-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-general-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-xxl-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-xl-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-l-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-m-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-s-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-xs-hover": {
+    "type": "number"
+  },
+  "background-gradient-wrapper-height-unit-general-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-xxl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-xl-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-l-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-m-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-s-hover": {
+    "type": "string"
+  },
+  "background-gradient-wrapper-height-unit-xs-hover": {
+    "type": "string"
+  }
+}

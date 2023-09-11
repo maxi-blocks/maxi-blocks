@@ -35,6 +35,11 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 	}
 	.edit-site-layout__header {
 		z-index: 3;
+
+		// To make SC popup appear on click even after FSE template switch
+		&:has(.maxi-style-cards__popover) {
+			transform: none !important;
+		}
 	}
 	.maxi-toolbar-layout__button {
 		position: absolute;
@@ -44,7 +49,7 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 	}
 }
 
-@media only screen and (max-width: 781px){
+@media only screen and (max-width: 781px) {
 	.edit-site {
 		.maxi-toolbar-layout__button {
 			left: 125px;

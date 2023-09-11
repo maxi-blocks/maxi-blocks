@@ -1,22 +1,31 @@
 /**
  * External dependencies
  */
-import { capitalize, isEmpty } from 'lodash';
+import { trimEnd, dropRight, split, join } from 'lodash';
 
-const removeCustomLabelNumber = customLabelToReplace =>
-	customLabelToReplace.replace(/_(\d+)\s*$/, '').trim();
+/**
+ * Internal dependencies
+ */
+import uniqueCustomLabelGenerator from '../attributes/uniqueCustomLabelGenerator';
+
+const removeRandomPart = str => {
+	// Remove '-u' from the end
+	const withoutU = trimEnd(str, '-u');
+
+	// Split the string by '-'
+	const parts = split(withoutU, '-');
+
+	// Remove the last element
+	const removedLast = dropRight(parts);
+
+	// Join the array back into a string
+	return join(removedLast, '-');
+};
 
 const getCustomLabel = (previousCustomLabel, uniqueID) => {
-	const customLabelFromUniqueID = capitalize(uniqueID.replace('-maxi-', '_'));
-	if (
-		isEmpty(previousCustomLabel) ||
-		removeCustomLabelNumber(previousCustomLabel) ===
-			removeCustomLabelNumber(customLabelFromUniqueID)
-	)
-		return customLabelFromUniqueID;
+	const blockName = removeRandomPart(uniqueID);
 
-	const number = uniqueID.match(/-(\d+)$/)[1];
-	return `${removeCustomLabelNumber(previousCustomLabel)}_${number}`;
+	return uniqueCustomLabelGenerator(blockName);
 };
 
 export default getCustomLabel;

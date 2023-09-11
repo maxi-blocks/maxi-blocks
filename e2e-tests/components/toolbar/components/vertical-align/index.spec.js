@@ -13,12 +13,14 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
 describe('Vertical align align from Toolbar', () => {
 	it('Test vertical align align from toolbar', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

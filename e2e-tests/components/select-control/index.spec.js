@@ -5,12 +5,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('SelectControl', () => {
 	it('Check select control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'border');
 
 		const selector = await accordionPanel.$(

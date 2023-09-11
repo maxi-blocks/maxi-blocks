@@ -1,0 +1,132 @@
+{
+  "icon-border-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "icon-border-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-xl": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-l": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-m": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-s": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-xs": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "icon-border-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "icon-border-palette-color-general": {
+    "type": "number",
+    "default": 2
+  },
+  "icon-border-palette-color-xxl": {
+    "type": "number"
+  },
+  "icon-border-palette-color-xl": {
+    "type": "number"
+  },
+  "icon-border-palette-color-l": {
+    "type": "number"
+  },
+  "icon-border-palette-color-m": {
+    "type": "number"
+  },
+  "icon-border-palette-color-s": {
+    "type": "number"
+  },
+  "icon-border-palette-color-xs": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-general": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xl": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-l": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-m": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-s": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xs": {
+    "type": "number"
+  },
+  "icon-border-color-general": {
+    "type": "string"
+  },
+  "icon-border-color-xxl": {
+    "type": "string"
+  },
+  "icon-border-color-xl": {
+    "type": "string"
+  },
+  "icon-border-color-l": {
+    "type": "string"
+  },
+  "icon-border-color-m": {
+    "type": "string"
+  },
+  "icon-border-color-s": {
+    "type": "string"
+  },
+  "icon-border-color-xs": {
+    "type": "string"
+  },
+  "icon-border-style-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "icon-border-style-xxl": {
+    "type": "string"
+  },
+  "icon-border-style-xl": {
+    "type": "string"
+  },
+  "icon-border-style-l": {
+    "type": "string"
+  },
+  "icon-border-style-m": {
+    "type": "string"
+  },
+  "icon-border-style-s": {
+    "type": "string"
+  },
+  "icon-border-style-xs": {
+    "type": "string"
+  }
+}

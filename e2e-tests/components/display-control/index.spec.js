@@ -11,12 +11,14 @@ import {
 	getBlockStyle,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('DisplayControl', () => {
 	it('Checking the display control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,

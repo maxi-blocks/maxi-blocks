@@ -35,11 +35,11 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			'text-maxi-1': 'admin',
-			'text-maxi-2': 'No content found',
-			'text-maxi-3': 'No content found',
-			'text-maxi-4': 'http://localhost:8889/?author=1',
-			'text-maxi-5': 'http://localhost:8889',
+			'text-maxi-1se8ef1z-u': 'admin',
+			'text-maxi-2se8ef1z-u': 'No content found',
+			'text-maxi-3se8ef1z-u': 'No content found',
+			'text-maxi-4se8ef1z-u': 'http://localhost:8889/?author=1',
+			'text-maxi-5se8ef1z-u': 'http://localhost:8889',
 		};
 
 		const getBackResults = async (block, expect) =>
@@ -58,7 +58,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1.maxi-text-block .maxi-text-block__content',
+			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}

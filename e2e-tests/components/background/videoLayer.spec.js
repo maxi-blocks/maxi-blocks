@@ -15,6 +15,7 @@ import {
 	getBlockStyle,
 	openPreviewPage,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
@@ -26,6 +27,7 @@ describe('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
 

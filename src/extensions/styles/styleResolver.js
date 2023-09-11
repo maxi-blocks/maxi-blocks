@@ -53,7 +53,7 @@ const getCleanContent = content => {
 	return newContent;
 };
 
-const styleResolver = ({ styles, remover = false, breakpoints }) => {
+const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!styles) return {};
 
 	const response = (remover && []) || {};
@@ -62,6 +62,7 @@ const styleResolver = ({ styles, remover = false, breakpoints }) => {
 		if (!remover) {
 			if (!response[target])
 				response[target] = {
+					uniqueID,
 					breakpoints,
 					content: {},
 				};

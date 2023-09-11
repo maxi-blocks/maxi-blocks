@@ -10,12 +10,14 @@ import {
 	openSidebarTab,
 	getBlockStyle,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('DefaultStylesControl', () => {
 	it('Checking the default styles control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('check default styles');
 		const accordionPanel = await openSidebarTab(page, 'style', 'border');
 		await accordionPanel.$$(

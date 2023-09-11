@@ -12,12 +12,14 @@ import {
 	addResponsiveTest,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('OpacityControl', () => {
 	it('Checking the opacity control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi');
 		await openSidebarTab(page, 'advanced', 'opacity');
 

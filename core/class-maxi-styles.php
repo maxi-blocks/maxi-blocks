@@ -1,7 +1,59 @@
 <?php
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
+/**
+ * MaxiBlocks Maxi Styles Class
+ *
+ * @since   1.2.0
+ * @package MaxiBlocks
+ */
+
+// Exit if accessed directly.
+if (!defined('ABSPATH')) {
+    exit();
+}
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+
+$coreClasses = [
+    'class-maxi-local-fonts',
+    'class-maxi-style-cards',
+    'class-maxi-api',
+    'blocks/utils/style_resolver',
+    'blocks/utils/frontend_style_generator',
+    'blocks/utils/get_row_gap_attributes',
+    'blocks/utils/get_custom_data',
+    'blocks/utils/get_custom_format_value',
+    'blocks/utils/get_all_fonts',
+    'blocks/utils/create_selectors',
+];
+
+foreach($coreClasses as $coreClass) {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/' . $coreClass . '.php';
+}
+
+$blockClasses = [
+    'class-group-maxi-block',
+    'class-container-maxi-block',
+    'class-row-maxi-block',
+    'class-column-maxi-block',
+    'class-accordion-maxi-block',
+    'class-pane-maxi-block',
+    'class-button-maxi-block',
+    'class-divider-maxi-block',
+    'class-image-maxi-block',
+    'class-svg-icon-maxi-block',
+    'class-text-maxi-block',
+    'class-video-maxi-block',
+    'class-number-counter-maxi-block',
+    'class-search-maxi-block',
+    'class-map-maxi-block',
+    'class-slide-maxi-block',
+    'class-slider-maxi-block'
+];
+
+foreach($blockClasses as $blockClass) {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/' . $blockClass . '.php';
+}
+
 
 class MaxiBlocks_Styles
 {
@@ -22,16 +74,67 @@ class MaxiBlocks_Styles
         }
     }
 
+    protected $max_execution_time;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_styles';
+
+        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
+            add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+        }
+
+        if(self::should_apply_content_filter()) {
+            add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
+        }
+
+        add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
+        $this->max_execution_time = ini_get('max_execution_time');
+
+    }
+
+    private function should_apply_content_filter()
+    {
+        // Check if the REQUEST_URI contains context=edit
+        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false) {
+            return false; // Do not apply the filter for this context
+        }
+
+        return true; // Apply the filter in other cases
+    }
+
+    public function process_all_site_content()
+    {
+        global $post;
+        $args = array(
+            'numberposts' => -1,
+            'post_type'   => 'post'
+        );
+
+        $all_posts = get_posts($args);
+
+        foreach ($all_posts as $post) {
+            // We need to setup the postdata for each post before calling the function
+            setup_postdata($post);
+
+
+            // Call the function here
+            $this->get_styles_meta_fonts_from_blocks($post->ID);
+        }
+
+        wp_reset_postdata(); // Reset Post Data after the loop
+
+        echo 'Processing completed for all posts.';
+        wp_die(); // this is required to terminate immediately and return a proper response
     }
 
     /**
+     * Legacy function
      * Get block data
      */
     public function get_block_data($js_var, $meta)
@@ -50,11 +153,12 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Enqueuing styles
      */
+
     public function enqueue_styles()
     {
-        global $post;
 
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
@@ -93,6 +197,7 @@ class MaxiBlocks_Styles
                     );
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+                // $js_script_path = '//js//' . $js_script_name . '.js';
 
                 $post_meta = $this->custom_meta($js_var, false);
                 $template_meta = $this->custom_meta($js_var, true);
@@ -105,6 +210,7 @@ class MaxiBlocks_Styles
                 }
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -122,12 +228,15 @@ class MaxiBlocks_Styles
                         plugins_url($js_script_path, dirname(__FILE__))
                     );
 
+
+
                     wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
                 }
             }
         }
     }
 
+    // Legacy function
     public function get_template_name()
     {
         $template_name = wp_get_theme()->stylesheet ?? get_template();
@@ -135,6 +244,7 @@ class MaxiBlocks_Styles
         return $template_name;
     }
 
+    // Legacy function
     public function get_template_parts($content)
     {
         if ($content && array_key_exists('template_parts', $content)) {
@@ -157,6 +267,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Apply content
      */
     public function apply_content($name, $content, $id)
@@ -196,6 +307,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Get id
      */
     public function get_id($is_template = false)
@@ -230,7 +342,7 @@ class MaxiBlocks_Styles
                 // Arrived here, means we are probably trying to get index.php; so if the slug is not coming from $block_templates,
                 // we need to start going down on the WP hierarchy to find the correct template.
                 // TODO: create a better way to get the correct template.
-                if($block_templates && !empty($block_templates)) {
+                if ($block_templates && !empty($block_templates)) {
                     $template_id .= $block_templates[0]->slug;
                 } elseif (is_search()) {
                     $template_id .= 'search';
@@ -260,8 +372,9 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Get need custom meta
-     */
+    */
     public function need_custom_meta($contents)
     {
         $need_custom_meta = false;
@@ -274,8 +387,8 @@ class MaxiBlocks_Styles
 
                 if ($content) {
                     if (
-                        ((int) $content['prev_active_custom_data'] === 1 ||
-                        (int) $content['active_custom_data'] === 1)
+                        ((isset($content['prev_active_custom_data']) && (int) $content['prev_active_custom_data'] === 1) ||
+                        (isset($content['active_custom_data']) && (int) $content['active_custom_data'] === 1))
                     ) {
                         $need_custom_meta = true;
                         break;
@@ -302,6 +415,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Gets content
      */
     public function get_content($is_template = false, $id = null)
@@ -339,37 +453,44 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Gets post meta
      */
     public function get_meta($id, $is_template = false)
     {
-        global $post;
-
-        if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
-            return false;
-        }
-
         global $wpdb;
-        $response = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
-                $id
-            ),
-            OBJECT
-        );
+        $table_name = $wpdb->prefix . 'maxi_blocks_custom_data'. ($is_template ? "_templates" : "");
+        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
+            global $post;
 
-        if (!$response) {
-            $response = '';
+            if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
+                return false;
+            }
+
+            $response = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                    $id
+                ),
+                OBJECT
+            );
+
+            if (!$response) {
+                $response = '';
+            }
+
+            return $response;
         }
 
-        return $response;
     }
 
     /**
+     * Legacy function
      * Gets post styles content
      */
     public function get_styles($content)
     {
+
         $style =
             is_preview() || is_admin()
                 ? $content['prev_css_value']
@@ -385,10 +506,14 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Gets post styles content
+     * Legacy function
+     * Gets font styles content
      */
     public function get_fonts($content)
     {
+        if(!isset($content['fonts_value'])) {
+            return false;
+        }
         $fonts =
             is_preview() || is_admin()
                 ? $content['prev_fonts_value']
@@ -402,13 +527,11 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Returns default breakpoints values in case breakpoints are not set
      */
-    public function getBreakpoints($breakpoints)
+    public function get_breakpoints($breakpoints)
     {
-        if (!empty((array) $breakpoints)) {
-            return $breakpoints;
-        }
 
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
@@ -421,6 +544,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Check font url status code
      */
     public function check_font_url($font_url)
@@ -429,13 +553,13 @@ class MaxiBlocks_Styles
 
         $array = @get_headers($font_url);
 
-        if(!$array) {
+        if (!$array) {
             return false;
         }
 
         $string = $array[0];
 
-        if(strpos($string, '200')) {
+        if (strpos($string, '200')) {
             return true;
         } else {
             return false;
@@ -443,17 +567,27 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Post fonts
      *
      * @return object   Font name with font options
      */
     public function enqueue_fonts($fonts, $name)
     {
+
         if (empty($fonts) || !is_array($fonts)) {
             return;
         }
 
-        if(str_contains($name, '-templates-')) {
+        foreach ($fonts as $font => $values) {
+            foreach ($values as $attribute => $value) {
+                if (is_array($value)) {
+                    $fonts[$font][$attribute] = array_values(array_unique($value))[0];
+                }
+            }
+        }
+
+        if (str_contains($name, '-templates-')) {
             $pattern = '/(-templates-)(\w*)/';
             $name = preg_replace($pattern, '', $name);
             $name = str_replace('style', 'styles', $name);
@@ -462,7 +596,6 @@ class MaxiBlocks_Styles
         $use_local_fonts = (bool) get_option('local_fonts');
 
         $loaded_fonts = [];
-
 
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
@@ -474,7 +607,6 @@ class MaxiBlocks_Styles
 
                 if (class_exists('MaxiBlocks_StyleCards')) {
                     $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level);
-
                     @list($font, $font_weights, $font_styles) = $sc_fonts;
                 }
 
@@ -512,9 +644,9 @@ class MaxiBlocks_Styles
                         );
                     }
 
-                    if(!$use_local_fonts) {
-                        if($font_url) {
-                            if($this->check_font_url($font_url)) {
+                    if (!$use_local_fonts) {
+                        if ($font_url) {
+                            if ($this->check_font_url($font_url)) {
                                 wp_enqueue_style(
                                     $name . '-font-' . sanitize_title_with_dashes($font),
                                     $font_url,
@@ -525,13 +657,12 @@ class MaxiBlocks_Styles
                             }
                         }
                     } else {
-                        if($font_url) {
+                        if ($font_url) {
                             wp_enqueue_style(
                                 $name . '-font-' . sanitize_title_with_dashes($font),
                                 $font_url
                             );
                         }
-
                     }
                 } else {
                     if (empty($font_weights)) {
@@ -584,9 +715,9 @@ class MaxiBlocks_Styles
                                 $already_loaded = true;
                             }
 
-                            foreach($font_weight as $weight) {
-                                foreach($loaded_fonts as $loaded_font) {
-                                    if(in_array($weight, $loaded_font['font_weight']) && $loaded_font['font'] === $font) {
+                            foreach ($font_weight as $weight) {
+                                foreach ($loaded_fonts as $loaded_font) {
+                                    if (in_array($weight, $loaded_font['font_weight']) && $loaded_font['font'] === $font) {
                                         $already_loaded = true;
                                     }
                                 }
@@ -619,9 +750,10 @@ class MaxiBlocks_Styles
                                 $font_weight = implode('-', $font_weight);
                             }
 
-                            if(!$use_local_fonts) {
-                                if($font_url) {
-                                    if($this->check_font_url($font_url)) {
+                            if (!$use_local_fonts) {
+
+                                if ($font_url) {
+                                    if ($this->check_font_url($font_url)) {
                                         wp_enqueue_style(
                                             $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
                                             $font_url,
@@ -641,7 +773,7 @@ class MaxiBlocks_Styles
                                     }
                                 }
                             } else {
-                                if($font_url) {
+                                if ($font_url) {
                                     wp_enqueue_style(
                                         $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
                                         $font_url
@@ -674,6 +806,7 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Legacy function
      * Custom Meta
      */
     public function custom_meta($metaJs, $is_template = false, $id = null)
@@ -719,6 +852,7 @@ class MaxiBlocks_Styles
         return $result_decoded;
     }
 
+    // Legacy function
     public function update_color_palette_backups($style)
     {
         global $wpdb;
@@ -821,7 +955,9 @@ class MaxiBlocks_Styles
             return $new_style;
         }
     }
+
     /**
+     * Legacy function
      * Set styles and custom data from home template to front-page template
      */
     public function set_home_to_front_page($post_id, $post, $update)
@@ -869,4 +1005,1046 @@ class MaxiBlocks_Styles
             ], false);
         }
     }
+
+    /***************************** NEW CODE PER BLOCK ****************************/
+
+    private function filter_recursive($input)
+    {
+        foreach ($input as &$value) {
+            if (is_array($value)) {
+                $value = $this->filter_recursive($value);
+            }
+        }
+        return array_filter($input, function ($v) {
+            return !(is_array($v) && count($v) == 0);
+        });
+    }
+
+
+    /**
+     * Processing content for blocks
+     * @return string
+     */
+    public function process_content_frontend()
+    {
+
+        $post_id = $this->get_id();
+
+        $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
+
+        if ($content_meta_fonts['meta'] !== null) {
+
+            $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
+            $this->process_scripts($meta_filtered);
+        }
+    }
+
+    /**
+     * Get content and meta data
+     * @param  int $id
+     * @param  bool $template
+     * @param  string $content_key
+     * @return array
+     */
+    private function get_content_meta_fonts_frontend($id, $content_key)
+    {
+
+        $data = $this->get_content_for_blocks_frontend($id);
+
+
+        if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
+            $this->apply_content($content_key, $data['content'], $id);
+            $this->enqueue_fonts($data['fonts'], $content_key);
+
+            return [
+                'content' => $data['content'],
+                'meta' => $data['meta'],
+                'fonts' => $data['fonts'],
+            ];
+        }
+        return ['content' => null, 'meta' => null, 'fonts' => null];
+    }
+
+
+    /**
+     * Process scripts
+     * @param  array $post_meta
+     * @param  array $template_meta
+     * @param  string $template_content
+     * @return void
+     */
+    private function process_scripts($post_meta)
+    {
+
+        $scripts = [
+            'hover-effects',
+            'bg-video',
+            'parallax',
+            'scroll-effects',
+            'number-counter',
+            'shape-divider',
+            'relations',
+            'video',
+            'search',
+            'map',
+            'accordion',
+            'slider'
+        ];
+
+        $script_attr = [
+            'bg-video',
+            'parallax',
+            'scroll-effects',
+            'shape-divider',
+            'relations',
+        ];
+
+
+
+        foreach ($scripts as $script) {
+            $js_var = str_replace('-', '_', $script);
+            $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+            $js_script_name = 'maxi-' . $script;
+            $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            //$js_script_path = '//js//' . $js_script_name . '.js';
+
+            $block_meta = $this->custom_meta($js_var, false);
+            $template_meta = $this->custom_meta($js_var, true);
+            $meta_to_pass = [];
+
+            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
+            $match = false;
+            $block_names = [];
+
+            foreach ($meta as $key => $value) {
+                if(str_contains($key, $script)) {
+                    $match = true;
+                    $block_names[] = $key;
+                } else {
+                    if(is_array($value) && in_array($script, $script_attr)) {
+                        foreach ($value as $k => $v) {
+                            if(gettype($v) === 'string' && str_contains($v, $script)) {
+                                $match = true;
+                                $block_names[] = $key;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($match) {
+                foreach ($block_names as $block_name) {
+                    if(!str_contains($block_name, 'maxi-blocks')) {
+                        continue;
+                    }
+                    if($script === 'relations') {
+                        foreach ($meta[$block_name] as $json) {
+                            $array = json_decode($json, true);  // Decode the JSON string into an array
+                            if (isset($array['relations'])) {
+                                $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            }
+                        }
+                    } else {
+                        foreach ($meta[$block_name] as $json) {
+                            $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                        }
+                    }
+
+                }
+
+                if(!empty($meta_to_pass)) {
+                    $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
+                }
+            }
+        }
+    }
+
+    /**
+     * Enqueue script per block
+     * @param  string $script
+     * @param  string $js_script_name
+     * @param  string $js_script_path
+     * @param  string $js_var_to_pass
+     * @param  string $js_var
+     * @param  array $meta
+     * @return void
+     */
+    private function enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta)
+    {
+        if ($script === 'number-counter') {
+            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)));
+        }
+
+        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)));
+        wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+    }
+
+
+    /**
+     * Check if block needs custom meta
+     *
+     * @param  string $unique_id
+     * @return bool
+     */
+    public function block_needs_custom_meta($unique_id)
+    {
+        global $wpdb;
+
+        $active_custom_data = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT active_custom_data FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $unique_id
+            )
+        );
+
+        return (bool)$active_custom_data;
+    }
+
+    /**
+     * Gets content for blocks
+     *
+     * @param array $block
+     * @param string &$styles
+     * @param string &$prev_styles
+     * @param array &$active_custom_data_array
+     */
+    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
+    {
+        global $wpdb;
+
+        $block_name = $block['blockName'] ?? '';
+        $props = $block['attrs'] ?? [];
+        $unique_id = $props['uniqueID'] ?? null;
+        $is_core_block = str_starts_with($block_name, 'core/');
+
+        if($gutenberg_blocks_status && $is_core_block && $maxi_block_style) {
+            $level = $props['level'] ?? null;
+            $text_level = null;
+
+            if($block_name === 'core/button') {
+                $text_level = 'button';
+            } elseif($level) {
+                $text_level = 'h' . $level;
+            } else {
+                $text_level = 'p';
+            }
+
+            $fonts_array = get_all_fonts([], false, false, $text_level, $maxi_block_style, false);
+            $fonts = array_merge($fonts, $fonts_array);
+        }
+
+        if(!$maxi_block_style && str_starts_with($block_name, 'maxi-blocks/')) {
+            $maxi_block_style = $props['blockStyle'] ?? 'light';
+        }
+
+        if (empty($props) || !isset($unique_id) || !$unique_id) {
+            if (!empty($block['innerBlocks'])) {
+                foreach ($block['innerBlocks'] as $innerBlock) {
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                }
+            } else {
+                return;
+            }
+
+        }
+
+        $content_array_block = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $unique_id
+            ),
+            ARRAY_A
+        );
+
+        $content_block = $content_array_block[0] ?? null;
+
+        if (!isset($content_block) || empty($content_block)) {
+            if (!empty($block['innerBlocks'])) {
+                foreach ($block['innerBlocks'] as $innerBlock) {
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                }
+            } else {
+                return;
+            }
+
+        }
+
+        if (isset($content_block['css_value'])) {
+            $styles .= ' ' . $content_block['css_value'];
+        }
+
+        if (isset($content_block['prev_css_value'])) {
+            $prev_styles .= ' ' . $content_block['prev_css_value'];
+        }
+
+        if (isset($content_block['active_custom_data'])) {
+            $this->process_custom_data_frontend($block_name, $unique_id, $active_custom_data_array);
+        }
+
+        // fonts
+        $fonts_json = $content_block['fonts_value'] ?? null;
+        if($fonts_json !== '' && $fonts_json !== null) {
+            $fonts_array = json_decode($fonts_json, true) ?? [];
+        } else {
+            $fonts_array = [];
+        }
+
+        $fonts = array_merge($fonts, $fonts_array);
+
+        // Process inner blocks, if any
+        if (!empty($block['innerBlocks'])) {
+            foreach ($block['innerBlocks'] as $innerBlock) {
+                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+            }
+        }
+    }
+
+    /**
+     * Process custom data
+     *
+     * @param array $block
+     * @param string $unique_id
+     * @param array &$active_custom_data_array
+     */
+    private function process_custom_data_frontend(string $block_name, string $unique_id, array &$active_custom_data_array)
+    {
+        global $wpdb;
+
+        $block_meta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                $unique_id
+            )
+        );
+
+        if (!empty($block_meta)) {
+            if (isset($active_custom_data_array[$block_name])) {
+                $active_custom_data_array[$block_name] = array_merge($active_custom_data_array[$block_name], [$unique_id => $block_meta]);
+            } else {
+                $active_custom_data_array[$block_name] = [$unique_id => $block_meta];
+            }
+        }
+    }
+
+    /**
+     * Fetches content for blocks with various optimizations.
+     *
+     * @param int|null $id
+     * @param string|null $passed_content
+     * @return array
+     */
+    public function get_content_for_blocks_frontend($id = null, string $passed_content = null)
+    {
+        global $post;
+
+        if(!$id) {
+            $post = get_post();
+        } else {
+            $post = get_post($id);
+        }
+        // Fetch blocks from template parts.
+        $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
+
+        // Fetch blocks from passed content or from the global post.
+        if($passed_content) {
+            $blocks_post = parse_blocks($passed_content);
+        } elseif($post) {
+            $blocks_post = parse_blocks($post->post_content);
+        } else {
+            $blocks_post = [];
+        }
+
+        // Merge the blocks.
+        $blocks = array_merge_recursive($blocks, $blocks_post);
+
+        if (empty($blocks)) {
+            return [];
+        }
+
+        // Fetch and parse reusable blocks.
+        $reusable_blocks = $this->get_parsed_reusable_blocks_frontend($blocks);
+
+        if (!empty($reusable_blocks)) {
+            $blocks = array_merge_recursive($blocks, $reusable_blocks);
+        }
+
+        // Process the blocks to extract styles and other metadata.
+        list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
+
+        // Construct the content array.
+        $content = [
+            'css_value' => $styles,
+            'prev_css_value' => $prev_styles,
+        ];
+
+        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+    }
+
+    /**
+ * Fetches blocks from template and template parts based on the template slug.
+ *
+ * @param string $template_id The ID of the template you want to fetch.
+ * @return array
+ */
+    public function fetch_blocks_by_template_id($template_id)
+    {
+        global $wpdb;
+
+        $parts = explode('//', $template_id);
+        $template_slug = $parts[1];
+
+        // Initialize the array to store all the blocks.
+        $all_blocks = [];
+
+        // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+            $template_slug
+        );
+        $templates = $wpdb->get_results($query);
+
+
+        if($template_slug === 'home') {
+            // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+                'blog'
+            );
+            $templates_home = $wpdb->get_results($query);
+            $templates = array_merge($templates, $templates_home);
+        }
+
+        foreach ($templates as $template) {
+            // Parse blocks for each template.
+            $template_blocks = parse_blocks($template->post_content);
+            $all_blocks = array_merge_recursive($all_blocks, $template_blocks);
+        }
+
+        // Fetch the 'header' and 'footer' template parts.
+        $template_part_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_name IN ('header', 'footer') AND post_status = 'publish'";
+        $template_parts = $wpdb->get_results($template_part_query);
+
+        foreach ($template_parts as $template_part) {
+            $part_blocks = parse_blocks($template_part->post_content);
+            $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
+        }
+
+        return $all_blocks;
+    }
+
+    public function get_reusable_blocks_ids($blocks)
+    {
+        $reusableBlockIds = [];
+
+        foreach ($blocks as $block) {
+            if ($block['blockName'] === 'core/block' && !empty($block['attrs']['ref'])) {
+                $reusableBlockIds[] = $block['attrs']['ref'];
+            }
+
+            if (!empty($block['innerBlocks'])) {
+                $reusableBlockIds = array_merge($reusableBlockIds, $this->get_reusable_blocks_ids($block['innerBlocks']));
+            }
+        }
+
+        return $reusableBlockIds;
+    }
+
+    /**
+     * Fetches and parses reusable blocks from the provided blocks.
+     *
+     * @param array $blocks
+     * @return array
+     */
+    private function get_parsed_reusable_blocks_frontend($blocks)
+    {
+
+        $reusable_block_ids = $this->get_reusable_blocks_ids($blocks);
+
+        // Remove duplicates from the block IDs.
+        $reusable_block_ids = array_unique($reusable_block_ids);
+        $all_parsed_blocks = [];
+
+        // Fetch and parse each reusable block by its ID.
+        foreach ($reusable_block_ids as $block_id) {
+            $block = get_post($block_id);
+            if ($block) {
+                $parsed_blocks = parse_blocks($block->post_content);
+                $all_parsed_blocks = array_merge($all_parsed_blocks, $parsed_blocks);
+            }
+        }
+
+        return $all_parsed_blocks;
+    }
+
+    /**
+     * Processes the provided blocks to extract styles, fonts, and other metadata.
+     *
+     * @param array $blocks
+     * @return array
+     */
+    private function process_blocks_frontend($blocks)
+    {
+        $styles = '';
+        $prev_styles = '';
+        $active_custom_data_array = [];
+        $fonts = [];
+
+        $style_cards = new MaxiBlocks_StyleCards();
+        $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
+
+        $gutenberg_blocks_status = $current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status'];
+
+        foreach ($blocks as $block) {
+            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
+        }
+
+        return [$styles, $prev_styles, $active_custom_data_array, $fonts];
+    }
+
+
+    public static function generate_random_string()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < 3; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
+
+    public static function unique_id_generator($blockName)
+    {
+        $name = str_replace('maxi-blocks/', '', $blockName);
+        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 5);
+        return "{$name}-{$uniquePart}-u";
+    }
+
+    public function process_block_unique_id(&$block)
+    {
+        // Check the block's uniqueID and update it if necessary
+        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+
+            // Get the block name
+            $blockName = $block['blockName'];
+
+            // Generate a new uniqueID
+            $new_uniqueID = self::unique_id_generator($blockName);
+
+            // Replace the old uniqueID with the new one in the block
+            $block['attrs']['uniqueID'] = $new_uniqueID;
+        }
+
+        // Recursively process any inner blocks
+        if (!empty($block['innerBlocks'])) {
+            foreach ($block['innerBlocks'] as &$innerBlock) {
+                $this->process_block_unique_id($innerBlock);
+            }
+        }
+    }
+
+
+
+    /**
+     * Get styles meta fonts from blocks
+     *
+     * @return bool
+     */
+    public function get_styles_meta_fonts_from_blocks($post_id)
+    {
+        $post = get_post($post_id);
+
+        if (!$post_id) {
+            return false;
+        }
+
+        // Get all blocks from post content
+        $blocks = parse_blocks($post->post_content);
+
+        if (empty($blocks)) {
+            return false;
+        }
+
+        // Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Iterate over each block and check its uniqueID
+            foreach ($block_chunk as $block) {
+                foreach ($block_chunk as &$block) {
+                    $this->process_block_unique_id($block);
+                }
+            }
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($this->max_execution_time != 0) {
+
+                set_time_limit($this->max_execution_time - 2);
+            }
+        }
+
+        // Save the post with the updated blocks
+        $post->post_content = serialize_blocks($blocks);
+        wp_update_post($post);
+
+        // Parse the blocks again after the content has been updated
+        $post = get_post($post_id);
+        $blocks = parse_blocks($post->post_content);
+
+        // Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Process each block in the current chunk
+            foreach($block_chunk as $block) {
+                $this->get_styles_meta_fonts_from_block($block);
+            }
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($this->max_execution_time != 0) {
+                set_time_limit($this->max_execution_time - 2);
+            }
+        }
+    }
+
+
+
+    public function get_block_fonts($block_name, $props, $only_backend = false)
+    {
+        $response = [];
+
+        $typography = [];
+        $typography_hover = [];
+        $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
+        $block_style = $props['blockStyle'];
+
+        switch ($block_name) {
+            case 'maxi-blocks/number-counter-maxi':
+                $typography = get_group_attributes($props, 'numberCounter');
+                break;
+            case 'maxi-blocks/button-maxi':
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                $text_level = 'button';
+                break;
+            default:
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                break;
+        }
+
+        if (isset($typography_hover['typography-status-hover'])) {
+            $response = array_merge_recursive(
+                get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend),
+                get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend)
+            );
+        } else {
+            $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend);
+        }
+
+
+        return $response;
+    }
+
+    /**
+     * Get styles meta fonts from block
+     *
+     * @param array $block
+     * @param array|null $context
+     * @return array
+     */
+    public function get_styles_meta_fonts_from_block($block, $context = null)
+    {
+        global $wpdb;
+
+        $styles = [];
+
+        if(empty($block)) {
+            return $styles;
+        }
+
+        $block_name = $block['blockName'];
+
+        if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
+            return $styles;
+        }
+
+        $props = $block['attrs'];
+        $block_style = $props['blockStyle'];
+
+        $unique_id = $props['uniqueID'];
+
+        $block_instance = null;
+
+        $blockClasses = [
+            'maxi-blocks/group-maxi' => 'MaxiBlocks_Group_Maxi_Block',
+            'maxi-blocks/container-maxi' => 'MaxiBlocks_Container_Maxi_Block',
+            'maxi-blocks/row-maxi' => 'MaxiBlocks_Row_Maxi_Block',
+            'maxi-blocks/column-maxi' => 'MaxiBlocks_Column_Maxi_Block',
+            'maxi-blocks/accordion-maxi' => 'MaxiBlocks_Accordion_Maxi_Block',
+            'maxi-blocks/pane-maxi' => 'MaxiBlocks_Pane_Maxi_Block',
+            'maxi-blocks/button-maxi' => 'MaxiBlocks_Button_Maxi_Block',
+            'maxi-blocks/divider-maxi' => 'MaxiBlocks_Divider_Maxi_Block',
+            'maxi-blocks/image-maxi' => 'MaxiBlocks_Image_Maxi_Block',
+            'maxi-blocks/svg-icon-maxi' => 'MaxiBlocks_SVG_Icon_Maxi_Block',
+            'maxi-blocks/text-maxi' => 'MaxiBlocks_Text_Maxi_Block',
+            'maxi-blocks/video-maxi' => 'MaxiBlocks_Video_Maxi_Block',
+            'maxi-blocks/number-counter-maxi' => 'MaxiBlocks_Number_Counter_Maxi_Block',
+            'maxi-blocks/search-maxi' => 'MaxiBlocks_Search_Maxi_Block',
+            'maxi-blocks/map-maxi' => 'MaxiBlocks_Map_Maxi_Block',
+            'maxi-blocks/slider-maxi' => 'MaxiBlocks_Slider_Maxi_Block',
+            'maxi-blocks/slide-maxi' => 'MaxiBlocks_Slide_Maxi_Block',
+        ];
+
+        if (class_exists($blockClasses[$block_name])) {
+            $block_instance = $blockClasses[$block_name]::get_instance();
+        }
+
+        if($block_instance === null) {
+            return $styles;
+        }
+
+        $props = $block_instance->get_block_attributes($props);
+
+        $customCss = $block_instance->get_block_custom_css($props);
+        $sc_props = $block_instance->get_block_sc_vars($block_style);
+        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
+
+
+        $inner_blocks = $block['innerBlocks'];
+
+        // Context creator
+        if ($block_name === 'maxi-blocks/row-maxi') {
+            $column_size = [];
+
+            if ($inner_blocks && !empty($inner_blocks)) {
+                foreach ($inner_blocks as $inner_block) {
+                    $attrs = $inner_block['attrs'];
+                    $column_size_attrs = get_group_attributes($attrs, 'columnSize');
+                    $unique_id = $attrs['uniqueID'];
+
+                    $column_size[$unique_id] = $column_size_attrs;
+                }
+            }
+
+            $context = [
+                'row_gap_props' => array_merge(
+                    get_row_gap_attributes($props),
+                    [
+                        'column_num' => count($inner_blocks),
+                        'column_size' => $column_size,
+                    ]
+                ),
+                'row_border_radius'=> get_group_attributes(
+                    $props,
+                    'borderRadius'
+                ),
+            ];
+        } else {
+            $context = null;
+        }
+
+        if ($inner_blocks && !empty($inner_blocks)) {
+
+            //Split inner_blocks array into chunks of 3
+            $inner_block_chunks = array_chunk($inner_blocks, 3);
+
+            foreach ($inner_block_chunks as $inner_block_chunk) {
+                // Process each block in the current chunk
+                foreach($inner_block_chunk as $inner_block) {
+                    $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
+                }
+
+                // Reset PHP maximum execution time for each chunk to avoid a timeout
+                if ($this->max_execution_time != 0) {
+                    set_time_limit($this->max_execution_time - 2);
+                }
+            }
+        }
+
+
+        $resolved_styles = style_resolver($styles);
+        $frontend_styles = frontend_style_generator($resolved_styles, $unique_id);
+
+        // custom meta
+        $custom_meta_block = 0;
+
+        $meta_blocks = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/video-maxi',
+            'maxi-blocks/search-maxi',
+            'maxi-blocks/map-maxi',
+            'maxi-blocks/accordion-maxi',
+            'maxi-blocks/pane-maxi',
+            'maxi-blocks/slider-maxi',
+
+        ];
+
+        if(in_array($block_name, $meta_blocks)) {
+            $custom_meta_block = 1;
+        }
+
+        $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
+
+        if(!empty($custom_meta)) {
+            $custom_meta_json = json_encode($custom_meta);
+            $exists = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                    $unique_id
+                ),
+                OBJECT
+            );
+
+            if (!empty($exists)) {
+                // Update the existing row.
+                $old_custom_meta = $exists->custom_data_value;
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "UPDATE {$wpdb->prefix}maxi_blocks_custom_data_blocks
+						SET custom_data_value = %s, prev_custom_data_value = %s
+						WHERE block_style_id = %s",
+                        $custom_meta_json,
+                        $old_custom_meta,
+                        $unique_id
+                    )
+                );
+            } else {
+                // Insert a new row.
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
+						VALUES (%s, %s, %s)",
+                        $unique_id,
+                        $custom_meta_json,
+                        ''
+                    )
+                );
+            }
+
+
+        }
+
+        // fonts
+        $blocks_with_fonts = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/button-maxi',
+            'maxi-blocks/text-maxi',
+            'maxi-blocks/image-maxi',
+        ];
+
+        if (in_array($block_name, $blocks_with_fonts) && !empty($props)) {
+            $fonts = json_encode($this->get_block_fonts($block_name, $props));
+        } else {
+            $fonts = '';
+        }
+        // save to DB
+        $exists = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                $unique_id
+            ),
+            OBJECT
+        );
+
+        if (!empty($exists)) {
+            // Update the existing row.
+            $old_css = $exists->css_value;
+            $old_custom_meta = $exists->active_custom_data;
+            $old_fonts = $exists->fonts_value;
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
+					SET css_value = %s, prev_css_value = %s, prev_fonts_value = %s, fonts_value = %s, active_custom_data = %d, prev_active_custom_data = %d
+					WHERE block_style_id = %s",
+                    $frontend_styles,
+                    $old_css,
+                    $old_fonts,
+                    $fonts,
+                    $custom_meta_block,
+                    $old_custom_meta,
+                    $unique_id
+                )
+            );
+        } else {
+            // Insert a new row.
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)
+					VALUES (%s, %s, %s, %s, %s, %d, %d)",
+                    $unique_id,
+                    $frontend_styles,
+                    '',
+                    $fonts,
+                    '',
+                    $custom_meta_block,
+                    0
+                )
+            );
+        }
+
+        return $styles;
+    }
+
+    /**
+     * Retrieves custom data from a block, based on the block's name and properties.
+     *
+     * The function supports a variety of block types, and returns different data depending
+     * on the block type. If the block type is not supported, the function returns an empty array.
+     *
+     * @param string $block_name The name of the block, e.g., 'maxi-blocks/number-counter-maxi'.
+     * @param array $attributes An associative array of attributes for the block.
+     * @return array An array containing the custom data from the block.
+     */
+    public function get_maxi_custom_data_from_block($block_name, $attributes)
+    {
+        // Define the block types and their corresponding attribute groups
+        $block_types = [
+            'maxi-blocks/accordion-maxi' => 'accordion',
+            'maxi-blocks/container-maxi' => 'container',
+            'maxi-blocks/map-maxi' => 'map',
+            'maxi-blocks/number-counter-maxi' => 'numberCounter',
+            'maxi-blocks/search-maxi' => 'search',
+            'maxi-blocks/slider-maxi' => 'slider',
+            'maxi-blocks/video-maxi' => 'video',
+        ];
+
+        // Iterate over the block types array
+        foreach ($block_types as $block_type => $attr_group) {
+            // If the block name matches the current block type
+            if ($block_name === $block_type) {
+                switch ($attr_group) {
+                    case 'accordion':
+                        $pane_icon = $attributes['icon-content'] ?? null;
+                        $pane_icon_active = $attributes['active-icon-content'] ?? null;
+                        $accordion_layout = $attributes['accordionLayout'] ?? null;
+                        $auto_pane_close = $attributes['autoPaneClose'] ?? null;
+                        $is_collapsible = $attributes['isCollapsible'] ?? null;
+                        $animation_duration = $attributes['animationDuration'] ?? null;
+
+                        $unique_custom_data = [
+                            'paneIcon' => $pane_icon,
+                            'paneIconActive' => $pane_icon_active,
+                            'accordionLayout' => $accordion_layout,
+                            'autoPaneClose' => $auto_pane_close,
+                            'isCollapsible' => $is_collapsible,
+                            'animationDuration' => $animation_duration,
+                        ];
+
+                        break;
+                    case 'container':
+                        $shape_divider_top_status = $attributes['shape-divider-top-status'] ?? null;
+                        $shape_divider_bottom_status = $attributes['shape-divider-bottom-status'] ?? null;
+                        $shape_status = $shape_divider_top_status ?? $shape_divider_bottom_status;
+
+                        $unique_custom_data = $shape_status ? get_group_attributes($attributes, 'shapeDivider') : [];
+
+                        break;
+                    case 'map':
+                        $unique_custom_data = get_group_attributes($attributes, [
+                            'mapInteraction',
+                            'mapMarker',
+                            'mapPopup',
+                            'mapPopupText',
+                        ]);
+
+                        break;
+                    case 'search':
+                        $close_icon_prefix = 'close-';
+                        $button_icon_content = $attributes['icon-content'] ?? null;
+                        $button_close_icon_content = $attributes[$close_icon_prefix . 'icon-content'] ?? null;
+                        $button_content = $attributes['buttonContent'] ?? null;
+                        $button_content_close = $attributes['buttonContentClose'] ?? null;
+                        $button_skin = $attributes['buttonSkin'] ?? null;
+                        $icon_reveal_action = $attributes['iconRevealAction'] ?? null;
+                        $skin = $attributes['skin'] ?? null;
+                        $unique_custom_data = [
+                            'icon-content' => $button_icon_content,
+                            $close_icon_prefix . 'icon-content' => $button_close_icon_content,
+                            'buttonContent' => $button_content,
+                            'buttonContentClose' => $button_content_close,
+                            'buttonSkin' => $button_skin,
+                            'iconRevealAction' => $icon_reveal_action,
+                            'skin' => $skin,
+                        ];
+
+                        break;
+                    case 'slider':
+                        $unique_custom_data = ['slider'=> true];
+
+                        break;
+                    default:
+                        $unique_custom_data = [];
+                        break;
+                }
+                // Construct and return the response array
+                return
+                   array_merge(
+                       get_group_attributes($attributes, $attr_group),
+                       $unique_custom_data,
+                       ['breakpoints' => $this->get_breakpoints($attributes)]
+                   );
+            }
+        }
+
+        // If no matching block type was found, return an empty array
+        return [];
+    }
+
+
+
+    /**
+     * Retrieves custom data from a block, based on the block's name, properties and context.
+     *
+     * This function first extracts relevant properties from the given arguments, including unique ID,
+     * status, background layers, relations, and context loop. It then calculates some properties
+     * based on the extracted data. Finally, it constructs and returns an array that contains all
+     * the calculated properties and the results from another method called `get_maxi_custom_data_from_block`.
+     *
+     * @param string $block_name The name of the block.
+     * @param array $props An associative array of properties for the block.
+     * @param array|null $context (Optional) The context in which the block is being processed.
+     * @return array An array containing the custom data from the block.
+     */
+    public function get_custom_data_from_block($block_name, $props, $context = null)
+    {
+        // Extract the unique ID from the properties
+        $unique_id = $props['uniqueID'];
+
+        // Extract other relevant properties with default values if not set
+        $dc_status = $props['dc-status'] ?? false;
+        $bg_layers = $props['background-layers'] ?? [];
+        $relations_raw = $props['relations'] ?? [];
+        $context_loop = $context['contextLoop'] ?? null;
+
+        // Calculate scroll attributes
+        $scroll = get_group_attributes($props, 'scroll', false, '', true);
+
+        // Calculate parallax layers if background layers are not empty
+        $bg_parallax_layers = !empty($bg_layers) ? get_parallax_layers($unique_id, $bg_layers) : [];
+
+        // Calculate video and scroll effects flags
+        $has_video = get_has_video($unique_id, $bg_layers);
+        $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
+
+        // Calculate relations if exist
+        $relations = get_relations($unique_id, $relations_raw);
+
+        // Construct the response by merging all calculated data and the data from another method
+        $response = array_merge(
+            !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
+            !empty($relations) ? ['relations' => $relations] : [],
+            $has_video ? ['bg_video' => true] : [],
+            $has_scroll_effects ? ['scroll_effects' => true] : [],
+            $dc_status && isset($context_loop['cl-status'])
+                    ? ['dynamic_content' => [$unique_id => $context_loop]]
+                    : [],
+            $this->get_maxi_custom_data_from_block($block_name, $props)
+        );
+
+        return $response;
+    }
+
 }

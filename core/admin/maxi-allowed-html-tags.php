@@ -62,6 +62,7 @@ function maxi_blocks_allowed_html()
             'name'     => true,
             'type'     => true,
             'value'    => true,
+            'id' 	   => true,
         ),
         'caption'    => array(
             'align' => true,

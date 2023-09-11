@@ -14,161 +14,8 @@ class MaxiBlocks_DynamicContent
      * @var MaxiBlocks_DynamicContent
      */
     private static $instance;
-
-    /**
-     * Registers the plugin.
-     */
-    public static function register()
-    {
-        if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_DynamicContent();
-        }
-    }
-
-    /**
-     * Variables
-     */
     private static $custom_data = null;
-
-    private static $dynamic_content_attributes = [
-        'dc-error' => [
-            'type' => 'string',
-            'default' => '',
-        ],
-        'dc-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-source' => [
-            'type' => 'string',
-            'default' => 'wp',
-        ],
-        'dc-type' => [
-            'type' => 'string',
-        ],
-        'dc-relation' => [
-            'type' => 'string',
-        ],
-        'dc-id' => [
-            'type' => 'number',
-        ],
-        'dc-author' => [
-            'type' => 'number',
-        ],
-        'dc-show' => [
-            'type' => 'string',
-            'default' => 'current',
-        ],
-        'dc-field' => [
-            'type' => 'string',
-        ],
-        'dc-format' => [
-            'type' => 'string',
-            'default' => 'd.m.Y t',
-        ],
-        'dc-custom-format' => [
-            'type' => 'string',
-        ],
-        'dc-custom-date' => [
-            'type' => 'boolean',
-            'default' => false,
-        ],
-        'dc-year' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-month' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-day' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-hour' => [
-            'type' => 'boolean',
-            'default' => 'numeric',
-        ],
-        'dc-hour12' => [
-            'type' => 'string',
-            'default' => false,
-        ],
-        'dc-minute' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-second' => [
-            'type' => 'string',
-            'default' => 'numeric',
-        ],
-        'dc-locale' => [
-            'type' => 'string',
-            'default' => 'en',
-        ],
-        'dc-timezone' => [
-            'type' => 'string',
-            'default' => 'Europe/London',
-        ],
-        'dc-timezone-name' => [
-            'type' => 'string',
-            'default' => 'none',
-        ],
-        'dc-weekday' => [
-            'type' => 'string',
-        ],
-        'dc-era' => [
-            'type' => 'string',
-        ],
-        'dc-limit' => [
-            'type' => 'number',
-            'default' => 100,
-        ],
-        'dc-content' => [
-            'type' => 'string',
-        ],
-        'dc-media-id' => [
-            'type' => 'number',
-        ],
-        'dc-media-url' => [
-            'type' => 'string',
-        ],
-        'dc-media-caption' => [
-            'type' => 'string',
-        ],
-        'dc-link-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-link-url' => [
-            'type' => 'string',
-        ],
-        'dc-post-taxonomy-links-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-custom-delimiter-status' => [
-            'type' => 'boolean',
-        ],
-        'dc-delimiter-content' => [
-            'type' => 'string',
-            'default' => '',
-        ],
-        'dc-acf-group' => [
-            'type' => 'string',
-        ],
-        'dc-acf-field-type' => [
-            'type' => 'string',
-        ],
-        'dc-order' => [
-            'type' => 'string',
-        ],
-        'dc-order-by' => [
-            'type' => 'string',
-        ],
-        'dc-accumulator' => [
-            'type' => 'number',
-        ],
-    ];
-
-    private static $order_by_relations =
-        ['by-category', 'by-author', 'by-tag'];
+    private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
 
     private static $link_only_blocks = [
         'group-maxi',
@@ -176,70 +23,25 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
-        'svg-icon-maxi',
     ];
 
     /**
-     * Constructor
+     * Initializes the plugin and its hooks.
+     */
+    public static function register()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+    }
+
+    /**
+    * Constructor: empty
      */
     public function __construct()
     {
-        // Dynamic blocks
-        register_block_type('maxi-blocks/text-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/button-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/image-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/group-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/column-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/row-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/slide-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/pane-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
-        register_block_type('maxi-blocks/svg-icon-maxi', array(
-            'api_version' => 2,
-            'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamic_content_attributes,
-        ));
     }
+
 
     public function render_dc($attributes, $content)
     {
@@ -253,18 +55,30 @@ class MaxiBlocks_DynamicContent
         $unique_id = $attributes['uniqueID'];
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
-        if (self::$custom_data === null) {
+        if (str_ends_with($unique_id, '-u')) {
+            $block_name = substr($unique_id, 0, -2);
+            $block_name = substr($block_name, 0, strrpos($block_name, '-'));
+        } else {
+            $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
+        }
+
+        if(str_ends_with($unique_id, '-u')) {
+            self::$custom_data = $this->get_dc_cl($unique_id);
+
+        } elseif (self::$custom_data === null) {
+
             if (class_exists('MaxiBlocks_Styles')) {
                 $styles = new MaxiBlocks_Styles();
                 self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
             } else {
                 self::$custom_data = [];
             }
+
         }
 
         $context_loop = [];
 
-        if (array_key_exists($unique_id, self::$custom_data)) {
+        if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
             $context_loop = self::$custom_data[$unique_id];
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
@@ -276,8 +90,6 @@ class MaxiBlocks_DynamicContent
                 $content = self::render_dc_link($attributes, $content);
             }
         }
-
-        $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
 
         if($is_template) {
             $block_name = substr($block_name, 0, strrpos($block_name, '-'));
@@ -319,6 +131,7 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_content($attributes, $content)
     {
+
         @list(
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
@@ -372,9 +185,7 @@ class MaxiBlocks_DynamicContent
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
-            'dc-field' => $dc_field,
             'dc-id' => $dc_id,
-            'dc-author' => $dc_author,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -384,8 +195,6 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'by-id';
         }
 
-        $media_id;
-        $media_src;
         $media_alt = '';
         $media_caption = '';
 
@@ -397,7 +206,9 @@ class MaxiBlocks_DynamicContent
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
-            $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+            if (!empty($post)) {
+                $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+            }
         } elseif ($dc_type === 'settings') { // Site settings
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
@@ -511,8 +322,6 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            $post;
-
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
@@ -597,7 +406,7 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if (is_null($post)) {
+        if(is_null($post) || !isset($post->{"post_$dc_field"})) {
             return '';
         }
 
@@ -1060,4 +869,28 @@ class MaxiBlocks_DynamicContent
 
         return $args;
     }
+
+    /**
+    * Return DC and CL
+    *
+    * @param string $unique_id
+    */
+    public function get_dc_cl(string $id)
+    {
+        global $wpdb;
+
+        $block_meta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                $id
+            )
+        );
+
+        if (!empty($block_meta)) {
+            $block_meta_parsed = json_decode($block_meta, true);
+            $response = $block_meta_parsed['dynamic_content'] ?? [];
+            return $response;
+        }
+    }
+
 }

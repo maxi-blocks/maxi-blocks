@@ -13,12 +13,14 @@ import {
 	addResponsiveTest,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Shape divider', () => {
 	it('Checking the shape divider', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openSidebarTab(
 			page,

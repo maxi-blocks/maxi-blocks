@@ -12,19 +12,22 @@ import {
 	addCustomCSS,
 	getEditedPostContent,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
-
 		await modalMock(page, { type: 'svg' });
+
+		await page.waitForTimeout(500);
 
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
 		await page.waitForTimeout(200);
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

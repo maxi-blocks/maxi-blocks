@@ -12,12 +12,14 @@ import {
 	addResponsiveTest,
 	resettingAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Padding control', () => {
 	it('Checking padding equal control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'margin padding');
 
 		await editAxisControl({

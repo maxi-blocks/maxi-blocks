@@ -53,10 +53,8 @@ class edit extends MaxiBlockComponent {
 
 		return {
 			...(shapeStatus && {
-				shape_divider: {
-					[uniqueID]: {
-						...getGroupAttributes(attributes, 'shapeDivider'),
-					},
+				[uniqueID]: {
+					...getGroupAttributes(attributes, 'shapeDivider'),
 				},
 			}),
 		};

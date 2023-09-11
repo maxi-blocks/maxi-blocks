@@ -1,0 +1,66 @@
+{
+  "height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "height-unit-xxl": {
+    "type": "string"
+  },
+  "height-unit-xl": {
+    "type": "string"
+  },
+  "height-unit-l": {
+    "type": "string"
+  },
+  "height-unit-m": {
+    "type": "string"
+  },
+  "height-unit-s": {
+    "type": "string"
+  },
+  "height-unit-xs": {
+    "type": "string"
+  },
+  "height-general": {
+    "type": "string"
+  },
+  "height-xxl": {
+    "type": "string"
+  },
+  "height-xl": {
+    "type": "string"
+  },
+  "height-l": {
+    "type": "string"
+  },
+  "height-m": {
+    "type": "string"
+  },
+  "height-s": {
+    "type": "string"
+  },
+  "height-xs": {
+    "type": "string"
+  },
+  "force-aspect-ratio-general": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-xxl": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-xl": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-l": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-m": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-s": {
+    "type": "boolean"
+  },
+  "force-aspect-ratio-xs": {
+    "type": "boolean"
+  }
+}

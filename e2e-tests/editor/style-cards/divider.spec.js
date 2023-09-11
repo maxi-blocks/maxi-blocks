@@ -12,12 +12,15 @@ import {
 	checkSCResult,
 	copySCToEdit,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+		await updateAllBlockUniqueIds(page);
+
 		await setBrowserViewport('large');
 
 		await getStyleCardEditor({

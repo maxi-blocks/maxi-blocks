@@ -16,6 +16,7 @@ import {
 	modalMock,
 	addTypographyStyle,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 /**
@@ -28,6 +29,8 @@ const createTextWithList = async (
 	typeIndex = 1
 ) => {
 	await insertMaxiBlock(page, 'Text Maxi');
+	await updateAllBlockUniqueIds(page);
+
 	await page.keyboard.type(content, { delay: 100 });
 	await page.waitForTimeout(150);
 

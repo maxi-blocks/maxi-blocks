@@ -12,12 +12,14 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'icon');
 
 		// select icon

@@ -12,12 +12,14 @@ import {
 	getAttributes,
 	addResponsiveTest,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -133,6 +135,8 @@ describe('FullSizeControl', () => {
 			button[6].click()
 		);
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
 
 		// select colum
 		await page.$eval(

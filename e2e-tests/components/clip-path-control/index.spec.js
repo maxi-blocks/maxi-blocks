@@ -13,6 +13,7 @@ import {
 	getBlockStyle,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ClipPathControl', () => {
@@ -37,6 +38,7 @@ describe('ClipPathControl', () => {
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(page, 'style', 'clip path');
 
 		// Use clip-path to create a triangle

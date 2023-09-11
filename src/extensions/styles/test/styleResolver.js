@@ -137,7 +137,14 @@ describe('styleResolver', () => {
 			xs: 480,
 		};
 
-		const result = styleResolver({ styles, remover, breakpoints });
+		const uniqueID = 'test-target-7f750e3e-u';
+
+		const result = styleResolver({
+			styles,
+			remover,
+			breakpoints,
+			uniqueID,
+		});
 
 		expect(result).toMatchSnapshot();
 	});

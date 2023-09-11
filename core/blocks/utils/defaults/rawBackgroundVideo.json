@@ -1,0 +1,92 @@
+{
+  "background-video-mediaID": {
+    "type": "number"
+  },
+  "background-video-mediaURL": {
+    "type": "string",
+    "default": "https://www.youtube.com/watch?v=ScMzIvxBSi4"
+  },
+  "background-video-startTime": {
+    "type": "string"
+  },
+  "background-video-endTime": {
+    "type": "string"
+  },
+  "background-video-loop": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-video-clip-path": {
+    "type": "string"
+  },
+  "background-video-clip-path-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-video-fallbackID": {
+    "type": "number"
+  },
+  "background-video-fallbackURL": {
+    "type": "string"
+  },
+  "background-video-playOnMobile": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-video-opacity": {
+    "type": "number",
+    "default": 1
+  },
+  "background-video-reduce-border": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-video-wrapper-position-top": {
+    "type": "string"
+  },
+  "background-video-wrapper-position-right": {
+    "type": "string"
+  },
+  "background-video-wrapper-position-bottom": {
+    "type": "string"
+  },
+  "background-video-wrapper-position-left": {
+    "type": "string"
+  },
+  "background-video-wrapper-position-sync": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-video-wrapper-position-top-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-video-wrapper-position-right-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-video-wrapper-position-bottom-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-video-wrapper-position-left-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-video-wrapper-width": {
+    "type": "number",
+    "default": 100
+  },
+  "background-video-wrapper-width-unit": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-video-wrapper-height": {
+    "type": "number",
+    "default": 100
+  },
+  "background-video-wrapper-height-unit": {
+    "type": "string",
+    "default": "%"
+  }
+}

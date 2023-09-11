@@ -8,12 +8,17 @@ import { createNewPost, saveDraft } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openPreviewPage, insertMaxiBlock } from '../utils';
+import {
+	openPreviewPage,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../utils';
 
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await page.waitForTimeout(1000);
 		await saveDraft();

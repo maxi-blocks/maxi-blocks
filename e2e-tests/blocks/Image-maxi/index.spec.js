@@ -22,12 +22,15 @@ import {
 	openPreviewPage,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe.skip('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+
+		await updateAllBlockUniqueIds(page);
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 

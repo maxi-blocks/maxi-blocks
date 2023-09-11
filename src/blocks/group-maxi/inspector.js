@@ -57,6 +57,10 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'group',
+									}),
 								]}
 							/>
 						),
@@ -82,10 +86,6 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
-									}),
-									...inspectorTabs.contextLoop({
-										props,
-										contentType: 'group',
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

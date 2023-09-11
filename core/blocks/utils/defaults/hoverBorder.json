@@ -1,0 +1,136 @@
+{
+  "hover-border-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "hover-border-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "hover-border-palette-status-xl": {
+    "type": "boolean"
+  },
+  "hover-border-palette-status-l": {
+    "type": "boolean"
+  },
+  "hover-border-palette-status-m": {
+    "type": "boolean"
+  },
+  "hover-border-palette-status-s": {
+    "type": "boolean"
+  },
+  "hover-border-palette-status-xs": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "hover-border-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "hover-border-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "hover-border-palette-color-general": {
+    "type": "number",
+    "default": 2
+  },
+  "hover-border-palette-color-xxl": {
+    "type": "number"
+  },
+  "hover-border-palette-color-xl": {
+    "type": "number"
+  },
+  "hover-border-palette-color-l": {
+    "type": "number"
+  },
+  "hover-border-palette-color-m": {
+    "type": "number"
+  },
+  "hover-border-palette-color-s": {
+    "type": "number"
+  },
+  "hover-border-palette-color-xs": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-general": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-xl": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-l": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-m": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-s": {
+    "type": "number"
+  },
+  "hover-border-palette-opacity-xs": {
+    "type": "number"
+  },
+  "hover-border-color-general": {
+    "type": "string"
+  },
+  "hover-border-color-xxl": {
+    "type": "string"
+  },
+  "hover-border-color-xl": {
+    "type": "string"
+  },
+  "hover-border-color-l": {
+    "type": "string"
+  },
+  "hover-border-color-m": {
+    "type": "string"
+  },
+  "hover-border-color-s": {
+    "type": "string"
+  },
+  "hover-border-color-xs": {
+    "type": "string"
+  },
+  "hover-border-style-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "hover-border-style-xxl": {
+    "type": "string"
+  },
+  "hover-border-style-xl": {
+    "type": "string"
+  },
+  "hover-border-style-l": {
+    "type": "string"
+  },
+  "hover-border-style-m": {
+    "type": "string"
+  },
+  "hover-border-style-s": {
+    "type": "string"
+  },
+  "hover-border-style-xs": {
+    "type": "string"
+  },
+  "hover-border-status": {
+    "type": "boolean",
+    "default": false
+  }
+}

@@ -12,12 +12,14 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Icon background', () => {
 	it('Check Icon background', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
+
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block
@@ -28,6 +30,8 @@ describe('Icon background', () => {
 			'.components-modal__content .components-modal__header button',
 			svg => svg.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 
 		// normal state
 		const accordion = await openSidebarTab(

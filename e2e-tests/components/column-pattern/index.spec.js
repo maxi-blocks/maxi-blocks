@@ -12,12 +12,14 @@ import {
 	getAttributes,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		await page.$eval('.maxi-row-block', row => row.focus());
 

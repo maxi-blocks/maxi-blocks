@@ -1,0 +1,27 @@
+{
+  "background-active-media-general-hover": {
+    "type": "string"
+  },
+  "background-active-media-xxl-hover": {
+    "type": "string"
+  },
+  "background-active-media-xl-hover": {
+    "type": "string"
+  },
+  "background-active-media-l-hover": {
+    "type": "string"
+  },
+  "background-active-media-m-hover": {
+    "type": "string"
+  },
+  "background-active-media-s-hover": {
+    "type": "string"
+  },
+  "background-active-media-xs-hover": {
+    "type": "string"
+  },
+  "background-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

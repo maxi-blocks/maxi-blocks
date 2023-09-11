@@ -147,16 +147,14 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 
 		return {
-			search: {
-				[uniqueID]: {
-					buttonIconContent,
-					buttonCloseIconContent,
-					buttonContent,
-					buttonContentClose,
-					buttonSkin,
-					iconRevealAction,
-					skin,
-				},
+			[uniqueID]: {
+				buttonIconContent,
+				buttonCloseIconContent,
+				buttonContent,
+				buttonContentClose,
+				buttonSkin,
+				iconRevealAction,
+				skin,
 			},
 		};
 	}

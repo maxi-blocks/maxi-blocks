@@ -25,6 +25,13 @@ describe('Text link', () => {
 
 		await page.waitForTimeout(200);
 
+		const linkInput = await page.waitForSelector(
+			'.block-editor-url-input__input'
+		);
+
+		await linkInput.click();
+		await page.waitForTimeout(100);
+
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 

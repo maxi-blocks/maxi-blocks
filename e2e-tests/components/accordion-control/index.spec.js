@@ -6,12 +6,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 
-import { openSidebarTab, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('AccordionControl', () => {
 	it('Checking the accordion control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+
+		await updateAllBlockUniqueIds(page);
 
 		const accordionNames = [
 			'heading paragraph tag',

@@ -5,12 +5,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes, insertMaxiBlock } from '../../utils';
+import {
+	openSidebarTab,
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('CheckBoxControl', () => {
 	it('checking the checkbox control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

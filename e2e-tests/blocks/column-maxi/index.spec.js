@@ -18,6 +18,7 @@ import {
 	getEditedPostContent,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -31,6 +32,8 @@ describe('Column Maxi', () => {
 			button.click()
 		);
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
@@ -117,16 +120,24 @@ describe('Column Maxi', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(200);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
+		await page.waitForTimeout(200);
+
 		await page.waitForSelector('.maxi-column-block');
+
+		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(200);
 
 		// Ensure we select the first Column
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[2].focus()
 		);
+
+		await page.waitForTimeout(200);
 
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
@@ -199,6 +210,8 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[0].focus()
 		);
+
+		await page.waitForTimeout(200);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 

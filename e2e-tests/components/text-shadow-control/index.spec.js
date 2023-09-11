@@ -12,12 +12,14 @@ import {
 	getBlockStyle,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('TextShadowControl', () => {
 	it('Checking the text shadow control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebarTab(
 			page,

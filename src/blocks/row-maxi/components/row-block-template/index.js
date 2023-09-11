@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { Button, Icon } from '../../../../components';
+import { getBlockPosition } from '../../../../extensions/repeater/utils';
 import { getTemplates } from '../../../../extensions/column-templates';
-import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
 
 /**
@@ -23,7 +23,6 @@ const RowBlockTemplate = ({
 	deviceType,
 	repeaterStatus,
 	repeaterRowClientId,
-	innerBlockPositions,
 	getInnerBlocksPositions,
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
@@ -61,24 +60,23 @@ const RowBlockTemplate = ({
 									const innerBlockPositions =
 										getInnerBlocksPositions();
 
-									const parentRepeaterColumnClientId = select(
-										'core/block-editor'
-									)
-										.getBlockParentsByBlockName(
-											clientId,
-											'maxi-blocks/column-maxi'
-										)
-										.find(columnClientId =>
-											innerBlockPositions[[-1]].includes(
-												columnClientId
-											)
-										);
-
-									validateRowColumnsStructure(
-										repeaterRowClientId,
-										innerBlockPositions,
-										parentRepeaterColumnClientId
+									const blockPosition = getBlockPosition(
+										clientId,
+										innerBlockPositions
 									);
+
+									const rowClientIds =
+										innerBlockPositions[blockPosition];
+
+									rowClientIds.forEach(rowClientId => {
+										if (rowClientId === clientId) return;
+
+										loadColumnsTemplate(
+											template.name,
+											rowClientId,
+											deviceType
+										);
+									});
 								}
 							}}
 						>

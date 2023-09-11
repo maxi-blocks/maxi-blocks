@@ -222,6 +222,7 @@ const getImageOverflow = props => {
 
 	return response;
 };
+
 const getImageWrapperObject = props => {
 	const response = {
 		alignment: getAlignmentFlexStyles({
@@ -553,14 +554,6 @@ const getStyles = props => {
 				' .maxi-hover-details .maxi-hover-details__content p':
 					getHoverEffectContentTextObject(props),
 				' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

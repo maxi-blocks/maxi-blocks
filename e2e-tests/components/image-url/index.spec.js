@@ -5,12 +5,18 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockStyle, getAttributes, insertMaxiBlock } from '../../utils';
+import {
+	getBlockStyle,
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe.skip('ImageURL', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
+		await updateAllBlockUniqueIds(page);
 	});
 
 	it('Check imageUrl', async () => {

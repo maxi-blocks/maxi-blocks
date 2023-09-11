@@ -9,12 +9,18 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockStyle, getAttributes, insertMaxiBlock } from '../../utils';
+import {
+	getBlockStyle,
+	getAttributes,
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+} from '../../utils';
 
 describe('BlockStylesControl', () => {
 	it('Checking the block styles control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 		await openDocumentSettingsSidebar();
 		await ensureSidebarOpened();
 

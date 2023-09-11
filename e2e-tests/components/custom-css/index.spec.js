@@ -13,12 +13,14 @@ import {
 	changeResponsive,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Custom-Css-Control', () => {
 	it('Checking the custom-css', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
+		await updateAllBlockUniqueIds(page);
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 

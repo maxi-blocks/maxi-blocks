@@ -1,0 +1,45 @@
+{
+  "max-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "max-height-unit-xxl": {
+    "type": "string"
+  },
+  "max-height-unit-xl": {
+    "type": "string"
+  },
+  "max-height-unit-l": {
+    "type": "string"
+  },
+  "max-height-unit-m": {
+    "type": "string"
+  },
+  "max-height-unit-s": {
+    "type": "string"
+  },
+  "max-height-unit-xs": {
+    "type": "string"
+  },
+  "max-height-general": {
+    "type": "string"
+  },
+  "max-height-xxl": {
+    "type": "string"
+  },
+  "max-height-xl": {
+    "type": "string"
+  },
+  "max-height-l": {
+    "type": "string"
+  },
+  "max-height-m": {
+    "type": "string"
+  },
+  "max-height-s": {
+    "type": "string"
+  },
+  "max-height-xs": {
+    "type": "string"
+  }
+}

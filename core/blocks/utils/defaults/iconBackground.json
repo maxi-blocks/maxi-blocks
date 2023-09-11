@@ -1,0 +1,24 @@
+{
+  "icon-background-active-media-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "icon-background-active-media-xxl": {
+    "type": "string"
+  },
+  "icon-background-active-media-xl": {
+    "type": "string"
+  },
+  "icon-background-active-media-l": {
+    "type": "string"
+  },
+  "icon-background-active-media-m": {
+    "type": "string"
+  },
+  "icon-background-active-media-s": {
+    "type": "string"
+  },
+  "icon-background-active-media-xs": {
+    "type": "string"
+  }
+}

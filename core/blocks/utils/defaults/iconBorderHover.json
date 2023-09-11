@@ -1,0 +1,129 @@
+{
+  "icon-border-palette-status-general-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-xl-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-l-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-m-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-s-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-status-xs-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-general-hover": {
+    "type": "boolean",
+    "default": false
+  },
+  "icon-border-palette-sc-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-xl-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-l-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-m-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-s-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-sc-status-xs-hover": {
+    "type": "boolean"
+  },
+  "icon-border-palette-color-general-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-xxl-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-xl-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-l-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-m-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-s-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-color-xs-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-general-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xxl-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xl-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-l-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-m-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-s-hover": {
+    "type": "number"
+  },
+  "icon-border-palette-opacity-xs-hover": {
+    "type": "number"
+  },
+  "icon-border-color-general-hover": {
+    "type": "string"
+  },
+  "icon-border-color-xxl-hover": {
+    "type": "string"
+  },
+  "icon-border-color-xl-hover": {
+    "type": "string"
+  },
+  "icon-border-color-l-hover": {
+    "type": "string"
+  },
+  "icon-border-color-m-hover": {
+    "type": "string"
+  },
+  "icon-border-color-s-hover": {
+    "type": "string"
+  },
+  "icon-border-color-xs-hover": {
+    "type": "string"
+  },
+  "icon-border-style-general-hover": {
+    "type": "string"
+  },
+  "icon-border-style-xxl-hover": {
+    "type": "string"
+  },
+  "icon-border-style-xl-hover": {
+    "type": "string"
+  },
+  "icon-border-style-l-hover": {
+    "type": "string"
+  },
+  "icon-border-style-m-hover": {
+    "type": "string"
+  },
+  "icon-border-style-s-hover": {
+    "type": "string"
+  },
+  "icon-border-style-xs-hover": {
+    "type": "string"
+  }
+}

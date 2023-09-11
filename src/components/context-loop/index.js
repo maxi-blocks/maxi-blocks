@@ -182,6 +182,7 @@ const ContextLoop = props => {
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={relationOptions[contentType][type]}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'cl-relation': value,
@@ -204,6 +205,7 @@ const ContextLoop = props => {
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
 										options={postAuthorOptions}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'cl-author': Number(value),
@@ -238,6 +240,7 @@ const ContextLoop = props => {
 											'maxi-blocks'
 										)}
 										value={id}
+										newStyle
 										options={postIdOptions}
 										onChange={value =>
 											changeProps({
@@ -264,6 +267,7 @@ const ContextLoop = props => {
 												)}
 												value={orderBy}
 												options={orderByOptions}
+												newStyle
 												onChange={value =>
 													changeProps({
 														'cl-order-by': value,
@@ -282,6 +286,7 @@ const ContextLoop = props => {
 										<SelectControl
 											label={__('Order', 'maxi-blocks')}
 											value={order}
+											newStyle
 											options={
 												orderOptions[
 													orderByRelations.includes(

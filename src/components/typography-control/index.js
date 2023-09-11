@@ -738,6 +738,7 @@ const TypographyControl = props => {
 					className='maxi-typography-control__transform'
 					value={getValue('text-transform')}
 					defaultValue={getDefault('text-transform')}
+					newStyle
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -776,6 +777,7 @@ const TypographyControl = props => {
 					className='maxi-typography-control__font-style'
 					value={getValue('font-style')}
 					defaultValue={getDefault('font-style')}
+					newStyle
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -810,6 +812,7 @@ const TypographyControl = props => {
 					className='maxi-typography-control__decoration'
 					value={getValue('text-decoration')}
 					defaultValue={getDefault('text-decoration')}
+					newStyle
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -854,6 +857,7 @@ const TypographyControl = props => {
 							className='maxi-typography-control__orientation'
 							value={getValue('text-orientation')}
 							defaultValue={getDefault('text-orientation')}
+							newStyle
 							options={[
 								{
 									label: __('None', 'maxi-blocks'),
@@ -895,6 +899,7 @@ const TypographyControl = props => {
 							className='maxi-typography-control__direction'
 							value={getValue('text-direction')}
 							defaultValue={getDefault('text-direction')}
+							newStyle
 							options={[
 								{
 									label: __('Left to right', 'maxi-blocks'),
@@ -983,6 +988,7 @@ const TypographyControl = props => {
 					className='maxi-typography-control__white-space'
 					value={getValue('white-space')}
 					defaultValue={getDefault('white-space')}
+					newStyle
 					options={[
 						{
 							label: __('Normal', 'maxi-blocks'),

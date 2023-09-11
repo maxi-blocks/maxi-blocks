@@ -12,12 +12,14 @@ import {
 	editAxisControl,
 	changeResponsive,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(
 			page,

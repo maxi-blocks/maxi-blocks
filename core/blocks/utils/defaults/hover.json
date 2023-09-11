@@ -1,0 +1,57 @@
+{
+  "hover-type": {
+    "type": "string",
+    "default": "none"
+  },
+  "hover-preview": {
+    "type": "boolean",
+    "default": true
+  },
+  "hover-extension": {
+    "type": "boolean",
+    "default": false
+  },
+  "hover-basic-effect-type": {
+    "type": "string",
+    "default": "zoom-in"
+  },
+  "hover-text-effect-type": {
+    "type": "string",
+    "default": "fade"
+  },
+  "hover-text-preset": {
+    "type": "string",
+    "default": "center-center"
+  },
+  "hover-transition-easing": {
+    "type": "string",
+    "default": "ease"
+  },
+  "hover-transition-easing-cubic-bezier": {
+    "type": "object"
+  },
+  "hover-transition-duration": {
+    "type": "number",
+    "default": 0.5
+  },
+  "hover-basic-zoom-in-value": {
+    "type": "number",
+    "default": 1.3
+  },
+  "hover-basic-zoom-out-value": {
+    "type": "number",
+    "default": 1.5
+  },
+  "hover-basic-slide-value": {
+    "type": "number",
+    "default": 30
+  },
+  "hover-basic-rotate-value": {
+    "type": "number",
+    "default": 15
+  },
+  "hover-basic-blur-value": {
+    "type": "number",
+    "default": 2
+  }
+}

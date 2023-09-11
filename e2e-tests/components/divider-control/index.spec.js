@@ -13,12 +13,14 @@ import {
 	getBlockStyle,
 	getBlockAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('DividerControl', () => {
 	it('Checking the style selector', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(
 			page,

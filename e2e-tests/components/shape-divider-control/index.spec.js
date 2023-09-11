@@ -12,12 +12,14 @@ import {
 	getBlockStyle,
 	editAdvancedNumberControl,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
+		await updateAllBlockUniqueIds(page);
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openSidebarTab(
 			page,

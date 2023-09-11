@@ -1162,6 +1162,8 @@ const getBasicResponseObject = ({
 		blockStyle,
 		isHover
 	);
+	// TODO: check this merge, as rowBorderRadiusObj is modified.
+	// At the end, mergedBorderObj is equal to rowBorderRadiusObj.
 	const mergedBorderObj = merge(rowBorderRadiusObj, borderObj);
 
 	return {

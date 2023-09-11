@@ -12,12 +12,14 @@ import {
 	editAxisControl,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('PositionControl', () => {
 	it('Checking position control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		const accordionPanel = await openSidebarTab(
 			page,

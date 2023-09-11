@@ -1,0 +1,67 @@
+{
+  "width-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "width-unit-xxl": {
+    "type": "string"
+  },
+  "width-unit-xl": {
+    "type": "string"
+  },
+  "width-unit-l": {
+    "type": "string"
+  },
+  "width-unit-m": {
+    "type": "string"
+  },
+  "width-unit-s": {
+    "type": "string"
+  },
+  "width-unit-xs": {
+    "type": "string"
+  },
+  "width-general": {
+    "type": "string"
+  },
+  "width-xxl": {
+    "type": "string"
+  },
+  "width-xl": {
+    "type": "string"
+  },
+  "width-l": {
+    "type": "string"
+  },
+  "width-m": {
+    "type": "string"
+  },
+  "width-s": {
+    "type": "string"
+  },
+  "width-xs": {
+    "type": "string"
+  },
+  "width-fit-content-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "width-fit-content-xxl": {
+    "type": "boolean"
+  },
+  "width-fit-content-xl": {
+    "type": "boolean"
+  },
+  "width-fit-content-l": {
+    "type": "boolean"
+  },
+  "width-fit-content-m": {
+    "type": "boolean"
+  },
+  "width-fit-content-s": {
+    "type": "boolean"
+  },
+  "width-fit-content-xs": {
+    "type": "boolean"
+  }
+}

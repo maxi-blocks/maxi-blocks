@@ -17,7 +17,6 @@ describe('Icon size', () => {
 	it('Check icon size', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
-
 		// generate icon
 		await modalMock(page, { type: 'svg' });
 		await page.$eval('button[aria-label="Close"]', button =>

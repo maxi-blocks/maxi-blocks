@@ -11,12 +11,14 @@ import {
 	openSidebarTab,
 	getAttributes,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Video maxi control', () => {
 	it('Check video maxi control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Video Maxi');
+		await updateAllBlockUniqueIds(page);
 
 		// Needs time to load the YT/Vimeo API
 		await page.waitForTimeout(1000);

@@ -40,6 +40,26 @@ const goThroughMaxiBlocks = (
 				}
 			}
 
+			if (block.name === 'core/post-content') {
+				const callbackResult = callback(block);
+				if (callbackResult) {
+					return callbackResult;
+				}
+
+				const { postType, postId } =
+					select('core/edit-site').getEditedPostContext();
+
+				const { blocks } = select('core').getEditedEntityRecord(
+					'postType',
+					postType,
+					postId
+				);
+
+				if (blocks?.length) {
+					innerBlocks = blocks;
+				}
+			}
+
 			if (block.name === 'core/block') {
 				const blocks = select('core/block-editor').getBlocks(
 					block.clientId

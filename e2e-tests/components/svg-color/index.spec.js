@@ -13,6 +13,7 @@ import {
 	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
+	updateAllBlockUniqueIds,
 } from '../../utils';
 
 describe('Icon Color', () => {
@@ -29,6 +30,8 @@ describe('Icon Color', () => {
 			'.components-modal__content .components-modal__header button',
 			svg => svg.click()
 		);
+
+		await updateAllBlockUniqueIds(page);
 
 		await openSidebarTab(page, 'style', 'icon colour');
 

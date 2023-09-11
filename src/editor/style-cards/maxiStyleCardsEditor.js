@@ -678,6 +678,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 											const newStyleCard = {
 												name: styleCardName,
 												status: '',
+												gutenberg_blocks_status:
+													'gutenberg_blocks_status' in
+													selectedSCValue
+														? selectedSCValue.gutenberg_blocks_status
+														: true,
 												dark: {
 													defaultStyleCard: {
 														...selectedSCValue.dark

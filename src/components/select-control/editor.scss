@@ -33,3 +33,29 @@ body.maxi-blocks--active select.maxi-select-control__input {
 		}
 	}
 }
+
+body.maxi-blocks--active {
+	.maxi-select-control{
+		&__second-style{
+			.maxi-base-control__field{
+				position: relative;
+			}
+			.maxi-base-control__label{
+				position: absolute;
+				top: -8px;
+				left: 8px;
+				font-size: 8px;
+				color: #5d5e5f;
+				font-style: italic;
+				background: #fff;
+				padding: 0 5px;
+				pointer-events: none;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
+			.maxi-select-control__input{
+				padding: 9px 8px;
+			}
+		}
+	}
+}

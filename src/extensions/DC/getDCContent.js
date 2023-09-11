@@ -7,7 +7,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { limitFields, limitTypes, renderedFields } from './constants';
+import {
+	limitFields,
+	limitTypes,
+	nameDictionary,
+	renderedFields,
+} from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
@@ -18,15 +23,6 @@ import getACFContentByType from './getACFContentByType';
  * External dependencies
  */
 import { isNil } from 'lodash';
-
-const nameDictionary = {
-	posts: 'post',
-	pages: 'page',
-	media: 'attachment',
-	settings: '__unstableBase',
-	categories: 'category',
-	tags: 'post_tag',
-};
 
 const getDCContent = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);

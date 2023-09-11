@@ -17,7 +17,10 @@ import { resolveSelect } from '@wordpress/data';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
-import { validationsValues } from '../../extensions/DC/utils';
+import {
+	canCurrentEntityBeSelected,
+	validationsValues,
+} from '../../extensions/DC/utils';
 import {
 	typeOptions,
 	fieldOptions,
@@ -219,6 +222,19 @@ const DynamicContent = props => {
 		return options;
 	}, []);
 
+	const currentRelationOptions = useMemo(() => {
+		const options = relationOptions[contentType][type];
+
+		if (canCurrentEntityBeSelected(type)) {
+			options.push({
+				label: __('Get current', 'maxi-blocks'),
+				value: 'current',
+			});
+		}
+
+		return options;
+	}, [contentType, type]);
+
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
 			const validatedAttributes = validationsValues(
@@ -316,7 +332,7 @@ const DynamicContent = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={relationOptions[contentType][type]}
+									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,

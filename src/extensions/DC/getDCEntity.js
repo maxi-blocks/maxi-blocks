@@ -8,29 +8,18 @@ import { resolveSelect } from '@wordpress/data';
  */
 import getDCErrors from './getDCErrors';
 import { getDCOrder } from './utils';
-import { orderRelations, orderTypes, relationTypes } from './constants';
+import {
+	kindDictionary,
+	nameDictionary,
+	orderRelations,
+	orderTypes,
+	relationTypes,
+} from './constants';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-
-const kindDictionary = {
-	posts: 'postType',
-	pages: 'postType',
-	media: 'postType',
-	settings: 'root',
-	categories: 'taxonomy',
-	tags: 'taxonomy',
-};
-const nameDictionary = {
-	posts: 'post',
-	pages: 'page',
-	media: 'attachment',
-	settings: '__unstableBase',
-	categories: 'category',
-	tags: 'post_tag',
-};
 
 const randomEntityIndexes = {};
 

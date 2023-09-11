@@ -406,6 +406,9 @@ export const relationTypes = [
 	'users', // TODO: Add support for users
 ];
 
+// Types that can have relation "current".
+export const currentEntityTypes = ['posts', 'pages'];
+
 // Fields that can lead to different locations from post
 export const linkFields = ['categories', 'tags', 'author'];
 
@@ -471,6 +474,23 @@ export const orderOptions = {
 		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
 		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
 	],
+};
+
+export const kindDictionary = {
+	posts: 'postType',
+	pages: 'postType',
+	media: 'postType',
+	settings: 'root',
+	categories: 'taxonomy',
+	tags: 'taxonomy',
+};
+export const nameDictionary = {
+	posts: 'post',
+	pages: 'page',
+	media: 'attachment',
+	settings: '__unstableBase',
+	categories: 'category',
+	tags: 'post_tag',
 };
 
 export const attributeDefaults = {

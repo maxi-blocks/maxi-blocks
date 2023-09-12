@@ -225,6 +225,7 @@ const TransformControl = props => {
 				type='buttons'
 				selected={transformStatus}
 				fullWidthMode
+				hasBorder
 				items={[
 					{
 						label: __('Scale', 'maxi-blocks'),

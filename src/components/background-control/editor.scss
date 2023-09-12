@@ -1,4 +1,5 @@
 .maxi-background-control {
+	padding-top: 8px;
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {
@@ -7,7 +8,10 @@
 		}
 	}
 	.maxi-background-control__add-layer {
-		margin-top: 10px !important;
+		margin-top: 0 !important;
+		.maxi-base-control__field{
+			margin-bottom: 3px !important;
+		}
 	}
 	.maxi-background-layer {
 		&__preview {

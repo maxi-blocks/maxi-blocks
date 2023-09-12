@@ -17,8 +17,6 @@ const getIsActiveTab = (
 	const { show_indicators: showIndicators } =
 		select('maxiBlocks').receiveMaxiSettings();
 
-	console.log('showIndicators', showIndicators);
-
 	if (!showIndicators) return false;
 
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');

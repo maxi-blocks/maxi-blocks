@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 /**
  * WordPress dependencies
  */
@@ -15,8 +14,12 @@ const getIsActiveTab = (
 	ignoreIndicator = [],
 	ignoreIndicatorGroups = []
 ) => {
-	// Beta: This function is not working properly.
-	return false;
+	const { show_indicators: showIndicators } =
+		select('maxiBlocks').receiveMaxiSettings();
+
+	console.log('showIndicators', showIndicators);
+
+	if (!showIndicators) return false;
 
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 

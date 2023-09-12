@@ -294,6 +294,7 @@ const TransformControl = props => {
 								target: `transform-${transformStatus}`,
 								keys: [transformTarget, 'hover-status'],
 							})}
+							newStyle
 							onChange={val => {
 								const transformTargetOptions =
 									transformOptions[

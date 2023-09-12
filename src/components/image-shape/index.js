@@ -172,6 +172,7 @@ const ImageShape = props => {
 						<SelectControl
 							label={__('Image position', 'maxi-blocks')}
 							value={shapePosition || 'xMidYMid'}
+							newStyle
 							options={[
 								{
 									label: __('Center center', 'maxi-blocks'),

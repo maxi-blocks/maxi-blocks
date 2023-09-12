@@ -173,6 +173,7 @@ const DividerControl = props => {
 							value: 'double',
 						},
 					]}
+					newStyle
 					value={
 						getLastBreakpointAttribute({
 							target: `${prefix}divider-border-style`,

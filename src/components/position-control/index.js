@@ -152,6 +152,7 @@ const PositionControl = props => {
 								isReset: true,
 							})
 						}
+						newStyle
 						onChange={val =>
 							onChange({
 								[`${prefix}position-${breakpoint}`]: val,

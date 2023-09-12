@@ -1626,7 +1626,6 @@
 				position: absolute;
 				left: 230px;
 				max-width: 450px;
-				//width: calc(100% - 230px);
 				margin-top: -38px;
 				margin-left: 13px;
 				&-item {
@@ -1649,9 +1648,6 @@
 			}
 			&__button-go-pro,
 			&__button-connect-pro {
-				// position: absolute;
-				// top: 7px;
-				// right: 100px;
 				width: auto;
 				height: 31px;
 				padding: 6px 18px;
@@ -1670,18 +1666,12 @@
 				right: 100px;
 			}
 			&__button-manage-sessions {
-				// right: 200px;
 				margin-right: -10px;
 			}
 			&__text_pro {
-				// position: absolute;
-				// top: 17px;
-				// right: 22%;
 				margin: 0;
 			}
 			&__input {
-				// position: absolute;
-				// right: 11%;
 				width: 300px;
 				margin-right: -15px;
 				input {

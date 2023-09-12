@@ -85,15 +85,14 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 															true,
 															prefix,
 															deviceType
-														)]:
-															getLastBreakpointAttribute(
-																{
-																	target: `${prefix}clip-path`,
-																	breakpoint:
-																		deviceType,
-																	attributes,
-																}
-															),
+														)]: getLastBreakpointAttribute(
+															{
+																target: `${prefix}clip-path`,
+																breakpoint:
+																	deviceType,
+																attributes,
+															}
+														),
 												  }
 												: {}),
 										})

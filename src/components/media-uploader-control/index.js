@@ -94,50 +94,46 @@ const MediaUploader = props => {
 						>
 							{!mediaID && placeholder}
 							{!!mediaID && !imageData && <Spinner />}
-							{mediaType === 'image' &&
-								!!mediaID &&
-								imageData && (
-									<div className='maxi-mediauploader-control__responsive-wrapper'>
-										<img
-											src={
-												alternativeImage
-													? alternativeImage.source_url
-													: imageData.source_url
-											}
-											alt={__('Image', 'maxi-blocks')}
-										/>
-									</div>
-								)}
-							{mediaType === 'video' &&
-								!!mediaID &&
-								imageData && (
-									<ResponsiveWrapper
-										naturalWidth={
+							{mediaType === 'image' && !!mediaID && imageData && (
+								<div className='maxi-mediauploader-control__responsive-wrapper'>
+									<img
+										src={
 											alternativeImage
-												? alternativeImage.width
-												: imageData.media_details.width
+												? alternativeImage.source_url
+												: imageData.source_url
 										}
-										naturalHeight={
+										alt={__('Image', 'maxi-blocks')}
+									/>
+								</div>
+							)}
+							{mediaType === 'video' && !!mediaID && imageData && (
+								<ResponsiveWrapper
+									naturalWidth={
+										alternativeImage
+											? alternativeImage.width
+											: imageData.media_details.width
+									}
+									naturalHeight={
+										alternativeImage
+											? alternativeImage.height
+											: imageData.media_details.height
+									}
+									className='maxi-mediauploader-control__responsive-wrapper'
+								>
+									<video
+										controls
+										autoPlay={false}
+										loop={false}
+										muted
+										preload
+										src={
 											alternativeImage
-												? alternativeImage.height
-												: imageData.media_details.height
+												? alternativeImage.source_url
+												: imageData.source_url
 										}
-										className='maxi-mediauploader-control__responsive-wrapper'
-									>
-										<video
-											controls
-											autoPlay={false}
-											loop={false}
-											muted
-											preload
-											src={
-												alternativeImage
-													? alternativeImage.source_url
-													: imageData.source_url
-											}
-										/>
-									</ResponsiveWrapper>
-								)}
+									/>
+								</ResponsiveWrapper>
+							)}
 						</Button>
 					)}
 				/>

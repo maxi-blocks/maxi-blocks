@@ -25,8 +25,6 @@ import './editor.scss';
 import { handlers } from '../../../../icons';
 
 const ColumnsHandlers = props => {
-	return null;
-
 	const { blockName, className, toggleHandlers, tooltipsHide } = props;
 
 	const [isActive, setActive] = useState(false);

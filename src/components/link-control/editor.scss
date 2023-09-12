@@ -1,7 +1,14 @@
 .maxi-link-control {
-	.block-editor-link-control {
-		width: 280px;
+	&--dc {
+		.block-editor-link-control__search-item,
+		.block-editor-link-control__search-item {
+			&-action,
+			&-info {
+				display: none;
+			}
+		}
 	}
+
 	.components-form-toggle {
 		position: relative;
 		display: flex;
@@ -94,6 +101,8 @@
 		}
 	}
 	.block-editor-link-control {
+		width: 280px;
+
 		&__search-submit {
 			background-color: #e5f2f8;
 			width: auto;
@@ -185,6 +194,10 @@
 					background-color: #fff;
 					color: var(--maxi-primary-color);
 				}
+			}
+
+			&-error-notice {
+				color: var(--maxi-primary-color);
 			}
 
 			.components-menu-item__info-wrapper {

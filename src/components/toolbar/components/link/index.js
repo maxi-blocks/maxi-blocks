@@ -14,7 +14,9 @@ import LinkControl from '../../../link-control';
 import ToggleSwitch from '../../../toggle-switch';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
-import { LoopContext } from '../../../../extensions/DC';
+import { getGroupAttributes } from '../../../../extensions/styles';
+import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
+import DC_LINK_BLOCKS from './dcLinkBlocks';
 
 /**
  * External dependencies
@@ -22,19 +24,10 @@ import { LoopContext } from '../../../../extensions/DC';
 import { isNil, isEmpty } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
-
-const DC_LINK_BLOCKS = [
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/slide-maxi',
-	'maxi-blocks/pane-maxi',
-	'maxi-blocks/svg-icon-maxi',
-];
 
 /**
  * Link
@@ -98,14 +91,14 @@ const Link = props => {
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={
-					!isNil(linkSettings) &&
-					!isEmpty(linkSettings.url) &&
+					((!isNil(linkSettings) && !isEmpty(linkSettings.url)) ||
+						dcLinkStatus) &&
 					'toolbar-item__link--active'
 				}
 				disabled={childHasLink}
 			>
 				{!childHasLink && (
-					<>
+					<div className='toolbar-item__link-popover'>
 						{(dcStatus || showDCLink) && (
 							<ToggleSwitch
 								label={__(
@@ -113,14 +106,39 @@ const Link = props => {
 									'maxi-blocks'
 								)}
 								selected={dcLinkStatus}
-								onChange={value => {
-									onChange(linkSettings, {
-										'dc-link-status': value,
-										...(showDCLink && {
-											// If DC link is enabled in blocks without DC, that should enable DC for the block
-											'dc-status': value,
-										}),
-									});
+								onChange={async value => {
+									const url =
+										value &&
+										(await getDCLink(
+											getDCValues(
+												getGroupAttributes(
+													props,
+													'dynamicContent'
+												)
+											),
+											clientId
+										));
+
+									onChange(
+										value
+											? {
+													...linkSettings,
+													url,
+													title: url,
+											  }
+											: {
+													...linkSettings,
+													url: null,
+													title: null,
+											  },
+										{
+											'dc-link-status': value,
+											...(showDCLink && {
+												// If DC link is enabled in blocks without DC, that should enable DC for the block
+												'dc-status': value,
+											}),
+										}
+									);
 								}}
 							/>
 						)}
@@ -128,6 +146,8 @@ const Link = props => {
 							{context => (
 								<LinkControl
 									linkValue={linkSettings}
+									isDCLinkActive={dcStatus && dcLinkStatus}
+									blockName={blockName}
 									onChangeLink={onChange}
 									onRemoveLink={() => {
 										removeLinkHandle();
@@ -136,7 +156,7 @@ const Link = props => {
 								/>
 							)}
 						</ToolbarContext.Consumer>
-					</>
+					</div>
 				)}
 			</ToolbarPopover>
 		</div>

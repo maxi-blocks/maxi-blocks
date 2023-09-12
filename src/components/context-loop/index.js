@@ -8,7 +8,7 @@ import {
 	useEffect,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -33,6 +33,7 @@ import {
 	LoopContext,
 } from '../../extensions/DC';
 import { validationsValues } from '../../extensions/DC/utils';
+import { ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP } from '../../extensions/DC/withMaxiContextLoop';
 
 /**
  * External dependencies
@@ -41,7 +42,7 @@ import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 const ContextLoop = props => {
-	const { className, onChange, contentType = 'group' } = props;
+	const { clientId, className, onChange, contentType = 'group' } = props;
 
 	const { contextLoop } = useContext(LoopContext);
 
@@ -66,9 +67,14 @@ const ContextLoop = props => {
 		relationTypes.includes(type) &&
 		!!relationOptions?.[contentType]?.[type];
 
-	const changeProps = params => {
+	const isOrderSettings =
+		orderTypes.includes(type) && orderRelations.includes(relation);
+
+	const changeProps = (params, alwaysSaveCLStatus = false) => {
 		const hasChangesToSave = Object.entries(contextLoop).some(
 			([key, val]) => {
+				if (alwaysSaveCLStatus && key === 'cl-status') return true;
+
 				if (!(key in params)) return false;
 
 				return params[key] !== val;
@@ -145,6 +151,39 @@ const ContextLoop = props => {
 			/>
 			{status && (
 				<>
+					{isOrderSettings &&
+						Object.keys(
+							ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP
+						).includes(
+							select('core/block-editor').getBlockName(clientId)
+						) &&
+						!isEmpty(
+							select(
+								'core/block-editor'
+							).getBlockParentsByBlockName(
+								clientId,
+								Object.keys(
+									ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP
+								)
+							)
+						) &&
+						contextLoop.prevContextLoopStatus && (
+							<ToggleSwitch
+								label={__(
+									'Stop accumulator inheritance',
+									'maxi-blocks'
+								)}
+								selected={props['cl-status']}
+								onChange={value =>
+									changeProps(
+										{
+											'cl-status': value || undefined,
+										},
+										true
+									)
+								}
+							/>
+						)}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
@@ -250,83 +289,77 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{orderTypes.includes(type) &&
-								orderRelations.includes(relation) && (
-									<>
-										{orderByRelations.includes(
-											relation
-										) && (
-											<SelectControl
-												label={__(
-													'Order by',
-													'maxi-blocks'
-												)}
-												value={orderBy}
-												options={orderByOptions}
-												onChange={value =>
-													changeProps({
-														'cl-order-by': value,
-													})
-												}
-												onReset={() =>
-													changeProps({
-														'cl-order-by':
-															getDefaultAttribute(
-																'cl-order-by'
-															),
-													})
-												}
-											/>
-										)}
+							{isOrderSettings && (
+								<>
+									{orderByRelations.includes(relation) && (
 										<SelectControl
-											label={__('Order', 'maxi-blocks')}
-											value={order}
-											options={
-												orderOptions[
-													orderByRelations.includes(
-														relation
-													)
-														? orderBy
-														: relation
-												]
-											}
-											onChange={value =>
-												changeProps({
-													'cl-order': value,
-												})
-											}
-											onReset={() =>
-												changeProps({
-													'cl-order':
-														getDefaultAttribute(
-															'cl-order'
-														),
-												})
-											}
-										/>
-										<AdvancedNumberControl
 											label={__(
-												'Accumulator',
+												'Order by',
 												'maxi-blocks'
 											)}
-											value={accumulator}
-											onChangeValue={value =>
+											value={orderBy}
+											options={orderByOptions}
+											onChange={value =>
 												changeProps({
-													'cl-accumulator': value,
+													'cl-order-by': value,
 												})
 											}
 											onReset={() =>
 												changeProps({
-													'cl-accumulator':
+													'cl-order-by':
 														getDefaultAttribute(
-															'cl-accumulator'
+															'cl-order-by'
 														),
 												})
 											}
-											disableRange
 										/>
-									</>
-								)}
+									)}
+									<SelectControl
+										label={__('Order', 'maxi-blocks')}
+										value={order}
+										options={
+											orderOptions[
+												orderByRelations.includes(
+													relation
+												)
+													? orderBy
+													: relation
+											]
+										}
+										onChange={value =>
+											changeProps({
+												'cl-order': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'cl-order':
+													getDefaultAttribute(
+														'cl-order'
+													),
+											})
+										}
+									/>
+									<AdvancedNumberControl
+										label={__('Accumulator', 'maxi-blocks')}
+										value={accumulator}
+										onChangeValue={value =>
+											changeProps({
+												'cl-accumulator': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'cl-accumulator':
+													getDefaultAttribute(
+														'cl-accumulator'
+													),
+											})
+										}
+										disableRange
+									/>
+								</>
+							)}
 						</>
 					)}
 				</>

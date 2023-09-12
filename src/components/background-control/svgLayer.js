@@ -10,7 +10,6 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
-import { ImageShapeResponsiveSettings } from '../image-shape';
 
 const SVGLayer = props => {
 	const {
@@ -57,14 +56,8 @@ const SVGLayer = props => {
 						onChange={onChange}
 						clientId={clientId}
 						isHover={isHover}
+						isLayer
 						breakpoint={breakpoint}
-					/>
-					<ImageShapeResponsiveSettings
-						prefix='background-svg-'
-						onChange={onChange}
-						breakpoint={breakpoint}
-						{...SVGOptions}
-						isHover={isHover}
 					/>
 					<SizeAndPositionLayerControl
 						prefix={prefix}

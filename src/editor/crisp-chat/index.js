@@ -26,7 +26,7 @@ const CrispChat = ({ className, as: As = Button, children }) => {
 	};
 
 	useEffect(() => {
-		Crisp.configure('8434178e-1d60-45d5-b112-14a32ee6903c');
+		Crisp.configure(process.env.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY);
 
 		if (!window.$crisp?.is) Crisp.chat.hide();
 	}, []);

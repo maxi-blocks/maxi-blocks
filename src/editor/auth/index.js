@@ -8,7 +8,9 @@ import { select, dispatch } from '@wordpress/data';
 export const getMaxiCookieKey = () => {
 	const cookie = document.cookie
 		.split(';')
-		.find(row => row.startsWith('maxi_blocks_key='))
+		.find(row =>
+			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+		)
 		?.split('=')[1];
 
 	if (!cookie) return false;
@@ -29,11 +31,15 @@ export const getPathToAdmin = () => {
 export const removeMaxiCookie = () => {
 	const cookie = document.cookie
 		.split(';')
-		.find(row => row.startsWith('maxi_blocks_key='))
+		.find(row =>
+			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+		)
 		?.split('=')[1];
 
 	if (cookie) {
-		document.cookie = `maxi_blocks_key=${cookie};max-age=0; Path=${getPathToAdmin()};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+		document.cookie = `${
+			process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY
+		}=${cookie};max-age=0; Path=${getPathToAdmin()};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 	}
 };
 
@@ -215,7 +221,9 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	let cookieKey = document.cookie
 		.split(';')
-		.find(row => row.startsWith('maxi_blocks_key='))
+		.find(row =>
+			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+		)
 		?.split('=')[1];
 
 	if (!cookieKey && !email) return;
@@ -246,7 +254,9 @@ export async function authConnect(withRedirect = false, email = false) {
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
-		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
+		document.cookie = `${
+			process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY
+		}=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
 	}
 
 	const redirect = () => {
@@ -266,13 +276,15 @@ export async function authConnect(withRedirect = false, email = false) {
 	const useEmail = email;
 
 	if (useEmail) {
-		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
+		const fetchUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_URL;
+		const checkTitle = process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE;
+		const checkValue = process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE;
 
 		const fetchOptions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
+				[checkTitle]: checkValue,
 			},
 			body: JSON.stringify({ email: useEmail, cookie: key }),
 		};

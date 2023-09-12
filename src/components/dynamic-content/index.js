@@ -10,6 +10,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
+import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -56,6 +57,11 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
+const UnlimitedCharacterPoppover = () => (
+	<Popover className='maxi-info-helper-popover maxi-popover-button'>
+		<p>0 for unlimited</p>
+	</Popover>
+);
 const DynamicContent = props => {
 	const {
 		className,
@@ -241,8 +247,11 @@ const DynamicContent = props => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
+	const [showHelp, setShowHelp] = useState(false);
+
 	return (
 		<div className={classes}>
+			{showHelp && <UnlimitedCharacterPoppover />}
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
@@ -508,7 +517,7 @@ const DynamicContent = props => {
 							{limitTypes.includes(type) &&
 								limitFields.includes(field) &&
 								!error && (
-									<>
+									<div className='maxi-info'>
 										<AdvancedNumberControl
 											label={__(
 												'Character limit',
@@ -542,10 +551,17 @@ const DynamicContent = props => {
 												limitOptions.defaultValue
 											}
 										/>
-										<span className='dc-unlimited'>
-											(0 for unlimited)
-										</span>
-									</>
+										<div
+											className='maxi-info__help-icon'
+											onClick={() =>
+												setShowHelp(state => !state)
+											}
+										>
+											<span className='maxi-info__help-icon-span'>
+												i
+											</span>
+										</div>
+									</div>
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting

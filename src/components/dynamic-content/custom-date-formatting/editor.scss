@@ -1,11 +1,15 @@
-.maxi-date-helper-popover {
+.maxi-info-helper-popover {
 	.components-popover__content {
 		width: 220px;
 		padding: 0px 16px;
 		transform: translateY(0%) !important;
 	}
 }
-.maxi-custom-date-formatting {
+.maxi-info {
+	display: flex;
+	.maxi-base-control {
+		flex: 1;
+	}
 	&__help-trigger {
 		position: relative;
 		display: flex;
@@ -16,7 +20,7 @@
 		align-items: center;
 		margin-left: 20px;
 
-		.maxi-custom-date-formatting__help-icon-span {
+		.maxi-info__help-icon-span {
 			display: flex;
 			align-items: center;
 			justify-content: center;

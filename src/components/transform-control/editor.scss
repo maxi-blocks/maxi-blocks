@@ -299,4 +299,29 @@
 			min-width: 32px;
 		}
 	}
+	.maxi-settingstab-control{
+		flex: 1;
+		.maxi-tabs-control__button--selected svg path {
+			fill: var(--maxi-secondary-color);
+		}
+		.maxi-tabs-control__button {
+			margin-right: 5px;
+			border: 1.5px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			transition: all 0.5s;
+			&:last-child{
+				margin-right: 0;
+			}
+		}
+		.maxi-tabs-control__button[aria-pressed='true'] {
+			background-color: var(--maxi-light-blue-2-color) !important;
+			border-color: var(--maxi-light-blue-2-color) !important;
+		}
+		.maxi-tabs-control__button {
+			&--selected {
+				font-weight: 700;
+				color: var(--maxi-secondary-color) !important;
+			}
+		}
+	}
 }

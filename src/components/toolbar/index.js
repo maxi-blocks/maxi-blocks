@@ -596,6 +596,7 @@ const MaxiToolbar = memo(
 							)}
 						/>
 						<ContextLoop
+							clientId={clientId}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							{...getGroupAttributes(

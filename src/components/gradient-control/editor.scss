@@ -25,7 +25,7 @@
 			line-height: 2 !important;
 		}
 		&__backdrop {
-			border: 2px solid #dddfe1 !important;
+			border: 1.5px solid #dddfe1 !important;
 			border-radius: 5px !important;
 		}
 	}
@@ -40,7 +40,7 @@
 			margin-top: 0;
 		}
 		&__clear {
-			border: 2px solid #dddfe1;
+			border: 1.5px solid #dddfe1;
 			box-shadow: none;
 			padding: 0;
 			height: 31px;
@@ -77,7 +77,7 @@
 				border: 2px solid #dddfe1;
 				opacity: 1;
 				float: left;
-				border-radius: 5px;
+				border-radius: 50%;
 			}
 			.components-maxi-control__reset-button {
 				border-color: #dddfe1;

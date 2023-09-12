@@ -308,10 +308,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 						&:nth-child(9),
 						&:nth-child(8),
 						&:nth-child(7),
-						&:nth-child(6),
+						//&:nth-child(6),
 						&:nth-child(5),
 						&:nth-child(4),
-						&:nth-child(3) {
+						&:nth-child(3),
+						&:nth-child(2) {
 							p {
 								&:first-child {
 									padding-top: 11px;
@@ -321,8 +322,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 								}
 							}
 						}
-						//&:nth-child(3),
-						&:nth-child(4),
+						&:nth-child(5),
+						&:nth-child(2),
 						&:nth-child(7) {
 							h4 {
 								padding-top: 11px;

@@ -1,0 +1,271 @@
+_Updates: 10 September 2023_
+
+Update: Overhauled styles, metadata, and fonts management processes
+Update: Integrated PHP for block and attribute registration
+Update: Enhanced code optimization and general performance
+Update: Plugin's user interface for a better user experience
+Update: Maxi blocks are now compatible with Synced Patterns (formerly Reusable Blocks)
+Update: Strengthened support for Site Editor
+Update: Refined error handling for Dynamic Content
+Update: Introduced a new loading animation for the Template Library Maxi block
+Update: UI enhancements for margin and padding settings
+Update: Introduced a new Context Loop icon
+Update: Added a character limit option for titles within Dynamic Content
+Update: Updated button icon customization with "before" and "after" options in Custom CSS
+Update: Optimized native Gutenberg blocks to work seamlessly with Style Cards
+Update: Modified scroll effects to utilize the transform property instead of position for better performance
+Update: Enabled image positioning without needing the fit wrapper option.
+Fix: Corrected column width issue for Repeater
+Fix: Fixed transform target for Interaction Builder
+Fix: Implemented an option to ensure equal size for Divider canvas
+Fix: Adjusted Repeater to set height based on content
+Fix: Resolved Repeater's block movement bug
+Fix: Fixed row scheme alterations for nested blocks within rows using Repeater
+Fix: Re-introduced the sign-in button for expired plugin activations
+Fix: Addressed Interaction Builder target issues with Repeater enabled
+Fix: Rectified callout arrow positioning
+
+_Updates: 7 August 2023_
+
+* Update: WordPress 6.3 compatibility
+* Update: Option to affect default Gutenberg blocks with Maxi Blocks Style cards
+* Update: Link icon added in the toolbar for Interaction builder
+* Update: Disabled list modified when Dynamic content enabled
+* Update: Marker size adjusted for responsive displays
+* Update: Image wrapper height changed from inherit to 100%
+* Update: Canvas label added for text block in Interaction builder
+* Update: New features for Dynamic content and Content loop developed, adding relations by category, author, and tag
+* Update: Marker size migrator implemented
+* Update: Consistent Dynamic content random content on the editor ensured
+* Update: Accordion Custom CSS improved
+* Update: Hide settings in Style card editor until they are available for changing
+* Update: Interaction builder implemented for background layers
+* Update: Dependencies, including tough-cookie and word-wrap versions, updated
+* Update: Styles consistency ensured on page reload
+* Update: Typography colours adjusted for responsive displays
+* Update: Links in higher blocks disabled when tags/categories links are enabled
+* Update: Dynamic content link provided for context loop blocks
+* Update: Interaction builder background transitions implemented
+* Update: Hover colour added for the search close icon
+* Update: Text strings disallowed in number inputs
+* Update: Repeater functionality implemented
+* Fix: Issue with tags and categories links on the editor addressed
+* Fix: Styles on Gutenberg's responsive preview improved
+* Fix: Issue where the background layers disappeared on special paste addressed
+* Fix: Interaction builder reset issue resolved
+* Fix: PHP warning on the frontend resolved
+* Fix: Interaction builder unit bugs resolved
+* Fix: Bug with big marker size resolved
+* Fix: Temporary overlap of number attributes fixed
+* Fix: Visited links colour for custom formats fixed
+* Fix: Toolbar indent/outdent functionality fixed
+* Fix: Background gradient opacity reset issue addressed
+* Fix: Container indicators fixed
+* Fix: Issues with 'custom data' on Site editor
+* Fix: Default Style cards font-family for Button Maxi
+
+_Updates: 19 June 2023_
+
+* Update: Advanced Custom Fields integration into Dynamic content
+* Update: Add % to min and max height settings for all Maxi blocks
+* Update: Add options for Number Counter to align the percentage sign
+* Update: Remove redundant init.php file and /src folder
+* Update: Remove "Custom CSS (for that page only)" meta box from the page sidebar
+* Update: Remove that  'unset' option in flex settings that was the same as the default option
+* Update: Add https / http for external links
+* Update: Custom date for Dynamic content  - removed extended options that were not working
+* Fix: Row dropping Full size option in some cases
+* Fix: Links for Text Block
+* Fix: Post ID reset for Dynamic content
+* Fix: Z-index for Icon Block background
+* Fix: Breadcrumbs visibility for Text Block
+* Fix: Disallowed new background layer on hover
+* Fix: Popover position for tablet and mobile preview
+* Fix: UI for long labels in Dynamic content
+
+_Updates: 16 May 2023_
+
+* Update: Option to serve the Google Fonts files locally
+* Update: Pro account login. Allow up to 5 device sessions per user account
+* Update: Context loop integration. Speed up everyone's page-building process. It's similar to the Gutenberg "query loop block" but it's integrated with Maxi's blocks; container, row, column, and group. It works with the responsive grid and dynamic content. Required for the Blog block. Create dynamic page layout templates with advanced controls. The feature uses patterns and dynamic content to produce structured layout templates with dynamic content such as blog index, search, archives, custom posts, galleries and so on. Tutorial videos coming soon
+* Update: Constants with static text as buttons field option
+* Update: Implement static text as Dynamic content for button maxi
+* Update: Modified cleanAttributes to keep boolean attributes
+* Update: Migrated full-width attributes from string to boolean
+* Update: Dynamic content (dc), add users relation options
+* Update: Dynamic content, implement dc author on frontend
+* Update: Give updated attributes to save migrators
+* Update: Add support for style card modal in full set editing mode
+* Fix: Custom colours for style cards
+* Fix: Dialogue box for Site Editing UI
+* Fix: Style card variables for Site Editing back-end
+* Fix: Possible 404 errors for Google fonts
+* Fix: Various PHP warnings
+* Fix: Warnings on React 18
+* Fix: Better image import handling from template library for images with similar names
+* Fix: Style cards not editable on XXL breakpoint
+* Fix: Style cards bug on lower breakpoints
+* Fix: Search block icon position
+* Fix: Dynamic content, fix author on editor
+* Fix: Button hover migration bug
+* Fix: Style card variables and styles for Button Maxi
+* Fix: Undefined button font
+* Fix: button icon palette
+* Fix: Style card colour on frontend
+* Fix: Dynamic content, content for Site Editing
+
+_Updates: 8 May 2023_
+
+* Fix: Pro library sign-in, better compatibility for email addresses with unconventional TLDs
+* Fix: Improve authentication for in
+
+_Updates: 28 April 2023_
+
+* Enable pro library sign up, sign in and downloads
+* Fix style card variables and styles for Button Maxi
+* Add template support for child themes
+* Fix infinite scroll in template library (below 768 height)
+* Remove text 'tone' from light and dark filters
+* Navigation fixes in FSE Full site editing
+* Fix block previews in list view (document view)
+* Implement Maxi Preview HOC
+* Fix error on loading styles
+* Fix font-family with spaces
+* Fix PHP issues
+
+
+_Updates: 21 April 2023_
+
+- Remove drop tables on uninstall
+- Issue 4643 - fix php warnings
+- Issue 4748 - Font weight not working when font-family comes from SC
+- Issue 4720 - Fix reusable blocks editor crash
+- Translations pot file updates
+- Issue 4519 - Implement SC CSS served from JS instead static CSS
+- Issue 4695 - XXL and general attributes conflict on saving from XXL baseBreakpoint
+- Button Icon Position on IB
+- Issue 4515 - dc tags and cats
+- Issue 4434 - Implement 'handleSetAttributes' to IB
+- Issue 4724 - Hide button icon height fit content IB
+- Toolbar link ui
+- Fix blockMarginObserver
+- Bg layer on IB
+- Issue 4659 - Maxi toolbar hides secondary sidebar
+- Issue 4664 - Increase max number of Columns in a Row
+- Fixes transition migrator
+- Optimization - Remove main 'subscribe', remove 'marginValueCalculator' observer and introduce 'CSSCache' concept
+- Issue 4693 - Error on loading certain patterns
+- Issue:4653 Added background shape rotate scale flip settings
+- Issue 4636 - Image caption toolbar z index
+- Missing domain for translation texts
+- Issue 4673 - missing u in- olor
+- Issue 4675 - Border around the gradient colour picker
+- Fix button presets
+- Issue 4680 - Text font size limit in toolbar
+- Issue 4654 - accordion icon hover
+- Issue 4572 - Breadcrumbs disappear on Text Maxi
+- Issue 4662 - DC. Get by date and get alphabetical relations
+- Fix return for useEffect
+- Issue 4369 - FSE. 'home' slug support
+- Issue 4656 - fix pane header and content size settings
+- Issue 4650 - fix wrong css for non full width blocks
+- Image Maxi HoverPreview incongruence #4291
+- Issue 4630 - theme bugs
+- Issue 4467 - Toolbar settings cut off fix
+- Removing underline from links removes the link #4638
+- Issue 4307 - NC text element bugs
+- Issue 4612 - IB relation label substring
+- Fix Fatal error: Cannot redeclare filterNull()
+- Inherit border color for text-block
+- Issue 4507 - FSE. IB work fix on pattern inserting/block duplication/copy-paste
+- Issue 4322 - Font weight on family change
+- Issue - Fix button migrators
+- Issue 4233 - Button bottom gap remove
+- Disallowed template library for some blocks
+- Fixed Alignment bg color
+- Add 2 more custom css server errors to ignore
+- Issue 4610 minor button label spacing
+- Toolbar Background Color UI
+- Issue 4561 - load default font weight for sc fonts
+- Issue 4505 - Range tooltip position for long numbers
+- Fix Svg for  button icon border
+- Issue 3790 & 4222 - IB labels problem
+- Main Maxi block component optimization
+- Library loader
+- Issue 4514 - DC UI
+- Fixed Title for SC library
+- Issue 3790 & 4222 - IB labels problem
+- Fix Svg for button icon border
+- Issue 4505 - Range tooltip position for long numbers
+- Issue 4561 - load default font weight for sc fonts
+- Toolbar Background Color UI
+- Issue 4610 minor button label spacing
+- Add 2 more custom css server errors to ignore
+- Fixed Alignment bg color
+- Disallowed template library for some blocks
+- Issue 4233 - Button bottom gap remove
+- Issue - Fix button migrators
+- Issue 4322 - Font weight on family change
+- Issue 4507 - FSE. IB work fix on pattern inserting/block duplication/copy-paste
+- Inherit border color for text-block
+- Fix Fatal error: Cannot redeclare filterNull()
+- Issue 4612 - IB relation label substring
+- Issue 4307 - NC text element bugs
+- Removing underline from links removes the link
+- Issue 4467 - Toolbar settings cut off fix
+- Issue 4630 - theme bugs
+- Image Maxi HoverPreview incongruence
+- Issue 4650 - fix wrong css for non full width blocks
+- Issue 4656 - fix pane header and content size settings
+- Issue 4369 - FSE. 'home' slug support
+- Fix return for useEffect
+- Issue 4662 - DC. Get by date and get alphabetical relations
+- Issue 4572 - Breadcrumbs disappear on Text Maxi
+- Issue 4654 - accordion icon hover
+- Issue 4680 - Text font size limit in toolbar
+- Fix button presets
+
+
+_Updates: 28 March 2023_
+
+- Translations pot file
+- Issue 4406 - Modal items titles
+- Issue 4393 - Block indicators z-index
+- Issue 4124 - Column value on responsive resetting
+- Issue 4349 - Style cards test
+- Issue 4411 - Copy/paste UI
+- Issue 4416 - Baby toolbar z-index
+- Issue 4388 - svg-icon-maxi fit-height support
+- Issue 4392 - Scroll effects default values
+- Issue 4437 - Margin conflict on full width Containers
+- Transition migrator from old broken patterns
+- Issue 4419 - Show/hide fixes
+- Fix column outline after resetting
+- v1.0.0-RC1
+- Issue 4432 - fix IB relations dissapearing on switch to code editor
+- Issue 4368 - Replace bg shape image in copypasted block fix
+- Issue 4411 - Special paste UI
+- Issue 4447 - Only the last font weight from the page is loaded on frontend
+- Bump dns-packet from 5.3.1 to 5.4.0
+- Fix CustomCSS validations fake positives in tests
+- Lazy load and Suspense for blocks and inspectors
+- Update typesense node url
+- Issue 4468 - Popover arrow
+- Issue 4490 - Hides image dimension from toolbar
+- Issue 4464 - fix image disappearing on changing shape mask
+- Issue 4451 - Don't set unnecessary height for svg-icon-maxi
+- Issue 4359 - list markers
+- Issue 4499 - Paste part 3
+- Issue 4176 - image-maxi: canvas max-height fix
+- Issue 4360 - Correct column size styles on small devices
+- Issue 4411 - Special paste UI part 3
+- Issues 4487 & 4489 - Suspense Lazy load issues
+- Issue 3388 - DC
+- Issue 4394 - calculating margin value for different themes
+- Fix Maxi Blocks for WP 6.2 (beta 5) and 6.1.1
+- Bump webpack from 5.72.0 to 5.76.1
+- Issue 4510 button
+- Deal with version rollback for wp
+- Removes unused code in maxiBlockComponent.js
+- Add missing alt tag for parallax images
+- New block Loader

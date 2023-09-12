@@ -361,8 +361,8 @@ const ResponsiveSelector = props => {
 		let rootClientId;
 
 		if (getIsSiteEditor()) {
-			const { postType, postId } =
-				select('core/edit-site').getEditedPostContext();
+			const postId = select('core/edit-site').getEditedPostId();
+			const postType = select('core/edit-site').getEditedPostType();
 
 			if (postType && postId) {
 				goThroughMaxiBlocks(block => {

@@ -11,27 +11,46 @@ import { __experimentalLinkControl as NativeLinkControl } from '@wordpress/block
  */
 import Button from '../button';
 import ToggleSwitch from '../toggle-switch';
+import DC_LINK_BLOCKS from '../toolbar/components/link/dcLinkBlocks';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles
  */
 import './editor.scss';
 
-const LinkControl = ({ linkValue = {}, onChangeLink, onRemoveLink }) => {
+const LinkControl = ({
+	linkValue = {},
+	isDCLinkActive,
+	blockName,
+	onChangeLink,
+	onRemoveLink,
+}) => {
 	return (
-		<div className='maxi-link-control'>
-			<NativeLinkControl
-				searchInputPlaceholder={__('Search or type URL', 'maxi-blocks')}
-				value={linkValue}
-				onChange={onChangeLink}
-				settings={[]}
-			/>
-			{!isEmpty(linkValue.url) && (
+		<div
+			className={classnames(
+				'maxi-link-control',
+				isDCLinkActive && 'maxi-link-control--dc'
+			)}
+		>
+			{(!isDCLinkActive || !DC_LINK_BLOCKS.includes(blockName)) && (
+				<NativeLinkControl
+					searchInputPlaceholder={__(
+						'Search or type URL',
+						'maxi-blocks'
+					)}
+					value={linkValue}
+					forceIsEditingLink={isDCLinkActive ? false : undefined}
+					onChange={onChangeLink}
+					settings={[]}
+				/>
+			)}
+			{(isDCLinkActive || !isEmpty(linkValue.url)) && (
 				<>
 					<div className='maxi-link-control__options'>
 						{[
@@ -77,12 +96,14 @@ const LinkControl = ({ linkValue = {}, onChangeLink, onRemoveLink }) => {
 							</div>
 						))}
 					</div>
-					<Button
-						className='maxi-link-control__link-destroyer'
-						onClick={onRemoveLink}
-					>
-						{__('Remove link', 'maxi-blocks')}
-					</Button>
+					{!isDCLinkActive && (
+						<Button
+							className='maxi-link-control__link-destroyer'
+							onClick={onRemoveLink}
+						>
+							{__('Remove link', 'maxi-blocks')}
+						</Button>
+					)}
 				</>
 			)}
 		</div>

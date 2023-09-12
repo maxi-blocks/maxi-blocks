@@ -4,6 +4,8 @@ exports[`getBlockNameFromUniqueID Should return the block name 1`] = `"button-ma
 
 exports[`getBlockNameFromUniqueID Should return the block name, when uniqueID is big digit 1`] = `"text-maxi"`;
 
+exports[`getBlockNameFromUniqueID Should return the block name, when uniqueID is from new format 1`] = `"accordion-maxi"`;
+
 exports[`getBlockSelectorsByUniqueID Should return accordion selectors 1`] = `
 {
   "accordion": {

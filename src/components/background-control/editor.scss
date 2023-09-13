@@ -1,38 +1,36 @@
 .maxi-background-control {
 	padding-top: 8px;
-	.maxi-tabs-control__full-width{
+	.maxi-tabs-control__full-width {
 		column-gap: 5px;
-		.maxi-tabs-control__button{
+		.maxi-tabs-control__button {
 			&-none,
 			&-color,
-			&-gradient{
+			&-gradient {
 				padding: 10px;
 				border: 1px solid var(--maxi-grey-1-color);
 				border-radius: 4px;
-				&.maxi-tabs-control__button--selected{
+				&.maxi-tabs-control__button--selected {
 					background-color: var(--maxi-light-blue-2-color);
-    				border-color: transparent;
+					border-color: transparent;
 				}
 			}
 			&-none,
-			&-color{
-				&.maxi-tabs-control__button--selected{
-					svg{
+			&-color {
+				&.maxi-tabs-control__button--selected {
+					svg {
 						path,
-						circle{
+						circle {
 							fill: var(--maxi-secondary-color);
-
 						}
 					}
 				}
 			}
-			&-gradient{
-				&.maxi-tabs-control__button--selected{
-					svg{
+			&-gradient {
+				&.maxi-tabs-control__button--selected {
+					svg {
 						path,
-						circle{
-							stroke:  var(--maxi-secondary-color);
-
+						circle {
+							stroke: var(--maxi-secondary-color);
 						}
 					}
 				}
@@ -48,7 +46,7 @@
 	}
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
-		.maxi-base-control__field{
+		.maxi-base-control__field {
 			margin-bottom: 3px !important;
 		}
 	}
@@ -164,4 +162,39 @@
 			}
 		}
 	}
+}
+.maxi-background-control__image-layer .maxi-toggle-switch {
+	padding-top: 10px;
+	margin-bottom: 3px !important;
+}
+.parallax-direction .maxi-tabs-control__button {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: auto;
+	padding: 14px 8px;
+	border-bottom: 1px solid var(--maxi-grey-1-color);
+	border-top: 1px solid var(--maxi-grey-1-color);
+	border-right: 1px solid var(--maxi-grey-1-color);
+	border-radius: 0;
+	color: var(--maxi-grey-11-color);
+	background-color: #fff;
+	text-align: center;
+	transform: 0.5s all;
+}
+
+.parallax-direction .maxi-tabs-control__button last-child {
+	border-right: none;
+}
+.parallax-direction .maxi-tabs-control__button hover {
+	background-color: var(--maxi-grey-3-color);
+	cursor: pointer;
+}
+.parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
+	box-shadow: none;
+	outline: none;
+}
+.parallax-direction .maxi-tabs-control__button active {
+	background-color: var(--maxi-grey-3-color);
 }

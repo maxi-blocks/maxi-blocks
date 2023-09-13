@@ -94,6 +94,7 @@ const ImageAltControl = ({
 				label={__('Image alt tag', 'maxi-blocks')}
 				value={altSelector}
 				options={getImageAltOptions()}
+				newStyle
 				onChange={altSelector =>
 					onChange({
 						altSelector,
@@ -112,6 +113,7 @@ const ImageAltControl = ({
 					className='maxi-image-inspector__custom-tag'
 					placeholder={__('Add Your Alt Tag Here', 'maxi-blocks')}
 					value={mediaAlt || ''}
+					newStyle
 					onChange={mediaAlt =>
 						onChange({
 							mediaAlt,

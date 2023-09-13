@@ -7,21 +7,20 @@ on:
 jobs:
     e2e-js:
         runs-on: ubuntu-latest
+        env:
+            REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+            REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+            REACT_APP_MAXI_BLOCKS_AUTH_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_KEY }}
+            REACT_APP_MAXI_BLOCKS_AUTH_URL: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_URL }}
+            REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE }}
+            REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE }}
+            REACT_APP_MAXI_BLOCKS_CRISP_API_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
         steps:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 2
             - name: Cache node modules
               uses: actions/cache@v2
-              env:
-                  cache-name: cache-node-modules
-                  REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
-                  REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
-                  REACT_APP_MAXI_BLOCKS_AUTH_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_KEY }}
-                  REACT_APP_MAXI_BLOCKS_AUTH_URL: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_URL }}
-                  REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE }}
-                  REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE }}
-                  REACT_APP_MAXI_BLOCKS_CRISP_API_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
               with:
                   # npm cache files are stored in `~/.npm` on Linux/macOS
                   # to clear the cache, change `v1.3` for any other random number, github will destroy
@@ -33,6 +32,8 @@ jobs:
                       ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
                       ${{ runner.os }}-build-v1.3-
                       ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
             - name: Use Node.js 16.x
               uses: actions/setup-node@v1
               with:

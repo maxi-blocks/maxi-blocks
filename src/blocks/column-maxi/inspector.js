@@ -114,6 +114,9 @@ const Inspector = props => {
 									...inspectorTabs.advancedCss({
 										props,
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.contextLoop({
 										props,
 										contentType: 'column',

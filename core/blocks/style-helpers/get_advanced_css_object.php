@@ -13,6 +13,11 @@ function trim_unmatched_brace($code)
 function get_advanced_css_object($obj)
 {
     $response = [];
+
+    if(!isset($obj['advanced-css'])) {
+        return $response;
+    }
+
     $code = $obj['advanced-css'];
 
     if(!$code) {

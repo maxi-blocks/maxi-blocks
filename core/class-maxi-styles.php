@@ -90,7 +90,7 @@ class MaxiBlocks_Styles
         }
 
         if(self::should_apply_content_filter()) {
-            add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
+            add_filter('wp_enqueue_scripts', [$this, 'process_all_site_content']);
         }
 
         add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);

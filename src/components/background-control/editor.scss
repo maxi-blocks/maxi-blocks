@@ -1,5 +1,44 @@
 .maxi-background-control {
 	padding-top: 8px;
+	.maxi-tabs-control__full-width{
+		column-gap: 5px;
+		.maxi-tabs-control__button{
+			&-none,
+			&-color,
+			&-gradient{
+				padding: 10px;
+				border: 1px solid var(--maxi-grey-1-color);
+				border-radius: 4px;
+				&.maxi-tabs-control__button--selected{
+					background-color: var(--maxi-light-blue-2-color);
+    				border-color: transparent;
+				}
+			}
+			&-none,
+			&-color{
+				&.maxi-tabs-control__button--selected{
+					svg{
+						path,
+						circle{
+							fill: var(--maxi-secondary-color);
+
+						}
+					}
+				}
+			}
+			&-gradient{
+				&.maxi-tabs-control__button--selected{
+					svg{
+						path,
+						circle{
+							stroke:  var(--maxi-secondary-color);
+
+						}
+					}
+				}
+			}
+		}
+	}
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {

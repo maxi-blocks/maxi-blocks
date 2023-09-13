@@ -1,10 +1,15 @@
 .maxi-overflow-control {
 	position: relative;
-
+    display: flex;
+    justify-content: space-between;
+	.maxi-select-control{
+		width: 110px;
+	}
 	.sync-wrapper {
 		position: absolute;
-		left: 75px;
-		top: 24px;
+		left: 50%;
+    	top: 50%;
+   	 	transform: translate(-50%, -50%);
 
 		button {
 			background: #fff;

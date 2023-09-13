@@ -156,7 +156,37 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-
+				&__dynamic-content{
+					&:hover,
+					&[aria-expanded='true'] {
+						svg {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color) !important;
+							}
+						}
+					}
+				}
+				&__list-options,
+				&__text-margin{
+					&:hover,
+					&[aria-expanded='true'] {
+						.toolbar-item__icon {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color) !important;
+							}
+						}
+					}
+				}
 				&__link {
 					&--active {
 						.toolbar-item__icon {

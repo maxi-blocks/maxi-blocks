@@ -8,10 +8,12 @@ const trimUnmatchedBrace = code => {
 };
 
 const getAdvancedCssObject = obj => {
+	const response = {};
 	const code = obj['advanced-css'];
 
+	if (!code) return response;
+
 	const selectorRegex = /([a-zA-Z0-9\-_\s.,#:*[\]="']*?)\s*{([^}]*)}/g;
-	const response = {};
 
 	let remainingCode = code;
 	let match = selectorRegex.exec(code);

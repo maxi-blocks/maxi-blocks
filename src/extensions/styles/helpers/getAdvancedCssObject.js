@@ -17,18 +17,22 @@ const getAdvancedCssObject = obj => {
 	let match = selectorRegex.exec(code);
 
 	while (match) {
-		const selector = ` ${match[1]?.trim()}` || '';
+		const rawSelectors = match[1]?.trim();
 		const properties = trimUnmatchedBrace(match[2]?.trim());
 
-		// Check if properties have unmatched opening brace, in such case, ignore this match
 		if (properties && !properties.includes('{')) {
-			response[selector] = {
-				advancedCss: {
-					general: {
-						css: properties,
+			// Split selectors by comma and create separate response entries for each selector
+			rawSelectors.split(',').forEach(rawSelector => {
+				const selector = ` ${rawSelector.trim()}`;
+				response[selector] = {
+					advancedCss: {
+						general: {
+							css: properties,
+						},
 					},
-				},
-			};
+				};
+			});
+
 			remainingCode = remainingCode.replace(match[0], '').trim(); // Remove the parsed segment from the remaining code
 		} else {
 			// if unmatched brace is found, stop the loop to prevent endless loop scenario

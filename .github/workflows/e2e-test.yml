@@ -7,14 +7,6 @@ on:
 jobs:
     e2e-js:
         runs-on: ubuntu-latest
-        env:
-            REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
-            REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
-            REACT_APP_MAXI_BLOCKS_AUTH_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_KEY }}
-            REACT_APP_MAXI_BLOCKS_AUTH_URL: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_URL }}
-            REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE }}
-            REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE: ${{ secrets.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE }}
-            REACT_APP_MAXI_BLOCKS_CRISP_API_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
         steps:
             - uses: actions/checkout@v2
               with:
@@ -40,6 +32,13 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Create .env file
+              uses: actions/create-env-file@v1
+              with:
+                  key: REACT_APP_TYPESENSE_API_KEY
+                  value: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  key: REACT_APP_TYPESENSE_API_URL
+                  value: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
             - name: Build
               run: npm run build
             - name: reset package-lock.json

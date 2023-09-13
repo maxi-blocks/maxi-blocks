@@ -114,6 +114,25 @@ exports[`getAdvancedCssObject should handle CSS with pseudo selectors 1`] = `
 }
 `;
 
+exports[`getAdvancedCssObject should handle CSS with selectors with spaces 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: green;",
+      },
+    },
+  },
+  " .maxi-block-button button .maxi-block-button__content": {
+    "advancedCss": {
+      "general": {
+        "css": "color: yellow;",
+      },
+    },
+  },
+}
+`;
+
 exports[`getAdvancedCssObject should handle basic CSS correctly 1`] = `
 {
   "": {

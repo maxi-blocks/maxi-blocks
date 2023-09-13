@@ -22,6 +22,19 @@ describe('getAdvancedCssObject', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('should handle CSS with selectors with spaces', () => {
+		const input = {
+			'advanced-css': `
+				background: green;
+				.maxi-block-button button .maxi-block-button__content {
+					color: yellow;
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		expect(result).toMatchSnapshot();
+	});
+
 	it('should handle CSS with multiple selectors', () => {
 		const input = {
 			'advanced-css': `

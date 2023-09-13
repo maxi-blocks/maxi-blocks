@@ -96,9 +96,13 @@ const CustomCssControl = props => {
 		return (
 			<CssCodeEditor
 				key={label}
-				label={label}
+				label={`${__('Custom CSS for', 'maxi-blocks')} ${__(
+					label,
+					'maxi-blocks'
+				)}`}
 				value={getValue()}
 				onChange={onChangeCssCode}
+				transformCssCode={code => `body {${code}}`}
 			/>
 		);
 	};

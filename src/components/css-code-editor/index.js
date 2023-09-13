@@ -22,23 +22,31 @@ import { isEmpty } from 'lodash';
  */
 import './editor.scss';
 
-const CssCodeEditor = ({ label, value, onChange }) => {
+const CssCodeEditor = ({
+	label,
+	value,
+	children,
+	onChange,
+	transformCssCode,
+	disabled,
+}) => {
 	const errorRef = useRef(null);
 
-	const labelForCss = label
-		.replaceAll(':', '')
-		.replaceAll("'", '')
-		.replaceAll('>', '')
-		.replaceAll('*', '')
-		.replaceAll('(', '')
-		.replaceAll(')', '')
-		.trim()
-		.replaceAll(' ', '_');
+	const labelForCss =
+		label
+			?.replaceAll(':', '')
+			.replaceAll("'", '')
+			.replaceAll('>', '')
+			.replaceAll('*', '')
+			.replaceAll('(', '')
+			.replaceAll(')', '')
+			.trim()
+			.replaceAll(' ', '_') || 'empty';
 
 	const validateCSSCode = async code => {
 		let responseFinal = '';
 		try {
-			const codeToCheck = `body {${code}}`;
+			const codeToCheck = transformCssCode(code);
 			const response = await cssValidator.validateText(codeToCheck, {
 				lang: 'en',
 				warningLevel: 0,
@@ -94,13 +102,10 @@ const CssCodeEditor = ({ label, value, onChange }) => {
 
 	return (
 		<BaseControl
-			label={`${__('Custom CSS for', 'maxi-blocks')} ${__(
-				label,
-				'maxi-blocks'
-			)}`}
+			label={label}
 			className={`maxi-css-code-editor maxi-css-code-editor--${labelForCss}`}
 		>
-			{!isEmpty(value) && (
+			{!disabled && !isEmpty(value) && (
 				<Button
 					aria-label={__('Validate', 'maxi-blocks')}
 					className={`maxi-css-code-editor__validate-button maxi-css-code-editor__validate-button--${labelForCss}`}
@@ -129,12 +134,16 @@ const CssCodeEditor = ({ label, value, onChange }) => {
 				onBlur={textarea => {
 					validateCss(textarea?.target?.value);
 				}}
+				disabled={disabled}
 			/>
-			<div
-				ref={errorRef}
-				className='maxi-css-code-editor__error'
-				id={id}
-			/>
+			{!disabled && (
+				<div
+					ref={errorRef}
+					className='maxi-css-code-editor__error'
+					id={id}
+				/>
+			)}
+			{children}
 		</BaseControl>
 	);
 };

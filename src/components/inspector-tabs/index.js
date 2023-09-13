@@ -1,3 +1,4 @@
+export { default as advancedCss } from './inspector-advanced-css';
 export { default as alignment } from './inspector-alignment';
 export { default as anchor } from './inspector-anchor';
 export { default as background } from './inspector-background';
@@ -20,6 +21,7 @@ export { default as overflow } from './inspector-overflow';
 export { default as position } from './inspector-position';
 export { default as relation } from './inspector-relation';
 export { default as repeater } from './inspector-repeater';
+export { default as repeaterInfoBox } from './repeater-info-box';
 export { default as responsive } from './inspector-responsive';
 export { default as responsiveInfoBox } from './inspector-responsive-info-box';
 export { default as scrollEffects } from './inspector-scroll-effects';
@@ -28,4 +30,3 @@ export { default as transform } from './inspector-transform';
 export { default as transition } from './inspector-transition';
 export { default as typography } from './inspector-typography';
 export { default as zindex } from './inspector-zindex';
-export { default as repeaterInfoBox } from './repeater-info-box';

@@ -251,10 +251,10 @@ const TransformControl = props => {
 				]}
 				onChange={val => setTransformStatus(val)}
 				depth={depth}
-				hasBorder
 			/>
 			<SelectControl
 				className='maxi-transform-control__target-select'
+				newStyle
 				label={__(
 					`${capitalize(transformStatus)} target`,
 					'maxi-blocks'

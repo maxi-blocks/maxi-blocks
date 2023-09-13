@@ -9,21 +9,21 @@
 			&:not(.maxi-tabs-control__button-rotate){
 				svg{
 					path{
-						stroke: var(--maxi-grey-1-color);
-						fill: var(--maxi-grey-1-color)
+						stroke: var(--maxi-grey-11-color);
+						fill: var(--maxi-grey-11-color)
 					}
 				}
 			}
 			&-rotate{
 				svg{
 					path{
-						fill: var(--maxi-grey-1-color);
+						fill: var(--maxi-grey-11-color);
 					}
 				}
 			}
 			&-blur{
 				svg{
-					stroke: var(--maxi-grey-1-color);
+					stroke: var(--maxi-grey-11-color);
 				}
 			}
 			&--selected:not(.maxi-tabs-control__button-rotate){

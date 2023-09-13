@@ -35,10 +35,8 @@ jobs:
             - name: Create .env file
               uses: actions/create-env-file@v1
               with:
-                  key: REACT_APP_TYPESENSE_API_KEY
-                  value: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
-                  key: REACT_APP_TYPESENSE_API_URL
-                  value: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
             - name: Build
               run: npm run build
             - name: reset package-lock.json

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getAdvancedCssObject should handle CSS with missing closing brace 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: yellow;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle CSS with missing closing brace in nested braces 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: yellow;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle CSS with multiple unmatched braces 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: teal;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle CSS with no selectors 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: blue;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle basic CSS correctly 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: red;",
+      },
+    },
+  },
+  " .maxi-block-button": {
+    "advancedCss": {
+      "general": {
+        "css": "color: yellow;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle empty CSS correctly 1`] = `{}`;

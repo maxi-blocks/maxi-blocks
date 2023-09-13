@@ -696,6 +696,8 @@ describe('TextMaxi', () => {
 
 		const { content: expectedContent } = await getBlockAttributes();
 
+		await page.waitForTimeout(150);
+
 		expect(expectedContent).toMatchSnapshot();
 
 		// Change color
@@ -712,6 +714,8 @@ describe('TextMaxi', () => {
 			'palette-color-general': expectedColor,
 			content: expectedContent2,
 		} = await getBlockAttributes();
+
+		await page.waitForTimeout(150);
 
 		expect(expectedColor).toBe(4);
 		expect(expectedContent2 === expectedContent).toBeTruthy();

@@ -21,6 +21,39 @@ exports[`getAdvancedCssObject should handle CSS with missing closing brace in ne
       },
     },
   },
+  " p": {
+    "advancedCss": {
+      "general": {
+        "css": "text-align: center;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle CSS with multiple selectors 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: green;",
+      },
+    },
+  },
+  " .maxi-block-button": {
+    "advancedCss": {
+      "general": {
+        "css": "color: red;",
+      },
+    },
+  },
+  " .maxi-block-button:hover": {
+    "advancedCss": {
+      "general": {
+        "css": "color: red;",
+      },
+    },
+  },
 }
 `;
 
@@ -42,6 +75,39 @@ exports[`getAdvancedCssObject should handle CSS with no selectors 1`] = `
     "advancedCss": {
       "general": {
         "css": "background: blue;",
+      },
+    },
+  },
+}
+`;
+
+exports[`getAdvancedCssObject should handle CSS with pseudo selectors 1`] = `
+{
+  "": {
+    "advancedCss": {
+      "general": {
+        "css": "background: green;",
+      },
+    },
+  },
+  " .maxi-block-button": {
+    "advancedCss": {
+      "general": {
+        "css": "color: yellow;",
+      },
+    },
+  },
+  " .maxi-block-button::before": {
+    "advancedCss": {
+      "general": {
+        "css": "content: 'before';",
+      },
+    },
+  },
+  " .maxi-block-button:hover": {
+    "advancedCss": {
+      "general": {
+        "css": "color: red;",
       },
     },
   },

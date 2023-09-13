@@ -22,6 +22,43 @@ describe('getAdvancedCssObject', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('should handle CSS with multiple selectors', () => {
+		const input = {
+			'advanced-css': `
+				background: green;
+				.maxi-block-button {
+					color: yellow;
+				}
+				.maxi-block-button,
+				.maxi-block-button:hover {
+					color: red;
+				}
+			`,
+		};
+
+		const result = getAdvancedCssObject(input);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('should handle CSS with pseudo selectors', () => {
+		const input = {
+			'advanced-css': `
+				background: green;
+				.maxi-block-button {
+					color: yellow;
+				}
+				.maxi-block-button:hover {
+					color: red;
+				}
+				.maxi-block-button::before {
+					content: 'before';
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		expect(result).toMatchSnapshot();
+	});
+
 	// Edge/invalid cases
 	it('should handle CSS with missing closing brace', () => {
 		const input = {

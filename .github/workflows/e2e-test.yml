@@ -33,10 +33,10 @@ jobs:
             - name: Install dependencies
               run: npm install --legacy-peer-deps
             - name: Create .env file
-              uses: actions/create-env-file@v1
+              uses: ozaytsev86/create-env-file-action@v1
               with:
-                  REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
-                  REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  INPUT_ENV_REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  INPUT_ENV_REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
             - name: Build
               run: npm run build
             - name: reset package-lock.json

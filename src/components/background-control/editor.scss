@@ -37,6 +37,28 @@
 			}
 		}
 	}
+
+	&__image-layer .maxi-toggle-switch {
+		padding-top: 10px;
+		margin-bottom: 3px !important;
+	}
+	.parallax-direction {
+		.maxi-tabs-control__button {
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 3px;
+			color: var(--maxi-grey-11-color);
+			background-color: #fff;
+			width: 50px;
+			transition: all 0.1s;
+
+			&[aria-pressed='true'],
+			&:active,
+			&:hover {
+				background-color: var(--maxi-light-blue-2-color);
+				color: var(--maxi-secondary-color);
+			}
+		}
+	}
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {

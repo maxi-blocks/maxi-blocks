@@ -37,6 +37,7 @@ jobs:
               with:
                   INPUT_ENV_REACT_APP_TYPESENSE_API_KEY: ${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
                   INPUT_ENV_REACT_APP_TYPESENSE_API_URL: ${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  INPUT_ENV_REACT_APP_MAXI_BLOCKS_CRISP_API_KEY: ${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
             - name: Build
               run: npm run build
             - name: reset package-lock.json

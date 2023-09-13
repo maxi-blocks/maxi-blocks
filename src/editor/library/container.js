@@ -442,14 +442,8 @@ const LibraryContainer = props => {
 	}, [selectedSCKey]);
 
 	const typesenseInstantsearchAdapter = params => {
-		const apiKey =
-			process.env.REACT_APP_TYPESENSE_API_KEY ||
-			// eslint-disable-next-line no-undef
-			secrets.REACT_APP_TYPESENSE_API_KEY;
-		const apiHost =
-			process.env.REACT_APP_TYPESENSE_API_URL ||
-			// eslint-disable-next-line no-undef
-			secrets.REACT_APP_TYPESENSE_API_URL;
+		const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
+		const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 		return new TypesenseInstantSearchAdapter({
 			server: {
 				apiKey, // Be sure to use an API key that only allows search operations

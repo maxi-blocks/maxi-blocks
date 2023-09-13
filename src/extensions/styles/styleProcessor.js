@@ -5,6 +5,7 @@ import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
 import {
 	getCustomCssObject,
+	getAdvancedCssObject,
 	getTransformStyles,
 	getTransitionStyles,
 } from './helpers';
@@ -32,6 +33,11 @@ const styleProcessor = (obj, data, props) => {
 	// Process custom styles if they exist
 	const newCssSelectors = getSelectorsCss(selectors, props);
 	const newTransformSelectors = getTransformSelectors(selectors, props);
+
+	if (!isEmpty(props['advanced-css'])) {
+		const advancedCssObject = getAdvancedCssObject(props);
+		!isEmpty(advancedCssObject) && merge(styles, advancedCssObject);
+	}
 
 	if (!isEmpty(newCssSelectors)) {
 		const customCssObject = getCustomCssObject(newCssSelectors, props);

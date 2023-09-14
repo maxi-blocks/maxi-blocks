@@ -1,3 +1,13 @@
+/**
+ * Internal dependencies
+ */
+import getAttributeValue from '../getAttributeValue';
+
+/**
+ * General
+ */
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const trimUnmatchedBrace = code => {
 	const braceIndex = code.indexOf('{');
 	if (braceIndex !== -1) {
@@ -7,59 +17,66 @@ const trimUnmatchedBrace = code => {
 	return code;
 };
 
+const setAdvancedCss = (obj, selector, breakpoint, css) => {
+	if (obj[selector]) {
+		obj[selector].advancedCss[breakpoint] = {
+			css,
+		};
+	} else {
+		obj[selector] = {
+			advancedCss: {
+				[breakpoint]: {
+					css,
+				},
+			},
+		};
+	}
+};
+
+// TODO: ensure helper has correct php alternative
 const getAdvancedCssObject = obj => {
 	const response = {};
-	const code = obj['advanced-css'];
-
-	if (!code) return response;
 
 	const selectorRegex = /([a-zA-Z0-9\-_\s.,#:*[\]="']*?)\s*{([^}]*)}/g;
 
-	let remainingCode = code;
-	let match = selectorRegex.exec(code);
+	breakpoints.forEach(breakpoint => {
+		const code = getAttributeValue({
+			target: 'advanced-css',
+			props: obj,
+			breakpoint,
+		});
 
-	while (match) {
-		const rawSelectors = match[1]?.trim();
-		const properties = trimUnmatchedBrace(match[2]?.trim());
+		if (!code) return;
 
-		if (properties && !properties.includes('{')) {
-			// Split selectors by comma and create separate response entries for each selector
-			rawSelectors.split(',').forEach(rawSelector => {
-				const selector = ` ${rawSelector.trim()}`;
-				response[selector] = {
-					advancedCss: {
-						general: {
-							css: properties,
-						},
-					},
-				};
-			});
+		let remainingCode = code;
+		let match = selectorRegex.exec(code);
 
-			remainingCode = remainingCode.replace(match[0], '').trim(); // Remove the parsed segment from the remaining code
-		} else {
-			// if unmatched brace is found, stop the loop to prevent endless loop scenario
-			break;
+		while (match) {
+			const rawSelectors = match[1]?.trim();
+			const properties = trimUnmatchedBrace(match[2]?.trim());
+
+			if (properties && !properties.includes('{')) {
+				// Split selectors by comma and create separate response entries for each selector
+				rawSelectors.split(',').forEach(rawSelector => {
+					const selector = ` ${rawSelector.trim()}`;
+					setAdvancedCss(response, selector, breakpoint, properties);
+				});
+
+				remainingCode = remainingCode.replace(match[0], '').trim(); // Remove the parsed segment from the remaining code
+			} else {
+				// if unmatched brace is found, stop the loop to prevent endless loop scenario
+				break;
+			}
+
+			match = selectorRegex.exec(code);
 		}
 
-		match = selectorRegex.exec(code);
-	}
-
-	// Add the remaining part as general CSS
-	if (remainingCode) {
-		remainingCode = trimUnmatchedBrace(remainingCode);
-
-		if (response['']) {
-			response[''].advancedCss.general.css += `\n${remainingCode}`;
-		} else {
-			response[''] = {
-				advancedCss: {
-					general: {
-						css: remainingCode,
-					},
-				},
-			};
+		// Add the remaining part as general CSS
+		if (remainingCode) {
+			remainingCode = trimUnmatchedBrace(remainingCode);
+			setAdvancedCss(response, '', breakpoint, remainingCode);
 		}
-	}
+	});
 
 	return response;
 };

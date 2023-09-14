@@ -34,10 +34,8 @@ const styleProcessor = (obj, data, props) => {
 	const newCssSelectors = getSelectorsCss(selectors, props);
 	const newTransformSelectors = getTransformSelectors(selectors, props);
 
-	if (!isEmpty(props['advanced-css'])) {
-		const advancedCssObject = getAdvancedCssObject(props);
-		!isEmpty(advancedCssObject) && merge(styles, advancedCssObject);
-	}
+	const advancedCssObject = getAdvancedCssObject(props);
+	if (!isEmpty(advancedCssObject)) merge(styles, advancedCssObject);
 
 	if (!isEmpty(newCssSelectors)) {
 		const customCssObject = getCustomCssObject(newCssSelectors, props);

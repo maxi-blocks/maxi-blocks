@@ -10,64 +10,65 @@ function trim_unmatched_brace($code)
     return $code;
 }
 
+function set_advanced_css(&$obj, $selector, $breakpoint, $css)
+{
+    if (isset($obj[$selector])) {
+        $obj[$selector]['advanced_css'][$breakpoint] = ['css' => $css];
+    } else {
+        $obj[$selector] = [
+            'advanced_css' => [
+                $breakpoint => ['css' => $css]
+            ]
+        ];
+    }
+}
+
+// TODO: ensure it works
 function get_advanced_css_object($obj)
 {
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
     $response = [];
-
-    if(!isset($obj['advanced-css'])) {
-        return $response;
-    }
-
-    $code = $obj['advanced-css'];
-
-    if(!$code) {
-        return $response;
-    }
-
     $selector_regex = '/([a-zA-Z0-9\-_\s.,#:*[\]="\']*?)\s*{([^}]*)}/';
 
     $remaining_code = $code;
     preg_match_all($selector_regex, $code, $matches, PREG_SET_ORDER);
 
-    foreach ($matches as $match) {
-        $raw_selectors = trim($match[1]);
-        $properties = trim_unmatched_brace(trim($match[2]));
+    foreach ($breakpoints as $breakpoint) {
+        $code = get_attribute_value(
+            'advanced-css',
+            $obj,
+            false,
+            $breakpoint
+        );
 
-        if ($properties && strpos($properties, '{') === false) {
-            // Split selectors by comma and create separate response entries for each selector
-            $selectors = explode(',', $raw_selectors);
-            foreach ($selectors as $raw_selector) {
-                $selector = ' ' . trim($raw_selector);
-                $response[$selector] = [
-                    'advancedCss' => [
-                        'general' => [
-                            'css' => $properties
-                        ]
-                    ]
-                ];
-            }
-
-            $remaining_code = trim(str_replace($match[0], '', $remaining_code));
-        } else {
-            // if unmatched brace is found, stop the loop to prevent endless loop scenario
-            break;
+        if (!$code) {
+            continue;
         }
-    }
 
-    // Add the remaining part as general CSS
-    if ($remaining_code) {
-        $remaining_code = trim_unmatched_brace($remaining_code);
+        $remaining_code = $code;
+        preg_match_all($selector_regex, $code, $matches, PREG_SET_ORDER);
 
-        if (isset($response[''])) {
-            $response['']['advancedCss']['general']['css'] .= "\n" . $remaining_code;
-        } else {
-            $response[''] = [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => $remaining_code
-                    ]
-                ]
-            ];
+        foreach ($matches as $match) {
+            $raw_selectors = trim($match[1]);
+            $properties = trim_unmatched_brace(trim($match[2]));
+
+            if ($properties && strpos($properties, '{') === false) {
+                $selectors = explode(',', $raw_selectors);
+                foreach ($selectors as $raw_selector) {
+                    $selector = ' ' . trim($raw_selector);
+                    set_advanced_css($response, $selector, $breakpoint, $properties);
+                }
+
+                $remaining_code = trim(str_replace($match[0], '', $remaining_code));
+            } else {
+                break;
+            }
+        }
+
+        if ($remaining_code) {
+            $remaining_code = trim_unmatched_brace($remaining_code);
+            set_advanced_css($response, '', $breakpoint, $remaining_code);
         }
     }
 

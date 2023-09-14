@@ -9,14 +9,22 @@ import { useState } from '@wordpress/element';
  */
 import Button from '../button';
 import CssCodeEditor from '../css-code-editor';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
+import withRTC from '../../extensions/maxi-block/withRTC';
 
-const AdvancedCssControl = ({ value, onChange }) => {
+const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 	const [isExampleShown, setIsExampleShown] = useState(false);
+
+	const value = getLastBreakpointAttribute({
+		target: 'advanced-css',
+		breakpoint,
+		attributes,
+	});
 
 	const transformCssCode = code => {
 		if (!code) return '';
@@ -79,4 +87,4 @@ const AdvancedCssControl = ({ value, onChange }) => {
 	);
 };
 
-export default AdvancedCssControl;
+export default withRTC(AdvancedCssControl);

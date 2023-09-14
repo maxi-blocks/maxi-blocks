@@ -447,6 +447,8 @@ const getWPNativeStyles = ({
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-reply-title small a`,
 				].join(', ');
 
 				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
@@ -542,7 +544,7 @@ const getWPNativeStyles = ({
 		}
 
 		// General color
-		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} {
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-reply-title small {
 			color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
 		}`;
 

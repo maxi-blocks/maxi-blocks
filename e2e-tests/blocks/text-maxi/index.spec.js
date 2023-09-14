@@ -715,7 +715,7 @@ describe('TextMaxi', () => {
 			content: expectedContent2,
 		} = await getBlockAttributes();
 
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(500);
 
 		expect(expectedColor).toBe(4);
 		expect(expectedContent2 === expectedContent).toBeTruthy();

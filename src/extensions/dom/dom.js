@@ -320,13 +320,17 @@ wp.domReady(() => {
 				method: 'GET',
 			});
 
-			if (SCStyles) {
+			if (SCStyles && styleCard?.value?.gutenberg_blocks_status) {
 				if (
 					[
 						'_maxi_blocks_style_card_styles',
 						'_maxi_blocks_style_card_styles_preview',
 					].some(
-						key => !SCStyles[key]?.includes('maxi-block--use-sc')
+						key =>
+							!SCStyles[key]?.includes('maxi-block--use-sc') ||
+							!SCStyles[key].includes(
+								'.comment-reply-title small a'
+							)
 					)
 				) {
 					await saveSCStyles(true);

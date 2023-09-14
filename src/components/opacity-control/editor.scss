@@ -1,14 +1,15 @@
-.maxi-accordion-control__item[data-name='opacity']{
-    .maxi-accordion-control__item__panel{
-        padding: 0;
-        .maxi-tabs-content{
-            padding: 0 10px 5px;
-            .maxi-responsive-tabs-control {
-                .maxi-tabs-control {
-                    margin-right: -8px;
-                    margin-left: -8px;
-                }
-            }
-        }
-    }
+.maxi-accordion-control__item[data-name='opacity'] {
+	.maxi-accordion-control__item__panel {
+		padding: 0;
+		margin-top: 10px !important;
+		.maxi-tabs-content {
+			padding: 0 10px 5px;
+			.maxi-responsive-tabs-control {
+				.maxi-tabs-control {
+					margin-right: -8px;
+					margin-left: -8px;
+				}
+			}
+		}
+	}
 }

@@ -7,6 +7,7 @@
 }
 .maxi-info {
 	display: flex;
+
 	.maxi-base-control {
 		flex: 1;
 	}
@@ -18,16 +19,15 @@
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
-		margin-left: 20px;
 
 		.maxi-info__help-icon-span {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			margin-right: 10px;
 			width: 16px;
 			height: 16px;
 			min-width: 16px;
-			margin-bottom: 8px;
 			font-size: 12px !important;
 			border-radius: 50%;
 			border: 1px solid var(--maxi-grey-1-color);
@@ -52,6 +52,9 @@
 			width: 100%;
 			min-width: 50px;
 			max-width: 25rem;
+		}
+		span:not(.maxi-info__help-icon-span) {
+			margin: 0 !important;
 		}
 	}
 }

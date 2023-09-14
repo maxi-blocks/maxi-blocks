@@ -247,11 +247,8 @@ const DynamicContent = props => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
-	const [showHelp, setShowHelp] = useState(false);
-
 	return (
 		<div className={classes}>
-			{showHelp && <UnlimitedCharacterPoppover />}
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
@@ -524,6 +521,10 @@ const DynamicContent = props => {
 												'maxi-blocks'
 											)}
 											value={limit}
+											showHelp
+											helpContent={
+												<UnlimitedCharacterPoppover />
+											}
 											onChangeValue={value =>
 												changeProps({
 													'dc-limit': Number(value),
@@ -551,16 +552,6 @@ const DynamicContent = props => {
 												limitOptions.defaultValue
 											}
 										/>
-										<div
-											className='maxi-info__help-icon'
-											onClick={() =>
-												setShowHelp(state => !state)
-											}
-										>
-											<span className='maxi-info__help-icon-span'>
-												i
-											</span>
-										</div>
 									</div>
 								)}
 							{field === 'date' && !error && (

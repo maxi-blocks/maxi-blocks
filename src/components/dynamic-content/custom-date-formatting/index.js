@@ -20,7 +20,7 @@ import DateOptions from './constants';
 import './editor.scss';
 
 const DateHelperPopover = () => (
-	<Popover className='maxi-setting-helper-popover maxi-popover-button'>
+	<Popover className='maxi-info-helper-popover maxi-popover-button'>
 		<p>
 			<b>d - </b>
 			{__('day in numeric format', 'maxi-blocks')}
@@ -67,7 +67,6 @@ const DateHelperPopover = () => (
 const DateFormatting = props => {
 	const { onChange } = props;
 
-	const [showHelp, setShowHelp] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
 
 	const {
@@ -154,7 +153,6 @@ const DateFormatting = props => {
 
 	return (
 		<div className='maxi-info'>
-			{showHelp && <DateHelperPopover />}
 			{/* Hide custom date until we figure out moment.parseFormat for other languages */}
 			{/* <ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
@@ -169,13 +167,9 @@ const DateFormatting = props => {
 						placeholder={__('d.m.Y t', 'maxi-blocks')}
 						value={format}
 						onChange={val => validateAnchor(val)}
+						showHelp
+						helpContent={<DateHelperPopover />}
 					/>
-					<div
-						className='maxi-info__help-icon'
-						onClick={() => setShowHelp(state => !state)}
-					>
-						<span className='maxi-info__help-icon-span'>i</span>
-					</div>
 				</div>
 			)}
 			{customDate && (

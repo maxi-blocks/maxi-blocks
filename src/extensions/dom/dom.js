@@ -320,7 +320,11 @@ wp.domReady(() => {
 				method: 'GET',
 			});
 
-			if (SCStyles && styleCard?.value?.gutenberg_blocks_status) {
+			if (
+				SCStyles &&
+				(!('gutenberg_blocks_status' in styleCard.value) ||
+					styleCard?.value?.gutenberg_blocks_status)
+			) {
 				if (
 					[
 						'_maxi_blocks_style_card_styles',

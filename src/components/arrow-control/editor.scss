@@ -1,0 +1,8 @@
+.maxi-arrow-control{
+    .maxi-settingstab-control{
+        .maxi-tabs-control__button[aria-pressed='true'] {
+			border-top: 2px solid var(--maxi-black-1-color) !important;
+            color: var(--maxi-black-1-color);
+		}
+    }
+}

@@ -582,6 +582,7 @@ const ScrollEffectsControl = props => {
 											'Direction preset',
 											'maxi-blocks'
 										)}
+										newStyle
 										value={props.shortcutEffectType?.[type]}
 										onChange={val =>
 											onChangeShortcut(val, type)
@@ -593,6 +594,7 @@ const ScrollEffectsControl = props => {
 											'Easing function',
 											'maxi-blocks'
 										)}
+										newStyle
 										value={getLastBreakpointAttribute({
 											target: `scroll-${type}-easing`,
 											breakpoint,
@@ -686,6 +688,7 @@ const ScrollEffectsControl = props => {
 													val,
 											})
 										}
+										newStyle
 										options={viewportOptions}
 										defaultValue='mid'
 									/>

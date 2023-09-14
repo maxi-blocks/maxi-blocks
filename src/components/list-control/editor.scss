@@ -19,11 +19,12 @@
 		align-items: center;
 		border: 1px solid var(--maxi-secondary-color);
 		z-index: 0;
+		border-radius: 5px !important;
 	}
 
 	&__content {
 		border: 1px solid var(--maxi-secondary-color);
-		border-radius: 0;
+		border-radius: 5px;
 		padding: 22px 8px 0;
 		margin: -23px -8px 8px;
 
@@ -55,6 +56,7 @@
 		border-right: 1px solid var(--maxi-secondary-color);
 		background-color: var(--maxi-white-4-color);
 		text-align: center;
+		border-radius: 5px 0px 0px 5px !important;
 
 		&::before {
 			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');

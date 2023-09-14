@@ -37,6 +37,11 @@ body.maxi-blocks--active select.maxi-select-control__input {
 body.maxi-blocks--active {
 	.maxi-select-control {
 		&__second-style {
+			&:first-child{
+				.maxi-base-control__field {
+					margin-top: 3px;
+				}
+			}
 			.maxi-base-control__field {
 				position: relative;
 				margin-top: 12px;

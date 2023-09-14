@@ -12,13 +12,22 @@ function trim_unmatched_brace($code)
 
 function set_advanced_css(&$obj, $selector, $breakpoint, $css)
 {
+    $trimmed_css = preg_replace('/\t/', '', $css);
+    $trimmed_css = preg_replace('/\n/', ' ', $trimmed_css);
+    $trimmed_css = preg_replace('/\s\s+/', ' ', $trimmed_css);
+    $trimmed_css = trim($trimmed_css);
+
     if (isset($obj[$selector])) {
-        $obj[$selector]['advanced_css'][$breakpoint] = ['css' => $css];
+        $obj[$selector]['advanced_css'][$breakpoint] = [
+            'css' => $trimmed_css,
+        ];
     } else {
         $obj[$selector] = [
             'advanced_css' => [
-                $breakpoint => ['css' => $css]
-            ]
+                $breakpoint => [
+                    'css' => $trimmed_css,
+                ],
+            ],
         ];
     }
 }
@@ -47,11 +56,10 @@ function get_advanced_css_object($obj)
         }
 
         $remaining_code = $code;
-        preg_match_all($selector_regex, $code, $matches, PREG_SET_ORDER);
-
-        foreach ($matches as $match) {
-            $raw_selectors = trim($match[1]);
-            $properties = trim_unmatched_brace(trim($match[2]));
+        preg_match($selector_regex, $code, $matches, PREG_OFFSET_CAPTURE);
+        while ($matches) {
+            $raw_selectors = trim($matches[1][0]);
+            $properties = trim_unmatched_brace(trim($matches[2][0]));
 
             if ($properties && strpos($properties, '{') === false) {
                 $selectors = explode(',', $raw_selectors);
@@ -60,10 +68,12 @@ function get_advanced_css_object($obj)
                     set_advanced_css($response, $selector, $breakpoint, $properties);
                 }
 
-                $remaining_code = trim(str_replace($match[0], '', $remaining_code));
+                $remaining_code = str_replace($matches[0][0], '', $remaining_code);
             } else {
                 break;
             }
+
+            preg_match($selector_regex, $code, $matches, PREG_OFFSET_CAPTURE);
         }
 
         if ($remaining_code) {

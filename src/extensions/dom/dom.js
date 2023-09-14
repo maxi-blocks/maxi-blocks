@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch, subscribe } from '@wordpress/data';
+import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
@@ -17,6 +17,7 @@ import {
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
+import { authConnect, getMaxiCookieKey } from '../../editor/auth';
 
 /**
  * External dependencies
@@ -262,6 +263,20 @@ wp.domReady(() => {
 		}
 	});
 
+	// authentication for maxi pro
+	const maxiCookie = getMaxiCookieKey();
+
+	if (maxiCookie) {
+		const { receiveMaxiProStatus } = resolveSelect('maxiBlocks/pro');
+		const { email } = maxiCookie;
+		receiveMaxiProStatus().then(data => {
+			if (typeof data === 'string') {
+				const dataObj = JSON.parse(data);
+				if (dataObj?.status === 'no') authConnect();
+				else authConnect(false, email);
+			}
+		});
+	}
 	let shouldSCMigratorRun = true;
 
 	const unsubscribe = subscribe(async () => {

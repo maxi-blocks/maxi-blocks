@@ -2,26 +2,25 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Maxi Blocks 0.0.1-SC6\n"
+"Project-Id-Version: Maxi Blocks 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-23T13:57:05+02:00\n"
+"POT-Creation-Date: 2023-04-20T11:06:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
 
 #. Plugin Name of the plugin
 #. Author of the plugin
-#: core/class-maxi-blocks.php:93
+#: core/class-maxi-blocks.php:138
 msgid "Maxi Blocks"
 msgstr ""
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 msgid "https://maxiblocks.com/"
 msgstr ""
 
@@ -29,16 +28,28 @@ msgstr ""
 msgid "A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with Maxi Blocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:263
+#. Author URI of the plugin
+msgid "https://maxiblocks.com/go/plugin-author"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:593
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:263
+#: core/admin/class-maxi-dashboard.php:596
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:270
+#: core/admin/class-maxi-dashboard.php:603
 msgid "Remove local fonts"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:633
+msgid "Enable live chat support (temporary)"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:636
+msgid "Read about Crisp GDPR terms"
 msgstr ""
 
 #: src/blocks/accordion-maxi/accordion-maxi.js:29
@@ -46,9 +57,9 @@ msgid "Accordion Maxi"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:24
-#: src/blocks/accordion-maxi/inspector.js:137
+#: src/blocks/button-maxi/utils.js:7
 #: src/blocks/search-maxi/components/button-control/index.js:26
-#: src/blocks/text-maxi/components/list-options-control/index.js:767
+#: src/blocks/text-maxi/components/list-options-control/index.js:768
 #: src/components/inspector-tabs/inspector-icon.js:22
 msgid "Icon"
 msgstr ""
@@ -65,9 +76,9 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-border.js:60
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
 #: src/components/inspector-tabs/inspector-clip-path.js:37
-#: src/components/inspector-tabs/inspector-icon.js:89
+#: src/components/inspector-tabs/inspector-icon.js:91
 #: src/components/inspector-tabs/inspector-opacity.js:39
-#: src/components/inspector-tabs/inspector-typography.js:61
+#: src/components/inspector-tabs/inspector-typography.js:62
 #: src/components/transform-control/index.js:277
 msgid "Normal state"
 msgstr ""
@@ -80,19 +91,19 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-icon-control/index.js:378
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:323
 #: src/components/inspector-tabs/inspector-background.js:102
-#: src/components/inspector-tabs/inspector-block-background.js:73
+#: src/components/inspector-tabs/inspector-block-background.js:74
 #: src/components/inspector-tabs/inspector-border.js:87
 #: src/components/inspector-tabs/inspector-box-shadow.js:73
 #: src/components/inspector-tabs/inspector-clip-path.js:46
-#: src/components/inspector-tabs/inspector-icon.js:119
+#: src/components/inspector-tabs/inspector-icon.js:121
 #: src/components/inspector-tabs/inspector-opacity.js:49
-#: src/components/inspector-tabs/inspector-typography.js:101
+#: src/components/inspector-tabs/inspector-typography.js:103
 #: src/components/transform-control/index.js:281
 msgid "Hover state"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:70
-#: src/components/inspector-tabs/inspector-icon.js:124
+#: src/components/inspector-tabs/inspector-icon.js:126
 msgid "Enable Icon Hover"
 msgstr ""
 
@@ -155,7 +166,7 @@ msgid "Accordion layout"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:89
-#: src/components/icon-control/index.js:221
+#: src/components/icon-control/index.js:222
 #: src/components/toolbar/components/icon-size/index.js:51
 msgid "Spacing"
 msgstr ""
@@ -172,13 +183,17 @@ msgstr ""
 msgid "Title background"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:84
-#: src/blocks/button-maxi/inspector.js:193
+#: src/blocks/accordion-maxi/edit.js:104
+msgid "Accordion block preview"
+msgstr ""
+
+#: src/blocks/accordion-maxi/inspector.js:90
+#: src/blocks/button-maxi/inspector.js:191
 #: src/blocks/column-maxi/inspector.js:38
 #: src/blocks/container-maxi/inspector.js:60
 #: src/blocks/divider-maxi/inspector.js:54
 #: src/blocks/group-maxi/inspector.js:35
-#: src/blocks/image-maxi/inspector.js:100
+#: src/blocks/image-maxi/inspector.js:108
 #: src/blocks/map-maxi/inspector.js:56
 #: src/blocks/number-counter-maxi/inspector.js:47
 #: src/blocks/pane-maxi/inspector.js:70
@@ -187,90 +202,101 @@ msgstr ""
 #: src/blocks/slide-maxi/inspector.js:33
 #: src/blocks/slider-maxi/inspector.js:64
 #: src/blocks/svg-icon-maxi/inspector.js:112
-#: src/blocks/text-maxi/inspector.js:42
+#: src/blocks/text-maxi/inspector.js:48
 #: src/blocks/video-maxi/inspector.js:56
 #: src/components/background-control/imageLayer.js:729
-#: src/components/inspector-tabs/inspector-transition.js:135
-#: src/components/relation-control/index.js:474
-#: src/components/relation-control/index.js:613
+#: src/components/inspector-tabs/inspector-transition.js:139
+#: src/components/relation-control/index.js:409
+#: src/components/relation-control/index.js:548
 msgid "Settings"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:89
+#: src/blocks/accordion-maxi/inspector.js:95
 msgid "Accordion settings"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:108
+#: src/blocks/accordion-maxi/inspector.js:114
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:36
 #: src/blocks/map-maxi/components/markers/index.js:94
-#: src/blocks/pane-maxi/edit.js:230
+#: src/blocks/pane-maxi/edit.js:246
+#: src/extensions/DC/constants.js:78
+#: src/extensions/DC/constants.js:101
+#: src/extensions/DC/constants.js:109
 msgid "Title"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:158
-#: src/blocks/divider-maxi/data.js:131
+#: src/blocks/accordion-maxi/inspector.js:149
+msgid "Active Icon"
+msgstr ""
+
+#: src/blocks/accordion-maxi/inspector.js:155
+#: src/blocks/divider-maxi/data.js:162
 #: src/blocks/divider-maxi/inspector.js:235
 msgid "Line settings"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:170
+#: src/blocks/accordion-maxi/inspector.js:167
 msgid "Header line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:182
+#: src/blocks/accordion-maxi/inspector.js:179
 msgid "Content line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:219
-#: src/blocks/button-maxi/inspector.js:333
+#: src/blocks/accordion-maxi/inspector.js:216
+#: src/blocks/button-maxi/inspector.js:308
 #: src/blocks/column-maxi/inspector.js:92
 #: src/blocks/container-maxi/inspector.js:115
 #: src/blocks/divider-maxi/inspector.js:304
 #: src/blocks/group-maxi/inspector.js:64
-#: src/blocks/image-maxi/inspector.js:451
+#: src/blocks/image-maxi/inspector.js:459
 #: src/blocks/map-maxi/inspector.js:196
 #: src/blocks/number-counter-maxi/inspector.js:144
 #: src/blocks/pane-maxi/inspector.js:143
 #: src/blocks/row-maxi/inspector.js:118
-#: src/blocks/search-maxi/inspector.js:366
+#: src/blocks/search-maxi/inspector.js:365
 #: src/blocks/slide-maxi/inspector.js:62
 #: src/blocks/slider-maxi/inspector.js:189
-#: src/blocks/svg-icon-maxi/inspector.js:297
-#: src/blocks/text-maxi/inspector.js:117
+#: src/blocks/svg-icon-maxi/inspector.js:298
+#: src/blocks/text-maxi/inspector.js:125
 #: src/blocks/video-maxi/inspector.js:249
 msgid "Advanced"
 msgstr ""
 
-#: src/blocks/button-maxi/button-maxi.js:41
+#: src/blocks/button-maxi/button-maxi.js:43
 msgid "Button Maxi"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:228
+#: src/blocks/button-maxi/data.js:230
 #: src/extensions/styles/migrators/test/utils.js:148
 msgid "Button icon"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:277
+#: src/blocks/button-maxi/data.js:281
 msgid "Button typography"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:297
+#: src/blocks/button-maxi/data.js:303
 msgid "Button border"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:307
+#: src/blocks/button-maxi/data.js:327
 msgid "Button background"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:334
+#: src/blocks/button-maxi/data.js:359
 msgid "Button box shadow"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:344
+#: src/blocks/button-maxi/data.js:385
 msgid "Button margin/padding"
 msgstr ""
 
-#: src/blocks/button-maxi/edit.js:148
+#: src/blocks/button-maxi/edit.js:120
+msgid "Button block preview"
+msgstr ""
+
+#: src/blocks/button-maxi/edit.js:180
 #: src/blocks/search-maxi/components/button-control/index.js:43
 msgid "Button text"
 msgstr ""
@@ -281,36 +307,49 @@ msgid "Button"
 msgstr ""
 
 #: src/blocks/button-maxi/inspector.js:137
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:372
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:374
 #: src/blocks/search-maxi/components/button-control/index.js:30
-#: src/blocks/text-maxi/components/list-options-control/index.js:759
-#: src/components/toolbar/components/text-color/index.js:136
-#: src/editor/style-cards/maxiStyleCardsTab.js:249
+#: src/blocks/text-maxi/components/list-options-control/index.js:760
+#: src/components/toolbar/components/text-color/index.js:138
+#: src/editor/style-cards/maxiStyleCardsTab.js:254
 msgid "Text"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:199
+#: src/blocks/button-maxi/inspector.js:197
 msgid "Quick styles"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:297
+#: src/blocks/button-maxi/inspector.js:282
 #: src/blocks/divider-maxi/inspector.js:277
-#: src/blocks/image-maxi/inspector.js:423
+#: src/blocks/image-maxi/inspector.js:431
 #: src/blocks/number-counter-maxi/inspector.js:118
-#: src/blocks/svg-icon-maxi/inspector.js:267
+#: src/blocks/svg-icon-maxi/inspector.js:268
 #: src/blocks/video-maxi/inspector.js:223
 msgid "Canvas"
 msgstr ""
 
-#: src/blocks/cloud-maxi/cloud-maxi.js:28
+#: src/blocks/cloud-maxi/cloud-maxi.js:24
+#: src/editor/library/index.js:71
+msgid "Template Library Maxi"
+msgstr ""
+
+#: src/blocks/cloud-maxi/cloud-maxi.js:25
+msgid "Find templates or patterns"
+msgstr ""
+
+#: src/blocks/cloud-maxi/cloud-maxi.js:34
 msgid "layout"
 msgstr ""
 
-#: src/blocks/cloud-maxi/cloud-maxi.js:28
+#: src/blocks/cloud-maxi/cloud-maxi.js:34
 msgid "block"
 msgstr ""
 
-#: src/blocks/column-maxi/column-maxi.js:38
+#: src/blocks/cloud-maxi/edit.js:28
+msgid "Template Library block preview"
+msgstr ""
+
+#: src/blocks/column-maxi/column-maxi.js:39
 msgid "Column Maxi"
 msgstr ""
 
@@ -330,8 +369,8 @@ msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:100
 #: src/blocks/divider-maxi/inspector.js:133
-#: src/blocks/image-maxi/inspector.js:186
-#: src/blocks/text-maxi/components/list-options-control/index.js:616
+#: src/blocks/image-maxi/inspector.js:194
+#: src/blocks/text-maxi/components/list-options-control/index.js:623
 #: src/components/arrow-control/index.js:41
 #: src/components/clip-path-control/index.js:58
 #: src/components/clip-path-control/index.js:63
@@ -343,8 +382,8 @@ msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:108
 #: src/blocks/divider-maxi/inspector.js:147
-#: src/blocks/image-maxi/inspector.js:193
-#: src/blocks/text-maxi/components/list-options-control/index.js:626
+#: src/blocks/image-maxi/inspector.js:201
+#: src/blocks/text-maxi/components/list-options-control/index.js:633
 #: src/components/arrow-control/index.js:42
 #: src/components/clip-path-control/index.js:67
 #: src/components/toolbar/components/divider-alignment/index.js:54
@@ -363,9 +402,28 @@ msgstr ""
 msgid "Space around"
 msgstr ""
 
-#: src/blocks/column-maxi/data.js:77
+#: src/blocks/column-maxi/data.js:78
 #: src/blocks/column-maxi/inspector.js:44
 msgid "Column settings"
+msgstr ""
+
+#: src/blocks/container-maxi/components/shape-divider-control/index.js:77
+#: src/blocks/container-maxi/components/shape-divider-control/index.js:101
+#: src/blocks/video-maxi/components/popup-settings-control/index.js:91
+#: src/blocks/video-maxi/components/popup-settings-control/index.js:109
+#: src/blocks/video-maxi/components/video-control/index.js:142
+#: src/components/background-control/imageLayer.js:116
+#: src/components/divider-control/index.js:158
+#: src/components/dynamic-content/index.js:75
+#: src/components/image-alt-control/index.js:51
+#: src/components/image-alt-control/index.js:62
+#: src/components/typography-control/index.js:840
+msgid "None"
+msgstr ""
+
+#: src/blocks/container-maxi/components/shape-divider-control/index.js:211
+#: src/components/toolbar/components/divider-line/index.js:72
+msgid "Divider style"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:220
@@ -378,7 +436,8 @@ msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:279
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:485
-#: src/components/color-control/customColorControl.js:82
+#: src/components/color-control/customColorControl.js:80
+#: src/components/color-control/customColorControl.js:120
 #: src/components/color-control/paletteControl.js:140
 msgid "Colour opacity"
 msgstr ""
@@ -386,7 +445,7 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:296
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:502
 #: src/components/divider-control/index.js:228
-#: src/editor/style-cards/maxiStyleCardsTab.js:399
+#: src/editor/style-cards/maxiStyleCardsTab.js:404
 msgid "Divider"
 msgstr ""
 
@@ -408,28 +467,36 @@ msgstr ""
 msgid "Enable bottom shape divider"
 msgstr ""
 
-#: src/blocks/container-maxi/container-maxi.js:39
+#: src/blocks/container-maxi/container-maxi.js:40
 msgid "Container Maxi"
+msgstr ""
+
+#: src/blocks/container-maxi/edit.js:94
+msgid "Container block preview"
 msgstr ""
 
 #: src/blocks/container-maxi/inspector.js:69
 msgid "Shape divider"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:121
+#: src/blocks/divider-maxi/data.js:128
 #: src/extensions/styles/migrators/test/utils.js:156
 msgid "Divider box shadow"
 msgstr ""
 
-#: src/blocks/divider-maxi/divider-maxi.js:37
+#: src/blocks/divider-maxi/divider-maxi.js:38
 msgid "Divider Maxi"
 msgstr ""
 
+#: src/blocks/divider-maxi/edit.js:179
+msgid "Divider block preview"
+msgstr ""
+
 #: src/blocks/divider-maxi/inspector.js:60
-#: src/blocks/image-maxi/data.js:221
-#: src/blocks/text-maxi/data.js:184
+#: src/blocks/image-maxi/data.js:222
+#: src/blocks/text-maxi/data.js:178
 #: src/components/inspector-tabs/inspector-alignment.js:33
-#: src/components/typography-control/index.js:529
+#: src/components/typography-control/index.js:573
 msgid "Alignment"
 msgstr ""
 
@@ -452,7 +519,11 @@ msgstr ""
 msgid "Line vertical position"
 msgstr ""
 
-#: src/blocks/group-maxi/group-maxi.js:38
+#: src/blocks/group-maxi/edit.js:54
+msgid "Group block preview"
+msgstr ""
+
+#: src/blocks/group-maxi/group-maxi.js:39
 msgid "Group Maxi"
 msgstr ""
 
@@ -466,14 +537,14 @@ msgstr ""
 
 #: src/blocks/image-maxi/components/dimension-tab/index.js:153
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:77
-#: src/components/background-control/sizeAndPositionLayerControl.js:112
+#: src/components/background-control/sizeAndPositionLayerControl.js:116
 #: src/components/full-size-control/index.js:137
 #: src/components/toolbar/components/size/index.js:80
 msgid "Width"
 msgstr ""
 
 #: src/blocks/image-maxi/components/dimension-tab/index.js:188
-#: src/components/image-shape/index.js:150
+#: src/components/image-shape/index.js:155
 msgid "Image ratio"
 msgstr ""
 
@@ -661,13 +732,13 @@ msgstr ""
 msgid "Add hover title text here"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:473
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:474
 msgid "Add hover content text here"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:577
-#: src/blocks/image-maxi/inspector.js:412
-#: src/blocks/search-maxi/inspector.js:333
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:578
+#: src/blocks/image-maxi/inspector.js:420
+#: src/blocks/search-maxi/inspector.js:332
 #: src/blocks/video-maxi/inspector.js:212
 #: src/components/background-control/imageLayer.js:517
 #: src/components/background-control/imageLayer.js:570
@@ -676,70 +747,86 @@ msgstr ""
 msgid "Padding"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:596
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:597
 #: src/components/margin-control/index.js:19
 #: src/components/toolbar/components/padding-margin/index.js:63
 #: src/components/toolbar/components/text-margin/index.js:33
 msgid "Margin"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:229
-#: src/blocks/image-maxi/inspector.js:368
+#: src/blocks/image-maxi/data.js:231
+#: src/blocks/image-maxi/inspector.js:376
 msgid "Shape mask"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:268
+#: src/blocks/image-maxi/data.js:271
 #: src/components/inspector-tabs/inspector-clip-path.js:32
 msgid "Clip-path"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:292
+#: src/blocks/image-maxi/data.js:297
 #: src/components/background-control/imageLayer.js:521
 #: src/components/background-control/imageLayer.js:566
 #: src/components/border-control/index.js:55
 #: src/components/inspector-tabs/inspector-border.js:55
 #: src/components/toolbar/components/border/index.js:52
-#: src/editor/style-cards/maxiStyleCardsTab.js:283
-#: src/extensions/relations/getCanvasSettings.js:111
+#: src/editor/style-cards/maxiStyleCardsTab.js:288
+#: src/extensions/relations/getCanvasSettings.js:134
 msgid "Border"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:333
-#: src/blocks/video-maxi/edit.js:237
+#: src/blocks/image-maxi/edit.js:247
+msgid "Image block preview"
+msgstr ""
+
+#: src/blocks/image-maxi/edit.js:358
+#: src/blocks/video-maxi/edit.js:248
 msgid "Upload / Add from Media Library"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:407
-#: src/blocks/image-maxi/edit.js:485
+#: src/blocks/image-maxi/edit.js:431
+#: src/blocks/image-maxi/edit.js:532
+#: src/blocks/image-maxi/edit.js:593
+#: src/extensions/DC/utils.js:46
+msgid "No content found"
+msgstr ""
+
+#: src/blocks/image-maxi/edit.js:443
+#: src/blocks/image-maxi/edit.js:544
 msgid "Set your Image Maxi caption here…"
 msgstr ""
 
-#: src/blocks/image-maxi/image-maxi.js:38
+#: src/blocks/image-maxi/edit.js:594
+msgid "Placeholder image"
+msgstr ""
+
+#: src/blocks/image-maxi/image-maxi.js:39
 msgid "Image Maxi"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:109
+#: src/blocks/image-maxi/inspector.js:117
 msgid "Dimension"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:131
+#: src/blocks/image-maxi/inspector.js:139
 msgid "Alt tag"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:144
-#: src/components/toolbar/components/more-settings/index.js:124
+#: src/blocks/image-maxi/inspector.js:152
+#: src/components/toolbar/components/more-settings/index.js:119
+#: src/extensions/DC/constants.js:110
 msgid "Caption"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:176
+#: src/blocks/image-maxi/inspector.js:184
 msgid "Caption position"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:209
+#: src/blocks/image-maxi/inspector.js:217
 msgid "Caption gap"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:332
+#: src/blocks/image-maxi/inspector.js:340
 msgid "Hover effect"
 msgstr ""
 
@@ -747,39 +834,39 @@ msgstr ""
 msgid "Release to drop a marker here"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-content/index.js:112
-msgid "Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block Settings > "
+#: src/blocks/map-maxi/components/map-content/index.js:116
+msgid "Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Blocks "
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-content/index.js:120
-msgid "Google Maps API Key"
+#: src/blocks/map-maxi/components/map-content/index.js:125
+msgid "Settings > Google Maps API key"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:29
+#: src/blocks/map-maxi/components/map-control/index.js:30
 msgid "You have not set your Google map API key, please navigate to the Maxi Block Options and set it"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:35
+#: src/blocks/map-maxi/components/map-control/index.js:36
 msgid "Maxi Block Settings"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:43
+#: src/blocks/map-maxi/components/map-control/index.js:44
 msgid "Map service provider"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:47
+#: src/blocks/map-maxi/components/map-control/index.js:48
 msgid "Open Street Map"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:51
+#: src/blocks/map-maxi/components/map-control/index.js:52
 msgid "Google Maps Api"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:59
+#: src/blocks/map-maxi/components/map-control/index.js:60
 msgid "Minimum zoom"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-control/index.js:75
+#: src/blocks/map-maxi/components/map-control/index.js:76
 msgid "Maximum zoom"
 msgstr ""
 
@@ -800,7 +887,7 @@ msgid "Scroll wheel zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-markers-control/index.js:29
-#: src/blocks/text-maxi/components/list-options-control/index.js:348
+#: src/blocks/text-maxi/components/list-options-control/index.js:361
 msgid "Marker size"
 msgstr ""
 
@@ -815,7 +902,7 @@ msgstr ""
 #: src/blocks/map-maxi/components/map-popup-control/index.js:36
 #: src/components/inspector-tabs/inspector-box-shadow.js:40
 #: src/components/toolbar/components/box-shadow/index.js:47
-#: src/extensions/relations/getCanvasSettings.js:119
+#: src/extensions/relations/getCanvasSettings.js:153
 #: src/extensions/styles/migrators/test/utils.js:140
 msgid "Box shadow"
 msgstr ""
@@ -824,12 +911,16 @@ msgstr ""
 msgid "Marker title text"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-popup-text-control/index.js:69
+#: src/blocks/map-maxi/components/map-popup-text-control/index.js:70
 #: src/blocks/map-maxi/components/markers/index.js:106
+#: src/extensions/DC/constants.js:102
+#: src/extensions/DC/constants.js:111
+#: src/extensions/DC/constants.js:122
+#: src/extensions/DC/constants.js:130
 msgid "Description"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-popup-text-control/index.js:73
+#: src/blocks/map-maxi/components/map-popup-text-control/index.js:74
 msgid "Marker description text"
 msgstr ""
 
@@ -847,6 +938,10 @@ msgstr ""
 
 #: src/blocks/map-maxi/components/search-box/index.js:109
 msgid "Find locations"
+msgstr ""
+
+#: src/blocks/map-maxi/edit.js:86
+msgid "Map block preview"
 msgstr ""
 
 #: src/blocks/map-maxi/inspector.js:62
@@ -869,11 +964,11 @@ msgstr ""
 msgid "Map interaction"
 msgstr ""
 
-#: src/blocks/map-maxi/map-maxi.js:38
+#: src/blocks/map-maxi/map-maxi.js:39
 msgid "Map Maxi"
 msgstr ""
 
-#: src/blocks/map-maxi/map-maxi.js:40
+#: src/blocks/map-maxi/map-maxi.js:41
 msgid "Create a map with marker and description"
 msgstr ""
 
@@ -909,36 +1004,48 @@ msgstr ""
 msgid "End Number "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:179
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:180
 msgid "Start number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:196
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:198
 msgid "End number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:215
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:217
 msgid "End Number can't be grater than 100 when circle is enabled"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:223
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:225
 msgid "Duration"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:243
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:245
 msgid "Stroke"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:305
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:307
 msgid "Title font size"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:425
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:334
+msgid "Show percentage sign"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:363
+msgid "Rounded bar"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:424
 msgid "Circle background"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:472
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:471
 msgid "Circle bar"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/edit.js:122
+msgid "Number counter block preview"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/inspector.js:57
@@ -949,12 +1056,16 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/number-counter-maxi.js:37
+#: src/blocks/number-counter-maxi/number-counter-maxi.js:39
 msgid "Number Counter Maxi"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/number-counter-maxi.js:39
+#: src/blocks/number-counter-maxi/number-counter-maxi.js:41
 msgid "Create a number counter"
+msgstr ""
+
+#: src/blocks/pane-maxi/edit.js:195
+msgid "Pane block preview"
 msgstr ""
 
 #: src/blocks/pane-maxi/inspector.js:75
@@ -968,28 +1079,33 @@ msgstr ""
 #: src/blocks/pane-maxi/inspector.js:103
 #: src/components/background-control/imageLayer.js:525
 #: src/components/background-control/imageLayer.js:574
+#: src/extensions/DC/constants.js:82
 msgid "Content"
 msgstr ""
 
-#: src/blocks/pane-maxi/pane-maxi.js:35
+#: src/blocks/pane-maxi/pane-maxi.js:36
 msgid "Pane Maxi"
 msgstr ""
 
-#: src/blocks/pane-maxi/pane-maxi.js:36
+#: src/blocks/pane-maxi/pane-maxi.js:37
 msgid "Hide some content inside of it"
 msgstr ""
 
-#: src/blocks/row-maxi/components/column-pattern/index.js:159
+#: src/blocks/row-maxi/components/column-pattern/index.js:155
 msgid "Number of columns"
 msgstr ""
 
-#: src/blocks/row-maxi/edit.js:38
+#: src/blocks/row-maxi/components/row-block-template/index.js:25
 #: src/blocks/row-maxi/inspector.js:73
 #: src/components/toolbar/components/column-pattern/index.js:29
 msgid "Column picker"
 msgstr ""
 
-#: src/blocks/row-maxi/row-maxi.js:38
+#: src/blocks/row-maxi/edit.js:75
+msgid "Row block preview"
+msgstr ""
+
+#: src/blocks/row-maxi/row-maxi.js:39
 msgid "Row Maxi"
 msgstr ""
 
@@ -1007,11 +1123,11 @@ msgid "Placeholder text"
 msgstr ""
 
 #: src/blocks/search-maxi/components/placeholder-color-control/index.js:37
-#: src/components/typography-control/index.js:115
-#: src/components/typography-control/index.js:151
-#: src/components/typography-control/index.js:189
-#: src/components/typography-control/index.js:230
-#: src/components/typography-control/index.js:491
+#: src/components/typography-control/index.js:117
+#: src/components/typography-control/index.js:153
+#: src/components/typography-control/index.js:191
+#: src/components/typography-control/index.js:232
+#: src/components/typography-control/index.js:535
 msgid "Font"
 msgstr ""
 
@@ -1023,8 +1139,8 @@ msgstr ""
 #: src/components/scroll-effects-control/index.js:232
 #: src/components/scroll-effects-control/index.js:265
 #: src/components/scroll-effects-control/index.js:298
-#: src/components/scroll-effects-control/index.js:339
-#: src/components/scroll-effects-control/index.js:378
+#: src/components/scroll-effects-control/index.js:331
+#: src/components/scroll-effects-control/index.js:370
 msgid "Choose"
 msgstr ""
 
@@ -1052,6 +1168,10 @@ msgstr ""
 msgid "Hover"
 msgstr ""
 
+#: src/blocks/search-maxi/edit.js:185
+msgid "Search block preview"
+msgstr ""
+
 #: src/blocks/search-maxi/inspector.js:113
 msgid "Search settings"
 msgstr ""
@@ -1065,10 +1185,10 @@ msgid "Close icon"
 msgstr ""
 
 #: src/blocks/search-maxi/inspector.js:196
-#: src/components/arrow-control/index.js:142
+#: src/components/arrow-control/index.js:144
 #: src/components/inspector-tabs/inspector-position.js:19
 #: src/components/position-control/index.js:113
-#: src/extensions/relations/getAdvancedSettings.js:80
+#: src/extensions/relations/getAdvancedSettings.js:89
 msgid "Position"
 msgstr ""
 
@@ -1076,16 +1196,28 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:280
+#: src/blocks/search-maxi/inspector.js:279
 msgid "Placeholder"
 msgstr ""
 
-#: src/blocks/search-maxi/search-maxi.js:37
+#: src/blocks/search-maxi/search-maxi.js:38
 msgid "Search Maxi"
 msgstr ""
 
-#: src/blocks/slide-maxi/slide-maxi.js:31
+#: src/blocks/slide-maxi/edit.js:94
+msgid "Slide block preview"
+msgstr ""
+
+#: src/blocks/slide-maxi/slide-maxi.js:32
 msgid "Slide Maxi"
+msgstr ""
+
+#: src/blocks/slider-maxi/components/navigation-control/index.js:45
+msgid "Enable arrows"
+msgstr ""
+
+#: src/blocks/slider-maxi/components/navigation-control/index.js:54
+msgid "Enable dots"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:62
@@ -1094,13 +1226,13 @@ msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:65
 #: src/blocks/slider-maxi/components/navigation-control/index.js:97
-#: src/blocks/text-maxi/components/list-options-control/index.js:158
+#: src/blocks/text-maxi/components/list-options-control/index.js:171
 msgid "Inside"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:69
 #: src/blocks/slider-maxi/components/navigation-control/index.js:101
-#: src/blocks/text-maxi/components/list-options-control/index.js:162
+#: src/blocks/text-maxi/components/list-options-control/index.js:175
 msgid "Outside"
 msgstr ""
 
@@ -1121,7 +1253,7 @@ msgstr ""
 msgid "Add dot icon"
 msgstr ""
 
-#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:373
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:374
 msgid "Spacing between dots"
 msgstr ""
 
@@ -1165,6 +1297,10 @@ msgstr ""
 msgid "Transition speed (ms)"
 msgstr ""
 
+#: src/blocks/slider-maxi/edit.js:469
+msgid "Slider block preview"
+msgstr ""
+
 #: src/blocks/slider-maxi/inspector.js:70
 #: src/components/toolbar/components/slider-settings/index.js:40
 msgid "Slider settings"
@@ -1182,7 +1318,7 @@ msgstr ""
 msgid "Dots"
 msgstr ""
 
-#: src/blocks/slider-maxi/slider-maxi.js:31
+#: src/blocks/slider-maxi/slider-maxi.js:32
 msgid "Slider Maxi"
 msgstr ""
 
@@ -1195,7 +1331,7 @@ msgid "Alt description"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:53
-#: src/components/icon-control/index.js:401
+#: src/components/icon-control/index.js:406
 #: src/components/toolbar/components/icon-color/index.js:114
 msgid "Icon fill"
 msgstr ""
@@ -1216,22 +1352,27 @@ msgstr ""
 msgid "Icon line hover"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/data.js:241
-#: src/components/icon-control/index.js:492
+#: src/blocks/svg-icon-maxi/data.js:185
+#: src/blocks/svg-icon-maxi/inspector.js:137
+msgid "Icon colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:244
+#: src/components/icon-control/index.js:497
 #: src/components/toolbar/components/icon-background/index.js:67
 msgid "Icon background"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/data.js:264
+#: src/blocks/svg-icon-maxi/data.js:272
 msgid "Icon border"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/edit.js:247
+msgid "SVG block preview"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/inspector.js:123
 msgid "Icon alt"
-msgstr ""
-
-#: src/blocks/svg-icon-maxi/inspector.js:137
-msgid "Icon colour"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/inspector.js:177
@@ -1240,120 +1381,125 @@ msgstr ""
 
 #: src/blocks/svg-icon-maxi/inspector.js:227
 #: src/components/inspector-tabs/inspector-size.js:44
-#: src/extensions/relations/getCanvasSettings.js:126
+#: src/extensions/relations/getCanvasSettings.js:182
 msgid "Height / Width"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/svg-icon-maxi.js:41
+#: src/blocks/svg-icon-maxi/svg-icon-maxi.js:42
 msgid "Icon Maxi"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:137
+#: src/blocks/text-maxi/components/list-options-control/index.js:150
 msgid "List style position"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:173
-#: src/components/typography-control/index.js:862
+#: src/blocks/text-maxi/components/list-options-control/index.js:186
+#: src/components/typography-control/index.js:908
 msgid "Text indent"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:228
+#: src/blocks/text-maxi/components/list-options-control/index.js:241
 msgid "List gap"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:287
+#: src/blocks/text-maxi/components/list-options-control/index.js:300
 msgid "Paragraph spacing"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:441
+#: src/blocks/text-maxi/components/list-options-control/index.js:448
 msgid "Marker line-height"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:481
+#: src/blocks/text-maxi/components/list-options-control/index.js:488
 msgid "Marker indent"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:540
+#: src/blocks/text-maxi/components/list-options-control/index.js:547
 msgid "Marker"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:587
+#: src/blocks/text-maxi/components/list-options-control/index.js:594
 msgid "Text position"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:608
+#: src/blocks/text-maxi/components/list-options-control/index.js:615
 msgid "Baseline"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:611
+#: src/blocks/text-maxi/components/list-options-control/index.js:618
 msgid "Sub"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:613
+#: src/blocks/text-maxi/components/list-options-control/index.js:620
 msgid "Super"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:618
+#: src/blocks/text-maxi/components/list-options-control/index.js:625
 msgid "Text-top"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:622
+#: src/blocks/text-maxi/components/list-options-control/index.js:629
 msgid "Middle"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:630
+#: src/blocks/text-maxi/components/list-options-control/index.js:637
 msgid "Text-bottom"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:642
+#: src/blocks/text-maxi/components/list-options-control/index.js:649
 msgid "Type of list"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:657
+#: src/blocks/text-maxi/components/list-options-control/index.js:664
 msgid "Unordered"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:661
+#: src/blocks/text-maxi/components/list-options-control/index.js:668
 msgid "Ordered"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:676
-#: src/components/typography-control/index.js:710
+#: src/blocks/text-maxi/components/list-options-control/index.js:683
+#: src/components/typography-control/index.js:756
 msgid "Style"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:706
+#: src/blocks/text-maxi/components/list-options-control/index.js:713
 msgid "Start from"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:733
+#: src/blocks/text-maxi/components/list-options-control/index.js:740
 msgid "Reverse order"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:747
+#: src/blocks/text-maxi/components/list-options-control/index.js:754
 msgid "Source"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:763
+#: src/blocks/text-maxi/components/list-options-control/index.js:764
 #: src/blocks/video-maxi/components/video-control/index.js:63
 #: src/components/toolbar/components/video-url/index.js:38
+#: src/extensions/DC/constants.js:114
 msgid "URL"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:191
-#: src/components/inspector-tabs/inspector-typography.js:55
+#: src/blocks/text-maxi/data.js:186
+#: src/components/inspector-tabs/inspector-typography.js:56
 msgid "Typography"
 msgstr ""
 
-#: src/blocks/text-maxi/inspector.js:49
+#: src/blocks/text-maxi/edit.js:212
+msgid "Text block preview"
+msgstr ""
+
+#: src/blocks/text-maxi/inspector.js:55
 msgid "Heading / Paragraph tag"
 msgstr ""
 
-#: src/blocks/text-maxi/inspector.js:69
+#: src/blocks/text-maxi/inspector.js:75
 msgid "List options"
 msgstr ""
 
-#: src/blocks/text-maxi/text-maxi.js:39
+#: src/blocks/text-maxi/text-maxi.js:40
 msgid "Text Maxi"
 msgstr ""
 
@@ -1363,16 +1509,6 @@ msgstr ""
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:87
 msgid "Video aspect ratio"
-msgstr ""
-
-#: src/blocks/video-maxi/components/popup-settings-control/index.js:91
-#: src/blocks/video-maxi/components/popup-settings-control/index.js:109
-#: src/blocks/video-maxi/components/video-control/index.js:142
-#: src/components/background-control/imageLayer.js:116
-#: src/components/divider-control/index.js:158
-#: src/components/image-alt-control/index.js:40
-#: src/components/typography-control/index.js:794
-msgid "None"
 msgstr ""
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:104
@@ -1385,7 +1521,7 @@ msgstr ""
 
 #: src/blocks/video-maxi/components/video-control/index.js:43
 #: src/blocks/video-maxi/inspector.js:62
-#: src/components/media-uploader-control/index.js:147
+#: src/components/media-uploader-control/index.js:151
 msgid "Video"
 msgstr ""
 
@@ -1450,6 +1586,10 @@ msgstr ""
 msgid "Hide image(icon only)"
 msgstr ""
 
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:184
+msgid "Image overlay"
+msgstr ""
+
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:211
 msgid "Image width"
 msgstr ""
@@ -1479,16 +1619,17 @@ msgid "Play icon"
 msgstr ""
 
 #: src/blocks/video-maxi/inspector.js:163
-#: src/components/media-uploader-control/index.js:105
-#: src/components/media-uploader-control/index.js:146
+#: src/components/media-uploader-control/index.js:107
+#: src/components/media-uploader-control/index.js:150
+#: src/extensions/DC/constants.js:173
 msgid "Image"
 msgstr ""
 
-#: src/blocks/video-maxi/video-maxi.js:31
+#: src/blocks/video-maxi/video-maxi.js:32
 msgid "Video Maxi"
 msgstr ""
 
-#: src/components/advanced-number-control/index.js:172
+#: src/components/advanced-number-control/index.js:173
 #: src/components/background-control/imageLayer.js:90
 msgid "Auto"
 msgstr ""
@@ -1498,17 +1639,22 @@ msgid "Please set a background colour layer to see the arrow."
 msgstr ""
 
 #: src/components/arrow-control/index.js:91
-#: src/components/background-control/backgroundLayersControl.js:300
+#: src/components/background-control/backgroundLayersControl.js:309
+#: src/components/background-control/backgroundLayersControl.js:608
 #: src/components/toolbar/components/background-color/background-color.js:63
 #: src/components/toolbar/components/background-color/block-background-color.js:74
 msgid "Background colour"
 msgstr ""
 
-#: src/components/arrow-control/index.js:111
+#: src/components/arrow-control/index.js:104
+msgid "Please ensure that the background colour is not the same as the page background colour."
+msgstr ""
+
+#: src/components/arrow-control/index.js:113
 msgid "Show arrow on boundary"
 msgstr ""
 
-#: src/components/arrow-control/index.js:170
+#: src/components/arrow-control/index.js:172
 msgid "Arrow size"
 msgstr ""
 
@@ -1548,39 +1694,35 @@ msgstr ""
 msgid "Unit"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:302
-#: src/components/background-control/backgroundLayersControl.js:578
+#: src/components/background-control/backgroundLayersControl.js:311
+#: src/components/background-control/backgroundLayersControl.js:612
 #: src/components/media-uploader-control/index.js:80
 msgid "Background image"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:304
-#: src/components/background-control/backgroundLayersControl.js:582
+#: src/components/background-control/backgroundLayersControl.js:313
+#: src/components/background-control/backgroundLayersControl.js:616
 msgid "Background video"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:306
-#: src/components/background-control/backgroundLayersControl.js:586
+#: src/components/background-control/backgroundLayersControl.js:315
+#: src/components/background-control/backgroundLayersControl.js:620
 #: src/components/background-control/gradientLayer.js:42
 msgid "Background gradient"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:308
-#: src/components/background-control/backgroundLayersControl.js:590
+#: src/components/background-control/backgroundLayersControl.js:317
+#: src/components/background-control/backgroundLayersControl.js:624
 msgid "Background shape"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:570
+#: src/components/background-control/backgroundLayersControl.js:604
 msgid "Add new layer"
-msgstr ""
-
-#: src/components/background-control/backgroundLayersControl.js:574
-msgid "Background color"
 msgstr ""
 
 #: src/components/background-control/colorLayer.js:171
 #: src/components/background-control/index.js:120
-#: src/editor/style-cards/maxiStyleCardsTab.js:266
+#: src/editor/style-cards/maxiStyleCardsTab.js:271
 msgid "Background"
 msgstr ""
 
@@ -1602,14 +1744,15 @@ msgstr ""
 
 #: src/components/background-control/imageLayer.js:104
 #: src/components/background-control/imageLayer.js:294
-#: src/components/image-alt-control/index.js:36
+#: src/components/dynamic-content/index.js:78
+#: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:112
-#: src/components/image-shape/index.js:158
+#: src/components/image-shape/index.js:163
 #: src/components/svg-fill-control/index.js:42
-#: src/editor/style-cards/maxiStyleCardsTab.js:376
+#: src/editor/style-cards/maxiStyleCardsTab.js:381
 msgid "Fill"
 msgstr ""
 
@@ -1654,47 +1797,47 @@ msgid "Background position"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:258
-#: src/components/image-shape/index.js:224
+#: src/components/image-shape/index.js:229
 msgid "Left top"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:262
-#: src/components/image-shape/index.js:182
+#: src/components/image-shape/index.js:187
 msgid "Left center"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:266
-#: src/components/image-shape/index.js:210
+#: src/components/image-shape/index.js:215
 msgid "Left bottom"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:270
-#: src/components/image-shape/index.js:231
+#: src/components/image-shape/index.js:236
 msgid "Right top"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:274
-#: src/components/image-shape/index.js:189
+#: src/components/image-shape/index.js:194
 msgid "Right center"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:278
-#: src/components/image-shape/index.js:217
+#: src/components/image-shape/index.js:222
 msgid "Right bottom"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:282
-#: src/components/image-shape/index.js:196
+#: src/components/image-shape/index.js:201
 msgid "Center top"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:286
-#: src/components/image-shape/index.js:175
+#: src/components/image-shape/index.js:180
 msgid "Center center"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:290
-#: src/components/image-shape/index.js:203
+#: src/components/image-shape/index.js:208
 msgid "Center bottom"
 msgstr ""
 
@@ -1758,13 +1901,21 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
-#: src/components/background-control/sizeAndPositionLayerControl.js:147
+#: src/components/background-control/sizeAndPositionLayerControl.js:115
+msgid "Height and Width"
+msgstr ""
+
+#: src/components/background-control/sizeAndPositionLayerControl.js:153
 #: src/components/full-size-control/index.js:200
 msgid "Height"
 msgstr ""
 
 #: src/components/background-control/videoLayer.js:40
 msgid "Video opacity"
+msgstr ""
+
+#: src/components/background-control/videoLayer.js:56
+msgid "Background fallback"
 msgstr ""
 
 #: src/components/background-control/videoLayer.js:230
@@ -1788,6 +1939,7 @@ msgid "Block tone"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:99
+#: src/extensions/DC/constants.js:132
 msgid "Parent"
 msgstr ""
 
@@ -1825,10 +1977,16 @@ msgid "Custom clip-path"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:323
+#: src/components/dynamic-content/custom-date-formatting/constants.js:8
+#: src/components/dynamic-content/custom-date-formatting/constants.js:23
+#: src/components/dynamic-content/custom-date-formatting/constants.js:53
+#: src/components/dynamic-content/custom-date-formatting/constants.js:80
+#: src/components/dynamic-content/custom-date-formatting/constants.js:670
 msgid "none"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:368
+#: src/components/dynamic-content/index.js:160
 msgid "Type"
 msgstr ""
 
@@ -1872,8 +2030,8 @@ msgstr ""
 msgid "Left: %s"
 msgstr ""
 
-#: src/components/color-control/customColorControl.js:58
-#: src/components/color-control/customColorControl.js:103
+#: src/components/color-control/customColorControl.js:56
+#: src/components/color-control/customColorControl.js:101
 #: src/components/gradient-control/index.js:60
 msgid "colour"
 msgstr ""
@@ -1884,6 +2042,102 @@ msgstr ""
 
 #: src/components/color-control/paletteControl.js:105
 msgid "Pallet box colour %s"
+msgstr ""
+
+#: src/components/content-loader/index.js:12
+msgid "Please wait while the minions whip up some magic"
+msgstr ""
+
+#: src/components/content-loader/index.js:13
+msgid "Grabbing some extra minions like they're hotcakes"
+msgstr ""
+
+#: src/components/content-loader/index.js:14
+msgid "We're working very hard…to look like we're working"
+msgstr ""
+
+#: src/components/content-loader/index.js:15
+msgid "Waking up the minions before they mutiny"
+msgstr ""
+
+#: src/components/content-loader/index.js:16
+msgid "Getting the minions back on track after their coffee break turned into happy hour"
+msgstr ""
+
+#: src/components/content-loader/index.js:20
+msgid "Swapping time and space…because we can"
+msgstr ""
+
+#: src/components/content-loader/index.js:21
+msgid "Don't think of purple hippos…"
+msgstr ""
+
+#: src/components/content-loader/index.js:22
+msgid "Pay no attention to the person behind the curtain…they're just napping"
+msgstr ""
+
+#: src/components/content-loader/index.js:26
+msgid "And enjoy the elevator music…or count how many times you've heard it"
+msgstr ""
+
+#: src/components/content-loader/index.js:30
+msgid "Please wait while the little elves build your blocks…sorry, they're unionized"
+msgstr ""
+
+#: src/components/content-loader/index.js:34
+msgid "Don't worry, a few bits tried to escape, but we bribed them with chocolate"
+msgstr ""
+
+#: src/components/content-loader/index.js:38
+msgid "Checking the gravitational constant in your locale…just in case"
+msgstr ""
+
+#: src/components/content-loader/index.js:42
+msgid "At least you're not on hold…yet"
+msgstr ""
+
+#: src/components/content-loader/index.js:43
+msgid "The block generator is powered by a hamster on a wheel."
+msgstr ""
+
+#: src/components/content-loader/index.js:47
+msgid "Follow the white rabbit…or just wait patiently"
+msgstr ""
+
+#: src/components/content-loader/index.js:48
+msgid "One sec while the satellite moves into position…and the stars align"
+msgstr ""
+
+#: src/components/content-loader/index.js:52
+msgid "The bits are flowing slowly today…they need more caffeine"
+msgstr ""
+
+#: src/components/content-loader/index.js:56
+msgid "The block generator is powered by a lemon and two wires"
+msgstr ""
+
+#: src/components/content-loader/index.js:60
+msgid "It's still faster than you could draw it…unless you're a cheetah"
+msgstr ""
+
+#: src/components/content-loader/index.js:64
+msgid "Testing on Timmy…we're going to need more Timmy's"
+msgstr ""
+
+#: src/components/content-loader/index.js:65
+msgid "Are we there yet?…nope, but we're enjoying the ride"
+msgstr ""
+
+#: src/components/content-loader/index.js:66
+msgid "Counting backwards from infinity…or at least until the coffee is ready"
+msgstr ""
+
+#: src/components/content-loader/index.js:70
+msgid "We're baking your blocks…with extra love and a dash of insanity"
+msgstr ""
+
+#: src/components/content-loader/index.js:74
+msgid "The minions are on it…as soon as they finish their impromptu dance party."
 msgstr ""
 
 #: src/components/custom-css-control/index.js:76
@@ -1920,6 +2174,7 @@ msgid "Give a name…"
 msgstr ""
 
 #: src/components/dialog-box/index.js:66
+#: src/components/image-url/index.js:106
 #: src/editor/style-cards/maxiStyleCardsEditor.js:418
 msgid "Close"
 msgstr ""
@@ -1977,6 +2232,1303 @@ msgstr ""
 msgid "Weight"
 msgstr ""
 
+#: src/components/dynamic-content/custom-date-formatting/constants.js:12
+#: src/components/dynamic-content/custom-date-formatting/constants.js:57
+msgid "numeric"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:16
+#: src/components/dynamic-content/custom-date-formatting/constants.js:61
+msgid "2-digit"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:27
+#: src/components/dynamic-content/custom-date-formatting/constants.js:65
+#: src/components/dynamic-content/custom-date-formatting/constants.js:84
+msgid "narrow"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:31
+#: src/components/dynamic-content/custom-date-formatting/constants.js:69
+#: src/components/dynamic-content/custom-date-formatting/constants.js:88
+#: src/components/dynamic-content/custom-date-formatting/constants.js:674
+msgid "short"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:35
+#: src/components/dynamic-content/custom-date-formatting/constants.js:73
+#: src/components/dynamic-content/custom-date-formatting/constants.js:92
+#: src/components/dynamic-content/custom-date-formatting/constants.js:678
+msgid "long"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:42
+msgid "12"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:46
+msgid "24"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:99
+msgid "(UTC-11:00) Midway Island"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:103
+msgid "(UTC-11:00) Samoa"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:107
+msgid "(UTC-10:00) Hawaii"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:111
+msgid "(UTC-09:00) Alaska"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:115
+msgid "(UTC-08:00) Pacific Time (US & Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:119
+msgid "(UTC-08:00) Tijuana"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:123
+msgid "(UTC-07:00) Arizona"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:127
+msgid "(UTC-07:00) Chihuahua"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:131
+msgid "(UTC-07:00) La Paz"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:135
+msgid "(UTC-07:00) Mazatlan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:139
+msgid "(UTC-07:00) Mountain Time (US & Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:143
+msgid "(UTC-06:00) Central America"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:147
+msgid "(UTC-06:00) Central Time (US & Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:151
+msgid "(UTC-06:00) Guadalajara"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:155
+msgid "(UTC-06:00) Mexico City"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:159
+msgid "(UTC-06:00) Monterrey"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:163
+msgid "(UTC-06:00) Saskatchewan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:167
+msgid "(UTC-05:00) Bogota"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:171
+msgid "(UTC-05:00) Eastern Time (US & Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:175
+msgid "(UTC-05:00) Indiana (East)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:179
+msgid "(UTC-05:00) Lima"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:183
+msgid "(UTC-05:00) Quito"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:187
+msgid "(UTC-04:00) Atlantic Time (Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:191
+msgid "(UTC-04:30) Caracas"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:195
+msgid "(UTC-04:00) La Paz"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:199
+msgid "(UTC-04:00) Santiago"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:203
+msgid "(UTC-03:30) Newfoundland"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:207
+msgid "(UTC-03:00) Brasilia"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:211
+msgid "(UTC-03:00) Buenos Aires"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:215
+msgid "(UTC-03:00) Georgetown"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:219
+msgid "(UTC-03:00) Greenland"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:223
+msgid "(UTC-02:00) Mid-Atlantic"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:227
+msgid "(UTC-01:00) Azores"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:231
+msgid "(UTC-01:00) Cape Verde Is."
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:235
+msgid "(UTC+00:00) Casablanca"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:239
+msgid "(UTC+00:00) Greenwich Mean Time : Dublin"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:243
+msgid "(UTC+00:00) Lisbon"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:247
+msgid "(UTC+00:00) London"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:251
+msgid "(UTC+00:00) Monrovia"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:255
+msgid "(UTC+00:00) UTC"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:259
+msgid "(UTC+01:00) Amsterdam"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:263
+msgid "(UTC+01:00) Belgrade"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:267
+msgid "(UTC+01:00) Berlin"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:271
+msgid "(UTC+01:00) Bern"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:275
+msgid "(UTC+01:00) Bratislava"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:279
+msgid "(UTC+01:00) Brussels"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:283
+msgid "(UTC+01:00) Budapest"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:287
+msgid "(UTC+01:00) Copenhagen"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:291
+msgid "(UTC+01:00) Ljubljana"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:295
+msgid "(UTC+01:00) Madrid"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:299
+msgid "(UTC+01:00) Paris"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:303
+msgid "(UTC+01:00) Prague"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:307
+msgid "(UTC+01:00) Rome"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:311
+msgid "(UTC+01:00) Sarajevo"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:315
+msgid "(UTC+01:00) Skopje"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:319
+msgid "(UTC+01:00) Stockholm"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:323
+msgid "(UTC+01:00) Vienna"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:327
+msgid "(UTC+01:00) Warsaw"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:331
+msgid "(UTC+01:00) West Central Africa"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:335
+msgid "(UTC+01:00) Zagreb"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:339
+msgid "(UTC+02:00) Athens"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:343
+msgid "(UTC+02:00) Bucharest"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:347
+msgid "(UTC+02:00) Cairo"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:351
+msgid "(UTC+02:00) Harare"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:355
+msgid "(UTC+02:00) Helsinki"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:359
+msgid "(UTC+02:00) Istanbul"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:363
+msgid "(UTC+02:00) Jerusalem"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:367
+msgid "(UTC+02:00) Kyiv"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:371
+msgid "(UTC+02:00) Pretoria"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:375
+msgid "(UTC+02:00) Riga"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:379
+msgid "(UTC+02:00) Sofia"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:383
+msgid "(UTC+02:00) Tallinn"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:387
+msgid "(UTC+02:00) Vilnius"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:391
+msgid "(UTC+03:00) Baghdad"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:395
+msgid "(UTC+03:00) Kuwait"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:399
+msgid "(UTC+03:00) Minsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:403
+msgid "(UTC+03:00) Nairobi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:407
+msgid "(UTC+03:00) Riyadh"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:411
+msgid "(UTC+03:00) Volgograd"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:415
+msgid "(UTC+03:30) Tehran"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:419
+msgid "(UTC+04:00) Abu Dhabi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:423
+msgid "(UTC+04:00) Baku"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:427
+msgid "(UTC+04:00) Moscow"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:431
+msgid "(UTC+04:00) Muscat"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:435
+msgid "(UTC+04:00) St. Petersburg"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:439
+msgid "(UTC+04:00) Tbilisi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:443
+msgid "(UTC+04:00) Yerevan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:447
+msgid "(UTC+04:30) Kabul"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:451
+msgid "(UTC+05:00) Islamabad"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:455
+msgid "(UTC+05:00) Karachi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:459
+msgid "(UTC+05:00) Tashkent"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:463
+msgid "(UTC+05:30) Chennai"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:467
+msgid "(UTC+05:30) Kolkata"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:471
+msgid "(UTC+05:30) Mumbai"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:475
+msgid "(UTC+05:30) New Delhi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:479
+msgid "(UTC+05:30) Sri Jayawardenepura"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:483
+msgid "(UTC+05:45) Kathmandu"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:487
+msgid "(UTC+06:00) Almaty"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:491
+msgid "(UTC+06:00) Astana"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:495
+msgid "(UTC+06:00) Dhaka"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:499
+msgid "(UTC+06:00) Ekaterinburg"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:503
+msgid "(UTC+06:30) Rangoon"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:507
+msgid "(UTC+07:00) Bangkok"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:511
+msgid "(UTC+07:00) Hanoi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:515
+msgid "(UTC+07:00) Jakarta"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:519
+msgid "(UTC+07:00) Novosibirsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:523
+msgid "(UTC+08:00) Beijing"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:527
+msgid "(UTC+08:00) Chongqing"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:531
+msgid "(UTC+08:00) Hong Kong"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:535
+msgid "(UTC+08:00) Krasnoyarsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:539
+msgid "(UTC+08:00) Kuala Lumpur"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:543
+msgid "(UTC+08:00) Perth"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:547
+msgid "(UTC+08:00) Singapore"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:551
+msgid "(UTC+08:00) Taipei"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:555
+msgid "(UTC+08:00) Ulaan Bataar"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:559
+msgid "(UTC+08:00) Urumqi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:563
+msgid "(UTC+09:00) Irkutsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:567
+msgid "(UTC+09:00) Osaka"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:571
+msgid "(UTC+09:00) Sapporo"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:575
+msgid "(UTC+09:00) Seoul"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:579
+msgid "(UTC+09:00) Tokyo"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:583
+msgid "(UTC+09:30) Adelaide"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:587
+msgid "(UTC+09:30) Darwin"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:591
+msgid "(UTC+10:00) Brisbane"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:595
+msgid "(UTC+10:00) Canberra"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:599
+msgid "(UTC+10:00) Guam"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:603
+msgid "(UTC+10:00) Hobart"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:607
+msgid "(UTC+10:00) Melbourne"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:611
+msgid "(UTC+10:00) Port Moresby"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:615
+msgid "(UTC+10:00) Sydney"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:619
+msgid "(UTC+10:00) Yakutsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:623
+msgid "(UTC+11:00) Vladivostok"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:627
+msgid "(UTC+12:00) Auckland"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:631
+msgid "(UTC+12:00) Fiji"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:635
+msgid "(UTC+12:00) International Date Line West"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:639
+msgid "(UTC+12:00) Kamchatka"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:643
+msgid "(UTC+12:00) Magadan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:647
+msgid "(UTC+12:00) Marshall Is."
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:651
+msgid "(UTC+12:00) New Caledonia"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:655
+msgid "(UTC+12:00) Solomon Is."
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:659
+msgid "(UTC+12:00) Wellington"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:663
+msgid "(UTC+13:00) Nuku'alofa"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:685
+msgid "Afrikaans"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:689
+msgid "Arabic (Algeria)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:693
+msgid "Arabic (Kuwait)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:697
+msgid "Arabic (Libya)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:701
+msgid "Arabic (Morocco)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:705
+msgid "Arabic (Saudi Arabia)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:709
+msgid "Arabic (Tunisia)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:713
+msgid "Arabic"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:717
+msgid "Azerbaijani"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:721
+msgid "Belarusian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:725
+msgid "Bulgarian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:729
+msgid "Bambara"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:733
+msgid "Bengali (Bangladesh)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:737
+msgid "Bengali"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:741
+msgid "Tibetan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:745
+msgid "Breton"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:749
+msgid "Bosnian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:753
+msgid "Catalan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:757
+msgid "Czech"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:761
+msgid "Chuvash"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:765
+msgid "Welsh"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:769
+msgid "Danish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:773
+msgid "German (Austria)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:777
+msgid "German (Switzerland)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:781
+msgid "German"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:785
+msgid "Divehi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:789
+msgid "Greek"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:793
+msgid "English"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:797
+msgid "English (Australia)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:801
+msgid "English (Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:805
+msgid "English (United Kingdom)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:809
+msgid "English (Ireland)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:813
+msgid "English (Israel)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:817
+msgid "English (India)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:821
+msgid "English (New Zealand)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:825
+msgid "English (Singapore)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:829
+msgid "Esperanto"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:833
+msgid "Spanish (Dominican Republic)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:837
+msgid "Spanish (Mexico)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:841
+msgid "Spanish (United States)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:845
+msgid "Spanish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:849
+msgid "Estonian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:853
+msgid "Basque"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:857
+msgid "Persian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:861
+msgid "Finnish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:865
+msgid "Filipino"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:869
+msgid "Faroese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:873
+msgid "French (Canada)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:877
+msgid "French (Switzerland)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:881
+msgid "French"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:885
+msgid "Western Frisian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:889
+msgid "Scottish Gaelic"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:893
+msgid "Galician"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:897
+msgid "gom (Latin)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:901
+msgid "Gujarati"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:905
+msgid "Hebrew"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:909
+msgid "Hindi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:913
+msgid "Croatian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:917
+msgid "Hungarian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:921
+msgid "Armenian (Armenia)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:925
+msgid "Indonesian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:929
+msgid "Icelandic"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:933
+msgid "Italian (Switzerland)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:937
+msgid "Italian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:941
+msgid "Japanese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:945
+msgid "Javanese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:949
+msgid "Georgian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:953
+msgid "Kazakh"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:957
+msgid "Khmer"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:961
+msgid "Kannada"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:965
+msgid "Korean"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:969
+msgid "Kurdish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:973
+msgid "Kirghiz"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:977
+msgid "Luxembourgish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:981
+msgid "Lao"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:985
+msgid "Lithuanian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:989
+msgid "Latvian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:993
+msgid "Montenegrin"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:997
+msgid "Maori"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1001
+msgid "Macedonian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1005
+msgid "Malayalam"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1009
+msgid "Mongolian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1013
+msgid "Marathi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1017
+msgid "Malay (Malaysia)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1021
+msgid "Malay"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1025
+msgid "Maltese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1029
+msgid "Burmese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1033
+msgid "Norwegian Bokmål"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1037
+msgid "Nepali"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1041
+msgid "Dutch (Belgium)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1045
+msgid "Dutch"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1049
+msgid "Norwegian Nynorsk"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1053
+msgid "Punjabi (India)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1057
+msgid "Polish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1061
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1065
+msgid "Portuguese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1069
+msgid "Romanian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1073
+msgid "Russian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1077
+msgid "Sindhi"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1081
+msgid "Northern Sami"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1085
+msgid "Sinhala"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1089
+msgid "Slovak"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1093
+msgid "Slovenian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1097
+msgid "Albanian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1101
+msgid "Serbian (Cyrillic)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1105
+msgid "Serbian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1109
+msgid "Swati"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1113
+msgid "Swedish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1117
+msgid "Swahili"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1121
+msgid "Tamil"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1125
+msgid "Telugu"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1129
+msgid "Tetum"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1133
+msgid "Tajik"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1137
+msgid "Thai"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1141
+msgid "Turkmen"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1145
+msgid "Tagalog (Philippines)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1149
+msgid "Klingon"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1153
+msgid "Turkish"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1157
+msgid "Talossan"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1161
+msgid "Central Atlas Tamazight (Latin)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1165
+msgid "Central Atlas Tamazight"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1169
+msgid "Uyghur (China)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1173
+msgid "Ukrainian"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1177
+msgid "Urdu"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1181
+msgid "Uzbek (Latin)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1185
+msgid "Uzbek"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1189
+msgid "Vietnamese"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1193
+msgid "Pseudo"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1197
+msgid "Yoruba (Nigeria)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1201
+msgid "Chinese (China)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1205
+msgid "Chinese (Hong Kong)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1209
+msgid "Chinese (Macau)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/constants.js:1213
+msgid "Chinese (Taiwan)"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:27
+msgid "day in numeric format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:31
+msgid "day in text format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:35
+msgid "day in text format, short"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:39
+msgid "day in text format, very short"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:43
+msgid "month in numeric format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:47
+msgid "month in text format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:51
+msgid "month in text format, short"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:55
+msgid "year in short format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:59
+msgid "full year"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:63
+msgid "time"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:160
+msgid "Custom date"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:171
+msgid "Date format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:173
+msgid "d.m.Y t"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:211
+msgid "Era"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:219
+msgid "Years"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:227
+msgid "Month"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:235
+msgid "Day"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:243
+msgid "Weekday"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:255
+msgid "Format"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:263
+msgid "Hour"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:271
+msgid "Minute"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:279
+msgid "Second"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:291
+msgid "Locale"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:299
+msgid "Timezone"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:309
+msgid "Timezone name"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:328
+msgid "To modify custom date, use the panel settings"
+msgstr ""
+
+#: src/components/dynamic-content/custom-date-formatting/index.js:334
+#: src/components/image-alt-control/index.js:47
+#: src/components/inspector-tabs/inspector-dc.js:16
+msgid "Dynamic content"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:76
+msgid "Comma"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:77
+msgid "Semicolon"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:153
+msgid "Use dynamic content"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:180
+msgid "This type is empty"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:185
+msgid "Relation"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:208
+msgid "Author id"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:243
+#: src/components/flex-settings-control/index.js:112
+msgid "Order"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:253
+msgid "Accumulator"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:288
+msgid "Field"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:302
+msgid "Character limit"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:355
+msgid "Delimiter"
+msgstr ""
+
+#: src/components/dynamic-content/index.js:379
+msgid "Custom delimiter"
+msgstr ""
+
 #: src/components/flex-settings-control/flex-align-control.js:117
 msgid "Justify content horizontally"
 msgstr ""
@@ -2007,10 +3559,6 @@ msgstr ""
 
 #: src/components/flex-settings-control/index.js:106
 msgid "Flex-child"
-msgstr ""
-
-#: src/components/flex-settings-control/index.js:112
-msgid "Order"
 msgstr ""
 
 #: src/components/flex-settings-control/index.js:136
@@ -2066,8 +3614,12 @@ msgstr ""
 msgid "H6"
 msgstr ""
 
-#: src/components/font-weight-control/index.js:21
+#: src/components/font-weight-control/index.js:36
 msgid "Font weight"
+msgstr ""
+
+#: src/components/font-weight-control/index.js:50
+msgid "Current font weight is not available in the selected font and may not render correctly, please select a different font weight"
 msgstr ""
 
 #: src/components/full-size-control/index.js:88
@@ -2107,77 +3659,77 @@ msgstr ""
 msgid "Gradient opacity"
 msgstr ""
 
-#: src/components/icon-control/index.js:171
+#: src/components/icon-control/index.js:170
 msgid "Icon only (remove text)"
 msgstr ""
 
-#: src/components/icon-control/index.js:295
+#: src/components/icon-control/index.js:300
 #: src/components/toolbar/components/icon-color/index.js:61
 msgid "Icon stroke"
 msgstr ""
 
-#: src/components/icon-control/index.js:371
+#: src/components/icon-control/index.js:376
 msgid "Icon stroke colour is inheriting from button."
 msgstr ""
 
-#: src/components/icon-control/index.js:377
+#: src/components/icon-control/index.js:382
 msgid "Button colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:572
+#: src/components/icon-control/index.js:577
 msgid "Icon background is inheriting from button."
 msgstr ""
 
-#: src/components/icon-control/index.js:578
+#: src/components/icon-control/index.js:583
 msgid "Button Background colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:595
+#: src/components/icon-control/index.js:600
 msgid "Icon Background gradient"
 msgstr ""
 
-#: src/components/icon-control/index.js:611
+#: src/components/icon-control/index.js:616
 #: src/components/toolbar/components/padding-margin/index.js:51
 msgid "Icon padding"
 msgstr ""
 
-#: src/components/image-alt-control/index.js:47
+#: src/components/image-alt-control/index.js:69
 msgid "Image title"
 msgstr ""
 
-#: src/components/image-alt-control/index.js:53
+#: src/components/image-alt-control/index.js:75
 msgid "WordPress alt"
 msgstr ""
 
-#: src/components/image-alt-control/index.js:64
+#: src/components/image-alt-control/index.js:94
 msgid "Image alt tag"
 msgstr ""
 
-#: src/components/image-alt-control/index.js:83
+#: src/components/image-alt-control/index.js:113
 msgid "Add Your Alt Tag Here"
 msgstr ""
 
-#: src/components/image-shape/index.js:78
+#: src/components/image-shape/index.js:82
 msgid "Scale shape"
 msgstr ""
 
-#: src/components/image-shape/index.js:86
+#: src/components/image-shape/index.js:91
 msgid "Rotate shape"
 msgstr ""
 
-#: src/components/image-shape/index.js:94
+#: src/components/image-shape/index.js:99
 msgid "Flip shape horizontally"
 msgstr ""
 
-#: src/components/image-shape/index.js:98
+#: src/components/image-shape/index.js:103
 msgid "Flip shape vertically"
 msgstr ""
 
-#: src/components/image-shape/index.js:154
+#: src/components/image-shape/index.js:159
 msgid "Fit"
 msgstr ""
 
-#: src/components/image-shape/index.js:171
+#: src/components/image-shape/index.js:176
 msgid "Image position"
 msgstr ""
 
@@ -2187,6 +3739,10 @@ msgstr ""
 
 #: src/components/image-url/index.js:28
 msgid "Insert image from URL"
+msgstr ""
+
+#: src/components/image-url/index.js:90
+msgid "Submit"
 msgstr ""
 
 #: src/components/image-url/index.js:96
@@ -2205,8 +3761,12 @@ msgstr ""
 msgid "Create anchor link ID for this block"
 msgstr ""
 
+#: src/components/inspector-tabs/inspector-anchor.js:36
+msgid "Allowed chars: 0-9, A-Z, a-z, _ , -"
+msgstr ""
+
 #: src/components/inspector-tabs/inspector-background.js:107
-#: src/components/inspector-tabs/inspector-block-background.js:78
+#: src/components/inspector-tabs/inspector-block-background.js:79
 msgid "Enable background hover"
 msgstr ""
 
@@ -2215,7 +3775,7 @@ msgid "Enable background active"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-block-background.js:40
-#: src/extensions/relations/getCanvasSettings.js:35
+#: src/extensions/relations/getCanvasSettings.js:41
 msgid "Background / Layer"
 msgstr ""
 
@@ -2264,13 +3824,13 @@ msgid "Flexbox"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-margin-padding.js:34
-#: src/extensions/relations/getCanvasSettings.js:149
+#: src/extensions/relations/getCanvasSettings.js:206
 msgid "Margin / Padding"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-opacity.js:33
 #: src/components/opacity-control/index.js:51
-#: src/extensions/relations/getAdvancedSettings.js:64
+#: src/extensions/relations/getAdvancedSettings.js:72
 msgid "Opacity"
 msgstr ""
 
@@ -2300,27 +3860,27 @@ msgid "Scroll effects"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-transform.js:30
-#: src/extensions/relations/getAdvancedSettings.js:31
+#: src/extensions/relations/getAdvancedSettings.js:32
 msgid "Transform"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-transition.js:139
+#: src/components/inspector-tabs/inspector-transition.js:143
 msgid "Select setting"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-transition.js:183
+#: src/components/inspector-tabs/inspector-transition.js:197
 msgid "Hover transition"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-transition.js:215
+#: src/components/inspector-tabs/inspector-transition.js:252
 msgid "No transition settings available. Please turn on some hover settings."
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-transition.js:223
+#: src/components/inspector-tabs/inspector-transition.js:260
 msgid "Change all transitions"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-typography.js:107
+#: src/components/inspector-tabs/inspector-typography.js:109
 msgid "Enable typography hover"
 msgstr ""
 
@@ -2359,69 +3919,75 @@ msgid "Background Video"
 msgstr ""
 
 #: src/components/overflow-control/index.js:143
-#: src/components/transform-control/square-control.js:791
+#: src/components/transform-control/square-control.js:793
 msgid "Unsync"
 msgstr ""
 
 #: src/components/overflow-control/index.js:144
-#: src/components/transform-control/square-control.js:792
+#: src/components/transform-control/square-control.js:794
 msgid "Sync"
 msgstr ""
 
 #: src/components/overflow-control/index.js:148
-#: src/components/transform-control/square-control.js:796
+#: src/components/transform-control/square-control.js:798
 msgid "Sync units"
 msgstr ""
 
-#: src/components/relation-control/index.js:91
+#: src/components/relation-control/index.js:85
 msgid "Choose settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:369
+#: src/components/relation-control/index.js:301
 msgid "Add new interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:379
+#: src/components/relation-control/index.js:311
 msgid "Untitled interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:384
+#: src/components/relation-control/index.js:316
+#: src/extensions/DC/constants.js:121
+#: src/extensions/DC/constants.js:129
 msgid "Name"
 msgstr ""
 
-#: src/components/relation-control/index.js:400
+#: src/components/relation-control/index.js:318
+msgid "Give memorable name…"
+msgstr ""
+
+#: src/components/relation-control/index.js:335
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
-#: src/components/relation-control/index.js:407
+#: src/components/relation-control/index.js:342
 msgid "Block to affect"
 msgstr ""
 
-#: src/components/relation-control/index.js:414
+#: src/components/relation-control/index.js:349
 msgid "Select block…"
 msgstr ""
 
-#: src/components/relation-control/index.js:435
+#: src/components/relation-control/index.js:370
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:442
+#: src/components/relation-control/index.js:377
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:449
+#: src/components/relation-control/index.js:384
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:456
+#: src/components/relation-control/index.js:391
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:596
+#: src/components/relation-control/index.js:531
 msgid "Open block settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:623
+#: src/components/relation-control/index.js:558
 msgid "Effects"
 msgstr ""
 
@@ -2502,155 +4068,161 @@ msgid "Left more"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:269
+#: src/components/scroll-effects-control/index.js:302
 msgid "In less"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:273
+#: src/components/scroll-effects-control/index.js:306
 msgid "Out less"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:277
+#: src/components/scroll-effects-control/index.js:310
 msgid "In some"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:281
+#: src/components/scroll-effects-control/index.js:314
 msgid "Out some"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:285
+#: src/components/scroll-effects-control/index.js:318
 msgid "In more"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:289
+#: src/components/scroll-effects-control/index.js:322
 msgid "Out more"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:302
-#: src/components/scroll-effects-control/index.js:387
-msgid "In vertical"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:306
-#: src/components/scroll-effects-control/index.js:391
-msgid "Out vertical"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:310
-#: src/components/scroll-effects-control/index.js:395
-msgid "In horizontal"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:314
-#: src/components/scroll-effects-control/index.js:399
-msgid "Out horizontal"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:318
-#: src/components/scroll-effects-control/index.js:403
-msgid "In rotate"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:322
-#: src/components/scroll-effects-control/index.js:407
-msgid "Out rotate"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:326
-#: src/components/scroll-effects-control/index.js:411
-msgid "In scale"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:330
-#: src/components/scroll-effects-control/index.js:415
-msgid "Out scale"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:343
+#: src/components/scroll-effects-control/index.js:335
 msgid "Placeholder effect"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:347
+#: src/components/scroll-effects-control/index.js:339
 msgid "Another"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:363
+#: src/components/scroll-effects-control/index.js:355
 msgid "Top of screen"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:367
+#: src/components/scroll-effects-control/index.js:359
 msgid "Middle of screen"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:371
+#: src/components/scroll-effects-control/index.js:363
 msgid "Bottom of screen"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:382
+#: src/components/scroll-effects-control/index.js:374
 msgid "Disable all"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:420
+#: src/components/scroll-effects-control/index.js:379
+msgid "In vertical Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:383
+msgid "Out vertical Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:387
+msgid "In horizontal Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:391
+msgid "Out horizontal Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:395
+msgid "In rotate Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:399
+msgid "Out rotate Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:403
+msgid "In scale Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:407
+msgid "Out scale Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:412
 msgid "Fade in up less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:424
+#: src/components/scroll-effects-control/index.js:416
 msgid "Fade in down less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:428
+#: src/components/scroll-effects-control/index.js:420
 msgid "Fade in left less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:432
+#: src/components/scroll-effects-control/index.js:424
 msgid "Fade in right less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:436
+#: src/components/scroll-effects-control/index.js:428
 msgid "Fade in up some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:440
+#: src/components/scroll-effects-control/index.js:432
 msgid "Fade in down some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:444
+#: src/components/scroll-effects-control/index.js:436
 msgid "Fade in left some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:448
+#: src/components/scroll-effects-control/index.js:440
 msgid "Fade in right some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:453
+#: src/components/scroll-effects-control/index.js:445
 msgid "Rotate up less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:457
+#: src/components/scroll-effects-control/index.js:449
 msgid "Rotate down less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:461
+#: src/components/scroll-effects-control/index.js:453
 msgid "Rotate left less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:465
+#: src/components/scroll-effects-control/index.js:457
 msgid "Rotate right less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:469
+#: src/components/scroll-effects-control/index.js:461
 msgid "Rotate up some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:473
+#: src/components/scroll-effects-control/index.js:465
 msgid "Rotate down some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:477
+#: src/components/scroll-effects-control/index.js:469
 msgid "Rotate left some"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:481
+#: src/components/scroll-effects-control/index.js:473
 msgid "Rotate right some"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:478
+msgid "Scale in Fade in less"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:482
+msgid "Scale out Fade out less"
 msgstr ""
 
 #: src/components/scroll-effects-control/index.js:486
@@ -2661,39 +4233,31 @@ msgstr ""
 msgid "Scale down Fade in less"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:494
-msgid "Scale in Fade in less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:498
-msgid "Scale out Fade in less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:530
+#: src/components/scroll-effects-control/index.js:523
 msgid "Scroll combinations"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:586
+#: src/components/scroll-effects-control/index.js:579
 msgid "Direction preset"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:597
+#: src/components/scroll-effects-control/index.js:590
 msgid "Easing function"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:615
+#: src/components/scroll-effects-control/index.js:608
 msgid "Speed (ms)"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:647
+#: src/components/scroll-effects-control/index.js:640
 msgid "Delay (ms)"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:679
+#: src/components/scroll-effects-control/index.js:672
 msgid "Viewport entry"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:730
+#: src/components/scroll-effects-control/index.js:723
 msgid "Reverse scroll playback"
 msgstr ""
 
@@ -2701,7 +4265,7 @@ msgstr ""
 msgid "Use background image"
 msgstr ""
 
-#: src/components/svg-width-control/index.js:123
+#: src/components/svg-width-control/index.js:125
 msgid "Set height to fit content"
 msgstr ""
 
@@ -2755,31 +4319,31 @@ msgstr ""
 msgid "ColumnSize"
 msgstr ""
 
-#: src/components/toolbar/components/columns-handlers/index.js:60
+#: src/components/toolbar/components/columns-handlers/index.js:63
 msgid "Columns Handlers"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:314
+#: src/components/toolbar/components/copy-paste/index.js:306
 msgid "Copy styles - all"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:321
+#: src/components/toolbar/components/copy-paste/index.js:313
 msgid "Paste styles - all"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:334
+#: src/components/toolbar/components/copy-paste/index.js:326
 msgid "Paste special - select"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:348
+#: src/components/toolbar/components/copy-paste/index.js:340
 msgid "Paste special style"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:359
+#: src/components/toolbar/components/copy-paste/index.js:351
 msgid "Copy nested blocks"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:368
+#: src/components/toolbar/components/copy-paste/index.js:360
 msgid "Paste nested blocks"
 msgstr ""
 
@@ -2788,8 +4352,8 @@ msgid "Remove block"
 msgstr ""
 
 #: src/components/toolbar/components/delete/index.js:37
-#: src/editor/style-cards/maxiStyleCardsEditor.js:535
-#: src/editor/style-cards/maxiStyleCardsEditor.js:544
+#: src/editor/style-cards/maxiStyleCardsEditor.js:538
+#: src/editor/style-cards/maxiStyleCardsEditor.js:547
 msgid "Delete"
 msgstr ""
 
@@ -2809,16 +4373,19 @@ msgstr ""
 msgid "Divider line"
 msgstr ""
 
-#: src/components/toolbar/components/divider-line/index.js:72
-msgid "Divider style"
-msgstr ""
-
 #: src/components/toolbar/components/duplicate/index.js:48
 msgid "Duplicate"
 msgstr ""
 
-#: src/components/toolbar/components/help/index.js:44
-#: src/editor/library/toolbar.js:463
+#: src/components/toolbar/components/dynamic-content/index.js:42
+msgid "Dynamic Content"
+msgstr ""
+
+#: src/components/toolbar/components/help/index.js:61
+#: src/editor/library/toolbar.js:501
+#: src/editor/library/toolbar.js:512
+#: src/editor/responsive-selector/index.js:455
+#: src/editor/responsive-selector/index.js:466
 msgid "Help"
 msgstr ""
 
@@ -2843,34 +4410,41 @@ msgstr ""
 msgid "Icon Size/Spacing"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:74
-#: src/components/toolbar/components/text-link/index.js:272
+#: src/components/toolbar/components/link/index.js:84
+#: src/components/toolbar/components/text-link/index.js:279
+#: src/extensions/DC/constants.js:113
+#: src/extensions/DC/constants.js:124
+#: src/extensions/DC/constants.js:134
 #: src/extensions/text/formats/link/index.js:10
 msgid "Link"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:93
-#: src/components/toolbar/components/text-link/index.js:236
+#: src/components/toolbar/components/link/index.js:96
+msgid "Use dynamic content link"
+msgstr ""
+
+#: src/components/toolbar/components/link/index.js:117
+#: src/components/toolbar/components/text-link/index.js:238
 msgid "Open in new tab"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:97
-#: src/components/toolbar/components/text-link/index.js:240
+#: src/components/toolbar/components/link/index.js:121
+#: src/components/toolbar/components/text-link/index.js:242
 msgid "\"nofollow\""
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:101
-#: src/components/toolbar/components/text-link/index.js:244
+#: src/components/toolbar/components/link/index.js:125
+#: src/components/toolbar/components/text-link/index.js:246
 msgid "\"sponsored\""
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:105
-#: src/components/toolbar/components/text-link/index.js:248
+#: src/components/toolbar/components/link/index.js:129
+#: src/components/toolbar/components/text-link/index.js:250
 msgid "\"UGC\""
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:119
-#: src/components/toolbar/components/text-link/index.js:257
+#: src/components/toolbar/components/link/index.js:143
+#: src/components/toolbar/components/text-link/index.js:259
 msgid "Remove link"
 msgstr ""
 
@@ -2878,19 +4452,15 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: src/components/toolbar/components/more-settings/index.js:85
+#: src/components/toolbar/components/more-settings/index.js:88
 msgid "Button width"
 msgstr ""
 
-#: src/components/toolbar/components/more-settings/index.js:95
+#: src/components/toolbar/components/more-settings/index.js:98
 msgid "Button padding/margin"
 msgstr ""
 
-#: src/components/toolbar/components/more-settings/index.js:117
-msgid "Image dimension"
-msgstr ""
-
-#: src/components/toolbar/components/more-settings/index.js:155
+#: src/components/toolbar/components/more-settings/index.js:149
 msgid "More"
 msgstr ""
 
@@ -2946,12 +4516,12 @@ msgstr ""
 msgid "Bold"
 msgstr ""
 
-#: src/components/toolbar/components/text-color/index.js:112
+#: src/components/toolbar/components/text-color/index.js:114
 msgid "Text Colour"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-overline/index.js:114
-#: src/components/typography-control/index.js:754
+#: src/components/typography-control/index.js:800
 msgid "Overline"
 msgstr ""
 
@@ -2968,7 +4538,7 @@ msgid "Superscript"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-underline/index.js:75
-#: src/components/typography-control/index.js:762
+#: src/components/typography-control/index.js:808
 msgid "Underline"
 msgstr ""
 
@@ -2989,7 +4559,7 @@ msgid "Add"
 msgstr ""
 
 #: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:720
+#: src/components/typography-control/index.js:766
 msgid "Italic"
 msgstr ""
 
@@ -3057,237 +4627,233 @@ msgstr ""
 msgid "Transition delay"
 msgstr ""
 
-#: src/components/typography-control/index.js:538
+#: src/components/typography-control/index.js:582
 msgid "Font size"
 msgstr ""
 
-#: src/components/typography-control/index.js:571
+#: src/components/typography-control/index.js:615
 msgid "Line height"
 msgstr ""
 
-#: src/components/typography-control/index.js:614
+#: src/components/typography-control/index.js:658
 msgid "Letter spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:672
+#: src/components/typography-control/index.js:718
 msgid "Text transform"
 msgstr ""
 
-#: src/components/typography-control/index.js:678
-#: src/components/typography-control/index.js:716
-#: src/components/typography-control/index.js:750
+#: src/components/typography-control/index.js:724
+#: src/components/typography-control/index.js:762
+#: src/components/typography-control/index.js:796
 msgid "Default"
 msgstr ""
 
-#: src/components/typography-control/index.js:682
+#: src/components/typography-control/index.js:728
 msgid "Capitalize"
 msgstr ""
 
-#: src/components/typography-control/index.js:686
+#: src/components/typography-control/index.js:732
 msgid "Uppercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:690
+#: src/components/typography-control/index.js:736
 msgid "Lowercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:724
+#: src/components/typography-control/index.js:770
 msgid "Oblique"
 msgstr ""
 
-#: src/components/typography-control/index.js:744
+#: src/components/typography-control/index.js:790
 msgid "Text decoration"
 msgstr ""
 
-#: src/components/typography-control/index.js:758
+#: src/components/typography-control/index.js:804
 msgid "Line through"
 msgstr ""
 
-#: src/components/typography-control/index.js:766
+#: src/components/typography-control/index.js:812
 msgid "Underline overline"
 msgstr ""
 
-#: src/components/typography-control/index.js:788
+#: src/components/typography-control/index.js:834
 msgid "Text orientation"
 msgstr ""
 
-#: src/components/typography-control/index.js:798
+#: src/components/typography-control/index.js:844
 msgid "Mixed"
 msgstr ""
 
-#: src/components/typography-control/index.js:802
+#: src/components/typography-control/index.js:848
 msgid "Upright"
 msgstr ""
 
-#: src/components/typography-control/index.js:806
+#: src/components/typography-control/index.js:852
 msgid "Sideways"
 msgstr ""
 
-#: src/components/typography-control/index.js:829
+#: src/components/typography-control/index.js:875
 msgid "Text direction"
 msgstr ""
 
-#: src/components/typography-control/index.js:835
+#: src/components/typography-control/index.js:881
 msgid "Left to right"
 msgstr ""
 
-#: src/components/typography-control/index.js:839
+#: src/components/typography-control/index.js:885
 msgid "Right to left"
 msgstr ""
 
-#: src/components/typography-control/index.js:917
+#: src/components/typography-control/index.js:963
 msgid "White space"
 msgstr ""
 
-#: src/components/typography-control/index.js:923
+#: src/components/typography-control/index.js:969
 msgid "Normal"
 msgstr ""
 
-#: src/components/typography-control/index.js:927
+#: src/components/typography-control/index.js:973
 msgid "No wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:931
+#: src/components/typography-control/index.js:977
 msgid "Pre"
 msgstr ""
 
-#: src/components/typography-control/index.js:935
+#: src/components/typography-control/index.js:981
 msgid "Pre line"
 msgstr ""
 
-#: src/components/typography-control/index.js:939
+#: src/components/typography-control/index.js:985
 msgid "Pre wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:943
+#: src/components/typography-control/index.js:989
 msgid "Break spaces"
 msgstr ""
 
-#: src/components/typography-control/index.js:964
+#: src/components/typography-control/index.js:1010
 msgid "Word Spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1021
+#: src/components/typography-control/index.js:1067
 msgid "Bottom gap"
 msgstr ""
 
-#: src/components/typography-control/utils.js:19
+#: src/components/typography-control/utils.js:36
 msgid "Hairline (100)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:21
+#: src/components/typography-control/utils.js:38
 msgid "Extra light (200)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:24
+#: src/components/typography-control/utils.js:41
 msgid "Light (300)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:26
+#: src/components/typography-control/utils.js:43
 msgid "Regular (400)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:29
+#: src/components/typography-control/utils.js:46
 msgid "Medium (500)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:31
+#: src/components/typography-control/utils.js:48
 msgid "Semi bold (600)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:34
+#: src/components/typography-control/utils.js:51
 msgid "Bold (700)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:36
+#: src/components/typography-control/utils.js:53
 msgid "Extra bold (800)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:39
+#: src/components/typography-control/utils.js:56
 msgid "Heavy (900)"
 msgstr ""
 
-#: src/components/typography-control/utils.js:41
+#: src/components/typography-control/utils.js:58
 msgid "Extra heavy (950)"
 msgstr ""
 
-#: src/editor/library/container.js:67
+#: src/editor/library/container.js:64
 msgid "Returned"
 msgstr ""
 
-#: src/editor/library/container.js:71
+#: src/editor/library/container.js:68
 msgid "result"
 msgstr ""
 
-#: src/editor/library/container.js:72
+#: src/editor/library/container.js:69
 msgid "results"
 msgstr ""
 
-#: src/editor/library/container.js:134
-#: src/editor/library/container.js:231
+#: src/editor/library/container.js:149
+#: src/editor/library/container.js:246
 msgid "All"
 msgstr ""
 
-#: src/editor/library/container.js:151
-#: src/editor/library/MasonryItem.js:135
+#: src/editor/library/container.js:166
+#: src/editor/library/MasonryItem.js:134
 msgid "Free"
 msgstr ""
 
-#: src/editor/library/container.js:168
-#: src/editor/library/MasonryItem.js:140
+#: src/editor/library/container.js:183
+#: src/editor/library/MasonryItem.js:139
 msgid "Pro"
 msgstr ""
 
-#: src/editor/library/container.js:365
-#: src/editor/library/container.js:1162
+#: src/editor/library/container.js:380
+#: src/editor/library/container.js:1188
 msgid "Clear filters"
 msgstr ""
 
-#: src/editor/library/container.js:769
+#: src/editor/library/container.js:787
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
-#: src/editor/library/container.js:797
+#: src/editor/library/container.js:815
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
-#: src/editor/library/container.js:806
+#: src/editor/library/container.js:824
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
-#: src/editor/library/container.js:843
-#: src/editor/library/container.js:962
-#: src/editor/library/container.js:975
+#: src/editor/library/container.js:868
+#: src/editor/library/container.js:987
+#: src/editor/library/container.js:1000
 msgid "All icons"
 msgstr ""
 
-#: src/editor/library/container.js:853
-#: src/editor/library/container.js:887
-#: src/editor/library/container.js:898
-#: src/editor/library/container.js:907
-#: src/editor/library/container.js:986
-#: src/editor/library/container.js:997
+#: src/editor/library/container.js:878
+#: src/editor/library/container.js:912
+#: src/editor/library/container.js:923
+#: src/editor/library/container.js:932
+#: src/editor/library/container.js:1011
+#: src/editor/library/container.js:1022
 msgid "Find"
 msgstr ""
 
-#: src/editor/library/container.js:1083
-#: src/editor/library/MasonryItem.js:114
-#: src/editor/library/toolbar.js:488
+#: src/editor/library/container.js:1108
+#: src/editor/library/MasonryItem.js:113
+#: src/editor/library/toolbar.js:533
 msgid "Go Pro"
 msgstr ""
 
-#: src/editor/library/index.js:63
-msgid "Template Library Maxi"
-msgstr ""
-
-#: src/editor/library/MasonryItem.js:105
-#: src/editor/library/toolbar.js:471
+#: src/editor/library/MasonryItem.js:104
+#: src/editor/library/toolbar.js:519
 msgid "Insert"
 msgstr ""
 
 #: src/editor/library/modal.js:76
-#: src/editor/library/toolbar.js:384
-#: src/editor/responsive-selector/index.js:196
+#: src/editor/library/toolbar.js:397
+#: src/editor/responsive-selector/index.js:448
 msgid "Template library"
 msgstr ""
 
@@ -3295,109 +4861,102 @@ msgstr ""
 msgid "Select icon"
 msgstr ""
 
-#: src/editor/library/modal.js:204
+#: src/editor/library/modal.js:214
 msgid "Browse style cards"
 msgstr ""
 
-#: src/editor/library/modal.js:228
+#: src/editor/library/modal.js:238
 msgid "Load shape library"
 msgstr ""
 
-#: src/editor/library/modal.js:239
+#: src/editor/library/modal.js:249
 msgid "Add Icon"
 msgstr ""
 
-#: src/editor/library/modal.js:240
+#: src/editor/library/modal.js:250
 msgid "Replace Icon"
 msgstr ""
 
-#: src/editor/library/modal.js:249
+#: src/editor/library/modal.js:259
 msgid "Add icon"
 msgstr ""
 
-#: src/editor/library/modal.js:250
+#: src/editor/library/modal.js:260
 msgid "Replace icon"
 msgstr ""
 
-#: src/editor/library/modal.js:260
+#: src/editor/library/modal.js:270
 msgid "Load icon library"
 msgstr ""
 
-#: src/editor/library/modal.js:287
+#: src/editor/library/modal.js:297
 msgid "Preview"
 msgstr ""
 
-#: src/editor/library/toolbar.js:382
+#: src/editor/library/toolbar.js:395
 msgid "Icon library"
 msgstr ""
 
-#: src/editor/library/toolbar.js:385
+#: src/editor/library/toolbar.js:398
 #: src/editor/style-cards/index.js:36
 #: src/editor/style-cards/index.js:40
 msgid "Style cards"
 msgstr ""
 
-#: src/editor/library/toolbar.js:387
+#: src/editor/library/toolbar.js:400
 msgid "Shape library"
 msgstr ""
 
-#: src/editor/library/toolbar.js:389
+#: src/editor/library/toolbar.js:402
 msgid "Button icon library"
 msgstr ""
 
-#: src/editor/library/toolbar.js:391
+#: src/editor/library/toolbar.js:404
 msgid "Video icon library"
 msgstr ""
 
-#: src/editor/library/toolbar.js:398
+#: src/editor/library/toolbar.js:411
 msgid "Back"
 msgstr ""
 
-#: src/editor/library/toolbar.js:409
+#: src/editor/library/toolbar.js:422
 msgid "Switch tone"
 msgstr ""
 
-#: src/editor/library/toolbar.js:418
+#: src/editor/library/toolbar.js:431
 msgid "Full screen"
 msgstr ""
 
-#: src/editor/library/toolbar.js:426
+#: src/editor/library/toolbar.js:439
 msgid "Desktop"
 msgstr ""
 
-#: src/editor/library/toolbar.js:434
+#: src/editor/library/toolbar.js:447
 msgid "Tablet"
 msgstr ""
 
-#: src/editor/library/toolbar.js:442
+#: src/editor/library/toolbar.js:455
 msgid "Mobile"
 msgstr ""
 
-#: src/editor/library/util.js:71
-msgid "Can't upload the placeholder image, check directory's permissions"
+#: src/editor/library/toolbar.js:484
+msgid "Signed in as:"
 msgstr ""
 
-#: src/editor/library/util.js:100
-msgid "The Cloud server is down, using the placeholder image"
+#: src/editor/library/toolbar.js:491
+#: src/editor/library/toolbar.js:494
+msgid "Sign out"
 msgstr ""
 
-#: src/editor/library/util.js:111
-msgid "The original image not found (404) on the Cloud Site, using the placeholder image"
-msgstr ""
-
-#: src/editor/library/util.js:248
-msgid "LOADING…"
-msgstr ""
-
-#: src/editor/library/util.js:289
+#: src/editor/library/utils/onRequestInsertPattern.js:71
 msgid "Error processing images' links and ids - counts do not match"
 msgstr ""
 
-#: src/editor/library/util.js:342
+#: src/editor/library/utils/onRequestInsertPattern.js:118
 msgid "The Code is not valid"
 msgstr ""
 
-#: src/editor/responsive-selector/index.js:90
+#: src/editor/responsive-selector/index.js:94
 msgid "Your size"
 msgstr ""
 
@@ -3425,113 +4984,117 @@ msgstr ""
 msgid "Preview, edit or activate style card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:511
+#: src/editor/style-cards/maxiStyleCardsEditor.js:500
+msgid "Imported card already exists."
+msgstr ""
+
+#: src/editor/style-cards/maxiStyleCardsEditor.js:514
 msgid "Type to search…"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:534
-#: src/editor/style-cards/maxiStyleCardsEditor.js:576
-#: src/editor/style-cards/maxiStyleCardsEditor.js:671
+#: src/editor/style-cards/maxiStyleCardsEditor.js:537
+#: src/editor/style-cards/maxiStyleCardsEditor.js:579
+#: src/editor/style-cards/maxiStyleCardsEditor.js:674
 msgid "Cancel"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:559
+#: src/editor/style-cards/maxiStyleCardsEditor.js:562
 msgid "Customise card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:560
+#: src/editor/style-cards/maxiStyleCardsEditor.js:563
 msgid "Copy card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:568
+#: src/editor/style-cards/maxiStyleCardsEditor.js:571
 msgid "Save changes"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:577
+#: src/editor/style-cards/maxiStyleCardsEditor.js:580
 msgid "Activate"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:587
+#: src/editor/style-cards/maxiStyleCardsEditor.js:590
 msgid "Activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:590
+#: src/editor/style-cards/maxiStyleCardsEditor.js:593
 msgid "Save and activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:604
+#: src/editor/style-cards/maxiStyleCardsEditor.js:607
 msgid "Create new style from"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:612
+#: src/editor/style-cards/maxiStyleCardsEditor.js:615
 msgid "Short memorable name*"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:666
+#: src/editor/style-cards/maxiStyleCardsEditor.js:669
 msgid "Create"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:698
+#: src/editor/style-cards/maxiStyleCardsEditor.js:701
 msgid "Light tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:714
+#: src/editor/style-cards/maxiStyleCardsEditor.js:717
 msgid "Dark tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:245
+#: src/editor/style-cards/maxiStyleCardsTab.js:250
 msgid "Button globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:257
+#: src/editor/style-cards/maxiStyleCardsTab.js:262
 msgid "Text hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:274
+#: src/editor/style-cards/maxiStyleCardsTab.js:279
 msgid "Background hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:291
+#: src/editor/style-cards/maxiStyleCardsTab.js:296
 msgid "Border hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:302
+#: src/editor/style-cards/maxiStyleCardsTab.js:307
 msgid "Paragraph globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:306
+#: src/editor/style-cards/maxiStyleCardsTab.js:311
 msgid "Paragraph"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:316
+#: src/editor/style-cards/maxiStyleCardsTab.js:321
 msgid "Link globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:355
+#: src/editor/style-cards/maxiStyleCardsTab.js:360
 msgid "Icon globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:359
+#: src/editor/style-cards/maxiStyleCardsTab.js:364
 msgid "Line"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:367
+#: src/editor/style-cards/maxiStyleCardsTab.js:372
 msgid "Line hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:384
+#: src/editor/style-cards/maxiStyleCardsTab.js:389
 msgid "Fill hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:395
+#: src/editor/style-cards/maxiStyleCardsTab.js:400
 msgid "Divider globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:417
+#: src/editor/style-cards/maxiStyleCardsTab.js:422
 msgid "Colour palette"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:569
+#: src/editor/style-cards/maxiStyleCardsTab.js:577
 msgid "Typography globals"
 msgstr ""
 
@@ -3540,7 +5103,147 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: src/extensions/relations/getCanvasSettings.js:99
+#: src/extensions/DC/constants.js:10
+msgid "Post"
+msgstr ""
+
+#: src/extensions/DC/constants.js:11
+msgid "Page"
+msgstr ""
+
+#: src/extensions/DC/constants.js:12
+msgid "Site"
+msgstr ""
+
+#: src/extensions/DC/constants.js:13
+msgid "Media"
+msgstr ""
+
+#: src/extensions/DC/constants.js:14
+#: src/extensions/DC/constants.js:90
+#: src/extensions/DC/constants.js:117
+msgid "Author"
+msgstr ""
+
+#: src/extensions/DC/constants.js:15
+#: src/extensions/DC/constants.js:96
+msgid "Categories"
+msgstr ""
+
+#: src/extensions/DC/constants.js:16
+#: src/extensions/DC/constants.js:97
+msgid "Tags"
+msgstr ""
+
+#: src/extensions/DC/constants.js:31
+#: src/extensions/DC/constants.js:41
+#: src/extensions/DC/constants.js:49
+#: src/extensions/DC/constants.js:54
+msgid "Get by id"
+msgstr ""
+
+#: src/extensions/DC/constants.js:86
+msgid "Excerpt"
+msgstr ""
+
+#: src/extensions/DC/constants.js:89
+#: src/extensions/DC/constants.js:116
+msgid "Date"
+msgstr ""
+
+#: src/extensions/DC/constants.js:103
+msgid "Site URL"
+msgstr ""
+
+#: src/extensions/DC/constants.js:104
+msgid "Admin email"
+msgstr ""
+
+#: src/extensions/DC/constants.js:105
+msgid "Language"
+msgstr ""
+
+#: src/extensions/DC/constants.js:112
+msgid "Alt text"
+msgstr ""
+
+#: src/extensions/DC/constants.js:115
+msgid "Mime type"
+msgstr ""
+
+#: src/extensions/DC/constants.js:123
+msgid "Email"
+msgstr ""
+
+#: src/extensions/DC/constants.js:125
+msgid "Website"
+msgstr ""
+
+#: src/extensions/DC/constants.js:131
+msgid "Slug"
+msgstr ""
+
+#: src/extensions/DC/constants.js:133
+msgid "Count"
+msgstr ""
+
+#: src/extensions/DC/constants.js:166
+msgid "Featured media"
+msgstr ""
+
+#: src/extensions/DC/constants.js:170
+msgid "Logo"
+msgstr ""
+
+#: src/extensions/DC/constants.js:176
+msgid "Avatar"
+msgstr ""
+
+#: src/extensions/DC/constants.js:335
+msgid "Sorry, there is no next post, please choose something else."
+msgstr ""
+
+#: src/extensions/DC/constants.js:339
+msgid "Sorry, there is no previous post, please choose something else."
+msgstr ""
+
+#: src/extensions/DC/constants.js:343
+msgid "Value is not an object."
+msgstr ""
+
+#: src/extensions/DC/constants.js:344
+msgid "Sorry, this author has no posts yet, please choose something else."
+msgstr ""
+
+#: src/extensions/DC/constants.js:348
+msgid "Sorry, you do not have any images yet, please choose something else."
+msgstr ""
+
+#: src/extensions/DC/constants.js:352
+msgid "Sorry, you do not have any tags yet, please choose something else."
+msgstr ""
+
+#: src/extensions/DC/constants.js:372
+msgid "New/old"
+msgstr ""
+
+#: src/extensions/DC/constants.js:373
+msgid "Old/new"
+msgstr ""
+
+#: src/extensions/DC/constants.js:376
+msgid "A/Z"
+msgstr ""
+
+#: src/extensions/DC/constants.js:377
+msgid "Z/A"
+msgstr ""
+
+#: src/extensions/DC/getDCContent.js:85
+msgid "No parent"
+msgstr ""
+
+#: src/extensions/relations/getCanvasSettings.js:120
 msgid "No background layers added"
 msgstr ""
 

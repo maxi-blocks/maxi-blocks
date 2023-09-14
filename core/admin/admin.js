@@ -6,6 +6,20 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const checkBox = document.getElementById(toCheck);
 	if (checkBox) checkBox.checked = true;
 
+	// Hide the "Pro" tab if the user is not logged in
+	const proDiv = document.getElementById('maxi-dashboard_main-content_pro');
+	if (proDiv) proDiv.style.display = 'none';
+
+	const notProDiv = document.getElementById(
+		'maxi-dashboard_main-content_not-pro'
+	);
+	if (notProDiv) {
+		notProDiv.style.display = 'block';
+		document.getElementById(
+			'maxi-dashboard_main-content_pro-not-pro'
+		).style.display = 'block';
+	}
+
 	// save new breakpoints to the hidden input
 	const inputs = document.getElementsByClassName(
 		'maxi-dashboard_main-content_accordion-item-input'
@@ -53,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		// The marker, positioned at Uluru
 		const marker = new google.maps.Marker({
 			position: uluru,
-			map: map,
+			map,
 		});
 	};
 
@@ -101,9 +115,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				case 'RefererNotAllowedMapError':
 					validationMessage =
 						'Referer not allowed, please allow your domain for that key';
+					break;
 				case 'EmptyKeyMapError':
 					validationMessage = 'Please add your Google Maps API key';
-
+					break;
 				default:
 					break;
 			}
@@ -114,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 	const catchGoogleMapsApiErrors = () => {
 		// based on http://tobyho.com/2012/07/27/taking-over-console-log/
-		const console = window.console;
+		const { console } = window;
 		if (!console) return;
 
 		const intercept = method => {

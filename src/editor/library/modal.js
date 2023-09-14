@@ -16,6 +16,14 @@ import {
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
+import {
+	authConnect,
+	isProSubActive,
+	isProSubExpired,
+	isValidEmail,
+	getUserName,
+	logOut,
+} from '../auth';
 
 /**
  * External dependencies
@@ -169,6 +177,51 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
+	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
+	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
+	const [userName, setUserName] = useState(getUserName());
+	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
+
+	useEffect(() => {
+		setIsMaxiProActive(isProSubActive());
+	}, [type]);
+
+	useEffect(() => {
+		setIsMaxiProExpired(isProSubExpired());
+	}, [type]);
+
+	const onClickConnect = async email => {
+		const isValid = isValidEmail(email);
+		if (isValid) {
+			setShowNotValidEmail(false);
+			document.addEventListener(
+				'visibilitychange',
+				function userIsBack() {
+					if (!document.hidden) {
+						authConnect(false, email).then(() => {
+							setIsMaxiProActive(isProSubActive());
+							setIsMaxiProExpired(isProSubExpired());
+							setUserName(getUserName());
+						});
+					}
+				}
+			);
+
+			await authConnect(false, email).then(() => {
+				setIsMaxiProActive(isProSubActive());
+				setIsMaxiProExpired(isProSubExpired());
+				setUserName(getUserName());
+			});
+		} else setShowNotValidEmail(true);
+	};
+
+	const onLogOut = redirect => {
+		logOut(redirect);
+		setIsMaxiProActive(false);
+		setIsMaxiProExpired(false);
+		setUserName('');
+	};
+
 	const onClick = () => {
 		changeIsOpen(!isOpen);
 
@@ -309,6 +362,12 @@ const MaxiModal = props => {
 								prefix={prefix}
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
+								isMaxiProActive={isMaxiProActive}
+								isMaxiProExpired={isMaxiProExpired}
+								onClickConnect={onClickConnect}
+								showNotValidEmail={showNotValidEmail}
+								userName={userName}
+								onLogOut={onLogOut}
 								layerOrder={layerOrder}
 							/>
 						</div>
@@ -416,6 +475,12 @@ const MaxiModal = props => {
 							onSelect={onSelect}
 							gutenbergCode={gutenbergCode}
 							isSwapChecked={isSwapChecked}
+							isMaxiProActive={isMaxiProActive}
+							isMaxiProExpired={isMaxiProExpired}
+							onClickConnect={onClickConnect}
+							showNotValidEmail={showNotValidEmail}
+							userName={userName}
+							onLogOut={onLogOut}
 						/>
 					</div>
 				</div>

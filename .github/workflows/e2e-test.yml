@@ -13,8 +13,6 @@ jobs:
                   fetch-depth: 2
             - name: Cache node modules
               uses: actions/cache@v2
-              env:
-                  cache-name: cache-node-modules
               with:
                   # npm cache files are stored in `~/.npm` on Linux/macOS
                   # to clear the cache, change `v1.3` for any other random number, github will destroy
@@ -26,12 +24,20 @@ jobs:
                       ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
                       ${{ runner.os }}-build-v1.3-
                       ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
             - name: Use Node.js 16.x
               uses: actions/setup-node@v1
               with:
                   node-version: 16.x
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
             - name: Build
               run: npm run build
             - name: reset package-lock.json

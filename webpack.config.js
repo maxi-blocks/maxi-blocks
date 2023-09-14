@@ -9,6 +9,7 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
+const Dotenv = require('dotenv-webpack');
 
 // Frontend scripts config
 const jsFiles = {};
@@ -40,6 +41,7 @@ const scriptsConfig = {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),
 	},
+	plugins: [new Dotenv()],
 };
 
 // Blocks config
@@ -73,6 +75,7 @@ const blocksConfig = {
 			'react/jsx-runtime': 'react/jsx-runtime.js',
 		},
 	},
+	plugins: [...defaultConfig.plugins, new Dotenv()],
 };
 
 module.exports = [blocksConfig, scriptsConfig];

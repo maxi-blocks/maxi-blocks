@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /**
  * WordPress dependencies
  */

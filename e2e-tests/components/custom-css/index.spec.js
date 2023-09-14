@@ -76,7 +76,7 @@ describe('Custom-Css-Control', () => {
 
 		await selector.select('group');
 
-		await page.$eval('.maxi-css-code-area textarea', input =>
+		await page.$eval('.maxi-css-code-editor textarea', input =>
 			input.focus()
 		);
 

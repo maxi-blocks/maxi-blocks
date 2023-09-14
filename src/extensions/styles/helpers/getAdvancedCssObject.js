@@ -18,15 +18,21 @@ const trimUnmatchedBrace = code => {
 };
 
 const setAdvancedCss = (obj, selector, breakpoint, css) => {
+	const trimmedCss = css
+		.replace(/\t/g, '')
+		.replace(/\n/g, ' ')
+		.replace(/\s\s+/g, ' ')
+		.trim();
+
 	if (obj[selector]) {
 		obj[selector].advancedCss[breakpoint] = {
-			css,
+			css: trimmedCss,
 		};
 	} else {
 		obj[selector] = {
 			advancedCss: {
 				[breakpoint]: {
-					css,
+					css: trimmedCss,
 				},
 			},
 		};

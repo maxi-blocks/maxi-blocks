@@ -217,8 +217,8 @@
 				margin-left: 4px;
 			}
 			button[type='button'] {
-				border: 2px solid #dddfe1;
-				border-radius: 0;
+				border: 1.5px solid var(--maxi-grey-1-color);
+				border-radius: 5px;
 				width: 32px;
 				height: 32px;
 				padding: 0;
@@ -299,7 +299,7 @@
 			min-width: 32px;
 		}
 	}
-	.maxi-settingstab-control{
+	.maxi-settingstab-control {
 		flex: 1;
 		.maxi-tabs-control__button--selected svg path {
 			fill: var(--maxi-secondary-color);
@@ -310,7 +310,7 @@
 			border: 1.5px solid var(--maxi-grey-1-color);
 			border-radius: 4px;
 			transition: all 0.5s;
-			&:last-child{
+			&:last-child {
 				margin-right: 0;
 			}
 		}

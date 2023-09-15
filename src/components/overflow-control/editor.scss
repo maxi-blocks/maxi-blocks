@@ -2,8 +2,13 @@
 	position: relative;
     display: flex;
     justify-content: space-between;
+	margin-bottom: 10px;
 	.maxi-select-control{
 		width: 110px;
+		.maxi-base-control__field{
+			margin-top: 3px !important;
+			margin-bottom: 0 !important;
+		}
 	}
 	.sync-wrapper {
 		position: absolute;

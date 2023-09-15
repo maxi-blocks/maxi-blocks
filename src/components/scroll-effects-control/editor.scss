@@ -68,6 +68,30 @@
 			fill: var(--maxi-secondary-color) !important;
 		}
 	}
+	.maxi-scroll-unique-control{
+		.maxi-settingstab-control{
+			.maxi-tabs-control{
+				margin-left: 0;
+				margin-right: 0;
+				.maxi-tabs-control__button {
+					padding: 8px;
+					margin-right: 5px;
+					border: 1.5px solid var(--maxi-grey-1-color) !important;
+					border-radius: 4px;
+					font-weight: 400;
+				}
+		
+				.maxi-tabs-control__button[aria-pressed='true'] {
+					background-color: var(--maxi-light-blue-2-color) !important;
+					border-color: var(--maxi-light-blue-2-color) !important;
+					font-weight: 700;
+				}
+			}
+			.maxi-tabs-content{
+				padding-top: 10px;
+			}
+		}
+	}
 	.maxi-scroll-combinations-select .maxi-base-control__field {
 		flex-direction: column;
 		align-items: flex-start;

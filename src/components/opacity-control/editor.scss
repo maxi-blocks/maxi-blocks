@@ -3,12 +3,15 @@
 		padding: 0;
 		margin-top: 10px !important;
 		.maxi-tabs-content {
-			padding: 0 10px 5px;
+			padding: 0 10px 0;
 			.maxi-responsive-tabs-control {
 				.maxi-tabs-control {
 					margin-right: -8px;
 					margin-left: -8px;
 				}
+			}
+			.maxi-opacity-control{
+				margin-top: 10px;
 			}
 		}
 	}

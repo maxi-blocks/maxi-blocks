@@ -498,6 +498,7 @@ const DynamicContent = props => {
 										'date',
 										'modified',
 										'random',
+										'current',
 										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl

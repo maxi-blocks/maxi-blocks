@@ -20,7 +20,7 @@ import {
  */
 import moment from 'moment';
 import 'moment-parseformat';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, invert } from 'lodash';
 
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
@@ -77,7 +77,8 @@ export const validationsValues = (
 			!fieldResult.includes(field) && {
 				[`${prefix}field`]: fieldResult[0],
 			}),
-		...(relationResult &&
+		...(relation !== 'current' &&
+			relationResult &&
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
@@ -102,3 +103,20 @@ export const getDCOrder = (relation, orderBy) => {
 export const canCurrentEntityBeSelected = type =>
 	currentEntityTypes.includes(type) &&
 	nameDictionary[type] === select('core/editor').getCurrentPostType();
+
+export const validateRelations = (type, relation, isCL) => {
+	const prefix = isCL ? 'cl-' : 'dc-';
+
+	if (relation === 'current' && !canCurrentEntityBeSelected(type)) {
+		const currentType = select('core/editor').getCurrentPostType();
+		const postTypeToDCType = invert(nameDictionary);
+
+		if (currentEntityTypes.includes(postTypeToDCType[currentType])) {
+			return { [`${prefix}type`]: postTypeToDCType[currentType] };
+		}
+
+		return { [`${prefix}relation`]: 'by-id' };
+	}
+
+	return {};
+};

@@ -246,7 +246,7 @@ describe('BorderControl', () => {
 
 		expect(
 			await getAttributes('border-bottom-left-radius-general')
-		).toStrictEqual(undefined);
+		).toStrictEqual();
 	});
 
 	it('Checking the responsive border control', async () => {

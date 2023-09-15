@@ -176,7 +176,7 @@ describe('TypographyControl', () => {
 		);
 
 		expect(await getAttributes('palette-status-s')).toStrictEqual(
-			undefined
+			
 		);
 	});
 

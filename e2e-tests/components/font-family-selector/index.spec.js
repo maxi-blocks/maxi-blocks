@@ -46,7 +46,7 @@ describe('FontFamilySelector', () => {
 		);
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
-			undefined
+			
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

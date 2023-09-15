@@ -306,7 +306,7 @@ describe('AxisControl', () => {
 			await page.keyboard.press('ArrowUp');
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
-				undefined
+				
 			);
 		}
 	});

@@ -71,7 +71,7 @@ describe('Advanced Number Control', () => {
 		);
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
-			undefined
+			
 		);
 
 		// Check max value change

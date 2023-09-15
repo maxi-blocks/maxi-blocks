@@ -17,6 +17,12 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
             - name: Build
               run: npm run build
             - name: reset package-lock.json

@@ -6,7 +6,7 @@ import { find } from 'lodash';
 export const getAttributes = (blocks, matcher) => {
 	const result = find(blocks, matcher);
 
-	if (result && result.attributes) return result.attributes;
+	if ( result?.attributes) return result.attributes;
 
 	let attributes;
 

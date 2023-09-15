@@ -34,8 +34,8 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					? rawHoverProp
 					: [rawHoverProp];
 			if (
-				hoverProp &&
-				hoverProp.every(prop => !props[prop]) &&
+				
+				hoverProp?.every(prop => !props[prop]) &&
 				!isTransform
 			)
 				return;

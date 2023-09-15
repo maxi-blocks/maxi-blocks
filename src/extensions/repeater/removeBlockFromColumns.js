@@ -55,7 +55,7 @@ const removeBlockFromColumns = (
 			const rootBlock = getBlock(rootClientId);
 
 			markNextChangeAsNotPersistent();
-			if (rootBlock && rootBlock.innerBlocks) {
+			if ( rootBlock?.innerBlocks) {
 				replaceInnerBlocks(
 					rootClientId,
 					rootBlock.innerBlocks.filter(

@@ -141,8 +141,8 @@ const numberCounterEffect = () => {
 
 						numberCounterElemText.innerHTML = newInnerHTML;
 
-						numberCounterElemCircle &&
-							numberCounterElemCircle.setAttribute(
+						
+							numberCounterElemCircle?.setAttribute(
 								'stroke-dasharray',
 								`${Math.ceil(
 									(count / 100) * circumference

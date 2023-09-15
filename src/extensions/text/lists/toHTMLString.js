@@ -54,7 +54,7 @@ function createEmpty() {
 }
 
 function getLastChild({ children }) {
-	return children && children[children.length - 1];
+	return  children?.[children.length - 1];
 }
 
 function append(parent, object) {

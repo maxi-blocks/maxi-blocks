@@ -56,7 +56,7 @@ const getDefaultAttribute = (
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
-	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
+	const isMaxiBlock =  blockName?.includes('maxi-blocks');
 
 	if (!isMaxiBlock) return response;
 

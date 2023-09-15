@@ -25,8 +25,8 @@ const transitionAttributesCreator = ({
 	const transitionStyleObj = {};
 
 	const createTransitionStyleObjForType = (type, options) =>
-		options &&
-		options.forEach(({ title }) => {
+		
+		options?.forEach(({ title }) => {
 			transitionStyleObj[type] = {
 				...transitionStyleObj[type],
 				[title.toLowerCase()]: {

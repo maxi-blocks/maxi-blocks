@@ -35,7 +35,7 @@ const getCurrentFormatClassName = (formatValue, isHover = false) => {
 	);
 
 	const currentClassName =
-		(formatOptions && formatOptions.attributes.className) || false;
+		( formatOptions?.attributes.className) || false;
 
 	return currentClassName;
 };

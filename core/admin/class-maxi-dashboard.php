@@ -133,6 +133,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
+                __('Maxi Ai', self::$maxi_text_domain),
+                __('Maxi Ai', self::$maxi_text_domain),
+                'manage_ai',
+                'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_ai',
+                '',
+                null
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
                 __('Pro library', self::$maxi_text_domain),
                 __('Pro library', self::$maxi_text_domain),
                 'manage_options',
@@ -140,7 +149,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null
             );
-            add_submenu_page(self::$maxi_slug_dashboard, __('Maxi Ai', self::$maxi_text_domain), __('Maxi Ai', self::$maxi_text_domain), 'manage_ai', 'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_ai', '', null);
         }
 
         // Draw option page
@@ -155,14 +163,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'Settings',
                     self::$maxi_text_domain,
                 ),
+                self::$maxi_prefix.'maxi_ai' => __(
+                    'Maxi Ai',
+                    self::$maxi_text_domain
+                ),
                 self::$maxi_prefix.'pro' => __(
                     'Pro library',
                     self::$maxi_text_domain
                 ),
-				self::$maxi_prefix.'maxi_ai' => __(
-					'Maxi Ai',
-					self::$maxi_text_domain
-				),
             ];
 
             if (isset($_GET['tab'])) {
@@ -221,9 +229,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     );
                 } elseif($tab === self::$maxi_prefix.'maxi_ai') {
                     echo wp_kses(
-						$this->maxi_blocks_maxi_ai(),
-						maxi_blocks_allowed_html()
-					);
+                        $this->maxi_blocks_maxi_ai(),
+                        maxi_blocks_allowed_html()
+                    );
                 }
             }
 
@@ -881,6 +889,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             $content .= '</div>';
+        }
+
         public function maxi_blocks_maxi_ai()
         {
             $content = '<div class="maxi-dashboard_main-content">';

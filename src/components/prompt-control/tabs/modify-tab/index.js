@@ -60,7 +60,7 @@ const ModifyTab = ({
 		const {
 			prompt,
 			characterCount,
-			confidenceLevel,
+			temperature,
 			contentType,
 			tone,
 			writingStyle,
@@ -72,15 +72,15 @@ const ModifyTab = ({
 
 		const customExplanation =
 			modificationType === 'custom'
-				? `- **Custom Instructions**: ${customValue}`
+				? `- Custom Instructions: ${customValue}`
 				: '';
 		const languageExplanation =
 			modificationType === 'translate'
-				? `- **Language to translate to**: ${customValue}`
+				? `- Language to translate to: ${customValue}`
 				: '';
 
 		const generatedTextExplanation = !refFromSelectedText
-			? `${prompt ? `- **Original Prompt**: ${prompt}` : ''}
+			? `${prompt ? `- Original Prompt: ${prompt}` : ''}
 ${getContentAttributesSection(
 	contentType,
 	tone,
@@ -88,7 +88,7 @@ ${getContentAttributesSection(
 	language,
 	characterCount
 )}
-- **Confidence Level**: ${confidenceLevel}%`
+- Temperature: ${temperature}`
 			: '';
 
 		const rephraseInstruction =
@@ -102,7 +102,6 @@ You are a helpful assistant tasked with ${modificationAction} the following ${
 				? 'selected on website'
 				: 'generated for website'
 		} text. Adhere to these guidelines:
-
 ${languageExplanation}${generatedTextExplanation}
 ${customExplanation}${getSiteInformation(AISettings)}
 ${getContextSection(context)}

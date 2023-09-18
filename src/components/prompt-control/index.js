@@ -149,8 +149,7 @@ ${getContentAttributesSection(
 	writingStyle,
 	language,
 	characterCount
-)}
-${getContextSection(context)}
+)}${getContextSection(context)}
 ${getExamplesSection(contentType)}
 ${getStyleGuide(prompt, context)}`;
 

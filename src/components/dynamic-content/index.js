@@ -226,10 +226,13 @@ const DynamicContent = props => {
 		const options = relationOptions[contentType][type];
 
 		if (canCurrentEntityBeSelected(type)) {
-			options.push({
-				label: __('Get current', 'maxi-blocks'),
-				value: 'current',
-			});
+			return [
+				...options,
+				{
+					label: __('Get current', 'maxi-blocks'),
+					value: 'current',
+				},
+			];
 		}
 
 		return options;

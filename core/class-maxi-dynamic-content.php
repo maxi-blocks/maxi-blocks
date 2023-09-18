@@ -289,6 +289,9 @@ class MaxiBlocks_DynamicContent
             // DC Relation
             if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
+            } elseif ($dc_relation == 'current') {
+                $args['p'] = get_the_ID();
+                unset($args['post_status']);
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {

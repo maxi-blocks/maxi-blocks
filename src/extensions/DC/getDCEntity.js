@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -140,6 +140,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 
 		return termsEntity[0];
+	}
+
+	if (relation === 'current') {
+		return resolveSelect('core').getEditedEntityRecord(
+			kindDictionary[type],
+			nameDictionary[type],
+			select('core/editor').getCurrentPostId()
+		);
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(

@@ -152,12 +152,7 @@ ${getContentAttributesSection(
 )}
 ${getContextSection(context)}
 ${getExamplesSection(contentType)}
-${getStyleGuide()}
-${
-	prompt
-		? '\nUser Input: Prioritize user query. Use site information only if relevant.'
-		: ''
-}`;
+${getStyleGuide(prompt, context)}`;
 
 		const humanTemplate = prompt;
 

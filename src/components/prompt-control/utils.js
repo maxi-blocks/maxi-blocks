@@ -81,10 +81,17 @@ export const getExamplesSection = contentType => {
 	return `- Examples:${formattedExamples}`;
 };
 
-export const getStyleGuide = () => `- Style Guide:
-\t- Model your response based on the provided examples.
-\t- Provide ONE singular response.
-\t- DO NOT use quotes around the response.`;
+export const getStyleGuide = (prompt, context) => `- Style Guide:
+\t- Develop content based on the details provided.
+\t- Do not directly incorporate or restate phrases from ${
+	context ? "the 'Page Context' section or" : ''
+} the 'Examples' section.${
+	prompt
+		? "\n\t- Your output should be in line with the user's query while referencing site information when relevant."
+		: ''
+}
+\t- Provide a single response.
+\t- Avoid using quotation marks around the answer.`;
 
 export const getFormattedMessages = async (
 	systemMessageTemplate,

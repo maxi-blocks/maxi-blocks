@@ -61,8 +61,6 @@ const MasonryItem = props => {
 
 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
 
-	const isBeta = beta.includes('Beta');
-
 	const patternsScContent = () => {
 		return (
 			<>

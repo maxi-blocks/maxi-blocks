@@ -10,7 +10,6 @@ import { CheckboxControl, Button } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-<<<<<<< HEAD
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import { svgAttributesReplacer, svgCurrentColorStatus, fitSvg } from './util';
 import { injectImgSVG } from '../../extensions/svg';
@@ -20,9 +19,6 @@ import useInterval from '../../extensions/dom/useInterval';
 import InfiniteHits from './InfiniteHits';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { ContentLoader } from '../../components';
-=======
-import Button from '../../components/button';
->>>>>>> Patterns modal
 
 /**
  * External dependencies
@@ -31,20 +27,12 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-<<<<<<< HEAD
 	connectMenu,
 	connectHierarchicalMenu,
 	connectCurrentRefinements,
 	Menu,
 	Stats,
 	Configure,
-=======
-	InfiniteHits,
-	RefinementList,
-	ClearRefinements,
-	Menu,
-	HierarchicalMenu,
->>>>>>> Patterns modal
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
@@ -525,7 +513,6 @@ const LibraryContainer = props => {
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
 
 		return (
-<<<<<<< HEAD
 			<MasonryItem
 				type='patterns'
 				target='patterns'
@@ -558,39 +545,6 @@ const LibraryContainer = props => {
 					);
 				}}
 			/>
-=======
-			<div className='maxi-cloud-masonry-card'>
-				<div className='maxi-cloud-masonry-card__image'>
-					<img src={previewIMG} alt={`Preview for ${serial}`} />
-				</div>
-				<div className='maxi-cloud-masonry-card__container'>
-					<div className='maxi-cloud-masonry-card__buttons'>
-						<Button className='maxi-cloud-masonry-card__button'>
-							Preview
-						</Button>
-						<Button className='maxi-cloud-masonry-card__button'>
-							Import
-						</Button>
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
-						>
-							Insert
-						</Button>
-					</div>
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry__pro-tag'>
-								PRO
-							</span>
-						)}
-						<p className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</p>
-					</div>
-				</div>
-			</div>
->>>>>>> Patterns modal
 		);
 	};
 
@@ -846,7 +800,6 @@ const LibraryContainer = props => {
 		);
 	};
 
-<<<<<<< HEAD
 	const CustomMenuSelect = connectMenu(MenuSelect);
 	const CustomMenuSC = connectMenu(MenuSC);
 	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
@@ -901,21 +854,6 @@ const LibraryContainer = props => {
 			</div>
 		);
 
-=======
-	const patternsResults = ({ hit }) => {
-		return (
-			<MasonryItem
-				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				demoUrl={hit.demo_url}
-				previewIMG={hit.preview_image_url}
-				isPro={hit.taxonomies.cost === 'pro'}
-				serial={hit.post_number}
-				onRequestInsert={() => onRequestInsert(hit.gutenberg_code)}
-			/>
-		);
-	};
-
->>>>>>> Patterns modal
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -1031,7 +969,6 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-<<<<<<< HEAD
 			{(type === 'button-icon' ||
 				type === 'navigation-icon' ||
 				type === 'search-icon' ||
@@ -1288,43 +1225,6 @@ const LibraryContainer = props => {
 						<div className='maxi-cloud-container__sc__content-sc'>
 							<Stats translations={resultsCount} />
 							<InfiniteHits hitComponent={scResults} />
-=======
-			{type === 'patterns' && (
-				<div className='maxi-cloud-container__patterns'>
-					<InstantSearch
-						indexName='maxi_posts_post'
-						searchClient={searchClient}
-					>
-						<div className='maxi-cloud-container__top-menu'>
-							<Menu
-								attribute='taxonomies.gutenberg_type'
-								defaultRefinement='Block Patterns'
-							/>
-						</div>
-						<div className='maxi-cloud-container__top'>
-							<RefinementList attribute='taxonomies.cost' />
-						</div>
-						<div className='maxi-cloud-container__sidebar'>
-							<RefinementList attribute='taxonomies.light_or_dark' />
-							<SearchBox
-								submit={false}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
-							<HierarchicalMenu
-								attributes={[
-									'taxonomies_hierarchical.category.lvl0',
-									'taxonomies_hierarchical.category.lvl1',
-									'taxonomies_hierarchical.category.lvl2',
-									'taxonomies_hierarchical.category.lvl3',
-								]}
-							/>
-							<ClearRefinements />
-						</div>
-						<div className='maxi-cloud-container__content-patterns'>
-							<InfiniteHits hitComponent={patternsResults} />
->>>>>>> Patterns modal
 						</div>
 					</InstantSearch>
 				</div>

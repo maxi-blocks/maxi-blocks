@@ -51,13 +51,6 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 		},
 	},
 	/* Save the block markup. */
-<<<<<<< HEAD:src/blocks/cloud-maxi/index.js
 	edit,
 	save: () => null,
-=======
-	save: () => {
-		return null;
-	},
-	edit,
->>>>>>> Clean Cloud Maxi files:src/blocks/cloud-maxi/cloud-maxi.js
 });

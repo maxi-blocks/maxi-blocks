@@ -13,6 +13,11 @@ import SettingTabsControl from '../setting-tabs-control';
  */
 import classnames from 'classnames';
 
+/**
+ * Styles and icons
+ */
+import './editor.scss';
+
 const AxisPositionControl = ({
 	label,
 	onChange,

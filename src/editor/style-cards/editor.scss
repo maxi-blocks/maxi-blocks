@@ -75,6 +75,14 @@ body {
 		}
 	}
 }
+.maxi-style-cards__sc{
+	&__more-sc--select{
+		.css-swenwd-Control{
+			border-width: 1.5px;
+			border-radius: 4px;
+		}
+	}
+}
 .maxi-style-cards-customise-card-button,
 .maxi-style-cards__sc__more-sc--select,
 .components-button.maxi-style-cards__sc__actions--apply,
@@ -333,7 +341,7 @@ body {
 					justify-content: center;
 					transition: all 0.5s;
 					border: 1px solid #dddfe1;
-					border-radius: 0 5px 0;
+					border-radius: 5px;
 					padding: 8px;
 					color: #232533;
 				}
@@ -484,6 +492,7 @@ body {
 					margin-right: 8px;
 					justify-content: center;
 					border: 1px solid rgb(var(--maxi-light-color-4));
+					border-radius: 5px;
 					transition: 0.1s;
 					&:hover {
 						background-color: #edf6fa;

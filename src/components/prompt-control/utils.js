@@ -47,12 +47,16 @@ export const getContentAttributesSection = (
 ) => {
 	const upperLimit = Math.ceil(characterCount * 1.2);
 	const lowerLimit = Math.floor(characterCount * 0.8);
+
 	return `- Content Attributes:
 	- Type: ${contentType}
 	- Tone: ${tone}
 	- Writing Style: ${writingStyle}
 	- Language: ${language}
-	- Length: ${lowerLimit}-${upperLimit} (ideal: ${characterCount}) characters`;
+	- Length:
+	  - Between ${lowerLimit} to ${upperLimit} characters.
+	  - Ideal length is ${characterCount} characters.
+	  - Characters include letters, numbers, punctuation, and spaces.`;
 };
 
 export const getContextSection = context => {

@@ -66,8 +66,7 @@ export const getContextSection = context => {
 		.map(({ l: label, c: content }) => `\t- ${label}: ${content}`)
 		.join('\n');
 
-	return `- Page Context:
-\t[IMPORTANT: Use the context ONLY for understanding the page's theme. DO NOT directly copy or use any phrases from this section in your response.]
+	return `\n- Existing Page Elements:
 ${contextSection}`;
 };
 
@@ -114,7 +113,10 @@ export const getFormattedMessages = async (
 	]);
 
 	const messages = await chatPrompt.formatMessages({});
-	console.log(systemMessageTemplate, messages);
+
+	// Debugging
+	console.log(systemMessageTemplate);
+	console.log(humanMessageTemplate);
 	return messages;
 };
 

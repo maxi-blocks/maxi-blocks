@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { CONTENT_TYPE_DESCRIPTIONS, CONTENT_TYPE_EXAMPLES } from './constants';
+import { CONTENT_TYPE_EXAMPLES } from './constants';
 
 /**
  * External dependencies
@@ -18,7 +18,7 @@ import {
 	HumanMessagePromptTemplate,
 	SystemMessagePromptTemplate,
 } from 'langchain/prompts';
-import { isEmpty, startCase } from 'lodash';
+import { isEmpty } from 'lodash';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeysToLabels = {
@@ -277,7 +277,7 @@ export const handleContentGeneration = async ({
 			});
 
 			console.error(error.response.data.error);
-		} else if (!error.name === 'AbortError') {
+		} else if (error.name !== 'AbortError') {
 			console.error(error);
 		}
 	}

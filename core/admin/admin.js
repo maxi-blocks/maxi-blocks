@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	);
 
 	if (dropdowns) {
-		Array.from(dropdowns)?.forEach(dropdown => {
+		Array.from(dropdowns).forEach(dropdown => {
 			const dropdownInput = document.querySelector(
 				`input#${dropdown.id}`
 			);

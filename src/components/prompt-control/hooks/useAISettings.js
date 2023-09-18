@@ -19,7 +19,7 @@ const useAISettings = () => {
 				const maxiSettings = await receiveMaxiSettings();
 
 				const AISettings = Object.entries(
-					maxiSettings?.ai_settings
+					maxiSettings.ai_settings
 				).reduce((acc, [key, value]) => {
 					const newKey = camelCase(key);
 					acc[newKey] = value;

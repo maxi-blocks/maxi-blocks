@@ -56,6 +56,9 @@
 		&:not(.maxi-tabs-control--disable-padding) {
 			margin-bottom: 0;
 		}
+		&--bottom-space{
+			margin-bottom: 8px !important;
+		}
 		&__button {
 			position: relative;
 			display: flex;
@@ -157,6 +160,7 @@
 			padding: 25px 0 0;
 			margin-bottom: 8px;
 			border-radius: 5px;
+			overflow: hidden;
 		}
 
 		.maxi-tab-content {

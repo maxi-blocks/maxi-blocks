@@ -3,9 +3,11 @@
 
 	&__item {
 		background: white;
-		&[data-name='box shadow'] .maxi-accordion-control__item__panel {
-			padding: 0;
-		}
+		&[data-name='dots'] .maxi-accordion-control__item__panel ,
+		&[data-name='icon colour'] .maxi-accordion-control__item__panel ,
+		&[data-name='arrows'] .maxi-accordion-control__item__panel ,
+		&[data-name='box shadow'] .maxi-accordion-control__item__panel ,
+		&[data-name='icon'] .maxi-accordion-control__item__panel ,
 		&[data-name='border'] .maxi-accordion-control__item__panel {
 			padding: 0;
 		}

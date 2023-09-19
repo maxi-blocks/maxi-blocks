@@ -76,67 +76,41 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 ],
             ];
 
-            $shape_divider_top_styles =
-                array_key_exists('shape-divider-top-status', $props) &&
-                $props['shape-divider-top-status'] ?
-                    [
-                        ' .maxi-shape-divider__top' => [
-                            'shapeDivider' =>  get_shape_divider_styles(
-                                get_group_attributes(
-                                    $props,
-                                    [
-                                        'shapeDivider',
-                                        'padding'
-                                    ]
-                                ),
-                                'top'
-                            ),
-                        ' .maxi-shape-divider__top svg' => [
-                            'shapeDivider' =>  get_shape_divider_svg_styles(
-                                get_group_attributes(
-                                    $props,
-                                    [
-                                        'shapeDivider',
-                                        'padding'
-                                    ]
-                                ),
-                                'top',
-                                $block_style
-                            ),
-                        ]
-                        ]
-                    ] : [];
-            $shape_divider_bottom_styles =
-                array_key_exists('shape-divider-bottom-status', $props) &&
-                $props['shape-divider-bottom-status'] ?
-            [
-                ' .maxi-shape-divider__bottom' => [
-                    'shapeDivider' =>  get_shape_divider_styles(
-                        get_group_attributes(
-                            $props,
-                            [
-                                'shapeDivider',
-                                'padding'
-                            ]
-                        ),
-                        'bottom'
-                    ),
-                ' .maxi-shape-divider__bottom svg' => [
-                    'shapeDivider' =>  get_shape_divider_svg_styles(
-                        get_group_attributes(
-                            $props,
-                            [
-                                'shapeDivider',
-                                'padding'
-                            ]
-                        ),
-                        'bottom',
-                        $block_style
-                    ),
-                ]
-                ]
-            ] : [];
 
+            function get_shape_divider_styles($props, $position) {
+                return array_key_exists("shape-divider-{$position}-status", $props) &&
+                    $props["shape-divider-{$position}-status"] ?
+                     [
+                         " .maxi-shape-divider__{$position}" => [
+                             'shapeDivider' =>  get_shape_divider_styles(
+                                 get_group_attributes(
+                                     $props,
+                                     [
+                                         'shapeDivider',
+                                         'padding'
+                                     ]
+                                 ),
+                                 $position
+                             ),
+                         " .maxi-shape-divider__{$position} svg" => [
+                             'shapeDivider' =>  get_shape_divider_svg_styles(
+                                 get_group_attributes(
+                                     $props,
+                                     [
+                                         'shapeDivider',
+                                         'padding'
+                                     ]
+                                 ),
+                                 $position,
+                                 $block_style
+                             ),
+                         ]
+                         ]
+                ] : [];
+            }
+
+            $shape_divider_top_styles = get_shape_divider_styles($props, 'top');
+            $shape_divider_bottom_styles = get_shape_divider_styles($props, 'bottom');
 
             $background_styles = get_block_background_styles(
                 array_merge(

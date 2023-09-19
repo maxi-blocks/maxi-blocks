@@ -24,11 +24,11 @@ function get_shape_styles($obj, $target, $blockStyle)
         $color = $palette_attributes['color'];
 
         if ($palette_status && $palette_color) {
-            $response['general']['fill'] = get_color_rgba_string(
-                "color-$palette_color",
-                $palette_opacity,
-                $blockStyle
-            );
+            $color_rgba_string = get_color_rgba_string("color-$palette_color", $palette_opacity, $blockStyle);
+            if (!$color_rgba_string) {
+                return $response;
+            }
+            $response['general']['fill'] = $color_rgba_string;
         } elseif (!$palette_status && isset($color)) {
             $response['general']['fill'] = $color;
         }

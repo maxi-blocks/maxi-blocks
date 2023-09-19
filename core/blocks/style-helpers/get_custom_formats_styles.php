@@ -8,6 +8,9 @@ function get_custom_formats_styles(
     $text_level,
     $is_hover = false,
 ) {
+    if (!is_string($target)) {
+        throw new InvalidArgumentException('Target must be a string');
+    }
     $response = [];
 
     if (is_array($custom_formats)) {

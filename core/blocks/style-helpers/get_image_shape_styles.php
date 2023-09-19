@@ -13,30 +13,19 @@ function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_gen
     foreach ($breakpoints as $breakpoint) {
         $transform_string = '';
 
-        $scale = get_last_breakpoint_attribute([
-            'target' => $prefix . 'image-shape-scale',
-            'breakpoint' => $breakpoint,
-            'attributes' => $obj,
-            'is_hover' => $is_hover,
-        ]);
-        $rotate = get_last_breakpoint_attribute([
-            'target' => $prefix . 'image-shape-rotate',
-            'breakpoint' => $breakpoint,
-            'is_hover' => $is_hover,
-            'attributes' => $obj,
-        ]);
-        $flip_x = get_last_breakpoint_attribute([
-            'target' => $prefix . 'image-shape-flip-x',
-            'breakpoint' => $breakpoint,
-            'is_hover' => $is_hover,
-            'attributes' => $obj,
-        ]);
-        $flip_y = get_last_breakpoint_attribute([
-            'target' => $prefix . 'image-shape-flip-y',
-            'breakpoint' => $breakpoint,
-            'is_hover' => $is_hover,
-            'attributes' => $obj,
-        ]);
+        $getLastBreakpointAttribute = function($target) use ($prefix, $breakpoint, $obj, $is_hover) {
+            return get_last_breakpoint_attribute([
+                'target' => $prefix . $target,
+                'breakpoint' => $breakpoint,
+                'attributes' => $obj,
+                'is_hover' => $is_hover,
+            ]);
+        };
+            
+        $scale = $getLastBreakpointAttribute('image-shape-scale');
+        $rotate = $getLastBreakpointAttribute('image-shape-rotate');
+        $flip_x = $getLastBreakpointAttribute('image-shape-flip-x');
+        $flip_y = $getLastBreakpointAttribute('image-shape-flip-y');
 
         if (is_numeric($scale)) {
             $omit_transform_scale = $omit_transform_scale && $scale === 100;
@@ -51,11 +40,9 @@ function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_gen
             if ($target === 'svg') {
                 $transform_string .= 'rotate(' . $rotate . 'deg) ';
             } else {
-                if (($flip_x && !$flip_y) || (!$flip_x && $flip_y)) {
-                    $transform_string .= 'rotate(' . $rotate . 'deg) ';
-                } else {
-                    $transform_string .= 'rotate(' . (-$rotate) . 'deg) ';
-                }
+                $shouldRotatePositively = ($flip_x xor $flip_y);
+                $rotationDegree = $shouldRotatePositively ? $rotate : -$rotate;
+                $transform_string .= "rotate($rotationDegree" . 'deg) ';
             }
         }
 
@@ -67,10 +54,8 @@ function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_gen
             $transform_string .= 'scaleY(-1) ';
         }
 
-        $transform_obj = !empty($transform_string) ? ['transform' => $transform_string] : [];
-
-        if (!empty($transform_obj)) {
-            $response[$breakpoint] = $transform_obj;
+        if (!empty($transform_string)) {
+            $response[$breakpoint] = ['transform' => $transform_string];
         }
     }
 

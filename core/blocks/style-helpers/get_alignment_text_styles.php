@@ -30,16 +30,9 @@ function get_alignment_text_styles($obj, $type = 'text')
                     break;
                 case 'right':
                     {
-                        if($type === 'list') {
-                            $response[$breakpoint] = [
-                                $type === 'list' ? 'list-style-position' : 'text-align' =>
-                                    $type === 'list' ? 'inside' : 'initial',
-                            ];
-                        } else {
-                            $response[$breakpoint] = [
-                                'text-align' => 'right',
-                            ];
-                        }
+                        $response[$breakpoint] = $type === 'list'
+                            ? ['list-style-position' => 'inside']
+                            : ['text-align' => 'right'];
 
                         break;
                     }

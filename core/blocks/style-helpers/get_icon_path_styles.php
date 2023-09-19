@@ -15,7 +15,9 @@ function get_icon_path_styles($obj, $is_hover = false, $prefix = '')
         $icon_stroke = $obj[get_attribute_key('icon-stroke', $is_hover, $prefix, $breakpoint)] ?? null;
 
         if (!is_null($icon_stroke)) {
-            $response[$breakpoint]['stroke-width'] = $icon_stroke;
+            if (is_numeric($icon_stroke) && $icon_stroke > 0) {
+                $response[$breakpoint]['stroke-width'] = $icon_stroke;
+            }
         }
 
         if (empty($response[$breakpoint]) && $breakpoint !== 'general') {

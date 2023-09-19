@@ -13,7 +13,7 @@ function get_transition_styles($props, $transition_obj)
     $transition = $props['transition'] ?? null;
 
     if (empty($transition)) {
-        return null;
+        return [];
     }
 
     $response = [];

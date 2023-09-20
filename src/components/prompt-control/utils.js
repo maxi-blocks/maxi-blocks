@@ -279,7 +279,10 @@ export const handleContentGeneration = async ({
 			});
 
 			console.error(error.response.data.error);
-		} else if (error.name !== 'AbortError') {
+		} else if (
+			error.name !== 'AbortError' &&
+			error.message !== 'Cancel: canceled'
+		) {
 			console.error(error);
 		}
 	}

@@ -17,13 +17,11 @@ import TextContext from '../../extensions/text/formats/textContext';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
-	getContentAttributesSection,
 	getContext,
 	getContextSection,
 	getExamplesSection,
 	getFormattedMessages,
 	getSiteInformation,
-	getStyleGuide,
 	handleContentGeneration,
 } from './utils';
 import {
@@ -35,7 +33,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { ceil, floor, isEmpty, lowerCase } from 'lodash';
 
 /**
  * Styles
@@ -140,20 +138,26 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	}
 
 	const getMessages = async () => {
-		const systemTemplate = `You are tasked with generating content for a website. Please follow these guidelines:
+		const systemTemplate = `${getSiteInformation(
+			AISettings
+		)}${getContextSection(context)}
+${getExamplesSection(contentType)}`;
 
-${getSiteInformation(AISettings)}
-${getContentAttributesSection(
-	contentType,
-	tone,
-	writingStyle,
-	language,
-	characterCount
-)}${getContextSection(context)}
-${getExamplesSection(contentType)}
-${getStyleGuide(prompt, context)}`;
-
-		const humanTemplate = prompt;
+		const humanTemplate = `Please craft a ${lowerCase(tone)} ${lowerCase(
+			writingStyle
+		)} ${lowerCase(contentType)} between ${floor(
+			characterCount * 0.8
+		)} to ${ceil(characterCount * 1.2)} characters, matching the ${
+			language === 'Language of the prompt'
+				? "language of user's message"
+				: `${language} language`
+		}${
+			!['Quotes', 'Pull quotes Testimonial'].includes(contentType)
+				? ', and avoid using quotation marks'
+				: ''
+		}. Ensure it aligns with the site details and is polished for the website.${
+			prompt ? `\nUser's custom instructions: ${prompt}` : ''
+		}`;
 
 		return getFormattedMessages(systemTemplate, humanTemplate);
 	};

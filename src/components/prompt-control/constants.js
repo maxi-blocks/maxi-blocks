@@ -29,9 +29,6 @@ export const CONTENT_TYPES_DATA = {
 	'Body text': {
 		description:
 			'Write informative and engaging body text that elaborates on the main topic.',
-		examples: [
-			'Our products are designed with the user in mind, offering a range of innovative features...',
-		],
 		defaultCharacterCountGuideline: 500, // Arbitrary number. This could be much longer depending on context.
 	},
 	Quotes: {

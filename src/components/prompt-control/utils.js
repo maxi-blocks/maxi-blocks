@@ -18,7 +18,7 @@ import {
 	HumanMessagePromptTemplate,
 	SystemMessagePromptTemplate,
 } from 'langchain/prompts';
-import { isEmpty } from 'lodash';
+import { ceil, floor, isEmpty } from 'lodash';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeysToLabels = {
@@ -32,10 +32,10 @@ export const getSiteInformation = AISettings => {
 
 	const siteInformation = Object.keys(AISettingsKeysToLabels)
 		.filter(key => AISettings[key] && AISettings[key].trim() !== '')
-		.map(key => `\t- ${AISettingsKeysToLabels[key]}: ${AISettings[key]}`)
+		.map(key => `- ${AISettingsKeysToLabels[key]}: ${AISettings[key]}`)
 		.join('\n');
 
-	return siteInformation ? `- Site Information:\n${siteInformation}` : '';
+	return siteInformation ? `Site Details:\n${siteInformation}` : '';
 };
 
 export const getContentAttributesSection = (
@@ -45,28 +45,29 @@ export const getContentAttributesSection = (
 	language,
 	characterCount
 ) => {
-	const upperLimit = Math.ceil(characterCount * 1.2);
-	const lowerLimit = Math.floor(characterCount * 0.8);
-
-	return `- Content Attributes:
-	- Type: ${contentType}
-	- Tone: ${tone}
-	- Writing Style: ${writingStyle}
-	- Language: ${language}
-	- Length:
-	  - Between ${lowerLimit} to ${upperLimit} characters.
-	  - Ideal length is ${characterCount} characters.
-	  - Characters include letters, numbers, punctuation, and spaces.`;
+	const upperLimit = ceil(characterCount * 1.2);
+	const lowerLimit = floor(characterCount * 0.8);
+	return `Content Specifications:
+- Type: ${contentType}
+- Ensure the response is between ${lowerLimit} to ${upperLimit} characters in length.
+- Tone: ${tone}
+- Style: ${writingStyle}
+- Language: ${
+		language === 'Language of the prompt'
+			? 'Match the language of this prompt'
+			: language
+	}
+- Avoid using quotation marks in your answer`;
 };
 
 export const getContextSection = context => {
 	if (!context) return '';
 
 	const contextSection = context
-		.map(({ l: label, c: content }) => `\t- ${label}: ${content}`)
+		.map(({ l: label, c: content }) => `- ${label}: ${content}`)
 		.join('\n');
 
-	return `\n- Existing Page Elements:
+	return `\nExisting Page Elements (Do not reuse or closely mimic these phrases):
 ${contextSection}`;
 };
 
@@ -76,25 +77,13 @@ export const getExamplesSection = contentType => {
 		return '';
 	}
 
-	const beforeEveryExample = '\n\t- ';
+	const beforeEveryExample = '\n- ';
 	const formattedExamples = `${beforeEveryExample}${examples.join(
 		beforeEveryExample
 	)}`;
 
-	return `- Examples:${formattedExamples}`;
+	return `Examples (Refer to these for the desired output format and style. Do not reuse phrases):${formattedExamples}`;
 };
-
-export const getStyleGuide = (prompt, context) => `- Style Guide:
-\t- Develop content based on the details provided.
-\t- Do not directly incorporate or restate phrases from ${
-	context ? "the 'Page Context' section or" : ''
-} the 'Examples' section.${
-	prompt
-		? "\n\t- Your output should be in line with the user's query while referencing site information when relevant."
-		: ''
-}
-\t- Provide a single response.
-\t- Avoid using quotation marks around the answer.`;
 
 export const getFormattedMessages = async (
 	systemMessageTemplate,

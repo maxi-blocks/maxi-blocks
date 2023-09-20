@@ -293,7 +293,7 @@ wp.domReady(() => {
 		const styleCard = receiveMaxiActiveStyleCard();
 		const styleCards = receiveMaxiStyleCards();
 
-		if (styleCard && styleCards) {
+		if (styleCard.value && styleCards) {
 			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
 				'maxiBlocks/style-cards'
 			);

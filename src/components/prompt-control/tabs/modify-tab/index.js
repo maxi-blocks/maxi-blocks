@@ -15,7 +15,10 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
-import { MODIFICATION_ACTIONS } from '../../constants';
+import {
+	MODIFICATION_ACTIONS,
+	MODIFICATION_MODIFICATORS,
+} from '../../constants';
 
 /**
  * Styles
@@ -61,7 +64,6 @@ const ModifyTab = ({
 		} = data;
 		const {
 			prompt,
-			characterCount,
 			temperature,
 			contentType,
 			tone,
@@ -69,52 +71,47 @@ const ModifyTab = ({
 			language,
 		} = settings || {};
 
-		const modificationAction =
-			MODIFICATION_ACTIONS[modificationType] || 'modifying';
-
 		const customExplanation =
 			modificationType === 'custom'
-				? `- Custom Instructions: ${customValue}`
+				? `, using the user-provided instruction: ${customValue}`
 				: '';
 		const languageExplanation =
 			modificationType === 'translate'
-				? `- Language to translate to: ${customValue}`
+				? ` to ${customValue} language`
 				: '';
 
 		const generatedTextExplanation = !refFromSelectedText
 			? `${prompt ? `- Original Prompt: ${prompt}` : ''}
-${getContentAttributesSection(
-	contentType,
-	tone,
-	writingStyle,
-	language,
-	characterCount
-)}
+${getContentAttributesSection(contentType, tone, writingStyle, language)}
 - Temperature: ${temperature}`
 			: '';
 
-		const rephraseInstruction =
-			modificationType === 'rephrase'
-				? 'The rephrased content should be approximately the same length as the original text.'
-				: '';
+		const getAdditionalInstruction = () => {
+			switch (modificationType) {
+				case 'rephrase':
+					return ' Reword the entire text to offer a fresh perspective.';
+				case 'shorten':
+					return ' Drastically condense the text to make it much more succinct.';
+				case 'lengthen':
+					return ' Enhance the text by adding relevant details. Aim for a 10-20% increase from the original length.';
+				default:
+					return '';
+			}
+		};
 
-		const systemTemplate = `
-You are a helpful assistant tasked with ${modificationAction} the following ${
-			refFromSelectedText
-				? 'selected on website'
-				: 'generated for website'
-		} text. Adhere to these guidelines:
-${languageExplanation}${generatedTextExplanation}
-${customExplanation}${getSiteInformation(AISettings)}
+		const systemTemplate = `${getSiteInformation(AISettings)}
 ${getContextSection(getContext(contextOption, clientId))}
-${rephraseInstruction}
-Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
+${generatedTextExplanation}`;
 
-		const humanTemplate =
+		const humanTemplate = `Please ${modificationType}${languageExplanation} the following text${customExplanation}.${getAdditionalInstruction()} Ensure the ${
+			MODIFICATION_MODIFICATORS[modificationType]
+		} content maintains the original intent and context, aligns with the provided site details, and is polished and ready for the website.
+
+Original text: ${
 			selectedResultId === 'selectedText'
 				? selectedText
-				: results.find(result => result.id === selectedResultId)
-						.content;
+				: results.find(result => result.id === selectedResultId).content
+		}`;
 
 		return getFormattedMessages(systemTemplate, humanTemplate);
 	};

@@ -42,14 +42,10 @@ export const getContentAttributesSection = (
 	contentType,
 	tone,
 	writingStyle,
-	language,
-	characterCount
+	language
 ) => {
-	const upperLimit = ceil(characterCount * 1.2);
-	const lowerLimit = floor(characterCount * 0.8);
 	return `Content Specifications:
 - Type: ${contentType}
-- Ensure the response is between ${lowerLimit} to ${upperLimit} characters in length.
 - Tone: ${tone}
 - Style: ${writingStyle}
 - Language: ${

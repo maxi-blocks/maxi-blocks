@@ -1,0 +1,28 @@
+name: softwaretesting.ai code analysis
+
+on: [pull_request]
+
+jobs:
+  CheckCoverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+    - name: Install dependencies
+      run: npm ci
+    - name: Run Jest tests and generate coverage report
+      run: npm test -- --coverage --coverageReporters="json-summary" --coverageReporters="json"
+    - name: Archive coverage report (json-summary)
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-summary-report
+        path: coverage/coverage-summary.json
+    - name: Archive coverage report (json)
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage/coverage-final.json

@@ -15,10 +15,7 @@ import {
 	getSiteInformation,
 	handleContentGeneration,
 } from '../../utils';
-import {
-	MODIFICATION_ACTIONS,
-	MODIFICATION_MODIFICATORS,
-} from '../../constants';
+import { MODIFICATION_MODIFICATORS } from '../../constants';
 
 /**
  * Styles

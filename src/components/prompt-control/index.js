@@ -257,6 +257,7 @@ ${getExamplesSection(contentType)}`;
 					},
 				]}
 				disablePadding
+				hasBorder
 				setTab={setTab}
 			/>
 		</div>

@@ -9,6 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
 import ResultCards from '../../components/result-cards';
 import {
 	getContentAttributesSection,
+	getContext,
 	getContextSection,
 	getFormattedMessages,
 	getSiteInformation,
@@ -22,10 +23,11 @@ import { MODIFICATION_ACTIONS } from '../../constants';
 import './editor.scss';
 
 const ModifyTab = ({
+	clientId,
 	results,
 	AISettings,
 	settings,
-	context,
+	contextOption,
 	selectedText,
 	modifyOption,
 	customValue,
@@ -104,7 +106,7 @@ You are a helpful assistant tasked with ${modificationAction} the following ${
 		} text. Adhere to these guidelines:
 ${languageExplanation}${generatedTextExplanation}
 ${customExplanation}${getSiteInformation(AISettings)}
-${getContextSection(context)}
+${getContextSection(getContext(contextOption, clientId))}
 ${rephraseInstruction}
 Your task is to maintain the original intent and context while ${modificationAction} the text. The content must align with the given criteria, and any custom instructions provided, and be suitable for immediate use on the website.`;
 

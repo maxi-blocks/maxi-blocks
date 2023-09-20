@@ -65,7 +65,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [contextOption, setContextOption] = useState(
 		Object.keys(CONTEXT_OPTIONS)[0]
 	);
-	const [context, setContext] = useState(null);
 	const [results, setResults] = useResultsHandling();
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
@@ -109,10 +108,6 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedText]);
 
-	useEffect(() => {
-		setContext(getContext(contextOption, clientId));
-	}, [contextOption, clientId]);
-
 	if (isEmpty(AISettings)) {
 		return <ContentLoader />;
 	}
@@ -140,7 +135,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const getMessages = async () => {
 		const systemTemplate = `${getSiteInformation(
 			AISettings
-		)}${getContextSection(context)}
+		)}${getContextSection(getContext(contextOption, clientId))}
 ${getExamplesSection(contentType)}`;
 
 		const humanTemplate = `Please craft a ${lowerCase(tone)} ${lowerCase(
@@ -240,10 +235,11 @@ ${getExamplesSection(contentType)}`;
 						label: __('Modify', 'maxi-blocks'),
 						content: (
 							<ModifyTab
+								clientId={clientId}
 								results={results}
 								AISettings={AISettings}
 								settings={settings}
-								context={context}
+								contextOption={contextOption}
 								selectedText={selectedText}
 								modifyOption={modifyOption}
 								customValue={customValue}

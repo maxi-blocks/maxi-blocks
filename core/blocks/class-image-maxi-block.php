@@ -476,7 +476,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 ];
             }
 
-            if ($fit_parent_size && !$is_first_on_hierarchy) {
+            if (!$is_first_on_hierarchy) {
                 $response['fitParentSize'] = self::get_image_fit_wrapper($props);
             }
 

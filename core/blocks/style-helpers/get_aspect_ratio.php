@@ -1,22 +1,32 @@
 <?php
 
-function get_aspect_ratio($ratio)
-{
+function get_aspect_ratio($ratio) {
     if ($ratio === 'original') {
         return null;
     }
 
     $aspectRatio = null;
 
-    $aspectRatios = [
-        'ar11' => '1 / 1',
-        'ar23' => '2 / 3',
-        'ar32' => '3 / 2',
-        'ar43' => '4 / 3',
-        'ar169' => '16 / 9'
-     ];
-
-    $aspectRatio = $aspectRatios[$ratio] ?? '';
+    switch ($ratio) {
+        case 'ar11':
+            $aspectRatio = '1 / 1';
+            break;
+        case 'ar23':
+            $aspectRatio = '2 / 3';
+            break;
+        case 'ar32':
+            $aspectRatio = '3 / 2';
+            break;
+        case 'ar43':
+            $aspectRatio = '4 / 3';
+            break;
+        case 'ar169':
+            $aspectRatio = '16 / 9';
+            break;
+        default:
+            $aspectRatio = '';
+            break;
+    }
 
     return [
         'ratio' => [

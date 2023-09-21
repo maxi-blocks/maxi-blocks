@@ -392,7 +392,10 @@ class edit extends MaxiBlockComponent {
 								}%`,
 							}}
 							showHandle={
-								isSelected && !fullWidth && !useInitSize
+								isSelected &&
+								!fullWidth &&
+								!useInitSize &&
+								!fitParentSize
 							}
 							maxWidth={getMaxWidth()}
 							enable={{

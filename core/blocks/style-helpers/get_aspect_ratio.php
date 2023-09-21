@@ -1,6 +1,7 @@
 <?php
 
-function get_aspect_ratio($ratio) {
+function get_aspect_ratio($ratio)
+{
     if ($ratio === 'original') {
         return null;
     }
@@ -14,7 +15,7 @@ function get_aspect_ratio($ratio) {
         'ar43' => '4 / 3',
         'ar169' => '16 / 9'
      ];
-    
+
     $aspectRatio = $aspectRatios[$ratio] ?? '';
 
     return [

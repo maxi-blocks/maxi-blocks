@@ -28,7 +28,7 @@ function get_shape_divider_styles($obj, $location)
         $result = [];
 
         foreach ($value as $pos => $val) {
-            if ($pos === "padding-$location") {
+            if (str_replace('padding-', '', $pos) === $location) {
                 $result[str_replace('padding-', '', $pos)] = '-' . $val;
             }
         }

@@ -2,9 +2,6 @@
 
 function get_zindex_styles($obj)
 {
-    if (!is_array($obj)) {
-        return [];
-    }
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

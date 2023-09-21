@@ -423,6 +423,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
         public static function get_image_object($props)
         {
+            $fit_parent_size = $props['fitParentSize'] ?? false;
             $image_ratio = $props['imageRatio'];
             $img_width = $props['imgWidth'];
             $use_init_size = $props['useInitSize'] ?? false;
@@ -467,7 +468,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 'obj' => get_group_attributes($props, 'clipPath'),
             ]);
 
-            if ($img_width) {
+            if ($img_width && !$fit_parent_size) {
                 $response['imgWidth'] = [
                     'general' => [
                         'width' => !$use_init_size ? "$img_width%" : $media_width . "px",

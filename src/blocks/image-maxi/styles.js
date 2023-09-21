@@ -305,11 +305,12 @@ const getImageFitWrapper = props => {
 
 const getImageObject = props => {
 	const {
+		fitParentSize,
 		imageRatio,
 		imgWidth,
-		useInitSize,
-		mediaWidth,
 		isFirstOnHierarchy,
+		mediaWidth,
+		useInitSize,
 	} = props;
 
 	return {
@@ -352,13 +353,16 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'clipPath'),
 			},
 		}),
-		...(imgWidth && {
-			imgWidth: {
-				general: {
-					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
+		...(imgWidth &&
+			!fitParentSize && {
+				imgWidth: {
+					general: {
+						width: !useInitSize
+							? `${imgWidth}%`
+							: `${mediaWidth}px`,
+					},
 				},
-			},
-		}),
+			}),
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),

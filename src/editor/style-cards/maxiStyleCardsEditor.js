@@ -70,9 +70,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const { key: selectedSCKey, value: selectedSCValue } =
 			selectedStyleCard;
 
-		console.log('selectedSCValue');
-		console.log(selectedSCValue);
-
 		return {
 			isRTL,
 			breakpoint,

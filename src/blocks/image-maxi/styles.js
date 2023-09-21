@@ -33,7 +33,7 @@ import data from './data';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -270,17 +270,21 @@ const getImageFitWrapper = props => {
 			attributes: props,
 		});
 
-		const size = objectSize * 100;
+		const size = round(objectSize * 100, 2);
 
 		response[breakpoint].height = `${size}%`;
 		response[breakpoint].width = `${size}%`;
 
 		const displacementCoefficient = 100 - size;
 
-		const horizontalDisplacement =
-			(displacementCoefficient * horizontalPosition) / 100;
-		const verticalDisplacement =
-			(displacementCoefficient * verticalPosition) / 100;
+		const horizontalDisplacement = round(
+			(displacementCoefficient * horizontalPosition) / 100,
+			2
+		);
+		const verticalDisplacement = round(
+			(displacementCoefficient * verticalPosition) / 100,
+			2
+		);
 
 		response[breakpoint].left = `${horizontalDisplacement}%`;
 		response[breakpoint].top = `${verticalDisplacement}%`;

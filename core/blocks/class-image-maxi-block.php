@@ -393,7 +393,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'attributes' => $props,
                 ]);
 
-                $size = $object_size * 100;
+                $size = round($object_size * 100, 2);
 
                 $response[$breakpoint]['height'] = "{$size}%";
                 $response[$breakpoint]['width'] = "{$size}%";
@@ -401,11 +401,15 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
                 $displacement_coefficient = 100 - $size;
 
-                $horizontal_displacement =
-                    ($displacement_coefficient * $horizontal_position) / 100;
+                $horizontal_displacement = round(
+                    ($displacement_coefficient * $horizontal_position) / 100,
+                    2
+                );
 
-                $vertical_isplacement =
-                    ($displacement_coefficient * $vertical_position) / 100;
+                $vertical_isplacement = round(
+                    ($displacement_coefficient * $vertical_position) / 100,
+                    2
+                );
 
                 $response[$breakpoint]['left'] = "$horizontal_displacement%";
                 $response[$breakpoint]['top'] = "$vertical_isplacement%";

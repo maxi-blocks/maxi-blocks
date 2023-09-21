@@ -45,7 +45,7 @@
 			width: 90% !important;
 			height: 27px !important;
 			border: 1px solid var(--maxi-grey-1-color) !important;
-			border-radius: 0 !important;
+			border-radius: 5px !important;
 			font-size: 12px !important;
 			box-shadow: none !important;
 
@@ -101,7 +101,7 @@
 					width: 100%;
 				}
 				.maxi-base-control__label {
-					margin-bottom: 8px;
+					margin-bottom: 10px;
 				}
 				.components-maxi-control__reset-button {
 					position: absolute;
@@ -132,18 +132,19 @@
 			width: 32px;
 			height: 32px;
 			padding: 0;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-1-color);
 			margin: 0;
 			background-color: #fff;
 			cursor: pointer;
 			transition: all 0.5s;
+			border-radius: 50%;
 
 			&--active {
-				border: 2px solid var(--maxi-primary-color);
+				border: 1px solid var(--maxi-light-blue-2-color);
 			}
 			&:focus {
-				background: var(--maxi-white-1-color);
-				border-color: var(--maxi-grey-6-color);
+				background: var(--maxi-light-blue-2-color);
+				border-color: var(--maxi-light-blue-2-color);
 				box-shadow: none;
 				outline: none;
 			}
@@ -153,9 +154,9 @@
 			}
 		}
 		&-item {
-			width: 20px;
-			height: 20px;
-			border: 1px solid var(--maxi-black-1-color);
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
 		}
 	}
 	&__opacity {
@@ -187,7 +188,7 @@
 				width: 32px;
 				height: 32px;
 				border: 1px solid var(--maxi-grey-1-color);
-				border-radius: 0;
+				border-radius: 50%;
 				margin: auto;
 				opacity: 1;
 				float: left;

@@ -1,32 +1,50 @@
 .maxi-accordion-control__item {
 	&__flexbox {
+		.maxi-tabs-control:first-child {
+			.maxi-tabs-control__button {
+				&[aria-pressed='true'] {
+					color: var(--maxi-black-1-color);
+				}
+			}
+		}
 		.maxi-tabs-content {
 			&:not(:first-child) {
-				.maxi-tabs-control__button {
-					border-bottom: 1px solid var(--maxi-grey-1-color);
-					padding: 6px 3px;
-					svg {
-						width: 18px;
-						height: 18px;
-					}
-					&::after {
-						content: '';
-						position: absolute;
-						bottom: -1px;
-						left: -1px;
-						right: -1px;
-						display: block;
-						height: 2px;
-						background-color: var(--maxi-secondary-color);
-						opacity: 0;
-					}
-					&--selected {
-						&::after {
-							opacity: 1;
-						}
+				.maxi-tabs-control {
+					column-gap: 5px;
+					&__button {
+						border: 1px solid var(--maxi-grey-1-color);
+						border-radius: 4px;
+						padding: 6px 3px;
+						transition: all 0.5s;
 						svg {
-							path {
-								fill: var(--maxi-secondary-color);
+							width: 18px;
+							height: 18px;
+							fill: var(--maxi-grey-6-color) !important;
+						}
+						// &::after {
+						// 	content: '';
+						// 	position: absolute;
+						// 	bottom: -1px;
+						// 	left: -1px;
+						// 	right: -1px;
+						// 	display: block;
+						// 	height: 2px;
+						// 	background-color: var(--maxi-secondary-color);
+						// 	opacity: 0;
+						// }
+						&:hover {
+							background-color: var(--maxi-light-blue-2-color);
+						}
+						&--selected {
+							background-color: var(--maxi-light-blue-2-color);
+							border-color: var(--maxi-light-blue-2-color);
+							// &::after {
+							// 	opacity: 1;
+							// }
+							svg {
+								path {
+									fill: var(--maxi-secondary-color);
+								}
 							}
 						}
 					}
@@ -34,6 +52,33 @@
 				.maxi-flex-options__wrap {
 					.maxi-base-control__label {
 						margin-bottom: 3px !important;
+					}
+				}
+			}
+		}
+	}
+	.maxi-flex-wrap-control {
+		.maxi-tabs-control {
+			column-gap: 5px;
+			&__button {
+				border: 1px solid var(--maxi-grey-1-color);
+				border-radius: 4px;
+				padding: 6px 3px;
+				transition: all 0.5s;
+				svg {
+					width: 18px;
+					height: 18px;
+				}
+				&:hover {
+					background-color: var(--maxi-light-blue-2-color);
+				}
+				&--selected {
+					background-color: var(--maxi-light-blue-2-color);
+					border-color: var(--maxi-light-blue-2-color);
+					svg {
+						path {
+							fill: var(--maxi-secondary-color);
+						}
 					}
 				}
 			}

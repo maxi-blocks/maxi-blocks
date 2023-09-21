@@ -1,4 +1,25 @@
 .maxi-advanced-number-control {
+	&__second-style{
+		.maxi-base-control__field{
+			position: relative;
+		}
+		.maxi-base-control__label{
+			position: absolute;
+			top: -8px;
+			left: 8px;
+			font-size: 8px;
+			color: #5d5e5f;
+			font-style: italic;
+			background: #fff;
+			padding: 0 5px;
+			pointer-events: none;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+		}
+		.maxi-select-control__input{
+			padding: 9px 8px;
+		}
+	}
 	.maxi-base-control {
 		margin-bottom: 0;
 	}
@@ -6,6 +27,36 @@
 		width: 20%;
 		height: 31px;
 		flex: none;
+		&::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+		}
+		&:after,
+		&:before {
+		  position: absolute;
+		  right: 5px;
+		  width: 1.6em;
+		  height: .9em;
+		  font-size: 10px;
+		  pointer-events: none;
+		  background: #fff;
+		}
+
+		&:after {
+		  color: red;
+		  content: "\25B2";
+		   width:12px;
+		  background-color:green;
+		  margin-top: 1px;
+		}
+
+		&:before {
+		  color: red;
+		  width:12px;
+		  content: "\25BC";
+		   background-color:green;
+		  margin-bottom: 5px;
+		  bottom: -.5em;
+		}
 	}
 	.components-range-control {
 		width: 100%;

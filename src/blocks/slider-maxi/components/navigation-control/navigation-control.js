@@ -38,6 +38,7 @@ const NavigationIconsControl = props => {
 
 	return (
 		<SettingTabsControl
+			hasMarginBottom
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),

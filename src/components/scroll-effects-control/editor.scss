@@ -5,10 +5,98 @@
 			color: #999;
 			font-size: 12px;
 		}
+		.maxi-tabs-control__button{
+			&:not(.maxi-tabs-control__button-rotate){
+				svg{
+					path{
+						stroke: var(--maxi-grey-11-color);
+						fill: var(--maxi-grey-11-color)
+					}
+				}
+			}
+			&-rotate{
+				svg{
+					path{
+						fill: var(--maxi-grey-11-color);
+					}
+				}
+			}
+			&-blur{
+				svg{
+					stroke: var(--maxi-grey-11-color);
+				}
+			}
+			&--selected:not(.maxi-tabs-control__button-rotate){
+				svg{
+					path{
+						stroke: var(--maxi-secondary-color);
+					}
+				}
+			}
+			&-rotate{
+				&.maxi-tabs-control__button--selected{
+					svg{
+						path{
+							fill: var(--maxi-secondary-color);
+						}
+					}
+				}
+
+			}
+			&-blur{
+				&.maxi-tabs-control__button--selected{
+					svg{
+						stroke: var(--maxi-secondary-color);
+					}
+				}
+			}
+		}
+		.maxi-tabs-control__button {
+			padding: 8.5px;
+			margin-right: 5px;
+			border: 1.5px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			&:last-child{
+				margin-right: 0;
+			}
+		}
+
+		.maxi-tabs-control__button[aria-pressed='true'] {
+			background-color: var(--maxi-light-blue-2-color) !important;
+			border-color: var(--maxi-light-blue-2-color) !important;
+		}
+		.maxi-tabs-control__button svg:not(.maxi-tabs-control__notification) {
+			height: 100%;
+			margin: 0;
+			fill: var(--maxi-secondary-color) !important;
+		}
+	}
+	.maxi-scroll-unique-control{
+		.maxi-settingstab-control{
+			.maxi-tabs-control{
+				margin-left: 0;
+				margin-right: 0;
+				.maxi-tabs-control__button {
+					padding: 8px;
+					margin-right: 5px;
+					border: 1.5px solid var(--maxi-grey-1-color) !important;
+					border-radius: 4px;
+					font-weight: 400;
+				}
+		
+				.maxi-tabs-control__button[aria-pressed='true'] {
+					background-color: var(--maxi-light-blue-2-color) !important;
+					border-color: var(--maxi-light-blue-2-color) !important;
+					font-weight: 700;
+				}
+			}
+			.maxi-tabs-content{
+				padding-top: 10px;
+			}
+		}
 	}
 	.maxi-scroll-combinations-select .maxi-base-control__field {
 		flex-direction: column;
-		row-gap: 5px;
 		align-items: flex-start;
 	}
 	.components-button {

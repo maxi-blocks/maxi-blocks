@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
 import SelectControl from '../select-control';
+import AxisControl from '../axis-control';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
@@ -152,6 +152,7 @@ const PositionControl = props => {
 								isReset: true,
 							})
 						}
+						newStyle
 						onChange={val =>
 							onChange({
 								[`${prefix}position-${breakpoint}`]: val,

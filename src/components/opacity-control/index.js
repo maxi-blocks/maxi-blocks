@@ -21,6 +21,11 @@ import classnames from 'classnames';
 import { isEmpty, isFunction, isNil, round } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const OpacityControl = props => {

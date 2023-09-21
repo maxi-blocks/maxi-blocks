@@ -225,6 +225,7 @@ const TransformControl = props => {
 				type='buttons'
 				selected={transformStatus}
 				fullWidthMode
+				hasBorder
 				items={[
 					{
 						label: __('Scale', 'maxi-blocks'),
@@ -250,10 +251,10 @@ const TransformControl = props => {
 				]}
 				onChange={val => setTransformStatus(val)}
 				depth={depth}
-				hasBorder
 			/>
 			<SelectControl
 				className='maxi-transform-control__target-select'
+				newStyle
 				label={__(
 					`${capitalize(transformStatus)} target`,
 					'maxi-blocks'
@@ -293,6 +294,7 @@ const TransformControl = props => {
 								target: `transform-${transformStatus}`,
 								keys: [transformTarget, 'hover-status'],
 							})}
+							newStyle
 							onChange={val => {
 								const transformTargetOptions =
 									transformOptions[

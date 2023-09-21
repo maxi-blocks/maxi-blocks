@@ -76,6 +76,7 @@ const DividerAlignment = props => {
 						},
 					]}
 					value={lineOrientation}
+					newStyle
 					onChange={value => onChangeOrientation(value)}
 				/>
 				{lineOrientation === 'vertical' && (
@@ -83,6 +84,7 @@ const DividerAlignment = props => {
 						label={__('Vertical position', 'maxi-blocks')}
 						options={getVerticalOptions()}
 						value={lineVertical}
+						newStyle
 						onChange={value => onChangeVertical(value)}
 					/>
 				)}

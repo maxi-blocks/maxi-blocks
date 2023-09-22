@@ -77,8 +77,7 @@ export const validationsValues = (
 			!fieldResult.includes(field) && {
 				[`${prefix}field`]: fieldResult[0],
 			}),
-		...(relation !== 'current' &&
-			relationResult &&
+		...(relationResult &&
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
@@ -114,8 +113,6 @@ export const validateRelations = (type, relation, isCL) => {
 		if (currentEntityTypes.includes(postTypeToDCType[currentType])) {
 			return { [`${prefix}type`]: postTypeToDCType[currentType] };
 		}
-
-		return { [`${prefix}relation`]: 'by-id' };
 	}
 
 	return {};

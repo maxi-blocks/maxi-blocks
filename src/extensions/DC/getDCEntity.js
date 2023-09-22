@@ -143,10 +143,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 	}
 
 	if (relation === 'current') {
-		return resolveSelect('core').getEditedEntityRecord(
-			kindDictionary[type],
-			nameDictionary[type],
-			select('core/editor').getCurrentPostId()
+		return (
+			resolveSelect('core').getEditedEntityRecord(
+				kindDictionary[type],
+				nameDictionary[type],
+				select('core/editor').getCurrentPostId()
+			) ?? {}
 		);
 	}
 

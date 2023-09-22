@@ -47,6 +47,7 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by author'), value: 'by-author' },
 	{ label: __('Get by category'), value: 'by-category' },
 	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
+	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -57,6 +58,7 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
+	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
 ];
 
 const generalRelationOptionsUsers = [

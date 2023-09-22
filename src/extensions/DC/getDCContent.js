@@ -22,7 +22,7 @@ import getACFContentByType from './getACFContentByType';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 const getDCContent = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
@@ -31,6 +31,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 	const {
 		source,
+		relation,
 		type,
 		field,
 		limit,
@@ -54,6 +55,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		postTaxonomyLinksStatus
 			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
 			: item;
+
+	if (relation === 'current' && isEmpty(data)) {
+		return `${capitalize(field)}: current`;
+	}
 
 	if (
 		renderedFields.includes(field) &&

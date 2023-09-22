@@ -291,6 +291,10 @@ class MaxiBlocks_DynamicContent
                 $args['p'] = $dc_id;
             } elseif ($dc_relation == 'current') {
                 $args['p'] = get_the_ID();
+                // If user chooses current post on FSE but is editing a page, need to get the current post,
+                // because we can't get what type of post user is editing on FSE,
+                // so we can't disallow users to choose the wrong type
+                $args['post_type'] = get_post_type();
                 unset($args['post_status']);
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;

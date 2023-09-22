@@ -9,7 +9,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,10 +17,7 @@ import { resolveSelect } from '@wordpress/data';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
-import {
-	canCurrentEntityBeSelected,
-	validationsValues,
-} from '../../extensions/DC/utils';
+import { validationsValues } from '../../extensions/DC/utils';
 import {
 	typeOptions,
 	fieldOptions,
@@ -225,14 +222,13 @@ const DynamicContent = props => {
 	const currentRelationOptions = useMemo(() => {
 		const options = relationOptions[contentType][type];
 
-		if (canCurrentEntityBeSelected(type)) {
-			return [
-				...options,
-				{
-					label: __('Get current', 'maxi-blocks'),
-					value: 'current',
-				},
-			];
+		const hideCurrent = {
+			post: 'pages',
+			page: 'posts',
+		};
+
+		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+			return options.filter(({ value }) => value !== 'current');
 		}
 
 		return options;

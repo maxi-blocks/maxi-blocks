@@ -406,7 +406,7 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if(is_null($post) || !isset($post->{"post_$dc_field"})) {
+        if(is_null($post) || (!isset($post->{"post_$dc_field"}) && !in_array($dc_field, ['categories', 'tags']))) {
             return '';
         }
 

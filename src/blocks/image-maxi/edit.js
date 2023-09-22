@@ -215,7 +215,13 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			});
 
-			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
+			if (useInitSize && !isNumber(maxWidth)) {
+				if (fitParentSize) {
+					return '100%';
+				}
+
+				return `${mediaWidth}px`;
+			}
 
 			const maxWidthUnit = getLastBreakpointAttribute({
 				target: 'image-max-width-unit',

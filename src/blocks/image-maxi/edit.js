@@ -118,7 +118,11 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.state.width
 			);
 
-			if (this.props.attributes.fitParentSize && resizableWidth !== 100) {
+			if (
+				(this.props.attributes.fitParentSize ||
+					this.props.attributes.useInitSize) &&
+				resizableWidth !== 100
+			) {
 				this.resizableObject.current.updateSize({
 					width: '100%',
 				});

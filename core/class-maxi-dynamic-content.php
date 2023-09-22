@@ -299,6 +299,10 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
+            if(empty($query->posts)) {
+                return null;
+            }
+
             return end($query->posts);
         } elseif ($dc_type === 'media') {
             $args = [
@@ -406,11 +410,11 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if(is_null($post) || (!isset($post->{"post_$dc_field"}) && !in_array($dc_field, ['categories', 'tags']))) {
+        if(is_null($post)) {
             return '';
         }
 
-        $post_data = $post->{"post_$dc_field"};
+        $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $post->post_content;

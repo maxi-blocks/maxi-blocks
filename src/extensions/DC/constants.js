@@ -2,6 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Source constants
+ */
+export const sourceOptions = [
+	{
+		label: __('WordPress', 'maxi-blocks'),
+		value: 'wp',
+	},
+];
 
 /**
  * Type constants

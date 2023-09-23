@@ -137,74 +137,82 @@ const DimensionTab = props => {
 					)}
 				</>
 			)}
-			<ToggleSwitch
-				label={__('Use original size', 'maxi-blocks')}
-				className='maxi-image-inspector__initial-size'
-				selected={useInitSize}
-				onChange={val =>
-					maxiSetAttributes({
-						useInitSize: val,
-					})
-				}
-			/>
-			{!useInitSize && (
-				<RangeControl
-					className='maxi-image-inspector__dimension-width'
-					label={__('Width', 'maxi-blocks')}
-					value={attributes.imgWidth}
-					onChange={val => {
-						if (!isNil(val)) {
+			{!fitParentSize && (
+				<>
+					<ToggleSwitch
+						label={__('Use original size', 'maxi-blocks')}
+						className='maxi-image-inspector__initial-size'
+						selected={useInitSize}
+						onChange={val =>
 							maxiSetAttributes({
-								imgWidth: val,
-							});
+								useInitSize: val,
+							})
+						}
+					/>
+					{!useInitSize && (
+						<RangeControl
+							className='maxi-image-inspector__dimension-width'
+							label={__('Width', 'maxi-blocks')}
+							value={attributes.imgWidth}
+							onChange={val => {
+								if (!isNil(val)) {
+									maxiSetAttributes({
+										imgWidth: val,
+									});
 
-							resizableObject &&
-								resizableObject.updateSize({
-									width: `${val}%`,
-								});
-						} else {
-							const defaultAttribute = getDefaultAttribute(
+									resizableObject &&
+										resizableObject.updateSize({
+											width: `${val}%`,
+										});
+								} else {
+									const defaultAttribute =
+										getDefaultAttribute(
+											'imgWidth',
+											clientId
+										);
+
+									maxiSetAttributes({
+										imgWidth: defaultAttribute,
+									});
+
+									resizableObject &&
+										resizableObject.updateSize({
+											width: `${defaultAttribute}%`,
+										});
+								}
+							}}
+							max={100}
+							allowReset
+							initialPosition={getDefaultAttribute(
 								'imgWidth',
 								clientId
-							);
-
+							)}
+						/>
+					)}
+					<AspectRatioControl
+						className='maxi-image-inspector__ratio'
+						label={__('Image ratio', 'maxi-blocks')}
+						value={imageRatio}
+						additionalOptions={[
+							{
+								label: __('Original size', 'maxi-blocks'),
+								value: 'original',
+							},
+						]}
+						onChange={imageRatio =>
 							maxiSetAttributes({
-								imgWidth: defaultAttribute,
-							});
-
-							resizableObject &&
-								resizableObject.updateSize({
-									width: `${defaultAttribute}%`,
-								});
+								imageRatio,
+							})
 						}
-					}}
-					max={100}
-					allowReset
-					initialPosition={getDefaultAttribute('imgWidth', clientId)}
-				/>
+						onReset={() =>
+							maxiSetAttributes({
+								imageRatio: getDefaultAttribute('imageRatio'),
+								isReset: true,
+							})
+						}
+					/>
+				</>
 			)}
-			<AspectRatioControl
-				className='maxi-image-inspector__ratio'
-				label={__('Image ratio', 'maxi-blocks')}
-				value={imageRatio}
-				additionalOptions={[
-					{
-						label: __('Original size', 'maxi-blocks'),
-						value: 'original',
-					},
-				]}
-				onChange={imageRatio =>
-					maxiSetAttributes({
-						imageRatio,
-					})
-				}
-				onReset={() =>
-					maxiSetAttributes({
-						imageRatio: getDefaultAttribute('imageRatio'),
-						isReset: true,
-					})
-				}
-			/>
 			{!isFirstOnHierarchy && (
 				<>
 					<ToggleSwitch

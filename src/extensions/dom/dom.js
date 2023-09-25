@@ -293,7 +293,7 @@ wp.domReady(() => {
 		const styleCard = receiveMaxiActiveStyleCard();
 		const styleCards = receiveMaxiStyleCards();
 
-		if (styleCard && styleCards) {
+		if (styleCard.value && styleCards) {
 			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
 				'maxiBlocks/style-cards'
 			);
@@ -320,22 +320,25 @@ wp.domReady(() => {
 				method: 'GET',
 			});
 
-			if (SCStyles) {
-				if (
-					[
-						'_maxi_blocks_style_card_styles',
-						'_maxi_blocks_style_card_styles_preview',
-					].some(
-						key => !SCStyles[key]?.includes('maxi-block--use-sc')
-					)
-				) {
-					await saveSCStyles(true);
+			if (
+				SCStyles &&
+				(!('gutenberg_blocks_status' in styleCard.value) ||
+					styleCard.value.gutenberg_blocks_status) &&
+				[
+					'_maxi_blocks_style_card_styles',
+					'_maxi_blocks_style_card_styles_preview',
+				].some(
+					key =>
+						!SCStyles[key]?.includes('maxi-block--use-sc') ||
+						!SCStyles[key].includes('.comment-reply-title small a')
+				)
+			) {
+				await saveSCStyles(true);
 
-					// eslint-disable-next-line no-console
-					console.log(
-						'Style Cards migrator has been successfully used to update the styles.'
-					);
-				}
+				// eslint-disable-next-line no-console
+				console.log(
+					'Style Cards migrator has been successfully used to update the styles.'
+				);
 			}
 
 			unsubscribe();

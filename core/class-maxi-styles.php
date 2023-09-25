@@ -1283,11 +1283,14 @@ class MaxiBlocks_Styles
         }
 
         // fonts
-        $fonts_json = $content_block['fonts_value'] ?? null;
-        if($fonts_json !== '' && $fonts_json !== null) {
-            $fonts_array = json_decode($fonts_json, true) ?? [];
-        } else {
-            $fonts_array = [];
+        foreach (['fonts_value', 'prev_fonts_value'] as $fonts_key) {
+            $fonts_json = $content_block[$fonts_key] ?? null;
+
+            if ($fonts_json !== '' && $fonts_json !== null) {
+                $fonts_array = json_decode($fonts_json, true) ?? [];
+            } else {
+                $fonts_array = [];
+            }
         }
 
         $fonts = array_merge($fonts, $fonts_array);

@@ -10,6 +10,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
+import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -56,6 +57,11 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
+const UnlimitedCharacterPoppover = () => (
+	<Popover className='maxi-info-helper-popover maxi-popover-button'>
+		<p>0 for unlimited</p>
+	</Popover>
+);
 const DynamicContent = props => {
 	const {
 		className,
@@ -508,36 +514,45 @@ const DynamicContent = props => {
 							{limitTypes.includes(type) &&
 								limitFields.includes(field) &&
 								!error && (
-									<AdvancedNumberControl
-										label={__(
-											'Character limit',
-											'maxi-blocks'
-										)}
-										value={limit}
-										onChangeValue={value =>
-											changeProps({
-												'dc-limit': Number(value),
-											})
-										}
-										disableReset={limitOptions.disableReset}
-										step={limitOptions.steps}
-										withInputField={
-											limitOptions.withInputField
-										}
-										onReset={() =>
-											changeProps({
-												'dc-limit':
-													getDefaultAttribute(
-														'dc-limit'
-													),
-											})
-										}
-										min={limitOptions.min}
-										max={limitOptions.max}
-										initialPosition={
-											limit || limitOptions.defaultValue
-										}
-									/>
+									<div className='maxi-info'>
+										<AdvancedNumberControl
+											label={__(
+												'Character limit',
+												'maxi-blocks'
+											)}
+											value={limit}
+											showHelp
+											helpContent={
+												<UnlimitedCharacterPoppover />
+											}
+											onChangeValue={value =>
+												changeProps({
+													'dc-limit': Number(value),
+												})
+											}
+											disableReset={
+												limitOptions.disableReset
+											}
+											step={limitOptions.steps}
+											withInputField={
+												limitOptions.withInputField
+											}
+											onReset={() =>
+												changeProps({
+													'dc-limit':
+														getDefaultAttribute(
+															'dc-limit'
+														),
+												})
+											}
+											min={limitOptions.min}
+											max={limitOptions.max}
+											initialPosition={
+												limit ||
+												limitOptions.defaultValue
+											}
+										/>
+									</div>
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting

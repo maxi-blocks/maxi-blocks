@@ -11,7 +11,7 @@ import { Popover } from '@wordpress/components';
 import SelectControl from '../../select-control';
 import SettingTabsControl from '../../setting-tabs-control';
 import TextControl from '../../text-control';
-import ToggleSwitch from '../../toggle-switch';
+// import ToggleSwitch from '../../toggle-switch';
 import DateOptions from './constants';
 
 /**
@@ -20,7 +20,7 @@ import DateOptions from './constants';
 import './editor.scss';
 
 const DateHelperPopover = () => (
-	<Popover className='maxi-date-helper-popover maxi-popover-button'>
+	<Popover className='maxi-info-helper-popover maxi-popover-button'>
 		<p>
 			<b>d - </b>
 			{__('day in numeric format', 'maxi-blocks')}
@@ -67,7 +67,6 @@ const DateHelperPopover = () => (
 const DateFormatting = props => {
 	const { onChange } = props;
 
-	const [showHelp, setShowHelp] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
 
 	const {
@@ -153,8 +152,7 @@ const DateFormatting = props => {
 	};
 
 	return (
-		<div className='maxi-custom-date-formatting'>
-			{showHelp && <DateHelperPopover />}
+		<div className='maxi-info'>
 			{/* Hide custom date until we figure out moment.parseFormat for other languages */}
 			{/* <ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
@@ -162,22 +160,16 @@ const DateFormatting = props => {
 				onChange={value => changeProps({ 'dc-custom-date': value })}
 			/> */}
 			{!customDate && (
-				<div className='maxi-custom-date-formatting__help-trigger'>
+				<div className='maxi-info__help-trigger'>
 					<TextControl
 						label={__('Date format', 'maxi-blocks')}
 						help={false}
 						placeholder={__('d.m.Y t', 'maxi-blocks')}
 						value={format}
 						onChange={val => validateAnchor(val)}
+						showHelp
+						helpContent={<DateHelperPopover />}
 					/>
-					<div
-						className='maxi-custom-date-formatting__help-icon'
-						onClick={() => setShowHelp(state => !state)}
-					>
-						<span className='maxi-custom-date-formatting__help-icon-span'>
-							i
-						</span>
-					</div>
 				</div>
 			)}
 			{customDate && (

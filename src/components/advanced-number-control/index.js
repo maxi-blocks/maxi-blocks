@@ -95,6 +95,8 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
+		showHelp,
+		helpContent,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -167,6 +169,8 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
+	const [showHelpContent, setShowHelpContent] = useState(false);
+
 	return (
 		<>
 			{enableAuto && (
@@ -183,6 +187,15 @@ const AdvancedNumberControl = props => {
 					label={label}
 					className={classes}
 				>
+					{showHelp && (
+						<div
+							className='maxi-info__help-icon'
+							onClick={() => setShowHelpContent(state => !state)}
+						>
+							<span className='maxi-info__help-icon-span'>i</span>
+						</div>
+					)}
+					{showHelpContent && helpContent}
 					<input
 						id={advancedNumberControlId}
 						type={

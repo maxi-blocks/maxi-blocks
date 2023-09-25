@@ -1355,8 +1355,11 @@ class MaxiBlocks_Styles
         } elseif($post) {
             if(is_preview()) {
                 $revisions = wp_get_post_revisions($post->ID);
-                $latest_revision = array_shift($revisions);
-                $blocks_post = parse_blocks($latest_revision->post_content);
+
+                if (!empty($revisions)) {
+                    $latest_revision = array_shift($revisions);
+                    $blocks_post = parse_blocks($latest_revision->post_content);
+                }
             } else {
                 $blocks_post = parse_blocks($post->post_content);
             }

@@ -180,7 +180,6 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
-            $fit_parent_size = $props['fitParentSize'] ?? false;
 
             $response =
                 [
@@ -368,18 +367,27 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
         public static function get_image_fit_wrapper($props)
         {
+            $fit_parent_size = $props['fitParentSize'] ?? false;
+
             $response = [];
 
-            $breakpoints = ['general', 'sm', 'md', 'lg', 'xl', 'xxl'];
+            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
             foreach ($breakpoints as $breakpoint) {
                 $response[$breakpoint] = [];
 
-                $object_size = get_last_breakpoint_attribute([
+                $object_size = $fit_parent_size ? get_last_breakpoint_attribute([
                     'target' => 'object-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
-                ]);
+                ]) : get_default_attribute('object-size-general');
+                $size = round($object_size * 100, 2);
+                $displacement_coefficient = 100 - $size;
+
+                if ($fit_parent_size) {
+                    $response[$breakpoint]['height'] = "{$size}%";
+                    $response[$breakpoint]['width'] = "{$size}%";
+                }
 
                 $horizontal_position = get_last_breakpoint_attribute([
                     'target' => 'object-position-horizontal',
@@ -393,19 +401,15 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'attributes' => $props,
                 ]);
 
-                $size = $object_size * 100;
+                $horizontal_displacement = round(
+                    ($displacement_coefficient * $horizontal_position) / 100,
+                    2
+                );
 
-                $response[$breakpoint]['height'] = "{$size}%";
-                $response[$breakpoint]['width'] = "{$size}%";
-
-
-                $displacement_coefficient = 100 - $size;
-
-                $horizontal_displacement =
-                    ($displacement_coefficient * $horizontal_position) / 100;
-
-                $vertical_isplacement =
-                    ($displacement_coefficient * $vertical_position) / 100;
+                $vertical_isplacement = round(
+                    ($displacement_coefficient * $vertical_position) / 100,
+                    2
+                );
 
                 $response[$breakpoint]['left'] = "$horizontal_displacement%";
                 $response[$breakpoint]['top'] = "$vertical_isplacement%";
@@ -419,11 +423,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
         public static function get_image_object($props)
         {
+            $fit_parent_size = $props['fitParentSize'] ?? false;
             $image_ratio = $props['imageRatio'];
             $img_width = $props['imgWidth'];
             $use_init_size = $props['useInitSize'] ?? false;
             $media_width = $props['mediaWidth'];
-            $fit_parent_size = $props['fitParentSize'] ?? false;
             $is_first_on_hierarchy = $props['isFirstOnHierarchy'];
             $svg_element = $props['SVGElement'] ?? '';
 
@@ -464,7 +468,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 'obj' => get_group_attributes($props, 'clipPath'),
             ]);
 
-            if ($img_width) {
+            if ($img_width && !$fit_parent_size) {
                 $response['imgWidth'] = [
                     'general' => [
                         'width' => !$use_init_size ? "$img_width%" : $media_width . "px",
@@ -472,7 +476,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 ];
             }
 
-            if ($fit_parent_size && !$is_first_on_hierarchy) {
+            if (!$is_first_on_hierarchy) {
                 $response['fitParentSize'] = self::get_image_fit_wrapper($props);
             }
 

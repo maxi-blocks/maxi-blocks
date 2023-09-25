@@ -1283,6 +1283,7 @@ class MaxiBlocks_Styles
         }
 
         // fonts
+        // TODO: split fonts and prev_fonts
         foreach (['fonts_value', 'prev_fonts_value'] as $fonts_key) {
             $fonts_json = $content_block[$fonts_key] ?? null;
 
@@ -1291,9 +1292,9 @@ class MaxiBlocks_Styles
             } else {
                 $fonts_array = [];
             }
-        }
 
-        $fonts = array_merge($fonts, $fonts_array);
+            $fonts = array_merge($fonts, $fonts_array);
+        }
 
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {

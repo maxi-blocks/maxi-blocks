@@ -21,6 +21,12 @@ const actions = {
 			blockRoot,
 		};
 	},
+	addNewBlock(uniqueID) {
+		return {
+			type: 'ADD_NEW_BLOCK',
+			uniqueID,
+		};
+	},
 	saveLastInsertedBlocks(blockClientIds) {
 		return {
 			type: 'SAVE_LAST_INSERTED_BLOCKS',

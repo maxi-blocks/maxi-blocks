@@ -3,6 +3,7 @@ const reducer = (
 		blocks: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
+		newBlocksUniqueIDs: [],
 		wasBlockClientIdsSaved: false,
 	},
 	action
@@ -35,6 +36,9 @@ const reducer = (
 				blockClientIds: state.blockClientIds.filter(
 					item => item !== clientId
 				),
+				newBlocksUniqueIDs: state.newBlocksUniqueIDs.filter(
+					item => item !== uniqueID
+				),
 			};
 		}
 		case 'UPDATE_BLOCK_STYLES_ROOT': {
@@ -49,6 +53,14 @@ const reducer = (
 						blockRoot,
 					},
 				},
+			};
+		}
+		case 'ADD_NEW_BLOCK': {
+			const { uniqueID } = action;
+
+			return {
+				...state,
+				newBlocksUniqueIDs: [...state.newBlocksUniqueIDs, uniqueID],
 			};
 		}
 		case 'SAVE_LAST_INSERTED_BLOCKS': {

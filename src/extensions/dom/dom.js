@@ -194,50 +194,55 @@ wp.domReady(() => {
 		dispatch('maxiBlocks/styles').saveBlockMarginValue(blockMargin);
 	});
 
-	if (getIsSiteEditor()) {
-		const siteEditorIframeBody = getSiteEditorIframeBody();
+	const editorContentUnsubscribe = subscribe(() => {
+		console.log('editorContentUnsubscribe');
 
-		if (!getIsTemplatesListOpened() && siteEditorIframeBody) {
-			setTimeout(() => {
-				dispatch('maxiBlocks').setMaxiDeviceType({
-					deviceType: 'general',
-				});
-			}, 150);
+		if (getIsSiteEditor()) {
+			const currentId = select('core/edit-site').getEditedPostId();
+			const siteEditorIframeBody = getSiteEditorIframeBody();
 
-			resizeObserver.observe(getResizeObserverTarget());
-			setBaseBreakpoint();
-		}
+			if (!getIsTemplatesListOpened() && siteEditorIframeBody) {
+				setTimeout(() => {
+					dispatch('maxiBlocks').setMaxiDeviceType({
+						deviceType: 'general',
+					});
+				}, 150);
 
-		if (
-			siteEditorIframeBody &&
-			!siteEditorIframeBody.classList.contains('maxi-blocks--active')
-		)
-			siteEditorIframeBody.classList.add('maxi-blocks--active');
-
-		if (getIsTemplatePart()) {
-			const resizableBox = document.querySelector(
-				'.edit-site-visual-editor .components-resizable-box__container'
-			);
+				resizeObserver.observe(getResizeObserverTarget());
+				setBaseBreakpoint();
+			}
 
 			if (
-				!getIsTemplatesListOpened() &&
-				getSiteEditorIframeBody() &&
-				resizableBox
-			) {
-				templatePartResizeObserver.observe(resizableBox);
-			} else {
-				templatePartResizeObserver.disconnect();
-			}
-		}
-	} else {
-		if (getResizeObserverTarget()) {
-			resizeObserver.observe(getResizeObserverTarget());
-		}
-		resizeObserver.observe(document.body);
+				siteEditorIframeBody &&
+				!siteEditorIframeBody.classList.contains('maxi-blocks--active')
+			)
+				siteEditorIframeBody.classList.add('maxi-blocks--active');
 
-		const blockContainer = getBlockContainer();
-		if (blockContainer) blockMarginObserver.observe(blockContainer);
-	}
+			if (getIsTemplatePart()) {
+				const resizableBox = document.querySelector(
+					'.edit-site-visual-editor .components-resizable-box__container'
+				);
+
+				if (
+					!getIsTemplatesListOpened() &&
+					getSiteEditorIframeBody() &&
+					resizableBox
+				) {
+					templatePartResizeObserver.observe(resizableBox);
+				} else {
+					templatePartResizeObserver.disconnect();
+				}
+			}
+		} else {
+			if (getResizeObserverTarget()) {
+				resizeObserver.observe(getResizeObserverTarget());
+			}
+			resizeObserver.observe(document.body);
+
+			const blockContainer = getBlockContainer();
+			if (blockContainer) blockMarginObserver.observe(blockContainer);
+		}
+	});
 
 	const maxiCookie = getMaxiCookieKey();
 	if (maxiCookie) {

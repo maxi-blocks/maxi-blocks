@@ -3,6 +3,7 @@ const reducer = (
 		blocks: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
+		wasBlockClientIdsSaved: false,
 	},
 	action
 ) => {
@@ -51,6 +52,10 @@ const reducer = (
 			};
 		}
 		case 'SAVE_LAST_INSERTED_BLOCKS': {
+			if (!state.wasBlockClientIdsSaved) {
+				return state;
+			}
+
 			const { allClientIds } = action;
 			const savedClientIds = state.blockClientIds;
 
@@ -69,6 +74,9 @@ const reducer = (
 			return {
 				...state,
 				blockClientIds,
+				...(!state.wasBlockClientIdsSaved && {
+					wasBlockClientIdsSaved: true,
+				}),
 			};
 		}
 		default:

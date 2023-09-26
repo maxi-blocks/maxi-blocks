@@ -4,7 +4,6 @@ const reducer = (
 		lastInsertedBlocks: [],
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
-		wasBlockClientIdsSaved: false,
 	},
 	action
 ) => {
@@ -64,7 +63,7 @@ const reducer = (
 			};
 		}
 		case 'SAVE_LAST_INSERTED_BLOCKS': {
-			if (!state.wasBlockClientIdsSaved) {
+			if (action.isCurrentPostClean) {
 				return state;
 			}
 
@@ -86,9 +85,6 @@ const reducer = (
 			return {
 				...state,
 				blockClientIds,
-				...(!state.wasBlockClientIdsSaved && {
-					wasBlockClientIdsSaved: true,
-				}),
 			};
 		}
 		default:

@@ -858,7 +858,15 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		if (!getIsIDTrulyUnique(idToCheck)) {
+		if (
+			(!select('maxiBlocks/blocks').getIsNewBlock(
+				this.props.attributes.uniqueID
+			) &&
+				select('maxiBlocks/blocks')
+					.getLastInsertedBlocks()
+					.includes(this.props.clientId)) ||
+			!getIsIDTrulyUnique(idToCheck)
+		) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});

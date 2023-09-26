@@ -217,7 +217,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (!empty($media_id) && is_numeric($media_id)) {
-            $media_src = wp_get_attachment_image_src($media_id, 'full')[0];
+            $image_src_array = wp_get_attachment_image_src($media_id, 'full');
+            $media_src = !empty($image_src_array) ? $image_src_array[0] : '';
 
             $media_alt = get_post_meta($media_id, '_wp_attachment_image_alt', true);
 
@@ -225,10 +226,10 @@ class MaxiBlocks_DynamicContent
                 $media_alt = 'No content found';
             }
 
-            $media_caption = get_post($media_id)->post_excerpt;
-
-            if (empty($media_caption)) {
-                $media_caption = 'No content found';
+            $post = get_post($media_id);
+            $media_caption = 'No content found';
+            if ($post && !empty($post->post_excerpt)) {
+                $media_caption = $post->post_excerpt;
             }
         }
 
@@ -298,6 +299,10 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
+
+            if(empty($query->posts)) {
+                return null;
+            }
 
             return end($query->posts);
         } elseif ($dc_type === 'media') {
@@ -406,11 +411,11 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if(is_null($post) || !isset($post->{"post_$dc_field"})) {
+        if(is_null($post)) {
             return '';
         }
 
-        $post_data = $post->{"post_$dc_field"};
+        $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $post->post_content;

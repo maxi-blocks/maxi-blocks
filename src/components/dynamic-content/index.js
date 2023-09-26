@@ -7,9 +7,8 @@ import {
 	useContext,
 	useEffect,
 	useState,
-	useMemo,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -33,13 +32,13 @@ import {
 	orderTypes,
 	linkFields,
 	linkFieldsLabels,
+	sourceOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
-// import WCSettingsControl from './wc-settings-control';
 
 /**
  * External dependencies
@@ -200,31 +199,6 @@ const DynamicContent = props => {
 			}
 		}
 	});
-
-	const sourceOptions = useMemo(() => {
-		const options = [
-			{
-				label: __('WordPress', 'maxi-blocks'),
-				value: 'wp',
-			},
-		];
-
-		if (typeof acf !== 'undefined') {
-			options.push({
-				label: __('ACF', 'maxi-blocks'),
-				value: 'acf',
-			});
-		}
-
-		if (select('wc/store/validation')) {
-			options.push({
-				label: __('WooCommerce', 'maxi-blocks'),
-				value: 'wc',
-			});
-		}
-
-		return options;
-	}, []);
 
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {

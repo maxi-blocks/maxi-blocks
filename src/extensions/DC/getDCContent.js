@@ -8,7 +8,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { limitFields, limitTypes, renderedFields } from './constants';
-import { getSimpleText, limitString, parseText } from './utils';
+import {
+	getItemLinkContent,
+	getSimpleText,
+	getTaxonomyContent,
+	limitString,
+	parseText,
+} from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
@@ -54,11 +60,6 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
-
-	const getItemLinkContent = item =>
-		postTaxonomyLinksStatus
-			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
-			: item;
 
 	if (
 		renderedFields.includes(field) &&
@@ -122,24 +123,12 @@ const getDCContent = async (dataRequest, clientId) => {
 		}
 	}
 	if (['tags', 'categories'].includes(field)) {
-		const { getEntityRecord } = resolveSelect('core');
-		const idArray = contentValue;
-
-		const namesArray = await Promise.all(
-			idArray.map(async id => {
-				const taxonomyItem = await getEntityRecord(
-					'taxonomy',
-					nameDictionary[field],
-					id
-				);
-
-				return getItemLinkContent(taxonomyItem.name);
-			})
+		contentValue = await getTaxonomyContent(
+			contentValue,
+			delimiterContent,
+			postTaxonomyLinksStatus,
+			nameDictionary[field]
 		);
-
-		contentValue = postTaxonomyLinksStatus
-			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
-			: namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

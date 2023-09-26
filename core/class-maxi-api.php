@@ -278,6 +278,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/get-active-integration-plugins', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_active_integration_plugins'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/pro', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_pro_status'],
@@ -877,6 +884,21 @@ if (!class_exists('MaxiBlocks_API')):
             return true;
 
         }
+
+        public function get_active_integration_plugins()
+        {
+            $active_integration_plugins = array();
+
+            if (class_exists('WooCommerce')) {
+                $active_integration_plugins[] = 'woocommerce';
+            }
+            if (class_exists('ACF')) {
+                $active_integration_plugins[] = 'acf';
+            }
+
+            return $active_integration_plugins;
+        }
+
 
         // ACF
 

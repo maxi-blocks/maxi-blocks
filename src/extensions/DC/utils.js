@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -56,6 +57,33 @@ export const sanitizeDCContent = content =>
 	!isEmpty(content) || isNumber(content)
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
+
+export const getItemLinkContent = (item, linkStatus) =>
+	linkStatus
+		? `<a class="maxi-text-block--link"><span>${item}</span></a>`
+		: item;
+
+export const getTaxonomyContent = async (
+	taxonomyIds,
+	delimiterContent,
+	linkStatus,
+	taxonomyType
+) => {
+	if (!taxonomyIds) return null;
+
+	const { getEntityRecords } = resolveSelect('core');
+
+	const taxonomyArray = await getEntityRecords('taxonomy', taxonomyType, {
+		include: taxonomyIds,
+	});
+	const namesArray = taxonomyArray.map(({ name }) =>
+		getItemLinkContent(name, linkStatus)
+	);
+
+	return linkStatus
+		? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
+		: namesArray.join(`${delimiterContent} `);
+};
 
 export const validationsValues = (
 	variableValue,

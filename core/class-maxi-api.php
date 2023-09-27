@@ -483,8 +483,8 @@ if (!class_exists('MaxiBlocks_API')):
                     } else {
                         $wpdb->insert("{$table}", $get_array([
                             'block_style_id',
-                            'css_value',
-                            'fonts_value',
+                            'prev_css_value',
+                            'prev_fonts_value',
                         ], $dictionary));
                     }
                 }

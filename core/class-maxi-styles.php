@@ -1283,14 +1283,18 @@ class MaxiBlocks_Styles
         }
 
         // fonts
-        $fonts_json = $content_block['fonts_value'] ?? null;
-        if($fonts_json !== '' && $fonts_json !== null) {
-            $fonts_array = json_decode($fonts_json, true) ?? [];
-        } else {
-            $fonts_array = [];
-        }
+        // TODO: split fonts and prev_fonts
+        foreach (['fonts_value', 'prev_fonts_value'] as $fonts_key) {
+            $fonts_json = $content_block[$fonts_key] ?? null;
 
-        $fonts = array_merge($fonts, $fonts_array);
+            if ($fonts_json !== '' && $fonts_json !== null) {
+                $fonts_array = json_decode($fonts_json, true) ?? [];
+            } else {
+                $fonts_array = [];
+            }
+
+            $fonts = array_merge($fonts, $fonts_array);
+        }
 
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
@@ -1350,7 +1354,16 @@ class MaxiBlocks_Styles
         if($passed_content) {
             $blocks_post = parse_blocks($passed_content);
         } elseif($post) {
-            $blocks_post = parse_blocks($post->post_content);
+            if(is_preview()) {
+                $revisions = wp_get_post_revisions($post->ID);
+
+                if (!empty($revisions)) {
+                    $latest_revision = array_shift($revisions);
+                    $blocks_post = parse_blocks($latest_revision->post_content);
+                }
+            } else {
+                $blocks_post = parse_blocks($post->post_content);
+            }
         } else {
             $blocks_post = [];
         }

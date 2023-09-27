@@ -20,6 +20,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/react-dom": "^1.2.1",
+		"@loadable/component": "^5.15.3",
 		"@uiw/react-textarea-code-editor": "^2.0.3",
 		"@wordpress/block-editor": "^9.6.0",
 		"@wordpress/blocks": "^11.13.0",

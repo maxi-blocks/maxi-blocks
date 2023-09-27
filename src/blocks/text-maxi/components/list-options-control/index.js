@@ -6,15 +6,28 @@ import { useState } from '@wordpress/element';
 import { isURL } from '@wordpress/url';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	ColorControl,
-	SelectControl,
-	TextControl,
-	ToggleSwitch,
-} from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const TextControl = loadable(() =>
+	import('../../../../components/text-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
 import {
 	getColorRGBAString,
 	getDefaultAttribute,

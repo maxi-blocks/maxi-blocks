@@ -5,17 +5,19 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import { Button, Icon } from '../../../../components';
-import { getBlockPosition } from '../../../../extensions/repeater/utils';
-import { getTemplates } from '../../../../extensions/column-templates';
-import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
-
-/**
  * External dependencies
  */
 import { uniqueId } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../../../components/button'));
+const Icon = loadable(() => import('../../../../components/icon'));
+import { getBlockPosition } from '../../../../extensions/repeater/utils';
+import { getTemplates } from '../../../../extensions/column-templates';
+import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
 
 const RowBlockTemplate = ({
 	clientId,

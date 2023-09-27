@@ -7,31 +7,34 @@ import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
 /**
- * Internal dependencies
- */
-import Inspector from './inspector';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { RawHTML, Toolbar } from '../../components';
-import {
-	getColorRGBAString,
-	getPaletteAttributes,
-	getGroupAttributes,
-} from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import getStyles from './styles';
-import onMerge from './utils';
-import { onChangeRichText, textContext } from '../../extensions/text/formats';
-import { setSVGColor } from '../../extensions/svg';
-import { copyPasteMapping, scProps } from './data';
-import { indentListItems, outdentListItems } from '../../extensions/text/lists';
-import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Inspector = loadable(() => import('./inspector'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const RawHTML = loadable(() => import('../../components/raw-html'));
+const stylesLib = loadable.lib(() => import('../../extensions/styles'));
+const utilsLib = loadable.lib(() => import('./utils'));
+const svgLib = loadable.lib(() => import('../../extensions/svg'));
+const listItemsLib = loadable.lib(() => import('../../extensions/text/lists'));
+
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import getStyles from './styles';
+import { onChangeRichText, textContext } from '../../extensions/text/formats';
+import { copyPasteMapping, scProps } from './data';
+import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
@@ -64,28 +67,35 @@ class edit extends MaxiBlockComponent {
 			listStyle === 'custom' &&
 			listStyleCustom?.includes('<svg ')
 		) {
-			const { paletteStatus, paletteColor, paletteOpacity } =
-				getPaletteAttributes({
-					obj: attributes,
-					prefix: 'list-',
-				});
-
-			if (paletteStatus) {
-				const newColor = getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				});
-
-				if (!listStyleCustom.includes(newColor))
-					setAttributes({
-						listStyleCustom: setSVGColor({
-							svg: listStyleCustom,
-							color: newColor,
-							type: 'fill',
-						}),
+			stylesLib.load().then(({ getPaletteAttributes }) => {
+				const { paletteStatus, paletteColor, paletteOpacity } =
+					getPaletteAttributes({
+						obj: attributes,
+						prefix: 'list-',
 					});
-			}
+
+				if (paletteStatus) {
+					// Usage
+					stylesLib.load().then(({ getColorRGBAString }) => {
+						const newColor = getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+						});
+
+						if (!listStyleCustom.includes(newColor))
+							svgLib.load().then(({ setSVGColor }) => {
+								setAttributes({
+									listStyleCustom: setSVGColor({
+										svg: listStyleCustom,
+										color: newColor,
+										type: 'fill',
+									}),
+								});
+							});
+					});
+				}
+			});
 		}
 
 		// Ensures white-space is applied from Maxi and not with inline styles
@@ -189,7 +199,10 @@ class edit extends MaxiBlockComponent {
 				return block;
 			},
 			onReplace,
-			onMerge: forward => onMerge(this.props, forward),
+			onMerge: forward =>
+				utilsLib.load().then(({ onMerge }) => {
+					onMerge(this.props, forward);
+				}),
 			// onRemove needs to be commented to avoid removing the block
 			// on pressing backspace with the content empty 👍
 			// onRemove={onRemove}
@@ -319,56 +332,69 @@ class edit extends MaxiBlockComponent {
 								});
 
 								if (isSelected)
-									return (
-										<>
-											<RichTextShortcut
-												type='primary'
-												character='['
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character=']'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character='m'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primaryShift'
-												character='m'
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-										</>
-									);
+									listItemsLib
+										.load()
+										.then(
+											({
+												indentListItems,
+												outdentListItems,
+											}) => {
+												return (
+													<>
+														<RichTextShortcut
+															type='primary'
+															character='['
+															onUse={() => {
+																onChange(
+																	outdentListItems(
+																		formatValue
+																	)
+																);
+															}}
+														/>
+														<RichTextShortcut
+															type='primary'
+															character=']'
+															onUse={() => {
+																onChange(
+																	indentListItems(
+																		formatValue,
+																		{
+																			type: typeOfList,
+																		}
+																	)
+																);
+															}}
+														/>
+														<RichTextShortcut
+															type='primary'
+															character='m'
+															onUse={() => {
+																onChange(
+																	indentListItems(
+																		formatValue,
+																		{
+																			type: typeOfList,
+																		}
+																	)
+																);
+															}}
+														/>
+														<RichTextShortcut
+															type='primaryShift'
+															character='m'
+															onUse={() => {
+																onChange(
+																	outdentListItems(
+																		formatValue
+																	)
+																);
+															}}
+														/>
+													</>
+												);
+											}
+										);
 
 								return null;
 							}}

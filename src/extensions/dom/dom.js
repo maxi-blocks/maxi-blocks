@@ -6,7 +6,6 @@ import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { updateSCOnEditor } from '../style-cards';
 import {
 	getIsSiteEditor as originalGetIsSiteEditor,
 	getIsTemplatePart,
@@ -195,10 +194,7 @@ wp.domReady(() => {
 	});
 
 	const editorContentUnsubscribe = subscribe(() => {
-		console.log('editorContentUnsubscribe');
-
 		if (getIsSiteEditor()) {
-			const currentId = select('core/edit-site').getEditedPostId();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
 
 			if (!getIsTemplatesListOpened() && siteEditorIframeBody) {

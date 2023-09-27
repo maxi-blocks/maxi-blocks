@@ -4,27 +4,32 @@
 import { createRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const BlockResizer = loadable(() => import('../../components/block-resizer'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
 import {
-	getResizerSize,
 	MaxiBlockComponent,
+	getResizerSize,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { BlockResizer, Toolbar } from '../../components';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { copyPasteMapping } from './data';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Content

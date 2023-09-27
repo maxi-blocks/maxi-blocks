@@ -3,14 +3,15 @@
  */
 import { select, dispatch } from '@wordpress/data';
 
+/*
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
 /**
  * Internal dependencies
  */
-import {
-	fromListToText,
-	fromTextToList,
-	getFormatsOnMerge,
-} from '../../extensions/text/formats';
+const formatsLib = loadable.lib(() => import('../../extensions/text/formats'));
 
 const onMerge = (props, forward) => {
 	const { attributes, clientId, maxiSetAttributes } = props;
@@ -31,35 +32,46 @@ const onMerge = (props, forward) => {
 		const blockName = getBlock(nextBlockClientId)?.name;
 
 		if (nextBlockClientId && blockName === 'maxi-blocks/text-maxi') {
-			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
-			const {
-				content: nextBlockContent,
-				isList: nextBlockIsList,
-				'custom-formats': nextBlockCustomFormats,
-			} = nextBlockAttributes;
+			formatsLib
+				.load()
+				.then(
+					({ fromListToText, fromTextToList, getFormatsOnMerge }) => {
+						const nextBlockAttributes =
+							getBlockAttributes(nextBlockClientId);
+						const {
+							content: nextBlockContent,
+							isList: nextBlockIsList,
+							'custom-formats': nextBlockCustomFormats,
+						} = nextBlockAttributes;
 
-			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
-			const newNextBlockContent = nextBlockContentNeedsTransform
-				? nextBlockIsList
-					? fromListToText(nextBlockContent)
-					: fromTextToList(nextBlockContent)
-				: nextBlockContent;
+						const nextBlockContentNeedsTransform =
+							isList !== nextBlockIsList;
+						const newNextBlockContent =
+							nextBlockContentNeedsTransform
+								? nextBlockIsList
+									? fromListToText(nextBlockContent)
+									: fromTextToList(nextBlockContent)
+								: nextBlockContent;
 
-			const { content: newContent, 'custom-formats': newCustomFormats } =
-				getFormatsOnMerge(
-					{ content, 'custom-formats': customFormats },
-					{
-						content: newNextBlockContent,
-						'custom-formats': nextBlockCustomFormats,
+						const {
+							content: newContent,
+							'custom-formats': newCustomFormats,
+						} = getFormatsOnMerge(
+							{ content, 'custom-formats': customFormats },
+							{
+								content: newNextBlockContent,
+								'custom-formats': nextBlockCustomFormats,
+							}
+						);
+
+						maxiSetAttributes({
+							content: newContent,
+							'custom-formats': newCustomFormats,
+						});
+
+						removeBlock(nextBlockClientId);
 					}
 				);
-
-			maxiSetAttributes({
-				content: newContent,
-				'custom-formats': newCustomFormats,
-			});
-
-			removeBlock(nextBlockClientId);
 		}
 	} else {
 		const previousBlockClientId = getPreviousBlockClientId(clientId);
@@ -70,16 +82,19 @@ const onMerge = (props, forward) => {
 			// Commented as is something we might want to come back in future
 			// removeBlock(clientId);
 		} else {
-			const previousBlockAttributes = getBlockAttributes(
-				previousBlockClientId
-			);
-			const {
-				content: previousBlockContent,
-				'custom-formats': previousBlockCustomFormats,
-			} = previousBlockAttributes;
+			formatsLib.load().then(({ fromListToText, getFormatsOnMerge }) => {
+				const previousBlockAttributes = getBlockAttributes(
+					previousBlockClientId
+				);
+				const {
+					content: previousBlockContent,
+					'custom-formats': previousBlockCustomFormats,
+				} = previousBlockAttributes;
 
-			const { content: newContent, 'custom-formats': newCustomFormats } =
-				getFormatsOnMerge(
+				const {
+					content: newContent,
+					'custom-formats': newCustomFormats,
+				} = getFormatsOnMerge(
 					{
 						content: previousBlockContent,
 						'custom-formats': previousBlockCustomFormats,
@@ -92,12 +107,13 @@ const onMerge = (props, forward) => {
 					}
 				);
 
-			updateBlockAttributes(previousBlockClientId, {
-				content: newContent,
-				'custom-formats': newCustomFormats,
-			});
+				updateBlockAttributes(previousBlockClientId, {
+					content: newContent,
+					'custom-formats': newCustomFormats,
+				});
 
-			removeBlock(clientId);
+				removeBlock(clientId);
+			});
 		}
 	}
 };

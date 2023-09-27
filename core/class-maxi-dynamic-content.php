@@ -992,11 +992,19 @@ class MaxiBlocks_DynamicContent
         ];
 
         if($relation === 'by-category') {
-            $args['cat'] = $id;
+            if ($type === 'products') {
+                $args['category'] = [get_term($id)->slug];
+            } else {
+                $args['cat'] = $id;
+            }
         } elseif($relation === 'by-author') {
             $args['author'] = $id;
         } elseif($relation === 'by-tag') {
-            $args['tag_id'] = $id;
+            if ($type === 'products') {
+                $args['tag'] = [get_term($id)->slug];
+            } else {
+                $args['tag_id'] = $id;
+            }
         }
 
         return $args;

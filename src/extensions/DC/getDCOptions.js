@@ -47,9 +47,11 @@ export const getIdOptions = async (type, relation, author) => {
 			}));
 		}
 	} else if (type === 'categories' || relation === 'by-category') {
-		data = await getEntityRecords('taxonomy', 'category', args);
+		const categoryType = type === 'products' ? 'product_cat' : 'category';
+		data = await getEntityRecords('taxonomy', categoryType, args);
 	} else if (type === 'tags' || relation === 'by-tag') {
-		data = await getEntityRecords('taxonomy', 'post_tag', args);
+		const tagType = type === 'products' ? 'product_tag' : 'post_tag';
+		data = await getEntityRecords('taxonomy', tagType, args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}

@@ -39,21 +39,33 @@ const getTempAttributes = (
 					breakpoint,
 				});
 
-				if (value && !returnValue)
-					tempAttributes[getAttributeKey(key, null, '', breakpoint)] =
-						value;
-				else if (value) return value;
-				else {
+				if (value) {
+					const attributeKey = getAttributeKey(
+						key,
+						null,
+						'',
+						breakpoint
+					);
+					if (!returnValue) {
+						tempAttributes[attributeKey] = value;
+					} else {
+						return { key: attributeKey, value };
+					}
+				} else {
 					value = getAttributeValue({
 						target: key,
 						props: attrsToCompare,
 						prefix,
 					});
 
-					if (value && !returnValue)
-						tempAttributes[getAttributeKey(key, null, prefix)] =
-							value;
-					else if (value) return value;
+					if (value) {
+						const attributeKey = getAttributeKey(key, null, prefix);
+						if (!returnValue) {
+							tempAttributes[attributeKey] = value;
+						} else {
+							return { key: attributeKey, value };
+						}
+					}
 				}
 
 				return null;
@@ -66,15 +78,19 @@ const getTempAttributes = (
 							cleanAttributesObject['background-layers'];
 
 					cleanAttributesObject['background-layers'].forEach(
-						(layer, i) => {
-							tempAttributes['background-layers'][i] = {
-								...tempAttributes['background-layers'][i],
-								[attrKey]: getValue(
-									attrKey,
-									blockAttributes['background-layers'][i],
-									true
-								),
-							};
+						(_layer, i) => {
+							const value = getValue(
+								attrKey,
+								blockAttributes['background-layers'][i],
+								true
+							);
+
+							if (value) {
+								tempAttributes['background-layers'][i] = {
+									...tempAttributes['background-layers'][i],
+									[value.key]: value.value,
+								};
+							}
 						}
 					);
 				}

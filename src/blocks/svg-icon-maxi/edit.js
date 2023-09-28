@@ -155,7 +155,7 @@ class edit extends MaxiBlockComponent {
 			this.props.attributes.content?.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const svgClassMatch = svgClass.match(/__([a-f0-9]+)/);
+		const svgClassMatch = svgClass.match(/__([a-f0-9]+)(?:-u)?$|-(\d+)$/);
 		const newUniqueIDMatch = newUniqueID.match(
 			/-([a-f0-9]+)(?:-u)?$|-(\d+)$/
 		);

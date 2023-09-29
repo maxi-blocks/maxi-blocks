@@ -99,9 +99,6 @@ export const getFormattedMessages = async (
 
 	const messages = await chatPrompt.formatMessages({});
 
-	// Debugging
-	console.log(systemMessageTemplate);
-	console.log(humanMessageTemplate);
 	return messages;
 };
 

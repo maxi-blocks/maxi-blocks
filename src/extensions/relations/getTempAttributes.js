@@ -4,7 +4,6 @@
 import {
 	getAttributeKey,
 	getAttributeValue,
-	getLastBreakpointAttribute,
 	getPaletteAttributes,
 } from '../styles';
 

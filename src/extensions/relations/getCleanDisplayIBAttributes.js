@@ -70,7 +70,10 @@ const getCleanDisplayIBAttributes = (blockAttributes, IBAttributes) => {
 	cleanAttributes(mergedAttributes, blockAttributes, IBAttributes);
 
 	// If 'background-layers' exists, clean it as well
-	if (mergedAttributes['background-layers']) {
+	if (
+		mergedAttributes['background-layers'] &&
+		IBAttributes['background-layers']
+	) {
 		mergedAttributes['background-layers'].forEach((layer, index) => {
 			mergedAttributes['background-layers'][index] = cleanAttributes(
 				layer,

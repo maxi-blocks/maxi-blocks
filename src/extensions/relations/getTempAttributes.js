@@ -55,7 +55,7 @@ const getTempAttributes = (
 							const attributeKey = getAttributeKey(
 								key,
 								null,
-								'',
+								prefix,
 								breakpoint
 							);
 							if (!returnValue) {

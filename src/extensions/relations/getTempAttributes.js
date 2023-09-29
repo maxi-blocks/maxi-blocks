@@ -8,6 +8,11 @@ import {
 	getPaletteAttributes,
 } from '../styles';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const getTempAttributes = (
 	selectedSettingsObj = {},
 	cleanAttributesObject,
@@ -24,7 +29,7 @@ const getTempAttributes = (
 			 * TODO: this piece of code is having a dual behavior: it's returning a value or setting a value.
 			 * Needs to be refactored to be more readable and maintainable.
 			 */
-			const getValue = (key, props, returnValue = false) => {
+			const getValues = (key, props, returnValue = false) => {
 				const attrsToCompare = props ?? blockAttributes;
 
 				if (
@@ -33,26 +38,37 @@ const getTempAttributes = (
 				)
 					return null;
 
-				let value = getLastBreakpointAttribute({
-					target: key,
-					attributes: attrsToCompare,
-					breakpoint,
-				});
+				const responsiveValues = returnValue && {};
+				let isBreakpointValue = false;
+				['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+					breakpoint => {
+						const value = getAttributeValue({
+							target: key,
+							props: attrsToCompare,
+							breakpoint,
+							prefix,
+							returnValueWithoutBreakpoint: false,
+						});
 
-				if (value) {
-					const attributeKey = getAttributeKey(
-						key,
-						null,
-						'',
-						breakpoint
-					);
-					if (!returnValue) {
-						tempAttributes[attributeKey] = value;
-					} else {
-						return { key: attributeKey, value };
+						if (value) {
+							isBreakpointValue = true;
+							const attributeKey = getAttributeKey(
+								key,
+								null,
+								'',
+								breakpoint
+							);
+							if (!returnValue) {
+								tempAttributes[attributeKey] = value;
+							} else {
+								responsiveValues[attributeKey] = value;
+							}
+						}
 					}
-				} else {
-					value = getAttributeValue({
+				);
+
+				if (!isBreakpointValue) {
+					const value = getAttributeValue({
 						target: key,
 						props: attrsToCompare,
 						prefix,
@@ -63,12 +79,12 @@ const getTempAttributes = (
 						if (!returnValue) {
 							tempAttributes[attributeKey] = value;
 						} else {
-							return { key: attributeKey, value };
+							responsiveValues[attributeKey] = value;
 						}
 					}
 				}
 
-				return null;
+				return !isEmpty(responsiveValues) ? responsiveValues : null;
 			};
 
 			if (sid && sid === 'bgl') {
@@ -79,22 +95,22 @@ const getTempAttributes = (
 
 					cleanAttributesObject['background-layers'].forEach(
 						(_layer, i) => {
-							const value = getValue(
+							const values = getValues(
 								attrKey,
 								blockAttributes['background-layers'][i],
 								true
 							);
 
-							if (value) {
+							if (values) {
 								tempAttributes['background-layers'][i] = {
 									...tempAttributes['background-layers'][i],
-									[value.key]: value.value,
+									...values,
 								};
 							}
 						}
 					);
 				}
-			} else getValue(attrKey);
+			} else getValues(attrKey);
 		});
 
 	// In some cases we need to force the adding of colours to the IB styles

@@ -32,18 +32,14 @@ exports[`getClipPathStyles Get a correct hover clipPath styles 1`] = `
   "l": {
     "clip-path": "circle(50% at 50% 50%)",
   },
-  "m": {
-    "clip-path": "circle(50% at 50% 50%)",
-  },
+  "m": {},
   "s": {
     "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
   },
   "xl": {
     "clip-path": "polygon(0% 75%, 100% 25%, 62.5% 75%)",
   },
-  "xs": {
-    "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
-  },
+  "xs": {},
   "xxl": {
     "clip-path": "polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%)",
   },
@@ -55,24 +51,12 @@ exports[`getClipPathStyles Get a none hover clipPath styles, when clipPath - non
   "general": {
     "clip-path": "none",
   },
-  "l": {
-    "clip-path": "none",
-  },
-  "m": {
-    "clip-path": "none",
-  },
-  "s": {
-    "clip-path": "none",
-  },
-  "xl": {
-    "clip-path": "none",
-  },
-  "xs": {
-    "clip-path": "none",
-  },
-  "xxl": {
-    "clip-path": "none",
-  },
+  "l": {},
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
 }
 `;
 

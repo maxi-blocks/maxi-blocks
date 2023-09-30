@@ -33,6 +33,8 @@ const nameDictionary = {
 	settings: '__unstableBase',
 	categories: 'category',
 	tags: 'post_tag',
+	product_categories: 'product_cat',
+	product_tags: 'product_tag',
 };
 
 const getDCContent = async (dataRequest, clientId) => {
@@ -64,7 +66,9 @@ const getDCContent = async (dataRequest, clientId) => {
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
-		!['tags', 'categories'].includes(type)
+		!['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			type
+		)
 	) {
 		contentValue = data?.[field].rendered;
 	} else {
@@ -107,7 +111,12 @@ const getDCContent = async (dataRequest, clientId) => {
 			postTaxonomyLinksStatus
 		);
 	}
-	if (['tags', 'categories'].includes(type) && field === 'parent') {
+	if (
+		['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			type
+		) &&
+		field === 'parent'
+	) {
 		if (!contentValue || contentValue === 0)
 			contentValue = __('No parent', 'maxi-blocks');
 		else {
@@ -126,7 +135,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		}
 	}
 
-	if (['tags', 'categories'].includes(field)) {
+	if (
+		['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			field
+		)
+	) {
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,

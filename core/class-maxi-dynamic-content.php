@@ -176,7 +176,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_site_content($dc_field);
         } elseif ($dc_type === 'media') {
             $response = self::get_media_content($attributes);
-        } elseif (in_array($dc_type, ['categories', 'tags'])) { // Categories or tags
+        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) { // Categories or tags
             $response = self::get_taxonomy_content($attributes);
         } elseif ($dc_type === 'users') { // Users
             $response = self::get_user_content($attributes);
@@ -358,11 +358,15 @@ class MaxiBlocks_DynamicContent
             }
 
             return $post;
-        } elseif (in_array($dc_type, ['categories', 'tags'])) {
+        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) {
             if ($dc_type === 'categories') {
                 $taxonomy = 'category';
             } elseif ($dc_type === 'tags') {
                 $taxonomy = 'post_tag';
+            } elseif ($dc_type === 'product_categories') {
+                $taxonomy = 'product_cat';
+            } elseif ($dc_type === 'product_tags') {
+                $taxonomy = 'product_tag';
             }
 
             $args = [

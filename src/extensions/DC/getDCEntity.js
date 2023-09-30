@@ -24,6 +24,8 @@ const kindDictionary = {
 	categories: 'taxonomy',
 	tags: 'taxonomy',
 	products: 'postType',
+	product_categories: 'taxonomy',
+	product_tags: 'taxonomy',
 };
 const nameDictionary = {
 	posts: 'post',
@@ -33,6 +35,8 @@ const nameDictionary = {
 	categories: 'category',
 	tags: 'post_tag',
 	products: 'product',
+	product_categories: 'product_cat',
+	product_tags: 'product_tag',
 };
 
 const randomEntityIndexes = {};
@@ -147,7 +151,11 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		return cart;
 	}
-	if (['tags', 'categories'].includes(type)) {
+	if (
+		['tags', 'categories', 'product_categories', 'product_tags'].includes(
+			type
+		)
+	) {
 		const termsEntity = await resolveSelect('core').getEntityRecords(
 			kindDictionary[type],
 			nameDictionary[type],

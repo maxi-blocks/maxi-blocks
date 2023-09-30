@@ -38,6 +38,11 @@ export const ACFTypeOptions = generalTypeOptions.filter(
 export const WCTypeOptions = [
 	{ label: __('Product', 'maxi-blocks'), value: 'products' },
 	{ label: __('Cart', 'maxi-blocks'), value: 'cart' },
+	{
+		label: __('Product categories', 'maxi-blocks'),
+		value: 'product_categories',
+	},
+	{ label: __('Product tags', 'maxi-blocks'), value: 'product_tags' },
 ];
 
 export const typeOptions = {
@@ -105,6 +110,8 @@ const generalRelationOptions = {
 	tags: generalRelationOptionsTags,
 	products: generalRelationOptionsPosts,
 	cart: generalRelationOptionsPosts,
+	product_categories: generalRelationOptionsCategories,
+	product_tags: generalRelationOptionsTags,
 };
 
 export const relationOptions = {
@@ -325,6 +332,8 @@ export const fieldOptions = {
 		tags: generalTagFields,
 		products: generalProductFields,
 		cart: generalCartFields,
+		product_categories: generalCategoryFields,
+		product_tags: generalTagFields,
 	},
 	button: {
 		posts: buttonPostsPagesFields,
@@ -336,6 +345,8 @@ export const fieldOptions = {
 		tags: buttonTagFields,
 		products: buttonProductFields,
 		cart: generalCartFields,
+		product_categories: buttonCategoryFields,
+		product_tags: buttonTagFields,
 	},
 	image: {
 		posts: mediaPostsPagesFields,
@@ -449,6 +460,8 @@ export const idOptionByField = {
 	users: 'name',
 	author: 'name',
 	categories: 'name',
+	product_categories: 'name',
+	product_tags: 'name',
 };
 
 // Fields that use id field
@@ -461,6 +474,8 @@ export const idFields = [
 	'tags',
 	'authors',
 	'products',
+	'product_categories',
+	'product_tags',
 ];
 
 // Fields that have rendered and raw content
@@ -481,6 +496,8 @@ export const relationTypes = [
 	'tags',
 	'users', // TODO: Add support for users
 	'products',
+	'product_categories',
+	'product_tags',
 ];
 
 // Fields that can lead to different locations from post
@@ -516,7 +533,15 @@ export const descriptionOfErrors = {
 	),
 };
 
-export const limitTypes = ['posts', 'pages', 'tags', 'categories', 'products'];
+export const limitTypes = [
+	'posts',
+	'pages',
+	'tags',
+	'categories',
+	'products',
+	'product_categories',
+	'product_tags',
+];
 
 export const limitFields = [
 	'excerpt',

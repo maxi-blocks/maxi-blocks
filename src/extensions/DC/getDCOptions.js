@@ -46,11 +46,21 @@ export const getIdOptions = async (type, relation, author) => {
 				name,
 			}));
 		}
-	} else if (type === 'categories' || relation === 'by-category') {
-		const categoryType = type === 'products' ? 'product_cat' : 'category';
+	} else if (
+		['categories', 'product_categories'].includes(type) ||
+		relation === 'by-category'
+	) {
+		const categoryType = ['products', 'product_categories'].includes(type)
+			? 'product_cat'
+			: 'category';
 		data = await getEntityRecords('taxonomy', categoryType, args);
-	} else if (type === 'tags' || relation === 'by-tag') {
-		const tagType = type === 'products' ? 'product_tag' : 'post_tag';
+	} else if (
+		['tags', 'product_tags'].includes(type) ||
+		relation === 'by-tag'
+	) {
+		const tagType = ['products', 'product_tags'].includes(type)
+			? 'product_tag'
+			: 'post_tag';
 		data = await getEntityRecords('taxonomy', tagType, args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
@@ -90,7 +100,12 @@ const getDCOptions = async (
 
 	const newPostIdOptions = data.map(item => {
 		if (
-			['tags', 'categories'].includes(type) ||
+			[
+				'tags',
+				'categories',
+				'product_tags',
+				'product_categories',
+			].includes(type) ||
 			orderByRelations.includes(relation)
 		) {
 			return {

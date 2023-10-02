@@ -1,36 +1,25 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import getDCErrors from './getDCErrors';
 import { getDCOrder } from './utils';
-import { orderRelations, orderTypes, relationTypes } from './constants';
+import {
+	kindDictionary,
+	nameDictionary,
+	orderRelations,
+	orderTypes,
+	relationTypes,
+} from './constants';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-
-const kindDictionary = {
-	posts: 'postType',
-	pages: 'postType',
-	media: 'postType',
-	settings: 'root',
-	categories: 'taxonomy',
-	tags: 'taxonomy',
-};
-const nameDictionary = {
-	posts: 'post',
-	pages: 'page',
-	media: 'attachment',
-	settings: '__unstableBase',
-	categories: 'category',
-	tags: 'post_tag',
-};
 
 const randomEntityIndexes = {};
 
@@ -151,6 +140,16 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 
 		return termsEntity[0];
+	}
+
+	if (relation === 'current') {
+		return (
+			resolveSelect('core').getEditedEntityRecord(
+				kindDictionary[type],
+				nameDictionary[type],
+				select('core/editor').getCurrentPostId()
+			) ?? {}
+		);
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(

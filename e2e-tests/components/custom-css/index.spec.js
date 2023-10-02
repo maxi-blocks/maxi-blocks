@@ -76,21 +76,20 @@ describe('Custom-Css-Control', () => {
 
 		await selector.select('group');
 
-		await page.$eval('.maxi-custom-css-control__group textarea', input =>
+		await page.$eval('.maxi-css-code-editor textarea', input =>
 			input.focus()
 		);
 
 		await page.keyboard.type('VALIDATE ERROR');
 		await page.waitForTimeout(200);
 
-		await accordionPanel.$eval(
-			'.maxi-custom-css-control__group button',
-			button => button.click()
+		await accordionPanel.$eval('.maxi-css-code-editor button', button =>
+			button.click()
 		);
 		await page.waitForTimeout(150);
 
 		const error = await accordionPanel.$$eval(
-			'.maxi-custom-css-control__error',
+			'.maxi-css-code-editor__error',
 			input => input[0].innerText
 		);
 		expect(error).not.toBe('Valid');

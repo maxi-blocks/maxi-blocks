@@ -32,18 +32,16 @@ const controls = {
 			blockData.map(async data => {
 				const uniqueID = data[0];
 				const [, value] = data;
-				if (!isEmpty(value)) {
-					filteredCustomData[uniqueID] = {};
 
-					if (value[uniqueID])
-						filteredCustomData[uniqueID] = value[uniqueID];
-					if (value.relations)
-						filteredCustomData[uniqueID].relations =
-							value.relations;
-					if (value.dynamic_content) {
-						filteredCustomData[uniqueID].dynamic_content =
-							value.dynamic_content;
-					}
+				filteredCustomData[uniqueID] = {};
+
+				if (value[uniqueID])
+					filteredCustomData[uniqueID] = value[uniqueID];
+				if (value.relations)
+					filteredCustomData[uniqueID].relations = value.relations;
+				if (value.dynamic_content) {
+					filteredCustomData[uniqueID].dynamic_content =
+						value.dynamic_content;
 				}
 			})
 		);

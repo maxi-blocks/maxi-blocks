@@ -1,10 +1,22 @@
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const BlockInserter = loadable(() => import('../../components/block-inserter'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const ArrowDisplayer = loadable(() =>
+	import('../../components/arrow-displayer')
+);
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';

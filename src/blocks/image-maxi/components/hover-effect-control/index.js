@@ -4,20 +4,41 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	AxisControl,
-	BackgroundControl,
-	BorderControl,
-	Icon,
-	SelectControl,
-	TextareaControl,
-	ToggleSwitch,
-	TypographyControl,
-	SettingTabsControl,
-} from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const AxisControl = loadable(() =>
+	import('../../../../components/axis-control')
+);
+const BackgroundControl = loadable(() =>
+	import('../../../../components/background-control')
+);
+const BorderControl = loadable(() =>
+	import('../../../../components/border-control')
+);
+const Icon = loadable(() => import('../../../../components/icon'));
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const TextareaControl = loadable(() =>
+	import('../../../../components/textarea-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const TypographyControl = loadable(() =>
+	import('../../../../components/typography-control')
+);
 
 /**
  * External dependencies

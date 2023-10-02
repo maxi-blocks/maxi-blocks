@@ -4,13 +4,22 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	SelectControl,
-	ToggleSwitch,
-} from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {

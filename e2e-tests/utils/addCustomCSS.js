@@ -10,18 +10,15 @@ const checkCSS = async ({ page, cssInstances }) => {
 		const instance = await cssInstances[i];
 		const labelForCss = await instance.evaluate(el =>
 			Array.from(el.classList)
-				.find(className =>
-					className.includes('maxi-custom-css-control__group--')
-				)
-				.replace('maxi-custom-css-control__group--', '')
+				.find(className => className.includes('maxi-css-code-editor--'))
+				.replace('maxi-css-code-editor--', '')
 		);
 
 		await page.waitForSelector(
-			`.maxi-custom-css-control__code-editor--${labelForCss} textarea`
+			`.maxi-css-code-editor--${labelForCss} textarea`
 		);
-		await page.$eval(
-			`.maxi-custom-css-control__code-editor--${labelForCss} textarea`,
-			el => el.focus()
+		await page.$eval(`.maxi-css-code-editor--${labelForCss} textarea`, el =>
+			el.focus()
 		);
 
 		await page.keyboard.type('background: red');
@@ -29,10 +26,10 @@ const checkCSS = async ({ page, cssInstances }) => {
 
 		// validate css
 		await page.waitForSelector(
-			`.maxi-custom-css-control__validate-button--${labelForCss}`
+			`.maxi-css-code-editor__validate-button--${labelForCss}`
 		);
 		await page.click(
-			`.maxi-custom-css-control__validate-button--${labelForCss}`
+			`.maxi-css-code-editor__validate-button--${labelForCss}`
 		);
 		await page.waitForTimeout(250);
 	}
@@ -51,7 +48,7 @@ const addCustomCSS = async page => {
 
 		await customCssSelector.select(optionLabel);
 
-		const cssInstances = await page.$$('.maxi-custom-css-control__group');
+		const cssInstances = await page.$$('.maxi-css-code-editor');
 
 		await checkCSS({ page, cssInstances });
 	}

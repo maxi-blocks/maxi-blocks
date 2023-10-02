@@ -52,6 +52,7 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
+	...attributesData.advancedCss,
 	...{
 		...attributesData.flex,
 		'row-gap-general': {

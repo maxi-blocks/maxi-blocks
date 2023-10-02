@@ -47,6 +47,7 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by author'), value: 'by-author' },
 	{ label: __('Get by category'), value: 'by-category' },
 	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
+	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -57,6 +58,7 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
+	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
 ];
 
 const generalRelationOptionsUsers = [
@@ -406,6 +408,9 @@ export const relationTypes = [
 	'users', // TODO: Add support for users
 ];
 
+// Types that can have relation "current".
+export const currentEntityTypes = ['posts', 'pages'];
+
 // Fields that can lead to different locations from post
 export const linkFields = ['categories', 'tags', 'author'];
 
@@ -471,6 +476,23 @@ export const orderOptions = {
 		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
 		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
 	],
+};
+
+export const kindDictionary = {
+	posts: 'postType',
+	pages: 'postType',
+	media: 'postType',
+	settings: 'root',
+	categories: 'taxonomy',
+	tags: 'taxonomy',
+};
+export const nameDictionary = {
+	posts: 'post',
+	pages: 'page',
+	media: 'attachment',
+	settings: '__unstableBase',
+	categories: 'category',
+	tags: 'post_tag',
 };
 
 export const attributeDefaults = {

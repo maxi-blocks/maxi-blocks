@@ -2,18 +2,25 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { fieldOptions, relationOptions, orderByRelations } from './constants';
+import {
+	fieldOptions,
+	relationOptions,
+	orderByRelations,
+	currentEntityTypes,
+	nameDictionary,
+} from './constants';
 
 /**
  * External dependencies
  */
 import moment from 'moment';
 import 'moment-parseformat';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, invert } from 'lodash';
 
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
@@ -90,4 +97,23 @@ export const getDCOrder = (relation, orderBy) => {
 	}
 
 	return dictionary[relation];
+};
+
+export const canCurrentEntityBeSelected = type =>
+	currentEntityTypes.includes(type) &&
+	nameDictionary[type] === select('core/editor').getCurrentPostType();
+
+export const validateRelations = (type, relation, isCL) => {
+	const prefix = isCL ? 'cl-' : 'dc-';
+
+	if (relation === 'current' && !canCurrentEntityBeSelected(type)) {
+		const currentType = select('core/editor').getCurrentPostType();
+		const postTypeToDCType = invert(nameDictionary);
+
+		if (currentEntityTypes.includes(postTypeToDCType[currentType])) {
+			return { [`${prefix}type`]: postTypeToDCType[currentType] };
+		}
+	}
+
+	return {};
 };

@@ -2,6 +2,7 @@ export { default as accordion } from './accordion';
 export { default as accordionIcon } from './accordionIcon';
 export { default as accordionLine } from './accordionLine';
 export { default as accordionTitle } from './accordionTitle';
+export { default as advancedCss } from './advancedCss';
 export { default as alignment } from './alignment';
 export { default as arrow } from './arrow';
 export { default as arrowIcon } from './arrowIcon';

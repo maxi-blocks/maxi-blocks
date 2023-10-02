@@ -9,7 +9,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -219,6 +219,21 @@ const DynamicContent = props => {
 		return options;
 	}, []);
 
+	const currentRelationOptions = useMemo(() => {
+		const options = relationOptions[contentType][type];
+
+		const hideCurrent = {
+			post: 'pages',
+			page: 'posts',
+		};
+
+		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+			return options.filter(({ value }) => value !== 'current');
+		}
+
+		return options;
+	}, [contentType, type]);
+
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
 			const validatedAttributes = validationsValues(
@@ -316,7 +331,7 @@ const DynamicContent = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={relationOptions[contentType][type]}
+									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,
@@ -482,6 +497,7 @@ const DynamicContent = props => {
 										'date',
 										'modified',
 										'random',
+										'current',
 										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl

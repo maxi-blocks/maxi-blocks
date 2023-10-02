@@ -241,6 +241,9 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.contextLoop({
 										props,
 										contentType: 'accordion',

@@ -143,6 +143,9 @@ const Inspector = props => {
 										selectors,
 										categories: getCategoriesCss(),
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.contextLoop({
 										props,
 										contentType: 'container',

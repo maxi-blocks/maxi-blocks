@@ -82,6 +82,9 @@ const Inspector = props => {
 										selectors: customCss.selectors,
 										categories: customCss.categories,
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.contextLoop({
 										props,
 										contentType: 'slide',

@@ -172,6 +172,9 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

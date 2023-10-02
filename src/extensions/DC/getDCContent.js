@@ -7,7 +7,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { limitFields, limitTypes, renderedFields } from './constants';
+import {
+	limitFields,
+	limitTypes,
+	nameDictionary,
+	renderedFields,
+} from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
@@ -17,16 +22,7 @@ import getACFContentByType from './getACFContentByType';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
-
-const nameDictionary = {
-	posts: 'post',
-	pages: 'page',
-	media: 'attachment',
-	settings: '__unstableBase',
-	categories: 'category',
-	tags: 'post_tag',
-};
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 const getDCContent = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
@@ -35,6 +31,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 	const {
 		source,
+		relation,
 		type,
 		field,
 		limit,
@@ -58,6 +55,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		postTaxonomyLinksStatus
 			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
 			: item;
+
+	if (relation === 'current' && isEmpty(data)) {
+		return `${capitalize(field)}: current`;
+	}
 
 	if (
 		renderedFields.includes(field) &&

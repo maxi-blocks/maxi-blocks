@@ -184,6 +184,7 @@ const attributes = {
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.customCss,
+	...attributesData.advancedCss,
 	...attributesData.flex,
 };
 

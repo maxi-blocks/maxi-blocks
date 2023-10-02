@@ -1,19 +1,10 @@
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const ArrowDisplayer = loadable(() =>
-	import('../../components/arrow-displayer')
-);
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+
 import { getGroupAttributes } from '../../extensions/styles';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { ArrowDisplayer } from '../../components';
 
 /**
  * Save

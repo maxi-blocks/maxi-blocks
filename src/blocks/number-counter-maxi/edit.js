@@ -4,16 +4,26 @@
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import { round } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const BlockResizer = loadable(() => import('../../components/block-resizer'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
 import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { BlockResizer, Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
@@ -23,11 +33,6 @@ import {
 import getStyles from './styles';
 import { getBreakpoints } from '../../extensions/styles/helpers';
 import { copyPasteMapping } from './data';
-
-/**
- * External dependencies
- */
-import { round } from 'lodash';
 
 /**
  * Content

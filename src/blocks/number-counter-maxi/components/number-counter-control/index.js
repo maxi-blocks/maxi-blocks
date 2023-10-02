@@ -4,25 +4,36 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	ColorControl,
-	FontFamilySelector,
-	FontWeightControl,
-	SelectControl,
-	ToggleSwitch,
-} from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const FontFamilySelector = loadable(() =>
+	import('../../../../components/font-family-selector')
+);
+const FontWeightControl = loadable(() =>
+	import('../../../../components/font-weight-control')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Styles

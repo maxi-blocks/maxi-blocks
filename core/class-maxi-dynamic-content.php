@@ -300,8 +300,12 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if(empty($query->posts)) {
-                return null;
+            if (empty($query->posts)) {
+                if (in_array($dc_relation, self::$order_by_relations)) {
+                    return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+                } else {
+                    return null;
+                }
             }
 
             return end($query->posts);
@@ -315,7 +319,7 @@ class MaxiBlocks_DynamicContent
             if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {
-                $args= [
+                $args = [
                     'post_type' => 'attachment',
                     'post_status' => 'inherit',
                     'posts_per_page' => -1
@@ -326,6 +330,10 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
+
+            if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
+                return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+            }
 
             if ($is_random) {
                 $posts = $query->posts;
@@ -379,6 +387,28 @@ class MaxiBlocks_DynamicContent
             return null;
         }
     }
+
+    public function get_validated_orderby_attributes($dc_relation)
+    {
+        if ($dc_relation === 'by-category') {
+            // Get first existing category
+            $categories = get_categories(['hide_empty' => false]);
+            $first_category = reset($categories);
+            if ($first_category) {
+                return ['dc-relation' => 'by-category', 'dc-id' => $first_category->term_id];
+            }
+        } elseif ($dc_relation === 'by-tag') {
+            // Get first existing tag
+            $tags = get_tags(['hide_empty' => false]);
+            $first_tag = reset($tags);
+            if ($first_tag) {
+                return ['dc-relation' => 'by-tag', 'dc-id' => $first_tag->term_id];
+            }
+        }
+
+        return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
+    }
+
 
     public function get_field_link($item, $field)
     {

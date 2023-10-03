@@ -7,15 +7,17 @@ import { Modal } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-
-import LibraryToolbar from './toolbar';
-import LibraryContainer from './container';
-/**
  * External dependencies
  */
 import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+
+const LibraryToolbar = loadable(() => import('./toolbar'));
+const LibraryContainer = loadable(() => import('./container'));
 
 /**
  * Styles

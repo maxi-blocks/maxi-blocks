@@ -7,22 +7,23 @@ import { createBlock } from '@wordpress/blocks';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import Button from '../../components/button';
-import Icon from '../../components/icon';
-import MaxiStyleCardsEditorPopUp from '../style-cards';
-import { setScreenSize } from '../../extensions/styles';
-import CrispChat from '../crisp-chat';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
-
-/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../components/button'));
+const Icon = loadable(() => import('../../components/icon'));
+const MaxiStyleCardsEditorPopUp = loadable(() => import('../style-cards'));
+const CrispChat = loadable(() => import('../crisp-chat'));
+import { setScreenSize } from '../../extensions/styles';
+import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
 
 /**
  * Styles

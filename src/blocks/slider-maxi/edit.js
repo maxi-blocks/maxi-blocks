@@ -6,17 +6,6 @@ import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { useRef, useState, useEffect, RawHTML } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
-/**
- * Internal dependencies
- */
-import Inspector from './inspector';
-import { Toolbar } from '../../components';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { withMaxiContextLoop } from '../../extensions/DC';
-import getStyles from './styles';
-import { copyPasteMapping } from './data';
-import TEMPLATE from './template';
 
 /**
  * External dependencies
@@ -24,6 +13,19 @@ import TEMPLATE from './template';
 import classnames from 'classnames';
 import SliderContext from './context';
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { withMaxiContextLoop } from '../../extensions/DC';
+import getStyles from './styles';
+import { copyPasteMapping } from './data';
+import TEMPLATE from './template';
 
 /**
  * Edit

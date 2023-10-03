@@ -15,14 +15,11 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
 const IconToolbar = loadable(() =>
 	import('../../components/toolbar/iconToolbar')
 );
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getGroupAttributes,
 	getIconPositionClass,

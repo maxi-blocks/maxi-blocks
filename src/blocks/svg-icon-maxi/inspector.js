@@ -5,18 +5,36 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	BlockStylesControl,
-	CustomLabel,
-	ResponsiveTabsControl,
-	SettingTabsControl,
-	SvgStrokeWidthControl,
-	SvgWidthControl,
-} from '../../components';
-import { SvgAltControl, SvgColorControl } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const BlockStylesControl = loadable(() =>
+	import('../../components/block-styles-control')
+);
+const CustomLabel = loadable(() => import('../../components/custom-label'));
+const ResponsiveTabsControl = loadable(() =>
+	import('../../components/responsive-tabs-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const SvgStrokeWidthControl = loadable(() =>
+	import('../../components/svg-stroke-width-control')
+);
+const SvgWidthControl = loadable(() =>
+	import('../../components/svg-width-control')
+);
+const SvgAltControl = loadable(() => import('./components/svg-alt-control'));
+const SvgColorControl = loadable(() =>
+	import('./components/svg-color-control')
+);
 import {
 	getColorRGBAString,
 	getGroupAttributes,

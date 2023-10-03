@@ -4,17 +4,6 @@
 import { select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import Inspector from './inspector';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { BlockInserter, Toolbar } from '../../components';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import getStyles from './styles';
-import SliderContext from '../slider-maxi/context';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -23,6 +12,22 @@ import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Inspector = loadable(() => import('./inspector'));
+const BlockInserter = loadable(() => import('../../components/block-inserter'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+// const MaxiBlock = loadable(() =>
+// 	import('../../components/maxi-block/maxiBlock')
+// );
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
+import getStyles from './styles';
+import SliderContext from '../slider-maxi/context';
 
 /**
  * Editor

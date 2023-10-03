@@ -491,7 +491,7 @@ const TypographyControl = props => {
 		if (!isReset) {
 			onChange(filteredObj, getInlineTarget(tag));
 		} else {
-			onChange({ ...filteredObj, isReset: true }, getInlineTarget(tag));
+			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
 		}
 	};
 

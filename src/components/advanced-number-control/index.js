@@ -7,19 +7,20 @@ import { useInstanceId } from '@wordpress/compose';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import SelectControl from '../select-control';
-import BaseControl from '../base-control';
-import ToggleSwitch from '../toggle-switch';
-import ResetButton from '../reset-control';
-import validateNumberInput from './utils';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNumber, merge, trim } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const SelectControl = loadable(() => import('../select-control'));
+const BaseControl = loadable(() => import('../base-control'));
+const ToggleSwitch = loadable(() => import('../toggle-switch'));
+const ResetButton = loadable(() => import('../reset-control'));
+import validateNumberInput from './utils';
 
 /**
  * Styles

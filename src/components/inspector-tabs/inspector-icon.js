@@ -86,6 +86,7 @@ const icon = ({
 		label,
 		content: (
 			<SettingTabsControl
+				hasMarginBottom
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),

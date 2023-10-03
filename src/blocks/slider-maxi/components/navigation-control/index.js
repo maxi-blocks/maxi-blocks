@@ -60,6 +60,7 @@ const NavigationControl = props => {
 			{arrowsEnabled && (
 				<SelectControl
 					label={__('Arrow position', 'maxi-blocks')}
+					newStyle
 					options={[
 						{
 							label: __('Inside', 'maxi-blocks'),
@@ -92,6 +93,7 @@ const NavigationControl = props => {
 			{dotsEnabled && (
 				<SelectControl
 					label={__('Dots position', 'maxi-blocks')}
+					newStyle
 					options={[
 						{
 							label: __('Inside', 'maxi-blocks'),

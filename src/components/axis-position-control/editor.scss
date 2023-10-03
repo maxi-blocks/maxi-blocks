@@ -1,0 +1,19 @@
+.maxi-accordion-control__item{
+    &[data-name="position"]{
+        .maxi-accordion-control__item__panel{
+            padding-top: 10px;
+        }
+        .maxi-tabs-control{
+            column-gap: 5px;
+			.maxi-components-button{
+                padding: 10px;
+				border-radius: 4px;
+                border: 1px solid var(--maxi-grey-1-color);
+				&[aria-pressed="true"]{
+					background: var(--maxi-light-blue-2-color);
+                    color: var(--maxi-secondary-color);
+				}
+			}
+        }
+    }
+}

@@ -15,21 +15,55 @@
 			font-weight: 500;
 
 			&[aria-pressed='true'] {
-				border-bottom-color: var(--maxi-secondary-color);
+				// border-bottom-color: var(--maxi-secondary-color);
 				color: var(--maxi-secondary-color);
 			}
 		}
 
-		.maxi-tabs-control__button-position,
-		.maxi-tabs-control__button-size,
-		.maxi-tabs-control__button-start,
-		.maxi-tabs-control__button-mid,
-		.maxi-tabs-control__button-end,
-		.maxi-tabs-control__button-flex-parent,
-		.maxi-tabs-control__button-flex-child,
-		.maxi-tabs-control__button-normal,
-		.maxi-tabs-control__button-hover {
-			color: var(--maxi-grey-5-color);
+		// .maxi-tabs-control__button-position,
+		// .maxi-tabs-control__button-size,
+		// .maxi-tabs-control__button-start,
+		// .maxi-tabs-control__button-mid,
+		// .maxi-tabs-control__button-end,
+		// .maxi-tabs-control__button-flex-parent,
+		// .maxi-tabs-control__button-flex-child,
+		// .maxi-tabs-control__button-normal,
+		// .maxi-tabs-control__button-hover {
+		// 	color: var(--maxi-grey-5-color);
+		// }
+	}
+}
+.maxi-responsive-tabs-control {
+	.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
+		padding: 12px 0 0;
+	}
+	.maxi-tabs-control {
+		margin-right: -8px;
+		margin-left: -8px;
+		&.maxi-settingstab-control_has-border-left-right {
+			margin-right: 0;
+			margin-left: 0;
 		}
+
+		&__button {
+			padding: 10px;
+			font-weight: 500;
+
+			&[aria-pressed='true'] {
+				color: var(--maxi-secondary-color);
+			}
+		}
+
+		// .maxi-tabs-control__button-position,
+		// .maxi-tabs-control__button-size,
+		// .maxi-tabs-control__button-start,
+		// .maxi-tabs-control__button-mid,
+		// .maxi-tabs-control__button-end,
+		// .maxi-tabs-control__button-flex-parent,
+		// .maxi-tabs-control__button-flex-child,
+		// .maxi-tabs-control__button-normal,
+		// .maxi-tabs-control__button-hover {
+		// 	color: var(--maxi-grey-5-color);
+		// }
 	}
 }

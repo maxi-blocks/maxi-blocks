@@ -108,6 +108,7 @@ const OverflowControl = props => {
 				<SelectControl
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
 					key={uniqueId('maxi-position-control__overflow')}
+					newStyle
 					options={[
 						{ label: 'Visible', value: 'visible' },
 						{ label: 'Hidden', value: 'hidden' },

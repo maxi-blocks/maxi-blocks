@@ -9,7 +9,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -219,21 +219,6 @@ const DynamicContent = props => {
 		return options;
 	}, []);
 
-	const currentRelationOptions = useMemo(() => {
-		const options = relationOptions[contentType][type];
-
-		const hideCurrent = {
-			post: 'pages',
-			page: 'posts',
-		};
-
-		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			return options.filter(({ value }) => value !== 'current');
-		}
-
-		return options;
-	}, [contentType, type]);
-
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
 			const validatedAttributes = validationsValues(
@@ -270,6 +255,7 @@ const DynamicContent = props => {
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
+							newStyle
 							onChange={value => {
 								const validatedAttributes = validationsValues(
 									type,
@@ -302,6 +288,7 @@ const DynamicContent = props => {
 								? ACFTypeOptions
 								: typeOptions[contentType]
 						}
+						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(
 								value,
@@ -331,7 +318,8 @@ const DynamicContent = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={currentRelationOptions}
+									options={relationOptions[contentType][type]}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,
@@ -362,6 +350,7 @@ const DynamicContent = props => {
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
 									options={postAuthorOptions}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-author': Number(value),
@@ -397,6 +386,7 @@ const DynamicContent = props => {
 										)}
 										value={id}
 										options={postIdOptions}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-error': '',
@@ -451,6 +441,7 @@ const DynamicContent = props => {
 														: relation
 												]
 											}
+											newStyle
 											onChange={value =>
 												changeProps({
 													'dc-order': value,
@@ -497,7 +488,6 @@ const DynamicContent = props => {
 										'date',
 										'modified',
 										'random',
-										'current',
 										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl
@@ -506,6 +496,7 @@ const DynamicContent = props => {
 										options={
 											fieldOptions[contentType][type]
 										}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-field': value,
@@ -589,6 +580,7 @@ const DynamicContent = props => {
 													: delimiterContent
 											}
 											options={delimiterOptions}
+											newStyle
 											onChange={value => {
 												changeProps(
 													value === 'custom'

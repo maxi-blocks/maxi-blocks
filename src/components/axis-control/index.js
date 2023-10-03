@@ -384,8 +384,9 @@ const AxisControlContent = props => {
 					<SettingTabsControl
 						label={getSyncLabel()}
 						type='buttons'
-						className='maxi-axis-control__header'
+						className='maxi-axis-control__header maxi-axis-control__sync'
 						selected={sync}
+						hasBorder
 						items={[
 							{
 								value: 'all',

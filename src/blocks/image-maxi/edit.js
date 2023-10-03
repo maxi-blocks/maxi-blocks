@@ -118,15 +118,7 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.state.width
 			);
 
-			if (
-				(this.props.attributes.fitParentSize ||
-					this.props.attributes.useInitSize) &&
-				resizableWidth !== 100
-			) {
-				this.resizableObject.current.updateSize({
-					width: '100%',
-				});
-			} else if (imgWidth !== resizableWidth) {
+			if (imgWidth !== resizableWidth) {
 				this.resizableObject.current.updateSize({
 					width: `${imgWidth}%`,
 				});
@@ -215,13 +207,7 @@ class edit extends MaxiBlockComponent {
 				attributes,
 			});
 
-			if (useInitSize && !isNumber(maxWidth)) {
-				if (fitParentSize) {
-					return '100%';
-				}
-
-				return `${mediaWidth}px`;
-			}
+			if (useInitSize && !isNumber(maxWidth)) return `${mediaWidth}px`;
 
 			const maxWidthUnit = getLastBreakpointAttribute({
 				target: 'image-max-width-unit',
@@ -402,10 +388,7 @@ class edit extends MaxiBlockComponent {
 								}%`,
 							}}
 							showHandle={
-								isSelected &&
-								!fullWidth &&
-								!useInitSize &&
-								!fitParentSize
+								isSelected && !fullWidth && !useInitSize
 							}
 							maxWidth={getMaxWidth()}
 							enable={{

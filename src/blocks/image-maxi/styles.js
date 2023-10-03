@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import {
-	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	styleProcessor,
@@ -34,7 +33,7 @@ import data from './data';
 /**
  * External dependencies
  */
-import { isNil, round } from 'lodash';
+import { isNil } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -250,13 +249,16 @@ const getImageWrapperObject = props => {
 };
 
 const getImageFitWrapper = props => {
-	const { fitParentSize } = props;
-
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const objectSize = getLastBreakpointAttribute({
+			target: 'object-size',
+			breakpoint,
+			attributes: props,
+		});
 		const horizontalPosition = getLastBreakpointAttribute({
 			target: 'object-position-horizontal',
 			breakpoint,
@@ -268,29 +270,17 @@ const getImageFitWrapper = props => {
 			attributes: props,
 		});
 
-		const objectSize = fitParentSize
-			? getLastBreakpointAttribute({
-					target: 'object-size',
-					breakpoint,
-					attributes: props,
-			  })
-			: getDefaultAttribute('object-size-general');
-		const size = round(objectSize * 100, 2);
+		const size = objectSize * 100;
+
+		response[breakpoint].height = `${size}%`;
+		response[breakpoint].width = `${size}%`;
+
 		const displacementCoefficient = 100 - size;
 
-		if (fitParentSize) {
-			response[breakpoint].height = `${size}%`;
-			response[breakpoint].width = `${size}%`;
-		}
-
-		const horizontalDisplacement = round(
-			(displacementCoefficient * horizontalPosition) / 100,
-			2
-		);
-		const verticalDisplacement = round(
-			(displacementCoefficient * verticalPosition) / 100,
-			2
-		);
+		const horizontalDisplacement =
+			(displacementCoefficient * horizontalPosition) / 100;
+		const verticalDisplacement =
+			(displacementCoefficient * verticalPosition) / 100;
 
 		response[breakpoint].left = `${horizontalDisplacement}%`;
 		response[breakpoint].top = `${verticalDisplacement}%`;
@@ -305,12 +295,11 @@ const getImageFitWrapper = props => {
 
 const getImageObject = props => {
 	const {
-		fitParentSize,
 		imageRatio,
 		imgWidth,
-		isFirstOnHierarchy,
-		mediaWidth,
 		useInitSize,
+		mediaWidth,
+		isFirstOnHierarchy,
 	} = props;
 
 	return {
@@ -353,16 +342,13 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'clipPath'),
 			},
 		}),
-		...(imgWidth &&
-			!fitParentSize && {
-				imgWidth: {
-					general: {
-						width: !useInitSize
-							? `${imgWidth}%`
-							: `${mediaWidth}px`,
-					},
+		...(imgWidth && {
+			imgWidth: {
+				general: {
+					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
 				},
-			}),
+			},
+		}),
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),

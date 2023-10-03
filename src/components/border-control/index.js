@@ -351,6 +351,7 @@ const BorderControl = props => {
 							isReset: true,
 						})
 					}
+					newStyle
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },

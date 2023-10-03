@@ -525,6 +525,7 @@ const ScrollEffectsControl = props => {
 				onChange={val => onChangeShortcut(val)}
 				value={props.shortcutEffect}
 				options={globalShortcutsOptions}
+				newStyle
 			/>
 			<SettingTabsControl
 				type='buttons'
@@ -581,6 +582,7 @@ const ScrollEffectsControl = props => {
 											'Direction preset',
 											'maxi-blocks'
 										)}
+										newStyle
 										value={props.shortcutEffectType?.[type]}
 										onChange={val =>
 											onChangeShortcut(val, type)
@@ -592,6 +594,7 @@ const ScrollEffectsControl = props => {
 											'Easing function',
 											'maxi-blocks'
 										)}
+										newStyle
 										value={getLastBreakpointAttribute({
 											target: `scroll-${type}-easing`,
 											breakpoint,
@@ -685,6 +688,7 @@ const ScrollEffectsControl = props => {
 													val,
 											})
 										}
+										newStyle
 										options={viewportOptions}
 										defaultValue='mid'
 									/>

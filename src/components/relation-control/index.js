@@ -422,7 +422,7 @@ const RelationControl = props => {
 											'maxi-blocks'
 										)}
 										value={item.uniqueID}
-										newStlye
+										newStyle
 										options={[
 											{
 												label: __(
@@ -433,7 +433,6 @@ const RelationControl = props => {
 											},
 											...blocksToAffect,
 										]}
-										newStyle
 										onChange={value =>
 											onChangeRelation(
 												relations,

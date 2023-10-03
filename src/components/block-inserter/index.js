@@ -217,13 +217,11 @@ const InterBlockToggle = props => {
 
 	const [isHovered, setHovered] = useState(false);
 
-	const { nextBlockClientId, isTyping } = useSelect(select => {
-		const { getAdjacentBlockClientId, isTyping } =
-			select('core/block-editor');
+	const { nextBlockClientId } = useSelect(select => {
+		const { getAdjacentBlockClientId } = select('core/block-editor');
 
 		return {
 			nextBlockClientId: getAdjacentBlockClientId(clientId, 1),
-			isTyping: isTyping(),
 		};
 	});
 
@@ -249,11 +247,7 @@ const InterBlockToggle = props => {
 			}}
 			onClick={onToggleInserter}
 		>
-			{/*
-				Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
-				It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
-			*/}
-			{((isHovered && !isTyping) || isOpen) && (
+			{(isHovered || isOpen) && (
 				<>
 					<Button
 						key={`maxi-inter-blocks-inserter__content-item-${clientId}`}

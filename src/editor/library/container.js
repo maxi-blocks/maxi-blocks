@@ -5,7 +5,7 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import { CheckboxControl, Button } from '@wordpress/components';
+import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

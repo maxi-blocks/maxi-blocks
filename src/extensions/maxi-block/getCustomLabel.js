@@ -34,7 +34,7 @@ const getCustomLabel = (previousCustomLabel, uniqueID) => {
 		return uniqueCustomLabelGenerator(
 			sanitizedPreviousCustomLabel,
 			uniqueID,
-			sanitizedPreviousCustomLabel === previousCustomLabel ? null : 2
+			sanitizedPreviousCustomLabel === previousCustomLabel ? null : 1
 		);
 	}
 

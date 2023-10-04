@@ -634,7 +634,14 @@ const loadIntegrationsOptions = () => {
 			if (response.includes('woocommerce')) {
 				generalTypeOptions.push(...WCTypeOptions);
 				imageTypeOptions.push(
-					...WCTypeOptions.filter(option => option.value !== 'cart')
+					...WCTypeOptions.filter(
+						option =>
+							![
+								'cart',
+								'product_tags',
+								'product_categories',
+							].includes(option.value)
+					)
 				);
 			}
 		}

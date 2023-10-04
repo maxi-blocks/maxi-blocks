@@ -139,6 +139,10 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-link-target': {
+		type: 'string',
+		default: 'none',
+	},
 };
 
 const dynamicContentLink = {

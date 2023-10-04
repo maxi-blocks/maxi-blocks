@@ -369,6 +369,18 @@ export const mediaFieldOptions = Object.values(fieldOptions.image).map(
 );
 
 /**
+ * Link constants
+ */
+export const multipleLinksTypes = ['products'];
+
+export const linkOptions = {
+	products: [
+		{ label: __('Product', 'maxi-blocks'), value: 'product' },
+		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
+	],
+};
+
+/**
  * Option constants
  */
 // Random get-by types

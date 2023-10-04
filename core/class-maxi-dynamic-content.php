@@ -126,8 +126,11 @@ class MaxiBlocks_DynamicContent
             if (empty($product)) {
                 return $content;
             }
-
-            $link = get_permalink($product->get_id());
+            if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
+                $link = $product->add_to_cart_url();
+            } else {
+                $link = get_permalink($product->get_id());
+            }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
             $link = wc_get_cart_url();
         } else {

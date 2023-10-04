@@ -28,6 +28,11 @@ import { isNil, isEmpty } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
+import {
+	linkOptions,
+	multipleLinksTypes,
+} from '../../../../extensions/DC/constants';
+import SelectControl from '../../../select-control';
 
 /**
  * Link
@@ -41,6 +46,8 @@ const Link = props => {
 		disableCustomFormats = false,
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
+		'dc-link-target': dcLinkTarget,
+		'dc-type': dcType,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext) ?? {};
@@ -100,47 +107,88 @@ const Link = props => {
 				{!childHasLink && (
 					<div className='toolbar-item__link-popover'>
 						{(dcStatus || showDCLink) && (
-							<ToggleSwitch
-								label={__(
-									'Use dynamic content link',
-									'maxi-blocks'
-								)}
-								selected={dcLinkStatus}
-								onChange={async value => {
-									const url =
-										value &&
-										(await getDCLink(
-											getDCValues(
-												getGroupAttributes(
-													props,
-													'dynamicContent'
-												)
-											),
-											clientId
-										));
+							<>
+								<ToggleSwitch
+									label={__(
+										'Use dynamic content link',
+										'maxi-blocks'
+									)}
+									selected={dcLinkStatus}
+									onChange={async value => {
+										const url =
+											value &&
+											(await getDCLink(
+												getDCValues(
+													getGroupAttributes(
+														props,
+														'dynamicContent'
+													)
+												),
+												clientId
+											));
 
-									onChange(
-										value
-											? {
-													...linkSettings,
-													url,
-													title: url,
-											  }
-											: {
-													...linkSettings,
-													url: null,
-													title: null,
-											  },
-										{
-											'dc-link-status': value,
-											...(showDCLink && {
-												// If DC link is enabled in blocks without DC, that should enable DC for the block
-												'dc-status': value,
-											}),
-										}
-									);
-								}}
-							/>
+										onChange(
+											value
+												? {
+														...linkSettings,
+														url,
+														title: url,
+												  }
+												: {
+														...linkSettings,
+														url: null,
+														title: null,
+												  },
+											{
+												'dc-link-status': value,
+												...(showDCLink && {
+													// If DC link is enabled in blocks without DC, that should enable DC for the block
+													'dc-status': value,
+												}),
+											}
+										);
+									}}
+								/>
+								{multipleLinksTypes.includes(dcType) &&
+									dcLinkStatus && (
+										<SelectControl
+											label={__(
+												'Link target',
+												'maxi-blocks'
+											)}
+											selected={dcLinkTarget}
+											options={linkOptions[dcType]}
+											onChange={async value => {
+												const url =
+													value &&
+													(await getDCLink(
+														getDCValues(
+															getGroupAttributes(
+																{
+																	...props,
+																	'dc-link-target':
+																		value,
+																},
+																'dynamicContent'
+															)
+														),
+														clientId
+													));
+
+												onChange(
+													{
+														...linkSettings,
+														url,
+														title: url,
+													},
+													{
+														'dc-link-target': value,
+													}
+												);
+											}}
+										/>
+									)}
+							</>
 						)}
 						<ToolbarContext.Consumer>
 							{context => (

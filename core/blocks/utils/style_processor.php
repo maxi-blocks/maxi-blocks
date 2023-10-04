@@ -489,6 +489,15 @@ function style_processor($obj, $data, $props)
         unset($value);  // Unset reference to avoid unexpected behavior
     }
 
+    $advanced_css_object = get_advanced_css_object($props);
+    if(!empty($advanced_css_object)) {
+        foreach ($styles as $key => &$value) {
+            if (is_array($value)) {
+                $value = deepMergeArrays($value, $advanced_css_object);
+            }
+        }
+    }
+
 
     // Process custom styles if they exist
     $new_css_selectors = get_selectors_css($selectors, $props);

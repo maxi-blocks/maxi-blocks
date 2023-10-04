@@ -405,6 +405,9 @@ const Inspector = props => {
 										selectors,
 										categories: getCategoriesCss(),
 									}),
+									...inspectorTabs.advancedCss({
+										props,
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

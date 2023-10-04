@@ -4,13 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim } from 'lodash';
+import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
 import loadable from '@loadable/component';
 
 /**
@@ -106,6 +106,8 @@ const AdvancedNumberControl = props => {
 		setCurrentValue(trim(value));
 	}, [value]);
 
+	const latestValueRef = useRef();
+
 	const classes = classnames('maxi-advanced-number-control', className);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
@@ -168,6 +170,29 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
+	const handleChange = debounce(newValue => {
+		onChangeValue(newValue);
+	}, 300);
+
+	const handleInputChange = e => {
+		let value = getNewValueFromEmpty(e);
+
+		if (enableUnit) {
+			if (value !== '' && value > maxValue) value = maxValue;
+			if (value !== '' && value < minValue) value = minValue;
+		} else {
+			if (value !== '' && +value > max) value = max;
+			if (value !== '' && +value !== 0 && +value < min) value = min;
+		}
+
+		const result =
+			value === '' || optionType === 'string' ? value.toString() : +value;
+
+		setCurrentValue(result);
+		latestValueRef.current = result;
+		handleChange(result);
+	};
+
 	return (
 		<>
 			{enableAuto && (
@@ -192,33 +217,8 @@ const AdvancedNumberControl = props => {
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'
-						value={currentValue}
-						onChange={e => {
-							let value = getNewValueFromEmpty(e);
-
-							if (enableUnit) {
-								if (value !== '' && value > maxValue)
-									value = maxValue;
-								if (value !== '' && value < minValue)
-									value = minValue;
-							} else {
-								if (value !== '' && +value > max) value = max;
-								if (
-									value !== '' &&
-									+value !== 0 &&
-									+value < min
-								)
-									value = min;
-							}
-
-							const result =
-								value === '' || optionType === 'string'
-									? value.toString()
-									: +value;
-
-							setCurrentValue(result);
-							onChangeValue(result);
-						}}
+						value={latestValueRef.current || currentValue}
+						onChange={handleInputChange}
 						onKeyDown={e => {
 							validateNumberInput(e);
 							if (
@@ -258,8 +258,10 @@ const AdvancedNumberControl = props => {
 					{!disableReset && (
 						<ResetButton
 							onReset={() => {
-								onReset();
-								setCurrentValue(defaultValue);
+								const resetValue = defaultValue;
+								setCurrentValue(resetValue);
+								latestValueRef.current = resetValue;
+								onChangeValue(resetValue);
 							}}
 							isSmall
 						/>
@@ -277,18 +279,15 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							value={
-								+[
-									value ||
-										(defaultValue, initial, placeholder),
-								].find(val => /\d/.test(val) && +val !== 0) || 0
-							}
+							value={+latestValueRef.current || 0}
 							onChange={val => {
-								onChangeValue(
+								const result =
 									optionType === 'string'
 										? val.toString()
-										: +val
-								);
+										: +val;
+								setCurrentValue(result);
+								latestValueRef.current = result;
+								onChangeValue(result);
 							}}
 							min={enableUnit ? minValueRange : min}
 							max={maxRange || (enableUnit ? maxValueRange : max)}

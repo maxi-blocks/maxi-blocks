@@ -309,7 +309,7 @@ class MaxiBlocks_DynamicContent
 
             if (empty($query->posts)) {
                 if (in_array($dc_relation, self::$order_by_relations)) {
-                    return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+                    //   return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
                 } else {
                     return null;
                 }

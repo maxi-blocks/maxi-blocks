@@ -95,14 +95,15 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		hiddenInput,
 		validationDiv,
 		validationLoadingClass = 'api-validation-loading',
-		errorClass = 'api-error',
-		loadingStatusMessage = 'Validating...'
+		errorClass = 'api-error'
 	) => {
 		const key = getKey();
 		let validationMessage = '';
 
+		const { localization } = window;
+
 		if (type === 'validating') {
-			validationMessage = loadingStatusMessage;
+			validationMessage = localization.loading_status_message;
 			validationDiv.classList.add(validationLoadingClass);
 			validationDiv.classList.remove(errorClass);
 		} else {
@@ -111,25 +112,21 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (key === '' || type === 'EmptyKeyError') {
 				hiddenInput.value = '';
 				validationDiv.classList.add(errorClass);
-				validationMessage = 'Please add your API key';
+				validationMessage = localization.please_add_api_key;
 			} else {
 				validationDiv.classList.add(errorClass);
 				switch (type) {
 					case 'InvalidKeyError':
-						validationMessage =
-							'Invalid API Key, please check your key and try again';
+						validationMessage = localization.invalid_api_key;
 						break;
 					case 'RefererNotAllowedError':
-						validationMessage =
-							'Referer not allowed, please allow your domain for that key';
+						validationMessage = localization.referer_not_allowed;
 						break;
 					case 'InvalidCharactersError':
-						validationMessage =
-							'Only alphabet, number, "_", "$", ".", "[", and "]" are allowed in the API key.';
+						validationMessage = localization.invalid_characters;
 						break;
 					case 'ServerError':
-						validationMessage =
-							'Error validating API Key, please try again later';
+						validationMessage = localization.server_error;
 						break;
 					case true:
 						hiddenInput.value = key;

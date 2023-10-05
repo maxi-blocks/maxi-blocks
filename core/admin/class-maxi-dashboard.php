@@ -94,6 +94,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'slide_preview'     => $path_to_previews.'slide.png',
                     )
                 );
+
+                wp_localize_script(
+                    'maxi-admin',
+                    'localization',
+                    array(
+                        'loading_status_message' => __('Validating...', self::$maxi_text_domain),
+                        'please_add_api_key' => __('Please add your API key', self::$maxi_text_domain),
+                        'invalid_api_key' => __('Invalid API Key, please check your key and try again', self::$maxi_text_domain),
+                        'referer_not_allowed' => __('Referer not allowed, please allow your domain for that key', self::$maxi_text_domain),
+                        'invalid_characters' => __('Only alphabet, number, "_", "$", ".", "[", and "]" are allowed in the API key.', self::$maxi_text_domain),
+                        'server_error' => __('Error validating API Key, please try again later', self::$maxi_text_domain)
+                    )
+                );
             }
         }
 

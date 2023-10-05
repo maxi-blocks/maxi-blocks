@@ -33,6 +33,8 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
+		await page.waitForTimeout(310);
+
 		const expectMargin = {
 			'margin-top-general': '66',
 			'margin-bottom-general': '66',
@@ -67,6 +69,8 @@ describe('AxisControl', () => {
 			unit: '%',
 		});
 
+		await page.waitForTimeout(310);
+
 		expect(
 			typeof (await getAttributes('padding-bottom-general'))
 		).toStrictEqual('string');
@@ -77,6 +81,7 @@ describe('AxisControl', () => {
 	});
 
 	it('Checking responsive axisControl', async () => {
+		await page.waitForTimeout(310);
 		const responsiveValue = await addResponsiveTest({
 			page,
 			instance:
@@ -86,6 +91,7 @@ describe('AxisControl', () => {
 			xsExpect: '44',
 			newValue: '44',
 		});
+		await page.waitForTimeout(310);
 		expect(responsiveValue).toBeTruthy();
 
 		const responsiveUnit = await addResponsiveTest({
@@ -120,7 +126,7 @@ describe('AxisControl', () => {
 			unit: 'px',
 		});
 
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(310);
 
 		expect(await getAttributes('margin-top-general')).toStrictEqual('3.5');
 
@@ -128,6 +134,8 @@ describe('AxisControl', () => {
 
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
+
+		await page.waitForTimeout(310);
 
 		expect(await getAttributes('margin-top-general')).toStrictEqual('-1');
 	});
@@ -152,6 +160,8 @@ describe('AxisControl', () => {
 			'margin-top-unit-general': 'px',
 			'margin-right-unit-general': 'px',
 		};
+
+		await page.waitForTimeout(310);
 
 		const result = await getAttributes([
 			'margin-left-unit-general',
@@ -193,6 +203,8 @@ describe('AxisControl', () => {
 			'margin-right-unit-general': 'px',
 		};
 
+		await page.waitForTimeout(310);
+
 		const resultAxis = await getAttributes([
 			'margin-left-unit-general',
 			'margin-bottom-unit-general',
@@ -225,6 +237,8 @@ describe('AxisControl', () => {
 			'margin-right-unit-general': 'px',
 		};
 
+		await page.waitForTimeout(310);
+
 		const resultSyncOptionNone = await getAttributes([
 			'margin-top-general',
 			'margin-bottom-general',
@@ -250,12 +264,16 @@ describe('AxisControl', () => {
 			unit: 'px',
 		});
 
+		await page.waitForTimeout(310);
+
 		const input = await page.$(
 			'.maxi-axis-control__padding .maxi-axis-control__content__item input'
 		);
 
 		await input.focus();
 		await pressKeyTimes('ArrowDown', '5');
+
+		await page.waitForTimeout(310);
 
 		expect(await getAttributes('padding-top-general')).toStrictEqual('0');
 	});
@@ -269,6 +287,8 @@ describe('AxisControl', () => {
 			'style',
 			'margin padding'
 		);
+
+		await page.waitForTimeout(310);
 
 		for (const [index, value] of [-30, 30].entries()) {
 			const itemMarginContentClass =
@@ -290,6 +310,8 @@ describe('AxisControl', () => {
 				unit: 'px',
 			});
 
+			await page.waitForTimeout(310);
+
 			await changeResponsive(page, 'm');
 
 			await accordionPanel.$eval(
@@ -299,11 +321,15 @@ describe('AxisControl', () => {
 
 			await page.keyboard.press('ArrowDown');
 
+			await page.waitForTimeout(310);
+
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				`${value - 1}`
 			);
 
 			await page.keyboard.press('ArrowUp');
+
+			await page.waitForTimeout(310);
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				undefined

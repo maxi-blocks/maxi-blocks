@@ -53,6 +53,8 @@ const addResponsiveTest = async ({
 
 		await page.keyboard.type(`${newValue}`, { delay: 100 });
 
+		await page.waitForTimeout(310);
+
 		// change responsive xs
 		await changeResponsive(page, 'xs');
 

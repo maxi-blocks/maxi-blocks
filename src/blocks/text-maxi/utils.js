@@ -13,7 +13,7 @@ import loadable from '@loadable/component';
  */
 const formatsLib = loadable.lib(() => import('../../extensions/text/formats'));
 
-const onMerge = (props, forward) => {
+export const onMerge = (props, forward) => {
 	const { attributes, clientId, maxiSetAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
@@ -117,8 +117,6 @@ const onMerge = (props, forward) => {
 		}
 	}
 };
-
-export default onMerge;
 
 export const getSVGListStyle = svg => {
 	if (!svg) return '';

@@ -22,8 +22,6 @@ describe('getCleanDisplayIBAttributes', () => {
 		const expectedResult = {
 			'font-size-general': 6,
 			'font-size-unit-general': 'vw',
-			'font-size-xl': 5,
-			'font-size-unit-xl': 'px',
 		};
 
 		expect(result).toEqual(expectedResult);
@@ -66,8 +64,6 @@ describe('getCleanDisplayIBAttributes', () => {
 		const expectedResult = {
 			'font-size-general': 6,
 			'font-size-unit-general': 'vw',
-			'font-size-xl': 5,
-			'font-size-unit-xl': 'px',
 		};
 
 		expect(result).toEqual(expectedResult);

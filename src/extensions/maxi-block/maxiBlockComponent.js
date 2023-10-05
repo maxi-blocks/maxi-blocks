@@ -690,7 +690,28 @@ class MaxiBlockComponent extends Component {
 				'maxi-blocks-responsive',
 				document.querySelector('.is-tablet-preview') ? 's' : 'xs'
 			);
-		} else wrapper = getStylesWrapper(document.head);
+			if (!select('maxiBlocks').getIsIframeObserverSet()) {
+				dispatch('maxiBlocks').setIsIframeObserverSet(true);
+				const iframeObserver = new MutationObserver(() => {
+					if (
+						!iframe.contentDocument.body.classList.contains(
+							'maxi-blocks--active'
+						)
+					) {
+						iframe.contentDocument.body.classList.add(
+							'maxi-blocks--active'
+						);
+					}
+				});
+				iframeObserver.observe(iframe.contentDocument.body, {
+					attributes: true,
+					attributeFilter: ['class'],
+				});
+			}
+		} else {
+			dispatch('maxiBlocks').setIsIframeObserverSet(false);
+			wrapper = getStylesWrapper(document.head);
+		}
 
 		if (
 			this.rootSlot &&
@@ -858,7 +879,15 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		if (!getIsIDTrulyUnique(idToCheck)) {
+		const isBlockCopied =
+			!select('maxiBlocks/blocks').getIsNewBlock(
+				this.props.attributes.uniqueID
+			) &&
+			select('maxiBlocks/blocks')
+				.getLastInsertedBlocks()
+				.includes(this.props.clientId);
+
+		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});

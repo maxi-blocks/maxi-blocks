@@ -242,8 +242,8 @@ const RelationControl = props => {
 						sid: item.sid,
 						attributes: omitBy(
 							{
-								...cleanAttributesObject,
 								...tempAttributes,
+								...cleanAttributesObject,
 							},
 							val => val === undefined
 						),

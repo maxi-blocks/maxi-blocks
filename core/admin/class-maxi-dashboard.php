@@ -135,8 +135,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 self::$maxi_slug_dashboard,
                 __('Maxi Ai', self::$maxi_text_domain),
                 __('Maxi Ai', self::$maxi_text_domain),
-                'manage_ai',
-                'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_ai',
+                'manage_options',
+                'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_blocks_maxi_ai',
                 '',
                 null
             );

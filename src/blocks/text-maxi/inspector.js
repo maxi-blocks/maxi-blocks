@@ -76,9 +76,27 @@ const Inspector = props => {
 														true
 													)}
 													value={textLevel}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
+													onChange={obj => {
+														const filteredObj =
+															Object.fromEntries(
+																Object.entries(
+																	obj
+																).filter(
+																	([
+																		key,
+																		value,
+																	]) =>
+																		value !==
+																		undefined
+																)
+															);
+														console.log(
+															filteredObj
+														);
+														maxiSetAttributes(
+															filteredObj
+														);
+													}}
 												/>
 											),
 											indicatorProps: ['textLevel'],

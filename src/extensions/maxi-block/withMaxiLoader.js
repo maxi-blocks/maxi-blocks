@@ -51,14 +51,9 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	const allBlocks = getBlocks();
 	const maxiBlocks = getAllMaxiBlocks(allBlocks);
 
-	const excludedBlocks = [
-		'maxi-blocks/container-maxi',
-		'maxi-blocks/group-maxi',
-	];
-
 	const shouldShowLoader = maxiBlocks.some(block => {
 		return (
-			block.clientId === clientId && !excludedBlocks.includes(block.name)
+			block.clientId === clientId // && !excludedBlocks.includes(block.name)
 		);
 	});
 
@@ -81,9 +76,6 @@ const withMaxiLoader = createHigherOrderComponent(
 				select => select('maxiBlocks'),
 				[]
 			);
-
-			// If you want the loader for all blocks, we can remove this line
-			// if (!isFirstOnHierarchy) return <WrappedComponent {...ownProps} />;
 
 			const { blockWantsToRender } = useDispatch('maxiBlocks');
 

@@ -8,17 +8,17 @@ import { forwardRef, useContext, useRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
- * Internal dependencies
- */
-import Button from '../button';
-import Dropdown from '../dropdown';
-import Popover from '../popover';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
+import loadable from '@loadable/component';
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../button'));
+const Dropdown = loadable(() => import('../dropdown'));
+const Popover = loadable(() => import('../popover'));
+import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 
 /**
  * Styles

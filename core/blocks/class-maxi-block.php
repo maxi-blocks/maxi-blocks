@@ -234,24 +234,22 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function register_block()
         {
-            $config = [
+            $basic_config = [
                 'api_version' => 2,
                 'editor_script' => 'maxi-blocks-block-editor',
                 'render_callback' => [$this, 'render_block'],
-                'attributes' => self::$dynamic_content_attributes,
             ];
-            // If the block should be dynamic, use MaxiBlocks_DynamicContent
-            if (in_array($this->block_name, $this->dynamic_blocks)) {
-                $this->block = register_block_type("maxi-blocks/{$this->block_name}", array_merge(json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . "build/blocks/{$this->block_name}/block.json"), true), $config));
-            } else {
-                $this->block = register_block_type(
-                    "maxi-blocks/{$this->block_name}",
-                    array_merge(
-                        json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'), true),
-                        [ 'render_callback' => [$this, 'render_block']]
-                    )
-                );
-            }
+            $config = in_array($this->block_name, $this->dynamic_blocks) ? array_merge($basic_config, [
+                'attributes' => self::$dynamic_content_attributes,
+            ]) : $basic_config;
+
+            $this->block = register_block_type(
+                "maxi-blocks/{$this->block_name}",
+                array_merge(
+                    json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'), true),
+                    $config,
+                )
+            );
         }
 
         public function render_block($attributes, $content)

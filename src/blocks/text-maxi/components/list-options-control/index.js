@@ -28,6 +28,8 @@ const TextControl = loadable(() =>
 const ToggleSwitch = loadable(() =>
 	import('../../../../components/toggle-switch')
 );
+const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -35,7 +37,6 @@ import {
 	getPaletteAttributes,
 } from '../../../../extensions/styles';
 import { setSVGColor } from '../../../../extensions/svg';
-import MaxiModal from '../../../../editor/library/modal';
 
 /**
  * External dependencies

@@ -20,6 +20,8 @@ const RawHTML = loadable(() => import('../../components/raw-html'));
 const MaxiPopoverButton = loadable(() =>
 	import('../../components/maxi-popover-button')
 );
+const MaxiModal = loadable(() => import('../../editor/library/modal'));
+
 import {
 	getResizerSize,
 	MaxiBlockComponent,
@@ -36,7 +38,6 @@ import {
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
 import { withMaxiContextLoopContext } from '../../extensions/DC';
-import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 

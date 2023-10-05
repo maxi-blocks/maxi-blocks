@@ -45,6 +45,11 @@ const BorderControl = loadable(() =>
 const BoxShadowControl = loadable(() =>
 	import('../../../../components/box-shadow-control')
 );
+const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+const GradientControl = loadable(() =>
+	import('../../../../components/gradient-control')
+);
+
 import {
 	getAttributeKey,
 	getColorRGBAString,
@@ -52,13 +57,11 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-import MaxiModal from '../../../../editor/library/modal';
 import {
 	setSVGContent,
 	setSVGContentHover,
 	setSVGStrokeWidth,
 } from '../../../../extensions/svg';
-import GradientControl from '../../../../components/gradient-control';
 
 /**
  * Styles and icons

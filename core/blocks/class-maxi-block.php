@@ -239,6 +239,7 @@ if (!class_exists('MaxiBlocks_Block')):
                 'editor_script' => 'maxi-blocks-block-editor',
                 'render_callback' => [$this, 'render_block'],
             ];
+            // Add dynamic content attributes to dynamic blocks
             $config = in_array($this->block_name, $this->dynamic_blocks) ? array_merge($basic_config, [
                 'attributes' => self::$dynamic_content_attributes,
             ]) : $basic_config;

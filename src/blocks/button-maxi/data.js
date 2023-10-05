@@ -375,7 +375,7 @@ const interactionBuilderSettings = {
 				return borderStyle && borderStyle === 'none';
 			},
 			forceTempPalettePrefix: 'button-border-',
-			styleAttrs: ['button-border-style'],
+			styleAttrs: ['border-style'],
 		},
 		{
 			sid: 'bbg',
@@ -405,8 +405,8 @@ const interactionBuilderSettings = {
 				}).background,
 			target: '.maxi-button-block__button',
 			styleAttrs: [
-				'button-background-active-media',
-				'button-background-gradient-opacity',
+				'background-active-media',
+				'background-gradient-opacity',
 			],
 		},
 		{

@@ -14,6 +14,12 @@ const selectors = {
 
 		return false;
 	},
+	getIsNewBlock(state, uniqueID) {
+		if (state && uniqueID)
+			return state.newBlocksUniqueIDs.includes(uniqueID);
+
+		return false;
+	},
 	getLastInsertedBlocks(state) {
 		if (state) return state.lastInsertedBlocks;
 

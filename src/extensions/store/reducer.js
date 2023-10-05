@@ -107,6 +107,7 @@ const reducer = (
 		deprecatedBlocks: {},
 		blocksToRender: [],
 		isPageLoaded: false,
+		isIframeObserverSet: false,
 		blockName: {},
 		uniqueID: {},
 	},
@@ -226,6 +227,11 @@ const reducer = (
 				...state,
 				isPageLoaded: action.isPageLoaded,
 				blocksToRender: [],
+			};
+		case 'SET_IS_IFRAME_OBSERVER_SET':
+			return {
+				...state,
+				isIframeObserverSet: action.isIframeObserverSet,
 			};
 		default:
 			return state;

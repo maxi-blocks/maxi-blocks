@@ -1,4 +1,9 @@
+/**
+ * Internal dependencies
+ */
+import getAttributeValue from '../getAttributeValue';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
 /**
  * General
  */
@@ -13,14 +18,16 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 
 	let omitClipPath = !isHover && !isIB;
 	breakpoints.forEach(breakpoint => {
-		const currentClipPath = getLastBreakpointAttribute({
+		const currentClipPath = getAttributeValue({
 			target: 'clip-path',
-			breakpoint,
-			attributes: obj,
+			props: obj,
 			isHover,
+			breakpoint,
 		});
 
-		omitClipPath = omitClipPath ? currentClipPath === 'none' : false;
+		omitClipPath = omitClipPath
+			? !currentClipPath || currentClipPath === 'none'
+			: false;
 		if (omitClipPath) return;
 
 		response[breakpoint] = {

@@ -896,7 +896,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            $content .= $this->generate_item_header('Integrations', false);
+            $content .= $this->generate_item_header('Integrations', true);
 
             $description = '<h4>'.__('Insert OpenAI API Key here', self::$maxi_text_domain).'</h4>';
             $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'password');

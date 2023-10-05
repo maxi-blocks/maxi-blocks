@@ -80,6 +80,11 @@ const selectors = {
 
 		return false;
 	},
+	getIsIframeObserverSet(state) {
+		if (state) return state.isIframeObserverSet;
+
+		return false;
+	},
 };
 
 export default selectors;

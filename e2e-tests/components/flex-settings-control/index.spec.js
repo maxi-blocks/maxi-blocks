@@ -64,6 +64,8 @@ describe('FlexSettings', () => {
 			newValue: 'vw',
 		});
 
+		await page.waitForTimeout(500);
+
 		// Column gap to 77em
 		await page.waitForSelector('.maxi-gap-control__column-gap');
 		await editAdvancedNumberControl({
@@ -72,6 +74,8 @@ describe('FlexSettings', () => {
 			newNumber: '77',
 			newValue: 'em',
 		});
+
+		await page.waitForTimeout(500);
 
 		// expect
 		const attributeParent = await getAttributes([
@@ -204,6 +208,8 @@ describe('FlexSettings', () => {
 			newNumber: '33',
 			newValue: '%',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('flex-basis-general')).toStrictEqual('33');
 		expect(await getAttributes('flex-basis-unit-general')).toStrictEqual(
@@ -402,12 +408,15 @@ describe('FlexSettings', () => {
 				newNumber: rowGapValue,
 				newValue: rowGapUnit,
 			});
+			await page.waitForTimeout(500);
+
 			await editAdvancedNumberControl({
 				page,
 				instance: await page.$('.maxi-gap-control__column-gap'),
 				newNumber: columnGapValue,
 				newValue: columnGapUnit,
 			});
+			await page.waitForTimeout(500);
 		};
 		const flexBoxResponsiveExpect = async (content, breakpoint) => {
 			const {
@@ -656,6 +665,8 @@ describe('FlexSettings', () => {
 			columnGapValue: '34',
 			columnGapUnit: 'px',
 		});
+		await page.waitForTimeout(500);
+
 		expect(
 			await flexBoxResponsiveExpect(
 				{
@@ -675,6 +686,8 @@ describe('FlexSettings', () => {
 
 		// Check xs values are the same than s
 		await changeResponsive(page, 'xs');
+		await page.waitForTimeout(500);
+
 		expect(
 			await flexBoxResponsiveValuesTest({
 				flexWrap: 'wrap',
@@ -691,6 +704,8 @@ describe('FlexSettings', () => {
 
 		// change responsive m
 		await changeResponsive(page, 'm');
+		await page.waitForTimeout(500);
+
 		expect(
 			await flexBoxResponsiveValuesTest({
 				flexWrap: 'wrap-reverse',

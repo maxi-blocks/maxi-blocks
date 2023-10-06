@@ -257,7 +257,8 @@ const flatWithGeneral = (
 						if (
 							prevSavedAttrs.includes(label) &&
 							isNil(prevSavedAttrs[label]) &&
-							isNil(attributes[label])
+							isNil(attributes[label]) &&
+							isNil(newAttributes[label])
 						)
 							result[label] = prevValue;
 					});

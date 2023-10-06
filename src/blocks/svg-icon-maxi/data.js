@@ -263,8 +263,8 @@ const interactionBuilderSettings = {
 				getBackgroundStyles({ ...props, ...props.obj }).background,
 			target: ' .maxi-svg-icon-block__icon',
 			styleAttrs: [
-				'svg-background-active-media',
-				'svg-background-gradient-opacity',
+				'background-active-media',
+				'background-gradient-opacity',
 			],
 		},
 		{

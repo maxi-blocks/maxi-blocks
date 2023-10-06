@@ -16,6 +16,7 @@ const getAttributeValue = ({
 	isHover,
 	breakpoint,
 	prefix = '',
+	returnValueWithoutBreakpoint = true,
 }) => {
 	const value =
 		props[
@@ -42,7 +43,11 @@ const getAttributeValue = ({
 			prefix,
 		});
 
-	return props[`${prefix}${target}`];
+	if (returnValueWithoutBreakpoint) {
+		return props[`${prefix}${target}`];
+	}
+
+	return null;
 };
 
 export default getAttributeValue;

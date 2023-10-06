@@ -17,16 +17,7 @@ import {
 	getIconWithColor,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-// import {
-// 	BackgroundControl,
-// 	BorderControl,
-// 	BoxShadowControl,
-// 	IconControl,
-// 	InfoBox,
-// 	MarginControl,
-// 	PaddingControl,
-// 	TypographyControl,
-// } from '../../components';
+
 const BackgroundControl = loadable(() =>
 	import('../../components/background-control')
 );

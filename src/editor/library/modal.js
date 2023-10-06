@@ -20,11 +20,10 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-// eslint-disable-next-line import/no-cycle
-// const CloudLibrary = loadable(() => import('.'));
 const Icon = loadable(() => import('../../components/icon'));
 const BaseControl = loadable(() => import('../../components/base-control'));
 const Button = loadable(() => import('../../components/button'));
+// eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import {
 	authConnect,

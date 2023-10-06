@@ -18,9 +18,9 @@ import { ContentLoader } from '../../components';
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);
 
-	const { getBlock, getBlocks } = useSelect(select => {
-		const { getBlock, getBlocks } = select('core/block-editor');
-		return { getBlock, getBlocks };
+	const { getBlocks } = useSelect(select => {
+		const { getBlocks } = select('core/block-editor');
+		return { getBlocks };
 	}, []);
 
 	const getAllMaxiBlocks = blocks => {

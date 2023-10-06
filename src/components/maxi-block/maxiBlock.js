@@ -381,18 +381,6 @@ const MaxiBlock = memo(
 		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;
 
-		// Check differences between children
-		// if (rawOldProps?.children || rawNewProps?.children) {
-		// 	// TODO: check this part of the code, seems is always returning false,
-		// 	// so the block is always re-rendering
-		// 	const areChildrenEqual = isEqual(
-		// 		rawOldProps.children,
-		// 		rawNewProps.children
-		// 	);
-
-		// 	if (!areChildrenEqual) return false;
-		// }
-
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 
 		if (wasSelected !== isSelected) return false;

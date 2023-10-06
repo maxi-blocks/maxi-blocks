@@ -22,7 +22,7 @@ import Svg5 from './img/5.svg';
 const svgImages = [Svg1, Svg2, Svg3, Svg4, Svg5];
 
 const ContentLoader = props => {
-	const { cloud, name } = props;
+	const { cloud } = props;
 	return (
 		<div
 			style={{

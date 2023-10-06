@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 
 /**
- * External dependencies
- */
-import { uniqueId } from 'lodash';
-
-/**
  * Internal dependencies
  */
 
@@ -17,6 +12,11 @@ import { Button, Icon } from '../../../../components';
 import { getBlockPosition } from '../../../../extensions/repeater/utils';
 import { getTemplates } from '../../../../extensions/column-templates';
 import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
+
+/**
+ * External dependencies
+ */
+import { uniqueId } from 'lodash';
 
 const RowBlockTemplate = ({
 	clientId,

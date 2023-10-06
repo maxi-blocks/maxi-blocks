@@ -20,9 +20,6 @@ import loadable from '@loadable/component';
 const Inspector = loadable(() => import('./inspector'));
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-// const MaxiBlock = loadable(() =>
-// 	import('../../components/maxi-block/maxiBlock')
-// );
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';

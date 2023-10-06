@@ -8,6 +8,7 @@ import { resolveSelect } from '@wordpress/data';
  */
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
+import { getProductsContent } from './getWCContent';
 
 /**
  * External dependencies
@@ -17,7 +18,8 @@ import { isNil } from 'lodash';
 const getDCMedia = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
 
-	const { field, source } = dataRequest;
+	const { field, source, type } = dataRequest;
+	let id;
 
 	if (source === 'acf') {
 		const contentValue = await getACFFieldContent(field, data.id);
@@ -25,9 +27,13 @@ const getDCMedia = async (dataRequest, clientId) => {
 		return contentValue;
 	}
 
-	if (!data || !(field in data)) return null;
+	if (type === 'products') {
+		id = await getProductsContent(dataRequest, data);
+	}
 
-	const id = data[field];
+	if ((!data || !(field in data)) && isNil(id)) return null;
+
+	if (isNil(id)) id = data[field];
 
 	if (isNil(id)) return null;
 

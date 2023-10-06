@@ -301,6 +301,7 @@ const buttonProductFields = generalProductFields.filter(
 
 const imageProductFields = [
 	{ label: __('Featured image', 'maxi-blocks'), value: 'featured_media' },
+	{ label: __('Gallery image', 'maxi-blocks'), value: 'gallery' },
 ];
 
 const generalCartFields = [

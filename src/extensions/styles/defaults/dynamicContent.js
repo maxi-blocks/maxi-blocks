@@ -143,6 +143,9 @@ const dynamicContent = {
 		type: 'string',
 		default: 'none',
 	},
+	'dc-image-accumulator': {
+		type: 'number',
+	},
 };
 
 const dynamicContentLink = {

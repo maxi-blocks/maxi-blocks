@@ -36,8 +36,13 @@ const getPrice = (rawPrice, data) => {
 };
 
 const getProductsContent = async (dataRequest, entityData) => {
-	const { field, delimiterContent, postTaxonomyLinksStatus, limit } =
-		dataRequest;
+	const {
+		field,
+		delimiterContent,
+		postTaxonomyLinksStatus,
+		limit,
+		imageAccumulator,
+	} = dataRequest;
 
 	const data = await getProductData(entityData.id);
 
@@ -81,6 +86,11 @@ const getProductsContent = async (dataRequest, entityData) => {
 				postTaxonomyLinksStatus,
 				taxonomyType
 			);
+		case 'featured_media':
+			return entityData[field];
+		case 'gallery':
+			// First image is featured image, need to skip it.
+			return data.images[imageAccumulator + 1]?.id;
 		default:
 			return null;
 	}

@@ -603,6 +603,7 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
+            'dc-image-accumulator' => $dc_image_accumulator,
         ) = $attributes;
 
         $product = $this->get_post($attributes);
@@ -649,6 +650,8 @@ class MaxiBlocks_DynamicContent
                 return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
             case 'featured_media':
                 return (int) $product->get_image_id();
+            case 'gallery':
+                return $product->get_gallery_image_ids()[$dc_image_accumulator];
             default:
                 return null;
         }

@@ -589,6 +589,29 @@ const DynamicContent = props => {
 										)}
 									</>
 								)}
+							{field === 'gallery' && (
+								<AdvancedNumberControl
+									label={__(
+										'Image accumulator',
+										'maxi-blocks'
+									)}
+									value={accumulator}
+									onChangeValue={value =>
+										changeProps({
+											'dc-image-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-image-accumulator':
+												getDefaultAttribute(
+													'dc-image-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
+							)}
 						</>
 					)}
 				</>

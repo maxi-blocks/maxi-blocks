@@ -127,7 +127,12 @@ const getCanvasSettings = ({ name }) => [
 				blockStyle,
 				ignoreMediaAttributes: true,
 			}),
-		styleAttrs: ['type', 'order', 'id'],
+		styleAttrs: [
+			'type',
+			'order',
+			'id',
+			'background-color-clip-path-status',
+		],
 	},
 	{
 		sid: 'b',

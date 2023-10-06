@@ -14,6 +14,7 @@ import {
 	getDCDateCustomFormat,
 	getSimpleText,
 	sanitizeDCContent,
+	validateRelations,
 	validationsValues,
 } from './utils';
 import getDCOptions from './getDCOptions';
@@ -83,11 +84,17 @@ const withMaxiDC = createHigherOrderComponent(
 					contentType,
 					source
 				);
+				const validatedRelations = validateRelations(type, relation);
 
-				if (dcOptions?.newValues || validatedAttributes) {
+				if (
+					dcOptions?.newValues ||
+					validatedAttributes ||
+					validatedRelations
+				) {
 					const newAttributes = {
 						...dcOptions?.newValues,
 						...validatedAttributes,
+						...validatedRelations,
 					};
 
 					const {

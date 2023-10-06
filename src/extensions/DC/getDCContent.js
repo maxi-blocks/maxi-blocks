@@ -7,7 +7,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { limitFields, limitTypes, renderedFields } from './constants';
+import {
+	limitFields,
+	limitTypes,
+	nameDictionary,
+	renderedFields,
+} from './constants';
 import {
 	getItemLinkContent,
 	getSimpleText,
@@ -24,18 +29,7 @@ import { getCartContent, getProductsContent } from './getWCContent';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
-
-const nameDictionary = {
-	posts: 'post',
-	pages: 'page',
-	media: 'attachment',
-	settings: '__unstableBase',
-	categories: 'category',
-	tags: 'post_tag',
-	product_categories: 'product_cat',
-	product_tags: 'product_tag',
-};
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 const getDCContent = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
@@ -44,6 +38,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 	const {
 		source,
+		relation,
 		type,
 		field,
 		limit,
@@ -61,6 +56,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = await getACFFieldContent(field, data.id);
 
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
+	}
+
+	if (relation === 'current' && isEmpty(data)) {
+		return `${capitalize(field)}: current`;
 	}
 
 	if (

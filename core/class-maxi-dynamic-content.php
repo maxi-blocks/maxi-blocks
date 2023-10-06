@@ -242,7 +242,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (!empty($media_id) && is_numeric($media_id)) {
-            $media_src = wp_get_attachment_image_src($media_id, 'full')[0];
+            $image_src_array = wp_get_attachment_image_src($media_id, 'full');
+            $media_src = !empty($image_src_array) ? $image_src_array[0] : '';
 
             $media_alt = get_post_meta($media_id, '_wp_attachment_image_alt', true);
 
@@ -250,10 +251,10 @@ class MaxiBlocks_DynamicContent
                 $media_alt = 'No content found';
             }
 
-            $media_caption = get_post($media_id)->post_excerpt;
-
-            if (empty($media_caption)) {
-                $media_caption = 'No content found';
+            $post = get_post($media_id);
+            $media_caption = 'No content found';
+            if ($post && !empty($post->post_excerpt)) {
+                $media_caption = $post->post_excerpt;
             }
         }
 
@@ -314,6 +315,13 @@ class MaxiBlocks_DynamicContent
             // DC Relation
             if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
+            } elseif ($dc_relation == 'current') {
+                $args['p'] = get_the_ID();
+                // If user chooses current post on FSE but is editing a page, need to get the current post,
+                // because we can't get what type of post user is editing on FSE,
+                // so we can't disallow users to choose the wrong type
+                $args['post_type'] = get_post_type();
+                unset($args['post_status']);
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {
@@ -330,6 +338,14 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
+            if (empty($query->posts)) {
+                if (in_array($dc_relation, self::$order_by_relations)) {
+                    return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+                } else {
+                    return null;
+                }
+            }
+
             return end($query->posts);
         } elseif ($dc_type === 'media') {
             $args = [
@@ -341,7 +357,7 @@ class MaxiBlocks_DynamicContent
             if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {
-                $args= [
+                $args = [
                     'post_type' => 'attachment',
                     'post_status' => 'inherit',
                     'posts_per_page' => -1
@@ -352,6 +368,10 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
+
+            if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
+                return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+            }
 
             if ($is_random) {
                 $posts = $query->posts;
@@ -410,6 +430,28 @@ class MaxiBlocks_DynamicContent
         }
     }
 
+    public function get_validated_orderby_attributes($dc_relation)
+    {
+        if ($dc_relation === 'by-category') {
+            // Get first existing category
+            $categories = get_categories(['hide_empty' => false]);
+            $first_category = reset($categories);
+            if ($first_category) {
+                return ['dc-relation' => 'by-category', 'dc-id' => $first_category->term_id];
+            }
+        } elseif ($dc_relation === 'by-tag') {
+            // Get first existing tag
+            $tags = get_tags(['hide_empty' => false]);
+            $first_tag = reset($tags);
+            if ($first_tag) {
+                return ['dc-relation' => 'by-tag', 'dc-id' => $first_tag->term_id];
+            }
+        }
+
+        return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
+    }
+
+
     public function get_field_link($item, $field)
     {
         switch ($field) {
@@ -465,11 +507,11 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if(is_null($post) || !isset($post->{"post_$dc_field"})) {
+        if(is_null($post)) {
             return '';
         }
 
-        $post_data = $post->{"post_$dc_field"};
+        $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $post->post_content;

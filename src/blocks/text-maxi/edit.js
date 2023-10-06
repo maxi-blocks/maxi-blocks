@@ -132,11 +132,14 @@ class edit extends MaxiBlockComponent {
 		 * This method fixes it
 		 */
 		const processContent = rawContent => {
+			if (rawContent === this.props.attributes.content) {
+				return;
+			}
+
 			/**
 			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
 			 * Does not replace spaces, which inside of HTML tags
 			 */
-
 			const replaceSpaces = content =>
 				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 

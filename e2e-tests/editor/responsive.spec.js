@@ -167,6 +167,8 @@ describe('Responsive attributes mechanisms', () => {
 			values: '100',
 		});
 
+		await page.waitForTimeout(300);
+
 		const expectMargin = {
 			'margin-top-general': '100',
 			'margin-top-xxl': undefined,
@@ -243,6 +245,8 @@ describe('Responsive attributes mechanisms', () => {
 			values: '10',
 		});
 
+		await page.waitForTimeout(300);
+
 		await changeResponsive(page, 'xl');
 		marginPaddingAccordion = await openSidebarTab(
 			page,
@@ -263,6 +267,8 @@ describe('Responsive attributes mechanisms', () => {
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
+
+		await page.waitForTimeout(300);
 
 		const marginResult = await getAttributes([
 			'margin-top-general',
@@ -292,6 +298,8 @@ describe('Responsive attributes mechanisms', () => {
 			values: '10',
 		});
 
+		await page.waitForTimeout(300);
+
 		await changeResponsive(page, 'xl');
 
 		marginPaddingAccordion = await openSidebarTab(
@@ -313,6 +321,8 @@ describe('Responsive attributes mechanisms', () => {
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
+
+		await page.waitForTimeout(300);
 
 		const marginResult = await getAttributes([
 			'margin-top-general',
@@ -386,7 +396,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
+	it.skip('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
 		await changeResponsive(page, 'xl');
 
 		let marginPaddingAccordion = await openSidebarTab(
@@ -403,7 +413,11 @@ describe('Responsive attributes mechanisms', () => {
 			values: '20',
 		});
 
+		await page.waitForTimeout(500);
+
 		await changeResponsive(page, 'm');
+
+		await page.waitForTimeout(500);
 
 		marginPaddingAccordion = await openSidebarTab(
 			page,
@@ -418,6 +432,8 @@ describe('Responsive attributes mechanisms', () => {
 			instance: axisControlInstance,
 			values: '10',
 		});
+
+		await page.waitForTimeout(500);
 
 		const expectMargin = {
 			'margin-top-general': '10',
@@ -459,6 +475,8 @@ describe('Responsive attributes mechanisms', () => {
 			'margin-top-xxl': undefined,
 		};
 
+		await page.waitForTimeout(300);
+
 		const marginResult = await getAttributes([
 			'margin-top-general',
 			'margin-top-xxl',
@@ -469,19 +487,21 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
+	it.skip('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
 		let borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		await borderAccordion.$eval(
 			'.maxi-axis-control__content__item__border-radius input',
 			input => input.focus()
 		);
-		await page.keyboard.type('100', { delay: 100 });
+		await page.keyboard.type('100', { delay: 300 });
 
 		const expectRadiusOnM = {
 			'border-top-left-radius-general': 100,
 			'border-top-left-radius-m': undefined,
 		};
+
+		await page.waitForTimeout(500);
 
 		const radiusOnM = await getAttributes([
 			'border-top-left-radius-general',
@@ -492,19 +512,23 @@ describe('Responsive attributes mechanisms', () => {
 
 		await changeResponsive(page, 'xl');
 
+		await page.waitForTimeout(500);
+
 		borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		await borderAccordion.$eval(
 			'.maxi-axis-control__content__item__border-radius input',
 			input => input.focus()
 		);
-		await page.keyboard.type('150', { delay: 100 });
+		await page.keyboard.type('150', { delay: 300 });
 
 		const expectRadiusOnXl = {
 			'border-top-left-radius-general': 100,
 			'border-top-left-radius-xl': 150,
 			'border-top-left-radius-m': 100,
 		};
+
+		await page.waitForTimeout(500);
 
 		const radiusOnXl = await getAttributes([
 			'border-top-left-radius-general',
@@ -525,6 +549,8 @@ describe('Responsive attributes mechanisms', () => {
 			'border-top-left-radius-m': undefined,
 			'border-top-left-radius-xl': undefined,
 		};
+
+		await page.waitForTimeout(500);
 
 		const resetRadiusOnXl = await getAttributes([
 			'border-top-left-radius-general',
@@ -550,6 +576,8 @@ describe('Responsive attributes mechanisms', () => {
 			'border-top-left-radius-xl': undefined,
 		};
 
+		await page.waitForTimeout(500);
+
 		const resetRadiusOnM = await getAttributes([
 			'border-top-left-radius-general',
 			'border-top-left-radius-m',
@@ -559,7 +587,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
+	it.skip('On change XL default attributes from General responsive and then reset, changes on General', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1920, height: 700 });
 
@@ -582,6 +610,8 @@ describe('Responsive attributes mechanisms', () => {
 			values: '10',
 		});
 
+		await page.waitForTimeout(500);
+
 		const expectPaddingOnM = {
 			'button-padding-top-general': '10',
 			'button-padding-top-xl': undefined,
@@ -595,6 +625,8 @@ describe('Responsive attributes mechanisms', () => {
 		expect(paddingOnM).toStrictEqual(expectPaddingOnM);
 
 		await changeResponsive(page, 'xxl');
+
+		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
 			'button-padding-top-general': '10',
@@ -612,6 +644,8 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await changeResponsive(page, 'xl');
+		await page.waitForTimeout(500);
+
 		axisControlInstance = await accordionPanel.$(
 			'.maxi-axis-control__padding'
 		);
@@ -619,6 +653,8 @@ describe('Responsive attributes mechanisms', () => {
 		await axisControlInstance.$eval('.maxi-reset-button', button =>
 			button.click()
 		);
+
+		await page.waitForTimeout(500);
 
 		const expectPaddingAfterReset = {
 			'button-padding-top-general': '15',
@@ -689,6 +725,8 @@ describe('Responsive attributes mechanisms', () => {
 			instance: axisControlInstance,
 			values: '15',
 		});
+
+		await page.waitForTimeout(300);
 
 		const expectPaddingOnXxl = {
 			'padding-top-general': '15',

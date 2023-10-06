@@ -5,16 +5,17 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import ResultCard from '../result-card';
-import Button from '../../../button';
-import { LOAD_MORE_COUNT } from '../../constants';
-
-/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const ResultCard = loadable(() => import('../result-card'));
+const Button = loadable(() => import('../../../button'));
+import { LOAD_MORE_COUNT } from '../../constants';
 
 /**
  * Styles

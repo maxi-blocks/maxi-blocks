@@ -18,7 +18,33 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-register_activation_hook(__FILE__, 'check_php_on_activation');
+// Define the required MySQL version.
+define('REQUIRED_MYSQL_VERSION', '13.7');
+
+// Hook for checking the MySQL version in the admin area.
+add_action('admin_init', 'check_mysql_version');
+
+/**
+ * Check the required MySQL version during admin initialization.
+ */
+function check_mysql_version()
+{
+    global $wpdb;
+
+    if (version_compare($wpdb->db_version(), REQUIRED_MYSQL_VERSION, '<')) {
+        $plugin_file = plugin_basename(__FILE__);
+        add_action("after_plugin_row_{$plugin_file}", 'show_mysql_version_notice', 10, 3);
+    }
+}
+
+/**
+ * Show an admin notice under the plugin's name if the required MySQL version is not met.
+ */
+function show_mysql_version_notice($plugin_file, $plugin_data, $status)
+{
+    $message = 'This plugin is optimized for MySQL version ' . REQUIRED_MYSQL_VERSION . ' or higher. Please update your MySQL version or contact your hosting provider for the best experience.';
+    printf('<tr class="active"><td colspan="3" class="plugin-update colspanchange"><div class="update-message notice inline notice-error notice-alt"><p>%s</p></div></td></tr>', esc_html($message));
+}
 
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);

@@ -28,9 +28,9 @@ const getUpdatedMarkers = (mapMarkers, newMarker) =>
 export { getNewMarker, getUpdatedMarkers };
 
 // TO DO: need a better way to get the admin url
-export const getMaxiAdminSettingsUrl = () => {
+export const getMaxiAdminSettingsUrl = (tab = 'maxi_blocks_settings') => {
 	const currentUrl = window.location.href;
 	const wpAdminUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-	const maxiAdminSettingsUrl = `${wpAdminUrl}/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings`;
+	const maxiAdminSettingsUrl = `${wpAdminUrl}/admin.php?page=maxi-blocks-dashboard&tab=${tab}`;
 	return maxiAdminSettingsUrl;
 };

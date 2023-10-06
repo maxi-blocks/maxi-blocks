@@ -1,0 +1,22 @@
+.maxi-prompt-control-result-modify-bar {
+	&__modification-options {
+		display: flex;
+		gap: 8px;
+
+		& > *:first-child {
+			flex-grow: 1;
+		}
+
+		& > div > div > div{
+			border-color: var(--maxi-grey-1-color);
+		}
+	}
+
+	&__button{
+		background: var(--maxi-light-blue-2-color);
+		color: var(--maxi-black-1-color) !important;
+		&:hover{
+			background: var(--maxi-white-3-color);
+		}
+	}
+}

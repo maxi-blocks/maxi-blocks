@@ -4,9 +4,14 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import DynamicContent from '../dynamic-content';
+const DynamicContent = loadable(() => import('../dynamic-content'));
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**

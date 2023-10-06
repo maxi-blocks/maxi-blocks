@@ -12,11 +12,22 @@ import {
 import { resolveSelect, select } from '@wordpress/data';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
+const AdvancedNumberControl = loadable(() =>
+	import('../advanced-number-control')
+);
+const SelectControl = loadable(() => import('../select-control'));
+const ToggleSwitch = loadable(() => import('../toggle-switch'));
+const TextControl = loadable(() => import('../text-control'));
+
 import { validationsValues } from '../../extensions/DC/utils';
 import {
 	typeOptions,
@@ -42,13 +53,6 @@ import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 
 /**
- * External dependencies
- */
-import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
-import classnames from 'classnames';
-import TextControl from '../text-control';
-
-/**
  * Styles
  */
 import './editor.scss';
@@ -70,6 +74,9 @@ const DynamicContent = props => {
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
 	const classes = classnames('maxi-dynamic-content', className);
+
+	console.log('dynamicContent');
+	console.log(dynamicContent);
 
 	const dcValues = getDCValues(dynamicContent, contextLoop);
 

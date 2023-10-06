@@ -89,6 +89,7 @@ const DynamicContent = props => {
 		order,
 		orderBy,
 		accumulator,
+		imageAccumulator,
 		acfFieldType,
 		customDate,
 		day,
@@ -612,7 +613,7 @@ const DynamicContent = props => {
 										'Image accumulator',
 										'maxi-blocks'
 									)}
-									value={accumulator}
+									value={imageAccumulator}
 									onChangeValue={value =>
 										changeProps({
 											'dc-image-accumulator': value,

@@ -22,7 +22,14 @@ const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
 	content: (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
-			onChange={obj => maxiSetAttributes(obj)}
+			onChange={obj => {
+				const filteredObj = Object.fromEntries(
+					Object.entries(obj).filter(
+						([key, value]) => value !== undefined
+					)
+				);
+				maxiSetAttributes(filteredObj);
+			}}
 			contentType={contentType}
 		/>
 	),

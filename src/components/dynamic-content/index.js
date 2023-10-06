@@ -75,9 +75,6 @@ const DynamicContent = props => {
 
 	const classes = classnames('maxi-dynamic-content', className);
 
-	console.log('dynamicContent');
-	console.log(dynamicContent);
-
 	const dcValues = getDCValues(dynamicContent, contextLoop);
 
 	const {

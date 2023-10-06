@@ -331,6 +331,19 @@ if (!class_exists('MaxiBlocks_API')):
             $response = [
                 'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
+                'ai_settings' => [
+                    'openai_api_key' => get_option('openai_api_key_option'),
+                    'model' => get_option('maxi_ai_model'),
+                    'language' => get_option('maxi_ai_language'),
+                    'tone' => get_option('maxi_ai_tone'),
+                    'site_description' => get_option('maxi_ai_site_description'),
+                    'audience' => get_option('maxi_ai_audience'),
+                    'site_goal' => get_option('maxi_ai_site_goal'),
+                    'services' => get_option('maxi_ai_services'),
+                    'business_name' => get_option('maxi_ai_business_name'),
+                    'business_info' => get_option('maxi_ai_business_info'),
+                ],
+
                 'core' => [
                     'version' => $wp_version,
                 ],

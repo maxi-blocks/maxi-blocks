@@ -33,4 +33,8 @@
 	&:-ms-input-placeholder {
 		color: rgba(#1e1e1e, 0.62);
 	}
+
+	&--disable-resize {
+		resize: none;
+	}
 }

@@ -42,3 +42,5 @@ export { default as textIcon } from './text-icon';
 export { default as titleExtra } from './title-extra';
 export { default as toggle } from './toggle';
 export { default as videoIcon } from './video-icon';
+export { default as promptDelete } from './prompt-delete';
+export { default as promptCopy } from './prompt-copy';

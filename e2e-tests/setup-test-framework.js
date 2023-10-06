@@ -20,6 +20,13 @@ import {
 import { deactivatePlugin } from './utils';
 
 /**
+ * Disable debounce for tests.
+ */
+const _ = require('lodash');
+
+_.debounce = func => func;
+
+/**
  * Timeout, in seconds, that the test should be allowed to run.
  *
  * @type {string|undefined}

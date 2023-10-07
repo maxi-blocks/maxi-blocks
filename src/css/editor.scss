@@ -228,7 +228,7 @@ body .toolbar-item__popover {
 		color: var(--maxi-black-1-color);
 		background-color: #fff;
 		font-size: 12px;
-		line-height: 12px;
+		line-height: normal;
 
 		&:focus {
 			box-shadow: none;

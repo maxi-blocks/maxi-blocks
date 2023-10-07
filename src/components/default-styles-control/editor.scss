@@ -16,7 +16,7 @@
 		&--active {
 			background-color: var(--maxi-light-blue-2-color);
 			border: none;
-			// border-bottom: 2px solid var(--maxi-secondary-color);
+
 			path {
 				fill: var(--maxi-secondary-color);
 			}
@@ -35,12 +35,11 @@
 				}
 			}
 		}
+
 		&:hover {
 			background-color: var(--maxi-grey-3-color);
 		}
-		// &:focus {
-		// 	background-color: var(--maxi-grey-4-color);
-		// }
+
 		&__icon {
 			width: 40px;
 		}

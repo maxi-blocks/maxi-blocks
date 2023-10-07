@@ -219,10 +219,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 						transition: 0.3s;
 					}
 					.sign-up_button-wrap {
-						// display: flex;
-						// align-items: center;
-						// column-gap: 10px;
-						// margin-top: 24px;
 						margin-top: 40px;
 					}
 					.maxi-dashboard_main-content_accordion {
@@ -312,7 +308,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 						&:nth-child(9),
 						&:nth-child(8),
 						&:nth-child(7),
-						//&:nth-child(6),
 						&:nth-child(5),
 						&:nth-child(4),
 						&:nth-child(3),
@@ -347,7 +342,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								height: auto;
 								text-align: center;
 								transition: all 0.35s;
-								color: var(--maxi-grey-1-color );
+								color: var(--maxi-grey-1-color);
 								transform-origin: center;
 							}
 						}
@@ -546,12 +541,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 							display: block;
 							text-align: left;
 							margin-top: 50px;
+
 							li {
 								display: inline-block;
 								margin: 0 0 5px;
-								// &::after{
-								// 	display: none;
-								// }
 							}
 						}
 					}

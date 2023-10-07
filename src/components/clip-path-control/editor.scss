@@ -11,6 +11,7 @@
 			align-items: center;
 			justify-content: center;
 		}
+
 		&__items {
 			position: relative;
 			width: 28px;
@@ -26,9 +27,6 @@
 			&[aria-pressed='true'],
 			&:hover {
 				background: var(--maxi-light-blue-2-color);
-				// &::after {
-				// 	height: 2px;
-				// }
 
 				.clip-path-defaults__clip-path {
 					background-color: var(--maxi-secondary-color);

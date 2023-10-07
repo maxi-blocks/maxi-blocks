@@ -85,17 +85,17 @@
 			}
 		}
 	}
-	&__gradient{
-		.components-custom-gradient-picker__ui-line{
+	&__gradient {
+		.components-custom-gradient-picker__ui-line {
 			flex-direction: column;
 			.components-flex-item {
 				width: 100%;
 			}
-			div[data-wp-component="Flex"],
-			.components-custom-gradient-picker__type-picker{
+			div[data-wp-component='Flex'],
+			.components-custom-gradient-picker__type-picker {
 				width: 100%;
 				gap: 0;
-				label{
+				label {
 					position: absolute;
 					top: -5px;
 					left: 8px;
@@ -109,7 +109,7 @@
 					-webkit-box-sizing: border-box;
 					text-transform: capitalize;
 				}
-				input{
+				input {
 					line-height: 12px !important;
 				}
 			}

@@ -16,14 +16,15 @@
 	}
 }
 
-.maxi-display-control{
-	.maxi-base-control{
-		.maxi-tabs-control{
+.maxi-display-control {
+	.maxi-base-control {
+		.maxi-tabs-control {
 			column-gap: 5px;
-			.maxi-components-button{
+
+			.maxi-components-button {
 				border: 1px solid var(--maxi-grey-1-color);
 				border-radius: 4px;
-				&[aria-pressed="true"]{
+				&[aria-pressed='true'] {
 					background: var(--maxi-light-blue-2-color);
 				}
 			}

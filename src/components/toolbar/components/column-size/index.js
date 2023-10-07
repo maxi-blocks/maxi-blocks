@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getGroupAttributes,

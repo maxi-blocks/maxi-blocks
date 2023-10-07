@@ -3,13 +3,16 @@
 
 	&__item {
 		background: white;
-		&[data-name='dots'] .maxi-accordion-control__item__panel ,
-		&[data-name='icon colour'] .maxi-accordion-control__item__panel ,
-		&[data-name='arrows'] .maxi-accordion-control__item__panel ,
-		&[data-name='box shadow'] .maxi-accordion-control__item__panel ,
-		&[data-name='icon'] .maxi-accordion-control__item__panel ,
-		&[data-name='border'] .maxi-accordion-control__item__panel {
-			padding: 0;
+
+		&[data-name='dots'],
+		&[data-name='icon colour'],
+		&[data-name='arrows'],
+		&[data-name='box shadow'],
+		&[data-name='icon'],
+		&[data-name='border'] {
+			.maxi-accordion-control__item__panel {
+				padding: 0;
+			}
 		}
 
 		.maxi-accordion-tab {
@@ -77,7 +80,6 @@
 				}
 			}
 			&[aria-expanded='true'] {
-				// border-bottom: 1px solid var(--maxi-grey-1-color);
 				background: #fff;
 
 				&:after {

@@ -1,9 +1,9 @@
 .maxi-advanced-number-control {
-	&__second-style{
-		.maxi-base-control__field{
+	&__second-style {
+		.maxi-base-control__field {
 			position: relative;
 		}
-		.maxi-base-control__label{
+		.maxi-base-control__label {
 			position: absolute;
 			top: -8px;
 			left: 8px;
@@ -16,7 +16,7 @@
 			box-sizing: border-box;
 			-webkit-box-sizing: border-box;
 		}
-		.maxi-select-control__input{
+		.maxi-select-control__input {
 			padding: 9px 8px;
 		}
 	}
@@ -32,30 +32,30 @@
 		}
 		&:after,
 		&:before {
-		  position: absolute;
-		  right: 5px;
-		  width: 1.6em;
-		  height: .9em;
-		  font-size: 10px;
-		  pointer-events: none;
-		  background: #fff;
+			position: absolute;
+			right: 5px;
+			width: 1.6em;
+			height: 0.9em;
+			font-size: 10px;
+			pointer-events: none;
+			background: #fff;
 		}
 
 		&:after {
-		  color: red;
-		  content: "\25B2";
-		   width:12px;
-		  background-color:green;
-		  margin-top: 1px;
+			color: red;
+			content: '\25B2';
+			width: 12px;
+			background-color: green;
+			margin-top: 1px;
 		}
 
 		&:before {
-		  color: red;
-		  width:12px;
-		  content: "\25BC";
-		   background-color:green;
-		  margin-bottom: 5px;
-		  bottom: -.5em;
+			color: red;
+			width: 12px;
+			content: '\25BC';
+			background-color: green;
+			margin-bottom: 5px;
+			bottom: -0.5em;
 		}
 	}
 	.components-range-control {

@@ -1,20 +1,23 @@
 .maxi-overflow-control {
 	position: relative;
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: 10px;
-	.maxi-select-control{
+
+	.maxi-select-control {
 		width: 110px;
-		.maxi-base-control__field{
+
+		.maxi-base-control__field {
 			margin-top: 3px !important;
 			margin-bottom: 0 !important;
 		}
 	}
+
 	.sync-wrapper {
 		position: absolute;
 		left: 50%;
-    	top: 50%;
-   	 	transform: translate(-50%, -50%);
+		top: 50%;
+		transform: translate(-50%, -50%);
 
 		button {
 			background: #fff;
@@ -39,10 +42,11 @@
 			&:focus {
 				border-color: transparent;
 			}
+
 			&[aria-pressed='true'] {
 				background: var(--maxi-light-blue-2-color) !important;
-				svg{
-					path{
+				svg {
+					path {
 						fill: var(--maxi-secondary-color);
 					}
 				}
@@ -51,7 +55,7 @@
 			svg {
 				width: 14px;
 				height: 14px;
-				path{
+				path {
 					fill: var(--maxi-grey-4-color);
 				}
 			}

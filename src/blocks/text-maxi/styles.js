@@ -42,6 +42,11 @@ import parse from 'html-react-parser';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getIsTextSource = (listStyle, listStyleCustom) =>
+	listStyle === 'custom' &&
+	!listStyleCustom?.includes('</svg>') &&
+	!isURL(listStyleCustom);
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -163,7 +168,8 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listStart, listReversed, content } = props;
+	const { listStyle, listStyleCustom, listStart, listReversed, content } =
+		props;
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -248,16 +254,28 @@ const getListObject = props => {
 
 				const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
 
+				const isTextSource = getIsTextSource(
+					listStyle,
+					listStyleCustom
+				);
+
 				const padding =
 					listStylePosition === 'inside'
 						? gapNum + gapUnit
 						: `calc(${gapNum + gapUnit} + ${
-								sizeNum + sizeUnit
-						  } + ${indentMarkerSum})`;
+								!isTextSource ? `${sizeNum + sizeUnit} + ` : ''
+						  }${indentMarkerSum})`;
 
 				if (!isNil(gapNum) && !isNil(gapUnit)) {
 					response.listGap[breakpoint] = {
 						[`padding-${isRTL ? 'right' : 'left'}`]: padding,
+					};
+				}
+
+				if (listStylePosition === 'outside' && isTextSource) {
+					response.listGap[breakpoint] = {
+						...response.listGap[breakpoint],
+						'font-size': sizeNum + sizeUnit,
 					};
 				}
 
@@ -372,6 +390,8 @@ const getMarkerObject = props => {
 			obj: props,
 			prefix: 'list-',
 		});
+
+	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
 
 	return {
 		color: {
@@ -567,14 +587,25 @@ const getMarkerObject = props => {
 					}),
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
-						(listStyle !== 'custom'
-							? {
+						(() => {
+							if (isTextSource) {
+								return {
+									width: '0',
+									'margin-left': '0',
+								};
+							}
+
+							if (listStyle !== 'custom') {
+								return {
 									width: '1em',
 									'margin-left': '-1em',
-							  }
-							: {
-									'margin-left': -sizeNum + sizeUnit,
-							  })),
+								};
+							}
+
+							return {
+								'margin-left': `-${sizeNum}${sizeUnit}`,
+							};
+						})()),
 					...(listStylePosition === 'inside' && {
 						'margin-right': indentMarkerSum,
 					}),

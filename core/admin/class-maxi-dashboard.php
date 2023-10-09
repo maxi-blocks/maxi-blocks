@@ -1283,11 +1283,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $args_ai_description = array(
                 'type' => 'string',
             );
-            $args_ai_business_name = array(
-                'type' => 'string',
-                'default' => get_bloginfo('name'),
-
-            );
 
             // List of settings and corresponding arguments
             $settings = array(
@@ -1305,7 +1300,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_ai_audience' => $args_ai_description,
                 'maxi_ai_site_goal' => $args_ai_description,
                 'maxi_ai_services' => $args_ai_description,
-                'maxi_ai_business_name' => $args_ai_business_name,
+                'maxi_ai_business_name' => $args_ai_description,
                 'maxi_ai_business_info' => $args_ai_description,
                 'maxi_breakpoints' => null,
                 'maxi_rollback_version' => $args_rollback,

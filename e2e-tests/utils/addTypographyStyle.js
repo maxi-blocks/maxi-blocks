@@ -115,6 +115,7 @@ const addTypographyStyle = async ({
 			bottomGapInput.focus();
 			await pressKeyWithModifier('primary', 'a');
 			await bottomGapInput.type(`${bottomGap}`);
+			await page.waitForTimeout(500);
 		}
 
 		response.bottomGap = await getElementAttribute(bottomGapInput, 'value');

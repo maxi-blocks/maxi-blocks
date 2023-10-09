@@ -13,7 +13,13 @@ const getProductsLink = async dataRequest => {
 	const data = await getProductData(dataRequest?.id);
 
 	if (dataRequest?.linkTarget === 'add_to_cart') {
-		return `${select('core').getSite()?.url}${data?.add_to_cart?.url}`;
+		const siteUrl = select('core').getSite()?.url;
+		const addToCartUrl = data?.add_to_cart?.url;
+		if (!siteUrl || !addToCartUrl) {
+			return null;
+		}
+
+		return `${siteUrl}${addToCartUrl}`;
 	}
 
 	return data?.permalink;

@@ -29,11 +29,9 @@ const getDCMedia = async (dataRequest, clientId) => {
 
 	if (type === 'products') {
 		id = await getProductsContent(dataRequest, data);
+	} else {
+		id = data?.[field];
 	}
-
-	if ((!data || !(field in data)) && isNil(id)) return null;
-
-	if (isNil(id)) id = data[field];
 
 	if (isNil(id)) return null;
 

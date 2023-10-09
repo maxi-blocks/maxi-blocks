@@ -23,10 +23,11 @@ import {
 import moment from 'moment';
 import 'moment-parseformat';
 import { isEmpty, isNumber, invert } from 'lodash';
+import DOMPurify from 'dompurify';
 
 export const parseText = value => {
 	const parser = new DOMParser();
-	const doc = parser.parseFromString(value, 'text/html');
+	const doc = parser.parseFromString(DOMPurify.sanitize(value), 'text/html');
 	return doc.body.textContent;
 };
 

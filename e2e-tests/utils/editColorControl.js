@@ -34,14 +34,15 @@ const editColorControl = async ({
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
+
 		await page.$eval('.maxi-color-control__color input', input =>
 			input.focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(customColor);
-
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(500);
 	}
 
 	// change opacity

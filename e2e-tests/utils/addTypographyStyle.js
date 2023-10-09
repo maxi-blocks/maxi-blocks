@@ -81,6 +81,7 @@ const addTypographyStyle = async ({
 		textIndentInput.focus();
 		await pressKeyWithModifier('primary', 'a');
 		await textIndentInput.type(`${indent}`);
+		await page.waitForTimeout(500);
 	}
 	response.indent = await getElementAttribute(textIndentInput, 'value');
 
@@ -102,6 +103,7 @@ const addTypographyStyle = async ({
 		wordSpaceInput.focus();
 		await pressKeyWithModifier('primary', 'a');
 		await wordSpaceInput.type(`${wordSpacing}`);
+		await page.waitForTimeout(500);
 	}
 	response.wordSpacing = await getElementAttribute(wordSpaceInput, 'value');
 

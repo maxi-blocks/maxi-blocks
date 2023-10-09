@@ -11,15 +11,14 @@ import { useEffect, useState, useRef } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const SelectControl = loadable(() => import('../select-control'));
-const BaseControl = loadable(() => import('../base-control'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const ResetButton = loadable(() => import('../reset-control'));
+import SelectControl from '../select-control';
+import BaseControl from '../base-control';
+import ToggleSwitch from '../toggle-switch';
+import ResetButton from '../reset-control';
 import validateNumberInput from './utils';
 
 /**

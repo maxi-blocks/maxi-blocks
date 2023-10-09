@@ -79,6 +79,9 @@ export const getTaxonomyContent = async (
 	const taxonomyArray = await getEntityRecords('taxonomy', taxonomyType, {
 		include: taxonomyIds,
 	});
+
+	if (!taxonomyArray) return null;
+
 	const namesArray = taxonomyArray.map(({ name }) =>
 		getItemLinkContent(name, linkStatus)
 	);

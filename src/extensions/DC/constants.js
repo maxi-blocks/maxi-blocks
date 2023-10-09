@@ -651,32 +651,36 @@ const loadIntegrationsOptions = () => {
 	apiFetch({
 		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
 		method: 'GET',
-	}).then(response => {
-		if (response) {
-			if (response.includes('acf')) {
-				sourceOptions.push({
-					label: __('ACF', 'maxi-blocks'),
-					value: 'acf',
-				});
+	})
+		.then(response => {
+			if (response) {
+				if (response.includes('acf')) {
+					sourceOptions.push({
+						label: __('ACF', 'maxi-blocks'),
+						value: 'acf',
+					});
+				}
+
+				if (response.includes('woocommerce')) {
+					generalTypeOptions.push(...WCTypeOptions);
+					imageTypeOptions.push(
+						...WCTypeOptions.filter(
+							option =>
+								![
+									'cart',
+									'product_tags',
+									'product_categories',
+								].includes(option.value)
+						)
+					);
+				}
 			}
 
-			if (response.includes('woocommerce')) {
-				generalTypeOptions.push(...WCTypeOptions);
-				imageTypeOptions.push(
-					...WCTypeOptions.filter(
-						option =>
-							![
-								'cart',
-								'product_tags',
-								'product_categories',
-							].includes(option.value)
-					)
-				);
-			}
-		}
-
-		haveLoadedIntegrationsOptions = true;
-	});
+			haveLoadedIntegrationsOptions = true;
+		})
+		.catch(error => {
+			console.error('Error loading integration options:', error);
+		});
 };
 
 loadIntegrationsOptions();

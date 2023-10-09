@@ -28,9 +28,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			padding: 0;
 		}
 		&__option {
-			&--is-focused {
-				color: #fff;
-				background-color: var(--maxi-secondary-color);
+			&--is-focused,
+			&--is-selected {
+				background-color: rgba(229, 242, 248, 0.7);
 				cursor: pointer;
 			}
 		}

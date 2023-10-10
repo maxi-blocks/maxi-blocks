@@ -155,11 +155,21 @@ class edit extends MaxiBlockComponent {
 			this.props.attributes.content?.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const newContent = this.props.attributes.content?.replaceAll(
-			svgClass.match(/__(\d)/)[0],
-			`__${newUniqueID.match(/-(\d+)$/)?.pop()}`
+		const svgClassMatch = svgClass.match(/__([a-f0-9]+)(?:-u)?$|-(\d+)$/);
+		const newUniqueIDMatch = newUniqueID.match(
+			/-([a-f0-9]+)(?:-u)?$|-(\d+)$/
 		);
-		this.props.attributes.content = newContent;
+
+		if (svgClassMatch && newUniqueIDMatch) {
+			const matchedSvgClass = svgClassMatch[0];
+			const matchedID = newUniqueIDMatch[1];
+
+			const newContent = this.props.attributes.content?.replaceAll(
+				matchedSvgClass,
+				`__${matchedID}`
+			);
+			this.props.attributes.content = newContent;
+		}
 	}
 
 	get getStylesObject() {

@@ -153,5 +153,11 @@ const actions = {
 			isPageLoaded,
 		};
 	},
+	setIsIframeObserverSet(isIframeObserverSet = true) {
+		return {
+			type: 'SET_IS_IFRAME_OBSERVER_SET',
+			isIframeObserverSet,
+		};
+	},
 };
 export default actions;

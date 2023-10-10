@@ -9,6 +9,11 @@ import { useInstanceId } from '@wordpress/compose';
 import BaseControl from '../base-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles
  */
 import './editor.scss';
@@ -20,6 +25,7 @@ export default function TextareaControl({
 	help,
 	onChange,
 	rows = 4,
+	disableResize = false,
 	className,
 	...props
 }) {
@@ -36,7 +42,11 @@ export default function TextareaControl({
 			className={className}
 		>
 			<textarea
-				className='maxi-textarea-control__input'
+				className={classnames(
+					'maxi-textarea-control__input',
+					disableResize &&
+						'maxi-textarea-control__input--disable-resize'
+				)}
 				id={id}
 				rows={rows}
 				onChange={onChangeValue}

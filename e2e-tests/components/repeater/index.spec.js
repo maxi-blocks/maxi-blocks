@@ -43,6 +43,9 @@ const insertMaxiBlockIntoColumn = async (page, blockName, column) => {
 	await page.waitForTimeout(150);
 };
 
+const sanitizeEditedPostContent = content =>
+	content.replace(/,"uniqueID":"[^"]+"|,"customLabel":"[^"]+"/g, '');
+
 describe('Repeater', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -68,7 +71,9 @@ describe('Repeater', () => {
 		await updateAllBlockUniqueIds(page);
 
 		// Check if button was added to all columns
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -100,7 +105,9 @@ describe('Repeater', () => {
 		await updateAllBlockUniqueIds(page);
 
 		// Check if buttons were removed from all columns
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 	});
 
 	it('Check repeater columns validation on toggle when first column has content', async () => {
@@ -167,7 +174,9 @@ describe('Repeater', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 
 		// Select nested(second) text from third column
 		await page.$$eval(
@@ -187,6 +196,8 @@ describe('Repeater', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 	});
 });

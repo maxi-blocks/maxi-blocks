@@ -3,7 +3,7 @@
  */
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { useContext, useEffect, useRef } from '@wordpress/element';
 
 /**
@@ -68,6 +68,8 @@ const withAttributes = createHigherOrderComponent(
 					attributes.customLabel,
 					newUniqueID
 				);
+
+				dispatch('maxiBlocks/blocks').addNewBlock(newUniqueID);
 
 				wasUniqueIDAdded.current = true;
 			}

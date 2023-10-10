@@ -6,19 +6,19 @@
 	cursor: pointer;
 	transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
 
-	& > *{
+	& > * {
 		color: var(--maxi-black-1-color) !important;
 	}
 	& &__variant {
 		font-weight: bold;
 	}
 
-	&__show-more{
+	&__show-more {
 		margin-bottom: 8px;
 		height: auto;
 		padding: 0;
 	}
-	&__clean-history-button{
+	&__clean-history-button {
 		height: auto;
 		padding: 0;
 	}
@@ -75,7 +75,7 @@
 	}
 
 	& &__content-length {
-		color: var(--maxi-grey-6-color);
+		color: var(--maxi-grey-9-color);
 		text-align: end;
 	}
 

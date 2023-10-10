@@ -271,13 +271,11 @@ body {
 			right: 8px;
 			display: flex;
 			align-items: center;
+			gap: 4px;
 			width: 58px;
 			height: 32px;
 			padding-left: 2px !important;
-			border: opx solid #dddfe1;
 			color: #464a53;
-			transition: all 0.5s;
-			border-radius: 50% !important;
 
 			&-button__preview {
 				width: 26px;
@@ -289,17 +287,27 @@ body {
 			&-button {
 				flex: 1;
 				width: auto;
-				height: auto;
+				height: 30px;
 				padding: 0;
 				display: flex;
 				justify-content: center;
+				border-radius: 50%;
+				transition: all 0.3s;
+
+				&:hover:not(:disabled) {
+					background: var(--maxi-white-1-color);
+
+					svg {
+						fill: var(--maxi-black-1-color);
+					}
+				}
 			}
+
 			svg {
 				width: 14px;
 				height: 14px;
-			}
-			&:hover {
-				background: #f9f9f9;
+				fill: var(--maxi-grey-6-color);
+				transition: all 0.3s;
 			}
 		}
 		hr {

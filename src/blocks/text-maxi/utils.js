@@ -3,17 +3,16 @@
  */
 import { select, dispatch } from '@wordpress/data';
 
-/*
- * External dependencies
- */
-import loadable from '@loadable/component';
-
 /**
  * Internal dependencies
  */
-const formatsLib = loadable.lib(() => import('../../extensions/text/formats'));
+import {
+	fromListToText,
+	fromTextToList,
+	getFormatsOnMerge,
+} from '../../extensions/text/formats';
 
-export const onMerge = (props, forward) => {
+const onMerge = (props, forward) => {
 	const { attributes, clientId, maxiSetAttributes } = props;
 	const { isList, content, 'custom-formats': customFormats } = attributes;
 
@@ -32,46 +31,35 @@ export const onMerge = (props, forward) => {
 		const blockName = getBlock(nextBlockClientId)?.name;
 
 		if (nextBlockClientId && blockName === 'maxi-blocks/text-maxi') {
-			formatsLib
-				.load()
-				.then(
-					({ fromListToText, fromTextToList, getFormatsOnMerge }) => {
-						const nextBlockAttributes =
-							getBlockAttributes(nextBlockClientId);
-						const {
-							content: nextBlockContent,
-							isList: nextBlockIsList,
-							'custom-formats': nextBlockCustomFormats,
-						} = nextBlockAttributes;
+			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
+			const {
+				content: nextBlockContent,
+				isList: nextBlockIsList,
+				'custom-formats': nextBlockCustomFormats,
+			} = nextBlockAttributes;
 
-						const nextBlockContentNeedsTransform =
-							isList !== nextBlockIsList;
-						const newNextBlockContent =
-							nextBlockContentNeedsTransform
-								? nextBlockIsList
-									? fromListToText(nextBlockContent)
-									: fromTextToList(nextBlockContent)
-								: nextBlockContent;
+			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
+			const newNextBlockContent = nextBlockContentNeedsTransform
+				? nextBlockIsList
+					? fromListToText(nextBlockContent)
+					: fromTextToList(nextBlockContent)
+				: nextBlockContent;
 
-						const {
-							content: newContent,
-							'custom-formats': newCustomFormats,
-						} = getFormatsOnMerge(
-							{ content, 'custom-formats': customFormats },
-							{
-								content: newNextBlockContent,
-								'custom-formats': nextBlockCustomFormats,
-							}
-						);
-
-						maxiSetAttributes({
-							content: newContent,
-							'custom-formats': newCustomFormats,
-						});
-
-						removeBlock(nextBlockClientId);
+			const { content: newContent, 'custom-formats': newCustomFormats } =
+				getFormatsOnMerge(
+					{ content, 'custom-formats': customFormats },
+					{
+						content: newNextBlockContent,
+						'custom-formats': nextBlockCustomFormats,
 					}
 				);
+
+			maxiSetAttributes({
+				content: newContent,
+				'custom-formats': newCustomFormats,
+			});
+
+			removeBlock(nextBlockClientId);
 		}
 	} else {
 		const previousBlockClientId = getPreviousBlockClientId(clientId);
@@ -82,19 +70,16 @@ export const onMerge = (props, forward) => {
 			// Commented as is something we might want to come back in future
 			// removeBlock(clientId);
 		} else {
-			formatsLib.load().then(({ fromListToText, getFormatsOnMerge }) => {
-				const previousBlockAttributes = getBlockAttributes(
-					previousBlockClientId
-				);
-				const {
-					content: previousBlockContent,
-					'custom-formats': previousBlockCustomFormats,
-				} = previousBlockAttributes;
+			const previousBlockAttributes = getBlockAttributes(
+				previousBlockClientId
+			);
+			const {
+				content: previousBlockContent,
+				'custom-formats': previousBlockCustomFormats,
+			} = previousBlockAttributes;
 
-				const {
-					content: newContent,
-					'custom-formats': newCustomFormats,
-				} = getFormatsOnMerge(
+			const { content: newContent, 'custom-formats': newCustomFormats } =
+				getFormatsOnMerge(
 					{
 						content: previousBlockContent,
 						'custom-formats': previousBlockCustomFormats,
@@ -107,16 +92,17 @@ export const onMerge = (props, forward) => {
 					}
 				);
 
-				updateBlockAttributes(previousBlockClientId, {
-					content: newContent,
-					'custom-formats': newCustomFormats,
-				});
-
-				removeBlock(clientId);
+			updateBlockAttributes(previousBlockClientId, {
+				content: newContent,
+				'custom-formats': newCustomFormats,
 			});
+
+			removeBlock(clientId);
 		}
 	}
 };
+
+export default onMerge;
 
 export const getSVGListStyle = svg => {
 	if (!svg) return '';

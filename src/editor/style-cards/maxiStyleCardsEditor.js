@@ -35,6 +35,11 @@ import { updateSCOnEditor } from '../../extensions/style-cards';
 import { handleSetAttributes } from '../../extensions/maxi-block';
 import standardSC from '../../../core/defaults/defaultSC.json';
 
+/**
+ * Icons
+ */
+import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
+
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {
 		isRTL,

@@ -395,71 +395,71 @@ describe('Button Maxi hover simple actions', () => {
 		await checkFrontend();
 	});
 
-	// it('Button margin/padding', async () => {
-	// 	// Select setting
-	// 	const selectControls = await page.$$('.maxi-select-control__input');
-	// 	await selectControls[3].select('bmp');
+	it('Button margin/padding', async () => {
+		// Select setting
+		const selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[3].select('bmp');
 
-	// 	// Margin
-	// 	await page.$$eval(
-	// 		'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-	// 		ANCs => ANCs[0].focus()
-	// 	);
-	// 	await pressKeyWithModifier('primary', 'a');
-	// 	await page.keyboard.type('1');
+		// Margin
+		await page.$$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			ANCs => ANCs[0].focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('1');
 
-	// 	// Padding
-	// 	await page.$$eval('.maxi-tabs-control', tabs =>
-	// 		tabs[5]
-	// 			.querySelector(
-	// 				'.maxi-tabs-control__button.maxi-tabs-control__button-all'
-	// 			)
-	// 			.click()
-	// 	);
+		// Padding
+		await page.$$eval('.maxi-tabs-control', tabs =>
+			tabs[5]
+				.querySelector(
+					'.maxi-tabs-control__button.maxi-tabs-control__button-all'
+				)
+				.click()
+		);
 
-	// 	await page.$$eval(
-	// 		'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-	// 		ANCs => ANCs[1].focus()
-	// 	);
-	// 	await pressKeyWithModifier('primary', 'a');
-	// 	await page.keyboard.type('2');
+		await page.$$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			ANCs => ANCs[1].focus()
+		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('2');
 
-	// 	expect(await getAttributes('relations')).toMatchSnapshot();
+		expect(await getAttributes('relations')).toMatchSnapshot();
 
-	// 	await checkFrontend();
-	// });
+		await checkFrontend();
+	});
 
-	// it('Button background and shadow', async () => {
-	// 	// Select setting
-	// 	const backgroundSelectControls = await page.$$(
-	// 		'.maxi-select-control__input'
-	// 	);
-	// 	await backgroundSelectControls[3].select('bbg');
+	it('Button background and shadow', async () => {
+		// Select setting
+		const backgroundSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await backgroundSelectControls[3].select('bbg');
 
-	// 	// Background color
-	// 	await editColorControl({
-	// 		page,
-	// 		instance: await page.$('.maxi-color-control'),
-	// 		paletteStatus: true,
-	// 		colorPalette: 8,
-	// 		opacity: 50,
-	// 	});
+		// Background color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-color-control'),
+			paletteStatus: true,
+			colorPalette: 8,
+			opacity: 50,
+		});
 
-	// 	await addInteraction();
+		await addInteraction();
 
-	// 	// Select setting
-	// 	const shadowSelectControls = await page.$$(
-	// 		'.maxi-select-control__input'
-	// 	);
-	// 	await shadowSelectControls[3].select('bbs');
+		// Select setting
+		const shadowSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await shadowSelectControls[3].select('bbs');
 
-	// 	// Select first default
-	// 	await page.$$eval('.maxi-default-styles-control__button', buttons =>
-	// 		buttons[1].click()
-	// 	);
+		// Select first default
+		await page.$$eval('.maxi-default-styles-control__button', buttons =>
+			buttons[1].click()
+		);
 
-	// 	expect(await getAttributes('relations')).toMatchSnapshot();
+		expect(await getAttributes('relations')).toMatchSnapshot();
 
-	// 	await checkFrontend();
-	// });
+		await checkFrontend();
+	});
 });

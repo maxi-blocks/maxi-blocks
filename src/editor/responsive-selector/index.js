@@ -16,10 +16,9 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Button = loadable(() => import('../../components/button'));
-const Icon = loadable(() => import('../../components/icon'));
 const MaxiStyleCardsEditorPopUp = loadable(() => import('../style-cards'));
 const CrispChat = loadable(() => import('../crisp-chat'));
+import { Button, Icon } from '../../components';
 import { setScreenSize } from '../../extensions/styles';
 import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
 import { goThroughMaxiBlocks } from '../../extensions/maxi-block';

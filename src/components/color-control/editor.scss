@@ -146,17 +146,18 @@
 			border-radius: 50%;
 
 			&--active {
-				border: 1px solid var(--maxi-light-blue-2-color);
-			}
-
-			&:focus {
 				background: var(--maxi-light-blue-2-color);
-				border-color: var(--maxi-light-blue-2-color);
+				border: 1px solid var(--maxi-light-blue-2-color);
 				box-shadow: none;
 				outline: none;
+
+				&:hover {
+					background: var(--maxi-light-blue-3-color);
+					border-color: var(--maxi-light-blue-3-color);
+				}
 			}
 
-			&:hover {
+			&:not(&--active):hover {
 				background: var(--maxi-white-1-color);
 				border-color: var(--maxi-grey-6-color);
 			}

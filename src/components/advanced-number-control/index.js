@@ -278,7 +278,10 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							value={+latestValueRef.current || 0}
+							//	value={+latestValueRef.current || 0}
+							value={
+								+latestValueRef.current || +currentValue || 0
+							}
 							onChange={val => {
 								const result =
 									optionType === 'string'

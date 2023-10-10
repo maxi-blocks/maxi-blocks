@@ -2,22 +2,17 @@
 	width: 100%;
 
 	&.maxi-axis-control__sync {
-		.maxi-tabs-control__button[aria-pressed='true'] {
-			border-bottom: 0px solid var(--maxi-secondary-color);
-			background-color: var(--maxi-light-blue-2-color);
-			border: none;
-			font-weight: 700;
-		}
-		.maxi-tabs-control__button:hover {
-			border-bottom: 0px solid var(--maxi-secondary-color);
-			background-color: var(--maxi-light-blue-2-color);
-			border: none;
-			font-weight: 700;
-		}
 		.maxi-tabs-control__button {
 			margin-left: 7px;
 			border: 1.5px solid var(--maxi-grey-1-color);
 			border-radius: 4px;
+
+			&[aria-pressed='true'],
+			&:hover {
+				background-color: var(--maxi-light-blue-2-color);
+				border-width: 0;
+				font-weight: 700;
+			}
 		}
 	}
 

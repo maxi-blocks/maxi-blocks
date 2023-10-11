@@ -57,8 +57,6 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 		);
 	});
 
-	console.log('shouldShowLoader', shouldShowLoader);
-
 	if (shouldShowLoader) {
 		return <ContentLoader cloud={false} />;
 	}

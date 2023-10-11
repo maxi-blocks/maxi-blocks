@@ -15,7 +15,7 @@ const editAdvancedNumberControl = async ({
 	await page.waitForTimeout(400);
 
 	await pressKeyWithModifier('primary', 'a');
-	await page.keyboard.type(newNumber, { delay: 400 });
+	await page.keyboard.type(newNumber, { delay: 350 });
 	await page.waitForTimeout(400);
 
 	if (newValue) {

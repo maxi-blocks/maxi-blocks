@@ -38,7 +38,7 @@ describe('FullSizeControl', () => {
 		);
 
 		await inputs.focus();
-		await page.keyboard.type('330', { delay: 100 });
+		await page.keyboard.type('330', { delay: 350 });
 
 		// check responsive height
 		const responsiveResult = await addResponsiveTest({

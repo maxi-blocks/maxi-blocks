@@ -32,6 +32,8 @@ const addMoreSC = async (title = 'Daemon') => {
 		button.click()
 	);
 
+	await page.waitForTimeout(350);
+
 	// To ensure we always select the same SC search it by name (hopefully it doesn't change)
 	await page.$eval(
 		'.maxi-cloud-container .maxi-cloud-container__sc__sidebar .ais-SearchBox-input',

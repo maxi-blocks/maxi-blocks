@@ -75,6 +75,8 @@ const sizeAndPositionChecker = async ({
 		newValue: sizeUnit,
 	});
 
+	await page.waitForTimeout(350);
+
 	// position
 	const position = await page.$(positionClass);
 
@@ -85,6 +87,8 @@ const sizeAndPositionChecker = async ({
 		values: positionValues,
 		unit: positionUnit,
 	});
+
+	await page.waitForTimeout(350);
 
 	return true;
 };

@@ -30,7 +30,7 @@ const addTypographyOptions = async ({
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(`${lineHeight}`, { delay: 150 });
+		await page.keyboard.type(`${lineHeight}`, { delay: 350 });
 	}
 
 	// letter-spacing
@@ -41,7 +41,7 @@ const addTypographyOptions = async ({
 			select => select[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(`${letterSpacing}`, { delay: 150 });
+		await page.keyboard.type(`${letterSpacing}`, { delay: 350 });
 	}
 
 	await page.waitForTimeout(150);

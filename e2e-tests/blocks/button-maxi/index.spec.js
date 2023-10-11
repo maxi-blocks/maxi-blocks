@@ -26,7 +26,7 @@ describe('Button Maxi', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.keyboard.type('Hello', { delay: 100 });
+		await page.keyboard.type('Hello', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
@@ -63,7 +63,7 @@ describe('Button Maxi', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.keyboard.type('Hello', { delay: 100 });
+		await page.keyboard.type('Hello', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		const quickStylesAccordion = await openSidebarTab(

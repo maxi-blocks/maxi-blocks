@@ -97,7 +97,7 @@ describe.skip('Image Maxi', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat', { delay: 100 });
+		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 

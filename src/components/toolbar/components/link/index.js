@@ -51,8 +51,9 @@ const Link = props => {
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext) ?? {};
-	const { 'cl-status': clStatus } = contextLoop ?? {};
+	const { 'cl-status': clStatus, 'cl-type': clType } = contextLoop ?? {};
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
+	const selectedDCType = dcType ?? clType;
 
 	if (
 		(blockName === 'maxi-blocks/divider-maxi' ||
@@ -149,15 +150,17 @@ const Link = props => {
 										);
 									}}
 								/>
-								{multipleLinksTypes.includes(dcType) &&
+								{multipleLinksTypes.includes(selectedDCType) &&
 									dcLinkStatus && (
 										<SelectControl
 											label={__(
 												'Link target',
 												'maxi-blocks'
 											)}
-											selected={dcLinkTarget}
-											options={linkOptions[dcType]}
+											value={dcLinkTarget}
+											options={
+												linkOptions[selectedDCType]
+											}
 											onChange={async value => {
 												const url =
 													value &&

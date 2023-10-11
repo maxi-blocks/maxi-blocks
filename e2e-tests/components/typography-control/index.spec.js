@@ -117,6 +117,8 @@ describe('TypographyControl', () => {
 			customColor: '#FAFA03',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('color-general')).toStrictEqual(
 			'rgb(250,250,3)'
 		);
@@ -156,6 +158,8 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
+		await page.waitForTimeout(200);
+
 		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 
 		// xs
@@ -166,6 +170,8 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
+		await page.waitForTimeout(200);
+
 		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
 
 		// m
@@ -174,6 +180,8 @@ describe('TypographyControl', () => {
 			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
 			select => select.click()
 		);
+
+		await page.waitForTimeout(200);
 
 		expect(await getAttributes('palette-status-s')).toStrictEqual(
 			undefined
@@ -197,6 +205,8 @@ describe('TypographyControl', () => {
 			wordSpacing: '20',
 			bottomGap: '15',
 		});
+
+		await page.waitForTimeout(200);
 
 		const typographyResult = await getAttributes([
 			'font-style-general',
@@ -238,6 +248,8 @@ describe('TypographyControl', () => {
 			xsExpect: '500',
 			newValue: '500',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveFontWeight).toBeTruthy();
 
 		// check responsive transform
@@ -252,6 +264,8 @@ describe('TypographyControl', () => {
 			xsExpect: 'uppercase',
 			newValue: 'uppercase',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveTextTransform).toBeTruthy();
 
 		// check responsive font-style
@@ -266,6 +280,8 @@ describe('TypographyControl', () => {
 			xsExpect: 'oblique',
 			newValue: 'oblique',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveFontStyle).toBeTruthy();
 
 		// check responsive text-decoration
@@ -280,6 +296,8 @@ describe('TypographyControl', () => {
 			xsExpect: 'underline',
 			newValue: 'underline',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveTextDecoration).toBeTruthy();
 
 		// check responsive text-indent
@@ -292,6 +310,8 @@ describe('TypographyControl', () => {
 			xsExpect: '88',
 			newValue: '88',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveTextIndent).toBeTruthy();
 
 		// check responsive white-space
@@ -306,6 +326,8 @@ describe('TypographyControl', () => {
 			xsExpect: 'pre-wrap',
 			newValue: 'pre-wrap',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveWhiteSpace).toBeTruthy();
 
 		// check responsive word-spacing
@@ -318,6 +340,8 @@ describe('TypographyControl', () => {
 			xsExpect: '40',
 			newValue: '40',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveWordSpacing).toBeTruthy();
 
 		// check responsive bottom-gap
@@ -330,6 +354,8 @@ describe('TypographyControl', () => {
 			xsExpect: '30',
 			newValue: '30',
 		});
+		await page.waitForTimeout(200);
+
 		expect(responsiveBottomGap).toBeTruthy();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

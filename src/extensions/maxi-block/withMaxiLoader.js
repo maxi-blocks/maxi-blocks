@@ -57,6 +57,8 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 		);
 	});
 
+	console.log('shouldShowLoader', shouldShowLoader);
+
 	if (shouldShowLoader) {
 		return <ContentLoader cloud={false} />;
 	}
@@ -77,6 +79,9 @@ const withMaxiLoader = createHigherOrderComponent(
 				[]
 			);
 
+			const [hasBeenConsolidated, setHasBeenConsolidated] =
+				useState(false);
+
 			const { blockWantsToRender } = useDispatch('maxiBlocks');
 
 			useLayoutEffect(() => {
@@ -88,11 +93,12 @@ const withMaxiLoader = createHigherOrderComponent(
 			);
 
 			useEffect(() => {
-				if (canRender) return () => {};
+				if (canRender && hasBeenConsolidated) return () => {};
 
 				const interval = setInterval(() => {
 					if (canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
+						setHasBeenConsolidated(true);
 						clearInterval(interval);
 					}
 				}, 100);
@@ -101,10 +107,12 @@ const withMaxiLoader = createHigherOrderComponent(
 			});
 
 			const onMountBlock = useCallback(() => {
+				setHasBeenConsolidated(true);
 				setCanRender(true);
 			}, []);
 
-			if (canRender) return <WrappedComponent {...ownProps} />;
+			if (canRender && hasBeenConsolidated)
+				return <WrappedComponent {...ownProps} />;
 
 			return (
 				<SuspendedBlock

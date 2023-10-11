@@ -147,6 +147,8 @@ describe('Button Maxi hover simple actions', () => {
 		await selectControls[3].select('bi');
 
 		// Width
+		await page.waitForTimeout(350);
+
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
 			ANCs => ANCs[0].focus()
@@ -162,6 +164,7 @@ describe('Button Maxi hover simple actions', () => {
 		await ANCs[0].select('%');
 
 		// Stroke width
+		await page.waitForTimeout(350);
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
 			ANCs => ANCs[1].focus()
@@ -172,6 +175,7 @@ describe('Button Maxi hover simple actions', () => {
 		// console.log('before spacing');
 
 		// Spacing
+		await page.waitForTimeout(350);
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
 			ANCs => ANCs[2].focus()
@@ -314,6 +318,7 @@ describe('Button Maxi hover simple actions', () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[3].select('bbg');
+		await page.waitForTimeout(350);
 
 		// Background color
 		await editColorControl({
@@ -323,6 +328,8 @@ describe('Button Maxi hover simple actions', () => {
 			colorPalette: 8,
 			opacity: 50,
 		});
+
+		await page.waitForTimeout(350);
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 
@@ -400,6 +407,8 @@ describe('Button Maxi hover simple actions', () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[3].select('bmp');
 
+		await page.waitForTimeout(350);
+
 		// Margin
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -407,6 +416,8 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('1', { delay: 350 });
+
+		await page.waitForTimeout(350);
 
 		// Padding
 		await page.$$eval('.maxi-tabs-control', tabs =>
@@ -416,6 +427,8 @@ describe('Button Maxi hover simple actions', () => {
 				)
 				.click()
 		);
+
+		await page.waitForTimeout(350);
 
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -435,6 +448,7 @@ describe('Button Maxi hover simple actions', () => {
 			'.maxi-select-control__input'
 		);
 		await backgroundSelectControls[3].select('bbg');
+		await page.waitForTimeout(350);
 
 		// Background color
 		await editColorControl({
@@ -444,6 +458,7 @@ describe('Button Maxi hover simple actions', () => {
 			colorPalette: 8,
 			opacity: 50,
 		});
+		await page.waitForTimeout(350);
 
 		await addInteraction();
 
@@ -452,6 +467,7 @@ describe('Button Maxi hover simple actions', () => {
 			'.maxi-select-control__input'
 		);
 		await shadowSelectControls[3].select('bbs');
+		await page.waitForTimeout(350);
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>

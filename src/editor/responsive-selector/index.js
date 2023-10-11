@@ -364,9 +364,6 @@ const ResponsiveSelector = props => {
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
 
-			console.log('postId', postId);
-			console.log('postType', postType);
-
 			if (postType && postId) {
 				goThroughMaxiBlocks(block => {
 					if (block.name === 'core/post-content') {

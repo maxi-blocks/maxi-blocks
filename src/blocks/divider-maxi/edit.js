@@ -13,11 +13,8 @@ import loadable from '@loadable/component';
  * Internal dependencies
  */
 const Inspector = loadable(() => import('./inspector'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+import { BlockResizer } from '../../components';
 import {
 	MaxiBlockComponent,
 	getResizerSize,
@@ -28,7 +25,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { copyPasteMapping } from './data';
 
 /**

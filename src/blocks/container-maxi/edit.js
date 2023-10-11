@@ -21,9 +21,7 @@ const ArrowDisplayer = loadable(() =>
 );
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
 const ShapeDivider = loadable(() => import('../../components/shape-divider'));
-const BlockIndicators = loadable(() =>
-	import('../../components/block-indicators')
-);
+import { BlockIndicators } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';

@@ -18,6 +18,7 @@ import {
 	addResponsiveTest,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	typeWithDelay,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
@@ -59,26 +60,26 @@ describe('NumberCounterControl', () => {
 		// Start Number
 		await inputs[2].focus();
 		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('20');
+		await typeWithDelay(page, '20');
 
 		// End Number
 		await inputs[3].focus();
 		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
+		await typeWithDelay(page, '50');
 
 		// Duration
 		await inputs[4].focus();
-		await page.keyboard.type('0');
+		await typeWithDelay(page, '0');
 
 		// Stroke
 		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('50');
+		await typeWithDelay(page, '50');
 
 		// Title Font Size
 		await inputs[6].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('19');
+		await typeWithDelay(page, '19');
 
 		// expect
 		const numberResult = await getAttributes([
@@ -173,7 +174,7 @@ describe('NumberCounterControl', () => {
 			'.maxi-number-counter-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await typeWithDelay(page, 'Montserrat');
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
@@ -283,7 +284,7 @@ describe('NumberCounterControl', () => {
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue.innerHTML
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(400);
 
 		expect(typographyInput).toStrictEqual('Montserrat');
 
@@ -294,7 +295,7 @@ describe('NumberCounterControl', () => {
 			input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('Arial');
+		await typeWithDelay(page, 'Arial');
 		await page.keyboard.press('Enter');
 
 		const typographyInputS = await page.$eval(
@@ -335,9 +336,11 @@ describe('NumberCounterControl', () => {
 
 		// Text color
 		await colorsS[0].$$eval('button', click => click[4].click());
+		await page.waitForTimeout(400);
 
 		// Circle Bar Color
 		await colorsS[2].$$eval('button', click => click[2].click());
+		await page.waitForTimeout(400);
 
 		// expect
 		const colorResult = await getAttributes([

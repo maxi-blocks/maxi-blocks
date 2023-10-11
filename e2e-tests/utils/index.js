@@ -32,3 +32,4 @@ export { default as waitForAttribute } from './waitForAttribute';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';
 export { default as updateAllBlockUniqueIds } from './updateAllBlockUniqueIds';
 export { default as changeUniqueID } from './changeUniqueID';
+export { default as typeWithDelay } from './typeWithDelay';

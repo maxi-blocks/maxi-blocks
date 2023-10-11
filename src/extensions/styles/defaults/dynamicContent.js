@@ -145,6 +145,7 @@ const dynamicContent = {
 	},
 	'dc-image-accumulator': {
 		type: 'number',
+		default: 0,
 	},
 };
 

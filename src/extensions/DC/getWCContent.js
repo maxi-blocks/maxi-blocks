@@ -90,7 +90,7 @@ const getProductsContent = async (dataRequest, entityData) => {
 			return entityData[field];
 		case 'gallery':
 			// First image is featured image, need to skip it.
-			return data.images[imageAccumulator + 1]?.id;
+			return data.images[(imageAccumulator ?? 0) + 1]?.id;
 		default:
 			return null;
 	}

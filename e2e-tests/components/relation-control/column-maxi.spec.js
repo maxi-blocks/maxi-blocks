@@ -101,7 +101,7 @@ describe('Column Maxi hover simple actions', () => {
 		// Add title
 		const textControls = await page.$$('.maxi-text-control__input');
 		await textControls[1].focus();
-		await page.keyboard.type('Hello World!');
+		await page.keyboard.type('Hello World!', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		// Add target
@@ -171,7 +171,7 @@ describe('Column Maxi hover simple actions', () => {
 			el => el.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		// Vertical align
 		selectControls = await page.$$('.maxi-select-control__input');

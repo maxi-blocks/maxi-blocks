@@ -117,7 +117,7 @@ describe('Repeater', () => {
 		});
 
 		// Set title
-		await page.keyboard.type('Page repeater test');
+		await page.keyboard.type('Page repeater test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');
@@ -149,7 +149,7 @@ describe('Repeater', () => {
 		});
 
 		// Set title
-		await page.keyboard.type('Page repeater test');
+		await page.keyboard.type('Page repeater test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');

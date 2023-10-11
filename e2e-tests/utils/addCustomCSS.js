@@ -21,7 +21,7 @@ const checkCSS = async ({ page, cssInstances }) => {
 			el.focus()
 		);
 
-		await page.keyboard.type('background: red');
+		await page.keyboard.type('background: red', { delay: 350 });
 		await page.waitForTimeout(200);
 
 		// validate css

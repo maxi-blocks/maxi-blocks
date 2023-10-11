@@ -37,7 +37,7 @@ describe('Icon size', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('132');
+		await page.keyboard.type('132', { delay: 350 });
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual('132');
 

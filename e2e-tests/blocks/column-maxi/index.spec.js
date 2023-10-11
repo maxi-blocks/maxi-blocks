@@ -53,7 +53,7 @@ describe('Column Maxi', () => {
 
 		await pressKeyTimes('Backspace', '3');
 
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		expect(await getAttributes('column-size-general')).toStrictEqual(50);
 
@@ -81,7 +81,7 @@ describe('Column Maxi', () => {
 		);
 
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('9');
+		await page.keyboard.type('9', { delay: 350 });
 
 		const responsiveSOption = await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',

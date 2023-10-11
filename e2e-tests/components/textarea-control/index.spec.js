@@ -34,7 +34,9 @@ describe('TextareaControl', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.press('Backspace');
-		await page.keyboard.type('Testing everything works correctly!');
+		await page.keyboard.type('Testing everything works correctly!', {
+			delay: 350,
+		});
 
 		const expectText = await page.$eval(
 			'.maxi-hover-effect-control .maxi-base-control__field textarea',

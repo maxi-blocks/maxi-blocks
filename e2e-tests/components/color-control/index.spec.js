@@ -184,7 +184,7 @@ describe('ColorControl', () => {
 			opacity => opacity.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		await page.waitForTimeout(350);
 
@@ -199,7 +199,7 @@ describe('ColorControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('#9A5441');
+		await page.keyboard.type('#9A5441', { delay: 350 });
 		await page.waitForTimeout(350);
 
 		expect(

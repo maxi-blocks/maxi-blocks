@@ -310,7 +310,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('Text Maxi');
+		await page.keyboard.type('Text Maxi', { delay: 350 });
 
 		await page.$eval(
 			'.editor-block-list-item-maxi-blocks-text-maxi',

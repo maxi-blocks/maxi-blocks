@@ -44,7 +44,7 @@ describe('ColumnPattern', () => {
 			select => select.focus()
 		);
 		await page.keyboard.press('Backspace');
-		await page.keyboard.type('2');
+		await page.keyboard.type('2', { delay: 350 });
 
 		await accordionControl.$$eval(
 			'.components-column-pattern__templates button',

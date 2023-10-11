@@ -68,7 +68,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-opacity-general')

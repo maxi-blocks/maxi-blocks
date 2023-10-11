@@ -194,7 +194,7 @@ describe('SC settings', () => {
 			input => input.focus()
 		);
 
-		await page.keyboard.type('Daemon - copy 2');
+		await page.keyboard.type('Daemon - copy 2', { delay: 350 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
@@ -227,7 +227,7 @@ describe('SC settings', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('106D3C');
+		await page.keyboard.type('106D3C', { delay: 350 });
 
 		await page.waitForSelector('.maxi-style-cards__sc__actions--apply');
 		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>

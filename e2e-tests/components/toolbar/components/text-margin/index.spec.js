@@ -36,7 +36,7 @@ describe('Text margin', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('66');
+		await page.keyboard.type('66', { delay: 350 });
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'66'

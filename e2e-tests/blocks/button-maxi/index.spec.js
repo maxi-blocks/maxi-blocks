@@ -186,7 +186,7 @@ describe('Button Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('59');
+		await page.keyboard.type('59', { delay: 350 });
 
 		expect(
 			await getAttributes('icon-border-bottom-width-general')
@@ -199,7 +199,7 @@ describe('Button Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('26');
+		await page.keyboard.type('26', { delay: 350 });
 
 		expect(
 			await getAttributes('icon-border-bottom-right-radius-general')
@@ -212,7 +212,7 @@ describe('Button Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('33');
+		await page.keyboard.type('33', { delay: 350 });
 
 		expect(
 			await getAttributes('icon-padding-bottom-general')
@@ -237,7 +237,7 @@ describe('Button Maxi', () => {
 			select => select[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('245');
+		await page.keyboard.type('245', { delay: 350 });
 
 		//  stroke Width
 		await page.$$eval(
@@ -246,7 +246,7 @@ describe('Button Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('4');
+		await page.keyboard.type('4', { delay: 350 });
 
 		expect(await getAttributes('icon-stroke-general-hover')).toStrictEqual(
 			4
@@ -288,7 +288,7 @@ describe('Button Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('70');
+		await page.keyboard.type('70', { delay: 350 });
 
 		expect(
 			await getAttributes('icon-border-bottom-width-general-hover')

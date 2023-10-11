@@ -30,7 +30,7 @@ describe('Button Maxi hover simple actions', () => {
 		await page.waitForTimeout(500);
 		const textControls = await page.$$('.maxi-text-control__input');
 		await textControls[1].focus();
-		await page.keyboard.type('Hello World!');
+		await page.keyboard.type('Hello World!', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		// Add target
@@ -152,7 +152,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('11');
+		await page.keyboard.type('11', { delay: 350 });
 
 		// console.log('after width');
 
@@ -167,7 +167,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[1].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('22', { delay: 350 });
 
 		// console.log('before spacing');
 
@@ -177,7 +177,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[2].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('33');
+		await page.keyboard.type('33', { delay: 350 });
 
 		// console.log('before Icon stroke color');
 
@@ -212,7 +212,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[5].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
 
 		// console.log('before toMatchSnapshot');
 
@@ -233,7 +233,7 @@ describe('Button Maxi hover simple actions', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family',
 			input => input.click()
 		);
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
@@ -302,7 +302,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[2].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('11');
+		await page.keyboard.type('11', { delay: 350 });
 		await page.waitForTimeout(500);
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
@@ -356,7 +356,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[1].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('22', { delay: 350 });
 
 		await page.waitForTimeout(500);
 
@@ -366,7 +366,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[2].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('33');
+		await page.keyboard.type('33', { delay: 350 });
 
 		await page.waitForTimeout(500);
 
@@ -376,7 +376,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[3].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
 
 		await page.waitForTimeout(500);
 
@@ -386,7 +386,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[4].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('55');
+		await page.keyboard.type('55', { delay: 350 });
 
 		await page.waitForTimeout(500);
 
@@ -406,7 +406,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
+		await page.keyboard.type('1', { delay: 350 });
 
 		// Padding
 		await page.$$eval('.maxi-tabs-control', tabs =>
@@ -422,7 +422,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[1].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('2');
+		await page.keyboard.type('2', { delay: 350 });
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

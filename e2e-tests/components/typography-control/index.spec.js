@@ -44,7 +44,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
@@ -72,7 +72,7 @@ describe('TypographyControl', () => {
 			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('Arial');
+		await page.keyboard.type('Arial', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		const typographyInputS = await accordionPanel.$$eval(

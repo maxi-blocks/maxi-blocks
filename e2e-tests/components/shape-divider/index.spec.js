@@ -55,7 +55,7 @@ describe('Shape divider', () => {
 		await page.$eval('.maxi-opacity-control input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('88');
+		await page.keyboard.type('88', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-opacity-general')
@@ -80,7 +80,7 @@ describe('Shape divider', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('70');
+		await page.keyboard.type('70', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-height-general')
@@ -117,7 +117,7 @@ describe('Shape divider', () => {
 		await page.$eval('.maxi-opacity-control input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-bottom-opacity-general')
@@ -143,7 +143,7 @@ describe('Shape divider', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('254');
+		await page.keyboard.type('254', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-bottom-height-general')

@@ -90,7 +90,7 @@ describe.skip('Image Maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('5');
+		await page.keyboard.type('5', { delay: 350 });
 
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
@@ -293,7 +293,7 @@ describe.skip('Image Maxi', () => {
 		);
 
 		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('60');
+		await page.keyboard.type('60', { delay: 350 });
 
 		expect(await getAttributes('imgWidth')).toStrictEqual(60);
 
@@ -341,7 +341,7 @@ describe.skip('Image Maxi', () => {
 			input.focus()
 		);
 
-		await page.keyboard.type('Image Custom Tag');
+		await page.keyboard.type('Image Custom Tag', { delay: 350 });
 
 		expect(await getAttributes('mediaAlt')).toStrictEqual(
 			'Image Custom Tag'

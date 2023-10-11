@@ -123,7 +123,7 @@ describe('FlexSettings', () => {
 			addBlock[0].click()
 		);
 
-		await page.keyboard.type('Text Maxi');
+		await page.keyboard.type('Text Maxi', { delay: 350 });
 
 		await page.$eval(
 			'.block-editor-inserter__panel-content .block-editor-block-types-list__list-item button',

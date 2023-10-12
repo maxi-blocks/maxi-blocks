@@ -1,21 +1,16 @@
 /**
- * External dependencies
- */
-import { isEmpty, cloneDeep } from 'lodash';
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-// const MaxiModal = loadable(() => import('../../editor/library/modal'));
-// const SizeAndPositionLayerControl = loadable(() =>
-// 	import('./sizeAndPositionLayerControl')
-// );
-// const SVGFillControl = loadable(() => import('../svg-fill-control'));
+
 import MaxiModal from '../../editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
 import { getBlockStyle } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, cloneDeep } from 'lodash';
 
 const SVGLayer = props => {
 	const {

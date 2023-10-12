@@ -135,7 +135,7 @@ describe('TypographyControl', () => {
 			select => select[0].click()
 		);
 
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(300);
 	});
 
 	it('Check responsive palette color', async () => {

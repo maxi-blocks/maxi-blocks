@@ -39,7 +39,7 @@ const editColorControl = async ({
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(customColor, { delay: 350 });
+		await page.keyboard.type(customColor);
 	}
 
 	// change opacity

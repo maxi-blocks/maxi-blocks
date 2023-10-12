@@ -28,7 +28,7 @@ Fix: Rectified callout arrow positioning
 _Updates: 7 August 2023_
 
 * Update: WordPress 6.3 compatibility
-* Update: Option to affect default Gutenberg blocks with Maxi Blocks Style cards
+* Update: Option to affect default Gutenberg blocks with MaxiBlocks Style cards
 * Update: Link icon added in the toolbar for Interaction builder
 * Update: Disabled list modified when Dynamic content enabled
 * Update: Marker size adjusted for responsive displays
@@ -262,7 +262,7 @@ _Updates: 28 March 2023_
 - Issues 4487 & 4489 - Suspense Lazy load issues
 - Issue 3388 - DC
 - Issue 4394 - calculating margin value for different themes
-- Fix Maxi Blocks for WP 6.2 (beta 5) and 6.1.1
+- Fix MaxiBlocks for WP 6.2 (beta 5) and 6.1.1
 - Bump webpack from 5.72.0 to 5.76.1
 - Issue 4510 button
 - Deal with version rollback for wp

@@ -16,7 +16,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         private static $maxi_prefix = 'maxi_blocks_';
         private static $maxi_slug = 'maxi-blocks';
         private static $maxi_slug_dashboard = 'maxi-blocks-dashboard';
-        private static $maxi_plugin_name = 'Maxi Blocks';
+        private static $maxi_plugin_name = 'MaxiBlocks';
         private static $maxi_text_domain = 'maxi-blocks';
 
         /**
@@ -198,7 +198,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 esc_url(MAXI_PLUGIN_URL_PATH) .
                 'img/maxi-logo-dashboard-white.svg' .
                 '" alt="' .
-                esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)) .
+                esc_html(__('MaxiBlocks Logo', self::$maxi_text_domain)) .
                 '"></header>';
             echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
 
@@ -289,14 +289,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    "And if you're loving Maxi Blocks and want to help us out, join the Pro library. Find inspiration, get variety and work faster with production ready templates.",
+                    "And if you're loving MaxiBlocks and want to help us out, join the Pro library. Find inspiration, get variety and work faster with production ready templates.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
             $content .=
             '<p>' .
             __(
-                "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
+                "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with MaxiBlocks.",
                 self::$maxi_text_domain,
             ) .
             '</p>';
@@ -317,7 +317,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<p>' .
             //     __(
-            //         'Maxi Blocks is a modern page builder and template library made for creators like you. Join us as we explore the full potential of Gutenberg and the future of WordPress.',
+            //         'MaxiBlocks is a modern page builder and template library made for creators like you. Join us as we explore the full potential of Gutenberg and the future of WordPress.',
             //         self::$maxi_text_domain,
             //     ) .
             //     '</p>';
@@ -329,7 +329,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<p>' .
             //     __(
-            //         'Anything you create with Maxi Blocks builder is yours to keep. There’s no lock in, no domain restrictions or license keys to keep track of. Start with 700 free templates and build as many sites as you want. All you need is time and effort.',
+            //         'Anything you create with MaxiBlocks builder is yours to keep. There’s no lock in, no domain restrictions or license keys to keep track of. Start with 700 free templates and build as many sites as you want. All you need is time and effort.',
             //         self::$maxi_text_domain,
             //     );
             // $content .=
@@ -345,7 +345,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<p><a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
             //     __(
-            //         'Visit Maxi Blocks Pro to learn more',
+            //         'Visit MaxiBlocks Pro to learn more',
             //         self::$maxi_text_domain,
             //     ) .
             //     '</a>.</p>';
@@ -369,7 +369,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<li>' .
             //     __(
-            //         'First create a new blank page from the WordPress pages menu. Then click the Maxi Blocks launcher icon.',
+            //         'First create a new blank page from the WordPress pages menu. Then click the MaxiBlocks launcher icon.',
             //         self::$maxi_text_domain,
             //     ) .
             //     '</li>';
@@ -425,7 +425,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<p>' .
             //     __(
-            //         'The Maxi Blocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels. Every bit of feedback helps. Thank you!',
+            //         'The MaxiBlocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels. Every bit of feedback helps. Thank you!',
             //         self::$maxi_text_domain,
             //     ) .
             //     '</p>';
@@ -704,12 +704,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Maxi Blocks is free and open source', false);
+            $content .= $this->generate_item_header('MaxiBlocks is free and open source', false);
 
             $content .=
                 '<p>' .
                 __(
-                    'Whatever you create with Maxi Blocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag',
+                    'Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag',
                     self::$maxi_text_domain,
                 );
 
@@ -728,14 +728,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    'Our next goal is to launch the Maxi Blocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
+                    'Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
                     self::$maxi_text_domain,
                 ) ;
 
             $content .=
                 ' <a href="https://maxiblocks.com/go/pro-subscription" target="_blank">' .
                 __(
-                    'Learn more about Maxi Blocks Pro.',
+                    'Learn more about MaxiBlocks Pro.',
                     self::$maxi_text_domain,
                 ) .
                 '</a>';
@@ -774,7 +774,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .=
             //     '<p>' .
             //     __(
-            //         'The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
+            //         'The MaxiBlocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
             //         self::$maxi_text_domain,
             //     ) .
             //     '</p>';
@@ -785,7 +785,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
-            // $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
+            // $content .= '<p>'.__('If you want to restore a previous version of MaxiBlocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
 
             // if (MAXI_PLUGIN_VERSION) {
             //     $content .= '<p>'.__('Your current version is <strong>', self::$maxi_text_domain).MAXI_PLUGIN_VERSION.'</strong></p>';
@@ -805,7 +805,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= $this->generate_item_header('Advanced', false);
 
             // $content .= '<h4>'.__('Responsive design breakpoints', self::$maxi_text_domain).'</h4>';
-            // $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
+            // $content .= '<p>'.__('MaxiBlocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the MaxiBlocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
             // $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
             // $content .= $this->generate_breakpoint_inputs();
             // $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
@@ -877,7 +877,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<li>' .
                 __(
-                    '-  Open master toolbar from the square Maxi Blocks launcher icon',
+                    '-  Open master toolbar from the square MaxiBlocks launcher icon',
                     self::$maxi_text_domain,
                 ) .
                 '</li>';

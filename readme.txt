@@ -1,4 +1,4 @@
-=== Maxi Blocks Template Library Free Page Builder ===
+=== MaxiBlocks Template Library Free Page Builder ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
@@ -34,7 +34,7 @@ https://www.youtube.com/watch?v=nPUopDg644o
 
 == Why choose Maxi? ==
 
-Maxi Blocks stands out for several reasons:
+MaxiBlocks stands out for several reasons:
 
 - **Fast customization:** Style cards instantly change a template to match your style.
 
@@ -44,7 +44,7 @@ Maxi Blocks stands out for several reasons:
 
 - **Performance focused:** Optimized code and minimal bloat to keep your website fast and responsive.
 
-- **Active development:** Our team is always working to improve Maxi Blocks and add new features.
+- **Active development:** Our team is always working to improve MaxiBlocks and add new features.
 
 - **Thriving community:** A vibrant community of users, designers, and developers provides inspiration, support, and collaboration.
 
@@ -148,7 +148,7 @@ Look forward to exciting additions to enhance your design experience:
 
 - **Navigation & mega menu:** Create responsive menus for seamless site navigation.
 
-- **Full site editing:** Further integrate Maxi Blocks for complete site customization.
+- **Full site editing:** Further integrate MaxiBlocks for complete site customization.
 
 - **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
 
@@ -164,7 +164,7 @@ Look forward to exciting additions to enhance your design experience:
 
 == Documentation & support ==
 
-Our resources will help you get started and master Maxi Blocks in no time:
+Our resources will help you get started and master MaxiBlocks in no time:
 
 - **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature. Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
 
@@ -176,23 +176,23 @@ Our resources will help you get started and master Maxi Blocks in no time:
 
 == Community & contributions ==
 
-Maxi Blocks is more than a plugin. It's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make Maxi Blocks even better:
+MaxiBlocks is more than a plugin. It's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make MaxiBlocks even better:
 
-- **Join the Maxi Blocks community:** Participate in forums, share your experiences, and connect with other users. Follow us on [Twitter](https://twitter.com/maxiblocks) or join our [discord community](https://maxiblocks.com/go/maxi-discord).
+- **Join the MaxiBlocks community:** Participate in forums, share your experiences, and connect with other users. Follow us on [Twitter](https://twitter.com/maxiblocks) or join our [discord community](https://maxiblocks.com/go/maxi-discord).
 
-- **Contribute to Maxi Blocks:** Submit your suggestions, or contribute code to our open-source project. Visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
+- **Contribute to MaxiBlocks:** Submit your suggestions, or contribute code to our open-source project. Visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
 
-- **Share your work:** Show off your amazing creations with Maxi Blocks and inspire others with your designs. Use the hashtag **#maxiblocks** or **#madewithmaxi**
+- **Share your work:** Show off your amazing creations with MaxiBlocks and inspire others with your designs. Use the hashtag **#maxiblocks** or **#madewithmaxi**
 
-== Get Started with Maxi Blocks ==
+== Get Started with MaxiBlocks ==
 
-Ready to take your website design to the next level? Download Maxi Blocks today and experience the power of this versatile page builder. Begin your journey to fun web design today.
+Ready to take your website design to the next level? Download MaxiBlocks today and experience the power of this versatile page builder. Begin your journey to fun web design today.
 
 _**A note from your designer...**_
 
-_Join us in our mission to provide a user-friendly solution for website creation. With Maxi Blocks, you'll have a faster, easier, and more enjoyable website design experience. We're excited to see the websites you create with Maxi Blocks!_
+_Join us in our mission to provide a user-friendly solution for website creation. With MaxiBlocks, you'll have a faster, easier, and more enjoyable website design experience. We're excited to see the websites you create with MaxiBlocks!_
 
-_Take care, Kyra - Design lead & co-founder of Maxi Blocks_
+_Take care, Kyra - Design lead & co-founder of MaxiBlocks_
 
 == Frequently Asked Questions ==
 
@@ -202,19 +202,19 @@ Absolutely! Your creations are yours to keep. It's open source and free to build
 
 = How many sites can I build? =
 
-There's no limit to the number of sites you can build with Maxi Blocks. The plugin, blocks and all features are free to use for any purpose, personal or commercial.
+There's no limit to the number of sites you can build with MaxiBlocks. The plugin, blocks and all features are free to use for any purpose, personal or commercial.
 
 = Do I need to pay for advanced blocks? =
 
-No, all page builder features and blocks are free for everyone. You can build anything you want with Maxi Blocks without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of experience working with Maxi. You can benefit from their skills and save a ton of time by using the templates we create and maintain just for you.
+No, all page builder features and blocks are free for everyone. You can build anything you want with MaxiBlocks without restrictions. To help you work faster we offer a pro template library subscription that gives you thousands more templates built with Maxi. Our in-house template creators have years of experience working with Maxi. You can benefit from their skills and save a ton of time by using the templates we create and maintain just for you.
 
-= Is Maxi Blocks compatible with my theme? =
+= Is MaxiBlocks compatible with my theme? =
 
-Maxi Blocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing Maxi Blocks with your theme to ensure the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the Maxi Blocks Theme coming soon too.
+MaxiBlocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing MaxiBlocks with your theme to ensure the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the MaxiBlocks Theme coming soon too.
 
-= Does Maxi Blocks work with Gutenberg? =
+= Does MaxiBlocks work with Gutenberg? =
 
-Yes, Maxi Blocks is fully integrated with the Gutenberg editor, providing custom Gutenberg blocks and full compatibility with WordPress's native editor.
+Yes, MaxiBlocks is fully integrated with the Gutenberg editor, providing custom Gutenberg blocks and full compatibility with WordPress's native editor.
 
 = Why don’t you need licence keys with the pro library? =
 
@@ -226,15 +226,15 @@ You bet. [Check it out here](https://maxiblocks.com/go/roadmap).
 
 == Installation ==
 
-Install the Maxi Blocks plugin from the WordPress plugin directory in your WordPress admin dashboard.
+Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPress admin dashboard.
 
-1. Search for **"Maxi Blocks"**
+1. Search for **"MaxiBlocks"**
 2. Then click **"Install Now"**
 3. Click **"Activate"** plugin
 
 **To use free templates, first edit, or create a new page in WordPress**
 
-- From the page editing view, click the Maxi Blocks icon to open the master toolbar, top left side.
+- From the page editing view, click the MaxiBlocks icon to open the master toolbar, top left side.
 
 - Launch the template library and browse for patterns. Insert and start editing.
 
@@ -305,8 +305,8 @@ _Updates: 23 August 2023_
 * Fix: Corrected the saving of styles when using the autosave feature in Gutenberg
 * Fix: Resolved Maxi database tables creation issue on plugin activation users w/o admin permissions
 * Fix: Image uploading issue when comments were disabled under settings/discussion
-* Fix: Gutenberg block styles in the Editing Experience when the setting "Affect Gutenberg native blocks inside Maxi Blocks" is enabled
+* Fix: Gutenberg block styles in the Editing Experience when the setting "Affect Gutenberg native blocks inside MaxiBlocks" is enabled
 
 == Upgrade Notice ==
 
-New version of Maxi Blocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.
+New version of MaxiBlocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.

@@ -123,6 +123,7 @@ const DimensionTab = props => {
 							})
 						}
 						options={getSizeOptions()}
+						newStyle
 						onChange={imageSize => {
 							const { mediaURL, mediaWidth, mediaHeight } =
 								getSizeResponse(imageSize);

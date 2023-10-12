@@ -31,6 +31,7 @@ export default function SelectControl({
 	hideLabelFromVision,
 	defaultValue,
 	value,
+	newStyle = false,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -60,7 +61,12 @@ export default function SelectControl({
 			</option>
 		));
 
-	const classes = classnames('maxi-select-control', className);
+	const classes = classnames(
+		`maxi-select-control ${
+			newStyle ? 'maxi-select-control__second-style' : ''
+		}`,
+		className
+	);
 
 	return (
 		!isEmpty(options) && (

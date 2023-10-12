@@ -22,11 +22,13 @@ const SvgAltControl = props => {
 			<TextControl
 				label={__('Alt title', 'maxi-blocks')}
 				value={altTitle}
+				newStyle
 				onChange={altTitle => onChange({ altTitle })}
 			/>
 			<TextControl
 				label={__('Alt description', 'maxi-blocks')}
 				value={altDescription}
+				newStyle
 				onChange={altDescription => onChange({ altDescription })}
 			/>
 		</>

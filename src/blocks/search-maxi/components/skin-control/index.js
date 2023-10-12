@@ -53,6 +53,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 			<SelectControl
 				label={__('Choose', 'maxi-blocks')}
 				value={skin}
+				newStyle
 				options={[
 					{
 						label: __('Boxed', 'maxi-blocks'),

@@ -77,6 +77,7 @@ const SvgColorControl = props => {
 
 	return !disableHover ? (
 		<SettingTabsControl
+			hasMarginBottom
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),

@@ -274,6 +274,7 @@ const DynamicContent = props => {
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
+							newStyle
 							onChange={value => {
 								const validatedAttributes = validationsValues(
 									type,
@@ -306,6 +307,7 @@ const DynamicContent = props => {
 								? ACFTypeOptions
 								: typeOptions[contentType]
 						}
+						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(
 								value,
@@ -336,6 +338,7 @@ const DynamicContent = props => {
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,
@@ -366,6 +369,7 @@ const DynamicContent = props => {
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
 									options={postAuthorOptions}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-author': Number(value),
@@ -401,6 +405,7 @@ const DynamicContent = props => {
 										)}
 										value={id}
 										options={postIdOptions}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-error': '',
@@ -428,6 +433,7 @@ const DynamicContent = props => {
 												)}
 												value={orderBy}
 												options={orderByOptions}
+												newStyle
 												onChange={value =>
 													changeProps({
 														'dc-order-by': value,
@@ -455,6 +461,7 @@ const DynamicContent = props => {
 														: relation
 												]
 											}
+											newStyle
 											onChange={value =>
 												changeProps({
 													'dc-order': value,
@@ -510,6 +517,7 @@ const DynamicContent = props => {
 										options={
 											fieldOptions[contentType][type]
 										}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-field': value,
@@ -593,6 +601,7 @@ const DynamicContent = props => {
 													: delimiterContent
 											}
 											options={delimiterOptions}
+											newStyle
 											onChange={value => {
 												changeProps(
 													value === 'custom'

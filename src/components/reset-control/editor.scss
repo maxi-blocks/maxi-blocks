@@ -4,10 +4,9 @@
 	align-items: center;
 	justify-content: center;
 	height: auto;
-	min-width: 32px;
-	padding: 8px;
-	border: 1px solid var(--maxi-grey-1-color);
-	border-radius: 0;
+	min-width: 20px;
+	padding: 8px 5px !important;
+	border-radius: 50%;
 	margin-left: 4px;
 	background: #fff;
 	text-decoration: none;
@@ -28,7 +27,11 @@
 		width: 14px;
 		height: 14px;
 		margin: auto;
+		fill: var(--maxi-grey-6-color);
+	}
+	&:hover svg {
 		fill: var(--maxi-black-1-color);
+		transition: all 0.3s;
 	}
 	@at-root .rtl #{&} {
 		margin-right: 4px;
@@ -42,10 +45,11 @@
 		max-width: 32px;
 		top: 0;
 		right: 0;
-		padding: 1px 1px 1px 8px;
+		padding: 1px 1px 1px 8px !important;
 
 		&:hover svg {
-			fill: #ff4a17;
+			transition: all 0.3s;
+			fill: var(--maxi-black-1-color);
 		}
 	}
 }

@@ -100,6 +100,7 @@ const SliderControl = props => {
 			/>
 			<SelectControl
 				label={__('Transition', 'maxi-blocks')}
+				newStyle
 				options={[
 					{
 						label: __('Slide', 'maxi-blocks'),

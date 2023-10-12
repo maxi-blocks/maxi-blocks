@@ -36,6 +36,7 @@ const SettingTabsControl = props => {
 		tab: tabProp,
 		setTab: setTabProp,
 		disablePadding = false,
+		hasMarginBottom = false,
 		isNestedAccordion = false,
 		className,
 		forceTab,
@@ -76,7 +77,8 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
 		fullWidthMode && 'maxi-tabs-control__full-width',
 		hasBorder && 'maxi-settingstab-control_has-border-left-right',
-		isNestedAccordion && 'maxi-tabs-control--nested'
+		isNestedAccordion && 'maxi-tabs-control--nested',
+		hasMarginBottom && 'maxi-tabs-control--bottom-space'
 	);
 
 	const classesBase = classnames(

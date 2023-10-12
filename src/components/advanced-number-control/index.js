@@ -95,6 +95,7 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
+		newStyle = false,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -108,7 +109,12 @@ const AdvancedNumberControl = props => {
 		latestValueRef.current = value;
 	}, [value]);
 
-	const classes = classnames('maxi-advanced-number-control', className);
+	const classes = classnames(
+		`maxi-advanced-number-control ${
+			newStyle ? 'maxi-advanced-number-control__second-style' : ''
+		}`,
+		className
+	);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 

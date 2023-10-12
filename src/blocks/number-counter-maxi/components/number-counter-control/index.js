@@ -141,6 +141,7 @@ const NumberCounterControl = props => {
 				label={__('Start animation', 'maxi-blocks')}
 				className='maxi-number-counter-control__start-animation'
 				value={props['number-counter-start-animation']}
+				newStyle
 				options={[
 					{
 						label: __('Page Load', 'maxi-blocks'),

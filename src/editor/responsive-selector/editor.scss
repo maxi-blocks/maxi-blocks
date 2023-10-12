@@ -202,7 +202,7 @@
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;
 				&::after {
-					height: 2px;
+					height: 0px;
 					background-color: #007cba;
 				}
 				svg {
@@ -247,7 +247,7 @@
 		}
 		&-current-size {
 			font-family: 'Roboto', sans-serif !important;
-			font-size: 10px;
+			font-size: 10px !important;
 			line-height: 100%;
 			margin-top: 2px;
 			font-weight: 500;

@@ -96,7 +96,7 @@
 				background: var(--maxi-primary-color);
 				border-radius: 3px 0 0 3px;
 				color: #fff;
-				font-size: 10px;
+				font-size: 10px !important;
 				font-weight: 400;
 				font-family: 'Roboto', sans-serif !important;
 				line-height: 100%;
@@ -156,6 +156,39 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+
+				&__dynamic-content {
+					&:hover,
+					&[aria-expanded='true'] {
+						svg {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color) !important;
+							}
+						}
+					}
+				}
+
+				&__list-options,
+				&__text-margin {
+					&:hover,
+					&[aria-expanded='true'] {
+						.toolbar-item__icon {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color) !important;
+							}
+						}
+					}
+				}
 
 				&__link {
 					&--active {
@@ -228,12 +261,14 @@
 						outline: 0;
 					}
 				}
+
 				&__alignment:not(.maxi-dropdown),
 				&__bold,
 				&__italic {
 					height: auto;
 					width: 2rem;
 				}
+
 				&__bold,
 				&__italic {
 					&:hover path {
@@ -241,6 +276,7 @@
 						stroke: var(--maxi-secondary-color);
 					}
 				}
+
 				&__replace-image {
 					width: 80px !important;
 
@@ -249,6 +285,7 @@
 						display: inline-block;
 					}
 				}
+
 				&__icon {
 					display: block;
 					width: 1rem;
@@ -267,9 +304,11 @@
 						stroke: transparent;
 					}
 				}
+
 				&__move {
 					cursor: move;
 				}
+
 				&__bold path,
 				&__italic path {
 					fill: #fff;
@@ -317,6 +356,7 @@ body .toolbar-item__popover {
 			flex: 1;
 			border-bottom: none;
 			border-right: 0;
+
 			&:first-of-type {
 				input {
 					& ~ label {
@@ -331,6 +371,7 @@ body .toolbar-item__popover {
 					}
 				}
 			}
+
 			&:last-of-type {
 				input {
 					& ~ label {
@@ -345,6 +386,7 @@ body .toolbar-item__popover {
 					}
 				}
 			}
+
 			input {
 				display: none;
 				&:checked ~ label {
@@ -355,6 +397,7 @@ body .toolbar-item__popover {
 					border-bottom: 2px solid var(--maxi-primary-color);
 				}
 			}
+
 			label {
 				display: block;
 				height: 100%;
@@ -373,13 +416,16 @@ body .toolbar-item__popover {
 		z-index: -1;
 		display: none;
 	}
+
 	.maxi-base-control,
 	.components-base-control {
 		.components-range-control {
 			display: none;
 		}
+
 		&__field {
 			color: var(--maxi-black-1-color);
+
 			.components-range-control__track {
 				& + span {
 					span {
@@ -390,29 +436,35 @@ body .toolbar-item__popover {
 					}
 				}
 			}
+
 			.components-range-control__number {
 				background-color: transparent;
 				color: var(--maxi-black-1-color);
 				border-color: #80828a !important;
 			}
+
 			.maxi-select-control__input {
 				option {
 					color: #000 !important;
 				}
 			}
+
 			.components-button {
 				&.is-secondary {
 					background-color: transparent;
 					border-color: #80828a !important;
+
 					&:hover {
 						background-color: transparent !important;
 					}
+
 					svg {
 						fill: var(--maxi-black-1-color) !important;
 					}
 				}
 			}
 		}
+
 		&__label {
 			color: var(--maxi-black-1-color);
 		}
@@ -432,6 +484,7 @@ body .toolbar-item__popover {
 		& * {
 			font-family: 'Roboto', sans-serif !important;
 		}
+
 		.maxi-color-control {
 			margin-bottom: 10px;
 			color: #fff;
@@ -439,16 +492,20 @@ body .toolbar-item__popover {
 				.components-base-control__field {
 					margin-bottom: 10px;
 				}
+
 				.components-angle-picker-control {
 					&__angle-circle-indicator,
 					&__angle-circle {
 						border-color: #808189;
 					}
 				}
+
 				&__toolbar {
 					background: none;
+
 					button.components-toolbar__control {
 						border-color: #808189;
+
 						&.is-pressed,
 						&:hover {
 							background-color: #4f515b !important;
@@ -462,15 +519,18 @@ body .toolbar-item__popover {
 			}
 			&__items {
 				color: #fff;
+
 				.maxi-tabs-control__button {
 					border-color: #80828a;
 					background-color: #242433;
 				}
+
 				input {
 					&:checked ~ label {
 						background-color: #4f515c;
 					}
 				}
+
 				svg {
 					fill: #fff !important;
 					path {
@@ -482,6 +542,7 @@ body .toolbar-item__popover {
 				color: #fff;
 			}
 		}
+
 		& > .components-base-control {
 			&:nth-last-child(1) {
 				margin-bottom: 0 !important;
@@ -498,6 +559,7 @@ body .toolbar-item__popover {
 		border: 1px solid var(--maxi-grey-1-color) !important;
 		color: var(--maxi-grey-5-color) !important;
 		flex: 2;
+
 		&::placeholder {
 			color: var(--maxi-grey-5-color);
 			opacity: 0.8;
@@ -506,28 +568,35 @@ body .toolbar-item__popover {
 
 	.maxi-dimensions-control {
 		color: #fff;
+
 		&_sync {
 			border-color: #80828a !important;
 			background-color: transparent !important;
 			width: 36px !important;
+
 			&:hover {
 				background-color: transparent !important;
 			}
+
 			&[aria-pressed='true'] {
 				border-color: #fff;
+
 				svg {
 					fill: #fff;
 				}
 			}
 		}
+
 		&__mobile-controls-item {
 			height: 36px;
 			border-color: #80828a !important;
+
 			svg {
 				fill: currentColor;
 				color: #fff;
 			}
 		}
+
 		&__number {
 			background-color: transparent;
 			border-color: #80828a !important;
@@ -546,6 +615,7 @@ body .toolbar-item__popover {
 		padding: 0 !important;
 		height: 22px;
 		left: auto !important;
+
 		svg {
 			fill: #fff;
 			width: 16px;
@@ -559,12 +629,15 @@ body .toolbar-item__popover {
 			background: #fff;
 			width: 100%;
 			margin: 0 4px;
+
 			&:first-of-type {
 				margin-left: 0;
 			}
+
 			&:last-of-type {
 				margin-right: 0;
 			}
+
 			&:hover {
 				color: inherit;
 			}
@@ -580,22 +653,25 @@ body .toolbar-item__popover {
 			padding-top: 5px;
 			padding-bottom: 5px;
 			font-weight: 700;
+
 			&[aria-pressed='true'] {
 				color: #007cba;
 				background-color: #eaf2f6 !important;
-				border-bottom: 3px solid #007cba !important;
 			}
 		}
 	}
 
 	.maxi-tabs-content {
 		width: 100%;
+
 		.components-base-control__field {
 			display: flex;
 		}
+
 		.components-base-control__label {
 			flex-basis: 100%;
 		}
+
 		input[type='number'] {
 			width: 3.5rem;
 		}

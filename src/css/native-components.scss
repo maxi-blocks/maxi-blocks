@@ -11,7 +11,7 @@
 .toolbar-item__popover {
 	hr {
 		margin: 0 0 8px;
-		border-bottom: 2px solid var(--maxi-grey-1-color);
+		border-bottom: 1px solid var(--maxi-grey-1-color);
 	}
 	.block-editor-link-control {
 		.block-editor-url-input__input {
@@ -34,10 +34,10 @@
 				box-shadow: inset 0 0 0 1px #ff4a17 !important;
 			}
 		}
-		&__search-item-header{
+		&__search-item-header {
 			max-width: 165px;
 		}
-		&__search-item-details{
+		&__search-item-details {
 			max-width: 185px;
 		}
 		&__search-item-title {
@@ -86,7 +86,7 @@
 		margin-bottom: 7px;
 
 		&:last-child {
-			margin-bottom: 0 !important;
+			margin-bottom: 0px !important;
 		}
 
 		.components-base-control__field {
@@ -197,7 +197,7 @@
 					height: 2px;
 					margin-top: 6px;
 					margin-right: -8px;
-					background: #dddfe1;
+					background: var(--maxi-grey-1-color);
 				}
 			}
 			.components-range-control__track {

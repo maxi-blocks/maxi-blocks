@@ -3,6 +3,7 @@
 		width: 230px !important;
 	}
 }
+
 .toolbar-item__text-generator-blocks__popover {
 	padding: 8px;
 	&::after {
@@ -38,7 +39,7 @@
 	}
 	.maxi-advanced-number-control__value {
 		border: 1px solid var(--maxi-grey-1-color) !important;
-		color: var(--maxi-grey-5-color);
+		color: var(--maxi-grey-1-color);
 		padding: 0 0 0 5px !important;
 		margin-top: 3px !important;
 		flex: none;

@@ -175,6 +175,9 @@ function observeConsoleLogging() {
 		if (text.includes('Error validating css: BadStatusError')) {
 			return;
 		}
+		if (text.includes('Refused to connect to')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (

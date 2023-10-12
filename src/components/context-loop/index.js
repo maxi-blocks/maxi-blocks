@@ -188,6 +188,7 @@ const ContextLoop = props => {
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={typeOptions[contentType]}
+						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(
 								value,

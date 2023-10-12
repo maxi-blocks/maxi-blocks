@@ -10,6 +10,7 @@ import SelectControl from '../select-control';
 
 const AspectRatioControl = ({ additionalOptions, ...props }) => (
 	<SelectControl
+		newStyle
 		{...props}
 		options={[
 			...additionalOptions,

@@ -9,8 +9,6 @@ const resettingAttributes = async ({ page, instance, expectValue }) => {
 		button => button.click()
 	);
 
-	await page.waitForTimeout(500);
-
 	// Check value
 	const value = await page.$eval(
 		`.maxi-tabs-content .${instance} input`,

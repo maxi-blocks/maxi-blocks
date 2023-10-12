@@ -64,12 +64,16 @@ const MapControl = props => {
 				step={1}
 				value={mapMinZoom}
 				onChangeValue={val => onChange({ 'map-min-zoom': val })}
-				onReset={() =>
+				onReset={() => {
+					console.log(
+						'getDefaultAttribute',
+						getDefaultAttribute('map-min-zoom')
+					);
 					onChange({
 						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
 						isReset: true,
-					})
-				}
+					});
+				}}
 			/>
 			<AdvancedNumberControl
 				className='maxi-map-control__max-zoom'

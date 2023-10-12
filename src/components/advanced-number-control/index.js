@@ -266,10 +266,10 @@ const AdvancedNumberControl = props => {
 					{!disableReset && (
 						<ResetButton
 							onReset={() => {
-								const resetValue = defaultValue;
-								setCurrentValue(resetValue);
-								latestValueRef.current = resetValue;
-								onChangeValue(resetValue);
+								setCurrentValue(defaultValue);
+								latestValueRef.current = defaultValue;
+								onChangeValue(defaultValue);
+								onReset();
 							}}
 							isSmall
 						/>

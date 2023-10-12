@@ -172,6 +172,9 @@ function observeConsoleLogging() {
 		if (text.includes('Failed to load resource: the server responded')) {
 			return;
 		}
+		if (text.includes('Error validating css: BadStatusError')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (

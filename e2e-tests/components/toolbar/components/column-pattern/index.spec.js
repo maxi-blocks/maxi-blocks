@@ -23,7 +23,7 @@ describe('Column pattern from Toolbar', () => {
 		await page.waitForSelector('.toolbar-wrapper');
 
 		await page.waitForSelector('.maxi-row-block__template button');
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(500);
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);

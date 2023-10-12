@@ -19,7 +19,7 @@ describe('FontFamilySelector', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('Testing Text Maxi', { delay: 350 });
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -31,7 +31,7 @@ describe('FontFamilySelector', () => {
 			button => button.focus()
 		);
 
-		await page.keyboard.type('Montserrat', { delay: 350 });
+		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
@@ -65,7 +65,7 @@ describe('FontFamilySelector', () => {
 			button => button.focus()
 		);
 
-		await page.keyboard.type('Montserrat', { delay: 350 });
+		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 

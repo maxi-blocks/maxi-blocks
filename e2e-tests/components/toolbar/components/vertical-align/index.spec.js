@@ -39,6 +39,8 @@ describe('Vertical align align from Toolbar', () => {
 		);
 		await selectBlockByClientId(columnClientId);
 
+		await page.waitForTimeout(500);
+
 		// edit vertical align
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__vertical-align',

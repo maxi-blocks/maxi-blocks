@@ -31,6 +31,8 @@ describe('Padding from Toolbar', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
+
 		// edit padding
 		await page.$eval(
 			'.components-popover__content .icon-toolbar .toolbar-item__padding-margin',

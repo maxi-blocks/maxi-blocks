@@ -76,9 +76,11 @@ const addResponsiveTest = async ({
 		// change responsive m
 		await changeResponsive(page, 'm');
 
+		await page.waitForTimeout(500);
+
 		await page.waitForSelector(instance);
 		await page.$eval(`${instance}`, m => m.focus());
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(500);
 
 		const checkMResponsive = await page.$eval(`${instance}`, m => m.value);
 

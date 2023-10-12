@@ -12,13 +12,13 @@ const addTypographyOptions = async ({
 }) => {
 	// size
 	if (size) {
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 
 		await instance.$$eval('.maxi-typography-control__size input', select =>
 			select[0].focus()
 		);
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type(`${size}`, { delay: 300 });
+		await page.keyboard.type(`${size}`, { delay: 350 });
 	}
 
 	// line-height

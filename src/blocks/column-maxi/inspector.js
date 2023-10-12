@@ -66,9 +66,10 @@ const Inspector = props => {
 												)}
 												rowPattern={rowPattern}
 												clientId={clientId}
-												onChange={obj =>
-													maxiSetAttributes(obj)
-												}
+												onChange={obj => {
+													console.log(obj);
+													maxiSetAttributes(obj);
+												}}
 												breakpoint={deviceType}
 											/>
 										),

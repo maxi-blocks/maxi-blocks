@@ -74,6 +74,8 @@ describe('Shape divider', () => {
 			await getAttributes('shape-divider-top-palette-color-general')
 		).toStrictEqual(5);
 
+		await page.waitForTimeout(500);
+
 		await page.$eval(
 			'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			input => input.focus()

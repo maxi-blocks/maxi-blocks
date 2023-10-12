@@ -387,66 +387,66 @@ describe('TypographyControl', () => {
 		expect(attributeResult).toStrictEqual(expectedAttributes);
 
 		// test size control
-		// const responsiveSizeControl = await addResponsiveTest({
-		// 	page,
-		// 	instance:
-		// 		'.maxi-typography-control .maxi-typography-control__size input',
-		// 	needFocus: true,
-		// 	baseExpect: '19',
-		// 	xsExpect: '11',
-		// 	newValue: '11',
-		// });
-		// expect(responsiveSizeControl).toBeTruthy();
+		const responsiveSizeControl = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__size input',
+			needFocus: true,
+			baseExpect: '19',
+			xsExpect: '11',
+			newValue: '11',
+		});
+		expect(responsiveSizeControl).toBeTruthy();
 
-		// // Check responsive font-size-unit
-		// const responsiveSizeUnit = await addResponsiveTest({
-		// 	page,
-		// 	instance:
-		// 		'.maxi-typography-control .maxi-typography-control__size select',
-		// 	selectInstance:
-		// 		'.maxi-typography-control .maxi-typography-control__size select',
-		// 	needSelectIndex: true,
-		// 	baseExpect: 'px',
-		// 	xsExpect: 'em',
-		// 	newValue: 'em',
-		// });
-		// expect(responsiveSizeUnit).toBeTruthy();
+		// Check responsive font-size-unit
+		const responsiveSizeUnit = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__size select',
+			selectInstance:
+				'.maxi-typography-control .maxi-typography-control__size select',
+			needSelectIndex: true,
+			baseExpect: 'px',
+			xsExpect: 'em',
+			newValue: 'em',
+		});
+		expect(responsiveSizeUnit).toBeTruthy();
 
-		// // test line-height
-		// await page.waitForTimeout(250);
+		// test line-height
+		await page.waitForTimeout(250);
 
-		// const responsiveLineHeight = await addResponsiveTest({
-		// 	page,
-		// 	instance:
-		// 		'.maxi-typography-control .maxi-typography-control__line-height input',
-		// 	needFocusPlaceholder: true,
-		// 	baseExpect: '22',
-		// 	xsExpect: '43',
-		// 	newValue: '43',
-		// });
+		const responsiveLineHeight = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__line-height input',
+			needFocusPlaceholder: true,
+			baseExpect: '22',
+			xsExpect: '43',
+			newValue: '43',
+		});
 
-		// expect(responsiveLineHeight).toBeTruthy();
+		expect(responsiveLineHeight).toBeTruthy();
 
-		// // letter spacing responsive
-		// const responsiveLetterSpacing = await addResponsiveTest({
-		// 	page,
-		// 	instance:
-		// 		'.maxi-typography-control .maxi-typography-control__letter-spacing input',
-		// 	needFocus: true,
-		// 	baseExpect: '10',
-		// 	xsExpect: '23',
-		// 	newValue: '23',
-		// });
-		// expect(responsiveLetterSpacing).toBeTruthy();
+		// letter spacing responsive
+		const responsiveLetterSpacing = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__letter-spacing input',
+			needFocus: true,
+			baseExpect: '10',
+			xsExpect: '23',
+			newValue: '23',
+		});
+		expect(responsiveLetterSpacing).toBeTruthy();
 
-		// expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check showed value on TypographyControl on custom format', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+		await page.keyboard.type('Testing Text Maxi');
 
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -461,7 +461,7 @@ describe('TypographyControl', () => {
 			size: '50',
 		});
 
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 
 		let result = await accordion.$eval(
 			'.maxi-typography-control__size input',

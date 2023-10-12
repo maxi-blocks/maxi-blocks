@@ -101,11 +101,12 @@ const AdvancedNumberControl = props => {
 		value === undefined ? defaultValue : trim(value)
 	);
 
-	useEffect(() => {
-		setCurrentValue(trim(value));
-	}, [value]);
+	const latestValueRef = useRef(currentValue);
 
-	const latestValueRef = useRef();
+	useEffect(() => {
+		setCurrentValue(value);
+		latestValueRef.current = value;
+	}, [value]);
 
 	const classes = classnames('maxi-advanced-number-control', className);
 
@@ -169,8 +170,10 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(newValue => {
-		onChangeValue(newValue);
+	const handleChange = debounce(() => {
+		if (onChangeValue) {
+			onChangeValue(latestValueRef.current);
+		}
 	}, 300);
 
 	const handleInputChange = e => {
@@ -187,9 +190,9 @@ const AdvancedNumberControl = props => {
 		const result =
 			value === '' || optionType === 'string' ? value.toString() : +value;
 
-		setCurrentValue(result);
 		latestValueRef.current = result;
-		handleChange(result);
+		setCurrentValue(result);
+		handleChange();
 	};
 
 	return (

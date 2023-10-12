@@ -295,22 +295,20 @@ describe('AxisControl', () => {
 
 			await changeResponsive(page, 'm');
 
-			await page.waitForTimeout(350);
-
 			await accordionPanel.$eval(
 				`${itemMarginContentClass} .maxi-advanced-number-control__value`,
 				input => input.focus()
 			);
 
-			await page.waitForTimeout(350);
+			await page.keyboard.press('ArrowDown', { delay: 350 });
 
-			await page.keyboard.press('ArrowDown');
+			// await page.waitForTimeout(500);
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				`${value - 1}`
 			);
 
-			await page.keyboard.press('ArrowUp');
+			await page.keyboard.press('ArrowUp', { delay: 350 });
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				undefined

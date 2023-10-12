@@ -27,6 +27,8 @@ describe('ShapeDividerControl', () => {
 			'shape divider'
 		);
 
+		await page.waitForTimeout(350);
+
 		await accordionPanel.$eval(
 			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
 			click => click.click()

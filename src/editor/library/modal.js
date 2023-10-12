@@ -15,16 +15,13 @@ import {
  */
 import { isEmpty } from 'lodash';
 import classNames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Icon = loadable(() => import('../../components/icon'));
-const BaseControl = loadable(() => import('../../components/base-control'));
-const Button = loadable(() => import('../../components/button'));
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
+import { Icon, Button, BaseControl } from '../../components';
 import {
 	authConnect,
 	isProSubActive,

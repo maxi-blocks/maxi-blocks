@@ -55,13 +55,13 @@ describe('Repeater', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(500);
 
 		// Click on non equal column template to check if columns will be resized on repeater toggle
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[2].click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		await toggleRepeater(page);
 
@@ -69,6 +69,8 @@ describe('Repeater', () => {
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
 
 		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(500);
 
 		// Check if button was added to all columns
 		expect(
@@ -92,6 +94,8 @@ describe('Repeater', () => {
 
 		await updateAllBlockUniqueIds(page);
 
+		await page.waitForTimeout(500);
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Remove button from second column
@@ -103,6 +107,8 @@ describe('Repeater', () => {
 		await page.waitForTimeout(150);
 
 		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(500);
 
 		// Check if buttons were removed from all columns
 		expect(
@@ -149,7 +155,7 @@ describe('Repeater', () => {
 		});
 
 		// Set title
-		await page.keyboard.type('Page repeater test', { delay: 350 });
+		await page.keyboard.type('Page repeater test');
 
 		// Add code editor
 		await page.keyboard.press('Enter');
@@ -164,15 +170,17 @@ describe('Repeater', () => {
 					.dispatch('core/block-editor')
 					.selectBlock(block.getAttribute('data-block'))
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Move text down
 		await page.$$eval('.toolbar-item-move__vertically button', button =>
 			button[1].click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(500);
 
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))
@@ -186,15 +194,17 @@ describe('Repeater', () => {
 					.dispatch('core/block-editor')
 					.selectBlock(blocks[1].getAttribute('data-block'))
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Move text up
 		await page.$eval('.toolbar-item-move__vertically button', button =>
 			button.click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(500);
 
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))

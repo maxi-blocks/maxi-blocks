@@ -20,7 +20,6 @@ const RawHTML = loadable(() => import('../../components/raw-html'));
 const MaxiPopoverButton = loadable(() =>
 	import('../../components/maxi-popover-button')
 );
-// const MaxiModal = loadable(() => import('../../editor/library/modal'));
 import MaxiModal from '../../editor/library/modal';
 
 import {

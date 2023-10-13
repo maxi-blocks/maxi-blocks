@@ -489,6 +489,8 @@ describe('List in Text-maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
+		await page.waitForTimeout(1000);
+
 		const accordion = await openSidebarTab(page, 'style', 'list options');
 
 		// Change marker indent

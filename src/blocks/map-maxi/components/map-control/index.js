@@ -65,10 +65,6 @@ const MapControl = props => {
 				value={mapMinZoom}
 				onChangeValue={val => onChange({ 'map-min-zoom': val })}
 				onReset={() => {
-					console.log(
-						'getDefaultAttribute',
-						getDefaultAttribute('map-min-zoom')
-					);
 					onChange({
 						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
 						isReset: true,

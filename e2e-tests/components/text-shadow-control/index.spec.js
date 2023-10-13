@@ -128,31 +128,37 @@ describe('TextShadowControl', () => {
 		await editTextShadow[1].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('67', { delay: 350 });
+		await page.keyboard.type('67');
+
+		await page.waitForTimeout(350);
 
 		// 	change Y
 		await editTextShadow[2].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('15', { delay: 350 });
+		await page.keyboard.type('15');
+
+		await page.waitForTimeout(350);
 
 		// change Blur
 		await editTextShadow[3].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('48', { delay: 350 });
+		await page.keyboard.type('48');
+
+		await page.waitForTimeout(350);
 
 		// expect in Xs
 		await changeResponsive(page, 'xs');
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(300);
 
 		// S
 		const xsSValue = await page.$$eval(
 			'.maxi-textshadow-control .maxi-advanced-number-control input',
 			input => input[2].value
 		);
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(300);
 
 		expect(xsSValue).toStrictEqual('67');
 

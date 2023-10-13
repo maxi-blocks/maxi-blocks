@@ -180,6 +180,7 @@ const TransitionControl = props => {
 							attributes: transition,
 						})}
 						defaultValue={getDefaultTransitionAttribute('easing')}
+						newStyle
 						options={[
 							{ label: __('Ease', 'maxi-blocks'), value: 'ease' },
 							{

@@ -37,4 +37,26 @@ body.maxi-blocks--active .maxi-text-control {
 			width: 100%;
 		}
 	}
+	&__second-style {
+		.maxi-base-control__field {
+			position: relative;
+			margin-top: 12px;
+		}
+		.maxi-base-control__label {
+			position: absolute;
+			top: -8px;
+			left: 8px;
+			font-size: 10px !important;
+			color: #8e8c8c;
+			font-style: normal;
+			background: #fff;
+			padding: 0 5px;
+			pointer-events: none;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+		}
+		.maxi-select-control__input {
+			padding: 10px 11px;
+		}
+	}
 }

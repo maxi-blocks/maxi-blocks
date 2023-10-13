@@ -81,6 +81,7 @@ const Inspector = props => {
 														defaultValue={getDefaultAttribute(
 															`line-orientation-${deviceType}`
 														)}
+														newStyle
 														options={[
 															{
 																label: __(
@@ -152,6 +153,7 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
+														newStyle
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-vertical-${deviceType}`]:
@@ -207,6 +209,7 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
+														newStyle
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-horizontal-${deviceType}`]:

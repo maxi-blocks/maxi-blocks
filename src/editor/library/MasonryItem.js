@@ -28,6 +28,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		cost,
+		beta,
 		toneUrl,
 		currentItemColorStatus = false,
 		className,
@@ -85,6 +86,7 @@ const MasonryItem = props => {
 								url={demoUrl}
 								title={title}
 								cost={cost}
+								beta={beta}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
 								isPro={isPro}

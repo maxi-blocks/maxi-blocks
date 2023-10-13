@@ -120,6 +120,7 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
+						newStyle
 						placeholder={defaultURL}
 						onChange={val => {
 							if (val && !videoUrlRegex.test(val)) {

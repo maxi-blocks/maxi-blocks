@@ -339,8 +339,9 @@ class MaxiBlocks_DynamicContent
             $query = new WP_Query($args);
 
             if (empty($query->posts)) {
-                if (in_array($dc_relation, self::$order_by_relations)) {
-                    return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+                $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
+                if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
+                    return $this->get_post(array_replace($attributes, $validated_attributes));
                 } else {
                     return null;
                 }
@@ -370,7 +371,12 @@ class MaxiBlocks_DynamicContent
             $query = new WP_Query($args);
 
             if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
-                return $this->get_post(array_replace($attributes, self::get_validated_orderby_attributes($dc_relation)));
+                $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
+                if ($validated_attributes) {
+                    return $this->get_post(array_replace($attributes, $validated_attributes));
+                } else {
+                    return null;
+                }
             }
 
             if ($is_random) {
@@ -430,19 +436,33 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_validated_orderby_attributes($dc_relation)
+    public function get_validated_orderby_attributes($dc_relation, $dc_id)
     {
         if ($dc_relation === 'by-category') {
-            // Get first existing category
             $categories = get_categories(['hide_empty' => false]);
-            $first_category = reset($categories);
+
+            if (in_array($dc_id, array_column($categories, 'term_id'))) {
+                return false;
+            }
+
+            // Get first category which has posts.
+            $non_empty_categories = get_categories(['hide_empty' => true]);
+            $first_category = reset($non_empty_categories);
+
             if ($first_category) {
                 return ['dc-relation' => 'by-category', 'dc-id' => $first_category->term_id];
             }
         } elseif ($dc_relation === 'by-tag') {
-            // Get first existing tag
             $tags = get_tags(['hide_empty' => false]);
-            $first_tag = reset($tags);
+
+            if (in_array($dc_id, array_column($tags, 'term_id'))) {
+                return false;
+            }
+
+            // Get first tag which has posts.
+            $non_empty_tags = get_tags(['hide_empty' => true]);
+            $first_tag = reset($non_empty_tags);
+
             if ($first_tag) {
                 return ['dc-relation' => 'by-tag', 'dc-id' => $first_tag->term_id];
             }

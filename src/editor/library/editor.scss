@@ -50,8 +50,8 @@
 				padding: 0;
 				width: calc(16.6666666667% - 5px);
 				border: 2px solid #dddfe1;
-				border-radius: 5px;
-				margin: 0 5px 5px 0;
+				border-radius: 10px;
+				margin: 10px 5px 5px 0;
 
 				&--active {
 					background: #f2f2f2;
@@ -65,7 +65,7 @@
 				svg {
 					width: 100%;
 					height: 100%;
-					padding: 5px;
+					padding: 10px;
 				}
 			}
 		}
@@ -260,6 +260,84 @@
 		}
 	}
 
+	&__action-section {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&__buttons {
+			width: 100%;
+			flex: 5;
+
+			&__load-library {
+				background: #edeff0;
+				border: 1px dashed #cfd3d7;
+				color: #464a53 !important;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				padding: 2rem;
+				transition: all 0.5s;
+
+				&:hover {
+					opacity: 0.8;
+				}
+			}
+
+			&__item {
+				cursor: pointer;
+				height: auto;
+				padding: 0;
+				width: calc(16.6666666667% - 5px);
+				border: 2px solid #dddfe1;
+				border-radius: 5px;
+				margin: 0 5px 5px 0;
+
+				&--active {
+					background: #f2f2f2;
+				}
+				&:last-child {
+					margin-right: 0;
+				}
+				&:hover {
+					background-color: #f2f2f2;
+				}
+				svg {
+					width: 100%;
+					height: 100%;
+					padding: 5px;
+				}
+			}
+		}
+		&__preview {
+			position: relative;
+			width: 100%;
+			flex: 1;
+			background: #edeff0;
+			border: 1px dashed #cfd3d7;
+			color: #464a53 !important;
+			padding: 5px;
+			margin-left: 5px;
+			margin-right: 5px;
+			height: 66px;
+
+			&--remove {
+				width: 20px;
+				position: absolute;
+				top: -12px;
+				right: -8px;
+				cursor: pointer;
+			}
+			& > div {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+			}
+		}
+	}
 	.components-modal__content {
 		position: relative;
 		width: 100%;
@@ -1675,10 +1753,10 @@
 				width: 300px;
 				margin-right: -15px;
 				input {
-					margin-top: 8px;
+					margin-top: 9px;
 					margin-right: -5px;
 					padding: 1px 8px 2px !important;
-					border: 1px solid var(--maxi-grey-1-color) !important;
+					border: 1px solid #dbdde6 !important;
 					border-radius: 0 !important;
 				}
 				span {
@@ -1765,6 +1843,9 @@
 							color: #007cba !important;
 							background-color: #edf6fa !important;
 						}
+					}
+					&.saved {
+						opacity: 0.4;
 					}
 					&.saved {
 						opacity: 0.4;

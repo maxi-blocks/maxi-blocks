@@ -1,8 +1,30 @@
 .maxi-typography-control {
+	.maxi-base-control {
+		flex: 1;
+		&__help {
+			color: #999;
+			font-size: 12px;
+		}
+		.maxi-tabs-control__button--selected svg path {
+			fill: var(--maxi-secondary-color);
+		}
+		.maxi-tabs-control__button {
+			margin-right: 5px;
+			border: 1.5px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			transition: all 0.5s;
+		}
+		.maxi-tabs-control__button[aria-pressed='true'] {
+			background-color: var(--maxi-light-blue-2-color) !important;
+			border-color: var(--maxi-light-blue-2-color) !important;
+		}
+	}
+
 	.maxi-typography-control__link-options {
 		.maxi-tabs-control__button {
 			&--selected {
 				font-weight: 700;
+				color: var(--maxi-secondary-color) !important;
 			}
 		}
 	}

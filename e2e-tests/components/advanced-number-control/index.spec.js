@@ -70,7 +70,9 @@ describe('Advanced Number Control', () => {
 			click => click.click()
 		);
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual('');
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
+			undefined
+		);
 
 		// Check max value change
 		await editAdvancedNumberControl({

@@ -485,11 +485,11 @@ describe('List in Text-maxi', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await pressKeyWithModifier('shift', 'Enter');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(300);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(500);
 
 		const accordion = await openSidebarTab(page, 'style', 'list options');
 

@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getDCEntity from './getDCEntity';
-import { getProductData } from './getWooCommerceData';
+import { getCartUrl, getProductData } from './getWooCommerceData';
 
 const getProductsLink = async dataRequest => {
 	const data = await getProductData(dataRequest?.id);
@@ -28,6 +28,9 @@ const getProductsLink = async dataRequest => {
 const getDCContent = async (dataRequest, clientId) => {
 	if (dataRequest?.type === 'products') {
 		return getProductsLink(dataRequest);
+	}
+	if (dataRequest?.type === 'cart') {
+		return getCartUrl();
 	}
 
 	const data = await getDCEntity(dataRequest, clientId);

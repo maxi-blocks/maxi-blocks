@@ -285,6 +285,14 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            // We can't get cart url in JS currently so made endpoint to get it.
+            register_rest_route($this->namespace, '/wc/get-cart-url', [
+                'methods' => 'GET',
+                'callback' => 'wc_get_cart_url',
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/pro', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_pro_status'],

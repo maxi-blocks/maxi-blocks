@@ -1,6 +1,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import memoize from 'memize';
 
+const API_ENDPOINT = 'wc/store/v1';
 let indexedProducts = null;
 
 const indexProducts = products => {
@@ -12,7 +13,7 @@ const indexProducts = products => {
 
 const getProducts = memoize(async () => {
 	const products = await apiFetch({
-		path: '/wc/store/v1/products',
+		path: `${API_ENDPOINT}/products`,
 		method: 'GET',
 	});
 
@@ -23,25 +24,39 @@ const getProducts = memoize(async () => {
 
 const getProductData = async productID => {
 	if (!indexedProducts?.[productID]) {
-		const product = await apiFetch({
-			path: `wc/store/v1/products/${productID}`,
-			method: 'GET',
-		});
+		try {
+			const product = await apiFetch({
+				path: `${API_ENDPOINT}/products/${productID}`,
+				method: 'GET',
+			});
 
-		indexedProducts = {
-			...indexedProducts,
-			[productID]: product,
-		};
+			indexedProducts = {
+				...indexedProducts,
+				[productID]: product,
+			};
+		} catch (error) {
+			console.error(
+				`Failed to fetch product with ID ${productID}:`,
+				error
+			);
+			return null;
+		}
 	}
 
 	return indexedProducts[productID];
 };
 
-const getCartData = memoize(async () => {
-	return apiFetch({
-		path: '/wc/store/v1/cart',
+const getCartData = memoize(async () =>
+	apiFetch({
+		path: `${API_ENDPOINT}/cart`,
 		method: 'GET',
-	});
-});
+	})
+);
 
-export { getProducts, getProductData, getCartData };
+const getCartUrl = memoize(async () =>
+	apiFetch({
+		path: '/maxi-blocks/v1.0/wc/get-cart-url',
+	})
+);
+
+export { getProducts, getProductData, getCartData, getCartUrl };

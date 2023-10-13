@@ -116,7 +116,7 @@ const withMaxiDC = createHigherOrderComponent(
 					status &&
 					!isNil(type) &&
 					!isNil(field) &&
-					(!isNil(id) || type === 'settings') // id is not necessary for site settings
+					(!isNil(id) || ['settings', 'cart'].includes(type)) // id is not necessary for site settings
 				) {
 					const {
 						__unstableMarkNextChangeAsNotPersistent:

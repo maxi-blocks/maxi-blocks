@@ -474,7 +474,10 @@ const TypographyControl = props => {
 		});
 
 		const filteredObj = Object.fromEntries(
-			Object.entries(obj).filter(([key, value]) => value !== undefined)
+			Object.entries(obj).filter(
+				([key, value]) =>
+					value !== undefined || key.includes('font-family')
+			)
 		);
 
 		if (!isEmpty(filteredObj.formatValue)) {

@@ -93,9 +93,6 @@ const Inspector = props => {
 																		undefined
 																)
 															);
-														console.log(
-															filteredObj
-														);
 														maxiSetAttributes(
 															filteredObj
 														);

@@ -23,6 +23,8 @@ describe('TextareaControl', () => {
 			'hover effect'
 		);
 
+		await page.waitForTimeout(500);
+
 		await accordionPanel.$$eval(
 			'.maxi-hover-effect-control .maxi-settingstab-control button',
 			buttons => buttons[2].click()

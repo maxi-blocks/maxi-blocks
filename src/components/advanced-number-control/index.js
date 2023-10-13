@@ -196,9 +196,6 @@ const AdvancedNumberControl = props => {
 		const result =
 			value === '' || optionType === 'string' ? value.toString() : +value;
 
-		console.log(value);
-		console.log(optionType);
-		console.log(typeof result);
 		latestValueRef.current = result;
 		setCurrentValue(result);
 		handleChange();

@@ -364,6 +364,13 @@ const ResponsiveSelector = props => {
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
 
+			if (
+				(postId.includes('single') || postId.includes('blank')) &&
+				postType === 'wp_template'
+			) {
+				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+			}
+
 			if (postType && postId) {
 				goThroughMaxiBlocks(block => {
 					if (block.name === 'core/post-content') {

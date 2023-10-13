@@ -138,6 +138,8 @@ describe('FullSizeControl', () => {
 
 		await updateAllBlockUniqueIds(page);
 
+		await page.waitForTimeout(500);
+
 		// select colum
 		await page.$eval(
 			'.maxi-row-block .maxi-column-block .block-editor-inserter',

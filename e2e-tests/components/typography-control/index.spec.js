@@ -455,13 +455,18 @@ describe('TypographyControl', () => {
 
 		const accordion = await openSidebarTab(page, 'style', 'typography');
 
-		await addTypographyOptions({
-			page,
-			instance: accordion,
-			size: '50',
-		});
+		await accordion.$$eval('.maxi-typography-control__size input', select =>
+			select[0].focus()
+		);
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('50');
+		await page.waitForTimeout(350);
 
-		await page.waitForTimeout(500);
+		// await addTypographyOptions({
+		// 	page,
+		// 	instance: accordion,
+		// 	size: '50',
+		// });
 
 		let result = await accordion.$eval(
 			'.maxi-typography-control__size input',

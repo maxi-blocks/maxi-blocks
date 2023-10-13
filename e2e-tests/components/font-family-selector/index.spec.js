@@ -33,7 +33,6 @@ describe('FontFamilySelector', () => {
 
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(500);
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
 			'Montserrat'
@@ -44,6 +43,8 @@ describe('FontFamilySelector', () => {
 			'.maxi-tabs-content .maxi-typography-control .maxi-base-control .maxi-reset-button',
 			button => button.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
 			undefined

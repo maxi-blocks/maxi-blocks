@@ -105,8 +105,8 @@ const AdvancedNumberControl = props => {
 	const latestValueRef = useRef(currentValue);
 
 	useEffect(() => {
-		setCurrentValue(value);
-		latestValueRef.current = value;
+		setCurrentValue(trim(value));
+		latestValueRef.current = trim(value);
 	}, [value]);
 
 	const classes = classnames(
@@ -196,10 +196,25 @@ const AdvancedNumberControl = props => {
 		const result =
 			value === '' || optionType === 'string' ? value.toString() : +value;
 
+		console.log(value);
+		console.log(optionType);
+		console.log(typeof result);
 		latestValueRef.current = result;
 		setCurrentValue(result);
 		handleChange();
 	};
+
+	const preferredValues = [
+		latestValueRef.current,
+		currentValue,
+		value,
+		defaultValue,
+		initial,
+		placeholder,
+	];
+
+	const rangeValue =
+		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;
 
 	return (
 		<>
@@ -287,10 +302,7 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							//	value={+latestValueRef.current || 0}
-							value={
-								+latestValueRef.current || +currentValue || 0
-							}
+							value={rangeValue}
 							onChange={val => {
 								const result =
 									optionType === 'string'

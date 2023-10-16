@@ -31,12 +31,14 @@ describe('Column pattern from Toolbar', () => {
 
 		expect(await getAttributes('row-pattern-general')).toStrictEqual('1');
 
+		await page.waitForTimeout(500);
 		// toolbar patterns
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__column-pattern',
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
 		// change column pattern
 		await page.$$eval(
 			'.toolbar-item__column-pattern__popover .components-column-pattern__templates button',

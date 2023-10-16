@@ -17,7 +17,7 @@ const addTypographyOptions = async ({
 		await instance.$$eval('.maxi-typography-control__size input', select =>
 			select[0].focus()
 		);
-		await pressKeyTimes('Backspace', '4');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(`${size}`, { delay: 350 });
 	}
 

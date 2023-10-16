@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -43,13 +43,17 @@ describe('ColumnPattern', () => {
 			'.components-column-pattern .maxi-base-control__field input',
 			select => select.focus()
 		);
-		await page.keyboard.press('Backspace');
-		await page.keyboard.type('2', { delay: 350 });
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('2');
+
+		await page.waitForTimeout(500);
 
 		await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
 			click => click[0].click()
 		);
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
 
@@ -125,6 +129,8 @@ describe('ColumnPattern', () => {
 			newNumber: '12',
 			newValue: '%',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('column-gap-s')).toStrictEqual(12);
 		expect(await getAttributes('column-gap-unit-s')).toStrictEqual('%');

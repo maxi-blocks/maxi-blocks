@@ -59,13 +59,15 @@ describe('NumberCounterControl', () => {
 
 		// Start Number
 		await inputs[2].focus();
-		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('20');
+		await pressKeyTimes('Backspace', '1');
+		await page.waitForTimeout(500);
+		await page.keyboard.type('20', { delay: 350 });
 
 		// End Number
 		await inputs[3].focus();
 		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
+		await page.waitForTimeout(500);
 
 		// Duration
 		await inputs[4].focus();
@@ -73,13 +75,15 @@ describe('NumberCounterControl', () => {
 
 		// Stroke
 		await inputs[5].focus();
-		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('50');
+		await pressKeyTimes('Backspace', '2');
+		await page.waitForTimeout(350);
+		await page.keyboard.type('50', { delay: 350 });
 
 		// Title Font Size
 		await inputs[6].focus();
-		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('19');
+		await pressKeyTimes('Backspace', '2');
+		await page.waitForTimeout(350);
+		await page.keyboard.type('19', { delay: 350 });
 
 		// expect
 		const numberResult = await getAttributes([

@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	pressKeyTimes,
 	selectBlockByClientId,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -52,10 +51,7 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
-
-		await page.waitForTimeout(350);
-
+		await pressKeyWithModifier('ctrl', 'a');
 		await page.keyboard.type('50', { delay: 350 });
 
 		expect(await getAttributes('column-size-general')).toStrictEqual(50);

@@ -127,10 +127,10 @@ const blockMigrator = blockMigratorProps => {
 		bottomGapMigrator,
 		transitionMigrator,
 		IBLabelToIDMigrator,
-		uniqueIDMigrator,
 		SVGMarkerSizeMigrator,
 		dcLinkBlocksMigrator,
 		...(blockMigratorProps.migrators ?? []),
+		uniqueIDMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

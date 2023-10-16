@@ -177,17 +177,17 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(true);
-	const [isMaxiProExpired, setIsMaxiProExpired] = useState(false);
-	const [userName, setUserName] = useState('user name');
+	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
+	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
+	const [userName, setUserName] = useState(getUserName());
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
 	useEffect(() => {
-		setIsMaxiProActive(true);
+		setIsMaxiProActive(isProSubActive());
 	}, [type]);
 
 	useEffect(() => {
-		setIsMaxiProExpired(false);
+		setIsMaxiProExpired(isProSubExpired());
 	}, [type]);
 
 	const onClickConnect = async email => {

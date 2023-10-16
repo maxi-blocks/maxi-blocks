@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	pressKeyTimes,
 	selectBlockByClientId,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -82,7 +83,7 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('ctrl', 'a');
 		await page.keyboard.type('9', { delay: 350 });
 
 		const responsiveSOption = await page.$eval(

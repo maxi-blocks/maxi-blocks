@@ -185,6 +185,8 @@ const AdvancedNumberControl = props => {
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
 
+		console.log('value', value, typeof value);
+
 		if (enableUnit) {
 			if (value !== '' && value > maxValue) value = maxValue;
 			if (value !== '' && value < minValue) value = minValue;
@@ -195,6 +197,8 @@ const AdvancedNumberControl = props => {
 
 		const result =
 			value === '' || optionType === 'string' ? value.toString() : +value;
+
+		console.log('result', result, typeof result);
 
 		latestValueRef.current = result;
 		setCurrentValue(result);

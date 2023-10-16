@@ -20,7 +20,7 @@ const versions = [
 	'1.1.1',
 ];
 
-const prefixes = ['button-', 'image-', 'video-'];
+const prefixes = ['', 'button-', 'image-', 'video-'];
 
 const attributes = () => ({
 	...breakpointAttributesCreator({
@@ -61,8 +61,9 @@ const isEligible = blockAttributes => {
 };
 const migrate = newAttributes => {
 	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (key.includes('full-width') && typeof value === 'string')
+		if (key.includes('full-width') && typeof value === 'string') {
 			newAttributes[key] = value === 'full';
+		}
 	});
 
 	return newAttributes;

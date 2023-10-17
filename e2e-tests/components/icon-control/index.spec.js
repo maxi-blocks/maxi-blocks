@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	pressKeyTimes,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -47,7 +51,7 @@ describe('IconControl', () => {
 
 		// icon spacing
 		await inputs[4].click();
-		await pressKeyTimes('Backspace', '1');
+		await pressKeyWithModifier('ctrl', 'a');
 		await page.keyboard.type('66', { delay: 350 });
 
 		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);

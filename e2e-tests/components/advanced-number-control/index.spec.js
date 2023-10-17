@@ -41,6 +41,8 @@ describe('Advanced Number Control', () => {
 			newNumber: '31',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
 
 		// Min value

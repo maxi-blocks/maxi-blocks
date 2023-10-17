@@ -70,6 +70,8 @@ describe('Repeater', () => {
 		// Add button to second column
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
 
+		await page.waitForTimeout(2000);
+
 		// Check if button was added to all columns
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))
@@ -101,7 +103,7 @@ describe('Repeater', () => {
 				.removeBlock(button[1].getAttribute('data-block'))
 		);
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(2000);
 
 		// Check if buttons were removed from all columns
 		expect(

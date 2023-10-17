@@ -38,9 +38,9 @@ describe('BackgroundControl', () => {
 			input.focus()
 		);
 
-		await page.keyboard.type('55', { delay: 300 });
+		await page.keyboard.type('55', { delay: 350 });
 
-		await page.waitForTimeout(700);
+		await page.waitForTimeout(1000);
 
 		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>

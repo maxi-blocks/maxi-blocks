@@ -37,7 +37,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('19', { delay: 350 });
 
-		await page.waitForTimeout(400);
+		await page.waitForTimeout(700);
 
 		expect(await getAttributes('font-size-general')).toStrictEqual(19);
 

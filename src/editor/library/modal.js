@@ -11,17 +11,11 @@ import {
 } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-import classNames from 'classnames';
-
-/**
  * Internal dependencies
  */
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
-import { Icon, Button, BaseControl } from '../../components';
+import { Icon, BaseControl, Button } from '../../components';
 import {
 	authConnect,
 	isProSubActive,
@@ -30,6 +24,12 @@ import {
 	getUserName,
 	logOut,
 } from '../auth';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+import classNames from 'classnames';
 
 /**
  * Icons

@@ -52,9 +52,7 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	const maxiBlocks = getAllMaxiBlocks(allBlocks);
 
 	const shouldShowLoader = maxiBlocks.some(block => {
-		return (
-			block.clientId === clientId // && !excludedBlocks.includes(block.name)
-		);
+		return block.clientId === clientId;
 	});
 
 	if (shouldShowLoader) {

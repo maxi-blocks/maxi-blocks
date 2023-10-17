@@ -7,11 +7,6 @@ import { select } from '@wordpress/data';
  * External dependencies
  */
 import classnames from 'classnames';
-import { copyPasteMapping } from './data';
-import {
-	withMaxiContextLoop,
-	withMaxiContextLoopContext,
-} from '../../extensions/DC';
 import loadable from '@loadable/component';
 
 /**
@@ -20,6 +15,11 @@ import loadable from '@loadable/component';
 const Inspector = loadable(() => import('./inspector'));
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
+import { copyPasteMapping } from './data';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';

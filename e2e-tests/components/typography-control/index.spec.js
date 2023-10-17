@@ -462,12 +462,6 @@ describe('TypographyControl', () => {
 		await page.keyboard.type('50');
 		await page.waitForTimeout(350);
 
-		// await addTypographyOptions({
-		// 	page,
-		// 	instance: accordion,
-		// 	size: '50',
-		// });
-
 		let result = await accordion.$eval(
 			'.maxi-typography-control__size input',
 			input => input.value

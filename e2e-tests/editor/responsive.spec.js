@@ -396,7 +396,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.skip('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
+	it('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
 		await changeResponsive(page, 'xl');
 
 		let marginPaddingAccordion = await openSidebarTab(
@@ -487,7 +487,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.skip('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
+	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', async () => {
 		let borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		await borderAccordion.$eval(
@@ -587,7 +587,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it.skip('On change XL default attributes from General responsive and then reset, changes on General', async () => {
+	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1920, height: 700 });
 

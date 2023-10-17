@@ -38,6 +38,7 @@ describe('Placeholder', () => {
 	});
 
 	it('Test icon placeholder', async () => {
+		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// close modal

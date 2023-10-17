@@ -40,11 +40,15 @@ describe('BackgroundControl', () => {
 
 		await page.keyboard.type('55', { delay: 350 });
 
+		await page.waitForTimeout(350);
+
 		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>
 			input.focus()
 		);
 		await page.keyboard.type('77', { delay: 350 });
+
+		await page.waitForTimeout(350);
 
 		// Add loop
 		await page.$eval('.video-loop input', button => button.click());
@@ -62,6 +66,8 @@ describe('BackgroundControl', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44', { delay: 350 });
+
+		await page.waitForTimeout(350);
 
 		await sizeAndPositionChecker({ page });
 

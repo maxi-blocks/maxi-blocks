@@ -18,7 +18,6 @@ import {
 	addResponsiveTest,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
-	typeWithDelay,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
@@ -178,7 +177,7 @@ describe('NumberCounterControl', () => {
 			'.maxi-number-counter-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await typeWithDelay(page, 'Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
@@ -299,7 +298,7 @@ describe('NumberCounterControl', () => {
 			input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await typeWithDelay(page, 'Arial');
+		await page.keyboard.type('Arial', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		const typographyInputS = await page.$eval(

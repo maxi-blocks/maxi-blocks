@@ -37,7 +37,7 @@ describe('Placeholder', () => {
 		expect(placeholder).toMatchSnapshot();
 	});
 
-	it.skip('Test icon placeholder', async () => {
+	it('Test icon placeholder', async () => {
 		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// close modal
@@ -55,7 +55,7 @@ describe('Placeholder', () => {
 		await page.waitForTimeout(500);
 		expect(placeholder).toMatchSnapshot();
 	});
-	it.skip('Test image placeholder', async () => {
+	it('Test image placeholder', async () => {
 		await insertMaxiBlock(page, 'Image Maxi');
 		// check image placeholder
 		const placeholder = await page.$eval(

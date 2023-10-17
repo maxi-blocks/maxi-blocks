@@ -24,6 +24,8 @@ describe('Dropdown', () => {
 			'shape divider'
 		);
 
+		await page.waitForTimeout(500);
+
 		await accordionPanel.$eval(
 			'.maxi-shape-divider-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()

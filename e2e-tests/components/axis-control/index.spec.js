@@ -302,8 +302,6 @@ describe('AxisControl', () => {
 
 			await page.keyboard.press('ArrowDown', { delay: 350 });
 
-			// await page.waitForTimeout(500);
-
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				`${value - 1}`
 			);

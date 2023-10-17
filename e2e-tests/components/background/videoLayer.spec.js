@@ -40,7 +40,7 @@ describe('BackgroundControl', () => {
 
 		await page.keyboard.type('55', { delay: 350 });
 
-		await page.waitForTimeout(350);
+		await page.waitForTimeout(500);
 
 		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>
@@ -48,7 +48,7 @@ describe('BackgroundControl', () => {
 		);
 		await page.keyboard.type('77', { delay: 350 });
 
-		await page.waitForTimeout(350);
+		await page.waitForTimeout(500);
 
 		// Add loop
 		await page.$eval('.video-loop input', button => button.click());

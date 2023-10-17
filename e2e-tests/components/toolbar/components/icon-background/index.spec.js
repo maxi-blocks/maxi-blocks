@@ -25,7 +25,7 @@ describe('Icon background', () => {
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(700);
 
 		// edit divider line
 		await page.$eval(

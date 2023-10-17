@@ -31,16 +31,16 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
 
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>
 			input.focus()
 		);
 
-		await page.keyboard.type('55', { delay: 350 });
+		await page.keyboard.type('55', { delay: 300 });
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(700);
 
 		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>

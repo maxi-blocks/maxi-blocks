@@ -101,6 +101,8 @@ describe('Repeater', () => {
 				.removeBlock(button[1].getAttribute('data-block'))
 		);
 
+		await page.waitForTimeout(1000);
+
 		// Check if buttons were removed from all columns
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))

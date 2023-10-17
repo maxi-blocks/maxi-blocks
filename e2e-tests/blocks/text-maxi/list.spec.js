@@ -32,7 +32,7 @@ const createTextWithList = async (
 	await updateAllBlockUniqueIds(page);
 
 	await page.keyboard.type(content, { delay: 100 });
-	await page.waitForTimeout(150);
+	await page.waitForTimeout(500);
 
 	await page.$eval('.toolbar-wrapper .toolbar-item__list-options', button =>
 		button.click()

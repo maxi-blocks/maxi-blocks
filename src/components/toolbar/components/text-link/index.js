@@ -72,7 +72,7 @@ const LinkContent = props => {
 					);
 				});
 			});
-		const end = (formatValue?.formats?.length || 0) + 1;
+		const end = formatValue.end || (formatValue?.formats?.length || 0) + 1;
 		const start =
 			isWholeLink && formatValue.start === formatValue.end
 				? 0

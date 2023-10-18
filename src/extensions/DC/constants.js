@@ -102,6 +102,10 @@ const generalRelationOptionsTags = [
 	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
+const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
+	relation => relation.value !== 'current'
+);
+
 const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
 	pages: generalRelationOptionsPages,
@@ -110,7 +114,7 @@ const generalRelationOptions = {
 	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
-	products: generalRelationOptionsPosts,
+	products: generalRelationOptionsProducts,
 	cart: generalRelationOptionsPosts,
 	product_categories: generalRelationOptionsCategories,
 	product_tags: generalRelationOptionsTags,
@@ -294,12 +298,18 @@ const generalProductFields = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
-const buttonProductFields = generalProductFields.filter(
-	option =>
-		!['short_description', 'description', 'categories', 'tags'].includes(
-			option.value
-		)
-);
+const buttonProductFields = [
+	...generalProductFields.filter(
+		option =>
+			![
+				'short_description',
+				'description',
+				'categories',
+				'tags',
+			].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
 
 const imageProductFields = [
 	{ label: __('Featured image', 'maxi-blocks'), value: 'featured_media' },
@@ -322,6 +332,11 @@ const generalCartFields = [
 	},
 	{ label: __('Total fees', 'maxi-blocks'), value: 'total_fees' },
 	{ label: __('Total fees tax', 'maxi-blocks'), value: 'total_fees_tax' },
+];
+
+const buttonCartFields = [
+	...generalCartFields,
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
 export const fieldOptions = {
@@ -347,7 +362,7 @@ export const fieldOptions = {
 		categories: buttonCategoryFields,
 		tags: buttonTagFields,
 		products: buttonProductFields,
-		cart: generalCartFields,
+		cart: buttonCartFields,
 		product_categories: buttonCategoryFields,
 		product_tags: buttonTagFields,
 	},

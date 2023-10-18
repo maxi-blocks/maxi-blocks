@@ -283,7 +283,7 @@ const TextLink = props => {
 				className={
 					(!isNil(linkSettings) && !isEmpty(linkSettings.url)) ||
 					hasLink
-						? 'toolbar-item__link--active toolbar-item__text-link test'
+						? 'toolbar-item__link--active toolbar-item__text-link'
 						: 'toolbar-item__text-link'
 				}
 			>

@@ -638,9 +638,17 @@ const MaxiToolbar = memo(
 								'dynamicContent',
 							])}
 							blockName={name}
-							onChange={(linkSettings, obj) =>
-								maxiSetAttributes({ linkSettings, ...obj })
-							}
+							onChange={(linkSettings, obj) => {
+								const filteredObj = Object.fromEntries(
+									Object.entries(obj).filter(
+										([key, value]) => value !== undefined
+									)
+								);
+								maxiSetAttributes({
+									linkSettings,
+									...filteredObj,
+								});
+							}}
 							isList={isList}
 							linkSettings={linkSettings}
 							breakpoint={breakpoint}

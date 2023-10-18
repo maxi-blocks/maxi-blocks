@@ -263,6 +263,16 @@ const TextLink = props => {
 		linkSettings,
 	} = props;
 
+	const { formatValue } = useContext(textContext);
+
+	const hasLink =
+		!isEmpty(formatValue?.formats) &&
+		formatValue?.formats?.some(formatArray => {
+			return formatArray.some(format => {
+				return !isEmpty(format.attributes.url);
+			});
+		});
+
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	if (!dcStatus)
@@ -271,8 +281,9 @@ const TextLink = props => {
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={
-					!isNil(linkSettings) && !isEmpty(linkSettings.url)
-						? 'toolbar-item__link--active toolbar-item__text-link'
+					(!isNil(linkSettings) && !isEmpty(linkSettings.url)) ||
+					hasLink
+						? 'toolbar-item__link--active toolbar-item__text-link test'
 						: 'toolbar-item__text-link'
 				}
 			>

@@ -176,16 +176,14 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
+	const handleChange = debounce(result => {
 		if (onChangeValue) {
-			onChangeValue(latestValueRef.current);
+			onChangeValue(result);
 		}
 	}, 300);
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
-
-		console.log('value', value, typeof value);
 
 		if (enableUnit) {
 			if (value !== '' && value > maxValue) value = maxValue;
@@ -198,11 +196,9 @@ const AdvancedNumberControl = props => {
 		const result =
 			value === '' || optionType === 'string' ? value.toString() : +value;
 
-		console.log('result', result, typeof result);
-
 		latestValueRef.current = result;
 		setCurrentValue(result);
-		handleChange();
+		handleChange(result);
 	};
 
 	const preferredValues = [

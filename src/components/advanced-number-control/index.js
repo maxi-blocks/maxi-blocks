@@ -176,9 +176,13 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(result => {
+	const handleChange = debounce(() => {
 		if (onChangeValue) {
-			onChangeValue(result);
+			const val =
+				latestValueRef.current === '' || optionType === 'string'
+					? latestValueRef.current.toString()
+					: +latestValueRef.current;
+			onChangeValue(val);
 		}
 	}, 300);
 

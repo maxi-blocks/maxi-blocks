@@ -9,12 +9,12 @@ import { select } from '@wordpress/data';
 import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
 
-const getProductsLink = async dataRequest => {
-	const data = await getProductData(dataRequest?.id);
+const getProductsLink = async (dataRequest, data) => {
+	const productData = await getProductData(data?.id);
 
 	if (dataRequest?.linkTarget === 'add_to_cart') {
 		const siteUrl = select('core').getSite()?.url;
-		const addToCartUrl = data?.add_to_cart?.url;
+		const addToCartUrl = productData?.add_to_cart?.url;
 		if (!siteUrl || !addToCartUrl) {
 			return null;
 		}
@@ -22,18 +22,19 @@ const getProductsLink = async dataRequest => {
 		return `${siteUrl}${addToCartUrl}`;
 	}
 
-	return data?.permalink;
+	return productData?.permalink;
 };
 
 const getDCContent = async (dataRequest, clientId) => {
-	if (dataRequest?.type === 'products') {
-		return getProductsLink(dataRequest);
-	}
 	if (dataRequest?.type === 'cart') {
 		return getCartUrl();
 	}
 
 	const data = await getDCEntity(dataRequest, clientId);
+
+	if (dataRequest?.type === 'products') {
+		return getProductsLink(dataRequest, data);
+	}
 
 	const contentValue = data?.link;
 

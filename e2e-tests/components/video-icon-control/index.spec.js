@@ -49,6 +49,8 @@ describe('Video icon control', () => {
 			await getAttributes('lightbox-background-palette-color-general')
 		).toStrictEqual(6);
 
+		await page.waitForTimeout(500);
+
 		// Change opacity
 		await editAdvancedNumberControl({
 			page,

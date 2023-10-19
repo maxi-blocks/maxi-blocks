@@ -38,7 +38,7 @@ describe('StyleCards ColorPresets', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('#106D3C');
+		await page.keyboard.type('#106D3C', { delay: 350 });
 
 		const customColor = await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',

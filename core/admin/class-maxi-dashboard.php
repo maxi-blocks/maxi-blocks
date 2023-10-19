@@ -902,6 +902,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             $content .= '</div>';
+            return $content;
         }
 
         public function maxi_blocks_maxi_ai()

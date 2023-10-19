@@ -6,14 +6,20 @@ import { __ } from '@wordpress/i18n';
 import { createRef, forwardRef, RawHTML } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { Toolbar, BlockInserter } from '../../components';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { BlockInserter } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
-import Inspector from './inspector';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,

@@ -5,15 +5,28 @@ import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	AspectRatioControl,
-	ImageCropControl,
-	SelectControl,
-	ToggleSwitch,
-} from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const AspectRatioControl = loadable(() =>
+	import('../../../../components/aspect-ratio-control')
+);
+const ImageCropControl = loadable(() =>
+	import('../../../../components/image-crop-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,

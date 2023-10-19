@@ -41,7 +41,7 @@ describe('Toolbar size', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('754');
+		await page.keyboard.type('754', { delay: 350 });
 
 		expect(await getAttributes('width-general')).toStrictEqual(754);
 

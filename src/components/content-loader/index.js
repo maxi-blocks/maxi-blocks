@@ -46,31 +46,36 @@ const ContentLoader = props => {
 				/>
 			)}
 			{cloud && (
-				<BarLoader
-					className='maxi-blocks-content-loader__bar'
-					color='#e3e3e3'
-					width={515}
-					height={25}
-					speedMultiplier={0.5}
-					cssOverride={{
-						margin: '0 auto',
-						boxShadow: '0 0 0 3px #e3e3e3',
-						borderRadius: '20px',
-						backgroundColor: '#fff',
-					}}
-				/>
+				<>
+					<BarLoader
+						className='maxi-blocks-content-loader__bar'
+						color='#e3e3e3'
+						width={515}
+						height={25}
+						speedMultiplier={0.5}
+						cssOverride={{
+							margin: '0 auto',
+							boxShadow: '0 0 0 3px #e3e3e3',
+							borderRadius: '20px',
+							backgroundColor: '#fff',
+						}}
+					/>
+					<h3
+						className='maxi-text-loader'
+						style={{ textAlign: 'center' }}
+					/>
+				</>
 			)}
 			{!cloud && (
 				<PuffLoader
 					color='#ff4a17'
-					size={20}
+					size={30}
 					speedMultiplier={0.8}
 					cssOverride={{
 						margin: '0 auto',
 					}}
 				/>
 			)}
-			<h3 className='maxi-text-loader' style={{ textAlign: 'center' }} />
 		</div>
 	);
 };

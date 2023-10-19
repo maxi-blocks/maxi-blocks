@@ -1,18 +1,27 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
+
 /**
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
 
-/* eslint-disable react/jsx-no-constructed-context-values */
+/**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { withMaxiContextLoop } from '../../extensions/DC';
-import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
-import { Toolbar } from '../../components';
 import AccordionContext from './context';
 import { copyPasteMapping } from './data';
 

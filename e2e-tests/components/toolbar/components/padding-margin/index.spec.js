@@ -31,6 +31,8 @@ describe('Padding from Toolbar', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
+
 		// edit padding
 		await page.$eval(
 			'.components-popover__content .icon-toolbar .toolbar-item__padding-margin',
@@ -44,7 +46,7 @@ describe('Padding from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('123');
+		await page.keyboard.type('123', { delay: 350 });
 
 		expect(
 			await getAttributes('icon-padding-bottom-general')

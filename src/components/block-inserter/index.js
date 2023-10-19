@@ -8,17 +8,16 @@ import { forwardRef, useContext, useRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+/**
  * Internal dependencies
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
 import Popover from '../popover';
 import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Styles

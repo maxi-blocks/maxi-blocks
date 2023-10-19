@@ -34,6 +34,8 @@ describe('ColorControl', () => {
 			opacity: '45',
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-palette-opacity-general')
 		).toStrictEqual(0.45);
@@ -47,6 +49,8 @@ describe('ColorControl', () => {
 			'.maxi-background-control .maxi-base-control__field .maxi-reset-button',
 			resetButton => resetButton.click()
 		);
+
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-palette-color-general')
@@ -68,6 +72,8 @@ describe('ColorControl', () => {
 			opacity: '67',
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-color-general')
 		).toStrictEqual('rgba(142, 39, 39, 0.67)');
@@ -81,6 +87,8 @@ describe('ColorControl', () => {
 			'.maxi-base-control__field .maxi-reset-button',
 			resetButton => resetButton.click()
 		);
+
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-color-general')
@@ -104,6 +112,8 @@ describe('ColorControl', () => {
 			opacity: '250',
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-palette-opacity-general')
 		).toStrictEqual(1);
@@ -114,6 +124,8 @@ describe('ColorControl', () => {
 			paletteStatus: false,
 			opacity: '-23',
 		});
+
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-palette-opacity-general')
@@ -140,6 +152,8 @@ describe('ColorControl', () => {
 			colorPalette: 5,
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-palette-color-general')
 		).toStrictEqual(5);
@@ -150,6 +164,8 @@ describe('ColorControl', () => {
 			input => input[0].click()
 		);
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-palette-color-general')
 		).toStrictEqual(4);
@@ -159,7 +175,7 @@ describe('ColorControl', () => {
 			'.maxi-color-palette-control .maxi-toggle-switch input',
 			input => input.click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// check custom color
 
@@ -168,7 +184,10 @@ describe('ColorControl', () => {
 			opacity => opacity.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
+
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('button-background-color-general')
 		).toStrictEqual('rgba(255, 74, 23, 0.5)');
@@ -180,8 +199,8 @@ describe('ColorControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('#9A5441');
-		await page.waitForTimeout(250);
+		await page.keyboard.type('#9A5441', { delay: 350 });
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-color-general')
@@ -192,7 +211,7 @@ describe('ColorControl', () => {
 			'.maxi-color-control .maxi-color-control__display button',
 			resetButton => resetButton.click()
 		);
-		await page.waitForTimeout(250);
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-color-general')

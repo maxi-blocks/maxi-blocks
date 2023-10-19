@@ -27,6 +27,8 @@ describe('ShapeDividerControl', () => {
 			'shape divider'
 		);
 
+		await page.waitForTimeout(350);
+
 		await accordionPanel.$eval(
 			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
 			click => click.click()
@@ -68,7 +70,7 @@ describe('ShapeDividerControl', () => {
 		);
 
 		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-opacity-general')

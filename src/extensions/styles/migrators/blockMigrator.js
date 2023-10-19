@@ -110,6 +110,7 @@ const blockMigrator = blockMigratorProps => {
 	const migrators = [
 		positionToNumberMigrator,
 		positionUnitsToAxisMigrator,
+		fullWidthAttributeMigrator,
 		fullWidthNonToResponsiveMigrator,
 		transformMigrator,
 		transformIBMigrator,
@@ -125,12 +126,11 @@ const blockMigrator = blockMigratorProps => {
 		corruptedHoverAttributesMigrator,
 		bottomGapMigrator,
 		transitionMigrator,
-		fullWidthAttributeMigrator,
 		IBLabelToIDMigrator,
-		uniqueIDMigrator,
 		SVGMarkerSizeMigrator,
 		dcLinkBlocksMigrator,
 		...(blockMigratorProps.migrators ?? []),
+		uniqueIDMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

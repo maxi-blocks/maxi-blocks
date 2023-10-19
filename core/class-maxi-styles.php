@@ -1435,7 +1435,7 @@ class MaxiBlocks_Styles
         }
 
         // Fetch the 'header' and 'footer' template parts.
-        $template_part_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND post_name IN ('header', 'footer') AND post_status = 'publish'";
+        $template_part_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND (post_name LIKE '%header%' OR post_name LIKE '%footer%') AND post_status = 'publish'";
         $template_parts = $wpdb->get_results($template_part_query);
 
         foreach ($template_parts as $template_part) {

@@ -20,7 +20,7 @@ const versions = [
 	'1.1.1',
 ];
 
-const prefixes = ['button-', 'image-', 'video-'];
+const prefixes = ['', 'button-', 'image-', 'video-'];
 
 const attributes = () => ({
 	...breakpointAttributesCreator({

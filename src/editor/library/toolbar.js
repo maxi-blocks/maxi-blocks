@@ -492,7 +492,14 @@ const LibraryToolbar = props => {
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
-						<span className={usernameClasses}>{userName}</span>
+						<span
+							className={usernameClasses}
+							onClick={event => {
+								console.log('click');
+							}}
+						>
+							{userName}
+						</span>
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
@@ -518,8 +525,7 @@ const LibraryToolbar = props => {
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
-							const url =
-								'https://my.maxiblocks.com/login?plugin';
+							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
 							window.open(url, '_blank')?.focus();
 
 							onClickConnect(userEmail);
@@ -571,8 +577,7 @@ const LibraryToolbar = props => {
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
-							const url =
-								'https://my.maxiblocks.com/login?plugin';
+							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
 							window.open(url, '_blank')?.focus();
 
 							onClickConnect(userEmail);

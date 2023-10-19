@@ -1,23 +1,58 @@
 import updateSCOnEditor from '../updateSCOnEditor';
 import getActiveStyleCard from '../getActiveStyleCard';
-import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
+import {
+	receiveMaxiStyleCards,
+	sendMaxiStyleCards,
+	saveMaxiStyleCards,
+} from './actions';
 import { getActiveColourFromSC } from '../../../editor/style-cards/utils';
 
-import { isEmpty } from 'lodash';
+import { isEmpty, map } from 'lodash';
+import { dispatch } from '@wordpress/data';
 
 const resolvers = {
 	*receiveMaxiStyleCards() {
 		const maxiStyleCards = yield receiveMaxiStyleCards();
+		let shouldSCMigratorRun = false;
+		const updatedMaxiStyleCards = {};
 
 		if (maxiStyleCards && !isEmpty(maxiStyleCards)) {
-			const currentSC = getActiveStyleCard(maxiStyleCards);
+			for (const key in maxiStyleCards) {
+				if (Object.prototype.hasOwnProperty.call(maxiStyleCards, key)) {
+					const styleCard = maxiStyleCards[key];
+					if (!('gutenberg_blocks_status' in styleCard)) {
+						shouldSCMigratorRun = true;
+						updatedMaxiStyleCards[key] = {
+							...styleCard,
+							gutenberg_blocks_status: true,
+						};
+					} else {
+						updatedMaxiStyleCards[key] = styleCard;
+					}
+				}
+			}
+			if (shouldSCMigratorRun) {
+				const { saveMaxiStyleCards } = dispatch(
+					'maxiBlocks/style-cards'
+				);
+				saveMaxiStyleCards(updatedMaxiStyleCards, true);
+			}
+
+			const currentSC = shouldSCMigratorRun
+				? getActiveStyleCard(updatedMaxiStyleCards)
+				: getActiveStyleCard(maxiStyleCards);
+
 			updateSCOnEditor(
 				currentSC.value,
 				getActiveColourFromSC(currentSC, 4)
 			);
 		}
 
-		return sendMaxiStyleCards(maxiStyleCards);
+		const response = shouldSCMigratorRun
+			? sendMaxiStyleCards(updatedMaxiStyleCards)
+			: sendMaxiStyleCards(maxiStyleCards);
+
+		return response;
 	},
 };
 

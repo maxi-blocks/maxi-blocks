@@ -6,13 +6,20 @@ import { RichText } from '@wordpress/block-editor';
 import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const IconToolbar = loadable(() =>
+	import('../../components/toolbar/iconToolbar')
+);
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import IconToolbar from '../../components/toolbar/iconToolbar';
 import {
 	getGroupAttributes,
 	getIconPositionClass,

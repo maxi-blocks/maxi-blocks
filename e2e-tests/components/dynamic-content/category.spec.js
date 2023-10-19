@@ -22,7 +22,7 @@ describe('Dynamic content', () => {
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
-		await page.keyboard.type('Categories DC test');
+		await page.keyboard.type('Categories DC test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');

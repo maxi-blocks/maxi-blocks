@@ -189,7 +189,7 @@ describe('BorderControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('59');
+		await page.keyboard.type('59', { delay: 350 });
 
 		expect(await getAttributes('border-left-width-general')).toStrictEqual(
 			59
@@ -202,7 +202,7 @@ describe('BorderControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('26');
+		await page.keyboard.type('26', { delay: 350 });
 
 		expect(
 			await getAttributes('border-bottom-left-radius-general')

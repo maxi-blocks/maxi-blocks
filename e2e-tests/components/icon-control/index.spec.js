@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	pressKeyTimes,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -35,20 +39,20 @@ describe('IconControl', () => {
 		// width
 		await inputs[0].click();
 		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('40');
+		await page.keyboard.type('40', { delay: 350 });
 
 		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();
-		await page.keyboard.type('5');
+		await page.keyboard.type('5', { delay: 350 });
 
 		expect(await getAttributes('icon-stroke-general')).toStrictEqual(5);
 
 		// icon spacing
 		await inputs[4].click();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('66');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('66', { delay: 350 });
 
 		expect(await getAttributes('icon-spacing-general')).toStrictEqual(66);
 

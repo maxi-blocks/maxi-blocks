@@ -6,28 +6,32 @@ import { __ } from '@wordpress/i18n';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
- * Internal dependencies
- */
-import getStyles from './styles';
-import Inspector from './inspector';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import {
-	Toolbar,
-	Placeholder,
-	MaxiPopoverButton,
-	Button,
-} from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
-import { videoValidation } from '../../extensions/video';
-import { copyPasteMapping } from './data';
-import { placeholderImage, toolbarReplaceImage } from '../../icons';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Inspector = loadable(() => import('./inspector'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const Placeholder = loadable(() => import('../../components/placeholder'));
+const MaxiPopoverButton = loadable(() =>
+	import('../../components/maxi-popover-button')
+);
+const Button = loadable(() => import('../../components/button'));
+import getStyles from './styles';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
+import { videoValidation } from '../../extensions/video';
+import { copyPasteMapping } from './data';
+import { placeholderImage, toolbarReplaceImage } from '../../icons';
 
 /**
  * Video player

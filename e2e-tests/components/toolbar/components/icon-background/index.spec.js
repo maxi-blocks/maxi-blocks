@@ -20,10 +20,12 @@ describe('Icon background', () => {
 
 		// generate icon
 		await modalMock(page, { type: 'svg' });
+		await page.waitForTimeout(500);
+
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(700);
 
 		// edit divider line
 		await page.$eval(

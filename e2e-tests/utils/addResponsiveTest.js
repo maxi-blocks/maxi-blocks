@@ -51,7 +51,7 @@ const addResponsiveTest = async ({
 
 		await pressKeyWithModifier('primary', 'a');
 
-		await page.keyboard.type(`${newValue}`, { delay: 100 });
+		await page.keyboard.type(`${newValue}`, { delay: 400 });
 
 		// change responsive xs
 		await changeResponsive(page, 'xs');
@@ -76,9 +76,11 @@ const addResponsiveTest = async ({
 		// change responsive m
 		await changeResponsive(page, 'm');
 
+		await page.waitForTimeout(500);
+
 		await page.waitForSelector(instance);
 		await page.$eval(`${instance}`, m => m.focus());
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(500);
 
 		const checkMResponsive = await page.$eval(`${instance}`, m => m.value);
 
@@ -110,7 +112,7 @@ const addResponsiveTest = async ({
 		await page.$eval(`${instance}`, changeValue => changeValue.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(`${newValue}`, { delay: 100 });
+		await page.keyboard.type(`${newValue}`, { delay: 400 });
 
 		// change responsive xs
 		await changeResponsive(page, 'xs');

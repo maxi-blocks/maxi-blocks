@@ -4,19 +4,20 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
- */
-import {
-	Button,
-	ReactSelectControl,
-	TextareaControl,
-} from '../../../../components';
-import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
-
-/**
  * External dependencies
  */
 import { capitalize } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../../button'));
+const ReactSelectControl = loadable(() =>
+	import('../../../react-select-control')
+);
+const TextareaControl = loadable(() => import('../../../textarea-control'));
+import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
 
 /**
  * Styles

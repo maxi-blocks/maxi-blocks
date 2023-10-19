@@ -39,7 +39,7 @@ describe('Text color', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('32');
+		await page.keyboard.type('32', { delay: 350 });
 
 		const expectDivider = {
 			'palette-color-general': 5,

@@ -45,7 +45,7 @@ describe('Svg width control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('37');
+		await page.keyboard.type('37', { delay: 350 });
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual('37');
 

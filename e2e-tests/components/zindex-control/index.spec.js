@@ -20,7 +20,7 @@ describe('ZIndexControl', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 350 });
 		await openSidebarTab(page, 'advanced', 'z index');
 
 		await editAdvancedNumberControl({

@@ -40,7 +40,7 @@ describe('Box shadow from Toolbar', () => {
 			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('77');
+		await page.keyboard.type('77', { delay: 350 });
 
 		// change color
 		await page.$eval(
@@ -55,7 +55,7 @@ describe('Box shadow from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('66');
+		await page.keyboard.type('66', { delay: 350 });
 
 		const expectBoxShadow = {
 			'button-box-shadow-palette-color-general': 6,

@@ -32,7 +32,7 @@ const createTextWithList = async (
 	await updateAllBlockUniqueIds(page);
 
 	await page.keyboard.type(content, { delay: 100 });
-	await page.waitForTimeout(150);
+	await page.waitForTimeout(500);
 
 	await page.$eval('.toolbar-wrapper .toolbar-item__list-options', button =>
 		button.click()
@@ -70,6 +70,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '31',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-indent-general')).toStrictEqual(31);
 
 		// List gap
@@ -78,6 +80,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-gap '),
 			newNumber: '21',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
 
@@ -90,6 +94,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '44',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(
 			await getAttributes('list-paragraph-spacing-general')
 		).toStrictEqual(44);
@@ -100,6 +106,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-marker-size '),
 			newNumber: '11',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			11
@@ -114,6 +122,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '46',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(
 			await getAttributes('list-marker-line-height-general')
 		).toStrictEqual(46);
@@ -123,6 +133,8 @@ describe('List in Text-maxi', () => {
 			'.maxi-text-inspector__list-style select'
 		);
 		await textPosition.select('sub');
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-text-position-general')).toStrictEqual(
 			'sub'
@@ -138,6 +150,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'em',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-indent-general')).toStrictEqual(3);
 		expect(await getAttributes('list-indent-unit-general')).toStrictEqual(
 			'em'
@@ -151,6 +165,8 @@ describe('List in Text-maxi', () => {
 			newValue: '%',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
 		expect(await getAttributes('list-gap-unit-general')).toStrictEqual('%');
 
@@ -163,6 +179,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '44',
 			newValue: 'px',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(
 			await getAttributes('list-paragraph-spacing-general')
@@ -178,6 +196,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '11',
 			newValue: 'px',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			11
@@ -195,6 +215,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '16',
 			newValue: 'vw',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(
 			await getAttributes('list-marker-line-height-general')
@@ -227,6 +249,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '31',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-indent-general')).toStrictEqual(31);
 
 		// List gap
@@ -235,6 +259,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-gap '),
 			newNumber: '21',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
 
@@ -247,6 +273,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '44',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(
 			await getAttributes('list-paragraph-spacing-general')
 		).toStrictEqual(44);
@@ -257,6 +285,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-marker-size '),
 			newNumber: '11',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			11
@@ -271,6 +301,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '46',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(
 			await getAttributes('list-marker-line-height-general')
 		).toStrictEqual(46);
@@ -280,6 +312,8 @@ describe('List in Text-maxi', () => {
 			'.maxi-text-inspector__list-style select'
 		);
 		await textPosition.select('sub');
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-text-position-general')).toStrictEqual(
 			'sub'
@@ -293,6 +327,9 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-start '),
 			newNumber: '-23',
 		});
+
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('listStart')).toStrictEqual(-23);
 
 		// Style
@@ -311,6 +348,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '78',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('listStart')).toStrictEqual(78);
 
 		await editAdvancedNumberControl({
@@ -318,6 +357,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-start '),
 			newNumber: '-4',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStart')).toStrictEqual(4);
 
@@ -333,6 +374,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-start '),
 			newNumber: '-34',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStart')).toStrictEqual(34);
 
@@ -350,11 +393,15 @@ describe('List in Text-maxi', () => {
 		const listType = await page.$('.maxi-text-inspector__list-type select');
 		await listType.select('ul');
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('typeOfList')).toStrictEqual('ul');
 
 		// style default
 		const style = await page.$$('.maxi-text-inspector__list-style select');
 		await style[1].select('circle');
+
+		await page.waitForTimeout(500);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -379,7 +426,7 @@ describe('List in Text-maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('test');
+		await page.keyboard.type('test', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
@@ -408,12 +455,16 @@ describe('List in Text-maxi', () => {
 
 		await modalMock(page, { type: 'list-svg' });
 
+		await page.waitForTimeout(500);
+
 		await editColorControl({
 			page,
 			instance: await page.$('.maxi-accordion-control__item__panel'),
 			paletteStatus: true,
 			colorPalette: 7,
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-palette-color')).toStrictEqual(7);
 
@@ -434,9 +485,11 @@ describe('List in Text-maxi', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await pressKeyWithModifier('shift', 'Enter');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(300);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await page.waitForTimeout(500);
 
 		const accordion = await openSidebarTab(page, 'style', 'list options');
 
@@ -449,6 +502,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '40',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
 			40
 		);
@@ -459,6 +514,8 @@ describe('List in Text-maxi', () => {
 			instance: await accordion.$('.maxi-text-inspector__list-indent'),
 			newNumber: '23',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
 
@@ -507,6 +564,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '4',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			4
 		);
@@ -528,6 +587,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '10',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
 			10
 		);
@@ -538,6 +599,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-indent'),
 			newNumber: '23',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
 
@@ -560,9 +623,13 @@ describe('List in Text-maxi', () => {
 			newNumber: '20',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-marker-height-general')).toStrictEqual(
 			20
 		);
+
+		await page.waitForTimeout(500);
 
 		// Change marker line height
 		await editAdvancedNumberControl({
@@ -572,6 +639,8 @@ describe('List in Text-maxi', () => {
 			),
 			newNumber: '20',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(
 			await getAttributes('list-marker-line-height-general')
@@ -605,6 +674,8 @@ describe('List in Text-maxi', () => {
 			newValue: 'px',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
 			40
 		);
@@ -618,6 +689,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-indent'),
 			newNumber: '23',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
 
@@ -645,6 +718,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '23',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
 
 		// Change marker indent
@@ -653,6 +728,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-marker-indent'),
 			newNumber: '40',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
 			40
@@ -664,6 +741,8 @@ describe('List in Text-maxi', () => {
 			instance: await page.$('.maxi-text-inspector__list-marker-size'),
 			newNumber: '4',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
 			4
@@ -685,6 +764,8 @@ describe('List in Text-maxi', () => {
 			newNumber: '20',
 			newValue: 'em',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(
 			await getAttributes('list-marker-vertical-offset-general')

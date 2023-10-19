@@ -4,13 +4,25 @@
 import { createRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { round, isEqual } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const BlockInserter = loadable(() => import('../../components/block-inserter'));
+const BlockResizer = loadable(() => import('../../components/block-resizer'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
 import RowContext from '../row-maxi/rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { BlockInserter, BlockResizer, Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getColumnSizeStyles } from '../../extensions/styles/helpers';
 import {
 	getGroupAttributes,
@@ -25,12 +37,6 @@ import {
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
 import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import { round, isEqual } from 'lodash';
 
 /**
  * Editor

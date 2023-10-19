@@ -39,7 +39,7 @@ describe('Custom-Css-Control', () => {
 		await page.$eval('.w-tc-editor textarea', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('background: blue');
+		await page.keyboard.type('background: blue', { delay: 350 });
 		await page.waitForTimeout(200);
 
 		// change xs responsive
@@ -80,7 +80,7 @@ describe('Custom-Css-Control', () => {
 			input.focus()
 		);
 
-		await page.keyboard.type('VALIDATE ERROR');
+		await page.keyboard.type('VALIDATE ERROR', { delay: 350 });
 		await page.waitForTimeout(200);
 
 		await accordionPanel.$eval('.maxi-css-code-editor button', button =>

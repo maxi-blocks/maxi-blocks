@@ -7,9 +7,21 @@ import { dispatch, select } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import { floor, isEqual, isNil, uniqueId } from 'lodash';
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import { AdvancedNumberControl, Button, Icon } from '../../../../components';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const Button = loadable(() => import('../../../../components/button'));
+const Icon = loadable(() => import('../../../../components/icon'));
+
 import {
 	getNumCol,
 	getTemplateObject,
@@ -23,12 +35,6 @@ import {
 } from '../../../../extensions/styles';
 import { validateRowColumnsStructure } from '../../../../extensions/repeater';
 import { getBlockPosition } from '../../../../extensions/repeater/utils';
-
-/**
- * External dependencies
- */
-import { floor, isEqual, isNil, uniqueId } from 'lodash';
-import classnames from 'classnames';
 
 /**
  * Styles and icons

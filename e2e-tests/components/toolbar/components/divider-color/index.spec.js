@@ -45,7 +45,7 @@ describe('Divider color from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
 
 		const expectDivider = {
 			'divider-border-palette-color-general': 6,

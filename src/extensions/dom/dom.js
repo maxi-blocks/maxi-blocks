@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -277,75 +276,6 @@ wp.domReady(() => {
 			}
 		});
 	}
-	let shouldSCMigratorRun = true;
-
-	const unsubscribe = subscribe(async () => {
-		if (!shouldSCMigratorRun) {
-			return;
-		}
-
-		shouldSCMigratorRun = false;
-
-		const { receiveMaxiActiveStyleCard, receiveMaxiStyleCards } = select(
-			'maxiBlocks/style-cards'
-		);
-
-		const styleCard = receiveMaxiActiveStyleCard();
-		const styleCards = receiveMaxiStyleCards();
-
-		if (styleCard.value && styleCards) {
-			const { saveSCStyles, saveMaxiStyleCards } = dispatch(
-				'maxiBlocks/style-cards'
-			);
-
-			if (!('gutenberg_blocks_status' in styleCard.value)) {
-				const newStyleCards = {
-					...styleCards,
-					[styleCard.key]: {
-						...styleCard.value,
-						gutenberg_blocks_status: true,
-					},
-				};
-				await saveMaxiStyleCards(newStyleCards, true);
-				updateSCOnEditor(newStyleCards[styleCard.key]);
-
-				// eslint-disable-next-line no-console
-				console.log(
-					'Style Cards gutenberg_blocks_status has been set to default.'
-				);
-			}
-
-			const SCStyles = await apiFetch({
-				path: '/maxi-blocks/v1.0/style-card/',
-				method: 'GET',
-			});
-
-			if (
-				SCStyles &&
-				(!('gutenberg_blocks_status' in styleCard.value) ||
-					styleCard.value.gutenberg_blocks_status) &&
-				[
-					'_maxi_blocks_style_card_styles',
-					'_maxi_blocks_style_card_styles_preview',
-				].some(
-					key =>
-						!SCStyles[key]?.includes('maxi-block--use-sc') ||
-						!SCStyles[key].includes('.comment-reply-title small a')
-				)
-			) {
-				await saveSCStyles(true);
-
-				// eslint-disable-next-line no-console
-				console.log(
-					'Style Cards migrator has been successfully used to update the styles.'
-				);
-			}
-
-			unsubscribe();
-		}
-
-		shouldSCMigratorRun = true;
-	});
 
 	const hideMaxiReusableBlocksPreview = () => {
 		const observer = new MutationObserver(mutationsList => {

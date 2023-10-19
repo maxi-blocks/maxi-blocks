@@ -4,6 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
@@ -12,16 +17,24 @@ import {
 	getIconWithColor,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import {
-	BackgroundControl,
-	BorderControl,
-	BoxShadowControl,
-	IconControl,
-	InfoBox,
-	MarginControl,
-	PaddingControl,
-	TypographyControl,
-} from '../../components';
+
+const BackgroundControl = loadable(() =>
+	import('../../components/background-control')
+);
+const BorderControl = loadable(() => import('../../components/border-control'));
+const BoxShadowControl = loadable(() =>
+	import('../../components/box-shadow-control')
+);
+const IconControl = loadable(() => import('../../components/icon-control'));
+const InfoBox = loadable(() => import('../../components/info-box'));
+const MarginControl = loadable(() => import('../../components/margin-control'));
+const PaddingControl = loadable(() =>
+	import('../../components/padding-control')
+);
+const TypographyControl = loadable(() =>
+	import('../../components/typography-control')
+);
+
 import {
 	getBackgroundStyles,
 	getBorderStyles,

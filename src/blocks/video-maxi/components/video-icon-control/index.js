@@ -2,19 +2,30 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	SelectControl,
-	SettingTabsControl,
-	ColorControl,
-	ToggleSwitch,
-	ResponsiveTabsControl,
-} from '../../../../components';
-import MaxiModal from '../../../../editor/library/modal';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const ResponsiveTabsControl = loadable(() =>
+	import('../../../../components/responsive-tabs-control')
+);
+const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
 import {
 	getAttributeKey,
 	getAttributeValue,

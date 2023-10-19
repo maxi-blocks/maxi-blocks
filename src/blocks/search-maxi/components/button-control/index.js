@@ -4,9 +4,19 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import { SelectControl, TextControl } from '../../../../components';
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const TextControl = loadable(() =>
+	import('../../../../components/text-control')
+);
 
 const ButtonControl = ({
 	buttonContent,

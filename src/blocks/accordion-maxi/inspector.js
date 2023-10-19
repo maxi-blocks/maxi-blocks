@@ -5,22 +5,35 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	SettingTabsControl,
-	AccordionControl,
-	ResponsiveTabsControl,
-} from '../../components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ResponsiveTabsControl = loadable(() =>
+	import('../../components/responsive-tabs-control')
+);
+const AccordionLineControl = loadable(() =>
+	import('./components/accordion-line-control')
+);
+const AccordionSettings = loadable(() =>
+	import('./components/accordion-settings-control')
+);
+const AccordionTitleSettings = loadable(() =>
+	import('./components/accordion-title-control')
+);
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 import { customCss } from './data';
-import {
-	AccordionLineControl,
-	AccordionSettings,
-	AccordionTitleSettings,
-} from './components';
 
 /**
  * Inspector

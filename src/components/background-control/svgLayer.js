@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+
 import MaxiModal from '../../editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';

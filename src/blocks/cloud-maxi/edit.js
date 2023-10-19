@@ -5,15 +5,16 @@ import { Component, RawHTML } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies.
- */
-import MaxiModal from '../../editor/library/modal';
-import { withMaxiProps } from '../../extensions/maxi-block';
-
-/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies.
+ */
+const MaxiModal = loadable(() => import('../../editor/library/modal'));
+import { withMaxiProps } from '../../extensions/maxi-block';
 
 class edit extends Component {
 	render() {

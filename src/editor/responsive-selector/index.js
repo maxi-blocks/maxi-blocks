@@ -7,22 +7,22 @@ import { createBlock } from '@wordpress/blocks';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import Button from '../../components/button';
-import Icon from '../../components/icon';
-import MaxiStyleCardsEditorPopUp from '../style-cards';
-import { setScreenSize } from '../../extensions/styles';
-import CrispChat from '../crisp-chat';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
-
-/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const MaxiStyleCardsEditorPopUp = loadable(() => import('../style-cards'));
+const CrispChat = loadable(() => import('../crisp-chat'));
+import { Button, Icon } from '../../components';
+import { setScreenSize } from '../../extensions/styles';
+import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
 
 /**
  * Styles
@@ -363,6 +363,13 @@ const ResponsiveSelector = props => {
 		if (getIsSiteEditor()) {
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
+
+			if (
+				(postId.includes('single') || postId.includes('blank')) &&
+				postType === 'wp_template'
+			) {
+				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+			}
 
 			if (postType && postId) {
 				goThroughMaxiBlocks(block => {

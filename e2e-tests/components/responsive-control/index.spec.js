@@ -95,7 +95,7 @@ describe('ResponsiveControl', () => {
 		await changeResponsive(page, 's');
 		await input.focus();
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('855');
+		await page.keyboard.type('855', {delay: 350});
 		const breakpointS = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value

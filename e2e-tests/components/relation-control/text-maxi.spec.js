@@ -38,7 +38,7 @@ describe('Text Maxi hover simple actions', () => {
 					.updateBlockAttributes(clientId, { uniqueID: newValue });
 			}
 		});
-		await page.keyboard.type('Testing IB');
+		await page.keyboard.type('Testing IB', { delay: 350 });
 
 		await insertMaxiBlock(page, 'Button Maxi');
 
@@ -67,7 +67,7 @@ describe('Text Maxi hover simple actions', () => {
 		const textControls = await page.$$('.maxi-text-control__input');
 		await textControls[1].focus();
 
-		await page.keyboard.type('Test');
+		await page.keyboard.type('Test', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		let selectControls = await page.$$('.maxi-select-control__input');
@@ -151,7 +151,7 @@ describe('Text Maxi hover simple actions', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family',
 			input => input.click()
 		);
-		await page.keyboard.type('montserrat');
+		await page.keyboard.type('montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		await editColorControl({

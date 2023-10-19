@@ -34,7 +34,6 @@ const goThroughMaxiBlocks = (
 					'wp_template_part',
 					createTemplatePartId(theme, slug)
 				);
-
 				if (blocks?.length) {
 					innerBlocks = blocks;
 				}

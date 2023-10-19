@@ -7,40 +7,46 @@ import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { createRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isEmpty, isNil, isNumber, round, toNumber, uniqueId } from 'lodash';
+import DOMPurify from 'dompurify';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const BlockResizer = loadable(() => import('../../components/block-resizer'));
+const Button = loadable(() => import('../../components/button'));
+const HoverPreview = loadable(() => import('../../components/hover-preview'));
+const Placeholder = loadable(() => import('../../components/placeholder'));
+const RawHTML = loadable(() => import('../../components/raw-html'));
+const MaxiPopoverButton = loadable(() =>
+	import('../../components/maxi-popover-button')
+);
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
+const CaptionToolbar = loadable(() =>
+	import('../../components/toolbar/captionToolbar')
+);
 import getStyles from './styles';
-import Inspector from './inspector';
 import {
 	getAttributeValue,
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import {
-	BlockResizer,
-	Button,
-	HoverPreview,
-	Toolbar,
-	Placeholder,
-	RawHTML,
-	MaxiPopoverButton,
-} from '../../components';
 import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
-import CaptionToolbar from '../../components/toolbar/captionToolbar';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import { isEmpty, isNil, isNumber, round, toNumber, uniqueId } from 'lodash';
-import DOMPurify from 'dompurify';
 
 /**
  * Icons

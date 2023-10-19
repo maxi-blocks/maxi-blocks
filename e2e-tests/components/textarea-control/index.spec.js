@@ -23,6 +23,8 @@ describe('TextareaControl', () => {
 			'hover effect'
 		);
 
+		await page.waitForTimeout(500);
+
 		await accordionPanel.$$eval(
 			'.maxi-hover-effect-control .maxi-settingstab-control button',
 			buttons => buttons[2].click()
@@ -34,7 +36,9 @@ describe('TextareaControl', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.press('Backspace');
-		await page.keyboard.type('Testing everything works correctly!');
+		await page.keyboard.type('Testing everything works correctly!', {
+			delay: 350,
+		});
 
 		const expectText = await page.$eval(
 			'.maxi-hover-effect-control .maxi-base-control__field textarea',

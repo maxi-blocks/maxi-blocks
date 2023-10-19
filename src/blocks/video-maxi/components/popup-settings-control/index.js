@@ -2,16 +2,22 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import VideoIconControl from '../video-icon-control';
-import {
-	SelectControl,
-	ColorControl,
-	AspectRatioControl,
-} from '../../../../components';
+
+const VideoIconControl = loadable(() => import('../video-icon-control'));
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const AspectRatioControl = loadable(() =>
+	import('../../../../components/aspect-ratio-control')
+);
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

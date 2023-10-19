@@ -75,6 +75,8 @@ const LibraryToolbar = props => {
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 	const [userEmail, setUserEmail] = useState(false);
+	const [clicked, setClicked] = useState(false);
+	const [clickCount, setClickCount] = useState(0);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -395,10 +397,7 @@ const LibraryToolbar = props => {
 		};
 	});
 
-	const usernameClasses = classnames(
-		'maxi-username',
-		isValidEmail(userName) && 'maxi-username__hide'
-	);
+	const usernameClasses = classnames('maxi-username');
 
 	const manageSessions = () => {
 		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
@@ -494,11 +493,21 @@ const LibraryToolbar = props => {
 						{__('Signed in: ', 'maxi-blocks')}
 						<span
 							className={usernameClasses}
+							title={
+								clickCount % 2 !== 0
+									? __('Click to hide', 'maxi-blocks')
+									: __('Click to show', 'maxi-blocks')
+							}
 							onClick={event => {
-								console.log('click');
+								setClickCount(prevCount => prevCount + 1);
+								setClicked(prevCount => prevCount % 2 === 0);
 							}}
 						>
-							{userName}
+							{isValidEmail(userName)
+								? clickCount % 2 !== 0
+									? userName
+									: '******@***.***'
+								: userName}
 						</span>
 					</h5>
 					<Button

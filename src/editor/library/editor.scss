@@ -518,13 +518,6 @@
 				margin-right: 10px;
 			}
 		}
-		.maxi-username__hide {
-			filter: blur(4px);
-			transition: all 0.3s;
-		}
-		.maxi-username__hide:focus {
-			filter: blur(0);
-		}
 	}
 
 	.maxi-cloud-container {

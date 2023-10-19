@@ -1,13 +1,9 @@
 import updateSCOnEditor from '../updateSCOnEditor';
 import getActiveStyleCard from '../getActiveStyleCard';
-import {
-	receiveMaxiStyleCards,
-	sendMaxiStyleCards,
-	saveMaxiStyleCards,
-} from './actions';
+import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
 import { getActiveColourFromSC } from '../../../editor/style-cards/utils';
 
-import { isEmpty, map } from 'lodash';
+import { isEmpty } from 'lodash';
 import { dispatch } from '@wordpress/data';
 
 const resolvers = {

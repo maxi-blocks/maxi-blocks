@@ -4,10 +4,21 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const BoxShadowControl = loadable(() =>
+	import('../../components/box-shadow-control')
+);
+const DividerControl = loadable(() =>
+	import('../../components/divider-control')
+);
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { BoxShadowControl, DividerControl } from '../../components';
 import {
 	getBoxShadowStyles,
 	getDividerStyles,
@@ -18,11 +29,6 @@ import {
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 import { getPaletteAttributes } from '../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
 
 /**
  * Classnames

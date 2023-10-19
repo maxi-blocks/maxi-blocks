@@ -56,7 +56,8 @@ const editAxisControl = async ({
 			);
 		}
 		// Ensure is a number
-		if (!isNaN(+newValue)) await page.keyboard.type(newValue);
+		if (!isNaN(+newValue))
+			await page.keyboard.type(newValue, { delay: 350 });
 	}
 
 	if (resetAllAfter)

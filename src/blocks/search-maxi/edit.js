@@ -4,20 +4,25 @@
 import { useEffect, useState } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import Inspector from './inspector';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar, RawHTML } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getIconPositionClass } from '../../extensions/styles';
-import getStyles from './styles';
-import { prefixes, copyPasteMapping } from './data';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Inspector = loadable(() => import('./inspector'));
+const RawHTML = loadable(() => import('../../components/raw-html'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getIconPositionClass } from '../../extensions/styles';
+import getStyles from './styles';
+import { prefixes, copyPasteMapping } from './data';
 
 /**
  * Search block

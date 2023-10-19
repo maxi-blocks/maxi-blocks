@@ -34,7 +34,7 @@ describe('Context Loop', () => {
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
-		await page.keyboard.type('Page CL test');
+		await page.keyboard.type('Page CL test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');

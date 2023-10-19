@@ -5,19 +5,30 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const AspectRatioControl = loadable(() =>
+	import('../../../../components/aspect-ratio-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const TextControl = loadable(() =>
+	import('../../../../components/text-control')
+);
 import {
 	getParsedVideoUrl,
 	parseVideo,
 	videoUrlRegex,
 } from '../../../../extensions/video';
-import {
-	AdvancedNumberControl,
-	AspectRatioControl,
-	SettingTabsControl,
-	TextControl,
-} from '../../../../components';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 const VideoControl = props => {

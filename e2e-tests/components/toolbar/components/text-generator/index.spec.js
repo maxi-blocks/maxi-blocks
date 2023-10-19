@@ -33,7 +33,7 @@ describe('Text generator', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
+		await page.keyboard.type('1', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		// sentences
@@ -43,7 +43,7 @@ describe('Text generator', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1');
+		await page.keyboard.type('1', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		await page.$eval(

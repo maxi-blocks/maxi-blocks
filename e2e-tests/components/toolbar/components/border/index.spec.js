@@ -40,7 +40,7 @@ describe('Border from Toolbar', () => {
 			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('59');
+		await page.keyboard.type('59', { delay: 350 });
 
 		// change color
 		await page.$eval(
@@ -55,7 +55,7 @@ describe('Border from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('66');
+		await page.keyboard.type('66', { delay: 350 });
 
 		const expectBorder = {
 			'button-border-style-general': 'solid',

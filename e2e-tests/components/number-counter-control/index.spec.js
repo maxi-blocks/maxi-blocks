@@ -59,12 +59,14 @@ describe('NumberCounterControl', () => {
 		// Start Number
 		await inputs[2].focus();
 		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('20');
+		await page.waitForTimeout(500);
+		await page.keyboard.type('20', { delay: 350 });
 
 		// End Number
 		await inputs[3].focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('50', { delay: 350 });
+		await page.waitForTimeout(500);
 
 		// Duration
 		await inputs[4].focus();
@@ -73,12 +75,14 @@ describe('NumberCounterControl', () => {
 		// Stroke
 		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('50');
+		await page.waitForTimeout(350);
+		await page.keyboard.type('50', { delay: 350 });
 
 		// Title Font Size
 		await inputs[6].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('19');
+		await page.waitForTimeout(350);
+		await page.keyboard.type('19', { delay: 350 });
 
 		// expect
 		const numberResult = await getAttributes([
@@ -173,7 +177,7 @@ describe('NumberCounterControl', () => {
 			'.maxi-number-counter-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
@@ -283,7 +287,7 @@ describe('NumberCounterControl', () => {
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue.innerHTML
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(400);
 
 		expect(typographyInput).toStrictEqual('Montserrat');
 
@@ -294,7 +298,7 @@ describe('NumberCounterControl', () => {
 			input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('Arial');
+		await page.keyboard.type('Arial', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		const typographyInputS = await page.$eval(
@@ -335,9 +339,11 @@ describe('NumberCounterControl', () => {
 
 		// Text color
 		await colorsS[0].$$eval('button', click => click[4].click());
+		await page.waitForTimeout(400);
 
 		// Circle Bar Color
 		await colorsS[2].$$eval('button', click => click[2].click());
+		await page.waitForTimeout(400);
 
 		// expect
 		const colorResult = await getAttributes([

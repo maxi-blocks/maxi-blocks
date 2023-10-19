@@ -31,20 +31,24 @@ describe('BackgroundControl', () => {
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
 
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>
 			input.focus()
 		);
 
-		await page.keyboard.type('55');
+		await page.keyboard.type('55', { delay: 350 });
+
+		await page.waitForTimeout(1000);
 
 		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>
 			input.focus()
 		);
-		await page.keyboard.type('77');
+		await page.keyboard.type('77', { delay: 350 });
+
+		await page.waitForTimeout(500);
 
 		// Add loop
 		await page.$eval('.video-loop input', button => button.click());
@@ -61,7 +65,9 @@ describe('BackgroundControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
+
+		await page.waitForTimeout(350);
 
 		await sizeAndPositionChecker({ page });
 
@@ -88,7 +94,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('32');
+		await page.keyboard.type('32', { delay: 350 });
 
 		// Expect s
 		const backgroundOpacityS = await page.$eval(
@@ -157,7 +163,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('82');
+		await page.keyboard.type('82', { delay: 350 });
 
 		await sizeAndPositionChecker({ page, isHover: true });
 
@@ -184,7 +190,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await page.keyboard.type('45', { delay: 350 });
 
 		// Expect s
 		const backgroundOpacityS = await page.$eval(

@@ -30,7 +30,7 @@ describe('GradientControl', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('50');
+		await page.keyboard.type('50', { delay: 350 });
 
 		const selector = await page.$(
 			'.maxi-gradient-control .components-custom-gradient-picker select'

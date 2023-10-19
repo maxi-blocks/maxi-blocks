@@ -41,6 +41,8 @@ describe('Advanced Number Control', () => {
 			newNumber: '31',
 		});
 
+		await page.waitForTimeout(500);
+
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(30);
 
 		// Min value
@@ -49,12 +51,7 @@ describe('Advanced Number Control', () => {
 			select => select.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		// TODO: AdvancedNumberControl doesn't allow to empty the input and write '-' (minus),
-		// so, made a cheat to test negative values
-		await page.keyboard.type('0');
-		await page.keyboard.press('ArrowDown');
-		await pressKeyTimes('Backspace', 2);
-		await page.keyboard.type('4');
+		await page.keyboard.type('-4', { delay: 350 });
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-4);
 

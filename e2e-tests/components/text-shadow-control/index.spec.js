@@ -69,17 +69,23 @@ describe('TextShadowControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('34');
 
+		await page.waitForTimeout(500);
+
 		// 	change Y
 		await editTextShadow[2].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12');
 
+		await page.waitForTimeout(500);
+
 		// change Blur
 		await editTextShadow[3].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('54');
+
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('text-shadow-general')).toStrictEqual(
 			'34px 12px 54px rgba(var(--maxi-light-color-8,150,176,203),0.21)'
@@ -124,11 +130,15 @@ describe('TextShadowControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('67');
 
+		await page.waitForTimeout(350);
+
 		// 	change Y
 		await editTextShadow[2].$eval('input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('15');
+
+		await page.waitForTimeout(350);
 
 		// change Blur
 		await editTextShadow[3].$eval('input', input => input.focus());
@@ -136,14 +146,20 @@ describe('TextShadowControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('48');
 
+		await page.waitForTimeout(350);
+
 		// expect in Xs
 		await changeResponsive(page, 'xs');
+
+		await page.waitForTimeout(300);
 
 		// S
 		const xsSValue = await page.$$eval(
 			'.maxi-textshadow-control .maxi-advanced-number-control input',
 			input => input[2].value
 		);
+		await page.waitForTimeout(300);
+
 		expect(xsSValue).toStrictEqual('67');
 
 		// Y
@@ -152,6 +168,8 @@ describe('TextShadowControl', () => {
 			input => input[4].value
 		);
 		expect(xsYValue).toStrictEqual('15');
+
+		await page.waitForTimeout(500);
 
 		// Blur
 		const xsBlurValue = await page.$$eval(

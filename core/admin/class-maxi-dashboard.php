@@ -1273,6 +1273,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'boolean',
                 'default' => false,
             );
+            $args_true = array(
+                'type' => 'boolean',
+                'default' => true,
+            );
             $args_rollback = array(
                 'type' => 'string',
                 'default' => 'current',
@@ -1306,7 +1310,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_breakpoints' => null,
                 'maxi_rollback_version' => $args_rollback,
                 'maxi_sc_gutenberg_blocks' => $args,
-                'maxi_show_indicators' => $args,
+                'maxi_show_indicators' => $args_true,
             );
 
             // Register the settings and set default values if they don't exist

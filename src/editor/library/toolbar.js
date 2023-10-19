@@ -75,7 +75,6 @@ const LibraryToolbar = props => {
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 	const [userEmail, setUserEmail] = useState(false);
-	const [clicked, setClicked] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
 
 	const client = new TypesenseSearchClient({
@@ -500,7 +499,6 @@ const LibraryToolbar = props => {
 							}
 							onClick={event => {
 								setClickCount(prevCount => prevCount + 1);
-								setClicked(prevCount => prevCount % 2 === 0);
 							}}
 						>
 							{isValidEmail(userName)

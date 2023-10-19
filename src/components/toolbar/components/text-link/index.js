@@ -72,11 +72,11 @@ const LinkContent = props => {
 					);
 				});
 			});
-		const end = formatValue.end || (formatValue?.formats?.length || 0) + 1;
+		const end = formatValue?.end || (formatValue?.formats?.length || 0) + 1;
 		const start =
-			isWholeLink && formatValue.start === formatValue.end
+			isWholeLink && formatValue?.start === formatValue?.end
 				? 0
-				: formatValue.start;
+				: formatValue?.start;
 		const formatOptions = getActiveFormat(
 			{ ...formatValue, start, end },
 			formatName
@@ -263,13 +263,21 @@ const TextLink = props => {
 		linkSettings,
 	} = props;
 
-	const { formatValue } = useContext(textContext);
+	let formatValue;
+
+	if (textContext) {
+		const contextValue = useContext(textContext);
+		formatValue = contextValue?.formatValue ? contextValue?.formatValue : {};
+	  } else {
+		formatValue = {};
+	  }
 
 	const hasLink =
+		!isEmpty(formatValue) &&
 		!isEmpty(formatValue?.formats) &&
 		formatValue?.formats?.some(formatArray => {
 			return formatArray.some(format => {
-				return !isEmpty(format.attributes.url);
+				return !isEmpty(format?.attributes?.url);
 			});
 		});
 

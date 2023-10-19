@@ -19,7 +19,7 @@ import {
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '../../components';
-import { isValidEmail, getSessionsCount } from '../auth';
+import { isValidEmail } from '../auth';
 
 /**
  * External dependencies
@@ -494,15 +494,6 @@ const LibraryToolbar = props => {
 						{__('Signed in: ', 'maxi-blocks')}
 						<span className={usernameClasses}>{userName}</span>
 					</h5>
-					<Button
-						key='maxi-cloud-toolbar__button__manage-sessions'
-						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
-						label={__('Manage sessions', 'maxi-blocks')}
-						onClick={() => manageSessions()}
-					>
-						{__('Manage sessions', 'maxi-blocks')}{' '}
-						{getSessionsCount()}/5
-					</Button>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'

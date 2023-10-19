@@ -427,7 +427,7 @@ describe('List in Text-maxi', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('test', { delay: 350 });
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
 
@@ -507,6 +507,8 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
 			40
 		);
+
+		await page.waitForTimeout(500);
 
 		// Change text indent
 		await editAdvancedNumberControl({

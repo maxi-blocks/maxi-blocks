@@ -396,11 +396,6 @@ const LibraryToolbar = props => {
 		};
 	});
 
-	const manageSessions = () => {
-		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
-		window.open(url, '_blank')?.focus();
-	};
-
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -543,16 +538,8 @@ const LibraryToolbar = props => {
 			{!isMaxiProActive && userName && !isMaxiProExpired && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						<span className={usernameClasses}>{userName}</span>
+						<span className='maxi-username'>{userName}</span>
 					</h5>
-					<Button
-						key='maxi-cloud-toolbar__button__manage-sessions'
-						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
-						label={__('Maximum sessions 5/5', 'maxi-blocks')}
-						onClick={() => manageSessions()}
-					>
-						{__('Maximum sessions 5/5', 'maxi-blocks')}
-					</Button>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'

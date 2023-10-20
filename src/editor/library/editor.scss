@@ -1736,9 +1736,6 @@
 			&__button-connect-pro {
 				right: 100px;
 			}
-			&__button-manage-sessions {
-				margin-right: -10px;
-			}
 			&__text_pro {
 				margin: 0;
 				.maxi-username:hover {
@@ -2062,7 +2059,6 @@
 						left: 37px;
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							white-space: nowrap;
 						}
@@ -2132,7 +2128,6 @@
 						}
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							padding: 6px;
 						}
@@ -2245,7 +2240,6 @@
 						margin-right: -5px;
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							font-size: 11px;
 						}
@@ -2253,11 +2247,6 @@
 					&__text_pro {
 						font-size: 12px;
 						line-height: 16px;
-					}
-					&__button {
-						&-manage-sessions {
-							margin-right: -7px;
-						}
 					}
 				}
 			}
@@ -2488,8 +2477,7 @@
 						}
 					}
 					&__button {
-						&-go-pro,
-						&-manage-sessions {
+						&-go-pro {
 							font-size: 10px;
 							padding: 3px;
 						}

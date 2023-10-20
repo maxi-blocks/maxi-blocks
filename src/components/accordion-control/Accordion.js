@@ -85,25 +85,6 @@ const Accordion = props => {
 					}
 				}
 
-				console.log(items);
-				console.log('isActiveTab: ', isActiveTab);
-				console.log(
-					'getIsActiveTab: ',
-					getIsActiveTab(
-						getMaxiAttrsFromChildren({
-							items: itemsIndicators,
-							blockName:
-								blockName ??
-								getBlockName(getSelectedBlockClientId()),
-						}),
-						item.breakpoint,
-						item.extraIndicators,
-						item.extraIndicatorsResponsive,
-						item.ignoreIndicator,
-						item.ignoreIndicatorGroups
-					)
-				);
-
 				const classesItemButton = classnames(
 					'maxi-accordion-control__item__button',
 					(item.indicatorProps

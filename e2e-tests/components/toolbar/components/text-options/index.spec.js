@@ -35,7 +35,7 @@ describe('Text options', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('19', { delay: 350 });
+		await page.keyboard.type('19');
 
 		await page.waitForTimeout(1000);
 

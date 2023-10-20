@@ -396,8 +396,6 @@ const LibraryToolbar = props => {
 		};
 	});
 
-	const usernameClasses = classnames('maxi-username');
-
 	const manageSessions = () => {
 		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
 		window.open(url, '_blank')?.focus();
@@ -491,7 +489,7 @@ const LibraryToolbar = props => {
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
 						<span
-							className={usernameClasses}
+							className='maxi-username'
 							title={
 								clickCount % 2 !== 0
 									? __('Click to hide', 'maxi-blocks')

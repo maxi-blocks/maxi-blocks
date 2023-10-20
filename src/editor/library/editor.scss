@@ -1741,6 +1741,9 @@
 			}
 			&__text_pro {
 				margin: 0;
+				.maxi-username:hover {
+					cursor: pointer;
+				}
 			}
 			&__input {
 				width: 300px;

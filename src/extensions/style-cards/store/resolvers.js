@@ -27,12 +27,6 @@ const resolvers = {
 					}
 				}
 			}
-			if (shouldSCMigratorRun) {
-				const { saveMaxiStyleCards } = dispatch(
-					'maxiBlocks/style-cards'
-				);
-				saveMaxiStyleCards(updatedMaxiStyleCards, true);
-			}
 
 			const currentSC = shouldSCMigratorRun
 				? getActiveStyleCard(updatedMaxiStyleCards)

@@ -123,3 +123,18 @@ export const getSVGListStyle = svg => {
 
 	return cleanedSVG.replace(/[\r\n%#()<>?[\\\]^`{|}]/g, encodeURIComponent);
 };
+
+export const calculateTextWidth = (
+	content,
+	fontSize = '1em',
+	fontFamily = 'Roboto',
+	fontWeight = 400
+) => {
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	ctx.font = `normal ${fontWeight} ${fontSize} ${fontFamily}`;
+
+	const textWidth = ctx.measureText(content || '1').width;
+
+	return textWidth;
+};

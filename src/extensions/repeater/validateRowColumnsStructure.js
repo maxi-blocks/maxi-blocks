@@ -150,9 +150,19 @@ const replaceColumnInnerBlocks = (
 	replaceInnerBlocks(columnClientId, newInnerBlocks, false);
 };
 
-const validateRowColumnsStructure = (
+/**
+ * Transforms all columns in row to have same inner blocks structure and attributes
+ *
+ * @param {string}                rowClientId
+ * @param {Object<string, Array>} innerBlocksPositions
+ * @param {Function}              differentColumnsStructureCallback runs when columns have different structure, if returns false - columns won't be transformed
+ * @param {string}                rawColumnToValidateByClientId     column to validate by, first column by default
+ * @returns
+ */
+const validateRowColumnsStructure = async (
 	rowClientId,
 	innerBlocksPositions,
+	differentColumnsStructureCallback,
 	rawColumnToValidateByClientId
 ) => {
 	const {
@@ -163,7 +173,7 @@ const validateRowColumnsStructure = (
 	let childColumns = getChildColumns(rowClientId, true);
 
 	if (isEmpty(childColumns)) {
-		return;
+		return null;
 	}
 
 	let columnToValidateByIndex = 0;
@@ -179,6 +189,115 @@ const validateRowColumnsStructure = (
 		  })
 		: childColumns[0];
 	const columnToValidateByClientId = columnToValidateBy.clientId;
+
+	// Make sure that column to validate by is first in childColumns array
+	if (columnToValidateBy.clientId !== childColumns[0].clientId) {
+		childColumns = childColumns.filter(
+			column => column.clientId !== columnToValidateBy.clientId
+		);
+		childColumns.unshift(columnToValidateBy);
+	}
+
+	const columnToValidateByStructure = [];
+
+	const pushToStructure = (block, structureArray) => {
+		if (DISALLOWED_BLOCKS.includes(block.name)) {
+			markNextChangeAsNotPersistent();
+			removeBlock(block.clientId, false);
+		} else {
+			structureArray.push(block.name);
+		}
+	};
+
+	let proceedTransformingColumns = null;
+
+	await goThroughColumns(childColumns, null, async column => {
+		if (proceedTransformingColumns === false) {
+			return;
+		}
+
+		// we can't just compare inner blocks, because if they different attributes - it's ok
+		// so we need to compare only block names
+		const columnInnerBlocks = column.innerBlocks;
+
+		const isColumnToValidateBy =
+			column.clientId === columnToValidateBy.clientId;
+
+		if (!isColumnToValidateBy && columnInnerBlocks.length === 0) {
+			replaceColumnInnerBlocks(
+				column.clientId,
+				columnToValidateByClientId,
+				columnToValidateByIndex,
+				innerBlocksPositions
+			);
+			return;
+		}
+
+		const columnStructure = [];
+
+		goThroughMaxiBlocks(
+			block => {
+				if (isColumnToValidateBy) {
+					pushToStructure(block, columnToValidateByStructure);
+
+					return false;
+				}
+
+				pushToStructure(block, columnStructure);
+
+				return null;
+			},
+			false,
+			columnInnerBlocks
+		);
+
+		if (isColumnToValidateBy) {
+			return;
+		}
+
+		if (!isEqual(columnToValidateByStructure, columnStructure)) {
+			if (proceedTransformingColumns === null) {
+				proceedTransformingColumns =
+					!differentColumnsStructureCallback ||
+					(await differentColumnsStructureCallback());
+			}
+
+			if (proceedTransformingColumns === false) {
+				return;
+			}
+
+			replaceColumnInnerBlocks(
+				column.clientId,
+				columnToValidateByClientId,
+				columnToValidateByIndex,
+				innerBlocksPositions
+			);
+			return;
+		}
+
+		validateAttributes(
+			column,
+			column,
+			innerBlocksPositions,
+			columnToValidateByIndex
+		);
+
+		goThroughMaxiBlocks(
+			block =>
+				validateAttributes(
+					block,
+					column,
+					innerBlocksPositions,
+					columnToValidateByIndex
+				),
+			false,
+			columnInnerBlocks
+		);
+	});
+
+	if (proceedTransformingColumns === false) {
+		return false;
+	}
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -225,94 +344,7 @@ const validateRowColumnsStructure = (
 		);
 	}
 
-	// Make sure that column to validate by is first in childColumns array
-	if (columnToValidateBy.clientId !== childColumns[0].clientId) {
-		childColumns = childColumns.filter(
-			column => column.clientId !== columnToValidateBy.clientId
-		);
-		childColumns.unshift(columnToValidateBy);
-	}
-
-	const columnToValidateByStructure = [];
-
-	const pushToStructure = (block, structureArray) => {
-		if (DISALLOWED_BLOCKS.includes(block.name)) {
-			markNextChangeAsNotPersistent();
-			removeBlock(block.clientId, false);
-		} else {
-			structureArray.push(block.name);
-		}
-	};
-
-	goThroughColumns(childColumns, null, column => {
-		// we can't just compare inner blocks, because if they different attributes - it's ok
-		// so we need to compare only block names
-		const columnInnerBlocks = column.innerBlocks;
-
-		const isColumnToValidateBy =
-			column.clientId === columnToValidateBy.clientId;
-
-		if (!isColumnToValidateBy && columnInnerBlocks.length === 0) {
-			return replaceColumnInnerBlocks(
-				column.clientId,
-				columnToValidateByClientId,
-				columnToValidateByIndex,
-				innerBlocksPositions
-			);
-		}
-
-		const columnStructure = [];
-
-		goThroughMaxiBlocks(
-			block => {
-				if (isColumnToValidateBy) {
-					pushToStructure(block, columnToValidateByStructure);
-
-					return false;
-				}
-
-				pushToStructure(block, columnStructure);
-
-				return null;
-			},
-			false,
-			columnInnerBlocks
-		);
-
-		if (isColumnToValidateBy) {
-			return null;
-		}
-
-		if (!isEqual(columnToValidateByStructure, columnStructure)) {
-			return replaceColumnInnerBlocks(
-				column.clientId,
-				columnToValidateByClientId,
-				columnToValidateByIndex,
-				innerBlocksPositions
-			);
-		}
-
-		validateAttributes(
-			column,
-			column,
-			innerBlocksPositions,
-			columnToValidateByIndex
-		);
-
-		goThroughMaxiBlocks(
-			block =>
-				validateAttributes(
-					block,
-					column,
-					innerBlocksPositions,
-					columnToValidateByIndex
-				),
-			false,
-			columnInnerBlocks
-		);
-
-		return null;
-	});
+	return true;
 };
 
 export { validateAttributes };

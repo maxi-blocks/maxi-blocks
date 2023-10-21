@@ -198,7 +198,7 @@ const validateRowColumnsStructure = async (
 		childColumns.unshift(columnToValidateBy);
 	}
 
-	const columnToValidateByStructure = [];
+	const columnsStructure = {};
 
 	const pushToStructure = (block, structureArray) => {
 		if (DISALLOWED_BLOCKS.includes(block.name)) {
@@ -233,20 +233,11 @@ const validateRowColumnsStructure = async (
 			return;
 		}
 
-		const columnStructure = [];
+		columnsStructure[column.clientId] = [];
+		const columnStructure = columnsStructure[column.clientId];
 
 		goThroughMaxiBlocks(
-			block => {
-				if (isColumnToValidateBy) {
-					pushToStructure(block, columnToValidateByStructure);
-
-					return false;
-				}
-
-				pushToStructure(block, columnStructure);
-
-				return null;
-			},
+			block => pushToStructure(block, columnStructure),
 			false,
 			columnInnerBlocks
 		);
@@ -255,17 +246,30 @@ const validateRowColumnsStructure = async (
 			return;
 		}
 
-		if (!isEqual(columnToValidateByStructure, columnStructure)) {
-			if (proceedTransformingColumns === null) {
-				proceedTransformingColumns =
-					!differentColumnsStructureCallback ||
-					(await differentColumnsStructureCallback());
-			}
+		if (
+			proceedTransformingColumns === null &&
+			!isEqual(
+				columnsStructure[columnToValidateByClientId],
+				columnStructure
+			)
+		) {
+			proceedTransformingColumns =
+				!differentColumnsStructureCallback ||
+				(await differentColumnsStructureCallback());
+		}
+	});
 
-			if (proceedTransformingColumns === false) {
-				return;
-			}
+	if (proceedTransformingColumns === false) {
+		return false;
+	}
 
+	await goThroughColumns(childColumns, null, async column => {
+		if (
+			!isEqual(
+				columnsStructure[columnToValidateByClientId],
+				columnsStructure[column.clientId]
+			)
+		) {
 			replaceColumnInnerBlocks(
 				column.clientId,
 				columnToValidateByClientId,
@@ -291,13 +295,9 @@ const validateRowColumnsStructure = async (
 					columnToValidateByIndex
 				),
 			false,
-			columnInnerBlocks
+			column.innerBlocks
 		);
 	});
-
-	if (proceedTransformingColumns === false) {
-		return false;
-	}
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

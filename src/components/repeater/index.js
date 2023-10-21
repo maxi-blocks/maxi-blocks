@@ -75,7 +75,7 @@ const Repeater = ({
 			)}
 			<DialogBox
 				message={__(
-					'Columns are not uniformly structured. To standardize, all columns will be updated to match the first one. Continue?',
+					'Columns are not uniformly structured. To standardize, all columns will be updated to match the first one.',
 					'maxi-blocks'
 				)}
 				cancelLabel={__('Cancel', 'maxi-blocks')}

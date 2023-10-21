@@ -173,7 +173,7 @@ const validateRowColumnsStructure = async (
 	let childColumns = getChildColumns(rowClientId, true);
 
 	if (isEmpty(childColumns)) {
-		return null;
+		return true;
 	}
 
 	let columnToValidateByIndex = 0;

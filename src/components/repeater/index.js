@@ -42,7 +42,7 @@ const Repeater = ({
 					className={`${classes}__toggle`}
 					label={__('Enable repeater', 'maxi-blocks')}
 					selected={repeaterStatus}
-					onChange={val => {
+					onChange={async val => {
 						if (!val) {
 							onChange({
 								[getAttributeKey('repeater-status')]: val,
@@ -53,22 +53,24 @@ const Repeater = ({
 							const newInnerBlocksPositions =
 								updateInnerBlocksPositions();
 
-							validateRowColumnsStructure(
-								clientId,
-								newInnerBlocksPositions,
-								async () =>
-									new Promise(resolve => {
-										setIsModalHidden(false);
-										setResolveConfirmation(() => resolve);
-									})
-							).then(isStructureValidated => {
-								if (isStructureValidated) {
-									onChange({
-										[getAttributeKey('repeater-status')]:
-											val,
-									});
-								}
-							});
+							const isStructureValidated =
+								await validateRowColumnsStructure(
+									clientId,
+									newInnerBlocksPositions,
+									async () =>
+										new Promise(resolve => {
+											setIsModalHidden(false);
+											setResolveConfirmation(
+												() => resolve
+											);
+										})
+								);
+
+							if (isStructureValidated) {
+								onChange({
+									[getAttributeKey('repeater-status')]: val,
+								});
+							}
 						}
 					}}
 				/>

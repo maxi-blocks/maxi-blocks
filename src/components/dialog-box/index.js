@@ -26,9 +26,14 @@ const DialogBox = props => {
 		buttonDisabled,
 		buttonClassName,
 		buttonChildren,
+		isHidden: isHiddenProp,
+		setIsHidden: setIsHiddenProp,
 	} = props;
 
-	const [isHidden, setIsHidden] = useState(true);
+	const [isHiddenState, setIsHiddenState] = useState(true);
+
+	const isHidden = isHiddenProp ?? isHiddenState;
+	const setIsHidden = setIsHiddenProp ?? setIsHiddenState;
 
 	const getContainer = () =>
 		!getIsSiteEditor()
@@ -36,15 +41,17 @@ const DialogBox = props => {
 			: document.getElementById('site-editor');
 
 	return isHidden ? (
-		<Button
-			disabled={buttonDisabled}
-			className={buttonClassName}
-			onClick={() => {
-				setIsHidden(false);
-			}}
-		>
-			{buttonChildren}
-		</Button>
+		buttonChildren ? (
+			<Button
+				disabled={buttonDisabled}
+				className={buttonClassName}
+				onClick={() => {
+					setIsHidden(false);
+				}}
+			>
+				{buttonChildren}
+			</Button>
+		) : null
 	) : (
 		createPortal(
 			<div className='maxi-dialog-box'>

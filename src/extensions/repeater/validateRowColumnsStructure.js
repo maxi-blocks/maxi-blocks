@@ -157,7 +157,7 @@ const replaceColumnInnerBlocks = (
  * @param {Object<string, Array>} innerBlocksPositions
  * @param {Function}              differentColumnsStructureCallback runs when columns have different structure, if returns false - columns won't be transformed
  * @param {string}                rawColumnToValidateByClientId     column to validate by, first column by default
- * @returns
+ * @returns {Promise<boolean>}    true if columns were transformed, false if not
  */
 const validateRowColumnsStructure = async (
 	rowClientId,

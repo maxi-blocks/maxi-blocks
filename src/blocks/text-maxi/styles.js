@@ -31,13 +31,14 @@ import {
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
+import { getTypographyValue } from '../../extensions/text/formats';
+import { calculateTextWidth, getSVGListStyle } from './utils';
 import data from './data';
-import { getSVGListStyle } from './utils';
 
 /**
  * External dependencies
  */
-import { isNil, isNumber } from 'lodash';
+import { isNil, isNumber, round } from 'lodash';
 import parse from 'html-react-parser';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -46,6 +47,61 @@ const getIsTextSource = (listStyle, listStyleCustom) =>
 	listStyle === 'custom' &&
 	!listStyleCustom?.includes('</svg>') &&
 	!isURL(listStyleCustom);
+
+const getIsTextSourceAndStyleCard = (listStyle, listStyleCustom) => {
+	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
+	const styleCard =
+		isTextSource &&
+		select('maxiBlocks/style-cards').receiveMaxiSelectedStyleCard()?.value;
+
+	return { isTextSource, styleCard };
+};
+
+const getTextWidth = (sizeNum, sizeUnit, props, breakpoint, styleCard) => {
+	const { blockStyle, listStyleCustom } = props;
+
+	const fontSize =
+		sizeUnit === 'em'
+			? `${
+					sizeNum *
+					getTypographyValue({
+						prop: 'font-size',
+						breakpoint,
+						typography: props,
+						blockStyle,
+						styleCard,
+					})
+			  }${getTypographyValue({
+					prop: 'font-size-unit',
+					breakpoint,
+					typography: props,
+					blockStyle,
+					styleCard,
+			  })}`
+			: `${sizeNum}${sizeUnit}`;
+
+	return `${round(
+		calculateTextWidth(
+			listStyleCustom,
+			fontSize,
+			getTypographyValue({
+				prop: 'font-family',
+				breakpoint,
+				typography: props,
+				blockStyle,
+				styleCard,
+			}),
+			getTypographyValue({
+				prop: 'font-weight',
+				breakpoint,
+				typography: props,
+				blockStyle,
+				styleCard,
+			})
+		),
+		2
+	)}px`;
+};
 
 const getNormalObject = props => {
 	const response = {
@@ -170,6 +226,10 @@ const getTypographyHoverObject = props => {
 const getListObject = props => {
 	const { listStyle, listStyleCustom, listStart, listReversed, content } =
 		props;
+	const { isTextSource, styleCard } = getIsTextSourceAndStyleCard(
+		listStyle,
+		listStyleCustom
+	);
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -254,16 +314,19 @@ const getListObject = props => {
 
 				const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
 
-				const isTextSource = getIsTextSource(
-					listStyle,
-					listStyleCustom
-				);
-
 				const padding =
 					listStylePosition === 'inside'
 						? gapNum + gapUnit
 						: `calc(${gapNum + gapUnit} + ${
-								!isTextSource ? `${sizeNum + sizeUnit} + ` : ''
+								!isTextSource
+									? `${sizeNum + sizeUnit} + `
+									: `${getTextWidth(
+											sizeNum,
+											sizeUnit,
+											props,
+											breakpoint,
+											styleCard
+									  )} + `
 						  }${indentMarkerSum})`;
 
 				if (!isNil(gapNum) && !isNil(gapUnit)) {
@@ -391,7 +454,10 @@ const getMarkerObject = props => {
 			prefix: 'list-',
 		});
 
-	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
+	const { isTextSource, styleCard } = getIsTextSourceAndStyleCard(
+		listStyle,
+		listStyleCustom
+	);
 
 	return {
 		color: {
@@ -589,9 +655,17 @@ const getMarkerObject = props => {
 					...(listStylePosition === 'outside' &&
 						(() => {
 							if (isTextSource) {
+								const textWidth = getTextWidth(
+									sizeNum,
+									sizeUnit,
+									props,
+									breakpoint,
+									styleCard
+								);
+
 								return {
-									width: '0',
-									'margin-left': '0',
+									width: textWidth,
+									'margin-left': `-${textWidth}`,
 								};
 							}
 

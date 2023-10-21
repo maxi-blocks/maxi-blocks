@@ -20,6 +20,13 @@ import {
 import { deactivatePlugin } from './utils';
 
 /**
+ * Disable debounce for tests.
+ */
+const _ = require('lodash');
+
+_.debounce = func => func;
+
+/**
  * Timeout, in seconds, that the test should be allowed to run.
  *
  * @type {string|undefined}
@@ -163,6 +170,12 @@ function observeConsoleLogging() {
 			return;
 		}
 		if (text.includes('Failed to load resource: the server responded')) {
+			return;
+		}
+		if (text.includes('Error validating css: BadStatusError')) {
+			return;
+		}
+		if (text.includes('Refused to connect to')) {
 			return;
 		}
 

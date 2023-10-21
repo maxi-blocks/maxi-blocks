@@ -39,7 +39,6 @@ body.maxi-blocks--active {
 		$class_name: '.maxi-block--backend';
 
 		.maxi-#{$style} {
-			// &#{$class_name} {
 			&.maxi-text-block,
 			.maxi-text-block {
 				@each $level in $levels {
@@ -315,7 +314,6 @@ body.maxi-blocks--active {
 					);
 				}
 			}
-			// }
 		}
 	}
 }

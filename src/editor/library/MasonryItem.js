@@ -5,18 +5,19 @@ import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-
-// eslint-disable-next-line import/no-cycle
-import MaxiModal from './modal';
-import { Button } from '../../components';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+
+// eslint-disable-next-line import/no-cycle
+const MaxiModal = loadable(() => import('./modal'));
+const Button = loadable(() => import('../../components/button'));
 
 const MasonryItem = props => {
 	const {
@@ -28,6 +29,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		cost,
+		beta,
 		toneUrl,
 		currentItemColorStatus = false,
 		className,
@@ -85,6 +87,7 @@ const MasonryItem = props => {
 								url={demoUrl}
 								title={title}
 								cost={cost}
+								beta={beta}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
 								isPro={isPro}

@@ -4,13 +4,22 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	ColorControl,
-	ResponsiveTabsControl,
-	TextControl,
-} from '../../../../components';
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const ResponsiveTabsControl = loadable(() =>
+	import('../../../../components/responsive-tabs-control')
+);
+const TextControl = loadable(() =>
+	import('../../../../components/text-control')
+);
 import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 const PlaceholderColorControl = ({

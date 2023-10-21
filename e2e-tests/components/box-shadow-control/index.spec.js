@@ -60,25 +60,25 @@ describe('BoxShadowControl', () => {
 		// Horizontal
 		await inputs[2].focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('30');
+		await page.keyboard.type('30', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		// Vertical
 		await inputs[4].focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('40');
+		await page.keyboard.type('40', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		// Blur
 		await inputs[6].focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('10');
+		await page.keyboard.type('10', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		// Spread
 		await inputs[8].focus();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('60');
+		await page.keyboard.type('60', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		const expectChanges = {

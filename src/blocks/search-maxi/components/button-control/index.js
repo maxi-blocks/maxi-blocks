@@ -4,9 +4,19 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import { SelectControl, TextControl } from '../../../../components';
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const TextControl = loadable(() =>
+	import('../../../../components/text-control')
+);
 
 const ButtonControl = ({
 	buttonContent,
@@ -21,6 +31,7 @@ const ButtonControl = ({
 				className='maxi-search-button-control__skin'
 				label={__('Skin', 'maxi-blocks')}
 				value={buttonSkin}
+				newStyle
 				options={[
 					{
 						label: __('Icon', 'maxi-blocks'),
@@ -42,6 +53,7 @@ const ButtonControl = ({
 					<TextControl
 						label={__('Button text', 'maxi-blocks')}
 						value={buttonContent}
+						newStyle
 						onChange={buttonContent =>
 							onChange({
 								buttonContent,
@@ -52,6 +64,7 @@ const ButtonControl = ({
 						<TextControl
 							label={__('Button close text', 'maxi-blocks')}
 							value={buttonContentClose}
+							newStyle
 							onChange={buttonContentClose =>
 								onChange({
 									buttonContentClose,

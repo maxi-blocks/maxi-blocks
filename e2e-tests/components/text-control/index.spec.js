@@ -17,7 +17,7 @@ describe('TextControl', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 350 });
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -30,7 +30,7 @@ describe('TextControl', () => {
 			select => select.focus()
 		);
 
-		await page.keyboard.type('title');
+		await page.keyboard.type('title', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		expect(await getAttributes('extraClassName')).toStrictEqual('title');

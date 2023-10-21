@@ -4,10 +4,22 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import { SettingTabsControl, ToggleSwitch } from '../../../../components';
-import NavigationIconControl from './navigation-icon-control';
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const NavigationIconControl = loadable(() =>
+	import('./navigation-icon-control')
+);
 
 const NavigationIconsControl = props => {
 	const {
@@ -38,6 +50,7 @@ const NavigationIconsControl = props => {
 
 	return (
 		<SettingTabsControl
+			hasMarginBottom
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),

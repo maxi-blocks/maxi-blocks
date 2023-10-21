@@ -6,14 +6,23 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	DefaultStylesControl,
-	Icon,
-	SettingTabsControl,
-} from '../../components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const DefaultStylesControl = loadable(() =>
+	import('../../components/default-styles-control')
+);
+const Icon = loadable(() => import('../../components/icon'));
 import * as defaultPresets from './defaults';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import { customCss } from './data';

@@ -31,7 +31,7 @@ describe('Video maxi control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('31');
+		await page.keyboard.type('31', { delay: 350 });
 
 		expect(await getAttributes('startTime')).toStrictEqual('31');
 
@@ -39,7 +39,7 @@ describe('Video maxi control', () => {
 		await page.$eval('.maxi-video-end-time input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('22', { delay: 350 });
 
 		expect(await getAttributes('endTime')).toStrictEqual('22');
 
@@ -62,7 +62,9 @@ describe('Video maxi control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('https://youtu.be/mkggXE5e2yk');
+		await page.keyboard.type('https://youtu.be/mkggXE5e2yk', {
+			delay: 350,
+		});
 		await page.waitForTimeout(150);
 
 		expect(await getAttributes('url')).toStrictEqual(

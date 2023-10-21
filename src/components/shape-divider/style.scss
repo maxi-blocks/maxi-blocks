@@ -13,3 +13,10 @@
 		margin-top: auto;
 	}
 }
+
+.maxi-shape-divider-control
+	.maxi-settingstab-control
+	.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
+	padding-top: 10px !important;
+	padding-bottom: 0px !important;
+}

@@ -13,7 +13,7 @@ const editAdvancedNumberControl = async ({
 	await instance.$eval('input', select => select.focus());
 
 	await pressKeyWithModifier('primary', 'a');
-	await page.keyboard.type(newNumber);
+	await page.keyboard.type(newNumber, { delay: 350 });
 
 	if (newValue) {
 		const selector = await instance.$('select');

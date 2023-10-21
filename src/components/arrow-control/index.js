@@ -22,6 +22,11 @@ import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const ArrowControl = props => {
@@ -104,7 +109,6 @@ const ArrowControl = props => {
 						message={__(
 							'Please ensure that the background colour is not the same as the page background colour.',
 							'maxi-blocks'
-
 						)}
 						onClose={() => onChange({ 'show-warning-box': false })}
 					/>

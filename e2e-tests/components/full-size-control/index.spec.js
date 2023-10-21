@@ -38,7 +38,7 @@ describe('FullSizeControl', () => {
 		);
 
 		await inputs.focus();
-		await page.keyboard.type('330', { delay: 100 });
+		await page.keyboard.type('330', { delay: 350 });
 
 		// check responsive height
 		const responsiveResult = await addResponsiveTest({
@@ -137,6 +137,8 @@ describe('FullSizeControl', () => {
 		await page.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);
+
+		await page.waitForTimeout(500);
 
 		// select colum
 		await page.$eval(

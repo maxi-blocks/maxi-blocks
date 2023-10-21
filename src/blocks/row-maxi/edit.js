@@ -6,33 +6,35 @@
 import { select } from '@wordpress/data';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, isEqual } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
-import RowContext from './rowContext';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const MaxiBlock = loadable(() =>
+	import('../../components/maxi-block/maxiBlock')
+);
+const RowBlockTemplate = loadable(() =>
+	import('./components/row-block-template')
+);
 import RepeaterContext from './repeaterContext';
+import RowContext from './rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
 import { retrieveInnerBlocksPositions } from '../../extensions/repeater';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-
-/**
- * External dependencies
- */
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
-import { RowBlockTemplate } from './components';
-
-/**
- * External dependencies
- */
-import { isEmpty, isEqual } from 'lodash';
 
 /**
  * Edit

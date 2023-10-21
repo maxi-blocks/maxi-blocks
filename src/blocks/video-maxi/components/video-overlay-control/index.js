@@ -2,18 +2,29 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import {
-	ColorControl,
-	ToggleSwitch,
-	SettingTabsControl,
-	AdvancedNumberControl,
-} from '../../../../components';
-import MediaUploaderControl from '../../../../components/media-uploader-control';
-import OpacityControl from '../../../../components/opacity-control';
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const MediaUploaderControl = loadable(() =>
+	import('../../../../components/media-uploader-control')
+);
+const OpacityControl = loadable(() =>
+	import('../../../../components/opacity-control')
+);
 import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,

@@ -4,10 +4,15 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import InfoBox from '../info-box';
-import ToggleSwitch from '../toggle-switch';
+const InfoBox = loadable(() => import('../info-box'));
+const ToggleSwitch = loadable(() => import('../toggle-switch'));
 import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
 import { validateRowColumnsStructure } from '../../extensions/repeater';
 

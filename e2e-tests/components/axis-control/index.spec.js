@@ -129,6 +129,8 @@ describe('AxisControl', () => {
 		await input[0].focus();
 		await pressKeyTimes('ArrowDown', '5');
 
+		await page.waitForTimeout(350);
+
 		expect(await getAttributes('margin-top-general')).toStrictEqual('-1');
 	});
 
@@ -257,6 +259,8 @@ describe('AxisControl', () => {
 		await input.focus();
 		await pressKeyTimes('ArrowDown', '5');
 
+		await page.waitForTimeout(350);
+
 		expect(await getAttributes('padding-top-general')).toStrictEqual('0');
 	});
 
@@ -279,7 +283,6 @@ describe('AxisControl', () => {
 					`${itemMarginContentClass} .maxi-reset-button`,
 					button => button.click()
 				);
-
 				await changeResponsive(page, 'base');
 			}
 
@@ -297,13 +300,13 @@ describe('AxisControl', () => {
 				input => input.focus()
 			);
 
-			await page.keyboard.press('ArrowDown');
+			await page.keyboard.press('ArrowDown', { delay: 350 });
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				`${value - 1}`
 			);
 
-			await page.keyboard.press('ArrowUp');
+			await page.keyboard.press('ArrowUp', { delay: 350 });
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				undefined

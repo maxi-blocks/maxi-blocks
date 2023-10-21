@@ -12,11 +12,22 @@ import {
 import { resolveSelect, select } from '@wordpress/data';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
+const AdvancedNumberControl = loadable(() =>
+	import('../advanced-number-control')
+);
+const SelectControl = loadable(() => import('../select-control'));
+const ToggleSwitch = loadable(() => import('../toggle-switch'));
+const TextControl = loadable(() => import('../text-control'));
+
 import { validationsValues } from '../../extensions/DC/utils';
 import {
 	typeOptions,
@@ -40,13 +51,6 @@ import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
-
-/**
- * External dependencies
- */
-import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
-import classnames from 'classnames';
-import TextControl from '../text-control';
 
 /**
  * Styles
@@ -270,6 +274,7 @@ const DynamicContent = props => {
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
+							newStyle
 							onChange={value => {
 								const validatedAttributes = validationsValues(
 									type,
@@ -302,6 +307,7 @@ const DynamicContent = props => {
 								? ACFTypeOptions
 								: typeOptions[contentType]
 						}
+						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(
 								value,
@@ -332,6 +338,7 @@ const DynamicContent = props => {
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,
@@ -362,6 +369,7 @@ const DynamicContent = props => {
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
 									options={postAuthorOptions}
+									newStyle
 									onChange={value =>
 										changeProps({
 											'dc-author': Number(value),
@@ -397,6 +405,7 @@ const DynamicContent = props => {
 										)}
 										value={id}
 										options={postIdOptions}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-error': '',
@@ -424,6 +433,7 @@ const DynamicContent = props => {
 												)}
 												value={orderBy}
 												options={orderByOptions}
+												newStyle
 												onChange={value =>
 													changeProps({
 														'dc-order-by': value,
@@ -451,6 +461,7 @@ const DynamicContent = props => {
 														: relation
 												]
 											}
+											newStyle
 											onChange={value =>
 												changeProps({
 													'dc-order': value,
@@ -506,6 +517,7 @@ const DynamicContent = props => {
 										options={
 											fieldOptions[contentType][type]
 										}
+										newStyle
 										onChange={value =>
 											changeProps({
 												'dc-field': value,
@@ -589,6 +601,7 @@ const DynamicContent = props => {
 													: delimiterContent
 											}
 											options={delimiterOptions}
+											newStyle
 											onChange={value => {
 												changeProps(
 													value === 'custom'

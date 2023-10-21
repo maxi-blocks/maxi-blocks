@@ -31,7 +31,7 @@ describe('Breadcrumbs', () => {
 		);
 
 		// Add Group Maxi
-		await page.keyboard.type('group');
+		await page.keyboard.type('group', { delay: 350 });
 		await page.waitForSelector(
 			'.editor-block-list-item-maxi-blocks-group-maxi'
 		);
@@ -49,7 +49,7 @@ describe('Breadcrumbs', () => {
 		await page.waitForTimeout(500);
 
 		// Add Row Maxi
-		await page.keyboard.type('row');
+		await page.keyboard.type('row', { delay: 350 });
 		await page.waitForSelector(
 			'.editor-block-list-item-maxi-blocks-row-maxi'
 		);

@@ -1,8 +1,8 @@
 .maxi-axis-control {
-	margin-bottom: 8px;
+	margin-bottom: 10px;
 
 	&__header {
-		margin-bottom: 8px;
+		margin-bottom: 10px;
 
 		.maxi-base-control__field {
 			margin-bottom: 0;
@@ -26,6 +26,13 @@
 		opacity: 1 !important;
 		transition: all 0.5s;
 		cursor: pointer;
+	}
+
+	.maxi-tabs-control__button {
+		svg:not(.maxi-tabs-control__notification) path {
+			fill: transparent;
+			stroke: var(--maxi-grey-4-color);
+		}
 	}
 
 	.maxi-tabs-control__button--selected,

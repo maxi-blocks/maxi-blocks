@@ -9,7 +9,7 @@ $panel-header-height: 32px;
 $grid-unit-20: 20px;
 
 .maxi-components-popover {
-	z-index: z-index('.components-popover');
+	z-index: 10;
 	opacity: 1;
 
 	&::before,

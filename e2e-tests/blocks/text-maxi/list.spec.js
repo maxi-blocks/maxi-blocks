@@ -425,8 +425,15 @@ describe('List in Text-maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('test');
+		await page.$eval(
+			'.maxi-text-inspector__list-source-text input',
+			input => {
+				input.value = '';
+			}
+		);
+		await page.keyboard.type('test', {
+			delay: 350,
+		});
 		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');

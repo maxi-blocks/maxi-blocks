@@ -1,3 +1,5 @@
+import { select } from '@wordpress/data';
+
 const actions = {
 	addBlock(uniqueID, clientId, blockRoot) {
 		return {
@@ -21,10 +23,25 @@ const actions = {
 			blockRoot,
 		};
 	},
+	addNewBlock(uniqueID) {
+		return {
+			type: 'ADD_NEW_BLOCK',
+			uniqueID,
+		};
+	},
 	saveLastInsertedBlocks(blockClientIds) {
+		const { __experimentalGetDirtyEntityRecords: getDirtyEntityRecords } =
+			select('core');
+		const { getCurrentPostId } = select('core/editor');
+
+		const isCurrentPostClean = !getDirtyEntityRecords().some(
+			item => item.key === getCurrentPostId()
+		);
+
 		return {
 			type: 'SAVE_LAST_INSERTED_BLOCKS',
 			allClientIds: blockClientIds,
+			isCurrentPostClean,
 		};
 	},
 	saveBlockClientIds(blockClientIds) {

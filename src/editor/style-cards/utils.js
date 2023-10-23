@@ -71,14 +71,13 @@ export const showMaxiSCAppliedActiveSnackbar = nameSC => {
 	);
 };
 
-export const exportStyleCard = (data, fileName) => {
+export const downloadTextFile = (data, fileName) => {
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.style = 'display: none';
 
-	const reducedSC = diff(standardSC?.sc_maxi, data);
 	// Need stringify twice to get 'text/plain' mime type
-	const json = JSON.stringify(JSON.stringify(reducedSC));
+	const json = JSON.stringify(JSON.stringify(data));
 	const blob = new Blob([json], { type: 'text/plain' });
 	const url = window.URL.createObjectURL(blob);
 
@@ -86,6 +85,11 @@ export const exportStyleCard = (data, fileName) => {
 	a.download = fileName;
 	a.click();
 	document.body.removeChild(a);
+};
+
+export const exportStyleCard = (data, fileName) => {
+	const reducedSC = diff(standardSC?.sc_maxi, data);
+	downloadTextFile(reducedSC, fileName);
 };
 
 export const getDefaultSCAttribute = (SC, attr, type) => {

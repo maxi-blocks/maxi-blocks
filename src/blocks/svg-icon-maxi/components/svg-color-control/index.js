@@ -4,14 +4,23 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	ManageHoverTransitions,
-	SettingTabsControl,
-	ToggleSwitch,
-	SvgColor,
-} from '../../../../components';
+const ManageHoverTransitions = loadable(() =>
+	import('../../../../components/manage-hover-transitions')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const SvgColor = loadable(() => import('../../../../components/svg-color'));
 
 const SvgColorControl = props => {
 	const {
@@ -68,6 +77,7 @@ const SvgColorControl = props => {
 
 	return !disableHover ? (
 		<SettingTabsControl
+			hasMarginBottom
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),

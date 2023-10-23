@@ -5,14 +5,25 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	FontLevelControl,
-	SettingTabsControl,
-} from '../../components';
-import { ListOptionsControl } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const FontLevelControl = loadable(() =>
+	import('../../components/font-level-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ListOptionsControl = loadable(() =>
+	import('./components/list-options-control')
+);
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
@@ -51,6 +62,9 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
+									...inspectorTabs.prompt({
+										props,
+									}),
 									deviceType === 'general' &&
 										!isList && {
 											label: __(
@@ -65,9 +79,24 @@ const Inspector = props => {
 														true
 													)}
 													value={textLevel}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
+													onChange={obj => {
+														const filteredObj =
+															Object.fromEntries(
+																Object.entries(
+																	obj
+																).filter(
+																	([
+																		key,
+																		value,
+																	]) =>
+																		value !==
+																		undefined
+																)
+															);
+														maxiSetAttributes(
+															filteredObj
+														);
+													}}
 												/>
 											),
 											indicatorProps: ['textLevel'],
@@ -143,6 +172,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
+									}),
+									...inspectorTabs.advancedCss({
+										props,
 									}),
 									...inspectorTabs.dc({
 										props,

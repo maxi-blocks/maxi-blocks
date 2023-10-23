@@ -33,7 +33,6 @@ describe('FontFamilySelector', () => {
 
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(
 			'Montserrat'
@@ -67,7 +66,6 @@ describe('FontFamilySelector', () => {
 
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
 
 		expect(await getAttributes('font-family-s')).toStrictEqual(
 			'Montserrat'

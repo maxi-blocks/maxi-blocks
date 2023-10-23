@@ -22,6 +22,8 @@ const changeResponsive = async (page, size) => {
 			(size !== 'xxl' ? breakpoints[size] : xxlSize)
 	);
 
+	await page.waitForTimeout(350);
+
 	return null;
 };
 

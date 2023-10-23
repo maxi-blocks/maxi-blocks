@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import getCustomLabel from '../getCustomLabel';
-import getIsUniqueCustomLabelRepeated from '../getIsUniqueCustomLabelRepeated';
 
 const mockStateBlock = {
 	blocks: {
@@ -31,6 +30,24 @@ const mockStateBlock = {
 			attributes: {
 				uniqueID: 'button-maxi-4se8ef1z-u',
 				customLabel: 'Custom button name 2',
+			},
+		},
+		'text-maxi-34d8de32-u': {
+			clientId: 'e0a326e8-8e25-4da7-8ec1-923663fb4c91',
+			name: 'maxi-blocks/text-maxi',
+			innerBlocks: [],
+			attributes: {
+				uniqueID: 'text-maxi-34d8de32-u',
+				customLabel: 'Custom text name 2',
+			},
+		},
+		'text-maxi-a9333c75-u': {
+			clientId: '29990f41-7f8a-4d4a-948c-592f33b66281',
+			name: 'maxi-blocks/text-maxi',
+			innerBlocks: [],
+			attributes: {
+				uniqueID: 'text-maxi-a9333c75-u',
+				customLabel: 'Custom text name 2',
 			},
 		},
 	},
@@ -64,6 +81,24 @@ const mockStateBlocks = [
 			customLabel: 'Custom button name 2',
 		},
 	},
+	{
+		clientId: 'e0a326e8-8e25-4da7-8ec1-923663fb4c91',
+		name: 'maxi-blocks/text-maxi',
+		innerBlocks: [],
+		attributes: {
+			uniqueID: 'text-maxi-34d8de32-u',
+			customLabel: 'Custom text name 2',
+		},
+	},
+	{
+		clientId: '29990f41-7f8a-4d4a-948c-592f33b66281',
+		name: 'maxi-blocks/text-maxi',
+		innerBlocks: [],
+		attributes: {
+			uniqueID: 'text-maxi-a9333c75-u',
+			customLabel: 'Custom text name 2',
+		},
+	},
 ];
 
 jest.mock('@wordpress/data', () => {
@@ -77,22 +112,22 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 
-const checkCustomLabel = (customLabel, uniqueID) => {
-	if (getIsUniqueCustomLabelRepeated(customLabel))
-		return getCustomLabel(customLabel, uniqueID);
-	return customLabel;
-};
-
 describe('getCustomLabel', () => {
 	it('Should return generated from uniqueID customLabel', () => {
-		expect(checkCustomLabel('Button_1', 'button-maxi-3se8ef1z-u')).toBe(
+		expect(getCustomLabel('Button_1', 'button-maxi-3se8ef1z-u')).toBe(
 			'Button_2'
 		);
 	});
 
 	it('Should return customLabel with number from unique id', () => {
 		expect(
-			checkCustomLabel('Custom button name 2', 'button-maxi-4se8ef1z-u')
+			getCustomLabel('Custom button name 2', 'button-maxi-4se8ef1z-u')
 		).toBe('Custom button name 2');
+	});
+
+	it('Should return customLabel with unique index', () => {
+		expect(
+			getCustomLabel('Custom text name 2', 'text-maxi-a9333c75-u')
+		).toBe('Custom text name 2_2');
 	});
 });

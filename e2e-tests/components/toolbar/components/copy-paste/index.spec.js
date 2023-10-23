@@ -44,6 +44,8 @@ describe('CopyPaste from Toolbar', () => {
 			unit: '%',
 		});
 
+		await page.waitForTimeout(350);
+
 		// open options
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__more-settings button',
@@ -58,7 +60,8 @@ describe('CopyPaste from Toolbar', () => {
 
 		await insertMaxiBlock(page, 'Text Maxi');
 
-		await updateAllBlockUniqueIds(page);
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
 
 		// open options
 		await page.$eval(
@@ -310,7 +313,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('Text Maxi');
+		await page.keyboard.type('Text Maxi', { delay: 350 });
 
 		await page.$eval(
 			'.editor-block-list-item-maxi-blocks-text-maxi',

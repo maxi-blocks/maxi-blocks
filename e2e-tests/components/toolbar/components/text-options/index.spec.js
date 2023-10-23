@@ -35,7 +35,9 @@ describe('Text options', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('19');
+		await page.keyboard.type('19', { delay: 350 });
+
+		await page.waitForTimeout(1000);
 
 		expect(await getAttributes('font-size-general')).toStrictEqual(19);
 
@@ -46,7 +48,7 @@ describe('Text options', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('24');
+		await page.keyboard.type('24', { delay: 350 });
 
 		expect(await getAttributes('line-height-general')).toStrictEqual(24);
 
@@ -57,7 +59,7 @@ describe('Text options', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('12');
+		await page.keyboard.type('12', { delay: 350 });
 
 		expect(await getAttributes('letter-spacing-general')).toStrictEqual(12);
 
@@ -67,7 +69,7 @@ describe('Text options', () => {
 		);
 		await fontFamily.click();
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('Lato');
+		await page.keyboard.type('Lato', { delay: 350 });
 		await page.keyboard.press('Enter');
 
 		expect(await getAttributes('font-family-general')).toStrictEqual(

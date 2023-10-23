@@ -4,9 +4,14 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import DynamicContent from '../dynamic-content';
+const DynamicContent = loadable(() => import('../dynamic-content'));
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -17,7 +22,14 @@ const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
 	content: (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
-			onChange={obj => maxiSetAttributes(obj)}
+			onChange={obj => {
+				const filteredObj = Object.fromEntries(
+					Object.entries(obj).filter(
+						([key, value]) => value !== undefined
+					)
+				);
+				maxiSetAttributes(filteredObj);
+			}}
 			contentType={contentType}
 		/>
 	),

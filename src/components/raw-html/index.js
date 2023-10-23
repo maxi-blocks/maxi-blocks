@@ -37,6 +37,10 @@ const RawHTML = forwardRef((props, ref) => {
 
 	const parsedContent = parse(cleanedChildren);
 
+	if (typeof parsedContent === 'string') {
+		return parsedContent;
+	}
+
 	const {
 		type: nodeType,
 		props: { 'data-item': dataItem, className },

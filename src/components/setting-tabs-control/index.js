@@ -33,7 +33,10 @@ import './editor.scss';
 const SettingTabsControl = props => {
 	const {
 		items,
+		tab: tabProp,
+		setTab: setTabProp,
 		disablePadding = false,
+		hasMarginBottom = false,
 		isNestedAccordion = false,
 		className,
 		forceTab,
@@ -56,7 +59,10 @@ const SettingTabsControl = props => {
 
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
-	const [tab, setTab] = useState(0);
+	const [localTab, setLocalTab] = useState(0);
+
+	const tab = tabProp ?? localTab;
+	const setTab = setTabProp ?? setLocalTab;
 
 	const updatedTab = useSelect(
 		() => select('maxiBlocks').receiveInspectorPath()?.[depth]?.value || 0
@@ -71,7 +77,8 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
 		fullWidthMode && 'maxi-tabs-control__full-width',
 		hasBorder && 'maxi-settingstab-control_has-border-left-right',
-		isNestedAccordion && 'maxi-tabs-control--nested'
+		isNestedAccordion && 'maxi-tabs-control--nested',
+		hasMarginBottom && 'maxi-tabs-control--bottom-space'
 	);
 
 	const classesBase = classnames(

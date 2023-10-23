@@ -6,19 +6,38 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	AdvancedNumberControl,
-	ImageAltControl,
-	ImageShape,
-	ResponsiveTabsControl,
-	SelectControl,
-	SettingTabsControl,
-	TypographyControl,
-} from '../../components';
-import { DimensionTab, HoverEffectControl } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const AdvancedNumberControl = loadable(() =>
+	import('../../components/advanced-number-control')
+);
+const ImageAltControl = loadable(() =>
+	import('../../components/image-alt-control')
+);
+const ImageShape = loadable(() => import('../../components/image-shape'));
+const ResponsiveTabsControl = loadable(() =>
+	import('../../components/responsive-tabs-control')
+);
+const SelectControl = loadable(() => import('../../components/select-control'));
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const TypographyControl = loadable(() =>
+	import('../../components/typography-control')
+);
+const DimensionTab = loadable(() => import('./components/dimension-tab'));
+const HoverEffectControl = loadable(() =>
+	import('./components/hover-effect-control')
+);
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -27,11 +46,6 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Inspector
@@ -472,6 +486,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
+									}),
+									...inspectorTabs.advancedCss({
+										props,
 									}),
 									...inspectorTabs.dc({
 										props,

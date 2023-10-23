@@ -5,20 +5,31 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import AxisControl from '../axis-control';
-import AxisPositionControl from '../axis-position-control';
-import BorderControl from '../border-control';
-import ColorControl from '../color-control';
-import GradientControl from '../gradient-control';
-import Icon from '../icon';
-import InfoBox from '../info-box';
-import SettingTabsControl from '../setting-tabs-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
-import SvgWidthControl from '../svg-width-control';
-import ToggleSwitch from '../toggle-switch';
+const AdvancedNumberControl = loadable(() =>
+	import('../advanced-number-control')
+);
+const AxisControl = loadable(() => import('../axis-control'));
+const AxisPositionControl = loadable(() => import('../axis-position-control'));
+const BorderControl = loadable(() => import('../border-control'));
+const ColorControl = loadable(() => import('../color-control'));
+const GradientControl = loadable(() => import('../gradient-control'));
+const Icon = loadable(() => import('../icon'));
+const InfoBox = loadable(() => import('../info-box'));
+const SettingTabsControl = loadable(() => import('../setting-tabs-control'));
+const SvgStrokeWidthControl = loadable(() =>
+	import('../svg-stroke-width-control')
+);
+const SvgWidthControl = loadable(() => import('../svg-width-control'));
+const ToggleSwitch = loadable(() => import('../toggle-switch'));
+const MaxiModal = loadable(() => import('../../editor/library/modal'));
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
@@ -31,12 +42,6 @@ import {
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
-import MaxiModal from '../../editor/library/modal';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Styles and icons

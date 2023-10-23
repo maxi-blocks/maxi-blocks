@@ -4,16 +4,17 @@
 import { forwardRef, useRef } from '@wordpress/element';
 
 /**
- * Internal dependencies
- */
-import Popover from '../popover';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEqual, isNaN, toNumber } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Popover = loadable(() => import('../popover'));
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Styles

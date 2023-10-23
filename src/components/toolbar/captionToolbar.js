@@ -9,16 +9,18 @@ import { useSelect } from '@wordpress/data';
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual } from 'lodash';
+import loadable from '@loadable/component';
 
 /**
  * Utils
  */
-import { TextColor, TextOptions } from './components';
+const TextColor = loadable(() => import('./components/text-color'));
+const TextOptions = loadable(() => import('./components/text-options'));
 
 /**
  * Internal dependencies
  */
-import Popover from '../popover';
+const Popover = loadable(() => import('../popover'));
 
 /**
  * Styles

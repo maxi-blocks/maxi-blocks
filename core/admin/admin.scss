@@ -78,14 +78,18 @@ body.toplevel_page_maxi-blocks-dashboard {
 			justify-content: space-between;
 			padding: 0 39px;
 			max-width: 1112px;
-			#maxi-google-test-map {
+			#maxi-api-test {
 				width: 1px !important;
 				height: 1px !important;
-			}
-			#maxi-google-test-map_validation-message {
-				width: 100%;
-				&.map-error {
-					color: var(--maxi-primary-color);
+
+				&__validation-message {
+					width: 100%;
+					&.api-loading {
+						color: var(--maxi-secondary-color);
+					}
+					&.api-error {
+						color: var(--maxi-primary-color);
+					}
 				}
 			}
 			&-content {
@@ -215,10 +219,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 						transition: 0.3s;
 					}
 					.sign-up_button-wrap {
-						// display: flex;
-						// align-items: center;
-						// column-gap: 10px;
-						// margin-top: 24px;
 						margin-top: 40px;
 					}
 					.maxi-dashboard_main-content_accordion {
@@ -308,7 +308,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 						&:nth-child(9),
 						&:nth-child(8),
 						&:nth-child(7),
-						//&:nth-child(6),
 						&:nth-child(5),
 						&:nth-child(4),
 						&:nth-child(3),
@@ -343,7 +342,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								height: auto;
 								text-align: center;
 								transition: all 0.35s;
-								color: #141516;
+								color: var(--maxi-grey-1-color);
 								transform-origin: center;
 							}
 						}
@@ -357,7 +356,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								}
 								~ .maxi-dashboard_main-content_accordion-item-content {
 									border-top-width: 1px;
-									max-height: 100vh;
+									max-height: 10000vh;
 								}
 							}
 						}
@@ -382,9 +381,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 								&__input {
 									margin-top: 5px;
 									margin-bottom: 5px;
-									input {
+									input,
+									textarea {
 										border-radius: 0;
 										border-color: #dbdde6;
+									}
+
+									textarea {
+										resize: none;
 									}
 
 									label:not(label[for='maxi-breakpoint-maxi-versions']) {
@@ -537,12 +541,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 							display: block;
 							text-align: left;
 							margin-top: 50px;
+
 							li {
 								display: inline-block;
 								margin: 0 0 5px;
-								// &::after{
-								// 	display: none;
-								// }
 							}
 						}
 					}

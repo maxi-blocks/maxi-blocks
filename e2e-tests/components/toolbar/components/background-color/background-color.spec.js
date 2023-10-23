@@ -41,7 +41,7 @@ describe('Background color from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('22', { delay: 350 });
 
 		const expectBackgroundColor = {
 			'button-background-palette-color-general': 3,

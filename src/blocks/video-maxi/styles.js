@@ -409,20 +409,21 @@ const getStyles = props => {
 			data,
 			props
 		),
-		[playerType === 'popup' ? `popup-${uniqueID}` : `${uniqueID}`]:
-			styleProcessor(
+		...(playerType === 'popup' && {
+			[`popup-${uniqueID}`]: styleProcessor(
 				{
 					' .maxi-video-block__popup-wrapper':
 						getLightBoxObject(props),
 					' .maxi-video-block__video-container': getAspectRatioStyles(
 						props,
-						playerType === 'popup'
+						true
 					),
 					...getIconObject('close-', props),
 				},
 				data,
 				props
 			),
+		}),
 	};
 
 	return response;

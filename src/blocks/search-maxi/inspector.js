@@ -5,27 +5,32 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	AxisPositionControl,
-	SettingTabsControl,
-} from '../../components';
-import {
-	ButtonControl,
-	SkinControl,
-	PlaceholderColorControl,
-} from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const AxisPositionControl = loadable(() =>
+	import('../../components/axis-position-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ButtonControl = loadable(() => import('./components/button-control'));
+const SkinControl = loadable(() => import('./components/skin-control'));
+const PlaceholderColorControl = loadable(() =>
+	import('./components/placeholder-color-control')
+);
 import { getGroupAttributes } from '../../extensions/styles';
 import { customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
-
-/**
- * External dependencies
- */
-import { isEmpty, without } from 'lodash';
 
 /**
  * Inspector
@@ -404,6 +409,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories: getCategoriesCss(),
+									}),
+									...inspectorTabs.advancedCss({
+										props,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

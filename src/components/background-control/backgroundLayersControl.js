@@ -588,7 +588,8 @@ const BackgroundLayersControl = ({
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}
 									isCloseButton={
-										!isHover || (isHover && layer.isHover)
+										!disableAddLayer &&
+										(!isHover || (isHover && layer.isHover))
 									}
 								/>
 							);

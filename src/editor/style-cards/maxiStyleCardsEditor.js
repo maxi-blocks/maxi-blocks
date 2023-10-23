@@ -10,27 +10,30 @@ import { getSettings, date } from '@wordpress/date';
 import { Popover } from '@wordpress/components';
 
 /**
- * Internal dependencies
- */
-import { exportStyleCard, getActiveColourFromSC } from './utils';
-import {
-	Button,
-	DialogBox,
-	Icon,
-	SettingTabsControl,
-	ToggleSwitch,
-} from '../../components';
-import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import { updateSCOnEditor } from '../../extensions/style-cards';
-import MaxiModal from '../library/modal';
-import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/defaults/defaultSC.json';
-
-/**
  * External dependencies
  */
 import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
-import Select from 'react-select';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../components/button'));
+const DialogBox = loadable(() => import('../../components/dialog-box'));
+const Icon = loadable(() => import('../../components/icon'));
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
+const ReactSelectControl = loadable(() =>
+	import('../../components/react-select-control')
+);
+const MaxiStyleCardsTab = loadable(() => import('./maxiStyleCardsTab'));
+const MaxiModal = loadable(() => import('../library/modal'));
+import { exportStyleCard, getActiveColourFromSC } from './utils';
+import { updateSCOnEditor } from '../../extensions/style-cards';
+import { handleSetAttributes } from '../../extensions/maxi-block';
+import standardSC from '../../../core/defaults/defaultSC.json';
 
 /**
  * Icons
@@ -365,33 +368,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		return response;
 	};
 
-	const customStyles = {
-		option: (base, state, selected) => ({
-			...base,
-			padding: '8px',
-			whiteSpace: 'wrap',
-			borderBottom: '1px solid #E3E3E3',
-			backgroundColor: state.isSelected
-				? 'rgb(var(--maxi-light-color-4)) !important'
-				: '#fff !important' && state.isFocused
-				? 'rgba(229, 242, 248, 0.7) !important'
-				: '#fff !important',
-			color: state.isSelected
-				? '#fff !important'
-				: 'color: var(--maxi-grey-5-color) !important',
-			width: 'auto',
-			cursor: 'pointer',
-		}),
-		control: () => ({
-			display: 'flex',
-			padding: '0',
-			marginBottom: '8px',
-			borderRadius: '0px',
-			border: '1px solid rgb(var(--maxi-light-color-4))',
-			cursor: 'pointer',
-		}),
-	};
-
 	const listForDropdown = getOptionsSCList();
 	const selectedForDropdown =
 		listForDropdown[getSelectedInList(listForDropdown)];
@@ -532,7 +508,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						)}
 						<div className='maxi-style-cards__active-edit-options'>
 							<div className='maxi-style-cards__sc__more-sc--select'>
-								<Select
+								<ReactSelectControl
 									options={listForDropdown}
 									value={
 										selectedForDropdown || activeForDropdown
@@ -541,7 +517,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										'Type to search…',
 										'maxi-blocks'
 									)}
-									styles={customStyles}
 									onChange={val => {
 										const newSCKey = val?.value;
 										setSelectedStyleCard(newSCKey);

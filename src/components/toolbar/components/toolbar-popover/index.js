@@ -7,20 +7,21 @@ import { Tooltip } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import Button from '../../../button';
-import Icon from '../../../icon';
-import { openSidebarAccordion } from '../../../../extensions/inspector';
-import { toolbarAdvancedSettings } from '../../../../icons';
-import ToolbarContext from './toolbarContext';
-import Popover from '../../../popover';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../../button'));
+const Icon = loadable(() => import('../../../icon'));
+const Popover = loadable(() => import('../../../popover'));
+import { openSidebarAccordion } from '../../../../extensions/inspector';
+import { toolbarAdvancedSettings } from '../../../../icons';
+import ToolbarContext from './toolbarContext';
 
 /**
  * Styles

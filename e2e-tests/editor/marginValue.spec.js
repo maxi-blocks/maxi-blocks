@@ -28,7 +28,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth + 16);
+		expect(containerWidth).toBe(editorWidth);
 	});
 
 	it('Should have width of editor in theme 2022', async () => {
@@ -38,7 +38,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth + 192);
+		expect(containerWidth).toBe(editorWidth);
 	});
 
 	it('Should have width of editor in theme 2023', async () => {

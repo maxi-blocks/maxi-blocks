@@ -20,6 +20,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/react-dom": "^1.2.1",
+		"@loadable/component": "^5.15.3",
 		"@uiw/react-textarea-code-editor": "^2.0.3",
 		"@wordpress/block-editor": "^9.6.0",
 		"@wordpress/blocks": "^11.13.0",
@@ -44,6 +45,7 @@
 		"dompurify": "^2.3.10",
 		"html-react-parser": "^3.0.1",
 		"is-mobile": "^3.1.1",
+		"langchain": "^0.0.116",
 		"leaflet": "^1.8.0",
 		"masonry-layout": "^4.2.2",
 		"moment-parseformat": "^4.0.0",

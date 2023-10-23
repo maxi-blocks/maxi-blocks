@@ -5,19 +5,28 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import { without } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
-import { ShapeDividerControl } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ShapeDividerControl = loadable(() =>
+	import('./components/shape-divider-control')
+);
+
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
-
-/**
- * External dependencies
- */
-import { without } from 'lodash';
 
 /**
  * Inspector
@@ -133,6 +142,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories: getCategoriesCss(),
+									}),
+									...inspectorTabs.advancedCss({
+										props,
 									}),
 									...inspectorTabs.contextLoop({
 										props,

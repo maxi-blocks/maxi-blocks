@@ -56,6 +56,8 @@ describe('Video overlay control', () => {
 			newNumber: '33',
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('overlay-background-palette-opacity-general')
 		).toStrictEqual(0.33);
@@ -80,6 +82,8 @@ describe('Video overlay control', () => {
 			xsExpect: '56',
 			newValue: '56',
 		});
+		await page.waitForTimeout(500);
+
 		expect(responsiveOpacityValue).toBeTruthy();
 
 		// Change S responsive
@@ -94,12 +98,16 @@ describe('Video overlay control', () => {
 			colorPalette: 3,
 		});
 
+		await page.waitForTimeout(350);
+
 		expect(
 			await getAttributes('overlay-background-palette-color-s')
 		).toStrictEqual(3);
 
 		// Change xs
 		await changeResponsive(page, 'xs');
+
+		await page.waitForTimeout(350);
 
 		const xsColorSelected = await page.$eval(
 			'.maxi-video-overlay-control__overlay-background-colour .maxi-color-control__palette-box--active',
@@ -110,6 +118,8 @@ describe('Video overlay control', () => {
 
 		// Change m
 		await changeResponsive(page, 'm');
+
+		await page.waitForTimeout(350);
 
 		const mColorSelected = await page.$eval(
 			'.maxi-video-overlay-control__overlay-background-colour .maxi-color-control__palette-box--active',

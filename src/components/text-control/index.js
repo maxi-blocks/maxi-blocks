@@ -32,6 +32,7 @@ export default function TextControl({
 	type = 'text',
 	validationText,
 	isFullwidth,
+	newStyle = false,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
@@ -40,6 +41,7 @@ export default function TextControl({
 	const classes = classnames(
 		'maxi-text-control',
 		isFullwidth && ' maxi-text-control--fullwidth',
+		newStyle && ' maxi-text-control__second-style',
 		className
 	);
 

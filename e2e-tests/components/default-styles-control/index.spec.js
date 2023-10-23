@@ -18,7 +18,7 @@ describe('DefaultStylesControl', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('check default styles');
+		await page.keyboard.type('check default styles', { delay: 350 });
 		const accordionPanel = await openSidebarTab(page, 'style', 'border');
 		await accordionPanel.$$(
 			'.maxi-tabs-content .maxi-default-styles-control button'

@@ -5,27 +5,32 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const Button = loadable(() => import('../../components/button'));
+const ColorControl = loadable(() => import('../../components/color-control'));
+const Icon = loadable(() => import('../../components/icon'));
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const TypographyControl = loadable(() =>
+	import('../../components/typography-control')
+);
+const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
 import { processSCAttribute, getDefaultSCAttribute } from './utils';
-import {
-	AccordionControl,
-	Button,
-	ColorControl,
-	Icon,
-	SettingTabsControl,
-	TypographyControl,
-	ToggleSwitch,
-} from '../../components';
 import {
 	getDefaultSCValue,
 	getTypographyFromSC,
 } from '../../extensions/style-cards';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Icons

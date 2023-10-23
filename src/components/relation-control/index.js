@@ -242,8 +242,8 @@ const RelationControl = props => {
 						sid: item.sid,
 						attributes: omitBy(
 							{
-								...cleanAttributesObject,
 								...tempAttributes,
+								...cleanAttributesObject,
 							},
 							val => val === undefined
 						),
@@ -396,6 +396,7 @@ const RelationControl = props => {
 											'Give memorable name…',
 											'maxi-blocks'
 										)}
+										newStyle
 										onChange={value =>
 											onChangeRelation(
 												relations,
@@ -421,6 +422,7 @@ const RelationControl = props => {
 											'maxi-blocks'
 										)}
 										value={item.uniqueID}
+										newStyle
 										options={[
 											{
 												label: __(
@@ -472,6 +474,7 @@ const RelationControl = props => {
 														value: 'hover',
 													},
 												]}
+												newStyle
 												onChange={value =>
 													onChangeRelation(
 														relations,
@@ -495,6 +498,7 @@ const RelationControl = props => {
 														)
 													)
 												)}
+												newStyle
 												onChange={value => {
 													const clientId =
 														getClientIdFromUniqueId(
@@ -639,6 +643,7 @@ const RelationControl = props => {
 														content: (
 															<TransitionControl
 																className='maxi-relation-control__item__effects'
+																newStyle
 																onChange={(
 																	obj,
 																	splitMode

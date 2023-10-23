@@ -6,13 +6,17 @@ import { useState } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import SelectControl from '../../select-control';
-import SettingTabsControl from '../../setting-tabs-control';
-import TextControl from '../../text-control';
-import ToggleSwitch from '../../toggle-switch';
-import DateOptions from './constants';
+const SelectControl = loadable(() => import('../../select-control'));
+const SettingTabsControl = loadable(() => import('../../setting-tabs-control'));
+const TextControl = loadable(() => import('../../text-control'));
+const DateOptions = loadable(() => import('./constants'));
 
 /**
  * Styles & Icons

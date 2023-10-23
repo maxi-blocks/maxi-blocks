@@ -7,11 +7,19 @@ import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { RawHTML, Toolbar } from '../../components';
+import { RawHTML } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
@@ -26,12 +34,6 @@ import { copyPasteMapping, scProps } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -132,11 +134,14 @@ class edit extends MaxiBlockComponent {
 		 * This method fixes it
 		 */
 		const processContent = rawContent => {
+			if (rawContent === this.props.attributes.content) {
+				return;
+			}
+
 			/**
 			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
 			 * Does not replace spaces, which inside of HTML tags
 			 */
-
 			const replaceSpaces = content =>
 				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 

@@ -3,8 +3,8 @@
  */
 import {
 	createNewPost,
-	pressKeyTimes,
 	selectBlockByClientId,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -51,9 +51,8 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
-
-		await page.keyboard.type('50');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('50', { delay: 350 });
 
 		expect(await getAttributes('column-size-general')).toStrictEqual(50);
 
@@ -80,8 +79,8 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('9');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('9', { delay: 350 });
 
 		const responsiveSOption = await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -109,6 +108,8 @@ describe('Column Maxi', () => {
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
 			select => select.value
 		);
+
+		await page.waitForTimeout(500);
 
 		expect(responsiveMOption).toStrictEqual('50');
 

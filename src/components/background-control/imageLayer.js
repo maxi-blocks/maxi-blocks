@@ -85,6 +85,7 @@ const ImageLayerSettings = props => {
 					isHover,
 				})}
 				defaultValue={getDefaultAttr('background-image-size')}
+				newStyle
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -195,6 +196,7 @@ const ImageLayerSettings = props => {
 						isHover,
 					})}
 					defaultValue={getDefaultAttr('background-image-repeat')}
+					newStyle
 					options={[
 						{
 							label: __('No repeat', 'maxi-blocks'),
@@ -253,6 +255,7 @@ const ImageLayerSettings = props => {
 					isHover,
 				})}
 				defaultValue={getDefaultAttr('background-image-position')}
+				newStyle
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -453,6 +456,7 @@ const ImageLayerSettings = props => {
 						defaultValue={getDefaultAttr(
 							'background-image-attachment'
 						)}
+						newStyle
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -512,6 +516,7 @@ const ImageLayerSettings = props => {
 								defaultValue={getDefaultAttr(
 									'background-image-origin'
 								)}
+								newStyle
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -561,6 +566,7 @@ const ImageLayerSettings = props => {
 								defaultValue={getDefaultAttr(
 									'background-image-clip'
 								)}
+								newStyle
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),
@@ -743,8 +749,9 @@ const ImageLayer = props => {
 							content: (
 								<>
 									<ToggleSwitch
+										className='margin-top'
 										label={__(
-											'Enable Parallax',
+											'Enable parallax',
 											'maxi-blocks'
 										)}
 										selected={

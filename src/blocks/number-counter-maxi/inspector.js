@@ -5,14 +5,25 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	ResponsiveTabsControl,
-	SettingTabsControl,
-} from '../../components';
-import { NumberCounterControl } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const ResponsiveTabsControl = loadable(() =>
+	import('../../components/responsive-tabs-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const NumberCounterControl = loadable(() =>
+	import('./components/number-counter-control')
+);
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
@@ -162,6 +173,9 @@ const Inspector = props => {
 										breakpoint: deviceType,
 										selectors,
 										categories,
+									}),
+									...inspectorTabs.advancedCss({
+										props,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

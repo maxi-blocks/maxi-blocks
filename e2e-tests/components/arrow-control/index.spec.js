@@ -70,7 +70,7 @@ describe('ArrowControl', () => {
 		// Use Arrow Size
 		await selectInput[2].focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('120');
+		await page.keyboard.type('120', { delay: 350 });
 
 		expect(await getAttributes('arrow-width-general')).toStrictEqual(120);
 	});

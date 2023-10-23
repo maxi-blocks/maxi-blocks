@@ -31,6 +31,8 @@ describe('Icon position', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
+
 		// select icon position
 		await page.$eval(
 			'.toolbar-wrapper.icon-toolbar .toolbar-item__icon-position',

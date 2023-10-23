@@ -4,16 +4,22 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const BackgroundControl = loadable(() =>
+	import('../../components/background-control')
+);
+const BorderControl = loadable(() => import('../../components/border-control'));
+const SvgColorControl = loadable(() =>
+	import('./components/svg-color-control')
+);
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
-import {
-	// SvgStrokeWidthControl,
-	BackgroundControl,
-	BorderControl,
-} from '../../components';
-import { SvgColorControl } from './components';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -263,8 +269,8 @@ const interactionBuilderSettings = {
 				getBackgroundStyles({ ...props, ...props.obj }).background,
 			target: ' .maxi-svg-icon-block__icon',
 			styleAttrs: [
-				'svg-background-active-media',
-				'svg-background-gradient-opacity',
+				'background-active-media',
+				'background-gradient-opacity',
 			],
 		},
 		{

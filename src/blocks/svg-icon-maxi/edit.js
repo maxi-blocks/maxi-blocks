@@ -5,20 +5,28 @@ import { select, dispatch } from '@wordpress/data';
 import { createRef } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
+const BlockResizer = loadable(() => import('../../components/block-resizer'));
+const RawHTML = loadable(() => import('../../components/raw-html'));
+const MaxiPopoverButton = loadable(() =>
+	import('../../components/maxi-popover-button')
+);
+import MaxiModal from '../../editor/library/modal';
+
 import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import {
-	Toolbar,
-	BlockResizer,
-	RawHTML,
-	MaxiPopoverButton,
-} from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getIsOverflowHidden,
@@ -30,14 +38,8 @@ import {
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
 import { withMaxiContextLoopContext } from '../../extensions/DC';
-import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
-
-/**
- * External dependencies
- */
-import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
 
 class edit extends MaxiBlockComponent {
 	constructor(props) {
@@ -155,11 +157,21 @@ class edit extends MaxiBlockComponent {
 			this.props.attributes.content?.match(/ class="(.+?(?=))"/)?.[1];
 		if (!svgClass) return;
 
-		const newContent = this.props.attributes.content?.replaceAll(
-			svgClass.match(/__(\d)/)[0],
-			`__${newUniqueID.match(/-(\d+)$/)?.pop()}`
+		const svgClassMatch = svgClass.match(/__([a-f0-9]+)(?:-u)?$|-(\d+)$/);
+		const newUniqueIDMatch = newUniqueID.match(
+			/-([a-f0-9]+)(?:-u)?$|-(\d+)$/
 		);
-		this.props.attributes.content = newContent;
+
+		if (svgClassMatch && newUniqueIDMatch) {
+			const matchedSvgClass = svgClassMatch[0];
+			const matchedID = newUniqueIDMatch[1];
+
+			const newContent = this.props.attributes.content?.replaceAll(
+				matchedSvgClass,
+				`__${matchedID}`
+			);
+			this.props.attributes.content = newContent;
+		}
 	}
 
 	get getStylesObject() {

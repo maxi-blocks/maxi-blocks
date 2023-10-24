@@ -115,5 +115,5 @@ export const validateRelations = (type, relation, isCL) => {
 		}
 	}
 
-	return {};
+	return null;
 };

@@ -124,7 +124,7 @@ const withMaxiDC = createHigherOrderComponent(
 					} = dispatch('core/block-editor');
 
 					const synchronizedAttributes =
-						getSynchronizedDCAttributes();
+						await getSynchronizedDCAttributes();
 					let isSynchronizedAttributesUpdated = false;
 
 					const lastDynamicContentProps = getDCValues(

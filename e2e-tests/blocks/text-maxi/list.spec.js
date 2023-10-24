@@ -425,16 +425,9 @@ describe('List in Text-maxi', () => {
 			input => input.focus()
 		);
 
-		await page.$eval(
-			'.maxi-text-inspector__list-source-text input',
-			input => {
-				input.value = '';
-			}
-		);
-		await page.keyboard.type('test', {
-			delay: 350,
-		});
-		await page.waitForTimeout(500);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('test');
+		await page.waitForTimeout(150);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
 
@@ -557,6 +550,8 @@ describe('List in Text-maxi', () => {
 		const styleCustom = await page.$$(
 			'.maxi-text-inspector__list-style select'
 		);
+		await page.waitForTimeout(500);
+
 		await styleCustom[1].select('custom');
 
 		await page.waitForTimeout(150);

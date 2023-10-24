@@ -32,7 +32,7 @@ const addMoreSC = async (title = 'Daemon') => {
 		button.click()
 	);
 
-	await page.waitForTimeout(350);
+	await page.waitForTimeout(1000);
 
 	// To ensure we always select the same SC search it by name (hopefully it doesn't change)
 	await page.$eval(
@@ -40,7 +40,9 @@ const addMoreSC = async (title = 'Daemon') => {
 		input => input.focus()
 	);
 
+	await page.waitForTimeout(500);
 	await page.keyboard.type(title);
+	await page.waitForTimeout(500);
 
 	await page.waitForSelector(
 		'.maxi-cloud-container .maxi-cloud-container__sc__content-sc .ais-InfiniteHits-list .ais-InfiniteHits-item button'
@@ -49,6 +51,7 @@ const addMoreSC = async (title = 'Daemon') => {
 		'.maxi-cloud-container .maxi-cloud-container__sc__content-sc .ais-InfiniteHits-list .ais-InfiniteHits-item button',
 		button => button.click()
 	);
+	await page.waitForTimeout(500);
 };
 
 const switchSC = async (title = 'Template: Daemon') => {
@@ -87,6 +90,8 @@ describe('SC settings', () => {
 		});
 
 		await addMoreSC();
+
+		await page.waitForTimeout(350);
 
 		// Check SC name, because key will be different every time
 		const {

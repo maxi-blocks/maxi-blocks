@@ -319,12 +319,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ) .
             '</p>';
             $content .=
-            '<p>' .
+            '<h2>' .
             __(
                 "Go next-level with pro templates 🆙",
                 self::$maxi_text_domain,
             ) .
-            '</p>';
+            '</h2>';
             $content .=
             '<p>' .
             __(

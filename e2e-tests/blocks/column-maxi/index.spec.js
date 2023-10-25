@@ -131,7 +131,7 @@ describe('Column Maxi', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(500);
 
 		// Ensure we select the first Column
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
@@ -208,6 +208,8 @@ describe('Column Maxi', () => {
 
 		// check first column
 		await page.waitForSelector('.maxi-column-block');
+		await page.waitForTimeout(500);
+
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[0].focus()
 		);
@@ -218,6 +220,8 @@ describe('Column Maxi', () => {
 
 		// check last column
 		await page.waitForSelector('.maxi-container-block .maxi-column-block');
+		await page.waitForTimeout(500);
+
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[2].focus()
 		);

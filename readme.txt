@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.3.2
 Requires PHP: 8.0
-Stable tag: 1.4.1
+Stable tag: 1.5.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ _New:_  Quickly create or revise content using the new GPT4 Open AI integration'
 https://youtu.be/EFXhXGFfMF8
 
 == No locked blocks 📖==
-We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design. 
+We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.
 
 == Goodbye license keys 👋 ==
 Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.
@@ -36,13 +36,13 @@ Get started with 200 free templates, 13.4k icons and 100 style cards. You don't 
 Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
 
 == Go next-level with pro templates 🆙==
-If you're loving MaxiBlocks and want support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates. 
+If you're loving MaxiBlocks and want support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates.
 
 _It’s like having a dedicated professional designer crafting unique designs exclusively for you._
 
-Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output. 
+Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output.
 
-Copy, remix, and learn as you go - it's all possible with MaxiBlocks. 
+Copy, remix, and learn as you go - it's all possible with MaxiBlocks.
 
 I love your philosophy of keeping the plugin and all its features free, rather than hiding some features behind a paywall as most companies do. And then earning your income from professionally designed page and block templates that people may want to buy to speed up their website creation, especially people or companies that have to build many websites. It is a win-win! _-- Ani, Early supporter_
 
@@ -72,7 +72,7 @@ https://youtu.be/p37ozp0Kyls
 
 Ah, and the style cards functionality is genius. So much more advanced than any other WP theme that supports palettes. The product looks great. The icons are fantastic, and for me personally, the style cards will be very helpful. _-- Ivan Arnaudov, Freelancer_
 
-== Style Cards 🎴 == 
+== Style Cards 🎴 ==
 
 **Website transformation**: Use style cards to quickly re-style any part of your website or specific templates.
 
@@ -90,18 +90,18 @@ https://youtu.be/RuqkaGmKua4
 
 **GPT-4 Integration**: Deploy your own GPT-4 API key to modify template content for both prototyping and final designs.
 
-**Prompt Maxi**: With the API Key activated, all text elements in MaxiBlocks can utilize GPT-4 and ChatGPT for content enhancement. 
+**Prompt Maxi**: With the API Key activated, all text elements in MaxiBlocks can utilize GPT-4 and ChatGPT for content enhancement.
 
-**Content Templates**: Describe your website's purpose, and ChatGPT will generate related content. 
+**Content Templates**: Describe your website's purpose, and ChatGPT will generate related content.
 
-**Website Identity**: Answer questions to establish site-wide settings, aiding in better content generation by the AI. 
+**Website Identity**: Answer questions to establish site-wide settings, aiding in better content generation by the AI.
 
 == Prompt Maxi Copywriting Controls ✍️==
 
 Adjustable settings for the content creation text block.
-  
-**Generate Tab**: 
-  
+
+**Generate Tab**:
+
 *Content Type*: Specify the content's category.
 *Tone*: Set the tone of voice.
 *Writing Style*: Choose a style.
@@ -110,10 +110,10 @@ Adjustable settings for the content creation text block.
 *Contextual Inputs*: Provide an initial prompt or leave it blank.
 
 **Results Tab**: Export, import, clean, replace, generate, and modify.
-    
+
 **Modify Tab**: Rephrase, shorten, lengthen, fix spelling and grammar, translate and custom.
 
-I’m a first-year IT student and my university recently began a 6-month WordPress course. In this course, I’ve learnt about WordPress themes and plugins like MaxiBlocks, [redacted], [redacted], [redacted] and more. 
+I’m a first-year IT student and my university recently began a 6-month WordPress course. In this course, I’ve learnt about WordPress themes and plugins like MaxiBlocks, [redacted], [redacted], [redacted] and more.
 
 In the next few months, we need to create a website for a library as practice. We can pick any website builder we want to use for this project. I’ve checked out a bunch of WordPress builders and seen many how-to videos.
 
@@ -183,7 +183,7 @@ https://youtu.be/OQi1YygiYnk
 
 == 1500 pro patterns 🌈==
 
-Ready-made block patterns 
+Ready-made block patterns
 
 - Accordion (4)
 - Call to action (80)
@@ -238,7 +238,7 @@ Our resources will help you get started and master MaxiBlocks in no time:
 
 - **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature. Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
 
-- **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques. Try this playlist: 
+- **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques. Try this playlist:
 [⏱️Quick tips & techniques: Short MaxiBlocks mastery!🚀](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda)
 
 - **Dedicated support:** A support team is available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).

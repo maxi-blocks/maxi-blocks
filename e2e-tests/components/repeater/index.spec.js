@@ -72,6 +72,17 @@ describe('Repeater', () => {
 
 		await page.waitForTimeout(2000);
 
+		// Select button from second column
+		await page.$eval(
+			'.maxi-column-block:nth-child(2) .maxi-button-block',
+			block =>
+				wp.data
+					.dispatch('core/block-editor')
+					.selectBlock(block.getAttribute('data-block'))
+		);
+
+		await page.waitForTimeout(350);
+
 		// Check if button was added to all columns
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))

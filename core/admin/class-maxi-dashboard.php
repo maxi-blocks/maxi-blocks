@@ -272,35 +272,84 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<h2>' .
                 __(
-                    'Tired of those page builders that tease you with basic features and make you pay for the rest?',
+                    'Future-proof your web design with the modern page builder that blends simplicity and power',
                     self::$maxi_text_domain,
                 ) .
                 '</h2>';
             $content .=
                 '<p>' .
                 __(
-                    "Maxi is here to break the cycle! We're open source and free to use. No locked features, no domain limits, and no licence keys to keep track of.",
+                    "MaxiBlocks is a no-code visual page builder that can create responsive, fast-loading webpages using an integrated design library.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
             $content .=
             '<p>' .
             __(
-                " Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
+                "You can choose from over 1,800 patterns, 100 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life.",
                 self::$maxi_text_domain,
             ) .
             '</p>';
             $content .=
                 '<p>' .
                 __(
-                    "And if you're loving MaxiBlocks and want to help us out, join the Pro library. Find inspiration, get variety and work faster with production ready templates.",
+                    "No locked blocks 📖: We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
             $content .=
             '<p>' .
             __(
-                "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with MaxiBlocks.",
+                "Goodbye license keys 👋: Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "Packed with free goodies 🆓: Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "Go next-level with pro templates 🆙",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "It’s like having a dedicated professional designer crafting unique designs exclusively for you.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "Copy, remix, and learn as you go - it's all possible with MaxiBlocks.",
                 self::$maxi_text_domain,
             ) .
             '</p>';

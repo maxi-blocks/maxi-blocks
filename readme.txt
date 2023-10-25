@@ -343,3 +343,36 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 10. Use the transform function for shape mask layers: Learn to manipulate design elements effectively with our guide on using the transform function for shape mask layers.
 11. Set automatic image size ratios: See how to set automatic image size ratios to maintain consistent visuals throughout your entire website.
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
+
+== Changelog ==
+
+_Updates: 10 September 2023_
+
+Update: Overhauled styles, metadata, and fonts management processes
+Update: Integrated PHP for block and attribute registration
+Update: Enhanced code optimization and general performance
+Update: Plugin's user interface for a better user experience
+Update: Maxi blocks are now compatible with Synced Patterns (formerly Reusable Blocks)
+Update: Strengthened support for Site Editor
+Update: Refined error handling for Dynamic Content
+Update: Introduced a new loading animation for the Template Library Maxi block
+Update: UI enhancements for margin and padding settings
+Update: Introduced a new Context Loop icon
+Update: Added a character limit option for titles within Dynamic Content
+Update: Updated button icon customization with "before" and "after" options in Custom CSS
+Update: Optimized native Gutenberg blocks to work seamlessly with Style Cards
+Update: Modified scroll effects to utilize the transform property instead of position for better performance
+Update: Enabled image positioning without needing the fit wrapper option.
+Fix: Corrected column width issue for Repeater
+Fix: Fixed transform target for Interaction Builder
+Fix: Implemented an option to ensure equal size for Divider canvas
+Fix: Adjusted Repeater to set height based on content
+Fix: Resolved Repeater's block movement bug
+Fix: Fixed row scheme alterations for nested blocks within rows using Repeater
+Fix: Re-introduced the sign-in button for expired plugin activations
+Fix: Addressed Interaction Builder target issues with Repeater enabled
+Fix: Rectified callout arrow positioning
+
+== Upgrade Notice ==
+
+New version of MaxiBlocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.

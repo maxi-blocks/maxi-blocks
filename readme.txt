@@ -346,32 +346,63 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates: 10 September 2023_
+_Updates: 25 October 2023_
+MaxiBlocks V1.5.0
 
-Update: Overhauled styles, metadata, and fonts management processes
-Update: Integrated PHP for block and attribute registration
-Update: Enhanced code optimization and general performance
-Update: Plugin's user interface for a better user experience
-Update: Maxi blocks are now compatible with Synced Patterns (formerly Reusable Blocks)
-Update: Strengthened support for Site Editor
-Update: Refined error handling for Dynamic Content
-Update: Introduced a new loading animation for the Template Library Maxi block
-Update: UI enhancements for margin and padding settings
-Update: Introduced a new Context Loop icon
-Update: Added a character limit option for titles within Dynamic Content
-Update: Updated button icon customization with "before" and "after" options in Custom CSS
-Update: Optimized native Gutenberg blocks to work seamlessly with Style Cards
-Update: Modified scroll effects to utilize the transform property instead of position for better performance
-Update: Enabled image positioning without needing the fit wrapper option.
-Fix: Corrected column width issue for Repeater
-Fix: Fixed transform target for Interaction Builder
-Fix: Implemented an option to ensure equal size for Divider canvas
-Fix: Adjusted Repeater to set height based on content
-Fix: Resolved Repeater's block movement bug
-Fix: Fixed row scheme alterations for nested blocks within rows using Repeater
-Fix: Re-introduced the sign-in button for expired plugin activations
-Fix: Addressed Interaction Builder target issues with Repeater enabled
-Fix: Rectified callout arrow positioning
+* Update: Huge speed optimization for the Editing Experience, FSE Site Editor, and frontend Visitor Experience .
+* Update: New refined UI styles for block settings sidebar & style card editor.
+* Update: New GPT4 BYO API key for all text elements to create or revise content with AI.
+* Update: New advanced CSS component for block settings. Useful for styling default Gutenberg blocks wrapped inside Maxi foundation blocks. Think FSE full site editing - navigation block etc.
+* Update: WP Comments block: Set correct Style Cards styles to 'Cancel reply' text.
+* Update: Switch to latest posts for Dynamic Content and Context Loop if no tags exist on the site.
+* Update: Security updates for packages.
+* Update: Require PHP 8.0 or newer.
+* Update: Require MySQL 8.0 LTS or newer.
+* Update: Autofill email on Pro account activation.
+* Update: Remove sessions count for Pro accounts.
+* Update: Visual indicators in MaxiBlocks settings are now active by default.
+* Fix: Dimension size on frontend.
+* Fix: Dynamic Content: Categories and tags displaying on frontend.
+* Fix: Styles in Gutenberg preview mode.
+* Fix: Custom data on reset.
+* Fix: Video Maxi: Styles for playerType: video.
+* Fix: Gutenberg Tablet and Mobile preview.
+* Fix: Update unique IDs on code editor paste.
+* Fix: IB: Clip-path for background layers.
+* Fix: Render for not Dynamic Content blocks.
+* Fix: Infinite loop when validating order by attributes.
+* Fix: Opacity control returns wrong value for null.
+* Fix: Row width migration.
+* Fix: Custom footers and headers for Site Editor.
+* Fix: Link removal for two and more links.
+
+_Updates: 10 September 2023_
+MaxiBlocks V1.4.1
+
+* Update: Overhauled styles, metadata, and fonts management processes
+* Update: Integrated PHP for block and attribute registration
+* Update: Enhanced code optimization and general performance
+* Update: Plugin's user interface for a better user experience
+* Update: Maxi blocks are now compatible with Synced Patterns (formerly Reusable Blocks)
+* Update: Strengthened support for Site Editor
+* Update: Refined error handling for Dynamic Content
+* Update: Introduced a new loading animation for the Template Library Maxi block
+* Update: UI enhancements for margin and padding settings
+* Update: Introduced a new Context Loop icon
+* Update: Added a character limit option for titles within Dynamic Content
+* Update: Updated button icon customization with "before" and "after" options in Custom CSS
+* Update: Optimized native Gutenberg blocks to work seamlessly with Style Cards
+* Update: Modified scroll effects to utilize the transform property instead of position for better performance
+* Update: Enabled image positioning without needing the fit wrapper option.
+* Fix: Corrected column width issue for Repeater
+* Fix: Fixed transform target for Interaction Builder
+* Fix: Implemented an option to ensure equal size for Divider canvas
+* Fix: Adjusted Repeater to set height based on content
+* Fix: Resolved Repeater's block movement bug
+* Fix: Fixed row scheme alterations for nested blocks within rows using Repeater
+* Fix: Re-introduced the sign-in button for expired plugin activations
+* Fix: Addressed Interaction Builder target issues with Repeater enabled
+* Fix: Rectified callout arrow positioning
 
 == Upgrade Notice ==
 

@@ -1,5 +1,5 @@
 _Updates: 25 October 2023_
-MaxiBlocks V1.5.0
+MaxiBlocks V1.5.0-V1.5.1
 
 * Update: Huge speed optimization for the Editing Experience, FSE Site Editor, and frontend Visitor Experience .
 * Update: New refined UI styles for block settings sidebar & style card editor.

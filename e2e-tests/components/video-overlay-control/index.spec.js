@@ -37,6 +37,8 @@ describe('Video overlay control', () => {
 		// Overlay background button
 		await openSidebarTab(page, 'style', 'image');
 
+		await page.waitForTimeout(500);
+
 		await editColorControl({
 			page,
 			instance: await page.$(

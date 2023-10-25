@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.3.2
 Requires PHP: 8.0
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -347,7 +347,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 == Changelog ==
 
 _Updates: 25 October 2023_
-MaxiBlocks V1.5.0
+MaxiBlocks V1.5.0-V1.5.1
 
 * Update: Huge speed optimization for the Editing Experience, FSE Site Editor, and frontend Visitor Experience .
 * Update: New refined UI styles for block settings sidebar & style card editor.

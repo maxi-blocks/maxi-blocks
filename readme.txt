@@ -10,7 +10,7 @@ Stable tag: 1.4.1
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern page builder blends simplicity with power. Work faster w/ 1700 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
+Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
 
 == Description ==
 
@@ -20,116 +20,106 @@ MaxiBlocks is a no-code visual page builder that can create responsive, fast-loa
 
 You can choose from over 1,800 patterns, 100 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life.
 
-= No locked blocks =
-We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets open access to custom blocks and every setting **completely free**. No lock-in by design. 
+_New:_  Quickly create or revise content using the new GPT4 Open AI integration's helpful "bring your own api key" feature.
 
-= Goodbye license keys =
-Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get **unlimited sites** and **unlimited downloads**.
+https://youtu.be/EFXhXGFfMF8
 
-= Get lots for free =
-Start with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. All blocks and advanced settings are free. Just install the plugin and start building.
+== No locked blocks 📖==
+We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design. 
+
+== Goodbye license keys 👋 ==
+Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.
+
+== Packed with free goodies 🆓 ==
+Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
 
 Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
 
-= Go next-level with pro templates =
-And if you love MaxiBlocks and want support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates. 
+== Go next-level with pro templates 🆙==
+If you're loving MaxiBlocks and want support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates. 
 
-It’s like having a dedicated professional designer crafting unique designs exclusively for you.
+_It’s like having a dedicated professional designer crafting unique designs exclusively for you._
 
-Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge asset library that can literally **double your output**. 
+Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output. 
 
 Copy, remix, and learn as you go - it's all possible with MaxiBlocks. 
 
-= Here's what creators say =
----
- _"Ah, and the style cards functionality is genius. So much more advanced than any other WP theme that supports palettes. The product looks great. The icons are fantastic, and for me personally, the style cards will be very helpful."_  -- Ivan Arnaudov, Freelancer
---- 
-_"I love your philosophy of keeping the plugin and all its features free, rather than hiding some features behind a paywall as most companies do. And then earning your income from professionally designed page and block templates that people may want to buy to speed up their website creation, especially people or companies that have to build many websites. It is a win-win!"_ -- Ani, Early supporter
+I love your philosophy of keeping the plugin and all its features free, rather than hiding some features behind a paywall as most companies do. And then earning your income from professionally designed page and block templates that people may want to buy to speed up their website creation, especially people or companies that have to build many websites. It is a win-win! _-- Ani, Early supporter_
 
-_“I like the settings and the power it offers me. You did a great job with the “one-click design change” that you offer with style cards while offering the power to change everything with the settings.”_ -- A. Ku, Online marketeer
+https://youtu.be/p37ozp0Kyls
 
-**Top 12 free features of MaxiBlocks**
+== Advanced Template Library ⚗️ ==
 
-https://www.youtube.com/watch?v=EFXhXGFfMF8
+**Efficiency**: Meet your new secret weapon—a template library that saves time and fuels creativity.
 
-== MaxiBlocks features overview ==
+**Device compatibility**: Six responsive breakpoints ensure that your webpages are optimized for all devices, from large 4K displays to tablets and mobile devices.
 
-**Template Library** 
+**User flexibility**: Whether you're a newbie or a pro coder, the drag-and-drop features combined with custom CSS allow you to design freely.
 
--  **Efficiency**: Meet your new secret weapon—a template library that saves time and fuels creativity.
-- **Device Compatibility**: MaxiBlocks ensures that your webpages are optimized for all devices, from large 4K displays to any mobile phone.
-- **User Flexibility**: Whether you're a newbie or a pro coder, the drag-and-drop features combined with custom CSS allow you to design freely.
-- **Dynamic Content**: Access animation features like hover effects and scroll animations to enhance user engagement.
-- **Design Customization**: Choose from diverse color schemes and font pairings for a distinct look, and employ SEO tools to enhance online visibility.
+**Dynamic interactions**: Access animation features like hover effects and scroll animations to enhance user engagement.
 
-**Image Tools**
+**Design customization**: Choose from diverse color schemes and font pairings for a distinct look, and employ SEO tools to enhance online visibility.
 
-- **Advanced Interactions**: Craft engaging web elements with hover effects, background layers, and masks.
-- **Expansive Element Library**: No need to search the internet endlessly. MaxiBlocks offers over 13,400 customizable design elements.
-- **Style Cards**: Instantly re-style websites or templates using one of the 100 style cards, available in both light and dark mode themes.
-- **User-Friendly Tools**: Enhance your workflow with tools like undo/redo, version history, and extensive free WordPress integrations.
+== Image Tools 📸==
 
-**Style Cards**
+**Advanced interactions**: Craft engaging web elements with hover effects, background layers, and masks.
 
-- **Website Transformation**: Use style cards to re-style any part of your website or specific templates effortlessly.
-- **Full-Site Editing**: MaxiBlocks provides tools that allow you to incorporate standard navigation blocks, ensuring a seamless user experience.
-- **Diverse Content Options**: Create various webpages, from landing pages and microsites to industry-specific templates.
-- **Resources & Support**: Benefit from a plethora of resources, video tutorials, and a dedicated support team always ready to assist.
+**Expansive element library**: No need to search the internet endlessly. MaxiBlocks offers over 13,400 customizable design elements.
 
-**Dynamic Content**
+**Style cards**: Instantly re-style websites or templates using one of the 100 style cards, available in both light and dark mode themes.
 
-- **Limitless Creativity**: Gain access to dynamic content tools that empower you to design without boundaries.
-- **Stand Out from the Rest**: While many page builders might restrict creativity, MaxiBlocks offers a wealth of responsive templates, patterns, and SVG icons that you can tailor to your vision.
+**User-friendly tools**: Enhance your workflow with tools like undo/redo, version history, and extensive free WordPress integrations.
 
-MaxiBlocks stands out for several reasons:
+Ah, and the style cards functionality is genius. So much more advanced than any other WP theme that supports palettes. The product looks great. The icons are fantastic, and for me personally, the style cards will be very helpful. _-- Ivan Arnaudov, Freelancer_
 
-- **Fast customization:** Style cards instantly change a template to match your style.
+== Style Cards 🎴 == 
 
-- **Flexibility:** Create any layout and design you want without coding or complex configuration.
+**Website transformation**: Use style cards to quickly re-style any part of your website or specific templates.
 
-- **Seamless integration:** Works smoothly with WordPress and the Gutenberg editor.
+**Full-Site Editing**: MaxiBlocks provides tools that allow you to incorporate standard navigation blocks, ensuring a seamless user experience.
 
-- **Performance focused:** Optimized code and minimal bloat to keep your website fast and responsive.
+**Diverse Content Options**: Create various webpages, from landing pages and microsites to industry-specific templates.
 
-- **Active development:** Our team is always working to improve MaxiBlocks and add new features.
+**Resources & Support**: Benefit from a mountain of resources, video tutorials, and a dedicated support team always ready to assist.
 
-- **Thriving community:** A vibrant community of users, designers, and developers provides inspiration, support, and collaboration.
+I like the settings and the power it offers me. You did a great job with the “one-click design change” that you offer with style cards while offering the power to change everything with the settings. _-- A. Ku, Online marketeer_
 
-- **No locked features:** We give free what other page builders charge for. We can do this because we earn income from selling pro templates that save you time. All page builder features are free for everyone.
+https://youtu.be/RuqkaGmKua4
 
-- **Page speed:** Maxi's front-end-visitor page speed scores are all green for mobile and desktop devices. Run the test and find out.
+== Integrated AI Tools  🤖==
 
-== Features you'll love ==
+**GPT-4 Integration**: Deploy your own GPT-4 API key to modify template content for both prototyping and final designs.
 
-Explore a wide array of tools and templates to enhance your designs:
+**Prompt Maxi**: With the API Key activated, all text elements in MaxiBlocks can utilize GPT-4 and ChatGPT for content enhancement. 
 
-- **706+ free patterns and templates:** Start your project with a huge library of ready-to-use patterns.
+**Content Templates**: Describe your website's purpose, and ChatGPT will generate related content. 
 
-- **26+ free page templates:** More than 70 planned.
+**Website Identity**: Answer questions to establish site-wide settings, aiding in better content generation by the AI. 
 
-- **13.4K designer icons and shapes:** Customize your designs with a wide collection of icons and shapes.
+== Prompt Maxi Copywriting Controls ✍️==
 
-- **Style cards functionality:** Change your page or website's look easily with 100 unique style cards.
+Adjustable settings for the content creation text block.
+  
+**Generate Tab**: 
+  
+*Content Type*: Specify the content's category.
+*Tone*: Set the tone of voice.
+*Writing Style*: Choose a style.
+*Language*: Select the content's language.
+*Temperature*: Set between precision, neutrality, and creativity.
+*Contextual Inputs*: Provide an initial prompt or leave it blank.
 
-- **Pro template library:** Enhance your design experience with **852 pro patterns** - Plus  **2400 designs + 72 pages - coming soon**. Take a [sneak peek](https://maxiblocks.com/home-page-coming-soon/) here.
+**Results Tab**: Export, import, clean, replace, generate, and modify.
+    
+**Modify Tab**: Rephrase, shorten, lengthen, fix spelling and grammar, translate and custom.
 
-- **You'll get more variety**  and inspiration to help you work faster. Pro templates can help you reach new audiences. Have a look at the [demo library](https://maxiblocks.com/demo/) to see what's possible.
+I’m a first-year IT student and my university recently began a 6-month WordPress course. In this course, I’ve learnt about WordPress themes and plugins like MaxiBlocks, [redacted], [redacted], [redacted] and more. 
 
-== Maxi components ==
+In the next few months, we need to create a website for a library as practice. We can pick any website builder we want to use for this project. I’ve checked out a bunch of WordPress builders and seen many how-to videos.
 
-Build your site with components made for speedy design:
+I think MaxiBlocks tops them all. It’s super fast and adaptable. I tried MaxiBlocks for a week and I can say it’s better than other builders. It’s really neat and well-arranged. _-- Lynn WordPress designer – Myanmar_
 
-- **Interaction builder:** Link elements and layers together for advanced interactions.
-
-- **Full Site Editing (FSE):** Design your entire website, including headers, footers, and content.
-
-- **Cloud template, icon, and style card libraries:** Access free and pro patterns, icons, and style cards via our cloud library.
-
-- **Custom Gutenberg blocks:** Enhance your experience with 16 custom Gutenberg blocks.
-
-- **Dynamic content support:** Add life to your designs with content that adapts to your website.
-
-== Maxi's Foundation blocks ==
+== Maxi's Custom Blocks  💎==
 
 **Accordion Maxi**: Manages content within expandable and collapsible panels. It optimizes space, especially beneficial for mobile designs, by dynamically showing/hiding content, ideal for FAQs or nested information.
 
@@ -159,43 +149,41 @@ Build your site with components made for speedy design:
 
 **Video Maxi**: Facilitates the addition of videos with controls or lightbox. Enhances user engagement by easily incorporating multimedia, enriching the visual experience.
 
-== Design features ==
+== Design Features 🎨==
 
 Craft responsive, visually appealing websites with a user-friendly editing tool:
 
-- **Responsive design:** Ensure your website looks great on all devices.
+**Responsive design:** Ensure your website looks great on all devices.
 
-- **Live visual editing:** Make real-time changes with an easy-to-use editing interface.
+**Live visual editing:** Make real-time changes with an easy-to-use editing interface.
 
-- **Layer backgrounds:** Combine images, colours, and videos for eye-catching designs.
+**Layer backgrounds:** Combine images, colours, and videos for eye-catching designs.
 
-- **Shape masks:** Add flair to your images with CSS clip paths and shape masks.
+**Shape masks:** Add flair to your images with CSS clip paths and shape masks.
 
-- **Responsive grid with Flexbox:** Precise layout control with six breakpoints and Flexbox capabilities.
+**Responsive grid with Flexbox:** Precise layout control with six breakpoints and Flexbox capabilities.
 
-- **Scroll effects:** Add visual interest with subtle scroll effects and CSS transformations.
+https://youtu.be/UNEzFp9bBw4
 
-== Integrated design library ==
+**Scroll effects:** Add visual interest with subtle scroll effects and CSS transformations.
 
-Choose from thousands of icons and shapes for a unique look:
+**Context loop:** This powerful feature is similar to Gutenberg's "query loop block" but integrated with Maxi's blocks, container, row, column, and group. It works with the responsive grid and dynamic content. Create blogs, product pages, archives, listings and more.
 
-- **13,410 free SVG icons and shapes:** Edit icon colour, line, and fill in real-time without extra software.
+**Style repeater**: Synchronises all block styles inside of a row. Ideal for situations where many identical blocks are used like; testimonials, team profiles, blogs, galleries or logo farms.
 
-- **Searchable icons and shapes:** Find the perfect icons and shapes easily with our speed search functionality.
-
-- **Optimized for speed:** Fast-loading icons and shapes with minimal file sizes for top site performance.
+**Dynamic content:** Advanced Custom Fields (ACF) is already implemented. Future support for Meta Box, JetEngine & Toolset.
 
 == Pro library for production-ready responsive templates ==
 
 Pro templates give you more variety and original designs. It's faster and easier to create attractive WordPress pages.
 
+https://youtu.be/OQi1YygiYnk
+
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-How many pro patterns are there right now?
+== 1500 pro patterns 🌈==
 
-- **852 pro patterns** plus (2400 patterns + 72 pages coming soon)
-
-Ready-made block patterns include:
+Ready-made block patterns 
 
 - Accordion (4)
 - Call to action (80)
@@ -215,7 +203,7 @@ Coming soon
 - Blogs
 - Navigation menus
 
-Ready-made page templates include:
+== Ready-made page templates ==
 
 - 404 Pages (14)
 - About us pages (7)
@@ -227,49 +215,37 @@ Ready-made page templates include:
 - Sports (4)
 - Many more coming soon
 
-
-
 With Maxi, your pro templates always auto-update even without Pro access. Now that's peace-of-mind.
 
 [View the pro demo library](https://maxiblocks.com/demo/?plan=pro)
 
-== Planned features ==
+== Planned features 🔜 ==
 
-Look forward to exciting additions to enhance your design experience:
+Look forward to exciting additions to enhance your design experience.
 
-- **AI tools:** Content creation like text and images, integrated with style cards and right where you need it.
-
-- **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
-
-- **Navigation & mega menu:** Create responsive menus for seamless site navigation.
-
-- **Full site editing:** Further integrate MaxiBlocks for complete site customization.
-
+- **More AI tools:** Content creation like images, integrated with style cards and right where you need it.
 - **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
-
+- **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
+- **Navigation & mega menu:** Create responsive menus for seamless site navigation.
+- **Full site editing:** Further integrate MaxiBlocks for complete site customization.
 - **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.
-
 - **Menu builder:** A custom navigation block for responsive menus.
-
-- **Context loop with repeater fields:** Speed up your page-building process with this powerful feature, similar to Gutenberg's "query loop block" but integrated with Maxi's blocks, container, row, column, and group. It works with the responsive grid and dynamic content.
-
-- **Dynamic content:** Soon to implement support for services like **ACF**, **Meta Box**, **JetEngine** & **Toolset**.
-
 - **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
 
-== Documentation & support ==
+== Documentation & support 📚==
 
 Our resources will help you get started and master MaxiBlocks in no time:
 
 - **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature. Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
 
-- **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques.
+- **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques. Try this playlist: 
+[⏱️Quick tips & techniques: Short MaxiBlocks mastery!🚀](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda)
 
 - **Dedicated support:** A support team is available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
 
 - **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/wordpress-plugin-changelog).
 
-== Community & contributions ==
+== Community & contributions 🌍==
 
 MaxiBlocks is more than a plugin. It's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make MaxiBlocks even better:
 
@@ -279,7 +255,7 @@ MaxiBlocks is more than a plugin. It's a community of passionate designers, deve
 
 - **Share your work:** Show off your amazing creations with MaxiBlocks and inspire others with your designs. Use the hashtag **#maxiblocks** or **#madewithmaxi**
 
-== Get Started with MaxiBlocks ==
+== Get started with MaxiBlocks 🔰==
 
 Ready to take your website design to the next level? Download MaxiBlocks today and experience the power of this versatile page builder. Begin your journey to fun web design today.
 
@@ -314,6 +290,14 @@ Yes, MaxiBlocks is fully integrated with the Gutenberg editor, providing custom 
 = Why don’t you need licence keys with the pro library? =
 
 We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). Plus, we refuse to follow the crowd and hold basic features hostage just to sell the “full-version.” With Maxi, your pro templates always stay functional and receive updates indefinitely.
+
+= How do sites built with Pro templates stay updated? =
+
+Each Pro access account allows you to create unlimited sites for your web design customers. Simply sign out from the cloud library to hand over. Sites crafted with Pro templates always auto-update, even without Pro access.
+
+= How does copyright work? =
+
+MaxiBlocks believes in the spirit of open collaboration. All our templates, patterns, and icons carry the CC0 1.0 license meaning you can freely use them for personal or commercial projects.
 
 = Got a public roadmap =
 

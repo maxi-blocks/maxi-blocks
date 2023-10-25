@@ -260,11 +260,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $user_name = $current_user->user_firstname;
 
             $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-start">';
-            $content .=
-                '<h1>' .
-                __('Hello, friend 👋 ', self::$maxi_text_domain) .
-                esc_html($user_name) .
-                '</h1>';
+            $content .= '<h1>';
+
+            if ($user_name) {
+                $content .= __('Hello, ', self::$maxi_text_domain) . esc_html($user_name) . ' 👋';
+            } else {
+                $content .= __('Hello, friend 👋', self::$maxi_text_domain);
+            }
+
+            $content .= '</h1>';
             $content .=
                 '<h2>' .
                 __(
@@ -928,7 +932,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Website identity', false);
+            $content .= $this->generate_item_header('Website identity', true);
 
             $description = '
 				<h4>'.__('Tell us about your site', self::$maxi_text_domain).'</h4>

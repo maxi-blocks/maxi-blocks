@@ -13,6 +13,7 @@ import { orderByRelations, orderRelations } from './constants';
 import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
+import getValidatedDCAttributes from './validateDCAttributes';
 
 /**
  * External dependencies
@@ -133,17 +134,13 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				let isCancelled = false;
 
 				const updateRelationIds = async () => {
-					const dataRequest = Object.fromEntries(
-						Object.entries(
-							getCLAttributes(contextLoopAttributes)
-						).map(([key, value]) => [key.replace('cl-', ''), value])
-					);
+					const dataRequest = getCLAttributes(contextLoopAttributes);
 
 					const { newValues } =
 						(await getDCOptions(
 							dataRequest,
 							contextLoopAttributes['cl-id'],
-							undefined,
+							null,
 							true
 						)) ?? {};
 
@@ -166,6 +163,44 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					isCancelled = true;
 				};
 			}, [setAttributes, contextLoopAttributes]);
+
+			const wasAttributesValidated = useRef(false);
+			useEffect(() => {
+				if (
+					wasAttributesValidated.current ||
+					isEmpty(contextLoopAttributes)
+				)
+					return () => null;
+
+				let isCancelled = false;
+
+				const updateAttributes = async () => {
+					const newAttributes = await getValidatedDCAttributes(
+						getCLAttributes(contextLoopAttributes),
+						null,
+						null,
+						true
+					);
+
+					if (!isEmpty(newAttributes) && !isCancelled) {
+						const {
+							__unstableMarkNextChangeAsNotPersistent:
+								markNextChangeAsNotPersistent,
+						} = dispatch('core/block-editor');
+
+						markNextChangeAsNotPersistent();
+						setAttributes(newAttributes);
+					}
+
+					wasAttributesValidated.current = true;
+				};
+
+				updateAttributes();
+
+				return () => {
+					isCancelled = true;
+				};
+			}, [contextLoopAttributes, setAttributes]);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

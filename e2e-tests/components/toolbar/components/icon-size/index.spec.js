@@ -24,7 +24,7 @@ describe('Icon size', () => {
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(500);
 
 		// edit color
 		await page.$eval(

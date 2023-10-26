@@ -19,7 +19,7 @@ import {
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '../../components';
-import { isValidEmail, getSessionsCount } from '../auth';
+import { isValidEmail } from '../auth';
 
 /**
  * External dependencies
@@ -75,6 +75,7 @@ const LibraryToolbar = props => {
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 	const [userEmail, setUserEmail] = useState(false);
+	const [clickCount, setClickCount] = useState(0);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -395,16 +396,6 @@ const LibraryToolbar = props => {
 		};
 	});
 
-	const usernameClasses = classnames(
-		'maxi-username',
-		isValidEmail(userName) && 'maxi-username__hide'
-	);
-
-	const manageSessions = () => {
-		const url = 'https://my.maxiblocks.com/manage-sessions?plugin-sessions';
-		window.open(url, '_blank')?.focus();
-	};
-
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -492,17 +483,24 @@ const LibraryToolbar = props => {
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Signed in: ', 'maxi-blocks')}
-						<span className={usernameClasses}>{userName}</span>
+						<span
+							className='maxi-username'
+							title={
+								clickCount % 2 !== 0
+									? __('Click to hide', 'maxi-blocks')
+									: __('Click to show', 'maxi-blocks')
+							}
+							onClick={event => {
+								setClickCount(prevCount => prevCount + 1);
+							}}
+						>
+							{isValidEmail(userName)
+								? clickCount % 2 !== 0
+									? userName
+									: '******@***.***'
+								: userName}
+						</span>
 					</h5>
-					<Button
-						key='maxi-cloud-toolbar__button__manage-sessions'
-						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
-						label={__('Manage sessions', 'maxi-blocks')}
-						onClick={() => manageSessions()}
-					>
-						{__('Manage sessions', 'maxi-blocks')}{' '}
-						{getSessionsCount()}/5
-					</Button>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
@@ -527,8 +525,7 @@ const LibraryToolbar = props => {
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
-							const url =
-								'https://my.maxiblocks.com/login?plugin';
+							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
 							window.open(url, '_blank')?.focus();
 
 							onClickConnect(userEmail);
@@ -541,16 +538,8 @@ const LibraryToolbar = props => {
 			{!isMaxiProActive && userName && !isMaxiProExpired && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						<span className={usernameClasses}>{userName}</span>
+						<span className='maxi-username'>{userName}</span>
 					</h5>
-					<Button
-						key='maxi-cloud-toolbar__button__manage-sessions'
-						className='maxi-cloud-container__patterns__top-menu__button-go-pro maxi-cloud-container__patterns__top-menu__button-manage-sessions'
-						label={__('Maximum sessions 5/5', 'maxi-blocks')}
-						onClick={() => manageSessions()}
-					>
-						{__('Maximum sessions 5/5', 'maxi-blocks')}
-					</Button>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
@@ -580,8 +569,7 @@ const LibraryToolbar = props => {
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
 						onClick={() => {
-							const url =
-								'https://my.maxiblocks.com/login?plugin';
+							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
 							window.open(url, '_blank')?.focus();
 
 							onClickConnect(userEmail);

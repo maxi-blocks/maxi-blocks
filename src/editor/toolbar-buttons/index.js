@@ -55,7 +55,7 @@ wp.domReady(() => {
 	/**
 	 * Mutation Observer for:
 	 * - Add special classes on Settings Sidebar
-	 * - Hide original WP toolbar on selected Maxi Blocks
+	 * - Hide original WP toolbar on selected MaxiBlocks
 	 */
 	let isMaxiToolbar = false;
 

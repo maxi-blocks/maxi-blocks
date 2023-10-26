@@ -22,7 +22,7 @@ const getValueFromKeys = (value, keys) =>
 	keys.reduce((acc, key) => acc?.[key], value);
 
 /**
- * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
+ * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint. Also enables getting
  * normal attribute on hover requests when the hover attribute doesn't exist.
  */

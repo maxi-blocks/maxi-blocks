@@ -189,7 +189,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     __('Maxi Image', 'max-blocks'),
                     'maxi-image-type',
                     array(
-                      'description' => __('Images added by Maxi Blocks plugin', 'max-blocks'),
+                      'description' => __('Images added by MaxiBlocks plugin', 'max-blocks'),
                       'slug'        => 'maxi-image'
                     )
                 );
@@ -202,7 +202,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 [
                     [
                         'slug' => 'maxi-blocks',
-                        'title' => __('Maxi Blocks', 'maxi-blocks'),
+                        'title' => __('MaxiBlocks', 'maxi-blocks'),
                     ],
                 ],
                 $categories

@@ -14,6 +14,7 @@ import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
 import getValidatedDCAttributes from './validateDCAttributes';
+import { getAttributesWithoutPrefix } from './utils';
 
 /**
  * External dependencies
@@ -134,7 +135,10 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				let isCancelled = false;
 
 				const updateRelationIds = async () => {
-					const dataRequest = getCLAttributes(contextLoopAttributes);
+					const dataRequest = getAttributesWithoutPrefix(
+						getCLAttributes(contextLoopAttributes),
+						'cl-'
+					);
 
 					const { newValues } =
 						(await getDCOptions(
@@ -176,7 +180,10 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 				const updateAttributes = async () => {
 					const newAttributes = await getValidatedDCAttributes(
-						getCLAttributes(contextLoopAttributes),
+						getAttributesWithoutPrefix(
+							getCLAttributes(contextLoopAttributes),
+							'cl-'
+						),
 						null,
 						null,
 						true

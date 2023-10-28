@@ -35,14 +35,15 @@ const controls = {
 
 				filteredCustomData[uniqueID] = {};
 
-				if (value[uniqueID])
+				if (value[uniqueID]) {
 					filteredCustomData[uniqueID] = value[uniqueID];
-				if (value.relations)
-					filteredCustomData[uniqueID].relations = value.relations;
-				if (value.dynamic_content) {
-					filteredCustomData[uniqueID].dynamic_content =
-						value.dynamic_content;
 				}
+
+				Object.keys(value).forEach(key => {
+					if (key === uniqueID) return;
+
+					filteredCustomData[uniqueID][key] = value[key];
+				});
 			})
 		);
 

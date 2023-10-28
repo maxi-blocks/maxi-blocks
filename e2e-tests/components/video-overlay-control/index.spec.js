@@ -25,6 +25,8 @@ describe('Video overlay control', () => {
 
 		const accordionPanel = await openSidebarTab(page, 'style', 'video');
 
+		await page.waitForTimeout(300);
+
 		// Change type
 		await accordionPanel.$eval(
 			'.maxi-video-control__player-type .maxi-tabs-control__button-popup',
@@ -34,6 +36,8 @@ describe('Video overlay control', () => {
 
 		// Overlay background button
 		await openSidebarTab(page, 'style', 'image');
+
+		await page.waitForTimeout(500);
 
 		await editColorControl({
 			page,

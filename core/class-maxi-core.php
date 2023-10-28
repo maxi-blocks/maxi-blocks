@@ -70,6 +70,7 @@ if (!class_exists('MaxiBlocks_Core')):
             });
         }
 
+
         public function maxi_blocks_body_class($classes)
         {
             $mb_class_accessibility_class = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';

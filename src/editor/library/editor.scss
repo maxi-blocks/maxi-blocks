@@ -518,13 +518,6 @@
 				margin-right: 10px;
 			}
 		}
-		.maxi-username__hide {
-			filter: blur(4px);
-			transition: all 0.3s;
-		}
-		.maxi-username__hide:hover {
-			filter: blur(0);
-		}
 	}
 
 	.maxi-cloud-container {
@@ -1743,17 +1736,17 @@
 			&__button-connect-pro {
 				right: 100px;
 			}
-			&__button-manage-sessions {
-				margin-right: -10px;
-			}
 			&__text_pro {
 				margin: 0;
+				.maxi-username:hover {
+					cursor: pointer;
+				}
 			}
 			&__input {
 				width: 300px;
 				margin-right: -15px;
 				input {
-					margin-top: 9px;
+					margin-top: 10px;
 					margin-right: -5px;
 					padding: 1px 8px 2px !important;
 					border: 1px solid #dbdde6 !important;
@@ -2066,7 +2059,6 @@
 						left: 37px;
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							white-space: nowrap;
 						}
@@ -2136,7 +2128,6 @@
 						}
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							padding: 6px;
 						}
@@ -2249,7 +2240,6 @@
 						margin-right: -5px;
 					}
 					&__button {
-						&-manage-sessions,
 						&-go-pro {
 							font-size: 11px;
 						}
@@ -2257,11 +2247,6 @@
 					&__text_pro {
 						font-size: 12px;
 						line-height: 16px;
-					}
-					&__button {
-						&-manage-sessions {
-							margin-right: -7px;
-						}
 					}
 				}
 			}
@@ -2492,8 +2477,7 @@
 						}
 					}
 					&__button {
-						&-go-pro,
-						&-manage-sessions {
+						&-go-pro {
 							font-size: 10px;
 							padding: 3px;
 						}

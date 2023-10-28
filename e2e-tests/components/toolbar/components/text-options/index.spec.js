@@ -34,10 +34,13 @@ describe('Text options', () => {
 			button => button.focus()
 		);
 
+		await page.waitForTimeout(100); // Add a slight delay
 		await pressKeyWithModifier('primary', 'a');
+		await page.waitForTimeout(100); // Add a slight delay
+
 		await page.keyboard.type('19', { delay: 350 });
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('font-size-general')).toStrictEqual(19);
 

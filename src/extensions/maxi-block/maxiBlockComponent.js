@@ -1,5 +1,5 @@
 /**
- * Maxi Blocks Block component extension
+ * MaxiBlocks Block component extension
  *
  * @todo Comment properly
  * @todo Transform to functional component or HOC
@@ -288,7 +288,7 @@ class MaxiBlockComponent extends Component {
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(error =>
-				console.error('Maxi Blocks: Could not load settings', error)
+				console.error('MaxiBlocks: Could not load settings', error)
 			);
 
 		// Check if the block is reusable

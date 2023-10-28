@@ -43,7 +43,7 @@ const allowedBlocks = [
 ];
 
 /**
- * Add custom Maxi Blocks attributes to selected blocks
+ * Add custom MaxiBlocks attributes to selected blocks
  *
  * @param {Function|Component} BlockEdit Original component.
  * @return {string} Wrapped component.

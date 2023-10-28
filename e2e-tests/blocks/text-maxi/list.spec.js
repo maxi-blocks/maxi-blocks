@@ -426,8 +426,8 @@ describe('List in Text-maxi', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('test', { delay: 350 });
-		await page.waitForTimeout(150);
+		await page.keyboard.type('test');
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
 
@@ -493,6 +493,8 @@ describe('List in Text-maxi', () => {
 
 		const accordion = await openSidebarTab(page, 'style', 'list options');
 
+		await page.waitForTimeout(500);
+
 		// Change marker indent
 		await editAdvancedNumberControl({
 			page,
@@ -508,6 +510,8 @@ describe('List in Text-maxi', () => {
 			40
 		);
 
+		await page.waitForTimeout(500);
+
 		// Change text indent
 		await editAdvancedNumberControl({
 			page,
@@ -521,6 +525,9 @@ describe('List in Text-maxi', () => {
 
 		// Check styles on rtl
 		await openSidebarTab(page, 'style', 'typography');
+
+		await page.waitForTimeout(500);
+
 		await addTypographyStyle({
 			instance: page,
 			direction: 'rtl',
@@ -543,6 +550,8 @@ describe('List in Text-maxi', () => {
 		const styleCustom = await page.$$(
 			'.maxi-text-inspector__list-style select'
 		);
+		await page.waitForTimeout(500);
+
 		await styleCustom[1].select('custom');
 
 		await page.waitForTimeout(150);

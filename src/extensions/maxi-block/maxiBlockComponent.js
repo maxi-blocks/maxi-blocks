@@ -42,7 +42,7 @@ import {
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
 } from '../fse';
-import { updateSCOnEditor } from '../style-cards';
+import { getActiveStyleCard, updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
@@ -317,12 +317,15 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Prevents rendering
 	 */
-	shouldComponentUpdate(nextProps, nextState) {
+	async shouldComponentUpdate(nextProps, nextState) {
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
-			const SC = select(
-				'maxiBlocks/style-cards'
-			).receiveMaxiSelectedStyleCard();
+			const SC = getActiveStyleCard(
+				await resolveSelect(
+					'maxiBlocks/style-cards'
+				).receiveMaxiStyleCards(),
+				true
+			);
 
 			if (!isEqual(this.state.oldSC, SC)) {
 				this.setState({

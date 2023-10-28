@@ -96,6 +96,7 @@ const AdvancedNumberControl = props => {
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
 		inputType = 'number',
+		customValidationRegex,
 		newStyle = false,
 	} = props;
 
@@ -245,7 +246,7 @@ const AdvancedNumberControl = props => {
 						value={latestValueRef.current || currentValue}
 						onChange={handleInputChange}
 						onKeyDown={e => {
-							validateNumberInput(e);
+							validateNumberInput(e, customValidationRegex);
 							if (
 								e.key === '-' &&
 								(enableUnit ? minValue : min) >= 0

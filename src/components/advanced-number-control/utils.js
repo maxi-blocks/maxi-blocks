@@ -1,6 +1,6 @@
-const validateNumberInput = event => {
+const validateNumberInput = (event, regex = /[a-zA-Z]/) => {
 	if (
-		/[a-zA-Z]/.test(event.key) &&
+		regex.test(event.key) &&
 		event.key !== 'e' &&
 		event.key.length === 1 &&
 		!event.ctrlKey &&

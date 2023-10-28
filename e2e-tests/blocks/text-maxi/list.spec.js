@@ -427,7 +427,7 @@ describe('List in Text-maxi', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('test');
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(500);
 
 		expect(await getAttributes('listStyleCustom')).toStrictEqual('test');
 

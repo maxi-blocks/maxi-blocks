@@ -35,7 +35,12 @@ export default function TextInput({
 	const valueChange = e => {
 		const newValue = e.target.value;
 		setInputValue(newValue);
-		onChange(newValue);
+
+		if (textTimeOut.current) clearTimeout(textTimeOut.current);
+
+		textTimeOut.current = setTimeout(() => {
+			onChange(newValue);
+		}, 300);
 	};
 
 	return (

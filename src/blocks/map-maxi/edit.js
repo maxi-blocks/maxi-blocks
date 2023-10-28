@@ -66,7 +66,7 @@ class edit extends MaxiBlockComponent {
 				const googleApiKey = maxiSettings?.google_api_key;
 				this.setState({ googleApiKey });
 			})
-			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+			.catch(() => console.error('MaxiBlocks: Could not load settings'));
 	}
 
 	render() {

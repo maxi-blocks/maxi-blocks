@@ -1,7 +1,7 @@
 <?php
 require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
 /**
- * Maxi Blocks styles API
+ * MaxiBlocks styles API
  */
 
 if (!defined('ABSPATH')) {
@@ -302,7 +302,7 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
-         * Returns Maxi Blocks general settings
+         * Returns MaxiBlocks general settings
          */
         public function get_maxi_blocks_options()
         {

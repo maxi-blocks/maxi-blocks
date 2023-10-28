@@ -150,6 +150,7 @@ const Inspector = props => {
 								]}
 							/>
 						),
+						ignoreIndicator: ['prompt'],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

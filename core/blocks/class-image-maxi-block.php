@@ -425,6 +425,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             $fit_parent_size = $props['fitParentSize'] ?? false;
             $image_ratio = $props['imageRatio'];
+			$image_ratio_custom = $props['imageRatioCustom'];
             $img_width = $props['imgWidth'];
             $use_init_size = $props['useInitSize'] ?? false;
             $media_width = $props['mediaWidth'];
@@ -454,7 +455,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             ];
 
             if ($image_ratio) {
-                $aspect_ratio = get_aspect_ratio($image_ratio) ?? [];
+                $aspect_ratio = get_aspect_ratio($image_ratio, $image_ratio_custom) ?? [];
 
                 $response = array_merge($response, $aspect_ratio);
             }

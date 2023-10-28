@@ -5818,6 +5818,12 @@
     "padding-sync-xs": {
       "type": "string"
     },
+    "dc-status": {
+      "type": "boolean"
+    },
+    "dc-link-status": {
+      "type": "boolean"
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -7335,6 +7341,27 @@
     },
     "custom-css-xs": {
       "type": "object"
+    },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
     },
     "flex-grow-general": {
       "type": "number"

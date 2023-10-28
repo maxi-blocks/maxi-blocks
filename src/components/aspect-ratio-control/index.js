@@ -50,20 +50,23 @@ const AspectRatioControl = ({
 			]}
 		/>
 		{props.value === 'custom' && (
-			<AdvancedNumberControl
-				newStyle
-				value={customValue}
-				min={0}
-				max={999}
-				maxRange={10}
-				step={0.1}
-				optionType='string'
-				inputType='text'
-				customValidationRegex={/[^0-9.,/]/}
-				transformRangePreferredValue={convertAspectRatioToDecimal}
-				onChangeValue={onChangeCustomValue}
-				onReset={onResetCustomValue}
-			/>
+			<>
+				<AdvancedNumberControl
+					newStyle
+					value={customValue}
+					min={0}
+					max={999}
+					maxRange={10}
+					step={0.1}
+					optionType='string'
+					inputType='text'
+					customValidationRegex={/[^0-9.,/]/}
+					transformRangePreferredValue={convertAspectRatioToDecimal}
+					onChangeValue={onChangeCustomValue}
+					onReset={onResetCustomValue}
+				/>
+				<span>{__('Examples:', 'maxi-blocks')} 1.7778, 16/9</span>
+			</>
 		)}
 	</>
 );

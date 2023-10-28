@@ -26,7 +26,7 @@ function get_aspect_ratio($ratio, $custom_ratio) {
             $aspectRatio = '16 / 9';
             break;
 		case 'custom':
-			$aspectRatio = convert_aspect_ratio_to_decimal($custom_ratio);
+			$aspect_ratio = strval(convert_aspect_ratio_to_decimal($custom_ratio));
         default:
             $aspectRatio = '';
             break;

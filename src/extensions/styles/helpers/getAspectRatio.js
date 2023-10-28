@@ -22,7 +22,9 @@ const getAspectRatio = (ratio, customRatio) => {
 						case 'ar169':
 							return '16 / 9';
 						case 'custom':
-							return convertAspectRatioToDecimal(customRatio);
+							return `${convertAspectRatioToDecimal(
+								customRatio
+							)}`;
 						default:
 							return '';
 					}

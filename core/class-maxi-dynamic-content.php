@@ -15,6 +15,7 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
     private static $custom_data = null;
+    private static $is_empty = false;
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
 
     private static $link_only_blocks = [
@@ -103,6 +104,8 @@ class MaxiBlocks_DynamicContent
             $content = self::render_dc_image($attributes, $content);
         }
 
+        $content = self::render_dc_classes($attributes, $content);
+
         return $content;
     }
 
@@ -172,6 +175,7 @@ class MaxiBlocks_DynamicContent
 
         if (empty($response)) {
             $response = 'No content found';
+            self::$is_empty = true;
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
@@ -243,7 +247,23 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
+            self::$is_empty = true;
         }
+
+        return $content;
+    }
+
+    public function render_dc_classes($attributes, $content)
+    {
+        $classes = [];
+
+        $classes[] = self::$is_empty ? 'maxi-block--hidden' : '';
+
+        $content = str_replace(
+            '$class-to-replace',
+            implode(' ', array_filter($classes)),
+            $content
+        );
 
         return $content;
     }

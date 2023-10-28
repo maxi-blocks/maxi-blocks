@@ -126,15 +126,32 @@ export const getSVGListStyle = svg => {
 
 export const calculateTextWidth = (
 	content,
-	fontSize = '1em',
-	fontFamily = 'Roboto',
-	fontWeight = 400
+	fontSize,
+	providedFontFamily,
+	fontWeight
 ) => {
+	let activeFontFamily = providedFontFamily;
+
+	if (typeof document.fonts !== 'undefined') {
+		const fontIsLoaded =
+			!activeFontFamily ||
+			document.fonts.check(
+				`normal ${fontWeight || 400} ${
+					fontSize || '1em'
+				} ${activeFontFamily}`
+			);
+
+		if (!fontIsLoaded) {
+			activeFontFamily = window.getComputedStyle(
+				document.body
+			).fontFamily;
+		}
+	}
+
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
-	ctx.font = `normal ${fontWeight} ${fontSize} ${fontFamily}`;
+	ctx.font = `normal ${fontWeight} ${fontSize} ${activeFontFamily}`;
 
 	const textWidth = ctx.measureText(content || '1').width;
-
 	return textWidth;
 };

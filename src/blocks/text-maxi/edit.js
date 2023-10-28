@@ -51,7 +51,7 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(this.props.attributes, this.state.oldSC?.value);
 	}
 
 	maxiBlockDidUpdate() {

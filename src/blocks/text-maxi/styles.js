@@ -48,17 +48,8 @@ const getIsTextSource = (listStyle, listStyleCustom) =>
 	!listStyleCustom?.includes('</svg>') &&
 	!isURL(listStyleCustom);
 
-const getIsTextSourceAndStyleCard = (listStyle, listStyleCustom) => {
-	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
-	const styleCard =
-		isTextSource &&
-		select('maxiBlocks/style-cards').receiveMaxiSelectedStyleCard()?.value;
-
-	return { isTextSource, styleCard };
-};
-
 const getTextWidth = (sizeNum, sizeUnit, props, breakpoint, styleCard) => {
-	const { blockStyle, listStyleCustom } = props;
+	const { blockStyle, listStyle, listStyleCustom } = props;
 
 	const fontSize =
 		sizeUnit === 'em'
@@ -82,7 +73,7 @@ const getTextWidth = (sizeNum, sizeUnit, props, breakpoint, styleCard) => {
 
 	return `${round(
 		calculateTextWidth(
-			listStyleCustom,
+			listStyle === 'custom' ? listStyleCustom : '1',
 			fontSize,
 			getTypographyValue({
 				prop: 'font-family',
@@ -223,13 +214,10 @@ const getTypographyHoverObject = props => {
 	return response;
 };
 
-const getListObject = props => {
+const getListObject = (props, styleCard) => {
 	const { listStyle, listStyleCustom, listStart, listReversed, content } =
 		props;
-	const { isTextSource, styleCard } = getIsTextSourceAndStyleCard(
-		listStyle,
-		listStyleCustom
-	);
+	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -318,7 +306,7 @@ const getListObject = props => {
 					listStylePosition === 'inside'
 						? gapNum + gapUnit
 						: `calc(${gapNum + gapUnit} + ${
-								!isTextSource
+								listStyle === 'custom' && !isTextSource
 									? `${sizeNum + sizeUnit} + `
 									: `${getTextWidth(
 											sizeNum,
@@ -335,7 +323,10 @@ const getListObject = props => {
 					};
 				}
 
-				if (listStylePosition === 'outside' && isTextSource) {
+				if (
+					listStylePosition === 'outside' &&
+					(listStyle !== 'custom' || isTextSource)
+				) {
 					response.listGap[breakpoint] = {
 						...response.listGap[breakpoint],
 						'font-size': sizeNum + sizeUnit,
@@ -445,7 +436,7 @@ const getListParagraphObject = props => {
 	return response;
 };
 
-const getMarkerObject = props => {
+const getMarkerObject = (props, styleCard) => {
 	const { typeOfList, listStyle, listStyleCustom, blockStyle } = props;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -454,10 +445,7 @@ const getMarkerObject = props => {
 			prefix: 'list-',
 		});
 
-	const { isTextSource, styleCard } = getIsTextSourceAndStyleCard(
-		listStyle,
-		listStyleCustom
-	);
+	const isTextSource = getIsTextSource(listStyle, listStyleCustom);
 
 	return {
 		color: {
@@ -654,30 +642,23 @@ const getMarkerObject = props => {
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
 						(() => {
-							if (isTextSource) {
-								const textWidth = getTextWidth(
-									sizeNum,
-									sizeUnit,
-									props,
-									breakpoint,
-									styleCard
-								);
-
+							if (listStyle === 'custom' && !isTextSource) {
 								return {
-									width: textWidth,
-									'margin-left': `-${textWidth}`,
+									'margin-left': `-${sizeNum}${sizeUnit}`,
 								};
 							}
 
-							if (listStyle !== 'custom') {
-								return {
-									width: '1em',
-									'margin-left': '-1em',
-								};
-							}
+							const textWidth = getTextWidth(
+								sizeNum,
+								sizeUnit,
+								props,
+								breakpoint,
+								styleCard
+							);
 
 							return {
-								'margin-left': `-${sizeNum}${sizeUnit}`,
+								width: textWidth,
+								'margin-left': `-${textWidth}`,
 							};
 						})()),
 					...(listStylePosition === 'inside' && {
@@ -694,7 +675,7 @@ const getMarkerObject = props => {
 	};
 };
 
-const getStyles = props => {
+const getStyles = (props, styleCard) => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();
@@ -711,10 +692,13 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]: getListObject({
-						...props,
-						isRTL,
-					}),
+					[` ${element}.maxi-text-block__content`]: getListObject(
+						{
+							...props,
+							isRTL,
+						},
+						styleCard
+					),
 					[` ${element}.maxi-text-block__content li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),
@@ -724,7 +708,7 @@ const getStyles = props => {
 					[` ${element}.maxi-text-block__content li:hover`]:
 						getTypographyHoverObject(props),
 					[` ${element}.maxi-text-block__content li::before`]:
-						getMarkerObject({ ...props, isRTL }),
+						getMarkerObject({ ...props, isRTL }, styleCard),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

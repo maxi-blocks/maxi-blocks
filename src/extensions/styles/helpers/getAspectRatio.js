@@ -1,4 +1,9 @@
-const getAspectRatio = ratio => {
+/**
+ * Internal dependencies
+ */
+import convertAspectRatioToDecimal from '../convertAspectRatioToDecimal';
+
+const getAspectRatio = (ratio, customRatio) => {
 	if (ratio === 'original') return null;
 
 	return {
@@ -16,6 +21,8 @@ const getAspectRatio = ratio => {
 							return '4 / 3';
 						case 'ar169':
 							return '16 / 9';
+						case 'custom':
+							return convertAspectRatioToDecimal(customRatio);
 						default:
 							return '';
 					}

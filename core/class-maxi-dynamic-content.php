@@ -25,6 +25,12 @@ class MaxiBlocks_DynamicContent
         'pane-maxi',
     ];
 
+    private static $type_to_post_type = [
+        'posts' => 'post',
+        'pages' => 'page',
+        'products' => 'product',
+    ];
+
     /**
      * Initializes the plugin and its hooks.
      */
@@ -114,6 +120,19 @@ class MaxiBlocks_DynamicContent
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             $link = get_author_posts_url($attributes['dc-id']);
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
+            $product = self::get_post($attributes);
+
+            if (empty($product)) {
+                return $content;
+            }
+            if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
+                $link = $product->add_to_cart_url();
+            } else {
+                $link = get_permalink($product->get_id());
+            }
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
 
@@ -160,17 +179,21 @@ class MaxiBlocks_DynamicContent
             $response = self::get_site_content($dc_field);
         } elseif ($dc_type === 'media') {
             $response = self::get_media_content($attributes);
-        } elseif (in_array($dc_type, ['categories', 'tags'])) { // Categories or tags
+        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) { // Categories or tags
             $response = self::get_taxonomy_content($attributes);
         } elseif ($dc_type === 'users') { // Users
             $response = self::get_user_content($attributes);
+        } elseif ($dc_type === 'products') {
+            $response = self::get_product_content($attributes);
+        } elseif ($dc_type === 'cart') {
+            $response = self::get_cart_content($attributes);
         }
 
         if ($dc_field === 'date') {
             $response = self::get_date($response, $attributes);
         }
 
-        if (empty($response)) {
+        if (empty($response) && $response !== '0') {
             $response = 'No content found';
         }
 
@@ -214,6 +237,8 @@ class MaxiBlocks_DynamicContent
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $media_id = $dc_id;
+        } elseif ($dc_type === 'products') {
+            $media_id = self::get_product_content($attributes);
         }
 
         if (!empty($media_id) && is_numeric($media_id)) {
@@ -279,10 +304,10 @@ class MaxiBlocks_DynamicContent
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
-        if (in_array($dc_type, ['posts', 'pages'])) {
+        if (in_array($dc_type, ['posts', 'pages', 'products'])) {
             // Basic args
             $args = [
-                'post_type' => $dc_type === 'posts' ? 'post' : 'page',
+                'post_type' => self::$type_to_post_type[$dc_type],
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
@@ -303,6 +328,12 @@ class MaxiBlocks_DynamicContent
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
                 $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+            }
+
+            if ($dc_type === 'products') {
+                $products = wc_get_products($args);
+
+                return end($products);
             }
 
             $query = new WP_Query($args);
@@ -356,11 +387,15 @@ class MaxiBlocks_DynamicContent
             }
 
             return $post;
-        } elseif (in_array($dc_type, ['categories', 'tags'])) {
+        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) {
             if ($dc_type === 'categories') {
                 $taxonomy = 'category';
             } elseif ($dc_type === 'tags') {
                 $taxonomy = 'post_tag';
+            } elseif ($dc_type === 'product_categories') {
+                $taxonomy = 'product_cat';
+            } elseif ($dc_type === 'product_tags') {
+                $taxonomy = 'product_tag';
             }
 
             $args = [
@@ -457,6 +492,30 @@ class MaxiBlocks_DynamicContent
             : $content;
     }
 
+    public function get_post_taxonomy_content($attributes, $post_id, $taxonomy)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-delimiter-content' => $dc_delimiter,
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+        ) = $attributes;
+
+        $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
+
+        $taxonomy_content = [];
+
+        foreach ($taxonomy_list as $taxonomy_item) {
+            $taxonomy_content[] = $this->get_post_taxonomy_item_content(
+                $taxonomy_item,
+                $taxonomy_item->name,
+                $dc_post_taxonomy_links_status,
+                $dc_field
+            );
+        }
+
+        return implode("$dc_delimiter ", $taxonomy_content);
+    }
+
     public function get_post_or_page_content($attributes)
     {
         @list(
@@ -515,20 +574,7 @@ class MaxiBlocks_DynamicContent
                 'categories' => 'category',
             ];
 
-            $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
-
-            $taxonomy_content = [];
-
-            foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = $this->get_post_taxonomy_item_content(
-                    $taxonomy_item,
-                    $taxonomy_item->name,
-                    $dc_post_taxonomy_links_status,
-                    $dc_field
-                );
-            }
-
-            $post_data = implode("$dc_delimiter ", $taxonomy_content);
+            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
         }
 
         return $post_data;
@@ -612,8 +658,104 @@ class MaxiBlocks_DynamicContent
         }
 
         return $tax_data;
+    }
 
+    public function get_product_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+            'dc-image-accumulator' => $dc_image_accumulator,
+        ) = $attributes;
 
+        $product = $this->get_post($attributes);
+
+        switch ($dc_field) {
+            case 'name':
+            case 'slug':
+            case 'sku':
+            case 'review_count':
+            case 'average_rating':
+                return strval($product->get_data()[$dc_field]);
+            case 'price':
+            case 'regular_price':
+                return strip_tags(wc_price($product->get_data()[$dc_field]));
+            case 'sale_price':
+                if ($product->is_on_sale()) {
+                    return strip_tags(wc_price($product->get_sale_price()));
+                }
+
+                return strip_tags(wc_price($product->get_price()));
+            case 'price_range':
+                if ($product->is_type('variable')) {
+
+                    $min_price = $product->get_variation_price('min', true);
+                    $max_price = $product->get_variation_price('max', true);
+
+                    if ($min_price !== $max_price) {
+                        return wc_format_price_range($min_price, $max_price);
+                    }
+                }
+
+                return strip_tags(wc_price($product->get_price()));
+            case 'description':
+                return self::get_limited_string($product->get_description(), $dc_limit);
+            case 'short_description':
+                return self::get_limited_string($product->get_short_description(), $dc_limit);
+            case 'tags':
+            case 'categories':
+                $field_name_to_taxonomy = [
+                    'tags' => 'product_tag',
+                    'categories' => 'product_cat',
+                ];
+
+                return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
+            case 'featured_media':
+                return (int) $product->get_image_id();
+            case 'gallery':
+                return $product->get_gallery_image_ids()[$dc_image_accumulator];
+            default:
+                return null;
+        }
+    }
+
+    public function get_cart_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+        ) = $attributes;
+
+        if (!WC()->cart) {
+            return null;
+        }
+
+        $field_to_totals = [
+            'total_price' => 'total',
+            'total_items' => 'cart_contents_total',
+            'total_items_tax' => 'cart_contents_tax',
+            'total_tax' => 'total_tax',
+            'total_shipping' => 'shipping_total',
+            'total_shipping_tax' => 'shipping_tax',
+            'total_discount' => 'discount_total',
+            'total_fees' => 'fee_total',
+            'total_fees_tax' => 'fee_tax',
+        ];
+
+        switch ($dc_field) {
+            case 'total_price':
+            case 'total_items':
+            case 'total_items_tax':
+            case 'total_tax':
+            case 'total_shipping':
+            case 'total_shipping_tax':
+            case 'total_discount':
+            case 'total_fees':
+            case 'total_fees_tax':
+                return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
+            default:
+                return null;
+        }
     }
 
     public function get_acf_content($attributes)
@@ -922,11 +1064,19 @@ class MaxiBlocks_DynamicContent
         ];
 
         if($relation === 'by-category') {
-            $args['cat'] = $id;
+            if ($type === 'products') {
+                $args['category'] = [get_term($id)->slug];
+            } else {
+                $args['cat'] = $id;
+            }
         } elseif($relation === 'by-author') {
             $args['author'] = $id;
         } elseif($relation === 'by-tag') {
-            $args['tag_id'] = $id;
+            if ($type === 'products') {
+                $args['tag'] = [get_term($id)->slug];
+            } else {
+                $args['tag_id'] = $id;
+            }
         }
 
         return $args;

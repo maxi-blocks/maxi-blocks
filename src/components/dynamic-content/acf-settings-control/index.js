@@ -19,7 +19,7 @@ import { acfFieldTypes } from '../../../extensions/DC/constants';
 import { isEmpty } from 'lodash';
 
 const ACFSettingsControl = props => {
-	const { dynamicContent, changeProps, contentType } = props;
+	const { dynamicContent, onChange, contentType } = props;
 	const { acfGroup: group, field } = dynamicContent;
 
 	const [groupOptions, setGroupOptions] = useState(null);
@@ -36,7 +36,7 @@ const ACFSettingsControl = props => {
 
 			if (!isEmpty(options)) {
 				if (!options.find(option => option.value === field))
-					changeProps({
+					onChange({
 						'dc-acf-group': options[0].value,
 					});
 
@@ -68,7 +68,7 @@ const ACFSettingsControl = props => {
 
 			if (!isEmpty(options)) {
 				if (!options.find(option => option.value === field))
-					changeProps({
+					onChange({
 						'dc-field': options[0].value,
 						'dc-acf-field-type': options[0].type,
 					});
@@ -102,7 +102,7 @@ const ACFSettingsControl = props => {
 				value={group}
 				options={groupOptions}
 				onChange={value =>
-					changeProps({
+					onChange({
 						'dc-acf-group': value,
 					})
 				}
@@ -112,7 +112,7 @@ const ACFSettingsControl = props => {
 				value={field}
 				options={fieldsOptions}
 				onChange={value =>
-					changeProps({
+					onChange({
 						'dc-field': value,
 						'dc-acf-field-type': fieldsOptions.find(
 							option => option.value === value

@@ -95,6 +95,7 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
+		inputType = 'number',
 		newStyle = false,
 	} = props;
 
@@ -237,7 +238,7 @@ const AdvancedNumberControl = props => {
 						id={advancedNumberControlId}
 						type={
 							!enableAuto || value !== 'auto'
-								? 'number'
+								? inputType
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'

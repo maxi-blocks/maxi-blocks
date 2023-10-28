@@ -602,7 +602,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					{!isTemplate && (
 						<ToggleSwitch
 							label={__(
-								'Affect Gutenberg native blocks inside Maxi Blocks',
+								'Affect Gutenberg native blocks inside MaxiBlocks',
 								'maxi-blocks'
 							)}
 							selected={selectedSCValue.gutenberg_blocks_status}

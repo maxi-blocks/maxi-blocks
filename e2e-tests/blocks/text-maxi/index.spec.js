@@ -696,7 +696,7 @@ describe('TextMaxi', () => {
 
 		const { content: expectedContent } = await getBlockAttributes();
 
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(500);
 
 		expect(expectedContent).toMatchSnapshot();
 

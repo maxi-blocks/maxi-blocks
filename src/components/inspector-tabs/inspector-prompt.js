@@ -27,6 +27,7 @@ const prompt = ({ props }) => {
 					}
 				/>
 			),
+			indicatorProps: ['prompt'],
 		}
 	);
 };

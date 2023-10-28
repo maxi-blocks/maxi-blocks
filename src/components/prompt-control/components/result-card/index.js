@@ -114,7 +114,7 @@ const ResultCard = ({
 		try {
 			await navigator.clipboard.writeText(result.content);
 		} catch (err) {
-			console.error('Maxi Blocks. Failed to copy text: ', err);
+			console.error('MaxiBlocks. Failed to copy text: ', err);
 		}
 	};
 

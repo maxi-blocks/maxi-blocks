@@ -109,8 +109,7 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 										ignoreIndicator: [
-											'row-pattern-general',
-											'row-pattern-m',
+											`row-pattern-${deviceType}`,
 										],
 										extraIndicators: [
 											'verticalAlign',
@@ -145,10 +144,7 @@ const Inspector = props => {
 								]}
 							/>
 						),
-						ignoreIndicator: [
-							'row-pattern-general',
-							'row-pattern-m',
-						],
+						ignoreIndicator: [`row-pattern-${deviceType}`],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

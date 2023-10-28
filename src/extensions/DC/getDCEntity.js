@@ -8,6 +8,7 @@ import { resolveSelect, select } from '@wordpress/data';
  */
 import getDCErrors from './getDCErrors';
 import { getDCOrder } from './utils';
+import { getCartData } from './getWooCommerceData';
 import {
 	kindDictionary,
 	nameDictionary,
@@ -128,7 +129,16 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		return settings;
 	}
-	if (['tags', 'categories'].includes(type)) {
+	if (type === 'cart') {
+		const cart = await getCartData();
+
+		return cart;
+	}
+	if (
+		['tags', 'categories', 'product_categories', 'product_tags'].includes(
+			type
+		)
+	) {
 		const termsEntity = await resolveSelect('core').getEntityRecords(
 			kindDictionary[type],
 			nameDictionary[type],

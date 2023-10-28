@@ -30,7 +30,7 @@ const allowedBlocks = [
 ];
 
 /**
- * Add hyperlink element on Maxi Blocks with toolbar link activated
+ * Add hyperlink element on MaxiBlocks with toolbar link activated
  *
  * @param {Object} BlockSave Original saved object.
  * @return {string} Wrapped component.

@@ -28,11 +28,15 @@ describe('Shape divider', () => {
 			'shape divider'
 		);
 
+		await page.waitForTimeout(300);
+
 		// Top shape divider
 		await accordionPanel.$eval(
 			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
 			click => click.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		await page.$eval(
 			'.maxi-shape-divider-control__shape-selector button',
@@ -46,6 +50,8 @@ describe('Shape divider', () => {
 			'.components-popover__content .maxi-shape-divider-control__shape-list .maxi-tabs-control__button-waves-top',
 			button => button.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		expect(
 			await getAttributes('shape-divider-top-shape-style')

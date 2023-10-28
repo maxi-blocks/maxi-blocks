@@ -114,7 +114,7 @@ const MapContent = props => {
 				<div className='maxi-map-block__not-found'>
 					<p>
 						{__(
-							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Blocks ',
+							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the MaxiBlocks ',
 							'maxi-blocks'
 						)}
 						<a

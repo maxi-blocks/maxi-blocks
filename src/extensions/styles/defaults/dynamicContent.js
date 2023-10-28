@@ -3,6 +3,9 @@ const dynamicContent = {
 		type: 'string',
 		default: '',
 	},
+	'dc-hide': {
+		type: 'boolean',
+	},
 	'dc-status': {
 		type: 'boolean',
 	},

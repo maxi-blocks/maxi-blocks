@@ -255,9 +255,13 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_classes($attributes, $content)
     {
+        @list(
+            'dc-hide' => $dc_hide
+        ) = $attributes;
+
         $classes = [];
 
-        $classes[] = self::$is_empty ? 'maxi-block--hidden' : '';
+        $classes[] = ($dc_hide && self::$is_empty) ? 'maxi-block--hidden' : '';
 
         $content = str_replace(
             '$class-to-replace',

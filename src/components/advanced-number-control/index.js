@@ -97,7 +97,7 @@ const AdvancedNumberControl = props => {
 		optionType = 'number',
 		inputType = 'number',
 		customValidationRegex,
-		transformRangePreferredValue = val => val,
+		transformRangePreferredValue,
 		newStyle = false,
 	} = props;
 
@@ -217,9 +217,9 @@ const AdvancedNumberControl = props => {
 		placeholder,
 	];
 
-	const preferredValues = rawPreferredValues.map(
-		transformRangePreferredValue
-	);
+	const preferredValues = transformRangePreferredValue
+		? rawPreferredValues.map(transformRangePreferredValue)
+		: rawPreferredValues;
 
 	const rangeValue =
 		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;

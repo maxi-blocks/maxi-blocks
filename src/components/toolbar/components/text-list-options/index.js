@@ -45,11 +45,15 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
+	console.log('TextListOptions');
+	console.log('props', props);
 	const { blockName, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const { formatValue } = useContext(textContext);
+
+	console.log('formatValue', formatValue);
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);
@@ -75,7 +79,13 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
+		console.log('onChangeList');
+		console.log('type', type);
+		console.log(formatValue);
+		console.log(isList);
 		const content = getFormattedString({ formatValue, isList });
+
+		console.log('content', content);
 
 		if (!isList || typeOfList === type)
 			onChange({

@@ -1100,8 +1100,6 @@ class MaxiBlocks_Styles
             'relations',
         ];
 
-
-
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
@@ -1124,7 +1122,7 @@ class MaxiBlocks_Styles
                 } else {
                     if(is_array($value) && in_array($script, $script_attr)) {
                         foreach ($value as $k => $v) {
-                            if(gettype($v) === 'string' && str_contains($v, $script)) {
+                            if(gettype($v) === 'string' && (str_contains($v, $script) || str_contains($v, $js_var))) {
                                 $match = true;
                                 $block_names[] = $key;
                             }
@@ -1837,8 +1835,6 @@ class MaxiBlocks_Styles
                     )
                 );
             }
-
-
         }
 
         // fonts

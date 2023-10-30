@@ -1,5 +1,5 @@
 Maxi Block is open source software license under GPLv2 or later
-All free icons and shapes and free patterns in Maxi Blocks library is free to use. For stock images see below.
+All free icons and shapes and free patterns in MaxiBlocks library is free to use. For stock images see below.
 
 Gutenberg components
 GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version (the “GPL”) and the Mozilla Public License, Version 2.0 (the “MPL”)

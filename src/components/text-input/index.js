@@ -40,7 +40,7 @@ export default function TextInput({
 
 		textTimeOut.current = setTimeout(() => {
 			onChange(newValue);
-		}, 100);
+		}, 300);
 	};
 
 	return (

@@ -109,24 +109,12 @@ export const getUserEmail = () => {
 	return false;
 };
 
-export const getSessionsCount = () => {
-	const { info, key } = getProInfoByEmail();
-
-	if (info && info?.key) {
-		const keysArray = info?.key.split(',');
-		if (keysArray.includes(key)) return info?.count;
-		return false;
-	}
-	return false;
-};
-
-export const processLocalActivation = (email, name, status, key, count) => {
+export const processLocalActivation = (email, name, status, key) => {
 	let newPro = {
 		[email]: {
 			status,
 			name,
 			key,
-			count,
 		},
 	};
 	let obj = newPro;
@@ -149,7 +137,6 @@ export const processLocalActivation = (email, name, status, key, count) => {
 					status,
 					name,
 					key: newKey,
-					count,
 				},
 			};
 		}
@@ -166,8 +153,7 @@ export const processLocalActivationRemoveDevice = (
 	email,
 	name,
 	status,
-	key,
-	count
+	key
 ) => {
 	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
 	let obj = {};
@@ -180,7 +166,6 @@ export const processLocalActivationRemoveDevice = (
 					status,
 					name,
 					key,
-					count: 1,
 				},
 			};
 			const oldKeysArray = oldEmailInfo?.key.split(',');
@@ -188,13 +173,11 @@ export const processLocalActivationRemoveDevice = (
 			if (newKeysArray.length !== 0) {
 				const newKey = newKeysArray.join();
 				const oldStatus = oldEmailInfo?.status;
-				const newCount = oldEmailInfo?.count || count;
 				newPro = {
 					[email]: {
 						status: oldStatus,
 						name,
 						key: newKey,
-						count: newCount - 1,
 					},
 				};
 			}
@@ -307,7 +290,7 @@ export async function authConnect(withRedirect = false, email = false) {
 							return;
 						}
 						const date = data?.expiration_date;
-						const { name, status, count } = data;
+						const { name, status } = data;
 
 						if (status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
@@ -316,8 +299,7 @@ export async function authConnect(withRedirect = false, email = false) {
 									useEmail,
 									name,
 									'expired',
-									key,
-									count
+									key
 								);
 								redirect();
 							} else {
@@ -325,8 +307,7 @@ export async function authConnect(withRedirect = false, email = false) {
 									useEmail,
 									name,
 									'yes',
-									key,
-									count
+									key
 								);
 							}
 						}
@@ -334,13 +315,7 @@ export async function authConnect(withRedirect = false, email = false) {
 							status === 'error' &&
 							data.message === 'already logged in'
 						) {
-							processLocalActivation(
-								useEmail,
-								name,
-								'no',
-								key,
-								count
-							);
+							processLocalActivation(useEmail, name, 'no', key);
 						}
 						if (
 							status === 'error' &&
@@ -368,8 +343,7 @@ export const logOut = redirect => {
 	const { key } = getMaxiCookieKey();
 	const email = getUserEmail();
 	const name = getUserName();
-	const count = getSessionsCount();
-	processLocalActivationRemoveDevice(email, name, 'no', key, count);
+	processLocalActivationRemoveDevice(email, name, 'no', key);
 	removeMaxiCookie();
 	if (redirect) {
 		const url = 'https://my.maxiblocks.com/log-out?plugin';

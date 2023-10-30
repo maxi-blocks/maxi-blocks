@@ -119,7 +119,7 @@ const BlockStylesSaver = () => {
 
 			// Waits one second before it checks if the page is a new page or has maxi blocks.
 			// In case it has maxi blocks, it will wait for them to load. If it doesn't, it will
-			// set the page as loaded so next added Maxi Blocks will be not pass the Suspense loading.
+			// set the page as loaded so next added MaxiBlocks will be not pass the Suspense loading.
 			setTimeout(() => {
 				const blocks = getBlocks();
 				const hasMaxiBlocks = blocks.some(isMaxiBlock);

@@ -27,7 +27,10 @@ const controls = {
 				styleCards: JSON.stringify(styleCards),
 			},
 		}).catch(err => {
-			console.error('Error saving Style Card. Code error: ', err);
+			console.error(
+				'Error saving Style Card. Code error: ',
+				JSON.stringify(err, null, 2)
+			);
 		});
 	},
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {

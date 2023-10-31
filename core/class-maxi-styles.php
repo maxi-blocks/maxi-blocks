@@ -1269,6 +1269,14 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['css_value'])) {
+            if($block_name === 'maxi-blocks/container-maxi' && $props['isFirstOnHierarchy'] && strpos($content_block['css_value'], 'min-width:100%') !== false) {
+                $newStyles = "body.maxi-blocks--active .has-global-padding > #$unique_id {
+					margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
+					margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
+					min-width: calc(100% + var(--wp--style--root--padding-right) + var(--wp--style--root--padding-left)) !important;
+				}";
+                $content_block['css_value'] .= $newStyles;
+            }
             $styles .= ' ' . $content_block['css_value'];
         }
 
@@ -1379,6 +1387,7 @@ class MaxiBlocks_Styles
         if (!empty($reusable_blocks)) {
             $blocks = array_merge_recursive($blocks, $reusable_blocks);
         }
+
 
         // Process the blocks to extract styles and other metadata.
         list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);

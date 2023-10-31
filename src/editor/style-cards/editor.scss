@@ -275,11 +275,13 @@ body .maxi-style-cards__popover {
 		height: 32px;
 		padding-left: 2px !important;
 		color: #464a53;
+		border: 1px solid var(--maxi-grey-1-color) !important;
+		border-radius: 5px !important;
 
 		&-button__preview {
-			width: 26px;
-			min-width: 26px;
-			height: 26px;
+			width: 20px;
+			min-width: 20px;
+			height: 20px;
 			border-radius: 50% !important;
 			border: 1px solid #dfe2e4;
 		}

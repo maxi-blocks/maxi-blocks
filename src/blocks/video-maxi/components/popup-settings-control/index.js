@@ -32,6 +32,7 @@ const PopupSettingsControl = props => {
 		onChange,
 		popAnimation,
 		popupRatio,
+		popupRatioCustom,
 	} = props;
 
 	return (
@@ -100,6 +101,7 @@ const PopupSettingsControl = props => {
 				className='maxi-video-control__ratio'
 				label={__('Video aspect ratio', 'maxi-blocks')}
 				value={popupRatio}
+				customValue={popupRatioCustom}
 				additionalOptions={[
 					{
 						label: __('None', 'maxi-blocks'),
@@ -107,9 +109,19 @@ const PopupSettingsControl = props => {
 					},
 				]}
 				onChange={popupRatio => onChange({ popupRatio })}
+				onChangeCustomValue={popupRatioCustom =>
+					onChange({ popupRatioCustom })
+				}
 				onReset={() =>
 					onChange({
 						popupRatio: getDefaultAttribute('popupRatio'),
+						isReset: true,
+					})
+				}
+				onResetCustomValue={() =>
+					onChange({
+						popupRatioCustom:
+							getDefaultAttribute('popupRatioCustom'),
 						isReset: true,
 					})
 				}

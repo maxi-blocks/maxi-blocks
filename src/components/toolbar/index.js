@@ -362,7 +362,11 @@ const MaxiToolbar = memo(
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
-								onChange={obj => maxiSetAttributes(obj)}
+								onChange={obj => {
+									console.log('obj');
+									console.log(obj);
+									maxiSetAttributes(obj);
+								}}
 							/>
 						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (

@@ -81,24 +81,29 @@ const TextListOptions = props => {
 	const onChangeList = type => {
 		console.log('onChangeList');
 		console.log('type', type);
-		console.log(formatValue);
-		console.log(isList);
+		console.log('formatValue: ', formatValue);
+		console.log('isList: ', isList);
 		const content = getFormattedString({ formatValue, isList });
 
 		console.log('content', content);
 
-		if (!isList || typeOfList === type)
+		if (!isList || typeOfList === type) {
+			console.log('!isList || typeOfList === type');
+			console.log(typeOfList);
+			console.log(getContent(content));
 			onChange({
 				isList: !isList,
 				typeOfList: type,
 				content: getContent(content),
 			});
-		else
+		} else {
+			console.log('else');
 			onChange({
 				isList,
 				typeOfList: type,
 				content,
 			});
+		}
 	};
 
 	const onChangeP = () => {

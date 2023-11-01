@@ -2093,8 +2093,6 @@ class MaxiBlocks_Styles
     public static function get_active_theme()
     {
         $current_theme = wp_get_theme();
-        echo $current_theme->name;
-        echo $current_theme->template;
 
         if ('Twenty Twenty-Four' === $current_theme->name || 'twentytwentyfour' === $current_theme->template) {
             return 2024;

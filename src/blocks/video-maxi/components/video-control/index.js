@@ -38,6 +38,7 @@ const VideoControl = props => {
 		startTime,
 		endTime,
 		videoRatio,
+		videoRatioCustom,
 		playerType,
 	} = props;
 
@@ -148,6 +149,7 @@ const VideoControl = props => {
 				className='maxi-video-control__ratio'
 				label={__('Aspect ratio', 'maxi-blocks')}
 				value={videoRatio}
+				customValue={videoRatioCustom}
 				additionalOptions={[
 					{
 						label: __('None', 'maxi-blocks'),
@@ -155,9 +157,19 @@ const VideoControl = props => {
 					},
 				]}
 				onChange={videoRatio => onChange({ videoRatio })}
+				onChangeCustomValue={videoRatioCustom =>
+					onChange({ videoRatioCustom })
+				}
 				onReset={() =>
 					onChange({
 						videoRatio: getDefaultAttribute('videoRatio'),
+						isReset: true,
+					})
+				}
+				onResetCustomValue={() =>
+					onChange({
+						videoRatioCustom:
+							getDefaultAttribute('videoRatioCustom'),
 						isReset: true,
 					})
 				}

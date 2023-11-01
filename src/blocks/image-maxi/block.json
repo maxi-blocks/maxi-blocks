@@ -92,6 +92,10 @@
       "type": "string",
       "default": "original"
     },
+    "imageRatioCustom": {
+      "type": "string",
+      "default": "1"
+    },
     "SVGElement": {
       "type": "string"
     },
@@ -6353,6 +6357,200 @@
     "image-full-width-xs": {
       "type": "boolean"
     },
+    "image-margin-top-general": {
+      "type": "string"
+    },
+    "image-margin-top-xxl": {
+      "type": "string"
+    },
+    "image-margin-top-xl": {
+      "type": "string"
+    },
+    "image-margin-top-l": {
+      "type": "string"
+    },
+    "image-margin-top-m": {
+      "type": "string"
+    },
+    "image-margin-top-s": {
+      "type": "string"
+    },
+    "image-margin-top-xs": {
+      "type": "string"
+    },
+    "image-margin-right-general": {
+      "type": "string"
+    },
+    "image-margin-right-xxl": {
+      "type": "string"
+    },
+    "image-margin-right-xl": {
+      "type": "string"
+    },
+    "image-margin-right-l": {
+      "type": "string"
+    },
+    "image-margin-right-m": {
+      "type": "string"
+    },
+    "image-margin-right-s": {
+      "type": "string"
+    },
+    "image-margin-right-xs": {
+      "type": "string"
+    },
+    "image-margin-bottom-general": {
+      "type": "string"
+    },
+    "image-margin-bottom-xxl": {
+      "type": "string"
+    },
+    "image-margin-bottom-xl": {
+      "type": "string"
+    },
+    "image-margin-bottom-l": {
+      "type": "string"
+    },
+    "image-margin-bottom-m": {
+      "type": "string"
+    },
+    "image-margin-bottom-s": {
+      "type": "string"
+    },
+    "image-margin-bottom-xs": {
+      "type": "string"
+    },
+    "image-margin-left-general": {
+      "type": "string"
+    },
+    "image-margin-left-xxl": {
+      "type": "string"
+    },
+    "image-margin-left-xl": {
+      "type": "string"
+    },
+    "image-margin-left-l": {
+      "type": "string"
+    },
+    "image-margin-left-m": {
+      "type": "string"
+    },
+    "image-margin-left-s": {
+      "type": "string"
+    },
+    "image-margin-left-xs": {
+      "type": "string"
+    },
+    "image-margin-sync-general": {
+      "type": "string",
+      "default": "all"
+    },
+    "image-margin-sync-xxl": {
+      "type": "string"
+    },
+    "image-margin-sync-xl": {
+      "type": "string"
+    },
+    "image-margin-sync-l": {
+      "type": "string"
+    },
+    "image-margin-sync-m": {
+      "type": "string"
+    },
+    "image-margin-sync-s": {
+      "type": "string"
+    },
+    "image-margin-sync-xs": {
+      "type": "string"
+    },
+    "image-margin-top-unit-general": {
+      "type": "string",
+      "default": "px"
+    },
+    "image-margin-top-unit-xxl": {
+      "type": "string"
+    },
+    "image-margin-top-unit-xl": {
+      "type": "string"
+    },
+    "image-margin-top-unit-l": {
+      "type": "string"
+    },
+    "image-margin-top-unit-m": {
+      "type": "string"
+    },
+    "image-margin-top-unit-s": {
+      "type": "string"
+    },
+    "image-margin-top-unit-xs": {
+      "type": "string"
+    },
+    "image-margin-right-unit-general": {
+      "type": "string",
+      "default": "px"
+    },
+    "image-margin-right-unit-xxl": {
+      "type": "string"
+    },
+    "image-margin-right-unit-xl": {
+      "type": "string"
+    },
+    "image-margin-right-unit-l": {
+      "type": "string"
+    },
+    "image-margin-right-unit-m": {
+      "type": "string"
+    },
+    "image-margin-right-unit-s": {
+      "type": "string"
+    },
+    "image-margin-right-unit-xs": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-general": {
+      "type": "string",
+      "default": "px"
+    },
+    "image-margin-bottom-unit-xxl": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-xl": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-l": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-m": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-s": {
+      "type": "string"
+    },
+    "image-margin-bottom-unit-xs": {
+      "type": "string"
+    },
+    "image-margin-left-unit-general": {
+      "type": "string",
+      "default": "px"
+    },
+    "image-margin-left-unit-xxl": {
+      "type": "string"
+    },
+    "image-margin-left-unit-xl": {
+      "type": "string"
+    },
+    "image-margin-left-unit-l": {
+      "type": "string"
+    },
+    "image-margin-left-unit-m": {
+      "type": "string"
+    },
+    "image-margin-left-unit-s": {
+      "type": "string"
+    },
+    "image-margin-left-unit-xs": {
+      "type": "string"
+    },
     "image-padding-top-general": {
       "type": "string"
     },
@@ -8707,6 +8905,10 @@
     "dc-status": {
       "type": "boolean"
     },
+    "dc-source": {
+      "type": "string",
+      "default": "wp"
+    },
     "dc-type": {
       "type": "string"
     },
@@ -8778,10 +8980,12 @@
       "default": "none"
     },
     "dc-weekday": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-era": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-limit": {
       "type": "number",
@@ -8815,11 +9019,20 @@
       "type": "string",
       "default": ""
     },
+    "dc-order-by": {
+      "type": "string"
+    },
     "dc-order": {
       "type": "string"
     },
     "dc-accumulator": {
       "type": "number"
+    },
+    "dc-acf-group": {
+      "type": "number"
+    },
+    "dc-acf-field-type": {
+      "type": "string"
     },
     "dc-contains-html": {
       "type": "boolean",
@@ -10342,6 +10555,27 @@
     },
     "custom-css-xs": {
       "type": "object"
+    },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
     },
     "flex-grow-general": {
       "type": "number"

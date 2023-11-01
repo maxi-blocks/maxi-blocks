@@ -11680,6 +11680,30 @@
     "padding-sync-xs": {
       "type": "string"
     },
+    "cl-status": {
+      "type": "boolean"
+    },
+    "cl-type": {
+      "type": "string"
+    },
+    "cl-relation": {
+      "type": "string"
+    },
+    "cl-id": {
+      "type": "number"
+    },
+    "cl-author": {
+      "type": "number"
+    },
+    "cl-order-by": {
+      "type": "string"
+    },
+    "cl-order": {
+      "type": "string"
+    },
+    "cl-accumulator": {
+      "type": "number"
+    },
     "transform-target": {
       "type": "string"
     },
@@ -12215,6 +12239,27 @@
     },
     "custom-css-xs": {
       "type": "object"
+    },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
     },
     "flex-grow-general": {
       "type": "number"

@@ -1,15 +1,7 @@
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const ArrowDisplayer = loadable(() =>
-	import('../../components/arrow-displayer')
-);
-const ShapeDivider = loadable(() => import('../../components/shape-divider'));
+import { ArrowDisplayer, ShapeDivider } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 

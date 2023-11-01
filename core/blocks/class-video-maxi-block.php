@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -232,7 +232,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
 
@@ -253,14 +253,14 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     ]
                 )
             );
-        
+
             return $response;
         }
 
         public static function get_overlay_image_styles($props)
         {
             $prefix = 'overlay-media-';
-        
+
             $response = [
                 'size' => get_size_styles(
                     get_group_attributes($props, 'size', false, $prefix),
@@ -272,7 +272,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     $prefix
                 ),
             ];
-        
+
             return $response;
         }
 
@@ -288,26 +288,28 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     ]
                 )
             );
-        
+
             return $response;
         }
 
         public static function get_aspect_ratio_styles($props, $isPopup = false)
         {
             $videoRatio = $props['videoRatio'];
+			$videoRatioCustom = $props['videoRatioCustom'];
             $popupRatio = $props['popupRatio'];
+			$popupRatioCustom = $props['popupRatioCustom'];
 
             $response = [];
 
             if ($isPopup) {
                 if($popupRatio) {
-                    $response = get_aspect_ratio($popupRatio);
+                    $response = get_aspect_ratio($popupRatio, $popupRatioCustom);
                 }
                 if ($videoRatio) {
-                    $response = get_aspect_ratio($videoRatio);
+                    $response = get_aspect_ratio($videoRatio, $videoRatioCustom);
                 }
             }
-        
+
             return $response;
         }
 
@@ -316,16 +318,16 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             $response = [
                 'label' => 'Icon position',
             ];
-        
+
             $iconPosition = $obj['close-icon-position'];
-        
+
             $isSpacingPositive = ($iconPosition === 'top-screen-right');
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-        
+
             foreach ($breakpoints as $breakpoint) {
                 $response[$breakpoint] = [];
-        
+
                 $rawIconSpacing = get_last_breakpoint_attribute([
                     'target' => 'close-icon-spacing',
                     'breakpoint' => $breakpoint,
@@ -336,13 +338,13 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
                 ]);
-        
+
                 $iconSpacing = ($isSpacingPositive ? $rawIconSpacing : -$rawIconSpacing);
-        
+
                 $response[$breakpoint]['top'] = ($iconSpacing ?? 0) . ($iconSpacingUnit ?? 'px');
                 $response[$breakpoint]['right'] = ($iconSpacing ?? 0) . ($iconSpacingUnit ?? 'px');
             }
-        
+
             return [
                 'iconPosition' => [
                     'response' => $response,
@@ -353,7 +355,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         public static function get_icon_object($prefix, $obj)
         {
             $iconHoverStatus = $obj[$prefix . 'icon-status-hover'] ?? false;
-        
+
             $response = [
                 " .maxi-video-block__{$prefix}button svg" => get_icon_size($obj, false, $prefix),
                 " .maxi-video-block__{$prefix}button svg path" => get_icon_path_styles($obj, false, $prefix),
@@ -413,7 +415,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     $svg_styles
                 );
             }
-        
+
             return $response;
         }
 
@@ -476,7 +478,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     ]
                 );
             }
-        
+
             return $response;
         }
     }

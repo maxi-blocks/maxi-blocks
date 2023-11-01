@@ -118,6 +118,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isHovered,
 		isChild,
 		dcStatus,
+		dcHide,
 		...extraProps
 	} = props;
 
@@ -243,7 +244,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRepeater && 'maxi-block--repeater',
 		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
-		isSave && dcStatus && '$class-to-replace'
+		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 
 	const onDragLeave = isSave

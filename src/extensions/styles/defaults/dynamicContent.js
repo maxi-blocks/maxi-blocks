@@ -5,7 +5,6 @@ const dynamicContent = {
 	},
 	'dc-hide': {
 		type: 'boolean',
-		default: true,
 	},
 	'dc-status': {
 		type: 'boolean',

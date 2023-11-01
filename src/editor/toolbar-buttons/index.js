@@ -5,11 +5,16 @@ import { subscribe } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import Button from '../../components/button';
-import Icon from '../../components/icon';
-import ResponsiveSelector from '../responsive-selector';
+const Button = loadable(() => import('../../components/button'));
+const Icon = loadable(() => import('../../components/icon'));
+const ResponsiveSelector = loadable(() => import('../responsive-selector'));
 import {
 	getIsSiteEditor,
 	getIsTemplatesListOpened,
@@ -50,7 +55,7 @@ wp.domReady(() => {
 	/**
 	 * Mutation Observer for:
 	 * - Add special classes on Settings Sidebar
-	 * - Hide original WP toolbar on selected Maxi Blocks
+	 * - Hide original WP toolbar on selected MaxiBlocks
 	 */
 	let isMaxiToolbar = false;
 

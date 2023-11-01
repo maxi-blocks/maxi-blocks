@@ -5,8 +5,51 @@ import { sprintf, __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { capitalize } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
+const Icon = loadable(() => import('../../../../components/icon'));
+const ResponsiveTabsControl = loadable(() =>
+	import('../../../../components/responsive-tabs-control')
+);
+const SvgWidthControl = loadable(() =>
+	import('../../../../components/svg-width-control')
+);
+const SvgStrokeWidthControl = loadable(() =>
+	import('../../../../components/svg-stroke-width-control')
+);
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const AxisControl = loadable(() =>
+	import('../../../../components/axis-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../../../components/setting-tabs-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const BorderControl = loadable(() =>
+	import('../../../../components/border-control')
+);
+const BoxShadowControl = loadable(() =>
+	import('../../../../components/box-shadow-control')
+);
+const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+const GradientControl = loadable(() =>
+	import('../../../../components/gradient-control')
+);
+
 import {
 	getAttributeKey,
 	getColorRGBAString,
@@ -15,31 +58,10 @@ import {
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 import {
-	Icon,
-	ResponsiveTabsControl,
-	SvgWidthControl,
-	SvgStrokeWidthControl,
-	AdvancedNumberControl,
-	AxisControl,
-	SettingTabsControl,
-	ColorControl,
-	ToggleSwitch,
-	BorderControl,
-	BoxShadowControl,
-} from '../../../../components';
-import MaxiModal from '../../../../editor/library/modal';
-import {
 	setSVGContent,
 	setSVGContentHover,
 	setSVGStrokeWidth,
 } from '../../../../extensions/svg';
-import GradientControl from '../../../../components/gradient-control';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import { capitalize } from 'lodash';
 
 /**
  * Styles and icons

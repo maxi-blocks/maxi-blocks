@@ -2,16 +2,21 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
+const ToggleSwitch = loadable(() =>
+	import('../../../../components/toggle-switch')
+);
+const AdvancedNumberControl = loadable(() =>
+	import('../../../../components/advanced-number-control')
+);
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
 import { getDefaultAttribute } from '../../../../extensions/styles';
-import {
-	ToggleSwitch,
-	AdvancedNumberControl,
-	SelectControl,
-} from '../../../../components';
 
 /**
  * External dependencies

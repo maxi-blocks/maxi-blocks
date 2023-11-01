@@ -15,12 +15,11 @@ import {
 	getEditedPostContent,
 	insertMaxiBlock,
 	openSidebarTab,
-	getBlockStyle,
-	updateAllBlockUniqueIds,
 } from '../../utils';
 import {
 	codeEditorWithContentInFirstColumn,
 	codeEditorWithRepeater,
+	codeEditorWithDifferentContentInColumns,
 } from './content';
 
 const toggleRepeater = async page => {
@@ -40,11 +39,14 @@ const insertMaxiBlockIntoColumn = async (page, blockName, column) => {
 	await page.$eval('.block-editor-block-types-list__item', button =>
 		button.click()
 	);
-	await page.waitForTimeout(150);
+	await page.waitForTimeout(2000);
 };
 
 const sanitizeEditedPostContent = content =>
-	content.replace(/,"uniqueID":"[^"]+"|,"customLabel":"[^"]+"/g, '');
+	content.replace(
+		/,"uniqueID":"[^"]+"|,"customLabel":"[^"]+"|\sid="[^"]+"|\s[a-zA-Z0-9-]+-u|\.\w+-u|\.\w+-\w+-u/g,
+		''
+	);
 
 describe('Repeater', () => {
 	beforeEach(async () => {
@@ -55,20 +57,31 @@ describe('Repeater', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(500);
 
 		// Click on non equal column template to check if columns will be resized on repeater toggle
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[2].click()
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		await toggleRepeater(page);
 
 		// Add button to second column
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
 
-		await updateAllBlockUniqueIds(page);
+		await page.waitForTimeout(2000);
+
+		// Select button from second column
+		await page.$eval(
+			'.maxi-column-block:nth-child(2) .maxi-button-block',
+			block =>
+				wp.data
+					.dispatch('core/block-editor')
+					.selectBlock(block.getAttribute('data-block'))
+		);
+
+		await page.waitForTimeout(350);
 
 		// Check if button was added to all columns
 		expect(
@@ -90,9 +103,9 @@ describe('Repeater', () => {
 			colorPalette: 3,
 		});
 
-		await updateAllBlockUniqueIds(page);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 
 		// Remove button from second column
 		page.$$eval('.maxi-button-block', button =>
@@ -100,9 +113,8 @@ describe('Repeater', () => {
 				.dispatch('core/block-editor')
 				.removeBlock(button[1].getAttribute('data-block'))
 		);
-		await page.waitForTimeout(150);
 
-		await updateAllBlockUniqueIds(page);
+		await page.waitForTimeout(2000);
 
 		// Check if buttons were removed from all columns
 		expect(
@@ -117,7 +129,7 @@ describe('Repeater', () => {
 		});
 
 		// Set title
-		await page.keyboard.type('Page repeater test');
+		await page.keyboard.type('Page repeater test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');
@@ -137,9 +149,9 @@ describe('Repeater', () => {
 
 		await page.waitForTimeout(150);
 
-		await updateAllBlockUniqueIds(page);
-
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
 	});
 
 	it('Check block moving with turned on repeater', async () => {
@@ -154,7 +166,7 @@ describe('Repeater', () => {
 		// Add code editor
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(2000);
 
 		// Select text from second column
 		await page.$eval(
@@ -164,15 +176,13 @@ describe('Repeater', () => {
 					.dispatch('core/block-editor')
 					.selectBlock(block.getAttribute('data-block'))
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Move text down
 		await page.$$eval('.toolbar-item-move__vertically button', button =>
 			button[1].click()
 		);
-		await page.waitForTimeout(150);
-
-		await updateAllBlockUniqueIds(page);
+		await page.waitForTimeout(350);
 
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))
@@ -186,15 +196,67 @@ describe('Repeater', () => {
 					.dispatch('core/block-editor')
 					.selectBlock(blocks[1].getAttribute('data-block'))
 		);
-		await page.waitForTimeout(150);
+		await page.waitForTimeout(350);
 
 		// Move text up
 		await page.$eval('.toolbar-item-move__vertically button', button =>
 			button.click()
 		);
+		await page.waitForTimeout(350);
+
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
+	});
+
+	it('Check different structure popup', async () => {
+		// Set code editor as clipboard data
+		await setClipboardData({
+			plainText: codeEditorWithDifferentContentInColumns,
+		});
+
+		// Set title
+		await page.keyboard.type('Page repeater test');
+
+		// Add code editor
+		await page.keyboard.press('Enter');
+		await pressKeyWithModifier('primary', 'v');
+		await page.waitForTimeout(2000);
+
+		// Select row
+		await page.$eval('.maxi-row-block', block =>
+			wp.data
+				.dispatch('core/block-editor')
+				.selectBlock(block.getAttribute('data-block'))
+		);
+
+		await toggleRepeater(page);
+
+		await page.waitForSelector('.maxi-dialog-box');
 		await page.waitForTimeout(150);
 
-		await updateAllBlockUniqueIds(page);
+		// Click on cancel button
+		await page.$eval('.maxi-dialog-box-buttons button', button =>
+			button.click()
+		);
+
+		await page.waitForSelector('.maxi-dialog-box', { hidden: true });
+
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
+
+		await toggleRepeater(page);
+
+		await page.waitForSelector('.maxi-dialog-box');
+		await page.waitForTimeout(150);
+
+		// Click on confirm button
+		await page.$$eval('.maxi-dialog-box-buttons button', buttons =>
+			buttons[1].click()
+		);
+
+		await page.waitForSelector('.maxi-dialog-box', { hidden: true });
 
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))

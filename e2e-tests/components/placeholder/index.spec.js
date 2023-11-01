@@ -38,12 +38,15 @@ describe('Placeholder', () => {
 	});
 
 	it('Test icon placeholder', async () => {
+		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// close modal
 		await page.$eval('.components-modal__header button', button =>
 			button.click()
 		);
+
+		await page.waitForTimeout(1500);
 
 		// check icon placeholder
 		const placeholder = await page.$eval(
@@ -55,7 +58,6 @@ describe('Placeholder', () => {
 	});
 	it('Test image placeholder', async () => {
 		await insertMaxiBlock(page, 'Image Maxi');
-
 		// check image placeholder
 		const placeholder = await page.$eval(
 			'.maxi-image-block__placeholder',

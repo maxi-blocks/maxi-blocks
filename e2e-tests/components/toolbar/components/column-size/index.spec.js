@@ -42,7 +42,7 @@ describe('Column size from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('365');
+		await page.keyboard.type('365', { delay: 350 });
 
 		expect(await getAttributes('width-general')).toStrictEqual(365);
 

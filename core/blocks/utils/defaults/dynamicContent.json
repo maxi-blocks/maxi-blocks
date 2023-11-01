@@ -123,5 +123,9 @@
   "dc-contains-html": {
     "type": "boolean",
     "default": false
-  }
+  },
+	"dc-link-target": {
+		"type": "string",
+		"default": "none"
+	}
 }

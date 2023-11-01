@@ -6,15 +6,22 @@ import { useSelect } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import {
-	AdvancedNumberControl,
-	Button,
-	ReactSelectControl,
-	TextareaControl,
-} from '../../..';
-import ResultCard from '../../components/result-card';
+const AdvancedNumberControl = loadable(() =>
+	import('../../../advanced-number-control')
+);
+const Button = loadable(() => import('../../../button'));
+const ReactSelectControl = loadable(() =>
+	import('../../../react-select-control')
+);
+const TextareaControl = loadable(() => import('../../../textarea-control'));
+const ResultCard = loadable(() => import('../../components/result-card'));
 import {
 	CONTENT_TYPES,
 	CONTEXT_OPTIONS,

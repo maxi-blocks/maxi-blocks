@@ -64,7 +64,7 @@ describe('Image Maxi hover simple actions', () => {
 		// Add title
 		const textControls = await page.$$('.maxi-text-control__input');
 		await textControls[1].focus();
-		await page.keyboard.type('Hello World!');
+		await page.keyboard.type('Hello World!', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		// Add target

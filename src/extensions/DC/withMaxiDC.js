@@ -67,7 +67,7 @@ const withMaxiDC = createHigherOrderComponent(
 					status &&
 					!isNil(type) &&
 					!isNil(field) &&
-					(!isNil(id) || type === 'settings') // id is not necessary for site settings
+					(!isNil(id) || ['settings', 'cart'].includes(type)) // id is not necessary for site settings
 				) {
 					const {
 						__unstableMarkNextChangeAsNotPersistent:
@@ -125,7 +125,7 @@ const withMaxiDC = createHigherOrderComponent(
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
-							type === 'posts' &&
+							['posts', 'products'].includes(type) &&
 							linkFields.includes(field);
 
 						if (!newContainsHTML) {
@@ -179,9 +179,11 @@ const withMaxiDC = createHigherOrderComponent(
 								setAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
-									'dc-media-caption': sanitizeDCContent(
-										getSimpleText(caption)
-									),
+									...(caption && {
+										'dc-media-caption': sanitizeDCContent(
+											getSimpleText(caption)
+										),
+									}),
 									...(updateLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),

@@ -18,7 +18,7 @@ describe('CustomLabel', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 350 });
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -31,7 +31,7 @@ describe('CustomLabel', () => {
 			select => select.focus()
 		);
 
-		await page.keyboard.type('Column');
+		await page.keyboard.type('Column', { delay: 350 });
 		await page.waitForTimeout(150);
 
 		expect(await getAttributes('extraClassName')).toStrictEqual('Column');

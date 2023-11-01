@@ -7,11 +7,12 @@ import { useRef, useEffect, useState, forwardRef } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import Popover from '../popover';
+const Popover = loadable(() => import('../popover'));
 
 function useObservableState(initialState, onStateChange) {
 	const [state, setState] = useState(initialState);

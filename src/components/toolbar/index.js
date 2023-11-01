@@ -16,51 +16,64 @@ import {
  */
 import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import SvgColorToolbar from './components/svg-color';
-import VideoUrl from './components/video-url';
-import Popover from '../popover';
+const SvgColorToolbar = loadable(() => import('./components/svg-color'));
+const VideoUrl = loadable(() => import('./components/video-url'));
+const Popover = loadable(() => import('../popover'));
 
 /**
  * Utils
  */
-import Breadcrumbs from '../breadcrumbs';
-import {
-	BackgroundColor,
-	BlockBackgroundColor,
-	Border,
-	BoxShadow,
-	ColumnMover,
-	// ColumnsHandlers,
-	ColumnSize,
-	Divider,
-	DividerAlignment,
-	DividerColor,
-	Duplicate,
-	DynamicContent,
-	Link,
-	Mover,
-	NumberCounterReplay,
-	Size,
-	SliderSettings,
-	SliderSlidesSettings,
-	SvgWidth,
-	TextColor,
-	TextLevel,
-	TextLink,
-	TextListOptions,
-	ToolbarColumnPattern,
-	TextOptions,
-	MoreSettings,
-	Help,
-	VerticalAlign,
-	TextMargin,
-	ToolbarMediaUpload,
-	ContextLoop,
-} from './components';
+const Breadcrumbs = loadable(() => import('../breadcrumbs'));
+const BackgroundColor = loadable(() =>
+	import('./components/background-color/background-color')
+);
+const BlockBackgroundColor = loadable(() =>
+	import('./components/background-color/block-background-color')
+);
+const Border = loadable(() => import('./components/border'));
+const BoxShadow = loadable(() => import('./components/box-shadow'));
+const ColumnMover = loadable(() => import('./components/column-mover'));
+const ColumnSize = loadable(() => import('./components/column-size'));
+const Divider = loadable(() => import('./components/divider-line'));
+const DividerAlignment = loadable(() =>
+	import('./components/divider-alignment')
+);
+const DividerColor = loadable(() => import('./components/divider-color'));
+const Duplicate = loadable(() => import('./components/duplicate'));
+const DynamicContent = loadable(() => import('./components/dynamic-content'));
+const Link = loadable(() => import('./components/link'));
+const Mover = loadable(() => import('./components/mover'));
+const NumberCounterReplay = loadable(() =>
+	import('./components/number-counter-replay')
+);
+const Size = loadable(() => import('./components/size'));
+const SliderSettings = loadable(() => import('./components/slider-settings'));
+const SliderSlidesSettings = loadable(() =>
+	import('./components/slider-slides-settings')
+);
+const SvgWidth = loadable(() => import('./components/svg-width'));
+const TextColor = loadable(() => import('./components/text-color'));
+const TextLevel = loadable(() => import('./components/text-level'));
+const TextLink = loadable(() => import('./components/text-link'));
+const TextListOptions = loadable(() =>
+	import('./components/text-list-options')
+);
+const ToolbarColumnPattern = loadable(() =>
+	import('./components/column-pattern')
+);
+const TextOptions = loadable(() => import('./components/text-options'));
+const MoreSettings = loadable(() => import('./components/more-settings'));
+const Help = loadable(() => import('./components/help'));
+const VerticalAlign = loadable(() => import('./components/vertical-align'));
+const TextMargin = loadable(() => import('./components/text-margin'));
+const ToolbarMediaUpload = loadable(() => import('./components/media-upload'));
+const ContextLoop = loadable(() => import('./components/context-loop'));
+
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -593,7 +606,14 @@ const MaxiToolbar = memo(
 						/>
 						<DynamicContent
 							blockName={name}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChange={obj => {
+								const filteredObj = Object.fromEntries(
+									Object.entries(obj).filter(
+										([key, value]) => value !== undefined
+									)
+								);
+								maxiSetAttributes(filteredObj);
+							}}
 							{...getGroupAttributes(
 								attributes,
 								'dynamicContent'
@@ -638,9 +658,17 @@ const MaxiToolbar = memo(
 								'dynamicContent',
 							])}
 							blockName={name}
-							onChange={(linkSettings, obj) =>
-								maxiSetAttributes({ linkSettings, ...obj })
-							}
+							onChange={(linkSettings, obj) => {
+								const filteredObj = Object.fromEntries(
+									Object.entries(obj).filter(
+										([key, value]) => value !== undefined
+									)
+								);
+								maxiSetAttributes({
+									linkSettings,
+									...filteredObj,
+								});
+							}}
 							isList={isList}
 							linkSettings={linkSettings}
 							breakpoint={breakpoint}

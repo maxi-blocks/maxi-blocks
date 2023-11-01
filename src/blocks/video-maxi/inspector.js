@@ -3,22 +3,34 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const PopupSettingsControl = loadable(() =>
+	import('./components/popup-settings-control')
+);
+const VideoControl = loadable(() => import('./components/video-control'));
+const VideoIconControl = loadable(() =>
+	import('./components/video-icon-control')
+);
+const VideoOptionsControl = loadable(() =>
+	import('./components/video-options-control')
+);
+const VideoOverlayControl = loadable(() =>
+	import('./components/video-overlay-control')
+);
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
-import {
-	PopupSettingsControl,
-	VideoControl,
-	VideoIconControl,
-	VideoOptionsControl,
-	VideoOverlayControl,
-} from './components';
 
 /**
  * Inspector

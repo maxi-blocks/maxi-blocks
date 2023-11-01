@@ -10593,6 +10593,29 @@
       "default": false
     }
   },
+  "advancedCss": {
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    }
+  },
   "alignment": {
     "alignment-general": {
       "type": "string",
@@ -24432,6 +24455,9 @@
     "cl-author": {
       "type": "number"
     },
+    "cl-order-by": {
+      "type": "string"
+    },
     "cl-order": {
       "type": "string"
     },
@@ -30955,6 +30981,10 @@
     "dc-status": {
       "type": "boolean"
     },
+    "dc-source": {
+      "type": "string",
+      "default": "wp"
+    },
     "dc-type": {
       "type": "string"
     },
@@ -31026,10 +31056,12 @@
       "default": "none"
     },
     "dc-weekday": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-era": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-limit": {
       "type": "number",
@@ -31063,15 +31095,32 @@
       "type": "string",
       "default": ""
     },
+    "dc-order-by": {
+      "type": "string"
+    },
     "dc-order": {
       "type": "string"
     },
     "dc-accumulator": {
       "type": "number"
     },
+    "dc-acf-group": {
+      "type": "number"
+    },
+    "dc-acf-field-type": {
+      "type": "string"
+    },
     "dc-contains-html": {
       "type": "boolean",
       "default": false
+    }
+  },
+  "dynamicContentLink": {
+    "dc-status": {
+      "type": "boolean"
+    },
+    "dc-link-status": {
+      "type": "boolean"
     }
   },
   "flex": {
@@ -41289,6 +41338,10 @@
       "type": "boolean",
       "default": false
     },
+    "number-counter-percentage-sign-position-status": {
+      "type": "boolean",
+      "default": false
+    },
     "number-counter-rounded-status": {
       "type": "boolean",
       "default": false
@@ -43011,6 +43064,12 @@
       "type": "string"
     },
     "width-fit-content": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "repeater": {
+    "repeater-status": {
       "type": "boolean",
       "default": false
     }
@@ -46532,9 +46591,17 @@
       "type": "string",
       "default": "ar169"
     },
+    "videoRatioCustom": {
+      "type": "string",
+      "default": "1"
+    },
     "popupRatio": {
       "type": "string",
       "default": "ar169"
+    },
+    "popupRatioCustom": {
+      "type": "string",
+      "default": "1"
     },
     "videoType": {
       "type": "string",

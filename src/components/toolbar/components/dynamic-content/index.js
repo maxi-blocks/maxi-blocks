@@ -4,10 +4,15 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
+/**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import DynamicContent from '../../../dynamic-content';
+const ToolbarPopover = loadable(() => import('../toolbar-popover'));
+const DynamicContent = loadable(() => import('../../../dynamic-content'));
 
 /**
  * Styles & Icons

@@ -3,17 +3,31 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+
+/**
+ * External dependencies
+ */
+import loadable from '@loadable/component';
+
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	FlexGapControl,
-	FlexWrapControl,
-	ResponsiveTabsControl,
-	SettingTabsControl,
-} from '../../components';
-import { ColumnPattern } from './components';
+const AccordionControl = loadable(() =>
+	import('../../components/accordion-control')
+);
+const FlexGapControl = loadable(() =>
+	import('../../components/flex-settings-control/flex-gap-control')
+);
+const FlexWrapControl = loadable(() =>
+	import('../../components/flex-settings-control/flex-wrap-control')
+);
+const ResponsiveTabsControl = loadable(() =>
+	import('../../components/responsive-tabs-control')
+);
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ColumnPattern = loadable(() => import('./components/column-pattern'));
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
@@ -95,8 +109,7 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 										ignoreIndicator: [
-											'row-pattern-general',
-											'row-pattern-m',
+											`row-pattern-${deviceType}`,
 										],
 										extraIndicators: [
 											'verticalAlign',
@@ -131,10 +144,7 @@ const Inspector = props => {
 								]}
 							/>
 						),
-						ignoreIndicator: [
-							'row-pattern-general',
-							'row-pattern-m',
-						],
+						ignoreIndicator: [`row-pattern-${deviceType}`],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

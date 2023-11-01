@@ -28,11 +28,15 @@ describe('Shape divider', () => {
 			'shape divider'
 		);
 
+		await page.waitForTimeout(300);
+
 		// Top shape divider
 		await accordionPanel.$eval(
 			'.maxi-shape-divider-control .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
 			click => click.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		await page.$eval(
 			'.maxi-shape-divider-control__shape-selector button',
@@ -47,6 +51,8 @@ describe('Shape divider', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(300);
+
 		expect(
 			await getAttributes('shape-divider-top-shape-style')
 		).toStrictEqual('waves-top');
@@ -55,7 +61,7 @@ describe('Shape divider', () => {
 		await page.$eval('.maxi-opacity-control input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('88');
+		await page.keyboard.type('88', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-opacity-general')
@@ -74,13 +80,15 @@ describe('Shape divider', () => {
 			await getAttributes('shape-divider-top-palette-color-general')
 		).toStrictEqual(5);
 
+		await page.waitForTimeout(500);
+
 		await page.$eval(
 			'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			input => input.focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('70');
+		await page.keyboard.type('70', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-top-height-general')
@@ -117,7 +125,7 @@ describe('Shape divider', () => {
 		await page.$eval('.maxi-opacity-control input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-bottom-opacity-general')
@@ -143,7 +151,7 @@ describe('Shape divider', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('254');
+		await page.keyboard.type('254', { delay: 350 });
 
 		expect(
 			await getAttributes('shape-divider-bottom-height-general')

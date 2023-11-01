@@ -2,16 +2,22 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import VideoIconControl from '../video-icon-control';
-import {
-	SelectControl,
-	ColorControl,
-	AspectRatioControl,
-} from '../../../../components';
+
+const VideoIconControl = loadable(() => import('../video-icon-control'));
+const SelectControl = loadable(() =>
+	import('../../../../components/select-control')
+);
+const ColorControl = loadable(() =>
+	import('../../../../components/color-control')
+);
+const AspectRatioControl = loadable(() =>
+	import('../../../../components/aspect-ratio-control')
+);
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -26,6 +32,7 @@ const PopupSettingsControl = props => {
 		onChange,
 		popAnimation,
 		popupRatio,
+		popupRatioCustom,
 	} = props;
 
 	return (
@@ -94,6 +101,7 @@ const PopupSettingsControl = props => {
 				className='maxi-video-control__ratio'
 				label={__('Video aspect ratio', 'maxi-blocks')}
 				value={popupRatio}
+				customValue={popupRatioCustom}
 				additionalOptions={[
 					{
 						label: __('None', 'maxi-blocks'),
@@ -101,9 +109,19 @@ const PopupSettingsControl = props => {
 					},
 				]}
 				onChange={popupRatio => onChange({ popupRatio })}
+				onChangeCustomValue={popupRatioCustom =>
+					onChange({ popupRatioCustom })
+				}
 				onReset={() =>
 					onChange({
 						popupRatio: getDefaultAttribute('popupRatio'),
+						isReset: true,
+					})
+				}
+				onResetCustomValue={() =>
+					onChange({
+						popupRatioCustom:
+							getDefaultAttribute('popupRatioCustom'),
 						isReset: true,
 					})
 				}

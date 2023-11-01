@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Maxi Blocks styles API
+ * MaxiBlocks styles API
  */
 
 if (!defined('ABSPATH')) {

@@ -3,8 +3,8 @@
  */
 import {
 	createNewPost,
-	pressKeyTimes,
 	selectBlockByClientId,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -51,9 +51,8 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '3');
-
-		await page.keyboard.type('50');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('50', { delay: 350 });
 
 		expect(await getAttributes('column-size-general')).toStrictEqual(50);
 
@@ -80,8 +79,8 @@ describe('Column Maxi', () => {
 			input => input.focus()
 		);
 
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('9');
+		await pressKeyWithModifier('ctrl', 'a');
+		await page.keyboard.type('9', { delay: 350 });
 
 		const responsiveSOption = await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -110,6 +109,8 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
+		await page.waitForTimeout(500);
+
 		expect(responsiveMOption).toStrictEqual('50');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -130,7 +131,7 @@ describe('Column Maxi', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(500);
 
 		// Ensure we select the first Column
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
@@ -207,6 +208,8 @@ describe('Column Maxi', () => {
 
 		// check first column
 		await page.waitForSelector('.maxi-column-block');
+		await page.waitForTimeout(500);
+
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[0].focus()
 		);
@@ -217,6 +220,8 @@ describe('Column Maxi', () => {
 
 		// check last column
 		await page.waitForSelector('.maxi-container-block .maxi-column-block');
+		await page.waitForTimeout(500);
+
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[2].focus()
 		);

@@ -4,4 +4,5 @@ module.exports = {
 		'<rootDir>/setup-test-framework.js',
 		'@wordpress/jest-console',
 	],
+	maxConcurrency: 20,
 };

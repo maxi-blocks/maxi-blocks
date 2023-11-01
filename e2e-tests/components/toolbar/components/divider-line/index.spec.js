@@ -45,7 +45,7 @@ describe('Divider line from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('12');
+		await page.keyboard.type('12', { delay: 350 });
 
 		await page.waitForTimeout(200);
 
@@ -56,7 +56,7 @@ describe('Divider line from Toolbar', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('45');
+		await page.keyboard.type('45', { delay: 350 });
 
 		const expectDivider = {
 			'divider-border-style-general': 'dashed',

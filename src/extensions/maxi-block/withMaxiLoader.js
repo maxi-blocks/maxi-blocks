@@ -18,19 +18,46 @@ import { ContentLoader } from '../../components';
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);
 
-	const { getBlocks, getBlockOrder } = useSelect(select => {
-		const { getBlocks, getBlockOrder } = select('core/block-editor');
-		return { getBlocks, getBlockOrder };
+	const { getBlocks } = useSelect(select => {
+		const { getBlocks } = select('core/block-editor');
+		return { getBlocks };
 	}, []);
 
+	const getAllMaxiBlocks = blocks => {
+		let maxiBlocks = [];
+
+		blocks.forEach(block => {
+			if (block.name.includes('maxi-blocks')) {
+				maxiBlocks.push(block);
+			}
+
+			// Check for Reusable blocks that might contain maxi-blocks
+			if (block.name === 'core/block' && block.innerBlocks.length > 0) {
+				maxiBlocks = maxiBlocks.concat(
+					getAllMaxiBlocks(block.innerBlocks)
+				);
+			}
+
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				maxiBlocks = maxiBlocks.concat(
+					getAllMaxiBlocks(block.innerBlocks)
+				);
+			}
+		});
+
+		return maxiBlocks;
+	};
+
 	const allBlocks = getBlocks();
-	const maxiBlocksOrder = getBlockOrder().filter(id => {
-		const block = allBlocks.find(b => b.clientId === id);
-		return block && block?.name.includes('maxi-blocks');
+	const maxiBlocks = getAllMaxiBlocks(allBlocks);
+
+	const shouldShowLoader = maxiBlocks.some(block => {
+		return block.clientId === clientId;
 	});
 
-	if (maxiBlocksOrder.indexOf(clientId) === 0)
+	if (shouldShowLoader) {
 		return <ContentLoader cloud={false} />;
+	}
 
 	return null;
 };
@@ -40,60 +67,47 @@ const withMaxiLoader = createHigherOrderComponent(
 		pure(ownProps => {
 			const {
 				clientId,
-				attributes: { uniqueID, isFirstOnHierarchy },
+				attributes: { uniqueID },
 			} = ownProps;
 
-			const { canBlockRender, getIsPageLoaded } = useSelect(
+			const { canBlockRender } = useSelect(
 				select => select('maxiBlocks'),
 				[]
 			);
 
-			if (!isFirstOnHierarchy) return <WrappedComponent {...ownProps} />;
+			const [hasBeenConsolidated, setHasBeenConsolidated] =
+				useState(false);
 
-			const { blockWantsToRender, setIsPageLoaded } =
-				useDispatch('maxiBlocks');
+			const { blockWantsToRender } = useDispatch('maxiBlocks');
 
 			useLayoutEffect(() => {
 				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
 			const [canRender, setCanRender] = useState(
-				canBlockRender(uniqueID, clientId) || getIsPageLoaded()
+				canBlockRender(uniqueID, clientId)
 			);
-			const [hasBeenConsolidated, setHasBeenConsolidated] =
-				useState(false);
 
 			useEffect(() => {
 				if (canRender && hasBeenConsolidated) return () => {};
 
-				const interval = setInterval(async () => {
-					if (getIsPageLoaded()) {
+				const interval = setInterval(() => {
+					if (canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 						setHasBeenConsolidated(true);
-
-						clearInterval(interval);
-					} else if (
-						!canRender &&
-						canBlockRender(uniqueID, clientId)
-					) {
-						setCanRender(true);
-
 						clearInterval(interval);
 					}
 				}, 100);
 
-				// Sorry linter, we can't be always consistent 🤷
-				// eslint-disable-next-line consistent-return
 				return () => clearInterval(interval);
 			});
 
 			const onMountBlock = useCallback(() => {
 				setHasBeenConsolidated(true);
+				setCanRender(true);
+			}, []);
 
-				if (!getIsPageLoaded()) setIsPageLoaded(true);
-			});
-
-			if (canRender && (hasBeenConsolidated || getIsPageLoaded()))
+			if (canRender && hasBeenConsolidated)
 				return <WrappedComponent {...ownProps} />;
 
 			return (

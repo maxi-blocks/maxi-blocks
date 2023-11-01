@@ -456,7 +456,6 @@ const TypographyControl = props => {
 			}, {});
 
 			onChange({ ...obj, isReset });
-
 			return;
 		}
 
@@ -474,19 +473,29 @@ const TypographyControl = props => {
 			returnFormatValue: true,
 		});
 
-		if (!isEmpty(obj.formatValue)) {
+		const filteredObj = Object.fromEntries(
+			Object.entries(obj).filter(
+				([key, value]) =>
+					value !== undefined || key.includes('font-family')
+			)
+		);
+
+		if (!isEmpty(filteredObj.formatValue)) {
 			const newFormatValue = {
-				...obj.formatValue,
+				...filteredObj.formatValue,
 				start: formatValue.start,
 				end: formatValue.end,
 			};
-			delete obj.formatValue;
+			delete filteredObj.formatValue;
 
 			onChangeTextFormat(newFormatValue);
 		}
 
-		if (!isReset) onChange(obj, getInlineTarget(tag));
-		else onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+		if (!isReset) {
+			onChange(filteredObj, getInlineTarget(tag));
+		} else {
+			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+		}
 	};
 
 	const onChangeInlineValue = (obj, tag = '') => {

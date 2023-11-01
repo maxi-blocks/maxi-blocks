@@ -10,27 +10,30 @@ import { getSettings, date } from '@wordpress/date';
 import { Popover } from '@wordpress/components';
 
 /**
- * Internal dependencies
- */
-import { exportStyleCard, getActiveColourFromSC } from './utils';
-import {
-	Button,
-	DialogBox,
-	Icon,
-	ReactSelectControl,
-	SettingTabsControl,
-	ToggleSwitch,
-} from '../../components';
-import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import { updateSCOnEditor } from '../../extensions/style-cards';
-import MaxiModal from '../library/modal';
-import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/defaults/defaultSC.json';
-
-/**
  * External dependencies
  */
 import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
+import loadable from '@loadable/component';
+
+/**
+ * Internal dependencies
+ */
+const Button = loadable(() => import('../../components/button'));
+const DialogBox = loadable(() => import('../../components/dialog-box'));
+const Icon = loadable(() => import('../../components/icon'));
+const SettingTabsControl = loadable(() =>
+	import('../../components/setting-tabs-control')
+);
+const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
+const ReactSelectControl = loadable(() =>
+	import('../../components/react-select-control')
+);
+const MaxiStyleCardsTab = loadable(() => import('./maxiStyleCardsTab'));
+const MaxiModal = loadable(() => import('../library/modal'));
+import { exportStyleCard, getActiveColourFromSC } from './utils';
+import { updateSCOnEditor } from '../../extensions/style-cards';
+import { handleSetAttributes } from '../../extensions/maxi-block';
+import standardSC from '../../../core/defaults/defaultSC.json';
 
 /**
  * Icons
@@ -599,7 +602,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					{!isTemplate && (
 						<ToggleSwitch
 							label={__(
-								'Affect Gutenberg native blocks inside Maxi Blocks',
+								'Affect Gutenberg native blocks inside MaxiBlocks',
 								'maxi-blocks'
 							)}
 							selected={selectedSCValue.gutenberg_blocks_status}

@@ -19,10 +19,12 @@ describe('Icon size', () => {
 		await insertMaxiBlock(page, 'Icon Maxi');
 		// generate icon
 		await modalMock(page, { type: 'svg' });
+		await page.waitForTimeout(500);
+
 		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(500);
 
 		// edit color
 		await page.$eval(
@@ -37,7 +39,7 @@ describe('Icon size', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('132');
+		await page.keyboard.type('132', { delay: 350 });
 
 		expect(await getAttributes('svg-width-general')).toStrictEqual('132');
 

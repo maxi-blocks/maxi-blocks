@@ -164,12 +164,19 @@ const getOverlayBackgroundObject = (props, isHover = false) => {
 };
 
 const getAspectRatioStyles = (props, isPopup = false) => {
-	const { videoRatio, popupRatio } = props;
+	const { popupRatio, popupRatioCustom, videoRatio, videoRatioCustom } =
+		props;
 
 	const response = {
 		...(isPopup
-			? { ...(popupRatio && getAspectRatio(popupRatio)) }
-			: { ...(videoRatio && getAspectRatio(videoRatio)) }),
+			? {
+					...(popupRatio &&
+						getAspectRatio(popupRatio, popupRatioCustom)),
+			  }
+			: {
+					...(videoRatio &&
+						getAspectRatio(videoRatio, videoRatioCustom)),
+			  }),
 	};
 
 	return response;

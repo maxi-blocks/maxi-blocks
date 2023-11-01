@@ -30,6 +30,10 @@ const attributes = {
 		type: 'string',
 		default: 'original',
 	},
+	imageRatioCustom: {
+		type: 'string',
+		default: '1',
+	},
 	SVGElement: {
 		type: 'string',
 	},

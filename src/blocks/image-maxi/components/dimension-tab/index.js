@@ -49,6 +49,7 @@ const DimensionTab = props => {
 	const {
 		cropOptions,
 		imageRatio,
+		imageRatioCustom,
 		imageSize,
 		isImageUrl,
 		mediaID,
@@ -207,6 +208,7 @@ const DimensionTab = props => {
 						className='maxi-image-inspector__ratio'
 						label={__('Image ratio', 'maxi-blocks')}
 						value={imageRatio}
+						customValue={imageRatioCustom}
 						additionalOptions={[
 							{
 								label: __('Original size', 'maxi-blocks'),
@@ -218,9 +220,21 @@ const DimensionTab = props => {
 								imageRatio,
 							})
 						}
+						onChangeCustomValue={imageRatioCustom =>
+							maxiSetAttributes({
+								imageRatioCustom,
+							})
+						}
 						onReset={() =>
 							maxiSetAttributes({
 								imageRatio: getDefaultAttribute('imageRatio'),
+								isReset: true,
+							})
+						}
+						onResetCustomValue={() =>
+							maxiSetAttributes({
+								imageRatioCustom:
+									getDefaultAttribute('imageRatioCustom'),
 								isReset: true,
 							})
 						}

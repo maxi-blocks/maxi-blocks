@@ -14,13 +14,11 @@ import {
 	getDCDateCustomFormat,
 	getSimpleText,
 	sanitizeDCContent,
-	validateRelations,
-	validationsValues,
 } from './utils';
-import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 import getDCValues from './getDCValues';
+import getValidatedDCAttributes from './validateDCAttributes';
 import LoopContext from './loopContext';
 import { linkFields } from './constants';
 
@@ -49,9 +47,7 @@ const withMaxiDC = createHigherOrderComponent(
 			);
 
 			const {
-				relation,
 				status,
-				source,
 				content,
 				type,
 				field,
@@ -66,51 +62,6 @@ const withMaxiDC = createHigherOrderComponent(
 				.replace(/maxi-blocks\//, '')
 				.replace(/-maxi/, '');
 
-			/**
-			 * Synchronize attributes between context loop and dynamic content.
-			 */
-			const getSynchronizedDCAttributes = useCallback(async () => {
-				const dcOptions = await getDCOptions(
-					dynamicContentProps,
-					dynamicContentProps.id,
-					contentType,
-					false,
-					contextLoop
-				);
-				const validatedAttributes = validationsValues(
-					type,
-					field,
-					relation,
-					contentType,
-					source
-				);
-				const validatedRelations = validateRelations(type, relation);
-
-				if (
-					dcOptions?.newValues ||
-					validatedAttributes ||
-					validatedRelations
-				) {
-					const newAttributes = {
-						...dcOptions?.newValues,
-						...validatedAttributes,
-						...validatedRelations,
-					};
-
-					const {
-						__unstableMarkNextChangeAsNotPersistent:
-							markNextChangeAsNotPersistent,
-					} = dispatch('core/block-editor');
-
-					markNextChangeAsNotPersistent();
-					setAttributes(newAttributes);
-
-					return newAttributes;
-				}
-
-				return null;
-			}, [dynamicContentProps, contextLoop]);
-
 			const fetchAndUpdateDCData = useCallback(async () => {
 				if (
 					status &&
@@ -124,7 +75,11 @@ const withMaxiDC = createHigherOrderComponent(
 					} = dispatch('core/block-editor');
 
 					const synchronizedAttributes =
-						getSynchronizedDCAttributes();
+						await getValidatedDCAttributes(
+							dynamicContentProps,
+							contentType,
+							contextLoop
+						);
 					let isSynchronizedAttributesUpdated = false;
 
 					const lastDynamicContentProps = getDCValues(

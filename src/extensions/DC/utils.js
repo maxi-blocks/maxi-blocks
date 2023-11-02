@@ -160,5 +160,17 @@ export const validateRelations = (type, relation, isCL) => {
 		}
 	}
 
-	return {};
+	return null;
+};
+
+export const getAttributesWithoutPrefix = (attributes, prefix) => {
+	const result = {};
+
+	Object.keys(attributes).forEach(key => {
+		if (key.startsWith(prefix)) {
+			result[key.replace(prefix, '')] = attributes[key];
+		}
+	});
+
+	return result;
 };

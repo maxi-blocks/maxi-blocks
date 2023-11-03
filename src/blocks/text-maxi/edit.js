@@ -5,6 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
+import { createRef, forwardRef } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -104,6 +105,8 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onReplace,
 			maxiSetAttributes,
+			hasInnerBlocks,
+			children,
 		} = this.props;
 		const {
 			content,
@@ -126,6 +129,32 @@ class edit extends MaxiBlockComponent {
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
+
+		const ALLOWED_BLOCKS = ['core/list-item'];
+
+		const ListWrapper = forwardRef((props, ref) => {
+			const { children, className, typeOfList } = props;
+
+			if (typeOfList === 'ul') {
+				return (
+					<ul ref={ref} className={className}>
+						{children}
+					</ul>
+				);
+			}
+			if (typeOfList === 'ol') {
+				return (
+					<ol ref={ref} className={className}>
+						{children}
+					</ol>
+				);
+			}
+			return (
+				<div ref={ref} className={className}>
+					{children}
+				</div>
+			);
+		});
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -243,6 +272,15 @@ class edit extends MaxiBlockComponent {
 						isList && 'maxi-list-block'
 					)}
 					ref={this.blockRef}
+					useInnerBlocks={isList}
+					innerBlocksSettings={{
+						allowedBlocks: ALLOWED_BLOCKS,
+						renderAppender: false,
+						templateLock: false,
+						template: !hasInnerBlocks
+							? [['core/list-item']]
+							: false,
+					}}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{!dcStatus && !isList && (
@@ -292,92 +330,13 @@ class edit extends MaxiBlockComponent {
 						</DCTagName>
 					)}
 					{!dcStatus && isList && (
-						<RichText
-							multiline='li'
-							tagName={typeOfList}
-							start={listStart}
-							reversed={listReversed}
-							type={typeOfList}
-							{...commonProps}
+						<ListWrapper
+							ref={this.blockRef}
+							uniqueID={uniqueID}
+							className='maxi-list-block__li'
 						>
-							{richTextValues => {
-								const { value: formatValue, onChange } =
-									richTextValues;
-
-								onChangeRichText({
-									attributes,
-									maxiSetAttributes,
-									oldFormatValue: this.state.formatValue,
-									onChange: newState => {
-										if (this.typingTimeoutFormatValue) {
-											clearTimeout(
-												this.typingTimeoutFormatValue
-											);
-										}
-
-										this.typingTimeoutFormatValue =
-											setTimeout(() => {
-												this.setState(newState);
-											}, 10);
-									},
-									richTextValues,
-								});
-
-								if (isSelected)
-									return (
-										<>
-											<RichTextShortcut
-												type='primary'
-												character='['
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character=']'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character='m'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primaryShift'
-												character='m'
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-										</>
-									);
-
-								return null;
-							}}
-						</RichText>
+							{children}
+						</ListWrapper>
 					)}
 				</MaxiBlock>
 			</textContext.Provider>,

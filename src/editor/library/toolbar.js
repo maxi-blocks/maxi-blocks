@@ -518,7 +518,7 @@ const LibraryToolbar = props => {
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						{__('Expired: ', 'maxi-blocks')}
-						<span className={usernameClasses}>{userName}</span>
+						<span className='maxi-username'>{userName}</span>
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__connect'

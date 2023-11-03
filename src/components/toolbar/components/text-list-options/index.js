@@ -45,8 +45,6 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	console.log('TextListOptions');
-	console.log('props', props);
 	const { blockName, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;

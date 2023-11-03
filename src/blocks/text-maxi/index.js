@@ -59,21 +59,3 @@ registerBlockType(metadata, {
 	customCss,
 	scProps,
 });
-
-registerBlockType('maxi-blocks/list-item', {
-	title: __('List Item Maxi', 'maxi-blocks'),
-	// ... other properties ...
-	edit(props) {
-		return wp.element.createElement(wp.blockEditor.RichText, {
-			tagName: 'li', // The tag here is li
-			value: props.attributes.content,
-			onChange(content) {
-				props.setAttributes({ content });
-			},
-			// ... other properties ...
-		});
-	},
-	save(props) {
-		return wp.element.createElement('li', null, props.attributes.content);
-	},
-});

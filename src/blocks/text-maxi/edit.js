@@ -205,6 +205,8 @@ class edit extends MaxiBlockComponent {
 				// Hitting enter at the beginning
 				if (value === '' && !isOriginal) {
 					newContent = `${attributes.content}<li></li>`;
+
+					console.log(this.richTextRef.current);
 				}
 				// Hitting enter in the middle
 				else if (value !== '' && !isOriginal) {

@@ -136,6 +136,8 @@ const MaxiToolbar = memo(
 			uniqueID,
 			svgType,
 			'dc-status': dcStatus,
+			content: listContent,
+			listStyle,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -362,9 +364,9 @@ const MaxiToolbar = memo(
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
+								listStyle={listStyle}
+								content={listContent}
 								onChange={obj => {
-									console.log('obj');
-									console.log(obj);
 									maxiSetAttributes(obj);
 								}}
 							/>

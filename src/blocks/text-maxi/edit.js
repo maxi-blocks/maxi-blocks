@@ -5,6 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
+import { createRef } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -127,6 +128,8 @@ class edit extends MaxiBlockComponent {
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
+		this.richTextRef = createRef();
+
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -173,10 +176,6 @@ class edit extends MaxiBlockComponent {
 			onChange: processContent,
 			onSplit: (value, isOriginal) => {
 				let newAttributes;
-				console.log('onSplit');
-				console.log('isList', isList);
-				console.log('isOriginal', isOriginal);
-				console.log('value', value);
 
 				if (!isList) {
 					if (isOriginal || value) {
@@ -199,15 +198,36 @@ class edit extends MaxiBlockComponent {
 					return block;
 				}
 				// isList
-				const newContent = `${attributes.content}<li>${value}</li>`;
+				console.log('value', value);
+				console.log('attributes.content', attributes.content);
+				let newContent = '';
+
+				// Hitting enter at the beginning
+				if (value === '' && !isOriginal) {
+					newContent = `${attributes.content}<li></li>`;
+				}
+				// Hitting enter in the middle
+				else if (value !== '' && !isOriginal) {
+					newContent = attributes.content.replace(
+						value,
+						`</li><li>${value}`
+					);
+				}
+				// Hitting enter at the end
+				else if (isOriginal) {
+					newContent = `<li></li>${attributes.content}`;
+				}
+
+				// console.log('newContent: ', newContent);
+
 				maxiSetAttributes({ content: newContent });
-				return null;
+				return {};
 			},
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
-			// onRemove needs to be commented to avoid removing the block
-			// on pressing backspace with the content empty 👍
-			// onRemove={onRemove}
+			onRemove: () => {
+				console.log('remove');
+			},
 		};
 
 		return [
@@ -304,6 +324,7 @@ class edit extends MaxiBlockComponent {
 					{!dcStatus && isList && (
 						<RichText
 							multiline='li'
+							ref={this.richTextRef}
 							tagName={typeOfList}
 							start={listStart}
 							reversed={listReversed}

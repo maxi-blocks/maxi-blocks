@@ -226,7 +226,10 @@ class edit extends MaxiBlockComponent {
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
 			onRemove: () => {
-				console.log('remove');
+				if (isList) {
+					const newContent = content.replace(/<li><\/li>/g, '');
+					maxiSetAttributes({ content: newContent });
+				}
 			},
 		};
 

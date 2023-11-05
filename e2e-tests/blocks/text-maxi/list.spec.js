@@ -50,7 +50,7 @@ const createTextWithList = async (
 };
 
 describe('List in Text-maxi', () => {
-	it.only('Use list options with list style position inside', async () => {
+	it('Use list options with list style position inside', async () => {
 		await createNewPost();
 		await createTextWithList();
 		await openSidebarTab(page, 'style', 'list options');

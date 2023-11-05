@@ -15,11 +15,11 @@ import {
 	getEditedPostContent,
 	insertMaxiBlock,
 	openSidebarTab,
-	getBlockStyle,
 } from '../../utils';
 import {
 	codeEditorWithContentInFirstColumn,
 	codeEditorWithRepeater,
+	codeEditorWithDifferentContentInColumns,
 } from './content';
 
 const toggleRepeater = async page => {
@@ -71,6 +71,17 @@ describe('Repeater', () => {
 		await insertMaxiBlockIntoColumn(page, 'Button Maxi', 2);
 
 		await page.waitForTimeout(2000);
+
+		// Select button from second column
+		await page.$eval(
+			'.maxi-column-block:nth-child(2) .maxi-button-block',
+			block =>
+				wp.data
+					.dispatch('core/block-editor')
+					.selectBlock(block.getAttribute('data-block'))
+		);
+
+		await page.waitForTimeout(350);
 
 		// Check if button was added to all columns
 		expect(
@@ -192,6 +203,60 @@ describe('Repeater', () => {
 			button.click()
 		);
 		await page.waitForTimeout(350);
+
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
+	});
+
+	it('Check different structure popup', async () => {
+		// Set code editor as clipboard data
+		await setClipboardData({
+			plainText: codeEditorWithDifferentContentInColumns,
+		});
+
+		// Set title
+		await page.keyboard.type('Page repeater test');
+
+		// Add code editor
+		await page.keyboard.press('Enter');
+		await pressKeyWithModifier('primary', 'v');
+		await page.waitForTimeout(2000);
+
+		// Select row
+		await page.$eval('.maxi-row-block', block =>
+			wp.data
+				.dispatch('core/block-editor')
+				.selectBlock(block.getAttribute('data-block'))
+		);
+
+		await toggleRepeater(page);
+
+		await page.waitForSelector('.maxi-dialog-box');
+		await page.waitForTimeout(150);
+
+		// Click on cancel button
+		await page.$eval('.maxi-dialog-box-buttons button', button =>
+			button.click()
+		);
+
+		await page.waitForSelector('.maxi-dialog-box', { hidden: true });
+
+		expect(
+			sanitizeEditedPostContent(await getEditedPostContent(page))
+		).toMatchSnapshot();
+
+		await toggleRepeater(page);
+
+		await page.waitForSelector('.maxi-dialog-box');
+		await page.waitForTimeout(150);
+
+		// Click on confirm button
+		await page.$$eval('.maxi-dialog-box-buttons button', buttons =>
+			buttons[1].click()
+		);
+
+		await page.waitForSelector('.maxi-dialog-box', { hidden: true });
 
 		expect(
 			sanitizeEditedPostContent(await getEditedPostContent(page))

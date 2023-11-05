@@ -22,9 +22,17 @@ const rawVideo = {
 		type: 'string',
 		default: 'ar169',
 	},
+	videoRatioCustom: {
+		type: 'string',
+		default: '1',
+	},
 	popupRatio: {
 		type: 'string',
 		default: 'ar169',
+	},
+	popupRatioCustom: {
+		type: 'string',
+		default: '1',
 	},
 	videoType: {
 		type: 'string',

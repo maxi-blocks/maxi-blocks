@@ -11049,6 +11049,36 @@
     "content-padding-sync-xs": {
       "type": "string"
     },
+    "cl-status": {
+      "type": "boolean"
+    },
+    "cl-type": {
+      "type": "string"
+    },
+    "cl-relation": {
+      "type": "string"
+    },
+    "cl-id": {
+      "type": "number"
+    },
+    "cl-author": {
+      "type": "number"
+    },
+    "cl-order-by": {
+      "type": "string"
+    },
+    "cl-order": {
+      "type": "string"
+    },
+    "cl-accumulator": {
+      "type": "number"
+    },
+    "dc-status": {
+      "type": "boolean"
+    },
+    "dc-link-status": {
+      "type": "boolean"
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -12227,7 +12257,19 @@
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "header": {
+          "pane header": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before header": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after header": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -12251,13 +12293,49 @@
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "icon": {
+          "before header content": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "content": {
+          "after header content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "pane icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "pane content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after content": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -12655,6 +12733,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -12969,57 +13068,85 @@
       "pane": {
         "normal": {
           "label": "pane",
-          "target": ""
+          "target": ".maxi-pane-block[aria-expanded].maxi-block"
         },
         "hover": {
           "label": "pane on hover",
-          "target": ":hover"
+          "target": ".maxi-block.maxi-pane-block[aria-expanded]:hover"
         },
         "active": {
           "label": "pane on active state",
-          "target": ".maxi-pane-block[aria-expanded=true]"
+          "target": ".maxi-block.maxi-pane-block[aria-expanded=true]"
         }
       },
       "before pane": {
         "normal": {
           "label": "pane ::before",
-          "target": "::before"
+          "target": ".wp-block-maxi-blocks-pane-maxi.maxi-pane-block[aria-expanded]::before"
         },
         "hover": {
           "label": "pane ::before on hover",
-          "target": ":hover::before"
+          "target": ".wp-block-maxi-blocks-pane-maxi.maxi-pane-block[aria-expanded]:hover::before"
         },
         "active": {
           "label": "pane ::before on active state",
-          "target": ".maxi-pane-block[aria-expanded=true]::before"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block::before"
         }
       },
       "after pane": {
         "normal": {
           "label": "pane ::after",
-          "target": "::after"
+          "target": ".wp-block-maxi-blocks-pane-maxi.maxi-pane-block[aria-expanded]::after"
         },
         "hover": {
           "label": "pane ::after on hover",
-          "target": ":hover::after"
+          "target": ".wp-block-maxi-blocks-pane-maxi.maxi-pane-block[aria-expanded]:hover::after"
         },
         "active": {
           "label": "pane ::after on active state",
-          "target": ".maxi-pane-block[aria-expanded=true]::after"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block::after"
         }
       },
-      "header": {
+      "pane header": {
         "normal": {
           "label": "pane header",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header"
         },
         "hover": {
           "label": "pane header on hover",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover"
         },
         "active": {
           "label": "pane header on active state",
-          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header"
+        }
+      },
+      "before header": {
+        "normal": {
+          "label": "pane header ::before",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before"
+        },
+        "hover": {
+          "label": "pane header ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::before"
+        },
+        "active": {
+          "label": "pane header ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before"
+        }
+      },
+      "after header": {
+        "normal": {
+          "label": "pane header ::after",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after"
+        },
+        "hover": {
+          "label": "pane header ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::after"
+        },
+        "active": {
+          "label": "pane header ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after"
         }
       },
       "header content": {
@@ -13064,64 +13191,152 @@
           "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line"
         }
       },
-      "icon": {
+      "before header content": {
+        "normal": {
+          "label": "accordion pane header content::before",
+          "target": ".maxi-pane-block[aria-expanded].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before"
+        },
+        "hover": {
+          "label": "accordion pane header content::before on hover",
+          "target": ".maxi-pane-block[aria-expanded].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::before"
+        },
+        "active": {
+          "label": "accordion pane header content::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before"
+        }
+      },
+      "after header content": {
+        "normal": {
+          "label": "accordion pane header content::after",
+          "target": ".maxi-pane-block[aria-expanded].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after"
+        },
+        "hover": {
+          "label": "pane header content::after on hover",
+          "target": ".maxi-pane-block[aria-expanded].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::after"
+        },
+        "active": {
+          "label": "pane header content::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after"
+        }
+      },
+      "pane icon": {
         "normal": {
           "label": "icon",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon"
         },
         "svg": {
           "label": "icon's svg",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg"
         },
         "insideSvg": {
           "label": "everything inside svg (svg > *)",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg > *"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg > *"
         },
         "path": {
           "label": "svg's path",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg path"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg path"
         },
         "hover": {
           "label": "icon on hover",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover"
         },
         "hoverSvg": {
           "label": "icon's svg on hover",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg"
         },
         "hoverInsideSvg": {
           "label": "everything inside svg on hover (:hover svg > *)",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg > *"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg > *"
         },
         "hoverPath": {
           "label": "svg's path on hover",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg path"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg path"
         },
         "active": {
           "label": "active icon",
-          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon"
         },
         "activeSvg": {
           "label": "active icon's svg",
-          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg"
         },
         "activeInsideSvg": {
           "label": "everything inside active svg (svg > *)",
-          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg > *"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg > *"
         },
         "activePath": {
           "label": "active svg's path",
-          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg path"
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg path"
         }
       },
-      "content": {
+      "before icon": {
+        "normal": {
+          "label": "icon ::before",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before"
+        },
+        "hover": {
+          "label": "icon ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::before"
+        },
+        "active": {
+          "label": "icon ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before"
+        }
+      },
+      "after icon": {
+        "normal": {
+          "label": "icon ::after",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after"
+        },
+        "hover": {
+          "label": "icon ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::after"
+        },
+        "active": {
+          "label": "icon ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after"
+        }
+      },
+      "pane content": {
         "normal": {
           "label": "pane content",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content"
         },
         "hover": {
           "label": "pane content on hover",
-          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover"
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content:hover"
+        },
+        "active": {
+          "label": "pane content on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content"
+        }
+      },
+      "before content": {
+        "normal": {
+          "label": "pane content ::before",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before"
+        },
+        "hover": {
+          "label": "pane content ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::before"
+        },
+        "active": {
+          "label": "pane content ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before"
+        }
+      },
+      "after content": {
+        "normal": {
+          "label": "pane content ::after",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after"
+        },
+        "hover": {
+          "label": "pane content ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::after"
+        },
+        "active": {
+          "label": "pane content ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true].wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after"
         }
       }
     },
@@ -13129,12 +13344,20 @@
       "pane",
       "before pane",
       "after pane",
-      "header",
+      "pane header",
+      "before header",
+      "after header",
       "header content",
       "header line",
       "content line",
-      "content",
-      "icon",
+      "pane content",
+      "before content",
+      "after content",
+      "before header content",
+      "after header content",
+      "pane icon",
+      "before icon",
+      "after icon",
       "background",
       "background hover"
     ]

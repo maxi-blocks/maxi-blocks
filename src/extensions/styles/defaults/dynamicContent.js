@@ -139,6 +139,14 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-link-target': {
+		type: 'string',
+		default: 'none',
+	},
+	'dc-image-accumulator': {
+		type: 'number',
+		default: 0,
+	},
 };
 
 const dynamicContentLink = {

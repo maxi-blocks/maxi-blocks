@@ -14,13 +14,11 @@ import {
 	getDCDateCustomFormat,
 	getSimpleText,
 	sanitizeDCContent,
-	validateRelations,
-	validationsValues,
 } from './utils';
-import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 import getDCValues from './getDCValues';
+import getValidatedDCAttributes from './validateDCAttributes';
 import LoopContext from './loopContext';
 import { linkFields } from './constants';
 
@@ -49,9 +47,7 @@ const withMaxiDC = createHigherOrderComponent(
 			);
 
 			const {
-				relation,
 				status,
-				source,
 				content,
 				type,
 				field,
@@ -66,57 +62,12 @@ const withMaxiDC = createHigherOrderComponent(
 				.replace(/maxi-blocks\//, '')
 				.replace(/-maxi/, '');
 
-			/**
-			 * Synchronize attributes between context loop and dynamic content.
-			 */
-			const getSynchronizedDCAttributes = useCallback(async () => {
-				const dcOptions = await getDCOptions(
-					dynamicContentProps,
-					dynamicContentProps.id,
-					contentType,
-					false,
-					contextLoop
-				);
-				const validatedAttributes = validationsValues(
-					type,
-					field,
-					relation,
-					contentType,
-					source
-				);
-				const validatedRelations = validateRelations(type, relation);
-
-				if (
-					dcOptions?.newValues ||
-					validatedAttributes ||
-					validatedRelations
-				) {
-					const newAttributes = {
-						...dcOptions?.newValues,
-						...validatedAttributes,
-						...validatedRelations,
-					};
-
-					const {
-						__unstableMarkNextChangeAsNotPersistent:
-							markNextChangeAsNotPersistent,
-					} = dispatch('core/block-editor');
-
-					markNextChangeAsNotPersistent();
-					setAttributes(newAttributes);
-
-					return newAttributes;
-				}
-
-				return null;
-			}, [dynamicContentProps, contextLoop]);
-
 			const fetchAndUpdateDCData = useCallback(async () => {
 				if (
 					status &&
 					!isNil(type) &&
 					!isNil(field) &&
-					(!isNil(id) || type === 'settings') // id is not necessary for site settings
+					(!isNil(id) || ['settings', 'cart'].includes(type)) // id is not necessary for site settings
 				) {
 					const {
 						__unstableMarkNextChangeAsNotPersistent:
@@ -124,7 +75,11 @@ const withMaxiDC = createHigherOrderComponent(
 					} = dispatch('core/block-editor');
 
 					const synchronizedAttributes =
-						getSynchronizedDCAttributes();
+						await getValidatedDCAttributes(
+							dynamicContentProps,
+							contentType,
+							contextLoop
+						);
 					let isSynchronizedAttributesUpdated = false;
 
 					const lastDynamicContentProps = getDCValues(
@@ -170,7 +125,7 @@ const withMaxiDC = createHigherOrderComponent(
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
-							type === 'posts' &&
+							['posts', 'products'].includes(type) &&
 							linkFields.includes(field);
 
 						if (!newContainsHTML) {
@@ -224,9 +179,11 @@ const withMaxiDC = createHigherOrderComponent(
 								setAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
-									'dc-media-caption': sanitizeDCContent(
-										getSimpleText(caption)
-									),
+									...(caption && {
+										'dc-media-caption': sanitizeDCContent(
+											getSimpleText(caption)
+										),
+									}),
 									...(updateLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),

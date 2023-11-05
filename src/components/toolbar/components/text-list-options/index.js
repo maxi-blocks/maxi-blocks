@@ -51,17 +51,11 @@ const TextListOptions = props => {
 		typeOfList,
 		onChange,
 		content: listContent,
-		listStyle,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	console.log('TextListOptions');
-	console.log('props', props);
-
 	const { formatValue } = useContext(textContext);
-
-	console.log('formatValue', formatValue);
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);
@@ -87,22 +81,13 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		console.log('onChangeList');
-		console.log('type', type);
-		console.log('formatValue: ', formatValue);
-		console.log('isList: ', isList);
-
 		if (!isList || typeOfList === type) {
-			console.log('!isList || typeOfList === type');
-			console.log(typeOfList);
-			console.log(getContent(listContent));
 			onChange({
 				isList: !isList,
 				typeOfList: type,
 				content: getContent(listContent),
 			});
 		} else {
-			console.log('else');
 			onChange({
 				isList,
 				typeOfList: type,

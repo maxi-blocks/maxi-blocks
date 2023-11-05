@@ -198,15 +198,11 @@ class edit extends MaxiBlockComponent {
 					return block;
 				}
 				// isList
-				console.log('value', value);
-				console.log('attributes.content', attributes.content);
 				let newContent = '';
 
 				// Hitting enter at the beginning
 				if (value === '' && !isOriginal) {
 					newContent = `${attributes.content}<li></li>`;
-
-					console.log(this.richTextRef.current);
 				}
 				// Hitting enter in the middle
 				else if (value !== '' && !isOriginal) {
@@ -219,8 +215,6 @@ class edit extends MaxiBlockComponent {
 				else if (isOriginal) {
 					newContent = `<li></li>${attributes.content}`;
 				}
-
-				// console.log('newContent: ', newContent);
 
 				maxiSetAttributes({ content: newContent });
 				return {};

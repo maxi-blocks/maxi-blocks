@@ -300,22 +300,31 @@ const getListObject = (props, styleCard) => {
 						attributes: props,
 					}) || 'px';
 
-				const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
+				const shouldMeasureTextWidth =
+					(listStyle !== 'custom' || isTextSource) &&
+					listStyle !== 'none';
 
-				const padding =
-					listStylePosition === 'inside'
-						? gapNum + gapUnit
-						: `calc(${gapNum + gapUnit} + ${
-								listStyle === 'custom' && !isTextSource
-									? `${sizeNum + sizeUnit} + `
-									: `${getTextWidth(
-											sizeNum,
-											sizeUnit,
-											props,
-											breakpoint,
-											styleCard
-									  )} + `
-						  }${indentMarkerSum})`;
+				const getPaddingValue = () => {
+					if (listStylePosition === 'inside') {
+						return gapNum + gapUnit;
+					}
+
+					return `calc(${gapNum + gapUnit} + ${
+						indentMarkerNum + indentMarkerUnit
+					}) + ${
+						shouldMeasureTextWidth
+							? getTextWidth(
+									sizeNum,
+									sizeUnit,
+									props,
+									breakpoint,
+									styleCard
+							  )
+							: `${sizeNum + sizeUnit}`
+					}`;
+				};
+
+				const padding = getPaddingValue();
 
 				if (!isNil(gapNum) && !isNil(gapUnit)) {
 					response.listGap[breakpoint] = {
@@ -323,10 +332,7 @@ const getListObject = (props, styleCard) => {
 					};
 				}
 
-				if (
-					listStylePosition === 'outside' &&
-					(listStyle !== 'custom' || isTextSource)
-				) {
+				if (listStylePosition === 'outside' && shouldMeasureTextWidth) {
 					response.listGap[breakpoint] = {
 						...response.listGap[breakpoint],
 						'font-size': sizeNum + sizeUnit,
@@ -642,6 +648,10 @@ const getMarkerObject = (props, styleCard) => {
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
 						(() => {
+							if (listStyle === 'none') {
+								return {};
+							}
+
 							if (listStyle === 'custom' && !isTextSource) {
 								return {
 									'margin-left': `-${sizeNum}${sizeUnit}`,

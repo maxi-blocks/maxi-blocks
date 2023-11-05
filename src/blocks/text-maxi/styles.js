@@ -311,7 +311,7 @@ const getListObject = (props, styleCard) => {
 
 					return `calc(${gapNum + gapUnit} + ${
 						indentMarkerNum + indentMarkerUnit
-					}) + ${
+					} + ${
 						shouldMeasureTextWidth
 							? getTextWidth(
 									sizeNum,
@@ -321,7 +321,7 @@ const getListObject = (props, styleCard) => {
 									styleCard
 							  )
 							: `${sizeNum + sizeUnit}`
-					}`;
+					})`;
 				};
 
 				const padding = getPaddingValue();

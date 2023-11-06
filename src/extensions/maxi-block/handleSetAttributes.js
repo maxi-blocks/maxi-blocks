@@ -36,22 +36,31 @@ const handleSetAttributes = ({
 
 		if (!breakpoint) return;
 
-		const isHigherBreakpoint =
+		const isHigherThanBase =
 			breakpoints.indexOf(breakpoint) <
 			breakpoints.indexOf(baseBreakpoint);
-
-		if (!isHigherBreakpoint) return;
-
-		const attrLabelOnBaseBreakpoint = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-${baseBreakpoint}`;
-		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
-		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
 		)}-general`;
+		const attrLabelOnBaseBreakpoint = `${key.slice(
+			0,
+			key.lastIndexOf('-')
+		)}-${baseBreakpoint}`;
+
+		if (breakpoint !== 'general' && attributes[attrLabelOnGeneral]) {
+			response[attrLabelOnBaseBreakpoint] =
+				attributes[attrLabelOnGeneral];
+			response[attrLabelOnGeneral] = undefined;
+			response[attrLabelOnBaseBreakpoint] = value;
+
+			return;
+		}
+
+		if (!isHigherThanBase) return;
+
+		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
+		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
@@ -67,6 +76,22 @@ const handleSetAttributes = ({
 			defaultGeneralAttribute !== value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
+
+			return;
+		}
+
+		const attrExistsOnResponsive = breakpoints.some(
+			breakpoint =>
+				!isNil(
+					attributes?.[
+						`${key.slice(0, key.lastIndexOf('-'))}-${breakpoint}`
+					]
+				)
+		);
+
+		if (breakpoint === 'general' && attrExistsOnResponsive) {
+			response[attrLabelOnBaseBreakpoint] = value;
+			response[attrLabelOnGeneral] = undefined;
 
 			return;
 		}
@@ -107,6 +132,7 @@ const handleSetAttributes = ({
 
 		if (
 			!attrExistOnBaseBreakpoint &&
+			baseBreakpoint !== 'xxl' &&
 			(breakpoint === 'general' || !existHigherBreakpointAttribute)
 		) {
 			// Checks if the higher breakpoint attribute is not on XXL

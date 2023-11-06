@@ -683,6 +683,7 @@ const MaxiToolbar = memo(
 							styleCard={styleCard}
 							disableCustomFormats={disableCustomFormats}
 							clientId={clientId}
+							content={attributes.content}
 						/>
 						<VerticalAlign
 							clientId={clientId}

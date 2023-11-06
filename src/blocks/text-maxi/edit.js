@@ -238,6 +238,8 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
+						console.log('onChangeTextFormat');
+						console.log(newFormatValue);
 						!dcStatus &&
 							this.state.onChangeFormat?.(newFormatValue);
 

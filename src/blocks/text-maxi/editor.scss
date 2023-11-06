@@ -1,4 +1,10 @@
 .maxi-text-block {
+	> ol,
+	> ul {
+		> br {
+			display: none;
+		}
+	}
 	&__content:not(li),
 	> ol,
 	> ul {

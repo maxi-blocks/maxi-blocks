@@ -5,7 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { createRef } from '@wordpress/element';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -43,6 +43,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
+		wpVersion: null,
 	};
 
 	scProps = scProps;
@@ -53,6 +54,23 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	maxiBlockDidMount() {
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings().then(maxiSettings => {
+			const version = maxiSettings?.core?.version;
+			console.log('version', version);
+			if (version) {
+				const convertVersionStringToNumber = versionString => {
+					// This regex matches the first two groups of digits separated by a dot
+					const matches = versionString.match(/^(\d+\.\d+)/);
+					return matches ? parseFloat(matches[1]) : null;
+				};
+				const wpVersion = convertVersionStringToNumber(version);
+				this.setState({ wpVersion });
+			}
+		});
 	}
 
 	maxiBlockDidUpdate() {
@@ -128,8 +146,6 @@ class edit extends MaxiBlockComponent {
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
-		this.richTextRef = createRef();
-
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -139,6 +155,11 @@ class edit extends MaxiBlockComponent {
 		const processContent = rawContent => {
 			if (rawContent === this.props.attributes.content) {
 				return;
+			}
+
+			console.log('processContent', rawContent);
+
+			if (isList) {
 			}
 
 			/**
@@ -177,56 +198,30 @@ class edit extends MaxiBlockComponent {
 			onSplit: (value, isOriginal) => {
 				let newAttributes;
 
-				if (!isList) {
-					if (isOriginal || value) {
-						newAttributes = {
-							...attributes,
-							content: value,
-							...(!isOriginal && { uniqueID: null }),
-						};
-					}
-
-					const block = createBlock(
-						'maxi-blocks/text-maxi',
-						newAttributes
-					);
-
-					if (isOriginal) {
-						block.clientId = clientId;
-					}
-
-					return block;
-				}
-				// isList
-				let newContent = '';
-
-				// Hitting enter at the beginning
-				if (value === '' && !isOriginal) {
-					newContent = `${attributes.content}<li></li>`;
-				}
-				// Hitting enter in the middle
-				else if (value !== '' && !isOriginal) {
-					newContent = attributes.content.replace(
-						value,
-						`</li><li>${value}`
-					);
-				}
-				// Hitting enter at the end
-				else if (isOriginal) {
-					newContent = `<li></li>${attributes.content}`;
+				if (isOriginal || value) {
+					newAttributes = {
+						...attributes,
+						content: value,
+						...(!isOriginal && { uniqueID: null }),
+					};
 				}
 
-				maxiSetAttributes({ content: newContent });
-				return {};
+				const block = createBlock(
+					'maxi-blocks/text-maxi',
+					newAttributes
+				);
+
+				if (isOriginal) {
+					block.clientId = clientId;
+				}
+
+				return block;
 			},
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
-			onRemove: () => {
-				if (isList) {
-					const newContent = content.replace(/<li><\/li>/g, '');
-					maxiSetAttributes({ content: newContent });
-				}
-			},
+			// onRemove needs to be commented to avoid removing the block
+			// on pressing backspace with the content empty 👍
+			// onRemove={onRemove}
 		};
 
 		return [
@@ -322,8 +317,9 @@ class edit extends MaxiBlockComponent {
 					)}
 					{!dcStatus && isList && (
 						<RichText
-							multiline='li'
-							ref={this.richTextRef}
+							multiline={
+								this.state.wpVersion < 6.4 ? 'li' : false
+							}
 							tagName={typeOfList}
 							start={listStart}
 							reversed={listReversed}

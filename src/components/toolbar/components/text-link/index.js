@@ -40,15 +40,8 @@ import { toolbarLink } from '../../../../icons';
  */
 
 const LinkContent = props => {
-	const {
-		onChange,
-		isList,
-		textLevel,
-		onClose,
-		blockStyle,
-		styleCard,
-		content,
-	} = props;
+	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
+		props;
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
@@ -139,45 +132,43 @@ const LinkContent = props => {
 	};
 
 	const setLinkFormat = (attributes, newLinkValue) => {
-		if (!isList) {
-			const { start, end } = formatValue;
+		const { start, end } = formatValue;
 
-			const isWholeContent = start === end;
+		const isWholeContent = start === end;
 
-			const updatedFormatValue = getUpdatedFormatValue(
-				formatValue,
-				attributes
-			);
+		const updatedFormatValue = getUpdatedFormatValue(
+			formatValue,
+			attributes
+		);
 
-			const obj = applyLinkFormat({
-				formatValue: isWholeContent
-					? {
-							...updatedFormatValue,
-							start: 0,
-							end: updatedFormatValue.formats.length,
-					  }
-					: updatedFormatValue,
-				typography,
-				linkAttributes: createLinkAttributes({
-					...attributes,
-					newLinkValue,
-				}),
-				isList,
-				textLevel,
-				saveFormatValue: true,
-				onChangeTextFormat,
-				returnFormatValue: true,
-			});
+		const obj = applyLinkFormat({
+			formatValue: isWholeContent
+				? {
+						...updatedFormatValue,
+						start: 0,
+						end: updatedFormatValue.formats.length,
+				  }
+				: updatedFormatValue,
+			typography,
+			linkAttributes: createLinkAttributes({
+				...attributes,
+				newLinkValue,
+			}),
+			isList,
+			textLevel,
+			saveFormatValue: true,
+			onChangeTextFormat,
+			returnFormatValue: true,
+		});
 
-			onChangeTextFormat({
-				...obj.formatValue,
-				start: updatedFormatValue.start,
-				end: updatedFormatValue.end,
-			});
-			delete obj.formatValue;
+		onChangeTextFormat({
+			...obj.formatValue,
+			start: updatedFormatValue.start,
+			end: updatedFormatValue.end,
+		});
+		delete obj.formatValue;
 
-			onChange(newLinkValue, obj);
-		}
+		onChange(newLinkValue, obj);
 	};
 
 	const onRemoveLink = () => {
@@ -244,7 +235,7 @@ const LinkContent = props => {
 		});
 
 		if (!formatOptions.current && !isEmpty(newAttributes.url))
-			setLinkFormat(newAttributes, newLinkAttributes, content);
+			setLinkFormat(newAttributes, newLinkAttributes);
 		else updateLinkString(newAttributes);
 
 		const newLinkValue = createLinkValue({
@@ -260,7 +251,6 @@ const LinkContent = props => {
 			linkValue={linkValue}
 			onChangeLink={onChangeLink}
 			onRemoveLink={onRemoveLink}
-			content={content}
 		/>
 	);
 };
@@ -271,7 +261,6 @@ const TextLink = props => {
 		isCaptionToolbar = false,
 		'dc-status': dcStatus = false,
 		linkSettings,
-		content,
 	} = props;
 
 	let formatValue;
@@ -315,7 +304,6 @@ const TextLink = props => {
 								<LinkContent
 									isOpen={isOpen}
 									onClose={onClose}
-									content={content}
 									{...props}
 								/>
 							);

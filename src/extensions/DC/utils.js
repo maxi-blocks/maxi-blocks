@@ -109,9 +109,13 @@ export const validationsValues = (
 	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
-	const typeResult = typeOptions[contentType].map(item => item.value);
+	const typeResult = Array.isArray(typeOptions[contentType])
+		? typeOptions[contentType].map(item => item.value)
+		: [];
 
+	// Then, construct your return object
 	return {
+		// Use spread operator only if condition is true, otherwise spread an empty object.
 		...(!isCL &&
 			fieldResult &&
 			!fieldResult.includes(field) && {
@@ -121,8 +125,9 @@ export const validationsValues = (
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
-		...(!typeResult.includes(variableValue) &&
-			// Only validate type of DC once all integrations have loaded
+		// Make sure typeResult array is not empty and does not include variableValue before spreading new property
+		...(typeResult.length > 0 &&
+			!typeResult.includes(variableValue) &&
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
 			}),

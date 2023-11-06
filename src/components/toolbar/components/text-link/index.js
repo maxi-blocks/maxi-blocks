@@ -52,12 +52,7 @@ const LinkContent = props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
-	console.log('isList', isList);
-	console.log('content', content);
-
 	const { formatValue, onChangeTextFormat } = useContext(textContext);
-
-	console.log('formatValue at start', formatValue);
 
 	const getFormatOptions = () => {
 		// Checks if the whole text string is under same link
@@ -182,9 +177,6 @@ const LinkContent = props => {
 			delete obj.formatValue;
 
 			onChange(newLinkValue, obj);
-		} else {
-			console.log('list link');
-			console.log('content', content);
 		}
 	};
 
@@ -245,8 +237,6 @@ const LinkContent = props => {
 	};
 
 	const onChangeLink = attributes => {
-		console.log('onChangeLink');
-		console.log(attributes);
 		const newAttributes = prepareUrl(attributes);
 		const newLinkAttributes = createLinkAttributes({
 			...newAttributes,

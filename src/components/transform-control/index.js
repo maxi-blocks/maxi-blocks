@@ -288,54 +288,90 @@ const TransformControl = props => {
 						/>
 					)}
 					{!disableHover && hoverSelected === 'hover' && (
-						<ToggleSwitch
-							label={__('Enable hover', 'maxi-blocks')}
-							selected={getLastBreakpointTransformAttribute({
-								target: `transform-${transformStatus}`,
-								keys: [transformTarget, 'hover-status'],
-							})}
-							newStyle
-							onChange={val => {
-								const transformTargetOptions =
-									transformOptions[
-										`transform-${transformStatus}-${breakpoint}`
-									]?.[transformTarget];
-								onChangeTransform({
-									[`transform-${transformStatus}`]: {
-										[`${latestTarget.current.transformTarget}`]:
-											{
-												'hover-status': val,
-												...(transformTargetOptions &&
-												isEmpty(
-													transformTargetOptions.hover
-												) &&
-												!isEmpty(
-													transformTargetOptions.normal
-												)
-													? {
-															hover: {
-																...transformTargetOptions.normal,
-															},
-													  }
-													: {}),
-											},
-									},
-								});
-								onChange(
-									{
-										[`transform-${transformStatus}-${breakpoint}`]:
-											{
-												...transformOptions[
-													`transform-${transformStatus}-${breakpoint}`
-												],
-											},
-									},
-									...getInlineTargetAndPseudoElement(
-										latestTarget.current.targetSelector
-									)
-								);
-							}}
-						/>
+						<>
+							<ToggleSwitch
+								label={__('Enable hover', 'maxi-blocks')}
+								selected={getLastBreakpointTransformAttribute({
+									target: `transform-${transformStatus}`,
+									keys: [transformTarget, 'hover-status'],
+								})}
+								newStyle
+								onChange={val => {
+									const transformTargetOptions =
+										transformOptions[
+											`transform-${transformStatus}-${breakpoint}`
+										]?.[transformTarget];
+									onChangeTransform({
+										[`transform-${transformStatus}`]: {
+											[`${latestTarget.current.transformTarget}`]:
+												{
+													'hover-status': val,
+													...(transformTargetOptions &&
+													isEmpty(
+														transformTargetOptions.hover
+													) &&
+													!isEmpty(
+														transformTargetOptions.normal
+													)
+														? {
+																hover: {
+																	...transformTargetOptions.normal,
+																},
+														  }
+														: {}),
+												},
+										},
+									});
+									onChange(
+										{
+											[`transform-${transformStatus}-${breakpoint}`]:
+												{
+													...transformOptions[
+														`transform-${transformStatus}-${breakpoint}`
+													],
+												},
+										},
+										...getInlineTargetAndPseudoElement(
+											latestTarget.current.targetSelector
+										)
+									);
+								}}
+							/>
+							<ToggleSwitch
+								label={__(
+									'Switch hover target to canvas',
+									'maxi-blocks'
+								)}
+								selected={getLastBreakpointTransformAttribute({
+									target: `transform-${transformStatus}`,
+									keys: [transformTarget, 'hover-canvas'],
+								})}
+								newStyle
+								onChange={val => {
+									onChangeTransform({
+										[`transform-${transformStatus}`]: {
+											[`${latestTarget.current.transformTarget}`]:
+												{
+													'hover-canvas': val,
+												},
+										},
+									});
+									onChange(
+										{
+											[`transform-${transformStatus}-${breakpoint}`]:
+												{
+													...transformOptions[
+														`transform-${transformStatus}-${breakpoint}`
+													],
+												},
+										},
+										...getInlineTargetAndPseudoElement(
+											latestTarget.current.targetSelector
+										)
+									);
+								}}
+							/>
+						</>
 					)}
 					{(hoverSelected === 'normal' ||
 						getLastBreakpointTransformAttribute({

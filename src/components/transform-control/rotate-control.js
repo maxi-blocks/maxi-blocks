@@ -135,8 +135,7 @@ const RotateControl = props => {
 						min={min}
 						max={max}
 						onKeyDown={e => {
-							if (e.key !== '-' && !e.key.match(/^[0-9]+$/))
-								e.preventDefault();
+							validateNumberInput(e);
 						}}
 						onChange={e => {
 							if (e.target.value === '') {

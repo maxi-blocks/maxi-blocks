@@ -25,7 +25,11 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			target,
 			breakpoint,
 			attributes: obj,
-			keys: keys ?? [category, hoverSelected, key],
+			keys: keys ?? [
+				category,
+				hoverSelected === 'canvas hover' ? 'hover' : hoverSelected,
+				key,
+			],
 		});
 
 	const originValueToNumber = value => {
@@ -46,6 +50,16 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getScaleString = index => {
 		let scaleString = '';
+
+		if (
+			index === 'canvas hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-scale',
+				keys: [category, 'hover-canvas'],
+			})
+		)
+			return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -70,6 +84,16 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getTranslateString = index => {
 		let translateString = '';
+
+		if (
+			index === 'canvas hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-translate',
+				keys: [category, 'hover-canvas'],
+			})
+		)
+			return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -94,6 +118,16 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getRotateString = index => {
 		let rotateString = '';
+
+		if (
+			index === 'canvas hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-rotate',
+				keys: [category, 'hover-canvas'],
+			})
+		)
+			return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -120,6 +154,15 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getOriginString = index => {
 		let originString = '';
+
+		if (
+			index === 'canvas hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-origin',
+				keys: [category, 'hover-canvas'],
+			})
+		)
+			return '';
 
 		if (
 			index === 'hover' &&
@@ -195,8 +238,9 @@ const getTransformStyles = (obj, selectors) => {
 		Object.entries(targets).forEach(([index, targetObj]) => {
 			const { target } = targetObj;
 			const transformObj = getTransformValue(obj, category, index);
-			if (!isEmpty(transformObj))
+			if (!isEmpty(transformObj)) {
 				response[target] = { transform: transformObj };
+			}
 		});
 	});
 

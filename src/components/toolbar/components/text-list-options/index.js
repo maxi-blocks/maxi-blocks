@@ -45,13 +45,7 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const {
-		blockName,
-		isList,
-		typeOfList,
-		onChange,
-		content: listContent,
-	} = props;
+	const { blockName, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -81,27 +75,29 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		if (!isList || typeOfList === type) {
+		const content = getFormattedString({ formatValue, isList });
+
+		if (!isList || typeOfList === type)
 			onChange({
 				isList: !isList,
 				typeOfList: type,
-				content: getContent(listContent),
+				content: getContent(content),
 			});
-		} else {
+		else
 			onChange({
 				isList,
 				typeOfList: type,
-				listContent,
-				listStyle: type === 'ol' ? 'details' : 'disc',
+				content,
 			});
-		}
 	};
 
 	const onChangeP = () => {
+		const content = getFormattedString({ formatValue, isList });
+
 		if (isList) {
 			onChange({
 				isList: false,
-				content: getContent(listContent),
+				content: getContent(content),
 			});
 		}
 	};

@@ -1,4 +1,7 @@
 .maxi-text-block {
+	.rich-text:focus * {
+		background-color: transparent !important;
+	}
 	> ol,
 	> ul {
 		> br {

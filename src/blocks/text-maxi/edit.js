@@ -56,23 +56,6 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidMount() {
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-		receiveMaxiSettings().then(maxiSettings => {
-			const version = maxiSettings?.core?.version;
-			console.log('version', version);
-			if (version) {
-				const convertVersionStringToNumber = versionString => {
-					// This regex matches the first two groups of digits separated by a dot
-					const matches = versionString.match(/^(\d+\.\d+)/);
-					return matches ? parseFloat(matches[1]) : null;
-				};
-				const wpVersion = convertVersionStringToNumber(version);
-				this.setState({ wpVersion });
-			}
-		});
-	}
-
 	maxiBlockDidUpdate() {
 		const { attributes, setAttributes } = this.props;
 		const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
@@ -146,6 +129,15 @@ class edit extends MaxiBlockComponent {
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
+		const link = document.getElementById('admin-bar-css');
+
+		const href = link.getAttribute('href');
+		let version = href.substring(
+			href.indexOf('?ver=') + 5,
+			href.indexOf('?ver=') + 8
+		);
+		version = parseFloat(version);
+
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -155,11 +147,6 @@ class edit extends MaxiBlockComponent {
 		const processContent = rawContent => {
 			if (rawContent === this.props.attributes.content) {
 				return;
-			}
-
-			console.log('processContent', rawContent);
-
-			if (isList) {
 			}
 
 			/**
@@ -317,9 +304,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					{!dcStatus && isList && (
 						<RichText
-							multiline={
-								this.state.wpVersion < 6.4 ? 'li' : false
-							}
+							multiline={version < 6.4 ? 'li' : false}
 							tagName={typeOfList}
 							start={listStart}
 							reversed={listReversed}

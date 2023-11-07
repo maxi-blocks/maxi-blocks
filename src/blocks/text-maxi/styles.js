@@ -677,7 +677,7 @@ const getStyles = props => {
 							'typographyHover',
 						]),
 					},
-					[` a ${element}.maxi-text-block__content`],
+					[` a ${element}`],
 					props.blockStyle
 				),
 				...getLinkStyles(
@@ -688,7 +688,7 @@ const getStyles = props => {
 							'typographyHover',
 						]),
 					},
-					[` ${element}.maxi-text-block__content a`],
+					[` ${element} a`],
 					props.blockStyle
 				),
 				...(props['dc-status'] && {
@@ -701,7 +701,7 @@ const getStyles = props => {
 							]),
 						},
 						[
-							`.maxi-block--has-link ${element}.maxi-text-block__content`,
+							`.maxi-block--has-link ${element}`,
 						],
 						props.blockStyle
 					),

@@ -43,7 +43,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
-		wpVersion: null,
+		wpVersion: 6.3,
 	};
 
 	scProps = scProps;
@@ -129,14 +129,19 @@ class edit extends MaxiBlockComponent {
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
-		const link = document.getElementById('admin-bar-css');
-
-		const href = link.getAttribute('href');
-		let version = href.substring(
-			href.indexOf('?ver=') + 5,
-			href.indexOf('?ver=') + 8
-		);
-		version = parseFloat(version);
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings().then(maxiSettings => {
+			const version = maxiSettings?.core?.version;
+			if (version) {
+				const convertVersionStringToNumber = versionString => {
+					// This regex matches the first two groups of digits separated by a dot
+					const matches = versionString.match(/^(\d+\.\d+)/);
+					return matches ? parseFloat(matches[1]) : null;
+				};
+				const wpVersion = convertVersionStringToNumber(version);
+				this.setState({ wpVersion });
+			}
+		});
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -304,7 +309,9 @@ class edit extends MaxiBlockComponent {
 					)}
 					{!dcStatus && isList && (
 						<RichText
-							multiline={version < 6.4 ? 'li' : false}
+							multiline={
+								this.state.wpVersion < 6.4 ? 'li' : false
+							}
 							tagName={typeOfList}
 							start={listStart}
 							reversed={listReversed}

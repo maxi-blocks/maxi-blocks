@@ -19,11 +19,5 @@ export const fromListToText = content => {
  * @returns {string} New formatted string
  */
 export const fromTextToList = content => {
-	console.log('before fromTextToList', content);
-	console.log(
-		'after fromTextToList',
-		`<li>${content.replace(/<br>/gi, '</li><li>')}</li>`
-	);
-
 	return `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
 };

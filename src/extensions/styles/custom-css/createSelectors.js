@@ -21,12 +21,14 @@ const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
 					pseudoElement ? `::${pseudoElement}` : ''
 				}`,
 			},
-			'canvas hover': {
-				label: `${label} on canvas hover`,
-				target: `:hover ${targetWithoutPseudoElement}${
-					pseudoElement ? `::${pseudoElement}` : ''
-				}`,
-			},
+			...(targetWithoutPseudoElement !== '' && {
+				'canvas hover': {
+					label: `${label} on canvas hover`,
+					target: `:hover ${targetWithoutPseudoElement}${
+						pseudoElement ? `::${pseudoElement}` : ''
+					}`,
+				},
+			}),
 		};
 	};
 

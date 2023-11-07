@@ -45,13 +45,16 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 				(acc, [key, obj]) => ({
 					...acc,
 					[key]: ['normal', 'hover', 'canvas hover'].reduce(
-						(acc, type) => ({
-							...acc,
-							[type]: {
-								...obj[type],
-								label: key,
-							},
-						}),
+						(acc, type) =>
+							obj[type]
+								? {
+										...acc,
+										[type]: {
+											...obj[type],
+											label: key,
+										},
+								  }
+								: acc,
 						{}
 					),
 				}),

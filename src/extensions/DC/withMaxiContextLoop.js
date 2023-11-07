@@ -171,6 +171,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			const wasAttributesValidated = useRef(false);
 			useEffect(() => {
 				if (
+					!contextLoop['cl-status'] ||
 					wasAttributesValidated.current ||
 					isEmpty(contextLoopAttributes)
 				)

@@ -1834,6 +1834,10 @@
       "type": "boolean",
       "default": false
     },
+    "active-icon-status-hover-canvas": {
+      "type": "boolean",
+      "default": false
+    },
     "active-icon-background-active-media-general-hover": {
       "type": "string"
     },
@@ -4741,6 +4745,10 @@
       "type": "string"
     },
     "icon-status-hover": {
+      "type": "boolean",
+      "default": false
+    },
+    "icon-status-hover-canvas": {
       "type": "boolean",
       "default": false
     },
@@ -31113,6 +31121,14 @@
     "dc-contains-html": {
       "type": "boolean",
       "default": false
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
     }
   },
   "dynamicContentLink": {
@@ -37704,6 +37720,10 @@
       "type": "string"
     },
     "icon-status-hover": {
+      "type": "boolean",
+      "default": false
+    },
+    "icon-status-hover-canvas": {
       "type": "boolean",
       "default": false
     }
@@ -47130,6 +47150,10 @@
       "type": "boolean",
       "default": false
     },
+    "close-icon-status-hover-canvas": {
+      "type": "boolean",
+      "default": false
+    },
     "play-svgType": {
       "type": "string"
     },
@@ -47623,6 +47647,10 @@
       "type": "string"
     },
     "play-icon-status-hover": {
+      "type": "boolean",
+      "default": false
+    },
+    "play-icon-status-hover-canvas": {
       "type": "boolean",
       "default": false
     }

@@ -5404,6 +5404,10 @@
         "hover": {
           "label": "popup on hover",
           "target": " .maxi-map-block__popup:hover"
+        },
+        "canvas hover": {
+          "label": "popup on canvas hover",
+          "target": ":hover  .maxi-map-block__popup"
         }
       },
       "title": {
@@ -5414,6 +5418,10 @@
         "hover": {
           "label": "title on hover",
           "target": " .maxi-map-block__popup__content__title:hover"
+        },
+        "canvas hover": {
+          "label": "title on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__title"
         }
       },
       "description": {
@@ -5424,6 +5432,10 @@
         "hover": {
           "label": "description on hover",
           "target": " .maxi-map-block__popup__content__description:hover"
+        },
+        "canvas hover": {
+          "label": "description on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__description"
         }
       },
       "before map": {
@@ -5444,6 +5456,10 @@
         "hover": {
           "label": "popup ::before on hover",
           "target": " .maxi-map-block__popup:hover::before"
+        },
+        "canvas hover": {
+          "label": "popup ::before on canvas hover",
+          "target": ":hover  .maxi-map-block__popup::before"
         }
       },
       "before title": {
@@ -5454,6 +5470,10 @@
         "hover": {
           "label": "title ::before on hover",
           "target": " .maxi-map-block__popup__content__title:hover::before"
+        },
+        "canvas hover": {
+          "label": "title ::before on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__title::before"
         }
       },
       "before description": {
@@ -5464,6 +5484,10 @@
         "hover": {
           "label": "description ::before on hover",
           "target": " .maxi-map-block__popup__content__description:hover::before"
+        },
+        "canvas hover": {
+          "label": "description ::before on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__description::before"
         }
       },
       "after map": {
@@ -5484,6 +5508,10 @@
         "hover": {
           "label": "popup ::after on hover",
           "target": " .maxi-map-block__popup:hover::after"
+        },
+        "canvas hover": {
+          "label": "popup ::after on canvas hover",
+          "target": ":hover  .maxi-map-block__popup::after"
         }
       },
       "after title": {
@@ -5494,6 +5522,10 @@
         "hover": {
           "label": "title ::after on hover",
           "target": " .maxi-map-block__popup__content__title:hover::after"
+        },
+        "canvas hover": {
+          "label": "title ::after on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__title::after"
         }
       },
       "after description": {
@@ -5504,6 +5536,10 @@
         "hover": {
           "label": "description ::after on hover",
           "target": " .maxi-map-block__popup__content__description:hover::after"
+        },
+        "canvas hover": {
+          "label": "description ::after on canvas hover",
+          "target": ":hover  .maxi-map-block__popup__content__description::after"
         }
       }
     },

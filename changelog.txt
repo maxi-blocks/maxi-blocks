@@ -1,3 +1,17 @@
+_Updates: 7 November 2023_
+MaxiBlocks V1.5.2
+* Update: Compatibility with WordPress 6.4.
+* Update: WooCommerce integration with Dynamic Content.
+* Update: Support chat is enabled by default on new sites.
+* Fix: PHP warnings for Dynamic Content.
+* Fix: Scroll effects.
+* Fix: Text generator placeholder colour.
+* Fix: Shape divider for containers.
+* Fix: Custom aspect-ratio for Image and Video blocks.
+* Fix: Repeater. Warn message when columns have different structure.
+* Fix: Global padding for full-width containers.
+* Fix: Rendering Dynamic Content on a new site.
+
 _Updates: 25 October 2023_
 MaxiBlocks V1.5.0-V1.5.1
 

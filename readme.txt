@@ -4,7 +4,7 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.3.2
+Tested up to: 6.4
 Requires PHP: 8.0
 Stable tag: 1.5.2
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0

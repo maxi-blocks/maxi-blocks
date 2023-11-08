@@ -109,8 +109,7 @@ export const validationsValues = (
 	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
-
-	const typeResult = typeOptions[contentType].map(item => item.value);
+	const typeResult = typeOptions[contentType]?.map(item => item.value);
 
 	return {
 		...(!isCL &&
@@ -122,7 +121,8 @@ export const validationsValues = (
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
-		...(!typeResult.includes(variableValue) &&
+		...(typeResult &&
+			!typeResult.includes(variableValue) &&
 			// Only validate type of DC once all integrations have loaded
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],

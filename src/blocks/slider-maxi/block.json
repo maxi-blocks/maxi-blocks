@@ -12613,7 +12613,7 @@
         },
         "canvas hover": {
           "label": "first arrow on canvas hover",
-          "target": ":hover  .maxi-slider-block__arrow--prev"
+          "target": ":hover .maxi-slider-block__arrow--prev"
         }
       },
       "second arrow": {
@@ -12627,7 +12627,7 @@
         },
         "canvas hover": {
           "label": "second arrow on canvas hover",
-          "target": ":hover  .maxi-slider-block__arrow--next"
+          "target": ":hover .maxi-slider-block__arrow--next"
         }
       },
       "all dots": {
@@ -12641,7 +12641,7 @@
         },
         "canvas hover": {
           "label": "all dots on canvas hover",
-          "target": ":hover  .maxi-slider-block__dots"
+          "target": ":hover .maxi-slider-block__dots"
         }
       },
       "each dot": {
@@ -12655,7 +12655,7 @@
         },
         "canvas hover": {
           "label": "each dot on canvas hover",
-          "target": ":hover  .maxi-slider-block__dot"
+          "target": ":hover .maxi-slider-block__dot"
         }
       },
       "first arrow icon": {

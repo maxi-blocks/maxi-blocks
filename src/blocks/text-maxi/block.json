@@ -6494,7 +6494,7 @@
         },
         "canvas hover": {
           "label": "links on canvas hover",
-          "target": ":hover  .maxi-text-block--link"
+          "target": ":hover .maxi-text-block--link"
         }
       },
       "ordered list": {
@@ -6508,7 +6508,7 @@
         },
         "canvas hover": {
           "label": "ordered list on canvas hover",
-          "target": ":hover  ol.maxi-text-block__content"
+          "target": ":hover ol.maxi-text-block__content"
         }
       },
       "unordered list": {
@@ -6522,7 +6522,7 @@
         },
         "canvas hover": {
           "label": "unordered list on canvas hover",
-          "target": ":hover  ul.maxi-text-block__content"
+          "target": ":hover ul.maxi-text-block__content"
         }
       },
       "text": {
@@ -6536,7 +6536,7 @@
         },
         "canvas hover": {
           "label": "text on canvas hover",
-          "target": ":hover  .maxi-text-block__content"
+          "target": ":hover .maxi-text-block__content"
         }
       },
       "before text": {
@@ -6550,7 +6550,7 @@
         },
         "canvas hover": {
           "label": "text ::before on canvas hover",
-          "target": ":hover  .maxi-text-block__content::before"
+          "target": ":hover .maxi-text-block__content::before"
         }
       },
       "after text": {
@@ -6564,7 +6564,7 @@
         },
         "canvas hover": {
           "label": "text ::after on canvas hover",
-          "target": ":hover  .maxi-text-block__content::after"
+          "target": ":hover .maxi-text-block__content::after"
         }
       }
     },

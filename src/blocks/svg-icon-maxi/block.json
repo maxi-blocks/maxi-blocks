@@ -7715,7 +7715,7 @@
         },
         "canvas hover": {
           "label": "svg on canvas hover",
-          "target": ":hover  .maxi-svg-icon-block__icon svg"
+          "target": ":hover .maxi-svg-icon-block__icon svg"
         }
       }
     },

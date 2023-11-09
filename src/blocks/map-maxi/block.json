@@ -5407,7 +5407,7 @@
         },
         "canvas hover": {
           "label": "popup on canvas hover",
-          "target": ":hover  .maxi-map-block__popup"
+          "target": ":hover .maxi-map-block__popup"
         }
       },
       "title": {
@@ -5421,7 +5421,7 @@
         },
         "canvas hover": {
           "label": "title on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__title"
+          "target": ":hover .maxi-map-block__popup__content__title"
         }
       },
       "description": {
@@ -5435,7 +5435,7 @@
         },
         "canvas hover": {
           "label": "description on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__description"
+          "target": ":hover .maxi-map-block__popup__content__description"
         }
       },
       "before map": {
@@ -5459,7 +5459,7 @@
         },
         "canvas hover": {
           "label": "popup ::before on canvas hover",
-          "target": ":hover  .maxi-map-block__popup::before"
+          "target": ":hover .maxi-map-block__popup::before"
         }
       },
       "before title": {
@@ -5473,7 +5473,7 @@
         },
         "canvas hover": {
           "label": "title ::before on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__title::before"
+          "target": ":hover .maxi-map-block__popup__content__title::before"
         }
       },
       "before description": {
@@ -5487,7 +5487,7 @@
         },
         "canvas hover": {
           "label": "description ::before on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__description::before"
+          "target": ":hover .maxi-map-block__popup__content__description::before"
         }
       },
       "after map": {
@@ -5511,7 +5511,7 @@
         },
         "canvas hover": {
           "label": "popup ::after on canvas hover",
-          "target": ":hover  .maxi-map-block__popup::after"
+          "target": ":hover .maxi-map-block__popup::after"
         }
       },
       "after title": {
@@ -5525,7 +5525,7 @@
         },
         "canvas hover": {
           "label": "title ::after on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__title::after"
+          "target": ":hover .maxi-map-block__popup__content__title::after"
         }
       },
       "after description": {
@@ -5539,7 +5539,7 @@
         },
         "canvas hover": {
           "label": "description ::after on canvas hover",
-          "target": ":hover  .maxi-map-block__popup__content__description::after"
+          "target": ":hover .maxi-map-block__popup__content__description::after"
         }
       }
     },

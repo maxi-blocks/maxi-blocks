@@ -5080,7 +5080,7 @@
         },
         "canvas hover": {
           "label": "divider on canvas hover",
-          "target": ":hover  .maxi-divider-block__divider"
+          "target": ":hover .maxi-divider-block__divider"
         }
       },
       "before canvas": {
@@ -5104,7 +5104,7 @@
         },
         "canvas hover": {
           "label": "divider ::before on canvas hover",
-          "target": ":hover  .maxi-divider-block__divider::before"
+          "target": ":hover .maxi-divider-block__divider::before"
         }
       },
       "after canvas": {
@@ -5128,7 +5128,7 @@
         },
         "canvas hover": {
           "label": "divider ::after on canvas hover",
-          "target": ":hover  .maxi-divider-block__divider::after"
+          "target": ":hover .maxi-divider-block__divider::after"
         }
       }
     },

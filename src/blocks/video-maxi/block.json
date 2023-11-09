@@ -8415,7 +8415,7 @@
         },
         "canvas hover": {
           "label": "video on canvas hover",
-          "target": ":hover  .maxi-video-block__video-player"
+          "target": ":hover .maxi-video-block__video-player"
         }
       },
       "overlay": {
@@ -8429,7 +8429,7 @@
         },
         "canvas hover": {
           "label": "overlay on canvas hover",
-          "target": ":hover  .maxi-video-block__overlay"
+          "target": ":hover .maxi-video-block__overlay"
         }
       },
       "before video": {
@@ -8443,7 +8443,7 @@
         },
         "canvas hover": {
           "label": "video ::before on canvas hover",
-          "target": ":hover  .maxi-video-block__video-player::before"
+          "target": ":hover .maxi-video-block__video-player::before"
         }
       },
       "before overlay": {
@@ -8457,7 +8457,7 @@
         },
         "canvas hover": {
           "label": "overlay ::before on canvas hover",
-          "target": ":hover  .maxi-video-block__overlay::before"
+          "target": ":hover .maxi-video-block__overlay::before"
         }
       },
       "after video": {
@@ -8471,7 +8471,7 @@
         },
         "canvas hover": {
           "label": "video ::after on canvas hover",
-          "target": ":hover  .maxi-video-block__video-player::after"
+          "target": ":hover .maxi-video-block__video-player::after"
         }
       },
       "after overlay": {
@@ -8485,7 +8485,7 @@
         },
         "canvas hover": {
           "label": "overlay ::after on canvas hover",
-          "target": ":hover  .maxi-video-block__overlay::after"
+          "target": ":hover .maxi-video-block__overlay::after"
         }
       },
       "close icon": {

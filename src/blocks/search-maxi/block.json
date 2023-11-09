@@ -11615,7 +11615,7 @@
         },
         "canvas hover": {
           "label": "button on canvas hover",
-          "target": ":hover  .maxi-search-block__button"
+          "target": ":hover .maxi-search-block__button"
         }
       },
       "input": {
@@ -11629,7 +11629,7 @@
         },
         "canvas hover": {
           "label": "input on canvas hover",
-          "target": ":hover  .maxi-search-block__input"
+          "target": ":hover .maxi-search-block__input"
         }
       },
       "before block": {
@@ -11653,7 +11653,7 @@
         },
         "canvas hover": {
           "label": "button ::before on canvas hover",
-          "target": ":hover  .maxi-search-block__button::before"
+          "target": ":hover .maxi-search-block__button::before"
         }
       },
       "before input": {
@@ -11667,7 +11667,7 @@
         },
         "canvas hover": {
           "label": "input ::before on canvas hover",
-          "target": ":hover  .maxi-search-block__input::before"
+          "target": ":hover .maxi-search-block__input::before"
         }
       },
       "after block": {
@@ -11691,7 +11691,7 @@
         },
         "canvas hover": {
           "label": "button ::after on canvas hover",
-          "target": ":hover  .maxi-search-block__button::after"
+          "target": ":hover .maxi-search-block__button::after"
         }
       },
       "after input": {
@@ -11705,7 +11705,7 @@
         },
         "canvas hover": {
           "label": "input ::after on canvas hover",
-          "target": ":hover  .maxi-search-block__input::after"
+          "target": ":hover .maxi-search-block__input::after"
         }
       },
       "placeholder input": {

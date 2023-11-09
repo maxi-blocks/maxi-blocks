@@ -6597,7 +6597,7 @@
         },
         "canvas hover": {
           "label": "number on canvas hover",
-          "target": ":hover  .maxi-number-counter__box__text"
+          "target": ":hover .maxi-number-counter__box__text"
         }
       },
       "before canvas": {
@@ -6621,7 +6621,7 @@
         },
         "canvas hover": {
           "label": "number ::before on canvas hover",
-          "target": ":hover  .maxi-number-counter__box__text::before"
+          "target": ":hover .maxi-number-counter__box__text::before"
         }
       },
       "after canvas": {
@@ -6645,7 +6645,7 @@
         },
         "canvas hover": {
           "label": "number ::after on canvas hover",
-          "target": ":hover  .maxi-number-counter__box__text::after"
+          "target": ":hover .maxi-number-counter__box__text::after"
         }
       },
       "circle": {
@@ -6659,7 +6659,7 @@
         },
         "canvas hover": {
           "label": "circle on canvas hover",
-          "target": ":hover  .maxi-number-counter__box__circle"
+          "target": ":hover .maxi-number-counter__box__circle"
         }
       }
     },

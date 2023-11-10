@@ -346,6 +346,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 10 November 2023_
+MaxiBlocks V1.5.3
+* Update: Better compatibility with WordPress 6.4.1.
+* Update: Improved authentication process for Pro accounts.
+* Update: Showing both Light and Dark cloud patterns by default.
+* Fix: Hover in backend for inside blocks.
+* Fix: Console errors for Dynamic Content.
+* Fix: Authentication process for emails with "+" and other symbols.
 
 _Updates: 7 November 2023_
 MaxiBlocks V1.5.2

@@ -256,6 +256,7 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	const useEmail = email;
 
+	// eslint-disable-next-line consistent-return
 	return new Promise((resolve, reject) => {
 		if (!useEmail) {
 			deactivateLocal();
@@ -292,7 +293,7 @@ export async function authConnect(withRedirect = false, email = false) {
 						if (data && data.status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
 							const expirationDate = data?.expiration_date;
-							const { name, status } = data;
+							const { name } = data;
 
 							if (today > expirationDate) {
 								processLocalActivation(

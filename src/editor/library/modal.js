@@ -182,13 +182,18 @@ const MaxiModal = props => {
 	const [userName, setUserName] = useState(getUserName());
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
+	const isActiveState = isProSubActive();
+	const isExpiredState = isProSubExpired();
+	const isUserName = getUserName();
+
 	useEffect(() => {
 		setIsMaxiProActive(isProSubActive());
-	}, [type]);
+		setUserName(getUserName());
+	}, [type, isActiveState, isUserName]);
 
 	useEffect(() => {
 		setIsMaxiProExpired(isProSubExpired());
-	}, [type]);
+	}, [type, isExpiredState, isUserName]);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);
@@ -203,7 +208,6 @@ const MaxiModal = props => {
 			// Start a periodic check
 			const intervalId = setInterval(async () => {
 				const result = await authConnect(false, email);
-				console.log('result', result);
 				if (result) {
 					// Assuming authConnect returns a truthy value on success
 					setIsMaxiProActive(isProSubActive());

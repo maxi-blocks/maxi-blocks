@@ -1108,7 +1108,6 @@ const LibraryContainer = props => {
 							/>
 							<Menu
 								attribute='light_or_dark'
-								defaultRefinement='Light'
 								transformItems={items => {
 									const generateItem = name => {
 										const item = items.find(

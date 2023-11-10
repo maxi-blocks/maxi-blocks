@@ -396,6 +396,14 @@ const LibraryToolbar = props => {
 		};
 	});
 
+	const onClickAuth = () => {
+		const encodedEmail = encodeURIComponent(userEmail);
+		const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
+		window.open(url, '_blank')?.focus();
+
+		onClickConnect(userEmail);
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -524,12 +532,7 @@ const LibraryToolbar = props => {
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
-						onClick={() => {
-							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
-							window.open(url, '_blank')?.focus();
-
-							onClickConnect(userEmail);
-						}}
+						onClick={() => onClickAuth()}
 					>
 						{__('Sign in', 'maxi-blocks')}
 					</Button>
@@ -568,12 +571,7 @@ const LibraryToolbar = props => {
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
-						onClick={() => {
-							const url = `https://my.maxiblocks.com/login?plugin&email=${userEmail}`;
-							window.open(url, '_blank')?.focus();
-
-							onClickConnect(userEmail);
-						}}
+						onClick={() => onClickAuth()}
 					>
 						{__('Sign in', 'maxi-blocks')}
 					</Button>

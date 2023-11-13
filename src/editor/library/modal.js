@@ -182,37 +182,43 @@ const MaxiModal = props => {
 	const [userName, setUserName] = useState(getUserName());
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
+	const isActiveState = isProSubActive();
+	const isExpiredState = isProSubExpired();
+	const isUserName = getUserName();
+
 	useEffect(() => {
 		setIsMaxiProActive(isProSubActive());
-	}, [type]);
+		setUserName(getUserName());
+	}, [type, isActiveState, isUserName]);
 
 	useEffect(() => {
 		setIsMaxiProExpired(isProSubExpired());
-	}, [type]);
+	}, [type, isExpiredState, isUserName]);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);
 		if (isValid) {
 			setShowNotValidEmail(false);
-			document.addEventListener(
-				'visibilitychange',
-				function userIsBack() {
-					if (!document.hidden) {
-						authConnect(false, email).then(() => {
-							setIsMaxiProActive(isProSubActive());
-							setIsMaxiProExpired(isProSubExpired());
-							setUserName(getUserName());
-						});
-					}
-				}
-			);
 
-			await authConnect(false, email).then(() => {
-				setIsMaxiProActive(isProSubActive());
-				setIsMaxiProExpired(isProSubExpired());
-				setUserName(getUserName());
-			});
-		} else setShowNotValidEmail(true);
+			await authConnect(false, email); // Initial call
+			setIsMaxiProActive(isProSubActive());
+			setIsMaxiProExpired(isProSubExpired());
+			setUserName(getUserName());
+
+			// Start a periodic check
+			const intervalId = setInterval(async () => {
+				const result = await authConnect(false, email);
+				if (result) {
+					// Assuming authConnect returns a truthy value on success
+					setIsMaxiProActive(isProSubActive());
+					setIsMaxiProExpired(isProSubExpired());
+					setUserName(getUserName());
+					clearInterval(intervalId); // Clear the interval once authenticated
+				}
+			}, 1000); // Check every 5 seconds, adjust as needed
+		} else {
+			setShowNotValidEmail(true);
+		}
 	};
 
 	const onLogOut = redirect => {

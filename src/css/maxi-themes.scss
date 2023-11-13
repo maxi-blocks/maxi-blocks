@@ -15,18 +15,15 @@ $color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 body.maxi-blocks--active {
 	@each $style in $styles {
 		/* Palette */
-		div#editor,
-		div#site-editor {
-			.maxi-color-palette--#{$style} {
-				@each $color_number in $color_set {
-					.maxi-color-control__palette
-						.maxi-color-control__palette-box
-						.maxi-color-control__palette-item__#{$color_number} {
-						background-color: rgba(
-							var(--maxi-#{$style}-color-#{$color_number}),
-							1
-						);
-					}
+		.maxi-color-palette--#{$style} {
+			@each $color_number in $color_set {
+				.maxi-color-control__palette
+					.maxi-color-control__palette-box
+					.maxi-color-control__palette-item__#{$color_number} {
+					background-color: rgba(
+						var(--maxi-#{$style}-color-#{$color_number}),
+						1
+					);
 				}
 			}
 		}

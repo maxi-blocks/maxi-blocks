@@ -261,7 +261,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		});
 
 		// Text Maxi when has link
-		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link .maxi-text-block__content`;
+		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)`;
 
 		addedResponse += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
 		addedResponse += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;

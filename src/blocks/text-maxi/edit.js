@@ -5,6 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -42,6 +43,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
+		wpVersion: 6.3,
 	};
 
 	scProps = scProps;
@@ -126,6 +128,20 @@ class edit extends MaxiBlockComponent {
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
+
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings().then(maxiSettings => {
+			const version = maxiSettings?.core?.version;
+			if (version) {
+				const convertVersionStringToNumber = versionString => {
+					// This regex matches the first two groups of digits separated by a dot
+					const matches = versionString.match(/^(\d+\.\d+)/);
+					return matches ? parseFloat(matches[1]) : null;
+				};
+				const wpVersion = convertVersionStringToNumber(version);
+				this.setState({ wpVersion });
+			}
+		});
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -293,7 +309,9 @@ class edit extends MaxiBlockComponent {
 					)}
 					{!dcStatus && isList && (
 						<RichText
-							multiline='li'
+							multiline={
+								this.state.wpVersion < 6.4 ? 'li' : false
+							}
 							tagName={typeOfList}
 							start={listStart}
 							reversed={listReversed}

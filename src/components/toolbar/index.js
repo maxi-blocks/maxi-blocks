@@ -136,6 +136,8 @@ const MaxiToolbar = memo(
 			uniqueID,
 			svgType,
 			'dc-status': dcStatus,
+			content: listContent,
+			listStyle,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -362,7 +364,11 @@ const MaxiToolbar = memo(
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
-								onChange={obj => maxiSetAttributes(obj)}
+								listStyle={listStyle}
+								content={listContent}
+								onChange={obj => {
+									maxiSetAttributes(obj);
+								}}
 							/>
 						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
@@ -677,6 +683,7 @@ const MaxiToolbar = memo(
 							styleCard={styleCard}
 							disableCustomFormats={disableCustomFormats}
 							clientId={clientId}
+							content={attributes.content}
 						/>
 						<VerticalAlign
 							clientId={clientId}

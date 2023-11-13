@@ -158,7 +158,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
-        if ($attributes['dc-field'] === 'static_text') {
+        if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
         }
 

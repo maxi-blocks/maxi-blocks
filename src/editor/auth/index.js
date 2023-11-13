@@ -233,7 +233,6 @@ export async function authConnect(withRedirect = false, email = false) {
 			}
 
 			const obj = { [email]: key };
-
 			return JSON.stringify(obj);
 		};
 		cookieKey = generateCookieKey(email, 20);
@@ -248,53 +247,55 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	const deactivateLocal = () => {
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(
-			JSON.stringify({
-				status: 'no',
-			})
+			JSON.stringify({ status: 'no' })
 		);
+		return false;
 	};
 
 	const key = JSON.parse(cookieKey)?.[email];
 
 	const useEmail = email;
 
-	if (useEmail) {
-		const fetchUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_URL;
-		const checkTitle = process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE;
-		const checkValue = process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE;
+	// eslint-disable-next-line consistent-return
+	return new Promise((resolve, reject) => {
+		if (!useEmail) {
+			deactivateLocal();
+			redirect();
+			resolve(false);
+		} else {
+			const fetchUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_URL;
+			const checkTitle =
+				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE;
+			const checkValue =
+				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE;
 
-		const fetchOptions = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				[checkTitle]: checkValue,
-			},
-			body: JSON.stringify({ email: useEmail, cookie: key }),
-		};
+			const fetchOptions = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					[checkTitle]: checkValue,
+				},
+				body: JSON.stringify({ email: useEmail, cookie: key }),
+			};
 
-		fetch(fetchUrl, fetchOptions)
-			.then(response => {
-				if (response.status !== 200) {
-					console.error(
-						`There was a problem with an API call. Status Code: ${response.status}`
-					);
-					return;
-				}
+			fetch(fetchUrl, fetchOptions)
+				.then(response => {
+					if (response.status !== 200) {
+						console.error(
+							`There was a problem with an API call. Status Code: ${response.status}`
+						);
+						deactivateLocal();
+						redirect();
+						resolve(false);
+					}
 
-				response.json().then(data => {
-					if (data) {
-						if (data.error) {
-							console.error(data.error);
-							deactivateLocal();
-
-							return;
-						}
-						const date = data?.expiration_date;
-						const { name, status } = data;
-
-						if (status === 'ok') {
+					response.json().then(data => {
+						if (data && data.status === 'ok') {
 							const today = new Date().toISOString().slice(0, 10);
-							if (today > date) {
+							const expirationDate = data?.expiration_date;
+							const { name } = data;
+
+							if (today > expirationDate) {
 								processLocalActivation(
 									useEmail,
 									name,
@@ -302,6 +303,7 @@ export async function authConnect(withRedirect = false, email = false) {
 									key
 								);
 								redirect();
+								resolve(false);
 							} else {
 								processLocalActivation(
 									useEmail,
@@ -309,34 +311,26 @@ export async function authConnect(withRedirect = false, email = false) {
 									'yes',
 									key
 								);
+								resolve(true);
 							}
+						} else {
+							if (data?.error) {
+								console.error(data.error);
+							}
+							deactivateLocal();
+							redirect();
+							resolve(false);
 						}
-						if (
-							status === 'error' &&
-							data.message === 'already logged in'
-						) {
-							processLocalActivation(useEmail, name, 'no', key);
-						}
-						if (
-							status === 'error' &&
-							data.message === 'no such user'
-						) {
-							removeLocalActivation(useEmail);
-						}
-					}
-					if (!data) {
-						// no email
-						deactivateLocal();
-						redirect();
-					}
+					});
+				})
+				.catch(err => {
+					console.error('Fetch Error for the API call:', err);
+					deactivateLocal();
+					redirect();
+					resolve(false);
 				});
-			})
-			.catch(err => {
-				console.error('Fetch Error for the API call:', err);
-				deactivateLocal();
-				redirect();
-			});
-	}
+		}
+	});
 }
 
 export const logOut = redirect => {
@@ -352,6 +346,7 @@ export const logOut = redirect => {
 };
 
 export const isValidEmail = email => {
-	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
+	const emailPattern =
+		/^(?![.])(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return emailPattern.test(email);
 };

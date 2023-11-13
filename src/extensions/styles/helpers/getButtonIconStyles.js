@@ -238,7 +238,7 @@ const getButtonIconStyles = ({
 	const {
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
-		[`${prefix}icon-status-hover-canvas`]: iconHoverStatusCanvas,
+		[`${prefix}icon-status-hover-target`]: iconHoverStatusTarget,
 	} = obj;
 	const useIconColor = !iconInherit;
 	const normalTarget = ` ${wrapperTarget} ${target}`;
@@ -248,7 +248,7 @@ const getButtonIconStyles = ({
 			return ` ${wrapperTarget} ${target}:hover`;
 		}
 
-		if (iconHoverStatusCanvas) {
+		if (!iconHoverStatusTarget) {
 			return `:hover ${wrapperTarget} ${target}`;
 		}
 

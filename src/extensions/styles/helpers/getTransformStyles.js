@@ -53,9 +53,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 		if (
 			index === 'canvas hover' &&
-			!getLastBreakpointTransformAttribute({
+			getLastBreakpointTransformAttribute({
 				target: 'transform-scale',
-				keys: [category, 'hover-canvas'],
+				keys: [category, 'hover-target'],
 			})
 		)
 			return '';
@@ -87,9 +87,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 		if (
 			index === 'canvas hover' &&
-			!getLastBreakpointTransformAttribute({
+			getLastBreakpointTransformAttribute({
 				target: 'transform-translate',
-				keys: [category, 'hover-canvas'],
+				keys: [category, 'hover-target'],
 			})
 		)
 			return '';
@@ -121,9 +121,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 		if (
 			index === 'canvas hover' &&
-			!getLastBreakpointTransformAttribute({
+			getLastBreakpointTransformAttribute({
 				target: 'transform-rotate',
-				keys: [category, 'hover-canvas'],
+				keys: [category, 'hover-target'],
 			})
 		)
 			return '';
@@ -157,9 +157,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 		if (
 			index === 'canvas hover' &&
-			!getLastBreakpointTransformAttribute({
+			getLastBreakpointTransformAttribute({
 				target: 'transform-origin',
-				keys: [category, 'hover-canvas'],
+				keys: [category, 'hover-target'],
 			})
 		)
 			return '';

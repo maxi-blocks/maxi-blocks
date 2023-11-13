@@ -9099,9 +9099,9 @@
       "type": "boolean",
       "default": false
     },
-    "icon-status-hover-canvas": {
+    "icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "close-svgType": {
       "type": "string",
@@ -9598,9 +9598,9 @@
       "type": "boolean",
       "default": false
     },
-    "close-icon-status-hover-canvas": {
+    "close-icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "shortcutEffect": {
       "type": "number",

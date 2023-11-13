@@ -585,9 +585,9 @@
       "type": "boolean",
       "default": false
     },
-    "icon-status-hover-canvas": {
+    "icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "icon-background-active-media-general-hover": {
       "type": "string"

@@ -343,48 +343,55 @@ const TransformControl = props => {
 							keys: [transformTarget, 'hover-status'],
 						})) && (
 						<>
-							{selectors?.[transformTarget]?.['canvas hover'] && (
-								<ToggleSwitch
-									label={__(
-										'Switch hover target to canvas',
-										'maxi-blocks'
-									)}
-									selected={getLastBreakpointTransformAttribute(
-										{
-											target: `transform-${transformStatus}`,
-											keys: [
-												transformTarget,
-												'hover-canvas',
-											],
-										}
-									)}
-									newStyle
-									onChange={val => {
-										onChangeTransform({
-											[`transform-${transformStatus}`]: {
-												[`${latestTarget.current.transformTarget}`]:
-													{
-														'hover-canvas': val,
-													},
-											},
-										});
-										onChange(
-											{
-												[`transform-${transformStatus}-${breakpoint}`]:
-													{
-														...transformOptions[
-															`transform-${transformStatus}-${breakpoint}`
-														],
-													},
-											},
-											...getInlineTargetAndPseudoElement(
-												latestTarget.current
-													.targetSelector
+							{breakpoint === 'general' &&
+								selectors?.[transformTarget]?.[
+									'canvas hover'
+								] && (
+									<ToggleSwitch
+										label={__(
+											'Switch hover target to canvas',
+											'maxi-blocks'
+										)}
+										selected={
+											!getLastBreakpointTransformAttribute(
+												{
+													target: `transform-${transformStatus}`,
+													keys: [
+														transformTarget,
+														'hover-target',
+													],
+												}
 											)
-										);
-									}}
-								/>
-							)}
+										}
+										newStyle
+										onChange={val => {
+											onChangeTransform({
+												[`transform-${transformStatus}`]:
+													{
+														[`${latestTarget.current.transformTarget}`]:
+															{
+																'hover-target':
+																	!val,
+															},
+													},
+											});
+											onChange(
+												{
+													[`transform-${transformStatus}-${breakpoint}`]:
+														{
+															...transformOptions[
+																`transform-${transformStatus}-${breakpoint}`
+															],
+														},
+												},
+												...getInlineTargetAndPseudoElement(
+													latestTarget.current
+														.targetSelector
+												)
+											);
+										}}
+									/>
+								)}
 							{transformStatus === 'scale' && (
 								<SquareControl
 									x={getLastBreakpointTransformAttribute({

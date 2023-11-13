@@ -1834,9 +1834,9 @@
       "type": "boolean",
       "default": false
     },
-    "active-icon-status-hover-canvas": {
+    "active-icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "active-icon-background-active-media-general-hover": {
       "type": "string"
@@ -4748,9 +4748,9 @@
       "type": "boolean",
       "default": false
     },
-    "icon-status-hover-canvas": {
+    "icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "icon-background-active-media-general-hover": {
       "type": "string"
@@ -37723,9 +37723,9 @@
       "type": "boolean",
       "default": false
     },
-    "icon-status-hover-canvas": {
+    "icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     }
   },
   "iconPadding": {
@@ -47150,9 +47150,9 @@
       "type": "boolean",
       "default": false
     },
-    "close-icon-status-hover-canvas": {
+    "close-icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "play-svgType": {
       "type": "string"
@@ -47650,9 +47650,9 @@
       "type": "boolean",
       "default": false
     },
-    "play-icon-status-hover-canvas": {
+    "play-icon-status-hover-target": {
       "type": "boolean",
-      "default": false
+      "default": true
     }
   },
   "videoOverlay": {

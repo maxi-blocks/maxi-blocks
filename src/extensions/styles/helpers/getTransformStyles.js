@@ -32,6 +32,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			],
 		});
 
+	const shouldSkipTransform = transformType => {
+		return (
+			index === 'canvas hover' &&
+			getLastBreakpointTransformAttribute({
+				target: transformType,
+				keys: [category, 'hover-target'],
+				attributes: obj,
+			})
+		);
+	};
+
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
 			case 'top':
@@ -51,14 +62,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getScaleString = index => {
 		let scaleString = '';
 
-		if (
-			index === 'canvas hover' &&
-			getLastBreakpointTransformAttribute({
-				target: 'transform-scale',
-				keys: [category, 'hover-target'],
-			})
-		)
-			return '';
+		if (shouldSkipTransform('transform-scale')) return '';
 
 		if (
 			index === 'hover' &&
@@ -85,14 +89,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getTranslateString = index => {
 		let translateString = '';
 
-		if (
-			index === 'canvas hover' &&
-			getLastBreakpointTransformAttribute({
-				target: 'transform-translate',
-				keys: [category, 'hover-target'],
-			})
-		)
-			return '';
+		if (shouldSkipTransform('transform-translate')) return '';
 
 		if (
 			index === 'hover' &&
@@ -119,14 +116,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getRotateString = index => {
 		let rotateString = '';
 
-		if (
-			index === 'canvas hover' &&
-			getLastBreakpointTransformAttribute({
-				target: 'transform-rotate',
-				keys: [category, 'hover-target'],
-			})
-		)
-			return '';
+		if (shouldSkipTransform('transform-rotate')) return '';
 
 		if (
 			index === 'hover' &&
@@ -155,14 +145,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getOriginString = index => {
 		let originString = '';
 
-		if (
-			index === 'canvas hover' &&
-			getLastBreakpointTransformAttribute({
-				target: 'transform-origin',
-				keys: [category, 'hover-target'],
-			})
-		)
-			return '';
+		if (shouldSkipTransform('transform-origin')) return '';
 
 		if (
 			index === 'hover' &&

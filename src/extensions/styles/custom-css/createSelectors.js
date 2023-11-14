@@ -1,74 +1,36 @@
-const PSEUDO_ELEMENTS = ['before', 'after'];
+import getPseudoElementSelectors from './getPseudoElementSelectors';
+import getNormalAndHoverSelectors from './getNormalAndHoverSelectors';
+import getBaseSelectors from './getBaseSelectors';
 
-const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
-	const getNormalAndHoverSelectors = ({ label, target }) => {
-		const pseudoElement = PSEUDO_ELEMENTS.find(pseudo =>
-			label.includes(pseudo)
-		);
-		const targetWithoutPseudoElement = target.replace(
-			`::${pseudoElement}`,
-			''
-		);
+const createSelectors = (
+	rawSelectors,
+	addPseudoElementSelectors = true,
+	addOnlyPseudoElementSelectors = false
+) => {
+	const baseSelectors = getBaseSelectors(rawSelectors);
 
-		return {
-			normal: {
-				label,
-				target,
-			},
-			hover: {
-				label: `${label} on hover`,
-				target: `${targetWithoutPseudoElement}:hover${
-					pseudoElement ? `::${pseudoElement}` : ''
-				}`,
-			},
-			...(targetWithoutPseudoElement !== '' && {
-				'canvas hover': {
-					label: `${label} on canvas hover`,
-					target: `:hover ${targetWithoutPseudoElement.trim()}${
-						pseudoElement ? `::${pseudoElement}` : ''
-					}`,
-				},
-			}),
-		};
-	};
+	const getExtendedSelectors = () => {
+		if (addOnlyPseudoElementSelectors) {
+			return getPseudoElementSelectors(baseSelectors);
+		}
 
-	const addPseudoElementSelector = (
-		key,
-		{ target, label },
-		pseudoElement,
-		obj
-	) => {
-		obj[`${pseudoElement} ${key}`] = {
-			label: `${label} ::${pseudoElement}`,
-			target: `${target}::${pseudoElement}`,
-		};
-	};
-
-	const selectors = Object.entries(rawSelectors).reduce(
-		(acc, [label, target]) => {
-			acc[label] = {
-				label,
-				target,
+		if (addPseudoElementSelectors) {
+			return {
+				...baseSelectors,
+				...getPseudoElementSelectors(baseSelectors),
 			};
-			return acc;
-		},
-		{}
+		}
+
+		return baseSelectors;
+	};
+	const extendedSelectors = getExtendedSelectors();
+
+	return Object.fromEntries(
+		Object.entries(extendedSelectors).map(([key, selector]) => [
+			key,
+			getNormalAndHoverSelectors(selector),
+		])
 	);
-
-	const result = { ...selectors };
-
-	if (addPseudoElementSelectors)
-		PSEUDO_ELEMENTS.forEach(pseudoElement => {
-			Object.entries(selectors).forEach(([key, selector]) =>
-				addPseudoElementSelector(key, selector, pseudoElement, result)
-			);
-		});
-
-	Object.entries(result).forEach(([key, selector]) => {
-		result[key] = getNormalAndHoverSelectors(selector);
-	});
-
-	return result;
 };
 
 export default createSelectors;

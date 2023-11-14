@@ -99,6 +99,60 @@ class edit extends MaxiBlockComponent {
 			});
 	}
 
+	handleKeyDown = event => {
+		const { isList } = this.props.attributes;
+		if (this.state.wpVersion >= 6.4 && isList) {
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				console.log('Enter key pressed');
+				// Custom logic to handle Enter key for lists
+				// This could involve inserting a new <li> element or similar behavior
+				this.insertNewListItem();
+			}
+		}
+	};
+
+	insertNewListItem = () => {
+		const { maxiSetAttributes } = this.props;
+		const { content } = this.props.attributes;
+
+		const selection = window.getSelection();
+		if (!selection.rangeCount) return;
+
+		const range = selection.getRangeAt(0);
+		if (!range.collapsed) return;
+
+		let cursorNode = range.startContainer;
+		const rangeStartOffset = range.startOffset;
+
+		// Ensure cursorNode is an element
+		if (cursorNode.nodeType !== Node.ELEMENT_NODE) {
+			cursorNode = cursorNode.parentNode;
+		}
+
+		const liElement = cursorNode.closest('li');
+		if (!liElement) return;
+
+		// Clone the list item
+		const clonedLi = liElement.cloneNode(true);
+		liElement.parentNode.insertBefore(clonedLi, liElement.nextSibling);
+
+		// Split the text node at the cursor position
+		const textNode =
+			range.startContainer.nodeType === Node.TEXT_NODE
+				? range.startContainer
+				: null;
+		if (textNode) {
+			const textAfterCursor = textNode.splitText(rangeStartOffset);
+			clonedLi.innerHTML = ''; // Clear the cloned list item
+			clonedLi.appendChild(textAfterCursor); // Add the split text and everything after it
+		}
+
+		// Serialize the modified list back to HTML
+		const listHtml = liElement.parentNode.innerHTML;
+		maxiSetAttributes({ content: listHtml });
+	};
+
 	render() {
 		const {
 			attributes,
@@ -188,6 +242,15 @@ class edit extends MaxiBlockComponent {
 			value: content,
 			onChange: processContent,
 			onSplit: (value, isOriginal) => {
+				console.log('onSplit');
+				const { isList } = this.props.attributes;
+				if (this.state.wpVersion >= 6.4 && isList) {
+					console.log('onSplit isList');
+					// Custom logic to handle Enter key within list
+					// This could be creating a new <li> within the same block
+					// Prevent the default block splitting behavior
+					return {};
+				}
 				let newAttributes;
 
 				if (isOriginal || value) {
@@ -316,6 +379,7 @@ class edit extends MaxiBlockComponent {
 							start={listStart}
 							reversed={listReversed}
 							type={typeOfList}
+							onKeyDown={this.handleKeyDown}
 							{...commonProps}
 						>
 							{richTextValues => {

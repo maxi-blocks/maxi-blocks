@@ -87,20 +87,27 @@ const TextListOptions = props => {
 				? getFormattedString({ formatValue, isList })
 				: listContent;
 
+		const changeObject1 = {
+			isList: !isList,
+			typeOfList: type,
+			content: getContent(content),
+		};
+
+		const changeObject2 = {
+			isList,
+			typeOfList: type,
+			content,
+		};
+
+		if (wpVersion >= 6.4) {
+			changeObject1.listStyle = type === 'ol' ? 'decimal' : 'disc';
+			changeObject2.listStyle = type === 'ol' ? 'decimal' : 'disc';
+		}
+
 		if (!isList || typeOfList === type) {
-			onChange({
-				isList: !isList,
-				typeOfList: type,
-				content: getContent(content),
-				listStyle: type === 'ol' ? 'decimal' : 'disc',
-			});
+			onChange(changeObject1);
 		} else {
-			onChange({
-				isList,
-				typeOfList: type,
-				content,
-				listStyle: type === 'ol' ? 'decimal' : 'disc',
-			});
+			onChange(changeObject2);
 		}
 	};
 

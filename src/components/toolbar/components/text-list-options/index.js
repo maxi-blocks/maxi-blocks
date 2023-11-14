@@ -87,18 +87,21 @@ const TextListOptions = props => {
 				? getFormattedString({ formatValue, isList })
 				: listContent;
 
-		if (!isList || typeOfList === type)
+		if (!isList || typeOfList === type) {
 			onChange({
 				isList: !isList,
 				typeOfList: type,
 				content: getContent(content),
+				listStyle: type === 'ol' ? 'decimal' : 'disc',
 			});
-		else
+		} else {
 			onChange({
 				isList,
 				typeOfList: type,
 				content,
+				listStyle: type === 'ol' ? 'decimal' : 'disc',
 			});
+		}
 	};
 
 	const onChangeP = () => {

@@ -105,7 +105,6 @@ class edit extends MaxiBlockComponent {
 			if (event.key === 'Enter') {
 				if (event.shiftKey) {
 					// Block Shift+Enter behavior in lists
-					console.log('Shift+Enter block');
 					event.preventDefault();
 				} else {
 					event.preventDefault();
@@ -213,7 +212,6 @@ class edit extends MaxiBlockComponent {
 		 * This method fixes it
 		 */
 		const processContent = rawContent => {
-			console.log('processContent');
 			if (rawContent === this.props.attributes.content) {
 				return;
 			}

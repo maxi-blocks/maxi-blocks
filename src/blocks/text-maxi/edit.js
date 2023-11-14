@@ -114,7 +114,6 @@ class edit extends MaxiBlockComponent {
 
 	insertNewListItem = () => {
 		const { maxiSetAttributes } = this.props;
-		const { content } = this.props.attributes;
 
 		const selection = window.getSelection();
 		if (!selection.rangeCount) return;
@@ -143,9 +142,15 @@ class edit extends MaxiBlockComponent {
 				? range.startContainer
 				: null;
 		if (textNode) {
-			const textAfterCursor = textNode.splitText(rangeStartOffset);
-			clonedLi.innerHTML = ''; // Clear the cloned list item
-			clonedLi.appendChild(textAfterCursor); // Add the split text and everything after it
+			// Check if the cursor is at the end of the text node
+			if (rangeStartOffset === textNode.length) {
+				// Add placeholder text to the new list item
+				clonedLi.innerHTML = 'New list item';
+			} else {
+				const textAfterCursor = textNode.splitText(rangeStartOffset);
+				clonedLi.innerHTML = ''; // Clear the cloned list item
+				clonedLi.appendChild(textAfterCursor); // Add the split text and everything after it
+			}
 		}
 
 		// Serialize the modified list back to HTML

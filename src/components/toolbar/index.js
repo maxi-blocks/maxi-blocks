@@ -124,6 +124,7 @@ const MaxiToolbar = memo(
 			repeaterStatus,
 			repeaterRowClientId,
 			getInnerBlocksPositions,
+			wpVersion,
 		} = props;
 		const {
 			blockStyle,
@@ -366,6 +367,7 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								listStyle={listStyle}
 								content={listContent}
+								wpVersion={wpVersion}
 								onChange={obj => {
 									maxiSetAttributes(obj);
 								}}

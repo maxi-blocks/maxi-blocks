@@ -45,7 +45,14 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, isList, typeOfList, onChange } = props;
+	const {
+		blockName,
+		isList,
+		typeOfList,
+		onChange,
+		content: listContent,
+		wpVersion,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -75,7 +82,10 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		const content = getFormattedString({ formatValue, isList });
+		const content =
+			wpVersion < 6.4
+				? getFormattedString({ formatValue, isList })
+				: listContent;
 
 		if (!isList || typeOfList === type)
 			onChange({
@@ -92,7 +102,10 @@ const TextListOptions = props => {
 	};
 
 	const onChangeP = () => {
-		const content = getFormattedString({ formatValue, isList });
+		const content =
+			wpVersion < 6.4
+				? getFormattedString({ formatValue, isList })
+				: listContent;
 
 		if (isList) {
 			onChange({

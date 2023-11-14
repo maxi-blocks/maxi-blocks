@@ -104,9 +104,6 @@ class edit extends MaxiBlockComponent {
 		if (this.state.wpVersion >= 6.4 && isList) {
 			if (event.key === 'Enter') {
 				event.preventDefault();
-				console.log('Enter key pressed');
-				// Custom logic to handle Enter key for lists
-				// This could involve inserting a new <li> element or similar behavior
 				this.insertNewListItem();
 			}
 		}
@@ -115,6 +112,7 @@ class edit extends MaxiBlockComponent {
 	insertNewListItem = () => {
 		const { maxiSetAttributes } = this.props;
 
+		// eslint-disable-next-line @wordpress/no-global-get-selection
 		const selection = window.getSelection();
 		if (!selection.rangeCount) return;
 
@@ -247,13 +245,9 @@ class edit extends MaxiBlockComponent {
 			value: content,
 			onChange: processContent,
 			onSplit: (value, isOriginal) => {
-				console.log('onSplit');
 				const { isList } = this.props.attributes;
 				if (this.state.wpVersion >= 6.4 && isList) {
-					console.log('onSplit isList');
-					// Custom logic to handle Enter key within list
-					// This could be creating a new <li> within the same block
-					// Prevent the default block splitting behavior
+					// do nothing
 					return {};
 				}
 				let newAttributes;
@@ -314,6 +308,7 @@ class edit extends MaxiBlockComponent {
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
+					wpVersion={this.state.wpVersion}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					disableCustomFormats={dcStatus}

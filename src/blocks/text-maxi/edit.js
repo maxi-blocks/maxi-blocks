@@ -322,24 +322,26 @@ class edit extends MaxiBlockComponent {
 								const { value: formatValue, onChange } =
 									richTextValues;
 
-								onChangeRichText({
-									attributes,
-									maxiSetAttributes,
-									oldFormatValue: this.state.formatValue,
-									onChange: newState => {
-										if (this.typingTimeoutFormatValue) {
-											clearTimeout(
-												this.typingTimeoutFormatValue
-											);
-										}
+								(!isList || this.state.wpVersion < 6.4) &&
+									onChangeRichText({
+										attributes,
+										maxiSetAttributes,
+										oldFormatValue: this.state.formatValue,
+										onChange: newState => {
+											if (this.typingTimeoutFormatValue) {
+												clearTimeout(
+													this
+														.typingTimeoutFormatValue
+												);
+											}
 
-										this.typingTimeoutFormatValue =
-											setTimeout(() => {
-												this.setState(newState);
-											}, 10);
-									},
-									richTextValues,
-								});
+											this.typingTimeoutFormatValue =
+												setTimeout(() => {
+													this.setState(newState);
+												}, 10);
+										},
+										richTextValues,
+									});
 
 								if (isSelected)
 									return (

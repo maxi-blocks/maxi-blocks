@@ -99,15 +99,19 @@ class edit extends MaxiBlockComponent {
 			});
 	}
 
+	shiftEnterPressed = false;
+
 	handleKeyDown = event => {
 		const { isList } = this.props.attributes;
 		if (this.state.wpVersion >= 6.4 && isList) {
 			if (event.key === 'Enter') {
+				event.preventDefault();
 				if (event.shiftKey) {
-					// Block Shift+Enter behavior in lists
-					event.preventDefault();
+					console.log('shift enter');
+					// Update the class property when Shift+Enter is pressed
+					this.shiftEnterPressed = true;
+					this.insertNewListItem();
 				} else {
-					event.preventDefault();
 					this.insertNewListItem();
 				}
 			}
@@ -117,7 +121,6 @@ class edit extends MaxiBlockComponent {
 	insertNewListItem = () => {
 		const { maxiSetAttributes } = this.props;
 
-		// eslint-disable-next-line @wordpress/no-global-get-selection
 		const selection = window.getSelection();
 		if (!selection.rangeCount) return;
 
@@ -135,29 +138,72 @@ class edit extends MaxiBlockComponent {
 		const liElement = cursorNode.closest('li');
 		if (!liElement) return;
 
-		// Clone the list item
-		const clonedLi = liElement.cloneNode(true);
-		liElement.parentNode.insertBefore(clonedLi, liElement.nextSibling);
+		let clonedLi = liElement;
 
-		// Split the text node at the cursor position
+		if (rangeStartOffset !== 0) {
+			// Clone the list item
+			clonedLi = liElement.cloneNode(true);
+			liElement.parentNode.insertBefore(clonedLi, liElement.nextSibling);
+		}
+
 		const textNode =
 			range.startContainer.nodeType === Node.TEXT_NODE
 				? range.startContainer
 				: null;
 		if (textNode) {
+			if (
+				rangeStartOffset === 0 &&
+				liElement.parentNode.firstChild === liElement
+			) {
+				// Cursor is at the beginning of the first list item
+				// Create a new empty list item and insert it before the current first list item
+				const newLi = document.createElement('li');
+				newLi.innerHTML =
+					'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
+				console.log('liElement', liElement);
+
+				liElement.parentNode.insertBefore(newLi, liElement);
+				console.log(liElement.parentNode);
+
+				// Set focus to the new placeholder
+				setTimeout(() => {
+					const placeholder = newLi.querySelector(
+						'.list-item-placeholder'
+					);
+					if (placeholder) {
+						placeholder.focus();
+						const range = document.createRange();
+						range.selectNodeContents(placeholder);
+						range.collapse(true);
+						const selection = window.getSelection();
+						selection.removeAllRanges();
+						selection.addRange(range);
+					}
+				}, 0);
+			}
+
 			// Check if the cursor is at the end of the text node
-			if (rangeStartOffset === textNode.length) {
-				// Add placeholder text to the new list item
-				clonedLi.innerHTML = 'New list item';
+			else if (rangeStartOffset === textNode.length) {
+				console.log('rangeStartOffset === textNode.length');
+				// Use a contenteditable span with &zwnj; as a placeholder
+				clonedLi.innerHTML =
+					'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
 			} else {
+				console.log('else');
 				const textAfterCursor = textNode.splitText(rangeStartOffset);
 				clonedLi.innerHTML = ''; // Clear the cloned list item
 				clonedLi.appendChild(textAfterCursor); // Add the split text and everything after it
 			}
+		} else {
+			console.log('else no textNode');
+			// If there's no textNode, then use the placeholder
+			clonedLi.innerHTML =
+				'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
 		}
 
 		// Serialize the modified list back to HTML
 		const listHtml = liElement.parentNode.innerHTML;
+		console.log('listHtml', listHtml);
 		maxiSetAttributes({ content: listHtml });
 	};
 
@@ -205,6 +251,22 @@ class edit extends MaxiBlockComponent {
 			}
 		});
 
+		// Function to set the cursor to the end of the list-item-placeholder
+		const setCursorToEndOfPlaceholder = () => {
+			const placeholder = document.querySelector(
+				'.list-item-placeholder'
+			);
+			console.log('placeholder', placeholder);
+			if (placeholder) {
+				const range = document.createRange();
+				const selection = window.getSelection();
+				range.selectNodeContents(placeholder);
+				range.collapse(false); // Collapse the range to the end
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+		};
+
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -212,35 +274,64 @@ class edit extends MaxiBlockComponent {
 		 * This method fixes it
 		 */
 		const processContent = rawContent => {
-			if (rawContent === this.props.attributes.content) {
-				return;
-			}
+			if (!this.shiftEnterPressed) {
+				console.log('processContent');
+				console.log('rawContent', rawContent);
+				console.log(
+					'this.props.attributes.content',
+					this.props.attributes.content
+				);
+				if (rawContent === this.props.attributes.content) {
+					return;
+				}
 
-			/**
-			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
-			 * Does not replace spaces, which inside of HTML tags
-			 */
-			const replaceSpaces = content =>
-				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
+				let content = rawContent;
 
-			const content = replaceSpaces(rawContent);
+				if (isList && this.state.wpVersion >= 6.4) {
+					// Determine the index after the last </li> in rawContent
+					const lastLiEndIndex = rawContent.lastIndexOf('</li>') + 5;
+					// Extract the extra text from rawContent
+					const extraText = rawContent.substring(lastLiEndIndex);
 
-			const isWholeLink =
-				content.split('</a>').length === 2 &&
-				content.startsWith('<a') &&
-				content.indexOf('</a>') === content.length - 5;
+					if (extraText.trim().length > 0) {
+						// Append the extra text to the content inside the last list-item-placeholder
+						const adjustedContent =
+							this.props.attributes.content.replace(
+								/(<span class="list-item-placeholder" contenteditable="true">)(.*?)(<\/span><\/li>)/,
+								(_, startTag, currentText, endTag) =>
+									`${startTag}${currentText}${extraText}${endTag}`
+							);
 
-			if (isWholeLink) {
-				const newContent = content.replace('</a>', '');
+						console.log('adjusted content', adjustedContent);
+						maxiSetAttributes({ content: adjustedContent });
+						// After updating the content, programmatically set the cursor position
+						setTimeout(() => {
+							setCursorToEndOfPlaceholder();
+						}, 0);
+					}
+				} else {
+					// Replace last space with &nbsp; to prevent losing it in Firefox #4194
+					const replaceSpaces = content => {
+						return content.replace(/(>)(\s+)(<)/g, '$1&nbsp;$3');
+					};
 
-				maxiSetAttributes({ content: `${newContent}</a>` });
+					content = replaceSpaces(content);
+
+					const isWholeLink =
+						content.split('</a>').length === 2 &&
+						content.startsWith('<a') &&
+						content.indexOf('</a>') === content.length - 5;
+
+					if (isWholeLink) {
+						const newContent = content.replace('</a>', '');
+
+						maxiSetAttributes({ content: `${newContent}</a>` });
+					} else {
+						maxiSetAttributes({ content });
+					}
+				}
 			} else {
-				if (this.typingTimeoutContent)
-					clearTimeout(this.typingTimeoutContent);
-
-				this.typingTimeoutContent = setTimeout(() => {
-					maxiSetAttributes({ content });
-				}, 100);
+				this.shiftEnterPressed = false;
 			}
 		};
 

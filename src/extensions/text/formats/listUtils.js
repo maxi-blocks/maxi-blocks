@@ -7,8 +7,12 @@
  */
 export const fromListToText = content => {
 	return content
-		.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>')
-		.replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '');
+		.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>') // Replace certain tags with <br>
+		.replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '') // Remove list and list container tags
+		.replace(
+			/<span class="list-item-placeholder"[^>]*>(.*?)<\/span>/gi,
+			'$1'
+		); // Keep content inside spans with class 'list-item-placeholder'
 };
 
 /**

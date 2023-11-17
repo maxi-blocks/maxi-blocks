@@ -12,7 +12,9 @@ export const fromListToText = content => {
 		.replace(
 			/<span class="list-item-placeholder"[^>]*>(.*?)<\/span>/gi,
 			'$1'
-		); // Keep content inside spans with class 'list-item-placeholder'
+		) // Keep content inside spans with class 'list-item-placeholder'
+		.replace(/<span class="list-item-first"[^>]*>(.*?)<\/span>/gi, '$1') // Keep content inside 'list-item-first'
+		.replace(/<span class="list-item-second"[^>]*>(.*?)<\/span>/gi, '$1'); // Keep content inside 'list-item-second';
 };
 
 /**

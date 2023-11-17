@@ -107,7 +107,6 @@ class edit extends MaxiBlockComponent {
 			if (event.key === 'Enter') {
 				event.preventDefault();
 				if (event.shiftKey) {
-					console.log('shift enter');
 					// Update the class property when Shift+Enter is pressed
 					this.shiftEnterPressed = true;
 					this.insertNewListItem();
@@ -140,16 +139,15 @@ class edit extends MaxiBlockComponent {
 
 		let clonedLi = liElement;
 
-		if (rangeStartOffset !== 0) {
-			// Clone the list item
-			clonedLi = liElement.cloneNode(true);
-			liElement.parentNode.insertBefore(clonedLi, liElement.nextSibling);
-		}
-
 		const textNode =
 			range.startContainer.nodeType === Node.TEXT_NODE
 				? range.startContainer
 				: null;
+		if (rangeStartOffset === textNode.length) {
+			// Clone the list item
+			clonedLi = liElement.cloneNode(true);
+			liElement.parentNode.insertBefore(clonedLi, liElement.nextSibling);
+		}
 		if (textNode) {
 			if (
 				rangeStartOffset === 0 &&
@@ -160,43 +158,44 @@ class edit extends MaxiBlockComponent {
 				const newLi = document.createElement('li');
 				newLi.innerHTML =
 					'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
-				console.log('liElement', liElement);
 
 				liElement.parentNode.insertBefore(newLi, liElement);
-				console.log(liElement.parentNode);
-
-				// // Set focus to the new placeholder
-				// setTimeout(() => {
-				// 	const placeholder =
-				// 		liElement.parentNode.newLi.querySelector(
-				// 			'.list-item-placeholder'
-				// 		);
-				// 	if (placeholder) {
-				// 		placeholder.focus();
-				// 		const range = document.createRange();
-				// 		range.selectNodeContents(placeholder);
-				// 		range.collapse(true);
-				// 		const selection = window.getSelection();
-				// 		selection.removeAllRanges();
-				// 		selection.addRange(range);
-				// 	}
-				// }, 0);
 			}
 
 			// Check if the cursor is at the end of the text node
 			else if (rangeStartOffset === textNode.length) {
-				console.log('rangeStartOffset === textNode.length');
 				// Use a contenteditable span with &zwnj; as a placeholder
 				clonedLi.innerHTML =
 					'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
+			} else if (
+				rangeStartOffset !== 0 &&
+				rangeStartOffset !== liElement.textContent.length
+			) {
+				// Cursor is in the middle of the list item
+				const originalContent = liElement.innerHTML;
+				const splitIndex = range.startOffset;
+
+				// Split the content at the cursor position
+				const contentBeforeCursor = originalContent.substring(
+					0,
+					splitIndex
+				);
+				const contentAfterCursor =
+					originalContent.substring(splitIndex);
+
+				// Wrap split content in spans with specific classes
+				liElement.innerHTML = `<span class="list-item-first">${contentBeforeCursor}</span>`;
+				const newLi = document.createElement('li');
+				newLi.innerHTML = `<span class="list-item-second">${contentAfterCursor}</span>`;
+
+				// Insert the new list item after the current one
+				liElement.parentNode.insertBefore(newLi, liElement.nextSibling);
 			} else {
-				console.log('else');
 				const textAfterCursor = textNode.splitText(rangeStartOffset);
 				clonedLi.innerHTML = ''; // Clear the cloned list item
 				clonedLi.appendChild(textAfterCursor); // Add the split text and everything after it
 			}
 		} else {
-			console.log('else no textNode');
 			// If there's no textNode, then use the placeholder
 			clonedLi.innerHTML =
 				'<span class="list-item-placeholder" contenteditable="true">&zwnj;</span>';
@@ -204,7 +203,6 @@ class edit extends MaxiBlockComponent {
 
 		// Serialize the modified list back to HTML
 		const listHtml = liElement.parentNode.innerHTML;
-		console.log('listHtml', listHtml);
 		maxiSetAttributes({ content: listHtml });
 	};
 
@@ -252,22 +250,6 @@ class edit extends MaxiBlockComponent {
 			}
 		});
 
-		// Function to set the cursor to the end of the list-item-placeholder
-		// const setCursorToEndOfPlaceholder = () => {
-		// 	const placeholder = document.querySelector(
-		// 		'.list-item-placeholder'
-		// 	);
-		// 	console.log('placeholder', placeholder);
-		// 	if (placeholder) {
-		// 		const range = document.createRange();
-		// 		const selection = window.getSelection();
-		// 		range.selectNodeContents(placeholder);
-		// 		range.collapse(false); // Collapse the range to the end
-		// 		selection.removeAllRanges();
-		// 		selection.addRange(range);
-		// 	}
-		// };
-
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
 		 *
@@ -276,12 +258,6 @@ class edit extends MaxiBlockComponent {
 		 */
 		const processContent = rawContent => {
 			if (!this.shiftEnterPressed) {
-				console.log('processContent');
-				console.log('rawContent', rawContent);
-				console.log(
-					'this.props.attributes.content',
-					this.props.attributes.content
-				);
 				if (rawContent === this.props.attributes.content) {
 					return;
 				}
@@ -299,15 +275,7 @@ class edit extends MaxiBlockComponent {
 								`$1${rawContent}$2`
 							);
 
-						console.log(
-							'adjusted content for empty list',
-							adjustedContent
-						);
 						maxiSetAttributes({ content: adjustedContent });
-
-						// setTimeout(() => {
-						// 	setCursorToEndOfPlaceholder();
-						// }, 0);
 
 						return;
 					}
@@ -320,7 +288,6 @@ class edit extends MaxiBlockComponent {
 							0,
 							firstLiStartIndex
 						);
-						console.log('extraTextAtStart', extraTextAtStart);
 
 						if (extraTextAtStart.trim().length > 0) {
 							// Insert the extra text into the first <li> with a list-item-placeholder
@@ -336,10 +303,6 @@ class edit extends MaxiBlockComponent {
 										`${startTag}${currentPlaceholderText}${extraTextAtStart}${endTag}`
 								);
 
-							console.log(
-								'adjusted content beginning',
-								adjustedContent
-							);
 							maxiSetAttributes({ content: adjustedContent });
 						}
 					}
@@ -382,12 +345,32 @@ class edit extends MaxiBlockComponent {
 									`${startTag}${currentText}${extraText}${endTag}`
 								);
 
-							console.log(
-								'adjusted content end',
-								adjustedContent
-							);
 							maxiSetAttributes({ content: adjustedContent });
 						}
+					}
+
+					// Regex to find the first block of text placed incorrectly between </li> and <li>
+					// Regex to find text placed incorrectly between </li> and <li>
+					const misplacedTextRegex = /<\/li>([^<]+)<li>/;
+					const match = misplacedTextRegex.exec(rawContent);
+
+					if (match) {
+						const misplacedText = match[1];
+
+						// Find the first occurrence of list-item-second
+						const listItemSecondRegex =
+							/<span class="list-item-second">([^<]*)<\/span>/;
+						const correctedContent =
+							this.props.attributes.content.replace(
+								listItemSecondRegex,
+								(match, currentText) => {
+									// Append the misplaced text to the current text of the first list-item-second span
+									return `<span class="list-item-second">${misplacedText}${currentText}</span>`;
+								}
+							);
+
+						// ... continue with your existing logic, using correctedContent instead of rawContent ...
+						maxiSetAttributes({ content: correctedContent });
 					}
 				} else {
 					// Replace last space with &nbsp; to prevent losing it in Firefox #4194

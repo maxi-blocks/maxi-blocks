@@ -14,10 +14,17 @@ export const fromListToText = content => {
 /**
  * Transform plain text to list formatted text
  *
- * @param {string} content Text content
+ * @param {string} content   Text content
+ * @param {number} wpVersion WordPress version
  *
  * @returns {string} New formatted string
  */
-export const fromTextToList = content => {
+export const fromTextToList = (content, wpVersion) => {
+	if (
+		wpVersion >= 6.4 &&
+		(!content || content === '' || content === '<li></li>')
+	) {
+		return '<li><span class="list-item-placeholder" contenteditable="true">&zwnj;</span></li>';
+	}
 	return `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
 };

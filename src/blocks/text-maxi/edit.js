@@ -165,21 +165,22 @@ class edit extends MaxiBlockComponent {
 				liElement.parentNode.insertBefore(newLi, liElement);
 				console.log(liElement.parentNode);
 
-				// Set focus to the new placeholder
-				setTimeout(() => {
-					const placeholder = newLi.querySelector(
-						'.list-item-placeholder'
-					);
-					if (placeholder) {
-						placeholder.focus();
-						const range = document.createRange();
-						range.selectNodeContents(placeholder);
-						range.collapse(true);
-						const selection = window.getSelection();
-						selection.removeAllRanges();
-						selection.addRange(range);
-					}
-				}, 0);
+				// // Set focus to the new placeholder
+				// setTimeout(() => {
+				// 	const placeholder =
+				// 		liElement.parentNode.newLi.querySelector(
+				// 			'.list-item-placeholder'
+				// 		);
+				// 	if (placeholder) {
+				// 		placeholder.focus();
+				// 		const range = document.createRange();
+				// 		range.selectNodeContents(placeholder);
+				// 		range.collapse(true);
+				// 		const selection = window.getSelection();
+				// 		selection.removeAllRanges();
+				// 		selection.addRange(range);
+				// 	}
+				// }, 0);
 			}
 
 			// Check if the cursor is at the end of the text node
@@ -252,20 +253,20 @@ class edit extends MaxiBlockComponent {
 		});
 
 		// Function to set the cursor to the end of the list-item-placeholder
-		const setCursorToEndOfPlaceholder = () => {
-			const placeholder = document.querySelector(
-				'.list-item-placeholder'
-			);
-			console.log('placeholder', placeholder);
-			if (placeholder) {
-				const range = document.createRange();
-				const selection = window.getSelection();
-				range.selectNodeContents(placeholder);
-				range.collapse(false); // Collapse the range to the end
-				selection.removeAllRanges();
-				selection.addRange(range);
-			}
-		};
+		// const setCursorToEndOfPlaceholder = () => {
+		// 	const placeholder = document.querySelector(
+		// 		'.list-item-placeholder'
+		// 	);
+		// 	console.log('placeholder', placeholder);
+		// 	if (placeholder) {
+		// 		const range = document.createRange();
+		// 		const selection = window.getSelection();
+		// 		range.selectNodeContents(placeholder);
+		// 		range.collapse(false); // Collapse the range to the end
+		// 		selection.removeAllRanges();
+		// 		selection.addRange(range);
+		// 	}
+		// };
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -288,6 +289,28 @@ class edit extends MaxiBlockComponent {
 				let content = rawContent;
 
 				if (isList && this.state.wpVersion >= 6.4) {
+					// Check if rawContent does not contain <li> tags and
+					// this.props.attributes.content has an empty list-item-placeholder
+					if (!/<li>/i.test(rawContent)) {
+						// Move entire rawContent into the list-item-placeholder
+						const adjustedContent =
+							this.props.attributes.content.replace(
+								/(<li[^>]*><span class="list-item-placeholder" contenteditable="true">).*?(<\/span><\/li>)/,
+								`$1${rawContent}$2`
+							);
+
+						console.log(
+							'adjusted content for empty list',
+							adjustedContent
+						);
+						maxiSetAttributes({ content: adjustedContent });
+
+						// setTimeout(() => {
+						// 	setCursorToEndOfPlaceholder();
+						// }, 0);
+
+						return;
+					}
 					// Detect text at the beginning of rawContent outside of <li> tags
 					const firstLiStartIndex = rawContent.indexOf('<li>');
 
@@ -297,13 +320,20 @@ class edit extends MaxiBlockComponent {
 							0,
 							firstLiStartIndex
 						);
+						console.log('extraTextAtStart', extraTextAtStart);
 
 						if (extraTextAtStart.trim().length > 0) {
 							// Insert the extra text into the first <li> with a list-item-placeholder
 							const adjustedContent =
 								this.props.attributes.content.replace(
-									/(<li[^>]*><span class="list-item-placeholder" contenteditable="true">).*?(<\/span><\/li>)/,
-									`$1${extraTextAtStart}$2`
+									/(<li[^>]*><span class="list-item-placeholder" contenteditable="true">)(.*?)(<\/span><\/li>)/,
+									(
+										_,
+										startTag,
+										currentPlaceholderText,
+										endTag
+									) =>
+										`${startTag}${currentPlaceholderText}${extraTextAtStart}${endTag}`
 								);
 
 							console.log(
@@ -311,11 +341,6 @@ class edit extends MaxiBlockComponent {
 								adjustedContent
 							);
 							maxiSetAttributes({ content: adjustedContent });
-
-							// After updating the content, programmatically set the cursor position
-							setTimeout(() => {
-								setCursorToEndOfPlaceholder();
-							}, 0);
 						}
 					}
 
@@ -325,20 +350,44 @@ class edit extends MaxiBlockComponent {
 					const extraText = rawContent.substring(lastLiEndIndex);
 
 					if (extraText.trim().length > 0) {
-						// Append the extra text to the content inside the last list-item-placeholder
-						const adjustedContent =
-							this.props.attributes.content.replace(
-								/(<span class="list-item-placeholder" contenteditable="true">)(.*?)(<\/span><\/li>)/,
-								(_, startTag, currentText, endTag) =>
-									`${startTag}${currentText}${extraText}${endTag}`
-							);
+						// Use a global regex to match all occurrences
+						const regex =
+							/(<span class="list-item-placeholder" contenteditable="true">)(.*?)(<\/span><\/li>)/g;
+						let matches;
+						let lastMatch;
 
-						console.log('adjusted content', adjustedContent);
-						maxiSetAttributes({ content: adjustedContent });
-						// After updating the content, programmatically set the cursor position
-						setTimeout(() => {
-							setCursorToEndOfPlaceholder();
-						}, 0);
+						// Find the last match in the string
+						while (
+							(matches = regex.exec(
+								this.props.attributes.content
+							)) !== null
+						) {
+							lastMatch = matches;
+						}
+
+						if (lastMatch) {
+							const startTag = lastMatch[1];
+							const currentText = lastMatch[2];
+							const endTag = lastMatch[3];
+
+							// Replace only the last match
+							const adjustedContent =
+								this.props.attributes.content.replace(
+									new RegExp(
+										lastMatch[0].replace(
+											/[.*+?^${}()|[\]\\]/g,
+											'\\$&'
+										)
+									), // escape special chars
+									`${startTag}${currentText}${extraText}${endTag}`
+								);
+
+							console.log(
+								'adjusted content end',
+								adjustedContent
+							);
+							maxiSetAttributes({ content: adjustedContent });
+						}
 					}
 				} else {
 					// Replace last space with &nbsp; to prevent losing it in Firefox #4194

@@ -58,8 +58,8 @@ const TextListOptions = props => {
 
 	const { formatValue } = useContext(textContext);
 
-	const getContent = content => {
-		if (!isList) return fromTextToList(content);
+	const getContent = (content, wpVersion) => {
+		if (!isList) return fromTextToList(content, wpVersion);
 		return fromListToText(content);
 	};
 
@@ -90,7 +90,7 @@ const TextListOptions = props => {
 		const changeObject1 = {
 			isList: !isList,
 			typeOfList: type,
-			content: getContent(content),
+			content: getContent(content, wpVersion),
 		};
 
 		const changeObject2 = {
@@ -120,7 +120,7 @@ const TextListOptions = props => {
 		if (isList) {
 			onChange({
 				isList: false,
-				content: getContent(content),
+				content: getContent(content, wpVersion),
 			});
 		}
 	};

@@ -288,7 +288,38 @@ class edit extends MaxiBlockComponent {
 				let content = rawContent;
 
 				if (isList && this.state.wpVersion >= 6.4) {
-					// Determine the index after the last </li> in rawContent
+					// Detect text at the beginning of rawContent outside of <li> tags
+					const firstLiStartIndex = rawContent.indexOf('<li>');
+
+					if (firstLiStartIndex !== -1) {
+						// Extract the text that precedes the first <li> tag
+						const extraTextAtStart = rawContent.substring(
+							0,
+							firstLiStartIndex
+						);
+
+						if (extraTextAtStart.trim().length > 0) {
+							// Insert the extra text into the first <li> with a list-item-placeholder
+							const adjustedContent =
+								this.props.attributes.content.replace(
+									/(<li[^>]*><span class="list-item-placeholder" contenteditable="true">).*?(<\/span><\/li>)/,
+									`$1${extraTextAtStart}$2`
+								);
+
+							console.log(
+								'adjusted content beginning',
+								adjustedContent
+							);
+							maxiSetAttributes({ content: adjustedContent });
+
+							// After updating the content, programmatically set the cursor position
+							setTimeout(() => {
+								setCursorToEndOfPlaceholder();
+							}, 0);
+						}
+					}
+
+					// Detect text at the end of rawContent outside of <li> tags
 					const lastLiEndIndex = rawContent.lastIndexOf('</li>') + 5;
 					// Extract the extra text from rawContent
 					const extraText = rawContent.substring(lastLiEndIndex);

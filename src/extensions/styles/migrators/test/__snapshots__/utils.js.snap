@@ -346,6 +346,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "after content": {
+    "canvas hover": {
+      "label": "content ::after on canvas hover",
+      "target": ":hover .maxi-button-block__content::after",
+    },
     "hover": {
       "label": "content ::after on hover",
       "target": " .maxi-button-block__content:hover::after",
@@ -356,6 +360,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "after icon": {
+    "canvas hover": {
+      "label": "icon ::after on canvas hover",
+      "target": ":hover .maxi-button-block__icon::after",
+    },
     "hover": {
       "label": "icon ::after on hover",
       "target": " .maxi-button-block__icon:hover::after",
@@ -390,6 +398,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "before content": {
+    "canvas hover": {
+      "label": "content ::before on canvas hover",
+      "target": ":hover .maxi-button-block__content::before",
+    },
     "hover": {
       "label": "content ::before on hover",
       "target": " .maxi-button-block__content:hover::before",
@@ -400,6 +412,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "before icon": {
+    "canvas hover": {
+      "label": "icon ::before on canvas hover",
+      "target": ":hover .maxi-button-block__icon::before",
+    },
     "hover": {
       "label": "icon ::before on hover",
       "target": " .maxi-button-block__icon:hover::before",
@@ -434,6 +450,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "content": {
+    "canvas hover": {
+      "label": "content on canvas hover",
+      "target": ":hover .maxi-button-block__content",
+    },
     "hover": {
       "label": "content on hover",
       "target": " .maxi-button-block__content:hover",
@@ -1682,6 +1702,20 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": "::after",
     },
   },
+  "after close icon": {
+    "canvas hover": {
+      "label": "close icon ::after on canvas hover",
+      "target": ":hover .maxi-video-block__close-button::after",
+    },
+    "hover": {
+      "label": "close icon ::after on hover",
+      "target": " .maxi-video-block__close-button:hover::after",
+    },
+    "normal": {
+      "label": "close icon ::after",
+      "target": " .maxi-video-block__close-button::after",
+    },
+  },
   "after overlay": {
     "canvas hover": {
       "label": "overlay ::after on canvas hover",
@@ -1694,6 +1728,20 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     "normal": {
       "label": "overlay ::after",
       "target": " .maxi-video-block__overlay::after",
+    },
+  },
+  "after play icon": {
+    "canvas hover": {
+      "label": "play icon ::after on canvas hover",
+      "target": ":hover .maxi-video-block__play-button::after",
+    },
+    "hover": {
+      "label": "play icon ::after on hover",
+      "target": " .maxi-video-block__play-button:hover::after",
+    },
+    "normal": {
+      "label": "play icon ::after",
+      "target": " .maxi-video-block__play-button::after",
     },
   },
   "after video": {
@@ -1720,6 +1768,20 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": "::before",
     },
   },
+  "before close icon": {
+    "canvas hover": {
+      "label": "close icon ::before on canvas hover",
+      "target": ":hover .maxi-video-block__close-button::before",
+    },
+    "hover": {
+      "label": "close icon ::before on hover",
+      "target": " .maxi-video-block__close-button:hover::before",
+    },
+    "normal": {
+      "label": "close icon ::before",
+      "target": " .maxi-video-block__close-button::before",
+    },
+  },
   "before overlay": {
     "canvas hover": {
       "label": "overlay ::before on canvas hover",
@@ -1732,6 +1794,20 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     "normal": {
       "label": "overlay ::before",
       "target": " .maxi-video-block__overlay::before",
+    },
+  },
+  "before play icon": {
+    "canvas hover": {
+      "label": "play icon ::before on canvas hover",
+      "target": ":hover .maxi-video-block__play-button::before",
+    },
+    "hover": {
+      "label": "play icon ::before on hover",
+      "target": " .maxi-video-block__play-button:hover::before",
+    },
+    "normal": {
+      "label": "play icon ::before",
+      "target": " .maxi-video-block__play-button::before",
     },
   },
   "before video": {

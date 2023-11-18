@@ -135,7 +135,10 @@ const flatSameAsPrev = (
 						'',
 						breakpoint
 					);
-					const attribute = attributes?.[label];
+					const attribute =
+						label in newAttributes
+							? newAttributes[label]
+							: attributes?.[label];
 					const defaultAttribute =
 						defaultAttributes?.[label] ??
 						getDefaultAttribute(label, clientId, true);
@@ -481,22 +484,34 @@ const removeSameAsGeneral = (
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const baseLabel = key.replace(`-${breakpoint}`, `-${baseBreakpoint}`);
+		const generalLabel = key.replace(`-${breakpoint}`, '-general');
+		const generalAttr =
+			key in newAttributes
+				? newAttributes[generalLabel]
+				: attributes[generalLabel];
 		const baseAttr = attributes?.[baseLabel];
 		const defaultBaseAttribute =
 			defaultAttributes?.[baseLabel] ??
 			getDefaultAttribute(baseLabel, clientId, true);
 
 		if (breakpoint !== 'general') {
-			if (key !== baseLabel || !isNil(defaultBaseAttribute))
+			if (
+				key !== baseLabel ||
+				!isNil(defaultBaseAttribute) ||
+				isNil(generalAttr) // if general attribute is undefined, base attribute is different from general
+			)
 				result[key] = value;
-			else result[baseLabel] = undefined;
+			else {
+				result[baseLabel] = undefined;
+			}
 
 			return;
 		}
 
 		if (
-			isNil(defaultBaseAttribute) ||
-			isEqual(defaultBaseAttribute, newAttributes[baseLabel])
+			(isNil(defaultBaseAttribute) ||
+				isEqual(defaultBaseAttribute, newAttributes[baseLabel])) &&
+			!isNil(generalAttr)
 		) {
 			if (!isNil(baseAttr)) result[baseLabel] = undefined;
 			if (baseLabel in newAttributes) result[baseLabel] = undefined;

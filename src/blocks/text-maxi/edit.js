@@ -249,6 +249,7 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					disableCustomFormats={dcStatus}
+					wpVersion={this.state.wpVersion}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}

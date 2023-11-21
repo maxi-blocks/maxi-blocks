@@ -26,6 +26,10 @@ import { merge } from 'lodash';
  * @returns {Object} - Cleaned mergedObj.
  */
 const cleanAttributes = (mergedObj, originalObj, inputAttributes) => {
+	// Check if inputAttributes is a valid object
+	if (!inputAttributes || typeof inputAttributes !== 'object') {
+		return mergedObj; // Return mergedObj as is, since inputAttributes is not valid
+	}
 	Object.keys(inputAttributes).forEach(key => {
 		const breakpoint = getBreakpointFromAttribute(key);
 

@@ -1350,7 +1350,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
-                'support_chat' => $args_true,
+                'support_chat' => $args,
                 'swap_cloud_images' => $args,
                 'google_api_key_option' => null,
                 'openai_api_key_option' => null,

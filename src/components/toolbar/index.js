@@ -138,6 +138,7 @@ const MaxiToolbar = memo(
 			'dc-status': dcStatus,
 			content: listContent,
 			listStyle,
+			wpVersion,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -366,6 +367,7 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								listStyle={listStyle}
 								content={listContent}
+								wpVersion={wpVersion}
 								onChange={obj => {
 									maxiSetAttributes(obj);
 								}}

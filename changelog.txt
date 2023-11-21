@@ -1,3 +1,9 @@
+_Updates: 21 November 2023_
+MaxiBlocks V1.5.4
+* Fix: Interaction Builder settings breaking Group block in some cases.
+* Update: Speed optimization for editing lists on WordPress 6.4+
+* Update: Disable support chat by default on new sites.
+
 _Updates: 10 November 2023_
 MaxiBlocks V1.5.3
 * Update: Better compatibility with WordPress 6.4.1.

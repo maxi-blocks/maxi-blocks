@@ -375,36 +375,6 @@ MaxiBlocks V1.5.2
 * Fix: Global padding for full-width containers.
 * Fix: Rendering Dynamic Content on a new site.
 
-_Updates: 25 October 2023_
-MaxiBlocks V1.5.0-V1.5.1
-
-* Update: Huge speed optimization for the Editing Experience, FSE Site Editor, and frontend Visitor Experience .
-* Update: New refined UI styles for block settings sidebar & style card editor.
-* Update: New GPT4 BYO API key for all text elements to create or revise content with AI.
-* Update: New advanced CSS component for block settings. Useful for styling default Gutenberg blocks wrapped inside Maxi foundation blocks. Think FSE full site editing - navigation block etc.
-* Update: WP Comments block: Set correct Style Cards styles to 'Cancel reply' text.
-* Update: Switch to latest posts for Dynamic Content and Context Loop if no tags exist on the site.
-* Update: Security updates for packages.
-* Update: Require PHP 8.0 or newer.
-* Update: Require MySQL 8.0 LTS or newer.
-* Update: Autofill email on Pro account activation.
-* Update: Remove sessions count for Pro accounts.
-* Update: Visual indicators in MaxiBlocks settings are now active by default.
-* Fix: Dimension size on frontend.
-* Fix: Dynamic Content: Categories and tags displaying on frontend.
-* Fix: Styles in Gutenberg preview mode.
-* Fix: Custom data on reset.
-* Fix: Video Maxi: Styles for playerType: video.
-* Fix: Gutenberg Tablet and Mobile preview.
-* Fix: Update unique IDs on code editor paste.
-* Fix: IB: Clip-path for background layers.
-* Fix: Render for not Dynamic Content blocks.
-* Fix: Infinite loop when validating order by attributes.
-* Fix: Opacity control returns wrong value for null.
-* Fix: Row width migration.
-* Fix: Custom footers and headers for Site Editor.
-* Fix: Link removal for two and more links.
-
 == Upgrade Notice ==
 
 New version of MaxiBlocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.

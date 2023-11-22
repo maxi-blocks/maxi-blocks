@@ -13,17 +13,14 @@ import loadable from '@loadable/component';
  * Internal dependencies
  */
 const Inspector = loadable(() => import('./inspector'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+
 import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import { BlockResizer, Toolbar } from '../../components';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,

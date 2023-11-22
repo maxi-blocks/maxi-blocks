@@ -24,12 +24,17 @@ describe('FontLevelControl', () => {
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-level', button => button.click());
 
+		await page.waitForTimeout(150);
+
 		await page.waitForSelector(
 			'.components-popover__content .maxi-font-level-control'
 		);
+		await page.waitForTimeout(150);
 		const fontLevelControl = await page.$$(
 			'.components-popover__content .maxi-font-level-control .components-button.maxi-font-level-control__button'
 		);
+
+		await page.waitForTimeout(150);
 
 		const fontLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'];
 

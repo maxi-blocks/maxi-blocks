@@ -4,9 +4,9 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.4
+Tested up to: 6.4.1
 Requires PHP: 8.0
-Stable tag: 1.5.3
+Stable tag: 1.5.5
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -346,6 +346,16 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 22 November 2023_
+MaxiBlocks V1.5.5
+* Fix: Number Counter block/pattern infinite loading issue in the editing experience.
+
+_Updates: 21 November 2023_
+MaxiBlocks V1.5.4
+* Fix: Interaction Builder settings breaking Group block in some cases.
+* Update: Speed optimization for editing lists on WordPress 6.4+
+* Update: Disable support chat by default on new sites.
+
 _Updates: 10 November 2023_
 MaxiBlocks V1.5.3
 * Update: Better compatibility with WordPress 6.4.1.
@@ -368,36 +378,6 @@ MaxiBlocks V1.5.2
 * Fix: Repeater. Warn message when columns have different structure.
 * Fix: Global padding for full-width containers.
 * Fix: Rendering Dynamic Content on a new site.
-
-_Updates: 25 October 2023_
-MaxiBlocks V1.5.0-V1.5.1
-
-* Update: Huge speed optimization for the Editing Experience, FSE Site Editor, and frontend Visitor Experience .
-* Update: New refined UI styles for block settings sidebar & style card editor.
-* Update: New GPT4 BYO API key for all text elements to create or revise content with AI.
-* Update: New advanced CSS component for block settings. Useful for styling default Gutenberg blocks wrapped inside Maxi foundation blocks. Think FSE full site editing - navigation block etc.
-* Update: WP Comments block: Set correct Style Cards styles to 'Cancel reply' text.
-* Update: Switch to latest posts for Dynamic Content and Context Loop if no tags exist on the site.
-* Update: Security updates for packages.
-* Update: Require PHP 8.0 or newer.
-* Update: Require MySQL 8.0 LTS or newer.
-* Update: Autofill email on Pro account activation.
-* Update: Remove sessions count for Pro accounts.
-* Update: Visual indicators in MaxiBlocks settings are now active by default.
-* Fix: Dimension size on frontend.
-* Fix: Dynamic Content: Categories and tags displaying on frontend.
-* Fix: Styles in Gutenberg preview mode.
-* Fix: Custom data on reset.
-* Fix: Video Maxi: Styles for playerType: video.
-* Fix: Gutenberg Tablet and Mobile preview.
-* Fix: Update unique IDs on code editor paste.
-* Fix: IB: Clip-path for background layers.
-* Fix: Render for not Dynamic Content blocks.
-* Fix: Infinite loop when validating order by attributes.
-* Fix: Opacity control returns wrong value for null.
-* Fix: Row width migration.
-* Fix: Custom footers and headers for Site Editor.
-* Fix: Link removal for two and more links.
 
 == Upgrade Notice ==
 

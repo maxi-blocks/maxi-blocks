@@ -1,3 +1,7 @@
+_Updates: 22 November 2023_
+MaxiBlocks V1.5.5
+* Fix: Number Counter block/pattern infinite loading issue in the editing experience.
+
 _Updates: 10 November 2023_
 MaxiBlocks V1.5.3
 * Update: Better compatibility with WordPress 6.4.1.

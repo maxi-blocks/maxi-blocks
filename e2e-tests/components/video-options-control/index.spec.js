@@ -22,10 +22,14 @@ describe('Video options control', () => {
 
 		await openSidebarTab(page, 'style', 'video options');
 
+		await page.waitForTimeout(300);
+
 		// Add autoplay
 		await page.$eval('.maxi-video-options-control__autoplay input', input =>
 			input.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		expect(await getAttributes('isAutoplay')).toBeTruthy();
 

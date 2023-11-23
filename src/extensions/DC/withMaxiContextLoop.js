@@ -168,48 +168,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				};
 			}, [setAttributes, contextLoopAttributes]);
 
-			const wasAttributesValidated = useRef(false);
-			useEffect(() => {
-				if (
-					!contextLoop['cl-status'] ||
-					wasAttributesValidated.current ||
-					isEmpty(contextLoopAttributes)
-				)
-					return () => null;
-
-				let isCancelled = false;
-
-				const updateAttributes = async () => {
-					const newAttributes = await getValidatedDCAttributes(
-						getAttributesWithoutPrefix(
-							getCLAttributes(contextLoopAttributes),
-							'cl-'
-						),
-						null,
-						null,
-						true
-					);
-
-					if (!isEmpty(newAttributes) && !isCancelled) {
-						const {
-							__unstableMarkNextChangeAsNotPersistent:
-								markNextChangeAsNotPersistent,
-						} = dispatch('core/block-editor');
-
-						markNextChangeAsNotPersistent();
-						setAttributes(newAttributes);
-					}
-
-					wasAttributesValidated.current = true;
-				};
-
-				updateAttributes();
-
-				return () => {
-					isCancelled = true;
-				};
-			}, [contextLoopAttributes, setAttributes]);
-
 			return (
 				<LoopContext.Provider value={memoizedValue}>
 					<WrappedComponent {...ownProps} />{' '}

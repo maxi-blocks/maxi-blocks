@@ -48,15 +48,6 @@ const handleSetAttributes = ({
 			key.lastIndexOf('-')
 		)}-${baseBreakpoint}`;
 
-		if (breakpoint !== 'general' && attributes[attrLabelOnGeneral]) {
-			response[attrLabelOnBaseBreakpoint] =
-				attributes[attrLabelOnGeneral];
-			response[attrLabelOnGeneral] = undefined;
-			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
-		}
-
 		if (!isHigherThanBase) return;
 
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
@@ -91,7 +82,6 @@ const handleSetAttributes = ({
 
 		if (breakpoint === 'general' && attrExistsOnResponsive) {
 			response[attrLabelOnBaseBreakpoint] = value;
-			response[attrLabelOnGeneral] = undefined;
 
 			return;
 		}

@@ -450,80 +450,6 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 };
 
 /**
- * Removes new saved responsive attributes on base breakpoint that have the same value
- * than the saved general ones.
- */
-const removeSameAsGeneral = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes
-) => {
-	const result = {};
-
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint) {
-			result[key] = value;
-			return;
-		}
-
-		const shouldPreserveAttribute = getShouldPreserveAttribute(
-			attributes,
-			breakpoint,
-			key,
-			value,
-			newAttributes
-		);
-
-		if (shouldPreserveAttribute) {
-			result[key] = value;
-			return;
-		}
-
-		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-		const baseLabel = key.replace(`-${breakpoint}`, `-${baseBreakpoint}`);
-		const generalLabel = key.replace(`-${breakpoint}`, '-general');
-		const generalAttr =
-			key in newAttributes
-				? newAttributes[generalLabel]
-				: attributes[generalLabel];
-		const baseAttr = attributes?.[baseLabel];
-		const defaultBaseAttribute =
-			defaultAttributes?.[baseLabel] ??
-			getDefaultAttribute(baseLabel, clientId, true);
-
-		if (breakpoint !== 'general') {
-			if (
-				key !== baseLabel ||
-				!isNil(defaultBaseAttribute) ||
-				isNil(generalAttr) // if general attribute is undefined, base attribute is different from general
-			)
-				result[key] = value;
-			else {
-				result[baseLabel] = undefined;
-			}
-
-			return;
-		}
-
-		if (
-			(isNil(defaultBaseAttribute) ||
-				isEqual(defaultBaseAttribute, newAttributes[baseLabel])) &&
-			!isNil(generalAttr)
-		) {
-			if (!isNil(baseAttr)) result[baseLabel] = undefined;
-			if (baseLabel in newAttributes) result[baseLabel] = undefined;
-		}
-
-		result[key] = value;
-	});
-
-	return result;
-};
-
-/**
  * Remove lower responsive saved attributes equal to new attributes (not just general).
  */
 const flatLowerAttr = (
@@ -688,10 +614,6 @@ const cleanAttributes = ({
 
 	if (!containsBreakpoint) return result;
 
-	result = {
-		...result,
-		...removeSameAsGeneral(result, attributes, clientId, defaultAttributes),
-	};
 	result = {
 		...result,
 		...flatSameAsPrev(

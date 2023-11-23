@@ -1291,7 +1291,7 @@ describe('cleanAttributes', () => {
 			'test-general': 20,
 			'test-xxl': 24,
 			'test-xl': 16,
-			'test-m': undefined,
+			'test-m': 20,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

@@ -21,17 +21,33 @@ const createIconSelector = (key, selector) => ({
 		label: `${key} on hover`,
 		target: `${selector}:hover`,
 	},
+	canvasHover: {
+		label: `${key} on canvas hover`,
+		target: `:hover ${selector}`,
+	},
 	hoverSvg: {
 		label: `${key}'s svg on hover`,
 		target: `${selector}:hover svg`,
+	},
+	canvasHoverSvg: {
+		label: `${key}'s svg on canvas hover`,
+		target: `:hover ${selector} svg`,
 	},
 	hoverInsideSvg: {
 		label: 'everything inside svg on hover (:hover svg > *)',
 		target: `${selector}:hover svg > *`,
 	},
+	canvasHoverInsideSvg: {
+		label: 'everything inside svg on canvas hover (:hover svg > *)',
+		target: `:hover ${selector} svg > *`,
+	},
 	hoverPath: {
 		label: "svg's path on hover",
 		target: `${selector}:hover svg path`,
+	},
+	canvasHoverPath: {
+		label: "svg's path on canvas hover",
+		target: `:hover ${selector} svg path`,
 	},
 });
 

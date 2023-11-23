@@ -65,15 +65,17 @@ const getCanvasSettings = ({ name }) => [
 									!key.includes('mediaURL')
 							);
 
-							const IBAttributes = Object.fromEntries(
-								Object.entries(newBgLayer).filter(
-									([key, attr]) =>
-										!isEqual(
-											attr,
-											blockBgLayers[index][key]
+							const IBAttributes = newBgLayer
+								? Object.fromEntries(
+										Object.entries(newBgLayer).filter(
+											([key, attr]) =>
+												!isEqual(
+													attr,
+													blockBgLayers[index][key]
+												)
 										)
-								)
-							);
+								  )
+								: {};
 
 							const { order, type } = blockBgLayers[index];
 

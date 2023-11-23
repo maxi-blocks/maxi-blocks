@@ -267,10 +267,12 @@ const TextLink = props => {
 
 	if (textContext) {
 		const contextValue = useContext(textContext);
-		formatValue = contextValue?.formatValue ? contextValue?.formatValue : {};
-	  } else {
+		formatValue = contextValue?.formatValue
+			? contextValue?.formatValue
+			: {};
+	} else {
 		formatValue = {};
-	  }
+	}
 
 	const hasLink =
 		!isEmpty(formatValue) &&

@@ -702,22 +702,22 @@ const getStyles = (props, styleCard) => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]: getListObject(
+					[` ${element}`]: getListObject(
 						{
 							...props,
 							isRTL,
 						},
 						styleCard
 					),
-					[` ${element}.maxi-text-block__content li`]: {
+					[` ${element} li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),
 					},
-					[` ${element}.maxi-text-block__content li:not(:first-child)`]:
+					[` ${element} li:not(:first-child)`]:
 						{ ...getListParagraphObject(props) },
-					[` ${element}.maxi-text-block__content li:hover`]:
+					[` ${element} li:hover`]:
 						getTypographyHoverObject(props),
-					[` ${element}.maxi-text-block__content li::before`]:
+					[` ${element} li::before`]:
 						getMarkerObject({ ...props, isRTL }, styleCard),
 				}),
 				...getBlockBackgroundStyles({
@@ -774,7 +774,7 @@ const getStyles = (props, styleCard) => {
 							'typographyHover',
 						]),
 					},
-					[` a ${element}.maxi-text-block__content`],
+					[` a ${element}`],
 					props.blockStyle
 				),
 				...getLinkStyles(
@@ -785,7 +785,7 @@ const getStyles = (props, styleCard) => {
 							'typographyHover',
 						]),
 					},
-					[` ${element}.maxi-text-block__content a`],
+					[` ${element} a`],
 					props.blockStyle
 				),
 				...(props['dc-status'] && {
@@ -798,7 +798,7 @@ const getStyles = (props, styleCard) => {
 							]),
 						},
 						[
-							`.maxi-block--has-link ${element}.maxi-text-block__content`,
+							`.maxi-block--has-link ${element}`,
 						],
 						props.blockStyle
 					),

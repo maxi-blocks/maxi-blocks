@@ -13,6 +13,10 @@ body.maxi-blocks--active .maxi-text-block {
 			margin: 0;
 			padding: revert;
 
+			> br {
+				display: none;
+			}
+
 			li {
 				counter-increment: li;
 				margin: revert;

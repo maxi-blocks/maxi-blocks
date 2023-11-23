@@ -178,6 +178,16 @@ function observeConsoleLogging() {
 		if (text.includes('Refused to connect to')) {
 			return;
 		}
+		if (
+			text.includes(
+				'WebSocket is closed before the connection is established'
+			)
+		) {
+			return;
+		}
+		if (text.includes('Error during WebSocket handshake')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (

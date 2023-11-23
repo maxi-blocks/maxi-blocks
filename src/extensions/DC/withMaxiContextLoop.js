@@ -13,7 +13,6 @@ import { orderByRelations, orderRelations } from './constants';
 import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
-import getValidatedDCAttributes from './validateDCAttributes';
 import { getAttributesWithoutPrefix } from './utils';
 
 /**

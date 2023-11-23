@@ -31,82 +31,96 @@ const withMaxiContextLoop = createHigherOrderComponent(
 		pure(ownProps => {
 			const { attributes, clientId, name, setAttributes } = ownProps;
 
-			let prevContextLoopAttributes = null;
-
-			if (!attributes.isFirstOnHierarchy) {
-				const context = useContext(LoopContext);
-
-				if (context) prevContextLoopAttributes = context.contextLoop;
-			}
+			let prevContextLoopAttributes = getPreviousContextLoopAttributes(attributes);
 
 			const contextLoopAttributes = getGroupAttributes(
 				attributes,
 				'contextLoop'
 			);
 
-			const getAccumulator = () => {
-				const getIsAccumulator = attributes =>
-					orderRelations.includes(attributes?.['cl-relation']);
+			const getAccumulator = getAccumulatorFunction(contextLoopAttributes, prevContextLoopAttributes);
+	let prevContextLoopAttributes = null;
 
-				const isCurrentAccumulator = getIsAccumulator(
-					contextLoopAttributes
-				);
-				const isPrevAccumulator = getIsAccumulator(
-					prevContextLoopAttributes
-				);
+	if (!attributes.isFirstOnHierarchy) {
+		const context = useContext(LoopContext);
 
-				const currentAccumulator =
-					contextLoopAttributes?.['cl-accumulator'];
-				if (
-					isNumber(currentAccumulator) &&
-					(isCurrentAccumulator || isPrevAccumulator)
-				) {
-					return currentAccumulator;
-				}
+		if (context) prevContextLoopAttributes = context.contextLoop;
+	}
 
-				const prevContextLoopStatus =
-					prevContextLoopAttributes?.['cl-status'];
+	return prevContextLoopAttributes;
+}
 
-				if (
-					!prevContextLoopStatus ||
-					attributes.isFirstOnHierarchy ||
-					!isPrevAccumulator
-				) {
-					return null;
-				}
+function getAccumulatorFunction(contextLoopAttributes, prevContextLoopAttributes) {
+	const getIsAccumulator = attributes =>
+		orderRelations.includes(attributes?.['cl-relation']);
 
-				const { getBlock, getBlockParents } =
-					select('core/block-editor');
-				const parent = getBlock(
-					getBlockParents(clientId)
-						.filter(id => id !== clientId)
-						.at(-1)
-				);
+	const isCurrentAccumulator = getIsAccumulator(
+		contextLoopAttributes
+	);
+	const isPrevAccumulator = getIsAccumulator(
+		prevContextLoopAttributes
+	);
 
-				if (!parent) {
-					return null;
-				}
+	const currentAccumulator =
+		contextLoopAttributes?.['cl-accumulator'];
+	if (
+		isNumber(currentAccumulator) &&
+		(isCurrentAccumulator || isPrevAccumulator)
+	) {
+		return currentAccumulator;
+	}
 
-				const prevAccumulator =
-					prevContextLoopAttributes?.['cl-accumulator'];
+	const prevContextLoopStatus =
+		prevContextLoopAttributes?.['cl-status'];
 
-				const currentBlockIndex = parent.innerBlocks.findIndex(
-					block => block.clientId === clientId
-				);
+	if (
+		!prevContextLoopStatus ||
+		attributes.isFirstOnHierarchy ||
+		!isPrevAccumulator
+	) {
+		return null;
+	}
 
-				// Increase the accumulator only if context loop is enabled in the parent
-				if (
-					parent.attributes['cl-status'] &&
-					ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
-					name ===
-						ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
-					currentBlockIndex !== 0
-				) {
-					return prevAccumulator + currentBlockIndex;
-				}
+	const parent = getParentBlock(clientId);
 
-				return prevAccumulator;
-			};
+	if (!parent) {
+		return null;
+	}
+
+	const prevAccumulator =
+		prevContextLoopAttributes?.['cl-accumulator'];
+
+	const currentBlockIndex = getCurrentBlockIndex(parent, clientId);
+
+	// Increase the accumulator only if context loop is enabled in the parent
+	if (
+		parent.attributes['cl-status'] &&
+		ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
+		name ===
+			ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
+		currentBlockIndex !== 0
+	) {
+		return prevAccumulator + currentBlockIndex;
+	}
+
+	return prevAccumulator;
+}
+
+function getParentBlock(clientId) {
+	const { getBlock, getBlockParents } =
+		select('core/block-editor');
+	return getBlock(
+		getBlockParents(clientId)
+			.filter(id => id !== clientId)
+			.at(-1)
+	);
+}
+
+function getCurrentBlockIndex(parent, clientId) {
+	return parent.innerBlocks.findIndex(
+		block => block.clientId === clientId
+	);
+}
 
 			const contextLoop = {
 				...merge({}, prevContextLoopAttributes, contextLoopAttributes),

@@ -117,7 +117,11 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 									}),
-									...inspectorTabs.contextLoop({
+									...inspectorTabs.contextLoopSettings({
+										props,
+										contentType: 'container',
+									}),
+									...inspectorTabs.contextLoopActions({
 										props,
 										contentType: 'container',
 									}),
@@ -178,6 +182,14 @@ const Inspector = props => {
 									},
 									...inspectorTabs.overflow({
 										props,
+									}),
+									...inspectorTabs.contextLoopSettings({
+										props,
+										contentType: 'container',
+									}),
+									...inspectorTabs.contextLoopActions({
+										props,
+										contentType: 'container',
 									}),
 									...inspectorTabs.zindex({
 										props,

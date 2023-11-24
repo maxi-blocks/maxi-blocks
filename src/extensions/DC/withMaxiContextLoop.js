@@ -24,6 +24,9 @@ export const ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP = {
 	'maxi-blocks/row-maxi': 'maxi-blocks/column-maxi',
 	'maxi-blocks/accordion-maxi': 'maxi-blocks/pane-maxi',
 	'maxi-blocks/slider-maxi': 'maxi-blocks/slide-maxi',
+	'maxi-blocks/container-maxi': 'maxi-blocks/row-maxi',
+	'maxi-blocks/column-maxi': 'maxi-blocks/row-maxi',
+	'maxi-blocks/group-maxi': 'maxi-blocks/row-maxi',
 };
 
 const withMaxiContextLoop = createHigherOrderComponent(

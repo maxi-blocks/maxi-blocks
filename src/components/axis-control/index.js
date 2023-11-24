@@ -256,15 +256,6 @@ const AxisContent = props => {
 					)}
 				</>
 			)}
-			{disableSync && (
-				<BaseControl className='maxi-axis-control__unit-header'>
-					<ResetButton
-						onReset={() =>
-							onReset({ customBreakpoint: breakpoint })
-						}
-					/>
-				</BaseControl>
-			)}
 		</div>
 	);
 };

@@ -29,6 +29,12 @@ export const ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP = {
 	'maxi-blocks/group-maxi': 'maxi-blocks/row-maxi',
 };
 
+export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
+	'maxi-blocks/container-maxi': 'maxi-blocks/column-maxi',
+	'maxi-blocks/column-maxi': 'maxi-blocks/column-maxi',
+	'maxi-blocks/group-maxi': 'maxi-blocks/column-maxi',
+};
+
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
@@ -106,6 +112,44 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					currentBlockIndex !== 0
 				) {
 					return prevAccumulator + currentBlockIndex;
+				}
+
+				const grandparent = getBlock(
+					getBlockParents(parent.clientId)
+						.filter(id => id !== parent.clientId)
+						.at(-1)
+				);
+
+				if (!grandparent) {
+					return prevAccumulator;
+				}
+
+				const grandchildAllowed =
+					ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP[
+						grandparent.name
+					] === name;
+
+				// Check if the current block is a valid grandchild
+				if (grandchildAllowed) {
+					const grandparentInnerBlocks = grandparent.innerBlocks;
+					const parentIndex = grandparentInnerBlocks.findIndex(
+						block => block.clientId === parent.clientId
+					);
+					const currentBlockIndex = parent.innerBlocks.findIndex(
+						block => block.clientId === clientId
+					);
+
+					// Calculate the accumulator based on the position of the grandparent and parent
+					const accumulatorOffset = grandparentInnerBlocks
+						.slice(0, parentIndex)
+						.reduce(
+							(acc, block) => acc + block.innerBlocks.length,
+							0
+						);
+
+					return (
+						prevAccumulator + accumulatorOffset + currentBlockIndex
+					);
 				}
 
 				return prevAccumulator;

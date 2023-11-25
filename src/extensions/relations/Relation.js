@@ -1,6 +1,7 @@
-/* eslint-disable no-undef */
-/* eslint-disable class-methods-use-this */
-import { getBlockNameFromUniqueID } from '../src/extensions/styles/migrators/utils';
+/**
+ * Internal dependencies
+ */
+import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
 
 // Relations (IB)
 class Relation {
@@ -449,7 +450,7 @@ class Relation {
 		return breakpointsObj;
 	}
 
-	escapeRegExp(string) {
+	static escapeRegExp(string) {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	}
 
@@ -517,7 +518,7 @@ class Relation {
 		return `${mainTarget} ${this.target}`;
 	}
 
-	getMediaLines(breakpoint, breakpointValue) {
+	static getMediaLines(breakpoint, breakpointValue) {
 		let prevLine = '';
 		let postLine = '';
 
@@ -545,7 +546,7 @@ class Relation {
 							? ':not(:hover)'
 							: '';
 
-						const { prevLine, postLine } = this.getMediaLines(
+						const { prevLine, postLine } = Relation.getMediaLines(
 							breakpoint,
 							breakpointValue
 						);
@@ -600,7 +601,7 @@ class Relation {
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
 								const selectorRegExp = new RegExp(
-									`(${this.escapeRegExp(selector)})`
+									`(${Relation.escapeRegExp(selector)})`
 								);
 								if (!this.stylesString.match(selectorRegExp))
 									this.stylesString += `${selector}}${postLine}`;
@@ -631,7 +632,7 @@ class Relation {
 								Math.round(number * 100) / 100;
 
 							const selectorRegExp = new RegExp(
-								`(${this.escapeRegExp(selector)})`
+								`(${Relation.escapeRegExp(selector)})`
 							);
 							if (!this.stylesString.match(selectorRegExp))
 								this.stylesString += `${selector}}${postLine}`;
@@ -798,7 +799,7 @@ class Relation {
 									fullTransitionStringRaw;
 
 								const { prevLine, postLine } =
-									this.getMediaLines(
+									Relation.getMediaLines(
 										breakpoint,
 										breakpointValue
 									);
@@ -810,14 +811,14 @@ class Relation {
 									);
 
 								const selectorRegExp = new RegExp(
-									`(${this.escapeRegExp(selector)})`
+									`(${Relation.escapeRegExp(selector)})`
 								);
 
 								if (!fullTransitionString.match(selectorRegExp))
 									fullTransitionString += `${selector}}${postLine}`;
 
 								const transitionExistsRegExp = new RegExp(
-									`(${this.escapeRegExp(
+									`(${Relation.escapeRegExp(
 										selector
 									)}[^{]*transition:)`
 								);
@@ -953,7 +954,7 @@ class Relation {
 		this.addStyleEl(element);
 	}
 
-	removeTransition(element) {
+	static removeTransition(element) {
 		element?.remove();
 	}
 
@@ -1015,13 +1016,6 @@ class Relation {
 		this.observer.disconnect();
 	}
 
-	// src/extensions/styles/migrators/utils.js
-	getBlockNameFromUniqueID = uniqueID => {
-		const match = uniqueID.match(/^(.*?)(-\d+|-[\w\d]+-u)$/);
-		if (match) return match[1];
-		return uniqueID; // fallback
-	};
-
 	init() {
 		if (this.isEditor) {
 			return;
@@ -1059,7 +1053,7 @@ class Relation {
 					// console.log('Entering hover target'); // 🔥
 
 					// Remove transitions to let the original ones be applied
-					this.removeTransition(this.inTransitionEl);
+					Relation.removeTransition(this.inTransitionEl);
 
 					clearTimeout(this.contentTimeout);
 				});
@@ -1108,7 +1102,8 @@ class Relation {
 
 	onMouseEnter() {
 		// console.log('IB is active'); // 🔥
-		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
+		if (this.transitionTimeout)
+			Relation.removeTransition(this.outTransitionEl);
 		clearTimeout(this.transitionTimeout);
 
 		this.addRelationSubscriber();
@@ -1120,7 +1115,7 @@ class Relation {
 
 	onMouseLeave() {
 		// console.log('IB is inactive'); // 🔥
-		this.removeTransition(this.inTransitionEl);
+		Relation.removeTransition(this.inTransitionEl);
 		this.addTransition(this.outTransitionEl);
 
 		this.removeStyles();
@@ -1130,13 +1125,13 @@ class Relation {
 			this.targetEl.matches(':hover') &&
 			this.defaultTransition !== 'none 0s ease 0s'
 		) {
-			this.removeTransition(this.outTransitionEl);
+			Relation.removeTransition(this.outTransitionEl);
 			this.removeAddAttrToBlock();
 		} else {
 			const transitionTimeout = this.getTransitionTimeout();
 
 			const removeTransitionAction = () => {
-				this.removeTransition(this.outTransitionEl);
+				Relation.removeTransition(this.outTransitionEl);
 				this.removeAddAttrToBlock();
 				this.removeRelationSubscriber();
 			};
@@ -1162,78 +1157,9 @@ class Relation {
 		this.addStyles();
 
 		this.transitionTimeout = setTimeout(() => {
-			this.removeTransition(this.inTransitionEl);
+			Relation.removeTransition(this.inTransitionEl);
 		}, this.getTransitionTimeout());
 	}
 }
 
-export default function processRelations(relations, isEditor = false) {
-	if (!relations) return null;
-
-	const uniqueRelations = relations.reduce(
-		(uniqueArray, { action, trigger, uniqueID, target }) => {
-			const getIsUnique = relation =>
-				relation.action === action &&
-				relation.trigger === trigger &&
-				relation.uniqueID === uniqueID &&
-				relation.target === target;
-
-			const isUnique = !uniqueArray.find(uniqueRelation =>
-				getIsUnique(uniqueRelation)
-			);
-			if (isUnique) {
-				const sameRelations = relations.filter(sameRelation =>
-					getIsUnique(sameRelation)
-				);
-				const mergedSameRelations = sameRelations.reduce(
-					(obj, relation) => {
-						Object.keys(relation).forEach(key => {
-							if (
-								key !== 'action' &&
-								key !== 'trigger' &&
-								key !== 'uniqueID' &&
-								key !== 'target'
-							) {
-								if (!obj[key]) obj[key] = [];
-								obj[key].push(relation[key]);
-							} else {
-								obj[key] = relation[key];
-							}
-						});
-						return obj;
-					},
-					{}
-				);
-				uniqueArray.push(mergedSameRelations);
-			}
-
-			return uniqueArray;
-		},
-		[]
-	);
-
-	return uniqueRelations.map(relation => new Relation(relation, isEditor));
-}
-
-// Add event listener only on frontend
-if (!window.wp) {
-	window.addEventListener('DOMContentLoaded', () => {
-		let relations;
-
-		if (typeof maxiRelations?.[0] === 'string') {
-			try {
-				relations = JSON.parse(maxiRelations?.[0]);
-			} catch (e) {
-				console.error('Invalid JSON string', e);
-				relations = null;
-			}
-		} else if (
-			typeof maxiRelations?.[0] === 'object' &&
-			maxiRelations?.[0] !== null
-		) {
-			relations = maxiRelations?.[0];
-		}
-
-		processRelations(relations);
-	});
-}
+export default Relation;

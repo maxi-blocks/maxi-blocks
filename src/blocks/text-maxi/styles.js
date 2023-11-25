@@ -713,12 +713,14 @@ const getStyles = (props, styleCard) => {
 						...getTypographyObject(props),
 						...getListItemObject(props),
 					},
-					[` ${element} li:not(:first-child)`]:
-						{ ...getListParagraphObject(props) },
-					[` ${element} li:hover`]:
-						getTypographyHoverObject(props),
-					[` ${element} li::before`]:
-						getMarkerObject({ ...props, isRTL }, styleCard),
+					[` ${element} li:not(:first-child)`]: {
+						...getListParagraphObject(props),
+					},
+					[` ${element} li:hover`]: getTypographyHoverObject(props),
+					[` ${element} li::before`]: getMarkerObject(
+						{ ...props, isRTL },
+						styleCard
+					),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
@@ -797,9 +799,7 @@ const getStyles = (props, styleCard) => {
 								'typographyHover',
 							]),
 						},
-						[
-							`.maxi-block--has-link ${element}`,
-						],
+						[`.maxi-block--has-link ${element}`],
 						props.blockStyle
 					),
 				}),

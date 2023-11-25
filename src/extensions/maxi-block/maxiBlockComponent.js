@@ -317,30 +317,32 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Prevents rendering
 	 */
-	async shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps, nextState) {
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
-			const SC = getActiveStyleCard(
-				await resolveSelect(
-					'maxiBlocks/style-cards'
-				).receiveMaxiStyleCards(),
-				true
-			);
-
-			if (!isEqual(this.state.oldSC, SC)) {
-				this.setState({
-					oldSC: SC,
-					scValues: select(
+			const updateSCValues = async () => {
+				const SC = getActiveStyleCard(
+					await resolveSelect(
 						'maxiBlocks/style-cards'
-					).receiveActiveStyleCardValue(
-						this.scProps.scElements,
-						this.props.attributes.blockStyle,
-						this.scProps.scType
-					),
-				});
+					).receiveMaxiStyleCards(),
+					true
+				);
 
-				return true;
-			}
+				if (!isEqual(this.state.oldSC, SC)) {
+					this.setState({
+						oldSC: SC,
+						scValues: select(
+							'maxiBlocks/style-cards'
+						).receiveActiveStyleCardValue(
+							this.scProps.scElements,
+							this.props.attributes.blockStyle,
+							this.scProps.scType
+						),
+					});
+				}
+			};
+
+			updateSCValues();
 		}
 
 		// Ensures rendering when selecting or unselecting

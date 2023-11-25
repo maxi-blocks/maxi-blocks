@@ -244,6 +244,7 @@ const CopyPaste = props => {
 			validateRowColumnsStructure(
 				repeaterContext?.repeaterRowClientId,
 				innerBlocksPositions,
+				null,
 				getInitialColumn(clientId, innerBlocksPositions[[-1]]).clientId
 			);
 		}

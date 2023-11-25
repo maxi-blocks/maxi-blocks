@@ -12507,6 +12507,30 @@
     "padding-sync-xs": {
       "type": "string"
     },
+    "cl-status": {
+      "type": "boolean"
+    },
+    "cl-type": {
+      "type": "string"
+    },
+    "cl-relation": {
+      "type": "string"
+    },
+    "cl-id": {
+      "type": "number"
+    },
+    "cl-author": {
+      "type": "number"
+    },
+    "cl-order-by": {
+      "type": "string"
+    },
+    "cl-order": {
+      "type": "string"
+    },
+    "cl-accumulator": {
+      "type": "number"
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -13701,7 +13725,85 @@
             "easing-general": "ease",
             "transition-status-general": true
           },
+          "pane": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before pane": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after pane": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
           "pane header": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before header": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after header": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before header content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after header content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "pane icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "pane content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after content": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -13720,18 +13822,6 @@
             "transition-status-general": true
           },
           "pane content line": {
-            "transition-duration-general": 0.3,
-            "transition-delay-general": 0,
-            "easing-general": "ease",
-            "transition-status-general": true
-          },
-          "pane icon": {
-            "transition-duration-general": 0.3,
-            "transition-delay-general": 0,
-            "easing-general": "ease",
-            "transition-status-general": true
-          },
-          "pane content": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -14125,6 +14215,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -14441,45 +14552,263 @@
       "accordion": {
         "normal": {
           "label": "accordion",
-          "target": ""
+          "target": ".maxi-accordion-block"
         },
         "hover": {
           "label": "accordion on hover",
-          "target": ":hover"
+          "target": ".maxi-accordion-block:hover"
         }
       },
       "before accordion": {
         "normal": {
-          "label": "accordion ::before",
-          "target": "::before"
+          "label": "before",
+          "target": ".maxi-accordion-block::before"
         },
         "hover": {
-          "label": "accordion ::before on hover",
-          "target": ":hover::before"
+          "label": "::before on hover",
+          "target": ".maxi-accordion-block:hover::before"
         }
       },
       "after accordion": {
         "normal": {
-          "label": "accordion ::after",
-          "target": "::after"
+          "label": "after",
+          "target": ".maxi-accordion-block::after"
         },
         "hover": {
-          "label": "accordion ::after on hover",
-          "target": ":hover::after"
+          "label": "::after on hover",
+          "target": ".maxi-accordion-block:hover::after"
+        }
+      },
+      "pane": {
+        "normal": {
+          "label": "pane",
+          "target": " .maxi-pane-block"
+        },
+        "hover": {
+          "label": "pane on hover",
+          "target": " .maxi-pane-block:hover"
+        },
+        "active": {
+          "label": "pane on active state",
+          "target": " .maxi-pane-block[aria-expanded=true]"
+        }
+      },
+      "before pane": {
+        "normal": {
+          "label": "pane ::before",
+          "target": " .maxi-pane-block::before"
+        },
+        "hover": {
+          "label": "pane ::before on hover",
+          "target": " .maxi-pane-block:hover::before"
+        },
+        "active": {
+          "label": "pane ::before on active state",
+          "target": " .maxi-pane-block[aria-expanded=true]::before"
+        }
+      },
+      "after pane": {
+        "normal": {
+          "label": "pane ::after",
+          "target": " .maxi-pane-block::after"
+        },
+        "hover": {
+          "label": "pane ::after on hover",
+          "target": " .maxi-pane-block:hover::after"
+        },
+        "active": {
+          "label": "pane ::after on active state",
+          "target": " .maxi-pane-block[aria-expanded=true]::after"
         }
       },
       "pane header": {
         "normal": {
           "label": "pane header",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header"
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header"
         },
         "hover": {
           "label": "pane header on hover",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover"
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover"
         },
         "active": {
           "label": "pane header on active state",
-          "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header"
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header"
+        }
+      },
+      "before header": {
+        "normal": {
+          "label": "pane header ::before",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header::before"
+        },
+        "hover": {
+          "label": "pane header ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover::before"
+        },
+        "active": {
+          "label": "pane header ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header::before"
+        }
+      },
+      "after header": {
+        "normal": {
+          "label": "pane header ::after",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header::after"
+        },
+        "hover": {
+          "label": "pane header ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover::after"
+        },
+        "active": {
+          "label": "pane header ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header::after"
+        }
+      },
+      "before header content": {
+        "normal": {
+          "label": "pane header content::before",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content::before"
+        },
+        "hover": {
+          "label": "pane header content::before on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content:hover::before"
+        },
+        "active": {
+          "label": "pane header content::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content::before"
+        }
+      },
+      "after header content": {
+        "normal": {
+          "label": "pane header content::after",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content::after"
+        },
+        "hover": {
+          "label": "pane header content::after on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content:hover::after"
+        },
+        "active": {
+          "label": "pane header content::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content::after"
+        }
+      },
+      "pane icon": {
+        "normal": {
+          "label": "icon",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon"
+        },
+        "svg": {
+          "label": "icon's svg",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg"
+        },
+        "insideSvg": {
+          "label": "everything inside svg (svg > *)",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg > *"
+        },
+        "path": {
+          "label": "svg's path",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg path"
+        },
+        "hover": {
+          "label": "icon on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover"
+        },
+        "hoverSvg": {
+          "label": "icon's svg on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg"
+        },
+        "hoverInsideSvg": {
+          "label": "everything inside svg on hover (:hover svg > *)",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg > *"
+        },
+        "hoverPath": {
+          "label": "svg's path on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg path"
+        },
+        "active": {
+          "label": "active icon",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon"
+        },
+        "activeSvg": {
+          "label": "active icon's svg",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg"
+        },
+        "activeInsideSvg": {
+          "label": "everything inside active svg (svg > *)",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg > *"
+        },
+        "activePath": {
+          "label": "active svg's path",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg path"
+        }
+      },
+      "before icon": {
+        "normal": {
+          "label": "icon ::before",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon::before"
+        },
+        "hover": {
+          "label": "icon ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover::before"
+        },
+        "active": {
+          "label": "icon ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon::before"
+        }
+      },
+      "after icon": {
+        "normal": {
+          "label": "icon ::after",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon::after"
+        },
+        "hover": {
+          "label": "icon ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover::after"
+        },
+        "active": {
+          "label": "icon ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon::after"
+        }
+      },
+      "pane content": {
+        "normal": {
+          "label": "pane content",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content"
+        },
+        "hover": {
+          "label": "pane content on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover"
+        },
+        "active": {
+          "label": "pane content active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__content"
+        }
+      },
+      "before content": {
+        "normal": {
+          "label": "pane content ::before",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content::before"
+        },
+        "hover": {
+          "label": "pane content ::before on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover::before"
+        },
+        "active": {
+          "label": "pane content ::before on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::before"
+        }
+      },
+      "after content": {
+        "normal": {
+          "label": "pane content ::after",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content::after"
+        },
+        "hover": {
+          "label": "pane content ::after on hover",
+          "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover::after"
+        },
+        "active": {
+          "label": "pane content ::after on active state",
+          "target": ".maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after"
         }
       },
       "pane header content": {
@@ -14523,78 +14852,29 @@
           "label": "content line on active state",
           "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line"
         }
-      },
-      "pane icon": {
-        "normal": {
-          "label": "icon",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon"
-        },
-        "svg": {
-          "label": "icon's svg",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg"
-        },
-        "insideSvg": {
-          "label": "everything inside svg (svg > *)",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg > *"
-        },
-        "path": {
-          "label": "svg's path",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon svg path"
-        },
-        "hover": {
-          "label": "icon on hover",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover"
-        },
-        "hoverSvg": {
-          "label": "icon's svg on hover",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg"
-        },
-        "hoverInsideSvg": {
-          "label": "everything inside svg on hover (:hover svg > *)",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg > *"
-        },
-        "hoverPath": {
-          "label": "svg's path on hover",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg path"
-        },
-        "active": {
-          "label": "active icon",
-          "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon"
-        },
-        "activeSvg": {
-          "label": "active icon's svg",
-          "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg"
-        },
-        "activeInsideSvg": {
-          "label": "everything inside active svg (svg > *)",
-          "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg > *"
-        },
-        "activePath": {
-          "label": "active svg's path",
-          "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg path"
-        }
-      },
-      "pane content": {
-        "normal": {
-          "label": "pane content",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content"
-        },
-        "hover": {
-          "label": "pane content on hover",
-          "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover"
-        }
       }
     },
     "categories": [
       "accordion",
       "before accordion",
       "after accordion",
+      "pane",
+      "before pane",
+      "after pane",
       "pane header",
+      "before header",
+      "after header",
       "pane header content",
       "pane header line",
       "pane content line",
       "pane content",
+      "before content",
+      "after content",
+      "before header content",
+      "after header content",
       "pane icon",
+      "before icon",
+      "after icon",
       "background",
       "background hover"
     ]

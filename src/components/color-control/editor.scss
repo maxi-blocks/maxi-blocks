@@ -26,11 +26,13 @@
 						div:not(.saturation-white, .saturation-black) {
 							display: flex;
 							padding-left: 0 !important;
-							margin: 0 7px 0 0 !important;
+							margin: 0 1px 0 0 !important;
+							width: 100%;
 
 							label {
 								order: 1;
-								margin-right: 5px;
+								margin-right: 2px;
+								margin-left: 3px;
 								font-family: 'Roboto', sans-serif !important;
 							}
 							input {

@@ -109,7 +109,7 @@ export const validationsValues = (
 	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
-	const typeResult = typeOptions[contentType].map(item => item.value);
+	const typeResult = typeOptions[contentType]?.map(item => item.value);
 
 	return {
 		...(!isCL &&
@@ -121,7 +121,8 @@ export const validationsValues = (
 			!relationResult.includes(relation) && {
 				[`${prefix}relation`]: relationResult[0],
 			}),
-		...(!typeResult.includes(variableValue) &&
+		...(typeResult &&
+			!typeResult.includes(variableValue) &&
 			// Only validate type of DC once all integrations have loaded
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
@@ -160,5 +161,17 @@ export const validateRelations = (type, relation, isCL) => {
 		}
 	}
 
-	return {};
+	return null;
+};
+
+export const getAttributesWithoutPrefix = (attributes, prefix) => {
+	const result = {};
+
+	Object.keys(attributes).forEach(key => {
+		if (key.startsWith(prefix)) {
+			result[key.replace(prefix, '')] = attributes[key];
+		}
+	});
+
+	return result;
 };

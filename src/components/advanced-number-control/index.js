@@ -95,6 +95,9 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
+		inputType = 'number',
+		customValidationRegex,
+		transformRangePreferredValue,
 		newStyle = false,
 	} = props;
 
@@ -205,7 +208,7 @@ const AdvancedNumberControl = props => {
 		handleChange(result);
 	};
 
-	const preferredValues = [
+	const rawPreferredValues = [
 		latestValueRef.current,
 		currentValue,
 		value,
@@ -213,6 +216,10 @@ const AdvancedNumberControl = props => {
 		initial,
 		placeholder,
 	];
+
+	const preferredValues = transformRangePreferredValue
+		? rawPreferredValues.map(transformRangePreferredValue)
+		: rawPreferredValues;
 
 	const rangeValue =
 		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;
@@ -237,14 +244,14 @@ const AdvancedNumberControl = props => {
 						id={advancedNumberControlId}
 						type={
 							!enableAuto || value !== 'auto'
-								? 'number'
+								? inputType
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'
 						value={latestValueRef.current || currentValue}
 						onChange={handleInputChange}
 						onKeyDown={e => {
-							validateNumberInput(e);
+							validateNumberInput(e, customValidationRegex);
 							if (
 								e.key === '-' &&
 								(enableUnit ? minValue : min) >= 0

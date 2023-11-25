@@ -552,7 +552,7 @@ describe('List in Text-maxi', () => {
 		const styleCustom = await page.$$(
 			'.maxi-text-inspector__list-style select'
 		);
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(700);
 
 		await styleCustom[1].select('custom');
 
@@ -676,6 +676,8 @@ describe('List in Text-maxi', () => {
 		);
 
 		await openSidebarTab(page, 'style', 'list options');
+
+		await page.waitForTimeout(500);
 
 		// Change marker indent
 		await editAdvancedNumberControl({

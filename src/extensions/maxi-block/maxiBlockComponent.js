@@ -52,13 +52,14 @@ import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
+import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
+import processRelations from '../../../js/maxi-relations';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
-import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 
 /**
  * Style Component
@@ -134,6 +135,7 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
+		this.relationInstances = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -954,6 +956,7 @@ class MaxiBlockComponent extends Component {
 
 		let obj;
 		let breakpoints;
+		let customDataRelations;
 
 		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
@@ -968,6 +971,8 @@ class MaxiBlockComponent extends Component {
 
 			const customData = this.getCustomData;
 			dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
@@ -987,6 +992,26 @@ class MaxiBlockComponent extends Component {
 					/>
 				);
 				this.rootSlot.render(styleComponent);
+			}
+
+			if (customDataRelations) {
+				const isRelationsPreview =
+					this.props.attributes['relations-preview'];
+
+				if (isRelationsPreview) {
+					this.relationInstances = processRelations(
+						customDataRelations,
+						true
+					);
+				}
+
+				this.relationInstances?.forEach(relationInstance => {
+					relationInstance.setIsPreview(isRelationsPreview);
+				});
+
+				if (!isRelationsPreview) {
+					this.relationInstances = null;
+				}
 			}
 		}
 	}

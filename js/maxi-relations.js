@@ -1,21 +1,39 @@
 /* eslint-disable no-undef */
 /* eslint-disable class-methods-use-this */
+import { getBlockNameFromUniqueID } from '../src/extensions/styles/migrators/utils';
 
 // Relations (IB)
 class Relation {
-	constructor(item) {
+	constructor(item, isEditor) {
+		this.isEditor = isEditor;
+
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
+		this.isPreview = false;
 
 		if (!this.uniqueID || this.css.length === 0) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
-		this.blockTargetEl = document.querySelector(`#${this.uniqueID}`);
+
+		this.blockTarget = `${this.isEditor ? '.' : '#'}${this.uniqueID}`;
+		this.blockTargetEl = document.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
-		this.fullTarget = `#${item.uniqueID} ${this.target}`;
+		this.targetPrefix = this.isEditor
+			? '.edit-post-visual-editor .maxi-block.maxi-block--backend'
+			: '';
+		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
 		this.targetEl = document.querySelector(this.fullTarget);
-		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
+		this.dataTarget = `${this.targetPrefix}${
+			this.blockTarget
+		}[data-maxi-relations="true"]${
+			// Adding additional selector to avoid other styles overwrite IB styles
+			this.isEditor
+				? `[data-type="maxi-blocks/${getBlockNameFromUniqueID(
+						this.uniqueID
+				  )}"]`
+				: ''
+		}`;
 
 		if (!this.triggerEl || !this.targetEl) return;
 
@@ -230,6 +248,16 @@ class Relation {
 
 			return Math.max(promise, transitionTimeout);
 		}, 0);
+	}
+
+	setIsPreview(isPreview) {
+		this.isPreview = isPreview;
+
+		if (this.isPreview) {
+			this.onMouseEnter();
+		} else {
+			this.onMouseLeave();
+		}
 	}
 
 	/**
@@ -987,7 +1015,18 @@ class Relation {
 		this.observer.disconnect();
 	}
 
+	// src/extensions/styles/migrators/utils.js
+	getBlockNameFromUniqueID = uniqueID => {
+		const match = uniqueID.match(/^(.*?)(-\d+|-[\w\d]+-u)$/);
+		if (match) return match[1];
+		return uniqueID; // fallback
+	};
+
 	init() {
+		if (this.isEditor) {
+			return;
+		}
+
 		switch (this.action) {
 			case 'hover':
 				this.addHoverEvents();
@@ -1128,26 +1167,8 @@ class Relation {
 	}
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	let relations;
-
-	if (typeof maxiRelations?.[0] === 'string') {
-		try {
-			relations = JSON.parse(maxiRelations?.[0]);
-		} catch (e) {
-			console.error('Invalid JSON string', e);
-			relations = null;
-		}
-	} else if (
-		typeof maxiRelations?.[0] === 'object' &&
-		maxiRelations?.[0] !== null
-	) {
-		relations = maxiRelations?.[0];
-	} else {
-		relations = null;
-	}
-
-	if (!relations) return;
+export default function processRelations(relations, isEditor = false) {
+	if (!relations) return null;
 
 	const uniqueRelations = relations.reduce(
 		(uniqueArray, { action, trigger, uniqueID, target }) => {
@@ -1191,5 +1212,28 @@ window.addEventListener('DOMContentLoaded', () => {
 		[]
 	);
 
-	uniqueRelations.forEach(relation => new Relation(relation));
-});
+	return uniqueRelations.map(relation => new Relation(relation, isEditor));
+}
+
+// Add event listener only on frontend
+if (!window.wp) {
+	window.addEventListener('DOMContentLoaded', () => {
+		let relations;
+
+		if (typeof maxiRelations?.[0] === 'string') {
+			try {
+				relations = JSON.parse(maxiRelations?.[0]);
+			} catch (e) {
+				console.error('Invalid JSON string', e);
+				relations = null;
+			}
+		} else if (
+			typeof maxiRelations?.[0] === 'object' &&
+			maxiRelations?.[0] !== null
+		) {
+			relations = maxiRelations?.[0];
+		}
+
+		processRelations(relations);
+	});
+}

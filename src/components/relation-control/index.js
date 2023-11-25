@@ -15,6 +15,7 @@ import ListItemControl from '../list-control/list-item-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
+import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import { openSidebarAccordion } from '../../extensions/inspector';
 import {
@@ -45,8 +46,10 @@ import './editor.scss';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
-
-	const { selectBlock } = useDispatch('core/block-editor');
+	const {
+		selectBlock,
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = useDispatch('core/block-editor');
 
 	const repeaterContext = useContext(RepeaterContext);
 
@@ -369,6 +372,16 @@ const RelationControl = props => {
 
 	return (
 		<div className='maxi-relation-control'>
+			{!isEmpty(relations) && (
+				<ToggleSwitch
+					label={__('Preview all interactions', 'maxi-blocks')}
+					selected={props['relations-preview']}
+					onChange={value => {
+						markNextChangeAsNotPersistent();
+						onChange({ 'relations-preview': value });
+					}}
+				/>
+			)}
 			<Button
 				className='maxi-relation-control__button'
 				type='button'

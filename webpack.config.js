@@ -41,6 +41,19 @@ const scriptsConfig = {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),
 	},
+	module: {
+		rules: [
+			{
+				test: /\.js$/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env'],
+					},
+				},
+			},
+		],
+	},
 	plugins: [new Dotenv()],
 };
 

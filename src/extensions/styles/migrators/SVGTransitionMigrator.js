@@ -1,4 +1,4 @@
-import { getBlockNameFromUniqueID } from './utils';
+import { getBlockNameFromUniqueID } from '../../attributes';
 import getTransitionData from '../transitions/getTransitionData';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
 import { isEqual } from 'lodash';

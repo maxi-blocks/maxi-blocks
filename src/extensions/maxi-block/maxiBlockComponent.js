@@ -53,7 +53,7 @@ import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
-import processRelations from '../../../js/maxi-relations';
+import processRelations from '../relations/processRelations';
 
 /**
  * External dependencies

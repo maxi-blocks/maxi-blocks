@@ -269,26 +269,16 @@ const getButtonIconStyles = ({
 						useIconColor,
 						iconType,
 					}),
-					[` ${wrapperTarget} ${target}`]: getIconObject(
-						obj,
-						'icon',
-						prefix,
-						isIB
-					),
-					[` ${wrapperTarget} ${target} svg`]: getIconSize(
+					[normalTarget]: getIconObject(obj, 'icon', prefix, isIB),
+					[`${normalTarget} svg`]: getIconSize(
 						obj,
 						false,
 						prefix,
 						iconWidthHeightRatio
 					),
-					[` ${wrapperTarget} ${target} svg > *`]: getIconObject(
+					[`${normalTarget} svg > *`]: getIconObject(
 						obj,
 						'svg',
-						prefix
-					),
-					[` ${wrapperTarget} ${target} svg path`]: getIconPathStyles(
-						obj,
-						false,
 						prefix
 					),
 			  }
@@ -326,11 +316,8 @@ const getButtonIconStyles = ({
 					};
 			  })()),
 		// Background
-		// TODO: check these lines, seems we've got an error here
-		// ...getBlockBackgroundStyles({
-		// ...getGroupAttributes(obj, 'svg'),
-		[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
-		[`${hoverTarget}`]:
+		[`${normalTarget} svg path`]: getIconPathStyles(obj, false),
+		[hoverTarget]:
 			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
 		[`${hoverTarget} svg > *`]:
 			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),

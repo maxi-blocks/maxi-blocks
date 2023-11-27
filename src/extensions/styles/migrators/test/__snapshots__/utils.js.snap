@@ -464,6 +464,22 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "icon": {
+    "canvasHover": {
+      "label": "icon on canvas hover",
+      "target": ":hover  .maxi-button-block__icon",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-button-block__icon svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-button-block__icon svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "icon's svg on canvas hover",
+      "target": ":hover  .maxi-button-block__icon svg",
+    },
     "hover": {
       "label": "icon on hover",
       "target": " .maxi-button-block__icon:hover",
@@ -1835,6 +1851,22 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "close icon": {
+    "canvasHover": {
+      "label": "close icon on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-video-block__close-button svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "close icon's svg on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button svg",
+    },
     "hover": {
       "label": "close icon on hover",
       "target": " .maxi-video-block__close-button:hover",
@@ -1883,6 +1915,22 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "play icon": {
+    "canvasHover": {
+      "label": "play icon on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-video-block__play-button svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "play icon's svg on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button svg",
+    },
     "hover": {
       "label": "play icon on hover",
       "target": " .maxi-video-block__play-button:hover",

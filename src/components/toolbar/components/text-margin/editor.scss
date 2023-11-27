@@ -8,8 +8,18 @@
 			}
 		}
 		&__popover {
-			.maxi-axis-control__margin .maxi-responsive-tabs-control {
-				flex-direction: column;
+			.maxi-axis-control__margin {
+				min-width: 210px;
+				.maxi-responsive-tabs-control {
+					flex-direction: column;
+				}
+			}
+			.maxi-base-control__field {
+				flex-wrap: nowrap;
+
+				.maxi-advanced-number-control__value {
+					width: 80px;
+				}
 			}
 			.maxi-axis-control__header
 				.maxi-base-control__field

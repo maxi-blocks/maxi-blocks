@@ -2223,10 +2223,6 @@
 		"cl-accumulator": {
 			"type": "number"
 		},
-		"cl-grandchild-accumulator": {
-			"type": "boolean",
-			"default": false
-		},
 		"dc-status": {
 			"type": "boolean"
 		},

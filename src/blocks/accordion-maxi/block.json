@@ -12531,10 +12531,6 @@
 		"cl-accumulator": {
 			"type": "number"
 		},
-		"cl-grandchild-accumulator": {
-			"type": "boolean",
-			"default": false
-		},
 		"shortcutEffect": {
 			"type": "number",
 			"default": 0

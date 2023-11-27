@@ -11704,10 +11704,6 @@
 		"cl-accumulator": {
 			"type": "number"
 		},
-		"cl-grandchild-accumulator": {
-			"type": "boolean",
-			"default": false
-		},
 		"transform-target": {
 			"type": "string"
 		},

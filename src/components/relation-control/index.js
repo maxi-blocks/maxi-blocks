@@ -214,6 +214,7 @@ const RelationControl = props => {
 				false,
 				prefix
 			),
+			...blockAttributes,
 			attributes: mergedAttributes,
 			blockAttributes,
 			onChange: ({ isReset, ...obj }) => {
@@ -541,8 +542,7 @@ const RelationControl = props => {
 															getBlock(clientId)
 																?.name ===
 																'maxi-blocks/text-maxi' &&
-															value ===
-																'Typography';
+															value === 'ty';
 
 														if (textMaxiPrefix) {
 															const blockAttributes =

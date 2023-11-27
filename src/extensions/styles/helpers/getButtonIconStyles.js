@@ -244,12 +244,12 @@ const getButtonIconStyles = ({
 	const normalTarget = ` ${wrapperTarget} ${target}`;
 
 	const getHoverTarget = () => {
-		if (hoverOnIcon) {
-			return ` ${wrapperTarget} ${target}:hover`;
-		}
-
 		if (!iconHoverStatusTarget) {
 			return `:hover ${wrapperTarget} ${target}`;
+		}
+
+		if (hoverOnIcon) {
+			return ` ${wrapperTarget} ${target}:hover`;
 		}
 
 		return ` ${wrapperTarget}:hover ${target}`;

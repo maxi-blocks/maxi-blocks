@@ -363,19 +363,27 @@ const ContextLoop = props => {
 										}
 										disableRange
 									/>
-									<ToggleSwitch
-										label={__(
-											'Enable for grandchildren blocks',
-											'maxi-blocks'
-										)}
-										selected={grandchildAccumulator}
-										onChange={value =>
-											changeProps({
-												'cl-grandchild-accumulator':
-													value,
-											})
-										}
-									/>
+									{Object.keys(
+										ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP
+									).includes(
+										select(
+											'core/block-editor'
+										).getBlockName(clientId)
+									) && (
+										<ToggleSwitch
+											label={__(
+												'Enable for grandchildren blocks',
+												'maxi-blocks'
+											)}
+											selected={grandchildAccumulator}
+											onChange={value =>
+												changeProps({
+													'cl-grandchild-accumulator':
+														value,
+												})
+											}
+										/>
+									)}
 								</>
 							)}
 						</>

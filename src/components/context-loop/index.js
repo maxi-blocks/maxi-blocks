@@ -33,7 +33,10 @@ import {
 	LoopContext,
 } from '../../extensions/DC';
 import { validationsValues } from '../../extensions/DC/utils';
-import { ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP } from '../../extensions/DC/withMaxiContextLoop';
+import {
+	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
+	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
+} from '../../extensions/DC/withMaxiContextLoop';
 
 /**
  * External dependencies
@@ -61,6 +64,7 @@ const ContextLoop = props => {
 		'cl-order-by': orderBy,
 		'cl-order': order,
 		'cl-accumulator': accumulator,
+		'cl-grandchild-accumulator': grandchildAccumulator = false,
 	} = getCLAttributes(contextLoop);
 
 	const isTypeHasRelations =
@@ -358,6 +362,19 @@ const ContextLoop = props => {
 											})
 										}
 										disableRange
+									/>
+									<ToggleSwitch
+										label={__(
+											'Enable for grandchildren blocks',
+											'maxi-blocks'
+										)}
+										selected={grandchildAccumulator}
+										onChange={value =>
+											changeProps({
+												'cl-grandchild-accumulator':
+													value,
+											})
+										}
 									/>
 								</>
 							)}

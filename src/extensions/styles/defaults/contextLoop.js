@@ -23,6 +23,10 @@ const contextLoop = {
 	'cl-accumulator': {
 		type: 'number',
 	},
+	'cl-grandchild-accumulator': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default contextLoop;

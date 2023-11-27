@@ -103,9 +103,17 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					block => block.clientId === clientId
 				);
 
+				const grandparent = getBlock(
+					getBlockParents(parent.clientId)
+						.filter(id => id !== parent.clientId)
+						.at(-1)
+				);
+
 				// Increase the accumulator only if context loop is enabled in the parent
+				// And the grandchild accumulator is not enabled
 				if (
 					parent.attributes['cl-status'] &&
+					!grandparent?.attributes['cl-grandchild-accumulator'] &&
 					ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
 					name ===
 						ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
@@ -114,17 +122,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					return prevAccumulator + currentBlockIndex;
 				}
 
-				const grandparent = getBlock(
-					getBlockParents(parent.clientId)
-						.filter(id => id !== parent.clientId)
-						.at(-1)
-				);
-
-				if (!grandparent) {
-					return prevAccumulator;
-				}
-
 				const grandchildAllowed =
+					grandparent &&
 					ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP[
 						grandparent.name
 					] === name;
@@ -135,11 +134,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					const parentIndex = grandparentInnerBlocks.findIndex(
 						block => block.clientId === parent.clientId
 					);
-					const currentBlockIndex = parent.innerBlocks.findIndex(
-						block => block.clientId === clientId
-					);
 
-					// Calculate the accumulator based on the position of the grandparent and parent
 					const accumulatorOffset = grandparentInnerBlocks
 						.slice(0, parentIndex)
 						.reduce(
@@ -147,9 +142,14 @@ const withMaxiContextLoop = createHigherOrderComponent(
 							0
 						);
 
-					return (
-						prevAccumulator + accumulatorOffset + currentBlockIndex
+					const currentBlockIndex = parent.innerBlocks.findIndex(
+						block => block.clientId === clientId
 					);
+
+					// Check for valid grandchild
+					if (grandparent.attributes['cl-grandchild-accumulator']) {
+						return accumulatorOffset + currentBlockIndex;
+					}
 				}
 
 				return prevAccumulator;

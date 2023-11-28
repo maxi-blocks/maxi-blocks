@@ -146,8 +146,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
-                __('Maxi Ai', self::$maxi_text_domain),
-                __('Maxi Ai', self::$maxi_text_domain),
+                __('Maxi AI', self::$maxi_text_domain),
+                __('Maxi AI', self::$maxi_text_domain),
                 'manage_options',
                 'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_blocks_maxi_ai',
                 '',
@@ -177,7 +177,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     self::$maxi_text_domain,
                 ),
                 self::$maxi_prefix.'maxi_ai' => __(
-                    'Maxi Ai',
+                    'Maxi AI',
                     self::$maxi_text_domain
                 ),
                 self::$maxi_prefix.'pro' => __(

@@ -124,7 +124,7 @@ export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
 	image: generalRelationOptions,
-	container: null,
+	container: generalRelationOptions,
 	row: generalRelationOptions,
 	column: generalRelationOptions,
 	group: generalRelationOptions,

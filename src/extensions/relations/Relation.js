@@ -677,7 +677,9 @@ class Relation {
 		// To prevent it, in case the interaction is 'click' type, the target don't contains
 		// the "data-relations" attribute, so we can keep the styles after the interaction.
 		const mainTarget =
-			this.action === 'click' ? `#${this.uniqueID}` : this.dataTarget;
+			this.action === 'click'
+				? `#${this.uniqueID}[data-maxi-relations="true"]`
+				: this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
 			if (this.hasMultipleTargetsArray[index])
@@ -697,7 +699,7 @@ class Relation {
 						this.getTargetForLine(
 							transitionTarget,
 							this.action === 'click'
-								? `#${this.uniqueID}`
+								? `#${this.uniqueID}[data-maxi-relations="true"]`
 								: this.dataTarget
 						),
 						index

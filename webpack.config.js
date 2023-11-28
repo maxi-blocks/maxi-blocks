@@ -37,23 +37,10 @@ const scriptsConfig = {
 	mode: defaultConfig.mode,
 	target: defaultConfig.target,
 	entry: jsFiles,
-	devtool: 'source-map', // This line is added to enable source maps.
+	devtool: 'source-map',
 	output: {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['@babel/preset-env'],
-					},
-				},
-			},
-		],
 	},
 	plugins: [new Dotenv()],
 };

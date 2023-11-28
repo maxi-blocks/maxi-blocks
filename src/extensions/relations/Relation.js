@@ -21,7 +21,7 @@ class Relation {
 		this.blockTargetEl = document.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
 		this.targetPrefix = this.isEditor
-			? '.edit-post-visual-editor .maxi-block.maxi-block--backend'
+			? '.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend'
 			: '';
 		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
 		this.targetEl = document.querySelector(this.fullTarget);
@@ -678,7 +678,9 @@ class Relation {
 		// the "data-relations" attribute, so we can keep the styles after the interaction.
 		const mainTarget =
 			this.action === 'click'
-				? `#${this.uniqueID}[data-maxi-relations="true"]`
+				? `${this.targetPrefix}${this.isEditor ? '.' : '#'}${
+						this.uniqueID
+				  }[data-maxi-relations="true"]`
 				: this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
@@ -699,7 +701,9 @@ class Relation {
 						this.getTargetForLine(
 							transitionTarget,
 							this.action === 'click'
-								? `#${this.uniqueID}[data-maxi-relations="true"]`
+								? `${this.targetPrefix}${
+										this.isEditor ? '.' : '#'
+								  }${this.uniqueID}[data-maxi-relations="true"]`
 								: this.dataTarget
 						),
 						index

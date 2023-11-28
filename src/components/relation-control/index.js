@@ -208,13 +208,13 @@ const RelationControl = props => {
 		};
 
 		return settingsComponent({
+			...blockAttributes,
 			...getGroupAttributes(
 				mergedAttributes,
 				selectedSettings.attrGroupName,
 				false,
 				prefix
 			),
-			...blockAttributes,
 			attributes: mergedAttributes,
 			blockAttributes,
 			onChange: ({ isReset, ...obj }) => {

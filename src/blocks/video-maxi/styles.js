@@ -248,7 +248,7 @@ const getIconObject = (prefix, obj) => {
 		},
 		...getSVGStyles({
 			obj,
-			target: `.maxi-video-block__${prefix}button`,
+			target: ` .maxi-video-block__${prefix}button`,
 			blockStyle: obj.blockStyle,
 			prefix: `${prefix}icon-`,
 			useIconColor: true,

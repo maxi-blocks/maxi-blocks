@@ -17,6 +17,10 @@ export const iconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
+		'icon-status-hover-target': {
+			type: 'boolean',
+			default: true,
+		},
 		'icon-stroke-palette-status-hover': {
 			type: 'boolean',
 			default: true,

@@ -12610,6 +12610,10 @@
 				"hover": {
 					"label": "first arrow on hover",
 					"target": " .maxi-slider-block__arrow--prev:hover"
+				},
+				"canvas hover": {
+					"label": "first arrow on canvas hover",
+					"target": ":hover .maxi-slider-block__arrow--prev"
 				}
 			},
 			"second arrow": {
@@ -12620,6 +12624,10 @@
 				"hover": {
 					"label": "second arrow on hover",
 					"target": " .maxi-slider-block__arrow--next:hover"
+				},
+				"canvas hover": {
+					"label": "second arrow on canvas hover",
+					"target": ":hover .maxi-slider-block__arrow--next"
 				}
 			},
 			"all dots": {
@@ -12630,6 +12638,10 @@
 				"hover": {
 					"label": "all dots on hover",
 					"target": " .maxi-slider-block__dots:hover"
+				},
+				"canvas hover": {
+					"label": "all dots on canvas hover",
+					"target": ":hover .maxi-slider-block__dots"
 				}
 			},
 			"each dot": {
@@ -12640,6 +12652,10 @@
 				"hover": {
 					"label": "each dot on hover",
 					"target": " .maxi-slider-block__dot:hover"
+				},
+				"canvas hover": {
+					"label": "each dot on canvas hover",
+					"target": ":hover .maxi-slider-block__dot"
 				}
 			},
 			"first arrow icon": {

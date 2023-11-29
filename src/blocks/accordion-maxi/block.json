@@ -1898,6 +1898,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"active-icon-status-hover-target": {
+			"type": "boolean",
+			"default": true
+		},
 		"active-icon-background-active-media-general-hover": {
 			"type": "string"
 		},
@@ -4807,6 +4811,10 @@
 		"icon-status-hover": {
 			"type": "boolean",
 			"default": false
+		},
+		"icon-status-hover-target": {
+			"type": "boolean",
+			"default": true
 		},
 		"icon-background-active-media-general-hover": {
 			"type": "string"
@@ -14557,6 +14565,10 @@
 				"hover": {
 					"label": "accordion on hover",
 					"target": ".maxi-accordion-block:hover"
+				},
+				"canvas hover": {
+					"label": "accordion on canvas hover",
+					"target": ":hover .maxi-accordion-block"
 				}
 			},
 			"before accordion": {

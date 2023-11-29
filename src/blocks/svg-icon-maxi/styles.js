@@ -235,7 +235,7 @@ const getStyles = (props, iconWidthHeightRatio) => {
 						obj: {
 							...getGroupAttributes(props, 'svg', true),
 						},
-						target: '.maxi-svg-icon-block__icon:hover',
+						target: ' .maxi-svg-icon-block__icon:hover',
 						blockStyle,
 						isHover: true,
 					}),

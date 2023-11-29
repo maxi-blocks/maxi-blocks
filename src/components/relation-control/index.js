@@ -208,6 +208,7 @@ const RelationControl = props => {
 		};
 
 		return settingsComponent({
+			...blockAttributes,
 			...getGroupAttributes(
 				mergedAttributes,
 				selectedSettings.attrGroupName,
@@ -541,8 +542,7 @@ const RelationControl = props => {
 															getBlock(clientId)
 																?.name ===
 																'maxi-blocks/text-maxi' &&
-															value ===
-																'Typography';
+															value === 'ty';
 
 														if (textMaxiPrefix) {
 															const blockAttributes =

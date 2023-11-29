@@ -33,11 +33,15 @@ describe('Icon background', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(300);
+
 		// select color
 		await page.$eval(
 			'.components-popover__content .toolbar-item__svg-color__popover .maxi-color-control__palette button[data-item="5"]',
 			colors => colors.click()
 		);
+
+		await page.waitForTimeout(300);
 
 		expect(await getAttributes('svg-fill-palette-color')).toStrictEqual(5);
 

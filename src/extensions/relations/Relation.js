@@ -1117,7 +1117,6 @@ class Relation {
 	}
 
 	onMouseEnter() {
-		console.log('onMouseEnter');
 		if (this.isEditor) this.removePreviousStylesAndTransitions();
 		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout)

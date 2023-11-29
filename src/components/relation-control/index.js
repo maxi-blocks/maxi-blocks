@@ -371,9 +371,6 @@ const RelationControl = props => {
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
 
-	console.log('relations');
-	console.log(relations);
-
 	return (
 		<div className='maxi-relation-control'>
 			<ToggleSwitch

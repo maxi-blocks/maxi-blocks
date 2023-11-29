@@ -994,6 +994,8 @@ class MaxiBlockComponent extends Component {
 				this.rootSlot.render(styleComponent);
 			}
 
+			console.log('customDataRelations', customDataRelations);
+
 			if (customDataRelations) {
 				const isRelationsPreview =
 					this.props.attributes['relations-preview'];

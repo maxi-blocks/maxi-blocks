@@ -43,9 +43,13 @@ class Relation {
 			.getPropertyValue('transition');
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		this.hasMultipleTargetsArray = this.css.map(item =>
-			Object.keys(item).some(key => !this.breakpoints.includes(key))
-		);
+		this.hasMultipleTargetsArray = Array.isArray(this.css)
+			? this.css.map(item =>
+					Object.keys(item).some(
+						key => !this.breakpoints.includes(key)
+					)
+			  )
+			: [];
 
 		this.action = item.action;
 		this.sids = item.sid || item.settings;
@@ -377,34 +381,37 @@ class Relation {
 			});
 		};
 
-		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargetsArray[index]) {
-				const stylesObj = {};
-				// effectsObj is the same for all targets
-				let effectsObj = {};
+		if (Array.isArray(this.css))
+			this.css.forEach((css, index) => {
+				if (this.hasMultipleTargetsArray[index]) {
+					const stylesObj = {};
+					// effectsObj is the same for all targets
+					let effectsObj = {};
 
-				Object.keys(css).forEach(target => {
-					const { stylesObj: rawStylesObj, effectsObj: rawEffects } =
-						cleanValues(
+					Object.keys(css).forEach(target => {
+						const {
+							stylesObj: rawStylesObj,
+							effectsObj: rawEffects,
+						} = cleanValues(
 							getCssObjForEachTarget(
 								css[target],
 								this.effects[index]
 							)
 						);
 
-					stylesObj[target] = rawStylesObj;
-					effectsObj = rawEffects;
-				});
+						stylesObj[target] = rawStylesObj;
+						effectsObj = rawEffects;
+					});
 
-				pushStylesAndEffects({ stylesObj, effectsObj });
-			} else {
-				pushStylesAndEffects(
-					cleanValues(
-						getCssObjForEachTarget(css, this.effects[index])
-					)
-				);
-			}
-		});
+					pushStylesAndEffects({ stylesObj, effectsObj });
+				} else {
+					pushStylesAndEffects(
+						cleanValues(
+							getCssObjForEachTarget(css, this.effects[index])
+						)
+					);
+				}
+			});
 
 		return {
 			stylesObjs,
@@ -439,13 +446,14 @@ class Relation {
 			});
 		};
 
-		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargetsArray[index]) {
-				Object.keys(css).forEach(target => {
-					getBreakpointValues(css[target]);
-				});
-			} else getBreakpointValues(css);
-		});
+		if (Array.isArray(this.css))
+			this.css.forEach((css, index) => {
+				if (this.hasMultipleTargetsArray[index]) {
+					Object.keys(css).forEach(target => {
+						getBreakpointValues(css[target]);
+					});
+				} else getBreakpointValues(css);
+			});
 
 		return breakpointsObj;
 	}
@@ -481,6 +489,7 @@ class Relation {
 	}
 
 	setDataAttrToBlock(value) {
+		if (!this.blockTargetEl) return;
 		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
 		// to ensure the last trigger is not removed. It happens when moving from some trigger to
 		// other really fast between while `transitionTimeout` is still running.
@@ -1009,10 +1018,11 @@ class Relation {
 			});
 		});
 
-		observer.observe(this.blockTargetEl, {
-			attributes: true,
-			attributeFilter: ['data-maxi-relations'],
-		});
+		if (this.blockTargetEl)
+			observer.observe(this.blockTargetEl, {
+				attributes: true,
+				attributeFilter: ['data-maxi-relations'],
+			});
 
 		this.observer = observer;
 	}
@@ -1107,6 +1117,8 @@ class Relation {
 	}
 
 	onMouseEnter() {
+		console.log('onMouseEnter');
+		if (this.isEditor) this.removePreviousStylesAndTransitions();
 		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout)
 			Relation.removeTransition(this.outTransitionEl);
@@ -1165,6 +1177,26 @@ class Relation {
 		this.transitionTimeout = setTimeout(() => {
 			Relation.removeTransition(this.inTransitionEl);
 		}, this.getTransitionTimeout());
+	}
+
+	removePreviousStylesAndTransitions() {
+		// IDs for the styles and transitions elements
+		const previousStylesElId = `relations--${this.uniqueID}-styles`;
+		const previousInTransitionsElId = `relations--${this.uniqueID}-in-transitions`;
+		const previousOutTransitionsElId = `relations--${this.uniqueID}-out-transitions`;
+
+		// Function to remove an element by its ID
+		const removeElementById = elementId => {
+			const element = document.getElementById(elementId);
+			if (element) {
+				element.remove();
+			}
+		};
+
+		// Remove the previous styles and transitions elements
+		removeElementById(previousStylesElId);
+		removeElementById(previousInTransitionsElId);
+		removeElementById(previousOutTransitionsElId);
 	}
 }
 

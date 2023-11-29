@@ -371,18 +371,19 @@ const RelationControl = props => {
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
 
+	console.log('relations');
+	console.log(relations);
+
 	return (
 		<div className='maxi-relation-control'>
-			{!isEmpty(relations) && (
-				<ToggleSwitch
-					label={__('Preview all interactions', 'maxi-blocks')}
-					selected={props['relations-preview']}
-					onChange={value => {
-						markNextChangeAsNotPersistent();
-						onChange({ 'relations-preview': value });
-					}}
-				/>
-			)}
+			<ToggleSwitch
+				label={__('Preview all interactions', 'maxi-blocks')}
+				selected={props['relations-preview']}
+				onChange={value => {
+					markNextChangeAsNotPersistent();
+					onChange({ 'relations-preview': value });
+				}}
+			/>
 			<Button
 				className='maxi-relation-control__button'
 				type='button'

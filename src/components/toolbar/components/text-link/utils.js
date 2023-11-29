@@ -30,7 +30,7 @@ export const createLinkAttributes = ({
 	if (noFollow) attributes.rel += ' nofollow';
 	if (sponsored) attributes.rel += ' sponsored';
 	if (ugc) attributes.rel += ' ugc';
-	if (!noFollow && !sponsored && !ugc) {
+	if (attributes.target !== '_blank' && !noFollow && !sponsored && !ugc) {
 		delete attributes.rel;
 	} else {
 		attributes.rel = attributes.rel.trim();

@@ -71,7 +71,6 @@ const DateHelperPopover = () => (
 const DateFormatting = props => {
 	const { onChange } = props;
 
-	// const [showHelp, setShowHelp] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
 
 	const {
@@ -158,13 +157,6 @@ const DateFormatting = props => {
 
 	return (
 		<div className='maxi-info'>
-			{/* {showHelp && <DateHelperPopover />} */}
-			{/* Hide custom date until we figure out moment.parseFormat for other languages */}
-			{/* <ToggleSwitch
-				label={__('Custom date', 'maxi-blocks')}
-				selected={customDate}
-				onChange={value => changeProps({ 'dc-custom-date': value })}
-			/> */}
 			{!customDate && (
 				<div className='maxi-info__help-trigger'>
 					<TextControl
@@ -176,14 +168,6 @@ const DateFormatting = props => {
 						showHelp
 						helpContent={<DateHelperPopover />}
 					/>
-					{/* <div
-						className='maxi-custom-date-formatting__help-icon'
-						onClick={() => setShowHelp(state => !state)}
-					>
-						<span className='maxi-custom-date-formatting__help-icon-span'>
-							i
-						</span>
-					</div> */}
 				</div>
 			)}
 			{customDate && (

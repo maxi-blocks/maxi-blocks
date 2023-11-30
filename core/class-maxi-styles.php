@@ -1399,7 +1399,9 @@ class MaxiBlocks_Styles
         }
 
         // Merge the blocks.
-        $blocks = array_merge_recursive($blocks, $blocks_post);
+        if (is_array($blocks_post)) {
+            $blocks = array_merge_recursive($blocks, $blocks_post);
+        }
 
         if (empty($blocks)) {
             return [];

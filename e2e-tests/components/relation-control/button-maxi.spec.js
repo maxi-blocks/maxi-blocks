@@ -195,6 +195,8 @@ describe('Button Maxi hover simple actions', () => {
 			opacity: 50,
 		});
 
+		await page.waitForTimeout(300);
+
 		// Icon background color
 		colorControls = await page.$$('.maxi-color-control');
 		await editColorControl({
@@ -204,6 +206,8 @@ describe('Button Maxi hover simple actions', () => {
 			colorPalette: 5,
 			opacity: 75,
 		});
+
+		await page.waitForTimeout(300);
 
 		// console.log('before Icon padding');
 

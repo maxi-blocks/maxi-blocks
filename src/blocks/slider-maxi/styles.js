@@ -374,7 +374,7 @@ const getDisabledStyles = (props, prefix) => {
 
 const getIconObject = (props, prefix, target, isHover = false) => {
 	const hoverFlag = isHover ? ':hover' : '';
-	const fullTarget = `${target}${hoverFlag}`;
+	const fullTarget = ` ${target}${hoverFlag}`;
 	const isActive = prefix.includes('active');
 
 	const response = {

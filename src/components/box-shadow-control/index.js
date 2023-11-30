@@ -91,8 +91,8 @@ const BoxShadowValueControl = props => {
 					}`]: val !== undefined && val !== '' ? val : '',
 				});
 			}}
-			min={-100}
-			max={100}
+			min={-3999}
+			max={3999}
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({

@@ -42,6 +42,15 @@ const save = props => {
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 
+	const relValues = [];
+	if (linkOpt.noFollow) relValues.push('nofollow');
+	if (linkOpt.sponsored) relValues.push('sponsored');
+	if (linkOpt.ugc) relValues.push('ugc');
+
+	if (relValues.length > 0) {
+		linkProps.rel = relValues.join(' ');
+	}
+
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
 		iconContent && `maxi-button-block__button--icon-${iconPosition}`

@@ -4,9 +4,17 @@ const getLinkAttributesFromLinkSettings = (
 	dcLinkStatus
 ) => {
 	let rel = '';
-	if (linkSettings.nofollow) rel += ' nofollow';
-	if (linkSettings.sponsored) rel += ' sponsored';
-	if (linkSettings.ugc) rel += ' ugc';
+	const nf = linkSettings.noFollow;
+	const sp = linkSettings.sponsored;
+	const ug = linkSettings.ugc;
+	if (nf) rel += ' nofollow';
+	if (sp) rel += ' sponsored';
+	if (ug) rel += ' ugc';
+	if (!nf && !sp && !ug) {
+		rel = null;
+	} else {
+		rel = rel.trim();
+	}
 
 	const href =
 		dcStatus && dcLinkStatus ? '$link-to-replace' : linkSettings.url;

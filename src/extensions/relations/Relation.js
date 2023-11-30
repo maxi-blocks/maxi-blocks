@@ -5,7 +5,7 @@ import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
 
 // Relations (IB)
 class Relation {
-	constructor(item, isEditor) {
+	constructor(item, isEditor, relationAction = null, relationIndex = null) {
 		this.isEditor = isEditor;
 
 		this.uniqueID = item?.uniqueID;
@@ -52,7 +52,7 @@ class Relation {
 			: [];
 
 		this.action = item.action;
-		this.sids = item.sid || item.settings;
+		this.sids = item.sid || item.settings || [];
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
@@ -545,6 +545,7 @@ class Relation {
 
 	generateStyles() {
 		const getStylesLine = (stylesObj, target, index) => {
+			if (!stylesObj) return;
 			const isBackground = target.includes('maxi-background-displayer');
 
 			Object.entries(this.breakpointsObj).forEach(

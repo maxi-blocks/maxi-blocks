@@ -999,9 +999,6 @@ class MaxiBlockComponent extends Component {
 				const isRelationsPreview =
 					this.props.attributes['relations-preview'];
 
-				// console.log('this.previousRelationInstances');
-				// console.log(this.previousRelationInstances);
-
 				if (isRelationsPreview) {
 					this.relationInstances = processRelations(
 						customDataRelations,
@@ -1013,26 +1010,18 @@ class MaxiBlockComponent extends Component {
 					relationInstance.setIsPreview(isRelationsPreview);
 				});
 
-				// console.log('this.relationInstances');
-				// console.log(this.relationInstances);
-
 				if (
+					isRelationsPreview &&
 					this.relationInstances !== null &&
 					this.previousRelationInstances !== null
 				) {
 					const previousInstances = this.previousRelationInstances;
 					const currentInstances = this.relationInstances;
 
-					console.log('previousInstances');
-					console.log(previousInstances);
-					console.log('currentInstances');
-					console.log(currentInstances);
-
 					const compareRelations = (
 						prevInstances,
 						currentInstances
 					) => {
-						// Keys to compare for updates and to create a composite unique key
 						const keysToCompare = [
 							'action',
 							'uniqueID',
@@ -1048,12 +1037,11 @@ class MaxiBlockComponent extends Component {
 						const createCompositeKey = relation =>
 							keysToCompare.map(key => relation[key]).join('|');
 
-						// Initialize arrays for added, removed, and updated relations
-						const added = [];
-						const removed = [];
-						const updated = [];
+						let added = null;
+						let removed = null;
+						let updated = null;
 
-						// Create maps for tracking composite keys
+						// Maps for tracking composite keys
 						const prevCompositeKeys = new Map();
 						const currCompositeKeys = new Map();
 
@@ -1075,61 +1063,87 @@ class MaxiBlockComponent extends Component {
 							}
 						);
 
-						// Identify added and removed relations
-						for (const [compositeKey, key] of currCompositeKeys) {
-							if (!prevCompositeKeys.has(compositeKey)) {
-								added.push(key);
-							}
-						}
-						for (const [compositeKey, key] of prevCompositeKeys) {
-							if (!currCompositeKeys.has(compositeKey)) {
-								removed.push(key);
-							}
-						}
-
-						// Identify updated relations
-						for (const [key, value] of Object.entries(
-							currentInstances
-						)) {
-							const compositeKey = createCompositeKey(value);
-							if (prevCompositeKeys.has(compositeKey)) {
-								const prevKey =
-									prevCompositeKeys.get(compositeKey);
-								let isUpdated = false;
-								for (const compareKey of keysToCompare) {
-									if (
-										value[compareKey] !==
-										previousInstances[prevKey][compareKey]
-									) {
-										isUpdated = true;
-										break;
+						// Check if counts are the same
+						if (
+							Object.keys(previousInstances).length !==
+							Object.keys(currentInstances).length
+						) {
+							// Identify added and removed relations
+							currCompositeKeys.forEach((value, key) => {
+								if (!prevCompositeKeys.has(key)) {
+									added = Number(value);
+								}
+							});
+							prevCompositeKeys.forEach((value, key) => {
+								if (!currCompositeKeys.has(key)) {
+									removed = Number(value);
+								}
+							});
+						} else {
+							// Check for updated relations
+							currCompositeKeys.forEach(
+								(currKey, compositeKey) => {
+									if (prevCompositeKeys.has(compositeKey)) {
+										const prevKey =
+											prevCompositeKeys.get(compositeKey);
+										let isUpdated = false;
+										for (const compareKey of keysToCompare) {
+											if (
+												currentInstances[currKey][
+													compareKey
+												] !==
+												previousInstances[prevKey][
+													compareKey
+												]
+											) {
+												isUpdated = true;
+												break;
+											}
+										}
+										if (isUpdated) {
+											updated = Number(currKey);
+										}
 									}
 								}
-								if (isUpdated) {
-									updated.push(key);
-								}
-							}
+							);
 						}
 
 						return { added, removed, updated };
 					};
 
 					// Use the function
-					const { added, removed, updated } = compareRelations(
-						this.previousRelationInstances,
-						this.relationInstances
+					// eslint-disable-next-line prefer-const
+					let { added, removed, updated } = compareRelations(
+						previousInstances,
+						currentInstances
 					);
 
-					console.log('Added Relations:', added);
-					console.log('Removed Relations:', removed);
-					console.log('Updated Relations:', updated);
-				}
+					if (
+						added === removed &&
+						added !== null &&
+						updated === null
+					) {
+						updated = added;
+						removed = null;
+						added = null;
+					}
 
-				this.previousRelationInstances = this.relationInstances;
+					if (removed !== null) {
+						processRelations(
+							this.previousRelationInstances,
+							true,
+							'remove',
+							removed
+						);
+						processRelations(this.relationInstances, true);
+					}
+				}
 
 				if (!isRelationsPreview) {
 					this.relationInstances = null;
 				}
+
+				this.previousRelationInstances = this.relationInstances;
 			}
 		}
 	}

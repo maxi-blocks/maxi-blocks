@@ -762,7 +762,8 @@ class Relation {
 							);
 						const prevEffectsBreakpoint = prevEffectsBreakpoints[0];
 						const prevBreakpointsHasStyles = !this.stylesObjs.some(
-							styleObj => prevEffectsBreakpoint in styleObj
+							styleObj =>
+								styleObj && prevEffectsBreakpoint in styleObj
 						);
 
 						if (
@@ -780,22 +781,27 @@ class Relation {
 						// and need to add transitions for them as well.
 						let currentStyleObj = [...this.breakpoints]
 							.splice(0, this.breakpoints.indexOf(breakpoint) + 1)
-							.reduce(
-								(acc, breakpoint) => ({
-									...acc,
-									...stylesObj[
-										this.getLastUsableBreakpoint(
-											breakpoint,
-											breakpoint =>
-												stylesObj?.[breakpoint] &&
-												Object.keys(
-													stylesObj?.[breakpoint]
-												).length
-										)
-									],
-								}),
-								{}
-							);
+							.reduce((acc, breakpoint) => {
+								const lastUsableBreakpoint =
+									this.getLastUsableBreakpoint(
+										breakpoint,
+										bp =>
+											stylesObj?.[bp] &&
+											Object.keys(stylesObj[bp]).length
+									);
+
+								if (
+									lastUsableBreakpoint !== undefined &&
+									stylesObj?.[lastUsableBreakpoint]
+								) {
+									return {
+										...acc,
+										...stylesObj[lastUsableBreakpoint],
+									};
+								}
+
+								return acc;
+							}, {});
 
 						if (this.isBorder && isBackground)
 							currentStyleObj = {
@@ -1117,7 +1123,7 @@ class Relation {
 	}
 
 	onMouseEnter() {
-		if (this.isEditor) this.removePreviousStylesAndTransitions();
+		// if (this.isEditor) this.removePreviousStylesAndTransitions();
 		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout)
 			Relation.removeTransition(this.outTransitionEl);

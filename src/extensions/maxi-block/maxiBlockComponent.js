@@ -136,6 +136,7 @@ class MaxiBlockComponent extends Component {
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
+		this.previousRelationInstances = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -998,6 +999,9 @@ class MaxiBlockComponent extends Component {
 				const isRelationsPreview =
 					this.props.attributes['relations-preview'];
 
+				// console.log('this.previousRelationInstances');
+				// console.log(this.previousRelationInstances);
+
 				if (isRelationsPreview) {
 					this.relationInstances = processRelations(
 						customDataRelations,
@@ -1008,6 +1012,120 @@ class MaxiBlockComponent extends Component {
 				this.relationInstances?.forEach(relationInstance => {
 					relationInstance.setIsPreview(isRelationsPreview);
 				});
+
+				// console.log('this.relationInstances');
+				// console.log(this.relationInstances);
+
+				if (
+					this.relationInstances !== null &&
+					this.previousRelationInstances !== null
+				) {
+					const previousInstances = this.previousRelationInstances;
+					const currentInstances = this.relationInstances;
+
+					console.log('previousInstances');
+					console.log(previousInstances);
+					console.log('currentInstances');
+					console.log(currentInstances);
+
+					const compareRelations = (
+						prevInstances,
+						currentInstances
+					) => {
+						// Keys to compare for updates and to create a composite unique key
+						const keysToCompare = [
+							'action',
+							'uniqueID',
+							'trigger',
+							'target',
+							'blockTarget',
+							'stylesString',
+							'outTransitionString',
+							'inTransitionString',
+						];
+
+						// Function to create a composite key
+						const createCompositeKey = relation =>
+							keysToCompare.map(key => relation[key]).join('|');
+
+						// Initialize arrays for added, removed, and updated relations
+						const added = [];
+						const removed = [];
+						const updated = [];
+
+						// Create maps for tracking composite keys
+						const prevCompositeKeys = new Map();
+						const currCompositeKeys = new Map();
+
+						// Populate the maps
+						Object.entries(previousInstances).forEach(
+							([key, value]) => {
+								prevCompositeKeys.set(
+									createCompositeKey(value),
+									key
+								);
+							}
+						);
+						Object.entries(currentInstances).forEach(
+							([key, value]) => {
+								currCompositeKeys.set(
+									createCompositeKey(value),
+									key
+								);
+							}
+						);
+
+						// Identify added and removed relations
+						for (const [compositeKey, key] of currCompositeKeys) {
+							if (!prevCompositeKeys.has(compositeKey)) {
+								added.push(key);
+							}
+						}
+						for (const [compositeKey, key] of prevCompositeKeys) {
+							if (!currCompositeKeys.has(compositeKey)) {
+								removed.push(key);
+							}
+						}
+
+						// Identify updated relations
+						for (const [key, value] of Object.entries(
+							currentInstances
+						)) {
+							const compositeKey = createCompositeKey(value);
+							if (prevCompositeKeys.has(compositeKey)) {
+								const prevKey =
+									prevCompositeKeys.get(compositeKey);
+								let isUpdated = false;
+								for (const compareKey of keysToCompare) {
+									if (
+										value[compareKey] !==
+										previousInstances[prevKey][compareKey]
+									) {
+										isUpdated = true;
+										break;
+									}
+								}
+								if (isUpdated) {
+									updated.push(key);
+								}
+							}
+						}
+
+						return { added, removed, updated };
+					};
+
+					// Use the function
+					const { added, removed, updated } = compareRelations(
+						this.previousRelationInstances,
+						this.relationInstances
+					);
+
+					console.log('Added Relations:', added);
+					console.log('Removed Relations:', removed);
+					console.log('Updated Relations:', updated);
+				}
+
+				this.previousRelationInstances = this.relationInstances;
 
 				if (!isRelationsPreview) {
 					this.relationInstances = null;

@@ -1095,11 +1095,6 @@ class MaxiBlockComponent extends Component {
 						processRelations(this.relationInstances);
 					}
 					if (updated !== null) {
-						processRelations(
-							this.relationshipInstances,
-							'remove',
-							updated
-						);
 						processRelations(this.relationInstances);
 					}
 				}

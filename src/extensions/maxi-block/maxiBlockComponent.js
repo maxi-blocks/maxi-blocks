@@ -996,7 +996,6 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (customDataRelations) {
-				console.log('customDataRelations', customDataRelations);
 				const isRelationsPreview =
 					this.props.attributes['relations-preview'];
 
@@ -1014,8 +1013,6 @@ class MaxiBlockComponent extends Component {
 					this.relationInstances !== null &&
 					this.previousRelationInstances !== null
 				) {
-					console.log(this.previousRelationInstances);
-					console.log(this.relationInstances);
 					const keysToCompare = [
 						'action',
 						'uniqueID',
@@ -1030,9 +1027,6 @@ class MaxiBlockComponent extends Component {
 					const isEquivalent = (a, b) => {
 						for (const key of keysToCompare) {
 							if (a[key] !== b[key]) {
-								console.log('key', key);
-								console.log('a[key]', a[key]);
-								console.log('b[key]', b[key]);
 								return false;
 							}
 						}
@@ -1046,11 +1040,9 @@ class MaxiBlockComponent extends Component {
 						const previousIds = new Set(
 							previousRelations.map(relation => relation.id)
 						);
-						console.log('previousIds', previousIds);
 						const currentIds = new Set(
 							currentRelations.map(relation => relation.id)
 						);
-						console.log('currentIds', currentIds);
 
 						let added = null;
 						let removed = null;
@@ -1079,7 +1071,6 @@ class MaxiBlockComponent extends Component {
 									prev => prev.id === relation.id
 								);
 								if (!isEquivalent(relation, previousRelation)) {
-									console.log('updated', relation.id);
 									updated = relation.id;
 									break;
 								}
@@ -1095,9 +1086,6 @@ class MaxiBlockComponent extends Component {
 						this.relationInstances
 					);
 
-					console.log('added', added); // Outputs the id of the added item, or null
-					console.log('removed', removed); // Outputs the id of the removed item, or null
-					console.log('updated', updated); // Outputs the id of the updated item, or null
 					if (removed !== null) {
 						processRelations(
 							this.previousRelationInstances,

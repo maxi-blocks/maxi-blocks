@@ -25,14 +25,8 @@ export default function processRelations(
 		return modifiedRelation;
 	});
 
-	console.log('Relations:');
-	console.log(modifiedRelations);
-
 	if (relationAction !== null) {
 		if (relationIndex !== null) {
-			console.log(
-				`Processing removal of relation ${relationIndex} with action ${relationAction}`
-			);
 			const removingRelation = modifiedRelations.find(
 				relation => relation.id === relationIndex
 			);
@@ -43,7 +37,6 @@ export default function processRelations(
 			);
 
 			if (relationAction === 'remove') {
-				console.log('Removing relation');
 				relation.removePreviousStylesAndTransitions();
 			}
 			return null;

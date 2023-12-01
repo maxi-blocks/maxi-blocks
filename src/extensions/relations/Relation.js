@@ -1034,32 +1034,6 @@ class Relation {
 		this.addTransition(this.outTransitionEl);
 
 		this.removeStyles();
-
-		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
-		if (
-			this.targetEl.matches(':hover') &&
-			this.defaultTransition !== 'none 0s ease 0s'
-		) {
-			this.removeTransition(this.outTransitionEl);
-			this.removeAddAttrToBlock();
-		} else {
-			const transitionTimeout = this.getTransitionTimeout();
-
-			const removeTransitionAction = () => {
-				this.removeTransition(this.inTransitionEl);
-				this.removeAddAttrToBlock();
-				this.removeRelationSubscriber();
-			};
-
-			if (transitionTimeout === 0) {
-				removeTransitionAction();
-			} else {
-				this.transitionTimeout = setTimeout(
-					removeTransitionAction,
-					transitionTimeout
-				);
-			}
-		}
 	}
 
 	removePreviousStylesAndTransitions() {
@@ -1067,10 +1041,6 @@ class Relation {
 		const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
 		const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
 		const previousOutTransitionsElId = `relations--${this.uniqueID}-${this.id}-out-transitions`;
-		console.log('removePreviousStylesAndTransitions'); // 🔥
-		console.log(previousStylesElId); // 🔥
-		console.log(previousInTransitionsElId); // 🔥
-		console.log(previousOutTransitionsElId); // 🔥
 
 		// Function to remove an element by its ID
 		const removeElementsById = elementId => {

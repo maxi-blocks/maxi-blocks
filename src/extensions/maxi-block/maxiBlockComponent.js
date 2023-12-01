@@ -1098,14 +1098,22 @@ class MaxiBlockComponent extends Component {
 					console.log('added', added); // Outputs the id of the added item, or null
 					console.log('removed', removed); // Outputs the id of the removed item, or null
 					console.log('updated', updated); // Outputs the id of the updated item, or null
-					// if (removed !== null) {
-					// 	processRelations(
-					// 		this.previousRelationInstances,
-					// 		'remove',
-					// 		removed
-					// 	);
-					// 	processRelations(this.relationInstances);
-					// }
+					if (removed !== null) {
+						processRelations(
+							this.previousRelationInstances,
+							'remove',
+							removed
+						);
+						processRelations(this.relationInstances);
+					}
+					if (updated !== null) {
+						processRelations(
+							this.relationshipInstances,
+							'remove',
+							updated
+						);
+						processRelations(this.relationInstances);
+					}
 				}
 
 				if (!isRelationsPreview) {

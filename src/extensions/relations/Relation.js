@@ -130,21 +130,21 @@ class Relation {
 	// Create two different <style> elements, one for the styles and one for the transitions.
 	generateStylesEls() {
 		this.stylesEl = document.createElement('style');
-		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
+		this.stylesEl.id = `relations--${this.uniqueID}-${this.id}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
 		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
 		if (this.inTransitionString.length > 0) {
 			this.inTransitionEl = document.createElement('style');
-			this.inTransitionEl.id = `relations--${this.uniqueID}-in-transitions`;
+			this.inTransitionEl.id = `relations--${this.uniqueID}-${this.id}-in-transitions`;
 			this.inTransitionEl.setAttribute('data-type', this.action);
 			this.inTransitionEl.setAttribute('data-sids', this.sids);
 			this.inTransitionEl.innerText = this.inTransitionString;
 		}
 		if (this.outTransitionString.length > 0) {
 			this.outTransitionEl = document.createElement('style');
-			this.outTransitionEl.id = `relations--${this.uniqueID}-out-transitions`;
+			this.outTransitionEl.id = `relations--${this.uniqueID}-${this.id}-out-transitions`;
 			this.outTransitionEl.setAttribute('data-type', this.action);
 			this.outTransitionEl.setAttribute('data-sids', this.sids);
 			this.outTransitionEl.innerText = this.outTransitionString;
@@ -162,23 +162,12 @@ class Relation {
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
-		if (currentEl) {
-			const currentElSids = currentEl
-				.getAttribute('data-sids')
-				.split(',')
-				.map(item => item.trim());
+		if (currentEl) currentEl.remove();
 
-			if (
-				currentEl.getAttribute('data-type') === this.action &&
-				JSON.stringify(currentElSids) === JSON.stringify(this.sids)
-			)
-				currentEl.replaceWith(styleEl);
-			else currentEl.insertAdjacentElement('afterend', styleEl);
-		} else
-			this.inlineStylesEl.parentNode.insertBefore(
-				styleEl,
-				this.inlineStylesEl.nextSibling
-			);
+		this.inlineStylesEl.parentNode.insertBefore(
+			styleEl,
+			this.inlineStylesEl.nextSibling
+		);
 	}
 
 	getCurrentBreakpoint() {
@@ -250,9 +239,9 @@ class Relation {
 		this.isPreview = isPreview;
 
 		if (this.isPreview) {
-			this.onMouseEnter();
+			this.enableTransitions();
 		} else {
-			this.onMouseLeave();
+			this.disableTransitions();
 		}
 	}
 
@@ -963,7 +952,8 @@ class Relation {
 		this.addStyleEl(element);
 	}
 
-	static removeTransition(element) {
+	// eslint-disable-next-line class-methods-use-this
+	removeTransition(element) {
 		element?.remove();
 	}
 
@@ -1026,78 +1016,9 @@ class Relation {
 		this.observer.disconnect();
 	}
 
-	addHoverEvents() {
-		this.triggerEl.addEventListener(
-			'mouseenter',
-			this.onMouseEnter.bind(this)
-		);
-		this.triggerEl.addEventListener(
-			'mouseleave',
-			this.onMouseLeave.bind(this)
-		);
-
-		/**
-		 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
-		 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
-		 * to ensure it has the selected effects
-		 */
-		if (this.isHoveredContained) {
-			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
-				transitionTriggerEl.addEventListener('mouseenter', () => {
-					// console.log('Entering hover target'); // 🔥
-
-					// Remove transitions to let the original ones be applied
-					Relation.removeTransition(this.inTransitionEl);
-
-					clearTimeout(this.contentTimeout);
-				});
-
-				transitionTriggerEl.addEventListener('mouseleave', () => {
-					const transitionDuration = Array.from(
-						new Set(this.transitionTargetsArray.flat())
-					)
-						.filter(Boolean)
-						.reduce((promise, transitionTarget) => {
-							const transitionTargetEl = document.querySelector(
-								`${this.dataTarget} ${transitionTarget ?? ''}`
-							);
-
-							const transitionDuration = transitionTargetEl
-								? [
-										'transition-duration',
-										'transition-delay',
-								  ].reduce(
-										(sum, prop) =>
-											sum +
-											parseFloat(
-												getComputedStyle(
-													transitionTargetEl
-												)
-													.getPropertyValue(prop)
-													.replace('s', '')
-											),
-										0
-								  ) * 1000
-								: 0;
-
-							return Math.max(promise, transitionDuration);
-						}, 0);
-
-					// console.log('Leaving hover target'); // 🔥
-
-					this.contentTimeout = setTimeout(() => {
-						// Set the transitions back waiting the original to be done
-						this.addTransition(this.inTransitionEl);
-					}, transitionDuration);
-				});
-			});
-		}
-	}
-
-	onMouseEnter() {
+	enableTransitions() {
 		// console.log('IB is active'); // 🔥
-		if (this.transitionTimeout)
-			Relation.removeTransition(this.outTransitionEl);
+		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
 		clearTimeout(this.transitionTimeout);
 
 		this.addRelationSubscriber();
@@ -1107,9 +1028,9 @@ class Relation {
 		this.addStyles();
 	}
 
-	onMouseLeave() {
+	disableTransitions() {
 		// console.log('IB is inactive'); // 🔥
-		Relation.removeTransition(this.inTransitionEl);
+		this.removeTransition(this.inTransitionEl);
 		this.addTransition(this.outTransitionEl);
 
 		this.removeStyles();
@@ -1119,13 +1040,13 @@ class Relation {
 			this.targetEl.matches(':hover') &&
 			this.defaultTransition !== 'none 0s ease 0s'
 		) {
-			Relation.removeTransition(this.outTransitionEl);
+			this.removeTransition(this.outTransitionEl);
 			this.removeAddAttrToBlock();
 		} else {
 			const transitionTimeout = this.getTransitionTimeout();
 
 			const removeTransitionAction = () => {
-				Relation.removeTransition(this.outTransitionEl);
+				this.removeTransition(this.inTransitionEl);
 				this.removeAddAttrToBlock();
 				this.removeRelationSubscriber();
 			};
@@ -1141,38 +1062,30 @@ class Relation {
 		}
 	}
 
-	addClickEvents() {
-		this.triggerEl.addEventListener('click', this.onMouseClick.bind(this));
-	}
-
-	onMouseClick() {
-		this.addDataAttrToBlock();
-		this.addTransition(this.inTransitionEl);
-		this.addStyles();
-
-		this.transitionTimeout = setTimeout(() => {
-			Relation.removeTransition(this.inTransitionEl);
-		}, this.getTransitionTimeout());
-	}
-
 	removePreviousStylesAndTransitions() {
 		// IDs for the styles and transitions elements
-		const previousStylesElId = `relations--${this.uniqueID}-styles`;
-		const previousInTransitionsElId = `relations--${this.uniqueID}-in-transitions`;
-		const previousOutTransitionsElId = `relations--${this.uniqueID}-out-transitions`;
+		const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
+		const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
+		const previousOutTransitionsElId = `relations--${this.uniqueID}-${this.id}-out-transitions`;
+		console.log('removePreviousStylesAndTransitions'); // 🔥
+		console.log(previousStylesElId); // 🔥
+		console.log(previousInTransitionsElId); // 🔥
+		console.log(previousOutTransitionsElId); // 🔥
 
 		// Function to remove an element by its ID
-		const removeElementById = elementId => {
-			const element = document.getElementById(elementId);
-			if (element) {
-				element.remove();
-			}
+		const removeElementsById = elementId => {
+			const elements = document.querySelectorAll(`#${elementId}`);
+			elements.forEach(element => {
+				if (element) {
+					element.remove();
+				}
+			});
 		};
 
 		// Remove the previous styles and transitions elements
-		removeElementById(previousStylesElId);
-		removeElementById(previousInTransitionsElId);
-		removeElementById(previousOutTransitionsElId);
+		removeElementsById(previousStylesElId);
+		removeElementsById(previousInTransitionsElId);
+		removeElementsById(previousOutTransitionsElId);
 	}
 }
 

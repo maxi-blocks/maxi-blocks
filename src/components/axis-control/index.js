@@ -664,35 +664,24 @@ const AxisControl = props => {
 
 		let response = {};
 
-		const isAllWithoutSideMarginsChange = key => {
-			if (prefix) {
-				return (
-					key.includes(`top${prefix}`) ||
-					key.includes(`bottom${prefix}`)
-				);
-			}
-			return (
-				(key.includes('top') || key.includes('bottom')) &&
-				!key.includes('unit')
-			);
-		};
-
 		const isAllChange = key => {
 			if (prefix) {
-				return (
-					key.includes(`top${prefix}`) ||
-					key.includes(`left${prefix}`) ||
-					key.includes(`bottom${prefix}`) ||
-					key.includes(`right${prefix}`)
-				);
+				return disableLeftRightMargin
+					? key.includes(`top${prefix}`) ||
+							key.includes(`bottom${prefix}`)
+					: key.includes(`top${prefix}`) ||
+							key.includes(`left${prefix}`) ||
+							key.includes(`bottom${prefix}`) ||
+							key.includes(`right${prefix}`);
 			}
-			return (
-				(key.includes('top') ||
-					key.includes('left') ||
-					key.includes('bottom') ||
-					key.includes('right')) &&
-				!key.includes('unit')
-			);
+			return disableLeftRightMargin
+				? (key.includes('top') || key.includes('bottom')) &&
+						!key.includes('unit')
+				: (key.includes('top') ||
+						key.includes('left') ||
+						key.includes('bottom') ||
+						key.includes('right')) &&
+						!key.includes('unit');
 		};
 
 		const isHorizontalChange = key => {
@@ -727,33 +716,19 @@ const AxisControl = props => {
 
 		switch (disableSync ? 'all' : sync) {
 			case 'all': {
-				if (disableLeftRightMargin) {
-					inputsArray.forEach(key => {
-						if (isAllWithoutSideMarginsChange(key)) {
-							response[
-								getAttributeKey(
-									getKey(key),
-									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
-							] = newValue;
-						}
-					});
-				} else {
-					inputsArray.forEach(key => {
-						if (isAllChange(key)) {
-							response[
-								getAttributeKey(
-									getKey(key),
-									isHover,
-									false,
-									customBreakpoint ?? breakpoint
-								)
-							] = newValue;
-						}
-					});
-				}
+				inputsArray.forEach(key => {
+					if (isAllChange(key)) {
+						response[
+							getAttributeKey(
+								getKey(key),
+								isHover,
+								false,
+								customBreakpoint ?? breakpoint
+							)
+						] = newValue;
+					}
+				});
+
 				break;
 			}
 			case 'axis': {

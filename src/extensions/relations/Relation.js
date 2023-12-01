@@ -593,12 +593,21 @@ class Relation {
 								const selectorRegExp = new RegExp(
 									`(${Relation.escapeRegExp(selector)})`
 								);
+
 								if (!this.stylesString.match(selectorRegExp))
 									this.stylesString += `${selector}}${postLine}`;
 
+								let postfix = '';
+
+								if (
+									selector.includes('divider-maxi') &&
+									(key === 'width' || key === 'height')
+								)
+									postfix = ' !important';
+
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
-									`$1 ${key}: ${value};`
+									`$1 ${key}: ${value}${postfix};`
 								);
 							}
 						);

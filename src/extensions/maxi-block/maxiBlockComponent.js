@@ -1020,13 +1020,25 @@ class MaxiBlockComponent extends Component {
 						'target',
 						'blockTarget',
 						'stylesString',
-						'outTransitionString',
-						'inTransitionString',
+						// 'outTransitionString',
+						// 'inTransitionString',
 					];
+
+					console.log(
+						'this.previousRelationInstances',
+						this.previousRelationInstances
+					);
+					console.log(
+						'this.relationInstances',
+						this.relationInstances
+					);
 
 					const isEquivalent = (a, b) => {
 						for (const key of keysToCompare) {
 							if (a[key] !== b[key]) {
+								console.log('key', key);
+								console.log('a[key]', a[key]);
+								console.log('b[key]', b[key]);
 								return false;
 							}
 						}
@@ -1086,6 +1098,10 @@ class MaxiBlockComponent extends Component {
 						this.relationInstances
 					);
 
+					console.log('added', added);
+					console.log('removed', removed);
+					console.log('updated', updated);
+
 					if (removed !== null) {
 						processRelations(
 							this.previousRelationInstances,
@@ -1095,6 +1111,11 @@ class MaxiBlockComponent extends Component {
 						processRelations(this.relationInstances);
 					}
 					if (updated !== null) {
+						processRelations(
+							this.relationInstances,
+							'remove',
+							removed
+						);
 						processRelations(this.relationInstances);
 					}
 				}

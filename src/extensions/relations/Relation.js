@@ -6,6 +6,7 @@ import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
 // Relations (IB)
 class Relation {
 	constructor(item, relationAction = null, relationIndex = null) {
+		this.id = item?.id;
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 		this.isPreview = false;
@@ -15,7 +16,7 @@ class Relation {
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
 
-		this.blockTarget = '.';
+		this.blockTarget = `.${this.uniqueID}`;
 		this.blockTargetEl = document.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
 		this.targetPrefix =

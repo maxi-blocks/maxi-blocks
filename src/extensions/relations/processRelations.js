@@ -26,7 +26,9 @@ export default function processRelations(
 		const modifiedRelation = {};
 		Object.keys(relation).forEach(key => {
 			// Exclude specific keys from being converted to arrays
-			if (['action', 'uniqueID', 'trigger', 'target'].includes(key)) {
+			if (
+				['action', 'uniqueID', 'trigger', 'target', 'id'].includes(key)
+			) {
 				modifiedRelation[key] = relation[key];
 			} else {
 				// Convert other properties to an array, if they're not already one

@@ -1020,8 +1020,6 @@ class MaxiBlockComponent extends Component {
 						'target',
 						'blockTarget',
 						'stylesString',
-						// 'outTransitionString',
-						// 'inTransitionString',
 					];
 
 					console.log(
@@ -1036,9 +1034,6 @@ class MaxiBlockComponent extends Component {
 					const isEquivalent = (a, b) => {
 						for (const key of keysToCompare) {
 							if (a[key] !== b[key]) {
-								console.log('key', key);
-								console.log('a[key]', a[key]);
-								console.log('b[key]', b[key]);
 								return false;
 							}
 						}

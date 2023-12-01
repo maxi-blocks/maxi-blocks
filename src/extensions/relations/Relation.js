@@ -507,22 +507,6 @@ class Relation {
 		return `${mainTarget} ${this.target}`;
 	}
 
-	static getMediaLines(breakpoint, breakpointValue) {
-		let prevLine = '';
-		let postLine = '';
-
-		if (breakpoint === 'general') return { prevLine, postLine };
-
-		const mediaRule = breakpoint === 'xxl' ? 'min-width' : 'max-width';
-		const mediaValue =
-			breakpoint === 'xxl' ? breakpointValue + 1 : breakpointValue;
-
-		prevLine = `@media screen and (${mediaRule}: ${mediaValue}px) {`;
-		postLine = '}';
-
-		return { prevLine, postLine };
-	}
-
 	generateStyles() {
 		const getStylesLine = (stylesObj, target, index) => {
 			if (!stylesObj) return;
@@ -535,11 +519,6 @@ class Relation {
 						const avoidHoverString = this.avoidHoverArray[index]
 							? ':not(:hover)'
 							: '';
-
-						const { prevLine, postLine } = Relation.getMediaLines(
-							breakpoint,
-							breakpointValue
-						);
 
 						let finalTarget;
 						// For background layers styles, avoidHoverString needs to be added to the parent element
@@ -582,8 +561,17 @@ class Relation {
 								);
 						}
 
+						if (
+							breakpoint !== 'general' &&
+							finalTarget.includes('[maxi-blocks-responsive]')
+						)
+							finalTarget = finalTarget.replace(
+								'[maxi-blocks-responsive]',
+								`[maxi-blocks-responsive="${breakpoint}"]`
+							);
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+							`body.maxi-blocks--active ${finalTarget} {`.replace(
 								/\s{2,}/g,
 								' '
 							);
@@ -595,7 +583,7 @@ class Relation {
 								);
 
 								if (!this.stylesString.match(selectorRegExp))
-									this.stylesString += `${selector}}${postLine}`;
+									this.stylesString += `${selector}}`;
 
 								let postfix = '';
 
@@ -634,7 +622,7 @@ class Relation {
 								`(${Relation.escapeRegExp(selector)})`
 							);
 							if (!this.stylesString.match(selectorRegExp))
-								this.stylesString += `${selector}}${postLine}`;
+								this.stylesString += `${selector}}`;
 
 							if (widthTop || widthTop === 0)
 								this.stylesString = this.stylesString.replace(
@@ -669,16 +657,7 @@ class Relation {
 				}
 			);
 		};
-
-		// On styles (not transitions), we need to keep the styles after run the interaction.
-		// As the same target block can be used by multiple interactions, we can't depend the styles
-		// on the "data-relations" attribute, as it can be changed by other interactions.
-		// To prevent it, in case the interaction is 'click' type, the target don't contains
-		// the "data-relations" attribute, so we can keep the styles after the interaction.
-		const mainTarget =
-			this.action === 'click'
-				? `${this.targetPrefix}'.'${this.uniqueID}[data-maxi-relations="true"]`
-				: this.dataTarget;
+		const mainTarget = this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
 			if (this.hasMultipleTargetsArray[index])
@@ -697,9 +676,7 @@ class Relation {
 						stylesObj,
 						this.getTargetForLine(
 							transitionTarget,
-							this.action === 'click'
-								? `${this.targetPrefix}.${this.uniqueID}[data-maxi-relations="true"]`
-								: this.dataTarget
+							this.dataTarget
 						),
 						index
 					)
@@ -805,16 +782,20 @@ class Relation {
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
-								const { prevLine, postLine } =
-									Relation.getMediaLines(
-										breakpoint,
-										breakpointValue
-									);
-
-								const selector =
-									`${prevLine}body.maxi-blocks--active ${transitionTarget} {`.replace(
+								let selector =
+									`body.maxi-blocks--active ${transitionTarget} {`.replace(
 										/\s{2,}/g,
 										' '
+									);
+								if (
+									breakpoint !== 'general' &&
+									selector.includes(
+										'[maxi-blocks-responsive]'
+									)
+								)
+									selector = selector.replace(
+										'[maxi-blocks-responsive]',
+										`[maxi-blocks-responsive="${breakpoint}"]`
 									);
 
 								const selectorRegExp = new RegExp(
@@ -822,7 +803,7 @@ class Relation {
 								);
 
 								if (!fullTransitionString.match(selectorRegExp))
-									fullTransitionString += `${selector}}${postLine}`;
+									fullTransitionString += `${selector}}`;
 
 								const transitionExistsRegExp = new RegExp(
 									`(${Relation.escapeRegExp(

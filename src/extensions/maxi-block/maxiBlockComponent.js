@@ -1022,15 +1022,6 @@ class MaxiBlockComponent extends Component {
 						'stylesString',
 					];
 
-					console.log(
-						'this.previousRelationInstances',
-						this.previousRelationInstances
-					);
-					console.log(
-						'this.relationInstances',
-						this.relationInstances
-					);
-
 					const isEquivalent = (a, b) => {
 						for (const key of keysToCompare) {
 							if (a[key] !== b[key]) {
@@ -1092,10 +1083,6 @@ class MaxiBlockComponent extends Component {
 						this.previousRelationInstances,
 						this.relationInstances
 					);
-
-					console.log('added', added);
-					console.log('removed', removed);
-					console.log('updated', updated);
 
 					if (removed !== null) {
 						processRelations(

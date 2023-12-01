@@ -228,6 +228,10 @@ const AdvancedNumberControl = props => {
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
+	const handleToggleHelpContent = () => {
+		setShowHelpContent(state => !state);
+	};
+
 	return (
 		<>
 			{enableAuto && (
@@ -247,7 +251,7 @@ const AdvancedNumberControl = props => {
 					{showHelp && (
 						<div
 							className='maxi-info__help-icon'
-							onClick={() => setShowHelpContent(state => !state)}
+							onClick={handleToggleHelpContent}
 						>
 							<span className='maxi-info__help-icon-span'>i</span>
 						</div>

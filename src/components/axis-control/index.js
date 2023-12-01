@@ -664,6 +664,19 @@ const AxisControl = props => {
 
 		let response = {};
 
+		const isAllWithoutSideMarginsChange = key => {
+			if (prefix) {
+				return (
+					key.includes(`top${prefix}`) ||
+					key.includes(`bottom${prefix}`)
+				);
+			}
+			return (
+				(key.includes('top') || key.includes('bottom')) &&
+				!key.includes('unit')
+			);
+		};
+
 		const isAllChange = key => {
 			if (prefix) {
 				return (
@@ -714,19 +727,33 @@ const AxisControl = props => {
 
 		switch (disableSync ? 'all' : sync) {
 			case 'all': {
-				inputsArray.forEach(key => {
-					if (isAllChange(key)) {
-						response[
-							getAttributeKey(
-								getKey(key),
-								isHover,
-								false,
-								customBreakpoint ?? breakpoint
-							)
-						] = newValue;
-					}
-				});
-
+				if (disableLeftRightMargin) {
+					inputsArray.forEach(key => {
+						if (isAllWithoutSideMarginsChange(key)) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = newValue;
+						}
+					});
+				} else {
+					inputsArray.forEach(key => {
+						if (isAllChange(key)) {
+							response[
+								getAttributeKey(
+									getKey(key),
+									isHover,
+									false,
+									customBreakpoint ?? breakpoint
+								)
+							] = newValue;
+						}
+					});
+				}
 				break;
 			}
 			case 'axis': {

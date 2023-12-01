@@ -37,7 +37,6 @@ const scriptsConfig = {
 	mode: defaultConfig.mode,
 	target: defaultConfig.target,
 	entry: jsFiles,
-	devtool: 'source-map',
 	output: {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),

@@ -5,9 +5,7 @@ import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
 
 // Relations (IB)
 class Relation {
-	constructor(item, isEditor, relationAction = null, relationIndex = null) {
-		this.isEditor = isEditor;
-
+	constructor(item, relationAction = null, relationIndex = null) {
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 		this.isPreview = false;
@@ -17,24 +15,18 @@ class Relation {
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
 
-		this.blockTarget = `${this.isEditor ? '.' : '#'}${this.uniqueID}`;
+		this.blockTarget = '.';
 		this.blockTargetEl = document.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
-		this.targetPrefix = this.isEditor
-			? '.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend'
-			: '';
+		this.targetPrefix =
+			'.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
 		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `${this.targetPrefix}${
 			this.blockTarget
-		}[data-maxi-relations="true"]${
-			// Adding additional selector to avoid other styles overwrite IB styles
-			this.isEditor
-				? `[data-type="maxi-blocks/${getBlockNameFromUniqueID(
-						this.uniqueID
-				  )}"]`
-				: ''
-		}`;
+		}[data-maxi-relations="true"]${`[data-type="maxi-blocks/${getBlockNameFromUniqueID(
+			this.uniqueID
+		)}"]`}`;
 
 		if (!this.triggerEl || !this.targetEl) return;
 
@@ -132,8 +124,6 @@ class Relation {
 		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
 		// leave the hover transition trigger
 		this.contentTimeout = null;
-
-		this.init();
 	}
 
 	// Create two different <style> elements, one for the styles and one for the transitions.
@@ -688,9 +678,7 @@ class Relation {
 		// the "data-relations" attribute, so we can keep the styles after the interaction.
 		const mainTarget =
 			this.action === 'click'
-				? `${this.targetPrefix}${this.isEditor ? '.' : '#'}${
-						this.uniqueID
-				  }[data-maxi-relations="true"]`
+				? `${this.targetPrefix}'.'${this.uniqueID}[data-maxi-relations="true"]`
 				: this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
@@ -711,9 +699,7 @@ class Relation {
 						this.getTargetForLine(
 							transitionTarget,
 							this.action === 'click'
-								? `${this.targetPrefix}${
-										this.isEditor ? '.' : '#'
-								  }${this.uniqueID}[data-maxi-relations="true"]`
+								? `${this.targetPrefix}.${this.uniqueID}[data-maxi-relations="true"]`
 								: this.dataTarget
 						),
 						index
@@ -1039,22 +1025,6 @@ class Relation {
 		this.observer.disconnect();
 	}
 
-	init() {
-		if (this.isEditor) {
-			return;
-		}
-
-		switch (this.action) {
-			case 'hover':
-				this.addHoverEvents();
-				break;
-			case 'click':
-			default:
-				this.addClickEvents();
-				break;
-		}
-	}
-
 	addHoverEvents() {
 		this.triggerEl.addEventListener(
 			'mouseenter',
@@ -1124,7 +1094,6 @@ class Relation {
 	}
 
 	onMouseEnter() {
-		// if (this.isEditor) this.removePreviousStylesAndTransitions();
 		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout)
 			Relation.removeTransition(this.outTransitionEl);

@@ -1042,17 +1042,8 @@ class MaxiBlockComponent extends Component {
 							currentRelations.map(relation => relation.id)
 						);
 
-						let added = null;
 						let removed = null;
 						let updated = null;
-
-						// Identify added relation
-						for (const relation of currentRelations) {
-							if (!previousIds.has(relation.id)) {
-								added = relation.id;
-								break; // Stop after finding the first added item
-							}
-						}
 
 						// Identify removed relation
 						for (const relation of previousRelations) {
@@ -1075,11 +1066,11 @@ class MaxiBlockComponent extends Component {
 							}
 						}
 
-						return { added, removed, updated };
+						return { removed, updated };
 					};
 
 					// Usage
-					const { added, removed, updated } = compareRelations(
+					const { removed, updated } = compareRelations(
 						this.previousRelationInstances,
 						this.relationInstances
 					);

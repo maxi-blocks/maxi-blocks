@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useContext } from '@wordpress/element';
+import { useContext, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -52,6 +52,8 @@ const RelationControl = props => {
 	} = useDispatch('core/block-editor');
 
 	const repeaterContext = useContext(RepeaterContext);
+
+	const [actionState, setActionState] = useState(null);
 
 	const {
 		clientId,
@@ -267,6 +269,7 @@ const RelationControl = props => {
 						val => val === undefined
 					),
 					css: styles,
+					action: actionState || item.action,
 					...(item.sid === 't' && {
 						effects: {
 							...item.effects,
@@ -462,7 +465,9 @@ const RelationControl = props => {
 													'Action',
 													'maxi-blocks'
 												)}
-												value={item.action}
+												value={
+													actionState || item.action
+												}
 												options={[
 													{
 														label: __(
@@ -487,15 +492,16 @@ const RelationControl = props => {
 													},
 												]}
 												newStyle
-												onChange={value =>
+												onChange={value => {
+													setActionState(value);
 													onChangeRelation(
 														relations,
 														item.id,
 														{
 															action: value,
 														}
-													)
-												}
+													);
+												}}
 											/>
 											<SelectControl
 												label={__(
@@ -594,6 +600,9 @@ const RelationControl = props => {
 															css: {},
 															target: getTarget(),
 															sid: value,
+															action:
+																actionState ||
+																item.action,
 															effects: {
 																...item.effects,
 																transitionTarget,

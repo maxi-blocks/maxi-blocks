@@ -588,6 +588,7 @@ const setFormatWithClass = ({
 	} = flatFormatsWithClass({
 		formatValue: preformattedFormatValue || formatValue,
 		typography: preformattedTypography || typography,
+		changedTypography: preformattedTypography || typography,
 		content: preformattedContent,
 		isList,
 		returnFormatValue: true,

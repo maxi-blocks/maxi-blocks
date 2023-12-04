@@ -3,6 +3,10 @@
 exports[`createSelectors Should create selectors 1`] = `
 {
   "after button": {
+    "canvas hover": {
+      "label": "button ::after on canvas hover",
+      "target": ":hover buttonClassName::after",
+    },
     "hover": {
       "label": "button ::after on hover",
       "target": "buttonClassName:hover::after",
@@ -23,6 +27,10 @@ exports[`createSelectors Should create selectors 1`] = `
     },
   },
   "before button": {
+    "canvas hover": {
+      "label": "button ::before on canvas hover",
+      "target": ":hover buttonClassName::before",
+    },
     "hover": {
       "label": "button ::before on hover",
       "target": "buttonClassName:hover::before",
@@ -43,6 +51,10 @@ exports[`createSelectors Should create selectors 1`] = `
     },
   },
   "button": {
+    "canvas hover": {
+      "label": "button on canvas hover",
+      "target": ":hover buttonClassName",
+    },
     "hover": {
       "label": "button on hover",
       "target": "buttonClassName:hover",
@@ -68,6 +80,10 @@ exports[`createSelectors Should create selectors 1`] = `
 exports[`createSelectors Should create selectors without pseudo elements 1`] = `
 {
   "button": {
+    "canvas hover": {
+      "label": "button on canvas hover",
+      "target": ":hover buttonClassName",
+    },
     "hover": {
       "label": "button on hover",
       "target": "buttonClassName:hover",

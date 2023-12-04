@@ -238,12 +238,23 @@ const getButtonIconStyles = ({
 	const {
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
+		[`${prefix}icon-status-hover-target`]: iconHoverStatusTarget,
 	} = obj;
 	const useIconColor = !iconInherit;
-	const normalTarget = `${wrapperTarget} ${target}`;
-	const hoverTarget = hoverOnIcon
-		? `${wrapperTarget} ${target}:hover`
-		: `${wrapperTarget}:hover ${target}`;
+	const normalTarget = ` ${wrapperTarget} ${target}`;
+
+	const getHoverTarget = () => {
+		if (!iconHoverStatusTarget) {
+			return `:hover ${wrapperTarget} ${target}`;
+		}
+
+		if (hoverOnIcon) {
+			return ` ${wrapperTarget} ${target}:hover`;
+		}
+
+		return ` ${wrapperTarget}:hover ${target}`;
+	};
+	const hoverTarget = getHoverTarget();
 
 	const iconType = obj?.[`${prefix}svgType`]?.toLowerCase();
 
@@ -258,26 +269,16 @@ const getButtonIconStyles = ({
 						useIconColor,
 						iconType,
 					}),
-					[` ${wrapperTarget} ${target}`]: getIconObject(
-						obj,
-						'icon',
-						prefix,
-						isIB
-					),
-					[` ${wrapperTarget} ${target} svg`]: getIconSize(
+					[normalTarget]: getIconObject(obj, 'icon', prefix, isIB),
+					[`${normalTarget} svg`]: getIconSize(
 						obj,
 						false,
 						prefix,
 						iconWidthHeightRatio
 					),
-					[` ${wrapperTarget} ${target} svg > *`]: getIconObject(
+					[`${normalTarget} svg > *`]: getIconObject(
 						obj,
 						'svg',
-						prefix
-					),
-					[` ${wrapperTarget} ${target} svg path`]: getIconPathStyles(
-						obj,
-						false,
 						prefix
 					),
 			  }
@@ -291,15 +292,15 @@ const getButtonIconStyles = ({
 					);
 
 					return {
-						[` ${hoverTarget}`]: iconHoverObj,
-						[` ${hoverTarget} svg > *`]: iconHoverObj,
-						[` ${hoverTarget} svg`]: getIconSize(
+						[`${hoverTarget}`]: iconHoverObj,
+						[`${hoverTarget} svg > *`]: iconHoverObj,
+						[`${hoverTarget} svg`]: getIconSize(
 							obj,
 							true,
 							prefix,
 							iconWidthHeightRatio
 						),
-						[` ${hoverTarget} svg path`]: getIconPathStyles(
+						[`${hoverTarget} svg path`]: getIconPathStyles(
 							obj,
 							true
 						),
@@ -315,18 +316,15 @@ const getButtonIconStyles = ({
 					};
 			  })()),
 		// Background
-		// TODO: check these lines, seems we've got an error here
-		// ...getBlockBackgroundStyles({
-		// ...getGroupAttributes(obj, 'svg'),
-		[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
-		[` ${hoverTarget}`]:
+		[`${normalTarget} svg path`]: getIconPathStyles(obj, false),
+		[hoverTarget]:
 			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
-		[` ${hoverTarget} svg > *`]:
+		[`${hoverTarget} svg > *`]:
 			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
-		[` ${hoverTarget} svg`]:
+		[`${hoverTarget} svg`]:
 			obj['icon-status-hover'] &&
 			getIconSize(obj, true, prefix, iconWidthHeightRatio),
-		[` ${hoverTarget} svg path`]:
+		[`${hoverTarget} svg path`]:
 			obj['icon-status-hover'] && getIconPathStyles(obj, true),
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, [
@@ -346,7 +344,6 @@ const getButtonIconStyles = ({
 			isHover: true,
 			blockStyle,
 		}),
-		// }),
 	};
 
 	return response;

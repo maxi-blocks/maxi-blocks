@@ -1,20 +1,33 @@
-/* eslint-disable no-undef */
-/* eslint-disable class-methods-use-this */
+/**
+ * Internal dependencies
+ */
+import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
+
 // Relations (IB)
 class Relation {
-	constructor(item) {
+	constructor(item, relationAction = null, relationIndex = null) {
+		this.id = item?.id;
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
+		this.isPreview = false;
 
 		if (!this.uniqueID || this.css.length === 0) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
-		this.blockTargetEl = document.querySelector(`#${this.uniqueID}`);
+
+		this.blockTarget = `.${this.uniqueID}`;
+		this.blockTargetEl = document.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
-		this.fullTarget = `#${item.uniqueID} ${this.target}`;
+		this.targetPrefix =
+			'.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
+		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
 		this.targetEl = document.querySelector(this.fullTarget);
-		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
+		this.dataTarget = `${this.targetPrefix}${
+			this.blockTarget
+		}[data-maxi-relations="true"]${`[data-type="maxi-blocks/${getBlockNameFromUniqueID(
+			this.uniqueID
+		)}"]`}`;
 
 		if (!this.triggerEl || !this.targetEl) return;
 
@@ -23,12 +36,16 @@ class Relation {
 			.getPropertyValue('transition');
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		this.hasMultipleTargetsArray = this.css.map(item =>
-			Object.keys(item).some(key => !this.breakpoints.includes(key))
-		);
+		this.hasMultipleTargetsArray = Array.isArray(this.css)
+			? this.css.map(item =>
+					Object.keys(item).some(
+						key => !this.breakpoints.includes(key)
+					)
+			  )
+			: [];
 
 		this.action = item.action;
-		this.sids = item.sid || item.settings;
+		this.sids = item.sid || item.settings || [];
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
@@ -108,28 +125,26 @@ class Relation {
 		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
 		// leave the hover transition trigger
 		this.contentTimeout = null;
-
-		this.init();
 	}
 
 	// Create two different <style> elements, one for the styles and one for the transitions.
 	generateStylesEls() {
 		this.stylesEl = document.createElement('style');
-		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
+		this.stylesEl.id = `relations--${this.uniqueID}-${this.id}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
 		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
 		if (this.inTransitionString.length > 0) {
 			this.inTransitionEl = document.createElement('style');
-			this.inTransitionEl.id = `relations--${this.uniqueID}-in-transitions`;
+			this.inTransitionEl.id = `relations--${this.uniqueID}-${this.id}-in-transitions`;
 			this.inTransitionEl.setAttribute('data-type', this.action);
 			this.inTransitionEl.setAttribute('data-sids', this.sids);
 			this.inTransitionEl.innerText = this.inTransitionString;
 		}
 		if (this.outTransitionString.length > 0) {
 			this.outTransitionEl = document.createElement('style');
-			this.outTransitionEl.id = `relations--${this.uniqueID}-out-transitions`;
+			this.outTransitionEl.id = `relations--${this.uniqueID}-${this.id}-out-transitions`;
 			this.outTransitionEl.setAttribute('data-type', this.action);
 			this.outTransitionEl.setAttribute('data-sids', this.sids);
 			this.outTransitionEl.innerText = this.outTransitionString;
@@ -147,23 +162,12 @@ class Relation {
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
-		if (currentEl) {
-			const currentElSids = currentEl
-				.getAttribute('data-sids')
-				.split(',')
-				.map(item => item.trim());
+		if (currentEl) currentEl.remove();
 
-			if (
-				currentEl.getAttribute('data-type') === this.action &&
-				JSON.stringify(currentElSids) === JSON.stringify(this.sids)
-			)
-				currentEl.replaceWith(styleEl);
-			else currentEl.insertAdjacentElement('afterend', styleEl);
-		} else
-			this.inlineStylesEl.parentNode.insertBefore(
-				styleEl,
-				this.inlineStylesEl.nextSibling
-			);
+		this.inlineStylesEl.parentNode.insertBefore(
+			styleEl,
+			this.inlineStylesEl.nextSibling
+		);
 	}
 
 	getCurrentBreakpoint() {
@@ -229,6 +233,16 @@ class Relation {
 
 			return Math.max(promise, transitionTimeout);
 		}, 0);
+	}
+
+	setIsPreview(isPreview) {
+		this.isPreview = isPreview;
+
+		if (this.isPreview) {
+			this.enableTransitions();
+		} else {
+			this.disableTransitions();
+		}
 	}
 
 	/**
@@ -347,34 +361,37 @@ class Relation {
 			});
 		};
 
-		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargetsArray[index]) {
-				const stylesObj = {};
-				// effectsObj is the same for all targets
-				let effectsObj = {};
+		if (Array.isArray(this.css))
+			this.css.forEach((css, index) => {
+				if (this.hasMultipleTargetsArray[index]) {
+					const stylesObj = {};
+					// effectsObj is the same for all targets
+					let effectsObj = {};
 
-				Object.keys(css).forEach(target => {
-					const { stylesObj: rawStylesObj, effectsObj: rawEffects } =
-						cleanValues(
+					Object.keys(css).forEach(target => {
+						const {
+							stylesObj: rawStylesObj,
+							effectsObj: rawEffects,
+						} = cleanValues(
 							getCssObjForEachTarget(
 								css[target],
 								this.effects[index]
 							)
 						);
 
-					stylesObj[target] = rawStylesObj;
-					effectsObj = rawEffects;
-				});
+						stylesObj[target] = rawStylesObj;
+						effectsObj = rawEffects;
+					});
 
-				pushStylesAndEffects({ stylesObj, effectsObj });
-			} else {
-				pushStylesAndEffects(
-					cleanValues(
-						getCssObjForEachTarget(css, this.effects[index])
-					)
-				);
-			}
-		});
+					pushStylesAndEffects({ stylesObj, effectsObj });
+				} else {
+					pushStylesAndEffects(
+						cleanValues(
+							getCssObjForEachTarget(css, this.effects[index])
+						)
+					);
+				}
+			});
 
 		return {
 			stylesObjs,
@@ -409,18 +426,19 @@ class Relation {
 			});
 		};
 
-		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargetsArray[index]) {
-				Object.keys(css).forEach(target => {
-					getBreakpointValues(css[target]);
-				});
-			} else getBreakpointValues(css);
-		});
+		if (Array.isArray(this.css))
+			this.css.forEach((css, index) => {
+				if (this.hasMultipleTargetsArray[index]) {
+					Object.keys(css).forEach(target => {
+						getBreakpointValues(css[target]);
+					});
+				} else getBreakpointValues(css);
+			});
 
 		return breakpointsObj;
 	}
 
-	escapeRegExp(string) {
+	static escapeRegExp(string) {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	}
 
@@ -451,6 +469,7 @@ class Relation {
 	}
 
 	setDataAttrToBlock(value) {
+		if (!this.blockTargetEl) return;
 		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
 		// to ensure the last trigger is not removed. It happens when moving from some trigger to
 		// other really fast between while `transitionTimeout` is still running.
@@ -488,24 +507,9 @@ class Relation {
 		return `${mainTarget} ${this.target}`;
 	}
 
-	getMediaLines(breakpoint, breakpointValue) {
-		let prevLine = '';
-		let postLine = '';
-
-		if (breakpoint === 'general') return { prevLine, postLine };
-
-		const mediaRule = breakpoint === 'xxl' ? 'min-width' : 'max-width';
-		const mediaValue =
-			breakpoint === 'xxl' ? breakpointValue + 1 : breakpointValue;
-
-		prevLine = `@media screen and (${mediaRule}: ${mediaValue}px) {`;
-		postLine = '}';
-
-		return { prevLine, postLine };
-	}
-
 	generateStyles() {
 		const getStylesLine = (stylesObj, target, index) => {
+			if (!stylesObj) return;
 			const isBackground = target.includes('maxi-background-displayer');
 
 			Object.entries(this.breakpointsObj).forEach(
@@ -515,11 +519,6 @@ class Relation {
 						const avoidHoverString = this.avoidHoverArray[index]
 							? ':not(:hover)'
 							: '';
-
-						const { prevLine, postLine } = this.getMediaLines(
-							breakpoint,
-							breakpointValue
-						);
 
 						let finalTarget;
 						// For background layers styles, avoidHoverString needs to be added to the parent element
@@ -562,8 +561,17 @@ class Relation {
 								);
 						}
 
+						if (
+							breakpoint !== 'general' &&
+							finalTarget.includes('[maxi-blocks-responsive]')
+						)
+							finalTarget = finalTarget.replace(
+								'[maxi-blocks-responsive]',
+								`[maxi-blocks-responsive="${breakpoint}"]`
+							);
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+							`body.maxi-blocks--active ${finalTarget} {`.replace(
 								/\s{2,}/g,
 								' '
 							);
@@ -571,14 +579,23 @@ class Relation {
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
 								const selectorRegExp = new RegExp(
-									`(${this.escapeRegExp(selector)})`
+									`(${Relation.escapeRegExp(selector)})`
 								);
+
 								if (!this.stylesString.match(selectorRegExp))
-									this.stylesString += `${selector}}${postLine}`;
+									this.stylesString += `${selector}}`;
+
+								let postfix = '';
+
+								if (
+									selector.includes('divider-maxi') &&
+									(key === 'width' || key === 'height')
+								)
+									postfix = ' !important';
 
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
-									`$1 ${key}: ${value};`
+									`$1 ${key}: ${value}${postfix};`
 								);
 							}
 						);
@@ -602,10 +619,10 @@ class Relation {
 								Math.round(number * 100) / 100;
 
 							const selectorRegExp = new RegExp(
-								`(${this.escapeRegExp(selector)})`
+								`(${Relation.escapeRegExp(selector)})`
 							);
 							if (!this.stylesString.match(selectorRegExp))
-								this.stylesString += `${selector}}${postLine}`;
+								this.stylesString += `${selector}}`;
 
 							if (widthTop || widthTop === 0)
 								this.stylesString = this.stylesString.replace(
@@ -640,16 +657,7 @@ class Relation {
 				}
 			);
 		};
-
-		// On styles (not transitions), we need to keep the styles after run the interaction.
-		// As the same target block can be used by multiple interactions, we can't depend the styles
-		// on the "data-relations" attribute, as it can be changed by other interactions.
-		// To prevent it, in case the interaction is 'click' type, the target don't contains
-		// the "data-relations" attribute, so we can keep the styles after the interaction.
-		const mainTarget =
-			this.action === 'click'
-				? `#${this.uniqueID}[data-maxi-relations="true"]`
-				: this.dataTarget;
+		const mainTarget = this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
 			if (this.hasMultipleTargetsArray[index])
@@ -668,9 +676,7 @@ class Relation {
 						stylesObj,
 						this.getTargetForLine(
 							transitionTarget,
-							this.action === 'click'
-								? `#${this.uniqueID}[data-maxi-relations="true"]`
-								: this.dataTarget
+							this.dataTarget
 						),
 						index
 					)
@@ -719,7 +725,8 @@ class Relation {
 							);
 						const prevEffectsBreakpoint = prevEffectsBreakpoints[0];
 						const prevBreakpointsHasStyles = !this.stylesObjs.some(
-							styleObj => prevEffectsBreakpoint in styleObj
+							styleObj =>
+								styleObj && prevEffectsBreakpoint in styleObj
 						);
 
 						if (
@@ -737,22 +744,27 @@ class Relation {
 						// and need to add transitions for them as well.
 						let currentStyleObj = [...this.breakpoints]
 							.splice(0, this.breakpoints.indexOf(breakpoint) + 1)
-							.reduce(
-								(acc, breakpoint) => ({
-									...acc,
-									...stylesObj[
-										this.getLastUsableBreakpoint(
-											breakpoint,
-											breakpoint =>
-												stylesObj?.[breakpoint] &&
-												Object.keys(
-													stylesObj?.[breakpoint]
-												).length
-										)
-									],
-								}),
-								{}
-							);
+							.reduce((acc, breakpoint) => {
+								const lastUsableBreakpoint =
+									this.getLastUsableBreakpoint(
+										breakpoint,
+										bp =>
+											stylesObj?.[bp] &&
+											Object.keys(stylesObj[bp]).length
+									);
+
+								if (
+									lastUsableBreakpoint !== undefined &&
+									stylesObj?.[lastUsableBreakpoint]
+								) {
+									return {
+										...acc,
+										...stylesObj[lastUsableBreakpoint],
+									};
+								}
+
+								return acc;
+							}, {});
 
 						if (this.isBorder && isBackground)
 							currentStyleObj = {
@@ -770,27 +782,31 @@ class Relation {
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
-								const { prevLine, postLine } =
-									this.getMediaLines(
-										breakpoint,
-										breakpointValue
-									);
-
-								const selector =
-									`${prevLine}body.maxi-blocks--active ${transitionTarget} {`.replace(
+								let selector =
+									`body.maxi-blocks--active ${transitionTarget} {`.replace(
 										/\s{2,}/g,
 										' '
 									);
+								if (
+									breakpoint !== 'general' &&
+									selector.includes(
+										'[maxi-blocks-responsive]'
+									)
+								)
+									selector = selector.replace(
+										'[maxi-blocks-responsive]',
+										`[maxi-blocks-responsive="${breakpoint}"]`
+									);
 
 								const selectorRegExp = new RegExp(
-									`(${this.escapeRegExp(selector)})`
+									`(${Relation.escapeRegExp(selector)})`
 								);
 
 								if (!fullTransitionString.match(selectorRegExp))
-									fullTransitionString += `${selector}}${postLine}`;
+									fullTransitionString += `${selector}}`;
 
 								const transitionExistsRegExp = new RegExp(
-									`(${this.escapeRegExp(
+									`(${Relation.escapeRegExp(
 										selector
 									)}[^{]*transition:)`
 								);
@@ -926,6 +942,7 @@ class Relation {
 		this.addStyleEl(element);
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	removeTransition(element) {
 		element?.remove();
 	}
@@ -975,10 +992,11 @@ class Relation {
 			});
 		});
 
-		observer.observe(this.blockTargetEl, {
-			attributes: true,
-			attributeFilter: ['data-maxi-relations'],
-		});
+		if (this.blockTargetEl)
+			observer.observe(this.blockTargetEl, {
+				attributes: true,
+				attributeFilter: ['data-maxi-relations'],
+			});
 
 		this.observer = observer;
 	}
@@ -988,87 +1006,7 @@ class Relation {
 		this.observer.disconnect();
 	}
 
-	init() {
-		switch (this.action) {
-			case 'hover':
-				this.addHoverEvents();
-				break;
-			case 'click':
-			default:
-				this.addClickEvents();
-				break;
-		}
-	}
-
-	addHoverEvents() {
-		this.triggerEl.addEventListener(
-			'mouseenter',
-			this.onMouseEnter.bind(this)
-		);
-		this.triggerEl.addEventListener(
-			'mouseleave',
-			this.onMouseLeave.bind(this)
-		);
-
-		/**
-		 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
-		 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
-		 * to ensure it has the selected effects
-		 */
-		if (this.isHoveredContained) {
-			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
-				transitionTriggerEl.addEventListener('mouseenter', () => {
-					// console.log('Entering hover target'); // 🔥
-
-					// Remove transitions to let the original ones be applied
-					this.removeTransition(this.inTransitionEl);
-
-					clearTimeout(this.contentTimeout);
-				});
-
-				transitionTriggerEl.addEventListener('mouseleave', () => {
-					const transitionDuration = Array.from(
-						new Set(this.transitionTargetsArray.flat())
-					)
-						.filter(Boolean)
-						.reduce((promise, transitionTarget) => {
-							const transitionTargetEl = document.querySelector(
-								`${this.dataTarget} ${transitionTarget ?? ''}`
-							);
-
-							const transitionDuration = transitionTargetEl
-								? [
-										'transition-duration',
-										'transition-delay',
-								  ].reduce(
-										(sum, prop) =>
-											sum +
-											parseFloat(
-												getComputedStyle(
-													transitionTargetEl
-												)
-													.getPropertyValue(prop)
-													.replace('s', '')
-											),
-										0
-								  ) * 1000
-								: 0;
-
-							return Math.max(promise, transitionDuration);
-						}, 0);
-
-					// console.log('Leaving hover target'); // 🔥
-
-					this.contentTimeout = setTimeout(() => {
-						// Set the transitions back waiting the original to be done
-						this.addTransition(this.inTransitionEl);
-					}, transitionDuration);
-				});
-			});
-		}
-	}
-
-	onMouseEnter() {
+	enableTransitions() {
 		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
 		clearTimeout(this.transitionTimeout);
@@ -1080,117 +1018,35 @@ class Relation {
 		this.addStyles();
 	}
 
-	onMouseLeave() {
+	disableTransitions() {
 		// console.log('IB is inactive'); // 🔥
 		this.removeTransition(this.inTransitionEl);
 		this.addTransition(this.outTransitionEl);
 
 		this.removeStyles();
-
-		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
-		if (
-			this.targetEl.matches(':hover') &&
-			this.defaultTransition !== 'none 0s ease 0s'
-		) {
-			this.removeTransition(this.outTransitionEl);
-			this.removeAddAttrToBlock();
-		} else {
-			const transitionTimeout = this.getTransitionTimeout();
-
-			const removeTransitionAction = () => {
-				this.removeTransition(this.outTransitionEl);
-				this.removeAddAttrToBlock();
-				this.removeRelationSubscriber();
-			};
-
-			if (transitionTimeout === 0) {
-				removeTransitionAction();
-			} else {
-				this.transitionTimeout = setTimeout(
-					removeTransitionAction,
-					transitionTimeout
-				);
-			}
-		}
 	}
 
-	addClickEvents() {
-		this.triggerEl.addEventListener('click', this.onMouseClick.bind(this));
-	}
+	removePreviousStylesAndTransitions() {
+		// IDs for the styles and transitions elements
+		const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
+		const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
+		const previousOutTransitionsElId = `relations--${this.uniqueID}-${this.id}-out-transitions`;
 
-	onMouseClick() {
-		this.addDataAttrToBlock();
-		this.addTransition(this.inTransitionEl);
-		this.addStyles();
+		// Function to remove an element by its ID
+		const removeElementsById = elementId => {
+			const elements = document.querySelectorAll(`#${elementId}`);
+			elements.forEach(element => {
+				if (element) {
+					element.remove();
+				}
+			});
+		};
 
-		this.transitionTimeout = setTimeout(() => {
-			this.removeTransition(this.inTransitionEl);
-		}, this.getTransitionTimeout());
+		// Remove the previous styles and transitions elements
+		removeElementsById(previousStylesElId);
+		removeElementsById(previousInTransitionsElId);
+		removeElementsById(previousOutTransitionsElId);
 	}
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	let relations;
-
-	if (typeof maxiRelations?.[0] === 'string') {
-		try {
-			relations = JSON.parse(maxiRelations?.[0]);
-		} catch (e) {
-			console.error('Invalid JSON string', e);
-			relations = null;
-		}
-	} else if (
-		typeof maxiRelations?.[0] === 'object' &&
-		maxiRelations?.[0] !== null
-	) {
-		relations = maxiRelations?.[0];
-	} else {
-		relations = null;
-	}
-
-	if (!relations) return;
-
-	const uniqueRelations = relations.reduce(
-		(uniqueArray, { action, trigger, uniqueID, target }) => {
-			const getIsUnique = relation =>
-				relation.action === action &&
-				relation.trigger === trigger &&
-				relation.uniqueID === uniqueID &&
-				relation.target === target;
-
-			const isUnique = !uniqueArray.find(uniqueRelation =>
-				getIsUnique(uniqueRelation)
-			);
-			if (isUnique) {
-				const sameRelations = relations.filter(sameRelation =>
-					getIsUnique(sameRelation)
-				);
-				const mergedSameRelations = sameRelations.reduce(
-					(obj, relation) => {
-						Object.keys(relation).forEach(key => {
-							if (
-								key !== 'action' &&
-								key !== 'trigger' &&
-								key !== 'uniqueID' &&
-								key !== 'target'
-							) {
-								if (!obj[key]) obj[key] = [];
-								obj[key].push(relation[key]);
-							} else {
-								obj[key] = relation[key];
-							}
-						});
-						return obj;
-					},
-					{}
-				);
-				uniqueArray.push(mergedSameRelations);
-			}
-
-			return uniqueArray;
-		},
-		[]
-	);
-
-	uniqueRelations.forEach(relation => new Relation(relation));
-});
+export default Relation;

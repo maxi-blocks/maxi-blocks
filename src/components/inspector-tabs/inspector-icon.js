@@ -47,6 +47,7 @@ const icon = ({
 	} = props;
 	const {
 		[`${prefix}icon-status-hover`]: hoverStatus,
+		[`${prefix}icon-status-hover-target`]: hoverStatusTarget,
 		blockStyle,
 		[`${prefix}svgType`]: svgType,
 	} = attributes;
@@ -135,20 +136,35 @@ const icon = ({
 										})
 									}
 								/>
-								{hoverStatus && (
-									<IconControl
-										{...getGroupAttributes(
-											attributes,
-											groupAttributes,
-											true,
-											prefix
-										)}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-										}}
-										isHover
-										{...iconControlBasicProps}
-									/>
+								{hoverStatus && deviceType === 'general' && (
+									<>
+										<ToggleSwitch
+											label={__(
+												'Switch hover target to canvas',
+												'maxi-blocks'
+											)}
+											selected={!hoverStatusTarget}
+											onChange={val =>
+												maxiSetAttributes({
+													[`${prefix}icon-status-hover-target`]:
+														!val,
+												})
+											}
+										/>
+										<IconControl
+											{...getGroupAttributes(
+												attributes,
+												groupAttributes,
+												true,
+												prefix
+											)}
+											onChange={obj => {
+												maxiSetAttributes(obj);
+											}}
+											isHover
+											{...iconControlBasicProps}
+										/>
+									</>
 								)}
 							</>
 						),

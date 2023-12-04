@@ -9038,6 +9038,14 @@
       "type": "boolean",
       "default": false
     },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -10906,6 +10914,10 @@
         "hover": {
           "label": "image on hover",
           "target": " .maxi-image-block__image:hover"
+        },
+        "canvas hover": {
+          "label": "image on canvas hover",
+          "target": ":hover .maxi-image-block__image"
         }
       },
       "before canvas": {
@@ -10926,6 +10938,10 @@
         "hover": {
           "label": "image ::before on hover",
           "target": " .maxi-image-block__image:hover::before"
+        },
+        "canvas hover": {
+          "label": "image ::before on canvas hover",
+          "target": ":hover .maxi-image-block__image::before"
         }
       },
       "after canvas": {
@@ -10946,6 +10962,10 @@
         "hover": {
           "label": "image ::after on hover",
           "target": " .maxi-image-block__image:hover::after"
+        },
+        "canvas hover": {
+          "label": "image ::after on canvas hover",
+          "target": ":hover .maxi-image-block__image::after"
         }
       }
     },

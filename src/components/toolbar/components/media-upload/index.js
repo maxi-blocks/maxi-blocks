@@ -86,6 +86,8 @@ const ToolbarMediaUpload = props => {
 						<div>
 							<MediaUpload
 								onSelect={media => {
+									args.onClose();
+
 									const alt =
 										(altSelector === 'wordpress' &&
 											media?.alt) ||

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockNameFromUniqueID } from './utils';
+import { getBlockNameFromUniqueID } from '../../attributes';
 import uniqueIDGenerator from '../../attributes/uniqueIDGenerator';
 import getCustomLabel from '../../maxi-block/getCustomLabel';
 

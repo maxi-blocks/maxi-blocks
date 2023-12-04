@@ -52,13 +52,14 @@ import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
+import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
+import processRelations from '../relations/processRelations';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
-import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 
 /**
  * Style Component
@@ -134,6 +135,8 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
+		this.relationInstances = null;
+		this.previousRelationInstances = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -954,6 +957,7 @@ class MaxiBlockComponent extends Component {
 
 		let obj;
 		let breakpoints;
+		let customDataRelations;
 
 		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
@@ -968,6 +972,8 @@ class MaxiBlockComponent extends Component {
 
 			const customData = this.getCustomData;
 			dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
@@ -987,6 +993,111 @@ class MaxiBlockComponent extends Component {
 					/>
 				);
 				this.rootSlot.render(styleComponent);
+			}
+
+			if (customDataRelations) {
+				const isRelationsPreview =
+					this.props.attributes['relations-preview'];
+
+				if (isRelationsPreview) {
+					this.relationInstances =
+						processRelations(customDataRelations);
+				}
+
+				this.relationInstances?.forEach(relationInstance => {
+					relationInstance.setIsPreview(isRelationsPreview);
+				});
+
+				if (
+					isRelationsPreview &&
+					this.relationInstances !== null &&
+					this.previousRelationInstances !== null
+				) {
+					const keysToCompare = [
+						'action',
+						'uniqueID',
+						'trigger',
+						'target',
+						'blockTarget',
+						'stylesString',
+					];
+
+					const isEquivalent = (a, b) => {
+						for (const key of keysToCompare) {
+							if (a[key] !== b[key]) {
+								return false;
+							}
+						}
+						return true;
+					};
+
+					const compareRelations = (
+						previousRelations,
+						currentRelations
+					) => {
+						const previousIds = new Set(
+							previousRelations.map(relation => relation.id)
+						);
+						const currentIds = new Set(
+							currentRelations.map(relation => relation.id)
+						);
+
+						let removed = null;
+						let updated = null;
+
+						// Identify removed relation
+						for (const relation of previousRelations) {
+							if (!currentIds.has(relation.id)) {
+								removed = relation.id;
+								break; // Stop after finding the first removed item
+							}
+						}
+
+						// Identify updated relation
+						for (const relation of currentRelations) {
+							if (previousIds.has(relation.id)) {
+								const previousRelation = previousRelations.find(
+									prev => prev.id === relation.id
+								);
+								if (!isEquivalent(relation, previousRelation)) {
+									updated = relation.id;
+									break;
+								}
+							}
+						}
+
+						return { removed, updated };
+					};
+
+					// Usage
+					const { removed, updated } = compareRelations(
+						this.previousRelationInstances,
+						this.relationInstances
+					);
+
+					if (removed !== null) {
+						processRelations(
+							this.previousRelationInstances,
+							'remove',
+							removed
+						);
+						processRelations(this.relationInstances);
+					}
+					if (updated !== null) {
+						processRelations(
+							this.relationInstances,
+							'remove',
+							removed
+						);
+						processRelations(this.relationInstances);
+					}
+				}
+
+				if (!isRelationsPreview) {
+					this.relationInstances = null;
+				}
+
+				this.previousRelationInstances = this.relationInstances;
 			}
 		}
 	}

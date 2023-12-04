@@ -177,6 +177,8 @@ class edit extends MaxiBlockComponent {
 			'play-icon-content': playIcon,
 			'overlay-mediaID': overlayMediaId,
 			'overlay-mediaURL': overlayMediaUrl,
+			'overlay-isImageUrl': overlayIsImageUrl,
+			'overlay-isImageUrlValid': overlayIsImageUrlValid,
 			'overlay-mediaAlt': overlayMediaAlt,
 			'overlay-altSelector': altSelector,
 			hideImage,
@@ -268,7 +270,10 @@ class edit extends MaxiBlockComponent {
 					(playerType === 'popup' ? (
 						<div className='maxi-video-block__overlay'>
 							{!hideImage &&
-								(!isNil(overlayMediaId) || overlayMediaUrl ? (
+								(overlayMediaUrl &&
+								((overlayIsImageUrl &&
+									overlayIsImageUrlValid) ||
+									!isNil(overlayMediaId)) ? (
 									<img
 										className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
 										src={overlayMediaUrl}

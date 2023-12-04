@@ -11,7 +11,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ClipPathControl from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
-import ImageURLUpload from '../image-url-upload';
+import ImageUrlUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -734,7 +734,7 @@ const ImageLayer = props => {
 							})
 						}
 					/>
-					<ImageURLUpload
+					<ImageUrlUpload
 						attributes={imageOptions}
 						prefix={`${prefix}background-image-`}
 						onChange={onChange}

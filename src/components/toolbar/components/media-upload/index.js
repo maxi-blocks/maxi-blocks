@@ -10,7 +10,7 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
-import ImageURLUpload from '../../../image-url-upload';
+import ImageUrlUpload from '../../../image-url-upload';
 import { injectImgSVG } from '../../../../extensions/svg';
 
 /**
@@ -166,7 +166,7 @@ const ToolbarMediaUpload = props => {
 								)}
 								renderContent={() => (
 									<div className='maxi-dropdown__url-upload-content__inner'>
-										<ImageURLUpload
+										<ImageUrlUpload
 											attributes={attributes}
 											prefix={prefix}
 											newStyle={false}

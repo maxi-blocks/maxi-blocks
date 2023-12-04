@@ -11,6 +11,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ClipPathControl from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
+import ImageURLUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -676,57 +677,69 @@ const ImageLayer = props => {
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
-				<MediaUploaderControl
-					mediaID={mediaID}
-					onSelectImage={imageData =>
-						onChange({
-							[getAttributeKey(
-								'background-image-mediaID',
-								isHover,
-								prefix
-							)]: imageData.id,
-							[getAttributeKey(
-								'background-image-mediaURL',
-								isHover,
-								prefix
-							)]: imageData.url,
-							[getAttributeKey(
-								'background-image-width',
-								isHover,
-								prefix
-							)]: imageData.width,
-							[getAttributeKey(
-								'background-image-height',
-								isHover,
-								prefix
-							)]: imageData.height,
-						})
-					}
-					onRemoveImage={() =>
-						onChange({
-							[getAttributeKey(
-								'background-image-mediaID',
-								false,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-mediaURL',
-								false,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-width',
-								isHover,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-height',
-								isHover,
-								prefix
-							)]: '',
-						})
-					}
-				/>
+				<>
+					<MediaUploaderControl
+						mediaID={mediaID}
+						onSelectImage={imageData =>
+							onChange({
+								[getAttributeKey(
+									'background-image-mediaID',
+									isHover,
+									prefix
+								)]: imageData.id,
+								[getAttributeKey(
+									'background-image-mediaURL',
+									isHover,
+									prefix
+								)]: imageData.url,
+								[getAttributeKey(
+									'background-image-width',
+									isHover,
+									prefix
+								)]: imageData.width,
+								[getAttributeKey(
+									'background-image-height',
+									isHover,
+									prefix
+								)]: imageData.height,
+								[getAttributeKey(
+									'background-image-isImageUrl',
+									isHover,
+									prefix
+								)]: false,
+							})
+						}
+						onRemoveImage={() =>
+							onChange({
+								[getAttributeKey(
+									'background-image-mediaID',
+									false,
+									prefix
+								)]: '',
+								[getAttributeKey(
+									'background-image-mediaURL',
+									false,
+									prefix
+								)]: '',
+								[getAttributeKey(
+									'background-image-width',
+									isHover,
+									prefix
+								)]: '',
+								[getAttributeKey(
+									'background-image-height',
+									isHover,
+									prefix
+								)]: '',
+							})
+						}
+					/>
+					<ImageURLUpload
+						attributes={imageOptions}
+						prefix={`${prefix}background-image-`}
+						onChange={onChange}
+					/>
+				</>
 			)}
 			{!hideSettings && (
 				<SettingTabsControl

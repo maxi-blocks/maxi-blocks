@@ -1,3 +1,19 @@
+_Updates: 5 December 2023_
+MaxiBlocks V1.5.6
+* Update: Enhance Interaction Builder with Preview Mode in Gutenberg.
+* Update: Add toggle for Icon, Transform and CustomCSS canvas hover.
+* Update: Context Loop toggle to affect children or grandchildren blocks inside Containers.
+* Fix: Resolve Dynamic Content issues for removed WooCommerce products.
+* Fix: Correct Context Loop functionality by category, tag and author.
+* Fix: Interaction Builder now accurately applies styles for click actions on frontend.
+* Fix: Typography default values for Interaction Builder in Gutenberg.
+* Fix: Remove redundant shape mask icon styles.
+* Fix: Remove an unnecessary second reset button from Button icon's toolbar.
+* Fix: Better Toolbar pop-up styles for margin.
+* Fix: Box shadow min and max values.
+* Fix: Context Loop for Container.
+* Fix: Remove empty rel attribute for links.
+
 _Updates: 22 November 2023_
 MaxiBlocks V1.5.5
 * Fix: Number Counter block/pattern infinite loading issue in the editing experience.

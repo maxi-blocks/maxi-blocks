@@ -7,11 +7,8 @@ import { cloneElement, renderToString } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import {
-	getBlockNameFromUniqueID,
-	getBlockSelectorsByUniqueID,
-	getIBDataItem,
-} from '../utils';
+import { getBlockNameFromUniqueID } from '../../../attributes';
+import { getBlockSelectorsByUniqueID, getIBDataItem } from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
 
 jest.mock('@wordpress/blocks', () => jest.fn());

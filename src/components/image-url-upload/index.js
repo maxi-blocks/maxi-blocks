@@ -20,7 +20,7 @@ const ImageUrlUpload = ({
 	newStyle = true,
 	onChange,
 }) => {
-	const [error, setError] = useState(false);
+	const [error, setError] = useState(!attributes[`${prefix}isImageUrlValid`]);
 
 	return (
 		<div className='maxi-image-url-upload'>

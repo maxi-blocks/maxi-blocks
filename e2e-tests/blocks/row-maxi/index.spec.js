@@ -17,6 +17,7 @@ import {
 describe('Row Maxi', () => {
 	it('Row Maxi does not break', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
 

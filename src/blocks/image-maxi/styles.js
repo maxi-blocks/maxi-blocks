@@ -28,6 +28,7 @@ import {
 	getClipPathStyles,
 	getFlexStyles,
 	getAspectRatio,
+	getImgWidthStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -309,7 +310,7 @@ const getImageObject = props => {
 		fitParentSize,
 		imageRatio,
 		imageRatioCustom,
-		imgWidth,
+		'img-width-general': imgWidth,
 		isFirstOnHierarchy,
 		mediaWidth,
 		useInitSize,
@@ -356,15 +357,14 @@ const getImageObject = props => {
 			},
 		}),
 		...(imgWidth &&
-			!fitParentSize && {
-				imgWidth: {
-					general: {
-						width: !useInitSize
-							? `${imgWidth}%`
-							: `${mediaWidth}px`,
-					},
+			!fitParentSize &&
+			getImgWidthStyles(
+				{
+					...getGroupAttributes(props, 'width', false, 'img-'),
 				},
-			}),
+				useInitSize,
+				mediaWidth
+			)),
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),

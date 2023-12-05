@@ -188,26 +188,26 @@
 		"mediaHeight": {
 			"type": "number"
 		},
-		"imgWidth-general": {
+		"img-width-general": {
 			"type": "number",
 			"default": 100
 		},
-		"imgWidth-xxl": {
+		"img-width-xxl": {
 			"type": "number"
 		},
-		"imgWidth-xl": {
+		"img-width-xl": {
 			"type": "number"
 		},
-		"imgWidth-l": {
+		"img-width-l": {
 			"type": "number"
 		},
-		"imgWidth-m": {
+		"img-width-m": {
 			"type": "number"
 		},
-		"imgWidth-s": {
+		"img-width-s": {
 			"type": "number"
 		},
-		"imgWidth-xs": {
+		"img-width-xs": {
 			"type": "number"
 		},
 		"useInitSize": {

@@ -169,13 +169,13 @@ const DimensionTab = props => {
 							className='maxi-image-inspector__dimension-width'
 							label={__('Width', 'maxi-blocks')}
 							value={
-								attributes[`imgWidth-${deviceType}`] ||
+								attributes[`img-width-${deviceType}`] ||
 								attributes.imgWidth
 							}
 							onChange={val => {
 								if (!isNil(val)) {
 									maxiSetAttributes({
-										[`imgWidth-${deviceType}`]: val,
+										[`img-width-${deviceType}`]: val,
 									});
 
 									resizableObject &&
@@ -185,12 +185,12 @@ const DimensionTab = props => {
 								} else {
 									const defaultAttribute =
 										getDefaultAttribute(
-											`imgWidth-${deviceType}`,
+											`img-width-${deviceType}`,
 											clientId
 										);
 
 									maxiSetAttributes({
-										[`imgWidth-${deviceType}`]:
+										[`img-width-${deviceType}`]:
 											defaultAttribute,
 									});
 
@@ -203,7 +203,7 @@ const DimensionTab = props => {
 							max={100}
 							allowReset
 							initialPosition={getDefaultAttribute(
-								`imgWidth-${deviceType}`,
+								`img-width-${deviceType}`,
 								clientId
 							)}
 						/>

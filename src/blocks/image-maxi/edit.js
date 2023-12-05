@@ -10,7 +10,7 @@ import { createRef } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isNumber, round, toNumber, uniqueId } from 'lodash';
+import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 import loadable from '@loadable/component';
 
@@ -35,17 +35,12 @@ const CaptionToolbar = loadable(() =>
 );
 import getStyles from './styles';
 import {
-	getAttributeValue,
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import {
-	MaxiBlockComponent,
-	withMaxiProps,
-	getResizerSize,
-} from '../../extensions/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
@@ -121,21 +116,14 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const imgWidth = getLastBreakpointAttribute({
-				target: 'imgWidth',
+				target: 'img-width',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			});
-			console.log('this.props.deviceType');
-			console.log(this.props.deviceType);
-			console.log('this.resizableObject.current.state.width');
-			console.log(this.resizableObject.current.state.width);
 			const numericWidthString =
 				this.resizableObject.current.state.width.replace(/[^\d.]/g, '');
 			const widthNumber = parseFloat(numericWidthString);
 			const resizableWidth = Math.round(widthNumber * 10) / 10;
-
-			console.log('imgWidth', imgWidth);
-			console.log('resizableWidth', resizableWidth);
 
 			if (
 				(this.props.attributes.fitParentSize ||
@@ -146,7 +134,6 @@ class edit extends MaxiBlockComponent {
 					width: '100%',
 				});
 			} else if (imgWidth !== resizableWidth) {
-				console.log('updateSize');
 				this.resizableObject.current.updateSize({
 					width: `${imgWidth}%`,
 				});
@@ -162,7 +149,7 @@ class edit extends MaxiBlockComponent {
 			'hover-type': hoverType,
 			captionContent,
 			captionType,
-			imgWidth,
+			'img-width': imgWidth,
 			mediaAlt,
 			altSelector,
 			useInitSize,
@@ -283,24 +270,12 @@ class edit extends MaxiBlockComponent {
 			(dcStatus && dcMediaId && dcMediaUrl);
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			console.log('handleOnResizeStop');
-			console.log(`imgWidth-${deviceType}`);
-			console.log(+round(elt.style.width.replace(/[^0-9.]/g, ''), 1));
 			maxiSetAttributes({
-				[`imgWidth-${deviceType}`]: +round(
+				[`img-width-${deviceType}`]: +round(
 					elt.style.width.replace(/[^0-9.]/g, ''),
 					1
 				),
 			});
-
-			// onResizeStop={(event, direction, elt, delta) =>
-			// 	maxiSetAttributes({
-			// 		[`imgWidth-${deviceType}`]: +round(
-			// 			elt.style.width.replace(/[^0-9.]/g, ''),
-			// 			1
-			// 		),
-			// 	})
-			// }
 		};
 
 		return [
@@ -441,7 +416,7 @@ class edit extends MaxiBlockComponent {
 								width: `${
 									!fullWidth && !useInitSize
 										? getLastBreakpointAttribute({
-												target: 'imgWidth',
+												target: 'img-width',
 												breakpoint:
 													deviceType || 'general',
 												attributes,
@@ -462,6 +437,7 @@ class edit extends MaxiBlockComponent {
 								bottomLeft: true,
 								topLeft: true,
 							}}
+							deviceType={deviceType}
 							onResizeStop={handleOnResizeStop}
 						>
 							{captionType !== 'none' &&

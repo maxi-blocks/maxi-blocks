@@ -72,7 +72,7 @@ const copyPasteMapping = {
 			group: {
 				'Image size': 'imageSize',
 				'Use original size': 'useInitSize',
-				'Image width': 'imgWidth',
+				'Image width': 'img-width',
 				'Image ratio': 'imageRatio',
 			},
 		},

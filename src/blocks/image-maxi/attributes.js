@@ -96,7 +96,7 @@ const attributes = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			imgWidth: {
+			'img-width': {
 				type: 'number',
 				default: 100,
 			},

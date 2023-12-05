@@ -103,7 +103,7 @@ const FullSizeControl = props => {
 								? onChange({
 										imageRatio: 'original',
 										imageSize: 'full',
-										imgWidth: 100,
+										[`img-width-${breakpoint}`]: 100,
 										[`${prefix}full-width-${breakpoint}`]:
 											val,
 								  })

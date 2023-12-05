@@ -2,6 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Source constants
+ */
+export const sourceOptions = [
+	{
+		label: __('WordPress', 'maxi-blocks'),
+		value: 'wp',
+	},
+];
 
 /**
  * Type constants
@@ -16,12 +27,28 @@ export const generalTypeOptions = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
 
+export const imageTypeOptions = generalTypeOptions.filter(
+	option => !['categories', 'tags'].includes(option.value)
+);
+
+export const ACFTypeOptions = generalTypeOptions.filter(
+	option => !['settings'].includes(option.value)
+);
+
+export const WCTypeOptions = [
+	{ label: __('Product', 'maxi-blocks'), value: 'products' },
+	{ label: __('Cart', 'maxi-blocks'), value: 'cart' },
+	{
+		label: __('Product categories', 'maxi-blocks'),
+		value: 'product_categories',
+	},
+	{ label: __('Product tags', 'maxi-blocks'), value: 'product_tags' },
+];
+
 export const typeOptions = {
 	text: generalTypeOptions,
 	button: generalTypeOptions,
-	image: generalTypeOptions.filter(
-		option => !['categories', 'tags'].includes(option.value)
-	),
+	image: imageTypeOptions,
 	container: generalTypeOptions,
 	row: generalTypeOptions,
 	column: generalTypeOptions,
@@ -30,11 +57,8 @@ export const typeOptions = {
 	slide: generalTypeOptions,
 	accordion: generalTypeOptions,
 	slider: generalTypeOptions,
+	acf: ACFTypeOptions,
 };
-
-export const ACFTypeOptions = generalTypeOptions.filter(
-	option => !['settings'].includes(option.value)
-);
 
 /**
  * Relation constants
@@ -78,6 +102,10 @@ const generalRelationOptionsTags = [
 	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
+const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
+	relation => relation.value !== 'current'
+);
+
 const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
 	pages: generalRelationOptionsPages,
@@ -86,13 +114,17 @@ const generalRelationOptions = {
 	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,
+	products: generalRelationOptionsProducts,
+	cart: generalRelationOptionsPosts,
+	product_categories: generalRelationOptionsCategories,
+	product_tags: generalRelationOptionsTags,
 };
 
 export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
 	image: generalRelationOptions,
-	container: null,
+	container: generalRelationOptions,
 	row: generalRelationOptions,
 	column: generalRelationOptions,
 	group: generalRelationOptions,
@@ -247,6 +279,66 @@ const mediaACFFieldTypes = ['image'];
 
 const buttonACFFieldTypes = textACFFieldTypes;
 
+const generalProductFields = [
+	{ label: __('Name', 'maxi-blocks'), value: 'name' },
+	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{
+		label: __('Short description', 'maxi-blocks'),
+		value: 'short_description',
+	},
+	{ label: __('Slug', 'maxi-blocks'), value: 'slug' },
+	{ label: __('SKU', 'maxi-blocks'), value: 'sku' },
+	{ label: __('Review count', 'maxi-blocks'), value: 'review_count' },
+	{ label: __('Average rating', 'maxi-blocks'), value: 'average_rating' },
+	{ label: __('Price', 'maxi-blocks'), value: 'price' },
+	{ label: __('Regular price', 'maxi-blocks'), value: 'regular_price' },
+	{ label: __('Sale price', 'maxi-blocks'), value: 'sale_price' },
+	{ label: __('Price range', 'maxi-blocks'), value: 'price_range' },
+	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
+	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
+];
+
+const buttonProductFields = [
+	...generalProductFields.filter(
+		option =>
+			![
+				'short_description',
+				'description',
+				'categories',
+				'tags',
+			].includes(option.value)
+	),
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
+
+const imageProductFields = [
+	{ label: __('Featured image', 'maxi-blocks'), value: 'featured_media' },
+	{ label: __('Gallery image', 'maxi-blocks'), value: 'gallery' },
+];
+
+const generalCartFields = [
+	{ label: __('Total price', 'maxi-blocks'), value: 'total_price' },
+	{ label: __('Total tax', 'maxi-blocks'), value: 'total_tax' },
+	{ label: __('Total shipping', 'maxi-blocks'), value: 'total_shipping' },
+	{
+		label: __('Total shipping tax', 'maxi-blocks'),
+		value: 'total_shipping_tax',
+	},
+	{ label: __('Total discount', 'maxi-blocks'), value: 'total_discount' },
+	{ label: __('Total items', 'maxi-blocks'), value: 'total_items' },
+	{
+		label: __('Total items tax', 'maxi-blocks'),
+		value: 'total_items_tax',
+	},
+	{ label: __('Total fees', 'maxi-blocks'), value: 'total_fees' },
+	{ label: __('Total fees tax', 'maxi-blocks'), value: 'total_fees_tax' },
+];
+
+const buttonCartFields = [
+	...generalCartFields,
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -256,6 +348,10 @@ export const fieldOptions = {
 		users: generalUsersFields,
 		categories: generalCategoryFields,
 		tags: generalTagFields,
+		products: generalProductFields,
+		cart: generalCartFields,
+		product_categories: generalCategoryFields,
+		product_tags: generalTagFields,
 	},
 	button: {
 		posts: buttonPostsPagesFields,
@@ -265,6 +361,10 @@ export const fieldOptions = {
 		users: buttonAuthorFields,
 		categories: buttonCategoryFields,
 		tags: buttonTagFields,
+		products: buttonProductFields,
+		cart: buttonCartFields,
+		product_categories: buttonCategoryFields,
+		product_tags: buttonTagFields,
 	},
 	image: {
 		posts: mediaPostsPagesFields,
@@ -272,6 +372,7 @@ export const fieldOptions = {
 		settings: mediaSettingsFields,
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
+		products: imageProductFields,
 	},
 };
 
@@ -284,6 +385,18 @@ export const acfFieldTypes = {
 export const mediaFieldOptions = Object.values(fieldOptions.image).map(
 	type => type.map(option => option.value)[0]
 );
+
+/**
+ * Link constants
+ */
+export const multipleLinksTypes = ['products'];
+
+export const linkOptions = {
+	products: [
+		{ label: __('Product', 'maxi-blocks'), value: 'product' },
+		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
+	],
+};
 
 /**
  * Option constants
@@ -372,10 +485,13 @@ export const idOptionByField = {
 	posts: 'title',
 	pages: 'title',
 	media: 'title',
+	products: 'title',
 	tags: 'name',
 	users: 'name',
 	author: 'name',
 	categories: 'name',
+	product_categories: 'name',
+	product_tags: 'name',
 };
 
 // Fields that use id field
@@ -387,6 +503,9 @@ export const idFields = [
 	'categories',
 	'tags',
 	'authors',
+	'products',
+	'product_categories',
+	'product_tags',
 ];
 
 // Fields that have rendered and raw content
@@ -406,6 +525,9 @@ export const relationTypes = [
 	'categories',
 	'tags',
 	'users', // TODO: Add support for users
+	'products',
+	'product_categories',
+	'product_tags',
 ];
 
 // Types that can have relation "current".
@@ -444,9 +566,22 @@ export const descriptionOfErrors = {
 	),
 };
 
-export const limitTypes = ['posts', 'pages', 'tags', 'categories'];
+export const limitTypes = [
+	'posts',
+	'pages',
+	'tags',
+	'categories',
+	'products',
+	'product_categories',
+	'product_tags',
+];
 
-export const limitFields = ['title', 'excerpt', 'content', 'description'];
+export const limitFields = [
+	'excerpt',
+	'content',
+	'description',
+	'short_description',
+];
 
 export const limitOptions = {
 	disableReset: false,
@@ -465,7 +600,7 @@ export const orderByOptions = [
 	{ label: __('Alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 ];
 
-export const orderTypes = ['posts', 'pages', 'media', 'users'];
+export const orderTypes = ['posts', 'pages', 'media', 'users', 'products'];
 
 export const orderOptions = {
 	'by-date': [
@@ -485,6 +620,9 @@ export const kindDictionary = {
 	settings: 'root',
 	categories: 'taxonomy',
 	tags: 'taxonomy',
+	products: 'postType',
+	product_categories: 'taxonomy',
+	product_tags: 'taxonomy',
 };
 export const nameDictionary = {
 	posts: 'post',
@@ -493,6 +631,9 @@ export const nameDictionary = {
 	settings: '__unstableBase',
 	categories: 'category',
 	tags: 'post_tag',
+	products: 'product',
+	product_categories: 'product_cat',
+	product_tags: 'product_tag',
 };
 
 export const attributeDefaults = {
@@ -515,3 +656,46 @@ export const attributeDefaults = {
 	},
 	accumulator: 0,
 };
+
+let haveLoadedIntegrationsOptions = false;
+
+export const getHaveLoadedIntegrationsOptions = () =>
+	haveLoadedIntegrationsOptions;
+
+const loadIntegrationsOptions = () => {
+	apiFetch({
+		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
+		method: 'GET',
+	})
+		.then(response => {
+			if (response) {
+				if (response.includes('acf')) {
+					sourceOptions.push({
+						label: __('ACF', 'maxi-blocks'),
+						value: 'acf',
+					});
+				}
+
+				if (response.includes('woocommerce')) {
+					generalTypeOptions.push(...WCTypeOptions);
+					imageTypeOptions.push(
+						...WCTypeOptions.filter(
+							option =>
+								![
+									'cart',
+									'product_tags',
+									'product_categories',
+								].includes(option.value)
+						)
+					);
+				}
+			}
+
+			haveLoadedIntegrationsOptions = true;
+		})
+		.catch(error => {
+			console.error('Error loading integration options:', error);
+		});
+};
+
+loadIntegrationsOptions();

@@ -585,6 +585,10 @@
       "type": "boolean",
       "default": false
     },
+    "icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
+    },
     "icon-background-active-media-general-hover": {
       "type": "string"
     },
@@ -9572,6 +9576,10 @@
     "dc-status": {
       "type": "boolean"
     },
+    "dc-source": {
+      "type": "string",
+      "default": "wp"
+    },
     "dc-type": {
       "type": "string"
     },
@@ -9643,10 +9651,12 @@
       "default": "none"
     },
     "dc-weekday": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-era": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-limit": {
       "type": "number",
@@ -9680,15 +9690,32 @@
       "type": "string",
       "default": ""
     },
+    "dc-order-by": {
+      "type": "string"
+    },
     "dc-order": {
       "type": "string"
     },
     "dc-accumulator": {
       "type": "number"
     },
+    "dc-acf-group": {
+      "type": "number"
+    },
+    "dc-acf-field-type": {
+      "type": "string"
+    },
     "dc-contains-html": {
       "type": "boolean",
       "default": false
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
     },
     "shortcutEffect": {
       "type": "number",
@@ -10907,6 +10934,36 @@
             "transition-delay-general": 0,
             "easing-general": "ease",
             "transition-status-general": true
+          },
+          "before icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after icon": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "before content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
+          },
+          "after content": {
+            "transition-duration-general": 0.3,
+            "transition-delay-general": 0,
+            "easing-general": "ease",
+            "transition-status-general": true
           }
         }
       }
@@ -11965,6 +12022,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -12294,6 +12372,10 @@
         "hover": {
           "label": "button on hover",
           "target": " .maxi-button-block__button:hover"
+        },
+        "canvas hover": {
+          "label": "button on canvas hover",
+          "target": ":hover .maxi-button-block__button"
         }
       },
       "before canvas": {
@@ -12314,6 +12396,10 @@
         "hover": {
           "label": "button ::before on hover",
           "target": " .maxi-button-block__button:hover::before"
+        },
+        "canvas hover": {
+          "label": "button ::before on canvas hover",
+          "target": ":hover .maxi-button-block__button::before"
         }
       },
       "after canvas": {
@@ -12334,6 +12420,10 @@
         "hover": {
           "label": "button ::after on hover",
           "target": " .maxi-button-block__button:hover::after"
+        },
+        "canvas hover": {
+          "label": "button ::after on canvas hover",
+          "target": ":hover .maxi-button-block__button::after"
         }
       },
       "icon": {
@@ -12369,6 +12459,56 @@
           "label": "svg's path on hover",
           "target": " .maxi-button-block__icon:hover svg path"
         }
+      },
+      "before icon": {
+        "normal": {
+          "label": "icon ::before",
+          "target": " .maxi-button-block__icon::before"
+        },
+        "hover": {
+          "label": "icon ::before on hover",
+          "target": " .maxi-button-block__icon:hover::before"
+        }
+      },
+      "after icon": {
+        "normal": {
+          "label": "icon ::after",
+          "target": " .maxi-button-block__icon::after"
+        },
+        "hover": {
+          "label": "icon ::after on hover",
+          "target": " .maxi-button-block__icon:hover::after"
+        }
+      },
+      "content": {
+        "normal": {
+          "label": "content",
+          "target": " .maxi-button-block__content"
+        },
+        "hover": {
+          "label": "content on hover",
+          "target": " .maxi-button-block__content:hover"
+        }
+      },
+      "before content": {
+        "normal": {
+          "label": "content ::before",
+          "target": " .maxi-button-block__content::before"
+        },
+        "hover": {
+          "label": "content ::before on hover",
+          "target": " .maxi-button-block__content:hover::before"
+        }
+      },
+      "after content": {
+        "normal": {
+          "label": "content ::after",
+          "target": " .maxi-button-block__content::after"
+        },
+        "hover": {
+          "label": "content ::after on hover",
+          "target": " .maxi-button-block__content:hover::after"
+        }
       }
     },
     "categories": [
@@ -12378,7 +12518,12 @@
       "button",
       "before button",
       "after button",
+      "content",
+      "before content",
+      "after content",
       "icon",
+      "before icon",
+      "after icon",
       "background",
       "background hover"
     ]

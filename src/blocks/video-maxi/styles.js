@@ -164,12 +164,19 @@ const getOverlayBackgroundObject = (props, isHover = false) => {
 };
 
 const getAspectRatioStyles = (props, isPopup = false) => {
-	const { videoRatio, popupRatio } = props;
+	const { popupRatio, popupRatioCustom, videoRatio, videoRatioCustom } =
+		props;
 
 	const response = {
 		...(isPopup
-			? { ...(popupRatio && getAspectRatio(popupRatio)) }
-			: { ...(videoRatio && getAspectRatio(videoRatio)) }),
+			? {
+					...(popupRatio &&
+						getAspectRatio(popupRatio, popupRatioCustom)),
+			  }
+			: {
+					...(videoRatio &&
+						getAspectRatio(videoRatio, videoRatioCustom)),
+			  }),
 	};
 
 	return response;
@@ -241,7 +248,7 @@ const getIconObject = (prefix, obj) => {
 		},
 		...getSVGStyles({
 			obj,
-			target: `.maxi-video-block__${prefix}button`,
+			target: ` .maxi-video-block__${prefix}button`,
 			blockStyle: obj.blockStyle,
 			prefix: `${prefix}icon-`,
 			useIconColor: true,

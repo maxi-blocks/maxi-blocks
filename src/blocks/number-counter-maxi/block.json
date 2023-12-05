@@ -100,6 +100,10 @@
       "type": "boolean",
       "default": false
     },
+    "number-counter-percentage-sign-position-status": {
+      "type": "boolean",
+      "default": false
+    },
     "number-counter-rounded-status": {
       "type": "boolean",
       "default": false
@@ -5237,6 +5241,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -6569,6 +6594,10 @@
         "hover": {
           "label": "number on hover",
           "target": " .maxi-number-counter__box__text:hover"
+        },
+        "canvas hover": {
+          "label": "number on canvas hover",
+          "target": ":hover .maxi-number-counter__box__text"
         }
       },
       "before canvas": {
@@ -6589,6 +6618,10 @@
         "hover": {
           "label": "number ::before on hover",
           "target": " .maxi-number-counter__box__text:hover::before"
+        },
+        "canvas hover": {
+          "label": "number ::before on canvas hover",
+          "target": ":hover .maxi-number-counter__box__text::before"
         }
       },
       "after canvas": {
@@ -6609,6 +6642,10 @@
         "hover": {
           "label": "number ::after on hover",
           "target": " .maxi-number-counter__box__text:hover::after"
+        },
+        "canvas hover": {
+          "label": "number ::after on canvas hover",
+          "target": ":hover .maxi-number-counter__box__text::after"
         }
       },
       "circle": {
@@ -6619,6 +6656,10 @@
         "hover": {
           "label": "circle on hover",
           "target": " .maxi-number-counter__box__circle:hover"
+        },
+        "canvas hover": {
+          "label": "circle on canvas hover",
+          "target": ":hover .maxi-number-counter__box__circle"
         }
       }
     },

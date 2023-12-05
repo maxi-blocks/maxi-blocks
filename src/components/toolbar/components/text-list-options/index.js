@@ -45,14 +45,21 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, isList, typeOfList, onChange } = props;
+	const {
+		blockName,
+		isList,
+		typeOfList,
+		onChange,
+		content: listContent,
+		wpVersion,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const { formatValue } = useContext(textContext);
 
-	const getContent = content => {
-		if (!isList) return fromTextToList(content);
+	const getContent = (content, wpVersion) => {
+		if (!isList) return fromTextToList(content, wpVersion);
 		return fromListToText(content);
 	};
 
@@ -75,29 +82,45 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		const content = getFormattedString({ formatValue, isList });
+		const content =
+			wpVersion < 6.4
+				? getFormattedString({ formatValue, isList })
+				: listContent;
 
-		if (!isList || typeOfList === type)
-			onChange({
-				isList: !isList,
-				typeOfList: type,
-				content: getContent(content),
-			});
-		else
-			onChange({
-				isList,
-				typeOfList: type,
-				content,
-			});
+		const changeObject1 = {
+			isList: !isList,
+			typeOfList: type,
+			content: getContent(content, wpVersion),
+		};
+
+		const changeObject2 = {
+			isList,
+			typeOfList: type,
+			content,
+		};
+
+		if (wpVersion >= 6.4) {
+			changeObject1.listStyle = type === 'ol' ? 'decimal' : 'disc';
+			changeObject2.listStyle = type === 'ol' ? 'decimal' : 'disc';
+		}
+
+		if (!isList || typeOfList === type) {
+			onChange(changeObject1);
+		} else {
+			onChange(changeObject2);
+		}
 	};
 
 	const onChangeP = () => {
-		const content = getFormattedString({ formatValue, isList });
+		const content =
+			wpVersion < 6.4
+				? getFormattedString({ formatValue, isList })
+				: listContent;
 
 		if (isList) {
 			onChange({
 				isList: false,
-				content: getContent(content),
+				content: getContent(content, wpVersion),
 			});
 		}
 	};

@@ -6,8 +6,8 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
-	useState,
 	useMemo,
+	useState,
 } from '@wordpress/element';
 import { resolveSelect, select } from '@wordpress/data';
 
@@ -42,9 +42,9 @@ import {
 	orderByRelations,
 	orderRelations,
 	orderTypes,
-	ACFTypeOptions,
 	linkFields,
 	linkFieldsLabels,
+	sourceOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -94,6 +94,7 @@ const DynamicContent = props => {
 		order,
 		orderBy,
 		accumulator,
+		imageAccumulator,
 		acfFieldType,
 		customDate,
 		day,
@@ -206,24 +207,6 @@ const DynamicContent = props => {
 		}
 	});
 
-	const sourceOptions = useMemo(() => {
-		const options = [
-			{
-				label: __('WordPress', 'maxi-blocks'),
-				value: 'wp',
-			},
-		];
-
-		if (typeof acf !== 'undefined') {
-			options.push({
-				label: __('ACF', 'maxi-blocks'),
-				value: 'acf',
-			});
-		}
-
-		return options;
-	}, []);
-
 	const currentRelationOptions = useMemo(() => {
 		const options = relationOptions[contentType][type];
 
@@ -289,7 +272,8 @@ const DynamicContent = props => {
 									type,
 									field,
 									relation,
-									contentType
+									contentType,
+									value
 								);
 
 								changeProps({
@@ -303,7 +287,7 @@ const DynamicContent = props => {
 					)}
 					{source === 'acf' && (
 						<ACFSettingsControl
-							changeProps={changeProps}
+							onChange={onChange}
 							dynamicContent={dcValues}
 							contentType={contentType}
 						/>
@@ -312,9 +296,9 @@ const DynamicContent = props => {
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={
-							source === 'acf'
-								? ACFTypeOptions
-								: typeOptions[contentType]
+							source === 'wp'
+								? typeOptions[contentType]
+								: typeOptions[source]
 						}
 						newStyle
 						onChange={value => {
@@ -322,7 +306,8 @@ const DynamicContent = props => {
 								value,
 								field,
 								relation,
-								contentType
+								contentType,
+								source
 							);
 
 							changeProps({
@@ -338,7 +323,8 @@ const DynamicContent = props => {
 							})
 						}
 					/>
-					{isEmpty(postIdOptions) && type !== 'settings' ? (
+					{isEmpty(postIdOptions) &&
+					!['settings', 'cart'].includes(type) ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>
@@ -408,7 +394,7 @@ const DynamicContent = props => {
 															'by-',
 															''
 													  )
-													: type
+													: type.replace('_', ' ')
 											)} id`,
 											'maxi-blocks'
 										)}
@@ -508,7 +494,7 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-							{source === 'wp' &&
+							{['wp', 'wc'].includes(source) &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
 									(relation === 'by-author' &&
@@ -643,6 +629,29 @@ const DynamicContent = props => {
 										)}
 									</>
 								)}
+							{field === 'gallery' && (
+								<AdvancedNumberControl
+									label={__(
+										'Image accumulator',
+										'maxi-blocks'
+									)}
+									value={imageAccumulator}
+									onChangeValue={value =>
+										changeProps({
+											'dc-image-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-image-accumulator':
+												getDefaultAttribute(
+													'dc-image-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
+							)}
 						</>
 					)}
 				</>

@@ -9099,6 +9099,10 @@
       "type": "boolean",
       "default": false
     },
+    "icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
+    },
     "close-svgType": {
       "type": "string",
       "default": "Shape"
@@ -9593,6 +9597,10 @@
     "close-icon-status-hover": {
       "type": "boolean",
       "default": false
+    },
+    "close-icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
     },
     "shortcutEffect": {
       "type": "number",
@@ -11254,6 +11262,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -11583,6 +11612,10 @@
         "hover": {
           "label": "button on hover",
           "target": " .maxi-search-block__button:hover"
+        },
+        "canvas hover": {
+          "label": "button on canvas hover",
+          "target": ":hover .maxi-search-block__button"
         }
       },
       "input": {
@@ -11593,6 +11626,10 @@
         "hover": {
           "label": "input on hover",
           "target": " .maxi-search-block__input:hover"
+        },
+        "canvas hover": {
+          "label": "input on canvas hover",
+          "target": ":hover .maxi-search-block__input"
         }
       },
       "before block": {
@@ -11613,6 +11650,10 @@
         "hover": {
           "label": "button ::before on hover",
           "target": " .maxi-search-block__button:hover::before"
+        },
+        "canvas hover": {
+          "label": "button ::before on canvas hover",
+          "target": ":hover .maxi-search-block__button::before"
         }
       },
       "before input": {
@@ -11623,6 +11664,10 @@
         "hover": {
           "label": "input ::before on hover",
           "target": " .maxi-search-block__input:hover::before"
+        },
+        "canvas hover": {
+          "label": "input ::before on canvas hover",
+          "target": ":hover .maxi-search-block__input::before"
         }
       },
       "after block": {
@@ -11643,6 +11688,10 @@
         "hover": {
           "label": "button ::after on hover",
           "target": " .maxi-search-block__button:hover::after"
+        },
+        "canvas hover": {
+          "label": "button ::after on canvas hover",
+          "target": ":hover .maxi-search-block__button::after"
         }
       },
       "after input": {
@@ -11653,6 +11702,10 @@
         "hover": {
           "label": "input ::after on hover",
           "target": " .maxi-search-block__input:hover::after"
+        },
+        "canvas hover": {
+          "label": "input ::after on canvas hover",
+          "target": ":hover .maxi-search-block__input::after"
         }
       },
       "placeholder input": {

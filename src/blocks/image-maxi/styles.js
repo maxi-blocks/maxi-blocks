@@ -176,7 +176,8 @@ const getHoverEffectDetailsBoxObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		...(props.imageRatio && getAspectRatio(props.imageRatio)),
+		...(props.imageRatio &&
+			getAspectRatio(props.imageRatio, props.imageRatioCustom)),
 	};
 
 	return response;
@@ -307,6 +308,7 @@ const getImageObject = props => {
 	const {
 		fitParentSize,
 		imageRatio,
+		imageRatioCustom,
 		imgWidth,
 		isFirstOnHierarchy,
 		mediaWidth,
@@ -341,7 +343,7 @@ const getImageObject = props => {
 			},
 			prefix: 'image-',
 		}),
-		...(imageRatio && getAspectRatio(imageRatio)),
+		...(imageRatio && getAspectRatio(imageRatio, imageRatioCustom)),
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'size', false, 'image-'),
@@ -502,7 +504,7 @@ const getFigcaptionObject = props => {
 };
 
 const getImageShapeObject = (target, props) => {
-	const { SVGElement, clipPath, imageRatio } = props;
+	const { SVGElement, clipPath, imageRatio, imageRatioCustom } = props;
 
 	const response = {
 		...(SVGElement && {
@@ -513,7 +515,9 @@ const getImageShapeObject = (target, props) => {
 		...(clipPath && {
 			image: { general: { 'clip-path': clipPath } },
 		}),
-		...(target === 'svg' && imageRatio && getAspectRatio(imageRatio)),
+		...(target === 'svg' &&
+			imageRatio &&
+			getAspectRatio(imageRatio, imageRatioCustom)),
 	};
 
 	return response;

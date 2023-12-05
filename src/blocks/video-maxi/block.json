@@ -84,9 +84,17 @@
       "type": "string",
       "default": "ar169"
     },
+    "videoRatioCustom": {
+      "type": "string",
+      "default": "1"
+    },
     "popupRatio": {
       "type": "string",
       "default": "ar169"
+    },
+    "popupRatioCustom": {
+      "type": "string",
+      "default": "1"
     },
     "videoType": {
       "type": "string",
@@ -615,6 +623,10 @@
       "type": "boolean",
       "default": false
     },
+    "close-icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
+    },
     "play-svgType": {
       "type": "string"
     },
@@ -1110,6 +1122,10 @@
     "play-icon-status-hover": {
       "type": "boolean",
       "default": false
+    },
+    "play-icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
     },
     "overlay-background-active-media-general": {
       "type": "string",
@@ -8026,6 +8042,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -8375,6 +8412,10 @@
         "hover": {
           "label": "video on hover",
           "target": " .maxi-video-block__video-player:hover"
+        },
+        "canvas hover": {
+          "label": "video on canvas hover",
+          "target": ":hover .maxi-video-block__video-player"
         }
       },
       "overlay": {
@@ -8385,6 +8426,10 @@
         "hover": {
           "label": "overlay on hover",
           "target": " .maxi-video-block__overlay:hover"
+        },
+        "canvas hover": {
+          "label": "overlay on canvas hover",
+          "target": ":hover .maxi-video-block__overlay"
         }
       },
       "before video": {
@@ -8395,6 +8440,10 @@
         "hover": {
           "label": "video ::before on hover",
           "target": " .maxi-video-block__video-player:hover::before"
+        },
+        "canvas hover": {
+          "label": "video ::before on canvas hover",
+          "target": ":hover .maxi-video-block__video-player::before"
         }
       },
       "before overlay": {
@@ -8405,6 +8454,10 @@
         "hover": {
           "label": "overlay ::before on hover",
           "target": " .maxi-video-block__overlay:hover::before"
+        },
+        "canvas hover": {
+          "label": "overlay ::before on canvas hover",
+          "target": ":hover .maxi-video-block__overlay::before"
         }
       },
       "after video": {
@@ -8415,6 +8468,10 @@
         "hover": {
           "label": "video ::after on hover",
           "target": " .maxi-video-block__video-player:hover::after"
+        },
+        "canvas hover": {
+          "label": "video ::after on canvas hover",
+          "target": ":hover .maxi-video-block__video-player::after"
         }
       },
       "after overlay": {
@@ -8425,6 +8482,10 @@
         "hover": {
           "label": "overlay ::after on hover",
           "target": " .maxi-video-block__overlay:hover::after"
+        },
+        "canvas hover": {
+          "label": "overlay ::after on canvas hover",
+          "target": ":hover .maxi-video-block__overlay::after"
         }
       },
       "close icon": {

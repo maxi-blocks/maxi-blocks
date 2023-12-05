@@ -63,6 +63,7 @@ class MaxiBlocks_Styles
      * @var MaxiBlocks_Styles
      */
     private static $instance;
+    private static $active_theme;
 
     /**
      * Registers the plugin.
@@ -72,9 +73,13 @@ class MaxiBlocks_Styles
         if (null === self::$instance) {
             self::$instance = new MaxiBlocks_Styles();
         }
+        if (null === self::$active_theme) {
+            self::$active_theme = self::get_active_theme();
+        }
     }
 
     protected $max_execution_time;
+
 
     /**
      * Constructor
@@ -1100,8 +1105,6 @@ class MaxiBlocks_Styles
             'relations',
         ];
 
-
-
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
@@ -1124,7 +1127,7 @@ class MaxiBlocks_Styles
                 } else {
                     if(is_array($value) && in_array($script, $script_attr)) {
                         foreach ($value as $k => $v) {
-                            if(gettype($v) === 'string' && str_contains($v, $script)) {
+                            if(gettype($v) === 'string' && (str_contains($v, $script) || str_contains($v, $js_var))) {
                                 $match = true;
                                 $block_names[] = $key;
                             }
@@ -1271,6 +1274,33 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['css_value'])) {
+            if($block_name === 'maxi-blocks/container-maxi' && $props['isFirstOnHierarchy'] && strpos($content_block['css_value'], 'min-width:100%') !== false) {
+                if(self::$active_theme === 2023 || self::$active_theme === 2024) {
+                    $new_styles = "body.maxi-blocks--active .has-global-padding > #$unique_id {
+					margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
+					margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
+					min-width: calc(100% + var(--wp--style--root--padding-right) + var(--wp--style--root--padding-left)) !important;
+				}";
+                    $content_block['css_value'] .= $new_styles;
+                }
+                if(self::$active_theme === 2022) {
+                    $new_styles = "body.maxi-blocks--active .wp-site-blocks .entry-content > #$unique_id {
+					margin-left: calc(-1 * var(--wp--custom--spacing--outer)) !important;
+					margin-right: calc(-1 * var(--wp--custom--spacing--outer)) !important;
+					min-width: calc(100% + var(--wp--custom--spacing--outer) * 2) !important;
+				}";
+                    $content_block['css_value'] .= $new_styles;
+                }
+                if(self::$active_theme === 'astra') {
+                    $new_styles = "body.maxi-blocks--active .entry-content > #$unique_id {
+						margin-left: calc( -50vw + 50%);
+						margin-right: calc( -50vw + 50%);
+						max-width: 100vw;
+						width: 100vw;
+				}";
+                    $content_block['css_value'] .= $new_styles;
+                }
+            }
             $styles .= ' ' . $content_block['css_value'];
         }
 
@@ -1369,7 +1399,9 @@ class MaxiBlocks_Styles
         }
 
         // Merge the blocks.
-        $blocks = array_merge_recursive($blocks, $blocks_post);
+        if (is_array($blocks_post)) {
+            $blocks = array_merge_recursive($blocks, $blocks_post);
+        }
 
         if (empty($blocks)) {
             return [];
@@ -1381,6 +1413,7 @@ class MaxiBlocks_Styles
         if (!empty($reusable_blocks)) {
             $blocks = array_merge_recursive($blocks, $reusable_blocks);
         }
+
 
         // Process the blocks to extract styles and other metadata.
         list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
@@ -1837,8 +1870,6 @@ class MaxiBlocks_Styles
                     )
                 );
             }
-
-
         }
 
         // fonts
@@ -2059,6 +2090,26 @@ class MaxiBlocks_Styles
         );
 
         return $response;
+    }
+
+    public static function get_active_theme()
+    {
+        $current_theme = wp_get_theme();
+
+        if ('Twenty Twenty-Four' === $current_theme->name || 'twentytwentyfour' === $current_theme->template) {
+            return 2024;
+        }
+        if ('Twenty Twenty-Three' === $current_theme->name || 'twentytwentythree' === $current_theme->template) {
+            return 2023;
+        }
+        if ('Twenty Twenty-Two' === $current_theme->name || 'twentytwentytwo' === $current_theme->template) {
+            return 2022;
+        }
+        if ('Astra' === $current_theme->name || 'astra' === $current_theme->template) {
+            return 'astra';
+        }
+
+        return 0; // another theme
     }
 
 }

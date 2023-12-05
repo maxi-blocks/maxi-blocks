@@ -13,11 +13,18 @@ import {
 	nameDictionary,
 	renderedFields,
 } from './constants';
-import { getSimpleText, limitString } from './utils';
+import {
+	getItemLinkContent,
+	getSimpleText,
+	getTaxonomyContent,
+	limitString,
+	parseText,
+} from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
+import { getCartContent, getProductsContent } from './getWCContent';
 
 /**
  * External dependencies
@@ -51,11 +58,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
-	const getItemLinkContent = item =>
-		postTaxonomyLinksStatus
-			? `<a class="maxi-text-block--link"><span>${item}</span></a>`
-			: item;
-
 	if (relation === 'current' && isEmpty(data)) {
 		return `${capitalize(field)}: current`;
 	}
@@ -63,11 +65,20 @@ const getDCContent = async (dataRequest, clientId) => {
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
-		!['tags', 'categories'].includes(type)
+		!['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			type
+		)
 	) {
 		contentValue = data?.[field].rendered;
 	} else {
 		contentValue = data?.[field];
+	}
+
+	if (type === 'products') {
+		return getProductsContent(dataRequest, data);
+	}
+	if (type === 'cart') {
+		return getCartContent(dataRequest, data);
 	}
 
 	if (field === 'date') {
@@ -83,9 +94,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	} else if (limitTypes.includes(type) && limitFields.includes(field)) {
 		// Parse content value
 		if (typeof contentValue === 'string') {
-			const parser = new DOMParser();
-			const doc = parser.parseFromString(contentValue, 'text/html');
-			contentValue = doc.body.textContent;
+			contentValue = parseText(contentValue);
 		}
 
 		if (field === 'content') contentValue = getSimpleText(contentValue);
@@ -96,9 +105,17 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		const user = await getUsers({ include: contentValue });
 
-		contentValue = getItemLinkContent(user[0].name);
+		contentValue = getItemLinkContent(
+			user[0].name,
+			postTaxonomyLinksStatus
+		);
 	}
-	if (['tags', 'categories'].includes(type) && field === 'parent') {
+	if (
+		['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			type
+		) &&
+		field === 'parent'
+	) {
 		if (!contentValue || contentValue === 0)
 			contentValue = __('No parent', 'maxi-blocks');
 		else {
@@ -116,25 +133,18 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue = parent[0].name;
 		}
 	}
-	if (['tags', 'categories'].includes(field)) {
-		const { getEntityRecord } = resolveSelect('core');
-		const idArray = contentValue;
 
-		const namesArray = await Promise.all(
-			idArray.map(async id => {
-				const taxonomyItem = await getEntityRecord(
-					'taxonomy',
-					nameDictionary[field],
-					id
-				);
-
-				return getItemLinkContent(taxonomyItem.name);
-			})
+	if (
+		['tags', 'categories', 'product_tags', 'product_categories'].includes(
+			field
+		)
+	) {
+		contentValue = await getTaxonomyContent(
+			contentValue,
+			delimiterContent,
+			postTaxonomyLinksStatus,
+			nameDictionary[field]
 		);
-
-		contentValue = postTaxonomyLinksStatus
-			? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
-			: namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

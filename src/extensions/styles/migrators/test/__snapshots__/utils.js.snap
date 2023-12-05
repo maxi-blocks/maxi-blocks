@@ -9,6 +9,10 @@ exports[`getBlockNameFromUniqueID Should return the block name, when uniqueID is
 exports[`getBlockSelectorsByUniqueID Should return accordion selectors 1`] = `
 {
   "accordion": {
+    "canvas hover": {
+      "label": "accordion on canvas hover",
+      "target": ":hover .maxi-accordion-block",
+    },
     "hover": {
       "label": "accordion on hover",
       "target": ".maxi-accordion-block:hover",
@@ -318,6 +322,10 @@ exports[`getBlockSelectorsByUniqueID Should return accordion selectors 1`] = `
 exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
 {
   "after button": {
+    "canvas hover": {
+      "label": "button ::after on canvas hover",
+      "target": ":hover .maxi-button-block__button::after",
+    },
     "hover": {
       "label": "button ::after on hover",
       "target": " .maxi-button-block__button:hover::after",
@@ -338,6 +346,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "after content": {
+    "canvas hover": {
+      "label": "content ::after on canvas hover",
+      "target": ":hover .maxi-button-block__content::after",
+    },
     "hover": {
       "label": "content ::after on hover",
       "target": " .maxi-button-block__content:hover::after",
@@ -348,6 +360,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "after icon": {
+    "canvas hover": {
+      "label": "icon ::after on canvas hover",
+      "target": ":hover .maxi-button-block__icon::after",
+    },
     "hover": {
       "label": "icon ::after on hover",
       "target": " .maxi-button-block__icon:hover::after",
@@ -358,6 +374,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "before button": {
+    "canvas hover": {
+      "label": "button ::before on canvas hover",
+      "target": ":hover .maxi-button-block__button::before",
+    },
     "hover": {
       "label": "button ::before on hover",
       "target": " .maxi-button-block__button:hover::before",
@@ -378,6 +398,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "before content": {
+    "canvas hover": {
+      "label": "content ::before on canvas hover",
+      "target": ":hover .maxi-button-block__content::before",
+    },
     "hover": {
       "label": "content ::before on hover",
       "target": " .maxi-button-block__content:hover::before",
@@ -388,6 +412,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "before icon": {
+    "canvas hover": {
+      "label": "icon ::before on canvas hover",
+      "target": ":hover .maxi-button-block__icon::before",
+    },
     "hover": {
       "label": "icon ::before on hover",
       "target": " .maxi-button-block__icon:hover::before",
@@ -398,6 +426,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "button": {
+    "canvas hover": {
+      "label": "button on canvas hover",
+      "target": ":hover .maxi-button-block__button",
+    },
     "hover": {
       "label": "button on hover",
       "target": " .maxi-button-block__button:hover",
@@ -418,6 +450,10 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "content": {
+    "canvas hover": {
+      "label": "content on canvas hover",
+      "target": ":hover .maxi-button-block__content",
+    },
     "hover": {
       "label": "content on hover",
       "target": " .maxi-button-block__content:hover",
@@ -428,6 +464,22 @@ exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
     },
   },
   "icon": {
+    "canvasHover": {
+      "label": "icon on canvas hover",
+      "target": ":hover  .maxi-button-block__icon",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-button-block__icon svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-button-block__icon svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "icon's svg on canvas hover",
+      "target": ":hover  .maxi-button-block__icon svg",
+    },
     "hover": {
       "label": "icon on hover",
       "target": " .maxi-button-block__icon:hover",
@@ -567,6 +619,10 @@ exports[`getBlockSelectorsByUniqueID Should return divider selectors 1`] = `
     },
   },
   "after divider": {
+    "canvas hover": {
+      "label": "divider ::after on canvas hover",
+      "target": ":hover .maxi-divider-block__divider::after",
+    },
     "hover": {
       "label": "divider ::after on hover",
       "target": " .maxi-divider-block__divider:hover::after",
@@ -587,6 +643,10 @@ exports[`getBlockSelectorsByUniqueID Should return divider selectors 1`] = `
     },
   },
   "before divider": {
+    "canvas hover": {
+      "label": "divider ::before on canvas hover",
+      "target": ":hover .maxi-divider-block__divider::before",
+    },
     "hover": {
       "label": "divider ::before on hover",
       "target": " .maxi-divider-block__divider:hover::before",
@@ -607,6 +667,10 @@ exports[`getBlockSelectorsByUniqueID Should return divider selectors 1`] = `
     },
   },
   "divider": {
+    "canvas hover": {
+      "label": "divider on canvas hover",
+      "target": ":hover .maxi-divider-block__divider",
+    },
     "hover": {
       "label": "divider on hover",
       "target": " .maxi-divider-block__divider:hover",
@@ -667,6 +731,10 @@ exports[`getBlockSelectorsByUniqueID Should return image selectors 1`] = `
     },
   },
   "after image": {
+    "canvas hover": {
+      "label": "image ::after on canvas hover",
+      "target": ":hover .maxi-image-block__image::after",
+    },
     "hover": {
       "label": "image ::after on hover",
       "target": " .maxi-image-block__image:hover::after",
@@ -687,6 +755,10 @@ exports[`getBlockSelectorsByUniqueID Should return image selectors 1`] = `
     },
   },
   "before image": {
+    "canvas hover": {
+      "label": "image ::before on canvas hover",
+      "target": ":hover .maxi-image-block__image::before",
+    },
     "hover": {
       "label": "image ::before on hover",
       "target": " .maxi-image-block__image:hover::before",
@@ -707,6 +779,10 @@ exports[`getBlockSelectorsByUniqueID Should return image selectors 1`] = `
     },
   },
   "image": {
+    "canvas hover": {
+      "label": "image on canvas hover",
+      "target": ":hover .maxi-image-block__image",
+    },
     "hover": {
       "label": "image on hover",
       "target": " .maxi-image-block__image:hover",
@@ -722,6 +798,10 @@ exports[`getBlockSelectorsByUniqueID Should return image selectors 1`] = `
 exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
 {
   "after description": {
+    "canvas hover": {
+      "label": "description ::after on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__description::after",
+    },
     "hover": {
       "label": "description ::after on hover",
       "target": " .maxi-map-block__popup__content__description:hover::after",
@@ -742,6 +822,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "after popup": {
+    "canvas hover": {
+      "label": "popup ::after on canvas hover",
+      "target": ":hover .maxi-map-block__popup::after",
+    },
     "hover": {
       "label": "popup ::after on hover",
       "target": " .maxi-map-block__popup:hover::after",
@@ -752,6 +836,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "after title": {
+    "canvas hover": {
+      "label": "title ::after on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__title::after",
+    },
     "hover": {
       "label": "title ::after on hover",
       "target": " .maxi-map-block__popup__content__title:hover::after",
@@ -762,6 +850,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "before description": {
+    "canvas hover": {
+      "label": "description ::before on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__description::before",
+    },
     "hover": {
       "label": "description ::before on hover",
       "target": " .maxi-map-block__popup__content__description:hover::before",
@@ -782,6 +874,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "before popup": {
+    "canvas hover": {
+      "label": "popup ::before on canvas hover",
+      "target": ":hover .maxi-map-block__popup::before",
+    },
     "hover": {
       "label": "popup ::before on hover",
       "target": " .maxi-map-block__popup:hover::before",
@@ -792,6 +888,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "before title": {
+    "canvas hover": {
+      "label": "title ::before on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__title::before",
+    },
     "hover": {
       "label": "title ::before on hover",
       "target": " .maxi-map-block__popup__content__title:hover::before",
@@ -802,6 +902,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "description": {
+    "canvas hover": {
+      "label": "description on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__description",
+    },
     "hover": {
       "label": "description on hover",
       "target": " .maxi-map-block__popup__content__description:hover",
@@ -822,6 +926,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "popup": {
+    "canvas hover": {
+      "label": "popup on canvas hover",
+      "target": ":hover .maxi-map-block__popup",
+    },
     "hover": {
       "label": "popup on hover",
       "target": " .maxi-map-block__popup:hover",
@@ -832,6 +940,10 @@ exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
     },
   },
   "title": {
+    "canvas hover": {
+      "label": "title on canvas hover",
+      "target": ":hover .maxi-map-block__popup__content__title",
+    },
     "hover": {
       "label": "title on hover",
       "target": " .maxi-map-block__popup__content__title:hover",
@@ -857,6 +969,10 @@ exports[`getBlockSelectorsByUniqueID Should return number-counter selectors 1`] 
     },
   },
   "after number": {
+    "canvas hover": {
+      "label": "number ::after on canvas hover",
+      "target": ":hover .maxi-number-counter__box__text::after",
+    },
     "hover": {
       "label": "number ::after on hover",
       "target": " .maxi-number-counter__box__text:hover::after",
@@ -877,6 +993,10 @@ exports[`getBlockSelectorsByUniqueID Should return number-counter selectors 1`] 
     },
   },
   "before number": {
+    "canvas hover": {
+      "label": "number ::before on canvas hover",
+      "target": ":hover .maxi-number-counter__box__text::before",
+    },
     "hover": {
       "label": "number ::before on hover",
       "target": " .maxi-number-counter__box__text:hover::before",
@@ -897,6 +1017,10 @@ exports[`getBlockSelectorsByUniqueID Should return number-counter selectors 1`] 
     },
   },
   "circle": {
+    "canvas hover": {
+      "label": "circle on canvas hover",
+      "target": ":hover .maxi-number-counter__box__circle",
+    },
     "hover": {
       "label": "circle on hover",
       "target": " .maxi-number-counter__box__circle:hover",
@@ -907,6 +1031,10 @@ exports[`getBlockSelectorsByUniqueID Should return number-counter selectors 1`] 
     },
   },
   "number": {
+    "canvas hover": {
+      "label": "number on canvas hover",
+      "target": ":hover .maxi-number-counter__box__text",
+    },
     "hover": {
       "label": "number on hover",
       "target": " .maxi-number-counter__box__text:hover",
@@ -1246,6 +1374,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "after button": {
+    "canvas hover": {
+      "label": "button ::after on canvas hover",
+      "target": ":hover .maxi-search-block__button::after",
+    },
     "hover": {
       "label": "button ::after on hover",
       "target": " .maxi-search-block__button:hover::after",
@@ -1256,6 +1388,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "after input": {
+    "canvas hover": {
+      "label": "input ::after on canvas hover",
+      "target": ":hover .maxi-search-block__input::after",
+    },
     "hover": {
       "label": "input ::after on hover",
       "target": " .maxi-search-block__input:hover::after",
@@ -1276,6 +1412,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "before button": {
+    "canvas hover": {
+      "label": "button ::before on canvas hover",
+      "target": ":hover .maxi-search-block__button::before",
+    },
     "hover": {
       "label": "button ::before on hover",
       "target": " .maxi-search-block__button:hover::before",
@@ -1286,6 +1426,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "before input": {
+    "canvas hover": {
+      "label": "input ::before on canvas hover",
+      "target": ":hover .maxi-search-block__input::before",
+    },
     "hover": {
       "label": "input ::before on hover",
       "target": " .maxi-search-block__input:hover::before",
@@ -1306,6 +1450,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "button": {
+    "canvas hover": {
+      "label": "button on canvas hover",
+      "target": ":hover .maxi-search-block__button",
+    },
     "hover": {
       "label": "button on hover",
       "target": " .maxi-search-block__button:hover",
@@ -1384,6 +1532,10 @@ exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
     },
   },
   "input": {
+    "canvas hover": {
+      "label": "input on canvas hover",
+      "target": ":hover .maxi-search-block__input",
+    },
     "hover": {
       "label": "input on hover",
       "target": " .maxi-search-block__input:hover",
@@ -1439,6 +1591,10 @@ exports[`getBlockSelectorsByUniqueID Should return svg-icon selectors 1`] = `
     },
   },
   "svg": {
+    "canvas hover": {
+      "label": "svg on canvas hover",
+      "target": ":hover .maxi-svg-icon-block__icon svg",
+    },
     "hover": {
       "label": "svg on hover",
       "target": " .maxi-svg-icon-block__icon svg:hover",
@@ -1454,6 +1610,10 @@ exports[`getBlockSelectorsByUniqueID Should return svg-icon selectors 1`] = `
 exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
 {
   "after text": {
+    "canvas hover": {
+      "label": "text ::after on canvas hover",
+      "target": ":hover .maxi-text-block__content::after",
+    },
     "hover": {
       "label": "text ::after on hover",
       "target": " .maxi-text-block__content:hover::after",
@@ -1464,6 +1624,10 @@ exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
     },
   },
   "before text": {
+    "canvas hover": {
+      "label": "text ::before on canvas hover",
+      "target": ":hover .maxi-text-block__content::before",
+    },
     "hover": {
       "label": "text ::before on hover",
       "target": " .maxi-text-block__content:hover::before",
@@ -1474,6 +1638,10 @@ exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
     },
   },
   "links": {
+    "canvas hover": {
+      "label": "links on canvas hover",
+      "target": ":hover .maxi-text-block--link",
+    },
     "hover": {
       "label": "links on hover",
       "target": " .maxi-text-block--link:hover",
@@ -1484,6 +1652,10 @@ exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
     },
   },
   "ordered list": {
+    "canvas hover": {
+      "label": "ordered list on canvas hover",
+      "target": ":hover ol.maxi-text-block__content",
+    },
     "hover": {
       "label": "ordered list on hover",
       "target": " ol.maxi-text-block__content:hover",
@@ -1494,6 +1666,10 @@ exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
     },
   },
   "text": {
+    "canvas hover": {
+      "label": "text on canvas hover",
+      "target": ":hover .maxi-text-block__content",
+    },
     "hover": {
       "label": "text on hover",
       "target": " .maxi-text-block__content:hover",
@@ -1514,6 +1690,10 @@ exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
     },
   },
   "unordered list": {
+    "canvas hover": {
+      "label": "unordered list on canvas hover",
+      "target": ":hover ul.maxi-text-block__content",
+    },
     "hover": {
       "label": "unordered list on hover",
       "target": " ul.maxi-text-block__content:hover",
@@ -1538,7 +1718,25 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": "::after",
     },
   },
+  "after close icon": {
+    "canvas hover": {
+      "label": "close icon ::after on canvas hover",
+      "target": ":hover .maxi-video-block__close-button::after",
+    },
+    "hover": {
+      "label": "close icon ::after on hover",
+      "target": " .maxi-video-block__close-button:hover::after",
+    },
+    "normal": {
+      "label": "close icon ::after",
+      "target": " .maxi-video-block__close-button::after",
+    },
+  },
   "after overlay": {
+    "canvas hover": {
+      "label": "overlay ::after on canvas hover",
+      "target": ":hover .maxi-video-block__overlay::after",
+    },
     "hover": {
       "label": "overlay ::after on hover",
       "target": " .maxi-video-block__overlay:hover::after",
@@ -1548,7 +1746,25 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": " .maxi-video-block__overlay::after",
     },
   },
+  "after play icon": {
+    "canvas hover": {
+      "label": "play icon ::after on canvas hover",
+      "target": ":hover .maxi-video-block__play-button::after",
+    },
+    "hover": {
+      "label": "play icon ::after on hover",
+      "target": " .maxi-video-block__play-button:hover::after",
+    },
+    "normal": {
+      "label": "play icon ::after",
+      "target": " .maxi-video-block__play-button::after",
+    },
+  },
   "after video": {
+    "canvas hover": {
+      "label": "video ::after on canvas hover",
+      "target": ":hover .maxi-video-block__video-player::after",
+    },
     "hover": {
       "label": "video ::after on hover",
       "target": " .maxi-video-block__video-player:hover::after",
@@ -1568,7 +1784,25 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": "::before",
     },
   },
+  "before close icon": {
+    "canvas hover": {
+      "label": "close icon ::before on canvas hover",
+      "target": ":hover .maxi-video-block__close-button::before",
+    },
+    "hover": {
+      "label": "close icon ::before on hover",
+      "target": " .maxi-video-block__close-button:hover::before",
+    },
+    "normal": {
+      "label": "close icon ::before",
+      "target": " .maxi-video-block__close-button::before",
+    },
+  },
   "before overlay": {
+    "canvas hover": {
+      "label": "overlay ::before on canvas hover",
+      "target": ":hover .maxi-video-block__overlay::before",
+    },
     "hover": {
       "label": "overlay ::before on hover",
       "target": " .maxi-video-block__overlay:hover::before",
@@ -1578,7 +1812,25 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
       "target": " .maxi-video-block__overlay::before",
     },
   },
+  "before play icon": {
+    "canvas hover": {
+      "label": "play icon ::before on canvas hover",
+      "target": ":hover .maxi-video-block__play-button::before",
+    },
+    "hover": {
+      "label": "play icon ::before on hover",
+      "target": " .maxi-video-block__play-button:hover::before",
+    },
+    "normal": {
+      "label": "play icon ::before",
+      "target": " .maxi-video-block__play-button::before",
+    },
+  },
   "before video": {
+    "canvas hover": {
+      "label": "video ::before on canvas hover",
+      "target": ":hover .maxi-video-block__video-player::before",
+    },
     "hover": {
       "label": "video ::before on hover",
       "target": " .maxi-video-block__video-player:hover::before",
@@ -1599,6 +1851,22 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "close icon": {
+    "canvasHover": {
+      "label": "close icon on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-video-block__close-button svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "close icon's svg on canvas hover",
+      "target": ":hover  .maxi-video-block__close-button svg",
+    },
     "hover": {
       "label": "close icon on hover",
       "target": " .maxi-video-block__close-button:hover",
@@ -1633,6 +1901,10 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "overlay": {
+    "canvas hover": {
+      "label": "overlay on canvas hover",
+      "target": ":hover .maxi-video-block__overlay",
+    },
     "hover": {
       "label": "overlay on hover",
       "target": " .maxi-video-block__overlay:hover",
@@ -1643,6 +1915,22 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "play icon": {
+    "canvasHover": {
+      "label": "play icon on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover  .maxi-video-block__play-button svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "play icon's svg on canvas hover",
+      "target": ":hover  .maxi-video-block__play-button svg",
+    },
     "hover": {
       "label": "play icon on hover",
       "target": " .maxi-video-block__play-button:hover",
@@ -1677,6 +1965,10 @@ exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
     },
   },
   "video": {
+    "canvas hover": {
+      "label": "video on canvas hover",
+      "target": ":hover .maxi-video-block__video-player",
+    },
     "hover": {
       "label": "video on hover",
       "target": " .maxi-video-block__video-player:hover",

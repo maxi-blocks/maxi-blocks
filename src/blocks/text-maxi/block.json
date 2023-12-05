@@ -73,6 +73,10 @@
     "dc-status": {
       "type": "boolean"
     },
+    "dc-source": {
+      "type": "string",
+      "default": "wp"
+    },
     "dc-type": {
       "type": "string"
     },
@@ -144,10 +148,12 @@
       "default": "none"
     },
     "dc-weekday": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-era": {
-      "type": "string"
+      "type": "string",
+      "default": "none"
     },
     "dc-limit": {
       "type": "number",
@@ -181,15 +187,32 @@
       "type": "string",
       "default": ""
     },
+    "dc-order-by": {
+      "type": "string"
+    },
     "dc-order": {
       "type": "string"
     },
     "dc-accumulator": {
       "type": "number"
     },
+    "dc-acf-group": {
+      "type": "number"
+    },
+    "dc-acf-field-type": {
+      "type": "string"
+    },
     "dc-contains-html": {
       "type": "boolean",
       "default": false
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
     },
     "content": {
       "type": "string",
@@ -387,6 +410,49 @@
     "list-marker-size-unit-xs": {
       "type": "string"
     },
+    "list-marker-height-general": {
+      "type": "number"
+    },
+    "list-marker-height-xxl": {
+      "type": "number"
+    },
+    "list-marker-height-xl": {
+      "type": "number"
+    },
+    "list-marker-height-l": {
+      "type": "number"
+    },
+    "list-marker-height-m": {
+      "type": "number"
+    },
+    "list-marker-height-s": {
+      "type": "number"
+    },
+    "list-marker-height-xs": {
+      "type": "number"
+    },
+    "list-marker-height-unit-general": {
+      "type": "string",
+      "default": "em"
+    },
+    "list-marker-height-unit-xxl": {
+      "type": "string"
+    },
+    "list-marker-height-unit-xl": {
+      "type": "string"
+    },
+    "list-marker-height-unit-l": {
+      "type": "string"
+    },
+    "list-marker-height-unit-m": {
+      "type": "string"
+    },
+    "list-marker-height-unit-s": {
+      "type": "string"
+    },
+    "list-marker-height-unit-xs": {
+      "type": "string"
+    },
     "list-marker-indent-general": {
       "type": "number",
       "default": 0.5
@@ -473,6 +539,50 @@
       "type": "string"
     },
     "list-marker-line-height-unit-xs": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-general": {
+      "type": "number",
+      "default": 0
+    },
+    "list-marker-vertical-offset-xxl": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-xl": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-l": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-m": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-s": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-xs": {
+      "type": "number"
+    },
+    "list-marker-vertical-offset-unit-general": {
+      "type": "string",
+      "default": "px"
+    },
+    "list-marker-vertical-offset-unit-xxl": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-unit-xl": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-unit-l": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-unit-m": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-unit-s": {
+      "type": "string"
+    },
+    "list-marker-vertical-offset-unit-xs": {
       "type": "string"
     },
     "list-text-position-general": {
@@ -6031,6 +6141,27 @@
     "custom-css-xs": {
       "type": "object"
     },
+    "advanced-css-general": {
+      "type": "string"
+    },
+    "advanced-css-xxl": {
+      "type": "string"
+    },
+    "advanced-css-xl": {
+      "type": "string"
+    },
+    "advanced-css-l": {
+      "type": "string"
+    },
+    "advanced-css-m": {
+      "type": "string"
+    },
+    "advanced-css-s": {
+      "type": "string"
+    },
+    "advanced-css-xs": {
+      "type": "string"
+    },
     "flex-grow-general": {
       "type": "number"
     },
@@ -6360,6 +6491,10 @@
         "hover": {
           "label": "links on hover",
           "target": " .maxi-text-block--link:hover"
+        },
+        "canvas hover": {
+          "label": "links on canvas hover",
+          "target": ":hover .maxi-text-block--link"
         }
       },
       "ordered list": {
@@ -6370,6 +6505,10 @@
         "hover": {
           "label": "ordered list on hover",
           "target": " ol.maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "ordered list on canvas hover",
+          "target": ":hover ol.maxi-text-block__content"
         }
       },
       "unordered list": {
@@ -6380,6 +6519,10 @@
         "hover": {
           "label": "unordered list on hover",
           "target": " ul.maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "unordered list on canvas hover",
+          "target": ":hover ul.maxi-text-block__content"
         }
       },
       "text": {
@@ -6390,6 +6533,10 @@
         "hover": {
           "label": "text on hover",
           "target": " .maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "text on canvas hover",
+          "target": ":hover .maxi-text-block__content"
         }
       },
       "before text": {
@@ -6400,6 +6547,10 @@
         "hover": {
           "label": "text ::before on hover",
           "target": " .maxi-text-block__content:hover::before"
+        },
+        "canvas hover": {
+          "label": "text ::before on canvas hover",
+          "target": ":hover .maxi-text-block__content::before"
         }
       },
       "after text": {
@@ -6410,6 +6561,10 @@
         "hover": {
           "label": "text ::after on hover",
           "target": " .maxi-text-block__content:hover::after"
+        },
+        "canvas hover": {
+          "label": "text ::after on canvas hover",
+          "target": ":hover .maxi-text-block__content::after"
         }
       }
     },

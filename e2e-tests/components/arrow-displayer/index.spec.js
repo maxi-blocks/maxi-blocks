@@ -15,6 +15,7 @@ import {
 describe('ArrowDisplay', () => {
 	it('Cheking the arrow display', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
 		await page.$eval('.maxi-container-block', container =>

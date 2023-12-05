@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -33,6 +34,8 @@ export default function TextControl({
 	validationText,
 	isFullwidth,
 	newStyle = false,
+	showHelp,
+	helpContent,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
@@ -45,6 +48,8 @@ export default function TextControl({
 		className
 	);
 
+	const [showHelpContent, setShowHelpContent] = useState(false);
+
 	return (
 		<BaseControl
 			label={label}
@@ -53,6 +58,15 @@ export default function TextControl({
 			help={help}
 			className={classes}
 		>
+			{showHelp && (
+				<div
+					className='maxi-info__help-icon'
+					onClick={() => setShowHelpContent(state => !state)}
+				>
+					<span className='maxi-info__help-icon-span'>i</span>
+				</div>
+			)}
+			{showHelpContent && helpContent}
 			<TextInput
 				className='maxi-text-control__input'
 				type={type}

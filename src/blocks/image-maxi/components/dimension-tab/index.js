@@ -168,11 +168,14 @@ const DimensionTab = props => {
 						<RangeControl
 							className='maxi-image-inspector__dimension-width'
 							label={__('Width', 'maxi-blocks')}
-							value={attributes.imgWidth}
+							value={
+								attributes[`imgWidth-${deviceType}`] ||
+								attributes.imgWidth
+							}
 							onChange={val => {
 								if (!isNil(val)) {
 									maxiSetAttributes({
-										imgWidth: val,
+										[`imgWidth-${deviceType}`]: val,
 									});
 
 									resizableObject &&
@@ -182,12 +185,13 @@ const DimensionTab = props => {
 								} else {
 									const defaultAttribute =
 										getDefaultAttribute(
-											'imgWidth',
+											`imgWidth-${deviceType}`,
 											clientId
 										);
 
 									maxiSetAttributes({
-										imgWidth: defaultAttribute,
+										[`imgWidth-${deviceType}`]:
+											defaultAttribute,
 									});
 
 									resizableObject &&
@@ -199,7 +203,7 @@ const DimensionTab = props => {
 							max={100}
 							allowReset
 							initialPosition={getDefaultAttribute(
-								'imgWidth',
+								`imgWidth-${deviceType}`,
 								clientId
 							)}
 						/>

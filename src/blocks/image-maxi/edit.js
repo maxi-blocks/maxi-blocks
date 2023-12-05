@@ -41,7 +41,11 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import {
+	MaxiBlockComponent,
+	withMaxiProps,
+	getResizerSize,
+} from '../../extensions/maxi-block';
 import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
@@ -116,13 +120,22 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
-			const imgWidth = getAttributeValue({
+			const imgWidth = getLastBreakpointAttribute({
 				target: 'imgWidth',
-				props: this.props.attributes,
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
 			});
-			const resizableWidth = toNumber(
-				this.resizableObject.current.state.width
-			);
+			console.log('this.props.deviceType');
+			console.log(this.props.deviceType);
+			console.log('this.resizableObject.current.state.width');
+			console.log(this.resizableObject.current.state.width);
+			const numericWidthString =
+				this.resizableObject.current.state.width.replace(/[^\d.]/g, '');
+			const widthNumber = parseFloat(numericWidthString);
+			const resizableWidth = Math.round(widthNumber * 10) / 10;
+
+			console.log('imgWidth', imgWidth);
+			console.log('resizableWidth', resizableWidth);
 
 			if (
 				(this.props.attributes.fitParentSize ||
@@ -133,6 +146,7 @@ class edit extends MaxiBlockComponent {
 					width: '100%',
 				});
 			} else if (imgWidth !== resizableWidth) {
+				console.log('updateSize');
 				this.resizableObject.current.updateSize({
 					width: `${imgWidth}%`,
 				});
@@ -267,6 +281,27 @@ class edit extends MaxiBlockComponent {
 			!isNil(mediaID) ||
 			mediaURL ||
 			(dcStatus && dcMediaId && dcMediaUrl);
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			console.log('handleOnResizeStop');
+			console.log(`imgWidth-${deviceType}`);
+			console.log(+round(elt.style.width.replace(/[^0-9.]/g, ''), 1));
+			maxiSetAttributes({
+				[`imgWidth-${deviceType}`]: +round(
+					elt.style.width.replace(/[^0-9.]/g, ''),
+					1
+				),
+			});
+
+			// onResizeStop={(event, direction, elt, delta) =>
+			// 	maxiSetAttributes({
+			// 		[`imgWidth-${deviceType}`]: +round(
+			// 			elt.style.width.replace(/[^0-9.]/g, ''),
+			// 			1
+			// 		),
+			// 	})
+			// }
+		};
 
 		return [
 			<textContext.Provider
@@ -404,7 +439,14 @@ class edit extends MaxiBlockComponent {
 							)}
 							defaultSize={{
 								width: `${
-									!fullWidth && !useInitSize ? imgWidth : 100
+									!fullWidth && !useInitSize
+										? getLastBreakpointAttribute({
+												target: 'imgWidth',
+												breakpoint:
+													deviceType || 'general',
+												attributes,
+										  })
+										: 100
 								}%`,
 							}}
 							showHandle={
@@ -420,14 +462,7 @@ class edit extends MaxiBlockComponent {
 								bottomLeft: true,
 								topLeft: true,
 							}}
-							onResizeStop={(event, direction, elt, delta) =>
-								maxiSetAttributes({
-									imgWidth: +round(
-										elt.style.width.replace(/[^0-9.]/g, ''),
-										1
-									),
-								})
-							}
+							onResizeStop={handleOnResizeStop}
 						>
 							{captionType !== 'none' &&
 								captionPosition === 'top' && (

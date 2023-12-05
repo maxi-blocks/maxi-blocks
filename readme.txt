@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.1
 Requires PHP: 8.0
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -345,6 +345,22 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 5 December 2023_
+MaxiBlocks V1.5.6
+* Update: Enhance Interaction Builder with Preview Mode in Gutenberg.
+* Update: Add toggle for Icon, Transform and CustomCSS canvas hover.
+* Update: Context Loop toggle to affect children or grandchildren blocks inside Containers.
+* Fix: Resolve Dynamic Content issues for removed WooCommerce products.
+* Fix: Correct Context Loop functionality by category, tag and author.
+* Fix: Interaction Builder now accurately applies styles for click actions on frontend.
+* Fix: Typography default values for Interaction Builder in Gutenberg.
+* Fix: Remove redundant shape mask icon styles.
+* Fix: Remove an unnecessary second reset button from Button icon's toolbar.
+* Fix: Better Toolbar pop-up styles for margin.
+* Fix: Box shadow min and max values.
+* Fix: Context Loop for Container.
+* Fix: Remove empty rel attribute for links.
 
 _Updates: 22 November 2023_
 MaxiBlocks V1.5.5

@@ -2594,3 +2594,59 @@ html[dir='rtl'] {
 		padding-right: 5px;
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-library-modal .maxi-cloud-toolbar__sign-in {
+		left: 100px;
+		right: unset;
+	}
+	.maxi-library-modal
+		.ais-InfiniteHits-list
+		.ais-InfiniteHits-item
+		.maxi-cloud-masonry-card__tags {
+		left: 8px;
+		right: unset;
+	}
+	.ais-SearchBox-reset {
+		left: 1px;
+		right: unset !important;
+	}
+	.maxi-cloud-container__content-svg-shape__search-bar .top-Menu {
+		right: 230px;
+		left: unset;
+		margin-left: 0;
+		margin-right: 13px;
+	}
+	.active-style-card {
+		.maxi-responsive-close {
+			left: 10px;
+			right: unset;
+
+			.tooltip {
+				left: unset;
+				right: -45px;
+			}
+		}
+	}
+	.maxi-style-card-settings .maxi-tabs-control__button:first-child {
+		border-right: 1px solid var(--maxi-grey-1-color) !important;
+	}
+	.maxi-style-cards__quick-color-presets__reset {
+		left: 8px;
+		right: unset !important;
+	}
+	.maxi-blocks-sc__type--color
+		.maxi-color-control__color
+		.chrome-picker
+		> div:last-child
+		.flexbox-fix:last-child {
+		padding-left: 60px;
+		padding-right: 0px !important;
+	}
+	.maxi-style-cards__quick-color-presets__reset-button__preview {
+		margin-left: 0 !important;
+		margin-right: 5px;
+	}
+}

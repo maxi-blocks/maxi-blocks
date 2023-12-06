@@ -660,3 +660,31 @@ body .maxi-style-cards__popover {
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	body .maxi-style-cards__popover .maxi-style-cards__sc__more-sc--select {
+		margin-right: unset;
+		margin-left: 8px;
+	}
+	.maxi-select-control__second-style .maxi-base-control__label {
+		left: unset;
+		right: 8px;
+	}
+	body .maxi-style-cards__popover .maxi-style-cards__sc__save button,
+	body
+		.maxi-style-cards__popover
+		.maxi-style-cards__sc__save
+		input[type='text'] {
+		margin-left: 8px;
+		margin-right: unset;
+	}
+	.maxi-style-cards__settings .maxi-reset-button {
+		margin-right: 4px !important;
+		margin-left: 0 !important;
+		left: 0;
+		right: unset;
+		padding: 1px 8px 1px 1px !important;
+	}
+}

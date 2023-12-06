@@ -102,6 +102,9 @@ const attributes = {
 			},
 		},
 	}),
+	imgWidth: {
+		type: 'number',
+	},
 	useInitSize: {
 		type: 'boolean',
 	},

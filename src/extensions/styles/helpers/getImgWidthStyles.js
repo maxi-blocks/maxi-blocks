@@ -11,7 +11,9 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Generates image width styles object
  *
- * @param {Object} obj Block size properties
+ * @param {Object}  obj         Block size properties
+ * @param {boolean} useInitSize Flag to determine if initial size should be used
+ * @param {number}  mediaWidth  Width of the media element
  */
 const getImgWidthStyles = (obj, useInitSize, mediaWidth) => {
 	const response = {};

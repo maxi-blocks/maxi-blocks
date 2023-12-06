@@ -168,10 +168,7 @@ const DimensionTab = props => {
 						<RangeControl
 							className='maxi-image-inspector__dimension-width'
 							label={__('Width', 'maxi-blocks')}
-							value={
-								attributes[`img-width-${deviceType}`] ||
-								attributes.imgWidth
-							}
+							value={attributes[`img-width-${deviceType}`]}
 							onChange={val => {
 								if (!isNil(val)) {
 									maxiSetAttributes({

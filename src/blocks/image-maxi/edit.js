@@ -149,7 +149,6 @@ class edit extends MaxiBlockComponent {
 			'hover-type': hoverType,
 			captionContent,
 			captionType,
-			'img-width': imgWidth,
 			mediaAlt,
 			altSelector,
 			useInitSize,

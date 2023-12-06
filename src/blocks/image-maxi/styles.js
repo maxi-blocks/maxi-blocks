@@ -465,9 +465,14 @@ const getFigcaptionObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props.imgWidth && {
-			imgWidth: { general: { width: `${props.imgWidth}%` } },
-		}),
+		...(props['image-width-general'] &&
+			getImgWidthStyles(
+				{
+					...getGroupAttributes(props, 'width', false, 'img-'),
+				},
+				props.useInitSize,
+				props.mediaWidth
+			)),
 		...(() => {
 			const response = { captionMargin: {} };
 			const { captionPosition } = props;

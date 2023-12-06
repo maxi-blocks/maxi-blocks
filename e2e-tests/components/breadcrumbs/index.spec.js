@@ -11,6 +11,7 @@ import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../utils';
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await updateAllBlockUniqueIds(page);

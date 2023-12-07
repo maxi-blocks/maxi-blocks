@@ -465,7 +465,7 @@ const getFigcaptionObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['image-width-general'] &&
+		...(props['img-width-general'] &&
 			getImgWidthStyles(
 				{
 					...getGroupAttributes(props, 'width', false, 'img-'),

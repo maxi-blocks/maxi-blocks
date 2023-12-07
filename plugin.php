@@ -18,33 +18,51 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-// Define the required MySQL version.
 define('REQUIRED_MYSQL_VERSION', '8.0');
+define('REQUIRED_MARIADB_VERSION', '10.4');
 
-// Hook for checking the MySQL version in the admin area.
-add_action('admin_init', 'check_mysql_version');
+// Hook for checking the database version in the admin area.
+add_action('admin_init', 'check_database_version');
 
 /**
- * Check the required MySQL version during admin initialization.
+ * Check the required database version during admin initialization.
  */
-function check_mysql_version()
+function check_database_version()
 {
     global $wpdb;
 
-    if (version_compare($wpdb->db_version(), REQUIRED_MYSQL_VERSION, '<')) {
+    // Check if the database is MariaDB.
+    $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
+
+    // Determine the required version based on the database type.
+    $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
+
+    // Compare the current database version with the required version.
+    if (version_compare($wpdb->db_version(), $requiredVersion, '<')) {
         $plugin_file = plugin_basename(__FILE__);
-        add_action("after_plugin_row_{$plugin_file}", 'show_mysql_version_notice', 10, 3);
+        add_action("after_plugin_row_{$plugin_file}", 'show_database_version_notice', 10, 3);
     }
 }
 
 /**
- * Show an admin notice under the plugin's name if the required MySQL version is not met.
+ * Show an admin notice under the plugin's name if the required database version is not met.
  */
-function show_mysql_version_notice()
+function show_database_version_notice()
 {
-    $message = 'This plugin is optimized for MySQL version ' . REQUIRED_MYSQL_VERSION . ' or higher. Please update your MySQL version or contact your hosting provider for the best experience.';
-    printf('<tr class="active"><td colspan="4" class="plugin-update colspanchange"><div class="update-message notice inline notice-error notice-alt"><p>%s</p></div></td></tr>', esc_html($message));
+    global $wpdb;
+    $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
+    $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
+    $databaseType = $isMariaDB ? 'MariaDB' : 'MySQL';
+
+    $message = 'This plugin is optimized for ' . $databaseType . ' version ' . $requiredVersion . ' or higher. Please update your ' . $databaseType . ' version or contact your hosting provider for the best experience.';
+
+    echo '<tr class="plugin-update-tr active">';
+    echo '<td colspan="4" class="plugin-update colspanchange">';
+    echo '<div class="update-message notice inline notice-warning notice-alt is-dismissible"><p>';
+    echo esc_html($message);
+    echo '</p></div></td></tr>';
 }
+
 
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);

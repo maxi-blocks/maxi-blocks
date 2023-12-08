@@ -20,6 +20,32 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+// Translations
+
+add_action('init', 'maxi_load_textdomain');
+
+function maxi_load_textdomain()
+{
+    load_plugin_textdomain('maxi-blocks', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+
+function maxi_load_translations($mofile, $domain)
+{
+    if ('maxi-blocks' === $domain) {
+        $locale = apply_filters('plugin_locale', determine_locale(), $domain);
+
+        $mofile_new = WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages/' . $domain . '-' . $locale . '.mo';
+
+        // Check if the new MO file exists
+        if (file_exists($mofile_new)) {
+            return $mofile_new;
+        }
+    }
+    return $mofile;
+}
+add_filter('load_textdomain_mofile', 'maxi_load_translations', 10, 2);
+
+
 // Define the required MySQL version.
 define('REQUIRED_MYSQL_VERSION', '8.0');
 

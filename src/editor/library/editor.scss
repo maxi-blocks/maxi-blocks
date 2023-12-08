@@ -2598,6 +2598,10 @@ html[dir='rtl'] {
 * RTL
 *******************************/
 html[dir='rtl'] {
+	.maxi-responsive-selector {
+		left: unset;
+		right: 0;
+	}
 	.maxi-library-modal .maxi-cloud-toolbar__sign-in {
 		left: 100px;
 		right: unset;
@@ -2648,5 +2652,9 @@ html[dir='rtl'] {
 	.maxi-style-cards__quick-color-presets__reset-button__preview {
 		margin-left: 0 !important;
 		margin-right: 5px;
+	}
+	.maxi-cloud-container__patterns__sidebar
+		svg.components-checkbox-control__checked {
+		right: 0;
 	}
 }

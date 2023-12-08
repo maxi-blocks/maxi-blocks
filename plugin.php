@@ -18,56 +18,112 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+define('MAXI_PLUGIN_DIR_FILE', __FILE__);
+define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
+define('MAXI_PLUGIN_VERSION', get_file_data(__FILE__, array('Version' => 'Version'), false)['Version']);
+
+// Define required versions
 define('REQUIRED_MYSQL_VERSION', '8.0');
 define('REQUIRED_MARIADB_VERSION', '10.4');
 
-// Hook for checking the database version in the admin area.
+// Hook for checking the database version in the admin area
 add_action('admin_init', 'check_database_version');
 
 /**
- * Check the required database version during admin initialization.
+ * Check the required database version during admin initialization
  */
 function check_database_version()
 {
     global $wpdb;
 
-    // Check if the database is MariaDB.
+    // Check if the database is MariaDB
     $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
-
-    // Determine the required version based on the database type.
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
 
-    // Compare the current database version with the required version.
+    // Compare the current database version with the required version
     if (version_compare($wpdb->db_version(), $requiredVersion, '<')) {
         $plugin_file = plugin_basename(__FILE__);
         add_action("after_plugin_row_{$plugin_file}", 'show_database_version_notice', 10, 3);
+        add_action('admin_enqueue_scripts', 'maxi_blocks_enqueue_notice_scripts');
     }
 }
 
 /**
- * Show an admin notice under the plugin's name if the required database version is not met.
+ * Enqueue JavaScript for the admin notice
+ */
+function maxi_blocks_enqueue_notice_scripts()
+{
+    wp_enqueue_script('maxi-blocks-admin-notice', plugins_url('/core/admin/notices.js', __FILE__), [], MAXI_PLUGIN_VERSION, true);
+
+    // Localize script with REST API URL and nonce
+    wp_localize_script('maxi-blocks-admin-notice', 'maxiBlocks', [
+        'rest_url' => rest_url('maxi-blocks/v1/dismiss-notice'),
+        'nonce' => wp_create_nonce('wp_rest')
+    ]);
+}
+
+/**
+ * Show an admin notice under the plugin's name if the required database version is not met
  */
 function show_database_version_notice()
 {
+    if (get_option('maxi_blocks_db_notice_dismissed') === 'yes') {
+        return;
+    }
+
     global $wpdb;
     $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
     $databaseType = $isMariaDB ? 'MariaDB' : 'MySQL';
+    $message = __('Highly recommend to update to', 'maxi-blocks') . ' ' . $databaseType . ' ' . $requiredVersion . '+ ' . __('for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks') . ' <a href="https://maxiblocks.com/go/database-version-requirements" target="_blank">' . __('Learn more', 'maxi-blocks') . '</a>';
 
-    $message = 'This plugin is optimized for ' . $databaseType . ' version ' . $requiredVersion . ' or higher. Please update your ' . $databaseType . ' version or contact your hosting provider for the best experience.';
-
-    echo '<tr class="plugin-update-tr active">';
+    echo '<tr class="plugin-update-tr active maxi-blocks-db-notice" data-slug="maxi-blocks" data-plugin="maxi-blocks/plugin.php">';
     echo '<td colspan="4" class="plugin-update colspanchange">';
     echo '<div class="update-message notice inline notice-warning notice-alt is-dismissible"><p>';
-    echo esc_html($message);
+    echo $message;
     echo '</p></div></td></tr>';
 }
 
+/**
+ * Register REST API endpoint for dismissing the notice
+ */
+function maxi_blocks_register_rest_route()
+{
+    register_rest_route('maxi-blocks/v1', '/dismiss-notice', [
+        'methods' => 'POST',
+        'callback' => 'maxi_blocks_dismiss_notice',
+        'permission_callback' => function () {
+            return current_user_can('manage_options');
+        }
+    ]);
+}
+add_action('rest_api_init', 'maxi_blocks_register_rest_route');
 
-define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
-define('MAXI_PLUGIN_DIR_FILE', __FILE__);
-define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
-define('MAXI_PLUGIN_VERSION', get_file_data(__FILE__, array('Version' => 'Version'), false)['Version']);
+/**
+ * Dismiss the notice and update the option in the database
+ */
+function maxi_blocks_dismiss_notice()
+{
+    update_option('maxi_blocks_db_notice_dismissed', 'yes');
+    return new WP_REST_Response(null, 204);
+}
+
+function maxi_blocks_post_update($upgrader_object, $options)
+{
+    // Check if it's an update of plugins
+    if ($options['action'] == 'update' && $options['type'] == 'plugin') {
+        // Check if YOUR plugin is in the list of updated plugins
+        foreach ($options['plugins'] as $plugin) {
+            if ($plugin == plugin_basename(__FILE__)) {
+                // Reset the dismissal option
+                update_option('maxi_blocks_db_notice_dismissed', 'no');
+                break;
+            }
+        }
+    }
+}
+add_action('upgrader_process_complete', 'maxi_blocks_post_update', 10, 2);
 
 
 //======================================================================

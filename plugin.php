@@ -28,12 +28,12 @@ define('REQUIRED_MYSQL_VERSION', '8.0');
 define('REQUIRED_MARIADB_VERSION', '10.4');
 
 // Hook for checking the database version in the admin area
-add_action('admin_init', 'check_database_version');
+add_action('admin_init', 'maxi_check_database_version');
 
 /**
  * Check the required database version during admin initialization
  */
-function check_database_version()
+function maxi_check_database_version()
 {
     global $wpdb;
 
@@ -44,7 +44,7 @@ function check_database_version()
     // Compare the current database version with the required version
     if (version_compare($wpdb->db_version(), $requiredVersion, '<')) {
         $plugin_file = plugin_basename(__FILE__);
-        add_action("after_plugin_row_{$plugin_file}", 'show_database_version_notice', 10, 3);
+        add_action("after_plugin_row_{$plugin_file}", 'maxi_show_database_version_notice', 10, 3);
         add_action('admin_enqueue_scripts', 'maxi_blocks_enqueue_notice_scripts');
     }
 }
@@ -66,7 +66,7 @@ function maxi_blocks_enqueue_notice_scripts()
 /**
  * Show an admin notice under the plugin's name if the required database version is not met
  */
-function show_database_version_notice()
+function maxi_show_database_version_notice()
 {
     if (get_option('maxi_blocks_db_notice_dismissed') === 'yes') {
         return;
@@ -109,7 +109,7 @@ function maxi_blocks_dismiss_notice()
     return new WP_REST_Response(null, 204);
 }
 
-function maxi_blocks_post_update($upgrader_object, $options)
+function maxi_blocks_after_update($upgrader_object, $options)
 {
     // Check if it's an update of plugins
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
@@ -123,7 +123,7 @@ function maxi_blocks_post_update($upgrader_object, $options)
         }
     }
 }
-add_action('upgrader_process_complete', 'maxi_blocks_post_update', 10, 2);
+add_action('upgrader_process_complete', 'maxi_blocks_after_update', 10, 2);
 
 
 //======================================================================

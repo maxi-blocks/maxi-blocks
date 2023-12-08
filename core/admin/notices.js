@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable func-names */
 document.addEventListener('DOMContentLoaded', function () {
 	const firstRow = document.querySelector(
 		'tr.active.is-uninstallable[data-slug="maxi-blocks"]'

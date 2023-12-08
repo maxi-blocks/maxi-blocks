@@ -11,6 +11,8 @@
  * Requires PHP: 8.0
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: maxi-blocks
+ * Domain Path: /languages
  */
 
 // Exit if accessed directly.
@@ -22,11 +24,39 @@ define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 define('MAXI_PLUGIN_DIR_FILE', __FILE__);
 define('MAXI_PLUGIN_URL_PATH', plugin_dir_url(__FILE__));
 define('MAXI_PLUGIN_VERSION', get_file_data(__FILE__, array('Version' => 'Version'), false)['Version']);
-
-// Define required versions
+// Define the required MySQL version.
 define('REQUIRED_MYSQL_VERSION', '8.0');
 define('REQUIRED_MARIADB_VERSION', '10.4');
 
+//======================================================================
+// Translations
+//======================================================================
+add_action('init', 'maxi_load_textdomain');
+
+function maxi_load_textdomain()
+{
+    load_plugin_textdomain('maxi-blocks', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+
+function maxi_load_translations($mofile, $domain)
+{
+    if ('maxi-blocks' === $domain) {
+        $locale = apply_filters('plugin_locale', determine_locale(), $domain);
+
+        $mofile_new = WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages/' . $domain . '-' . $locale . '.mo';
+
+        // Check if the new MO file exists
+        if (file_exists($mofile_new)) {
+            return $mofile_new;
+        }
+    }
+    return $mofile;
+}
+add_filter('load_textdomain_mofile', 'maxi_load_translations', 10, 2);
+
+//======================================================================
+// Database version check
+//======================================================================
 // Hook for checking the database version in the admin area
 add_action('admin_init', 'maxi_check_database_version');
 
@@ -125,7 +155,6 @@ function maxi_blocks_after_update($upgrader_object, $options)
 }
 add_action('upgrader_process_complete', 'maxi_blocks_after_update', 10, 2);
 
-
 //======================================================================
 // Init
 //======================================================================
@@ -191,7 +220,6 @@ function maxi_links_control($rel, $link)
     return false;
 }
 add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
-
 add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
 add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
 

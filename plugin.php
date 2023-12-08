@@ -38,7 +38,7 @@ function check_database_version()
     global $wpdb;
 
     // Check if the database is MariaDB
-    $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
+    $isMariaDB = strpos(strtolower($wpdb->db_server_info()), 'maria') !== false;
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
 
     // Compare the current database version with the required version
@@ -73,7 +73,7 @@ function show_database_version_notice()
     }
 
     global $wpdb;
-    $isMariaDB = strpos(strtolower($wpdb->db_version()), 'mariadb') !== false;
+    $isMariaDB = strpos(strtolower($wpdb->db_server_info()), 'maria') !== false;
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
     $databaseType = $isMariaDB ? 'MariaDB' : 'MySQL';
     $message = __('Highly recommend to update to', 'maxi-blocks') . ' ' . $databaseType . ' ' . $requiredVersion . '+ ' . __('for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks') . ' <a href="https://maxiblocks.com/go/database-version-requirements" target="_blank">' . __('Learn more', 'maxi-blocks') . '</a>';

@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
+import ImageUrlUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import ToggleSwitch from '../toggle-switch';
@@ -23,7 +24,6 @@ import {
  */
 import classnames from 'classnames';
 import { cloneDeep, isEmpty, isNil } from 'lodash';
-import ImageUrlUpload from '../image-url-upload';
 
 /**
  * Component

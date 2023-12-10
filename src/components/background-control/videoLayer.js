@@ -8,6 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ImageUrlUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -25,7 +26,6 @@ import { videoUrlRegex } from '../../extensions/video';
  * External dependencies
  */
 import { cloneDeep } from 'lodash';
-import ImageUrlUpload from '../image-url-upload';
 
 /**
  * Component

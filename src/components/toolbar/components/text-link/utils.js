@@ -30,6 +30,11 @@ export const createLinkAttributes = ({
 	if (noFollow) attributes.rel += ' nofollow';
 	if (sponsored) attributes.rel += ' sponsored';
 	if (ugc) attributes.rel += ' ugc';
+	if (attributes.target !== '_blank' && !noFollow && !sponsored && !ugc) {
+		delete attributes.rel;
+	} else {
+		attributes.rel = attributes.rel.trim();
+	}
 
 	// Clean empty attributes, as it returns error on RichText
 	// and trims the rest

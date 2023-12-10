@@ -585,6 +585,10 @@
       "type": "boolean",
       "default": false
     },
+    "icon-status-hover-target": {
+      "type": "boolean",
+      "default": true
+    },
     "icon-background-active-media-general-hover": {
       "type": "string"
     },
@@ -9705,6 +9709,14 @@
       "type": "boolean",
       "default": false
     },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0
@@ -12360,6 +12372,10 @@
         "hover": {
           "label": "button on hover",
           "target": " .maxi-button-block__button:hover"
+        },
+        "canvas hover": {
+          "label": "button on canvas hover",
+          "target": ":hover .maxi-button-block__button"
         }
       },
       "before canvas": {
@@ -12380,6 +12396,10 @@
         "hover": {
           "label": "button ::before on hover",
           "target": " .maxi-button-block__button:hover::before"
+        },
+        "canvas hover": {
+          "label": "button ::before on canvas hover",
+          "target": ":hover .maxi-button-block__button::before"
         }
       },
       "after canvas": {
@@ -12400,6 +12420,10 @@
         "hover": {
           "label": "button ::after on hover",
           "target": " .maxi-button-block__button:hover::after"
+        },
+        "canvas hover": {
+          "label": "button ::after on canvas hover",
+          "target": ":hover .maxi-button-block__button::after"
         }
       },
       "icon": {

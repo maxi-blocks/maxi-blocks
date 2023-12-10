@@ -206,6 +206,14 @@
       "type": "boolean",
       "default": false
     },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
+    "dc-image-accumulator": {
+      "type": "number",
+      "default": 0
+    },
     "content": {
       "type": "string",
       "default": ""
@@ -6483,6 +6491,10 @@
         "hover": {
           "label": "links on hover",
           "target": " .maxi-text-block--link:hover"
+        },
+        "canvas hover": {
+          "label": "links on canvas hover",
+          "target": ":hover .maxi-text-block--link"
         }
       },
       "ordered list": {
@@ -6493,6 +6505,10 @@
         "hover": {
           "label": "ordered list on hover",
           "target": " ol.maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "ordered list on canvas hover",
+          "target": ":hover ol.maxi-text-block__content"
         }
       },
       "unordered list": {
@@ -6503,6 +6519,10 @@
         "hover": {
           "label": "unordered list on hover",
           "target": " ul.maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "unordered list on canvas hover",
+          "target": ":hover ul.maxi-text-block__content"
         }
       },
       "text": {
@@ -6513,6 +6533,10 @@
         "hover": {
           "label": "text on hover",
           "target": " .maxi-text-block__content:hover"
+        },
+        "canvas hover": {
+          "label": "text on canvas hover",
+          "target": ":hover .maxi-text-block__content"
         }
       },
       "before text": {
@@ -6523,6 +6547,10 @@
         "hover": {
           "label": "text ::before on hover",
           "target": " .maxi-text-block__content:hover::before"
+        },
+        "canvas hover": {
+          "label": "text ::before on canvas hover",
+          "target": ":hover .maxi-text-block__content::before"
         }
       },
       "after text": {
@@ -6533,6 +6561,10 @@
         "hover": {
           "label": "text ::after on hover",
           "target": " .maxi-text-block__content:hover::after"
+        },
+        "canvas hover": {
+          "label": "text ::after on canvas hover",
+          "target": ":hover .maxi-text-block__content::after"
         }
       }
     },

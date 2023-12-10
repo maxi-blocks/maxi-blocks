@@ -24,6 +24,7 @@ import {
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
@@ -118,6 +119,7 @@ describe('Column Maxi', () => {
 
 	it('Check column Border', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForSelector('.maxi-row-block__template button');
@@ -208,7 +210,7 @@ describe('Column Maxi', () => {
 
 		// check first column
 		await page.waitForSelector('.maxi-column-block');
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1500);
 
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[0].focus()

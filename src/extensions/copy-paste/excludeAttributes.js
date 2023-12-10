@@ -17,6 +17,7 @@ const GLOBAL_EXCLUDE = [
 	'cl-id',
 	'dc-accumulator',
 	'cl-accumulator',
+	'cl-grandchild-accumulator',
 ];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
@@ -39,6 +40,7 @@ const ALL_TIME_EXCLUDE = [
 	'dc-accumulator',
 	'cl-id',
 	'cl-accumulator',
+	'cl-grandchild-accumulator',
 ];
 
 const shouldDeleteKey = (

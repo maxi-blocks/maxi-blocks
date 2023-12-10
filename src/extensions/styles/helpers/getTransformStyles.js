@@ -25,8 +25,23 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			target,
 			breakpoint,
 			attributes: obj,
-			keys: keys ?? [category, hoverSelected, key],
+			keys: keys ?? [
+				category,
+				hoverSelected === 'canvas hover' ? 'hover' : hoverSelected,
+				key,
+			],
 		});
+
+	const shouldSkipTransform = transformType => {
+		return (
+			index === 'canvas hover' &&
+			getLastBreakpointTransformAttribute({
+				target: transformType,
+				keys: [category, 'hover-target'],
+				attributes: obj,
+			})
+		);
+	};
 
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
@@ -46,6 +61,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getScaleString = index => {
 		let scaleString = '';
+
+		if (shouldSkipTransform('transform-scale')) return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -70,6 +88,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getTranslateString = index => {
 		let translateString = '';
+
+		if (shouldSkipTransform('transform-translate')) return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -94,6 +115,9 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getRotateString = index => {
 		let rotateString = '';
+
+		if (shouldSkipTransform('transform-rotate')) return '';
+
 		if (
 			index === 'hover' &&
 			!getLastBreakpointTransformAttribute({
@@ -120,6 +144,8 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 	const getOriginString = index => {
 		let originString = '';
+
+		if (shouldSkipTransform('transform-origin')) return '';
 
 		if (
 			index === 'hover' &&
@@ -195,8 +221,9 @@ const getTransformStyles = (obj, selectors) => {
 		Object.entries(targets).forEach(([index, targetObj]) => {
 			const { target } = targetObj;
 			const transformObj = getTransformValue(obj, category, index);
-			if (!isEmpty(transformObj))
+			if (!isEmpty(transformObj)) {
 				response[target] = { transform: transformObj };
+			}
 		});
 	});
 

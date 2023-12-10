@@ -3,7 +3,7 @@
  */
 import getTransitionData from '../transitions/getTransitionData';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
-import { getBlockNameFromUniqueID } from './utils';
+import { getBlockNameFromUniqueID } from '../../attributes';
 
 const name = 'Opacity Transition Migrator';
 

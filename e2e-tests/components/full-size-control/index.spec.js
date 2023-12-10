@@ -126,6 +126,7 @@ describe('FullSizeControl', () => {
 	});
 	it('Checking fullSizeControl force aspect ratio', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		// select 3 columns

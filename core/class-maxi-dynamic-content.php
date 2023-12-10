@@ -670,52 +670,54 @@ class MaxiBlocks_DynamicContent
 
         $product = $this->get_post($attributes);
 
-        switch ($dc_field) {
-            case 'name':
-            case 'slug':
-            case 'sku':
-            case 'review_count':
-            case 'average_rating':
-                return strval($product->get_data()[$dc_field]);
-            case 'price':
-            case 'regular_price':
-                return strip_tags(wc_price($product->get_data()[$dc_field]));
-            case 'sale_price':
-                if ($product->is_on_sale()) {
-                    return strip_tags(wc_price($product->get_sale_price()));
-                }
-
-                return strip_tags(wc_price($product->get_price()));
-            case 'price_range':
-                if ($product->is_type('variable')) {
-
-                    $min_price = $product->get_variation_price('min', true);
-                    $max_price = $product->get_variation_price('max', true);
-
-                    if ($min_price !== $max_price) {
-                        return wc_format_price_range($min_price, $max_price);
+        if($product) {
+            switch ($dc_field) {
+                case 'name':
+                case 'slug':
+                case 'sku':
+                case 'review_count':
+                case 'average_rating':
+                    return strval($product->get_data()[$dc_field]);
+                case 'price':
+                case 'regular_price':
+                    return strip_tags(wc_price($product->get_data()[$dc_field]));
+                case 'sale_price':
+                    if ($product->is_on_sale()) {
+                        return strip_tags(wc_price($product->get_sale_price()));
                     }
-                }
 
-                return strip_tags(wc_price($product->get_price()));
-            case 'description':
-                return self::get_limited_string($product->get_description(), $dc_limit);
-            case 'short_description':
-                return self::get_limited_string($product->get_short_description(), $dc_limit);
-            case 'tags':
-            case 'categories':
-                $field_name_to_taxonomy = [
-                    'tags' => 'product_tag',
-                    'categories' => 'product_cat',
-                ];
+                    return strip_tags(wc_price($product->get_price()));
+                case 'price_range':
+                    if ($product->is_type('variable')) {
 
-                return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
-            case 'featured_media':
-                return (int) $product->get_image_id();
-            case 'gallery':
-                return $product->get_gallery_image_ids()[$dc_image_accumulator];
-            default:
-                return null;
+                        $min_price = $product->get_variation_price('min', true);
+                        $max_price = $product->get_variation_price('max', true);
+
+                        if ($min_price !== $max_price) {
+                            return wc_format_price_range($min_price, $max_price);
+                        }
+                    }
+
+                    return strip_tags(wc_price($product->get_price()));
+                case 'description':
+                    return self::get_limited_string($product->get_description(), $dc_limit);
+                case 'short_description':
+                    return self::get_limited_string($product->get_short_description(), $dc_limit);
+                case 'tags':
+                case 'categories':
+                    $field_name_to_taxonomy = [
+                        'tags' => 'product_tag',
+                        'categories' => 'product_cat',
+                    ];
+
+                    return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
+                case 'featured_media':
+                    return (int) $product->get_image_id();
+                case 'gallery':
+                    return $product->get_gallery_image_ids()[$dc_image_accumulator];
+                default:
+                    return null;
+            }
         }
     }
 

@@ -85,6 +85,7 @@ const ToolbarMediaUpload = props => {
 					renderContent={args => (
 						<div>
 							<MediaUpload
+								isImageUrl={attributes[`${prefix}isImageUrl`]}
 								onSelect={media => {
 									args.onClose();
 
@@ -172,7 +173,21 @@ const ToolbarMediaUpload = props => {
 											attributes={attributes}
 											prefix={prefix}
 											newStyle={false}
-											onChange={maxiSetAttributes}
+											onChange={imageData =>
+												maxiSetAttributes({
+													[`${prefix}mediaID`]:
+														imageData.id,
+													[`${prefix}mediaURL`]:
+														imageData.url,
+													[`${prefix}mediaWidth`]:
+														imageData.width,
+													[`${prefix}mediaHeight`]:
+														imageData.height,
+													[`${prefix}isImageUrl`]: true,
+													[`${prefix}isImageUrlInvalid`]:
+														!!imageData.isImageUrlInvalid,
+												})
+											}
 										/>
 									</div>
 								)}

@@ -674,41 +674,35 @@ const ImageLayer = props => {
 		prefix,
 	});
 
+	const handleSelectImage = imageData => {
+		onChange({
+			[getAttributeKey('background-image-mediaID', isHover, prefix)]:
+				imageData.id,
+			[getAttributeKey('background-image-mediaURL', isHover, prefix)]:
+				imageData.url,
+			[getAttributeKey('background-image-width', isHover, prefix)]:
+				imageData.width,
+			[getAttributeKey('background-image-height', isHover, prefix)]:
+				imageData.height,
+			[getAttributeKey('background-image-isImageUrl', isHover, prefix)]:
+				imageData.isImageUrl || false,
+			[getAttributeKey('background-image-isImageUrlInvalid', isHover)]:
+				imageData.isImageUrlInvalid || false,
+		});
+	};
+
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
 				<>
 					<MediaUploaderControl
 						mediaID={mediaID}
-						onSelectImage={imageData =>
-							onChange({
-								[getAttributeKey(
-									'background-image-mediaID',
-									isHover,
-									prefix
-								)]: imageData.id,
-								[getAttributeKey(
-									'background-image-mediaURL',
-									isHover,
-									prefix
-								)]: imageData.url,
-								[getAttributeKey(
-									'background-image-width',
-									isHover,
-									prefix
-								)]: imageData.width,
-								[getAttributeKey(
-									'background-image-height',
-									isHover,
-									prefix
-								)]: imageData.height,
-								[getAttributeKey(
-									'background-image-isImageUrl',
-									isHover,
-									prefix
-								)]: false,
-							})
-						}
+						isImageUrl={getAttributeValue({
+							target: 'background-image-isImageUrl',
+							props: imageOptions,
+							prefix,
+						})}
+						onSelectImage={handleSelectImage}
 						onRemoveImage={() =>
 							onChange({
 								[getAttributeKey(
@@ -737,7 +731,7 @@ const ImageLayer = props => {
 					<ImageUrlUpload
 						attributes={imageOptions}
 						prefix={`${prefix}background-image-`}
-						onChange={onChange}
+						onChange={handleSelectImage}
 					/>
 				</>
 			)}

@@ -156,7 +156,7 @@ class edit extends MaxiBlockComponent {
 			mediaID,
 			mediaURL,
 			isImageUrl,
-			isImageUrlValid,
+			isImageUrlInvalid,
 			mediaWidth,
 			SVGElement,
 			uniqueID,
@@ -267,7 +267,7 @@ class edit extends MaxiBlockComponent {
 
 		const showImage =
 			(mediaURL &&
-				((isImageUrl && isImageUrlValid) ||
+				((isImageUrl && !isImageUrlInvalid) ||
 					(!isNil(mediaID) && mediaURL))) ||
 			(dcStatus && dcMediaId && dcMediaUrl);
 

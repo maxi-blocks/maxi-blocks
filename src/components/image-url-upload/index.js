@@ -8,6 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import TextControl from '../text-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Styles
@@ -17,18 +18,34 @@ import './editor.scss';
 const ImageUrlUpload = ({
 	attributes,
 	prefix = '',
+	mediaPrefix = 'media',
 	newStyle = true,
+	breakpoint,
 	onChange,
 }) => {
-	const [error, setError] = useState(!attributes[`${prefix}isImageUrlValid`]);
+	const [error, setError] = useState(
+		!!getLastBreakpointAttribute({
+			target: `${prefix}isImageUrlInvalid`,
+			breakpoint,
+			attributes,
+		})
+	);
 
 	return (
 		<div className='maxi-image-url-upload'>
 			<TextControl
 				label={newStyle && __('URL', 'maxi-blocks')}
 				value={
-					attributes[`${prefix}isImageUrl`] &&
-					attributes[`${prefix}mediaURL`]
+					getLastBreakpointAttribute({
+						target: `${prefix}isImageUrl`,
+						breakpoint,
+						attributes,
+					}) &&
+					getLastBreakpointAttribute({
+						target: `${prefix}${mediaPrefix}URL`,
+						breakpoint,
+						attributes,
+					})
 				}
 				placeholder={__('Enter URL', 'maxi-blocks')}
 				newStyle={newStyle}
@@ -39,15 +56,15 @@ const ImageUrlUpload = ({
 						url,
 						width,
 						height,
-						isValid = true,
+						isInvalid = false,
 					}) =>
 						onChange({
-							[`${prefix}mediaID`]: undefined,
-							[`${prefix}mediaURL`]: url,
-							[`${prefix}mediaWidth`]: width,
-							[`${prefix}mediaHeight`]: height,
-							[`${prefix}isImageUrl`]: true,
-							[`${prefix}isImageUrlValid`]: isValid,
+							id: undefined,
+							url,
+							width,
+							height,
+							isImageUrl: true,
+							isImageUrlInvalid: isInvalid,
 						});
 
 					if (!trimmedValue) {
@@ -70,7 +87,7 @@ const ImageUrlUpload = ({
 						setError(true);
 						setMediaAttributes({
 							url: trimmedValue,
-							isValid: false,
+							isInvalid: true,
 						});
 					};
 				}}

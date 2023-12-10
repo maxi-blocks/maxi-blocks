@@ -141,7 +141,7 @@ const Inspector = props => {
 											),
 											extraIndicators: [
 												'imageRatio',
-												'imgWidth',
+												'img-width',
 											],
 										},
 									...inspectorTabs.alignment({

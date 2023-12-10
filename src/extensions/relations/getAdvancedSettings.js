@@ -21,7 +21,7 @@ import {
 	getTransformSelectors,
 } from '../../components/transform-control/utils';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
-import { getBlockNameFromUniqueID } from '../styles/migrators/utils';
+import { getBlockNameFromUniqueID } from '../attributes';
 
 /**
  * External dependencies

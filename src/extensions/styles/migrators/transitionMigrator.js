@@ -2,8 +2,7 @@
  * Internal dependencies
  */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import { getBlockNameFromUniqueID } from './utils';
-import { getBlockData } from '../../attributes';
+import { getBlockData, getBlockNameFromUniqueID } from '../../attributes';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
 
 /**

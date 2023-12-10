@@ -99,6 +99,8 @@ const AdvancedNumberControl = props => {
 		customValidationRegex,
 		transformRangePreferredValue,
 		newStyle = false,
+		showHelp = false,
+		helpContent = '',
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -224,6 +226,12 @@ const AdvancedNumberControl = props => {
 	const rangeValue =
 		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;
 
+	const [showHelpContent, setShowHelpContent] = useState(false);
+
+	const handleToggleHelpContent = () => {
+		setShowHelpContent(state => !state);
+	};
+
 	return (
 		<>
 			{enableAuto && (
@@ -240,6 +248,15 @@ const AdvancedNumberControl = props => {
 					label={label}
 					className={classes}
 				>
+					{showHelp && (
+						<div
+							className='maxi-info__help-icon'
+							onClick={handleToggleHelpContent}
+						>
+							<span className='maxi-info__help-icon-span'>i</span>
+						</div>
+					)}
+					{showHelpContent && helpContent}
 					<input
 						id={advancedNumberControlId}
 						type={

@@ -98,9 +98,16 @@ const attributes = {
 	mediaHeight: {
 		type: 'number',
 	},
+	...breakpointAttributesCreator({
+		obj: {
+			'img-width': {
+				type: 'number',
+				default: 100,
+			},
+		},
+	}),
 	imgWidth: {
 		type: 'number',
-		default: 100,
 	},
 	useInitSize: {
 		type: 'boolean',

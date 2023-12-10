@@ -1,8 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockData } from '../../attributes';
-import { getBlockNameFromUniqueID } from './utils';
+import { getBlockData, getBlockNameFromUniqueID } from '../../attributes';
 
 /**
  * External dependencies

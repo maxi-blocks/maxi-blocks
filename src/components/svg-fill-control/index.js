@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
+import ImageUrlUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import ToggleSwitch from '../toggle-switch';
@@ -152,6 +153,47 @@ const SVGFillControl = props => {
 	const [oldImageURL, changeOldImageURL] = useState('');
 
 	const getFillItem = ([id, value]) => {
+		const handleRemoveImage = (cleanImageAttributes = true) => {
+			if (cleanImageAttributes) {
+				SVGData[id].imageID = '';
+				SVGData[id].imageURL = '';
+			}
+
+			const resEl = injectImgSVG(SVGElement, SVGData, true);
+
+			onChange({
+				'background-svg-SVGElement': resEl.outerHTML,
+				'background-svg-SVGData': SVGData,
+				'background-svg-palette-color':
+					props.SVGOptions['background-svg-palette-color'],
+				'background-svg-palette-status':
+					props.SVGOptions['background-svg-palette-status'],
+			});
+		};
+
+		const handleSelectImage = imageData => {
+			SVGData[id].imageID = imageData.id;
+			SVGData[id].imageURL = imageData.url;
+			SVGData[id].isImageUrl = imageData.isImageUrl || false;
+			SVGData[id].isImageUrlInvalid = !!imageData.isImageUrlInvalid;
+
+			if (imageData.isImageUrlInvalid) {
+				handleRemoveImage(false);
+				return;
+			}
+
+			const resEl = injectImgSVG(SVGElement, SVGData);
+
+			onChange({
+				'background-svg-SVGElement': resEl.outerHTML,
+				'background-svg-SVGData': SVGData,
+				'background-svg-palette-color':
+					props.SVGOptions['background-svg-palette-color'],
+				'background-svg-palette-status':
+					props.SVGOptions['background-svg-palette-status'],
+			});
+		};
+
 		return (
 			<>
 				{!isHover && breakpoint === 'general' && (
@@ -203,51 +245,20 @@ const SVGFillControl = props => {
 					/>
 				)}
 				{useImage && !isHover && breakpoint === 'general' && (
-					<MediaUploaderControl
-						allowedTypes={['image']}
-						mediaID={value.imageID}
-						onSelectImage={imageData => {
-							SVGData[id].imageID = imageData.id;
-							SVGData[id].imageURL = imageData.url;
-							const resEl = injectImgSVG(SVGElement, SVGData);
-
-							onChange({
-								'background-svg-SVGElement': resEl.outerHTML,
-								'background-svg-SVGData': SVGData,
-								'background-svg-palette-color':
-									props.SVGOptions[
-										'background-svg-palette-color'
-									],
-								'background-svg-palette-status':
-									props.SVGOptions[
-										'background-svg-palette-status'
-									],
-							});
-						}}
-						onRemoveImage={() => {
-							SVGData[id].imageID = '';
-							SVGData[id].imageURL = '';
-
-							const resEl = injectImgSVG(
-								SVGElement,
-								SVGData,
-								true
-							);
-
-							onChange({
-								'background-svg-SVGElement': resEl.outerHTML,
-								'background-svg-SVGData': SVGData,
-								'background-svg-palette-color':
-									props.SVGOptions[
-										'background-svg-palette-color'
-									],
-								'background-svg-palette-status':
-									props.SVGOptions[
-										'background-svg-palette-status'
-									],
-							});
-						}}
-					/>
+					<>
+						<MediaUploaderControl
+							allowedTypes={['image']}
+							mediaID={value.imageID}
+							isImageUrl={value.isImageUrl}
+							onSelectImage={handleSelectImage}
+							onRemoveImage={handleRemoveImage}
+						/>
+						<ImageUrlUpload
+							attributes={SVGData[id]}
+							mediaPrefix='image'
+							onChange={handleSelectImage}
+						/>
+					</>
 				)}
 				<ResponsiveTabsControl breakpoint={breakpoint}>
 					<>

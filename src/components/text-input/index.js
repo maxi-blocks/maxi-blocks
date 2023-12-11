@@ -21,6 +21,7 @@ export default function TextInput({
 	onChange,
 	type = 'text',
 	value,
+	autocomplete,
 	...props
 }) {
 	const [inputValue, setInputValue] = useState(value);
@@ -49,6 +50,7 @@ export default function TextInput({
 			type={type}
 			value={inputValue}
 			onChange={valueChange}
+			{...(autocomplete === false ? { autoComplete: 'off' } : {})}
 			{...props}
 		/>
 	);

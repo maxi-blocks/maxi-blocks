@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-11T15:54:30+00:00\n"
+"POT-Creation-Date: 2023-12-11T16:25:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -2370,7 +2370,7 @@ msgstr ""
 #: build/src_blocks_video-maxi_inspector_js.js:95
 #: src/blocks/video-maxi/components/video-control/index.js:55
 #: src/blocks/video-maxi/inspector.js:76
-#: src/components/media-uploader-control/index.js:151
+#: src/components/media-uploader-control/index.js:156
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:55
 #: build/src_blocks_video-maxi_inspector_js.js:76
 msgid "Video"
@@ -2519,8 +2519,8 @@ msgstr ""
 
 #: build/src_blocks_video-maxi_inspector_js.js:142
 #: src/blocks/video-maxi/inspector.js:177
-#: src/components/media-uploader-control/index.js:109
-#: src/components/media-uploader-control/index.js:150
+#: src/components/media-uploader-control/index.js:114
+#: src/components/media-uploader-control/index.js:155
 #: src/extensions/DC/constants.js:255
 #: build/src_blocks_video-maxi_inspector_js.js:177
 msgid "Image"
@@ -6814,6 +6814,10 @@ msgstr ""
 
 #: src/components/media-uploader-control/index.js:82
 msgid "Background Video"
+msgstr ""
+
+#: src/components/media-uploader-control/index.js:99
+msgid " from media library"
 msgstr ""
 
 #: src/components/overflow-control/index.js:144

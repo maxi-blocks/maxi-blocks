@@ -346,6 +346,18 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 11 December 2023_
+MaxiBlocks V1.5.7
+* Update: Add image URL source for Image block, Video block, background image layer.
+* Update: Add warning for MariaDB versions below 10.4
+* Update: Make database version warning dismissible.
+* Update: Correct translation code for WordPress plugins directory.
+* Update: Make image resizer support responsive styles.
+* Update: Add unlimited characters option for Dynamic Content.
+* Fix: Resolve broken blocks after standardizing the columns for Repeater.
+* Fix: Repeater styles on frontend.
+
+
 _Updates: 5 December 2023_
 MaxiBlocks V1.5.6
 * Update: Enhance Interaction Builder with Preview Mode in Gutenberg.
@@ -365,35 +377,6 @@ MaxiBlocks V1.5.6
 _Updates: 22 November 2023_
 MaxiBlocks V1.5.5
 * Fix: Number Counter block/pattern infinite loading issue in the editing experience.
-
-_Updates: 21 November 2023_
-MaxiBlocks V1.5.4
-* Fix: Interaction Builder settings breaking Group block in some cases.
-* Update: Speed optimization for editing lists on WordPress 6.4+
-* Update: Disable support chat by default on new sites.
-
-_Updates: 10 November 2023_
-MaxiBlocks V1.5.3
-* Update: Better compatibility with WordPress 6.4.1.
-* Update: Improved authentication process for Pro accounts.
-* Update: Showing both Light and Dark cloud patterns by default.
-* Fix: Hover in backend for inside blocks.
-* Fix: Console errors for Dynamic Content.
-* Fix: Authentication process for emails with "+" and other symbols.
-
-_Updates: 7 November 2023_
-MaxiBlocks V1.5.2
-* Update: Compatibility with WordPress 6.4.
-* Update: WooCommerce integration with Dynamic Content.
-* Update: Support chat is enabled by default on new sites.
-* Fix: PHP warnings for Dynamic Content.
-* Fix: Scroll effects.
-* Fix: Text generator placeholder colour.
-* Fix: Shape divider for containers.
-* Fix: Custom aspect-ratio for Image and Video blocks.
-* Fix: Repeater. Warn message when columns have different structure.
-* Fix: Global padding for full-width containers.
-* Fix: Rendering Dynamic Content on a new site.
 
 == Upgrade Notice ==
 

@@ -240,7 +240,7 @@ class edit extends MaxiBlockComponent {
 									<Button
 										className='maxi-video-block__settings__upload-button maxi-settings-media-upload__button'
 										label={__(
-											'Upload / Add from Media Library',
+											'Insert from Media Library',
 											'maxi-blocks'
 										)}
 										showTooltip='true'

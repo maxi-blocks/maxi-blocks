@@ -36,7 +36,7 @@ const UploadButton = ({ onClick }) => (
 		type='button'
 		onClick={onClick}
 	>
-		{__('Upload', 'maxi-blocks')}
+		{__('Insert', 'maxi-blocks')}
 	</Button>
 );
 
@@ -152,7 +152,7 @@ const ToolbarMediaUpload = props => {
 								render={({ open }) => (
 									<Button onClick={open}>
 										{__(
-											'Upload from media library',
+											'From media library',
 											'maxi-blocks'
 										)}
 									</Button>
@@ -164,7 +164,7 @@ const ToolbarMediaUpload = props => {
 								position='bottom right'
 								renderToggle={({ isOpen, onToggle }) => (
 									<Button onClick={onToggle}>
-										{__('Upload from URL', 'maxi-blocks')}
+										{__('From URL', 'maxi-blocks')}
 									</Button>
 								)}
 								renderContent={() => (

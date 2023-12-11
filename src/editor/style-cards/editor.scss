@@ -688,4 +688,8 @@ html[dir='rtl'] {
 		right: unset;
 		padding: 1px 8px 1px 1px !important;
 	}
+	.maxi-base-control__field .maxi-select-control__input {
+		padding-right: 8px !important;
+		background-position: center left 8px;
+	}
 }

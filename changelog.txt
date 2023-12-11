@@ -1,4 +1,4 @@
-Updates: 11 December 2023
+Updates: 12 December 2023
 MaxiBlocks V1.5.7
 * Update: Add image URL source for Image block, Video block, background image layer.
 * Update: Add warning for MariaDB versions below 10.4

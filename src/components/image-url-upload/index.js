@@ -49,6 +49,7 @@ const ImageUrlUpload = ({
 				}
 				placeholder={__('Enter URL', 'maxi-blocks')}
 				newStyle={newStyle}
+				autocomplete={false}
 				onChange={value => {
 					const trimmedValue = value.trim();
 

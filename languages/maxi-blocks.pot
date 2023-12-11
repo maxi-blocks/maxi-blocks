@@ -2,16 +2,17 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.5.6\n"
+"Project-Id-Version: MaxiBlocks 1.5.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-08T14:41:01+00:00\n"
+"POT-Creation-Date: 2023-12-11T13:36:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: maxi-blocks\n"
 
 #. Plugin Name of the plugin
 #. Author of the plugin
@@ -583,45 +584,16 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-blocks.php:161
-msgid "Maxi Images"
+#: plugin.php:109
+msgid "Highly recommend to update to"
 msgstr ""
 
-#: core/class-maxi-blocks.php:162
-msgid "maxi-image-type"
+#: plugin.php:109
+msgid "for enhanced security, better performance, and full feature compatibility."
 msgstr ""
 
-#: core/class-maxi-blocks.php:163
-msgid "Search Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:164
-msgid "All Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:165
-msgid "Edit Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:166
-msgid "Update Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:167
-msgid "Add New Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:168
-msgid "New Maxi Image Name"
-msgstr ""
-
-#: core/class-maxi-blocks.php:187
-#: core/class-maxi-blocks.php:189
-msgid "Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:192
-msgid "Images added by MaxiBlocks plugin"
+#: plugin.php:109
+msgid "Learn more"
 msgstr ""
 
 #: build/src_blocks_accordion-maxi_components_accordion-line-control_index_js.js:38
@@ -4665,13 +4637,6 @@ msgstr ""
 msgid "Inherit colour/background from button"
 msgstr ""
 
-#: build/src_components_toolbar_components_icon-background_index_js.js:75
-#: src/components/icon-control/index.js:620
-#: src/components/toolbar/components/icon-background/index.js:60
-#: build/src_components_toolbar_components_icon-background_index_js.js:60
-msgid "Icon background is inheriting from button."
-msgstr ""
-
 #: build/src_components_toolbar_components_icon-background_index_js.js:76
 #: src/blocks/svg-icon-maxi/data.js:250
 #: src/components/icon-control/index.js:527
@@ -4684,12 +4649,6 @@ msgstr ""
 #: src/components/toolbar/components/icon-color/index.js:32
 #: build/src_components_toolbar_components_icon-color_index_js.js:32
 msgid "Icon Colour"
-msgstr ""
-
-#: build/src_components_toolbar_components_icon-color_index_js.js:74
-#: src/components/toolbar/components/icon-color/index.js:52
-#: build/src_components_toolbar_components_icon-color_index_js.js:52
-msgid "Icon colour is inheriting from button."
 msgstr ""
 
 #: build/src_components_toolbar_components_icon-color_index_js.js:75
@@ -5429,12 +5388,6 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:566
-#: src/editor/style-cards/maxiStyleCardsEditor.js:698
-#: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:698
-msgid "A card with this name already exists."
-msgstr ""
-
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:575
 #: src/editor/style-cards/maxiStyleCardsEditor.js:719
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:719
@@ -5558,10 +5511,6 @@ msgstr ""
 msgid "Button icon"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:254
-msgid "Add button icon to be able to use this control"
-msgstr ""
-
 #: src/blocks/button-maxi/data.js:270
 msgid "Button typography"
 msgstr ""
@@ -5610,10 +5559,6 @@ msgstr ""
 #: src/blocks/divider-maxi/data.js:134
 #: src/extensions/styles/migrators/test/utils.js:160
 msgid "Divider box shadow"
-msgstr ""
-
-#: src/blocks/image-maxi/data.js:254
-msgid "Add shape icon to be able to use this control"
 msgstr ""
 
 #: src/blocks/image-maxi/data.js:279
@@ -6568,6 +6513,10 @@ msgstr ""
 
 #: src/components/icon-control/index.js:401
 msgid "Button colour"
+msgstr ""
+
+#: src/components/icon-control/index.js:620
+msgid "Icon background is inheriting from button."
 msgstr ""
 
 #: src/components/icon-control/index.js:626
@@ -7571,35 +7520,6 @@ msgstr ""
 msgid "Get by id"
 msgstr ""
 
-#: src/extensions/DC/constants.js:68
-#: src/extensions/DC/constants.js:81
-#: src/extensions/DC/constants.js:90
-#: src/extensions/DC/constants.js:97
-#: src/extensions/DC/constants.js:102
-msgid "Get random"
-msgstr ""
-
-#: src/extensions/DC/constants.js:69
-#: src/extensions/DC/constants.js:82
-#: src/extensions/DC/constants.js:91
-msgid "Get by date"
-msgstr ""
-
-#: src/extensions/DC/constants.js:70
-#: src/extensions/DC/constants.js:83
-#: src/extensions/DC/constants.js:92
-msgid "Get alphabetical"
-msgstr ""
-
-#: src/extensions/DC/constants.js:71
-#: src/extensions/DC/constants.js:84
-msgid "Get by author"
-msgstr ""
-
-#: src/extensions/DC/constants.js:72
-msgid "Get by category"
-msgstr ""
-
 #: src/extensions/DC/constants.js:73
 msgid "Get by tag"
 msgstr ""
@@ -7607,6 +7527,27 @@ msgstr ""
 #: src/extensions/DC/constants.js:74
 #: src/extensions/DC/constants.js:85
 msgid "Get current"
+msgstr ""
+
+#: src/extensions/DC/constants.js:81
+#: src/extensions/DC/constants.js:90
+#: src/extensions/DC/constants.js:97
+#: src/extensions/DC/constants.js:102
+msgid "Get random"
+msgstr ""
+
+#: src/extensions/DC/constants.js:82
+#: src/extensions/DC/constants.js:91
+msgid "Get by date"
+msgstr ""
+
+#: src/extensions/DC/constants.js:83
+#: src/extensions/DC/constants.js:92
+msgid "Get alphabetical"
+msgstr ""
+
+#: src/extensions/DC/constants.js:84
+msgid "Get by author"
 msgstr ""
 
 #: src/extensions/DC/constants.js:150

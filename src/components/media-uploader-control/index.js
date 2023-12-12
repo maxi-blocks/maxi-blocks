@@ -31,6 +31,7 @@ const MediaUploader = props => {
 		className,
 		mediaType = 'image',
 		mediaID,
+		isImageUrl,
 		onSelectImage,
 		onRemoveImage,
 		imageData,
@@ -92,7 +93,10 @@ const MediaUploader = props => {
 								onOpenImageModal();
 							}}
 						>
-							{!mediaID && placeholder}
+							{!mediaID &&
+								`${placeholder}${
+									isImageUrl ? ' from media library' : ''
+								}`}
 							{!!mediaID && !imageData && <Spinner />}
 							{mediaType === 'image' && !!mediaID && imageData && (
 								<div className='maxi-mediauploader-control__responsive-wrapper'>

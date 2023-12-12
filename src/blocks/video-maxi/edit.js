@@ -177,6 +177,8 @@ class edit extends MaxiBlockComponent {
 			'play-icon-content': playIcon,
 			'overlay-mediaID': overlayMediaId,
 			'overlay-mediaURL': overlayMediaUrl,
+			'overlay-isImageUrl': overlayIsImageUrl,
+			'overlay-isImageUrlInvalid': overlayIsImageUrlInvalid,
 			'overlay-mediaAlt': overlayMediaAlt,
 			'overlay-altSelector': altSelector,
 			hideImage,
@@ -238,7 +240,7 @@ class edit extends MaxiBlockComponent {
 									<Button
 										className='maxi-video-block__settings__upload-button maxi-settings-media-upload__button'
 										label={__(
-											'Upload / Add from Media Library',
+											'Insert from Media Library',
 											'maxi-blocks'
 										)}
 										showTooltip='true'
@@ -268,7 +270,10 @@ class edit extends MaxiBlockComponent {
 					(playerType === 'popup' ? (
 						<div className='maxi-video-block__overlay'>
 							{!hideImage &&
-								(!isNil(overlayMediaId) || overlayMediaUrl ? (
+								(overlayMediaUrl &&
+								((overlayIsImageUrl &&
+									!overlayIsImageUrlInvalid) ||
+									!isNil(overlayMediaId)) ? (
 									<img
 										className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
 										src={overlayMediaUrl}

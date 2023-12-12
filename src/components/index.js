@@ -48,6 +48,7 @@ export { default as ImageAltControl } from './image-alt-control';
 export { default as ImageCropControl } from './image-crop-control';
 export { default as ImageShape } from './image-shape';
 export { default as ImageURL } from './image-url';
+export { default as ImageURLUpload } from './image-url-upload';
 export { default as InfoBox } from './info-box';
 export { default as LinkControl } from './link-control';
 export { default as ListControl } from './list-control';

@@ -31,6 +31,7 @@ export { default as getTransformStyles } from './getTransformStyles';
 export { default as getTransitionStyles } from './getTransitionStyles';
 export { default as getTypographyStyles } from './getTypographyStyles';
 export { default as getZIndexStyles } from './getZIndexStyles';
+export { default as getImgWidthStyles } from './getImgWidthStyles';
 export * from './getBackgroundStyles';
 export * from './getShapeDividerStyles';
 export * from './getSVGStyles';

@@ -2132,7 +2132,7 @@ exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly wit
         "imageSize": "full",
       },
       "Image width": {
-        "imgWidth": 82,
+        "img-width-general": 82,
       },
       "Use original size": {
         "useInitSize": undefined,
@@ -5601,7 +5601,7 @@ exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly wit
   "image-width-xxl": undefined,
   "imageRatio": "original",
   "imageSize": "full",
-  "imgWidth": 82,
+  "img-width-general": 82,
   "isImageUrl": false,
   "justify-content-general": undefined,
   "justify-content-l": undefined,

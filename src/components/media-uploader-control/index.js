@@ -95,7 +95,12 @@ const MediaUploader = props => {
 						>
 							{!mediaID &&
 								`${placeholder}${
-									isImageUrl ? ' from media library' : ''
+									isImageUrl
+										? __(
+												' from media library',
+												'maxi-blocks'
+										  )
+										: ''
 								}`}
 							{!!mediaID && !imageData && <Spinner />}
 							{mediaType === 'image' && !!mediaID && imageData && (

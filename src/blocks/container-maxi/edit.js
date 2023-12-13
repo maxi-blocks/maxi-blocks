@@ -136,7 +136,11 @@ class edit extends MaxiBlockComponent {
 							])}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
-							avoidIndicators={{ margin: ['right', 'left'] }}
+							avoidIndicators={
+								attributes['full-width-general'] === true && {
+									margin: ['right', 'left'],
+								}
+							}
 							insertInlineStyles={insertInlineStyles}
 							cleanInlineStyles={cleanInlineStyles}
 							isBlockSelected={isSelected}

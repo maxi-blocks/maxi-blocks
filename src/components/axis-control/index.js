@@ -666,20 +666,22 @@ const AxisControl = props => {
 
 		const isAllChange = key => {
 			if (prefix) {
-				return (
-					key.includes(`top${prefix}`) ||
-					key.includes(`left${prefix}`) ||
-					key.includes(`bottom${prefix}`) ||
-					key.includes(`right${prefix}`)
-				);
+				return disableLeftRightMargin
+					? key.includes(`top${prefix}`) ||
+							key.includes(`bottom${prefix}`)
+					: key.includes(`top${prefix}`) ||
+							key.includes(`left${prefix}`) ||
+							key.includes(`bottom${prefix}`) ||
+							key.includes(`right${prefix}`);
 			}
-			return (
-				(key.includes('top') ||
-					key.includes('left') ||
-					key.includes('bottom') ||
-					key.includes('right')) &&
-				!key.includes('unit')
-			);
+			return disableLeftRightMargin
+				? (key.includes('top') || key.includes('bottom')) &&
+						!key.includes('unit')
+				: (key.includes('top') ||
+						key.includes('left') ||
+						key.includes('bottom') ||
+						key.includes('right')) &&
+						!key.includes('unit');
 		};
 
 		const isHorizontalChange = key => {

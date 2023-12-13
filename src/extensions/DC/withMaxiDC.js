@@ -25,7 +25,7 @@ import { linkFields } from './constants';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -91,7 +91,7 @@ const withMaxiDC = createHigherOrderComponent(
 					);
 
 					const newLinkSettings =
-						ownProps.attributes.linkSettings ?? {};
+						{ ...attributes.linkSettings } ?? {};
 					let updateLinkSettings = false;
 					const dcLink = await getDCLink(
 						lastDynamicContentProps,
@@ -100,7 +100,7 @@ const withMaxiDC = createHigherOrderComponent(
 					const isSameLink = dcLink === newLinkSettings.url;
 
 					if (
-						postTaxonomyLinksStatus !== !!newLinkSettings.disabled
+						!!postTaxonomyLinksStatus !== !!newLinkSettings.disabled
 					) {
 						newLinkSettings.disabled = postTaxonomyLinksStatus;
 
@@ -150,6 +150,16 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
+						} else if (updateLinkSettings) {
+							isSynchronizedAttributesUpdated = true;
+
+							markNextChangeAsNotPersistent();
+							setAttributes({
+								...(updateLinkSettings && {
+									linkSettings: newLinkSettings,
+								}),
+								...synchronizedAttributes,
+							});
 						}
 					} else {
 						const mediaContent = await getDCMedia(
@@ -195,7 +205,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 					if (
 						!isSynchronizedAttributesUpdated &&
-						synchronizedAttributes
+						!isEmpty(synchronizedAttributes)
 					) {
 						markNextChangeAsNotPersistent();
 						setAttributes(synchronizedAttributes);

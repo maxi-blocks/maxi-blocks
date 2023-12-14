@@ -103,7 +103,7 @@ const generalRelationOptionsTags = [
 ];
 
 const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
-	relation => relation.value !== 'current'
+	({ value }) => !['current', 'by-author'].includes(value)
 );
 
 const generalRelationOptions = {

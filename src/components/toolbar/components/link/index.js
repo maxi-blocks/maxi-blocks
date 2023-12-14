@@ -201,7 +201,6 @@ const Link = props => {
 									isDCLinkActive={
 										showUseDCLink && dcLinkStatus
 									}
-									blockName={blockName}
 									onChangeLink={onChange}
 									onRemoveLink={() => {
 										removeLinkHandle();

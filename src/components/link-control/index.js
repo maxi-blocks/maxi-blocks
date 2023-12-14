@@ -27,7 +27,6 @@ import './editor.scss';
 const LinkControl = ({
 	linkValue = {},
 	isDCLinkActive,
-	blockName,
 	onChangeLink,
 	onRemoveLink,
 }) => {

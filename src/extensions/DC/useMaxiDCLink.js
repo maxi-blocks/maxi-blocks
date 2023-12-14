@@ -10,8 +10,10 @@ import { useEffect } from '@wordpress/element';
 import { getGroupAttributes } from '../styles';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
+import DC_LINK_BLOCKS from '../../components/toolbar/components/link/dcLinkBlocks';
 
 const useMaxiDCLink = (
+	blockName,
 	attributes,
 	clientId,
 	contextLoopContext,
@@ -22,7 +24,7 @@ const useMaxiDCLink = (
 	const shouldUpdateLink = dcLinkStatus && contextLoop;
 
 	useEffect(() => {
-		if (!shouldUpdateLink) return;
+		if (!DC_LINK_BLOCKS.includes(blockName) || !shouldUpdateLink) return;
 
 		const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 		const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
@@ -38,6 +40,7 @@ const useMaxiDCLink = (
 					dispatch(
 						'core/block-editor'
 					).__unstableMarkNextChangeAsNotPersistent();
+
 					setAttributes({ linkSettings: newLinkSettings });
 				}
 			} catch (e) {
@@ -46,7 +49,14 @@ const useMaxiDCLink = (
 		};
 
 		updateLinkSettings();
-	}, [attributes, clientId, contextLoop, shouldUpdateLink, setAttributes]);
+	}, [
+		blockName,
+		attributes,
+		clientId,
+		contextLoop,
+		shouldUpdateLink,
+		setAttributes,
+	]);
 };
 
 export default useMaxiDCLink;

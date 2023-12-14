@@ -1,3 +1,14 @@
+Updates: 12 December 2023
+MaxiBlocks V1.5.7
+* Update: Add image URL source for Image block, Video block, background image layer.
+* Update: Add warning for MariaDB versions below 10.4
+* Update: Make database version warning dismissible.
+* Update: Correct translation code for WordPress plugins directory.
+* Update: Make image resizer support responsive styles.
+* Update: Add unlimited characters option for Dynamic Content.
+* Fix: Resolve broken blocks after standardizing the columns for Repeater.
+* Fix: Repeater styles on frontend.
+
 _Updates: 5 December 2023_
 MaxiBlocks V1.5.6
 * Update: Enhance Interaction Builder with Preview Mode in Gutenberg.

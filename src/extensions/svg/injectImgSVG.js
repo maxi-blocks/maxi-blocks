@@ -56,7 +56,10 @@ const injectImgSVG = (
 				'.maxi-svg-block__pattern'
 			);
 
-			if (isEmpty(el.imageURL) && removeMode) {
+			const shouldAddImage =
+				!isEmpty(el.imageURL) && !el.isImageUrlInvalid;
+
+			if (!shouldAddImage && removeMode) {
 				SVGLayers[i].removeAttribute('style');
 				svgImage?.remove();
 			}
@@ -67,7 +70,7 @@ const injectImgSVG = (
 			)
 				svgImage?.remove();
 
-			if (!isEmpty(el.imageURL)) {
+			if (shouldAddImage) {
 				const pattern = document.createElement('pattern');
 				pattern.id = `${id}__img`;
 				pattern.classList.add('maxi-svg-block__pattern');

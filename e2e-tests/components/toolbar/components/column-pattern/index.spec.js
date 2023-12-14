@@ -16,6 +16,7 @@ import {
 describe('Column pattern from Toolbar', () => {
 	it('Test column pattern from toolbar', async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
 

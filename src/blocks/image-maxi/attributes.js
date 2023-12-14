@@ -75,6 +75,10 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
+	isImageUrlInvalid: {
+		type: 'boolean',
+		default: false,
+	},
 	mediaID: {
 		type: 'number',
 	},

@@ -8,6 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ImageUrlUpload from '../image-url-upload';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -34,6 +35,52 @@ const VideoLayerContent = props => {
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
+	const handleRemoveImage = () => {
+		onChange({
+			[getAttributeKey(
+				'background-video-fallbackID',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '',
+			[getAttributeKey(
+				'background-video-fallbackURL',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '',
+		});
+	};
+
+	const handleSelectImage = val => {
+		onChange({
+			[getAttributeKey(
+				'background-video-fallbackID',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val.id,
+			[getAttributeKey(
+				'background-video-fallbackURL',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val.url,
+			[getAttributeKey(
+				'background-video-isImageUrl',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val.isImageUrl || false,
+			[getAttributeKey(
+				'background-video-isImageUrlInvalid',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val.isImageUrlInvalid || false,
+		});
+	};
+
 	return (
 		<>
 			<OpacityControl
@@ -51,48 +98,33 @@ const VideoLayerContent = props => {
 				disableRTC
 			/>
 			{!isHover && !isIB && (
-				<MediaUploaderControl
-					className='maxi-mediauploader-control__video-fallback'
-					placeholder={__('Background fallback', 'maxi-blocks')}
-					mediaID={getLastBreakpointAttribute({
-						target: `${prefix}background-video-fallbackID`,
-						breakpoint,
-						attributes: videoOptions,
-						isHover,
-					})}
-					onSelectImage={val =>
-						onChange({
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val.id,
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val.url,
-						})
-					}
-					onRemoveImage={() =>
-						onChange({
-							[getAttributeKey(
-								'background-video-fallbackID',
-								isHover,
-								prefix,
-								breakpoint
-							)]: '',
-							[getAttributeKey(
-								'background-video-fallbackURL',
-								isHover,
-								prefix,
-								breakpoint
-							)]: '',
-						})
-					}
-				/>
+				<>
+					<MediaUploaderControl
+						className='maxi-mediauploader-control__video-fallback'
+						placeholder={__('Background fallback', 'maxi-blocks')}
+						isImageUrl={getLastBreakpointAttribute({
+							target: `${prefix}background-video-isImageUrl`,
+							breakpoint,
+							attributes: videoOptions,
+							isHover,
+						})}
+						mediaID={getLastBreakpointAttribute({
+							target: `${prefix}background-video-fallbackID`,
+							breakpoint,
+							attributes: videoOptions,
+							isHover,
+						})}
+						onSelectImage={handleSelectImage}
+						onRemoveImage={handleRemoveImage}
+					/>
+					<ImageUrlUpload
+						attributes={videoOptions}
+						mediaPrefix='fallback'
+						prefix={`${prefix}background-video-`}
+						breakpoint={breakpoint}
+						onChange={handleSelectImage}
+					/>
+				</>
 			)}
 		</>
 	);

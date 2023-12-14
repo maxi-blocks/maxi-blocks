@@ -388,3 +388,12 @@ $white: #fff;
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-library-modal .maxi-cloud-toolbar__logo svg {
+		margin-left: 10px;
+		margin-right: 0;
+	}
+}

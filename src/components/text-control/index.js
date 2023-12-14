@@ -36,6 +36,7 @@ export default function TextControl({
 	newStyle = false,
 	showHelp,
 	helpContent,
+	autocomplete,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
@@ -74,6 +75,7 @@ export default function TextControl({
 				value={value || ''}
 				onChange={onChange}
 				aria-describedby={help ? `${id}__help` : undefined}
+				autocomplete={autocomplete}
 				{...props}
 			/>
 			{validationText && (

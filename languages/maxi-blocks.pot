@@ -2,16 +2,17 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.5.6\n"
+"Project-Id-Version: MaxiBlocks 1.5.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-08T14:41:01+00:00\n"
+"POT-Creation-Date: 2023-12-11T16:25:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: maxi-blocks\n"
 
 #. Plugin Name of the plugin
 #. Author of the plugin
@@ -96,7 +97,7 @@ msgstr ""
 #: src/blocks/svg-icon-maxi/inspector.js:153
 #: src/blocks/text-maxi/inspector.js:60
 #: src/blocks/video-maxi/inspector.js:70
-#: src/components/background-control/imageLayer.js:735
+#: src/components/background-control/imageLayer.js:742
 #: src/components/inspector-tabs/inspector-transition.js:139
 #: src/components/relation-control/index.js:507
 #: src/components/relation-control/index.js:649
@@ -583,45 +584,16 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-blocks.php:161
-msgid "Maxi Images"
+#: plugin.php:109
+msgid "Highly recommend to update to"
 msgstr ""
 
-#: core/class-maxi-blocks.php:162
-msgid "maxi-image-type"
+#: plugin.php:109
+msgid "for enhanced security, better performance, and full feature compatibility."
 msgstr ""
 
-#: core/class-maxi-blocks.php:163
-msgid "Search Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:164
-msgid "All Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:165
-msgid "Edit Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:166
-msgid "Update Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:167
-msgid "Add New Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:168
-msgid "New Maxi Image Name"
-msgstr ""
-
-#: core/class-maxi-blocks.php:187
-#: core/class-maxi-blocks.php:189
-msgid "Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:192
-msgid "Images added by MaxiBlocks plugin"
+#: plugin.php:109
+msgid "Learn more"
 msgstr ""
 
 #: build/src_blocks_accordion-maxi_components_accordion-line-control_index_js.js:38
@@ -1003,7 +975,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:107
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:135
 #: src/blocks/video-maxi/components/video-control/index.js:155
-#: src/components/background-control/imageLayer.js:117
+#: src/components/background-control/imageLayer.js:118
 #: src/components/divider-control/index.js:158
 #: src/components/dynamic-content/index.js:140
 #: src/components/image-alt-control/index.js:51
@@ -1543,8 +1515,8 @@ msgstr ""
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:599
 #: src/blocks/search-maxi/inspector.js:359
 #: src/blocks/video-maxi/inspector.js:226
-#: src/components/background-control/imageLayer.js:522
-#: src/components/background-control/imageLayer.js:576
+#: src/components/background-control/imageLayer.js:523
+#: src/components/background-control/imageLayer.js:577
 #: src/components/padding-control/index.js:19
 #: src/components/toolbar/components/padding-margin/index.js:39
 #: build/src_blocks_image-maxi_components_hover-effect-control_index_js.js:599
@@ -1773,8 +1745,8 @@ msgstr ""
 
 #: build/src_blocks_pane-maxi_inspector_js.js:112
 #: src/blocks/pane-maxi/inspector.js:114
-#: src/components/background-control/imageLayer.js:530
-#: src/components/background-control/imageLayer.js:580
+#: src/components/background-control/imageLayer.js:531
+#: src/components/background-control/imageLayer.js:581
 #: src/extensions/DC/constants.js:146
 #: build/src_blocks_pane-maxi_inspector_js.js:114
 msgid "Content"
@@ -2351,6 +2323,7 @@ msgstr ""
 #: build/src_components_toolbar_components_video-url_index_js.js:295
 #: src/blocks/text-maxi/components/list-options-control/index.js:846
 #: src/blocks/video-maxi/components/video-control/index.js:75
+#: src/components/image-url-upload/index.js:37
 #: src/components/toolbar/components/video-url/index.js:38
 #: src/extensions/DC/constants.js:178
 #: build/src_blocks_text-maxi_components_list-options-control_index_js.js:846
@@ -2397,7 +2370,7 @@ msgstr ""
 #: build/src_blocks_video-maxi_inspector_js.js:95
 #: src/blocks/video-maxi/components/video-control/index.js:55
 #: src/blocks/video-maxi/inspector.js:76
-#: src/components/media-uploader-control/index.js:147
+#: src/components/media-uploader-control/index.js:156
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:55
 #: build/src_blocks_video-maxi_inspector_js.js:76
 msgid "Video"
@@ -2412,7 +2385,7 @@ msgstr ""
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:91
 #: build/src_components_toolbar_components_video-url_index_js.js:301
 #: src/blocks/video-maxi/components/video-control/index.js:82
-#: src/components/background-control/videoLayer.js:128
+#: src/components/background-control/videoLayer.js:160
 #: src/components/toolbar/components/video-url/index.js:47
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:82
 #: build/src_components_toolbar_components_video-url_index_js.js:248
@@ -2421,14 +2394,14 @@ msgstr ""
 
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:106
 #: src/blocks/video-maxi/components/video-control/index.js:102
-#: src/components/background-control/videoLayer.js:146
+#: src/components/background-control/videoLayer.js:178
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:102
 msgid "Start time (s)"
 msgstr ""
 
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:128
 #: src/blocks/video-maxi/components/video-control/index.js:126
-#: src/components/background-control/videoLayer.js:176
+#: src/components/background-control/videoLayer.js:208
 #: build/src_blocks_video-maxi_components_video-control_index_js.js:126
 msgid "End time (s)"
 msgstr ""
@@ -2473,7 +2446,7 @@ msgstr ""
 
 #: build/src_blocks_video-maxi_components_video-options-control_index_js.js:65
 #: src/blocks/video-maxi/components/video-options-control/index.js:54
-#: src/components/background-control/videoLayer.js:206
+#: src/components/background-control/videoLayer.js:238
 #: build/src_blocks_video-maxi_components_video-options-control_index_js.js:54
 msgid "Loop"
 msgstr ""
@@ -2546,8 +2519,8 @@ msgstr ""
 
 #: build/src_blocks_video-maxi_inspector_js.js:142
 #: src/blocks/video-maxi/inspector.js:177
-#: src/components/media-uploader-control/index.js:105
-#: src/components/media-uploader-control/index.js:146
+#: src/components/media-uploader-control/index.js:114
+#: src/components/media-uploader-control/index.js:155
 #: src/extensions/DC/constants.js:255
 #: build/src_blocks_video-maxi_inspector_js.js:177
 msgid "Image"
@@ -4525,8 +4498,8 @@ msgstr ""
 #: build/src_components_toolbar_components_border_index_js.js:68
 #: build/src_editor_style-cards_maxiStyleCardsTab_js.js:265
 #: src/blocks/image-maxi/data.js:305
-#: src/components/background-control/imageLayer.js:526
-#: src/components/background-control/imageLayer.js:572
+#: src/components/background-control/imageLayer.js:527
+#: src/components/background-control/imageLayer.js:573
 #: src/components/border-control/index.js:55
 #: src/components/inspector-tabs/inspector-border.js:55
 #: src/components/toolbar/components/border/index.js:52
@@ -4665,13 +4638,6 @@ msgstr ""
 msgid "Inherit colour/background from button"
 msgstr ""
 
-#: build/src_components_toolbar_components_icon-background_index_js.js:75
-#: src/components/icon-control/index.js:620
-#: src/components/toolbar/components/icon-background/index.js:60
-#: build/src_components_toolbar_components_icon-background_index_js.js:60
-msgid "Icon background is inheriting from button."
-msgstr ""
-
 #: build/src_components_toolbar_components_icon-background_index_js.js:76
 #: src/blocks/svg-icon-maxi/data.js:250
 #: src/components/icon-control/index.js:527
@@ -4684,12 +4650,6 @@ msgstr ""
 #: src/components/toolbar/components/icon-color/index.js:32
 #: build/src_components_toolbar_components_icon-color_index_js.js:32
 msgid "Icon Colour"
-msgstr ""
-
-#: build/src_components_toolbar_components_icon-color_index_js.js:74
-#: src/components/toolbar/components/icon-color/index.js:52
-#: build/src_components_toolbar_components_icon-color_index_js.js:52
-msgid "Icon colour is inheriting from button."
 msgstr ""
 
 #: build/src_components_toolbar_components_icon-color_index_js.js:75
@@ -4743,10 +4703,31 @@ msgstr ""
 msgid "Link target"
 msgstr ""
 
-#: build/src_components_toolbar_components_media-upload_index_js.js:56
-#: src/components/toolbar/components/media-upload/index.js:29
-#: build/src_components_toolbar_components_media-upload_index_js.js:29
-msgid "Upload"
+#: build/src_components_toolbar_components_media-upload_index_js.js:64
+#: build/src_editor_library_container_js.js:234
+#: build/src_editor_library_container_js.js:271
+#: build/src_editor_library_toolbar_js.js:500
+#: src/components/toolbar/components/media-upload/index.js:39
+#: src/editor/library/MasonryItem.js:106
+#: src/editor/library/MasonryItem.js:196
+#: src/editor/library/toolbar.js:602
+#: build/src_components_toolbar_components_media-upload_index_js.js:39
+#: build/src_editor_library_container_js.js:182
+#: build/src_editor_library_container_js.js:272
+#: build/src_editor_library_toolbar_js.js:651
+msgid "Insert"
+msgstr ""
+
+#: build/src_components_toolbar_components_media-upload_index_js.js:136
+#: src/components/toolbar/components/media-upload/index.js:154
+#: build/src_components_toolbar_components_media-upload_index_js.js:154
+msgid "From media library"
+msgstr ""
+
+#: build/src_components_toolbar_components_media-upload_index_js.js:147
+#: src/components/toolbar/components/media-upload/index.js:167
+#: build/src_components_toolbar_components_media-upload_index_js.js:167
+msgid "From URL"
 msgstr ""
 
 #: build/src_components_toolbar_components_more-settings_index_js.js:72
@@ -4867,7 +4848,7 @@ msgid "Add"
 msgstr ""
 
 #: build/src_components_toolbar_components_more-settings_index_js.js:1022
-#: src/components/media-uploader-control/index.js:41
+#: src/components/media-uploader-control/index.js:42
 #: src/components/toolbar/components/text-generator/index.js:123
 #: build/src_components_toolbar_components_more-settings_index_js.js:1078
 msgid "Replace"
@@ -5030,18 +5011,6 @@ msgstr ""
 #: src/components/toolbar/components/video-url/index.js:32
 #: build/src_components_toolbar_components_video-url_index_js.js:233
 msgid "Video URL"
-msgstr ""
-
-#: build/src_editor_library_container_js.js:234
-#: build/src_editor_library_container_js.js:271
-#: build/src_editor_library_toolbar_js.js:500
-#: src/editor/library/MasonryItem.js:106
-#: src/editor/library/MasonryItem.js:196
-#: src/editor/library/toolbar.js:602
-#: build/src_editor_library_container_js.js:182
-#: build/src_editor_library_container_js.js:272
-#: build/src_editor_library_toolbar_js.js:651
-msgid "Insert"
 msgstr ""
 
 #: build/src_editor_library_container_js.js:238
@@ -5429,12 +5398,6 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:566
-#: src/editor/style-cards/maxiStyleCardsEditor.js:698
-#: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:698
-msgid "A card with this name already exists."
-msgstr ""
-
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:575
 #: src/editor/style-cards/maxiStyleCardsEditor.js:719
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:719
@@ -5516,9 +5479,9 @@ msgid "Line hover"
 msgstr ""
 
 #: build/src_editor_style-cards_maxiStyleCardsTab_js.js:346
-#: src/components/background-control/imageLayer.js:113
+#: src/components/background-control/imageLayer.js:114
 #: src/components/image-shape/index.js:173
-#: src/components/svg-fill-control/index.js:42
+#: src/components/svg-fill-control/index.js:43
 #: src/editor/style-cards/maxiStyleCardsTab.js:386
 #: build/src_editor_style-cards_maxiStyleCardsTab_js.js:386
 msgid "Fill"
@@ -5556,10 +5519,6 @@ msgstr ""
 #: src/blocks/button-maxi/data.js:219
 #: src/extensions/styles/migrators/test/utils.js:152
 msgid "Button icon"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:254
-msgid "Add button icon to be able to use this control"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:270
@@ -5612,33 +5571,29 @@ msgstr ""
 msgid "Divider box shadow"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:254
-msgid "Add shape icon to be able to use this control"
-msgstr ""
-
 #: src/blocks/image-maxi/data.js:279
 #: src/components/inspector-tabs/inspector-clip-path.js:32
 msgid "Clip-path"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:382
-#: src/blocks/video-maxi/edit.js:240
-msgid "Upload / Add from Media Library"
+#: src/blocks/image-maxi/edit.js:385
+#: src/blocks/video-maxi/edit.js:242
+msgid "Insert from Media Library"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:455
-#: src/blocks/image-maxi/edit.js:556
-#: src/blocks/image-maxi/edit.js:617
+#: src/blocks/image-maxi/edit.js:458
+#: src/blocks/image-maxi/edit.js:559
+#: src/blocks/image-maxi/edit.js:620
 #: src/extensions/DC/utils.js:62
 msgid "No content found"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:467
-#: src/blocks/image-maxi/edit.js:568
+#: src/blocks/image-maxi/edit.js:470
+#: src/blocks/image-maxi/edit.js:571
 msgid "Set your Image Maxi caption here…"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:618
+#: src/blocks/image-maxi/edit.js:621
 msgid "Placeholder image"
 msgstr ""
 
@@ -5774,7 +5729,7 @@ msgid "Affects only current block, you can add selectors for inner elements."
 msgstr ""
 
 #: src/components/advanced-number-control/index.js:239
-#: src/components/background-control/imageLayer.js:91
+#: src/components/background-control/imageLayer.js:92
 msgid "Auto"
 msgstr ""
 
@@ -5815,8 +5770,8 @@ msgid "16:9 Aspect ratio"
 msgstr ""
 
 #: src/components/aspect-ratio-control/index.js:47
-#: src/components/background-control/imageLayer.js:105
-#: src/components/background-control/imageLayer.js:297
+#: src/components/background-control/imageLayer.js:106
+#: src/components/background-control/imageLayer.js:298
 #: src/components/dynamic-content/index.js:143
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
@@ -5844,7 +5799,7 @@ msgstr ""
 
 #: src/components/background-control/backgroundLayersControl.js:311
 #: src/components/background-control/backgroundLayersControl.js:613
-#: src/components/media-uploader-control/index.js:80
+#: src/components/media-uploader-control/index.js:81
 msgid "Background image"
 msgstr ""
 
@@ -5868,164 +5823,164 @@ msgstr ""
 msgid "Add new layer"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:65
+#: src/components/background-control/imageLayer.js:66
 msgid "Background opacity"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:79
+#: src/components/background-control/imageLayer.js:80
 msgid "Background size"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:95
+#: src/components/background-control/imageLayer.js:96
 msgid "Cover"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:99
+#: src/components/background-control/imageLayer.js:100
 msgid "Contain"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:121
+#: src/components/background-control/imageLayer.js:122
 msgid "Revert"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:125
+#: src/components/background-control/imageLayer.js:126
 msgid "Scale down"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:190
+#: src/components/background-control/imageLayer.js:191
 msgid "Background repeat"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:202
+#: src/components/background-control/imageLayer.js:203
 msgid "No repeat"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:206
+#: src/components/background-control/imageLayer.js:207
 msgid "Repeat"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:210
+#: src/components/background-control/imageLayer.js:211
 msgid "Repeat X"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:214
+#: src/components/background-control/imageLayer.js:215
 msgid "Repeat Y"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:218
+#: src/components/background-control/imageLayer.js:219
 msgid "Space"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:222
+#: src/components/background-control/imageLayer.js:223
 msgid "Round"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:249
+#: src/components/background-control/imageLayer.js:250
 msgid "Background position"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:261
+#: src/components/background-control/imageLayer.js:262
 #: src/components/image-shape/index.js:239
 msgid "Left top"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:265
+#: src/components/background-control/imageLayer.js:266
 #: src/components/image-shape/index.js:197
 msgid "Left center"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:269
+#: src/components/background-control/imageLayer.js:270
 #: src/components/image-shape/index.js:225
 msgid "Left bottom"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:273
+#: src/components/background-control/imageLayer.js:274
 #: src/components/image-shape/index.js:246
 msgid "Right top"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:277
+#: src/components/background-control/imageLayer.js:278
 #: src/components/image-shape/index.js:204
 msgid "Right center"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:281
+#: src/components/background-control/imageLayer.js:282
 #: src/components/image-shape/index.js:232
 msgid "Right bottom"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:285
+#: src/components/background-control/imageLayer.js:286
 #: src/components/image-shape/index.js:211
 msgid "Center top"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:289
+#: src/components/background-control/imageLayer.js:290
 #: src/components/image-shape/index.js:190
 msgid "Center center"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:293
+#: src/components/background-control/imageLayer.js:294
 #: src/components/image-shape/index.js:218
 msgid "Center bottom"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:330
+#: src/components/background-control/imageLayer.js:331
 msgid "Y-axis"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:387
+#: src/components/background-control/imageLayer.js:388
 msgid "X-axis"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:448
+#: src/components/background-control/imageLayer.js:449
 msgid "Background attachment"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:462
+#: src/components/background-control/imageLayer.js:463
 msgid "Scroll"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:466
+#: src/components/background-control/imageLayer.js:467
 msgid "Fixed"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:470
+#: src/components/background-control/imageLayer.js:471
 msgid "Local"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:499
+#: src/components/background-control/imageLayer.js:500
 msgid "More settings"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:508
+#: src/components/background-control/imageLayer.js:509
 msgid "Background origin"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:558
+#: src/components/background-control/imageLayer.js:559
 msgid "Background clip"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:748
+#: src/components/background-control/imageLayer.js:755
 msgid "Parallax"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:753
+#: src/components/background-control/imageLayer.js:760
 msgid "Enable parallax"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:776
+#: src/components/background-control/imageLayer.js:783
 msgid "Direction"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:787
+#: src/components/background-control/imageLayer.js:794
 msgid "Up"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:794
+#: src/components/background-control/imageLayer.js:801
 msgid "Down"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:809
+#: src/components/background-control/imageLayer.js:816
 msgid "Speed"
 msgstr ""
 
@@ -6038,15 +5993,15 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: src/components/background-control/videoLayer.js:40
+#: src/components/background-control/videoLayer.js:87
 msgid "Video opacity"
 msgstr ""
 
-#: src/components/background-control/videoLayer.js:56
+#: src/components/background-control/videoLayer.js:104
 msgid "Background fallback"
 msgstr ""
 
-#: src/components/background-control/videoLayer.js:231
+#: src/components/background-control/videoLayer.js:263
 msgid "Reduce black borders"
 msgstr ""
 
@@ -6570,6 +6525,10 @@ msgstr ""
 msgid "Button colour"
 msgstr ""
 
+#: src/components/icon-control/index.js:620
+msgid "Icon background is inheriting from button."
+msgstr ""
+
 #: src/components/icon-control/index.js:626
 msgid "Button Background colour"
 msgstr ""
@@ -6623,6 +6582,15 @@ msgstr ""
 msgid "Image position"
 msgstr ""
 
+#: src/components/image-url-upload/index.js:50
+msgid "Enter URL"
+msgstr ""
+
+#: src/components/image-url-upload/index.js:98
+#: src/components/image-url/index.js:117
+msgid "Please input a valid URL to an image that exists"
+msgstr ""
+
 #: src/components/image-url/index.js:27
 msgid "Change image URL"
 msgstr ""
@@ -6637,10 +6605,6 @@ msgstr ""
 
 #: src/components/image-url/index.js:96
 msgid "Paste or input a direct URL to the Image"
-msgstr ""
-
-#: src/components/image-url/index.js:117
-msgid "Please input a valid URL to an image that exists"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-advanced-css.js:19
@@ -6836,20 +6800,24 @@ msgstr ""
 msgid "To edit this block please use a desktop browser"
 msgstr ""
 
-#: src/components/media-uploader-control/index.js:39
+#: src/components/media-uploader-control/index.js:40
 msgid "Set image"
 msgstr ""
 
-#: src/components/media-uploader-control/index.js:42
+#: src/components/media-uploader-control/index.js:43
 msgid "Remove"
 msgstr ""
 
-#: src/components/media-uploader-control/index.js:70
+#: src/components/media-uploader-control/index.js:71
 msgid "To edit this field, you need permission to upload media."
 msgstr ""
 
-#: src/components/media-uploader-control/index.js:81
+#: src/components/media-uploader-control/index.js:82
 msgid "Background Video"
+msgstr ""
+
+#: src/components/media-uploader-control/index.js:99
+msgid " from media library"
 msgstr ""
 
 #: src/components/overflow-control/index.js:144
@@ -7228,7 +7196,7 @@ msgstr ""
 msgid "Reverse scroll playback"
 msgstr ""
 
-#: src/components/svg-fill-control/index.js:159
+#: src/components/svg-fill-control/index.js:201
 msgid "Use background image"
 msgstr ""
 
@@ -7571,35 +7539,6 @@ msgstr ""
 msgid "Get by id"
 msgstr ""
 
-#: src/extensions/DC/constants.js:68
-#: src/extensions/DC/constants.js:81
-#: src/extensions/DC/constants.js:90
-#: src/extensions/DC/constants.js:97
-#: src/extensions/DC/constants.js:102
-msgid "Get random"
-msgstr ""
-
-#: src/extensions/DC/constants.js:69
-#: src/extensions/DC/constants.js:82
-#: src/extensions/DC/constants.js:91
-msgid "Get by date"
-msgstr ""
-
-#: src/extensions/DC/constants.js:70
-#: src/extensions/DC/constants.js:83
-#: src/extensions/DC/constants.js:92
-msgid "Get alphabetical"
-msgstr ""
-
-#: src/extensions/DC/constants.js:71
-#: src/extensions/DC/constants.js:84
-msgid "Get by author"
-msgstr ""
-
-#: src/extensions/DC/constants.js:72
-msgid "Get by category"
-msgstr ""
-
 #: src/extensions/DC/constants.js:73
 msgid "Get by tag"
 msgstr ""
@@ -7607,6 +7546,27 @@ msgstr ""
 #: src/extensions/DC/constants.js:74
 #: src/extensions/DC/constants.js:85
 msgid "Get current"
+msgstr ""
+
+#: src/extensions/DC/constants.js:81
+#: src/extensions/DC/constants.js:90
+#: src/extensions/DC/constants.js:97
+#: src/extensions/DC/constants.js:102
+msgid "Get random"
+msgstr ""
+
+#: src/extensions/DC/constants.js:82
+#: src/extensions/DC/constants.js:91
+msgid "Get by date"
+msgstr ""
+
+#: src/extensions/DC/constants.js:83
+#: src/extensions/DC/constants.js:92
+msgid "Get alphabetical"
+msgstr ""
+
+#: src/extensions/DC/constants.js:84
+msgid "Get by author"
 msgstr ""
 
 #: src/extensions/DC/constants.js:150

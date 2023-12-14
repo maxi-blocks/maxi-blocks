@@ -660,3 +660,36 @@ body .maxi-style-cards__popover {
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-style-cards__popover {
+		right: 0;
+		left: unset;
+		.maxi-style-cards__sc__more-sc--select {
+			margin-right: unset;
+			margin-left: 8px;
+		}
+		.maxi-style-cards__sc__save button,
+		.maxi-style-cards__sc__save input[type='text'] {
+			margin-left: 8px;
+			margin-right: unset;
+		}
+	}
+	.maxi-select-control__second-style .maxi-base-control__label {
+		left: unset;
+		right: 8px;
+	}
+	.maxi-style-cards__settings .maxi-reset-button {
+		margin-right: 4px !important;
+		margin-left: 0 !important;
+		left: 0;
+		right: unset;
+		padding: 1px 8px 1px 1px !important;
+	}
+	.maxi-base-control__field .maxi-select-control__input {
+		padding-right: 8px !important;
+		background-position: center left 8px;
+	}
+}

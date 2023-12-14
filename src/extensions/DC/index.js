@@ -9,6 +9,7 @@ export { default as getDCOptions } from './getDCOptions';
 export { default as getDCValues } from './getDCValues';
 export { default as LoopContext } from './loopContext';
 export { default as processDCDate } from './processDCDate';
+export { default as useMaxiDCLink } from './useMaxiDCLink';
 export { default as withMaxiContextLoop } from './withMaxiContextLoop';
 export { default as withMaxiContextLoopContext } from './withMaxiContextLoopContext';
 export { default as witMaxiDC } from './withMaxiDC';

@@ -636,6 +636,20 @@ export const nameDictionary = {
 	product_tags: 'product_tag',
 };
 
+export const relationDictionary = {
+	'by-category': {
+		default: 'categories',
+		products: 'product_cat',
+	},
+	'by-author': {
+		default: 'author',
+	},
+	'by-tag': {
+		default: 'tags',
+		products: 'product_tag',
+	},
+};
+
 export const attributeDefaults = {
 	status: false,
 	type: 'posts',

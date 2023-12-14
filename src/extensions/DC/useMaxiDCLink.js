@@ -28,16 +28,20 @@ const useMaxiDCLink = (
 		const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
 		const updateLinkSettings = async () => {
-			const newLinkSettings = await getDCNewLinkSettings(
-				attributes,
-				dynamicContentProps,
-				clientId
-			);
-			if (newLinkSettings) {
-				dispatch(
-					'core/block-editor'
-				).__unstableMarkNextChangeAsNotPersistent();
-				setAttributes({ linkSettings: newLinkSettings });
+			try {
+				const newLinkSettings = await getDCNewLinkSettings(
+					attributes,
+					dynamicContentProps,
+					clientId
+				);
+				if (newLinkSettings) {
+					dispatch(
+						'core/block-editor'
+					).__unstableMarkNextChangeAsNotPersistent();
+					setAttributes({ linkSettings: newLinkSettings });
+				}
+			} catch (e) {
+				console.error(e);
 			}
 		};
 

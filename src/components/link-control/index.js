@@ -38,18 +38,13 @@ const LinkControl = ({
 				isDCLinkActive && 'maxi-link-control--dc'
 			)}
 		>
-			{(!isDCLinkActive || !DC_LINK_BLOCKS.includes(blockName)) && (
-				<NativeLinkControl
-					searchInputPlaceholder={__(
-						'Search or type URL',
-						'maxi-blocks'
-					)}
-					value={linkValue}
-					forceIsEditingLink={isDCLinkActive ? false : undefined}
-					onChange={onChangeLink}
-					settings={[]}
-				/>
-			)}
+			<NativeLinkControl
+				searchInputPlaceholder={__('Search or type URL', 'maxi-blocks')}
+				value={linkValue}
+				forceIsEditingLink={isDCLinkActive ? false : undefined}
+				onChange={onChangeLink}
+				settings={[]}
+			/>
 			{(isDCLinkActive || !isEmpty(linkValue.url)) && (
 				<>
 					<div className='maxi-link-control__options'>

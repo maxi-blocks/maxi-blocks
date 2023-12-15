@@ -79,22 +79,27 @@ const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 	}
 };
 
-const updateSCOnEditor = (
+const updateSCOnEditor = async (
 	styleCards,
 	activeSCColour,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
-	const SCObject = getSCVariablesObject(
-		{ ...cloneDeep(styleCards) },
-		activeSCColour
-	);
-	const allSCFonts = getSCFontsData(SCObject);
-	const SCVariableString = createSCStyleString(SCObject);
+	let SCObject;
+	let allSCFonts;
+	let SCVariableString;
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
-	elements.forEach(element => {
+	for (let i = 0; i < elements.length; i += 1) {
+		const element = elements[i];
 		if (!element) return;
+
+		SCObject = getSCVariablesObject(
+			{ ...cloneDeep(styleCards) },
+			activeSCColour
+		);
+		allSCFonts = getSCFontsData(SCObject);
+		SCVariableString = createSCStyleString(SCObject);
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
 
@@ -123,8 +128,16 @@ const updateSCOnEditor = (
 			);
 		}
 
-		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
-	});
+		if (!isEmpty(allSCFonts)) {
+			if (i === elements.length - 1 || !elements[i + 1]) {
+				// Need to wait only once for the fonts to load (for the last valid element)
+				// eslint-disable-next-line no-await-in-loop
+				await loadFonts(allSCFonts, false, element);
+			} else {
+				loadFonts(allSCFonts, false, element);
+			}
+		}
+	}
 };
 
 export default updateSCOnEditor;

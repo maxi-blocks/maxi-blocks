@@ -377,14 +377,6 @@ class MaxiBlockComponent extends Component {
 				)
 			);
 
-		// const diffObj = diff(
-		// 	propsObjectCleaner(this.props),
-		// 	propsObjectCleaner(nextProps)
-		// );
-
-		// console.log('diffObj');
-		// console.log(diffObj);
-
 		return !isEqual(
 			propsObjectCleaner(this.props),
 			propsObjectCleaner(nextProps)
@@ -493,8 +485,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (!shouldDisplayStyles) {
-			// console.log('!shouldDisplayStyles');
-			// console.log(this.props.attributes.uniqueID);
 			!this.isReusable &&
 				this.displayStyles(
 					this.props.deviceType !== prevProps.deviceType ||

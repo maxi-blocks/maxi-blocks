@@ -23,6 +23,8 @@ const getProducts = memoize(async () => {
 });
 
 const getProductData = async productID => {
+	if (!productID) return null;
+
 	if (!indexedProducts?.[productID]) {
 		try {
 			const product = await apiFetch({

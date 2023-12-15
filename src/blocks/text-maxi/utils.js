@@ -130,6 +130,8 @@ export const calculateTextWidth = (
 	providedFontFamily,
 	fontWeight
 ) => {
+	if (fontSize === '0px') return 0;
+
 	let activeFontFamily = providedFontFamily;
 
 	if (typeof document.fonts !== 'undefined') {

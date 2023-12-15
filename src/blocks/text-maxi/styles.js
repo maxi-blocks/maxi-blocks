@@ -89,8 +89,7 @@ const getTextWidth = (sizeNum, sizeUnit, props, breakpoint, styleCard) => {
 				blockStyle,
 				styleCard,
 			})
-		),
-		2
+		)
 	)}px`;
 };
 

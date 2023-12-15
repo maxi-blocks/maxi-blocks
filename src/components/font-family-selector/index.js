@@ -58,16 +58,22 @@ const FontFamilySelector = props => {
 		if (value.label !== font) setValue({ label: font, value: font });
 	}, [font]);
 
-	const onFontChange = newFont => {
-		onChange(newFont);
+	const onFontChange = async newFont => {
+		if (!newFont) {
+			onChange({ label: defaultValue, value: defaultValue });
+			return;
+		}
 
 		const objFont = { [newFont.value]: {} };
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-		loadFontsInEditor(objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
+
+		await loadFontsInEditor(objFont);
+
+		onChange(newFont);
 	};
 
 	const classes = classnames('maxi-font-family-selector', className);
@@ -83,10 +89,7 @@ const FontFamilySelector = props => {
 				onChange={(value, clear) =>
 					clear.action === 'select-option'
 						? onFontChange(value)
-						: onFontChange({
-								label: defaultValue,
-								value: defaultValue,
-						  })
+						: onFontChange()
 				}
 				isLoading={isNil(options)}
 				isClearable
@@ -96,11 +99,8 @@ const FontFamilySelector = props => {
 
 			{!disableFontFamilyReset && (
 				<ResetButton
-					onReset={e => {
-						onFontChange({
-							label: defaultValue,
-							value: defaultValue,
-						});
+					onReset={() => {
+						onFontChange();
 					}}
 				/>
 			)}

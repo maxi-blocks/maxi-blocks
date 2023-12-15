@@ -141,7 +141,7 @@ msgid "Hello, "
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:267
-msgid "Hello, friend" " 👋"
+msgid "Hello, friend 👋"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:273
@@ -157,15 +157,15 @@ msgid "You can choose from over 1,800 patterns, 100 page templates, and 13,400 S
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:294
-msgid "No locked blocks "  "📖": We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design."
+msgid "No locked blocks 📖: We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:301
-msgid "Goodbye license keys"  "👋": Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads."
+msgid "Goodbye license keys 👋: Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:308
-msgid "Packed with free goodies "  "🆓": Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building."
+msgid "Packed with free goodies 🆓: Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:315
@@ -173,7 +173,7 @@ msgid "Loved by page builder enthusiasts, web designers, and template users, Max
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:322
-msgid "Go next-level with pro templates "  "🆙"
+msgid "Go next-level with pro templates 🆙"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:329
@@ -6045,7 +6045,7 @@ msgid "Inset"
 msgstr ""
 
 #: src/components/clip-path-control/doublePoint.js:20
-msgid "Top:  Left: "
+msgid "Top: %1$s Left: %2$s"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:50
@@ -6095,15 +6095,15 @@ msgid "Add new point"
 msgstr ""
 
 #: src/components/clip-path-control/radiusPoint.js:19
-msgid "Radius:"
+msgid "Radius: %s"
 msgstr ""
 
 #: src/components/clip-path-control/singlePoint.js:33
-msgid "Top:"
+msgid "Top: %s"
 msgstr ""
 
 #: src/components/clip-path-control/singlePoint.js:34
-msgid "Left:"
+msgid "Left: %s"
 msgstr ""
 
 #: src/components/color-control/customColorControl.js:56
@@ -6121,7 +6121,7 @@ msgid "Set custom colour"
 msgstr ""
 
 #: src/components/color-control/paletteControl.js:62
-msgid "Pallet box colour"
+msgid "Pallet box colour %s"
 msgstr ""
 
 #: src/components/context-loop/index.js:152

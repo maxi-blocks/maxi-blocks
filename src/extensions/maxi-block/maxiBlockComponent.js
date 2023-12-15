@@ -137,6 +137,7 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+		this.popoverStyles = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -480,6 +481,8 @@ class MaxiBlockComponent extends Component {
 				);
 			this.isReusable && this.displayStyles();
 		}
+
+		this.hideGutenbergPopover();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -1161,6 +1164,25 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	/**
+	 * Hides Gutenberg's popover when the Maxi block is selected.
+	 */
+	hideGutenbergPopover() {
+		if (this.props.isSelected && !this.popoverStyles) {
+			this.popoverStyles = document.createElement('style');
+			this.popoverStyles.innerHTML = `
+				.block-editor-block-popover {
+					display: none !important;
+				}
+			`;
+			this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
+			document.head.appendChild(this.popoverStyles);
+		} else if (!this.props.isSelected && this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
 	}
 }
 

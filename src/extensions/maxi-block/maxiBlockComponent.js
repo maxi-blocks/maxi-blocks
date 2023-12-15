@@ -343,16 +343,25 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		const wasBreakpointChanged =
+			this.props.deviceType !== nextProps.deviceType ||
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
+			wasBreakpointChanged // In case of breakpoint change
 		)
 			return true;
 
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) return true;
+
+		if (
+			this.props.attributes.uniqueID !== nextProps.attributes.uniqueID &&
+			!wasBreakpointChanged
+		)
+			return false;
 
 		if (this.shouldMaxiBlockUpdate)
 			return (
@@ -367,6 +376,14 @@ class MaxiBlockComponent extends Component {
 					propsObjectCleaner(nextProps)
 				)
 			);
+
+		// const diffObj = diff(
+		// 	propsObjectCleaner(this.props),
+		// 	propsObjectCleaner(nextProps)
+		// );
+
+		// console.log('diffObj');
+		// console.log(diffObj);
 
 		return !isEqual(
 			propsObjectCleaner(this.props),
@@ -403,9 +420,14 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		// If deviceType or baseBreakpoint changes, render styles
-		if (
+		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
+
+		if (
+			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
+			!wasBreakpointChanged
 		)
 			return false;
 
@@ -471,6 +493,8 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (!shouldDisplayStyles) {
+			// console.log('!shouldDisplayStyles');
+			// console.log(this.props.attributes.uniqueID);
 			!this.isReusable &&
 				this.displayStyles(
 					this.props.deviceType !== prevProps.deviceType ||

@@ -297,21 +297,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 			$content .=
 				'<p>' .
 				__(
-					"No locked blocks 📖: We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
+					"No locked blocks", 'maxi-blocks') . " 📖: " . __("We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
 					'maxi-blocks',
 				) .
 				'</p>';
 			$content .=
 				'<p>' .
 				__(
-					'Goodbye license keys 👋: Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
+					'Goodbye license keys', 'maxi-blocks') . ' 👋: ' . __('Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
 					'maxi-blocks',
 				) .
 				'</p>';
 			$content .=
 				'<p>' .
 				__(
-					"Packed with free goodies 🆓: Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building.",
+					"Packed with free goodies", "maxi-blocks") . " 🆓: " . __("Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building.",
 					'maxi-blocks',
 				) .
 				'</p>';
@@ -324,7 +324,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 				'</p>';
 			$content .=
 				'<h2>' .
-				__('Go next-level with pro templates 🆙', 'maxi-blocks') .
+				__('Go next-level with pro templates', 'maxi-blocks') . ' 🆙'.
 				'</h2>';
 			$content .=
 				'<p>' .

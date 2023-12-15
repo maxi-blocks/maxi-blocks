@@ -15,6 +15,7 @@ import {
 	getHaveLoadedIntegrationsOptions,
 	currentEntityTypes,
 	nameDictionary,
+	relationDictionary,
 } from './constants';
 
 /**
@@ -174,4 +175,12 @@ export const getAttributesWithoutPrefix = (attributes, prefix) => {
 	});
 
 	return result;
+};
+
+export const getRelationKeyForId = (relation, type) => {
+	const relationType = relationDictionary[relation];
+	if (relationType) {
+		return relationType[type] || relationType.default;
+	}
+	return null;
 };

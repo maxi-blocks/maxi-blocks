@@ -7,11 +7,12 @@ import { resolveSelect, select } from '@wordpress/data';
  * Internal dependencies
  */
 import getDCErrors from './getDCErrors';
-import { getDCOrder } from './utils';
+import { getDCOrder, getRelationKeyForId } from './utils';
 import { getCartData } from './getWooCommerceData';
 import {
 	kindDictionary,
 	nameDictionary,
+	relationDictionary,
 	orderRelations,
 	orderTypes,
 	relationTypes,
@@ -104,6 +105,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 	}
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
+		const relationKeyForId = getRelationKeyForId(relation, type);
+
 		const entities = await resolveSelect('core').getEntityRecords(
 			kindDictionary[type],
 			nameDictionary[type],
@@ -112,9 +115,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				hide_empty: false,
 				order,
 				orderby: getDCOrder(relation, orderBy),
-				...(relation === 'by-category' && { categories: id }),
-				...(relation === 'by-author' && { author: id }),
-				...(relation === 'by-tag' && { tags: id }),
+				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
 

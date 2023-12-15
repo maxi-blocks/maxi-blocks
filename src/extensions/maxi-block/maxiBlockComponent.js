@@ -357,12 +357,6 @@ class MaxiBlockComponent extends Component {
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) return true;
 
-		if (
-			this.props.attributes.uniqueID !== nextProps.attributes.uniqueID &&
-			!wasBreakpointChanged
-		)
-			return false;
-
 		if (this.shouldMaxiBlockUpdate)
 			return (
 				this.shouldMaxiBlockUpdate(

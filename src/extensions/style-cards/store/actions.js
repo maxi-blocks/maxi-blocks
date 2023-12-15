@@ -11,6 +11,14 @@ export function receiveMaxiStyleCards() {
 	};
 }
 
+export function updateStyleCardOnEditor(styleCards, activeSCColour) {
+	return {
+		type: 'UPDATE_STYLE_CARD_ON_EDITOR',
+		styleCards,
+		activeSCColour,
+	};
+}
+
 export function saveMaxiStyleCards(styleCards, isUpdate = false) {
 	return {
 		type: 'SAVE_STYLE_CARDS',

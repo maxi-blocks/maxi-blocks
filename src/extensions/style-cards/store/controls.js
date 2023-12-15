@@ -6,7 +6,7 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { createSCStyleString } from '../updateSCOnEditor';
+import updateSCOnEditor, { createSCStyleString } from '../updateSCOnEditor';
 import getSCVariablesObject from '../getSCVariablesObject';
 import getSCStyles from '../getSCStyles';
 
@@ -18,6 +18,9 @@ const controls = {
 		return apiFetch({ path: '/maxi-blocks/v1.0/style-cards/' }).then(sc =>
 			JSON.parse(sc)
 		);
+	},
+	async UPDATE_STYLE_CARD_ON_EDITOR({ styleCards, activeSCColour }) {
+		return updateSCOnEditor(styleCards, activeSCColour);
 	},
 	async SAVE_STYLE_CARDS(styleCards) {
 		await apiFetch({

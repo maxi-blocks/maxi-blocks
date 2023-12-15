@@ -124,23 +124,40 @@ export const getSVGListStyle = svg => {
 	return cleanedSVG.replace(/[\r\n%#()<>?[\\\]^`{|}]/g, encodeURIComponent);
 };
 
+/**
+ * Calculates the width of the given text using a canvas.
+ *
+ * @param {string} providedContent    - The text content to measure.
+ * @param {string} providedFontSize   - Font size of the text. Default is '1em'.
+ * @param {string} providedFontFamily - Font family of the text. Defaults to body's font family.
+ * @param {string} providedFontWeight - Font weight of the text. Default is '400'.
+ * @returns {number} The calculated width of the text.
+ */
 export const calculateTextWidth = (
-	content,
-	fontSize,
+	providedContent,
+	providedFontSize,
 	providedFontFamily,
-	fontWeight
+	providedFontWeight
 ) => {
-	if (fontSize === '0px') return 0;
+	if (providedFontSize === '0px') return 0;
 
-	let activeFontFamily = providedFontFamily;
+	// Define default values
+	const defaultFontSize = '1em';
+	const defaultFontWeight = '400';
+	const defaultContent = '1';
+
+	const fontSize = providedFontSize || defaultFontSize;
+	const fontWeight = providedFontWeight || defaultFontWeight;
+	const content = providedContent || defaultContent;
+
+	let activeFontFamily =
+		providedFontFamily || window.getComputedStyle(document.body).fontFamily;
 
 	if (typeof document.fonts !== 'undefined') {
 		const fontIsLoaded =
 			!activeFontFamily ||
 			document.fonts.check(
-				`normal ${fontWeight || 400} ${
-					fontSize || '1em'
-				} ${activeFontFamily}`
+				`normal ${fontWeight} ${fontSize} ${activeFontFamily}`
 			);
 
 		if (!fontIsLoaded) {
@@ -150,10 +167,14 @@ export const calculateTextWidth = (
 		}
 	}
 
-	const canvas = document.createElement('canvas');
+	// Reuse the same canvas for performance improvement
+	const canvas =
+		calculateTextWidth.canvas ||
+		(calculateTextWidth.canvas = document.createElement('canvas'));
 	const ctx = canvas.getContext('2d');
 	ctx.font = `normal ${fontWeight} ${fontSize} ${activeFontFamily}`;
 
-	const textWidth = ctx.measureText(content || '1').width;
+	const textWidth = ctx.measureText(content).width;
+
 	return textWidth;
 };

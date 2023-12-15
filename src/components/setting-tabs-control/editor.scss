@@ -272,7 +272,8 @@
 	align-items: center;
 
 	&:hover {
-		background: var(--maxi-grey-4-color);
+		border-color: var(--maxi-grey-4-color);
+		color: var(--maxi-grey-4-color);
 	}
 
 	span {
@@ -283,8 +284,8 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.maxi-settingstab-control .maxi-tabs-control__button {
-		border-left: 1px solid var(--maxi-grey-1-color);
-		border-right: none;
+	.block-info-icon {
+		right: unset;
+		left: 5px;
 	}
 }

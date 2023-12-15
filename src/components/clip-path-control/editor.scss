@@ -172,3 +172,13 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-clip-path-delete-handle {
+		left: unset;
+		right: 0;
+	}
+}

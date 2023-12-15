@@ -119,10 +119,6 @@
 				}
 			}
 
-			@at-root .rtl #{&} {
-				flex-direction: row-reverse;
-			}
-
 			button:focus {
 				outline: none;
 				box-shadow: none;
@@ -708,5 +704,30 @@ body.rtl .toolbar-item__popover {
 		input[type='number'] {
 			width: 5em !important;
 		}
+	}
+}
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__more-settings {
+		border-left: unset !important;
+		border-right: 1px solid var(--maxi-grey-1-color) !important;
+	}
+	.toolbar-block-custom-label {
+		left: unset !important;
+		right: 0;
+		border-radius: 0px 3px 3px 0px !important;
+	}
+	.toolbar-more-indicator {
+		margin-right: 10px !important;
+		left: -16px;
+		right: unset !important;
+		border-radius: 3px 0px 0px 3px !important;
+		margin-left: 0;
+	}
+	.breadcrumbs-pin {
+		padding-right: 0px !important;
+		padding-left: 10px;
 	}
 }

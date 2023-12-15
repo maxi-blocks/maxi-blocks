@@ -297,7 +297,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 			$content .=
 				'<p>' .
 				__(
-					"No locked blocks", 'maxi-blocks') . " 📖: " . __("We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
+					"No locked blocks", "maxi-blocks") . " 📖: " . __("We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
 					'maxi-blocks',
 				) .
 				'</p>';

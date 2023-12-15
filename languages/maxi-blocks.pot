@@ -6045,7 +6045,7 @@ msgid "Inset"
 msgstr ""
 
 #: src/components/clip-path-control/doublePoint.js:20
-msgid "Top: %1$s Left: %2$s"
+msgid "Top:  Left: "
 msgstr ""
 
 #: src/components/clip-path-control/index.js:50
@@ -6095,15 +6095,15 @@ msgid "Add new point"
 msgstr ""
 
 #: src/components/clip-path-control/radiusPoint.js:19
-msgid "Radius: %s"
+msgid "Radius:"
 msgstr ""
 
 #: src/components/clip-path-control/singlePoint.js:33
-msgid "Top: %s"
+msgid "Top:"
 msgstr ""
 
 #: src/components/clip-path-control/singlePoint.js:34
-msgid "Left: %s"
+msgid "Left:"
 msgstr ""
 
 #: src/components/color-control/customColorControl.js:56
@@ -6121,7 +6121,7 @@ msgid "Set custom colour"
 msgstr ""
 
 #: src/components/color-control/paletteControl.js:62
-msgid "Pallet box colour %s"
+msgid "Pallet box colour"
 msgstr ""
 
 #: src/components/context-loop/index.js:152

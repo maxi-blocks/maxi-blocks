@@ -109,9 +109,11 @@
 			float: right;
 			font-weight: 700;
 			color: var(--maxi-secondary-color);
-			height: 26px;
-			padding: 0px 12px;
+			height: 37px;
+			padding: 0px 20px !important;
 			box-shadow: none !important;
+			right: -19px !important;
+			position: absolute;
 
 			svg {
 				display: none;
@@ -184,6 +186,7 @@
 			border: 1px solid var(--maxi-grey-1-color);
 			border-radius: 0;
 			padding: 8px;
+			color: #5f6063 !important;
 			&-action {
 				background-color: var(--maxi-primary-color);
 				box-shadow: none !important;

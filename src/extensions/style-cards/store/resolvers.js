@@ -1,10 +1,12 @@
-import updateSCOnEditor from '../updateSCOnEditor';
 import getActiveStyleCard from '../getActiveStyleCard';
-import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
+import {
+	receiveMaxiStyleCards,
+	sendMaxiStyleCards,
+	updateStyleCardOnEditor,
+} from './actions';
 import { getActiveColourFromSC } from '../../../editor/style-cards/utils';
 
 import { isEmpty } from 'lodash';
-import { dispatch } from '@wordpress/data';
 
 const resolvers = {
 	*receiveMaxiStyleCards() {
@@ -32,7 +34,7 @@ const resolvers = {
 				? getActiveStyleCard(updatedMaxiStyleCards)
 				: getActiveStyleCard(maxiStyleCards);
 
-			updateSCOnEditor(
+			yield updateStyleCardOnEditor(
 				currentSC.value,
 				getActiveColourFromSC(currentSC, 4)
 			);

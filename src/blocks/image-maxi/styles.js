@@ -572,47 +572,38 @@ const getImagePreviewObject = props => {
 	} = props;
 
 	if (hoverType === 'basic') {
-		if (hoverBasicEffectType === 'zoom-in')
-			response.transform = {
-				general: {
-					transform: 'scale(1)',
-				},
-			};
-		else if (hoverBasicEffectType === 'rotate')
-			response.transform = {
-				general: {
-					transform: 'rotate(0)',
-				},
-			};
-		else if (hoverBasicEffectType === 'zoom-out')
-			response.transform = {
-				general: {
-					transform: `scale(${props['hover-basic-zoom-out-value']})`,
-				},
-			};
-		else if (hoverBasicEffectType === 'slide')
-			response.transform = {
-				general: {
-					transform: 'translateX(0%)',
-				},
-			};
-		else if (hoverBasicEffectType === 'blur')
-			response.filter = {
-				general: {
-					filter: 'blur(0)',
-				},
-			};
-		else {
-			response.transform = {
-				general: {
-					transform: '',
-				},
-			};
-			response.filter = {
-				general: {
-					filter: '',
-				},
-			};
+		switch (hoverBasicEffectType) {
+			case 'zoom-in':
+				response.transform = {
+					general: { transform: 'scale(1)' },
+				};
+				break;
+			case 'rotate':
+				response.transform = {
+					general: { transform: 'rotate(0)' },
+				};
+				break;
+			case 'zoom-out':
+				response.transform = {
+					general: {
+						transform: `scale(${props['hover-basic-zoom-out-value']})`,
+					},
+				};
+				break;
+			case 'slide':
+				response.transform = {
+					general: { transform: 'translateX(0%)' },
+				};
+				break;
+			case 'blur':
+				response.filter = {
+					general: { filter: 'blur(0)' },
+				};
+				break;
+			default:
+				response.transform = { general: { transform: '' } };
+				response.filter = { general: { filter: '' } };
+				break;
 		}
 	}
 
@@ -633,59 +624,52 @@ const getImageHoverPreviewObject = props => {
 			transitionDurationEffects.includes(hoverBasicEffectType))
 	) {
 		response.transform = {
-			general: {
-				transform: '',
-			},
+			general: { transform: '' },
 		};
 		response.filter = {
-			general: {
-				filter: '',
-			},
+			general: { filter: '' },
 		};
 	}
 
 	if (hoverType === 'basic') {
-		if (hoverBasicEffectType === 'zoom-in')
-			response.transform = {
-				general: {
-					transform: `scale(${props['hover-basic-zoom-in-value']})`,
-				},
-			};
-		else if (hoverBasicEffectType === 'rotate')
-			response.transform = {
-				general: {
-					transform: `rotate(${props['hover-basic-rotate-value']}deg)`,
-				},
-			};
-		else if (hoverBasicEffectType === 'zoom-out')
-			response.transform = {
-				general: {
-					transform: 'scale(1)',
-				},
-			};
-		else if (hoverBasicEffectType === 'slide')
-			response.transform = {
-				general: {
-					transform: `translateX(${props['hover-basic-slide-value']}%)`,
-				},
-			};
-		else if (hoverBasicEffectType === 'blur')
-			response.filter = {
-				general: {
-					filter: `blur(${props['hover-basic-blur-value']}px)`,
-				},
-			};
-		else {
-			response.transform = {
-				general: {
-					transform: '',
-				},
-			};
-			response.filter = {
-				general: {
-					filter: '',
-				},
-			};
+		switch (hoverBasicEffectType) {
+			case 'zoom-in':
+				response.transform = {
+					general: {
+						transform: `scale(${props['hover-basic-zoom-in-value']})`,
+					},
+				};
+				break;
+			case 'rotate':
+				response.transform = {
+					general: {
+						transform: `rotate(${props['hover-basic-rotate-value']}deg)`,
+					},
+				};
+				break;
+			case 'zoom-out':
+				response.transform = {
+					general: { transform: 'scale(1)' },
+				};
+				break;
+			case 'slide':
+				response.transform = {
+					general: {
+						transform: `translateX(${props['hover-basic-slide-value']}%)`,
+					},
+				};
+				break;
+			case 'blur':
+				response.filter = {
+					general: {
+						filter: `blur(${props['hover-basic-blur-value']}px)`,
+					},
+				};
+				break;
+			default:
+				response.transform = { general: { transform: '' } };
+				response.filter = { general: { filter: '' } };
+				break;
 		}
 	}
 

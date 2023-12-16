@@ -206,27 +206,27 @@ window.addEventListener('DOMContentLoaded', () => {
 		const parallaxData = JSON.parse(maxiParallax[0][parallaxID])
 			?.parallax?.[parallaxID];
 
-		if (parallaxData) {
-			// Parallax Effect
-			parallaxData.forEach(layer => {
-				const {
-					id,
-					'background-image-parallax-speed': parallaxSpeed,
-					'background-image-parallax-direction': parallaxDirection,
-				} = layer;
+		if (!parallaxData) return;
 
-				const parallaxElem = document.querySelector(
-					`#${parallaxID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
-				);
+		// Parallax Effect
+		parallaxData.forEach(layer => {
+			const {
+				id,
+				'background-image-parallax-speed': parallaxSpeed,
+				'background-image-parallax-direction': parallaxDirection,
+			} = layer;
 
-				const direction = parallaxDirection === 'up' ? 1 : -1;
-				const speed = parallaxSpeed / 10 + direction;
+			const parallaxElem = document.querySelector(
+				`#${parallaxID} > .maxi-background-displayer > .maxi-background-displayer__${id}`
+			);
 
-				window.addEventListener('scroll', () => {
-					// eslint-disable-next-line no-new
-					new Parallax(parallaxElem, speed);
-				});
+			const direction = parallaxDirection === 'up' ? 1 : -1;
+			const speed = parallaxSpeed / 10 + direction;
+
+			window.addEventListener('scroll', () => {
+				// eslint-disable-next-line no-new
+				new Parallax(parallaxElem, speed);
 			});
-		}
+		});
 	});
 });

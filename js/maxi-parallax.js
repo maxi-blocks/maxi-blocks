@@ -1,4 +1,3 @@
-/* eslint-disable @wordpress/no-global-event-listener */
 // Parallax
 class Parallax {
 	constructor(el, speed) {
@@ -192,24 +191,24 @@ class Parallax {
 }
 
 // parallax Effects
-const parallaxElements = document.querySelectorAll('.maxi-parallax-effect');
-parallaxElements.forEach(elem => {
+window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-undef
-	if (!maxi_custom_data.custom_data) return;
+	if (!maxiParallax?.[0]) return;
 
-	const parallaxID = elem.id;
+	const parallaxElements = document.querySelectorAll(
+		'.maxi-block:has(> .maxi-background-displayer .maxi-background-displayer__parallax)'
+	);
 
-	const parallaxData =
+	parallaxElements.forEach(elem => {
+		const parallaxID = elem.id;
+
 		// eslint-disable-next-line no-undef
-		maxi_custom_data.custom_data[parallaxID] !== undefined
-			? // eslint-disable-next-line no-undef
-			  maxi_custom_data.custom_data[parallaxID]
-			: null;
+		const parallaxData = JSON.parse(maxiParallax[0][parallaxID])
+			?.parallax?.[parallaxID];
 
-	if (parallaxData !== null) {
-		// Parallax Effect
-		if ('bgParallaxLayers' in parallaxData) {
-			parallaxData.bgParallaxLayers.forEach(layer => {
+		if (parallaxData) {
+			// Parallax Effect
+			parallaxData.forEach(layer => {
 				const {
 					id,
 					'background-image-parallax-speed': parallaxSpeed,
@@ -229,5 +228,5 @@ parallaxElements.forEach(elem => {
 				});
 			});
 		}
-	}
+	});
 });

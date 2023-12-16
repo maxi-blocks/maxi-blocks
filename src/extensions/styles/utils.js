@@ -1,8 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+
+/**
  * External dependencies
  */
-import { cloneDeep, isNumber, isBoolean, isEmpty, isNil } from 'lodash';
-import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import { cloneDeep, isBoolean, isEmpty, isNil, isNumber, round } from 'lodash';
 
 export const getIsValid = (val, cleaned = false) =>
 	(cleaned &&
@@ -102,3 +106,20 @@ export const getAttrKeyWithoutBreakpoint = key => {
 
 export const replaceAttrKeyBreakpoint = (key, breakpoint) =>
 	`${getAttrKeyWithoutBreakpoint(key)}-${breakpoint}`;
+
+export const getTransitionTimingFunction = (
+	hoverTransitionEasing,
+	hoverTransitionEasingCB
+) => {
+	if (hoverTransitionEasing !== 'cubic-bezier') {
+		return hoverTransitionEasing;
+	}
+
+	if (isNil(hoverTransitionEasingCB)) {
+		return 'ease';
+	}
+
+	return `cubic-bezier(${hoverTransitionEasingCB
+		.map(value => round(value, 4))
+		.join()})`;
+};

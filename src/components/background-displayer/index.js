@@ -84,11 +84,18 @@ const BackgroundContent = props => {
 						props: layer,
 						prefix,
 					});
-					const alt = getAttributeValue({
-						target: 'background-image-parallax-alt',
+					const altSelector = getAttributeValue({
+						target: 'background-image-parallax-alt-selector',
 						props: layer,
 						prefix,
 					});
+					const alt =
+						altSelector !== 'none' &&
+						getAttributeValue({
+							target: 'background-image-parallax-alt',
+							props: layer,
+							prefix,
+						});
 
 					if (!mediaURL) return null;
 

@@ -77,12 +77,8 @@ const getLastBreakpointAttributeSingle = (
 		);
 
 	const currentBreakpoint =
-		maxiBlocksStore.receiveMaxiDeviceType() ?? 'general';
-	const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
-
-	const attrFilter = attr =>
-		!isNil(attr) &&
-		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
+		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
+	const baseBreakpoint = maxiBlocksStore?.receiveBaseBreakpoint();
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
@@ -203,8 +199,9 @@ const getLastBreakpointAttribute = ({
 	keys = [],
 	forceUseBreakpoint = false,
 }) => {
-	const getSelectedBlockCount =
-		blockEditorStore.getSelectedBlockCount || (() => 1);
+	const { getSelectedBlockCount } = blockEditorStore || {
+		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
+	};
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(

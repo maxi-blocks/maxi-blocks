@@ -104,26 +104,7 @@
 		width: 280px;
 
 		&__search-submit {
-			background-color: #e5f2f8;
-			width: auto;
-			float: right;
-			font-weight: 700;
-			color: var(--maxi-secondary-color);
-			height: 37px;
-			padding: 0px 20px !important;
-			box-shadow: none !important;
-			right: -19px !important;
-			position: absolute;
-
-			svg {
-				display: none;
-			}
-
-			// WP 6.2.2 and lower support
-			&.has-icon::before {
-				content: 'Search';
-				display: block;
-			}
+			display: none;
 		}
 		&__settings {
 			border-top: 0;
@@ -186,7 +167,6 @@
 			border: 1px solid var(--maxi-grey-1-color);
 			border-radius: 0;
 			padding: 8px;
-			color: #5f6063 !important;
 			&-action {
 				background-color: var(--maxi-primary-color);
 				box-shadow: none !important;

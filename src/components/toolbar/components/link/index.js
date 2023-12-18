@@ -53,6 +53,7 @@ const Link = props => {
 	const { contextLoop } = useContext(LoopContext) ?? {};
 	const { 'cl-status': clStatus, 'cl-type': clType } = contextLoop ?? {};
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
+	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
 
 	if (
@@ -107,7 +108,7 @@ const Link = props => {
 			>
 				{!childHasLink && (
 					<div className='toolbar-item__link-popover'>
-						{(dcStatus || showDCLink) && (
+						{showUseDCLink && (
 							<>
 								<ToggleSwitch
 									label={__(
@@ -197,8 +198,9 @@ const Link = props => {
 							{context => (
 								<LinkControl
 									linkValue={linkSettings}
-									isDCLinkActive={dcStatus && dcLinkStatus}
-									blockName={blockName}
+									isDCLinkActive={
+										showUseDCLink && dcLinkStatus
+									}
 									onChangeLink={onChange}
 									onRemoveLink={() => {
 										removeLinkHandle();

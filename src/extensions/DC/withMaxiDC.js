@@ -16,7 +16,7 @@ import {
 	sanitizeDCContent,
 } from './utils';
 import getDCMedia from './getDCMedia';
-import getDCLink from './getDCLink';
+import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import LoopContext from './loopContext';
@@ -53,7 +53,6 @@ const withMaxiDC = createHigherOrderComponent(
 				field,
 				id,
 				customDate,
-				linkStatus,
 				postTaxonomyLinksStatus,
 				containsHTML,
 			} = dynamicContentProps;
@@ -90,33 +89,11 @@ const withMaxiDC = createHigherOrderComponent(
 						contextLoop
 					);
 
-					const newLinkSettings =
-						{ ...attributes.linkSettings } ?? {};
-					let updateLinkSettings = false;
-					const dcLink = await getDCLink(
+					const newLinkSettings = await getDCNewLinkSettings(
+						attributes,
 						lastDynamicContentProps,
 						clientId
 					);
-					const isSameLink = dcLink === newLinkSettings.url;
-
-					if (
-						!!postTaxonomyLinksStatus !== !!newLinkSettings.disabled
-					) {
-						newLinkSettings.disabled = postTaxonomyLinksStatus;
-
-						updateLinkSettings = true;
-					}
-					if (!isSameLink && linkStatus && !isNil(dcLink)) {
-						newLinkSettings.url = dcLink;
-						newLinkSettings.title = dcLink;
-
-						updateLinkSettings = true;
-					} else if (isSameLink && !linkStatus) {
-						newLinkSettings.url = null;
-						newLinkSettings.title = null;
-
-						updateLinkSettings = true;
-					}
 
 					if (!isImageMaxi) {
 						let newContent = await getDCContent(
@@ -142,7 +119,7 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-custom-format':
 										getDCDateCustomFormat(newContent),
 								}),
-								...(updateLinkSettings && {
+								...(newLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),
 								...synchronizedAttributes,
@@ -150,14 +127,12 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
-						} else if (updateLinkSettings) {
+						} else if (newLinkSettings) {
 							isSynchronizedAttributesUpdated = true;
 
 							markNextChangeAsNotPersistent();
 							setAttributes({
-								...(updateLinkSettings && {
-									linkSettings: newLinkSettings,
-								}),
+								linkSettings: newLinkSettings,
 								...synchronizedAttributes,
 							});
 						}
@@ -174,7 +149,7 @@ const withMaxiDC = createHigherOrderComponent(
 							setAttributes({
 								'dc-media-id': null,
 								'dc-media-url': null,
-								...(updateLinkSettings && {
+								...(newLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),
 								...synchronizedAttributes,
@@ -194,7 +169,7 @@ const withMaxiDC = createHigherOrderComponent(
 											getSimpleText(caption)
 										),
 									}),
-									...(updateLinkSettings && {
+									...(newLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),
 									...synchronizedAttributes,

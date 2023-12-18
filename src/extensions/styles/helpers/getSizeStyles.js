@@ -22,128 +22,125 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
 
-	breakpoints.forEach(breakpoint => {
-		const getValue = target => {
-			let fullWidthNormalStyles = {};
-			if (
-				target === 'width' ||
-				target === 'max-width' ||
-				target === 'min-width'
-			) {
-				const fullWidth = getLastBreakpointAttribute({
-					target: `${prefix}full-width`,
-					breakpoint,
-					attributes: obj,
-				});
+	const getValue = (target, breakpoint) => {
+		let fullWidthNormalStyles = {};
+		if (
+			target === 'width' ||
+			target === 'max-width' ||
+			target === 'min-width'
+		) {
+			const fullWidth = getLastBreakpointAttribute({
+				target: `${prefix}full-width`,
+				breakpoint,
+				attributes: obj,
+			});
 
-				if (
-					(target === 'width' || target === 'min-width') &&
-					fullWidth
-				) {
-					return null;
-				}
-
-				if (target === 'max-width') {
-					if (fullWidth) {
-						return {
-							'min-width': '100%',
-						};
-					}
-
-					const isMinWidthNeeded = breakpoints
-						.slice(0, breakpoints.indexOf(breakpoint) + 1)
-						.some(bp => {
-							const val = obj[`${prefix}full-width-${bp}`];
-							const defaultVal = getDefaultAttribute(
-								`${prefix}full-width-${bp}`
-							);
-
-							return val !== defaultVal;
-						});
-
-					if (!fullWidth && isMinWidthNeeded) {
-						fullWidthNormalStyles = {
-							'min-width': 'initial',
-						};
-					}
-				}
+			if ((target === 'width' || target === 'min-width') && fullWidth) {
+				return null;
 			}
 
-			if (!obj[`${prefix}size-advanced-options`]) {
-				if (target.includes('min')) return null;
-				if (target.includes('max')) return fullWidthNormalStyles;
-			}
-
-			if (target === 'height') {
-				const forceAspectRatio = getLastBreakpointAttribute({
-					target: `${prefix}force-aspect-ratio`,
-					breakpoint,
-					attributes: obj,
-				});
-
-				if (forceAspectRatio)
-					return { 'aspect-ratio': 1, height: 'auto !important' };
-				if (obj.fitParentSize) return { height: '100% !important' };
-			}
-			if (target === 'width') {
-				const fitContent = getLastBreakpointAttribute({
-					target: `${prefix}width-fit-content`,
-					breakpoint,
-					attributes: obj,
-				});
-
-				if (fitContent) {
+			if (target === 'max-width') {
+				if (fullWidth) {
 					return {
-						width: 'fit-content',
+						'min-width': '100%',
+					};
+				}
+
+				const isMinWidthNeeded = breakpoints
+					.slice(0, breakpoints.indexOf(breakpoint) + 1)
+					.some(bp => {
+						const val = obj[`${prefix}full-width-${bp}`];
+						const defaultVal = getDefaultAttribute(
+							`${prefix}full-width-${bp}`
+						);
+
+						return val !== defaultVal;
+					});
+
+				if (!fullWidth && isMinWidthNeeded) {
+					fullWidthNormalStyles = {
+						'min-width': 'initial',
 					};
 				}
 			}
+		}
 
-			if (
-				isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
-				obj[`${prefix}${target}-unit-${breakpoint}`]
-			) {
-				const num = getLastBreakpointAttribute({
-					target: `${prefix}${target}`,
-					breakpoint,
-					attributes: obj,
-				});
-				const unit = getLastBreakpointAttribute({
-					target: `${prefix}${target}-unit`,
-					breakpoint,
-					attributes: obj,
-				});
+		if (!obj[`${prefix}size-advanced-options`]) {
+			if (target.includes('min')) return null;
+			if (target.includes('max')) return fullWidthNormalStyles;
+		}
 
-				const auto =
-					prefix === 'number-counter-' &&
-					target === 'width' &&
-					obj['number-counter-circle-status']
-						? 'auto'
-						: getLastBreakpointAttribute({
-								target: `${prefix}${target}-auto`,
-								breakpoint,
-								attributes: obj,
-						  }) && '100%';
+		if (target === 'height') {
+			const forceAspectRatio = getLastBreakpointAttribute({
+				target: `${prefix}force-aspect-ratio`,
+				breakpoint,
+				attributes: obj,
+			});
 
-				if (!isNil(num) && !isNil(unit))
-					return {
-						[target]: auto || num + unit,
-						...fullWidthNormalStyles,
-					};
+			if (forceAspectRatio)
+				return { 'aspect-ratio': 1, height: 'auto !important' };
+			if (obj.fitParentSize) return { height: '100% !important' };
+		}
+		if (target === 'width') {
+			const fitContent = getLastBreakpointAttribute({
+				target: `${prefix}width-fit-content`,
+				breakpoint,
+				attributes: obj,
+			});
+
+			if (fitContent) {
+				return {
+					width: 'fit-content',
+				};
 			}
+		}
 
-			return {
-				...fullWidthNormalStyles,
-			};
+		if (
+			isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
+			obj[`${prefix}${target}-unit-${breakpoint}`]
+		) {
+			const num = getLastBreakpointAttribute({
+				target: `${prefix}${target}`,
+				breakpoint,
+				attributes: obj,
+			});
+			const unit = getLastBreakpointAttribute({
+				target: `${prefix}${target}-unit`,
+				breakpoint,
+				attributes: obj,
+			});
+
+			const auto =
+				prefix === 'number-counter-' &&
+				target === 'width' &&
+				obj['number-counter-circle-status']
+					? 'auto'
+					: getLastBreakpointAttribute({
+							target: `${prefix}${target}-auto`,
+							breakpoint,
+							attributes: obj,
+					  }) && '100%';
+
+			if (!isNil(num) && !isNil(unit))
+				return {
+					[target]: auto || num + unit,
+					...fullWidthNormalStyles,
+				};
+		}
+
+		return {
+			...fullWidthNormalStyles,
 		};
+	};
 
+	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
-			...getValue('max-width'),
-			...getValue('width'),
-			...getValue('min-width'),
-			...getValue('max-height'),
-			...getValue('height'),
-			...getValue('min-height'),
+			...getValue('max-width', breakpoint),
+			...getValue('width', breakpoint),
+			...getValue('min-width', breakpoint),
+			...getValue('max-height', breakpoint),
+			...getValue('height', breakpoint),
+			...getValue('min-height', breakpoint),
 		};
 	});
 

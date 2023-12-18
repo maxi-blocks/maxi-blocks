@@ -9,7 +9,6 @@ import { Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Icon from '../../../icon';
-import CrispChat from '../../../../editor/crisp-chat';
 
 /**
  * Icons
@@ -25,23 +24,11 @@ import './editor.scss';
  * Duplicate
  */
 const Help = props => {
-	const { blockName, tooltipsHide, supportChat } = props;
+	const { blockName, tooltipsHide } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const helpContent = () => {
-		if (supportChat)
-			return (
-				<div className='toolbar-item toolbar-item__help'>
-					<CrispChat>
-						<Icon
-							className='toolbar-item__icon'
-							icon={toolbarHelp}
-						/>
-					</CrispChat>
-				</div>
-			);
-
 		return (
 			<div className='toolbar-item toolbar-item__help'>
 				<a

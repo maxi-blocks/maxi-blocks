@@ -21,7 +21,8 @@ import { isString, isArray, isNil } from 'lodash';
  * Returns the block name if they are all the same
  */
 const getBlocksName = clientIds => {
-	const { getBlockName } = select('core/block-editor');
+	const blockEditorStore = select('core/block-editor');
+	const { getBlockName } = blockEditorStore;
 
 	if (clientIds.length === 1) return getBlockName(clientIds[0]);
 
@@ -45,33 +46,31 @@ const getDefaultAttribute = (
 	clientIds = null,
 	avoidBaseBreakpoint = false
 ) => {
-	const { getBlockName, getSelectedBlockClientIds } =
-		select('core/block-editor');
+	const blockEditorStore = select('core/block-editor');
+	const { getBlockName, getSelectedBlockClientIds } = blockEditorStore;
 
-	let response = null;
 	let blockName = '';
-
-	if (isString(clientIds)) blockName = getBlockName(clientIds);
-	else if (isArray(clientIds)) blockName = getBlocksName(clientIds);
-	else if (isNil(clientIds))
+	if (isString(clientIds)) {
+		blockName = getBlockName(clientIds);
+	} else if (isArray(clientIds)) {
+		blockName = getBlocksName(clientIds);
+	} else if (isNil(clientIds)) {
 		blockName = getBlocksName(getSelectedBlockClientIds());
+	}
 
 	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
+	if (!isMaxiBlock) return null;
 
-	if (!isMaxiBlock) return response;
-
-	// Check default value on block
-	response = getBlockAttributes(blockName)[prop];
-	if (getBlockData(blockName)?.maxiAttributes?.[prop])
+	let response = getBlockAttributes(blockName)[prop];
+	if (getBlockData(blockName)?.maxiAttributes?.[prop]) {
 		response = getBlockData(blockName).maxiAttributes[prop];
+	}
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
-
 	if (getIsValid(response, true)) return response;
-	if (isGeneral) {
-		if (avoidBaseBreakpoint) return response;
-
-		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+	if (isGeneral && !avoidBaseBreakpoint) {
+		const maxiBlocksStore = select('maxiBlocks');
+		const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 		const baseAttribute =
 			getBlockAttributes(blockName)[
 				prop.replace('general', baseBreakpoint)
@@ -81,17 +80,11 @@ const getDefaultAttribute = (
 	}
 
 	// Check default value
-	Object.values(defaults).forEach(defaultAttrs => {
-		if (prop in defaultAttrs) response = defaultAttrs[prop].default;
-	});
-
-	if (
-		!avoidBaseBreakpoint &&
-		isNil(response) &&
-		getBreakpointFromAttribute(prop) === 'general'
-	) {
-		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-
+	if (prop in defaults) {
+		response = defaults[prop].default;
+	} else if (!avoidBaseBreakpoint && isNil(response) && isGeneral) {
+		const maxiBlocksStore = select('maxiBlocks');
+		const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 		response = getDefaultAttribute(
 			prop.replace('general', baseBreakpoint, clientIds)
 		);

@@ -21,6 +21,31 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getValueFromKeys = (value, keys) =>
 	keys.reduce((acc, key) => acc?.[key], value);
 
+const getAttributeValueWrapper = (
+	target,
+	attributes,
+	isHover,
+	breakpoint,
+	keys
+) => {
+	return getValueFromKeys(
+		getAttributeValue({
+			target,
+			props: attributes,
+			isHover,
+			breakpoint,
+		}),
+		keys
+	);
+};
+
+const attrFilter = attr =>
+	!isNil(attr) &&
+	(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
+
+const blockEditorStore = select('core/block-editor');
+const maxiBlocksStore = select('maxiBlocks');
+
 /**
  * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint. Also enables getting
@@ -35,31 +60,25 @@ const getLastBreakpointAttributeSingle = (
 	keys,
 	forceUseBreakpoint = false
 ) => {
-	const { getBlockAttributes, getSelectedBlockClientId } = select(
-		'core/block-editor'
-	) || {
-		getBlockAttributes: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
-		getSelectedBlockClientId: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
-	};
-
-	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
+	const attr =
+		attributes ||
+		blockEditorStore.getBlockAttributes(
+			blockEditorStore.getSelectedBlockClientId()
+		);
 
 	if (isNil(attr)) return false;
 	if (isNil(breakpoint))
-		return getValueFromKeys(
-			getAttributeValue({
-				target,
-				props: attr,
-				isHover,
-				breakpoint,
-			}),
+		return getAttributeValueWrapper(
+			target,
+			attr,
+			isHover,
+			breakpoint,
 			keys
 		);
 
 	const currentBreakpoint =
-		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
-
-	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
+		maxiBlocksStore.receiveMaxiDeviceType() ?? 'general';
+	const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 
 	const attrFilter = attr =>
 		!isNil(attr) &&
@@ -154,14 +173,10 @@ const getLastBreakpointAttributeGroup = (
 	avoidXXL,
 	keys
 ) => {
-	const { getSelectedBlockClientIds, getBlockAttributes } =
-		select('core/block-editor');
-
-	const clientIds = getSelectedBlockClientIds();
+	const clientIds = blockEditorStore.getSelectedBlockClientIds();
 
 	const values = clientIds.map(clientId => {
-		const attributes = getBlockAttributes(clientId);
-
+		const attributes = blockEditorStore.getBlockAttributes(clientId);
 		return getLastBreakpointAttributeSingle(
 			target,
 			breakpoint,
@@ -188,9 +203,8 @@ const getLastBreakpointAttribute = ({
 	keys = [],
 	forceUseBreakpoint = false,
 }) => {
-	const { getSelectedBlockCount } = select('core/block-editor') || {
-		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
-	};
+	const getSelectedBlockCount =
+		blockEditorStore.getSelectedBlockCount || (() => 1);
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(

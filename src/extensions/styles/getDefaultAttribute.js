@@ -61,6 +61,9 @@ const getDefaultAttribute = (
 	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
 	if (!isMaxiBlock) return null;
 
+	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
+	const maxiBlocksStore = select('maxiBlocks');
+
 	let response = getBlockAttributes(blockName)[prop];
 	if (getBlockData(blockName)?.maxiAttributes?.[prop]) {
 		response = getBlockData(blockName).maxiAttributes[prop];
@@ -68,8 +71,9 @@ const getDefaultAttribute = (
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
 	if (getIsValid(response, true)) return response;
-	if (isGeneral && !avoidBaseBreakpoint) {
-		const maxiBlocksStore = select('maxiBlocks');
+	if (isGeneral) {
+		if (avoidBaseBreakpoint) return response;
+
 		const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 		const baseAttribute =
 			getBlockAttributes(blockName)[
@@ -83,7 +87,6 @@ const getDefaultAttribute = (
 	if (prop in defaults) {
 		response = defaults[prop].default;
 	} else if (!avoidBaseBreakpoint && isNil(response) && isGeneral) {
-		const maxiBlocksStore = select('maxiBlocks');
 		const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 		response = getDefaultAttribute(
 			prop.replace('general', baseBreakpoint, clientIds)

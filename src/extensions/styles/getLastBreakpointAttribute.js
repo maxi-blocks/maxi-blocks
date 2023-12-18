@@ -44,7 +44,6 @@ const attrFilter = attr =>
 	(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 const blockEditorStore = select('core/block-editor');
-const maxiBlocksStore = select('maxiBlocks');
 
 /**
  * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
@@ -75,6 +74,7 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 			keys
 		);
+	const maxiBlocksStore = select('maxiBlocks');
 
 	const currentBreakpoint =
 		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';

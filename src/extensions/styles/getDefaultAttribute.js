@@ -84,9 +84,11 @@ const getDefaultAttribute = (
 	}
 
 	// Check default value
-	if (prop in defaults) {
-		response = defaults[prop].default;
-	} else if (!avoidBaseBreakpoint && isNil(response) && isGeneral) {
+	Object.values(defaults).forEach(defaultAttrs => {
+		if (prop in defaultAttrs) response = defaultAttrs[prop].default;
+	});
+
+	if (!avoidBaseBreakpoint && isNil(response) && isGeneral) {
 		const baseBreakpoint = maxiBlocksStore.receiveBaseBreakpoint();
 		response = getDefaultAttribute(
 			prop.replace('general', baseBreakpoint, clientIds)

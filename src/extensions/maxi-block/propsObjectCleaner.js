@@ -6,6 +6,11 @@ const propsObjectCleaner = props => {
 		'cleanInlineStyles',
 		'context',
 		'getBounds',
+		'onReplace',
+		'onRemove',
+		'hasSelectedChild',
+		'insertBlocksAfter',
+		'mergeBlocks',
 	];
 
 	const newProps = Object.entries(props).reduce((acc, [key, value]) => {

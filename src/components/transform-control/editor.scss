@@ -365,3 +365,42 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-transform-control {
+		.maxi-settingstab-control .maxi-tabs-control__button {
+			&:last-child {
+				margin-right: 0;
+			}
+			&:last-child {
+				margin-right: 5px;
+			}
+		}
+		.maxi-transform-control__square-control input[type='number'] {
+			padding: 8px 8px 8px 0 !important;
+		}
+		.maxi-transform-control__square-control__x-control__value__input {
+			margin-right: 5px;
+			margin-left: 0;
+		}
+
+		&__rotate-control {
+			input[type='number'] {
+				padding: 8px 8px 8px 0 !important;
+				margin-right: 5px;
+				margin-left: unset;
+			}
+			.maxi-base-control__label {
+				margin-left: 5px;
+				margin-right: unset;
+			}
+		}
+		&__square-control__sync button[type='button'] {
+			margin-right: 5px;
+			margin-left: unset;
+		}
+	}
+}

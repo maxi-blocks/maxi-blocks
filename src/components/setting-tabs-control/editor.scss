@@ -288,4 +288,12 @@ html[dir='rtl'] {
 		right: unset;
 		left: 5px;
 	}
+	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
+		border-left: 1px solid var(--maxi-grey-1-color);
+		border-right: 1px solid var(--maxi-grey-1-color);
+	}
+	.maxi-block-style-preview {
+		margin-left: unset;
+		margin-right: 10px;
+	}
 }

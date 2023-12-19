@@ -1,3 +1,15 @@
+_Updates: 19 December 2023_
+MaxiBlocks V1.5.8
+* Update: Speed improvements for Editor experience.
+* Update: Hide native Gutenberg's toolbar for Maxi blocks.
+* Update: Better right to left languages support for MaxiBlocks Toolbar, Template Cloud, Style Card manager.
+* Update: UI improvements for Maxi Dashboard.
+* Update: Remove support chat from MaxiBlocks.
+* Fix: Woo relation by category/tag in Editor experience.
+* Fix: Dynamic Content link when changing Context Loop settings.
+* Fix: Dynamic Content link for Icon, Group, Columns.
+* Fix: Margin indicator overlapping
+
 Updates: 12 December 2023
 MaxiBlocks V1.5.7
 * Update: Add image URL source for Image block, Video block, background image layer.

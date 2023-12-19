@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -428,6 +428,18 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 19 December 2023_
+MaxiBlocks V1.5.8
+* Update: Speed improvements for Editor experience.
+* Update: Hide native Gutenberg's toolbar for Maxi blocks.
+* Update: Better right to left languages support for MaxiBlocks Toolbar, Template Cloud, Style Card manager.
+* Update: UI improvements for Maxi Dashboard.
+* Update: Remove support chat from MaxiBlocks.
+* Fix: Woo relation by category/tag in Editor experience.
+* Fix: Dynamic Content link when changing Context Loop settings.
+* Fix: Dynamic Content link for Icon, Group, Columns.
+* Fix: Margin indicator overlapping
+
 _Updates: 12 December 2023_
 MaxiBlocks V1.5.7
 * Update: Add image URL source for Image block, Video block, background image layer.
@@ -454,16 +466,6 @@ MaxiBlocks V1.5.6
 * Fix: Box shadow min and max values.
 * Fix: Context Loop for Container.
 * Fix: Remove empty rel attribute for links.
-
-_Updates: 22 November 2023_
-MaxiBlocks V1.5.5
-* Fix: Number Counter block/pattern infinite loading issue in the editing experience.
-
-_Updates: 21 November 2023_
-MaxiBlocks V1.5.4
-* Fix: Interaction Builder settings breaking Group block in some cases.
-* Update: Speed optimization for editing lists on WordPress 6.4+
-* Update: Disable support chat by default on new sites.
 
 == Upgrade Notice ==
 

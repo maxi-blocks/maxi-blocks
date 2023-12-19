@@ -59,7 +59,7 @@ const ColumnsHandlers = props => {
 		return (
 			<Tooltip
 				text={__('Columns Handlers', 'maxi-blocks')}
-				position='top center'
+				placement='top center'
 			>
 				{handlersContent()}
 			</Tooltip>

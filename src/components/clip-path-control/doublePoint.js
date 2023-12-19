@@ -45,7 +45,7 @@ const ClipPathDoublePoint = props => {
 			}}
 		>
 			{!isMoving && (
-				<Tooltip text={tooltipText} position='top center'>
+				<Tooltip text={tooltipText} placement='top center'>
 					<span className='maxi-clip-path-button__hidden-tooltip' />
 				</Tooltip>
 			)}

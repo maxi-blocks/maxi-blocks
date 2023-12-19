@@ -46,7 +46,7 @@ const Delete = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip text={__('Delete', 'maxi-blocks')} position='top center'>
+			<Tooltip text={__('Delete', 'maxi-blocks')} placement='top center'>
 				{deleteContent()}
 			</Tooltip>
 		);

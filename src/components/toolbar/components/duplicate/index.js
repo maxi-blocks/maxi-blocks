@@ -64,7 +64,7 @@ const Duplicate = props => {
 		return (
 			<Tooltip
 				text={__('Duplicate', 'maxi-blocks')}
-				position='top center'
+				placement='top center'
 			>
 				{duplicateContent()}
 			</Tooltip>

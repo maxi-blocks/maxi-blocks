@@ -68,7 +68,7 @@ const ButtonInserter = props => {
 	const repeaterStatus = useContext(RepeaterContext)?.repeaterStatus;
 
 	return (
-		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
+		<Tooltip text={__('Add block', 'maxi-blocks')} placement='top center'>
 			<div
 				className={classnames(
 					'maxi-wrapper-block-inserter__button-wrapper',

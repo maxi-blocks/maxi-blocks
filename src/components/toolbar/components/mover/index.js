@@ -153,7 +153,7 @@ const Mover = props => {
 					!tooltipsHide ? (
 						<Tooltip
 							text={__('Mover', 'maxi-blocks')}
-							position='top center'
+							placement='top center'
 						>
 							<div className='toolbar-item'>
 								<Button

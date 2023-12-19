@@ -56,7 +56,7 @@ const TextFormatSuperscript = props => {
 		return (
 			<Tooltip
 				text={__('Superscript', 'maxi-blocks')}
-				position='top center'
+				placement='top center'
 			>
 				{superscriptContent()}
 			</Tooltip>

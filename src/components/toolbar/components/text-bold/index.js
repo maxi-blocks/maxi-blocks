@@ -51,7 +51,7 @@ const TextBold = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip text={__('Bold', 'maxi-blocks')} position='top center'>
+			<Tooltip text={__('Bold', 'maxi-blocks')} placement='top center'>
 				{boldContent()}
 			</Tooltip>
 		);

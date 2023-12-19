@@ -76,7 +76,7 @@ const TextFormatStrikethrough = props => {
 		return (
 			<Tooltip
 				text={__('Strikethrough', 'maxi-blocks')}
-				position='top center'
+				placement='top center'
 			>
 				{contentStrikethrough()}
 			</Tooltip>

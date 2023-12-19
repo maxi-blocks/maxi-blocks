@@ -52,6 +52,14 @@ const transitionDurationEffects = [
 	'clear-grey-scale',
 ];
 
+const transitionFilterEffects = [
+	'blur',
+	'sepia',
+	'clear-sepia',
+	'grey-scale',
+	'clear-grey-scale',
+];
+
 const getWrapperObject = props => {
 	const { fitParentSize } = props;
 
@@ -339,7 +347,8 @@ const getImageTransitionObject = props => {
 		transition: {
 			general: {
 				transition: `${
-					hoverType !== 'text' && hoverBasicEffectType === 'blur'
+					hoverType !== 'text' &&
+					transitionFilterEffects.includes(hoverBasicEffectType)
 						? 'filter'
 						: 'transform'
 				} ${hoverTransitionDuration}s ${getTransitionTimingFunction(

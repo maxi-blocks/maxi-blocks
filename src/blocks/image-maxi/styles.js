@@ -318,6 +318,39 @@ const getImageFitWrapper = props => {
 	return response;
 };
 
+const getImageTransitionObject = props => {
+	const {
+		'hover-type': hoverType,
+		'hover-basic-effect-type': hoverBasicEffectType,
+		'hover-transition-duration': hoverTransitionDuration,
+		'hover-transition-easing': hoverTransitionEasing,
+		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
+	} = props;
+
+	if (
+		hoverType === 'none' ||
+		(hoverType !== 'text' &&
+			!transitionDurationEffects.includes(hoverBasicEffectType))
+	) {
+		return {};
+	}
+
+	return {
+		transition: {
+			general: {
+				transition: `${
+					hoverType !== 'text' && hoverBasicEffectType === 'blur'
+						? 'filter'
+						: 'transform'
+				} ${hoverTransitionDuration}s ${getTransitionTimingFunction(
+					hoverTransitionEasing,
+					hoverTransitionEasingCB
+				)}`,
+			},
+		},
+	};
+};
+
 const getImageObject = props => {
 	const {
 		fitParentSize,
@@ -326,11 +359,6 @@ const getImageObject = props => {
 		'img-width-general': imgWidth,
 		isFirstOnHierarchy,
 		mediaWidth,
-		'hover-type': hoverType,
-		'hover-basic-effect-type': hoverBasicEffectType,
-		'hover-transition-duration': hoverTransitionDuration,
-		'hover-transition-easing': hoverTransitionEasing,
-		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
 		useInitSize,
 	} = props;
 
@@ -386,23 +414,7 @@ const getImageObject = props => {
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),
-		...(hoverType !== 'none' &&
-			(hoverType === 'text' ||
-				transitionDurationEffects.includes(hoverBasicEffectType)) && {
-				transition: {
-					general: {
-						transition: `${
-							hoverType !== 'text' &&
-							hoverBasicEffectType === 'blur'
-								? 'filter'
-								: 'transform'
-						} ${hoverTransitionDuration}s ${getTransitionTimingFunction(
-							hoverTransitionEasing,
-							hoverTransitionEasingCB
-						)}`,
-					},
-				},
-			}),
+		...getImageTransitionObject(props),
 	};
 };
 
@@ -704,6 +716,9 @@ const getStyles = props => {
 					getImagePreviewObject(props),
 				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 					getHoverImageObject(props),
+				// Fix in/out transition conflict by duplicating the transition styles to hover
+				[` .maxi-image-block-wrapper ${imgTag}:hover`]:
+					getImageTransitionObject(props),
 				':hover .maxi-image-block-wrapper': getClipPathDropShadowObject(
 					props,
 					true
@@ -783,7 +798,7 @@ const getStyles = props => {
 			props
 		),
 	};
-
+	console.log(response);
 	return response;
 };
 

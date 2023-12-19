@@ -59,3 +59,26 @@
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-info__help-icon-span {
+		margin-left: 10px;
+		margin-right: 0px;
+	}
+	.maxi-info-helper-popover {
+		margin-top: 12px;
+
+		.components-popover__content {
+			p {
+				display: flex;
+				column-gap: 5px;
+				b {
+					display: flex;
+					white-space: pre;
+				}
+			}
+		}
+	}
+}

@@ -87,15 +87,3 @@
 		}
 	}
 }
-
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-dropdown__content.maxi-dropdown__reusable-content
-		.components-popover__content
-		.maxi-base-control
-		input {
-		text-indent: 53px;
-	}
-}

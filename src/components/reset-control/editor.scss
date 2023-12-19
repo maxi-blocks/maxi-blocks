@@ -73,14 +73,11 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.maxi-color-control__palette-label {
-		.maxi-reset-button {
-			left: 0;
-			right: unset !important;
-			left: 0;
-			right: unset !important;
-			padding: 1px 8px 1px 1px !important;
-			margin-left: 0;
-		}
+	.maxi-reset-button {
+		right: unset !important;
+		left: 0;
+		padding: 1px 8px 1px 1px !important;
+		margin-left: 0;
+		margin-right: 4px !important;
 	}
 }

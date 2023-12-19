@@ -54,3 +54,14 @@
 		margin-bottom: 0;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__text-generator-blocks__popover
+		.maxi-advanced-number-control__value {
+		padding-left: 0 !important;
+		padding-right: 4px !important;
+	}
+}

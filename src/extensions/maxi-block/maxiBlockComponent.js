@@ -343,11 +343,14 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		const wasBreakpointChanged =
+			this.props.deviceType !== nextProps.deviceType ||
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
+			wasBreakpointChanged // In case of breakpoint change
 		)
 			return true;
 
@@ -403,9 +406,14 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		// If deviceType or baseBreakpoint changes, render styles
-		if (
+		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
+
+		if (
+			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
+			!wasBreakpointChanged
 		)
 			return false;
 

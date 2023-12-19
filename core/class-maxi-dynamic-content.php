@@ -15,7 +15,6 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
     private static $custom_data = null;
-    private static $is_empty = false;
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
 
     private static $link_only_blocks = [
@@ -31,6 +30,8 @@ class MaxiBlocks_DynamicContent
         'pages' => 'page',
         'products' => 'product',
     ];
+
+    private $is_empty = false;
 
     /**
      * Initializes the plugin and its hooks.
@@ -198,7 +199,7 @@ class MaxiBlocks_DynamicContent
 
         if (empty($response) && $response !== '0') {
             $response = 'No content found';
-            self::$is_empty = true;
+            $this->is_empty = true;
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
@@ -272,7 +273,7 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
-            self::$is_empty = true;
+            $this->is_empty = true;
         }
 
         return $content;
@@ -286,7 +287,7 @@ class MaxiBlocks_DynamicContent
 
         $classes = [];
 
-        $classes[] = ($dc_hide && self::$is_empty) ? 'maxi-block--hidden' : '';
+        $classes[] = ($dc_hide && $this->is_empty) ? 'maxi-block--hidden' : '';
 
         $content = str_replace(
             '$class-to-replace',

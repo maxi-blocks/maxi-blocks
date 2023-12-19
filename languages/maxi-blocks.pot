@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.5.7\n"
+"Project-Id-Version: MaxiBlocks 1.5.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-11T16:25:00+00:00\n"
+"POT-Creation-Date: 2023-12-19T12:05:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -230,7 +230,6 @@ msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:564
 #: core/admin/class-maxi-dashboard.php:644
-#: core/admin/class-maxi-dashboard.php:670
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:499
 #: src/editor/style-cards/maxiStyleCardsEditor.js:572
 #: build/src_editor_style-cards_maxiStyleCardsEditor_js.js:572
@@ -319,268 +318,260 @@ msgstr ""
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:664
-msgid "Enable live chat support (temporary)"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:667
-msgid "Read about Crisp GDPR terms"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:683
+#: core/admin/class-maxi-dashboard.php:673
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:687
+#: core/admin/class-maxi-dashboard.php:677
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:694
+#: core/admin/class-maxi-dashboard.php:684
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:702
+#: core/admin/class-maxi-dashboard.php:692
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:703
+#: core/admin/class-maxi-dashboard.php:693
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:719
+#: core/admin/class-maxi-dashboard.php:709
 msgid "Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:727
+#: core/admin/class-maxi-dashboard.php:717
 msgid "Style Cards change 15 design elements in sync. It works like this;"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:735
+#: core/admin/class-maxi-dashboard.php:725
 msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:742
+#: core/admin/class-maxi-dashboard.php:732
 msgid "Browse the template library to find a good page or pattern."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:749
+#: core/admin/class-maxi-dashboard.php:739
 msgid "Insert and watch how templates instantly match your chosen style."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:763
+#: core/admin/class-maxi-dashboard.php:753
 msgid "Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:770
+#: core/admin/class-maxi-dashboard.php:760
 msgid "#maxiblocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:774
+#: core/admin/class-maxi-dashboard.php:764
 msgid " - We’re dying to see what you create. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:782
+#: core/admin/class-maxi-dashboard.php:772
 msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:789
+#: core/admin/class-maxi-dashboard.php:779
 msgid "Learn more about MaxiBlocks Pro."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:805
+#: core/admin/class-maxi-dashboard.php:795
 msgid "There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:812
+#: core/admin/class-maxi-dashboard.php:802
 msgid "See what's planned in the roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:880
+#: core/admin/class-maxi-dashboard.php:870
 msgid "Thousands of premium templates to work faster"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:881
+#: core/admin/class-maxi-dashboard.php:871
 msgid "Unlimited downloads. Unlimited sites. No feature lock-in."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:882
+#: core/admin/class-maxi-dashboard.php:872
 msgid "Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:883
+#: core/admin/class-maxi-dashboard.php:873
 msgid "Let’s create something amazing with Maxi"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:886
+#: core/admin/class-maxi-dashboard.php:876
 msgid "Sign up"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:887
+#: core/admin/class-maxi-dashboard.php:877
 msgid "Already have an account? "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:896
+#: core/admin/class-maxi-dashboard.php:886
 msgid "help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:897
+#: core/admin/class-maxi-dashboard.php:887
 msgid "pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:898
+#: core/admin/class-maxi-dashboard.php:888
 msgid "demo library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:899
+#: core/admin/class-maxi-dashboard.php:889
 msgid "youtube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:900
-#: core/admin/class-maxi-dashboard.php:948
+#: core/admin/class-maxi-dashboard.php:890
+#: core/admin/class-maxi-dashboard.php:938
 msgid "maxiblocks.com"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:901
+#: core/admin/class-maxi-dashboard.php:891
 msgid "twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:902
+#: core/admin/class-maxi-dashboard.php:892
 msgid "discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:903
+#: core/admin/class-maxi-dashboard.php:893
 msgid "roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:910
+#: core/admin/class-maxi-dashboard.php:900
 msgid "Hi "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:913
+#: core/admin/class-maxi-dashboard.php:903
 msgid "[username]"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:919
+#: core/admin/class-maxi-dashboard.php:909
 msgid "You're signed in. Pro library is connected."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:920
+#: core/admin/class-maxi-dashboard.php:910
 msgid "Browse for templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:924
+#: core/admin/class-maxi-dashboard.php:914
 msgid "-  Create a new page to launch the editing experience"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:931
+#: core/admin/class-maxi-dashboard.php:921
 msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:938
+#: core/admin/class-maxi-dashboard.php:928
 msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:944
+#: core/admin/class-maxi-dashboard.php:934
 msgid "Support links"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:946
+#: core/admin/class-maxi-dashboard.php:936
 msgid "Help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:947
+#: core/admin/class-maxi-dashboard.php:937
 msgid "YouTube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:949
+#: core/admin/class-maxi-dashboard.php:939
 msgid "Roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:951
+#: core/admin/class-maxi-dashboard.php:941
 msgid "Community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:953
+#: core/admin/class-maxi-dashboard.php:943
 msgid "Twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:954
+#: core/admin/class-maxi-dashboard.php:944
 msgid "Discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:967
+#: core/admin/class-maxi-dashboard.php:957
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:970
+#: core/admin/class-maxi-dashboard.php:960
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:986
+#: core/admin/class-maxi-dashboard.php:976
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:987
+#: core/admin/class-maxi-dashboard.php:977
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:990
+#: core/admin/class-maxi-dashboard.php:980
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:994
+#: core/admin/class-maxi-dashboard.php:984
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:995
+#: core/admin/class-maxi-dashboard.php:985
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:997
+#: core/admin/class-maxi-dashboard.php:987
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1001
+#: core/admin/class-maxi-dashboard.php:991
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1002
-#: core/admin/class-maxi-dashboard.php:1009
+#: core/admin/class-maxi-dashboard.php:992
+#: core/admin/class-maxi-dashboard.php:999
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1004
-#: core/admin/class-maxi-dashboard.php:1025
+#: core/admin/class-maxi-dashboard.php:994
+#: core/admin/class-maxi-dashboard.php:1015
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1008
+#: core/admin/class-maxi-dashboard.php:998
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1011
+#: core/admin/class-maxi-dashboard.php:1001
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1015
+#: core/admin/class-maxi-dashboard.php:1005
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1016
+#: core/admin/class-maxi-dashboard.php:1006
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1018
+#: core/admin/class-maxi-dashboard.php:1008
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1022
+#: core/admin/class-maxi-dashboard.php:1012
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1023
+#: core/admin/class-maxi-dashboard.php:1013
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
@@ -1599,9 +1590,12 @@ msgid "Auto width"
 msgstr ""
 
 #: build/src_blocks_number-counter-maxi_components_number-counter-control_index_js.js:128
+#: build/src_editor_library_container_js.js:240
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:132
+#: src/editor/library/MasonryItem.js:129
 #: src/editor/library/modal.js:346
 #: build/src_blocks_number-counter-maxi_components_number-counter-control_index_js.js:132
+#: build/src_editor_library_container_js.js:205
 msgid "Preview"
 msgstr ""
 
@@ -4605,21 +4599,15 @@ msgstr ""
 msgid "Dynamic Content"
 msgstr ""
 
-#: build/src_components_toolbar_components_help_index_js.js:76
-#: build/src_editor_library_toolbar_js.js:492
-#: build/src_editor_library_toolbar_js.js:497
-#: build/src_editor_responsive-selector_index_js.js:372
-#: build/src_editor_responsive-selector_index_js.js:380
-#: src/components/toolbar/components/help/index.js:61
-#: src/editor/library/toolbar.js:584
-#: src/editor/library/toolbar.js:595
-#: src/editor/responsive-selector/index.js:480
-#: src/editor/responsive-selector/index.js:491
-#: build/src_components_toolbar_components_help_index_js.js:61
-#: build/src_editor_library_toolbar_js.js:633
-#: build/src_editor_library_toolbar_js.js:644
-#: build/src_editor_responsive-selector_index_js.js:480
-#: build/src_editor_responsive-selector_index_js.js:491
+#: build/src_components_toolbar_components_help_index_js.js:67
+#: build/src_editor_library_toolbar_js.js:418
+#: build/src_editor_responsive-selector_index_js.js:361
+#: src/components/toolbar/components/help/index.js:48
+#: src/editor/library/toolbar.js:576
+#: src/editor/responsive-selector/index.js:471
+#: build/src_components_toolbar_components_help_index_js.js:48
+#: build/src_editor_library_toolbar_js.js:576
+#: build/src_editor_responsive-selector_index_js.js:471
 msgid "Help"
 msgstr ""
 
@@ -4671,50 +4659,50 @@ msgstr ""
 msgid "Icon Size/Spacing"
 msgstr ""
 
-#: build/src_components_toolbar_components_link_index_js.js:115
-#: build/src_components_toolbar_components_text-link_index_js.js:115
+#: build/src_components_toolbar_components_link_index_js.js:116
+#: build/src_components_toolbar_components_text-link_index_js.js:116
 #: build/src_components_toolbar_components_text-link_index_js.js:475
-#: src/components/toolbar/components/link/index.js:100
+#: src/components/toolbar/components/link/index.js:101
 #: src/components/toolbar/components/text-link/index.js:292
 #: src/components/typography-control/index.js:73
 #: src/extensions/DC/constants.js:177
 #: src/extensions/DC/constants.js:188
 #: src/extensions/DC/constants.js:198
 #: src/extensions/text/formats/link/index.js:10
-#: build/src_components_toolbar_components_link_index_js.js:100
-#: build/src_components_toolbar_components_text-link_index_js.js:100
-#: build/src_components_toolbar_components_text-link_index_js.js:510
+#: build/src_components_toolbar_components_link_index_js.js:101
+#: build/src_components_toolbar_components_text-link_index_js.js:101
+#: build/src_components_toolbar_components_text-link_index_js.js:512
 msgid "Link"
 msgstr ""
 
-#: build/src_components_toolbar_components_link_index_js.js:121
-#: build/src_components_toolbar_components_text-link_index_js.js:121
-#: src/components/toolbar/components/link/index.js:113
-#: build/src_components_toolbar_components_link_index_js.js:113
-#: build/src_components_toolbar_components_text-link_index_js.js:113
+#: build/src_components_toolbar_components_link_index_js.js:122
+#: build/src_components_toolbar_components_text-link_index_js.js:122
+#: src/components/toolbar/components/link/index.js:114
+#: build/src_components_toolbar_components_link_index_js.js:114
+#: build/src_components_toolbar_components_text-link_index_js.js:114
 msgid "Use dynamic content link"
 msgstr ""
 
-#: build/src_components_toolbar_components_link_index_js.js:165
-#: build/src_components_toolbar_components_text-link_index_js.js:165
-#: src/components/toolbar/components/link/index.js:156
-#: build/src_components_toolbar_components_link_index_js.js:156
-#: build/src_components_toolbar_components_text-link_index_js.js:156
+#: build/src_components_toolbar_components_link_index_js.js:166
+#: build/src_components_toolbar_components_text-link_index_js.js:166
+#: src/components/toolbar/components/link/index.js:157
+#: build/src_components_toolbar_components_link_index_js.js:157
+#: build/src_components_toolbar_components_text-link_index_js.js:157
 msgid "Link target"
 msgstr ""
 
 #: build/src_components_toolbar_components_media-upload_index_js.js:64
 #: build/src_editor_library_container_js.js:234
 #: build/src_editor_library_container_js.js:271
-#: build/src_editor_library_toolbar_js.js:500
+#: build/src_editor_library_toolbar_js.js:421
 #: src/components/toolbar/components/media-upload/index.js:39
 #: src/editor/library/MasonryItem.js:106
 #: src/editor/library/MasonryItem.js:196
-#: src/editor/library/toolbar.js:602
+#: src/editor/library/toolbar.js:583
 #: build/src_components_toolbar_components_media-upload_index_js.js:39
 #: build/src_editor_library_container_js.js:182
 #: build/src_editor_library_container_js.js:272
-#: build/src_editor_library_toolbar_js.js:651
+#: build/src_editor_library_toolbar_js.js:583
 msgid "Insert"
 msgstr ""
 
@@ -4815,11 +4803,8 @@ msgid "Create reusable block"
 msgstr ""
 
 #: build/src_components_toolbar_components_more-settings_index_js.js:868
-#: build/src_editor_library_container_js.js:240
 #: src/components/toolbar/components/reusable-blocks/index.js:68
-#: src/editor/library/MasonryItem.js:129
 #: build/src_components_toolbar_components_more-settings_index_js.js:947
-#: build/src_editor_library_container_js.js:205
 msgid "Save"
 msgstr ""
 
@@ -5131,172 +5116,172 @@ msgid "Find"
 msgstr ""
 
 #: build/src_editor_library_container_js.js:1766
-#: build/src_editor_library_toolbar_js.js:906
+#: build/src_editor_library_toolbar_js.js:827
 #: src/editor/library/utils/onRequestInsertPattern.js:71
 #: build/src_editor_library_container_js.js:1995
-#: build/src_editor_library_toolbar_js.js:965
+#: build/src_editor_library_toolbar_js.js:897
 msgid "Error processing images' links and ids - counts do not match"
 msgstr ""
 
 #: build/src_editor_library_container_js.js:1852
-#: build/src_editor_library_toolbar_js.js:992
+#: build/src_editor_library_toolbar_js.js:913
 #: src/editor/library/utils/onRequestInsertPattern.js:118
 #: build/src_editor_library_container_js.js:2042
-#: build/src_editor_library_toolbar_js.js:1012
+#: build/src_editor_library_toolbar_js.js:944
 msgid "The Code is not valid"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
-#: src/editor/library/toolbar.js:413
-#: build/src_editor_library_toolbar_js.js:462
+#: build/src_editor_library_toolbar_js.js:303
+#: src/editor/library/toolbar.js:400
+#: build/src_editor_library_toolbar_js.js:400
 msgid "Icon library"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
-#: build/src_editor_responsive-selector_index_js.js:365
+#: build/src_editor_library_toolbar_js.js:303
+#: build/src_editor_responsive-selector_index_js.js:351
 #: src/editor/library/modal.js:84
-#: src/editor/library/toolbar.js:415
-#: src/editor/responsive-selector/index.js:473
-#: build/src_editor_library_toolbar_js.js:464
-#: build/src_editor_responsive-selector_index_js.js:473
+#: src/editor/library/toolbar.js:402
+#: src/editor/responsive-selector/index.js:460
+#: build/src_editor_library_toolbar_js.js:402
+#: build/src_editor_responsive-selector_index_js.js:460
 msgid "Template library"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
+#: build/src_editor_library_toolbar_js.js:303
 #: build/src_editor_style-cards_index_js.js:73
 #: build/src_editor_style-cards_index_js.js:79
-#: src/editor/library/toolbar.js:416
+#: src/editor/library/toolbar.js:403
 #: src/editor/style-cards/index.js:42
 #: src/editor/style-cards/index.js:46
-#: build/src_editor_library_toolbar_js.js:465
+#: build/src_editor_library_toolbar_js.js:403
 #: build/src_editor_style-cards_index_js.js:42
 #: build/src_editor_style-cards_index_js.js:46
 msgid "Style cards"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
-#: src/editor/library/toolbar.js:418
-#: build/src_editor_library_toolbar_js.js:467
+#: build/src_editor_library_toolbar_js.js:303
+#: src/editor/library/toolbar.js:405
+#: build/src_editor_library_toolbar_js.js:405
 msgid "Shape library"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
-#: src/editor/library/toolbar.js:420
-#: build/src_editor_library_toolbar_js.js:469
+#: build/src_editor_library_toolbar_js.js:303
+#: src/editor/library/toolbar.js:407
+#: build/src_editor_library_toolbar_js.js:407
 msgid "Button icon library"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:379
-#: src/editor/library/toolbar.js:422
-#: build/src_editor_library_toolbar_js.js:471
+#: build/src_editor_library_toolbar_js.js:303
+#: src/editor/library/toolbar.js:409
+#: build/src_editor_library_toolbar_js.js:409
 msgid "Video icon library"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:382
-#: src/editor/library/toolbar.js:429
-#: build/src_editor_library_toolbar_js.js:478
+#: build/src_editor_library_toolbar_js.js:306
+#: src/editor/library/toolbar.js:416
+#: build/src_editor_library_toolbar_js.js:416
 msgid "Back"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:390
-#: src/editor/library/toolbar.js:440
-#: build/src_editor_library_toolbar_js.js:489
+#: build/src_editor_library_toolbar_js.js:314
+#: src/editor/library/toolbar.js:427
+#: build/src_editor_library_toolbar_js.js:427
 msgid "Switch tone"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:397
-#: src/editor/library/toolbar.js:449
-#: build/src_editor_library_toolbar_js.js:498
+#: build/src_editor_library_toolbar_js.js:321
+#: src/editor/library/toolbar.js:436
+#: build/src_editor_library_toolbar_js.js:436
 msgid "Full screen"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:404
-#: src/editor/library/toolbar.js:457
-#: build/src_editor_library_toolbar_js.js:506
+#: build/src_editor_library_toolbar_js.js:328
+#: src/editor/library/toolbar.js:444
+#: build/src_editor_library_toolbar_js.js:444
 msgid "Desktop"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:411
-#: src/editor/library/toolbar.js:465
-#: build/src_editor_library_toolbar_js.js:514
+#: build/src_editor_library_toolbar_js.js:335
+#: src/editor/library/toolbar.js:452
+#: build/src_editor_library_toolbar_js.js:452
 msgid "Tablet"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:418
-#: src/editor/library/toolbar.js:473
-#: build/src_editor_library_toolbar_js.js:522
+#: build/src_editor_library_toolbar_js.js:342
+#: src/editor/library/toolbar.js:460
+#: build/src_editor_library_toolbar_js.js:460
 msgid "Mobile"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:432
-#: src/editor/library/toolbar.js:493
-#: build/src_editor_library_toolbar_js.js:542
+#: build/src_editor_library_toolbar_js.js:356
+#: src/editor/library/toolbar.js:480
+#: build/src_editor_library_toolbar_js.js:480
 msgid "Signed in: "
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:434
-#: src/editor/library/toolbar.js:498
-#: build/src_editor_library_toolbar_js.js:547
+#: build/src_editor_library_toolbar_js.js:358
+#: src/editor/library/toolbar.js:485
+#: build/src_editor_library_toolbar_js.js:485
 msgid "Click to hide"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:434
-#: src/editor/library/toolbar.js:499
-#: build/src_editor_library_toolbar_js.js:548
+#: build/src_editor_library_toolbar_js.js:358
+#: src/editor/library/toolbar.js:486
+#: build/src_editor_library_toolbar_js.js:486
 msgid "Click to show"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:443
-#: build/src_editor_library_toolbar_js.js:448
-#: build/src_editor_library_toolbar_js.js:470
-#: build/src_editor_library_toolbar_js.js:472
-#: src/editor/library/toolbar.js:515
-#: src/editor/library/toolbar.js:521
-#: src/editor/library/toolbar.js:549
-#: src/editor/library/toolbar.js:552
-#: build/src_editor_library_toolbar_js.js:564
-#: build/src_editor_library_toolbar_js.js:570
-#: build/src_editor_library_toolbar_js.js:598
-#: build/src_editor_library_toolbar_js.js:601
+#: build/src_editor_library_toolbar_js.js:367
+#: build/src_editor_library_toolbar_js.js:372
+#: build/src_editor_library_toolbar_js.js:394
+#: build/src_editor_library_toolbar_js.js:396
+#: src/editor/library/toolbar.js:502
+#: src/editor/library/toolbar.js:508
+#: src/editor/library/toolbar.js:536
+#: src/editor/library/toolbar.js:539
+#: build/src_editor_library_toolbar_js.js:502
+#: build/src_editor_library_toolbar_js.js:508
+#: build/src_editor_library_toolbar_js.js:536
+#: build/src_editor_library_toolbar_js.js:539
 msgid "Sign out"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:452
-#: src/editor/library/toolbar.js:528
-#: build/src_editor_library_toolbar_js.js:577
+#: build/src_editor_library_toolbar_js.js:376
+#: src/editor/library/toolbar.js:515
+#: build/src_editor_library_toolbar_js.js:515
 msgid "Expired: "
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:457
-#: build/src_editor_library_toolbar_js.js:461
-#: build/src_editor_library_toolbar_js.js:485
-#: build/src_editor_library_toolbar_js.js:489
-#: src/editor/library/toolbar.js:534
-#: src/editor/library/toolbar.js:537
-#: src/editor/library/toolbar.js:573
-#: src/editor/library/toolbar.js:576
-#: build/src_editor_library_toolbar_js.js:583
-#: build/src_editor_library_toolbar_js.js:586
-#: build/src_editor_library_toolbar_js.js:622
-#: build/src_editor_library_toolbar_js.js:625
+#: build/src_editor_library_toolbar_js.js:381
+#: build/src_editor_library_toolbar_js.js:385
+#: build/src_editor_library_toolbar_js.js:409
+#: build/src_editor_library_toolbar_js.js:413
+#: src/editor/library/toolbar.js:521
+#: src/editor/library/toolbar.js:524
+#: src/editor/library/toolbar.js:560
+#: src/editor/library/toolbar.js:563
+#: build/src_editor_library_toolbar_js.js:521
+#: build/src_editor_library_toolbar_js.js:524
+#: build/src_editor_library_toolbar_js.js:560
+#: build/src_editor_library_toolbar_js.js:563
 msgid "Sign in"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:477
-#: src/editor/library/toolbar.js:560
-#: build/src_editor_library_toolbar_js.js:609
+#: build/src_editor_library_toolbar_js.js:401
+#: src/editor/library/toolbar.js:547
+#: build/src_editor_library_toolbar_js.js:547
 msgid "Pro user email"
 msgstr ""
 
-#: build/src_editor_library_toolbar_js.js:482
-#: src/editor/library/toolbar.js:566
-#: build/src_editor_library_toolbar_js.js:615
+#: build/src_editor_library_toolbar_js.js:406
+#: src/editor/library/toolbar.js:553
+#: build/src_editor_library_toolbar_js.js:553
 msgid "The email is not valid"
 msgstr ""
 
-#: build/src_editor_responsive-selector_index_js.js:105
-#: src/editor/responsive-selector/index.js:95
-#: build/src_editor_responsive-selector_index_js.js:95
+#: build/src_editor_responsive-selector_index_js.js:102
+#: src/editor/responsive-selector/index.js:94
+#: build/src_editor_responsive-selector_index_js.js:94
 msgid "Your size"
 msgstr ""
 
@@ -5584,7 +5569,7 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:458
 #: src/blocks/image-maxi/edit.js:559
 #: src/blocks/image-maxi/edit.js:620
-#: src/extensions/DC/utils.js:62
+#: src/extensions/DC/utils.js:63
 msgid "No content found"
 msgstr ""
 
@@ -6768,27 +6753,27 @@ msgstr ""
 msgid "Change setting"
 msgstr ""
 
-#: src/components/link-control/index.js:43
+#: src/components/link-control/index.js:41
 msgid "Search or type URL"
 msgstr ""
 
-#: src/components/link-control/index.js:59
+#: src/components/link-control/index.js:53
 msgid "Open in new tab"
 msgstr ""
 
-#: src/components/link-control/index.js:63
+#: src/components/link-control/index.js:57
 msgid "\"nofollow\""
 msgstr ""
 
-#: src/components/link-control/index.js:69
+#: src/components/link-control/index.js:63
 msgid "\"sponsored\""
 msgstr ""
 
-#: src/components/link-control/index.js:73
+#: src/components/link-control/index.js:67
 msgid "\"UGC\""
 msgstr ""
 
-#: src/components/link-control/index.js:104
+#: src/components/link-control/index.js:98
 msgid "Remove link"
 msgstr ""
 
@@ -7773,7 +7758,7 @@ msgstr ""
 msgid "Z/A"
 msgstr ""
 
-#: src/extensions/DC/constants.js:674
+#: src/extensions/DC/constants.js:688
 msgid "ACF"
 msgstr ""
 

@@ -710,8 +710,16 @@ const getStyles = props => {
 				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 					getHoverImageObject(props),
 				// Fix in/out transition conflict by duplicating the transition styles to hover
-				[` .maxi-image-block-wrapper ${imgTag}:hover`]:
-					getImageTransitionObject(props),
+				...(Object.values(props.transition.block).some(
+					transitionAttributes =>
+						breakpoints.some(
+							breakpoint =>
+								transitionAttributes[`split-${breakpoint}`]
+						)
+				) && {
+					[` .maxi-image-block-wrapper ${imgTag}:hover`]:
+						getImageTransitionObject(props),
+				}),
 				':hover .maxi-image-block-wrapper': getClipPathDropShadowObject(
 					props,
 					true
@@ -791,7 +799,7 @@ const getStyles = props => {
 			props
 		),
 	};
-	console.log(response);
+
 	return response;
 };
 

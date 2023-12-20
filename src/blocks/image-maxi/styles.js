@@ -714,7 +714,9 @@ const getStyles = props => {
 					transitionAttributes =>
 						breakpoints.some(
 							breakpoint =>
-								transitionAttributes[`split-${breakpoint}`]
+								!isNil(
+									transitionAttributes[`split-${breakpoint}`]
+								)
 						)
 				) && {
 					[` .maxi-image-block-wrapper ${imgTag}:hover`]:

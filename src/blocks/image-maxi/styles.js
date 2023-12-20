@@ -724,7 +724,7 @@ const getStyles = props => {
 					props,
 					true
 				),
-				[` .maxi-hover-preview.maxi-hover-effect-active ${imgTag}:hover`]:
+				[` .maxi-hover-preview.maxi-hover-effect-active:hover ${imgTag}`]:
 					getImageHoverPreviewObject(props),
 				// add the same styles to the hover to avoid conflict with transform styles
 				// which are also applied to the hover state

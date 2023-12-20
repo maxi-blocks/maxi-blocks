@@ -428,7 +428,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates: 19 December 2023_
+_Updates: 21 December 2023_
 MaxiBlocks V1.5.8
 * Update: Speed improvements for all Maxi foundation blocks in the Editing Experience (EE). More coming.
 * Update: Hide occasional duplicated Gutenberg toolbar when MaxiBlocks toolbar is active.

@@ -665,8 +665,9 @@ body .maxi-style-cards__popover {
 *******************************/
 html[dir='rtl'] {
 	.maxi-style-cards__popover {
-		right: 0;
-		left: unset;
+		left: unset !important;
+		right: 0 !important;
+		transform: translateX(0) translateY(102px) !important;
 		.maxi-style-cards__sc__more-sc--select {
 			margin-right: unset;
 			margin-left: 8px;

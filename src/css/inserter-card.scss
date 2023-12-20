@@ -49,9 +49,13 @@
 /*******************************
 * RTL
 *******************************/
-html[dir="rtl"]  {
-	.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card__content {
-		margin-left: 0;
-		margin-right: 8px;
+html[dir='rtl'] {
+	.block-editor-block-card__content {
+		margin-right: 8px !important;
+		margin-left: 0 !important;
+	}
+	.block-editor-block-card__description {
+		left: unset !important;
+		right: 0px;
 	}
 }

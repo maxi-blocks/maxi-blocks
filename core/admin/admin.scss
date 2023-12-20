@@ -660,3 +660,13 @@ body .plugins {
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-dashboard_main-content_accordion-item-content-description {
+		padding-right: 0 !important;
+		padding-left: 30px;
+	}
+}

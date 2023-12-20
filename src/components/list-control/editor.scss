@@ -154,11 +154,11 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
+	.maxi-list-item-control__title__remover {
+		right: unset;
+		left: -5px;
+	}
 	.maxi-background-control {
-		.maxi-list-item-control__title__remover {
-			right: unset;
-			left: -5px;
-		}
 		.maxi-background-layer__title__mover {
 			margin: auto auto auto 0;
 		}

@@ -17,40 +17,40 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
 
-	breakpoints.forEach(breakpoint => {
+	for (const breakpoint of breakpoints) {
 		response[breakpoint] = {};
-
-		['margin', 'padding'].forEach(type =>
-			keyWords.forEach(key => {
+		for (const type of ['margin', 'padding']) {
+			for (const key of keyWords) {
 				const attributeName = `${prefix}${type}-${key}`;
-
-				const [lastValue, lastUnit, value, unit] = [
-					target =>
-						getLastBreakpointAttribute({
-							target,
-							breakpoint,
-							attributes: obj,
-						}),
-					target => obj[`${target}-${breakpoint}`],
-				].flatMap(callback =>
-					['', '-unit'].map(suffix =>
-						callback(`${attributeName}${suffix}`)
-					)
-				);
+				const lastValue = getLastBreakpointAttribute({
+					target: attributeName,
+					breakpoint,
+					attributes: obj,
+				});
+				const lastUnit = getLastBreakpointAttribute({
+					target: `${attributeName}-unit`,
+					breakpoint,
+					attributes: obj,
+				});
+				const value = obj[`${attributeName}-${breakpoint}`];
+				const unit = obj[`${attributeName}-${breakpoint}-unit`];
 
 				if (
 					!isNil(lastValue) &&
 					(lastValue === value || lastUnit === unit)
-				)
+				) {
 					response[breakpoint][`${type}-${key}`] =
 						lastValue === 'auto'
 							? 'auto'
 							: `${lastValue}${lastUnit}`;
+				}
 
-				if (value === '') delete response[breakpoint][`${type}-${key}`];
-			})
-		);
-	});
+				if (value === '') {
+					delete response[breakpoint][`${type}-${key}`];
+				}
+			}
+		}
+	}
 
 	return response;
 };

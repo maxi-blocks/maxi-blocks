@@ -86,18 +86,12 @@ const ColumnMover = props => {
 	return (
 		<div className='toolbar-item toolbar-item-move__horizontally'>
 			{!tooltipsHide && (
-				<Tooltip
-					text={__('Move left', 'maxi-blocks')}
-					placement='top center'
-				>
+				<Tooltip text={__('Move left', 'maxi-blocks')} placement='top'>
 					{buttonMoveLeft()}
 				</Tooltip>
 			)}
 			{!tooltipsHide && (
-				<Tooltip
-					text={__('Move right', 'maxi-blocks')}
-					placement='top center'
-				>
+				<Tooltip text={__('Move right', 'maxi-blocks')} placement='top'>
 					{buttonMoveRight()}
 				</Tooltip>
 			)}

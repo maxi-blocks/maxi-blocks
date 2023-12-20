@@ -51,10 +51,7 @@ const TextFormatSubscript = props => {
 
 	if (!tooltipsHide)
 		return (
-			<Tooltip
-				text={__('Subscript', 'maxi-blocks')}
-				placement='top center'
-			>
+			<Tooltip text={__('Subscript', 'maxi-blocks')} placement='top'>
 				{subscriptContent()}
 			</Tooltip>
 		);

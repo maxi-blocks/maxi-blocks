@@ -25,9 +25,8 @@ import { isValidEmail } from '../auth';
  * External dependencies
  */
 import classnames from 'classnames';
-import CrispChat from '../crisp-chat';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import { isNil, isUndefined, isEmpty } from 'lodash';
+import { isNil, isUndefined } from 'lodash';
 
 /**
  * Component
@@ -384,18 +383,6 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
-	const { chatSupport } = useSelect(select => {
-		const { receiveMaxiSettings } = select('maxiBlocks');
-		const maxiSettings = receiveMaxiSettings();
-		const { support_chat: supportChat } = maxiSettings;
-
-		const chatSupport = !isEmpty(supportChat) ? supportChat : false;
-
-		return {
-			chatSupport,
-		};
-	});
-
 	const onClickAuth = () => {
 		const encodedEmail = encodeURIComponent(userEmail);
 		const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
@@ -578,13 +565,7 @@ const LibraryToolbar = props => {
 				</div>
 			)}
 
-			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
-				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
-					{help}
-					{__('Help', 'maxi-blocks')}
-				</CrispChat>
-			)}
-			{type !== 'preview' && type !== 'switch-tone' && !chatSupport && (
+			{type !== 'preview' && type !== 'switch-tone' && (
 				<a
 					href='https://maxiblocks.com/go/help-center'
 					target='_blank'

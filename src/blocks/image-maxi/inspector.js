@@ -38,6 +38,7 @@ const DimensionTab = loadable(() => import('./components/dimension-tab'));
 const HoverEffectControl = loadable(() =>
 	import('./components/hover-effect-control')
 );
+const InfoBox = loadable(() => import('../../components/info-box'));
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -46,6 +47,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { transitionFilterEffects } from './components/hover-effect-control/constants';
 
 /**
  * Inspector
@@ -496,6 +498,25 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
+										disabledInfoBox: attributes[
+											'hover-type'
+										] &&
+											attributes['hover-type'] !==
+												'none' &&
+											!transitionFilterEffects.includes(
+												attributes[
+													'hover-basic-effect-type'
+												]
+											) && (
+												<InfoBox
+													message={__(
+														`Hover effect type is not compatible with scroll effects. List of compatible hover effect types: ${transitionFilterEffects.join(
+															', '
+														)}`,
+														'maxi-blocks'
+													)}
+												/>
+											),
 									}),
 									...inspectorTabs.transform({
 										props,

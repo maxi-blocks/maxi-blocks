@@ -13,7 +13,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 /**
  * Component
  */
-const scrollEffects = ({ props, depth = 2 }) => {
+const scrollEffects = ({ props, disabledInfoBox, depth = 2 }) => {
 	const { attributes, maxiSetAttributes, blockStyle, clientId, deviceType } =
 		props;
 
@@ -21,7 +21,7 @@ const scrollEffects = ({ props, depth = 2 }) => {
 
 	return {
 		label: __('Scroll effects', 'maxi-blocks'),
-		content: (
+		content: disabledInfoBox || (
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<ScrollEffectsControl
 					uniqueID={uniqueID}

@@ -31,6 +31,10 @@ import {
 	getAspectRatio,
 	getImgWidthStyles,
 } from '../../extensions/styles/helpers';
+import {
+	transitionDurationEffects,
+	transitionFilterEffects,
+} from './components/hover-effect-control/constants';
 import data from './data';
 
 /**
@@ -39,26 +43,6 @@ import data from './data';
 import { isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const transitionDurationEffects = [
-	'zoom-in',
-	'zoom-out',
-	'slide',
-	'rotate',
-	'blur',
-	'sepia',
-	'clear-sepia',
-	'grey-scale',
-	'clear-grey-scale',
-];
-
-const transitionFilterEffects = [
-	'blur',
-	'sepia',
-	'clear-sepia',
-	'grey-scale',
-	'clear-grey-scale',
-];
 
 const getWrapperObject = props => {
 	const { fitParentSize } = props;

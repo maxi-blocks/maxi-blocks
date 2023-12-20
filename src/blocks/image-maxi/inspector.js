@@ -86,6 +86,17 @@ const Inspector = props => {
 			})) ||
 		!isEmpty(attributes.SVGElement);
 
+	const isHoverEffectUseTransform =
+		attributes['hover-type'] &&
+		attributes['hover-type'] !== 'none' &&
+		!transitionFilterEffects.includes(
+			attributes['hover-basic-effect-type']
+		);
+	const getHoverEffectIncompatibleMessage = setting =>
+		`The selected hover effect type is not compatible with ${setting}. To use this hover effect, please change the hover effect type to one of the compatible types: ${transitionFilterEffects.join(
+			', '
+		)}.`;
+
 	const getCaptionOptions = () => {
 		if (dcStatus)
 			return [
@@ -498,22 +509,11 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
-										disabledInfoBox: attributes[
-											'hover-type'
-										] &&
-											attributes['hover-type'] !==
-												'none' &&
-											!transitionFilterEffects.includes(
-												attributes[
-													'hover-basic-effect-type'
-												]
-											) && (
+										disabledInfoBox:
+											isHoverEffectUseTransform && (
 												<InfoBox
-													message={__(
-														`Hover effect type is not compatible with scroll effects. List of compatible hover effect types: ${transitionFilterEffects.join(
-															', '
-														)}`,
-														'maxi-blocks'
+													message={getHoverEffectIncompatibleMessage(
+														'scroll effects'
 													)}
 												/>
 											),
@@ -522,6 +522,18 @@ const Inspector = props => {
 										props,
 										selectors,
 										categories,
+										disabledCategories:
+											isHoverEffectUseTransform
+												? [
+														{
+															category: 'image',
+															message:
+																getHoverEffectIncompatibleMessage(
+																	'transform'
+																),
+														},
+												  ]
+												: undefined,
 									}),
 									...inspectorTabs.transition({
 										props,

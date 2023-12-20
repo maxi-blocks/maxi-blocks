@@ -537,7 +537,7 @@ const DynamicContent = props => {
 											value={limit}
 											showHelp
 											helpContent={
-												<UnlimitedCharacterPoppover message='0 for unlimited' />
+												<UnlimitedCharacterPoppover message='Type 0 for unlimited' />
 											}
 											onChangeValue={value =>
 												changeProps({

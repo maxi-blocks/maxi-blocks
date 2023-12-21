@@ -38,6 +38,7 @@ const DimensionTab = loadable(() => import('./components/dimension-tab'));
 const HoverEffectControl = loadable(() =>
 	import('./components/hover-effect-control')
 );
+const InfoBox = loadable(() => import('../../components/info-box'));
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -46,6 +47,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { transitionFilterEffects } from './components/hover-effect-control/constants';
 
 /**
  * Inspector
@@ -83,6 +85,17 @@ const Inspector = props => {
 				attributes,
 			})) ||
 		!isEmpty(attributes.SVGElement);
+
+	const isHoverEffectUseTransform =
+		attributes['hover-type'] &&
+		attributes['hover-type'] !== 'none' &&
+		!transitionFilterEffects.includes(
+			attributes['hover-basic-effect-type']
+		);
+	const getHoverEffectIncompatibleMessage = setting =>
+		`The selected hover effect type is not compatible with ${setting}. To use this hover effect, please change the hover effect type to one of the compatible types: ${transitionFilterEffects.join(
+			', '
+		)}.`;
 
 	const getCaptionOptions = () => {
 		if (dcStatus)
@@ -141,7 +154,7 @@ const Inspector = props => {
 											),
 											extraIndicators: [
 												'imageRatio',
-												'imgWidth',
+												'img-width',
 											],
 										},
 									...inspectorTabs.alignment({
@@ -496,11 +509,31 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
+										disabledInfoBox:
+											isHoverEffectUseTransform && (
+												<InfoBox
+													message={getHoverEffectIncompatibleMessage(
+														'scroll effects'
+													)}
+												/>
+											),
 									}),
 									...inspectorTabs.transform({
 										props,
 										selectors,
 										categories,
+										disabledCategories:
+											isHoverEffectUseTransform
+												? [
+														{
+															category: 'image',
+															message:
+																getHoverEffectIncompatibleMessage(
+																	'transform'
+																),
+														},
+												  ]
+												: undefined,
 									}),
 									...inspectorTabs.transition({
 										props,

@@ -10,7 +10,7 @@ import { createRef } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isNumber, round, toNumber, uniqueId } from 'lodash';
+import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 import loadable from '@loadable/component';
 
@@ -35,7 +35,6 @@ const CaptionToolbar = loadable(() =>
 );
 import getStyles from './styles';
 import {
-	getAttributeValue,
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
@@ -116,13 +115,15 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
-			const imgWidth = getAttributeValue({
-				target: 'imgWidth',
-				props: this.props.attributes,
+			const imgWidth = getLastBreakpointAttribute({
+				target: 'img-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
 			});
-			const resizableWidth = toNumber(
-				this.resizableObject.current.state.width
-			);
+			const numericWidthString =
+				this.resizableObject.current.state.width.replace(/[^\d.]/g, '');
+			const widthNumber = parseFloat(numericWidthString);
+			const resizableWidth = Math.round(widthNumber * 10) / 10;
 
 			if (
 				(this.props.attributes.fitParentSize ||
@@ -148,13 +149,14 @@ class edit extends MaxiBlockComponent {
 			'hover-type': hoverType,
 			captionContent,
 			captionType,
-			imgWidth,
 			mediaAlt,
 			altSelector,
 			useInitSize,
 			mediaHeight,
 			mediaID,
 			mediaURL,
+			isImageUrl,
+			isImageUrlInvalid,
 			mediaWidth,
 			SVGElement,
 			uniqueID,
@@ -264,9 +266,19 @@ class edit extends MaxiBlockComponent {
 			!isEmpty(attributes.SVGElement);
 
 		const showImage =
-			!isNil(mediaID) ||
-			mediaURL ||
+			(mediaURL &&
+				((isImageUrl && !isImageUrlInvalid) ||
+					(!isNil(mediaID) && mediaURL))) ||
 			(dcStatus && dcMediaId && dcMediaUrl);
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			maxiSetAttributes({
+				[`img-width-${deviceType}`]: +round(
+					elt.style.width.replace(/[^0-9.]/g, ''),
+					1
+				),
+			});
+		};
 
 		return [
 			<textContext.Provider
@@ -371,7 +383,7 @@ class edit extends MaxiBlockComponent {
 								<Button
 									className='maxi-image-block__settings__upload-button maxi-settings-media-upload__button'
 									label={__(
-										'Upload / Add from Media Library',
+										'Insert from Media Library',
 										'maxi-blocks'
 									)}
 									showTooltip='true'
@@ -404,7 +416,14 @@ class edit extends MaxiBlockComponent {
 							)}
 							defaultSize={{
 								width: `${
-									!fullWidth && !useInitSize ? imgWidth : 100
+									!fullWidth && !useInitSize
+										? getLastBreakpointAttribute({
+												target: 'img-width',
+												breakpoint:
+													deviceType || 'general',
+												attributes,
+										  })
+										: 100
 								}%`,
 							}}
 							showHandle={
@@ -420,14 +439,8 @@ class edit extends MaxiBlockComponent {
 								bottomLeft: true,
 								topLeft: true,
 							}}
-							onResizeStop={(event, direction, elt, delta) =>
-								maxiSetAttributes({
-									imgWidth: +round(
-										elt.style.width.replace(/[^0-9.]/g, ''),
-										1
-									),
-								})
-							}
+							deviceType={deviceType}
+							onResizeStop={handleOnResizeStop}
 						>
 							{captionType !== 'none' &&
 								captionPosition === 'top' && (

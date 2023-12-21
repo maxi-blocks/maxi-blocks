@@ -103,7 +103,7 @@ const generalRelationOptionsTags = [
 ];
 
 const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
-	relation => relation.value !== 'current'
+	({ value }) => !['current', 'by-author'].includes(value)
 );
 
 const generalRelationOptions = {
@@ -634,6 +634,20 @@ export const nameDictionary = {
 	products: 'product',
 	product_categories: 'product_cat',
 	product_tags: 'product_tag',
+};
+
+export const relationDictionary = {
+	'by-category': {
+		default: 'categories',
+		products: 'product_cat',
+	},
+	'by-author': {
+		default: 'author',
+	},
+	'by-tag': {
+		default: 'tags',
+		products: 'product_tag',
+	},
 };
 
 export const attributeDefaults = {

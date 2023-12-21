@@ -74,10 +74,7 @@ const TextFormatStrikethrough = props => {
 
 	if (!tooltipHide)
 		return (
-			<Tooltip
-				text={__('Strikethrough', 'maxi-blocks')}
-				position='top center'
-			>
+			<Tooltip text={__('Strikethrough', 'maxi-blocks')} placement='top'>
 				{contentStrikethrough()}
 			</Tooltip>
 		);

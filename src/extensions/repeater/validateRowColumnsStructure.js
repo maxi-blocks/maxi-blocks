@@ -265,6 +265,7 @@ const validateRowColumnsStructure = async (
 
 	await goThroughColumns(childColumns, null, async column => {
 		if (
+			columnsStructure[column.clientId] &&
 			!isEqual(
 				columnsStructure[columnToValidateByClientId],
 				columnsStructure[column.clientId]

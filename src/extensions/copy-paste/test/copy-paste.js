@@ -406,7 +406,7 @@ describe('getOrganizedAttributes', () => {
 			imageSize: 'full',
 			isImageUrl: false,
 			altSelector: 'title',
-			imgWidth: 82,
+			'img-width-general': 82,
 			'clip-path-status-general': false,
 			'link-palette-status-general': true,
 			'link-palette-color-general': 4,

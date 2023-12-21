@@ -36,6 +36,8 @@ const getPrice = (rawPrice, data) => {
 };
 
 const getProductsContent = async (dataRequest, entityData) => {
+	if (!entityData) return null;
+
 	const {
 		field,
 		delimiterContent,

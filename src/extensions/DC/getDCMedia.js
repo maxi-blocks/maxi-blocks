@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { resolveSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -36,7 +37,37 @@ const getDCMedia = async (dataRequest, clientId) => {
 	if (isNil(id)) return null;
 
 	const { getMedia } = resolveSelect('core');
-	const media = await getMedia(id);
+
+	let media;
+	try {
+		media = await getMedia(id);
+	} catch {
+		if (type === 'products') {
+			console.error(
+				__(
+					'Error fetching media, try to add Featured Image to the product you want to show',
+					'maxi-blocks'
+				)
+			);
+			return null;
+		}
+		if (type === 'media') {
+			console.error(
+				__(
+					'Error fetching media, check if it exists in the Media Library',
+					'maxi-blocks'
+				)
+			);
+			return null;
+		}
+		console.error(
+			__(
+				'Error fetching media, try to add Featured Image to the post you want to show',
+				'maxi-blocks'
+			)
+		);
+		return null;
+	}
 
 	if (isNil(media)) return null;
 

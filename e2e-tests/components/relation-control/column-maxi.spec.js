@@ -20,6 +20,7 @@ import {
 describe('Column Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
+		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.waitForTimeout(200);

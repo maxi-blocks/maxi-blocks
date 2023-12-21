@@ -124,7 +124,7 @@ export function SimpleButton(props, ref) {
 	}
 
 	return (
-		<Tooltip text={label} shortcut={shortcut} position={tooltipPosition}>
+		<Tooltip text={label} shortcut={shortcut} placement={tooltipPosition}>
 			{element}
 		</Tooltip>
 	);

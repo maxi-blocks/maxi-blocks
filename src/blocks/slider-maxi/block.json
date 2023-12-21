@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "maxi-blocks/slider-maxi",
-	"title": "Slider Maxi",
+	"title": "Slider Maxi (beta)",
 	"category": "maxi-blocks",
 	"description": "Position one or more blocks, arranged side-by-side (horizontal)",
 	"example": {

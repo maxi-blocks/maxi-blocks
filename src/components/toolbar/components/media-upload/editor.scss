@@ -6,3 +6,12 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__replace-image button {
+		text-align: right !important;
+	}
+}

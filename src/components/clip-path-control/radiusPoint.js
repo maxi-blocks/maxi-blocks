@@ -44,7 +44,7 @@ const ClipPathRadiusPoint = props => {
 					borderColor: color,
 				}}
 			>
-				<Tooltip text={tooltipText} position='top center'>
+				<Tooltip text={tooltipText} placement='top'>
 					<span className='maxi-clip-path-button__hidden-tooltip' />
 				</Tooltip>
 			</span>

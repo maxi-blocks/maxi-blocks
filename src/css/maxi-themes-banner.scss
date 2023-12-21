@@ -152,3 +152,12 @@ body.maxi-blocks--active
 	> *:not(.maxi-background-displayer):not(.maxi-block-indicators):not(.maxi-container-arrow) {
 	position: relative;
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	body.maxi-blocks--active .maxi-block {
+		direction: ltr;
+	}
+}

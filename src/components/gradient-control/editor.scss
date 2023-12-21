@@ -108,6 +108,7 @@
 					box-sizing: border-box;
 					-webkit-box-sizing: border-box;
 					text-transform: capitalize;
+					display: table;
 				}
 				input {
 					line-height: 12px !important;
@@ -125,5 +126,9 @@ html[dir='rtl'] {
 		.components-circular-option-picker__custom-clear-wrapper {
 		right: unset;
 		left: 35px;
+	}
+	label {
+		left: unset;
+		right: 8px;
 	}
 }

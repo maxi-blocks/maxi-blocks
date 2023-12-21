@@ -39,11 +39,6 @@
 			background: #7a00df !important;
 		}
 
-		@at-root .rtl #{&} {
-			right: 50%;
-			transform: translate(50%, -50%);
-		}
-
 		&:hover,
 		&:focus {
 			box-shadow: none;

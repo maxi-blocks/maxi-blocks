@@ -934,6 +934,41 @@ const TypographyControl = props => {
 								)
 							}
 						/>
+						<SelectControl
+							label={__('Text wrap', 'maxi-blocks')}
+							className='maxi-typography-control__wrap'
+							value={getValue('text-wrap')}
+							defaultValue={getDefault('text-wrap')}
+							newStyle
+							options={[
+								{
+									label: __('Wrap', 'maxi-blocks'),
+									value: 'wrap',
+								},
+								{
+									label: __('Nowrap', 'maxi-blocks'),
+									value: 'nowrap',
+								},
+								{
+									label: __('Balance', 'maxi-blocks'),
+									value: 'balance',
+								},
+							]}
+							onChange={val => {
+								onChangeFormat({
+									[`${prefix}text-wrap`]: val,
+								});
+							}}
+							onReset={() =>
+								onChangeFormat(
+									{
+										[`${prefix}text-wrap`]:
+											getDefault('text-wrap'),
+									},
+									{ isReset: true }
+								)
+							}
+						/>
 					</>
 				)}
 				<AdvancedNumberControl

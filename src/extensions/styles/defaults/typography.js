@@ -64,6 +64,9 @@ export const rawTypography = {
 	'text-direction': {
 		type: 'string',
 	},
+	'text-wrap': {
+		type: 'string',
+	},
 	'white-space': {
 		type: 'string',
 	},

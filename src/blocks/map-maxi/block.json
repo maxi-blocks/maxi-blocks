@@ -2969,6 +2969,27 @@
 		"text-direction-xs": {
 			"type": "string"
 		},
+		"text-wrap-general": {
+			"type": "string"
+		},
+		"text-wrap-xxl": {
+			"type": "string"
+		},
+		"text-wrap-xl": {
+			"type": "string"
+		},
+		"text-wrap-l": {
+			"type": "string"
+		},
+		"text-wrap-m": {
+			"type": "string"
+		},
+		"text-wrap-s": {
+			"type": "string"
+		},
+		"text-wrap-xs": {
+			"type": "string"
+		},
 		"white-space-general": {
 			"type": "string"
 		},
@@ -3656,6 +3677,27 @@
 			"type": "string"
 		},
 		"description-text-direction-xs": {
+			"type": "string"
+		},
+		"description-text-wrap-general": {
+			"type": "string"
+		},
+		"description-text-wrap-xxl": {
+			"type": "string"
+		},
+		"description-text-wrap-xl": {
+			"type": "string"
+		},
+		"description-text-wrap-l": {
+			"type": "string"
+		},
+		"description-text-wrap-m": {
+			"type": "string"
+		},
+		"description-text-wrap-s": {
+			"type": "string"
+		},
+		"description-text-wrap-xs": {
 			"type": "string"
 		},
 		"description-white-space-general": {

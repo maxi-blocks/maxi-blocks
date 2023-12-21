@@ -700,9 +700,7 @@ const getStyles = props => {
 								'typographyHover',
 							]),
 						},
-						[
-							`.maxi-block--has-link ${element}`,
-						],
+						[`.maxi-block--has-link ${element}`],
 						props.blockStyle
 					),
 				}),

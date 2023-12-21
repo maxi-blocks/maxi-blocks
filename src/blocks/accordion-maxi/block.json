@@ -6827,6 +6827,27 @@
 		"title-text-direction-xs": {
 			"type": "string"
 		},
+		"title-text-wrap-general": {
+			"type": "string"
+		},
+		"title-text-wrap-xxl": {
+			"type": "string"
+		},
+		"title-text-wrap-xl": {
+			"type": "string"
+		},
+		"title-text-wrap-l": {
+			"type": "string"
+		},
+		"title-text-wrap-m": {
+			"type": "string"
+		},
+		"title-text-wrap-s": {
+			"type": "string"
+		},
+		"title-text-wrap-xs": {
+			"type": "string"
+		},
 		"title-white-space-general": {
 			"type": "string"
 		},
@@ -7506,6 +7527,27 @@
 			"type": "string"
 		},
 		"title-text-direction-xs-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-general-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-xxl-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-xl-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-l-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-m-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-s-hover": {
+			"type": "string"
+		},
+		"title-text-wrap-xs-hover": {
 			"type": "string"
 		},
 		"title-white-space-general-hover": {
@@ -8195,6 +8237,27 @@
 			"type": "string"
 		},
 		"active-title-text-direction-xs": {
+			"type": "string"
+		},
+		"active-title-text-wrap-general": {
+			"type": "string"
+		},
+		"active-title-text-wrap-xxl": {
+			"type": "string"
+		},
+		"active-title-text-wrap-xl": {
+			"type": "string"
+		},
+		"active-title-text-wrap-l": {
+			"type": "string"
+		},
+		"active-title-text-wrap-m": {
+			"type": "string"
+		},
+		"active-title-text-wrap-s": {
+			"type": "string"
+		},
+		"active-title-text-wrap-xs": {
 			"type": "string"
 		},
 		"active-title-white-space-general": {

@@ -58,7 +58,7 @@ const ClipPathSinglePoint = props => {
 				}}
 			>
 				{!isMoving && (
-					<Tooltip text={tooltipText} position='top center'>
+					<Tooltip text={tooltipText} placement='top'>
 						<span className='maxi-clip-path-button__hidden-tooltip' />
 					</Tooltip>
 				)}
@@ -87,7 +87,7 @@ const ClipPathSinglePoint = props => {
 					}}
 				>
 					{!isMoving && (
-						<Tooltip text={tooltipText} position='top center'>
+						<Tooltip text={tooltipText} placement='top'>
 							<span className='maxi-clip-path-button__hidden-tooltip' />
 						</Tooltip>
 					)}

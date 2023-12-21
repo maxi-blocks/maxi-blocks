@@ -28,7 +28,37 @@ const styleProcessor = (obj, data, props) => {
 	const styles = cloneDeep(obj);
 
 	const transitionObject = getTransitionStyles(props, transitionSelectors);
-	if (!isEmpty(transitionObject)) merge(styles, transitionObject);
+	if (!isEmpty(transitionObject)) {
+		const isTransitionString = string => {
+			if (!isString(string)) return false;
+
+			const propertyName = '\\w+(-\\w+)*';
+			const duration = '\\d+(\\.\\d+)?(s|ms)';
+			const delay = '(\\s+\\d+(\\.\\d+)?(s|ms))?';
+			const timingFunction = '(\\s+\\w+(-\\w+)*((.*))?)?';
+			const transitionPattern = `(${propertyName}\\s+${duration}${delay}${timingFunction})`;
+
+			// Allowing multiple transitions separated by commas.
+			const regex = new RegExp(
+				`^${transitionPattern}(,\\s*${transitionPattern})*$`
+			);
+
+			return regex.test(string);
+		};
+
+		/**
+		 * Merge `image-maxi` hover effect transition with transition setting styles.
+		 */
+		if (isString(props['hover-type']) && props['hover-type'] !== 'none') {
+			// eslint-disable-next-line consistent-return
+			mergeWith(styles, transitionObject, (objValue, srcValue) => {
+				if ([objValue, srcValue].every(isTransitionString))
+					return `${objValue}, ${srcValue}`;
+			});
+		} else {
+			merge(styles, transitionObject);
+		}
+	}
 
 	// Process custom styles if they exist
 	const newCssSelectors = getSelectorsCss(selectors, props);

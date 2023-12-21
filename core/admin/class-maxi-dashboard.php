@@ -659,16 +659,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 __(' for self-service.', 'maxi-blocks') . '</p>';
 
-            $description =
-                '<h4>' .
-                __('Enable live chat support (temporary)', 'maxi-blocks') .
-                '</h4>';
-            $description .= '<p>For a short time we\'re offering live chat to help troubleshoot issues during the beta plugin release. Live chat will be removed in a future update. By activating this option you agree to the GDPR terms as set out in the Crisp chat service terms.</p>';
-            $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read about Crisp GDPR terms', 'maxi-blocks') . '</a></p>';
-
-            $content .= $this->generate_setting($description, 'support_chat');
-            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
-
             // $content .= '<p>'.__('For support please  ', 'maxi-blocks');
             // $content .= '<a href="" target="_blank"> '.__('post your question', 'maxi-blocks').'</a>';
             // $content .= __(' in the WordPress.org forum.', 'maxi-blocks').'</p>';
@@ -1349,7 +1339,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
-                'support_chat' => $args,
                 'swap_cloud_images' => $args,
                 'google_api_key_option' => null,
                 'openai_api_key_option' => null,

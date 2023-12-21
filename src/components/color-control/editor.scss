@@ -230,4 +230,7 @@ html[dir='rtl'] {
 		right: unset;
 		left: 0;
 	}
+	.maxi-color-control .chrome-picker > div > div:last-of-type {
+		direction: ltr;
+	}
 }

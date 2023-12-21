@@ -8,6 +8,7 @@ import { prefixes as searchPrefixes } from '../../blocks/search-maxi/data';
  * External dependencies
  */
 import { isEmpty, pickBy, uniq, without } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(
@@ -27,7 +28,11 @@ const getKey = key => {
 	}
 };
 
-export const getTransformSelectors = (selectors, attributes = {}) => {
+export const getTransformSelectors = (
+	selectors,
+	attributes = {},
+	cleanParallaxLayers
+) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
@@ -36,7 +41,8 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
 		false,
-		false
+		false,
+		cleanParallaxLayers
 	);
 
 	return {
@@ -118,4 +124,46 @@ export const getTransformCategories = (categories, attributes, blockName) => {
 			skin !== 'icon-reveal' && 'close icon',
 		])
 	);
+};
+
+export const getDisabledTransformCategories = (
+	disabledCategories,
+	attributes
+) => {
+	const {
+		'background-layers': bgLayers = [],
+		'background-layers-hover': bgLayersHover = [],
+	} = attributes;
+
+	const allBgLayers = [...bgLayers, ...bgLayersHover];
+
+	let message;
+
+	const bgLayersWithParallaxCategories = allBgLayers
+		.map(bgLayer => {
+			const { 'background-image-parallax-status': parallaxStatus } =
+				bgLayer;
+
+			if (parallaxStatus) {
+				if (!message)
+					message = __(
+						'Transform settings is not compatible with parallax effect. Please disable parallax effect to use transform settings.',
+						'maxi-blocks'
+					);
+
+				return {
+					category: `_${bgLayer.id}`,
+					message,
+				};
+			}
+
+			return null;
+		})
+		.filter(Boolean);
+
+	if (isEmpty(bgLayersWithParallaxCategories)) return disabledCategories;
+
+	if (isEmpty(disabledCategories)) return bgLayersWithParallaxCategories;
+
+	return [...disabledCategories, ...bgLayersWithParallaxCategories];
 };

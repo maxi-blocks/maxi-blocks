@@ -90,12 +90,13 @@ const BackgroundContent = props => {
 						prefix,
 					});
 					const alt =
-						altSelector !== 'none' &&
-						getAttributeValue({
-							target: 'background-image-parallax-alt',
-							props: layer,
-							prefix,
-						});
+						altSelector !== 'none'
+							? getAttributeValue({
+									target: 'background-image-parallax-alt',
+									props: layer,
+									prefix,
+							  })
+							: undefined;
 
 					if (!mediaURL) return null;
 

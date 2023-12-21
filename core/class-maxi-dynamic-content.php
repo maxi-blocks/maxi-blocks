@@ -701,14 +701,26 @@ class MaxiBlocks_DynamicContent
                 case 'slug':
                 case 'sku':
                 case 'review_count':
-                case 'average_rating':
                     return strval($product->get_data()[$dc_field]);
+                case 'average_rating':
+                    if (empty($product->get_average_rating())) {
+                        $this->is_empty = true;
+                    }
+                    return strval($product->get_average_rating());
                 case 'price':
                 case 'regular_price':
-                    return strip_tags(wc_price($product->get_data()[$dc_field]));
+                    $price = $product->get_data()[$dc_field];
+                    if (empty($price)) {
+                        $this->is_empty = true;
+                    }
+                    return strip_tags(wc_price($price));
                 case 'sale_price':
+                    $price = $product->get_sale_price();
+                    if (empty($price)) {
+                        $this->is_empty = true;
+                    }
                     if ($product->is_on_sale()) {
-                        return strip_tags(wc_price($product->get_sale_price()));
+                        return strip_tags(wc_price($price));
                     }
 
                     return strip_tags(wc_price($product->get_price()));
@@ -779,6 +791,9 @@ class MaxiBlocks_DynamicContent
             case 'total_discount':
             case 'total_fees':
             case 'total_fees_tax':
+                if (empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])) {
+                    $this->is_empty = true;
+                }
                 return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
             default:
                 return null;

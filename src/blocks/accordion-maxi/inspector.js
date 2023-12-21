@@ -222,6 +222,10 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'accordion',
+									}),
 								]}
 							/>
 						),
@@ -256,10 +260,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.advancedCss({
 										props,
-									}),
-									...inspectorTabs.contextLoop({
-										props,
-										contentType: 'accordion',
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {

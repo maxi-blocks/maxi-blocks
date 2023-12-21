@@ -229,3 +229,20 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__copy-paste__popover__item {
+		padding: 5px 7px 5px 20px;
+
+		input[type='checkbox'] + span {
+			padding-right: 5px;
+			padding-left: unset !important;
+		}
+		input[type='checkbox']:checked::before {
+			margin: -3px -2px 0px 0px;
+		}
+	}
+}

@@ -18,7 +18,7 @@ const getVarWithColor = ({ blockStyle, variable }) => {
 	const color = getPaletteColor({
 		blockStyle,
 		color: colorPart,
-	}).replace(/ /g, '');
+	})?.replace(/ /g, '');
 
 	// Use color in the return value only if it's truthy
 	return `var(--maxi-${blockStyle}-${variable}${color ? `,${color}` : ''})`;

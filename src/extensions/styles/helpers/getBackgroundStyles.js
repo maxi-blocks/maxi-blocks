@@ -1308,7 +1308,7 @@ export const getBackgroundStyles = ({
 			};
 		}
 
-		merge(response, { backgroundObject });
+		merge(response, backgroundObject);
 	});
 
 	return response;

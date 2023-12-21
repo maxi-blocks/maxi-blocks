@@ -306,5 +306,5 @@ export const getSVGStyles = ({
 		}
 	}
 
-	return { SVGPathStroke: response };
+	return response;
 };

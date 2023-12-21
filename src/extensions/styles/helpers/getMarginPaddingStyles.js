@@ -33,16 +33,20 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 					attributes: obj,
 				});
 				const value = obj[`${attributeName}-${breakpoint}`];
-				const unit = obj[`${attributeName}-${breakpoint}-unit`];
+				const unit = obj[`${attributeName}-unit-${breakpoint}`]; // Note the correction here
 
-				if (
-					!isNil(lastValue) &&
-					(lastValue === value || lastUnit === unit)
-				) {
-					response[breakpoint][`${type}-${key}`] =
-						lastValue === 'auto'
-							? 'auto'
-							: `${lastValue}${lastUnit}`;
+				// Refine comparison logic to handle cases where the value remains constant across breakpoints but the unit changes
+				if (!isNil(lastValue)) {
+					const isValueEqual = lastValue === value;
+					const isUnitEqual = lastUnit === unit;
+					const shouldSetResponse = isValueEqual || isUnitEqual;
+
+					if (shouldSetResponse) {
+						response[breakpoint][`${type}-${key}`] =
+							lastValue === 'auto'
+								? 'auto'
+								: `${lastValue}${lastUnit}`;
+					}
 				}
 
 				if (value === '') {

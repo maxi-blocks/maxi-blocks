@@ -223,10 +223,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			const direction = parallaxDirection === 'up' ? 1 : -1;
 			const speed = parallaxSpeed / 10 + direction;
 
-			window.addEventListener('scroll', () => {
-				// eslint-disable-next-line no-new
-				new Parallax(parallaxElem, speed);
-			});
+			// eslint-disable-next-line no-new
+			new Parallax(parallaxElem, speed);
 		});
 	});
 });

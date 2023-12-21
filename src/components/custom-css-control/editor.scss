@@ -42,6 +42,7 @@
 		border: 1px solid var(--maxi-grey-1-color);
 		font-family: monospace !important;
 		flex: 1 0 100%;
+		direction: ltr !important;
 
 		textarea {
 			background-color: var(--maxi-white-4-color);

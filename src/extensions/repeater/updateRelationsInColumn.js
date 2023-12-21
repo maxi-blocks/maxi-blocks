@@ -72,7 +72,7 @@ const updateRelationsInColumn = (
 
 		return {
 			...relation,
-			uniqueID: newBlock.attributes.uniqueID,
+			uniqueID: newBlock?.attributes?.uniqueID,
 		};
 	});
 };

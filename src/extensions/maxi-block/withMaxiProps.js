@@ -154,6 +154,7 @@ const withMaxiProps = createHigherOrderComponent(
 								if (currentClientId === clientId) return;
 
 								const currentBlock = getBlock(currentClientId);
+								if (!currentBlock) return;
 								const currentAttributes =
 									currentBlock?.attributes;
 

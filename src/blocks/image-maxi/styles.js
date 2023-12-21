@@ -5,6 +5,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getTransitionTimingFunction,
 	styleProcessor,
 } from '../../extensions/styles';
 import {
@@ -30,6 +31,10 @@ import {
 	getAspectRatio,
 	getImgWidthStyles,
 } from '../../extensions/styles/helpers';
+import {
+	transitionDurationEffects,
+	transitionFilterEffects,
+} from './components/hover-effect-control/constants';
 import data from './data';
 
 /**
@@ -305,6 +310,40 @@ const getImageFitWrapper = props => {
 	return response;
 };
 
+const getImageTransitionObject = props => {
+	const {
+		'hover-type': hoverType,
+		'hover-basic-effect-type': hoverBasicEffectType,
+		'hover-transition-duration': hoverTransitionDuration,
+		'hover-transition-easing': hoverTransitionEasing,
+		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
+	} = props;
+
+	if (
+		hoverType === 'none' ||
+		(hoverType !== 'text' &&
+			!transitionDurationEffects.includes(hoverBasicEffectType))
+	) {
+		return {};
+	}
+
+	return {
+		transition: {
+			general: {
+				transition: `${
+					hoverType !== 'text' &&
+					transitionFilterEffects.includes(hoverBasicEffectType)
+						? 'filter'
+						: 'transform'
+				} ${hoverTransitionDuration}s ${getTransitionTimingFunction(
+					hoverTransitionEasing,
+					hoverTransitionEasingCB
+				)}`,
+			},
+		},
+	};
+};
+
 const getImageObject = props => {
 	const {
 		fitParentSize,
@@ -368,6 +407,7 @@ const getImageObject = props => {
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),
+		...getImageTransitionObject(props),
 	};
 };
 
@@ -528,6 +568,119 @@ const getImageShapeObject = (target, props) => {
 	return response;
 };
 
+const getImagePreviewObject = props => {
+	const response = {};
+
+	const {
+		'hover-type': hoverType,
+		'hover-basic-effect-type': hoverBasicEffectType,
+	} = props;
+
+	if (hoverType === 'basic') {
+		switch (hoverBasicEffectType) {
+			case 'zoom-in':
+				response.transform = {
+					general: { transform: 'scale(1)' },
+				};
+				break;
+			case 'rotate':
+				response.transform = {
+					general: { transform: 'rotate(0)' },
+				};
+				break;
+			case 'zoom-out':
+				response.transform = {
+					general: {
+						transform: `scale(${props['hover-basic-zoom-out-value']})`,
+					},
+				};
+				break;
+			case 'slide':
+				response.transform = {
+					general: { transform: 'translateX(0%)' },
+				};
+				break;
+			case 'blur':
+				response.filter = {
+					general: { filter: 'blur(0)' },
+				};
+				break;
+			default:
+				response.transform = { general: { transform: '' } };
+				response.filter = { general: { filter: '' } };
+				break;
+		}
+	}
+
+	return response;
+};
+
+const getImageHoverPreviewObject = props => {
+	const response = {};
+
+	const {
+		'hover-type': hoverType,
+		'hover-basic-effect-type': hoverBasicEffectType,
+	} = props;
+
+	if (
+		hoverType !== 'none' &&
+		(hoverType === 'text' ||
+			transitionDurationEffects.includes(hoverBasicEffectType))
+	) {
+		response.transform = {
+			general: { transform: '' },
+		};
+		response.filter = {
+			general: { filter: '' },
+		};
+	}
+
+	if (hoverType === 'basic') {
+		switch (hoverBasicEffectType) {
+			case 'zoom-in':
+				response.transform = {
+					general: {
+						transform: `scale(${props['hover-basic-zoom-in-value']})`,
+					},
+				};
+				break;
+			case 'rotate':
+				response.transform = {
+					general: {
+						transform: `rotate(${props['hover-basic-rotate-value']}deg)`,
+					},
+				};
+				break;
+			case 'zoom-out':
+				response.transform = {
+					general: { transform: 'scale(1)' },
+				};
+				break;
+			case 'slide':
+				response.transform = {
+					general: {
+						transform: `translateX(${props['hover-basic-slide-value']}%)`,
+					},
+				};
+				break;
+			case 'blur':
+				response.filter = {
+					general: {
+						filter: `blur(${props['hover-basic-blur-value']}px)`,
+					},
+				};
+				break;
+			default:
+				response.transform = { general: { transform: '' } };
+				response.filter = { general: { filter: '' } };
+				break;
+		}
+	}
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -552,12 +705,29 @@ const getStyles = props => {
 					...getClipPathDropShadowObject(props),
 				},
 				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(props),
+				[` .maxi-hover-preview.maxi-hover-effect-active ${imgTag}`]:
+					getImagePreviewObject(props),
 				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 					getHoverImageObject(props),
+				// Fix in/out transition conflict by duplicating the transition styles to hover
+				...(Object.values(props.transition.block).some(
+					transitionAttributes =>
+						breakpoints.some(
+							breakpoint =>
+								!isNil(
+									transitionAttributes[`split-${breakpoint}`]
+								)
+						)
+				) && {
+					[` .maxi-image-block-wrapper ${imgTag}:hover`]:
+						getImageTransitionObject(props),
+				}),
 				':hover .maxi-image-block-wrapper': getClipPathDropShadowObject(
 					props,
 					true
 				),
+				[` .maxi-hover-preview.maxi-hover-effect-active:hover ${imgTag}`]:
+					getImageHoverPreviewObject(props),
 				// add the same styles to the hover to avoid conflict with transform styles
 				// which are also applied to the hover state
 				...[

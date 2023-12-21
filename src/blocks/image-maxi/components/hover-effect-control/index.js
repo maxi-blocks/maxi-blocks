@@ -182,16 +182,17 @@ const HoverEffectControl = props => {
 				)}
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
-					props['hover-basic-effect-type'] === 'zoom-in' ||
-					props['hover-basic-effect-type'] === 'zoom-out' ||
-					props['hover-basic-effect-type'] === 'slide' ||
-					props['hover-basic-effect-type'] === 'rotate' ||
-					props['hover-basic-effect-type'] === 'blur' ||
-					props['hover-basic-effect-type'] === 'sepia' ||
-					props['hover-basic-effect-type'] === 'clear-sepia' ||
-					props['hover-basic-effect-type'] === 'grey-scale' ||
-					props['hover-basic-effect-type'] ===
-						'clear-grey-scale') && (
+					[
+						'zoom-in',
+						'zoom-out',
+						'slide',
+						'rotate',
+						'blur',
+						'sepia',
+						'clear-sepia',
+						'grey-scale',
+						'clear-grey-scale',
+					].includes(props['hover-basic-effect-type'])) && (
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}

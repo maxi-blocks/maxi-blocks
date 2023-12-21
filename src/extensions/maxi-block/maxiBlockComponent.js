@@ -137,6 +137,7 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+		this.popoverStyles = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -343,11 +344,14 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		const wasBreakpointChanged =
+			this.props.deviceType !== nextProps.deviceType ||
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
+			wasBreakpointChanged // In case of breakpoint change
 		)
 			return true;
 
@@ -403,9 +407,14 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		// If deviceType or baseBreakpoint changes, render styles
-		if (
+		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
+
+		if (
+			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
+			!wasBreakpointChanged
 		)
 			return false;
 
@@ -480,6 +489,8 @@ class MaxiBlockComponent extends Component {
 				);
 			this.isReusable && this.displayStyles();
 		}
+
+		this.hideGutenbergPopover();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -1161,6 +1172,25 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	/**
+	 * Hides Gutenberg's popover when the Maxi block is selected.
+	 */
+	hideGutenbergPopover() {
+		if (this.props.isSelected && !this.popoverStyles) {
+			this.popoverStyles = document.createElement('style');
+			this.popoverStyles.innerHTML = `
+				.block-editor-block-popover {
+					display: none !important;
+				}
+			`;
+			this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
+			document.head.appendChild(this.popoverStyles);
+		} else if (!this.props.isSelected && this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
 	}
 }
 

@@ -126,7 +126,7 @@ const MasonryItem = props => {
 							)}
 						>
 							{!isSaved
-								? __('Save', 'maxi-blocks')
+								? __('Preview', 'maxi-blocks')
 								: __('Saved', 'maxi-blocks')}
 						</span>
 					)}

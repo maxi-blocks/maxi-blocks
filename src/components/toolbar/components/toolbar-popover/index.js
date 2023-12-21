@@ -142,7 +142,7 @@ class ToolbarPopover extends Component {
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={this.state}>
 					{!tooltipsHide && (
-						<Tooltip text={tooltip} position='top center'>
+						<Tooltip text={tooltip} placement='top'>
 							{buttonContent()}
 						</Tooltip>
 					)}

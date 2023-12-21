@@ -119,10 +119,6 @@
 				}
 			}
 
-			@at-root .rtl #{&} {
-				flex-direction: row-reverse;
-			}
-
 			button:focus {
 				outline: none;
 				box-shadow: none;
@@ -280,7 +276,7 @@
 				&__replace-image {
 					width: 80px !important;
 
-					.components-button {
+					&__button {
 						font-weight: 700;
 						display: inline-block;
 					}
@@ -321,11 +317,6 @@
 
 body .toolbar-item__popover {
 	margin-top: 0 !important;
-	.maxi-base-control:not(.maxi-color-control__palette-label) {
-		.maxi-reset-button {
-			padding: 8px;
-		}
-	}
 
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
@@ -708,5 +699,30 @@ body.rtl .toolbar-item__popover {
 		input[type='number'] {
 			width: 5em !important;
 		}
+	}
+}
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__more-settings {
+		border-left: unset !important;
+		border-right: 1px solid var(--maxi-grey-1-color) !important;
+	}
+	.toolbar-block-custom-label {
+		left: unset !important;
+		right: 0;
+		border-radius: 0px 3px 3px 0px !important;
+	}
+	.toolbar-more-indicator {
+		margin-right: 10px !important;
+		left: -16px;
+		right: unset !important;
+		border-radius: 3px 0px 0px 3px !important;
+		margin-left: 0;
+	}
+	.breadcrumbs-pin {
+		padding-right: 0px !important;
+		padding-left: 10px;
 	}
 }

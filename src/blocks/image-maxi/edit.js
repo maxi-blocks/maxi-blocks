@@ -155,6 +155,8 @@ class edit extends MaxiBlockComponent {
 			mediaHeight,
 			mediaID,
 			mediaURL,
+			isImageUrl,
+			isImageUrlInvalid,
 			mediaWidth,
 			SVGElement,
 			uniqueID,
@@ -264,8 +266,9 @@ class edit extends MaxiBlockComponent {
 			!isEmpty(attributes.SVGElement);
 
 		const showImage =
-			!isNil(mediaID) ||
-			mediaURL ||
+			(mediaURL &&
+				((isImageUrl && !isImageUrlInvalid) ||
+					(!isNil(mediaID) && mediaURL))) ||
 			(dcStatus && dcMediaId && dcMediaUrl);
 
 		const handleOnResizeStop = (event, direction, elt) => {
@@ -380,7 +383,7 @@ class edit extends MaxiBlockComponent {
 								<Button
 									className='maxi-image-block__settings__upload-button maxi-settings-media-upload__button'
 									label={__(
-										'Upload / Add from Media Library',
+										'Insert from Media Library',
 										'maxi-blocks'
 									)}
 									showTooltip='true'

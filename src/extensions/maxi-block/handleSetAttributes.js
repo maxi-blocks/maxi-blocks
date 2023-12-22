@@ -58,19 +58,6 @@ const handleSetAttributes = ({
 
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
-		// Ensures saving both General and XXL attribute when XXL attribute is already set,
-		// BaseBreakpoint is XXL and breakpoint is General
-		if (
-			breakpoint === 'general' &&
-			baseBreakpoint === 'xxl' &&
-			attrExistOnBaseBreakpoint &&
-			defaultGeneralAttribute !== value
-		) {
-			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
-		}
-
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
 			true

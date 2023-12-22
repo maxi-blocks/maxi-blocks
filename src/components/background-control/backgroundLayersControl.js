@@ -171,6 +171,7 @@ const getLayerCardContent = props => {
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isLayer
+					isIB={isIB}
 				/>
 			);
 		default:

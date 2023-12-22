@@ -428,17 +428,22 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates: 21 December 2023_
+_Updates: 22 December 2023_
 MaxiBlocks V1.5.8
 * Update: Speed improvements for all Maxi foundation blocks in the Editing Experience (EE). More coming.
 * Update: Hide occasional duplicated Gutenberg toolbar when MaxiBlocks toolbar is active.
-* Update: Better right-to-left (RTL) language support for MaxiBlocks Toolbar, Template Library, Style Card manager.
+* Update: Better right-to-left (RTL) language support for MaxiBlocks Toolbar, Template Library, Style Card manager, block inserter, breadcrumbs, indicators, pop-overs.
 * Update: UI improvements for MaxiBlocks plugin dashboard.
 * Update: Remove live support chat from MaxiBlocks plugin. You can still chat with us on the helpdesk. https://help.maxiblocks.com/ or https://maxiblocks.com/.
+* Update: Unify Context Loop settings placement in Block Sidebar for all blocks.
+* Update: Change deprecated 'position' prop to 'placement' (removes a WordPress warning in the console).
+* Update: Remove redundant 'Search' button for Link settings in Toolbar.
 * Fix: Woo relation by category/tag in Editing Experience (EE).
 * Fix: Dynamic Content link when changing Context Loop settings.
 * Fix: Dynamic Content link for Icon, Group, Columns.
 * Fix: Margin indicator overlapping.
+* Fix: Dynamic Content in the Editing Experience (EE) when the image is missing from the Media Library.
+* Fix: Hover effects for Image Block.
 
 _Updates: 12 December 2023_
 MaxiBlocks V1.5.7

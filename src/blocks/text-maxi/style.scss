@@ -91,7 +91,17 @@ body.maxi-blocks--active .maxi-text-block {
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.maxi-text-block li {
-		direction: rtl;
+	.maxi-text-block {
+		ol,
+		ul {
+			padding-right: revert !important;
+			li {
+				direction: rtl;
+				&::before {
+					margin: revert !important;
+					right: revert !important;
+				}
+			}
+		}
 	}
 }

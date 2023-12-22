@@ -59,11 +59,12 @@ const getLastBreakpointAttributeSingle = (
 	keys,
 	forceUseBreakpoint = false
 ) => {
-	const attr =
-		attributes ||
-		blockEditorStore.getBlockAttributes(
-			blockEditorStore.getSelectedBlockClientId()
-		);
+	const { getBlockAttributes, getSelectedBlockClientId } =
+		blockEditorStore || {
+			getBlockAttributes: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+			getSelectedBlockClientId: () => null, // Necessary for testing, mocking '@wordpress/data' is too dense
+		};
+	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
 	if (isNil(breakpoint))

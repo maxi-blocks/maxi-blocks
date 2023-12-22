@@ -136,6 +136,7 @@ const SVGFillControl = props => {
 		isLayer,
 		SVGOptions,
 		breakpoint = '',
+		isIB = false,
 	} = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
@@ -253,11 +254,13 @@ const SVGFillControl = props => {
 							onSelectImage={handleSelectImage}
 							onRemoveImage={handleRemoveImage}
 						/>
-						<ImageUrlUpload
-							attributes={SVGData[id]}
-							mediaPrefix='image'
-							onChange={handleSelectImage}
-						/>
+						{!isIB && (
+							<ImageUrlUpload
+								attributes={SVGData[id]}
+								mediaPrefix='image'
+								onChange={handleSelectImage}
+							/>
+						)}
 					</>
 				)}
 				<ResponsiveTabsControl breakpoint={breakpoint}>

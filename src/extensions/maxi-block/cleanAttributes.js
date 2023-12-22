@@ -52,7 +52,7 @@ const getShouldPreserveAttribute = (
 				return !isNil(prevAttr) && !isEqual(prevAttr, value);
 			});
 
-		if (preserveAttr) return true;
+		return preserveAttr;
 	}
 
 	return false;
@@ -529,6 +529,7 @@ const flatLowerAttr = (
 			const generalAttribute = {
 				...defaultAttributes,
 				...attributes,
+				...newAttributes,
 			}?.[generalKey];
 
 			if (isEqual(attribute, generalAttribute)) {
@@ -553,7 +554,11 @@ const flatLowerAttr = (
 };
 
 /**
- * Ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
+ * Ensures that baseBreakpoint attribute value is the same as general attribute value
+ * in case a responsive attribute exists with a different value. This ensures that when switching baseBreakpoint,
+ * the value on previous basebBreakpoint will be saved.
+ *
+ * Also ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
  * general value for baseBreakpoint attribute in order to avoid a visual bug between
  * editor and frontend, as in editor, with baseBreakpoint selected it will show the
  * general value, and in frontend, that value would be overwrite by the higher breakpoint
@@ -561,18 +566,18 @@ const flatLowerAttr = (
  */
 const preserveBaseBreakpoint = (newAttributes, attributes) => {
 	const result = {};
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || breakpoint === 'general' || isNil(value)) return;
-
-		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-		const isHigherThanBase =
-			breakpoints.indexOf(breakpoint) <
-				breakpoints.indexOf(baseBreakpoint) && breakpoint !== 'xxl';
-
-		if (!isHigherThanBase) return;
+		if (
+			!breakpoint ||
+			breakpoint === 'general' ||
+			breakpoint === baseBreakpoint ||
+			isNil(value)
+		)
+			return;
 
 		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
@@ -587,7 +592,11 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 			getAttributeKey(simpleLabel, isHover, '', 'general')
 		];
 
-		if (!isEqual(baseAttr, generalAttr) && !isEqual(generalAttr, value))
+		if (
+			!isNil(generalAttr) &&
+			!isEqual(baseAttr, generalAttr) &&
+			!isEqual(generalAttr, value)
+		)
 			result[baseLabel] = generalAttr;
 	});
 

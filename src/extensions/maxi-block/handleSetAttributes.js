@@ -71,21 +71,6 @@ const handleSetAttributes = ({
 			return;
 		}
 
-		const attrExistsOnResponsive = breakpoints.some(
-			breakpoint =>
-				!isNil(
-					attributes?.[
-						`${key.slice(0, key.lastIndexOf('-'))}-${breakpoint}`
-					]
-				)
-		);
-
-		if (breakpoint === 'general' && attrExistsOnResponsive) {
-			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
-		}
-
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
 			true

@@ -284,6 +284,7 @@ describe('cleanAttributes', () => {
 		};
 		const attributes = {
 			'test-status-general': true,
+			'test-m': 4,
 			'test-general': 4,
 			'test-status-xs': true,
 			'test-xs': 8,
@@ -399,6 +400,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-general': 5,
+			'test-xl': 5,
 			'test-l': 4,
 		};
 
@@ -553,6 +555,15 @@ describe('cleanAttributes', () => {
 					numberWhichIsNotChanging: 1,
 				},
 			},
+			'test-xl': {
+				normal: {
+					numberWhichIsChanging: 5,
+					keyOfUndefined: undefined,
+				},
+				hover: {
+					numberWhichIsNotChanging: 1,
+				},
+			},
 			'test-l': {
 				normal: {
 					numberWhichIsChanging: 4,
@@ -638,6 +649,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-general': 5,
+			'test-xl': 5,
 			'test-xxl': 4,
 			'test-l': 4,
 		};
@@ -864,6 +876,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-general': 400,
+			'test-xl': 400,
 			'test-l': 40,
 		};
 
@@ -1242,6 +1255,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '15',
+			'test-xl': '15',
 			'test-xxl': '23',
 		};
 
@@ -1290,7 +1304,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': 20,
 			'test-xxl': 24,
-			'test-xl': 16,
+			'test-xl': 20,
 			'test-m': 20,
 		};
 
@@ -1333,7 +1347,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': '%',
 			'test-xl': undefined,
-			'test-l': undefined,
+			'test-l': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1686,6 +1700,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'font-size-unit-general': 'em',
+			'font-size-unit-xl': 'em',
 			'font-size-unit-xxl': 'px',
 		};
 

@@ -559,6 +559,19 @@ body .plugins {
 						}
 					}
 				}
+				&-sidebar {
+					display: flex;
+					width: 62%;
+					max-width: unset;
+					column-gap: 20px;
+
+					&-item {
+						a::before {
+							content: '';
+							display: block;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -567,6 +580,12 @@ body .plugins {
 @media only screen and (max-width: 960px) {
 	body.toplevel_page_maxi-blocks-dashboard {
 		.maxi-dashboard_form {
+			.maxi-dashboard_main {
+				&-content,
+				&-sidebar {
+					width: 100%;
+				}
+			}
 			.maxi-dashboard_main-content {
 				&-pro-library {
 					width: 100%;
@@ -601,6 +620,7 @@ body .plugins {
 					width: 100%;
 					max-width: 100%;
 					margin-top: 20px;
+					flex-direction: column;
 				}
 			}
 		}

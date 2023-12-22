@@ -3,7 +3,7 @@
  */
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, useDispatch, useSelect } from '@wordpress/data';
 import { useContext, useEffect, useRef } from '@wordpress/element';
 
 /**
@@ -17,7 +17,7 @@ import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
 /**
  * External Dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * General
@@ -50,13 +50,27 @@ const allowedBlocks = [
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
-		const { attributes, name: blockName, clientId } = props;
+		const { attributes, name: blockName, clientId, setAttributes } = props;
 		const { uniqueID } = attributes;
 
 		const wasUniqueIDAdded = useRef(false);
 
 		const repeaterContext = useContext(RepeaterContext);
 		const repeaterStatus = repeaterContext?.repeaterStatus;
+
+		const blockRootClientId = useSelect(select => {
+			if (allowedBlocks.includes(blockName)) {
+				return select('core/block-editor').getBlockRootClientId(
+					clientId
+				);
+			}
+			return null;
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, []);
+		const {
+			__unstableMarkNextChangeAsNotPersistent:
+				markNextChangeAsNotPersistent,
+		} = useDispatch('core/block-editor', []);
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
@@ -72,24 +86,6 @@ const withAttributes = createHigherOrderComponent(
 				dispatch('maxiBlocks/blocks').addNewBlock(newUniqueID);
 
 				wasUniqueIDAdded.current = true;
-			}
-			// isFirstOnHierarchy
-			const parentBlocks = select('core/block-editor')
-				.getBlockParentsByBlockName(clientId, allowedBlocks)
-				.filter(el => {
-					return el !== clientId;
-				});
-
-			if (parentBlocks.includes(clientId)) parentBlocks.pop();
-
-			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
-			if (!attributes.isFirstOnHierarchy) {
-				const firstMaxiParentBlock = select(
-					'core/block-editor'
-				).getBlock(parentBlocks[0]);
-
-				attributes.blockStyle =
-					firstMaxiParentBlock.attributes.blockStyle;
 			}
 
 			// RTL
@@ -117,6 +113,36 @@ const withAttributes = createHigherOrderComponent(
 				);
 			}
 		}, [wasUniqueIDAdded.current]);
+
+		useEffect(() => {
+			if (allowedBlocks.includes(blockName)) {
+				const isFirstOnHierarchy = !blockRootClientId;
+				let isFirstOnHierarchyUpdated = false;
+
+				if (!isFirstOnHierarchy) {
+					const firstMaxiParentBlock =
+						select('core/block-editor').getBlock(blockRootClientId);
+					const { blockStyle } = firstMaxiParentBlock.attributes;
+
+					if (blockStyle !== attributes.blockStyle) {
+						isFirstOnHierarchyUpdated = true;
+						markNextChangeAsNotPersistent();
+						setAttributes({
+							blockStyle,
+							isFirstOnHierarchy,
+						});
+					}
+				}
+
+				if (
+					!isFirstOnHierarchyUpdated &&
+					isFirstOnHierarchy !== attributes.isFirstOnHierarchy
+				) {
+					attributes.isFirstOnHierarchy = isFirstOnHierarchy;
+				}
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [blockRootClientId]);
 
 		return <BlockEdit {...props} />;
 	},

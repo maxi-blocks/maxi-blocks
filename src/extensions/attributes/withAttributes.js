@@ -117,7 +117,6 @@ const withAttributes = createHigherOrderComponent(
 		useEffect(() => {
 			if (allowedBlocks.includes(blockName)) {
 				const isFirstOnHierarchy = !blockRootClientId;
-				let isFirstOnHierarchyUpdated = false;
 
 				if (!isFirstOnHierarchy) {
 					const firstMaxiParentBlock =
@@ -125,19 +124,14 @@ const withAttributes = createHigherOrderComponent(
 					const { blockStyle } = firstMaxiParentBlock.attributes;
 
 					if (blockStyle !== attributes.blockStyle) {
-						isFirstOnHierarchyUpdated = true;
 						markNextChangeAsNotPersistent();
 						setAttributes({
 							blockStyle,
-							isFirstOnHierarchy,
 						});
 					}
 				}
 
-				if (
-					!isFirstOnHierarchyUpdated &&
-					isFirstOnHierarchy !== attributes.isFirstOnHierarchy
-				) {
+				if (isFirstOnHierarchy !== attributes.isFirstOnHierarchy) {
 					attributes.isFirstOnHierarchy = isFirstOnHierarchy;
 				}
 			}

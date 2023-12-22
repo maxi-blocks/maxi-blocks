@@ -118,7 +118,11 @@ const CssCodeEditor = ({
 			)}
 			<CodeEditor
 				language='css'
-				className={`maxi-css-code-editor__code-editor maxi-css-code-editor__code-editor--${cssClassIndex}`}
+				className={classnames(
+					'maxi-css-code-editor__code-editor',
+					cssClassIndex &&
+						`maxi-css-code-editor__code-editor--${cssClassIndex}`
+				)}
 				value={value}
 				onChange={textarea => {
 					if (typingTimeout) clearTimeout(typingTimeout);

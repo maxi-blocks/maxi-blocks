@@ -16,7 +16,13 @@ import {
 /**
  * Component
  */
-const transform = ({ props, depth = 2, categories, selectors }) => {
+const transform = ({
+	props,
+	disabledCategories,
+	depth = 2,
+	categories,
+	selectors,
+}) => {
 	const {
 		attributes,
 		deviceType,
@@ -52,6 +58,7 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 				depth={depth}
 				categories={getTransformCategories(categories, attributes)}
 				selectors={getTransformSelectors(selectors, attributes)}
+				disabledCategories={disabledCategories}
 			/>
 		),
 	};

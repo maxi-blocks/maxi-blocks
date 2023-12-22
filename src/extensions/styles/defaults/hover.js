@@ -38,7 +38,7 @@ export const hover = {
 		default: 'ease',
 	},
 	'hover-transition-easing-cubic-bezier': {
-		type: 'object',
+		type: 'array',
 	},
 	'hover-transition-duration': {
 		type: 'number',

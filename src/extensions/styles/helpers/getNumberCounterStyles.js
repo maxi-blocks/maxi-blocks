@@ -23,9 +23,7 @@ const getCircleBarStyles = (obj, blockStyle) => {
 				prefix: 'number-counter-circle-bar-',
 				breakpoint,
 			});
-		if (!paletteStatus && !isNil(color)) {
-			return color;
-		}
+
 		if (paletteStatus && paletteColor) {
 			return getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
@@ -33,12 +31,11 @@ const getCircleBarStyles = (obj, blockStyle) => {
 				blockStyle,
 			});
 		}
+		return color || null; // Returns null if color is undefined or not set
 	};
 
 	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {
-			stroke: getColor(breakpoint),
-		};
+		response[breakpoint] = { stroke: getColor(breakpoint) };
 	});
 
 	return { numberCounterCircleBar: response };

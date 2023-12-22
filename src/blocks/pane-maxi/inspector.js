@@ -146,6 +146,10 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 									}),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'pane',
+									}),
 								]}
 							/>
 						),
@@ -180,10 +184,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.advancedCss({
 										props,
-									}),
-									...inspectorTabs.contextLoop({
-										props,
-										contentType: 'pane',
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {

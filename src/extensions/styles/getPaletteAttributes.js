@@ -10,19 +10,34 @@ import getAttributeValue from './getAttributeValue';
 import { isNil } from 'lodash';
 
 const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
-	const getValue = key =>
-		isNil(breakpoint)
-			? getAttributeValue({
-					target: `${prefix}${key}`,
+	const getAttributeValueMemo = {};
+	const getLastBreakpointAttributeMemo = {};
+
+	const getValue = key => {
+		const target = `${prefix}${key}`;
+
+		if (isNil(breakpoint)) {
+			if (!getAttributeValueMemo[target]) {
+				getAttributeValueMemo[target] = getAttributeValue({
+					target,
 					props: obj,
 					isHover,
-			  })
-			: getLastBreakpointAttribute({
-					target: `${prefix}${key}`,
+				});
+			}
+			return getAttributeValueMemo[target];
+		}
+		const memoKey = `${target}-${breakpoint}`;
+		if (!getLastBreakpointAttributeMemo[memoKey]) {
+			getLastBreakpointAttributeMemo[memoKey] =
+				getLastBreakpointAttribute({
+					target,
 					breakpoint,
 					attributes: obj,
 					isHover,
-			  });
+				});
+		}
+		return getLastBreakpointAttributeMemo[memoKey];
+	};
 
 	return {
 		paletteStatus: getValue('palette-status'),

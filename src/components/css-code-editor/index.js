@@ -32,17 +32,6 @@ const CssCodeEditor = ({
 }) => {
 	const errorRef = useRef(null);
 
-	const labelForCss =
-		label
-			?.replaceAll(':', '')
-			.replaceAll("'", '')
-			.replaceAll('>', '')
-			.replaceAll('*', '')
-			.replaceAll('(', '')
-			.replaceAll(')', '')
-			.trim()
-			.replaceAll(' ', '_') || 'empty';
-
 	const validateCSSCode = async code => {
 		let responseFinal = '';
 		try {
@@ -98,17 +87,17 @@ const CssCodeEditor = ({
 
 	let typingTimeout = null;
 
-	const id = `maxi-css-code-editor__error-text--${labelForCss}`;
+	const id = 'maxi-css-code-editor__error-text';
 
 	return (
 		<BaseControl
 			label={label}
-			className={`maxi-css-code-editor maxi-css-code-editor--${labelForCss}`}
+			className='maxi-css-code-editor maxi-css-code-editor'
 		>
 			{!disabled && !isEmpty(value) && (
 				<Button
 					aria-label={__('Validate', 'maxi-blocks')}
-					className={`maxi-css-code-editor__validate-button maxi-css-code-editor__validate-button--${labelForCss}`}
+					className='maxi-css-code-editor__validate-button maxi-css-code-editor__validate-button'
 					onClick={el => {
 						validateCss(
 							el?.target?.nextSibling?.getElementsByTagName(
@@ -122,7 +111,7 @@ const CssCodeEditor = ({
 			)}
 			<CodeEditor
 				language='css'
-				className={`maxi-css-code-editor__code-editor maxi-css-code-editor__code-editor--${labelForCss}`}
+				className='maxi-css-code-editor__code-editor maxi-css-code-editor__code-editor'
 				value={value}
 				onChange={textarea => {
 					if (typingTimeout) clearTimeout(typingTimeout);

@@ -86,3 +86,12 @@ body.maxi-blocks--active .maxi-text-block {
 		text-decoration-skip-ink: auto;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-text-block li {
+		direction: rtl;
+	}
+}

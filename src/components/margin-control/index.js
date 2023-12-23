@@ -34,6 +34,11 @@ const MarginControl = props => {
 					max: 999,
 					step: 0.1,
 				},
+				rem: {
+					min: -999,
+					max: 999,
+					step: 0.1,
+				},
 				vw: {
 					min: -999,
 					max: 999,

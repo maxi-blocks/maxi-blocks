@@ -174,6 +174,10 @@ const VideoOverlayControl = props => {
 			min: 0,
 			max: 999,
 		},
+		rem: {
+			min: 0,
+			max: 999,
+		},
 		vw: {
 			min: 0,
 			max: 999,
@@ -272,7 +276,7 @@ const VideoOverlayControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%']}
+						allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 						optionType='string'
 					/>
 					<AdvancedNumberControl
@@ -317,7 +321,7 @@ const VideoOverlayControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%']}
+						allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 						optionType='string'
 					/>
 					<OpacityControl

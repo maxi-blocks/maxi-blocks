@@ -110,6 +110,10 @@ const DividerControl = props => {
 			min: 0,
 			max: 999,
 		},
+		rem: {
+			min: 0,
+			max: 999,
+		},
 		vw: {
 			min: 0,
 			max: 100,
@@ -373,7 +377,7 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Line weight', 'maxi-blocks')}
 							enableUnit
-							allowedUnits={['px', 'em', 'vw']}
+							allowedUnits={['px', 'em', 'rem', 'vw']}
 							unit={getLastBreakpointAttribute({
 								target: `${prefix}divider-border-top-unit`,
 								breakpoint,

@@ -55,6 +55,10 @@ const FullSizeControl = props => {
 			min: 0,
 			max: 999,
 		},
+		rem: {
+			min: 0,
+			max: 999,
+		},
 		vw: {
 			min: 0,
 			max: 999,
@@ -165,7 +169,7 @@ const FullSizeControl = props => {
 						});
 					}}
 					minMaxSettings={minMaxSettings}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 					optionType='string'
 				/>
 			)}
@@ -231,7 +235,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', '%', 'em', 'vw', 'vh']}
+						allowedUnits={['px', '%', 'em', 'rem', 'vw', 'vh']}
 						optionType='string'
 					/>
 				)}
@@ -293,7 +297,7 @@ const FullSizeControl = props => {
 									});
 								}}
 								minMaxSettings={minMaxSettings}
-								allowedUnits={['px', 'em', 'vw', '%']}
+								allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 								optionType='string'
 							/>
 						)}
@@ -341,7 +345,7 @@ const FullSizeControl = props => {
 								});
 							}}
 							minMaxSettings={minMaxSettings}
-							allowedUnits={['px', 'em', 'vw', '%']}
+							allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 							optionType='string'
 						/>
 					)}
@@ -383,7 +387,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
+						allowedUnits={['px', 'em', 'rem', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 					<AdvancedNumberControl
@@ -424,7 +428,7 @@ const FullSizeControl = props => {
 							});
 						}}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', 'vh', '%']}
+						allowedUnits={['px', 'em', 'rem', 'vw', 'vh', '%']}
 						optionType='string'
 					/>
 				</>

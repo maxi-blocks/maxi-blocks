@@ -262,6 +262,10 @@ const FlexSettingsControl = props => {
 												min: 0,
 												max: 9999,
 											},
+											rem: {
+												min: 0,
+												max: 9999,
+											},
 											vw: {
 												min: 0,
 												max: 999,
@@ -271,7 +275,13 @@ const FlexSettingsControl = props => {
 												max: 100,
 											},
 										}}
-										allowedUnits={['px', 'em', 'vw', '%']}
+										allowedUnits={[
+											'px',
+											'em',
+											'rem',
+											'vw',
+											'%',
+										]}
 										onReset={() =>
 											onChange({
 												[`flex-basis-${breakpoint}`]:

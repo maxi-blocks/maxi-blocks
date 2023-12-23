@@ -286,6 +286,10 @@ const Inspector = props => {
 																		min: 0,
 																		max: 99,
 																	},
+																	rem: {
+																		min: 0,
+																		max: 99,
+																	},
 																}}
 																onChangeUnit={val =>
 																	maxiSetAttributes(

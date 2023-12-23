@@ -148,6 +148,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 			min: 0,
 			max: 999,
 		},
+		rem: {
+			min: 0,
+			max: 999,
+		},
 		vw: {
 			min: 0,
 			max: 999,

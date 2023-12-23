@@ -61,6 +61,12 @@ const BoxShadowValueControl = props => {
 			minRange: -300,
 			maxRange: 300,
 		},
+		rem: {
+			min: type === 'blur' ? 0 : -999,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
 		vw: {
 			min: type === 'blur' ? 0 : -999,
 			max: 999,
@@ -132,7 +138,7 @@ const BoxShadowValueControl = props => {
 					}`]: val,
 				})
 			}
-			allowedUnits={['px', 'em', 'vw']}
+			allowedUnits={['px', 'em', 'rem', 'vw']}
 		/>
 	);
 };

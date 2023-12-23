@@ -253,6 +253,10 @@ const TextOptions = props => {
 			min: 0,
 			max: 100,
 		},
+		rem: {
+			min: 0,
+			max: 100,
+		},
 		vw: {
 			min: 0,
 			max: 100,
@@ -273,6 +277,10 @@ const TextOptions = props => {
 			max: 30,
 		},
 		em: {
+			min: -1,
+			max: 10,
+		},
+		rem: {
 			min: -1,
 			max: 10,
 		},

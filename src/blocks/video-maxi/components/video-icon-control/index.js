@@ -62,6 +62,10 @@ const IconSettings = props => {
 			min: 0,
 			max: 100,
 		},
+		rem: {
+			min: 0,
+			max: 100,
+		},
 		vw: {
 			min: 0,
 			max: 100,
@@ -313,7 +317,7 @@ const IconSettings = props => {
 									})
 								}
 								minMaxSettings={minMaxSettings}
-								allowedUnits={['px', 'em', 'vw', '%']}
+								allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 							/>
 							{prefix === 'close-' && (
 								<AdvancedNumberControl
@@ -343,6 +347,10 @@ const IconSettings = props => {
 											max: 999,
 										},
 										em: {
+											min: -99,
+											max: 99,
+										},
+										rem: {
 											min: -99,
 											max: 99,
 										},

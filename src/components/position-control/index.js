@@ -46,6 +46,10 @@ const PositionControl = props => {
 			min: -999,
 			max: 999,
 		},
+		rem: {
+			min: -999,
+			max: 999,
+		},
 		vw: {
 			min: -999,
 			max: 999,
@@ -99,7 +103,7 @@ const PositionControl = props => {
 			minMaxSettings={minMaxSettings}
 			optionType='string'
 			enableAxisUnits
-			allowedUnits={['px', 'em', 'vw', '%', '-']}
+			allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
 			isHover={isHover}
 			defaultAttributes={defaultAttributes}
 		/>

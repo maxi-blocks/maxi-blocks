@@ -150,13 +150,17 @@ const BorderWidthControl = props => {
 					});
 			}}
 			breakpoint={breakpoint}
-			allowedUnits={['px', 'em', 'vw']}
+			allowedUnits={['px', 'em', 'rem', 'vw']}
 			minMaxSettings={{
 				px: {
 					min: 0,
 					max: 99,
 				},
 				em: {
+					min: 0,
+					max: 10,
+				},
+				rem: {
 					min: 0,
 					max: 10,
 				},
@@ -408,6 +412,10 @@ const BorderControl = props => {
 								max: 999,
 							},
 							em: {
+								min: 0,
+								max: 999,
+							},
+							rem: {
 								min: 0,
 								max: 999,
 							},

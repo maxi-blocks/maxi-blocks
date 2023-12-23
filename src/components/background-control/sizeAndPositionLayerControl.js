@@ -45,6 +45,12 @@ const Size = ({
 			minRange: 0,
 			maxRange: 1999,
 		},
+		rem: {
+			min: 0,
+			max: 1999,
+			minRange: 0,
+			maxRange: 1999,
+		},
 		vw: {
 			min: 0,
 			max: 1999,
@@ -121,7 +127,7 @@ const Size = ({
 					attributes: options,
 					isHover,
 				})}
-				allowedUnits={['px', 'em', 'vw', '%']}
+				allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
 					target: `${prefix}width-unit`,
@@ -157,7 +163,7 @@ const Size = ({
 						attributes: options,
 						isHover,
 					})}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 					enableUnit
 					unit={getLastBreakpointAttribute({
 						target: `${prefix}height-unit`,

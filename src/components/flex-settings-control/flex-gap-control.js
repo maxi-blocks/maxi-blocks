@@ -62,7 +62,7 @@ const GapAxisControl = props => {
 					[`${target}-${breakpoint}`]: val,
 				});
 			}}
-			allowedUnits={['px', 'em', 'vw', '%']}
+			allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 			onReset={() =>
 				onChange({
 					[`${target}-${breakpoint}`]: getDefaultAttribute(

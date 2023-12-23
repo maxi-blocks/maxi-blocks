@@ -39,6 +39,11 @@ const AccordionSettings = props => {
 			max: 99,
 			step: 1,
 		},
+		rem: {
+			min: 0,
+			max: 99,
+			step: 1,
+		},
 		vh: {
 			min: 0,
 			max: 99,
@@ -99,7 +104,7 @@ const AccordionSettings = props => {
 						attributes: props,
 					})}
 					enableUnit
-					allowedUnits={['px', 'em', 'vh']}
+					allowedUnits={['px', 'em', 'rem', 'vh']}
 					onChangeValue={val => {
 						onChange({
 							[`row-gap-${breakpoint}`]:

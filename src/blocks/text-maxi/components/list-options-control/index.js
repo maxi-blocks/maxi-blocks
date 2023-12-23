@@ -217,6 +217,10 @@ const ListOptionsControl = props => {
 						min: -99,
 						max: 99,
 					},
+					rem: {
+						min: -99,
+						max: 99,
+					},
 					vw: {
 						min: -99,
 						max: 99,
@@ -270,6 +274,11 @@ const ListOptionsControl = props => {
 						step: 1,
 					},
 					em: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					rem: {
 						min: 0,
 						max: 99,
 						step: 1,
@@ -329,6 +338,11 @@ const ListOptionsControl = props => {
 						step: 1,
 					},
 					em: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					rem: {
 						min: 0,
 						max: 99,
 						step: 1,
@@ -402,6 +416,10 @@ const ListOptionsControl = props => {
 						min: 0,
 						max: 99,
 					},
+					rem: {
+						min: 0,
+						max: 99,
+					},
 					vw: {
 						min: 0,
 						max: 99,
@@ -463,7 +481,7 @@ const ListOptionsControl = props => {
 							isReset: true,
 						});
 					}}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>
 			)}
 			<AdvancedNumberControl
@@ -504,7 +522,7 @@ const ListOptionsControl = props => {
 						isReset: true,
 					});
 				}}
-				allowedUnits={['px', 'em', 'vw', '%', '-']}
+				allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
 			/>
 			<AdvancedNumberControl
 				label={__('Marker vertical offset', 'maxi-blocks')}
@@ -553,6 +571,10 @@ const ListOptionsControl = props => {
 						min: -99,
 						max: 99,
 					},
+					rem: {
+						min: -99,
+						max: 99,
+					},
 					vw: {
 						min: -99,
 						max: 99,
@@ -595,6 +617,10 @@ const ListOptionsControl = props => {
 						max: 999,
 					},
 					em: {
+						min: -99,
+						max: 99,
+					},
+					rem: {
 						min: -99,
 						max: 99,
 					},

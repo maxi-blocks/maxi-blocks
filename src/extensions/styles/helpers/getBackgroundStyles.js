@@ -1139,36 +1139,42 @@ const getBasicResponseObject = ({
 	rowBorderRadius,
 	...props
 }) => {
-	const includeBorder =
-		!isHover || (isHover && props[`${prefix}border-status-hover`]);
+	const includeBorder = !isHover || props[`${prefix}border-status-hover`];
 
-	const borderObj =
-		includeBorder &&
-		getGeneralBackgroundStyles(
+	let borderObj;
+	if (includeBorder) {
+		const borderAttributes = getGroupAttributes(
 			props,
-			{
-				...getGroupAttributes(
-					props,
-					['border', 'borderRadius', 'borderWidth'],
-					isHover
-				),
-			},
+			['border', 'borderRadius', 'borderWidth'],
+			isHover
+		);
+		borderObj = getGeneralBackgroundStyles(
+			props,
+			borderAttributes,
 			blockStyle,
 			isHover
 		);
+	}
+
 	const rowBorderRadiusObj = getGeneralBackgroundStyles(
 		rowBorderRadius,
 		{ ...rowBorderRadius },
 		blockStyle,
 		isHover
 	);
-	// TODO: check this merge, as rowBorderRadiusObj is modified.
-	// At the end, mergedBorderObj is equal to rowBorderRadiusObj.
-	const mergedBorderObj = merge(rowBorderRadiusObj, borderObj);
+
+	let mergedBorderObj = {};
+	if (borderObj) {
+		// Optimize merge operation based on specific requirements
+		// For example, shallow merge can be used if objects are not deeply nested
+		mergedBorderObj = merge(rowBorderRadiusObj, borderObj);
+	} else {
+		mergedBorderObj = rowBorderRadiusObj;
+	}
 
 	return {
 		[`${target} > .maxi-background-displayer`]:
-			includeBorder && !isEmpty(borderObj.general)
+			includeBorder && borderObj && !isEmpty(borderObj.general)
 				? mergedBorderObj
 				: rowBorderRadiusObj,
 	};
@@ -1194,45 +1200,43 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}block-background-status-hover`])
+	if (isHover && !props[`${prefix}block-background-status-hover`]) {
 		return response;
+	}
 
-	const layers = compact([
-		...getAttributeValue({
-			target: 'background-layers',
-			props,
-			prefix,
-		}),
-		...(isHover && [
-			...getAttributeValue({
+	const baseLayers = getAttributeValue({
+		target: 'background-layers',
+		props,
+		prefix,
+	});
+
+	const hoverLayers = isHover
+		? getAttributeValue({
 				target: 'background-layers',
 				props,
 				prefix,
 				isHover,
-			}),
-		]),
-	]);
+		  })
+		: [];
 
-	if (layers && layers.length > 0)
+	const layers = compact([...baseLayers, ...hoverLayers]);
+
+	if (layers.length > 0) {
 		BREAKPOINTS.forEach(breakpoint => {
-			response = {
-				...merge(
-					{ ...response },
-					{
-						...getBackgroundLayers({
-							response,
-							layers,
-							target,
-							isHover,
-							blockStyle,
-							prefix,
-							breakpoint,
-							ignoreMediaAttributes,
-						}),
-					}
-				),
-			};
+			const backgroundLayers = getBackgroundLayers({
+				response,
+				layers,
+				target,
+				isHover,
+				blockStyle,
+				prefix,
+				breakpoint,
+				ignoreMediaAttributes,
+			});
+
+			response = { ...response, ...backgroundLayers };
 		});
+	}
 
 	return response;
 };
@@ -1259,15 +1263,19 @@ export const getBackgroundStyles = ({
 
 		if (!currentActiveMedia) return;
 
-		merge(response, {
-			...(currentActiveMedia === 'color' && {
+		let backgroundObject = {};
+
+		if (currentActiveMedia === 'color') {
+			const colorAttributes = getGroupAttributes(
+				props,
+				['background', 'backgroundColor'],
+				isHover,
+				prefix
+			);
+
+			backgroundObject = {
 				background: getColorBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['background', 'backgroundColor'],
-						isHover,
-						prefix
-					),
+					...colorAttributes,
 					blockStyle,
 					isButton,
 					breakpoint,
@@ -1277,15 +1285,18 @@ export const getBackgroundStyles = ({
 					scValues,
 					backgroundColorProperty,
 				}),
-			}),
-			...(currentActiveMedia === 'gradient' && {
+			};
+		} else if (currentActiveMedia === 'gradient') {
+			const gradientAttributes = getGroupAttributes(
+				props,
+				['backgroundColor', 'backgroundGradient'],
+				isHover,
+				prefix
+			);
+
+			backgroundObject = {
 				background: getGradientBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['backgroundColor', 'backgroundGradient'],
-						isHover,
-						prefix
-					),
+					...gradientAttributes,
 					blockStyle,
 					isButton,
 					breakpoint,
@@ -1294,8 +1305,10 @@ export const getBackgroundStyles = ({
 					isIconInherit,
 					scValues,
 				}),
-			}),
-		});
+			};
+		}
+
+		merge(response, backgroundObject);
 	});
 
 	return response;

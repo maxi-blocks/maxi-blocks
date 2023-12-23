@@ -9,14 +9,19 @@ import getPaletteColor from '../style-cards/getPaletteColor';
 import { isNumber } from 'lodash';
 
 const getVarWithColor = ({ blockStyle, variable }) => {
+	// Early return for variables that don't include 'color-'
+	if (!variable.includes('color-')) {
+		return `var(--maxi-${blockStyle}-${variable})`;
+	}
+
+	const colorPart = variable.split('-')[1];
 	const color = getPaletteColor({
 		blockStyle,
-		color: variable.replace('color-', ''),
-	}).replace(/ /g, '');
+		color: colorPart,
+	})?.replace(/ /g, '');
 
-	return `var(--maxi-${blockStyle}-${variable}${
-		variable.includes('color-') && color ? `,${color}` : ''
-	})`;
+	// Use color in the return value only if it's truthy
+	return `var(--maxi-${blockStyle}-${variable}${color ? `,${color}` : ''})`;
 };
 
 const getColorRGBAString = ({

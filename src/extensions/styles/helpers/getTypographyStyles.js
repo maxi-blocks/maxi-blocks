@@ -151,18 +151,44 @@ const getTypographyStyles = ({
 		});
 	};
 
+	const getFontSizeValue = breakpoint => {
+		const fontSize = getValue('font-size', breakpoint);
+
+		if (isNil(fontSize)) return null;
+
+		const fontSizeUnit = getUnitValue('font-size-unit', breakpoint);
+
+		const clampStatus = getValue('font-size-clamp-status', breakpoint);
+
+		if (clampStatus) {
+			const clampMin = getValue('font-size-clamp-min', breakpoint);
+			const clampMinUnit = getUnitValue(
+				'font-size-clamp-min-unit',
+				breakpoint
+			);
+			const clampMax = getValue('font-size-clamp-max', breakpoint);
+			const clampMaxUnit = getUnitValue(
+				'font-size-clamp-max-unit',
+				breakpoint
+			);
+
+			if (!isNil(clampMin) && !isNil(clampMax)) {
+				return {
+					'font-size': `clamp(${clampMin}${clampMinUnit}, ${fontSize}${fontSizeUnit}, ${clampMax}${clampMaxUnit})`,
+				};
+			}
+		}
+
+		return { 'font-size': `${fontSize}${fontSizeUnit}` };
+	};
+
 	breakpoints.forEach(breakpoint => {
 		const typography = {
 			...(!isNil(getValue('font-family', breakpoint)) && {
 				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
-			...(!isNil(getValue('font-size', breakpoint)) && {
-				'font-size': `${getValue(
-					'font-size',
-					breakpoint
-				)}${getUnitValue('font-size-unit', breakpoint)}`,
-			}),
+			...getFontSizeValue(breakpoint),
 			...(!isNil(getValue('line-height', breakpoint)) && {
 				'line-height': `${getValue('line-height', breakpoint)}${
 					getUnitValue('line-height-unit', breakpoint) || ''

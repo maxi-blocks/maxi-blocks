@@ -11,13 +11,14 @@ import { useState, useContext } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import AlignmentControl from '../alignment-control';
+import ClampControl from '../clamp-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import FontWeightControl from '../font-weight-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import TextShadowControl from '../text-shadow-control';
 import SettingTabsControl from '../setting-tabs-control';
-import FontWeightControl from '../font-weight-control';
+import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
 	getTypographyValue,
@@ -613,36 +614,17 @@ const TypographyControl = props => {
 						disableRTC
 					/>
 				)}
-				<AdvancedNumberControl
+				<ClampControl
 					className='maxi-typography-control__size'
 					label={__('Font size', 'maxi-blocks')}
-					enableUnit
-					unit={getValue('font-size-unit')}
-					defaultUnit={getDefault('font-size-unit')}
-					onChangeUnit={val => {
-						onChangeFormat({
-							[`${prefix}font-size-unit`]: val,
-						});
-					}}
-					placeholder={getValue('font-size')}
-					value={getValue('font-size', !isStyleCards)}
-					defaultValue={getDefault('font-size')}
-					onChangeValue={(val, unit) => {
-						onChangeFormat({
-							[`${prefix}font-size`]: val,
-							...(unit && { [`${prefix}font-size-unit`]: unit }),
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}font-size-unit`]:
-									getDefault('font-size-unit'),
-								[`${prefix}font-size`]: getDefault('font-size'),
-							},
-							{ isReset: true }
-						)
-					}
+					valueKey='font-size'
+					getValue={key => getValue(key, !isStyleCards)}
+					getUnitValue={getValue}
+					getPlaceholder={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					isStyleCards={isStyleCards}
+					prefix={prefix}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>

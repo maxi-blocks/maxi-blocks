@@ -16,6 +16,24 @@ export const rawTypography = {
 	'font-size': {
 		type: 'number',
 	},
+	'font-size-clamp-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'font-size-clamp-min': {
+		type: 'number',
+	},
+	'font-size-clamp-min-unit': {
+		type: 'string',
+		default: 'rem',
+	},
+	'font-size-clamp-max': {
+		type: 'number',
+	},
+	'font-size-clamp-max-unit': {
+		type: 'string',
+		default: 'rem',
+	},
 	'line-height-unit': {
 		type: 'string',
 		default: 'px',

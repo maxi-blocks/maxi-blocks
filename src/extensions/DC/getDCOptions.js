@@ -109,7 +109,7 @@ const getDCOptions = async (
 			orderByRelations.includes(relation)
 		) {
 			return {
-				label: limitString(item.name, 10),
+				label: limitString(item.name, 20),
 				value: +item.id,
 			};
 		}

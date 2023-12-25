@@ -25,6 +25,7 @@
 		select {
 			border: 2px solid var(--maxi-grey-1-color);
 			color: var(--maxi-grey-1-color);
+			text-overflow: ellipsis;
 		}
 	}
 	.maxi-axis-control {

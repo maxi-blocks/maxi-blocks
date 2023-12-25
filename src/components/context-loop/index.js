@@ -244,7 +244,7 @@ const ContextLoop = props => {
 								relationTypes.includes(type) &&
 								type === 'users' && (
 									<SelectControl
-										label={__('Author id', 'maxi-blocks')}
+										label={__('Author ID', 'maxi-blocks')}
 										value={author}
 										options={postAuthorOptions}
 										onChange={value =>
@@ -262,6 +262,7 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
+
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
@@ -277,7 +278,7 @@ const ContextLoop = props => {
 															''
 													  )
 													: type
-											)} id`,
+											)} ID`,
 											'maxi-blocks'
 										)}
 										value={id}

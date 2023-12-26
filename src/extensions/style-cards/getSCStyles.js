@@ -30,9 +30,9 @@ const settings = [
 	'text-decoration',
 	'text-transform',
 	'letter-spacing',
-	'text-wrap',
 	'white-space',
 	'word-spacing',
+	'text-wrap',
 	'margin-bottom',
 	'text-indent',
 ];

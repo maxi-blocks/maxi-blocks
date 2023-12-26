@@ -21,6 +21,7 @@ const SVGLayer = props => {
 		prefix = '',
 		isHover = false,
 		isLayer = false,
+		isIB = false,
 	} = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
@@ -58,6 +59,7 @@ const SVGLayer = props => {
 						clientId={clientId}
 						isHover={isHover}
 						isLayer
+						isIB={isIB}
 						breakpoint={breakpoint}
 					/>
 					<SizeAndPositionLayerControl

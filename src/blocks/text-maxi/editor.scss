@@ -54,12 +54,11 @@ html[dir='rtl'] {
 	.maxi-text-block {
 		ol,
 		ul {
-			padding-right: revert !important;
+			padding-left: 0 !important;
 			li {
 				direction: rtl;
 				&::before {
-					margin: revert !important;
-					right: revert !important;
+					margin-left: revert !important;
 				}
 			}
 		}

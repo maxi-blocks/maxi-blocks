@@ -396,12 +396,16 @@ const getMarkerObject = props => {
 		}),
 		...(typeOfList === 'ul' && {
 			listContent: {
-				general: {
-					content: `counter(li${
-						listStyle && listStyle === 'custom' && listStyleCustom
-							? `, ${listStyleCustom}`
-							: `, ${listStyle ?? 'disc'}`
-					})`,
+				igeneral: {
+					content: isURL
+						? ''
+						: `counter(li${
+								listStyle &&
+								listStyle === 'custom' &&
+								listStyleCustom
+									? `, ${listStyleCustom}`
+									: `, ${listStyle ?? 'disc'}`
+						  })`,
 				},
 			},
 		}),
@@ -420,7 +424,8 @@ const getMarkerObject = props => {
 						...(listStyle === 'custom' &&
 							listStyleCustom && {
 								...(isURL(listStyleCustom) && {
-									content: `url('${listStyleCustom}')`,
+									'background-image': `url('${listStyleCustom}')`,
+									'background-size': 'cover',
 								}),
 								...(listStyleCustom.includes('</svg>') && {
 									content: `url("data:image/svg+xml,${getSVGListStyle(
@@ -553,6 +558,11 @@ const getMarkerObject = props => {
 										} - (${sizeNum / 2 + sizeUnit}))`,
 									}),
 								}),
+						  }
+						: isURL
+						? {
+								height: sizeNum + sizeUnit,
+								width: sizeNum + sizeUnit,
 						  }
 						: {
 								'font-size': sizeNum + sizeUnit,
@@ -700,9 +710,7 @@ const getStyles = props => {
 								'typographyHover',
 							]),
 						},
-						[
-							`.maxi-block--has-link ${element}`,
-						],
+						[`.maxi-block--has-link ${element}`],
 						props.blockStyle
 					),
 				}),

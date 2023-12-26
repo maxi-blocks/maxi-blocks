@@ -313,7 +313,7 @@ class MaxiBlockComponent extends Component {
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
 		// unnecessary amount of process and resources
-		this.displayStyles(!!this.rootSlot);
+		if (!this.rootSlot) this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -473,14 +473,21 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (!shouldDisplayStyles) {
-			!this.isReusable &&
-				this.displayStyles(
+			if (!this.isReusable) {
+				const isBreakpointChange =
 					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint)
-				);
-			this.isReusable && this.displayStyles();
+					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint);
+				// Don't update styles on text-maxi state wpVersion update
+				const isWPVersionUpdated =
+					prevState.wpVersion !== this.state.wpVersion;
+
+				if (!isBreakpointChange && !isWPVersionUpdated) {
+					this.displayStyles();
+				}
+			} else {
+				this.displayStyles();
+			}
 		}
 
 		this.hideGutenbergPopover();
@@ -950,7 +957,7 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles(isBreakpointChange = false) {
+	displayStyles() {
 		if (!document.body.classList.contains('maxi-blocks--active')) {
 			return;
 		}
@@ -960,16 +967,13 @@ class MaxiBlockComponent extends Component {
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
-
 		this.rootSlot = this.getRootEl(iframe);
 
-		let obj;
-		let breakpoints;
-		let customDataRelations;
+		if (this.rootSlot) {
+			const isSiteEditor = getIsSiteEditor();
 
-		if (!isBreakpointChange) {
-			obj = this.getStylesObject;
-			breakpoints = this.getBreakpoints;
+			const obj = this.getStylesObject;
+			const breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
@@ -978,15 +982,6 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
-			const customData = this.getCustomData;
-			dispatch('maxiBlocks/customData').updateCustomData(customData);
-
-			customDataRelations = customData?.[uniqueID]?.relations;
-		}
-
-		const isSiteEditor = getIsSiteEditor();
-
-		if (this.rootSlot) {
 			const styleComponent = (
 				<StyleComponent
 					uniqueID={uniqueID}
@@ -994,13 +989,17 @@ class MaxiBlockComponent extends Component {
 					currentBreakpoint={this.props.deviceType}
 					blockBreakpoints={breakpoints}
 					isSiteEditor={isSiteEditor}
-					isBreakpointChange={isBreakpointChange}
 					isPreview={this.isTemplatePartPreview}
 					isIframe={!!iframe}
 				/>
 			);
 			this.rootSlot.render(styleComponent);
 		}
+
+		const customData = this.getCustomData;
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+		const customDataRelations = customData?.[uniqueID]?.relations;
 
 		if (customDataRelations) {
 			const isRelationsPreview =

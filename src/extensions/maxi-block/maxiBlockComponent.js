@@ -49,7 +49,7 @@ import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
-import propsObjectCleaner from './propsObjectCleaner';
+import selectivePropsCompare from './selectivePropsCompare';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
@@ -365,17 +365,10 @@ class MaxiBlockComponent extends Component {
 					nextProps,
 					this.state,
 					nextState
-				) ||
-				!isEqual(
-					propsObjectCleaner(this.props),
-					propsObjectCleaner(nextProps)
-				)
+				) || !selectivePropsCompare(this.props, nextProps)
 			);
 
-		return !isEqual(
-			propsObjectCleaner(this.props),
-			propsObjectCleaner(nextProps)
-		);
+		return !selectivePropsCompare(this.props, nextProps);
 	}
 
 	/**

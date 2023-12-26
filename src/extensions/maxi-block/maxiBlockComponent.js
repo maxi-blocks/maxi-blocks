@@ -66,11 +66,13 @@ import { diff } from 'deep-object-diff';
  */
 const StyleComponent = ({
 	uniqueID,
+	blockStyle,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
 	isBreakpointChange,
+	isBlockStyleChange,
 	currentBreakpoint,
 }) => {
 	const { breakpoints } = useSelect(select => {
@@ -81,13 +83,32 @@ const StyleComponent = ({
 		return { breakpoints };
 	});
 
-	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
+	const { saveCSSCache, saveRawCSSCache } = useDispatch('maxiBlocks/styles');
 
-	if (isBreakpointChange) {
-		const styleContent =
-			select('maxiBlocks/styles').getCSSCache(uniqueID)[
-				currentBreakpoint
-			];
+	if (isBreakpointChange || isBlockStyleChange) {
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		let styleContent = cssCache[currentBreakpoint];
+
+		if (isBlockStyleChange) {
+			const previousBlockStyle =
+				blockStyle === 'light' ? 'dark' : 'light';
+
+			const newCssCache = Object.entries(cssCache).reduce(
+				(acc, [breakpoint, css]) => {
+					acc[breakpoint] = css.replaceAll(
+						`--maxi-${previousBlockStyle}-`,
+						`--maxi-${blockStyle}-`
+					);
+					if (currentBreakpoint === breakpoint) {
+						styleContent = acc[breakpoint];
+					}
+					return acc;
+				},
+				{}
+			);
+
+			saveRawCSSCache(uniqueID, newCssCache);
+		}
 
 		return <style>{styleContent}</style>;
 	}
@@ -485,7 +506,9 @@ class MaxiBlockComponent extends Component {
 					this.props.deviceType !== prevProps.deviceType ||
 						(this.props.baseBreakpoint !==
 							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint)
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
 				);
 			this.isReusable && this.displayStyles();
 		}
@@ -957,7 +980,7 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles(isBreakpointChange = false) {
+	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
 		const iframe = document.querySelector(
@@ -970,7 +993,7 @@ class MaxiBlockComponent extends Component {
 		let breakpoints;
 		let customDataRelations;
 
-		if (!isBreakpointChange) {
+		if (!isBreakpointChange && !isBlockStyleChange) {
 			obj = this.getStylesObject;
 			breakpoints = this.getBreakpoints;
 
@@ -994,11 +1017,13 @@ class MaxiBlockComponent extends Component {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
+						blockStyle={this.props.attributes.blockStyle}
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
+						isBlockStyleChange={isBlockStyleChange}
 						isPreview={this.isTemplatePartPreview}
 						isIframe={!!iframe}
 					/>

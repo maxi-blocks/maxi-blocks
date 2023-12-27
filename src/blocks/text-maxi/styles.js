@@ -396,16 +396,17 @@ const getMarkerObject = props => {
 		}),
 		...(typeOfList === 'ul' && {
 			listContent: {
-				igeneral: {
-					content: isURL
-						? ''
-						: `counter(li${
-								listStyle &&
-								listStyle === 'custom' &&
-								listStyleCustom
-									? `, ${listStyleCustom}`
-									: `, ${listStyle ?? 'disc'}`
-						  })`,
+				general: {
+					content:
+						isURL && typeOfList === 'ol'
+							? ''
+							: `counter(li${
+									listStyle &&
+									listStyle === 'custom' &&
+									listStyleCustom
+										? `, ${listStyleCustom}`
+										: `, ${listStyle ?? 'disc'}`
+							  })`,
 				},
 			},
 		}),
@@ -559,7 +560,10 @@ const getMarkerObject = props => {
 									}),
 								}),
 						  }
-						: isURL
+						: isURL &&
+						  typeOfList === 'ul' &&
+						  listStyle === 'custom' &&
+						  listStyleCustom
 						? {
 								height: sizeNum + sizeUnit,
 								width: sizeNum + sizeUnit,

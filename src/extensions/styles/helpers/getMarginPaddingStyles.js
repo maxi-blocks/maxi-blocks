@@ -17,40 +17,44 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
 
-	breakpoints.forEach(breakpoint => {
+	for (const breakpoint of breakpoints) {
 		response[breakpoint] = {};
-
-		['margin', 'padding'].forEach(type =>
-			keyWords.forEach(key => {
+		for (const type of ['margin', 'padding']) {
+			for (const key of keyWords) {
 				const attributeName = `${prefix}${type}-${key}`;
+				const lastValue = getLastBreakpointAttribute({
+					target: attributeName,
+					breakpoint,
+					attributes: obj,
+				});
+				const lastUnit = getLastBreakpointAttribute({
+					target: `${attributeName}-unit`,
+					breakpoint,
+					attributes: obj,
+				});
+				const value = obj[`${attributeName}-${breakpoint}`];
+				const unit = obj[`${attributeName}-unit-${breakpoint}`]; // Note the correction here
 
-				const [lastValue, lastUnit, value, unit] = [
-					target =>
-						getLastBreakpointAttribute({
-							target,
-							breakpoint,
-							attributes: obj,
-						}),
-					target => obj[`${target}-${breakpoint}`],
-				].flatMap(callback =>
-					['', '-unit'].map(suffix =>
-						callback(`${attributeName}${suffix}`)
-					)
-				);
+				// Refine comparison logic to handle cases where the value remains constant across breakpoints but the unit changes
+				if (!isNil(lastValue)) {
+					const isValueEqual = lastValue === value;
+					const isUnitEqual = lastUnit === unit;
+					const shouldSetResponse = isValueEqual || isUnitEqual;
 
-				if (
-					!isNil(lastValue) &&
-					(lastValue === value || lastUnit === unit)
-				)
-					response[breakpoint][`${type}-${key}`] =
-						lastValue === 'auto'
-							? 'auto'
-							: `${lastValue}${lastUnit}`;
+					if (shouldSetResponse) {
+						response[breakpoint][`${type}-${key}`] =
+							lastValue === 'auto'
+								? 'auto'
+								: `${lastValue}${lastUnit}`;
+					}
+				}
 
-				if (value === '') delete response[breakpoint][`${type}-${key}`];
-			})
-		);
-	});
+				if (value === '') {
+					delete response[breakpoint][`${type}-${key}`];
+				}
+			}
+		}
+	}
 
 	return response;
 };

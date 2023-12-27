@@ -44,6 +44,7 @@ const attrFilter = attr =>
 	(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 const blockEditorStore = select('core/block-editor');
+const maxiBlocksStore = select('maxiBlocks');
 
 /**
  * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
@@ -67,6 +68,7 @@ const getLastBreakpointAttributeSingle = (
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
+
 	if (isNil(breakpoint))
 		return getAttributeValueWrapper(
 			target,
@@ -75,7 +77,6 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 			keys
 		);
-	const maxiBlocksStore = select('maxiBlocks');
 
 	const currentBreakpoint =
 		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
@@ -112,8 +113,8 @@ const getLastBreakpointAttributeSingle = (
 	);
 
 	if (
-		attrFilter(currentAttr) &&
-		(baseBreakpoint !== 'xxl' || breakpoint === 'xxl')
+		(baseBreakpoint !== 'xxl' || breakpoint === 'xxl') &&
+		attrFilter(currentAttr)
 	)
 		return currentAttr;
 
@@ -138,7 +139,7 @@ const getLastBreakpointAttributeSingle = (
 			);
 	}
 
-	if (isHover && !attrFilter(currentAttr))
+	if (isHover && !attrFilter(currentAttr)) {
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
 			breakpoint,
@@ -147,10 +148,11 @@ const getLastBreakpointAttributeSingle = (
 			avoidXXL,
 			keys
 		);
+	}
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
 	// check for the win selected breakpoint
-	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
+	if (!currentAttr && breakpoint === 'general' && baseBreakpoint) {
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
 			baseBreakpoint,
@@ -159,6 +161,7 @@ const getLastBreakpointAttributeSingle = (
 			baseBreakpoint === 'xxl' ? false : avoidXXL,
 			keys
 		);
+	}
 
 	return currentAttr;
 };

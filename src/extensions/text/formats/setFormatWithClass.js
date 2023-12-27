@@ -153,7 +153,15 @@ const updateCustomFormat = ({
 		styleCard,
 	});
 
-	if (!isEmpty(getCustomFormat(newTypography, formatClassName, isHover))) {
+	if (
+		!isEmpty(
+			getCustomFormat(
+				{ ...typography, ...newTypography },
+				formatClassName,
+				isHover
+			)
+		)
+	) {
 		const { content: newContent, formatValue: newFormatValue } =
 			applyCustomFormat({
 				formatValue,
@@ -281,7 +289,7 @@ const mergeNewFormat = ({
 		styleCard,
 	});
 
-	let newTypography = { ...typography };
+	let newTypography = {};
 	let newFormatValue = { ...formatValue };
 	let newContent = '';
 
@@ -314,7 +322,7 @@ const mergeNewFormat = ({
 		}
 
 		const { typography: cleanedTypography } = updateCustomFormatStyle({
-			typography: newTypography,
+			typography: { ...typography, ...newTypography },
 			currentClassName: useCurrent ? currentClassName : formatClassName,
 			breakpoint,
 			value,
@@ -373,7 +381,7 @@ const mergeNewFormat = ({
 		);
 
 		if (isRemovable)
-			delete newTypography['custom-formats'][currentClassName];
+			delete newTypography['custom-formats']?.[currentClassName];
 	}
 	return {
 		typography: newTypography,
@@ -409,7 +417,7 @@ const mergeMultipleFormats = ({
 	textLevel,
 	styleCard,
 }) => {
-	let newTypography = { ...typography };
+	let newTypography = {};
 	let newContent = '';
 	let newFormatValue = { ...formatValue };
 
@@ -426,7 +434,7 @@ const mergeMultipleFormats = ({
 
 		if (!Object.keys(newMultiFormatObj)[i]) return;
 
-		const formatClassName = getFormatClassName(newTypography, isHover);
+		const formatClassName = getFormatClassName(typography, isHover);
 		const { className, start, end } = Object.values(newMultiFormatObj)[i];
 
 		newFormatValue = {
@@ -447,7 +455,7 @@ const mergeMultipleFormats = ({
 			formatValue: newCustomFormatValue,
 		} = className
 			? mergeNewFormat({
-					typography: newTypography,
+					typography: { ...typography, ...newTypography },
 					formatValue: newFormatValue,
 					currentClassName: className,
 					formatClassName,
@@ -460,7 +468,7 @@ const mergeMultipleFormats = ({
 					styleCard,
 			  })
 			: setNewFormat({
-					typography: newTypography,
+					typography: { ...typography, ...newTypography },
 					formatValue: newFormatValue,
 					formatClassName,
 					breakpoint,
@@ -587,8 +595,8 @@ const setFormatWithClass = ({
 		formatValue: newFormatValue,
 	} = flatFormatsWithClass({
 		formatValue: preformattedFormatValue || formatValue,
-		typography: preformattedTypography || typography,
-		changedTypography: preformattedTypography || typography,
+		typography: { ...typography, ...preformattedTypography },
+		changedTypography: preformattedTypography || {},
 		content: preformattedContent,
 		isList,
 		returnFormatValue: true,

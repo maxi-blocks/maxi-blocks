@@ -77,14 +77,13 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
 export const flatRepeatedClassNames = (
 	repeatedClasses,
 	formatValue,
-	typography,
+	newTypography,
 	isHover
 ) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
 	const newFormatValue = { ...formatValue };
-	const newTypography = { ...typography };
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
 		if (formatEl)
@@ -145,8 +144,10 @@ export const removeUnnecessaryFormats = ({
 		},
 		isHover
 	);
-	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
-		changedTypography;
+	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } = {
+		...typography,
+		...changedTypography,
+	};
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 

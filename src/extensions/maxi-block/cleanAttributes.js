@@ -588,16 +588,22 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 			baseBreakpoint
 		);
 		const baseAttr = { ...attributes, ...newAttributes }?.[baseLabel];
-		// Only update base attribute if general was updated
-		const generalAttr =
-			newAttributes?.[
-				getAttributeKey(simpleLabel, isHover, '', 'general')
-			];
+		const generalLabel = getAttributeKey(
+			simpleLabel,
+			isHover,
+			'',
+			'general'
+		);
+		const newGeneralAttr = newAttributes?.[generalLabel];
+		const generalAttr = { ...attributes, ...newAttributes }?.[generalLabel];
 
 		if (
-			!isNil(generalAttr) &&
-			!isEqual(baseAttr, generalAttr) &&
-			!isEqual(generalAttr, value)
+			(!isNil(newGeneralAttr) &&
+				!isEqual(baseAttr, generalAttr) &&
+				!isEqual(generalAttr, value)) ||
+			(!isNil(generalAttr) &&
+				isNil(baseAttr) &&
+				!isEqual(generalAttr, value))
 		)
 			result[baseLabel] = generalAttr;
 	});

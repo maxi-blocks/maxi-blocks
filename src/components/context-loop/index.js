@@ -25,6 +25,7 @@ import {
 	orderTypes,
 	relationOptions,
 	relationTypes,
+	sourceOptions,
 } from '../../extensions/DC/constants';
 import {
 	getCLAttributes,
@@ -37,6 +38,7 @@ import {
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
 } from '../../extensions/DC/withMaxiContextLoop';
 import getPostTypes from '../../extensions/DC/getPostTypes';
+import ACFSettingsControl from '../dynamic-content/acf-settings-control';
 
 /**
  * External dependencies
@@ -57,6 +59,7 @@ const ContextLoop = props => {
 
 	const {
 		'cl-status': status,
+		'cl-source': source,
 		'cl-type': type,
 		'cl-relation': relation,
 		'cl-id': id,
@@ -66,6 +69,7 @@ const ContextLoop = props => {
 		'cl-order': order,
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
+		'cl-acf-group': acfGroup,
 	} = getCLAttributes(contextLoop);
 
 	const isTypeHasRelations =
@@ -144,10 +148,26 @@ const ContextLoop = props => {
 	});
 
 	useEffect(() => {
-		getPostTypes(contentType).then(postTypes => {
+		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
 			setPostTypesOptions(postTypes);
 		});
-	}, [contentType]);
+	}, [contentType, source]);
+
+	useEffect(() => {
+		if (source === 'acf' && typeof acf === 'undefined') {
+			const validatedAttributes = validationsValues(
+				type,
+				field,
+				relation,
+				contentType
+			);
+
+			changeProps({
+				'cl-source': 'wp',
+				...validatedAttributes,
+			});
+		}
+	}, []);
 
 	useEffect(() => {
 		fetchDcData().catch(console.error);
@@ -195,6 +215,37 @@ const ContextLoop = props => {
 								}
 							/>
 						)}
+					{sourceOptions.length > 1 && (
+						<SelectControl
+							label={__('Source', 'maxi-blocks')}
+							value={source}
+							options={sourceOptions}
+							newStyle
+							onChange={value => {
+								const validatedAttributes = validationsValues(
+									type,
+									field,
+									relation,
+									contentType,
+									value,
+									true
+								);
+
+								changeProps({
+									'cl-source': value,
+									...validatedAttributes,
+								});
+							}}
+						/>
+					)}
+					{source === 'acf' && (
+						<ACFSettingsControl
+							onChange={onChange}
+							contentType={contentType}
+							group={acfGroup}
+							isCL
+						/>
+					)}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}

@@ -8,7 +8,6 @@ const dynamicContent = {
 	},
 	'dc-source': {
 		type: 'string',
-		default: 'wp',
 	},
 	'dc-type': {
 		type: 'string',

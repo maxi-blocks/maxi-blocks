@@ -292,8 +292,9 @@ const DynamicContent = props => {
 					{source === 'acf' && (
 						<ACFSettingsControl
 							onChange={onChange}
-							dynamicContent={dcValues}
 							contentType={contentType}
+							group={dcValues.acfGroup}
+							field={field}
 						/>
 					)}
 					<SelectControl

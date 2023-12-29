@@ -652,6 +652,7 @@ export const relationDictionary = {
 
 export const attributeDefaults = {
 	status: false,
+	source: 'wp',
 	type: 'posts',
 	relation: 'by-id',
 	'order-by': 'by-date',

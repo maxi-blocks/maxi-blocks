@@ -101,6 +101,7 @@ const ACFSettingsControl = props => {
 				label='ACF Group'
 				value={group}
 				options={groupOptions}
+				newStyle
 				onChange={value =>
 					onChange({
 						'dc-acf-group': value,
@@ -111,6 +112,7 @@ const ACFSettingsControl = props => {
 				label='ACF Field'
 				value={field}
 				options={fieldsOptions}
+				newStyle
 				onChange={value =>
 					onChange({
 						'dc-field': value,

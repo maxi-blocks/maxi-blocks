@@ -8,6 +8,11 @@ import { resolveSelect } from '@wordpress/data';
  */
 import { nameDictionary, typeOptions } from './constants';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 // Standard types that are not supported by Maxi
 const excludedStandardTypes = [
 	'nav_menu_item',
@@ -35,10 +40,12 @@ const getPostTypes = async contentType => {
 			value: postType.slug,
 		}));
 
-	return {
-		'Standard types': typeOptions[contentType],
-		'Custom types': customPostTypes,
-	};
+	return isEmpty(customPostTypes)
+		? typeOptions[contentType]
+		: {
+				'Standard types': typeOptions[contentType],
+				'Custom types': customPostTypes,
+		  };
 };
 
 export default getPostTypes;

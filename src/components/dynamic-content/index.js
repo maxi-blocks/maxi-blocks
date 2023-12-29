@@ -31,7 +31,6 @@ const TextControl = loadable(() => import('../text-control'));
 
 import { validationsValues } from '../../extensions/DC/utils';
 import {
-	typeOptions,
 	fieldOptions,
 	relationOptions,
 	relationTypes,
@@ -52,6 +51,7 @@ import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
+import getPostTypes from '../../extensions/DC/getPostTypes';
 
 /**
  * Styles
@@ -78,6 +78,7 @@ const DynamicContent = props => {
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+	const [postTypesOptions, setPostTypesOptions] = useState(null);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -228,6 +229,12 @@ const DynamicContent = props => {
 	}, [contentType, type]);
 
 	useEffect(() => {
+		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
+			setPostTypesOptions(postTypes);
+		});
+	}, [contentType, source]);
+
+	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
 			const validatedAttributes = validationsValues(
 				type,
@@ -292,11 +299,7 @@ const DynamicContent = props => {
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={
-							source === 'wp'
-								? typeOptions[contentType]
-								: typeOptions[source]
-						}
+						options={postTypesOptions}
 						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(

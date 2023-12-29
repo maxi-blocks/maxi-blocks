@@ -25,7 +25,6 @@ import {
 	orderTypes,
 	relationOptions,
 	relationTypes,
-	typeOptions,
 } from '../../extensions/DC/constants';
 import {
 	getCLAttributes,
@@ -37,6 +36,7 @@ import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
 } from '../../extensions/DC/withMaxiContextLoop';
+import getPostTypes from '../../extensions/DC/getPostTypes';
 
 /**
  * External dependencies
@@ -51,6 +51,7 @@ const ContextLoop = props => {
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+	const [postTypesOptions, setPostTypesOptions] = useState(null);
 
 	const classes = classnames('maxi-context-loop', className);
 
@@ -143,6 +144,12 @@ const ContextLoop = props => {
 	});
 
 	useEffect(() => {
+		getPostTypes(contentType).then(postTypes => {
+			setPostTypesOptions(postTypes);
+		});
+	}, [contentType]);
+
+	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
@@ -191,7 +198,7 @@ const ContextLoop = props => {
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={typeOptions[contentType]}
+						options={postTypesOptions}
 						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(

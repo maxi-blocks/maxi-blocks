@@ -96,9 +96,6 @@ html[dir='rtl'] {
 			padding-left: 0 !important;
 			li {
 				direction: rtl;
-				&::before {
-					margin-left: revert !important;
-				}
 			}
 		}
 	}

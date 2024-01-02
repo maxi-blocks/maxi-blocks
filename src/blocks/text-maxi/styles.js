@@ -579,7 +579,8 @@ const getMarkerObject = props => {
 										-sizeNum + sizeUnit,
 							  })),
 					...(listStylePosition === 'inside' && {
-						'margin-right': indentMarkerSum,
+						[isRTL ? 'margin-left' : 'margin-right']:
+							indentMarkerSum,
 					}),
 					...(textPosition && {
 						'vertical-align': textPosition,

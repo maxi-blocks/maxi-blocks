@@ -73,7 +73,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(columnSizeInput).toStrictEqual('50');
+		expect(columnSizeInput).toStrictEqual('100');
 
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -112,7 +112,7 @@ describe('Column Maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(responsiveMOption).toStrictEqual('50');
+		expect(responsiveMOption).toStrictEqual('100');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

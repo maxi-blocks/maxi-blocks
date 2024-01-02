@@ -62,7 +62,7 @@ const styleProcessor = (obj, data, props) => {
 
 	// Process custom styles if they exist
 	const newCssSelectors = getSelectorsCss(selectors, props);
-	const newTransformSelectors = getTransformSelectors(selectors, props);
+	const newTransformSelectors = getTransformSelectors(selectors, props, true);
 
 	const advancedCssObject = getAdvancedCssObject(props);
 	if (!isEmpty(advancedCssObject)) merge(styles, advancedCssObject);
@@ -74,7 +74,8 @@ const styleProcessor = (obj, data, props) => {
 	if (!isEmpty(newTransformSelectors)) {
 		const transformObject = getTransformStyles(
 			props,
-			newTransformSelectors
+			newTransformSelectors,
+			true
 		);
 
 		if (!isEmpty(transformObject)) {

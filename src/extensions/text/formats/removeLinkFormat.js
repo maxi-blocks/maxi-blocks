@@ -108,7 +108,7 @@ const removeLinkFormat = ({
 							end: start,
 						},
 						isList,
-						typography: cleanTypography,
+						typography: { ...typography, ...cleanTypography },
 						value: {
 							'text-decoration': 'underline',
 						},
@@ -126,7 +126,11 @@ const removeLinkFormat = ({
 							end: formatLength,
 						},
 						isList,
-						typography: firstPartTypography,
+						typography: {
+							...typography,
+							...cleanTypography,
+							...firstPartTypography,
+						},
 						value: {
 							'text-decoration': 'underline',
 						},
@@ -134,7 +138,11 @@ const removeLinkFormat = ({
 				  })
 				: { ...firstPartTypography };
 
-		return { ...secondPartTypography };
+		return {
+			...cleanTypography,
+			...firstPartTypography,
+			...secondPartTypography,
+		};
 	}
 
 	if (

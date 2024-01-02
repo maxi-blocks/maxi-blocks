@@ -1151,9 +1151,7 @@ class MaxiBlocks_Styles
                             }
                         }
                     } else {
-                        foreach ($meta[$block_name] as $json) {
-                            $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
-                        }
+                        $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
                     }
 
                 }

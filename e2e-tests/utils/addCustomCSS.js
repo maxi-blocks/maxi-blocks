@@ -7,17 +7,8 @@ import getBlockStyle from './getBlockStyle';
 
 const checkCSS = async ({ page, cssInstances }) => {
 	for (let i = 0; i < cssInstances.length; i += 1) {
-		const instance = await cssInstances[i];
-		const labelForCss = await instance.evaluate(el =>
-			Array.from(el.classList)
-				.find(className => className.includes('maxi-css-code-editor--'))
-				.replace('maxi-css-code-editor--', '')
-		);
-
-		await page.waitForSelector(
-			`.maxi-css-code-editor--${labelForCss} textarea`
-		);
-		await page.$eval(`.maxi-css-code-editor--${labelForCss} textarea`, el =>
+		await page.waitForSelector(`.maxi-css-code-editor--${i + 1} textarea`);
+		await page.$eval(`.maxi-css-code-editor--${i + 1} textarea`, el =>
 			el.focus()
 		);
 
@@ -26,11 +17,9 @@ const checkCSS = async ({ page, cssInstances }) => {
 
 		// validate css
 		await page.waitForSelector(
-			`.maxi-css-code-editor__validate-button--${labelForCss}`
+			`.maxi-css-code-editor__validate-button--${i + 1}`
 		);
-		await page.click(
-			`.maxi-css-code-editor__validate-button--${labelForCss}`
-		);
+		await page.click(`.maxi-css-code-editor__validate-button--${i + 1}`);
 		await page.waitForTimeout(250);
 	}
 };

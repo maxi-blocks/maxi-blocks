@@ -27,7 +27,10 @@ const FontWeightControl = props => {
 	);
 
 	if (!isFontWeightAvailable) {
-		options.push({ label: getWeightLabel(fontWeight), value: +fontWeight });
+		options?.push({
+			label: getWeightLabel(fontWeight),
+			value: +fontWeight,
+		});
 	}
 
 	return (

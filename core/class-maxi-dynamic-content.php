@@ -31,6 +31,8 @@ class MaxiBlocks_DynamicContent
         'products' => 'product',
     ];
 
+    private $is_empty = false;
+
     /**
      * Initializes the plugin and its hooks.
      */
@@ -108,6 +110,8 @@ class MaxiBlocks_DynamicContent
         } else {
             $content = self::render_dc_image($attributes, $content);
         }
+
+        $content = self::render_dc_classes($attributes, $content);
 
         return $content;
     }
@@ -195,6 +199,7 @@ class MaxiBlocks_DynamicContent
 
         if (empty($response) && $response !== '0') {
             $response = 'No content found';
+            $this->is_empty = true;
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
@@ -268,7 +273,27 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
+            $this->is_empty = true;
         }
+
+        return $content;
+    }
+
+    public function render_dc_classes($attributes, $content)
+    {
+        @list(
+            'dc-hide' => $dc_hide
+        ) = $attributes;
+
+        $classes = [];
+
+        $classes[] = ($dc_hide && $this->is_empty) ? 'maxi-block--hidden' : '';
+
+        $content = str_replace(
+            '$class-to-replace',
+            implode(' ', array_filter($classes)),
+            $content
+        );
 
         return $content;
     }
@@ -676,14 +701,26 @@ class MaxiBlocks_DynamicContent
                 case 'slug':
                 case 'sku':
                 case 'review_count':
-                case 'average_rating':
                     return strval($product->get_data()[$dc_field]);
+                case 'average_rating':
+                    if (empty($product->get_average_rating())) {
+                        $this->is_empty = true;
+                    }
+                    return strval($product->get_average_rating());
                 case 'price':
                 case 'regular_price':
-                    return strip_tags(wc_price($product->get_data()[$dc_field]));
+                    $price = $product->get_data()[$dc_field];
+                    if (empty($price)) {
+                        $this->is_empty = true;
+                    }
+                    return strip_tags(wc_price($price));
                 case 'sale_price':
+                    $price = $product->get_sale_price();
+                    if (empty($price)) {
+                        $this->is_empty = true;
+                    }
                     if ($product->is_on_sale()) {
-                        return strip_tags(wc_price($product->get_sale_price()));
+                        return strip_tags(wc_price($price));
                     }
 
                     return strip_tags(wc_price($product->get_price()));
@@ -754,6 +791,9 @@ class MaxiBlocks_DynamicContent
             case 'total_discount':
             case 'total_fees':
             case 'total_fees_tax':
+                if (empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])) {
+                    $this->is_empty = true;
+                }
                 return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
             default:
                 return null;

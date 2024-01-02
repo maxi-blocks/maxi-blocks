@@ -1840,13 +1840,13 @@ describe('setFormatWithClass', () => {
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
-				'maxi-text-block__custom-format--3': {
+				'maxi-text-block__custom-format--2': {
 					'palette-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
 			content:
-				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
+				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">i</span>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2069,7 +2069,6 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'text-decoration-general': '',
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': '800',
@@ -2086,6 +2085,7 @@ describe('setFormatWithClass', () => {
 					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
+			'text-decoration-general': '',
 			content:
 				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">M</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">a</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--3">i</span>',
 		};
@@ -2473,7 +2473,6 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'font-weight-general': '800',
 			'custom-formats': {
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
@@ -2581,7 +2580,6 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
-			'font-weight-general': '800',
 			'custom-formats': {},
 			content: 'Testing Text Maxi',
 		};

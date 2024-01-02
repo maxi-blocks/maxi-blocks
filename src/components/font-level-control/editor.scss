@@ -2,6 +2,7 @@
 	display: flex;
 	flex-wrap: nowrap;
 	margin-bottom: 8px;
+	justify-content: space-between;
 
 	&__button {
 		display: flex;
@@ -30,6 +31,10 @@
 			border: none;
 			color: var(--maxi-secondary-color) !important;
 			font-weight: 700;
+		}
+
+		&:last-child {
+			margin-right: 0;
 		}
 	}
 }

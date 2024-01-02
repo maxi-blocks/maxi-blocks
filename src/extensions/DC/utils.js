@@ -73,7 +73,7 @@ export const getTaxonomyContent = async (
 	linkStatus,
 	taxonomyType
 ) => {
-	if (!taxonomyIds) return null;
+	if (!taxonomyIds || !taxonomyIds.length) return null;
 
 	const { getEntityRecords } = resolveSelect('core');
 
@@ -81,7 +81,7 @@ export const getTaxonomyContent = async (
 		include: taxonomyIds,
 	});
 
-	if (!taxonomyArray) return null;
+	if (!taxonomyArray || !taxonomyArray.length) return null;
 
 	const namesArray = taxonomyArray.map(({ name }) =>
 		getItemLinkContent(name, linkStatus)

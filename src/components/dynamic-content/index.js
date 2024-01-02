@@ -85,6 +85,7 @@ const DynamicContent = props => {
 
 	const {
 		status,
+		hide,
 		source,
 		type,
 		relation,
@@ -258,6 +259,14 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
+					<ToggleSwitch
+						label={__(
+							'Hide if no content found on frontend',
+							'maxi-blocks'
+						)}
+						selected={hide}
+						onChange={value => changeProps({ 'dc-hide': value })}
+					/>
 					{sourceOptions.length > 1 && (
 						<SelectControl
 							label={__('Source', 'maxi-blocks')}

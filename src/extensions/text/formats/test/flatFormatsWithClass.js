@@ -695,7 +695,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': '400', 'custom-formats': {} },
+			typography: { 'custom-formats': {} },
 			content: 'Testing Text Maxi',
 		};
 
@@ -906,7 +906,7 @@ describe('flatFormatsWithClass', () => {
 			textLevel,
 		});
 		const expectResult = {
-			typography: { 'font-weight-general': '800' },
+			typography: { 'custom-formats': undefined },
 			content: 'Testing Text Maxi',
 		};
 

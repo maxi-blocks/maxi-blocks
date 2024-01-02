@@ -89,6 +89,8 @@ class MaxiBlocks_Styles
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_styles';
 
+        add_filter('duplicate_post_new_post', [$this, 'update_post_unique_ids'], 10, 2);
+
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
             add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
@@ -2110,6 +2112,55 @@ class MaxiBlocks_Styles
         }
 
         return 0; // another theme
+    }
+
+    /**
+     * Updates the unique IDs of all blocks within a new post's content.
+     *
+     * This function parses the blocks of the new post, updates their unique IDs,
+     * and then re-serializes the blocks back into the post content.
+     *
+     * @param array $new_post The new post array containing 'post_content' among other details.
+     * @return array The modified post array with updated block unique IDs in the content.
+    */
+    public function update_post_unique_ids($new_post)
+    {
+        $blocks = parse_blocks($new_post['post_content']);
+        $this->update_unique_ids($blocks);
+
+        $serialized_content = serialize_blocks($blocks);
+
+        $new_post['post_content'] = $serialized_content;
+
+        return $new_post;
+    }
+
+	/**
+	 * Recursively updates the unique IDs of blocks and their inner blocks.
+	 *
+	 * This function iterates through each block, generating a new unique ID based on the block name,
+	 * and replaces the old unique ID in the block's attributes, innerHTML, and innerContent.
+	 * It also recursively updates any inner blocks.
+	 *
+	 * @param array $blocks Reference to the array of blocks to be updated.
+	 * @return void
+ 	*/
+    private function update_unique_ids(&$blocks)
+    {
+        foreach ($blocks as &$block) {
+            $previous_unique_id = $block['attrs']['uniqueID'];
+            $block_name = $block['blockName'];
+
+            $block['attrs']['uniqueID'] = self::unique_id_generator($block_name);
+            $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
+            $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
+                return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
+            }, $block['innerContent']);
+
+            if (!empty($block['innerBlocks'])) {
+                $this->update_unique_ids($block['innerBlocks']);
+            }
+        }
     }
 
 }

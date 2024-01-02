@@ -24,8 +24,15 @@ const getMaxiBlockAttributes = props => {
 		hasSelectedChild,
 		repeaterStatus,
 	} = props;
-	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
-		attributes;
+	const {
+		blockStyle,
+		extraClassName,
+		anchorLink,
+		uniqueID,
+		linkSettings,
+		'dc-status': dcStatus,
+		'dc-hide': dcHide,
+	} = attributes;
 
 	const isRepeater = !!repeaterStatus;
 
@@ -178,6 +185,8 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
+		dcStatus,
+		dcHide,
 		// Necessary for the memo() of MaxiBlocks component
 		attributes,
 		...scroll,

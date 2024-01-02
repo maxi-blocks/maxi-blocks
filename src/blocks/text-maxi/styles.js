@@ -426,7 +426,9 @@ const getMarkerObject = props => {
 							listStyleCustom && {
 								...(isURL(listStyleCustom) && {
 									'background-image': `url('${listStyleCustom}')`,
-									'background-size': 'cover',
+									'background-size': 'contain',
+									'background-repeat': 'no-repeat',
+									'background-position': 'left center',
 								}),
 								...(listStyleCustom.includes('</svg>') && {
 									content: `url("data:image/svg+xml,${getSVGListStyle(

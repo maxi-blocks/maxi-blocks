@@ -59,7 +59,7 @@ const CustomCssControl = props => {
 		return options;
 	};
 
-	const generateComponent = (label, index, category) => {
+	const generateComponent = (label, index, category, cssClassIndex) => {
 		const onChangeCssCode = (code, valid = true) => {
 			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
 
@@ -101,6 +101,7 @@ const CustomCssControl = props => {
 					'maxi-blocks'
 				)}`}
 				value={getValue()}
+				cssClassIndex={cssClassIndex}
 				onChange={onChangeCssCode}
 				transformCssCode={code => `body {${code}}`}
 			/>
@@ -124,11 +125,19 @@ const CustomCssControl = props => {
 					newStyle
 				/>
 				{!isEmpty(selectors?.[category]) &&
-					Object.entries(selectors?.[category])?.map(element => {
-						const label = element?.[1]?.label;
-						const index = element?.[0];
-						return generateComponent(label, index, category);
-					})}
+					Object.entries(selectors?.[category])?.map(
+						(element, cssClassIndex) => {
+							const label = element?.[1]?.label;
+							const index = element?.[0];
+
+							return generateComponent(
+								label,
+								index,
+								category,
+								cssClassIndex + 1
+							);
+						}
+					)}
 			</>
 		</ResponsiveTabsControl>
 	);

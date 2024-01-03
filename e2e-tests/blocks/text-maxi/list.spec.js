@@ -535,6 +535,8 @@ describe('List in Text-maxi', () => {
 			direction: 'rtl',
 		});
 
+		page.waitForTimeout(500);
+
 		expect(await getAttributes('text-direction-general')).toStrictEqual(
 			'rtl'
 		);
@@ -670,6 +672,8 @@ describe('List in Text-maxi', () => {
 			instance: page,
 			direction: 'rtl',
 		});
+
+		page.waitForTimeout(500);
 
 		expect(await getAttributes('text-direction-general')).toStrictEqual(
 			'rtl'

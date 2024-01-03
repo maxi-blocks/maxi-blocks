@@ -58,7 +58,15 @@ import processRelations from '../relations/processRelations';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
+import {
+	isArray,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isObject,
+	isString,
+} from 'lodash';
 import { diff } from 'deep-object-diff';
 
 /**
@@ -83,7 +91,8 @@ const StyleComponent = ({
 		return { breakpoints };
 	});
 
-	const { saveCSSCache, saveRawCSSCache } = useDispatch('maxiBlocks/styles');
+	const { updateStyles, saveCSSCache, saveRawCSSCache } =
+		useDispatch('maxiBlocks/styles');
 
 	if (isBreakpointChange || isBlockStyleChange) {
 		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
@@ -107,6 +116,38 @@ const StyleComponent = ({
 				{}
 			);
 
+			const styles = select('maxiBlocks/styles').getBlockStyles(uniqueID);
+
+			const newStyles = {
+				[uniqueID]: {
+					...styles,
+					content: Object.entries(styles.content).reduce(
+						(acc, [selector, props]) => {
+							acc[selector] = Object.entries(props).reduce(
+								(acc, [breakpoint, props]) => {
+									acc[breakpoint] = Object.entries(
+										props
+									).reduce((acc, [prop, value]) => {
+										acc[prop] = isString(value)
+											? value.replaceAll(
+													previousBlockStyle,
+													blockStyle
+											  )
+											: value;
+										return acc;
+									}, {});
+									return acc;
+								},
+								{}
+							);
+							return acc;
+						},
+						{}
+					),
+				},
+			};
+
+			updateStyles(uniqueID, newStyles);
 			saveRawCSSCache(uniqueID, newCssCache);
 		}
 

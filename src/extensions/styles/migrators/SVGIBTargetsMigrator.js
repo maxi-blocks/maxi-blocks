@@ -50,6 +50,7 @@ const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
 	blockAttributes.relations.some(
 		relation =>
+			relation.uniqueID &&
 			relation.uniqueID.includes('svg-icon-maxi') &&
 			relation.settings === 'Icon colour' &&
 			!Object.keys(relation.css).some(

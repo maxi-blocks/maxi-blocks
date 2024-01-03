@@ -77,14 +77,13 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
 export const flatRepeatedClassNames = (
 	repeatedClasses,
 	formatValue,
-	typography,
+	newTypography,
 	isHover
 ) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
 	const newFormatValue = { ...formatValue };
-	const newTypography = { ...typography };
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
 		if (formatEl)
@@ -127,6 +126,7 @@ export const flatRepeatedClassNames = (
 export const removeUnnecessaryFormats = ({
 	formatValue,
 	typography,
+	changedTypography,
 	content,
 	isList,
 	value,
@@ -144,8 +144,10 @@ export const removeUnnecessaryFormats = ({
 		},
 		isHover
 	);
-	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
-		typography;
+	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } = {
+		...typography,
+		...changedTypography,
+	};
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -168,7 +170,7 @@ export const removeUnnecessaryFormats = ({
 
 				// Exist on typography, not in content
 				if (!format) {
-					delete typography[
+					delete changedTypography[
 						`custom-formats${isHover ? '-hover' : ''}`
 					][target];
 				}
@@ -185,7 +187,7 @@ export const removeUnnecessaryFormats = ({
 						'maxi-blocks/text-custom'
 					);
 
-					delete typography[
+					delete changedTypography[
 						`custom-formats${isHover ? '-hover' : ''}`
 					][target];
 
@@ -209,7 +211,7 @@ export const removeUnnecessaryFormats = ({
 
 	return {
 		formatValue: newFormatValue,
-		typography,
+		typography: changedTypography,
 		content: newContent,
 	};
 };
@@ -229,6 +231,7 @@ export const removeUnnecessaryFormats = ({
 const flatFormatsWithClass = ({
 	formatValue,
 	typography,
+	changedTypography,
 	content,
 	isList,
 	value,
@@ -244,7 +247,10 @@ const flatFormatsWithClass = ({
 
 	let newContent = content;
 	let newFormatValue = { ...formatValue };
-	let newTypography = { ...typography };
+	let newTypography = {
+		...changedTypography,
+		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
+	};
 
 	if (customFormats) {
 		const repeatedClasses = getRepeatedClassNames(
@@ -259,7 +265,7 @@ const flatFormatsWithClass = ({
 			} = flatRepeatedClassNames(
 				repeatedClasses,
 				formatValue,
-				typography,
+				newTypography,
 				isHover
 			);
 
@@ -279,7 +285,8 @@ const flatFormatsWithClass = ({
 			content: cleanedContent,
 		} = removeUnnecessaryFormats({
 			formatValue: newFormatValue,
-			typography: newTypography,
+			typography,
+			changedTypography: newTypography,
 			content: newContent,
 			isList,
 			value,

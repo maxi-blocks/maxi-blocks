@@ -219,11 +219,11 @@
 		}
 		&__sync {
 			position: absolute;
-			top: 181px;
+			top: 185px;
 			right: 0;
 			display: flex;
 			align-items: flex-end;
-			width: 72px;
+			width: 60px;
 			@at-root .rtl #{&} {
 				right: unset;
 				left: 0;
@@ -232,15 +232,14 @@
 			svg {
 				width: 14px;
 				height: 14px;
+				path {
+					fill: var(--maxi-grey-4-color);
+				}
 			}
 
 			button[type='button'] {
-				margin-left: 4px;
-			}
-
-			button[type='button'] {
-				border: 1.5px solid var(--maxi-grey-1-color);
-				border-radius: 5px;
+				background: #fff;
+				border-radius: 4px;
 				width: 32px;
 				height: 32px;
 				padding: 0;
@@ -249,16 +248,17 @@
 				justify-content: center;
 				transition: all 0.2s;
 
-				&[aria-pressed='true'] {
-					background: #f2f2f2 !important;
-				}
-
-				&:hover {
-					background: var(--maxi-white-1-color);
-				}
-
 				&:focus {
-					border-color: var(--maxi-grey-6-color);
+					border-color: transparent;
+				}
+
+				&[aria-pressed='true'] {
+					background: var(--maxi-light-blue-2-color) !important;
+					svg {
+						path {
+							fill: var(--maxi-secondary-color);
+						}
+					}
 				}
 			}
 

@@ -18,6 +18,7 @@ const propagateNewUniqueID = (
 	newUniqueID,
 	clientId,
 	repeaterStatus,
+	maxiSetAttributes,
 	getInnerBlocksPositions,
 	bgLayers
 ) => {
@@ -139,13 +140,12 @@ const propagateNewUniqueID = (
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
-			updateBlockAttributes,
 		} = dispatch('core/block-editor');
 
 		Object.entries(blockAttributesUpdate).forEach(
 			([clientId, attributes]) => {
 				markNextChangeAsNotPersistent();
-				updateBlockAttributes(clientId, attributes);
+				maxiSetAttributes(clientId, attributes);
 			}
 		);
 	}

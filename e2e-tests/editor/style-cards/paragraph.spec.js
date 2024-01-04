@@ -59,8 +59,6 @@ describe('StyleCards Paragraph', () => {
 			block: 'paragraph',
 		});
 
-		page.waitForTimeout(1000);
-
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 
@@ -84,8 +82,6 @@ describe('StyleCards Paragraph', () => {
 			...responsiveTypographyStyle,
 			isStyleCards: true,
 		});
-
-		page.waitForTimeout(1000);
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 

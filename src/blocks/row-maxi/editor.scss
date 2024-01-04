@@ -68,3 +68,12 @@
 		flex-shrink: unset !important;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-row-block__template {
+		flex-direction: row-reverse;
+	}
+}

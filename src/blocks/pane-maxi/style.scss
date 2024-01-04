@@ -47,3 +47,15 @@ body.maxi-blocks--active .maxi-pane-block {
 		padding-bottom: 0 !important;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-pane-block__header-content {
+		flex-direction: row-reverse !important;
+		.maxi-pane-block__title {
+			direction: rtl;
+		}
+	}
+}

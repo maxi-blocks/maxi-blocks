@@ -2133,30 +2133,68 @@ class MaxiBlocks_Styles
         return $new_post;
     }
 
-	/**
-	 * Recursively updates the unique IDs of blocks and their inner blocks.
-	 *
-	 * This function iterates through each block, generating a new unique ID based on the block name,
-	 * and replaces the old unique ID in the block's attributes, innerHTML, and innerContent.
-	 * It also recursively updates any inner blocks.
-	 *
-	 * @param array $blocks Reference to the array of blocks to be updated.
-	 * @return void
- 	*/
+    /**
+     * Recursively updates the unique IDs of blocks and their inner blocks.
+     *
+     * This function iterates through each block, generating a new unique ID based on the block name,
+     * and replaces the old unique ID in the block's attributes, innerHTML, and innerContent.
+     * It also recursively updates any inner blocks.
+     *
+     * @param array $blocks Reference to the array of blocks to be updated.
+     * @return void
+    */
     private function update_unique_ids(&$blocks)
     {
-        foreach ($blocks as &$block) {
-            $previous_unique_id = $block['attrs']['uniqueID'];
-            $block_name = $block['blockName'];
+        $idMapping = [];
+        $blocksWithRelations = [];
 
-            $block['attrs']['uniqueID'] = self::unique_id_generator($block_name);
+        foreach ($blocks as &$block) {
+            $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
+            if(!$previous_unique_id) {
+                continue;
+            }
+
+            $block_name = $block['blockName'];
+            if(strpos($block_name, 'maxi-blocks') === false) {
+                continue;
+            }
+
+            $new_unique_id = self::unique_id_generator($block_name);
+            $idMapping[$previous_unique_id] = $new_unique_id;
+
+            $block['attrs']['uniqueID'] = $new_unique_id;
             $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
             $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
                 return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
             }, $block['innerContent']);
 
+            if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
+                $blocksWithRelations[] = &$block;
+            }
+
             if (!empty($block['innerBlocks'])) {
                 $this->update_unique_ids($block['innerBlocks']);
+            }
+        }
+
+        $this->update_attribute_relations($blocksWithRelations, $idMapping);
+    }
+
+    /**
+     * Updates the unique IDs in the attribute relations of the given blocks.
+     *
+     * @param array &$blocksWithRelations Array of references to blocks that contain attribute relations.
+     * @param array &$idMapping Mapping of old unique IDs to new unique IDs.
+     *
+     * @return void
+     */
+    private function update_attribute_relations(&$blocksWithRelations, &$idMapping)
+    {
+        foreach ($blocksWithRelations as &$block) {
+            foreach ($block['attrs']['relations'] as &$relation) {
+                if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
+                    $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+                }
             }
         }
     }

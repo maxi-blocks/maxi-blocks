@@ -566,17 +566,21 @@ const getMarkerObject = props => {
 						transform: `translateY(${verticalOffsetMarkerNum}${verticalOffsetMarkerUnit})`,
 					}),
 					[isRTL ? 'right' : 'left']: markerPosition,
+
 					...(listStylePosition === 'outside' &&
 						(listStyle !== 'custom'
 							? {
 									width: '1em',
-									'margin-left': '-1em',
+									[isRTL ? 'margin-right' : 'margin-left']:
+										'-1em',
 							  }
 							: {
-									'margin-left': -sizeNum + sizeUnit,
+									[isRTL ? 'margin-right' : 'margin-left']:
+										-sizeNum + sizeUnit,
 							  })),
 					...(listStylePosition === 'inside' && {
-						'margin-right': indentMarkerSum,
+						[isRTL ? 'margin-left' : 'margin-right']:
+							indentMarkerSum,
 					}),
 					...(textPosition && {
 						'vertical-align': textPosition,

@@ -11,6 +11,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getTransformSelectors,
 	getTransformCategories,
+	getDisabledTransformCategories,
 } from '../transform-control/utils';
 
 /**
@@ -58,7 +59,10 @@ const transform = ({
 				depth={depth}
 				categories={getTransformCategories(categories, attributes)}
 				selectors={getTransformSelectors(selectors, attributes)}
-				disabledCategories={disabledCategories}
+				disabledCategories={getDisabledTransformCategories(
+					disabledCategories,
+					attributes
+				)}
 			/>
 		),
 	};

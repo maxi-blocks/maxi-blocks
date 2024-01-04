@@ -19,6 +19,7 @@ export const getBlockSelectorsByUniqueID = uniqueID =>
  * Returns blocks `interactionBuilderSettings`
  */
 export const getIBDataItem = ({ uniqueID, sid, settings }) => {
+	if (!uniqueID) return null;
 	const interactionBuilderSettings =
 		getBlockDataByUniqueID(uniqueID)?.interactionBuilderSettings;
 

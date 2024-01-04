@@ -115,20 +115,20 @@ const updateCustomFormatStyle = ({
 	textLevel,
 	styleCard,
 }) => {
-	const newTypography = { ...typography };
+	const newTypography = {};
 
 	newTypography[`custom-formats${isHover ? '-hover' : ''}`] =
-		cleanCustomFormats(newTypography, isHover);
+		cleanCustomFormats(typography, isHover);
 
 	newTypography[`custom-formats${isHover ? '-hover' : ''}`][
 		currentClassName
 	] = {
 		...styleObjectManipulator({
-			typography: newTypography,
+			typography,
 			value,
 			breakpoint,
 			currentStyle: getCustomFormat(
-				newTypography,
+				typography,
 				currentClassName,
 				isHover
 			),

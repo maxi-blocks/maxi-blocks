@@ -60,6 +60,10 @@
 			text-align: center;
 		}
 	}
+
+	&--hidden {
+		display: none !important;
+	}
 }
 
 .maxi-link-wrapper {

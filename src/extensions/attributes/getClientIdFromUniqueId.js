@@ -5,6 +5,7 @@ import { goThroughMaxiBlocks } from '../maxi-block';
 import { getIsTemplatePart, getSiteEditorIframeBody } from '../fse';
 
 const getClientIdFromUniqueId = uniqueID => {
+	if (!uniqueID) return false;
 	/**
 	 * In case if block is from template part and it's post type isn't `wp_template_part`.
 	 * We should use DOM to get `clientId`. Because `clientId` from `entityRecord`

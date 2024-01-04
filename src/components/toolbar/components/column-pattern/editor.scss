@@ -52,3 +52,14 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.toolbar-item__column-pattern__popover
+		.components-column-pattern__template-button {
+		margin-left: 1.5%;
+		margin-right: 0;
+	}
+}

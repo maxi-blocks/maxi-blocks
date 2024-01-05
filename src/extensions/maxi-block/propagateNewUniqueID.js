@@ -86,12 +86,24 @@ const propagateNewUniqueID = (
 					return relation;
 				});
 
-				if (!isEqual(relations, newRelations) && clientId)
+				if (!isEqual(relations, newRelations) && clientId) {
 					updateBlockAttributesUpdate(
 						clientId,
 						'relations',
 						newRelations
 					);
+
+					const storedBlock =
+						select('maxiBlocks/blocks').getBlockByClientId(
+							clientId
+						);
+
+					if (!storedBlock) {
+						dispatch(
+							'maxiBlocks/blocks'
+						).addBlockWithUpdatedAttributes(clientId);
+					}
+				}
 			}
 		};
 
@@ -129,8 +141,21 @@ const propagateNewUniqueID = (
 	};
 
 	const updateBGLayers = () => {
-		blockAttributesUpdate['background-layers'] =
-			getUpdatedBGLayersWithNewUniqueID(bgLayers, newUniqueID);
+		const updatedBGLayers = getUpdatedBGLayersWithNewUniqueID(
+			bgLayers,
+			newUniqueID
+		);
+
+		if (updatedBGLayers) {
+			dispatch('maxiBlocks/blocks').addBlockWithUpdatedAttributes(
+				clientId
+			);
+			updateBlockAttributesUpdate(
+				clientId,
+				'background-layers',
+				updatedBGLayers
+			);
+		}
 	};
 
 	updateRelations();
@@ -140,14 +165,17 @@ const propagateNewUniqueID = (
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
+			updateBlockAttributes,
 		} = dispatch('core/block-editor');
 
-		Object.entries(blockAttributesUpdate).forEach(
-			([clientId, attributes]) => {
+		for (const [clientId, attributes] of Object.entries(
+			blockAttributesUpdate
+		)) {
+			if (attributes) {
 				markNextChangeAsNotPersistent();
-				maxiSetAttributes(clientId, attributes);
+				updateBlockAttributes(clientId, attributes);
 			}
-		);
+		}
 	}
 };
 

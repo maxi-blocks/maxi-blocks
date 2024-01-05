@@ -29,6 +29,17 @@ const actions = {
 			uniqueID,
 		};
 	},
+	/**
+	 * `updateBlockAttributes` is an async action, so in some cases when it's used,
+	 * it should be remembered to avoid in that cases using props.attributes[attributeName] = ...
+	 * changes, because they will be overwritten by the async action.
+	 */
+	addBlockWithUpdatedAttributes(clientId) {
+		return {
+			type: 'ADD_BLOCK_WITH_UPDATED_ATTRIBUTES',
+			clientId,
+		};
+	},
 	saveLastInsertedBlocks(blockClientIds) {
 		const { __experimentalGetDirtyEntityRecords: getDirtyEntityRecords } =
 			select('core');

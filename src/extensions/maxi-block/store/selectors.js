@@ -9,6 +9,17 @@ const selectors = {
 
 		return false;
 	},
+	getBlockByClientId(state, clientId) {
+		if (state && clientId) {
+			for (const uniqueID in state.blocks) {
+				if (state.blocks[uniqueID].clientId === clientId) {
+					return state.blocks[uniqueID];
+				}
+			}
+		}
+
+		return false;
+	},
 	getBlockRoot(state, uniqueID) {
 		if (state && uniqueID) return state.blocks?.[uniqueID]?.blockRoot;
 
@@ -17,6 +28,13 @@ const selectors = {
 	getIsNewBlock(state, uniqueID) {
 		if (state && uniqueID)
 			return state.newBlocksUniqueIDs.includes(uniqueID);
+
+		return false;
+	},
+	getIsBlockWithUpdatedAttributes(state, clientId) {
+		console.log(state.blockClientIdsWithUpdatedAttributes, clientId);
+		if (state && clientId)
+			return state.blockClientIdsWithUpdatedAttributes.includes(clientId);
 
 		return false;
 	},

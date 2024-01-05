@@ -11,12 +11,19 @@ import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getTransformSelectors,
 	getTransformCategories,
+	getDisabledTransformCategories,
 } from '../transform-control/utils';
 
 /**
  * Component
  */
-const transform = ({ props, depth = 2, categories, selectors }) => {
+const transform = ({
+	props,
+	disabledCategories,
+	depth = 2,
+	categories,
+	selectors,
+}) => {
 	const {
 		attributes,
 		deviceType,
@@ -52,6 +59,10 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 				depth={depth}
 				categories={getTransformCategories(categories, attributes)}
 				selectors={getTransformSelectors(selectors, attributes)}
+				disabledCategories={getDisabledTransformCategories(
+					disabledCategories,
+					attributes
+				)}
 			/>
 		),
 	};

@@ -143,7 +143,7 @@
 			width: 11rem;
 
 			@at-root .rtl #{&} {
-				left: -30px;
+				left: -20px;
 				right: unset;
 			}
 
@@ -219,11 +219,11 @@
 		}
 		&__sync {
 			position: absolute;
-			top: 181px;
+			top: 185px;
 			right: 0;
 			display: flex;
 			align-items: flex-end;
-			width: 72px;
+			width: 60px;
 			@at-root .rtl #{&} {
 				right: unset;
 				left: 0;
@@ -232,15 +232,14 @@
 			svg {
 				width: 14px;
 				height: 14px;
+				path {
+					fill: var(--maxi-grey-4-color);
+				}
 			}
 
 			button[type='button'] {
-				margin-left: 4px;
-			}
-
-			button[type='button'] {
-				border: 1.5px solid var(--maxi-grey-1-color);
-				border-radius: 5px;
+				background: #fff;
+				border-radius: 4px;
 				width: 32px;
 				height: 32px;
 				padding: 0;
@@ -249,16 +248,17 @@
 				justify-content: center;
 				transition: all 0.2s;
 
-				&[aria-pressed='true'] {
-					background: #f2f2f2 !important;
-				}
-
-				&:hover {
-					background: var(--maxi-white-1-color);
-				}
-
 				&:focus {
-					border-color: var(--maxi-grey-6-color);
+					border-color: transparent;
+				}
+
+				&[aria-pressed='true'] {
+					background: var(--maxi-light-blue-2-color) !important;
+					svg {
+						path {
+							fill: var(--maxi-secondary-color);
+						}
+					}
 				}
 			}
 
@@ -362,6 +362,45 @@
 				font-weight: 700;
 				color: var(--maxi-secondary-color) !important;
 			}
+		}
+	}
+}
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-transform-control {
+		.maxi-settingstab-control .maxi-tabs-control__button {
+			&:last-child {
+				margin-right: 0;
+			}
+			&:last-child {
+				margin-right: 5px;
+			}
+		}
+		.maxi-transform-control__square-control input[type='number'] {
+			padding: 8px 8px 8px 0 !important;
+		}
+		.maxi-transform-control__square-control__x-control__value__input {
+			margin-right: 5px;
+			margin-left: 0;
+		}
+
+		&__rotate-control {
+			input[type='number'] {
+				padding: 8px 8px 8px 0 !important;
+				margin-right: 5px;
+				margin-left: unset;
+			}
+			.maxi-base-control__label {
+				margin-left: 5px;
+				margin-right: unset;
+			}
+		}
+		&__square-control__sync button[type='button'] {
+			margin-right: 5px;
+			margin-left: unset;
 		}
 	}
 }

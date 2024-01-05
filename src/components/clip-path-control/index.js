@@ -321,7 +321,7 @@ const ClipPathControl = props => {
 							<Tooltip
 								key='clip-path-defaults__item__none'
 								text={__('none', 'maxi-blocks')}
-								position='top center'
+								placement='top'
 							>
 								<Button
 									aria-pressed={['', 'none'].includes(
@@ -338,7 +338,7 @@ const ClipPathControl = props => {
 									<Tooltip
 										key={`clip-path-defaults__item__${name}`}
 										text={name}
-										position='bottom center'
+										placement='bottom'
 									>
 										<Button
 											aria-pressed={

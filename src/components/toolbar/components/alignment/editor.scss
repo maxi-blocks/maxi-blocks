@@ -25,3 +25,23 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-alignment-control {
+		button[aria-label='justify'] {
+			order: 4;
+		}
+		button[aria-label='left'] {
+			order: 3;
+		}
+		button[aria-label='center'] {
+			order: 2;
+		}
+		button[aria-label='right'] {
+			order: 1;
+		}
+	}
+}

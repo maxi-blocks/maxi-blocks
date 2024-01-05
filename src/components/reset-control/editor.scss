@@ -69,3 +69,15 @@
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-reset-button {
+		right: unset !important;
+		left: 0;
+		padding: 1px 8px 1px 1px !important;
+		margin-left: 0;
+		margin-right: 4px !important;
+	}
+}

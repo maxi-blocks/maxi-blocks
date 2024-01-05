@@ -96,3 +96,16 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-select-control__input {
+		text-align: right;
+	}
+	.maxi-base-control__label {
+		left: unset;
+		right: 8px;
+	}
+}

@@ -58,7 +58,15 @@ import processRelations from '../relations/processRelations';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
+import {
+	isArray,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isObject,
+	isString,
+} from 'lodash';
 import { diff } from 'deep-object-diff';
 
 /**
@@ -66,11 +74,13 @@ import { diff } from 'deep-object-diff';
  */
 const StyleComponent = ({
 	uniqueID,
+	blockStyle,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
 	isBreakpointChange,
+	isBlockStyleChange,
 	currentBreakpoint,
 }) => {
 	const { breakpoints } = useSelect(select => {
@@ -81,13 +91,65 @@ const StyleComponent = ({
 		return { breakpoints };
 	});
 
-	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
+	const { updateStyles, saveCSSCache, saveRawCSSCache } =
+		useDispatch('maxiBlocks/styles');
 
-	if (isBreakpointChange) {
-		const styleContent =
-			select('maxiBlocks/styles').getCSSCache(uniqueID)[
-				currentBreakpoint
-			];
+	if (isBreakpointChange || isBlockStyleChange) {
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		let styleContent = cssCache[currentBreakpoint];
+
+		if (isBlockStyleChange) {
+			const previousBlockStyle =
+				blockStyle === 'light' ? 'dark' : 'light';
+
+			const newCssCache = Object.entries(cssCache).reduce(
+				(acc, [breakpoint, css]) => {
+					acc[breakpoint] = css.replaceAll(
+						`--maxi-${previousBlockStyle}-`,
+						`--maxi-${blockStyle}-`
+					);
+					if (currentBreakpoint === breakpoint) {
+						styleContent = acc[breakpoint];
+					}
+					return acc;
+				},
+				{}
+			);
+
+			const styles = select('maxiBlocks/styles').getBlockStyles(uniqueID);
+
+			const newStyles = {
+				[uniqueID]: {
+					...styles,
+					content: Object.entries(styles.content).reduce(
+						(acc, [selector, props]) => {
+							acc[selector] = Object.entries(props).reduce(
+								(acc, [breakpoint, props]) => {
+									acc[breakpoint] = Object.entries(
+										props
+									).reduce((acc, [prop, value]) => {
+										acc[prop] = isString(value)
+											? value.replaceAll(
+													previousBlockStyle,
+													blockStyle
+											  )
+											: value;
+										return acc;
+									}, {});
+									return acc;
+								},
+								{}
+							);
+							return acc;
+						},
+						{}
+					),
+				},
+			};
+
+			updateStyles(uniqueID, newStyles);
+			saveRawCSSCache(uniqueID, newCssCache);
+		}
 
 		return <style>{styleContent}</style>;
 	}
@@ -137,6 +199,7 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+		this.popoverStyles = null;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -343,11 +406,14 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		const wasBreakpointChanged =
+			this.props.deviceType !== nextProps.deviceType ||
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
-			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
+			wasBreakpointChanged // In case of breakpoint change
 		)
 			return true;
 
@@ -403,9 +469,14 @@ class MaxiBlockComponent extends Component {
 			return false;
 
 		// If deviceType or baseBreakpoint changes, render styles
-		if (
+		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
+
+		if (
+			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
+			!wasBreakpointChanged
 		)
 			return false;
 
@@ -476,10 +547,14 @@ class MaxiBlockComponent extends Component {
 					this.props.deviceType !== prevProps.deviceType ||
 						(this.props.baseBreakpoint !==
 							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint)
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
 				);
 			this.isReusable && this.displayStyles();
 		}
+
+		this.hideGutenbergPopover();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -946,7 +1021,7 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles(isBreakpointChange = false) {
+	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
 		const iframe = document.querySelector(
@@ -959,7 +1034,7 @@ class MaxiBlockComponent extends Component {
 		let breakpoints;
 		let customDataRelations;
 
-		if (!isBreakpointChange) {
+		if (!isBreakpointChange && !isBlockStyleChange) {
 			obj = this.getStylesObject;
 			breakpoints = this.getBreakpoints;
 
@@ -983,11 +1058,13 @@ class MaxiBlockComponent extends Component {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
+						blockStyle={this.props.attributes.blockStyle}
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
+						isBlockStyleChange={isBlockStyleChange}
 						isPreview={this.isTemplatePartPreview}
 						isIframe={!!iframe}
 					/>
@@ -1161,6 +1238,25 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	/**
+	 * Hides Gutenberg's popover when the Maxi block is selected.
+	 */
+	hideGutenbergPopover() {
+		if (this.props.isSelected && !this.popoverStyles) {
+			this.popoverStyles = document.createElement('style');
+			this.popoverStyles.innerHTML = `
+				.block-editor-block-popover {
+					display: none !important;
+				}
+			`;
+			this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
+			document.head.appendChild(this.popoverStyles);
+		} else if (!this.props.isSelected && this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
 	}
 }
 

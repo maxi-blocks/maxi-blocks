@@ -81,3 +81,14 @@
 		}
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-breadcrumbs {
+		right: 25px;
+		left: unset;
+		padding: 0 5px 0 10px !important;
+		transform-origin: right;
+	}
+}

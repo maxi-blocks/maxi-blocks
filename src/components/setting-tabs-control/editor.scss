@@ -68,7 +68,6 @@
 			color: var(--maxi-grey-11-color);
 			background-color: #fff;
 			text-align: center;
-			transform: 0.5s all;
 
 			&:last-child {
 				border-right: none;
@@ -272,7 +271,8 @@
 	align-items: center;
 
 	&:hover {
-		background: var(--maxi-grey-4-color);
+		border-color: var(--maxi-grey-4-color);
+		color: var(--maxi-grey-4-color);
 	}
 
 	span {
@@ -283,8 +283,16 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.maxi-settingstab-control .maxi-tabs-control__button {
+	.block-info-icon {
+		right: unset;
+		left: 5px;
+	}
+	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
 		border-left: 1px solid var(--maxi-grey-1-color);
-		border-right: none;
+		border-right: 1px solid var(--maxi-grey-1-color);
+	}
+	.maxi-block-style-preview {
+		margin-left: unset;
+		margin-right: 10px;
 	}
 }

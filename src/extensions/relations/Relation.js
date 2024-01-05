@@ -689,7 +689,7 @@ class Relation {
 	}
 
 	removeStyles() {
-		this.stylesEl.remove();
+		if (this.stylesEl) this.stylesEl.remove();
 	}
 
 	generateTransitions() {

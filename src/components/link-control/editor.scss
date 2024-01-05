@@ -104,24 +104,7 @@
 		width: 280px;
 
 		&__search-submit {
-			background-color: #e5f2f8;
-			width: auto;
-			float: right;
-			font-weight: 700;
-			color: var(--maxi-secondary-color);
-			height: 26px;
-			padding: 0px 12px;
-			box-shadow: none !important;
-
-			svg {
-				display: none;
-			}
-
-			// WP 6.2.2 and lower support
-			&.has-icon::before {
-				content: 'Search';
-				display: block;
-			}
+			display: none;
 		}
 		&__settings {
 			border-top: 0;

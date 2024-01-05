@@ -218,7 +218,7 @@ const getTypographyStyles = ({
 				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
 			}),
 			...(!isNil(getValue('text-wrap', breakpoint)) && {
-				'text-wrap': getValue('text-wrap', breakpoint),
+				'text-wrap': `${getValue('text-wrap', breakpoint)} !important`,
 			}),
 			...(!isNil(getValue('bottom-gap', breakpoint)) && {
 				'margin-bottom': `${getValue(

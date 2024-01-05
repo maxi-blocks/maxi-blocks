@@ -77,6 +77,20 @@ function reducer(
 				},
 			};
 		}
+		case 'SAVE_RAW_CSS_CACHE': {
+			const { uniqueID, stylesContent } = action;
+
+			return {
+				...state,
+				cssCache: {
+					...state.cssCache,
+					[uniqueID]: {
+						...state.cssCache[uniqueID],
+						...stylesContent,
+					},
+				},
+			};
+		}
 		case 'REMOVE_CSS_CACHE': {
 			const { uniqueID } = action;
 

@@ -15,7 +15,6 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -52,23 +51,32 @@ const BlockStylesControl = props => {
 		return !isVisible;
 	}, false);
 
-	const getAllInnerBlocks = (id, blockStyle) => {
+	const getAllInnerBlocks = (id = clientId, blockStyle) => {
 		const { getBlockOrder } = select('core/block-editor');
-		const { updateBlockAttributes } = dispatch('core/block-editor');
-		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
-		const innerBlocksStyle = blockStyle || '';
+		const {
+			__unstableMarkNextChangeAsNotPersistent:
+				markNextChangeAsNotPersistent,
+			updateBlockAttributes,
+		} = dispatch('core/block-editor');
 
-		if (innerBlockIds) {
-			innerBlockIds.forEach(innerBlockId => {
-				if (!isEmpty(innerBlocksStyle))
+		function getAllInnerBlocksHelper(innerId) {
+			const innerBlockIds = getBlockOrder(innerId);
+
+			if (innerBlockIds) {
+				innerBlockIds.forEach(innerBlockId => {
 					updateBlockAttributes(innerBlockId, {
-						blockStyle: innerBlocksStyle,
+						blockStyle,
 					});
+					markNextChangeAsNotPersistent(innerBlockId);
 
-				getAllInnerBlocks(innerBlockId, blockStyle);
-			});
+					getAllInnerBlocksHelper(innerBlockId);
+				});
+			}
 		}
+
+		getAllInnerBlocksHelper(id);
 	};
+
 	return (
 		<>
 			<div className='block-info-icon' onClick={setDescVisibility}>
@@ -85,7 +93,6 @@ const BlockStylesControl = props => {
 
 						onChange({
 							blockStyle,
-							...{ blockStyle },
 						});
 					}}
 				/>

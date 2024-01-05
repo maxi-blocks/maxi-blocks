@@ -208,9 +208,6 @@ const getTypographyStyles = ({
 			...(!isNil(getValue('text-direction', breakpoint)) && {
 				direction: getValue('text-direction', breakpoint),
 			}),
-			...(!isNil(getValue('white-space', breakpoint)) && {
-				'white-space': getValue('white-space', breakpoint),
-			}),
 			...(!isNil(getValue('word-spacing', breakpoint)) && {
 				'word-spacing': `${getValue(
 					'word-spacing',
@@ -218,8 +215,13 @@ const getTypographyStyles = ({
 				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
 			}),
 			...(!isNil(getValue('text-wrap', breakpoint)) && {
-				'text-wrap': `${getValue('text-wrap', breakpoint)} !important`,
+				'text-wrap': `${getValue('text-wrap', breakpoint)}`,
 			}),
+			...((getValue('text-wrap', breakpoint) === 'initial' ||
+				isNil(getValue('text-wrap', breakpoint))) &&
+				!isNil(getValue('white-space', breakpoint)) && {
+					'white-space': getValue('white-space', breakpoint),
+				}),
 			...(!isNil(getValue('bottom-gap', breakpoint)) && {
 				'margin-bottom': `${getValue(
 					'bottom-gap',

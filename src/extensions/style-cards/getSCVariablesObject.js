@@ -88,9 +88,9 @@ const getSCVariablesObject = (
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
-		'white-space',
 		'word-spacing',
 		'text-wrap',
+		'white-space',
 		'margin-bottom',
 		'text-indent',
 	];

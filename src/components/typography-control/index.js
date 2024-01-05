@@ -1000,16 +1000,16 @@ const TypographyControl = props => {
 					newStyle
 					options={[
 						{
-							label: __('Wrap', 'maxi-blocks'),
-							value: 'wrap',
-						},
-						{
-							label: __('Nowrap', 'maxi-blocks'),
-							value: 'nowrap',
+							label: __('Use white space', 'maxi-blocks'),
+							value: 'initial',
 						},
 						{
 							label: __('Balance', 'maxi-blocks'),
 							value: 'balance',
+						},
+						{
+							label: __('Pretty', 'maxi-blocks'),
+							value: 'pretty',
 						},
 					]}
 					onChange={val => {

@@ -32,7 +32,6 @@ const selectors = {
 		return false;
 	},
 	getIsBlockWithUpdatedAttributes(state, clientId) {
-		console.log(state.blockClientIdsWithUpdatedAttributes, clientId);
 		if (state && clientId)
 			return state.blockClientIdsWithUpdatedAttributes.includes(clientId);
 

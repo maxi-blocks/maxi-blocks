@@ -2163,6 +2163,27 @@ class MaxiBlocks_Styles
             $idMapping[$previous_unique_id] = $new_unique_id;
 
             $block['attrs']['uniqueID'] = $new_unique_id;
+
+            if(isset($block['attrs']['background-layers'])) {
+                foreach($block['attrs']['background-layers'] as $key => &$value) {
+                    if(isset($value['background-svg-SVGData'])) {
+                        $svg_data = $value['background-svg-SVGData'];
+                        foreach($svg_data as $svg_data_key => $svg_data_value) {
+                            if(strpos($svg_data_key, $previous_unique_id) !== false) {
+                                $svg_data[$new_unique_id] = $svg_data_value;
+                                unset($svg_data[$svg_data_key]);
+                            }
+                        }
+                    }
+
+                    if(isset($value['background-svg-SVGElement'])) {
+                        $svg_element = $value['background-svg-SVGElement'];
+                        $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
+                        $value['background-svg-SVGElement'] = $svg_element;
+                    }
+                }
+            }
+
             $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
             $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
                 return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;

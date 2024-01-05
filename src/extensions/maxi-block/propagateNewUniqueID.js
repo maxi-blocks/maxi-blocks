@@ -18,7 +18,6 @@ const propagateNewUniqueID = (
 	newUniqueID,
 	clientId,
 	repeaterStatus,
-	maxiSetAttributes,
 	getInnerBlocksPositions,
 	bgLayers
 ) => {

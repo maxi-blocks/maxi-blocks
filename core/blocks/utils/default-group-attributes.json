@@ -9134,9 +9134,6 @@
 		"title-text-wrap-m": {
 			"type": "string"
 		},
-		"title-text-direcwraption-s": {
-			"type": "string"
-		},
 		"title-text-wrap-xs": {
 			"type": "string"
 		},

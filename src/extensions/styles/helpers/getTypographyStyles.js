@@ -214,9 +214,10 @@ const getTypographyStyles = ({
 					breakpoint
 				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
 			}),
-			...(!isNil(getValue('text-wrap', breakpoint)) && {
-				'text-wrap': `${getValue('text-wrap', breakpoint)}`,
-			}),
+			...(getValue('text-wrap', breakpoint) !== 'initial' &&
+				!isNil(getValue('text-wrap', breakpoint)) && {
+					'text-wrap': `${getValue('text-wrap', breakpoint)}`,
+				}),
 			...((getValue('text-wrap', breakpoint) === 'initial' ||
 				isNil(getValue('text-wrap', breakpoint))) &&
 				!isNil(getValue('white-space', breakpoint)) && {

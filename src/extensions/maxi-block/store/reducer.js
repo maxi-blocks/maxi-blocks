@@ -4,6 +4,7 @@ const reducer = (
 		lastInsertedBlocks: [],
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
+		blockClientIdsWithUpdatedAttributes: [],
 	},
 	action
 ) => {
@@ -38,6 +39,10 @@ const reducer = (
 				newBlocksUniqueIDs: state.newBlocksUniqueIDs.filter(
 					item => item !== uniqueID
 				),
+				blockClientIdsWithUpdatedAttributes:
+					state.blockClientIdsWithUpdatedAttributes.filter(
+						item => item !== clientId
+					),
 			};
 		}
 		case 'UPDATE_BLOCK_STYLES_ROOT': {
@@ -60,6 +65,17 @@ const reducer = (
 			return {
 				...state,
 				newBlocksUniqueIDs: [...state.newBlocksUniqueIDs, uniqueID],
+			};
+		}
+		case 'ADD_BLOCK_WITH_UPDATED_ATTRIBUTES': {
+			if (!action.clientId) return state;
+
+			return {
+				...state,
+				blockClientIdsWithUpdatedAttributes: [
+					...state.blockClientIdsWithUpdatedAttributes,
+					action.clientId,
+				],
 			};
 		}
 		case 'SAVE_LAST_INSERTED_BLOCKS': {

@@ -164,7 +164,6 @@ const validateRowColumnsStructure = async (
 	rawColumnToValidateByClientId,
 	skipFirstMarkNotPersistent = false
 ) => {
-	console.log(skipFirstMarkNotPersistent);
 	const {
 		removeBlock,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
@@ -173,7 +172,6 @@ const validateRowColumnsStructure = async (
 	let isFirstCall = skipFirstMarkNotPersistent;
 
 	const modifiedMarkNextChangeAsNotPersistent = () => {
-		console.log(isFirstCall);
 		if (!isFirstCall) {
 			markNextChangeAsNotPersistent();
 		} else {

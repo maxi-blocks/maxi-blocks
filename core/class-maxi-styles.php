@@ -89,6 +89,8 @@ class MaxiBlocks_Styles
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_styles';
 
+        add_filter('duplicate_post_new_post', [$this, 'update_post_unique_ids'], 10, 2);
+
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
             add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
@@ -1378,6 +1380,8 @@ class MaxiBlocks_Styles
         // Fetch blocks from template parts.
         $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
 
+        $blocks_post = [];
+
         // Fetch blocks from passed content or from the global post.
         if($passed_content) {
             $blocks_post = parse_blocks($passed_content);
@@ -1392,12 +1396,10 @@ class MaxiBlocks_Styles
             } else {
                 $blocks_post = parse_blocks($post->post_content);
             }
-        } else {
-            $blocks_post = [];
         }
 
         // Merge the blocks.
-        if (is_array($blocks_post)) {
+        if (is_array($blocks_post) && !empty($blocks_post)) {
             $blocks = array_merge_recursive($blocks, $blocks_post);
         }
 
@@ -2108,6 +2110,116 @@ class MaxiBlocks_Styles
         }
 
         return 0; // another theme
+    }
+
+    /**
+     * Updates the unique IDs of all blocks within a new post's content.
+     *
+     * This function parses the blocks of the new post, updates their unique IDs,
+     * and then re-serializes the blocks back into the post content.
+     *
+     * @param array $new_post The new post array containing 'post_content' among other details.
+     * @return array The modified post array with updated block unique IDs in the content.
+    */
+    public function update_post_unique_ids($new_post)
+    {
+        $blocks = parse_blocks($new_post['post_content']);
+        $this->update_unique_ids($blocks);
+
+        $serialized_content = serialize_blocks($blocks);
+
+        $new_post['post_content'] = $serialized_content;
+
+        return $new_post;
+    }
+
+    /**
+     * Recursively updates the unique IDs of blocks and their inner blocks.
+     *
+     * This function iterates through each block, generating a new unique ID based on the block name,
+     * and replaces the old unique ID in the block's attributes, innerHTML, and innerContent.
+     * It also recursively updates any inner blocks.
+     *
+     * @param array $blocks Reference to the array of blocks to be updated.
+     * @return void
+    */
+    private function update_unique_ids(&$blocks)
+    {
+        $idMapping = [];
+        $blocksWithRelations = [];
+
+        foreach ($blocks as &$block) {
+            $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
+            if(!$previous_unique_id) {
+                continue;
+            }
+
+            $block_name = $block['blockName'];
+            if(strpos($block_name, 'maxi-blocks') === false) {
+                continue;
+            }
+
+            $new_unique_id = self::unique_id_generator($block_name);
+            $idMapping[$previous_unique_id] = $new_unique_id;
+
+            $block['attrs']['uniqueID'] = $new_unique_id;
+
+            if(isset($block['attrs']['background-layers'])) {
+                foreach($block['attrs']['background-layers'] as $key => &$value) {
+                    if(isset($value['background-svg-SVGData'])) {
+                        $svg_data = $value['background-svg-SVGData'];
+                        foreach($svg_data as $svg_data_key => $svg_data_value) {
+                            if(strpos($svg_data_key, $previous_unique_id) !== false) {
+                                $svg_data[$new_unique_id] = $svg_data_value;
+                                unset($svg_data[$svg_data_key]);
+                            }
+                        }
+                    }
+
+                    if(isset($value['background-svg-SVGElement'])) {
+                        $svg_element = $value['background-svg-SVGElement'];
+                        $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
+                        $value['background-svg-SVGElement'] = $svg_element;
+                    }
+                }
+            }
+
+            $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
+            $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
+                return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
+            }, $block['innerContent']);
+
+            if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
+                $blocksWithRelations[] = &$block;
+            }
+
+            if (!empty($block['innerBlocks'])) {
+                $this->update_unique_ids($block['innerBlocks']);
+            }
+        }
+
+        $this->update_attribute_relations($blocksWithRelations, $idMapping);
+    }
+
+    /**
+     * Updates the unique IDs in the attribute relations of the given blocks.
+     *
+     * @param array &$blocksWithRelations Array of references to blocks that contain attribute relations.
+     * @param array &$idMapping Mapping of old unique IDs to new unique IDs.
+     *
+     * @return void
+     */
+    private function update_attribute_relations(&$blocksWithRelations, &$idMapping)
+    {
+        foreach ($blocksWithRelations as &$block) {
+            if (is_array($block['attrs']['relations'])) {
+                foreach ($block['attrs']['relations'] as &$relation) {
+                    if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
+                        $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+                    }
+                }
+            }
+        }
     }
 
 }

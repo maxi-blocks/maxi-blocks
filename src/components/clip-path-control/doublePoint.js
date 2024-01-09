@@ -17,7 +17,8 @@ const ClipPathDoublePoint = props => {
 		props;
 
 	const tooltipText = sprintf(
-		__('Top: %1$s Left: %2$s', 'maxi-blocks'), // translators: Top and left values of the clip path point
+		// translators: Top and left values of the clip path point
+		__('Top: %1$s Left: %2$s', 'maxi-blocks'),
 		handle[1],
 		handle[0]
 	);

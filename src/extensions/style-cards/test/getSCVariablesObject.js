@@ -516,7 +516,6 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 						'text-orientation-general': 'unset',
 						'text-direction-general': 'ltr',
-
 						'white-space-general': 'normal',
 						'word-spacing-general': 0,
 						'word-spacing-unit-general': 'px',

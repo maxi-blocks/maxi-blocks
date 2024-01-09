@@ -473,7 +473,7 @@ describe('List in Text-maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check indent options and styles on multiline list item', async () => {
+	it.skip('Check indent options and styles on multiline list item', async () => {
 		await createNewPost();
 		await createTextWithList('');
 

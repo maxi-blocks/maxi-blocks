@@ -296,6 +296,7 @@ const validateRowColumnsStructure = async (
 			column,
 			innerBlocksPositions,
 			columnToValidateByIndex,
+			false,
 			modifiedMarkNextChangeAsNotPersistent
 		);
 
@@ -306,6 +307,7 @@ const validateRowColumnsStructure = async (
 					column,
 					innerBlocksPositions,
 					columnToValidateByIndex,
+					false,
 					modifiedMarkNextChangeAsNotPersistent
 				),
 			false,

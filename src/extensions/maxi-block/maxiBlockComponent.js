@@ -982,6 +982,27 @@ class MaxiBlockComponent extends Component {
 			);
 
 			this.props.attributes.uniqueID = newUniqueID;
+
+			/**
+			 * Use `updateBlockAttributes` for `uniqueID` update in case if
+			 * `updateBlockAttributes` was called before (for example in `propagateNewUniqueID`)
+			 */
+			if (
+				select('maxiBlocks/blocks').getIsBlockWithUpdatedAttributes(
+					clientId
+				)
+			) {
+				const {
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+					updateBlockAttributes,
+				} = dispatch('core/block-editor');
+				markNextChangeAsNotPersistent();
+				updateBlockAttributes(clientId, {
+					uniqueID: newUniqueID,
+				});
+			}
+
 			if (!this.props.repeaterStatus) {
 				this.props.attributes.customLabel = getCustomLabel(
 					this.props.attributes.customLabel,

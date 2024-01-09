@@ -13,12 +13,24 @@ import { isEmpty } from 'lodash';
  *
  * @param {Object[]} rawBackgroundLayers Background layers for cloning.
  * @param {string}   uniqueID
- * @returns {Object[]} Updated background layers.
+ * @returns {Object[] | null} Updated background layers or null if no update is needed.
  */
 const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 	if (isEmpty(rawBackgroundLayers)) return rawBackgroundLayers;
 
-	return rawBackgroundLayers.map(layer => {
+	let isBGLayersUpdated = false;
+
+	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
+	const updatedBGLayers = rawBackgroundLayers.map(layer => {
+		if (
+			!('background-svg-SVGData' in layer) &&
+			!('background-svg-SVGElement' in layer)
+		) {
+			return layer;
+		}
+
+		isBGLayersUpdated = true;
+
 		const { SVGData, SVGElement } = getUpdatedSVGDataAndElement(
 			layer,
 			uniqueID,
@@ -31,6 +43,10 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 			'background-svg-SVGElement': SVGElement,
 		};
 	});
+
+	if (!isBGLayersUpdated) return null;
+
+	return updatedBGLayers;
 };
 
 export default getUpdatedBGLayersWithNewUniqueID;

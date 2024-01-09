@@ -18,6 +18,7 @@ const propagateNewUniqueID = (
 	newUniqueID,
 	clientId,
 	repeaterStatus,
+	repeaterRowClientId,
 	getInnerBlocksPositions,
 	bgLayers
 ) => {
@@ -39,7 +40,7 @@ const propagateNewUniqueID = (
 
 		let firstColumnToModifyClientId = null;
 
-		const updateNewUniqueID = block => {
+		const updateBlockRelations = block => {
 			if (!block) return;
 
 			const { attributes = {}, clientId } = block;
@@ -55,16 +56,28 @@ const propagateNewUniqueID = (
 					? attributes.relations
 					: Object.values(attributes.relations);
 
+				const { getBlock, getBlockName, getBlockParentsByBlockName } =
+					select('core/block-editor');
+
+				const repeaterColumnClientIds =
+					repeaterStatus &&
+					repeaterRowClientId &&
+					getBlock(repeaterRowClientId).innerBlocks.map(
+						block => block.clientId
+					);
+
 				const newRelations = cloneDeep(relations).map(relation => {
 					const { uniqueID } = relation;
 
-					const { getBlockName, getBlockParentsByBlockName } =
-						select('core/block-editor');
 					const columnClientId =
 						getBlockParentsByBlockName(
 							clientId,
 							'maxi-blocks/column-maxi'
-						)[0] ||
+						).find(
+							parentClientId =>
+								repeaterColumnClientIds &&
+								repeaterColumnClientIds.includes(parentClientId)
+						) ||
 						(getBlockName(clientId) === 'maxi-blocks/column-maxi' &&
 							clientId);
 
@@ -134,7 +147,7 @@ const propagateNewUniqueID = (
 		[...lastChangedBlocks, getRepeaterColumnClientId()].forEach(
 			clientId => {
 				const block = select('core/block-editor').getBlock(clientId);
-				updateNewUniqueID(block);
+				updateBlockRelations(block);
 			}
 		);
 	};

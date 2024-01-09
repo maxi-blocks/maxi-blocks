@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-09T09:50:07+00:00\n"
+"POT-Creation-Date: 2024-01-09T10:06:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -3782,7 +3782,7 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:510
 #: src/components/color-control/customColorControl.js:80
 #: src/components/color-control/customColorControl.js:120
-#: src/components/color-control/paletteControl.js:97
+#: src/components/color-control/paletteControl.js:98
 msgid "Colour opacity"
 msgstr ""
 
@@ -5098,7 +5098,8 @@ msgstr ""
 msgid "Inset"
 msgstr ""
 
-#: src/components/clip-path-control/doublePoint.js:20
+#. translators: Top and left values of the clip path point
+#: src/components/clip-path-control/doublePoint.js:21
 msgid "Top: %1$s Left: %2$s"
 msgstr ""
 
@@ -5148,15 +5149,18 @@ msgstr ""
 msgid "Add new point"
 msgstr ""
 
-#: src/components/clip-path-control/radiusPoint.js:19
+#. translators: Radius value of the clip path point
+#: src/components/clip-path-control/radiusPoint.js:20
 msgid "Radius: %s"
 msgstr ""
 
-#: src/components/clip-path-control/singlePoint.js:33
+#. translators: Top value of the clip path point
+#: src/components/clip-path-control/singlePoint.js:34
 msgid "Top: %s"
 msgstr ""
 
-#: src/components/clip-path-control/singlePoint.js:34
+#. translators: Left value of the clip path point
+#: src/components/clip-path-control/singlePoint.js:36
 msgid "Left: %s"
 msgstr ""
 
@@ -5174,7 +5178,8 @@ msgstr ""
 msgid "Set custom colour"
 msgstr ""
 
-#: src/components/color-control/paletteControl.js:62
+#. translators: %s: color number
+#: src/components/color-control/paletteControl.js:63
 msgid "Pallet box colour %s"
 msgstr ""
 

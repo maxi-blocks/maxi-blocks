@@ -21,6 +21,7 @@ import {
 describe('Video icon control', () => {
 	it('Check video icon control', async () => {
 		await createNewPost();
+
 		await insertMaxiBlock(page, 'Video Maxi');
 		await updateAllBlockUniqueIds(page);
 
@@ -49,7 +50,7 @@ describe('Video icon control', () => {
 			await getAttributes('lightbox-background-palette-color-general')
 		).toStrictEqual(6);
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1500);
 
 		// Change opacity
 		await editAdvancedNumberControl({
@@ -135,6 +136,7 @@ describe('Video icon control', () => {
 	});
 
 	it('Check video icon control responsive', async () => {
+		await page.waitForTimeout(1500);
 		// Opacity lightbox responsive
 		const responsiveValue = await addResponsiveTest({
 			page,

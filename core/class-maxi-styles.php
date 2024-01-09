@@ -2212,9 +2212,11 @@ class MaxiBlocks_Styles
     private function update_attribute_relations(&$blocksWithRelations, &$idMapping)
     {
         foreach ($blocksWithRelations as &$block) {
-            foreach ($block['attrs']['relations'] as &$relation) {
-                if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
-                    $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+            if (is_array($block['attrs']['relations'])) {
+                foreach ($block['attrs']['relations'] as &$relation) {
+                    if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
+                        $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+                    }
                 }
             }
         }

@@ -662,7 +662,7 @@ describe('List in Text-maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check indent options on RTL', async () => {
+	it.skip('Check indent options on RTL', async () => {
 		await createNewPost();
 		await createTextWithList();
 

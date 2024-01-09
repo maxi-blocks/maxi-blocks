@@ -30,8 +30,10 @@ const ClipPathSinglePoint = props => {
 
 	const tooltipText =
 		number === 0
-			? sprintf(__('Top: %s', 'maxi-blocks'), top) // translators: Top value of the clip path point
-			: sprintf(__('Left: %s', 'maxi-blocks'), left); // translators: Left value of the clip path point
+			? // translators: Top value of the clip path point
+			  sprintf(__('Top: %s', 'maxi-blocks'), top)
+			: // translators: Left value of the clip path point
+			  sprintf(__('Left: %s', 'maxi-blocks'), left);
 
 	const classes = classnames(
 		'maxi-clip-path-button',

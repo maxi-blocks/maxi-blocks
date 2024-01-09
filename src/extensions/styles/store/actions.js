@@ -55,6 +55,14 @@ export const saveCSSCache = (uniqueID, stylesObj, isIframe, isSiteEditor) => {
 	};
 };
 
+export const saveRawCSSCache = (uniqueID, stylesContent) => {
+	return {
+		type: 'SAVE_RAW_CSS_CACHE',
+		uniqueID,
+		stylesContent,
+	};
+};
+
 export const removeCSSCache = uniqueID => {
 	return {
 		type: 'REMOVE_CSS_CACHE',

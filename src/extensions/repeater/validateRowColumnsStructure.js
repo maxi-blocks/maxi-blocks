@@ -33,7 +33,9 @@ const validateAttributes = (
 	column,
 	innerBlocksPositions,
 	indexToValidateBy = 0,
-	disableRelationsUpdate = false
+	disableRelationsUpdate = false,
+	modifiedMarkNextChangeAsNotPersistent = dispatch('core/block-editor')
+		.__unstableMarkNextChangeAsNotPersistent
 ) => {
 	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
 
@@ -83,13 +85,9 @@ const validateAttributes = (
 	);
 
 	if (!isEqual(nonExcludedRefAttributes, nonExcludedBlockAttributes)) {
-		const {
-			updateBlockAttributes,
-			__unstableMarkNextChangeAsNotPersistent:
-				markNextChangeAsNotPersistent,
-		} = dispatch('core/block-editor');
+		const { updateBlockAttributes } = dispatch('core/block-editor');
 
-		markNextChangeAsNotPersistent();
+		modifiedMarkNextChangeAsNotPersistent();
 		updateBlockAttributes(block.clientId, nonExcludedRefAttributes);
 	}
 
@@ -100,12 +98,10 @@ const replaceColumnInnerBlocks = (
 	columnClientId,
 	columnToValidateByClientId,
 	columnToValidateByIndex,
-	innerBlocksPositions
+	innerBlocksPositions,
+	modifiedMarkNextChangeAsNotPersistent
 ) => {
-	const {
-		replaceInnerBlocks,
-		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
-	} = dispatch('core/block-editor');
+	const { replaceInnerBlocks } = dispatch('core/block-editor');
 
 	const { getBlock } = select('core/block-editor');
 
@@ -116,7 +112,8 @@ const replaceColumnInnerBlocks = (
 		column,
 		innerBlocksPositions,
 		columnToValidateByIndex,
-		true
+		true,
+		modifiedMarkNextChangeAsNotPersistent
 	);
 
 	const newInnerBlocks = cleanInnerBlocks(
@@ -146,7 +143,7 @@ const replaceColumnInnerBlocks = (
 		newInnerBlocks
 	);
 
-	markNextChangeAsNotPersistent();
+	modifiedMarkNextChangeAsNotPersistent();
 	replaceInnerBlocks(columnClientId, newInnerBlocks, false);
 };
 
@@ -157,18 +154,32 @@ const replaceColumnInnerBlocks = (
  * @param {Object<string, Array>} innerBlocksPositions
  * @param {Function}              differentColumnsStructureCallback runs when columns have different structure, if returns false - columns won't be transformed
  * @param {string}                rawColumnToValidateByClientId     column to validate by, first column by default
+ * @param {boolean}               skipFirstMarkNotPersistent        skip first `__unstableMarkNextChangeAsNotPersistent` call
  * @returns {Promise<boolean>}    true if columns were transformed, false if not
  */
 const validateRowColumnsStructure = async (
 	rowClientId,
 	innerBlocksPositions,
 	differentColumnsStructureCallback,
-	rawColumnToValidateByClientId
+	rawColumnToValidateByClientId,
+	skipFirstMarkNotPersistent = false
 ) => {
+	console.log(skipFirstMarkNotPersistent);
 	const {
 		removeBlock,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = dispatch('core/block-editor');
+
+	let isFirstCall = skipFirstMarkNotPersistent;
+
+	const modifiedMarkNextChangeAsNotPersistent = () => {
+		console.log(isFirstCall);
+		if (!isFirstCall) {
+			markNextChangeAsNotPersistent();
+		} else {
+			isFirstCall = false;
+		}
+	};
 
 	let childColumns = getChildColumns(rowClientId, true);
 
@@ -202,7 +213,7 @@ const validateRowColumnsStructure = async (
 
 	const pushToStructure = (block, structureArray) => {
 		if (DISALLOWED_BLOCKS.includes(block.name)) {
-			markNextChangeAsNotPersistent();
+			modifiedMarkNextChangeAsNotPersistent();
 			removeBlock(block.clientId, false);
 		} else {
 			structureArray.push(block.name);
@@ -228,7 +239,8 @@ const validateRowColumnsStructure = async (
 				column.clientId,
 				columnToValidateByClientId,
 				columnToValidateByIndex,
-				innerBlocksPositions
+				innerBlocksPositions,
+				modifiedMarkNextChangeAsNotPersistent
 			);
 			return;
 		}
@@ -275,7 +287,8 @@ const validateRowColumnsStructure = async (
 				column.clientId,
 				columnToValidateByClientId,
 				columnToValidateByIndex,
-				innerBlocksPositions
+				innerBlocksPositions,
+				modifiedMarkNextChangeAsNotPersistent
 			);
 			return;
 		}
@@ -284,7 +297,8 @@ const validateRowColumnsStructure = async (
 			column,
 			column,
 			innerBlocksPositions,
-			columnToValidateByIndex
+			columnToValidateByIndex,
+			modifiedMarkNextChangeAsNotPersistent
 		);
 
 		goThroughMaxiBlocks(
@@ -293,7 +307,8 @@ const validateRowColumnsStructure = async (
 					block,
 					column,
 					innerBlocksPositions,
-					columnToValidateByIndex
+					columnToValidateByIndex,
+					modifiedMarkNextChangeAsNotPersistent
 				),
 			false,
 			column.innerBlocks

@@ -90,7 +90,6 @@ const getSCVariablesObject = (
 		'letter-spacing',
 		'white-space',
 		'word-spacing',
-		'text-wrap',
 		'margin-bottom',
 		'text-indent',
 	];

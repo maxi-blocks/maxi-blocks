@@ -992,40 +992,43 @@ const TypographyControl = props => {
 					}}
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
-				<SelectControl
-					label={__('Text wrap', 'maxi-blocks')}
-					className='maxi-typography-control__wrap'
-					value={getValue('text-wrap')}
-					defaultValue={getDefault('text-wrap')}
-					newStyle
-					options={[
-						{
-							label: __('Use white space', 'maxi-blocks'),
-							value: 'initial',
-						},
-						{
-							label: __('Balance', 'maxi-blocks'),
-							value: 'balance',
-						},
-						{
-							label: __('Pretty', 'maxi-blocks'),
-							value: 'pretty',
-						},
-					]}
-					onChange={val => {
-						onChangeFormat({
-							[`${prefix}text-wrap`]: val,
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
+				{!isStyleCards && (
+					<SelectControl
+						label={__('Text wrap', 'maxi-blocks')}
+						className='maxi-typography-control__wrap'
+						value={getValue('text-wrap')}
+						defaultValue={getDefault('text-wrap')}
+						newStyle
+						options={[
 							{
-								[`${prefix}text-wrap`]: getDefault('text-wrap'),
+								label: __('Use white space', 'maxi-blocks'),
+								value: 'initial',
 							},
-							{ isReset: true }
-						)
-					}
-				/>
+							{
+								label: __('Balance', 'maxi-blocks'),
+								value: 'balance',
+							},
+							{
+								label: __('Pretty', 'maxi-blocks'),
+								value: 'pretty',
+							},
+						]}
+						onChange={val => {
+							onChangeFormat({
+								[`${prefix}text-wrap`]: val,
+							});
+						}}
+						onReset={() =>
+							onChangeFormat(
+								{
+									[`${prefix}text-wrap`]:
+										getDefault('text-wrap'),
+								},
+								{ isReset: true }
+							)
+						}
+					/>
+				)}
 				<SelectControl
 					label={__('White space', 'maxi-blocks')}
 					className='maxi-typography-control__white-space'

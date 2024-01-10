@@ -15,6 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { getDCImgSVG } from '../../extensions/DC';
 
 /**
  * Save
@@ -53,6 +54,7 @@ const save = props => {
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
+		SVGData,
 		SVGElement,
 		'hover-type': hoverType,
 		isImageUrl,
@@ -102,10 +104,13 @@ const save = props => {
 					])}
 					isSave
 				>
-					{SVGElement && !dcStatus ? (
-						<RawHTML>{SVGElement}</RawHTML>
+					{SVGElement ? (
+						<RawHTML>
+							{dcStatus
+								? getDCImgSVG(uniqueID, SVGData, SVGElement)
+								: SVGElement}
+						</RawHTML>
 					) : (
-						// eslint-disable-next-line jsx-a11y/alt-text
 						<img
 							className={
 								isImageUrl

@@ -50,6 +50,7 @@ import {
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
+import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 
@@ -69,8 +70,14 @@ const UnlimitedCharacterPoppover = ({ message }) => (
 const DynamicContent = props => {
 	const {
 		className,
-		onChange,
 		contentType = 'text',
+		blockName,
+		uniqueID,
+		SVGData,
+		SVGElement,
+		mediaID,
+		mediaURL,
+		onChange,
 		...dynamicContent
 	} = props;
 
@@ -253,9 +260,21 @@ const DynamicContent = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
+				// Disable fix
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
-				onChange={value => changeProps({ 'dc-status': value })}
+				onChange={value =>
+					changeProps({
+						'dc-status': value,
+						...(blockName === 'maxi-blocks/image-maxi' &&
+							!value &&
+							SVGElement &&
+							getUpdatedImgSVG(uniqueID, SVGData, SVGElement, {
+								id: mediaID,
+								url: mediaURL,
+							})),
+					})
+				}
 			/>
 			{status && (
 				<>

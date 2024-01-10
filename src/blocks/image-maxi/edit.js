@@ -520,7 +520,7 @@ class edit extends MaxiBlockComponent {
 									'hoverContentTypography',
 								])}
 							>
-								{!dcStatus && SVGElement ? (
+								{SVGElement ? (
 									<RawHTML>{SVGElement}</RawHTML>
 								) : (
 									// eslint-disable-next-line jsx-a11y/alt-text

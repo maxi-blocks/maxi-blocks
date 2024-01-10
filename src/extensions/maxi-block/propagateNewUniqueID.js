@@ -19,7 +19,6 @@ const propagateNewUniqueID = (
 	clientId,
 	repeaterStatus,
 	repeaterRowClientId,
-	getInnerBlocksPositions,
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};

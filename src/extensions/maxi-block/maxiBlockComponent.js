@@ -978,7 +978,6 @@ class MaxiBlockComponent extends Component {
 				clientId,
 				this.props.repeaterStatus,
 				this.props.repeaterRowClientId,
-				this.props.getInnerBlocksPositions,
 				this.props.attributes['background-layers']
 			);
 

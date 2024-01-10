@@ -247,7 +247,7 @@ const validateRowColumnsStructure = async (
 
 		if (
 			proceedTransformingColumns === null &&
-			columnsStructure.length > 0 &&
+			columnStructure.length > 0 &&
 			!isEqual(
 				columnsStructure[columnToValidateByClientId],
 				columnStructure

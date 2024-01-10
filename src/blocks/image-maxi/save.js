@@ -8,6 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import { getDCImgSVG } from '../../extensions/DC';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
@@ -15,7 +16,6 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import { getDCImgSVG } from '../../extensions/DC';
 
 /**
  * Save

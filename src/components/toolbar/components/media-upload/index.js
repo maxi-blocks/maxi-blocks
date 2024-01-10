@@ -51,10 +51,12 @@ const ToolbarMediaUpload = props => {
 		playerType,
 		hideImage,
 		uniqueID,
+		'dc-status': dcStatus,
 	} = attributes;
 
 	if (
 		!ALLOWED_BLOCKS.includes(blockName) ||
+		dcStatus ||
 		playerType === 'video' ||
 		hideImage
 	)

@@ -260,7 +260,6 @@ const DynamicContent = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				// Disable fix
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
 				onChange={value =>

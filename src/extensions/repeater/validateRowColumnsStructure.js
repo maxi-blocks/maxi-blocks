@@ -232,17 +232,6 @@ const validateRowColumnsStructure = async (
 		const isColumnToValidateBy =
 			column.clientId === columnToValidateBy.clientId;
 
-		if (!isColumnToValidateBy && columnInnerBlocks.length === 0) {
-			replaceColumnInnerBlocks(
-				column.clientId,
-				columnToValidateByClientId,
-				columnToValidateByIndex,
-				innerBlocksPositions,
-				modifiedMarkNextChangeAsNotPersistent
-			);
-			return;
-		}
-
 		columnsStructure[column.clientId] = [];
 		const columnStructure = columnsStructure[column.clientId];
 
@@ -258,6 +247,7 @@ const validateRowColumnsStructure = async (
 
 		if (
 			proceedTransformingColumns === null &&
+			columnsStructure.length > 0 &&
 			!isEqual(
 				columnsStructure[columnToValidateByClientId],
 				columnStructure
@@ -274,6 +264,10 @@ const validateRowColumnsStructure = async (
 	}
 
 	await goThroughColumns(childColumns, null, async column => {
+		if (column.clientId === columnToValidateByClientId) {
+			return;
+		}
+
 		if (
 			columnsStructure[column.clientId] &&
 			!isEqual(

@@ -52,13 +52,12 @@ const propagateNewUniqueID = (
 					isArray(Object.values(attributes.relations))));
 
 		const getColumnClientId = (clientId, repeaterColumnClientIds) => {
-			if (!repeaterColumnClientIds) {
-				const { getBlockName } = blockEditorStore;
-				return (
-					getBlockName(clientId) === 'maxi-blocks/column-maxi' &&
-					clientId
-				);
-			}
+			const { getBlockName } = blockEditorStore;
+			const blockName = getBlockName(clientId);
+
+			if (blockName === 'maxi-blocks/column-maxi') return clientId;
+
+			if (!repeaterColumnClientIds) return null;
 
 			const { getBlockParentsByBlockName } = blockEditorStore;
 			return getBlockParentsByBlockName(

@@ -691,7 +691,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await pressKeyWithTimeout('ArrowRight', 5);
 		await page.waitForTimeout(150);
-		await page.keyboard.press('Enter');
+		await pressKeyWithModifier('shift', 'Enter');
 		await page.waitForTimeout(150);
 
 		const { content: expectedContent } = await getBlockAttributes();

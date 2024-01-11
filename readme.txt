@@ -261,7 +261,7 @@ Production ready. Just insert and start editing.
 - Food & drink (6)
 - Health (7)
 - Nonprofit (3)
-- Services (23)-
+- Services (23)
 - Sports (8)
 - Technology (4)
 - Travel (1)

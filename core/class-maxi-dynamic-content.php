@@ -198,8 +198,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (empty($response) && $response !== '0') {
-            $response = 'No content found';
             $this->is_empty = true;
+            $response = 'No content found';
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
@@ -242,6 +242,10 @@ class MaxiBlocks_DynamicContent
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $media_id = $dc_id;
+        } elseif ($dc_type === 'users') {
+            $media_id = 'external';
+            $post = $this->get_post($attributes);
+            $media_src = get_avatar_url($post->ID);
         } elseif ($dc_type === 'products') {
             $media_id = self::get_product_content($attributes);
         }
@@ -269,11 +273,11 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-alt-to-replace', $media_alt, $content);
             $content = str_replace('$media-caption-to-replace', $media_caption, $content);
         } else {
+            $this->is_empty = true;
             $content = str_replace('$media-id-to-replace', '', $content);
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
-            $this->is_empty = true;
         }
 
         return $content;

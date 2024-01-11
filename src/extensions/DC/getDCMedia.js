@@ -28,6 +28,20 @@ const getDCMedia = async (dataRequest, clientId) => {
 		return contentValue;
 	}
 
+	if (field === 'avatar' && type === 'users') {
+		const { avatar_urls: avatarUrls } = data;
+
+		if (!avatarUrls) return null;
+
+		const sizes = Object.keys(avatarUrls);
+		// Get the largest size
+		const size = Math.max(...sizes.map(Number));
+
+		return {
+			url: avatarUrls[size],
+		};
+	}
+
 	if (type === 'products') {
 		id = await getProductsContent(dataRequest, data);
 	} else {

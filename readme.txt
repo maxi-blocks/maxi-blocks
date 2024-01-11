@@ -440,7 +440,7 @@ MaxiBlocks v1.6.0
 * Fix: Refined application of advanced CSS classes.
 * Update: Remove image URLs within the Interaction Builder for a cleaner interface.
 * Update: Automate hiding of DC blocks on the frontend if content is absent.
-* Update: Comprehensive enhancements in user interface (UI) elements.
+* Update: Enhancements in user interface (UI) elements.
 * Update: Upgrade dashboard styles for better responsive support.
 * Update: Enhance support for right-to-left (RTL) language rendering.
 * Update: Refine cursor visibility with border adjustment for Text editing.

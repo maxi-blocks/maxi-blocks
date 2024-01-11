@@ -214,6 +214,7 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
+            'dc-field' => $dc_field,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -233,9 +234,14 @@ class MaxiBlocks_DynamicContent
             $media_id = is_array($image) && $image['id'];
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
-            // $dc_field is not used here as there's just on option for the moment
+
             if (!empty($post)) {
-                $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+                if ($dc_field === 'featured_media') {
+                    $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
+                } elseif ($dc_field === 'author_avatar') {
+                    $media_id = 'external';
+                    $media_src = get_avatar_url($post->post_author);
+                }
             }
         } elseif ($dc_type === 'settings') { // Site settings
             // $dc_field is not used here as there's just on option for the moment

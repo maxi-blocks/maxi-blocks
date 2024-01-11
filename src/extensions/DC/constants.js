@@ -246,6 +246,7 @@ const buttonTagFields = [
 
 const mediaPostsPagesFields = [
 	{ label: __('Featured media', 'maxi-blocks'), value: 'featured_media' },
+	{ label: __("Author's avatar", 'maxi-blocks'), value: 'author_avatar' },
 ];
 
 const mediaSettingsFields = [

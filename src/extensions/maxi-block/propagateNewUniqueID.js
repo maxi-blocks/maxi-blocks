@@ -18,7 +18,7 @@ const propagateNewUniqueID = (
 	newUniqueID,
 	clientId,
 	repeaterStatus,
-	getInnerBlocksPositions,
+	repeaterRowClientId,
 	bgLayers
 ) => {
 	const blockAttributesUpdate = {};
@@ -39,104 +39,146 @@ const propagateNewUniqueID = (
 
 		let firstColumnToModifyClientId = null;
 
-		const updateNewUniqueID = block => {
+		const blockEditorStore = select('core/block-editor');
+		const maxiBlocksStore = select('maxiBlocks/blocks');
+		const blockEditorDispatch = dispatch('maxiBlocks/blocks');
+		const { getBlock } = blockEditorStore;
+
+		const attributesHasRelations = attributes =>
+			'relations' in attributes &&
+			!isEmpty(attributes.relations) &&
+			(isArray(attributes.relations) ||
+				(isPlainObject(attributes.relations) &&
+					isArray(Object.values(attributes.relations))));
+
+		const getColumnClientId = (clientId, repeaterColumnClientIds) => {
+			const { getBlockName } = blockEditorStore;
+			const blockName = getBlockName(clientId);
+
+			if (blockName === 'maxi-blocks/column-maxi') return clientId;
+
+			if (!repeaterColumnClientIds) return null;
+
+			const { getBlockParentsByBlockName } = blockEditorStore;
+			return getBlockParentsByBlockName(
+				clientId,
+				'maxi-blocks/column-maxi'
+			).find(parentClientId =>
+				repeaterColumnClientIds.includes(parentClientId)
+			);
+		};
+
+		const shouldUpdateRelation = (
+			relation,
+			clientId,
+			repeaterColumnClientIds
+		) => {
+			if (relation.uniqueID !== oldUniqueID) return false;
+
+			if (repeaterStatus) {
+				const columnClientId = getColumnClientId(
+					clientId,
+					repeaterColumnClientIds
+				);
+
+				return (
+					!columnClientId ||
+					!firstColumnToModifyClientId ||
+					firstColumnToModifyClientId === columnClientId
+				);
+			}
+
+			return true;
+		};
+
+		const updateRelationsWithNewUniqueID = (
+			relations,
+			clientId,
+			repeaterColumnClientIds
+		) =>
+			cloneDeep(relations).map(relation => {
+				if (
+					shouldUpdateRelation(
+						relation,
+						clientId,
+						repeaterColumnClientIds
+					)
+				) {
+					firstColumnToModifyClientId = getColumnClientId(
+						clientId,
+						repeaterColumnClientIds
+					);
+					relation.uniqueID = newUniqueID;
+				}
+				return relation;
+			});
+
+		const updateBlockRelations = (block, repeaterColumnClientIds) => {
 			if (!block) return;
 
 			const { attributes = {}, clientId } = block;
 
-			if (
-				'relations' in attributes &&
-				!isEmpty(attributes.relations) &&
-				(isArray(attributes.relations) ||
-					(isPlainObject(attributes.relations) &&
-						isArray(Object.values(attributes.relations))))
-			) {
-				const relations = isArray(attributes.relations)
-					? attributes.relations
-					: Object.values(attributes.relations);
+			if (!attributesHasRelations(attributes)) return;
 
-				const newRelations = cloneDeep(relations).map(relation => {
-					const { uniqueID } = relation;
+			const relations = isArray(attributes.relations)
+				? attributes.relations
+				: Object.values(attributes.relations);
+			const newRelations = updateRelationsWithNewUniqueID(
+				relations,
+				clientId,
+				repeaterColumnClientIds
+			);
 
-					const { getBlockName, getBlockParentsByBlockName } =
-						select('core/block-editor');
-					const columnClientId =
-						getBlockParentsByBlockName(
-							clientId,
-							'maxi-blocks/column-maxi'
-						)[0] ||
-						(getBlockName(clientId) === 'maxi-blocks/column-maxi' &&
-							clientId);
+			if (!isEqual(relations, newRelations)) {
+				updateBlockAttributesUpdate(
+					clientId,
+					'relations',
+					newRelations
+				);
 
-					if (
-						uniqueID === oldUniqueID &&
-						(!repeaterStatus ||
-							!columnClientId ||
-							(repeaterStatus &&
-								(!firstColumnToModifyClientId ||
-									firstColumnToModifyClientId ===
-										columnClientId)))
-					) {
-						firstColumnToModifyClientId = columnClientId;
-
-						relation.uniqueID = newUniqueID;
-					}
-
-					return relation;
-				});
-
-				if (!isEqual(relations, newRelations) && clientId) {
-					updateBlockAttributesUpdate(
-						clientId,
-						'relations',
-						newRelations
-					);
-
-					const storedBlock =
-						select('maxiBlocks/blocks').getBlockByClientId(
-							clientId
-						);
-
-					if (!storedBlock) {
-						dispatch(
-							'maxiBlocks/blocks'
-						).addBlockWithUpdatedAttributes(clientId);
-					}
+				if (!maxiBlocksStore.getBlockByClientId(clientId)) {
+					blockEditorDispatch.addBlockWithUpdatedAttributes(clientId);
 				}
 			}
 		};
 
-		/**
-		 * In case if some of blocks was inserted into repeater (for example on validation),
-		 * then we need to check the column as well.
-		 */
-		const getRepeaterColumnClientId = () => {
-			if (!lastChangedBlocks.includes(clientId) || !repeaterStatus) {
-				return null;
-			}
-
-			const columnInnerBlocksPositions =
-				getInnerBlocksPositions()?.[[-1]];
-
-			if (!columnInnerBlocksPositions) {
-				return null;
-			}
-
-			const parentColumnsClientIds = select(
-				'core/block-editor'
-			).getBlockParentsByBlockName(clientId, 'maxi-blocks/column-maxi');
-
-			return parentColumnsClientIds.find(columnClientId =>
-				columnInnerBlocksPositions.includes(columnClientId)
+		const getRepeaterColumnClientIds = () => {
+			const { getBlock } = blockEditorStore;
+			return (
+				repeaterStatus &&
+				repeaterRowClientId &&
+				getBlock(repeaterRowClientId).innerBlocks.map(
+					block => block.clientId
+				)
 			);
 		};
 
-		[...lastChangedBlocks, getRepeaterColumnClientId()].forEach(
-			clientId => {
-				const block = select('core/block-editor').getBlock(clientId);
-				updateNewUniqueID(block);
-			}
+		const getRepeaterColumnClientId = repeaterColumnClientIds => {
+			if (!repeaterStatus) return null;
+
+			const parentColumnsClientIds =
+				blockEditorStore.getBlockParentsByBlockName(
+					clientId,
+					'maxi-blocks/column-maxi'
+				);
+			return parentColumnsClientIds.find(columnClientId =>
+				repeaterColumnClientIds.includes(columnClientId)
+			);
+		};
+
+		const repeaterColumnClientIds = getRepeaterColumnClientIds();
+		const repeaterColumnClientId = getRepeaterColumnClientId(
+			repeaterColumnClientIds
 		);
+
+		const clientIdsToProcess = new Set([
+			...lastChangedBlocks,
+			repeaterColumnClientId,
+		]);
+		for (const clientId of clientIdsToProcess) {
+			const block = getBlock(clientId);
+			updateBlockRelations(block, repeaterColumnClientIds);
+		}
 	};
 
 	const updateBGLayers = () => {

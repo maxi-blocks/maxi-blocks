@@ -376,14 +376,16 @@ const RelationControl = props => {
 
 	return (
 		<div className='maxi-relation-control'>
-			<ToggleSwitch
-				label={__('Preview all interactions', 'maxi-blocks')}
-				selected={props['relations-preview']}
-				onChange={value => {
-					markNextChangeAsNotPersistent();
-					onChange({ 'relations-preview': value });
-				}}
-			/>
+			{!isEmpty(relations) && (
+				<ToggleSwitch
+					label={__('Preview all interactions', 'maxi-blocks')}
+					selected={props['relations-preview']}
+					onChange={value => {
+						markNextChangeAsNotPersistent();
+						onChange({ 'relations-preview': value });
+					}}
+				/>
+			)}
 			<Button
 				className='maxi-relation-control__button'
 				type='button'

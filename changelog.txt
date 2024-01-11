@@ -1,5 +1,21 @@
 Updates: 11 January 2024
-MaxiBlocks V1.6.0
+MaxiBlocks v1.6.0
+* Fix: Resolve issues with block tone styles to ensure consistency.
+* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
+* Fix: Improve Interaction Builder on repeater toggle.
+* Fix: Address crash in Text Block when rapidly accessing Typography settings.
+* Fix: Resolve uniqueID conflicts in migrators.
+* Fix: Enhance frontend display of parallax effects and shape dividers.
+* Fix: Improve responsiveness for typography.
+* Fix: Refined application of advanced CSS classes.
+* Update: Remove image URLs within the Interaction Builder for a cleaner interface.
+* Update: Automate hiding of DC blocks on the frontend if content is absent.
+* Update: Comprehensive enhancements in user interface (UI) elements.
+* Update: Upgrade dashboard styles for better responsive support.
+* Update: Enhance support for right-to-left (RTL) language rendering.
+* Update: Refine cursor visibility with border adjustment for Text editing.
+* Update: Improve language translations.
+* Update: Add compatibility with the Yoast Duplicate Post plugin.
 
 Updates: 22 December 2023
 MaxiBlocks V1.5.8

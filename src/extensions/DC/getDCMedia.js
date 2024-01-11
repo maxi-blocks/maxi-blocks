@@ -47,7 +47,7 @@ const getDCMedia = async (dataRequest, clientId) => {
 		return getAvatar(data);
 	}
 
-	if (type === 'posts' && field === 'author_avatar') {
+	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
 		const { author: authorId } = data;
 		const { getUser } = resolveSelect('core');
 

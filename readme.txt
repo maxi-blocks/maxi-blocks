@@ -7,7 +7,7 @@ Requires at least: 6.2.2
 Tested up to: 6.4.2
 Requires PHP: 8.0
 Stable tag: 1.6.0
-License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
+License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
@@ -428,7 +428,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-Updates: 11 January 2024
+_Updates: 11 January 2024_
 MaxiBlocks v1.6.0
 * Fix: Resolve issues with block tone styles to ensure consistency.
 * Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
@@ -447,8 +447,7 @@ MaxiBlocks v1.6.0
 * Update: Improve language translations.
 * Update: Add compatibility with the Yoast Duplicate Post plugin.
 
-
-Updates: 22 December 2023
+_Updates: 22 December 2023_
 MaxiBlocks V1.5.8
 * Update: Speed improvements for all Maxi foundation blocks in the Editing Experience (EE). More coming.
 * Update: Hide occasional duplicated Gutenberg toolbar when MaxiBlocks toolbar is active.

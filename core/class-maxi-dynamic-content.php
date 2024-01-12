@@ -1173,7 +1173,7 @@ class MaxiBlocks_DynamicContent
     {
         // Wordpress has no way to check if the avatar is the default
         // so we check if the avatar has the class avatar-default
-        // {this might break in the future if wordpress changes the class name)
+        // this might break in the future if wordpress changes the class name
         $avatar_html = get_avatar($author_id);
         return strpos($avatar_html, 'avatar-default') !== false;
     }

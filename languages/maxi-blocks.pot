@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.5.8\n"
+"Project-Id-Version: MaxiBlocks 1.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-09T10:06:26+00:00\n"
+"POT-Creation-Date: 2024-01-11T12:12:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -99,8 +99,8 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:70
 #: src/components/background-control/imageLayer.js:742
 #: src/components/inspector-tabs/inspector-transition.js:139
-#: src/components/relation-control/index.js:507
-#: src/components/relation-control/index.js:649
+#: src/components/relation-control/index.js:509
+#: src/components/relation-control/index.js:651
 msgid "Settings"
 msgstr ""
 
@@ -638,7 +638,7 @@ msgstr ""
 #: build/1943.js:1
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:284
-#: src/components/repeater/index.js:83
+#: src/components/repeater/index.js:88
 #: src/editor/style-cards/maxiStyleCardsEditor.js:538
 #: src/editor/style-cards/maxiStyleCardsEditor.js:580
 #: src/editor/style-cards/maxiStyleCardsEditor.js:692
@@ -2882,32 +2882,32 @@ msgid "URL"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:394
+#: src/components/toolbar/components/copy-paste/index.js:398
 msgid "Copy styles - all"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:401
+#: src/components/toolbar/components/copy-paste/index.js:405
 msgid "Paste styles - all"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:414
+#: src/components/toolbar/components/copy-paste/index.js:418
 msgid "Paste special - select"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:428
+#: src/components/toolbar/components/copy-paste/index.js:432
 msgid "Paste special style"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:439
+#: src/components/toolbar/components/copy-paste/index.js:443
 msgid "Copy nested blocks"
 msgstr ""
 
 #: build/2766.js:1
-#: src/components/toolbar/components/copy-paste/index.js:448
+#: src/components/toolbar/components/copy-paste/index.js:452
 msgid "Paste nested blocks"
 msgstr ""
 
@@ -5914,78 +5914,78 @@ msgstr ""
 msgid "Choose settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:380
+#: src/components/relation-control/index.js:381
 msgid "Preview all interactions"
 msgstr ""
 
-#: src/components/relation-control/index.js:393
+#: src/components/relation-control/index.js:395
 msgid "Add new interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:403
+#: src/components/relation-control/index.js:405
 msgid "Untitled interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:408
+#: src/components/relation-control/index.js:410
 #: src/extensions/DC/constants.js:185
 #: src/extensions/DC/constants.js:193
 #: src/extensions/DC/constants.js:283
 msgid "Name"
 msgstr ""
 
-#: src/components/relation-control/index.js:410
+#: src/components/relation-control/index.js:412
 msgid "Give memorable name…"
 msgstr ""
 
-#: src/components/relation-control/index.js:428
+#: src/components/relation-control/index.js:430
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
-#: src/components/relation-control/index.js:435
+#: src/components/relation-control/index.js:437
 msgid "Block to affect"
 msgstr ""
 
-#: src/components/relation-control/index.js:443
+#: src/components/relation-control/index.js:445
 msgid "Select block…"
 msgstr ""
 
-#: src/components/relation-control/index.js:464
+#: src/components/relation-control/index.js:466
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:473
+#: src/components/relation-control/index.js:475
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:480
+#: src/components/relation-control/index.js:482
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:487
+#: src/components/relation-control/index.js:489
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:632
+#: src/components/relation-control/index.js:634
 msgid "Open block settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:659
+#: src/components/relation-control/index.js:661
 msgid "Effects"
 msgstr ""
 
-#: src/components/repeater/index.js:43
+#: src/components/repeater/index.js:48
 msgid "Enable repeater"
 msgstr ""
 
-#: src/components/repeater/index.js:79
+#: src/components/repeater/index.js:84
 msgid "Columns are not uniformly structured. To standardize, all columns will be updated to match the first one."
 msgstr ""
 
-#: src/components/repeater/index.js:84
+#: src/components/repeater/index.js:89
 msgid "Continue"
 msgstr ""
 
-#: src/components/repeater/index.js:96
+#: src/components/repeater/index.js:101
 msgid "Inherited from parent row. To edit, please disable higher level repeater."
 msgstr ""
 

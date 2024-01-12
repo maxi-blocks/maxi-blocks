@@ -374,6 +374,10 @@ class MaxiBlocks_DynamicContent
             }
 
             if ($dc_type === 'products') {
+                if(!function_exists('wc_get_products')) {
+                    return null;
+                }
+
                 $products = wc_get_products($args);
 
                 return end($products);
@@ -1125,7 +1129,7 @@ class MaxiBlocks_DynamicContent
 
         if($relation === 'by-category') {
             if ($type === 'products') {
-                $args['category'] = [get_term($id)->slug];
+                $args['category'] = [$this->get_term_slug($id)];
             } else {
                 $args['cat'] = $id;
             }
@@ -1133,7 +1137,7 @@ class MaxiBlocks_DynamicContent
             $args['author'] = $id;
         } elseif($relation === 'by-tag') {
             if ($type === 'products') {
-                $args['tag'] = [get_term($id)->slug];
+                $args['tag'] = [$this->get_term_slug($id)];
             } else {
                 $args['tag_id'] = $id;
             }
@@ -1173,4 +1177,16 @@ class MaxiBlocks_DynamicContent
         $avatar_html = get_avatar($author_id);
         return strpos($avatar_html, 'avatar-default') !== false;
     }
+
+    public function get_term_slug($id)
+    {
+        $term = get_term($id);
+
+        if ($term) {
+            return $term->slug;
+        }
+
+        return '';
+    }
+
 }

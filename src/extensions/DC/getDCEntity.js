@@ -12,7 +12,6 @@ import { getCartData } from './getWooCommerceData';
 import {
 	kindDictionary,
 	nameDictionary,
-	relationDictionary,
 	orderRelations,
 	orderTypes,
 	relationTypes,
@@ -83,7 +82,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				orderby: relation === 'by-date' ? 'registered_date' : 'name',
 			});
 
-			return users.at(-1);
+			return users?.at(-1);
 		}
 
 		const user = await getUser(author ?? id);
@@ -119,7 +118,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 			}
 		);
 
-		return entities.at(-1);
+		return entities?.at(-1);
 	}
 
 	if (type === 'settings') {

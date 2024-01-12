@@ -241,6 +241,10 @@ class MaxiBlocks_DynamicContent
                 } elseif ($dc_field === 'author_avatar') {
                     $media_id = 'external';
                     $media_src = get_avatar_url($post->post_author);
+
+                    if (self::is_avatar_default($post->post_author)) {
+                        $this->is_empty = true;
+                    }
                 }
             }
         } elseif ($dc_type === 'settings') { // Site settings
@@ -252,6 +256,10 @@ class MaxiBlocks_DynamicContent
             $media_id = 'external';
             $post = $this->get_post($attributes);
             $media_src = get_avatar_url($post->ID);
+
+            if (self::is_avatar_default($post->post_author)) {
+                $this->is_empty = true;
+            }
         } elseif ($dc_type === 'products') {
             $media_id = self::get_product_content($attributes);
         }
@@ -1157,4 +1165,12 @@ class MaxiBlocks_DynamicContent
         }
     }
 
+    public function is_avatar_default($author_id)
+    {
+        // Wordpress has no way to check if the avatar is the default
+        // so we check if the avatar has the class avatar-default
+        // {this might break in the future if wordpress changes the class name)
+        $avatar_html = get_avatar($author_id);
+        return strpos($avatar_html, 'avatar-default') !== false;
+    }
 }

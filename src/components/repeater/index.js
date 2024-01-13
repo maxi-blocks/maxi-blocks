@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -25,6 +26,10 @@ const Repeater = ({
 	onChange,
 	...attributes
 }) => {
+	const {
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = useDispatch('core/block-editor');
+
 	const [isModalHidden, setIsModalHidden] = useState(true);
 	const [resolveConfirmation, setResolveConfirmation] = useState(null);
 
@@ -47,30 +52,30 @@ const Repeater = ({
 							onChange({
 								[getAttributeKey('repeater-status')]: val,
 							});
+							return;
 						}
 
-						if (val) {
-							const newInnerBlocksPositions =
-								updateInnerBlocksPositions();
+						const newInnerBlocksPositions =
+							updateInnerBlocksPositions();
 
-							const isStructureValidated =
-								await validateRowColumnsStructure(
-									clientId,
-									newInnerBlocksPositions,
-									async () =>
-										new Promise(resolve => {
-											setIsModalHidden(false);
-											setResolveConfirmation(
-												() => resolve
-											);
-										})
-								);
+						const isStructureValidated =
+							await validateRowColumnsStructure(
+								clientId,
+								newInnerBlocksPositions,
+								async () =>
+									new Promise(resolve => {
+										setIsModalHidden(false);
+										setResolveConfirmation(() => resolve);
+									}),
+								undefined,
+								true
+							);
 
-							if (isStructureValidated) {
-								onChange({
-									[getAttributeKey('repeater-status')]: val,
-								});
-							}
+						if (isStructureValidated) {
+							markNextChangeAsNotPersistent();
+							onChange({
+								[getAttributeKey('repeater-status')]: val,
+							});
 						}
 					}}
 				/>

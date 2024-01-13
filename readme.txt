@@ -6,8 +6,8 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 1.5.8
-License: GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version and the Mozilla Public License, Version 2.0
+Stable tag: 1.6.0
+License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
@@ -261,7 +261,7 @@ Production ready. Just insert and start editing.
 - Food & drink (6)
 - Health (7)
 - Nonprofit (3)
-- Services (23)-
+- Services (23)
 - Sports (8)
 - Technology (4)
 - Travel (1)
@@ -428,7 +428,26 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-Updates: 22 December 2023
+_Updates: 11 January 2024_
+MaxiBlocks v1.6.0
+* Fix: Resolve issues with block tone styles to ensure consistency.
+* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
+* Fix: Improve Interaction Builder on repeater toggle.
+* Fix: Address crash in Text Block when rapidly accessing Typography settings.
+* Fix: Resolve uniqueID conflicts in migrators.
+* Fix: Enhance frontend display of parallax effects and shape dividers.
+* Fix: Improve responsiveness for typography.
+* Fix: Refined application of advanced CSS classes.
+* Update: Remove image URLs within the Interaction Builder for a cleaner interface.
+* Update: Automate hiding of DC blocks on the frontend if content is absent.
+* Update: Enhancements in user interface (UI) elements.
+* Update: Upgrade dashboard styles for better responsive support.
+* Update: Enhance support for right-to-left (RTL) language rendering.
+* Update: Refine cursor visibility with border adjustment for Text editing.
+* Update: Improve language translations.
+* Update: Add compatibility with the Yoast Duplicate Post plugin.
+
+_Updates: 22 December 2023_
 MaxiBlocks V1.5.8
 * Update: Speed improvements for all Maxi foundation blocks in the Editing Experience (EE). More coming.
 * Update: Hide occasional duplicated Gutenberg toolbar when MaxiBlocks toolbar is active.
@@ -456,21 +475,6 @@ MaxiBlocks V1.5.7
 * Fix: Resolve broken blocks after standardizing the columns for Repeater.
 * Fix: Repeater styles on frontend.
 
-_Updates: 5 December 2023_
-MaxiBlocks V1.5.6
-* Update: Enhance Interaction Builder with Preview Mode in Gutenberg.
-* Update: Add toggle for Icon, Transform and CustomCSS canvas hover.
-* Update: Context Loop toggle to affect children or grandchildren blocks inside Containers.
-* Fix: Resolve Dynamic Content issues for removed WooCommerce products.
-* Fix: Correct Context Loop functionality by category, tag and author.
-* Fix: Interaction Builder now accurately applies styles for click actions on frontend.
-* Fix: Typography default values for Interaction Builder in Gutenberg.
-* Fix: Remove redundant shape mask icon styles.
-* Fix: Remove an unnecessary second reset button from Button icon's toolbar.
-* Fix: Better Toolbar pop-up styles for margin.
-* Fix: Box shadow min and max values.
-* Fix: Context Loop for Container.
-* Fix: Remove empty rel attribute for links.
 
 == Upgrade Notice ==
 

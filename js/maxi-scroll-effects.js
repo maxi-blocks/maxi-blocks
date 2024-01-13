@@ -40,34 +40,29 @@ class ScrollEffects {
 
 	setTransform = (el, transform, type) => {
 		const oldTransform = el.style.transform;
+		const currentTransform = el.style.transform || '';
 
-		if (oldTransform == null) {
-			el.style.transform = transform;
-			el.style.WebkitTransform = transform;
-			return null;
-		}
-
-		const oldTransformArray = oldTransform.split(' ');
+		// Splitting the current transform into individual transformations (e.g., "translateX(100px)" and "rotate(45deg)")
+		const transformParts = currentTransform.match(/(\w+\([^)]+\))/g) || [];
 
 		if (el.dataset.scrollEffectType.includes(type)) {
-			const transformProperty = transform.split('(')[0]; // Get the property name (e.g., translateX, translateY, rotate)
-			let propertyExists = false;
+			const newTransformProperty = newTransform.split('(')[0]; // e.g., "translateX"
 
-			const newTransformArray = oldTransformArray.map(oldTransform => {
-				const property = oldTransform.split('(')[0];
-				if (property === transformProperty) {
-					propertyExists = true;
-					return transform;
-				}
-				return oldTransform;
-			});
+			const existingPropertyIndex = transformParts.findIndex(part =>
+				part.startsWith(newTransformProperty)
+			);
 
-			if (!propertyExists) {
-				newTransformArray.push(transform);
+			if (existingPropertyIndex !== -1) {
+				// Replace the existing transform property
+				transformParts[existingPropertyIndex] = newTransform;
+			} else {
+				// Add the new transform property
+				transformParts.push(newTransform);
 			}
 
-			el.style.transform = newTransformArray.join(' ');
-			el.style.WebkitTransform = newTransformArray.join(' ');
+			const updatedTransform = transformParts.join(' ');
+			el.style.transform = updatedTransform;
+			el.style.WebkitTransform = updatedTransform;
 		}
 
 		return null;

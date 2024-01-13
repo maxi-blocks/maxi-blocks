@@ -600,7 +600,7 @@ class edit extends MaxiBlockComponent {
 																			newState
 																		);
 																	},
-																	600
+																	10
 																);
 														},
 														richTextValues,

@@ -8,13 +8,11 @@ class ScrollEffects {
 	init() {
 		this.startingEffect();
 
-		// eslint-disable-next-line @wordpress/no-global-event-listener
 		document.addEventListener('DOMContentLoaded', [
 			this.getElements.bind(this),
 			this.startingEffect.bind(this),
 		]);
 
-		// eslint-disable-next-line @wordpress/no-global-event-listener
 		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
 	}
 
@@ -38,8 +36,7 @@ class ScrollEffects {
 		return response;
 	};
 
-	setTransform = (el, transform, type) => {
-		const oldTransform = el.style.transform;
+	static setTransform = (el, newTransform, type) => {
 		const currentTransform = el.style.transform || '';
 
 		// Splitting the current transform into individual transformations (e.g., "translateX(100px)" and "rotate(45deg)")
@@ -68,19 +65,19 @@ class ScrollEffects {
 		return null;
 	};
 
-	setOpacity = (el, opacity) => {
+	static setOpacity = (el, opacity) => {
 		el.style.opacity = opacity;
 	};
 
-	setBlur = (el, blur) => {
+	static setBlur = (el, blur) => {
 		el.style.filter = `blur(${blur})`;
 	};
 
-	setVertical = (el, value) => {
+	static setVertical = (el, value) => {
 		el.style.top = `${value}px`;
 	};
 
-	setHorizontal = (el, value) => {
+	static setHorizontal = (el, value) => {
 		el.style.left = `${value}px`;
 	};
 
@@ -115,9 +112,7 @@ class ScrollEffects {
 		return null;
 	}
 
-	getScrollSetting = data => {
-		const response = {};
-
+	static getScrollSetting = data => {
 		const dataScrollArray = data.trim().split(' ');
 
 		const getTriggerValue = viewport => {
@@ -147,7 +142,7 @@ class ScrollEffects {
 		return response;
 	};
 
-	getScrollData = (el, type) => {
+	static getScrollData = (el, type) => {
 		return el.getAttribute(`data-scroll-effect-${type}-general`);
 	};
 
@@ -291,7 +286,6 @@ class ScrollEffects {
 	}
 }
 
-// eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-new
 	new ScrollEffects();

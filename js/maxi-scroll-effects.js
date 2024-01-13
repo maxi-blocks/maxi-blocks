@@ -138,14 +138,16 @@ class ScrollEffects {
 			}
 		};
 
-		response.speedValue = parseFloat(dataScrollArray[0]) || 200;
-		response.delayValue = parseFloat(dataScrollArray[1]) || 0;
-		response.easingValue = dataScrollArray[2] || 'ease';
-		response.trigger = getTriggerValue(dataScrollArray[3]);
-		response.reverseScroll = dataScrollArray[4] || true;
-		response.start = parseInt(dataScrollArray[5]);
-		response.mid = parseInt(dataScrollArray[6]);
-		response.end = parseInt(dataScrollArray[7]);
+		const response = {
+			speedValue: parseFloat(dataScrollArray[0]) || 200,
+			delayValue: parseFloat(dataScrollArray[1]) || 0,
+			easingValue: dataScrollArray[2] || 'ease',
+			trigger: getTriggerValue(dataScrollArray[3]),
+			reverseScroll: dataScrollArray[4] || true,
+			start: parseInt(dataScrollArray[5]),
+			mid: parseInt(dataScrollArray[6]),
+			end: parseInt(dataScrollArray[7]),
+		};
 
 		return response;
 	};

@@ -173,11 +173,6 @@ wp.domReady(() => {
 			const siteEditorPreviewIframeBodies =
 				getSiteEditorPreviewIframesBodies();
 
-			console.log('siteEditorPreviewIframeBody:');
-			console.log(siteEditorPreviewIframeBodies);
-			console.log('isTemplatesListOpened:');
-			console.log(isTemplatesListOpened);
-
 			if (
 				!isTemplatesListOpened &&
 				isNewEditorContentObserver &&

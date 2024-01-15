@@ -41,6 +41,7 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -200,6 +201,7 @@ class MaxiBlockComponent extends Component {
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
+		this.isPatternsPreview = false;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -750,6 +752,12 @@ class MaxiBlockComponent extends Component {
 		if (isSiteEditor) {
 			const siteEditorIframe = getSiteEditorIframe();
 
+			if (this.isPatternsPreview) {
+				if (!iframe) return;
+				const iframeHead = iframe.contentDocument?.head;
+				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
+			}
+
 			if (this.isTemplatePartPreview) {
 				const templateViewIframe = getTemplateViewIframe(uniqueID);
 				if (templateViewIframe) {
@@ -1049,7 +1057,32 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
+		const previewIframes = document.querySelectorAll(
+			'.edit-site-page-content .block-editor-block-preview__container iframe'
+		);
+
 		this.rootSlot = this.getRootEl(iframe);
+		if (previewIframes.length > 0) {
+			this.isPatternsPreview = true;
+			previewIframes.forEach(iframe => {
+				this.rootSlot = this.getRootEl(iframe);
+				if (this.rootSlot) {
+					const styleComponent = (
+						<StyleComponent
+							uniqueID={uniqueID}
+							blockStyle={this.props.attributes.blockStyle}
+							stylesObj={this.getStylesObject}
+							currentBreakpoint={this.props.deviceType}
+							blockBreakpoints={this.getBreakpoints}
+							isSiteEditor
+							isIframe
+						/>
+					);
+					this.rootSlot.render(styleComponent);
+					this.rootSlot = null;
+				}
+			});
+		}
 
 		let obj;
 		let breakpoints;
@@ -1075,7 +1108,7 @@ class MaxiBlockComponent extends Component {
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
-			if (this.rootSlot) {
+			if (this.rootSlot && !this.isPatternsPreview) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}

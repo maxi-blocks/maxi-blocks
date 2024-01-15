@@ -1171,11 +1171,22 @@ class MaxiBlocks_DynamicContent
 
     public function is_avatar_default($author_id)
     {
-        // Wordpress has no way to check if the avatar is the default
-        // so we check if the avatar has the class avatar-default
-        // this might break in the future if wordpress changes the class name
-        $avatar_html = get_avatar($author_id);
-        return strpos($avatar_html, 'avatar-default') !== false;
+        // Get the avatar URL for the user
+        $user_avatar_url = get_avatar_url($author_id);
+
+        // Construct the default Gravatar URL
+        // You can change the default type to match the default set in your WordPress settings
+        // Common default types are 'mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'
+        // Retrieve the default avatar setting from WordPress options
+        $default_avatar_type = get_option('avatar_default');
+
+        // Check if the option is set, otherwise fallback to a default value
+        if (empty($default_avatar_type)) {
+            $default_avatar_type = 'mystery';
+        }
+
+        // Compare the two URLs
+        return strpos($user_avatar_url, 'd=' . $default_avatar_type) !== false;
     }
 
     public function get_term_slug($id)

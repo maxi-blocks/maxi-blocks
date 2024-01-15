@@ -12,6 +12,7 @@ import {
 	getIsTemplatePart,
 	getIsTemplatesListOpened,
 	getSiteEditorIframeBody,
+	getSiteEditorPreviewIframesBodies,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
@@ -169,6 +170,13 @@ wp.domReady(() => {
 			const currentId = select('core/edit-site').getEditedPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
+			const siteEditorPreviewIframeBodies =
+				getSiteEditorPreviewIframesBodies();
+
+			console.log('siteEditorPreviewIframeBody:');
+			console.log(siteEditorPreviewIframeBodies);
+			console.log('isTemplatesListOpened:');
+			console.log(isTemplatesListOpened);
 
 			if (
 				!isTemplatesListOpened &&
@@ -200,6 +208,13 @@ wp.domReady(() => {
 				!siteEditorIframeBody.classList.contains('maxi-blocks--active')
 			)
 				siteEditorIframeBody.classList.add('maxi-blocks--active');
+
+			// Need to add 'maxi-blocks--active' class to the FSE preview iframe bodies
+			siteEditorPreviewIframeBodies.forEach(body => {
+				if (body && !body.classList.contains('maxi-blocks--active')) {
+					body.classList.add('maxi-blocks--active');
+				}
+			});
 
 			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
 				isSCLoaded = false;

@@ -41,7 +41,6 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
-	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -208,6 +207,7 @@ class MaxiBlockComponent extends Component {
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.originalBlockStyle = attributes?.blockStyle;
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -1066,6 +1066,12 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
 				this.rootSlot = this.getRootEl(iframe);
+				if (
+					this.originalBlockStyle &&
+					this.props.attributes.blockStyle !== this.originalBlockStyle
+				) {
+					this.props.attributes.blockStyle = this.originalBlockStyle;
+				}
 				if (this.rootSlot) {
 					const styleComponent = (
 						<StyleComponent

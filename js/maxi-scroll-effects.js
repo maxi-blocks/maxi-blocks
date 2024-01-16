@@ -29,7 +29,10 @@ class ScrollEffects {
 			const scrollTypeArray = scrollType?.trim()?.split(' ');
 
 			scrollTypeArray.forEach(type => {
-				response[id][type] = this.getScrollData(element, type);
+				response[id][type] = this.constructor.getScrollData(
+					element,
+					type
+				);
 			});
 		});
 
@@ -84,26 +87,38 @@ class ScrollEffects {
 	applyStyle(el, type, value) {
 		switch (type) {
 			case 'rotate':
-				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
+				this.constructor.setTransform(
+					el,
+					`rotate(${value}deg)`,
+					'rotate'
+				);
 				break;
 			case 'fade':
-				this.setOpacity(el, `${value}%`);
+				this.constructor.setOpacity(el, `${value}%`);
 				break;
 			case 'scale':
-				this.setTransform(
+				this.constructor.setTransform(
 					el,
 					`scale3d(${value}%, ${value}%, ${value}%)`,
 					'scale'
 				);
 				break;
 			case 'blur':
-				this.setBlur(el, `${value}px`);
+				this.constructor.setBlur(el, `${value}px`);
 				break;
 			case 'vertical':
-				this.setTransform(el, `translateY(${value}px)`, 'vertical');
+				this.constructor.setTransform(
+					el,
+					`translateY(${value}px)`,
+					'vertical'
+				);
 				break;
 			case 'horizontal':
-				this.setTransform(el, `translateX(${value}px)`, 'horizontal');
+				this.constructor.setTransform(
+					el,
+					`translateX(${value}px)`,
+					'horizontal'
+				);
 				break;
 			default:
 				break;
@@ -147,10 +162,10 @@ class ScrollEffects {
 	};
 
 	startingTransform(element, type) {
-		const dataScroll = this.getScrollData(element, type);
+		const dataScroll = this.constructor.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const { start } = this.getScrollSetting(dataScroll);
+		const { start } = this.constructor.getScrollSetting(dataScroll);
 
 		this.applyStyle(element, type, start);
 
@@ -173,12 +188,12 @@ class ScrollEffects {
 	};
 
 	scrollTransform = (element, type, scrollDirection) => {
-		const dataScroll = this.getScrollData(element, type);
+		const dataScroll = this.constructor.getScrollData(element, type);
 
 		if (!dataScroll) return;
 
 		const { trigger, start, mid, end, reverseScroll } =
-			this.getScrollSetting(dataScroll);
+			this.constructor.getScrollSetting(dataScroll);
 
 		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
@@ -244,14 +259,13 @@ class ScrollEffects {
 		});
 	};
 
-	// eslint-disable-next-line class-methods-use-this
 	startingEffect() {
 		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			let transition = '';
 			const element = document.getElementById(id);
 			Object.entries(effect).forEach(([type, data]) => {
 				const { speedValue, easingValue, delayValue } =
-					this.getScrollSetting(data);
+					this.constructor.getScrollSetting(data);
 
 				switch (type) {
 					case 'vertical':

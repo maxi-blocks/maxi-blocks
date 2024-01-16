@@ -41,6 +41,7 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -1037,14 +1038,30 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-		if (!target) return;
+		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 
-		const response = getAllFonts(this.typography, 'custom-formats');
-		if (isEmpty(response)) return;
+		if (siteEditorPreviewIframes.length > 0) {
+			siteEditorPreviewIframes.forEach(iframe => {
+				const target = iframe?.contentDocument;
+				if (!target) return;
 
-		loadFonts(response, true, target);
-		this.areFontsLoaded.current = true;
+				const response = getAllFonts(this.typography, 'custom-formats');
+				if (isEmpty(response)) return;
+
+				loadFonts(response, true, target);
+			});
+			this.areFontsLoaded.current = true;
+		} else {
+			const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+
+			if (!target) return;
+
+			const response = getAllFonts(this.typography, 'custom-formats');
+			if (isEmpty(response)) return;
+
+			loadFonts(response, true, target);
+			this.areFontsLoaded.current = true;
+		}
 	}
 
 	/**

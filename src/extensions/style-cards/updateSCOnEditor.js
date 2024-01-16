@@ -7,7 +7,7 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { loadFonts } from '../text/fonts';
-import { getSiteEditorIframe } from '../fse';
+import { getSiteEditorIframe, getSiteEditorPreviewIframes } from '../fse';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 
@@ -90,41 +90,71 @@ const updateSCOnEditor = (
 	);
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
+	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 
-	const elements = isArray(rawElements) ? rawElements : [rawElements];
+	// FSE editor patterns previews
+	if (siteEditorPreviewIframes.length > 0) {
+		siteEditorPreviewIframes.forEach(iframe => {
+			const iframeDocument = iframe?.contentDocument;
 
-	elements.forEach(element => {
-		if (!element) return;
-
-		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
-
-		if (!SCVarEl) {
-			SCVarEl = element.createElement('style');
-			SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
-			SCVarEl.innerHTML = SCVariableString;
-
-			// Iframe on creation generates head, then gutenberg generates their own head
-			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
-			const elementHead = Array.from(
-				element.querySelectorAll('head')
-			).pop();
-			elementHead?.appendChild(SCVarEl);
-			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-			// Needs a delay, if not Redux returns error 3
-			setTimeout(() => saveSCStyles(false), 150);
-		} else {
-			SCVarEl.innerHTML = SCVariableString;
-
-			updateSCStyles(
-				element,
-				SCObject,
-				styleCards.gutenberg_blocks_status
+			let SCVarEl = iframeDocument.getElementById(
+				'maxi-blocks-sc-vars-inline-css'
 			);
-		}
 
-		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
-	});
+			if (!SCVarEl) {
+				SCVarEl = iframeDocument.createElement('style');
+				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
+				SCVarEl.innerHTML = SCVariableString;
+				const previewIframeHead = iframeDocument.head;
+				if (previewIframeHead) {
+					previewIframeHead.appendChild(SCVarEl);
+				}
+			}
+
+			if (!isEmpty(allSCFonts)) {
+				loadFonts(allSCFonts, true, iframe.contentDocument);
+			}
+		});
+	} else {
+		const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+		elements.forEach(element => {
+			if (!element) return;
+
+			let SCVarEl = element.getElementById(
+				'maxi-blocks-sc-vars-inline-css'
+			);
+
+			if (!SCVarEl) {
+				SCVarEl = element.createElement('style');
+				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
+				SCVarEl.innerHTML = SCVariableString;
+
+				// Iframe on creation generates head, then gutenberg generates their own head
+				// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+				const elementHead = Array.from(
+					element.querySelectorAll('head')
+				).pop();
+				elementHead?.appendChild(SCVarEl);
+				const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+				// Needs a delay, if not Redux returns error 3
+				setTimeout(() => saveSCStyles(false), 150);
+			} else {
+				SCVarEl.innerHTML = SCVariableString;
+
+				updateSCStyles(
+					element,
+					SCObject,
+					styleCards.gutenberg_blocks_status
+				);
+			}
+
+			if (!isEmpty(allSCFonts)) {
+				loadFonts(allSCFonts, false, element);
+			}
+		});
+	}
 };
 
 export default updateSCOnEditor;

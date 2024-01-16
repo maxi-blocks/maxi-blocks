@@ -97,6 +97,23 @@ const updateSCOnEditor = (
 		siteEditorPreviewIframes.forEach(iframe => {
 			const iframeDocument = iframe?.contentDocument;
 
+			// remove white overlay for FSE editor patterns previews
+			let overlayEl = iframeDocument.getElementById(
+				'maxi-blocks-fse-white-overlay-remove-styles'
+			);
+
+			if (!overlayEl) {
+				overlayEl = iframeDocument.createElement('style');
+				overlayEl.id = 'maxi-blocks-fse-white-overlay-remove-styles';
+				overlayEl.innerHTML =
+					'body{background-color: transparent; !important;}.is-focus-mode .block-editor-block-list__block:not(.has-child-selected){opacity: 1 !important;}';
+				const overlayHead = iframeDocument.head;
+				if (overlayHead) {
+					overlayHead.appendChild(overlayEl);
+				}
+			}
+
+			// add SC variables for FSE editor patterns previews
 			let SCVarEl = iframeDocument.getElementById(
 				'maxi-blocks-sc-vars-inline-css'
 			);
@@ -111,6 +128,7 @@ const updateSCOnEditor = (
 				}
 			}
 
+			// load SC fonts for FSE editor patterns previews
 			if (!isEmpty(allSCFonts)) {
 				loadFonts(allSCFonts, true, iframe.contentDocument);
 			}

@@ -122,15 +122,17 @@ const withAttributes = createHigherOrderComponent(
 				if (!isFirstOnHierarchy) {
 					const firstMaxiParentBlock =
 						select('core/block-editor').getBlock(blockRootClientId);
-					const { blockStyle } = firstMaxiParentBlock.attributes;
+					if (firstMaxiParentBlock) {
+						const { blockStyle } = firstMaxiParentBlock.attributes;
 
-					if (blockStyle !== attributes.blockStyle) {
-						isFirstOnHierarchyUpdated = true;
-						markNextChangeAsNotPersistent();
-						setAttributes({
-							blockStyle,
-							isFirstOnHierarchy,
-						});
+						if (blockStyle !== attributes.blockStyle) {
+							isFirstOnHierarchyUpdated = true;
+							markNextChangeAsNotPersistent();
+							setAttributes({
+								blockStyle,
+								isFirstOnHierarchy,
+							});
+						}
 					}
 				}
 

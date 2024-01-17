@@ -16,6 +16,7 @@ class MaxiBlocks_DynamicContent
     private static $instance;
     private static $custom_data = null;
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
+    private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
     private static $link_only_blocks = [
         'group-maxi',
@@ -241,10 +242,6 @@ class MaxiBlocks_DynamicContent
                 } elseif ($dc_field === 'author_avatar') {
                     $media_id = 'external';
                     $media_src = get_avatar_url($post->post_author);
-
-                    if (self::is_avatar_default($post->post_author)) {
-                        $this->is_empty = true;
-                    }
                 }
             }
         } elseif ($dc_type === 'settings') { // Site settings
@@ -256,10 +253,6 @@ class MaxiBlocks_DynamicContent
             $media_id = 'external';
             $post = $this->get_post($attributes);
             $media_src = get_avatar_url($post->ID);
-
-            if (self::is_avatar_default($post->post_author)) {
-                $this->is_empty = true;
-            }
         } elseif ($dc_type === 'products') {
             $media_id = self::get_product_content($attributes);
         }
@@ -300,12 +293,15 @@ class MaxiBlocks_DynamicContent
     public function render_dc_classes($attributes, $content)
     {
         @list(
-            'dc-hide' => $dc_hide
+            'dc-hide' => $dc_hide,
+            'dc-field' => $dc_field,
         ) = $attributes;
 
         $classes = [];
 
-        $classes[] = ($dc_hide && $this->is_empty) ? 'maxi-block--hidden' : '';
+        $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
+            ? 'maxi-block--hidden'
+            : '';
 
         $content = str_replace(
             '$class-to-replace',
@@ -1167,26 +1163,6 @@ class MaxiBlocks_DynamicContent
             $response = $block_meta_parsed['dynamic_content'] ?? [];
             return $response;
         }
-    }
-
-    public function is_avatar_default($author_id)
-    {
-        // Get the avatar URL for the user
-        $user_avatar_url = get_avatar_url($author_id);
-
-        // Construct the default Gravatar URL
-        // You can change the default type to match the default set in your WordPress settings
-        // Common default types are 'mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'
-        // Retrieve the default avatar setting from WordPress options
-        $default_avatar_type = get_option('avatar_default');
-
-        // Check if the option is set, otherwise fallback to a default value
-        if (empty($default_avatar_type)) {
-            $default_avatar_type = 'mystery';
-        }
-
-        // Compare the two URLs
-        return strpos($user_avatar_url, 'd=' . $default_avatar_type) !== false;
     }
 
     public function get_term_slug($id)

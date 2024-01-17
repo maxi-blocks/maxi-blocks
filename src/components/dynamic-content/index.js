@@ -46,6 +46,7 @@ import {
 	linkFields,
 	linkFieldsLabels,
 	sourceOptions,
+	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -259,14 +260,18 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					<ToggleSwitch
-						label={__(
-							'Hide if no content found on frontend',
-							'maxi-blocks'
-						)}
-						selected={hide}
-						onChange={value => changeProps({ 'dc-hide': value })}
-					/>
+					{!ignoreEmptyFields.includes(field) && (
+						<ToggleSwitch
+							label={__(
+								'Hide if no content found on frontend',
+								'maxi-blocks'
+							)}
+							selected={hide}
+							onChange={value =>
+								changeProps({ 'dc-hide': value })
+							}
+						/>
+					)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
 							label={__('Source', 'maxi-blocks')}

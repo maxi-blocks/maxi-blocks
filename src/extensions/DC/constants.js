@@ -543,6 +543,8 @@ export const linkFieldsLabels = {
 	author: __('Use author link', 'maxi-blocks'),
 };
 
+export const ignoreEmptyFields = ['avatar', 'author_avatar'];
+
 export const descriptionOfErrors = {
 	next: __(
 		'Sorry, there is no next post, please choose something else.',

@@ -105,8 +105,11 @@ const save = props => {
 					isSave
 				>
 					{SVGElement &&
-					// To avoid block validation issue return img tag if SVGElement is old
-					(!dcStatus || !SVGElement.includes(mediaURL)) ? (
+					(!dcStatus ||
+						// To avoid block validation issue return img tag if SVGElement is old
+						(mediaURL
+							? !SVGElement.includes(mediaURL)
+							: SVGElement.includes('href="'))) ? (
 						<RawHTML>
 							{dcStatus
 								? getDCImgSVG(uniqueID, SVGData, SVGElement)

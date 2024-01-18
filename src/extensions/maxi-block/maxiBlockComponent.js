@@ -565,7 +565,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		// Return if it's a preview block
-		if (this.isTemplatePartPreview) return;
+		if (this.isTemplatePartPreview || this.isPatternsPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -696,6 +696,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getRootEl(iframe) {
+		console.log('getRootEl');
 		const { uniqueID } = this.props.attributes;
 
 		const getStylesWrapper = (element, onCreateWrapper) => {
@@ -757,9 +758,7 @@ class MaxiBlockComponent extends Component {
 				if (!iframe) return;
 				const iframeHead = iframe.contentDocument?.head;
 				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
-			}
-
-			if (this.isTemplatePartPreview) {
+			} else if (this.isTemplatePartPreview) {
 				const templateViewIframe = getTemplateViewIframe(uniqueID);
 				if (templateViewIframe) {
 					wrapper = getPreviewWrapper(templateViewIframe);
@@ -773,7 +772,7 @@ class MaxiBlockComponent extends Component {
 
 				wrapper = getStylesWrapper(iframeHead);
 			}
-		} else if (iframe) {
+		} else if (iframe && !this.isPatternsPreview) {
 			wrapper = getPreviewWrapper(iframe.contentDocument, false);
 			iframe.contentDocument.body.setAttribute(
 				'maxi-blocks-responsive',
@@ -1078,7 +1077,6 @@ class MaxiBlockComponent extends Component {
 			'.edit-site-page-content .block-editor-block-preview__container iframe'
 		);
 
-		this.rootSlot = this.getRootEl(iframe);
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
@@ -1105,153 +1103,161 @@ class MaxiBlockComponent extends Component {
 					this.rootSlot = null;
 				}
 			});
-		}
+		} else {
+			this.rootSlot = this.getRootEl(iframe);
 
-		let obj;
-		let breakpoints;
-		let customDataRelations;
+			let obj;
+			let breakpoints;
+			let customDataRelations;
 
-		if (!isBreakpointChange && !isBlockStyleChange) {
-			obj = this.getStylesObject;
-			breakpoints = this.getBreakpoints;
+			if (!isBreakpointChange && !isBlockStyleChange) {
+				obj = this.getStylesObject;
+				breakpoints = this.getBreakpoints;
 
-			// When duplicating, need to change the obj target for the new uniqueID
-			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
-				obj[uniqueID] = obj[this.props.attributes.uniqueID];
+				// When duplicating, need to change the obj target for the new uniqueID
+				if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+					obj[uniqueID] = obj[this.props.attributes.uniqueID];
 
-				delete obj[this.props.attributes.uniqueID];
-			}
-
-			const customData = this.getCustomData;
-			dispatch('maxiBlocks/customData').updateCustomData(customData);
-
-			customDataRelations = customData?.[uniqueID]?.relations;
-		}
-
-		if (document.body.classList.contains('maxi-blocks--active')) {
-			const isSiteEditor = getIsSiteEditor();
-
-			if (this.rootSlot && !this.isPatternsPreview) {
-				const styleComponent = (
-					<StyleComponent
-						uniqueID={uniqueID}
-						blockStyle={this.props.attributes.blockStyle}
-						stylesObj={obj}
-						currentBreakpoint={this.props.deviceType}
-						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor}
-						isBreakpointChange={isBreakpointChange}
-						isBlockStyleChange={isBlockStyleChange}
-						isPreview={this.isTemplatePartPreview}
-						isIframe={!!iframe}
-					/>
-				);
-				this.rootSlot.render(styleComponent);
-			}
-
-			if (customDataRelations) {
-				const isRelationsPreview =
-					this.props.attributes['relations-preview'];
-
-				if (isRelationsPreview) {
-					this.relationInstances =
-						processRelations(customDataRelations);
+					delete obj[this.props.attributes.uniqueID];
 				}
 
-				this.relationInstances?.forEach(relationInstance => {
-					relationInstance.setIsPreview(isRelationsPreview);
-				});
+				const customData = this.getCustomData;
+				dispatch('maxiBlocks/customData').updateCustomData(customData);
 
-				if (
-					isRelationsPreview &&
-					this.relationInstances !== null &&
-					this.previousRelationInstances !== null
-				) {
-					const keysToCompare = [
-						'action',
-						'uniqueID',
-						'trigger',
-						'target',
-						'blockTarget',
-						'stylesString',
-					];
+				customDataRelations = customData?.[uniqueID]?.relations;
+			}
 
-					const isEquivalent = (a, b) => {
-						for (const key of keysToCompare) {
-							if (a[key] !== b[key]) {
-								return false;
-							}
-						}
-						return true;
-					};
+			if (document.body.classList.contains('maxi-blocks--active')) {
+				const isSiteEditor = getIsSiteEditor();
 
-					const compareRelations = (
-						previousRelations,
-						currentRelations
-					) => {
-						const previousIds = new Set(
-							previousRelations.map(relation => relation.id)
-						);
-						const currentIds = new Set(
-							currentRelations.map(relation => relation.id)
-						);
+				if (this.rootSlot && !this.isPatternsPreview) {
+					const styleComponent = (
+						<StyleComponent
+							uniqueID={uniqueID}
+							blockStyle={this.props.attributes.blockStyle}
+							stylesObj={obj}
+							currentBreakpoint={this.props.deviceType}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+							isBreakpointChange={isBreakpointChange}
+							isBlockStyleChange={isBlockStyleChange}
+							isPreview={this.isTemplatePartPreview}
+							isIframe={!!iframe}
+						/>
+					);
+					this.rootSlot.render(styleComponent);
+				}
 
-						let removed = null;
-						let updated = null;
+				if (customDataRelations) {
+					const isRelationsPreview =
+						this.props.attributes['relations-preview'];
 
-						// Identify removed relation
-						for (const relation of previousRelations) {
-							if (!currentIds.has(relation.id)) {
-								removed = relation.id;
-								break; // Stop after finding the first removed item
-							}
-						}
+					if (isRelationsPreview) {
+						this.relationInstances =
+							processRelations(customDataRelations);
+					}
 
-						// Identify updated relation
-						for (const relation of currentRelations) {
-							if (previousIds.has(relation.id)) {
-								const previousRelation = previousRelations.find(
-									prev => prev.id === relation.id
-								);
-								if (!isEquivalent(relation, previousRelation)) {
-									updated = relation.id;
-									break;
+					this.relationInstances?.forEach(relationInstance => {
+						relationInstance.setIsPreview(isRelationsPreview);
+					});
+
+					if (
+						isRelationsPreview &&
+						this.relationInstances !== null &&
+						this.previousRelationInstances !== null
+					) {
+						const keysToCompare = [
+							'action',
+							'uniqueID',
+							'trigger',
+							'target',
+							'blockTarget',
+							'stylesString',
+						];
+
+						const isEquivalent = (a, b) => {
+							for (const key of keysToCompare) {
+								if (a[key] !== b[key]) {
+									return false;
 								}
 							}
-						}
+							return true;
+						};
 
-						return { removed, updated };
-					};
+						const compareRelations = (
+							previousRelations,
+							currentRelations
+						) => {
+							const previousIds = new Set(
+								previousRelations.map(relation => relation.id)
+							);
+							const currentIds = new Set(
+								currentRelations.map(relation => relation.id)
+							);
 
-					// Usage
-					const { removed, updated } = compareRelations(
-						this.previousRelationInstances,
-						this.relationInstances
-					);
+							let removed = null;
+							let updated = null;
 
-					if (removed !== null) {
-						processRelations(
+							// Identify removed relation
+							for (const relation of previousRelations) {
+								if (!currentIds.has(relation.id)) {
+									removed = relation.id;
+									break; // Stop after finding the first removed item
+								}
+							}
+
+							// Identify updated relation
+							for (const relation of currentRelations) {
+								if (previousIds.has(relation.id)) {
+									const previousRelation =
+										previousRelations.find(
+											prev => prev.id === relation.id
+										);
+									if (
+										!isEquivalent(
+											relation,
+											previousRelation
+										)
+									) {
+										updated = relation.id;
+										break;
+									}
+								}
+							}
+
+							return { removed, updated };
+						};
+
+						// Usage
+						const { removed, updated } = compareRelations(
 							this.previousRelationInstances,
-							'remove',
-							removed
+							this.relationInstances
 						);
-						processRelations(this.relationInstances);
-					}
-					if (updated !== null) {
-						processRelations(
-							this.relationInstances,
-							'remove',
-							removed
-						);
-						processRelations(this.relationInstances);
-					}
-				}
 
-				if (!isRelationsPreview) {
-					this.relationInstances = null;
-				}
+						if (removed !== null) {
+							processRelations(
+								this.previousRelationInstances,
+								'remove',
+								removed
+							);
+							processRelations(this.relationInstances);
+						}
+						if (updated !== null) {
+							processRelations(
+								this.relationInstances,
+								'remove',
+								removed
+							);
+							processRelations(this.relationInstances);
+						}
+					}
 
-				this.previousRelationInstances = this.relationInstances;
+					if (!isRelationsPreview) {
+						this.relationInstances = null;
+					}
+
+					this.previousRelationInstances = this.relationInstances;
+				}
 			}
 		}
 	}

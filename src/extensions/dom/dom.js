@@ -214,6 +214,7 @@ wp.domReady(() => {
 						!body.classList.contains('maxi-blocks--active')
 					) {
 						body.classList.add('maxi-blocks--active');
+						body.setAttribute('maxi-blocks-responsive', 'l');
 					}
 				});
 

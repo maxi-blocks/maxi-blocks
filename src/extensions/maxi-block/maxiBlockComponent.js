@@ -10,13 +10,7 @@
  * WordPress dependencies
  */
 import { Component, createRoot, createRef } from '@wordpress/element';
-import {
-	dispatch,
-	resolveSelect,
-	select,
-	useDispatch,
-	useSelect,
-} from '@wordpress/data';
+import { dispatch, resolveSelect, select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

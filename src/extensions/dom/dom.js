@@ -159,133 +159,137 @@ wp.domReady(() => {
 	let id = null;
 
 	const editorContentUnsubscribe = subscribe(() => {
-		const resizeObserverTarget = document.querySelector(
-			resizeObserverSelector
-		);
-		if (!resizeObserverTarget) {
-			isNewEditorContentObserver = true;
-		}
+		console.time('editorContentUnsubscribe');
 
-		if (isSiteEditor) {
-			const currentId = select('core/edit-site').getEditedPostId();
-			const isTemplatesListOpened = getIsTemplatesListOpened();
-			const siteEditorIframeBody = getSiteEditorIframeBody();
-			const siteEditorPreviewIframeBodies =
-				getSiteEditorPreviewIframesBodies();
-			const isInPatternsPreviewMode =
-				siteEditorPreviewIframeBodies.length > 0;
+		const siteEditorPreviewIframeBodies =
+			getSiteEditorPreviewIframesBodies();
+		const isInPatternsPreviewMode =
+			siteEditorPreviewIframeBodies.length > 0;
 
-			if (
-				!isTemplatesListOpened &&
-				isNewEditorContentObserver &&
-				siteEditorIframeBody
-			) {
-				setTimeout(() => {
-					dispatch('maxiBlocks').setMaxiDeviceType({
-						deviceType: 'general',
-					});
-				}, 150);
-
-				isNewEditorContentObserver = false;
-				resizeObserver.observe(resizeObserverTarget);
-				setBaseBreakpoint();
-			} else if (
-				(isTemplatesListOpened || id !== currentId) &&
-				!isNewEditorContentObserver
-			) {
-				isNewEditorContentObserver = true;
-				resizeObserver.disconnect();
-			}
-
-			// Need to add 'maxi-blocks--active' class to the FSE iframe body
-			// because gutenberg is filtering the iframe classList
-			// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
-			if (
-				siteEditorIframeBody &&
-				!siteEditorIframeBody.classList.contains('maxi-blocks--active')
-			)
-				siteEditorIframeBody.classList.add('maxi-blocks--active');
-
+		if (isInPatternsPreviewMode) {
 			// Need to add 'maxi-blocks--active' class to the FSE preview iframe bodies
-			isInPatternsPreviewMode &&
-				siteEditorPreviewIframeBodies.forEach(body => {
-					if (
-						body &&
-						!body.classList.contains('maxi-blocks--active')
-					) {
-						body.classList.add('maxi-blocks--active');
-						body.setAttribute('maxi-blocks-responsive', 'l');
-					}
-				});
-
-			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
-				isSCLoaded = false;
-
-			// Adding the SC styles after switching between the templates
-			if (siteEditorIframeBody && !isSCLoaded) {
-				isSCLoaded = true;
-				setTimeout(() => {
-					const SC = select(
-						'maxiBlocks/style-cards'
-					).receiveMaxiActiveStyleCard();
-					if (SC) {
-						updateSCOnEditor(SC.value);
-					} else {
-						isSCLoaded = false;
-					}
-				}, 150);
-			}
-
-			if (isInPatternsPreviewMode) {
-				const SC = select(
-					'maxiBlocks/style-cards'
-				).receiveMaxiActiveStyleCard();
-				if (SC) {
-					updateSCOnEditor(SC.value);
+			siteEditorPreviewIframeBodies.forEach(body => {
+				if (body && !body.classList.contains('maxi-blocks--active')) {
+					body.classList.add('maxi-blocks--active');
+					body.setAttribute('maxi-blocks-responsive', 'l');
 				}
+			});
+			const SC = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiActiveStyleCard();
+			if (SC) {
+				updateSCOnEditor(SC.value);
+			}
+		} else {
+			const resizeObserverTarget = document.querySelector(
+				resizeObserverSelector
+			);
+			if (!resizeObserverTarget) {
+				isNewEditorContentObserver = true;
 			}
 
-			if (getIsTemplatePart()) {
-				const resizableBox = document.querySelector(
-					'.edit-site-visual-editor .components-resizable-box__container'
-				);
+			if (isSiteEditor) {
+				const currentId = select('core/edit-site').getEditedPostId();
 				const isTemplatesListOpened = getIsTemplatesListOpened();
+				const siteEditorIframeBody = getSiteEditorIframeBody();
 
 				if (
 					!isTemplatesListOpened &&
-					isNewObserver &&
-					getSiteEditorIframeBody() &&
-					resizableBox
+					isNewEditorContentObserver &&
+					siteEditorIframeBody
 				) {
-					isNewObserver = false;
-					templatePartResizeObserver.observe(resizableBox);
+					setTimeout(() => {
+						dispatch('maxiBlocks').setMaxiDeviceType({
+							deviceType: 'general',
+						});
+					}, 150);
+
+					isNewEditorContentObserver = false;
+					resizeObserver.observe(resizeObserverTarget);
+					setBaseBreakpoint();
 				} else if (
 					(isTemplatesListOpened || id !== currentId) &&
-					!isNewObserver
+					!isNewEditorContentObserver
 				) {
-					isNewObserver = true;
-					templatePartResizeObserver.disconnect();
+					isNewEditorContentObserver = true;
+					resizeObserver.disconnect();
 				}
+
+				// Need to add 'maxi-blocks--active' class to the FSE iframe body
+				// because gutenberg is filtering the iframe classList
+				// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
+				if (
+					siteEditorIframeBody &&
+					!siteEditorIframeBody.classList.contains(
+						'maxi-blocks--active'
+					)
+				)
+					siteEditorIframeBody.classList.add('maxi-blocks--active');
+
+				if (
+					(getIsTemplatesListOpened() || id !== currentId) &&
+					isSCLoaded
+				)
+					isSCLoaded = false;
+
+				// Adding the SC styles after switching between the templates
+				if (siteEditorIframeBody && !isSCLoaded) {
+					isSCLoaded = true;
+					setTimeout(() => {
+						const SC = select(
+							'maxiBlocks/style-cards'
+						).receiveMaxiActiveStyleCard();
+						if (SC) {
+							updateSCOnEditor(SC.value);
+						} else {
+							isSCLoaded = false;
+						}
+					}, 150);
+				}
+
+				if (getIsTemplatePart()) {
+					const resizableBox = document.querySelector(
+						'.edit-site-visual-editor .components-resizable-box__container'
+					);
+					const isTemplatesListOpened = getIsTemplatesListOpened();
+
+					if (
+						!isTemplatesListOpened &&
+						isNewObserver &&
+						getSiteEditorIframeBody() &&
+						resizableBox
+					) {
+						isNewObserver = false;
+						templatePartResizeObserver.observe(resizableBox);
+					} else if (
+						(isTemplatesListOpened || id !== currentId) &&
+						!isNewObserver
+					) {
+						isNewObserver = true;
+						templatePartResizeObserver.disconnect();
+					}
+				}
+
+				id = currentId;
+			} else {
+				if (!resizeObserverTarget) return;
+
+				[resizeObserverTarget, document.body].forEach(
+					element => element && resizeObserver.observe(element)
+				);
+
+				// Block margin value
+				const rawWrapper = getEditorWrapper();
+				const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
+				const blockContainer =
+					editorWrapper?.querySelector('.is-root-container');
+
+				if (blockContainer) blockMarginObserver.observe(blockContainer);
+
+				editorContentUnsubscribe();
 			}
-
-			id = currentId;
-		} else {
-			if (!resizeObserverTarget) return;
-
-			[resizeObserverTarget, document.body].forEach(
-				element => element && resizeObserver.observe(element)
-			);
-
-			// Block margin value
-			const rawWrapper = getEditorWrapper();
-			const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
-			const blockContainer =
-				editorWrapper?.querySelector('.is-root-container');
-
-			if (blockContainer) blockMarginObserver.observe(blockContainer);
-
-			editorContentUnsubscribe();
 		}
+		console.timeEnd('editorContentUnsubscribe');
 	});
 
 	// authentication for maxi pro

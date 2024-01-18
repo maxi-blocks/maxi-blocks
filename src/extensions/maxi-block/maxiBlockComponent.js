@@ -85,14 +85,7 @@ const StyleComponent = ({
 	currentBreakpoint,
 	isPatternPreview = false,
 }) => {
-	const { breakpoints } = useSelect(select => {
-		const { receiveMaxiBreakpoints } = select('maxiBlocks');
-
-		const breakpoints = receiveMaxiBreakpoints();
-
-		return { breakpoints };
-	});
-
+	// Start the timer with a unique label that includes uniqueID
 	const { updateStyles, saveCSSCache, saveRawCSSCache } =
 		useDispatch('maxiBlocks/styles');
 
@@ -157,6 +150,7 @@ const StyleComponent = ({
 	}
 
 	const getBreakpoints = () => {
+		const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 		const areBreakpointsLoaded =
 			!isEmpty(blockBreakpoints) &&
 			Object.values(blockBreakpoints).every(blockValue => !!blockValue);
@@ -164,20 +158,21 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const useBreakpoints = isPatternPreview
+	const stylesBreakpoints = isPatternPreview
 		? blockBreakpoints
 		: getBreakpoints();
 
 	const styles = styleResolver({
 		styles: stylesObj,
 		remove: false,
-		breakpoints: useBreakpoints,
+		breakpoints: stylesBreakpoints,
 		uniqueID,
 	});
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
 	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
+	// End the timer with the same unique label
 
 	return <style>{styleContent}</style>;
 };
@@ -206,24 +201,31 @@ class MaxiBlockComponent extends Component {
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
-		this.isPatternsPreview = false;
+		this.isPatternsPreview = getSiteEditorPreviewIframes().length > 0;
 
-		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+		if (!this.isPatternsPreview) {
+			dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+			this.updateLastInsertedBlocks();
+		}
 
 		// Init
-		this.updateLastInsertedBlocks();
-		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		const newUniqueID = this.isPatternsPreview
+			? uniqueID
+			: this.uniqueIDChecker(uniqueID);
 		this.originalBlockStyle = attributes?.blockStyle;
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
-		this.setRelations();
 
-		// Add block to store
-		dispatch('maxiBlocks/blocks').addBlock(
-			newUniqueID,
-			clientId,
-			this.rootSlot
-		);
+		if (!this.isPatternsPreview) {
+			this.setRelations();
+
+			// Add block to store
+			dispatch('maxiBlocks/blocks').addBlock(
+				newUniqueID,
+				clientId,
+				this.rootSlot
+			);
+		}
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -234,7 +236,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (this.isPatternsPreview) return;
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -393,6 +394,7 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		if (this.isPatternsPreview) return false;
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
 			const SC = select(
@@ -493,6 +495,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		if (this.isPatternsPreview) return;
+
 		const { uniqueID } = this.props.attributes;
 
 		// Gets the differences between the previous and current attributes
@@ -969,6 +973,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
+		if (this.isPatternsPreview) return idToCheck;
+
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
@@ -1042,9 +1048,8 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
-
-		if (siteEditorPreviewIframes.length > 0) {
+		if (this.isPatternsPreview) {
+			const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 			siteEditorPreviewIframes.forEach(iframe => {
 				const target = iframe?.contentDocument;
 				if (!target) return;
@@ -1078,11 +1083,7 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		const previewIframes = document.querySelectorAll(
-			'.edit-site-page-content .block-editor-block-preview__container iframe'
-		);
-
-		if (previewIframes.length > 0) {
+		if (this.isPatternsPreview) {
 			const cleanStyleObject = obj => {
 				// Define the keys and substrings to be removed
 				const keysToRemove = new Set(['xxl', 'm', 's']);
@@ -1112,7 +1113,10 @@ class MaxiBlockComponent extends Component {
 				return obj;
 			};
 
-			this.isPatternsPreview = true;
+			const previewIframes = document.querySelectorAll(
+				'.edit-site-page-content .block-editor-block-preview__container iframe'
+			);
+
 			previewIframes.forEach(iframe => {
 				const observeIframe = iframe => {
 					const iframeDocument =

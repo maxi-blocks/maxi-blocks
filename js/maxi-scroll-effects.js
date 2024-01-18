@@ -1,5 +1,16 @@
 class ScrollEffects {
 	constructor() {
+		this.breakpointsObj = {
+			xxl: 1921,
+			xl: 1920,
+			l: 1366,
+			m: 1024,
+			s: 768,
+			xs: 480,
+		};
+		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		this.breakpoint = this.getCurrentBreakpoint();
+
 		const oldScrollData = this.getElements();
 		this.isOldScroll = Object.keys(oldScrollData).length > 0;
 
@@ -32,7 +43,36 @@ class ScrollEffects {
 		]);
 
 		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
+
+		window.addEventListener('resize', this.handleResize.bind(this));
 	}
+
+	getCurrentBreakpoint() {
+		const winWidth = window.innerWidth;
+
+		let currentBreakpoint = 'general';
+
+		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
+			if (!['general', 'xxl'].includes(breakpoint)) {
+				if (breakpoint === 'general') return;
+
+				if (winWidth <= this.breakpointsObj.xl)
+					currentBreakpoint = breakpoint;
+			}
+			if (winWidth <= value) currentBreakpoint = breakpoint;
+		});
+
+		return currentBreakpoint;
+	}
+
+	handleResize = () => {
+		const newBreakpoint = this.getCurrentBreakpoint();
+
+		if (newBreakpoint !== this.breakpoint) {
+			this.breakpoint = newBreakpoint;
+			this.startingEffect();
+		}
+	};
 
 	getElements = () => {
 		const response = {};
@@ -130,7 +170,16 @@ class ScrollEffects {
 		return null;
 	}
 
-	static getScrollSetting = (data, type = 'rotate') => {
+	getLastBreakpointAttribute = (obj, key, currentBreakpoint) => {
+		return obj[
+			`${key}-${[...this.breakpoints]
+				.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
+				.reverse()
+				.find(breakpoint => `${key}-${breakpoint}` in obj)}`
+		];
+	};
+
+	getScrollSetting = (data, type = 'rotate') => {
 		const getTriggerValue = viewport => {
 			switch (viewport) {
 				case 'top':
@@ -146,16 +195,51 @@ class ScrollEffects {
 
 		if (typeof data === 'object') {
 			return {
-				speedValue: data[`scroll-${type}-speed-general`] || 200,
-				delayValue: data[`scroll-${type}-delay-general`] || 0,
-				easingValue: data[`scroll-${type}-easing-general`] || 'ease',
+				status: this.getLastBreakpointAttribute(
+					data,
+					`scroll-${type}-status`,
+					this.breakpoint
+				),
+				speedValue:
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-speed`,
+						this.breakpoint
+					) || 200,
+				delayValue:
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-delay`,
+						this.breakpoint
+					) || 0,
+				easingValue:
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-easing`,
+						this.breakpoint
+					) || 'ease',
 				trigger: getTriggerValue(
-					data[`scroll-${type}-viewport-top-general`]
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-viewport-top`,
+						this.breakpoint
+					)
 				),
 				reverseScroll:
-					data[`scroll-${type}-status-reverse-general`] || true,
-				// TODO: check why two types in name
-				zones: data[`scroll-${type}-${type}-zones-general`],
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-status-reverse`,
+						this.breakpoint
+					) || true,
+				zones: this.getLastBreakpointAttribute(
+					data,
+					`scroll-${type}-${type}-zones`,
+					this.breakpoint
+				) || {
+					0: 0,
+					50: 0,
+					100: 0,
+				},
 			};
 		}
 
@@ -196,9 +280,9 @@ class ScrollEffects {
 		const dataScroll = this.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const { zones } = this.constructor.getScrollSetting(dataScroll);
+		const { status, zones } = this.getScrollSetting(dataScroll);
 
-		this.applyStyle(element, type, zones[0]);
+		if (status) this.applyStyle(element, type, zones[0]);
 
 		return null;
 	}
@@ -223,8 +307,10 @@ class ScrollEffects {
 
 		if (!dataScroll) return;
 
-		const { trigger, zones, reverseScroll } =
-			this.constructor.getScrollSetting(dataScroll);
+		const { status, trigger, zones, reverseScroll } =
+			this.getScrollSetting(dataScroll);
+
+		if (!status) return;
 
 		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
@@ -320,8 +406,10 @@ class ScrollEffects {
 			let transition = '';
 			const element = document.getElementById(id);
 			Object.entries(effect).forEach(([type, data]) => {
-				const { speedValue, easingValue, delayValue } =
-					this.constructor.getScrollSetting(data);
+				const { status, speedValue, easingValue, delayValue } =
+					this.getScrollSetting(data);
+
+				if (!status) return;
 
 				transition += this.constructor.getTransition(
 					type,

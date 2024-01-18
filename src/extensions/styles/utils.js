@@ -48,18 +48,36 @@ const getVideoLayers = (uniqueID, bgLayers) => {
 	return { [uniqueID]: response };
 };
 
-const getScrollEffects = (uniqueID, scroll) => {
-	const response = Object.fromEntries(
-		Object.entries(scroll).filter(
-			([key]) =>
-				key.includes('-status-') &&
-				!key.includes('reverse') &&
-				!key.includes('preview') &&
-				scroll[key]
-		)
-	);
+export const getScrollEffects = (uniqueID, scroll) => {
+	const scrollTypes = [
+		'vertical',
+		'horizontal',
+		'rotate',
+		'scale',
+		'fade',
+		'blur',
+	];
+	const availableScrollTypes = scrollTypes.filter(type => {
+		return scroll[`scroll-${type}-status-general`];
+	});
+
+	const response = {};
+
+	Object.entries(scroll).forEach(([key, value]) => {
+		const scrollType = availableScrollTypes.find(type =>
+			key.includes(type)
+		);
+
+		if (!scrollType) return;
+
+		if (!response[scrollType]) response[scrollType] = {};
+		response[scrollType][key] = value;
+	});
 
 	if (!response || isEmpty(response)) return null;
+
+	response.scroll_effects = true;
+
 	return { [uniqueID]: response };
 };
 

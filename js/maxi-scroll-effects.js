@@ -1,6 +1,24 @@
 class ScrollEffects {
 	constructor() {
-		this.scrollData = this.getElements();
+		const oldScrollData = this.getElements();
+		this.isOldScroll = Object.keys(oldScrollData).length > 0;
+
+		// eslint-disable-next-line no-undef
+		const rawScrollData = maxiScrollEffects?.[0];
+
+		this.scrollData =
+			!this.isOldScroll && rawScrollData
+				? Object.entries(rawScrollData).reduce(
+						(acc, [uniqueID, json]) => {
+							const scrollData = JSON.parse(json);
+							delete scrollData.scroll_effects;
+							acc[uniqueID] = scrollData;
+							return acc;
+						},
+						{}
+				  )
+				: oldScrollData;
+
 		this.init();
 		this.oldValue = 0;
 	}
@@ -29,23 +47,20 @@ class ScrollEffects {
 			const scrollTypeArray = scrollType?.trim()?.split(' ');
 
 			scrollTypeArray.forEach(type => {
-				response[id][type] = this.constructor.getScrollData(
-					element,
-					type
-				);
+				response[id][type] = this.getScrollData(element, type, true);
 			});
 		});
 
 		return response;
 	};
 
-	static setTransform = (el, newTransform, type) => {
+	setTransform = (el, newTransform, type) => {
 		const currentTransform = el.style.transform || '';
 
 		// Splitting the current transform into individual transformations (e.g., "translateX(100px)" and "rotate(45deg)")
 		const transformParts = currentTransform.match(/(\w+\([^)]+\))/g) || [];
 
-		if (el.dataset.scrollEffectType.includes(type)) {
+		if (!this.isOldScroll || el.dataset.scrollEffectType.includes(type)) {
 			const newTransformProperty = newTransform.split('(')[0]; // e.g., "translateX"
 
 			const existingPropertyIndex = transformParts.findIndex(part =>
@@ -87,17 +102,13 @@ class ScrollEffects {
 	applyStyle(el, type, value) {
 		switch (type) {
 			case 'rotate':
-				this.constructor.setTransform(
-					el,
-					`rotate(${value}deg)`,
-					'rotate'
-				);
+				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
 				break;
 			case 'fade':
 				this.constructor.setOpacity(el, `${value}%`);
 				break;
 			case 'scale':
-				this.constructor.setTransform(
+				this.setTransform(
 					el,
 					`scale3d(${value}%, ${value}%, ${value}%)`,
 					'scale'
@@ -107,18 +118,10 @@ class ScrollEffects {
 				this.constructor.setBlur(el, `${value}px`);
 				break;
 			case 'vertical':
-				this.constructor.setTransform(
-					el,
-					`translateY(${value}px)`,
-					'vertical'
-				);
+				this.setTransform(el, `translateY(${value}px)`, 'vertical');
 				break;
 			case 'horizontal':
-				this.constructor.setTransform(
-					el,
-					`translateX(${value}px)`,
-					'horizontal'
-				);
+				this.setTransform(el, `translateX(${value}px)`, 'horizontal');
 				break;
 			default:
 				break;
@@ -127,9 +130,7 @@ class ScrollEffects {
 		return null;
 	}
 
-	static getScrollSetting = data => {
-		const dataScrollArray = data.trim().split(' ');
-
+	static getScrollSetting = (data, type = 'rotate') => {
 		const getTriggerValue = viewport => {
 			switch (viewport) {
 				case 'top':
@@ -143,31 +144,61 @@ class ScrollEffects {
 			}
 		};
 
-		const response = {
-			speedValue: parseFloat(dataScrollArray[0]) || 200,
-			delayValue: parseFloat(dataScrollArray[1]) || 0,
-			easingValue: dataScrollArray[2] || 'ease',
-			trigger: getTriggerValue(dataScrollArray[3]),
-			reverseScroll: dataScrollArray[4] || true,
-			start: parseInt(dataScrollArray[5]),
-			mid: parseInt(dataScrollArray[6]),
-			end: parseInt(dataScrollArray[7]),
-		};
+		if (typeof data === 'object') {
+			return {
+				speedValue: data[`scroll-${type}-speed-general`] || 200,
+				delayValue: data[`scroll-${type}-delay-general`] || 0,
+				easingValue: data[`scroll-${type}-easing-general`] || 'ease',
+				trigger: getTriggerValue(
+					data[`scroll-${type}-viewport-top-general`]
+				),
+				reverseScroll:
+					data[`scroll-${type}-status-reverse-general`] || true,
+				// TODO: check why two types in name
+				zones: data[`scroll-${type}-${type}-zones-general`],
+			};
+		}
 
-		return response;
+		/**
+		 * Old scroll
+		 */
+		if (typeof data === 'string') {
+			const dataScrollArray = data.trim().split(' ');
+
+			const response = {
+				speedValue: parseFloat(dataScrollArray[0]) || 200,
+				delayValue: parseFloat(dataScrollArray[1]) || 0,
+				easingValue: dataScrollArray[2] || 'ease',
+				trigger: getTriggerValue(dataScrollArray[3]),
+				reverseScroll: dataScrollArray[4] || true,
+				zones: {
+					0: parseInt(dataScrollArray[5]),
+					50: parseInt(dataScrollArray[6]),
+					100: parseInt(dataScrollArray[7]),
+				},
+			};
+
+			return response;
+		}
+
+		return null;
 	};
 
-	static getScrollData = (el, type) => {
+	getScrollData = (el, type, isOldScroll = this.isOldScroll) => {
+		if (!isOldScroll) {
+			return this.scrollData[el.id][type];
+		}
+
 		return el.getAttribute(`data-scroll-effect-${type}-general`);
 	};
 
 	startingTransform(element, type) {
-		const dataScroll = this.constructor.getScrollData(element, type);
+		const dataScroll = this.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const { start } = this.constructor.getScrollSetting(dataScroll);
+		const { zones } = this.constructor.getScrollSetting(dataScroll);
 
-		this.applyStyle(element, type, start);
+		this.applyStyle(element, type, zones[0]);
 
 		return null;
 	}
@@ -188,18 +219,17 @@ class ScrollEffects {
 	};
 
 	scrollTransform = (element, type, scrollDirection) => {
-		const dataScroll = this.constructor.getScrollData(element, type);
+		const dataScroll = this.getScrollData(element, type);
 
 		if (!dataScroll) return;
 
-		const { trigger, start, mid, end, reverseScroll } =
+		const { trigger, zones, reverseScroll } =
 			this.constructor.getScrollSetting(dataScroll);
 
 		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
 		const windowHalfHeight = windowHeight / 2;
 		const elementHeight = element.offsetHeight;
-		const elementHalfHeight = elementHeight / 2;
 
 		// Top shift
 		let topShiftPx = 0; // top
@@ -223,29 +253,32 @@ class ScrollEffects {
 			elementBottomInCoordinate -= topShiftPx;
 		}
 
-		const elementMidInCoordinate = Math.round(
-			elementTopInCoordinate + elementHalfHeight
-		);
-
 		if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
-			if (elementMidInCoordinate >= 0) {
-				// from starting to middle
-				this.applyStyle(element, type, mid);
-			} else {
-				// from middle to the end
-				this.applyStyle(element, type, end);
-			}
+			Object.entries(zones)
+				.sort((a, b) => b[0] - a[0])
+				.forEach(([zone, value]) => {
+					if (
+						elementTopInCoordinate + elementHeight * (zone / 100) >=
+						0
+					) {
+						this.applyStyle(element, type, value);
+					}
+				});
 		}
+
 		if (
-			reverseScroll === 'true' &&
+			(reverseScroll === true || reverseScroll === 'true') &&
 			scrollDirection === 'up' &&
 			elementBottomInCoordinate >= 0
 		) {
-			if (elementMidInCoordinate <= 0) {
-				this.applyStyle(element, type, mid);
-			} else {
-				this.applyStyle(element, type, start);
-			}
+			Object.entries(zones).forEach(([zone, value]) => {
+				if (
+					elementTopInCoordinate + elementHeight * (zone / 100) <=
+					0
+				) {
+					this.applyStyle(element, type, value);
+				}
+			});
 		}
 	};
 
@@ -259,6 +292,29 @@ class ScrollEffects {
 		});
 	};
 
+	static getTransition(type, speedValue, easingValue, delayValue) {
+		let transition = '';
+
+		switch (type) {
+			case 'vertical':
+			case 'horizontal':
+			case 'rotate':
+			case 'scale':
+				transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+				break;
+			case 'fade':
+				transition += `opacity ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+				break;
+			case 'blur':
+				transition += `filter ${speedValue}ms ${easingValue} ${delayValue}ms, `;
+				break;
+			default:
+				break;
+		}
+
+		return transition;
+	}
+
 	startingEffect() {
 		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			let transition = '';
@@ -267,28 +323,13 @@ class ScrollEffects {
 				const { speedValue, easingValue, delayValue } =
 					this.constructor.getScrollSetting(data);
 
-				switch (type) {
-					case 'vertical':
-						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					case 'horizontal':
-						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					case 'rotate':
-						transition = `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					case 'scale':
-						transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					case 'fade':
-						transition += `opacity ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					case 'blur':
-						transition += `filter ${speedValue}ms ${easingValue} ${delayValue}ms, `;
-						break;
-					default:
-						break;
-				}
+				transition += this.constructor.getTransition(
+					type,
+					speedValue,
+					easingValue,
+					delayValue
+				);
+
 				this.startingTransform(element, type);
 			});
 			if (transition !== '')

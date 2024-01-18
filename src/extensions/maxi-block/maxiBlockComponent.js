@@ -83,6 +83,7 @@ const StyleComponent = ({
 	isBreakpointChange,
 	isBlockStyleChange,
 	currentBreakpoint,
+	isPatternPreview = false,
 }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
@@ -163,10 +164,14 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
+	const useBreakpoints = isPatternPreview
+		? blockBreakpoints
+		: getBreakpoints();
+
 	const styles = styleResolver({
 		styles: stylesObj,
 		remove: false,
-		breakpoints: getBreakpoints(),
+		breakpoints: useBreakpoints,
 		uniqueID,
 	});
 
@@ -229,6 +234,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		if (this.isPatternsPreview) return;
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -696,7 +702,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getRootEl(iframe) {
-		console.log('getRootEl');
 		const { uniqueID } = this.props.attributes;
 
 		const getStylesWrapper = (element, onCreateWrapper) => {
@@ -755,7 +760,7 @@ class MaxiBlockComponent extends Component {
 			const siteEditorIframe = getSiteEditorIframe();
 
 			if (this.isPatternsPreview) {
-				if (!iframe) return;
+				if (!iframe) return null;
 				const iframeHead = iframe.contentDocument?.head;
 				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
 			} else if (this.isTemplatePartPreview) {
@@ -796,7 +801,7 @@ class MaxiBlockComponent extends Component {
 					attributeFilter: ['class'],
 				});
 			}
-		} else {
+		} else if (!this.isPatternsPreview) {
 			dispatch('maxiBlocks').setIsIframeObserverSet(false);
 			wrapper = getStylesWrapper(document.head);
 		}
@@ -1078,29 +1083,130 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (previewIframes.length > 0) {
+			const cleanStyleObject = obj => {
+				// Define the keys and substrings to be removed
+				const keysToRemove = new Set(['xxl', 'm', 's']);
+				const substringsToRemove = ['hover', 'active', 'visited'];
+
+				// Recursively traverse the object
+				Object.keys(obj).forEach(key => {
+					if (keysToRemove.has(key)) {
+						// If the key is in the keysToRemove set, delete it
+						delete obj[key];
+					} else if (
+						substringsToRemove.some(substring =>
+							key.includes(substring)
+						)
+					) {
+						// If the key contains any of the substrings, delete it
+						delete obj[key];
+					} else if (
+						typeof obj[key] === 'object' &&
+						obj[key] !== null
+					) {
+						// If the value is an object, recurse into it
+						cleanStyleObject(obj[key]);
+					}
+				});
+
+				return obj;
+			};
+
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
-				this.rootSlot = this.getRootEl(iframe);
+				const observeIframe = iframe => {
+					const iframeDocument =
+						iframe.contentDocument || iframe.contentWindow.document;
+
+					if (!iframeDocument) {
+						console.error('Unable to access iframe document.');
+						return;
+					}
+
+					// Ensure the iframeDocument has a body
+					if (!iframeDocument.body) {
+						console.error(
+							'Iframe document does not have a body yet.'
+						);
+						return;
+					}
+
+					// Options for the observer (which mutations to observe)
+					const config = {
+						attributes: true,
+						childList: true,
+						subtree: true,
+					};
+
+					// Callback function to execute when mutations are observed
+					const callback = (mutationsList, observer) => {
+						for (const mutation of mutationsList) {
+							if (mutation.type === 'childList') {
+								const element = iframeDocument.querySelector(
+									`.is-root-container .${uniqueID}`
+								);
+								if (element) {
+									this.rootSlot = this.getRootEl(iframe);
+									if (
+										this.originalBlockStyle &&
+										this.props.attributes.blockStyle !==
+											this.originalBlockStyle
+									) {
+										this.props.attributes.blockStyle =
+											this.originalBlockStyle;
+									}
+
+									if (this.rootSlot) {
+										const cleanedStylesObject =
+											cleanStyleObject(
+												this.getStylesObject
+											);
+										const styleComponent = (
+											<StyleComponent
+												uniqueID={uniqueID}
+												blockStyle={
+													this.props.attributes
+														.blockStyle
+												}
+												stylesObj={cleanedStylesObject}
+												currentBreakpoint='general'
+												blockBreakpoints={{
+													xl: 1920,
+													l: 1366,
+												}}
+												isBlockStyleChange={false}
+												isBreakpointChange={false}
+												isSiteEditor
+												isIframe
+												isPatternPreview
+											/>
+										);
+										this.rootSlot.render(styleComponent);
+										this.rootSlot = null;
+									}
+
+									observer.disconnect();
+								}
+							}
+						}
+					};
+
+					// Create an observer instance linked to the callback function
+					const observer = new MutationObserver(callback);
+
+					// Start observing the target node for configured mutations
+					observer.observe(iframeDocument.body, config);
+				};
+
 				if (
-					this.originalBlockStyle &&
-					this.props.attributes.blockStyle !== this.originalBlockStyle
+					iframe?.contentDocument &&
+					iframe?.contentDocument?.readyState === 'complete'
 				) {
-					this.props.attributes.blockStyle = this.originalBlockStyle;
-				}
-				if (this.rootSlot) {
-					const styleComponent = (
-						<StyleComponent
-							uniqueID={uniqueID}
-							blockStyle={this.props.attributes.blockStyle}
-							stylesObj={this.getStylesObject}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={this.getBreakpoints}
-							isSiteEditor
-							isIframe
-						/>
-					);
-					this.rootSlot.render(styleComponent);
-					this.rootSlot = null;
+					observeIframe(iframe);
+				} else {
+					iframe.onload = () => {
+						observeIframe(iframe);
+					};
 				}
 			});
 		} else {

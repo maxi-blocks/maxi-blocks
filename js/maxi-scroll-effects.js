@@ -179,7 +179,7 @@ class ScrollEffects {
 		];
 	};
 
-	getScrollSetting = (data, type = 'rotate') => {
+	getScrollSetting = (data, type) => {
 		const getTriggerValue = viewport => {
 			switch (viewport) {
 				case 'top':
@@ -233,7 +233,7 @@ class ScrollEffects {
 					) || true,
 				zones: this.getLastBreakpointAttribute(
 					data,
-					`scroll-${type}-${type}-zones`,
+					`scroll-${type}-zones`,
 					this.breakpoint
 				) || {
 					0: 0,
@@ -280,7 +280,7 @@ class ScrollEffects {
 		const dataScroll = this.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const { status, zones } = this.getScrollSetting(dataScroll);
+		const { status, zones } = this.getScrollSetting(dataScroll, type);
 
 		if (status) this.applyStyle(element, type, zones[0]);
 
@@ -307,8 +307,10 @@ class ScrollEffects {
 
 		if (!dataScroll) return;
 
-		const { status, trigger, zones, reverseScroll } =
-			this.getScrollSetting(dataScroll);
+		const { status, trigger, zones, reverseScroll } = this.getScrollSetting(
+			dataScroll,
+			type
+		);
 
 		if (!status) return;
 
@@ -407,7 +409,7 @@ class ScrollEffects {
 			const element = document.getElementById(id);
 			Object.entries(effect).forEach(([type, data]) => {
 				const { status, speedValue, easingValue, delayValue } =
-					this.getScrollSetting(data);
+					this.getScrollSetting(data, type);
 
 				if (!status) return;
 

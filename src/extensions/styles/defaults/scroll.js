@@ -41,12 +41,7 @@ const generateAttr = (
 	return null;
 };
 
-const generateUniqueAttributes = (
-	type,
-	attr,
-	defaults,
-	breakpoint = 'general'
-) => {
+const generateUniqueAttributes = (type, defaults, breakpoint = 'general') => {
 	const zones = defaults
 		? {
 				0: defaults[0],
@@ -54,8 +49,8 @@ const generateUniqueAttributes = (
 				100: defaults[2],
 		  }
 		: undefined;
-	console.log(zones, type, attr);
-	generateAttr(type, `${attr}-zones`, 'object', zones, breakpoint);
+
+	generateAttr(type, 'zones', 'object', zones, breakpoint);
 
 	return null;
 };
@@ -71,27 +66,27 @@ export const scroll = (() => {
 		generateAttr(type, 'status-reverse', 'boolean', true);
 
 		if (type === 'vertical') {
-			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
+			generateUniqueAttributes(type, [-400, 0, 400]);
 		}
 
 		if (type === 'horizontal') {
-			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
+			generateUniqueAttributes(type, [-200, 0, 200]);
 		}
 
 		if (type === 'rotate') {
-			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
+			generateUniqueAttributes(type, [90, 0, 0]);
 		}
 
 		if (type === 'scale') {
-			generateUniqueAttributes(type, 'scale', [70, 100, 100]);
+			generateUniqueAttributes(type, [70, 100, 100]);
 		}
 
 		if (type === 'fade') {
-			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
+			generateUniqueAttributes(type, [0, 100, 100]);
 		}
 
 		if (type === 'blur') {
-			generateUniqueAttributes(type, 'blur', [10, 0, 0]);
+			generateUniqueAttributes(type, [10, 0, 0]);
 		}
 	});
 
@@ -106,28 +101,23 @@ export const scroll = (() => {
 			generateAttr(type, 'status', 'boolean', undefined, breakpoint);
 
 			if (['vertical', 'horizontal'].includes(type)) {
-				generateUniqueAttributes(type, 'offset', undefined, breakpoint);
+				generateUniqueAttributes(type, undefined, breakpoint);
 			}
 
 			if (type === 'rotate') {
-				generateUniqueAttributes(type, 'rotate', undefined, breakpoint);
+				generateUniqueAttributes(type, undefined, breakpoint);
 			}
 
 			if (type === 'scale') {
-				generateUniqueAttributes(type, 'scale', undefined, breakpoint);
+				generateUniqueAttributes(type, undefined, breakpoint);
 			}
 
 			if (type === 'fade') {
-				generateUniqueAttributes(
-					type,
-					'opacity',
-					undefined,
-					breakpoint
-				);
+				generateUniqueAttributes(type, undefined, breakpoint);
 			}
 
 			if (type === 'blur') {
-				generateUniqueAttributes(type, 'blur', undefined, breakpoint);
+				generateUniqueAttributes(type, undefined, breakpoint);
 			}
 		});
 	});

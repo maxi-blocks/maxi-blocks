@@ -99,7 +99,7 @@ const ScrollEffectsUniqueControl = props => {
 	const [zones, setZones] = useState(
 		Object.keys(
 			getLastBreakpointAttribute({
-				target: `scroll-${type}-${specialLabels?.attr}-zones`,
+				target: `scroll-${type}-zones`,
 				breakpoint,
 				attributes: values,
 			})
@@ -112,7 +112,7 @@ const ScrollEffectsUniqueControl = props => {
 	const ref = useRef(null);
 
 	const zonesAttribute = getLastBreakpointAttribute({
-		target: `scroll-${type}-${specialLabels?.attr}-zones`,
+		target: `scroll-${type}-zones`,
 		breakpoint,
 		attributes: values,
 	});
@@ -135,7 +135,7 @@ const ScrollEffectsUniqueControl = props => {
 
 		setZones(newZones);
 		onChange({
-			[`scroll-${type}-${specialLabels?.attr}-zones-${breakpoint}`]: {
+			[`scroll-${type}-zones-${breakpoint}`]: {
 				...zonesAttribute,
 				[newZoneValue]: 0,
 			},
@@ -162,7 +162,6 @@ const ScrollEffectsUniqueControl = props => {
 
 		setMouseY(mouseY);
 
-		// Only show the add button if not dragging and not in proximity to a thumb
 		setShowAddButton(!proximity);
 	};
 
@@ -186,8 +185,7 @@ const ScrollEffectsUniqueControl = props => {
 		}, {});
 
 		onChange({
-			[`scroll-${type}-${specialLabels?.attr}-zones-${breakpoint}`]:
-				newZonesAttribute,
+			[`scroll-${type}-zones-${breakpoint}`]: newZonesAttribute,
 		});
 	};
 
@@ -196,11 +194,13 @@ const ScrollEffectsUniqueControl = props => {
 		newZones.splice(index, 1);
 		setZones(newZones);
 		onChange({
-			[`scroll-${type}-${specialLabels?.attr}-zones-${breakpoint}`]:
-				newZones.reduce((acc, zone) => {
+			[`scroll-${type}-zones-${breakpoint}`]: newZones.reduce(
+				(acc, zone) => {
 					acc[zone] = zonesAttribute[zone];
 					return acc;
-				}, {}),
+				},
+				{}
+			),
 		});
 	};
 
@@ -212,7 +212,7 @@ const ScrollEffectsUniqueControl = props => {
 	console.log(
 		props,
 		getLastBreakpointAttribute({
-			target: `scroll-${type}-${specialLabels?.attr}-zones`,
+			target: `scroll-${type}-zones`,
 			breakpoint,
 			attributes: values,
 		})
@@ -284,7 +284,7 @@ const ScrollEffectsUniqueControl = props => {
 					trackClassName='example-track'
 					value={Object.keys(
 						getLastBreakpointAttribute({
-							target: `scroll-${type}-${specialLabels?.attr}-zones`,
+							target: `scroll-${type}-zones`,
 							breakpoint,
 							attributes: values,
 						})
@@ -356,12 +356,11 @@ const ScrollEffectsUniqueControl = props => {
 				}
 				onChangeValue={val => {
 					onChange({
-						[`scroll-${type}-${specialLabels?.attr}-zones-${breakpoint}`]:
-							{
-								...zonesAttribute,
-								[Object.keys(zonesAttribute)[activeThumbIndex]]:
-									val !== undefined && val !== '' ? val : '',
-							},
+						[`scroll-${type}-zones-${breakpoint}`]: {
+							...zonesAttribute,
+							[Object.keys(zonesAttribute)[activeThumbIndex]]:
+								val !== undefined && val !== '' ? val : '',
+						},
 					});
 					isPreviewEnabled && applyEffect(type, uniqueID, val);
 				}}
@@ -371,30 +370,25 @@ const ScrollEffectsUniqueControl = props => {
 				onReset={() => {
 					onChange({
 						// todo: fix this
-						[`scroll-${type}-${specialLabels?.attr}-zones-${breakpoint}`]:
-							{
-								...zonesAttribute,
-								[Object.keys(zonesAttribute)[activeThumbIndex]]:
-									Object.values(
-										getDefaultAttribute(
-											`scroll-${type}-${specialLabels?.attr}-general`
-										)
-									)[activeThumbIndex],
-							},
+						[`scroll-${type}-zones-${breakpoint}`]: {
+							...zonesAttribute,
+							[Object.keys(zonesAttribute)[activeThumbIndex]]:
+								Object.values(
+									getDefaultAttribute(
+										`scroll-${type}-general`
+									)
+								)[activeThumbIndex],
+						},
 						isReset: true,
 					});
 					isPreviewEnabled &&
 						applyEffect(
 							type,
 							uniqueID,
-							getDefaultAttribute(
-								`scroll-${type}-${specialLabels?.attr}-general`
-							)
+							getDefaultAttribute(`scroll-${type}-general`)
 						);
 				}}
-				initialPosition={getDefaultAttribute(
-					`scroll-${type}-${specialLabels?.attr}-general`
-				)}
+				initialPosition={getDefaultAttribute(`scroll-${type}-general`)}
 			/>
 		</div>
 	);

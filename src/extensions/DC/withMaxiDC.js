@@ -159,7 +159,7 @@ const withMaxiDC = createHigherOrderComponent(
 						} else {
 							const { id, url, caption } = mediaContent;
 
-							if (!isNil(id) && !isNil(url)) {
+							if (!isNil(id) || !isNil(url)) {
 								isSynchronizedAttributesUpdated = true;
 
 								markNextChangeAsNotPersistent();

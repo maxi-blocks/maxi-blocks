@@ -269,7 +269,7 @@ class edit extends MaxiBlockComponent {
 			(mediaURL &&
 				((isImageUrl && !isImageUrlInvalid) ||
 					(!isNil(mediaID) && mediaURL))) ||
-			(dcStatus && dcMediaId && dcMediaUrl);
+			(dcStatus && (dcMediaId || dcMediaUrl));
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			maxiSetAttributes({
@@ -526,7 +526,8 @@ class edit extends MaxiBlockComponent {
 									// eslint-disable-next-line jsx-a11y/alt-text
 									<img
 										className={
-											isExternalClass && !dcStatus
+											(!dcStatus && isExternalClass) ||
+											(dcStatus && !dcMediaId)
 												? 'maxi-image-block__image wp-image-external'
 												: `maxi-image-block__image wp-image-${
 														dcStatus

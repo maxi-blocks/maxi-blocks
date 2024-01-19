@@ -121,7 +121,7 @@
 .horizontal-slider {
 	width: 2px;
 	height: 400px;
-	background-color: #ddd;
+	background-color: var(--maxi-light-blue-2-color) !important;
 	border-radius: 5px; /* Rounded corners for the track */
 	padding: 20px 0; /* Add some padding around the slider */
 	margin: 20px;
@@ -132,8 +132,10 @@
 	width: 30px; /* Diameter of the thumb */
 	height: 30px; /* Diameter of the thumb */
 	line-height: 30px; /* Center the text vertically */
-	background-color: #007bff; /* Background color of the thumb */
-	border: 2px solid #fff; /* White border for contrast */
+	background-color: var(
+		--maxi-light-blue-1-color
+	); /* Background color of the thumb */
+	border: 1.5px solid #fff; /* White border for contrast */
 	border-radius: 50%; /* Circular thumbs */
 	color: white; /* Text color */
 	display: flex; /* Use flexbox for centering */
@@ -141,13 +143,16 @@
 	justify-content: center; /* Center text horizontally */
 	cursor: grab; /* Cursor to indicate draggable */
 	outline: none; /* Remove default focus outline */
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Shadow for 3D effect */
+	box-shadow: 0 2px 6px var(--maxi-light-blue-2-color) !important; /* Shadow for 3D effect */
 	transition: transform 0.1s ease; /* Smooth transformation on select */
 	transform: translateX(-50%);
+	padding: 20px !important;
 }
 
 .example-thumb.selected {
-	background-color: #ffc107; /* Highlight color for the active thumb */
+	background-color: #119da4; /* Highlight color for the active thumb */
+	color: white !important;
+	font-weight: bold !important;
 }
 
 .thumb-label {
@@ -155,12 +160,13 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	left: 40px;
+	left: 50px;
 	white-space: nowrap;
 	background-color: aliceblue;
-	padding: 4px 8px;
-	border-radius: 4px;
+	padding: 4px 10px 4px 20px;
+	border-radius: 20px;
 	font-size: 0.8em;
+	width: 200px;
 }
 
 .add-zone-button {
@@ -173,7 +179,7 @@
 	height: 25px;
 	line-height: 25px;
 	text-align: center;
-	background-color: #28a745;
+	background-color: var(--maxi-green-1-color) !important;
 	color: white;
 	border-radius: 50%;
 	cursor: pointer;
@@ -186,14 +192,14 @@
 	position: absolute;
 	left: 10px; /* Adjust as necessary */
 	transform: translateY(-50%);
-	background-color: #28a745;
+	background-color: #60af87;
 	color: white;
 	width: 25px;
 	height: 25px;
 	line-height: 25px;
 	text-align: center;
 	border-radius: 50%;
-	font-size: 20px;
+	font-size: 16px;
 	user-select: none;
 }
 

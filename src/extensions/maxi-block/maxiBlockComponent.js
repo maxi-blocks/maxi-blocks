@@ -41,6 +41,7 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -58,7 +59,15 @@ import processRelations from '../relations/processRelations';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil, isArray, isObject } from 'lodash';
+import {
+	isArray,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isObject,
+	isString,
+} from 'lodash';
 import { diff } from 'deep-object-diff';
 
 /**
@@ -66,11 +75,13 @@ import { diff } from 'deep-object-diff';
  */
 const StyleComponent = ({
 	uniqueID,
+	blockStyle,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
 	isBreakpointChange,
+	isBlockStyleChange,
 	currentBreakpoint,
 }) => {
 	const { breakpoints } = useSelect(select => {
@@ -81,13 +92,65 @@ const StyleComponent = ({
 		return { breakpoints };
 	});
 
-	const { saveCSSCache } = useDispatch('maxiBlocks/styles');
+	const { updateStyles, saveCSSCache, saveRawCSSCache } =
+		useDispatch('maxiBlocks/styles');
 
-	if (isBreakpointChange) {
-		const styleContent =
-			select('maxiBlocks/styles').getCSSCache(uniqueID)[
-				currentBreakpoint
-			];
+	if (isBreakpointChange || isBlockStyleChange) {
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		let styleContent = cssCache[currentBreakpoint];
+
+		if (isBlockStyleChange) {
+			const previousBlockStyle =
+				blockStyle === 'light' ? 'dark' : 'light';
+
+			const newCssCache = Object.entries(cssCache).reduce(
+				(acc, [breakpoint, css]) => {
+					acc[breakpoint] = css.replaceAll(
+						`--maxi-${previousBlockStyle}-`,
+						`--maxi-${blockStyle}-`
+					);
+					if (currentBreakpoint === breakpoint) {
+						styleContent = acc[breakpoint];
+					}
+					return acc;
+				},
+				{}
+			);
+
+			const styles = select('maxiBlocks/styles').getBlockStyles(uniqueID);
+
+			const newStyles = {
+				[uniqueID]: {
+					...styles,
+					content: Object.entries(styles.content).reduce(
+						(acc, [selector, props]) => {
+							acc[selector] = Object.entries(props).reduce(
+								(acc, [breakpoint, props]) => {
+									acc[breakpoint] = Object.entries(
+										props
+									).reduce((acc, [prop, value]) => {
+										acc[prop] = isString(value)
+											? value.replaceAll(
+													previousBlockStyle,
+													blockStyle
+											  )
+											: value;
+										return acc;
+									}, {});
+									return acc;
+								},
+								{}
+							);
+							return acc;
+						},
+						{}
+					),
+				},
+			};
+
+			updateStyles(uniqueID, newStyles);
+			saveRawCSSCache(uniqueID, newCssCache);
+		}
 
 		return <style>{styleContent}</style>;
 	}
@@ -138,12 +201,14 @@ class MaxiBlockComponent extends Component {
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
+		this.isPatternsPreview = false;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.originalBlockStyle = attributes?.blockStyle;
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -485,7 +550,9 @@ class MaxiBlockComponent extends Component {
 					this.props.deviceType !== prevProps.deviceType ||
 						(this.props.baseBreakpoint !==
 							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint)
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
 				);
 			this.isReusable && this.displayStyles();
 		}
@@ -685,6 +752,12 @@ class MaxiBlockComponent extends Component {
 
 		if (isSiteEditor) {
 			const siteEditorIframe = getSiteEditorIframe();
+
+			if (this.isPatternsPreview) {
+				if (!iframe) return;
+				const iframeHead = iframe.contentDocument?.head;
+				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
+			}
 
 			if (this.isTemplatePartPreview) {
 				const templateViewIframe = getTemplateViewIframe(uniqueID);
@@ -913,11 +986,32 @@ class MaxiBlockComponent extends Component {
 				newUniqueID,
 				clientId,
 				this.props.repeaterStatus,
-				this.props.getInnerBlocksPositions,
+				this.props.repeaterRowClientId,
 				this.props.attributes['background-layers']
 			);
 
 			this.props.attributes.uniqueID = newUniqueID;
+
+			/**
+			 * Use `updateBlockAttributes` for `uniqueID` update in case if
+			 * `updateBlockAttributes` was called before (for example in `propagateNewUniqueID`)
+			 */
+			if (
+				select('maxiBlocks/blocks').getIsBlockWithUpdatedAttributes(
+					clientId
+				)
+			) {
+				const {
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+					updateBlockAttributes,
+				} = dispatch('core/block-editor');
+				markNextChangeAsNotPersistent();
+				updateBlockAttributes(clientId, {
+					uniqueID: newUniqueID,
+				});
+			}
+
 			if (!this.props.repeaterStatus) {
 				this.props.attributes.customLabel = getCustomLabel(
 					this.props.attributes.customLabel,
@@ -944,33 +1038,80 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-		if (!target) return;
+		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 
-		const response = getAllFonts(this.typography, 'custom-formats');
-		if (isEmpty(response)) return;
+		if (siteEditorPreviewIframes.length > 0) {
+			siteEditorPreviewIframes.forEach(iframe => {
+				const target = iframe?.contentDocument;
+				if (!target) return;
 
-		loadFonts(response, true, target);
-		this.areFontsLoaded.current = true;
+				const response = getAllFonts(this.typography, 'custom-formats');
+				if (isEmpty(response)) return;
+
+				loadFonts(response, true, target);
+			});
+			this.areFontsLoaded.current = true;
+		} else {
+			const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+
+			if (!target) return;
+
+			const response = getAllFonts(this.typography, 'custom-formats');
+			if (isEmpty(response)) return;
+
+			loadFonts(response, true, target);
+			this.areFontsLoaded.current = true;
+		}
 	}
 
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles(isBreakpointChange = false) {
+	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
+		const previewIframes = document.querySelectorAll(
+			'.edit-site-page-content .block-editor-block-preview__container iframe'
+		);
+
 		this.rootSlot = this.getRootEl(iframe);
+		if (previewIframes.length > 0) {
+			this.isPatternsPreview = true;
+			previewIframes.forEach(iframe => {
+				this.rootSlot = this.getRootEl(iframe);
+				if (
+					this.originalBlockStyle &&
+					this.props.attributes.blockStyle !== this.originalBlockStyle
+				) {
+					this.props.attributes.blockStyle = this.originalBlockStyle;
+				}
+				if (this.rootSlot) {
+					const styleComponent = (
+						<StyleComponent
+							uniqueID={uniqueID}
+							blockStyle={this.props.attributes.blockStyle}
+							stylesObj={this.getStylesObject}
+							currentBreakpoint={this.props.deviceType}
+							blockBreakpoints={this.getBreakpoints}
+							isSiteEditor
+							isIframe
+						/>
+					);
+					this.rootSlot.render(styleComponent);
+					this.rootSlot = null;
+				}
+			});
+		}
 
 		let obj;
 		let breakpoints;
 		let customDataRelations;
 
-		if (!isBreakpointChange) {
+		if (!isBreakpointChange && !isBlockStyleChange) {
 			obj = this.getStylesObject;
 			breakpoints = this.getBreakpoints;
 
@@ -990,15 +1131,17 @@ class MaxiBlockComponent extends Component {
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
-			if (this.rootSlot) {
+			if (this.rootSlot && !this.isPatternsPreview) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
+						blockStyle={this.props.attributes.blockStyle}
 						stylesObj={obj}
 						currentBreakpoint={this.props.deviceType}
 						blockBreakpoints={breakpoints}
 						isSiteEditor={isSiteEditor}
 						isBreakpointChange={isBreakpointChange}
+						isBlockStyleChange={isBlockStyleChange}
 						isPreview={this.isTemplatePartPreview}
 						isIframe={!!iframe}
 					/>

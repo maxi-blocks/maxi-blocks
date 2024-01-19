@@ -36,40 +36,27 @@ const handleSetAttributes = ({
 
 		if (!breakpoint) return;
 
-		const isHigherBreakpoint =
+		const isHigherThanBase =
 			breakpoints.indexOf(breakpoint) <
 			breakpoints.indexOf(baseBreakpoint);
-
-		if (!isHigherBreakpoint) return;
-
-		const attrLabelOnBaseBreakpoint = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-${baseBreakpoint}`;
-		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
-		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
 		)}-general`;
+		const attrLabelOnBaseBreakpoint = `${key.slice(
+			0,
+			key.lastIndexOf('-')
+		)}-${baseBreakpoint}`;
+
+		if (!isHigherThanBase) return;
+
+		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
+		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
-
-		// Ensures saving both General and XXL attribute when XXL attribute is already set,
-		// BaseBreakpoint is XXL and breakpoint is General
-		if (
-			breakpoint === 'general' &&
-			baseBreakpoint === 'xxl' &&
-			attrExistOnBaseBreakpoint &&
-			defaultGeneralAttribute !== value
-		) {
-			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
-		}
 
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
@@ -107,6 +94,7 @@ const handleSetAttributes = ({
 
 		if (
 			!attrExistOnBaseBreakpoint &&
+			baseBreakpoint !== 'xxl' &&
 			(breakpoint === 'general' || !existHigherBreakpointAttribute)
 		) {
 			// Checks if the higher breakpoint attribute is not on XXL

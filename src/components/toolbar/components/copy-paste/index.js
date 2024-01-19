@@ -138,12 +138,16 @@ const CopyPaste = props => {
 			});
 		}
 
-		if (copiedAttributes['background-layers'])
-			copiedAttributes['background-layers'] =
-				getUpdatedBGLayersWithNewUniqueID(
-					copiedAttributes['background-layers'],
-					attributes.uniqueID
-				);
+		if (copiedAttributes['background-layers']) {
+			const updatedBGLayers = getUpdatedBGLayersWithNewUniqueID(
+				copiedAttributes['background-layers'],
+				attributes.uniqueID
+			);
+
+			if (updatedBGLayers) {
+				copiedAttributes['background-layers'] = updatedBGLayers;
+			}
+		}
 	};
 
 	const onCopyStyles = () => {

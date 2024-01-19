@@ -6,7 +6,8 @@ import { isNil, isEmpty, without } from 'lodash';
 export function getBgLayersSelectorsCss(
 	bgLayers,
 	addOnHoverToLabel = true,
-	addBackgroundWrapper = true
+	addBackgroundWrapper = true,
+	cleanParallaxLayers = false
 ) {
 	const onHoverString = addOnHoverToLabel ? ' on hover' : '';
 
@@ -32,6 +33,12 @@ export function getBgLayersSelectorsCss(
 	bgLayers
 		?.sort((a, b) => a.order - b.order)
 		.forEach(bgLayer => {
+			if (
+				cleanParallaxLayers &&
+				bgLayer['background-image-parallax-status']
+			)
+				return;
+
 			const newBgLayersSelectors = {
 				...bgLayersSelectors.background,
 				[`_${bgLayer.id}`]: {

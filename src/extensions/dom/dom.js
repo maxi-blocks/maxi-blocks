@@ -12,6 +12,7 @@ import {
 	getIsTemplatePart,
 	getIsTemplatesListOpened,
 	getSiteEditorIframeBody,
+	getSiteEditorPreviewIframesBodies,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
@@ -169,6 +170,10 @@ wp.domReady(() => {
 			const currentId = select('core/edit-site').getEditedPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
+			const siteEditorPreviewIframeBodies =
+				getSiteEditorPreviewIframesBodies();
+			const isInPatternsPreviewMode =
+				siteEditorPreviewIframeBodies.length > 0;
 
 			if (
 				!isTemplatesListOpened &&
@@ -201,6 +206,17 @@ wp.domReady(() => {
 			)
 				siteEditorIframeBody.classList.add('maxi-blocks--active');
 
+			// Need to add 'maxi-blocks--active' class to the FSE preview iframe bodies
+			isInPatternsPreviewMode &&
+				siteEditorPreviewIframeBodies.forEach(body => {
+					if (
+						body &&
+						!body.classList.contains('maxi-blocks--active')
+					) {
+						body.classList.add('maxi-blocks--active');
+					}
+				});
+
 			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
 				isSCLoaded = false;
 
@@ -217,6 +233,15 @@ wp.domReady(() => {
 						isSCLoaded = false;
 					}
 				}, 150);
+			}
+
+			if (isInPatternsPreviewMode) {
+				const SC = select(
+					'maxiBlocks/style-cards'
+				).receiveMaxiActiveStyleCard();
+				if (SC) {
+					updateSCOnEditor(SC.value);
+				}
 			}
 
 			if (getIsTemplatePart()) {

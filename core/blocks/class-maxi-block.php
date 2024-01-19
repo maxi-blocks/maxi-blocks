@@ -221,6 +221,10 @@ if (!class_exists('MaxiBlocks_Block')):
             'dc-accumulator' => [
                 'type' => 'number',
             ],
+            'dc-hide' => [
+                'type' => 'boolean',
+                'default' => true,
+            ],
         ];
 
         /**

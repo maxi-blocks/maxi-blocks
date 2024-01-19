@@ -60,6 +60,18 @@ export const typeOptions = {
 	acf: ACFTypeOptions,
 };
 
+// Post types to show in "Standard types" section
+export const supportedPostTypes = ['post', 'page', 'attachment', 'product'];
+
+// Post types to hide
+export const ignoredPostTypes = [
+	'nav_menu_item',
+	'wp_block',
+	'wp_template',
+	'wp_template_part',
+	'wp_navigation',
+];
+
 /**
  * Relation constants
  */
@@ -105,6 +117,13 @@ const generalRelationOptionsTags = [
 const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
 	({ value }) => !['current', 'by-author'].includes(value)
 );
+
+// Relation options available for all post types
+export const postTypeRelationOptions = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
+];
 
 const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
@@ -495,7 +514,7 @@ export const idOptionByField = {
 };
 
 // Fields that use id field
-export const idFields = [
+export const idTypes = [
 	'posts',
 	'pages',
 	'media',

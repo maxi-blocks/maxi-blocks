@@ -8,6 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import { getDCImgSVG } from '../../extensions/DC';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
@@ -53,6 +54,7 @@ const save = props => {
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
+		SVGData,
 		SVGElement,
 		'hover-type': hoverType,
 		isImageUrl,
@@ -102,10 +104,18 @@ const save = props => {
 					])}
 					isSave
 				>
-					{SVGElement && !dcStatus ? (
-						<RawHTML>{SVGElement}</RawHTML>
+					{SVGElement &&
+					(!dcStatus ||
+						// To avoid block validation issue return img tag if SVGElement is old
+						(mediaURL
+							? !SVGElement.includes(mediaURL)
+							: SVGElement.includes('href="'))) ? (
+						<RawHTML>
+							{dcStatus
+								? getDCImgSVG(uniqueID, SVGData, SVGElement)
+								: SVGElement}
+						</RawHTML>
 					) : (
-						// eslint-disable-next-line jsx-a11y/alt-text
 						<img
 							className={
 								isImageUrl

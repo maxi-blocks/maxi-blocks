@@ -23,12 +23,6 @@ const injectImgSVG = (
 	removeMode = false,
 	blockUniqueID = null
 ) => {
-	const { getBlockAttributes, getSelectedBlockClientId } =
-		select('core/block-editor');
-
-	const uniqueID =
-		blockUniqueID ??
-		getBlockAttributes(getSelectedBlockClientId()).uniqueID;
 	const imageShapePosition = getSVGPosition(svg.outerHTML ?? svg);
 	const imageShapeRatio = getSVGRatio(svg.outerHTML ?? svg);
 
@@ -112,7 +106,15 @@ const injectImgSVG = (
 		});
 	});
 
-	if (SVGElement.dataset) SVGElement.dataset.item = `${uniqueID}__svg`;
+	if (SVGElement.dataset) {
+		const { getBlockAttributes, getSelectedBlockClientId } =
+			select('core/block-editor');
+		const uniqueID =
+			blockUniqueID ??
+			getBlockAttributes(getSelectedBlockClientId()).uniqueID;
+
+		SVGElement.dataset.item = `${uniqueID}__svg`;
+	}
 
 	return SVGElement;
 };

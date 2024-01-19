@@ -50,6 +50,7 @@ const DC = props => {
 			<DynamicContent
 				className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'
 				contentType={contentTypes[blockName]}
+				blockName={blockName}
 				{...restProps}
 			/>
 		</ToolbarPopover>

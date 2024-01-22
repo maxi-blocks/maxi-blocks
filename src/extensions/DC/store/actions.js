@@ -13,9 +13,17 @@ const actions = {
 			.filter(postType => !excludedTypes.has(postType.slug))
 			.map(postType => postType.slug);
 
+		const customLimitTypes = allPostTypes
+			.filter(
+				postType =>
+					postType.supports.editor || postType.supports.excerpt
+			)
+			.map(postType => postType.slug);
+
 		return {
 			type: 'UPDATE_CUSTOM_POST_TYPES',
 			customPostTypes,
+			customLimitTypes,
 		};
 	},
 };

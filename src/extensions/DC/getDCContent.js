@@ -1,18 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import {
-	limitFields,
-	limitTypes,
-	nameDictionary,
-	renderedFields,
-} from './constants';
+import { limitFields, nameDictionary, renderedFields } from './constants';
 import {
 	getItemLinkContent,
 	getSimpleText,
@@ -80,6 +75,8 @@ const getDCContent = async (dataRequest, clientId) => {
 	if (type === 'cart') {
 		return getCartContent(dataRequest, data);
 	}
+
+	const limitTypes = select('maxiBlocks/dynamic-content').getLimitTypes();
 
 	if (field === 'date') {
 		const options = formatDateOptions(dataRequest);

@@ -6,9 +6,10 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,9 +23,7 @@ import {
 	orderByOptions,
 	orderOptions,
 	orderRelations,
-	orderTypes,
 	relationOptions,
-	relationTypes,
 	sourceOptions,
 } from '../../extensions/DC/constants';
 import {
@@ -32,7 +31,10 @@ import {
 	getDCOptions,
 	LoopContext,
 } from '../../extensions/DC';
-import { validationsValues } from '../../extensions/DC/utils';
+import {
+	getCustomRelationOptions,
+	validationsValues,
+} from '../../extensions/DC/utils';
 import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
@@ -54,6 +56,16 @@ const ContextLoop = props => {
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
+
+	const { relationTypes, orderTypes } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes } = select(
+			'maxiBlocks/dynamic-content'
+		);
+		return {
+			relationTypes: getRelationTypes(),
+			orderTypes: getOrderTypes(),
+		};
+	}, []);
 
 	const classes = classnames('maxi-context-loop', className);
 
@@ -78,6 +90,17 @@ const ContextLoop = props => {
 
 	const isOrderSettings =
 		orderTypes.includes(type) && orderRelations.includes(relation);
+
+	const isCustomType = useSelect(
+		select => {
+			const customTypes = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomPostTypes();
+
+			return customTypes.includes(type);
+		},
+		[type]
+	);
 
 	const changeProps = (params, alwaysSaveCLStatus = false) => {
 		const hasChangesToSave = Object.entries(contextLoop).some(
@@ -146,6 +169,25 @@ const ContextLoop = props => {
 			}
 		}
 	});
+
+	const currentRelationOptions = useMemo(() => {
+		if (isCustomType) {
+			return getCustomRelationOptions(type);
+		}
+
+		const options = relationOptions[contentType]?.[type];
+
+		const hideCurrent = {
+			post: 'pages',
+			page: 'posts',
+		};
+
+		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+			return options.filter(({ value }) => value !== 'current');
+		}
+
+		return options;
+	}, [contentType, isCustomType, type]);
 
 	useEffect(() => {
 		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
@@ -282,7 +324,7 @@ const ContextLoop = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={relationOptions[contentType][type]}
+									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({
 											'cl-relation': value,

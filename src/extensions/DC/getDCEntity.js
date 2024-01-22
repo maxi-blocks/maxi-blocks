@@ -9,13 +9,7 @@ import { resolveSelect, select } from '@wordpress/data';
 import getDCErrors from './getDCErrors';
 import { getDCOrder, getRelationKeyForId } from './utils';
 import { getCartData } from './getWooCommerceData';
-import {
-	kindDictionary,
-	nameDictionary,
-	orderRelations,
-	orderTypes,
-	relationTypes,
-} from './constants';
+import { kindDictionary, nameDictionary, orderRelations } from './constants';
 
 /**
  * External dependencies
@@ -55,11 +49,19 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	if (contentError) return contentError;
 
-	if (type === 'users') {
-		dataRequest.id = author ?? id;
-	}
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+
+	const getKind = type => {
+		if (customPostTypes.includes(type)) return 'postType';
+
+		return kindDictionary[type];
+	};
 
 	if (type === 'users') {
+		dataRequest.id = author ?? id;
+
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
@@ -89,11 +91,16 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		return user;
 	}
+
+	const relationTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getRelationTypes();
+
 	if (relationTypes.includes(type) && relation === 'random') {
 		return getRandomEntity(
 			await resolveSelect('core').getEntityRecords(
-				kindDictionary[type],
-				nameDictionary[type],
+				getKind(type),
+				nameDictionary[type] ?? type,
 				{
 					per_page: 100,
 					hide_empty: false,
@@ -103,12 +110,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 	}
 
+	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
+
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
 		const relationKeyForId = getRelationKeyForId(relation, type);
 
 		const entities = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
+			getKind(type),
+			nameDictionary[type] ?? type,
 			{
 				per_page: accumulator + 1,
 				hide_empty: false,
@@ -123,7 +132,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	if (type === 'settings') {
 		const settings = await resolveSelect('core').getEditedEntityRecord(
-			kindDictionary[type],
+			getKind(type),
 			'site'
 		);
 
@@ -140,8 +149,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 		)
 	) {
 		const termsEntity = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
+			getKind(type),
+			nameDictionary[type] ?? type,
 			{
 				per_page: 1,
 				hide_empty: false,
@@ -155,15 +164,15 @@ const getDCEntity = async (dataRequest, clientId) => {
 	if (relation === 'current') {
 		return (
 			resolveSelect('core').getEditedEntityRecord(
-				kindDictionary[type],
-				nameDictionary[type],
+				getKind(type),
+				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
 			) ?? {}
 		);
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(
-		kindDictionary[type],
+		getKind(type) ?? 'postType',
 		nameDictionary[type] ?? type,
 		{
 			include: id,
@@ -176,7 +185,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	// Get selected entity
 	const entity = await resolveSelect('core').getEntityRecord(
-		kindDictionary[type],
+		getKind(type) ?? 'postType',
 		nameDictionary[type] ?? type,
 		id,
 		{

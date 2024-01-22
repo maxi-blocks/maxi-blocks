@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect, select, useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -29,19 +29,20 @@ const SelectControl = loadable(() => import('../select-control'));
 const ToggleSwitch = loadable(() => import('../toggle-switch'));
 const TextControl = loadable(() => import('../text-control'));
 
-import { validationsValues } from '../../extensions/DC/utils';
+import {
+	getCustomRelationOptions,
+	getFields,
+	validationsValues,
+} from '../../extensions/DC/utils';
 import {
 	fieldOptions,
 	relationOptions,
-	relationTypes,
 	limitOptions,
-	limitTypes,
 	limitFields,
 	orderOptions,
 	orderByOptions,
 	orderByRelations,
 	orderRelations,
-	orderTypes,
 	linkFields,
 	linkFieldsLabels,
 	sourceOptions,
@@ -79,6 +80,17 @@ const DynamicContent = props => {
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
+
+	const { relationTypes, orderTypes, limitTypes } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes, getLimitTypes } = select(
+			'maxiBlocks/dynamic-content'
+		);
+		return {
+			relationTypes: getRelationTypes(),
+			orderTypes: getOrderTypes(),
+			limitTypes: getLimitTypes(),
+		};
+	}, []);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -144,6 +156,22 @@ const DynamicContent = props => {
 		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
 		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
 	];
+
+	const isCustomType = useSelect(
+		select => {
+			const customTypes = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomPostTypes();
+
+			return customTypes.includes(type);
+		},
+		[type]
+	);
+
+	const currentFieldOptions = useMemo(
+		() => getFields(contentType, type),
+		[contentType, type]
+	);
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -215,7 +243,11 @@ const DynamicContent = props => {
 	});
 
 	const currentRelationOptions = useMemo(() => {
-		const options = relationOptions[contentType][type];
+		if (isCustomType) {
+			return getCustomRelationOptions(type);
+		}
+
+		const options = relationOptions[contentType]?.[type];
 
 		const hideCurrent = {
 			post: 'pages',
@@ -227,7 +259,7 @@ const DynamicContent = props => {
 		}
 
 		return options;
-	}, [contentType, type]);
+	}, [contentType, isCustomType, type]);
 
 	useEffect(() => {
 		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
@@ -504,7 +536,7 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-							{['wp', 'wc'].includes(source) &&
+							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
 									(relation === 'by-author' &&
@@ -519,9 +551,7 @@ const DynamicContent = props => {
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}
 										value={field}
-										options={
-											fieldOptions[contentType][type]
-										}
+										options={currentFieldOptions}
 										newStyle
 										onChange={value =>
 											changeProps({

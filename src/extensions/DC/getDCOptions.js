@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
@@ -10,8 +10,8 @@ import { store as coreStore } from '@wordpress/core-data';
 import { limitString } from './utils';
 import {
 	fieldOptions,
-	idFields,
 	idOptionByField,
+	idTypes,
 	orderByRelations,
 } from './constants';
 
@@ -21,7 +21,11 @@ import {
 import { find, isEmpty, isEqual } from 'lodash';
 
 export const getIdOptions = async (type, relation, author) => {
-	if (!idFields.includes(type)) return false;
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+
+	if (![...idTypes, ...customPostTypes].includes(type)) return false;
 
 	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
@@ -62,6 +66,10 @@ export const getIdOptions = async (type, relation, author) => {
 			? 'product_tag'
 			: 'post_tag';
 		data = await getEntityRecords('taxonomy', tagType, args);
+	} else if (
+		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
+	) {
+		data = await getEntityRecords('postType', type, args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
@@ -135,7 +143,7 @@ const getDCOptions = async (
 					newValues[`${prefix}order`] = 'desc';
 				} else {
 					newValues[`${prefix}id`] = Number(data[0].id);
-					idFields.current = data[0].id;
+					idTypes.current = data[0].id;
 				}
 			} else {
 				newValues[`${prefix}id`] = undefined;

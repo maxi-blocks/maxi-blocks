@@ -1,7 +1,9 @@
-import { relationTypes } from '../constants';
+import { limitTypes, orderTypes, relationTypes } from '../constants';
 
 const initialState = {
 	relationTypes,
+	orderTypes,
+	limitTypes,
 	customPostTypes: [],
 };
 
@@ -15,6 +17,8 @@ const reducer = (state = initialState, action) => {
 					...state.relationTypes,
 					...action.customPostTypes,
 				],
+				orderTypes: [...state.orderTypes, ...action.customPostTypes],
+				limitTypes: [...state.limitTypes, ...action.customLimitTypes],
 			};
 
 		default:

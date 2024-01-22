@@ -16,6 +16,7 @@ import {
 	currentEntityTypes,
 	nameDictionary,
 	relationDictionary,
+	postTypeRelationOptions,
 } from './constants';
 
 /**
@@ -100,14 +101,20 @@ export const validationsValues = (
 	source = 'wp',
 	isCL = false
 ) => {
-	if (source === 'acf') return {};
+	if (
+		source === 'acf' ||
+		select('maxiBlocks/dynamic-content')
+			.getCustomPostTypes()
+			.includes(variableValue)
+	)
+		return {};
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
+	const fieldResult = fieldOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
+	const relationResult = relationOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
 	const typeResult = typeOptions[contentType]?.map(item => item.value);
@@ -183,4 +190,93 @@ export const getRelationKeyForId = (relation, type) => {
 		return relationType[type] || relationType.default;
 	}
 	return null;
+};
+
+const getCustomTypeFields = (contentType, type) => {
+	// TODO: refactor possibly by filtering post/page fields
+	const fields = [];
+
+	const postType = select('core').getPostType(type);
+
+	const addField = (label, value) => {
+		fields.push({
+			label: __(label, 'maxi-blocks'),
+			value,
+		});
+	};
+
+	if (contentType === 'image') {
+		if (postType.supports.thumbnail) {
+			addField('Featured image', 'featured_image');
+		}
+
+		return fields;
+	}
+
+	if (postType.supports.title) {
+		addField('Title', 'title');
+	}
+	if (postType.supports.editor) {
+		addField('Content', 'content');
+	}
+	if (postType.supports.excerpt) {
+		addField('Excerpt', 'excerpt');
+	}
+	addField('Date', 'date');
+	if (postType.supports.author) {
+		addField('Author', 'author');
+	}
+	if (postType.taxonomies.includes('category')) {
+		addField('Categories', 'categories');
+	}
+	if (postType.taxonomies.includes('post_tag')) {
+		addField('Tags', 'tags');
+	}
+	if (postType.supports.comments) {
+		addField('Comments', 'comments');
+	}
+
+	return fields;
+};
+
+export const getFields = (contentType, type) => {
+	if (
+		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
+	)
+		return getCustomTypeFields(contentType, type);
+
+	return fieldOptions[contentType][type];
+};
+
+export const getCustomRelationOptions = type => {
+	const postType = select('core').getPostType(type);
+
+	const relationOptions = [...postTypeRelationOptions];
+
+	if (postType.supports.title) {
+		relationOptions.push({
+			label: __('Get alphabetical', 'maxi-blocks'),
+			value: 'alphabetical',
+		});
+	}
+	if (postType.supports.author) {
+		relationOptions.push({
+			label: __('Get by author', 'maxi-blocks'),
+			value: 'by-author',
+		});
+	}
+	if (postType.taxonomies.includes('category')) {
+		relationOptions.push({
+			label: __('Get by category', 'maxi-blocks'),
+			value: 'by-category',
+		});
+	}
+	if (postType.taxonomies.includes('post_tag')) {
+		relationOptions.push({
+			label: __('Get by tag', 'maxi-blocks'),
+			value: 'by-tag',
+		});
+	}
+
+	return relationOptions;
 };

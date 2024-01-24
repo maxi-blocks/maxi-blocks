@@ -177,7 +177,7 @@ class MaxiBlocks_DynamicContent
 
         if ($dc_source === 'acf') {
             $response = self::get_acf_content($attributes);
-        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $response = self::get_post_or_page_content($attributes);
         } elseif ($dc_type === 'settings') { // Site settings
             $response = self::get_site_content($dc_field);
@@ -231,7 +231,7 @@ class MaxiBlocks_DynamicContent
             $image = self::get_acf_content($attributes);
 
             $media_id = is_array($image) && $image['id'];
-        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $post = $this->get_post($attributes);
             // $dc_field is not used here as there's just on option for the moment
             if (!empty($post)) {
@@ -329,13 +329,18 @@ class MaxiBlocks_DynamicContent
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
-        if (in_array($dc_type, ['posts', 'pages', 'products'])) {
+        if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
             // Basic args
             $args = [
-                'post_type' => self::$type_to_post_type[$dc_type],
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
+
+            if (isset(self::$type_to_post_type[$dc_type])) {
+                $args['post_type'] = self::$type_to_post_type[$dc_type];
+            } else {
+                $args['post_type'] = $dc_type;
+            }
 
             // DC Relation
             if ($dc_relation == 'by-id') {
@@ -1162,4 +1167,20 @@ class MaxiBlocks_DynamicContent
         return '';
     }
 
+    public function get_custom_post_types()
+    {
+        $args = [
+            'public' => true,
+            '_builtin' => false,
+        ];
+
+        // Post types supported by maxi, that are not built in WP post types
+        $supported_post_types = [
+            'product'
+        ];
+
+        $post_types = array_diff(get_post_types($args), $supported_post_types);
+
+        return $post_types;
+    }
 }

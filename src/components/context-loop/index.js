@@ -57,16 +57,6 @@ const ContextLoop = props => {
 	const [postIdOptions, setPostIdOptions] = useState(null);
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
 
-	const { relationTypes, orderTypes } = useSelect(select => {
-		const { getRelationTypes, getOrderTypes } = select(
-			'maxiBlocks/dynamic-content'
-		);
-		return {
-			relationTypes: getRelationTypes(),
-			orderTypes: getOrderTypes(),
-		};
-	}, []);
-
 	const classes = classnames('maxi-context-loop', className);
 
 	const {
@@ -84,23 +74,43 @@ const ContextLoop = props => {
 		'cl-acf-group': acfGroup,
 	} = getCLAttributes(contextLoop);
 
-	const isTypeHasRelations =
-		relationTypes.includes(type) &&
-		!!relationOptions?.[contentType]?.[type];
-
-	const isOrderSettings =
-		orderTypes.includes(type) && orderRelations.includes(relation);
-
-	const isCustomType = useSelect(
+	const { relationTypes, orderTypes, isCustomType } = useSelect(
 		select => {
-			const customTypes = select(
-				'maxiBlocks/dynamic-content'
-			).getCustomPostTypes();
-
-			return customTypes.includes(type);
+			const { getRelationTypes, getOrderTypes, getCustomPostTypes } =
+				select('maxiBlocks/dynamic-content');
+			return {
+				relationTypes: getRelationTypes(),
+				orderTypes: getOrderTypes(),
+				isCustomType: getCustomPostTypes().includes(type),
+			};
 		},
 		[type]
 	);
+
+	const currentRelationOptions = useMemo(() => {
+		if (isCustomType) {
+			return getCustomRelationOptions(type);
+		}
+
+		const options = relationOptions[contentType]?.[type];
+
+		const hideCurrent = {
+			post: 'pages',
+			page: 'posts',
+		};
+
+		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+			return options.filter(({ value }) => value !== 'current');
+		}
+
+		return options;
+	}, [contentType, isCustomType, type]);
+
+	const isTypeHasRelations =
+		relationTypes.includes(type) && !!currentRelationOptions;
+
+	const isOrderSettings =
+		orderTypes.includes(type) && orderRelations.includes(relation);
 
 	const changeProps = (params, alwaysSaveCLStatus = false) => {
 		const hasChangesToSave = Object.entries(contextLoop).some(
@@ -169,25 +179,6 @@ const ContextLoop = props => {
 			}
 		}
 	});
-
-	const currentRelationOptions = useMemo(() => {
-		if (isCustomType) {
-			return getCustomRelationOptions(type);
-		}
-
-		const options = relationOptions[contentType]?.[type];
-
-		const hideCurrent = {
-			post: 'pages',
-			page: 'posts',
-		};
-
-		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			return options.filter(({ value }) => value !== 'current');
-		}
-
-		return options;
-	}, [contentType, isCustomType, type]);
 
 	useEffect(() => {
 		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {

@@ -154,10 +154,9 @@ const ScrollEffectsUniqueControl = props => {
 		const timelineRect = ref.current.getBoundingClientRect();
 		const mouseY = e.clientY - timelineRect.top;
 
-		// Check for proximity to each thumb
 		const proximity = zones.some(zone => {
 			const zonePosition = (zone / 100) * timelineRect.height;
-			return Math.abs(mouseY - zonePosition) < 20; // 20px as threshold for overlap
+			return Math.abs(mouseY - zonePosition) < 40;
 		});
 
 		setMouseY(mouseY);
@@ -207,15 +206,6 @@ const ScrollEffectsUniqueControl = props => {
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-scroll-unique-control',
 		className
-	);
-
-	console.log(
-		props,
-		getLastBreakpointAttribute({
-			target: `scroll-${type}-zones`,
-			breakpoint,
-			attributes: values,
-		})
 	);
 
 	return (
@@ -279,9 +269,9 @@ const ScrollEffectsUniqueControl = props => {
 				})}
 			/> */}
 				<ReactSlider
-					className='horizontal-slider'
-					thumbClassName='example-thumb'
-					trackClassName='example-track'
+					className='maxi-scroll-unique-control-slider'
+					thumbClassName='maxi-scroll-unique-control-slider__thumb'
+					trackClassName='maxi-scroll-unique-control-slider__track'
 					value={Object.keys(
 						getLastBreakpointAttribute({
 							target: `scroll-${type}-zones`,
@@ -297,13 +287,13 @@ const ScrollEffectsUniqueControl = props => {
 							{...props}
 							className={`${props.className} ${
 								state.index === activeThumbIndex
-									? 'selected'
+									? 'maxi-scroll-unique-control-slider__thumb--selected'
 									: ''
 							}`}
 							onClick={() => handleThumbClick(state.index)}
 						>
-							<div className='thumb-label'>
-								<span>
+							<div className='maxi-scroll-unique-control-slider__thumb-label-wrapper'>
+								<span className='maxi-scroll-unique-control-slider__thumb-label'>
 									{specialLabels?.label}:{' '}
 									{
 										zonesAttribute[
@@ -313,18 +303,24 @@ const ScrollEffectsUniqueControl = props => {
 										]
 									}
 								</span>
-								{state.index !== 0 &&
-									state.index !== zones.length - 1 && (
-										<Icon
-											icon={promptDelete}
-											onClick={() =>
-												handleThumbDelete(state.index)
-											}
-										/>
-									)}
+								<div className='maxi-scroll-unique-control-slider__thumb-label-delete'>
+									{state.index !== 0 &&
+										state.index !== zones.length - 1 && (
+											<Icon
+												icon={promptDelete}
+												onClick={() =>
+													handleThumbDelete(
+														state.index
+													)
+												}
+											/>
+										)}
+								</div>
 							</div>
 
-							<div className='thumb-value'>{state.valueNow}%</div>
+							<div className='maxi-scroll-unique-control-slider__thumb-value'>
+								{state.valueNow}%
+							</div>
 						</div>
 					)}
 					orientation='vertical'
@@ -334,11 +330,11 @@ const ScrollEffectsUniqueControl = props => {
 				{showAddButton && (
 					<>
 						<div
-							className='divider'
+							className='maxi-scroll-unique-control-slider__divider'
 							style={{ top: `${mouseY}px` }}
 						/>
 						<div
-							className='plus-text'
+							className='maxi-scroll-unique-control-slider__add-button'
 							style={{ top: `${mouseY}px` }}
 							onClick={handleAddZoneClick}
 						>

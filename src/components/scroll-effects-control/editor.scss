@@ -75,6 +75,84 @@
 			position: relative;
 		}
 
+		.maxi-scroll-unique-control-slider {
+			width: 2px;
+			height: 400px;
+			background-color: var(--maxi-light-blue-2-color) !important;
+			border-radius: 5px;
+			padding: 20px 0;
+			margin: 20px;
+
+			&__thumb {
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				background-color: var(--maxi-light-blue-1-color);
+				border: 1.5px solid #fff;
+				border-radius: 50%;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: grab;
+				outline: none;
+				box-shadow: 0 2px 6px var(--maxi-light-blue-2-color) !important;
+				transition: transform 0.1s ease;
+				transform: translateX(-50%);
+				padding: 20px !important;
+
+				&--selected {
+					background-color: #119da4;
+					color: white !important;
+					font-weight: bold !important;
+				}
+
+				&-label-wrapper {
+					position: absolute;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 8px;
+					left: 50px;
+					white-space: nowrap;
+					background-color: aliceblue;
+					padding: 4px 20px;
+					border-radius: 20px;
+					font-size: 0.8em;
+					width: 200px;
+				}
+
+				&-label-delete {
+					display: flex;
+					cursor: pointer;
+				}
+			}
+
+			&__divider {
+				position: absolute;
+				width: 100%;
+				height: 2px;
+				background-color: #000;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			&__add-button {
+				position: absolute;
+				left: 10px; /* Adjust as necessary */
+				transform: translateY(-50%);
+				background-color: #007cba;
+				color: white;
+				width: 25px;
+				height: 25px;
+				line-height: 25px;
+				text-align: center;
+				border-radius: 50%;
+				font-size: 16px;
+				user-select: none;
+			}
+		}
+
 		.maxi-settingstab-control {
 			.maxi-tabs-control {
 				margin-left: 0;
@@ -117,97 +195,4 @@
 			}
 		}
 	}
-}
-.horizontal-slider {
-	width: 2px;
-	height: 400px;
-	background-color: var(--maxi-light-blue-2-color) !important;
-	border-radius: 5px; /* Rounded corners for the track */
-	padding: 20px 0; /* Add some padding around the slider */
-	margin: 20px;
-}
-
-/* Styles for the individual thumbs */
-.example-thumb {
-	width: 30px; /* Diameter of the thumb */
-	height: 30px; /* Diameter of the thumb */
-	line-height: 30px; /* Center the text vertically */
-	background-color: var(
-		--maxi-light-blue-1-color
-	); /* Background color of the thumb */
-	border: 1.5px solid #fff; /* White border for contrast */
-	border-radius: 50%; /* Circular thumbs */
-	color: white; /* Text color */
-	display: flex; /* Use flexbox for centering */
-	align-items: center; /* Center text vertically */
-	justify-content: center; /* Center text horizontally */
-	cursor: grab; /* Cursor to indicate draggable */
-	outline: none; /* Remove default focus outline */
-	box-shadow: 0 2px 6px var(--maxi-light-blue-2-color) !important; /* Shadow for 3D effect */
-	transition: transform 0.1s ease; /* Smooth transformation on select */
-	transform: translateX(-50%);
-	padding: 20px !important;
-}
-
-.example-thumb.selected {
-	background-color: #119da4; /* Highlight color for the active thumb */
-	color: white !important;
-	font-weight: bold !important;
-}
-
-.thumb-label {
-	position: absolute;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	left: 50px;
-	white-space: nowrap;
-	background-color: aliceblue;
-	padding: 4px 10px 4px 20px;
-	border-radius: 20px;
-	font-size: 0.8em;
-	width: 200px;
-}
-
-.add-zone-button {
-	display: none; /* Initially hidden, will be shown when isAddingZone is true */
-	position: absolute;
-	left: 50%; /* Center horizontally */
-	transform: translateX(-50%);
-	top: -35px; /* Adjust as necessary */
-	width: 25px;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-	background-color: var(--maxi-green-1-color) !important;
-	color: white;
-	border-radius: 50%;
-	cursor: pointer;
-	font-size: 20px;
-	border: none;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.plus-text {
-	position: absolute;
-	left: 10px; /* Adjust as necessary */
-	transform: translateY(-50%);
-	background-color: #007cba;
-	color: white;
-	width: 25px;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-	border-radius: 50%;
-	font-size: 16px;
-	user-select: none;
-}
-
-.divider {
-	position: absolute;
-	width: 100%;
-	height: 2px;
-	background-color: #000;
-	top: 50%; /* Adjust based on cursor position */
-	transform: translateY(-50%);
 }

@@ -200,6 +200,21 @@ class ScrollEffects {
 		};
 
 		if (typeof data === 'object') {
+			const getZones = () => {
+				const zones = this.getLastBreakpointAttribute(
+					data,
+					`scroll-${type}-zones`,
+					this.breakpoint
+				) || {
+					0: 0,
+					100: 0,
+				};
+
+				if (!zones[0]) zones[0] = 0;
+
+				return zones;
+			};
+
 			return {
 				status: this.getLastBreakpointAttribute(
 					data,
@@ -237,14 +252,7 @@ class ScrollEffects {
 						`scroll-${type}-status-reverse`,
 						this.breakpoint
 					) || true,
-				zones: this.getLastBreakpointAttribute(
-					data,
-					`scroll-${type}-zones`,
-					this.breakpoint
-				) || {
-					0: 0,
-					100: 0,
-				},
+				zones: getZones(),
 				unit:
 					this.getLastBreakpointAttribute(
 						data,

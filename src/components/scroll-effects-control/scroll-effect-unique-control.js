@@ -21,6 +21,7 @@ import EFFECT_PROPERTIES from './effect-properties';
  */
 import ReactSlider from 'react-slider';
 import classnames from 'classnames';
+import { isArray } from 'lodash';
 
 /**
  * Icons
@@ -67,7 +68,8 @@ const ScrollEffectsUniqueControl = props => {
 	const [isDragging, setIsDragging] = useState(false);
 	const ref = useRef(null);
 
-	const handleSliderChange = values => {
+	const handleSliderChange = rawValues => {
+		const values = isArray(rawValues) ? rawValues : [rawValues];
 		setZones(values);
 	};
 
@@ -123,7 +125,9 @@ const ScrollEffectsUniqueControl = props => {
 		setIsDragging(true);
 	};
 
-	const handleThumbInteractionEnd = values => {
+	const handleThumbInteractionEnd = rawValues => {
+		const values = isArray(rawValues) ? rawValues : [rawValues];
+
 		setIsDragging(false);
 
 		const previousZonesValues = Object.values(zonesAttribute);
@@ -251,19 +255,17 @@ const ScrollEffectsUniqueControl = props => {
 										? unitAttribute
 										: effectProperties?.unitLabel}
 								</span>
-								{state.index !== 0 &&
-									state.index !== zones.length - 1 && (
-										<div className='maxi-scroll-unique-control-slider__thumb-label-delete'>
-											<Icon
-												icon={promptDelete}
-												onClick={() =>
-													handleThumbDelete(
-														state.index
-													)
-												}
-											/>
-										</div>
-									)}
+								{zones.length > 1 && (
+									<div
+										className='maxi-scroll-unique-control-slider__thumb-label-delete'
+										onClick={e => {
+											e.stopPropagation();
+											handleThumbDelete(state.index);
+										}}
+									>
+										<Icon icon={promptDelete} />
+									</div>
+								)}
 							</div>
 							<div className='maxi-scroll-unique-control-slider__thumb-value'>
 								{state.valueNow}%

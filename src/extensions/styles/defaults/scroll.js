@@ -6,6 +6,7 @@ export const scrollTypes = [
 	'fade',
 	'blur',
 ];
+export const scrollTypesWithUnits = ['vertical', 'horizontal', 'blur'];
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -65,6 +66,10 @@ export const scroll = (() => {
 		generateAttr(type, 'delay', 'number', 0);
 		generateAttr(type, 'viewport-top', 'string', 'mid'); // 100
 		generateAttr(type, 'status-reverse', 'boolean', true);
+
+		if (scrollTypesWithUnits.includes(type)) {
+			generateAttr(type, 'unit', 'string', 'px');
+		}
 
 		if (type === 'vertical') {
 			generateUniqueAttributes(type, [-400, 0, 400]);

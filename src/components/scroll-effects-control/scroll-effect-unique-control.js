@@ -14,6 +14,7 @@ import {
 import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
 import { applyEffect } from './scroll-effect-preview';
+import EFFECT_PROPERTIES from './effect-properties';
 
 /**
  * External dependencies
@@ -25,6 +26,8 @@ import classnames from 'classnames';
  * Icons
  */
 import { promptDelete } from '../../icons';
+import SelectControl from '../select-control';
+import { scrollTypesWithUnits } from '../../extensions/styles/defaults/scroll';
 
 /**
  * Component
@@ -40,59 +43,22 @@ const ScrollEffectsUniqueControl = props => {
 		isPreviewEnabled,
 	} = props;
 
-	const getSpecialLabels = type => {
-		const response = {};
-		switch (type) {
-			case 'vertical':
-				response.label = 'Position (px)';
-				response.attr = 'offset';
-				response.min = -4000;
-				response.max = 4000;
-				break;
-			case 'horizontal':
-				response.label = 'Position (px)';
-				response.attr = 'offset';
-				response.min = -4000;
-				response.max = 4000;
-				break;
-			case 'rotate':
-				response.label = 'Angle (degrees)';
-				response.attr = 'rotate';
-				response.min = -360;
-				response.max = 360;
-				break;
-			case 'scale':
-				response.label = 'Scale (%)';
-				response.attr = 'scale';
-				response.min = 0;
-				response.max = 1000;
-				break;
-			case 'fade':
-				response.label = 'Opacity (%)';
-				response.attr = 'opacity';
-				response.min = 0;
-				response.max = 100;
-				break;
-			case 'blur':
-				response.label = 'Blur (px)';
-				response.attr = 'blur';
-				response.min = 0;
-				response.max = 20;
-				break;
-
-			default:
-				break;
-		}
-		return response;
-	};
-
-	const specialLabels = getSpecialLabels(type);
+	const effectProperties = EFFECT_PROPERTIES[type];
+	const isTypeWithUnit = scrollTypesWithUnits.includes(type);
 
 	const zonesAttribute = getLastBreakpointAttribute({
 		target: `scroll-${type}-zones`,
 		breakpoint,
 		attributes: values,
 	});
+
+	const unitAttribute =
+		isTypeWithUnit &&
+		getLastBreakpointAttribute({
+			target: `scroll-${type}-unit`,
+			breakpoint,
+			attributes: values,
+		});
 
 	const [zones, setZones] = useState(Object.keys(zonesAttribute).map(Number));
 	const [activeThumbIndex, setActiveThumbIndex] = useState(0);
@@ -190,6 +156,28 @@ const ScrollEffectsUniqueControl = props => {
 	const getActiveThumbPercentage = () =>
 		Object.keys(zonesAttribute)[activeThumbIndex];
 
+	const getMinMaxValue = (value = unitAttribute, key) => {
+		if (isTypeWithUnit) {
+			return effectProperties.minMaxSettings[value][key];
+		}
+
+		return effectProperties[key];
+	};
+
+	const getMinValue = value => getMinMaxValue(value, 'min');
+
+	const getMaxValue = value => getMinMaxValue(value, 'max');
+
+	const getZonesUnderMinMaxLimits = (zones, unit) => {
+		const min = getMinValue(unit);
+		const max = getMaxValue(unit);
+
+		return zones.reduce((acc, zone) => {
+			acc[zone] = Math.min(Math.max(zonesAttribute[zone], min), max);
+			return acc;
+		}, {});
+	};
+
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-scroll-unique-control',
 		className
@@ -197,6 +185,34 @@ const ScrollEffectsUniqueControl = props => {
 
 	return (
 		<div className={classes}>
+			{isTypeWithUnit && (
+				<SelectControl
+					label={__('Units', 'maxi-blocks')}
+					value={unitAttribute}
+					options={effectProperties.allowedUnits.map(unit => ({
+						label: unit,
+						value: unit,
+					}))}
+					onChange={val =>
+						onChange({
+							[`scroll-${type}-unit-${breakpoint}`]: val,
+							[`scroll-${type}-zones-${breakpoint}`]:
+								getZonesUnderMinMaxLimits(zones, val),
+						})
+					}
+					onReset={() => {
+						const newUnit = getDefaultAttribute(
+							`scroll-${type}-unit-general`
+						);
+						onChange({
+							[`scroll-${type}-unit-${breakpoint}`]: newUnit,
+							[`scroll-${type}-zones-${breakpoint}`]:
+								getZonesUnderMinMaxLimits(zones, newUnit),
+							isReset: true,
+						});
+					}}
+				/>
+			)}
 			<div
 				ref={ref}
 				className='maxi-scroll-unique-control__slider-wrapper'
@@ -223,7 +239,7 @@ const ScrollEffectsUniqueControl = props => {
 						>
 							<div className='maxi-scroll-unique-control-slider__thumb-label-wrapper'>
 								<span className='maxi-scroll-unique-control-slider__thumb-label'>
-									{specialLabels?.label}:{' '}
+									{effectProperties?.label}:{' '}
 									{
 										zonesAttribute[
 											Object.keys(zonesAttribute)[
@@ -231,6 +247,9 @@ const ScrollEffectsUniqueControl = props => {
 											]
 										]
 									}
+									{isTypeWithUnit
+										? unitAttribute
+										: effectProperties?.unitLabel}
 								</span>
 								{state.index !== 0 &&
 									state.index !== zones.length - 1 && (
@@ -246,7 +265,6 @@ const ScrollEffectsUniqueControl = props => {
 										</div>
 									)}
 							</div>
-
 							<div className='maxi-scroll-unique-control-slider__thumb-value'>
 								{state.valueNow}%
 							</div>
@@ -273,7 +291,7 @@ const ScrollEffectsUniqueControl = props => {
 				)}
 			</div>
 			<AdvancedNumberControl
-				label={__(specialLabels?.label, 'maxi-blocks')}
+				label={__(effectProperties?.label, 'maxi-blocks')}
 				value={zonesAttribute[getActiveThumbPercentage()]}
 				onChangeValue={val => {
 					onChange({
@@ -285,9 +303,9 @@ const ScrollEffectsUniqueControl = props => {
 					});
 					isPreviewEnabled && applyEffect(type, uniqueID, val);
 				}}
-				min={specialLabels?.min}
+				min={getMinValue()}
 				step={1}
-				max={specialLabels?.max}
+				max={getMaxValue()}
 				onReset={() => {
 					const resetKey = getActiveThumbPercentage();
 					const resetValue =

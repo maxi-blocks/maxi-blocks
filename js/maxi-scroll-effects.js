@@ -139,7 +139,7 @@ class ScrollEffects {
 		el.style.left = `${value}px`;
 	};
 
-	applyStyle(el, type, value) {
+	applyStyle(el, type, value, unit) {
 		switch (type) {
 			case 'rotate':
 				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
@@ -155,13 +155,21 @@ class ScrollEffects {
 				);
 				break;
 			case 'blur':
-				this.constructor.setBlur(el, `${value}px`);
+				this.constructor.setBlur(el, `${value}${unit}`);
 				break;
 			case 'vertical':
-				this.setTransform(el, `translateY(${value}px)`, 'vertical');
+				this.setTransform(
+					el,
+					`translateY(${value}${unit})`,
+					'vertical'
+				);
 				break;
 			case 'horizontal':
-				this.setTransform(el, `translateX(${value}px)`, 'horizontal');
+				this.setTransform(
+					el,
+					`translateX(${value}${unit})`,
+					'horizontal'
+				);
 				break;
 			default:
 				break;
@@ -237,14 +245,19 @@ class ScrollEffects {
 					this.breakpoint
 				) || {
 					0: 0,
-					50: 0,
 					100: 0,
 				},
+				unit:
+					this.getLastBreakpointAttribute(
+						data,
+						`scroll-${type}-unit`,
+						this.breakpoint
+					) || 'px',
 			};
 		}
 
 		/**
-		 * Old scroll
+		 * Old scroll support
 		 */
 		if (typeof data === 'string') {
 			const dataScrollArray = data.trim().split(' ');
@@ -280,9 +293,9 @@ class ScrollEffects {
 		const dataScroll = this.getScrollData(element, type);
 		if (!dataScroll || !element) return null;
 
-		const { status, zones } = this.getScrollSetting(dataScroll, type);
+		const { status, zones, unit } = this.getScrollSetting(dataScroll, type);
 
-		if (status) this.applyStyle(element, type, zones[0]);
+		if (status) this.applyStyle(element, type, zones[0], unit);
 
 		return null;
 	}
@@ -307,10 +320,8 @@ class ScrollEffects {
 
 		if (!dataScroll) return;
 
-		const { status, trigger, zones, reverseScroll } = this.getScrollSetting(
-			dataScroll,
-			type
-		);
+		const { status, trigger, zones, unit, reverseScroll } =
+			this.getScrollSetting(dataScroll, type);
 
 		if (!status) return;
 
@@ -349,7 +360,7 @@ class ScrollEffects {
 						elementTopInCoordinate + elementHeight * (zone / 100) >=
 						0
 					) {
-						this.applyStyle(element, type, value);
+						this.applyStyle(element, type, value, unit);
 					}
 				});
 		}
@@ -364,7 +375,7 @@ class ScrollEffects {
 					elementTopInCoordinate + elementHeight * (zone / 100) <=
 					0
 				) {
-					this.applyStyle(element, type, value);
+					this.applyStyle(element, type, value, unit);
 				}
 			});
 		}

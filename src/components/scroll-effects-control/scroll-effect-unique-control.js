@@ -7,13 +7,15 @@ import { useState, useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
+import SelectControl from '../select-control';
+import Icon from '../icon';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import AdvancedNumberControl from '../advanced-number-control';
-import Icon from '../icon';
 import { applyEffect } from './scroll-effect-preview';
+import { scrollTypesWithUnits } from '../../extensions/styles/defaults/scroll';
 import EFFECT_PROPERTIES from './effect-properties';
 
 /**
@@ -27,8 +29,6 @@ import { isArray } from 'lodash';
  * Icons
  */
 import { promptDelete } from '../../icons';
-import SelectControl from '../select-control';
-import { scrollTypesWithUnits } from '../../extensions/styles/defaults/scroll';
 
 /**
  * Component
@@ -79,20 +79,24 @@ const ScrollEffectsUniqueControl = props => {
 
 	const handleAddZoneClick = e => {
 		const timelineRect = ref.current.getBoundingClientRect();
-		const newZoneValue = Math.round(
+		const newZonePercentage = Math.round(
 			((e.clientY - timelineRect.top) / timelineRect.height) * 100
 		);
-		const newZones = [...zones, newZoneValue];
+		const newZones = [...zones, newZonePercentage];
 		newZones.sort((a, b) => a - b);
+
+		const newZoneIndex = newZones.indexOf(newZonePercentage);
+		const newZoneValue =
+			newZoneIndex === 0 ? 0 : zonesAttribute[newZones[newZoneIndex - 1]];
 
 		setZones(newZones);
 		onChange({
 			[`scroll-${type}-zones-${breakpoint}`]: {
 				...zonesAttribute,
-				[newZoneValue]: 0,
+				[newZonePercentage]: newZoneValue,
 			},
 		});
-		setActiveThumbIndex(newZones.length - 1);
+		setActiveThumbIndex(newZoneIndex);
 	};
 
 	const handleMouseMove = e => {
@@ -146,6 +150,7 @@ const ScrollEffectsUniqueControl = props => {
 		const newZones = [...zones];
 		newZones.splice(index, 1);
 		setZones(newZones);
+		setActiveThumbIndex(index - 1);
 		onChange({
 			[`scroll-${type}-zones-${breakpoint}`]: newZones.reduce(
 				(acc, zone) => {

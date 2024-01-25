@@ -41,6 +41,18 @@ const maxiVersions = [
 ];
 
 const attributes = () => ({
+	'scroll-vertical-offset-start-general': {
+		type: 'number',
+		default: -400,
+	},
+	'scroll-vertical-offset-mid-general': {
+		type: 'number',
+		default: 0,
+	},
+	'scroll-vertical-offset-end-general': {
+		type: 'number',
+		default: 400,
+	},
 	'scroll-horizontal-offset-start-general': {
 		type: 'number',
 		default: -200,
@@ -135,6 +147,9 @@ const migrate = attributes => {
 		};
 	};
 
+	attributes['scroll-vertical-zones-general'] = createZone(
+		'scroll-vertical-offset-'
+	);
 	attributes['scroll-horizontal-zones-general'] = createZone(
 		'scroll-horizontal-offset-'
 	);

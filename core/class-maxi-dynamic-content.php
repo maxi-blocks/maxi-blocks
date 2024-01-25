@@ -16,6 +16,7 @@ class MaxiBlocks_DynamicContent
     private static $instance;
     private static $custom_data = null;
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
+    private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
     private static $link_only_blocks = [
         'group-maxi',
@@ -198,8 +199,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (empty($response) && $response !== '0') {
-            $response = 'No content found';
             $this->is_empty = true;
+            $response = 'No content found';
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
@@ -214,6 +215,7 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
+            'dc-field' => $dc_field,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -233,15 +235,24 @@ class MaxiBlocks_DynamicContent
             $media_id = is_array($image) && $image['id'];
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
-            // $dc_field is not used here as there's just on option for the moment
+
             if (!empty($post)) {
-                $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+                if ($dc_field === 'featured_media') {
+                    $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
+                } elseif ($dc_field === 'author_avatar') {
+                    $media_id = 'external';
+                    $media_src = get_avatar_url($post->post_author);
+                }
             }
         } elseif ($dc_type === 'settings') { // Site settings
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $media_id = $dc_id;
+        } elseif ($dc_type === 'users') {
+            $media_id = 'external';
+            $post = $this->get_post($attributes);
+            $media_src = get_avatar_url($post->ID);
         } elseif ($dc_type === 'products') {
             $media_id = self::get_product_content($attributes);
         }
@@ -269,11 +280,11 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-alt-to-replace', $media_alt, $content);
             $content = str_replace('$media-caption-to-replace', $media_caption, $content);
         } else {
+            $this->is_empty = true;
             $content = str_replace('$media-id-to-replace', '', $content);
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
-            $this->is_empty = true;
         }
 
         return $content;
@@ -282,12 +293,15 @@ class MaxiBlocks_DynamicContent
     public function render_dc_classes($attributes, $content)
     {
         @list(
-            'dc-hide' => $dc_hide
+            'dc-hide' => $dc_hide,
+            'dc-field' => $dc_field,
         ) = $attributes;
 
         $classes = [];
 
-        $classes[] = ($dc_hide && $this->is_empty) ? 'maxi-block--hidden' : '';
+        $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
+            ? 'maxi-block--hidden'
+            : '';
 
         $content = str_replace(
             '$class-to-replace',

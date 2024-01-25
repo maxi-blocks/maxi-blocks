@@ -16,6 +16,21 @@ import { getProductsContent } from './getWCContent';
  */
 import { isNil } from 'lodash';
 
+const getAvatar = user => {
+	const { avatar_urls: avatarUrls } = user;
+
+	if (!avatarUrls) return null;
+
+	const sizes = Object.keys(avatarUrls);
+
+	// Get the largest size
+	const size = Math.max(...sizes.map(Number));
+
+	return {
+		url: avatarUrls[size],
+	};
+};
+
 const getDCMedia = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
 
@@ -26,6 +41,19 @@ const getDCMedia = async (dataRequest, clientId) => {
 		const contentValue = await getACFFieldContent(field, data.id);
 
 		return contentValue;
+	}
+
+	if (field === 'avatar' && type === 'users') {
+		return getAvatar(data);
+	}
+
+	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
+		const { author: authorId } = data;
+		const { getUser } = resolveSelect('core');
+
+		const author = await getUser(authorId);
+
+		return getAvatar(author);
 	}
 
 	if (type === 'products') {

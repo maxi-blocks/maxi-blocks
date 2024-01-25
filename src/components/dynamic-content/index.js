@@ -46,10 +46,12 @@ import {
 	linkFields,
 	linkFieldsLabels,
 	sourceOptions,
+	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
+import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 
@@ -69,8 +71,14 @@ const UnlimitedCharacterPoppover = ({ message }) => (
 const DynamicContent = props => {
 	const {
 		className,
-		onChange,
 		contentType = 'text',
+		blockName,
+		uniqueID,
+		SVGData,
+		SVGElement,
+		mediaID,
+		mediaURL,
+		onChange,
 		...dynamicContent
 	} = props;
 
@@ -255,18 +263,33 @@ const DynamicContent = props => {
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
-				onChange={value => changeProps({ 'dc-status': value })}
+				onChange={value =>
+					changeProps({
+						'dc-status': value,
+						...(blockName === 'maxi-blocks/image-maxi' &&
+							!value &&
+							SVGElement &&
+							getUpdatedImgSVG(uniqueID, SVGData, SVGElement, {
+								id: mediaID,
+								url: mediaURL,
+							})),
+					})
+				}
 			/>
 			{status && (
 				<>
-					<ToggleSwitch
-						label={__(
-							'Hide if no content found on frontend',
-							'maxi-blocks'
-						)}
-						selected={hide}
-						onChange={value => changeProps({ 'dc-hide': value })}
-					/>
+					{!ignoreEmptyFields.includes(field) && (
+						<ToggleSwitch
+							label={__(
+								'Hide if no content found on frontend',
+								'maxi-blocks'
+							)}
+							selected={hide}
+							onChange={value =>
+								changeProps({ 'dc-hide': value })
+							}
+						/>
+					)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
 							label={__('Source', 'maxi-blocks')}

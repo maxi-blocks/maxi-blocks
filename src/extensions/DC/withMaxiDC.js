@@ -19,6 +19,7 @@ import getDCMedia from './getDCMedia';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
+import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
 import { linkFields } from './constants';
 
@@ -158,13 +159,19 @@ const withMaxiDC = createHigherOrderComponent(
 						} else {
 							const { id, url, caption } = mediaContent;
 
-							if (!isNil(id) && !isNil(url)) {
+							if (!isNil(id) || !isNil(url)) {
 								isSynchronizedAttributesUpdated = true;
 
 								markNextChangeAsNotPersistent();
 								setAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
+									...getUpdatedImgSVG(
+										attributes.uniqueID,
+										attributes.SVGData,
+										attributes.SVGElement,
+										mediaContent
+									),
 									...(caption && {
 										'dc-media-caption': sanitizeDCContent(
 											getSimpleText(caption)

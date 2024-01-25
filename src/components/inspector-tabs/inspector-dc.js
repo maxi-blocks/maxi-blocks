@@ -17,7 +17,10 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
+const dc = ({
+	props: { attributes, blockName, maxiSetAttributes },
+	contentType,
+}) => ({
 	label: __('Dynamic content', 'maxi-blocks'),
 	content: (
 		<DynamicContent
@@ -31,6 +34,12 @@ const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
 				maxiSetAttributes(filteredObj);
 			}}
 			contentType={contentType}
+			blockName={blockName}
+			uniqueID={attributes.uniqueID}
+			SVGData={attributes.SVGData}
+			SVGElement={attributes.SVGElement}
+			mediaID={attributes.mediaID}
+			mediaURL={attributes.mediaURL}
 		/>
 	),
 });

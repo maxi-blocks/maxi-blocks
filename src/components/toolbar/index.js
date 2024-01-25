@@ -622,6 +622,11 @@ const MaxiToolbar = memo(
 								attributes,
 								'dynamicContent'
 							)}
+							uniqueID={attributes.uniqueID}
+							SVGData={attributes.SVGData}
+							SVGElement={attributes.SVGElement}
+							mediaID={attributes.mediaID}
+							mediaURL={attributes.mediaURL}
 						/>
 						<ContextLoop
 							clientId={clientId}

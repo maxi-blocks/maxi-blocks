@@ -163,7 +163,9 @@ const getMaxiBlockAttributes = props => {
 				scroll[`data-scroll-effect-${type}-general`] =
 					responseString.trim();
 		}
-		scroll['data-scroll-effect-type'] = enabledScrolls.join(' ');
+
+		if (!isEmpty(enabledScrolls))
+			scroll['data-scroll-effect-type'] = enabledScrolls.join(' ');
 	}
 
 	const displayValue = getLastBreakpointAttribute({

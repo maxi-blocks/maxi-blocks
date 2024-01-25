@@ -30,6 +30,7 @@ import SVGMarkerSizeMigrator from './SVGMarkerSizeMigrator';
 import dcLinkBlocksMigrator from './dcLinkBlocksMigrator';
 import DCClassNameMigrator from './DCClassNameMigrator';
 import imageResponsiveWidth from './imageResponsiveWidth';
+import scrollEffectsMigrator from './scrollEffectsMigrator';
 
 /**
  * External dependencies
@@ -135,6 +136,7 @@ const blockMigrator = blockMigratorProps => {
 		...(blockMigratorProps.migrators ?? []),
 		imageResponsiveWidth,
 		uniqueIDMigrator,
+		scrollEffectsMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

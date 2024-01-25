@@ -27,14 +27,15 @@ const generateAttr = (
 	breakpoint = 'general'
 ) => {
 	const key = `scroll-${scrollType}-${attr}-${breakpoint}`;
-	const value = defaultValue
-		? {
-				type: valueType,
-				default: defaultValue,
-		  }
-		: {
-				type: valueType,
-		  };
+	const value =
+		defaultValue !== undefined
+			? {
+					type: valueType,
+					default: defaultValue,
+			  }
+			: {
+					type: valueType,
+			  };
 
 	response[key] = value;
 

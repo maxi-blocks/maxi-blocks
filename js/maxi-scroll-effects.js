@@ -50,16 +50,14 @@ class ScrollEffects {
 	getCurrentBreakpoint() {
 		const winWidth = window.innerWidth;
 
-		let currentBreakpoint = 'general';
+		if (winWidth > this.breakpointsObj.xl) return 'xxl';
 
-		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
-			if (!['general', 'xxl'].includes(breakpoint)) {
-				if (breakpoint === 'general') return;
+		let currentBreakpoint;
 
-				if (winWidth <= this.breakpointsObj.xl)
-					currentBreakpoint = breakpoint;
+		['xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+			if (this.breakpointsObj[breakpoint] >= winWidth) {
+				currentBreakpoint = breakpoint;
 			}
-			if (winWidth <= value) currentBreakpoint = breakpoint;
 		});
 
 		return currentBreakpoint;

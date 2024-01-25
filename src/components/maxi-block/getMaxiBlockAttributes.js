@@ -5,6 +5,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { scrollTypes } from '../../extensions/styles/defaults/scroll';
 
 /**
  * External dependencies
@@ -92,15 +93,6 @@ const getMaxiBlockAttributes = props => {
 		'scale-start',
 		'scale-mid',
 		'scale-end',
-	];
-
-	const scrollTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
 	];
 
 	const dataScrollTypeValue = () => {

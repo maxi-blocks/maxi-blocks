@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies
+ */
+import { scrollTypes } from '../defaults/scroll';
+
 const name = 'Scroll effects zones';
 
 const maxiVersions = [
@@ -103,15 +108,6 @@ const isEligible = blockAttributes => {
 		'maxi-version-origin': maxiVersionOrigin,
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
-
-	const scrollTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
-	];
 
 	return (
 		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&

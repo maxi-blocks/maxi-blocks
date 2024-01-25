@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import { scrollTypes } from './defaults/scroll';
 
 /**
  * External dependencies
@@ -49,14 +50,6 @@ const getVideoLayers = (uniqueID, bgLayers) => {
 };
 
 export const getScrollEffects = (uniqueID, scroll) => {
-	const scrollTypes = [
-		'vertical',
-		'horizontal',
-		'rotate',
-		'scale',
-		'fade',
-		'blur',
-	];
 	const availableScrollTypes = scrollTypes.filter(type => {
 		return scroll[`scroll-${type}-status-general`];
 	});

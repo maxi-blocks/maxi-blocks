@@ -17,6 +17,7 @@ export const shortcut2 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-vertical-easing-general': 'ease',
@@ -26,6 +27,7 @@ export const shortcut2 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-horizontal-status-general': false,
 	'scroll-rotate-status-general': false,
@@ -41,6 +43,7 @@ export const shortcut3 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-vertical-easing-general': 'ease',
 	'scroll-vertical-zones-general': {
@@ -49,6 +52,7 @@ export const shortcut3 = {
 		100: -60,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-blur-status-general': true,
 	'scroll-vertical-status-general': true,
@@ -67,6 +71,7 @@ export const shortcut4 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-horizontal-status-general': true,
 	'scroll-horizontal-easing-general': 'ease',
@@ -76,6 +81,7 @@ export const shortcut4 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-rotate-status-general': false,
@@ -92,6 +98,7 @@ export const shortcut5 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-horizontal-status-general': true,
 	'scroll-horizontal-easing-general': 'ease',
@@ -101,6 +108,7 @@ export const shortcut5 = {
 		100: -60,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-rotate-status-general': false,
@@ -116,6 +124,7 @@ export const shortcut6 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-easing-rotate-general': 'ease',
 	'scroll-rotate-zones-general': {
@@ -139,6 +148,7 @@ export const shortcut7 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-easing-rotate-general': 'ease',
 	'scroll-rotate-zones-general': {
@@ -161,6 +171,7 @@ export const shortcut8 = {
 	'scroll-blur-blur-start-general': 10,
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-zones-general': {
@@ -186,6 +197,7 @@ export const shortcut9 = {
 	},
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
+	'scroll-blur-unit-general': 'px',
 
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-zones-general': {
@@ -220,6 +232,7 @@ export const shortcut10 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -247,6 +260,7 @@ export const shortcut11 = {
 		100: 40,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -273,6 +287,7 @@ export const shortcut12 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -299,6 +314,7 @@ export const shortcut13 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -325,6 +341,7 @@ export const shortcut14 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -351,6 +368,7 @@ export const shortcut15 = {
 		100: 80,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -377,6 +395,7 @@ export const shortcut16 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -403,6 +422,7 @@ export const shortcut17 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -428,6 +448,7 @@ export const shortcut18 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -452,6 +473,7 @@ export const shortcut19 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -476,6 +498,7 @@ export const shortcut20 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -501,6 +524,7 @@ export const shortcut21 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -525,6 +549,7 @@ export const shortcut22 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -549,6 +574,7 @@ export const shortcut23 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -573,6 +599,7 @@ export const shortcut24 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -597,6 +624,7 @@ export const shortcut25 = {
 		100: 0,
 	},
 	'scroll-horizontal-speed-general': 500,
+	'scroll-horizontal-unit-general': 'px',
 
 	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': true,
@@ -681,6 +709,7 @@ export const shortcut28 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -715,6 +744,7 @@ export const shortcut29 = {
 		100: 0,
 	},
 	'scroll-vertical-speed-general': 500,
+	'scroll-vertical-unit-general': 'px',
 
 	'scroll-vertical-status-general': true,
 	'scroll-horizontal-status-general': false,
@@ -733,6 +763,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 	shortcut2: {
 		'scroll-vertical-zones-general': {
@@ -741,6 +772,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 	shortcut3: {
 		'scroll-vertical-zones-general': {
@@ -749,6 +781,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 	shortcut4: {
 		'scroll-vertical-zones-general': {
@@ -757,6 +790,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 	shortcut5: {
 		'scroll-vertical-zones-general': {
@@ -765,6 +799,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 	shortcut6: {
 		'scroll-vertical-zones-general': {
@@ -773,6 +808,7 @@ export const vertical = {
 			100: 0,
 		},
 		'scroll-vertical-speed-general': 500,
+		'scroll-vertical-unit-general': 'px',
 	},
 };
 
@@ -785,6 +821,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 	shortcut2: {
 		'scroll-horizontal-zones-general': {
@@ -793,6 +830,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 	shortcut3: {
 		'scroll-horizontal-zones-general': {
@@ -801,6 +839,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 	shortcut4: {
 		'scroll-horizontal-zones-general': {
@@ -809,6 +848,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 	shortcut5: {
 		'scroll-horizontal-zones-general': {
@@ -817,6 +857,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 	shortcut6: {
 		'scroll-horizontal-zones-general': {
@@ -825,6 +866,7 @@ export const horizontal = {
 			100: 0,
 		},
 		'scroll-horizontal-speed-general': 500,
+		'scroll-horizontal-unit-general': 'px',
 	},
 };
 
@@ -1001,6 +1043,7 @@ export const blur = {
 			100: 0,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 	shortcut2: {
 		'scroll-blur-easing-general': 'ease',
@@ -1010,6 +1053,7 @@ export const blur = {
 			100: 4,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 	shortcut3: {
 		'scroll-blur-easing-general': 'ease',
@@ -1019,6 +1063,7 @@ export const blur = {
 			100: 0,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 	shortcut4: {
 		'scroll-blur-easing-general': 'ease',
@@ -1028,6 +1073,7 @@ export const blur = {
 			100: 7,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 	shortcut5: {
 		'scroll-blur-easing-general': 'ease',
@@ -1037,6 +1083,7 @@ export const blur = {
 			100: 0,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 	shortcut6: {
 		'scroll-blur-easing-general': 'ease',
@@ -1046,5 +1093,6 @@ export const blur = {
 			100: 10,
 		},
 		'scroll-blur-speed-general': 500,
+		'scroll-blur-unit-general': 'px',
 	},
 };

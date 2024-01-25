@@ -40,41 +40,41 @@ const ScrollEffectsUniqueControl = props => {
 		isPreviewEnabled,
 	} = props;
 
-	const getSpecialLabels = (type, label) => {
+	const getSpecialLabels = type => {
 		const response = {};
 		switch (type) {
 			case 'vertical':
-				response.label = `${label} position (px)`;
+				response.label = 'Position (px)';
 				response.attr = 'offset';
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case 'horizontal':
-				response.label = `${label} position (px)`;
+				response.label = 'Position (px)';
 				response.attr = 'offset';
 				response.min = -4000;
 				response.max = 4000;
 				break;
 			case 'rotate':
-				response.label = `${label} angle (degrees)`;
+				response.label = 'Angle (degrees)';
 				response.attr = 'rotate';
 				response.min = -360;
 				response.max = 360;
 				break;
 			case 'scale':
-				response.label = `${label} scale (%)`;
+				response.label = 'Scale (%)';
 				response.attr = 'scale';
 				response.min = 0;
 				response.max = 1000;
 				break;
 			case 'fade':
-				response.label = `${label} opacity (%)`;
+				response.label = 'Opacity (%)';
 				response.attr = 'opacity';
 				response.min = 0;
 				response.max = 100;
 				break;
 			case 'blur':
-				response.label = `${label} blur (px)`;
+				response.label = 'Blur (px)';
 				response.attr = 'blur';
 				response.min = 0;
 				response.max = 20;
@@ -86,36 +86,20 @@ const ScrollEffectsUniqueControl = props => {
 		return response;
 	};
 
-	const specialLabels = getSpecialLabels(type, '');
-
-	/**
-	 * Zones structure example:
-	 * {
-	  "0": 90,
-	  "50": 0,
-	  "100": 0
-	  }
-	 */
-	const [zones, setZones] = useState(
-		Object.keys(
-			getLastBreakpointAttribute({
-				target: `scroll-${type}-zones`,
-				breakpoint,
-				attributes: values,
-			})
-		)
-	);
-	const [activeThumbIndex, setActiveThumbIndex] = useState(null);
-	const [showAddButton, setShowAddButton] = useState(false);
-	const [mouseY, setMouseY] = useState(0);
-	const [isDragging, setIsDragging] = useState(false);
-	const ref = useRef(null);
+	const specialLabels = getSpecialLabels(type);
 
 	const zonesAttribute = getLastBreakpointAttribute({
 		target: `scroll-${type}-zones`,
 		breakpoint,
 		attributes: values,
 	});
+
+	const [zones, setZones] = useState(Object.keys(zonesAttribute).map(Number));
+	const [activeThumbIndex, setActiveThumbIndex] = useState(0);
+	const [showAddButton, setShowAddButton] = useState(false);
+	const [mouseY, setMouseY] = useState(0);
+	const [isDragging, setIsDragging] = useState(false);
+	const ref = useRef(null);
 
 	const handleSliderChange = values => {
 		setZones(values);
@@ -203,6 +187,9 @@ const ScrollEffectsUniqueControl = props => {
 		});
 	};
 
+	const getActiveThumbPercentage = () =>
+		Object.keys(zonesAttribute)[activeThumbIndex];
+
 	const classes = classnames(
 		'maxi-advanced-number-control maxi-scroll-unique-control',
 		className
@@ -216,69 +203,11 @@ const ScrollEffectsUniqueControl = props => {
 				onMouseMove={handleMouseMove}
 				onMouseLeave={handleMouseLeave}
 			>
-				{/* <SettingTabsControl
-				items={labels.map(label => {
-					const special = getSpecialLabels(type, label);
-					console.log(special);
-					return {
-						label: __(`${label} zone`, 'maxi-blocks'),
-						content: (
-							<AdvancedNumberControl
-								label={__(special?.label, 'maxi-blocks')}
-								value={getLastBreakpointAttribute({
-									target: `scroll-${type}-${special?.attr}`,
-									breakpoint,
-									attributes: values,
-								})}
-								onChangeValue={val => {
-									onChange({
-										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-									isPreviewEnabled &&
-										applyEffect(type, uniqueID, val);
-								}}
-								min={special?.min}
-								step={1}
-								max={special?.max}
-								onReset={() => {
-									onChange({
-										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-general`
-											),
-										isReset: true,
-									});
-									isPreviewEnabled &&
-										applyEffect(
-											type,
-											uniqueID,
-											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-general`
-											)
-										);
-								}}
-								initialPosition={getDefaultAttribute(
-									`scroll-${type}-${special?.attr}-general`
-								)}
-							/>
-						),
-					};
-				})}
-			/> */}
 				<ReactSlider
 					className='maxi-scroll-unique-control-slider'
 					thumbClassName='maxi-scroll-unique-control-slider__thumb'
 					trackClassName='maxi-scroll-unique-control-slider__track'
-					value={Object.keys(
-						getLastBreakpointAttribute({
-							target: `scroll-${type}-zones`,
-							breakpoint,
-							attributes: values,
-						})
-					)}
+					value={zones}
 					onChange={handleSliderChange}
 					onBeforeChange={handleThumbInteractionStart}
 					onAfterChange={handleThumbInteractionEnd}
@@ -303,9 +232,9 @@ const ScrollEffectsUniqueControl = props => {
 										]
 									}
 								</span>
-								<div className='maxi-scroll-unique-control-slider__thumb-label-delete'>
-									{state.index !== 0 &&
-										state.index !== zones.length - 1 && (
+								{state.index !== 0 &&
+									state.index !== zones.length - 1 && (
+										<div className='maxi-scroll-unique-control-slider__thumb-label-delete'>
 											<Icon
 												icon={promptDelete}
 												onClick={() =>
@@ -314,8 +243,8 @@ const ScrollEffectsUniqueControl = props => {
 													)
 												}
 											/>
-										)}
-								</div>
+										</div>
+									)}
 							</div>
 
 							<div className='maxi-scroll-unique-control-slider__thumb-value'>
@@ -345,16 +274,12 @@ const ScrollEffectsUniqueControl = props => {
 			</div>
 			<AdvancedNumberControl
 				label={__(specialLabels?.label, 'maxi-blocks')}
-				value={
-					zonesAttribute[
-						Object.keys(zonesAttribute)[activeThumbIndex]
-					]
-				}
+				value={zonesAttribute[getActiveThumbPercentage()]}
 				onChangeValue={val => {
 					onChange({
 						[`scroll-${type}-zones-${breakpoint}`]: {
 							...zonesAttribute,
-							[Object.keys(zonesAttribute)[activeThumbIndex]]:
+							[getActiveThumbPercentage()]:
 								val !== undefined && val !== '' ? val : '',
 						},
 					});
@@ -364,19 +289,28 @@ const ScrollEffectsUniqueControl = props => {
 				step={1}
 				max={specialLabels?.max}
 				onReset={() => {
+					const resetKey = getActiveThumbPercentage();
+					const resetValue =
+						activeThumbIndex === 0
+							? Object.values(
+									getDefaultAttribute(
+										`scroll-${type}-zones-general`
+									)
+							  )[activeThumbIndex]
+							: zonesAttribute[
+									Object.keys(zonesAttribute)[
+										activeThumbIndex - 1
+									]
+							  ];
+
 					onChange({
-						// todo: fix this
 						[`scroll-${type}-zones-${breakpoint}`]: {
 							...zonesAttribute,
-							[Object.keys(zonesAttribute)[activeThumbIndex]]:
-								Object.values(
-									getDefaultAttribute(
-										`scroll-${type}-general`
-									)
-								)[activeThumbIndex],
+							[resetKey]: resetValue,
 						},
 						isReset: true,
 					});
+
 					isPreviewEnabled &&
 						applyEffect(
 							type,

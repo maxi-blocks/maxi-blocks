@@ -150,7 +150,7 @@ const ScrollEffectsUniqueControl = props => {
 		const newZones = [...zones];
 		newZones.splice(index, 1);
 		setZones(newZones);
-		setActiveThumbIndex(index - 1);
+		if (index === activeThumbIndex) setActiveThumbIndex(index - 1);
 		onChange({
 			[`scroll-${type}-zones-${breakpoint}`]: newZones.reduce(
 				(acc, zone) => {

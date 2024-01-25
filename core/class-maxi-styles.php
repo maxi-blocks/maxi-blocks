@@ -757,6 +757,10 @@ class MaxiBlocks_Styles
                                 $font_weight = implode('-', $font_weight);
                             }
 
+                            if(is_array($font_style)) {
+                                $font_style = implode('-', $font_style);
+                            }
+
                             if (!$use_local_fonts) {
 
                                 if ($font_url) {

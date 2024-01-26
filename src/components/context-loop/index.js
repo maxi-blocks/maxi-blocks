@@ -54,6 +54,9 @@ const ContextLoop = props => {
 
 	const classes = classnames('maxi-context-loop', className);
 
+	console.log('getCLAttributes(contextLoop):');
+	console.log(getCLAttributes(contextLoop));
+
 	const {
 		'cl-status': status,
 		'cl-type': type,
@@ -65,6 +68,10 @@ const ContextLoop = props => {
 		'cl-order': order,
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
+		'cl-pagination': pagination,
+		'cl-pagination-per-page': paginationPerPage,
+		'cl-pagination-total': paginationTotal,
+		'cl-pagination-total-all': paginationTotalAll,
 	} = getCLAttributes(contextLoop);
 
 	const isTypeHasRelations =
@@ -383,6 +390,78 @@ const ContextLoop = props => {
 												})
 											}
 										/>
+									)}
+									<ToggleSwitch
+										label={__('Pagination', 'maxi-blocks')}
+										selected={pagination}
+										onChange={value =>
+											changeProps({
+												'cl-pagination': value,
+											})
+										}
+									/>
+									{pagination && (
+										<>
+											<AdvancedNumberControl
+												label={__(
+													'Items per page',
+													'maxi-blocks'
+												)}
+												value={paginationPerPage}
+												onChangeValue={value =>
+													changeProps({
+														'cl-pagination-per-page':
+															value,
+													})
+												}
+												onReset={() =>
+													changeProps({
+														'cl-pagination-per-page':
+															getDefaultAttribute(
+																'cl-pagination-per-page'
+															),
+													})
+												}
+												disableRange
+											/>
+											<ToggleSwitch
+												label={__(
+													'Items total: show all',
+													'maxi-blocks'
+												)}
+												selected={paginationTotalAll}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-total-all':
+															value,
+													})
+												}
+											/>
+											{!paginationTotalAll && (
+												<AdvancedNumberControl
+													label={__(
+														'Items total',
+														'maxi-blocks'
+													)}
+													value={paginationTotal}
+													onChangeValue={value =>
+														changeProps({
+															'cl-pagination-total':
+																value,
+														})
+													}
+													onReset={() =>
+														changeProps({
+															'cl-pagination-total':
+																getDefaultAttribute(
+																	'cl-pagination-total'
+																),
+														})
+													}
+													disableRange
+												/>
+											)}
+										</>
 									)}
 								</>
 							)}

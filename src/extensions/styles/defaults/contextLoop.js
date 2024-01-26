@@ -27,6 +27,21 @@ const contextLoop = {
 		type: 'boolean',
 		default: false,
 	},
+	'cl-pagination': {
+		type: 'boolean',
+		default: false,
+	},
+	'cl-pagination-per-page': {
+		type: 'number',
+		default: 3,
+	},
+	'cl-pagination-total': {
+		type: 'number',
+	},
+	'cl-pagination-total-all': {
+		type: 'boolean',
+		default: true,
+	},
 };
 
 export default contextLoop;

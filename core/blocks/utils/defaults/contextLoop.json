@@ -1,23 +1,38 @@
 {
-  "cl-status": {
-    "type": "boolean"
-  },
-  "cl-type": {
-    "type": "string"
-  },
-  "cl-relation": {
-    "type": "string"
-  },
-  "cl-id": {
-    "type": "number"
-  },
-  "cl-author": {
-    "type": "number"
-  },
-  "cl-order": {
-    "type": "string"
-  },
-  "cl-accumulator": {
-    "type": "number"
-  }
+	"cl-status": {
+		"type": "boolean"
+	},
+	"cl-type": {
+		"type": "string"
+	},
+	"cl-relation": {
+		"type": "string"
+	},
+	"cl-id": {
+		"type": "number"
+	},
+	"cl-author": {
+		"type": "number"
+	},
+	"cl-order": {
+		"type": "string"
+	},
+	"cl-accumulator": {
+		"type": "number"
+	},
+	"cl-pagination": {
+		"type": "boolean",
+		"default": false
+	},
+	"cl-pagination-per-page": {
+		"type": "number",
+		"default": 3
+	},
+	"cl-pagination-total": {
+		"type": "number"
+	},
+	"cl-pagination-total-all": {
+		"type": "boolean",
+		"default": true
+	}
 }

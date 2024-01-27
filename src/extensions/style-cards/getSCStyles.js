@@ -40,8 +40,12 @@ const settings = [
 	'letter-spacing',
 	'white-space',
 	'word-spacing',
-	'margin-bottom',
 	'text-indent',
+	'margin-bottom',
+	'padding-bottom',
+	'padding-top',
+	'padding-left',
+	'padding-right',
 ];
 
 const getOrganizedValues = styleCard => {
@@ -416,6 +420,15 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 		const targetItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item`;
 		const sentences = [...navigationSentences.navigation];
+
+		// Remove margin-bottom sentences
+		const marginSentence = sentences?.find(
+			sentence => sentence?.indexOf('margin-bottom') > -1
+		);
+
+		if (marginSentence)
+			sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
 		addedResponse += `${targetItem} {${sentences?.join(' ')}}`;
 
 		const targetLink = `${targetItem} a`;
@@ -485,7 +498,7 @@ const getWPNativeStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
 					level === 'p' &&
-						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item)`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 					level === 'p' &&

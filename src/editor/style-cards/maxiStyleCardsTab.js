@@ -29,10 +29,12 @@ const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
 const AdvancedNumberControl = loadable(() =>
 	import('../../components/advanced-number-control')
 );
+const PaddingControl = loadable(() => import('../../components/padding-control'));
 import {
 	processSCAttribute,
 	getDefaultSCAttribute,
 	showHideHamburgerNavigation,
+	processSCAttributes,
 } from './utils';
 import {
 	getDefaultSCValue,
@@ -182,6 +184,8 @@ const SCAccordion = props => {
 		? processSCAttribute(SC, 'always-show-mobile', groupAttr)
 		: false;
 
+	console.log(processSCAttributes(SC, 'padding', groupAttr));
+
 	return (
 		<>
 			{!disableTypography && (
@@ -235,6 +239,11 @@ const SCAccordion = props => {
 				)}
 			{ifNavigationTab && (
 				<>
+					<PaddingControl
+						{...processSCAttributes(SC, 'padding', groupAttr)}
+						onChange={obj => onChangeValue(obj, groupAttr)}
+						breakpoint={breakpoint}
+					/>
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(

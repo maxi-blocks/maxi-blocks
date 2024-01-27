@@ -516,7 +516,20 @@
 					"text-indent-unit-general": "px",
 					"overwrite-mobile": false,
 					"always-show-mobile": false,
-					"show-mobile-down-from": 767
+					"show-mobile-down-from": 767,
+					"padding-top-general": 5,
+					"padding-top-xxl": 10,
+					"padding-right-general": 10,
+					"padding-right-xxl": 15,
+					"padding-bottom-general": 5,
+					"padding-bottom-xxl": 10,
+					"padding-left-general": 10,
+					"padding-left-xxl": 15,
+					"padding-sync-general": "axis",
+					"padding-top-unit-general": "px",
+					"padding-right-unit-general": "px",
+					"padding-bottom-unit-general": "px",
+					"padding-left-unit-general": "px"
 				}
 			}
 		},
@@ -1034,7 +1047,20 @@
 					"text-indent-unit-general": "px",
 					"overwrite-mobile": false,
 					"always-show-mobile": false,
-					"show-mobile-down-from": 767
+					"show-mobile-down-from": 767,
+					"padding-top-general": 5,
+					"padding-top-xxl": 10,
+					"padding-right-general": 10,
+					"padding-right-xxl": 15,
+					"padding-bottom-general": 5,
+					"padding-bottom-xxl": 10,
+					"padding-left-general": 10,
+					"padding-left-xxl": 15,
+					"padding-sync-general": "axis",
+					"padding-top-unit-general": "px",
+					"padding-right-unit-general": "px",
+					"padding-bottom-unit-general": "px",
+					"padding-left-unit-general": "px"
 				}
 			}
 		}

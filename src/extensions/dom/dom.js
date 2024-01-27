@@ -379,7 +379,6 @@ wp.domReady(() => {
 				const observer = new MutationObserver(mutationsList => {
 					for (const mutation of mutationsList) {
 						if (mutation.addedNodes.length > 0) {
-							console.log('mutation', mutation);
 							const hamburgerNavigation =
 								docContext.querySelector(
 									'.maxi-container-block .wp-block-navigation__responsive-container-open'
@@ -387,12 +386,6 @@ wp.domReady(() => {
 							const menuNavigation = docContext.querySelector(
 								'.maxi-container-block .wp-block-navigation__responsive-container'
 							);
-
-							console.log(
-								'hamburgerNavigation',
-								hamburgerNavigation
-							);
-							console.log('menuNavigation', menuNavigation);
 
 							if (hamburgerNavigation || menuNavigation) {
 								const grandparentElement = hamburgerNavigation
@@ -440,11 +433,11 @@ wp.domReady(() => {
 		let alwaysShowMobile = false;
 		if (blockStyle !== '') {
 			overwriteMobile =
-				activeSC?.value[blockStyle]?.styleCard?.navigation?.[
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
 					'overwrite-mobile'
 				] || false;
 			alwaysShowMobile =
-				activeSC?.value[blockStyle]?.styleCard?.navigation?.[
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
 					'always-show-mobile'
 				] || false;
 			if (overwriteMobile && alwaysShowMobile) {

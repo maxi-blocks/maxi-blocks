@@ -78,7 +78,6 @@ const getSCVariablesObject = (
 		'divider',
 		'link',
 		'navigation',
-		'mobile-navigation',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
@@ -94,6 +93,10 @@ const getSCVariablesObject = (
 		'word-spacing',
 		'margin-bottom',
 		'text-indent',
+		'padding-bottom',
+		'padding-top',
+		'padding-left',
+		'padding-right',
 	];
 	const SC = {
 		dark: {
@@ -122,21 +125,66 @@ const getSCVariablesObject = (
 					const isFontFamily = setting === 'font-family';
 
 					breakpoints.forEach(breakpoint => {
-						if (!cleanResponse)
-							response[
-								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute({
-								target: setting,
-								breakpoint,
-								attributes: obj,
-							});
-						else {
-							const value = obj[`${setting}-${breakpoint}`];
-
-							if (getIsValid(value, true))
+						if (!cleanResponse) {
+							if (!setting.includes('padding'))
 								response[
 									`--maxi-${style}-${element}-${setting}-${breakpoint}`
-								] = value;
+								] = getLastBreakpointAttribute({
+									target: setting,
+									breakpoint,
+									attributes: obj,
+								});
+							else {
+								const unitSetting = `${setting}-unit`;
+								const unitValue = getLastBreakpointAttribute({
+									target: unitSetting,
+									breakpoint,
+									attributes: obj,
+								});
+								if (unitValue) {
+									console.log('unitValue 1:', unitValue);
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = `${getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: obj,
+									})}${unitValue}`;
+								} else {
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = `${getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: obj,
+									})}px`;
+								}
+							}
+						} else {
+							const value = obj[`${setting}-${breakpoint}`];
+
+							if (getIsValid(value, true)) {
+								if (!setting.includes('padding'))
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = value;
+								else {
+									// Padding
+									const unitSetting = `${setting}-unit`;
+									const unitValue =
+										obj[`${unitSetting}-${breakpoint}`];
+									if (unitValue) {
+										console.log('unitValue 2:', unitValue);
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = `${value}${unitValue}`;
+									} else {
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = `${value}px`;
+									}
+								}
+							}
 						}
 
 						// Font family needs quotes for values that has space in middle

@@ -262,7 +262,6 @@ class MaxiBlocks_StyleCards
 
         $text_level_values = (object) $style_card_values->$text_level;
 
-
         if (!property_exists($text_level_values, 'font-family-general')) {
             $text_level_values = (object) $default_values[$text_level];
         }

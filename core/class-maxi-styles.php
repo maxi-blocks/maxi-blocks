@@ -1231,6 +1231,8 @@ class MaxiBlocks_Styles
 
             if($block_name === 'core/button') {
                 $text_level = 'button';
+            } elseif($block_name === 'core/navigation') {
+                $text_level = 'navigation';
             } elseif($level) {
                 $text_level = 'h' . $level;
             } else {

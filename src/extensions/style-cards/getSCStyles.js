@@ -11,7 +11,15 @@ import { times, compact } from 'lodash';
 const styles = ['light', 'dark'];
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const levels = ['p', ...headings];
-const elements = ['button', ...levels, 'icon', 'divider', 'link'];
+const elements = [
+	'button',
+	...levels,
+	'icon',
+	'divider',
+	'link',
+	'navigation',
+	'mobile-navigation',
+];
 const breakpoints = {
 	xxl: 1921,
 	xl: 1920,
@@ -397,6 +405,39 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
+
+		// Navigation inside Maxi Container
+		const navigationSentences = getSentencesByBreakpoint({
+			organizedValues,
+			style,
+			breakpoint,
+			targets: ['navigation'],
+		});
+
+		const targetItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item`;
+		const sentences = [...navigationSentences.navigation];
+		addedResponse += `${targetItem} {${sentences?.join(' ')}}`;
+
+		const targetLink = `${targetItem} a`;
+
+		addedResponse += `${targetLink} { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetLink}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited span { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		const targetLinkCurrent = `${targetItem}.current-menu-item a`;
+
+		addedResponse += `${targetLinkCurrent} { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent} span { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
 
 		return addedResponse;
 	};

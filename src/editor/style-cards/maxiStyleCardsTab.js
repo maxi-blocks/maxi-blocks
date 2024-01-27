@@ -26,7 +26,14 @@ const TypographyControl = loadable(() =>
 	import('../../components/typography-control')
 );
 const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
-import { processSCAttribute, getDefaultSCAttribute } from './utils';
+const AdvancedNumberControl = loadable(() =>
+	import('../../components/advanced-number-control')
+);
+import {
+	processSCAttribute,
+	getDefaultSCAttribute,
+	showHideHamburgerNavigation,
+} from './utils';
 import {
 	getDefaultSCValue,
 	getTypographyFromSC,
@@ -165,6 +172,16 @@ const SCAccordion = props => {
 		tag => groupAttr === tag
 	);
 
+	const ifNavigationTab = ['navigation'].some(tag => groupAttr === tag);
+
+	const overwriteMobile = ifNavigationTab
+		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
+		: false;
+
+	const alwaysShowMobile = ifNavigationTab
+		? processSCAttribute(SC, 'always-show-mobile', groupAttr)
+		: false;
+
 	return (
 		<>
 			{!disableTypography && (
@@ -216,6 +233,84 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
+			{ifNavigationTab && (
+				<>
+					<ToggleSwitch
+						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+						label={__(
+							'Overwrite Mobile Navigation settings',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-overwrite-mobile'
+						selected={overwriteMobile || false}
+						onChange={val =>
+							onChangeValue(
+								{
+									'overwrite-mobile': val,
+								},
+								groupAttr
+							)
+						}
+					/>
+					{overwriteMobile && (
+						<>
+							<ToggleSwitch
+								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+								label={__(
+									'Show Hamburger Menu for all screen sizes',
+									'maxi-blocks'
+								)}
+								className='maxi-style-cards-control__toggle-always-show-mobile'
+								selected={alwaysShowMobile}
+								onChange={val => {
+									onChangeValue(
+										{
+											'always-show-mobile': val,
+										},
+										groupAttr
+									);
+									showHideHamburgerNavigation(
+										val ? 'show' : 'hide'
+									);
+								}}
+							/>
+							{!alwaysShowMobile && (
+								<AdvancedNumberControl
+									label={__(
+										'Show Hamburger Menu for screen sizes down from (px)',
+										'maxi-blocks'
+									)}
+									value={processSCAttribute(
+										SC,
+										'show-mobile-down-from',
+										groupAttr
+									)}
+									onChangeValue={val => {
+										onChangeValue(
+											{
+												'show-mobile-down-from': val,
+											},
+											groupAttr
+										);
+
+										showHideHamburgerNavigation(val); // Call with desired type
+									}}
+									onReset={() =>
+										onChangeValue(
+											{
+												'show-mobile-down-from': 767,
+											},
+											groupAttr
+										)
+									}
+									disableRange
+									max={5000}
+								/>
+							)}
+						</>
+					)}
+				</>
+			)}
 		</>
 	);
 };
@@ -412,6 +507,45 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'palette-color',
 				paletteOpacity: 'palette-opacity',
 				color: 'color',
+			},
+		],
+	};
+	const navigationTabs = {
+		label: __('Navigation menu globals', 'maxi-blocks'),
+		groupAttr: 'navigation',
+		colorContent: [
+			{
+				label: 'Item Links',
+				globalAttr: 'menu-item-color-global',
+				paletteStatus: 'menu-item-palette-status',
+				paletteColor: 'menu-item-palette-color',
+				paletteOpacity: 'menu-item-palette-opacity',
+				color: 'menu-item-color',
+			},
+			{
+				label: 'Item Hover',
+				globalAttr: 'menu-item-hover-color-global',
+				globalAllAttr: 'menu-item-hover-color-all',
+				paletteStatus: 'menu-item-hover-palette-status',
+				paletteColor: 'menu-item-hover-palette-color',
+				paletteOpacity: 'menu-item-hover-palette-opacity',
+				color: 'menu-item-hover-color',
+			},
+			{
+				label: 'Item Current',
+				globalAttr: 'menu-item-current-color-global',
+				paletteStatus: 'menu-item-current-palette-status',
+				paletteColor: 'menu-item-current-palette-color',
+				paletteOpacity: 'menu-item-current-palette-opacity',
+				color: 'menu-item-current-color',
+			},
+			{
+				label: 'Item Visited',
+				globalAttr: 'menu-item-visited-color-global',
+				paletteStatus: 'menu-item-visited-palette-status',
+				paletteColor: 'menu-item-visited-palette-color',
+				paletteOpacity: 'menu-item-visited-palette-opacity',
+				color: 'menu-item-visited-color',
 			},
 		],
 	};
@@ -616,6 +750,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								SCStyle={SCStyle}
 								onChangeValue={onChangeValue}
 								disableTypography
+							/>
+						),
+					},
+					{
+						label: navigationTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--navigation',
+						content: (
+							<SCAccordion
+								key={`sc-accordion__${navigationTabs.label}`}
+								{...navigationTabs}
+								breakpoint={breakpoint}
+								SC={SC}
+								SCStyle={SCStyle}
+								onChangeValue={onChangeValue}
 							/>
 						),
 					},

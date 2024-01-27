@@ -77,6 +77,8 @@ const getSCVariablesObject = (
 		'icon',
 		'divider',
 		'link',
+		'navigation',
+		'mobile-navigation',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
@@ -257,6 +259,25 @@ const getSCVariablesObject = (
 					if (obj['visited-color-global'])
 						response[`--maxi-${style}-link-visited`] =
 							getColorString(obj, 'visited', style);
+
+					break;
+
+				case 'navigation':
+					if (obj['menu-item-color-global'])
+						response[`--maxi-${style}-menu-item`] = getColorString(
+							obj,
+							'menu-item',
+							style
+						);
+					if (obj['menu-item-hover-color-global'])
+						response[`--maxi-${style}-menu-item-hover`] =
+							getColorString(obj, 'menu-item-hover', style);
+					if (obj['menu-item-current-color-global'])
+						response[`--maxi-${style}-menu-item-current`] =
+							getColorString(obj, 'menu-item-current', style);
+					if (obj['menu-item-visited-color-global'])
+						response[`--maxi-${style}-menu-item-visited`] =
+							getColorString(obj, 'menu-item-visited', style);
 
 					break;
 

@@ -8,6 +8,7 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import standardSC from '../../../core/defaults/defaultSC.json';
+import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
 
 /**
  * External dependencies
@@ -131,4 +132,81 @@ export const getActiveColourFromSC = (sc, number) => {
 		sc?.light?.styleCard?.color?.[number] ||
 		sc?.light?.defaultStyleCard?.color?.[number]
 	);
+};
+
+export const showHideHamburgerNavigation = type => {
+	console.log('showHideHamburgerNavigation', type);
+	let editor = null;
+	if (getIsSiteEditor()) {
+		editor =
+			getSiteEditorIframeBody() || document.querySelector('.edit-site');
+	} else editor = document.querySelector('.edit-post-visual-editor');
+
+	console.log('editor', editor);
+
+	const applyStylesBasedOnType = () => {
+		const hamburgerNavigation = editor.querySelector(
+			'.maxi-container-block .wp-block-navigation__responsive-container-open'
+		);
+
+		let menuNavigation = null;
+
+		// Check if the very next sibling has the class 'wp-block-navigation__responsive-container'
+		if (
+			hamburgerNavigation &&
+			hamburgerNavigation.nextElementSibling &&
+			hamburgerNavigation.nextElementSibling.classList.contains(
+				'wp-block-navigation__responsive-container'
+			)
+		) {
+			menuNavigation = hamburgerNavigation.nextElementSibling;
+		}
+		console.log(hamburgerNavigation, menuNavigation);
+		if (hamburgerNavigation && menuNavigation) {
+			// Handle type as a string ('show' or 'hide')
+			if (typeof type === 'string') {
+				if (type === 'show') {
+					hamburgerNavigation.classList.add('always-shown');
+					menuNavigation.classList.add('hidden-by-default');
+				} else {
+					hamburgerNavigation.classList.remove('always-shown');
+					menuNavigation.classList.remove('hidden-by-default');
+				}
+			}
+			// Handle type as a number (screen size)
+			else if (typeof type === 'number') {
+				console.log('type', type);
+				const editorWidth = editor.clientWidth;
+				console.log('editorWidth', editorWidth);
+				if (editorWidth <= type) {
+					// Show for editor sizes type and down
+					hamburgerNavigation.classList.add('always-shown');
+					menuNavigation.classList.add('hidden-by-default');
+				} else {
+					// Hide for editor sizes larger than type
+					hamburgerNavigation.classList.remove('always-shown');
+					menuNavigation.classList.remove('hidden-by-default');
+				}
+			}
+		}
+	};
+
+	// Initialize styles based on type
+	applyStylesBasedOnType();
+
+	const resizeObserver = new ResizeObserver(() => {
+		applyStylesBasedOnType();
+	});
+
+	// Start observing the .edit-post-visual-editor
+	if (editor) {
+		resizeObserver.observe(editor);
+	}
+
+	// Return a function to allow cleanup of the observer
+	return () => {
+		if (editor) {
+			resizeObserver.unobserve(editor);
+		}
+	};
 };

@@ -323,6 +323,25 @@ class MaxiBlocks_StyleCards
         return $response;
     }
 
+    /**
+     * Gets a SC property value by block style and, property and name
+     *
+     * @param string $block_style
+     * @param string $property
+     * @param string $name
+     */
+    public static function get_active_style_cards_value_by_name($block_style, $property, $name)
+    {
+        $style_card = self::get_maxi_blocks_active_style_card();
+
+        if (isset($style_card[$block_style]['styleCard'][$property][$name])) {
+            return $style_card[$block_style]['styleCard'][$property][$name];
+        } else {
+            return null;
+        }
+
+    }
+
     public static function get_default_style_card()
     {
         $json = file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json");

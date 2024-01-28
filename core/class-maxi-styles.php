@@ -1233,6 +1233,10 @@ class MaxiBlocks_Styles
                 $text_level = 'button';
             } elseif($block_name === 'core/navigation') {
                 $text_level = 'navigation';
+                $remove_hover_underline = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($maxi_block_style, 'navigation', 'remove-hover-underline');
+                if($remove_hover_underline) {
+                    $styles .= ' .maxi-blocks--active .maxi-container-block .wp-block-navigation ul li a:hover { text-decoration: none; }';
+                }
             } elseif($level) {
                 $text_level = 'h' . $level;
             } else {

@@ -11,15 +11,7 @@ import { times, compact } from 'lodash';
 const styles = ['light', 'dark'];
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const levels = ['p', ...headings];
-const elements = [
-	'button',
-	...levels,
-	'icon',
-	'divider',
-	'link',
-	'navigation',
-	'mobile-navigation',
-];
+const elements = ['button', ...levels, 'icon', 'divider', 'link', 'navigation'];
 const breakpoints = {
 	xxl: 1921,
 	xl: 1920,
@@ -649,6 +641,9 @@ const getSCStyles = (
 	const prefix = 'body.maxi-blocks--active';
 
 	const organizedValues = getOrganizedValues(styleCard);
+
+	console.log('organizedValues');
+	console.log(organizedValues);
 
 	// Create styles
 	styles.forEach(style => {

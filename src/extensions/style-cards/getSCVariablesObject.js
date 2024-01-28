@@ -142,7 +142,6 @@ const getSCVariablesObject = (
 									attributes: obj,
 								});
 								if (unitValue) {
-									console.log('unitValue 1:', unitValue);
 									response[
 										`--maxi-${style}-${element}-${setting}-${breakpoint}`
 									] = `${getLastBreakpointAttribute({
@@ -174,7 +173,6 @@ const getSCVariablesObject = (
 									const unitValue =
 										obj[`${unitSetting}-${breakpoint}`];
 									if (unitValue) {
-										console.log('unitValue 2:', unitValue);
 										response[
 											`--maxi-${style}-${element}-${setting}-${breakpoint}`
 										] = `${value}${unitValue}`;

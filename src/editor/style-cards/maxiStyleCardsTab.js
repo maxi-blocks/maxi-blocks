@@ -29,7 +29,9 @@ const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
 const AdvancedNumberControl = loadable(() =>
 	import('../../components/advanced-number-control')
 );
-const PaddingControl = loadable(() => import('../../components/padding-control'));
+const PaddingControl = loadable(() =>
+	import('../../components/padding-control')
+);
 import {
 	processSCAttribute,
 	getDefaultSCAttribute,
@@ -184,7 +186,9 @@ const SCAccordion = props => {
 		? processSCAttribute(SC, 'always-show-mobile', groupAttr)
 		: false;
 
-	console.log(processSCAttributes(SC, 'padding', groupAttr));
+	const removeHoverUnderline = ifNavigationTab
+		? processSCAttribute(SC, 'remove-hover-underline', groupAttr)
+		: false;
 
 	return (
 		<>
@@ -241,13 +245,32 @@ const SCAccordion = props => {
 				<>
 					<PaddingControl
 						{...processSCAttributes(SC, 'padding', groupAttr)}
+						label={__('Item padding', 'maxi-blocks')}
 						onChange={obj => onChangeValue(obj, groupAttr)}
 						breakpoint={breakpoint}
+						disableAuto
 					/>
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(
-							'Overwrite Mobile Navigation settings',
+							'Remove item underline on hover',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-remove-hover-underline'
+						selected={removeHoverUnderline}
+						onChange={val => {
+							onChangeValue(
+								{
+									'remove-hover-underline': val,
+								},
+								groupAttr
+							);
+						}}
+					/>
+					<ToggleSwitch
+						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+						label={__(
+							'Overwrite Mobile Navigation breakpoint',
 							'maxi-blocks'
 						)}
 						className='maxi-style-cards-control__toggle-overwrite-mobile'

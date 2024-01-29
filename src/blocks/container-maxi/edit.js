@@ -62,7 +62,6 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		console.log(this.props);
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 		const {

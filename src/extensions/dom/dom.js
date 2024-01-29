@@ -351,10 +351,8 @@ wp.domReady(() => {
 	const getDocumentContext = () => {
 		return new Promise(resolve => {
 			if (getIsSiteEditor()) {
-				console.log('getIsSiteEditor');
 				const waitForIframe = () => {
 					const iframe = getSiteEditorIframe(); // Adjust this line to however you can get the iframe element itself
-					console.log('iframe', iframe);
 					if (iframe) {
 						if (
 							iframe.contentDocument &&
@@ -369,10 +367,6 @@ wp.domReady(() => {
 							});
 						}
 					} else {
-						// Use setTimeout to poll for the iframe availability
-						console.log(
-							'Waiting for iframe to become available...'
-						);
 						setTimeout(waitForIframe, 100); // Check for iframe every 100ms
 					}
 				};
@@ -386,7 +380,6 @@ wp.domReady(() => {
 	const waitForMenuBlocks = () => {
 		return new Promise(resolve => {
 			getDocumentContext().then(docContext => {
-				console.log(docContext);
 				const observer = new MutationObserver(mutationsList => {
 					for (const mutation of mutationsList) {
 						if (mutation.addedNodes.length > 0) {

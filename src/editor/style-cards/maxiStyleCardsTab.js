@@ -190,6 +190,10 @@ const SCAccordion = props => {
 		? processSCAttribute(SC, 'remove-hover-underline', groupAttr)
 		: false;
 
+	const showMobileFrom = ifNavigationTab
+		? processSCAttribute(SC, 'show-mobile-down-from', groupAttr)
+		: false;
+
 	return (
 		<>
 			{!disableTypography && (
@@ -275,14 +279,16 @@ const SCAccordion = props => {
 						)}
 						className='maxi-style-cards-control__toggle-overwrite-mobile'
 						selected={overwriteMobile || false}
-						onChange={val =>
+						onChange={val => {
 							onChangeValue(
 								{
 									'overwrite-mobile': val,
 								},
 								groupAttr
-							)
-						}
+							);
+							if (val)
+								showHideHamburgerNavigation(showMobileFrom);
+						}}
 					/>
 					{overwriteMobile && (
 						<>
@@ -312,11 +318,7 @@ const SCAccordion = props => {
 										'Show Hamburger Menu for screen sizes down from (px)',
 										'maxi-blocks'
 									)}
-									value={processSCAttribute(
-										SC,
-										'show-mobile-down-from',
-										groupAttr
-									)}
+									value={showMobileFrom}
 									onChangeValue={val => {
 										onChangeValue(
 											{
@@ -325,7 +327,7 @@ const SCAccordion = props => {
 											groupAttr
 										);
 
-										showHideHamburgerNavigation(val); // Call with desired type
+										showHideHamburgerNavigation(val);
 									}}
 									onReset={() =>
 										onChangeValue(

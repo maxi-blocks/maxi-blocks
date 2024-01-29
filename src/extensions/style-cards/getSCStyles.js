@@ -642,9 +642,6 @@ const getSCStyles = (
 
 	const organizedValues = getOrganizedValues(styleCard);
 
-	console.log('organizedValues');
-	console.log(organizedValues);
-
 	// Create styles
 	styles.forEach(style => {
 		// Link colors

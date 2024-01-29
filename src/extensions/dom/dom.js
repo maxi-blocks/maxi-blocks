@@ -351,23 +351,33 @@ wp.domReady(() => {
 	const getDocumentContext = () => {
 		return new Promise(resolve => {
 			if (getIsSiteEditor()) {
-				const iframe = getSiteEditorIframe(); // Adjust this line to however you can get the iframe element itself
-				if (iframe) {
-					if (iframe.contentDocument && iframe.contentDocument.body) {
-						// If the iframe is already loaded, resolve immediately
-						resolve(iframe.contentDocument);
-					} else {
-						// Wait for the iframe to load
-						iframe.addEventListener('load', () => {
+				console.log('getIsSiteEditor');
+				const waitForIframe = () => {
+					const iframe = getSiteEditorIframe(); // Adjust this line to however you can get the iframe element itself
+					console.log('iframe', iframe);
+					if (iframe) {
+						if (
+							iframe.contentDocument &&
+							iframe.contentDocument.body
+						) {
+							// If the iframe is already loaded, resolve immediately
 							resolve(iframe.contentDocument);
-						});
+						} else {
+							// Wait for the iframe to load
+							iframe.addEventListener('load', () => {
+								resolve(iframe.contentDocument.body);
+							});
+						}
+					} else {
+						// Use setTimeout to poll for the iframe availability
+						console.log(
+							'Waiting for iframe to become available...'
+						);
+						setTimeout(waitForIframe, 100); // Check for iframe every 100ms
 					}
-				} else {
-					// Iframe not found, resolve with the main document as fallback
-					resolve(document);
-				}
+				};
+				waitForIframe();
 			} else {
-				// Not in site editor, resolve with the main document
 				resolve(document);
 			}
 		});
@@ -376,6 +386,7 @@ wp.domReady(() => {
 	const waitForMenuBlocks = () => {
 		return new Promise(resolve => {
 			getDocumentContext().then(docContext => {
+				console.log(docContext);
 				const observer = new MutationObserver(mutationsList => {
 					for (const mutation of mutationsList) {
 						if (mutation.addedNodes.length > 0) {
@@ -416,7 +427,7 @@ wp.domReady(() => {
 					}
 				});
 
-				observer.observe(docContext.body, {
+				observer.observe(docContext, {
 					childList: true,
 					subtree: true,
 				});

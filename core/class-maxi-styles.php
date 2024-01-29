@@ -218,7 +218,6 @@ class MaxiBlocks_Styles
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
 
-
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
                         wp_enqueue_script(
@@ -1087,7 +1086,6 @@ class MaxiBlocks_Styles
      */
     private function process_scripts($post_meta)
     {
-
         $scripts = [
             'hover-effects',
             'bg-video',
@@ -1100,7 +1098,8 @@ class MaxiBlocks_Styles
             'search',
             'map',
             'accordion',
-            'slider'
+            'slider',
+            'navigation',
         ];
 
         $script_attr = [
@@ -1109,14 +1108,15 @@ class MaxiBlocks_Styles
             'scroll-effects',
             'shape-divider',
             'relations',
+            'navigation',
         ];
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
             $js_script_name = 'maxi-' . $script;
-            $js_script_path = '//js//min//' . $js_script_name . '.min.js';
-            //$js_script_path = '//js//' . $js_script_name . '.js';
+            //$js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            $js_script_path = '//js//' . $js_script_name . '.js';
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
@@ -1152,6 +1152,23 @@ class MaxiBlocks_Styles
                             $array = json_decode($json, true);  // Decode the JSON string into an array
                             if (isset($array['relations'])) {
                                 $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            }
+                        }
+                    } elseif($script === 'navigation') {
+                        foreach ($meta[$block_name] as $json) {
+                            $array = json_decode($json, true);  // Decode the JSON string into an array
+                            if (isset($array['navigation'])) {
+                                $block_style = $array['navigation']['style'];
+                                $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'overwrite-mobile');
+                                if($overwrite_mobile) {
+                                    $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'always-show-mobile');
+                                    $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
+                                    $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
+                                    $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
+
+                                }
+
+                                $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
                             }
                         }
                     } else {

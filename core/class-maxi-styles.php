@@ -1165,7 +1165,8 @@ class MaxiBlocks_Styles
                                     $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
                                     $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
                                     $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
-
+                                    echo '$always_show_mobile: '.$always_show_mobile;
+                                    echo '$show_mobile_down_from: '.$show_mobile_down_from;
                                 }
 
                                 $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);

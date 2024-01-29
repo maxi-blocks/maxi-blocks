@@ -336,6 +336,8 @@ class MaxiBlocks_StyleCards
 
         if (isset($style_card[$block_style]['styleCard'][$property][$name])) {
             return $style_card[$block_style]['styleCard'][$property][$name];
+        } elseif (isset($style_card[$block_style]['defaultStyleCard'][$property][$name])) {
+            return $style_card[$block_style]['defaultStyleCard'][$property][$name];
         } else {
             return null;
         }

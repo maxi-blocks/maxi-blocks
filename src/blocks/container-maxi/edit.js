@@ -97,7 +97,6 @@ class edit extends MaxiBlockComponent {
 			}
 		}
 
-		console.log(data);
 		return data;
 	}
 

@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 // Navigation Menu inside Maxi Container
 const Navigation = () => {
-	console.log('maxiNavigation', maxiNavigation);
-
 	const getKeyWithNavigation = navigationArray => {
 		// Assuming there's only one object in the array. Adjust as needed.
 		const navigationObject = navigationArray[0];

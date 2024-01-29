@@ -195,14 +195,41 @@ export const showHideHamburgerNavigation = type => {
 		}
 
 		if (hamburgerNavigation && menuNavigation) {
+			const addStyleElement = () => {
+				const styleId = 'maxi-blocks-hide-navigation';
+				let styleElement = document.getElementById(styleId);
+
+				// If the style element does not exist, create it
+				if (!styleElement) {
+					styleElement = document.createElement('style');
+					const cssContent =
+						'..maxi-container-block .wp-block-navigation__responsive-container:not(.has-modal-open):not(.hidden-by-default) {display: none;}';
+					styleElement.appendChild(
+						document.createTextNode(cssContent)
+					);
+					styleElement.type = 'text/css';
+					styleElement.id = styleId;
+					document.head.appendChild(styleElement);
+				}
+			};
+			const removeStyleElement = () => {
+				const styleElement = document.getElementById(
+					'maxi-blocks-hide-navigation'
+				);
+				if (styleElement) {
+					styleElement.remove();
+				}
+			};
 			// Handle type as a string ('show' or 'hide')
 			if (typeof type === 'string') {
 				if (type === 'show') {
 					hamburgerNavigation.classList.add('always-shown');
 					menuNavigation.classList.add('hidden-by-default');
+					addStyleElement();
 				} else {
 					hamburgerNavigation.classList.remove('always-shown');
 					menuNavigation.classList.remove('hidden-by-default');
+					removeStyleElement();
 				}
 			}
 			// Handle type as a number (screen size)
@@ -212,10 +239,12 @@ export const showHideHamburgerNavigation = type => {
 					// Show for editor sizes type and down
 					hamburgerNavigation.classList.add('always-shown');
 					menuNavigation.classList.add('hidden-by-default');
+					addStyleElement();
 				} else {
 					// Hide for editor sizes larger than type
 					hamburgerNavigation.classList.remove('always-shown');
 					menuNavigation.classList.remove('hidden-by-default');
+					removeStyleElement();
 				}
 			}
 		}

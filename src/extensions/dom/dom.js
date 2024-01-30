@@ -19,7 +19,10 @@ import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
 import { authConnect, getMaxiCookieKey } from '../../editor/auth';
-import { showHideHamburgerNavigation } from '../../editor/style-cards/utils';
+import {
+	showHideHamburgerNavigation,
+	removeNavigationHoverUnderline,
+} from '../../editor/style-cards/utils';
 
 /**
  * External dependencies
@@ -435,6 +438,7 @@ wp.domReady(() => {
 		const blockStyle = response[2];
 		let overwriteMobile = false;
 		let alwaysShowMobile = false;
+		let removeUnderlineHover = false;
 		if (blockStyle !== '') {
 			overwriteMobile =
 				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
@@ -449,6 +453,12 @@ wp.domReady(() => {
 			} else {
 				showHideHamburgerNavigation('hide');
 			}
+			removeUnderlineHover =
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
+					'remove-hover-underline'
+				] || false;
+
+			removeNavigationHoverUnderline(removeUnderlineHover);
 		}
 	});
 });

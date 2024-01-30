@@ -37,6 +37,7 @@ import {
 	getDefaultSCAttribute,
 	showHideHamburgerNavigation,
 	processSCAttributes,
+	removeNavigationHoverUnderline,
 } from './utils';
 import {
 	getDefaultSCValue,
@@ -269,6 +270,7 @@ const SCAccordion = props => {
 								},
 								groupAttr
 							);
+							removeNavigationHoverUnderline(val);
 						}}
 					/>
 					<ToggleSwitch

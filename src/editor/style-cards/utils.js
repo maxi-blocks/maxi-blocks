@@ -8,7 +8,11 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import standardSC from '../../../core/defaults/defaultSC.json';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
+import {
+	getIsSiteEditor,
+	getSiteEditorIframeBody,
+	getSiteEditorIframe,
+} from '../../extensions/fse';
 
 /**
  * External dependencies
@@ -268,4 +272,36 @@ export const showHideHamburgerNavigation = type => {
 			resizeObserver.unobserve(editor);
 		}
 	};
+};
+
+export const removeNavigationHoverUnderline = remove => {
+	let editor = null;
+	if (getIsSiteEditor()) {
+		editor = getSiteEditorIframe() || document;
+	} else editor = document;
+	const styleId = 'maxi-blocks-remove-hover-underline-navigation';
+	const addStyleElement = () => {
+		let styleElement = editor.getElementById(styleId);
+
+		if (!styleElement) {
+			styleElement = editor.createElement('style');
+			const cssContent =
+				'.maxi-blocks--active .maxi-container-block .wp-block-navigation a:hover { text-decoration: none; }';
+			styleElement.appendChild(editor.createTextNode(cssContent));
+			styleElement.type = 'text/css';
+			styleElement.id = styleId;
+			editor.head.appendChild(styleElement);
+		}
+	};
+	const removeStyleElement = () => {
+		const styleElement = editor.getElementById(styleId);
+		if (styleElement) {
+			styleElement.remove();
+		}
+	};
+	if (remove) {
+		addStyleElement();
+	} else {
+		removeStyleElement();
+	}
 };

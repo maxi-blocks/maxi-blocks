@@ -425,10 +425,10 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 		const targetLink = `${targetItem} a`;
 
-		addedResponse += `${targetLink} { color: var(--maxi-${style}-menu-item); }`;
-		addedResponse += `${targetLink} span { color: var(--maxi-${style}-menu-item); }`;
-		addedResponse += `${targetLink} + span { color: var(--maxi-${style}-menu-item); }`;
-		addedResponse += `${targetLink} + button { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetLink} { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+		addedResponse += `${targetLink} span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease; }`;
+		addedResponse += `${targetLink} + span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+		addedResponse += `${targetLink} + button { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
 
 		addedResponse += `${targetLink}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLink}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
@@ -466,6 +466,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		const burgerItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open`;
+		const burgerItemClose = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close`;
+
+		addedResponse += `${burgerItem} { color: var(--maxi-${style}-menu-burger); }`;
+		addedResponse += `${burgerItemClose} { color: var(--maxi-${style}-menu-burger); }`;
 
 		return addedResponse;
 	};

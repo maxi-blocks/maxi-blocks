@@ -276,7 +276,7 @@ const SCAccordion = props => {
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(
-							'Overwrite Mobile Navigation breakpoint',
+							'Overwrite mobile navigation breakpoint',
 							'maxi-blocks'
 						)}
 						className='maxi-style-cards-control__toggle-overwrite-mobile'
@@ -297,7 +297,7 @@ const SCAccordion = props => {
 							<ToggleSwitch
 								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 								label={__(
-									'Show Hamburger Menu for all screen sizes',
+									'Show mobile menu for all screen sizes',
 									'maxi-blocks'
 								)}
 								className='maxi-style-cards-control__toggle-always-show-mobile'
@@ -317,7 +317,7 @@ const SCAccordion = props => {
 							{!alwaysShowMobile && (
 								<AdvancedNumberControl
 									label={__(
-										'Show Hamburger Menu for screen sizes down from (px)',
+										'Show mobile menu for screen sizes down from (px)',
 										'maxi-blocks'
 									)}
 									value={showMobileFrom}
@@ -551,7 +551,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		groupAttr: 'navigation',
 		colorContent: [
 			{
-				label: 'Item Links',
+				label: 'Item links',
 				globalAttr: 'menu-item-color-global',
 				paletteStatus: 'menu-item-palette-status',
 				paletteColor: 'menu-item-palette-color',
@@ -559,16 +559,15 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'menu-item-color',
 			},
 			{
-				label: 'Item Hover',
+				label: 'Item hover',
 				globalAttr: 'menu-item-hover-color-global',
-				globalAllAttr: 'menu-item-hover-color-all',
 				paletteStatus: 'menu-item-hover-palette-status',
 				paletteColor: 'menu-item-hover-palette-color',
 				paletteOpacity: 'menu-item-hover-palette-opacity',
 				color: 'menu-item-hover-color',
 			},
 			{
-				label: 'Item Current',
+				label: 'Item current',
 				globalAttr: 'menu-item-current-color-global',
 				paletteStatus: 'menu-item-current-palette-status',
 				paletteColor: 'menu-item-current-palette-color',
@@ -576,12 +575,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'menu-item-current-color',
 			},
 			{
-				label: 'Item Visited',
+				label: 'Item visited',
 				globalAttr: 'menu-item-visited-color-global',
 				paletteStatus: 'menu-item-visited-palette-status',
 				paletteColor: 'menu-item-visited-palette-color',
 				paletteOpacity: 'menu-item-visited-palette-opacity',
 				color: 'menu-item-visited-color',
+			},
+			{
+				label: 'Mobile menu icon',
+				globalAttr: 'menu-burger-color-global',
+				paletteStatus: 'menu-burger-palette-status',
+				paletteColor: 'menu-burger-palette-color',
+				paletteOpacity: 'menu-burger-palette-opacity',
+				color: 'menu-burger-color',
 			},
 		],
 	};

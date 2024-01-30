@@ -425,24 +425,43 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 		const targetLink = `${targetItem} a`;
 
+		addedResponse += `${targetItem} { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetItem} span { color: var(--maxi-${style}-menu-item); }`;
 		addedResponse += `${targetLink} { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetItem}:hover { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetItem}:hover span { color: var(--maxi-${style}-menu-item); }`;
 		addedResponse += `${targetLink}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetItem}:focus { color: var(--maxi-${style}-menu-item); }`;
+		addedResponse += `${targetItem}:focus span { color: var(--maxi-${style}-menu-item); }`;
 		addedResponse += `${targetLink}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLink}:visited { color: var(--maxi-${style}-menu-item-visited); }`;
-		addedResponse += `${targetLink}:visited span { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited + span { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited + button { color: var(--maxi-${style}-menu-item-visited); }`;
 		addedResponse += `${targetLink}:visited:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:visited:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
 
+		const targetItemCurrent = `${targetItem}.current-menu-item`;
 		const targetLinkCurrent = `${targetItem}.current-menu-item a`;
 
+		addedResponse += `${targetItemCurrent} { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetItemCurrent} span { color: var(--maxi-${style}-menu-item-current); }`;
 		addedResponse += `${targetLinkCurrent} { color: var(--maxi-${style}-menu-item-current); }`;
 		addedResponse += `${targetLinkCurrent} span { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetItemCurrent}:hover { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetItemCurrent}:hover span { color: var(--maxi-${style}-menu-item-current); }`;
 		addedResponse += `${targetLinkCurrent}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetItemCurrent}:focus { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetItemCurrent}:focus span { color: var(--maxi-${style}-menu-item-current); }`;
 		addedResponse += `${targetLinkCurrent}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
 
 		return addedResponse;
 	};

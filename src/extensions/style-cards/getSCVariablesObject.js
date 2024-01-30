@@ -324,6 +324,9 @@ const getSCVariablesObject = (
 					if (obj['menu-item-visited-color-global'])
 						response[`--maxi-${style}-menu-item-visited`] =
 							getColorString(obj, 'menu-item-visited', style);
+					else
+						response[`--maxi-${style}-menu-item-visited`] =
+							getColorString(obj, 'menu-item', style);
 
 					break;
 

@@ -120,11 +120,9 @@ const addNavigationToStyleCards = styleCards => {
 
 // Usage
 export const receiveMaxiStyleCards = state => {
-	console.log('scs before', state.styleCards);
 	if (state.styleCards) {
 		const { styleCards } = state;
 		if (!navigationExists(styleCards)) {
-			console.log('scs migrator at work');
 			addNavigationToStyleCards(styleCards);
 		}
 		return styleCards;

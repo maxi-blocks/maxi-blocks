@@ -106,6 +106,11 @@ const getDCOptions = async (
 
 	const newValues = {};
 
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+	const isCustomPostType = customPostTypes.includes(type);
+
 	const newPostIdOptions = data.map(item => {
 		if (
 			[
@@ -118,6 +123,15 @@ const getDCOptions = async (
 		) {
 			return {
 				label: limitString(item.name, 10),
+				value: +item.id,
+			};
+		}
+
+		if (isCustomPostType) {
+			const title = item.title?.rendered ?? item.title;
+
+			return {
+				label: `${item.id}${title ? ` - ${title}` : ''}`,
 				value: +item.id,
 			};
 		}

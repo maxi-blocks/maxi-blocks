@@ -473,8 +473,14 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		const burgerItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open`;
 		const burgerItemClose = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close`;
 
-		addedResponse += `${burgerItem} { color: var(--maxi-${style}-menu-burger); }`;
-		addedResponse += `${burgerItemClose} { color: var(--maxi-${style}-menu-burger); }`;
+		[burgerItem, burgerItemClose].forEach(target => {
+			addedResponse += `${target} { color: var(--maxi-${style}-menu-burger); }`;
+			sentences.forEach((sentence, i) => {
+				if (sentence?.includes('font-family')) {
+					addedResponse += `${target} { font-family: var(--maxi-${style}-navigation-font-family-general); }`;
+				}
+			});
+		});
 
 		return addedResponse;
 	};

@@ -583,7 +583,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'menu-item-visited-color',
 			},
 			{
-				label: 'Mobile menu icon',
+				label: 'Mobile menu icon / text',
 				globalAttr: 'menu-burger-color-global',
 				paletteStatus: 'menu-burger-palette-status',
 				paletteColor: 'menu-burger-palette-color',

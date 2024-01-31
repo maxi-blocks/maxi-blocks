@@ -137,9 +137,7 @@ export const receiveMaxiActiveStyleCard = state => {
 export const receiveMaxiSelectedStyleCard = state => {
 	if (state.styleCards) {
 		const selectedStyleCard = getActiveStyleCard(state.styleCards, true);
-		console.log('selectedStyleCard', selectedStyleCard);
 		if (!navigationExists(selectedStyleCard)) {
-			console.log('Adding navigation to style cards');
 			addNavigationToStyleCards(selectedStyleCard);
 		}
 		return selectedStyleCard;

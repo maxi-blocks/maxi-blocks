@@ -52,7 +52,6 @@ const isEligible = blockAttributes => {
 
 const migrate = newAttributes => {
 	const { content } = newAttributes;
-	console.log(content, content.replace(/<\/li><li>/g, '</li><br><li>'));
 	newAttributes.content = content.replace(/<\/li><li>/g, '</li><br><li>');
 	return newAttributes;
 };

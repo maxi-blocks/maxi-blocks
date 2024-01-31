@@ -80,51 +80,43 @@ const navigationObject = {
 	},
 };
 
-const navigationExists = styleCards => {
-	return Object.values(styleCards).some(
-		styleCard => styleCard.dark?.defaultStyleCard?.navigation
-	);
+const navigationExists = styleCard => {
+	return styleCard?.value?.dark?.defaultStyleCard?.navigation !== undefined;
 };
 
-const addNavigationToStyleCards = styleCards => {
-	Object.keys(styleCards).forEach(key => {
-		const styleCard = styleCards[key];
-		['dark', 'light'].forEach(style => {
-			if (
-				styleCard[style] &&
-				styleCard[style].defaultStyleCard &&
-				!styleCard[style].defaultStyleCard.navigation
-			) {
-				const { defaultStyleCard } = styleCard[style];
-				const keys = Object.keys(defaultStyleCard);
-				const dividerIndex = keys.indexOf('divider');
-				const newKeys = [
-					...keys.slice(0, dividerIndex + 1),
-					'navigation',
-					...keys.slice(dividerIndex + 1),
-				];
-				const newDefaultStyleCard = newKeys.reduce((obj, key) => {
-					if (key === 'navigation') {
-						obj[key] = navigationObject.navigation;
-					} else {
-						obj[key] = defaultStyleCard[key];
-					}
-					return obj;
-				}, {});
-				styleCard[style].defaultStyleCard = newDefaultStyleCard;
-			}
-		});
+const addNavigationToStyleCards = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			!styleValue.defaultStyleCard.navigation
+		) {
+			const { defaultStyleCard } = styleValue;
+			const keys = Object.keys(defaultStyleCard);
+			const dividerIndex = keys.indexOf('divider');
+			const newKeys = [
+				...keys.slice(0, dividerIndex + 1),
+				'navigation',
+				...keys.slice(dividerIndex + 1),
+			];
+			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
+				if (key === 'navigation') {
+					obj[key] = navigationObject.navigation;
+				} else {
+					obj[key] = defaultStyleCard[key];
+				}
+				return obj;
+			}, {});
+			styleCard.value[style].defaultStyleCard = newDefaultStyleCard;
+		}
 	});
 };
 
 // Usage
 export const receiveMaxiStyleCards = state => {
 	if (state.styleCards) {
-		const { styleCards } = state;
-		if (!navigationExists(styleCards)) {
-			addNavigationToStyleCards(styleCards);
-		}
-		return styleCards;
+		return state.styleCards;
 	}
 	return false;
 };
@@ -144,7 +136,13 @@ export const receiveMaxiActiveStyleCard = state => {
 
 export const receiveMaxiSelectedStyleCard = state => {
 	if (state.styleCards) {
-		return getActiveStyleCard(state.styleCards, true);
+		const selectedStyleCard = getActiveStyleCard(state.styleCards, true);
+		console.log('selectedStyleCard', selectedStyleCard);
+		if (!navigationExists(selectedStyleCard)) {
+			console.log('Adding navigation to style cards');
+			addNavigationToStyleCards(selectedStyleCard);
+		}
+		return selectedStyleCard;
 	}
 	return false;
 };

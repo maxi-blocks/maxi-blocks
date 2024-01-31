@@ -1,97 +1,123 @@
 /* eslint-disable no-undef */
 // Navigation Menu inside Maxi Container
 const Navigation = () => {
-	const getKeyWithNavigation = navigationArray => {
-		// Assuming there's only one object in the array. Adjust as needed.
-		const navigationObject = navigationArray[0];
+	const getKeysWithNavigation = navigationArray => {
+		const keysWithNavigation = [];
 
-		for (const [key, value] of Object.entries(navigationObject)) {
-			try {
-				const parsedValue = JSON.parse(value);
-				if (parsedValue.navigation?.enable === true) {
-					return key;
-				}
-			} catch (e) {}
+		for (const navigationObject of navigationArray) {
+			for (const [key, value] of Object.entries(navigationObject)) {
+				try {
+					const parsedValue = JSON.parse(value);
+					if (parsedValue.navigation?.enable === true) {
+						keysWithNavigation.push(key);
+					}
+				} catch (e) {}
+			}
 		}
 
-		return false;
+		return keysWithNavigation.length > 0 ? keysWithNavigation : false;
 	};
 
-	const containerWithNavigation = getKeyWithNavigation(maxiNavigation);
-	if (!containerWithNavigation) return;
+	const containersWithNavigation = getKeysWithNavigation(maxiNavigation);
+	if (!containersWithNavigation) return;
 
 	const showHideHamburgerNavigation = type => {
-		const hamburgerNavigation = document.querySelector(
-			`#${containerWithNavigation} .wp-block-navigation__responsive-container-open`
-		);
+		containersWithNavigation.forEach(containerWithNavigation => {
+			const hamburgerNavigations = document.querySelectorAll(
+				`#${containerWithNavigation} .wp-block-navigation__responsive-container-open`
+			);
 
-		let menuNavigation = null;
+			hamburgerNavigations.forEach(hamburgerNavigation => {
+				let menuNavigation = null;
 
-		// Check if the very next sibling has the class 'wp-block-navigation__responsive-container'
-		if (
-			hamburgerNavigation &&
-			hamburgerNavigation.nextElementSibling &&
-			hamburgerNavigation.nextElementSibling.classList.contains(
-				'wp-block-navigation__responsive-container'
-			)
-		) {
-			menuNavigation = hamburgerNavigation.nextElementSibling;
-		}
+				// Check if the very next sibling has the class 'wp-block-navigation__responsive-container'
+				if (
+					hamburgerNavigation.nextElementSibling &&
+					hamburgerNavigation.nextElementSibling.classList.contains(
+						'wp-block-navigation__responsive-container'
+					)
+				) {
+					menuNavigation = hamburgerNavigation.nextElementSibling;
+				}
 
-		if (hamburgerNavigation && menuNavigation) {
-			// Create a <style> element
-			const addStyleElement = () => {
-				const styleId = 'maxi-blocks-hide-navigation';
-				let styleElement = document.getElementById(styleId);
+				if (hamburgerNavigation && menuNavigation) {
+					const styleId = 'maxi-blocks-hide-navigation';
 
-				// If the style element does not exist, create it
-				if (!styleElement) {
-					styleElement = document.createElement('style');
-					const cssContent = `#${containerWithNavigation} .wp-block-navigation__responsive-container:not(.has-modal-open):not(.hidden-by-default) {display: none;}`;
-					styleElement.appendChild(
-						document.createTextNode(cssContent)
-					);
-					styleElement.type = 'text/css';
-					styleElement.id = styleId;
-					document.head.appendChild(styleElement);
+					const addStyleElement = () => {
+						let styleElement = document.getElementById(styleId);
+
+						// If the style element does not exist, create it
+						if (!styleElement) {
+							styleElement = document.createElement('style');
+							styleElement.type = 'text/css';
+							styleElement.id = styleId;
+							document.head.appendChild(styleElement);
+						}
+
+						// Generate CSS content for all containers
+						const cssContent = containersWithNavigation
+							.map(
+								containerId =>
+									`#${containerId} .wp-block-navigation__responsive-container:not(.has-modal-open):not(.hidden-by-default) {display: none;}`
+							)
+							.join(' ');
+
+						// Set or replace the content of the style element
+						if (styleElement.firstChild) {
+							styleElement.firstChild.nodeValue = cssContent;
+						} else {
+							styleElement.appendChild(
+								document.createTextNode(cssContent)
+							);
+						}
+					};
+
+					const removeStyleElement = () => {
+						const styleElement = document.getElementById(
+							'maxi-blocks-hide-navigation'
+						);
+						if (styleElement) {
+							styleElement.remove();
+						}
+					};
+					// Handle type as a string ('show' or 'hide')
+					if (typeof type === 'string') {
+						if (type === 'show') {
+							hamburgerNavigation.classList.add('always-shown');
+							menuNavigation.classList.add('hidden-by-default');
+							addStyleElement();
+						} else {
+							hamburgerNavigation.classList.remove(
+								'always-shown'
+							);
+							menuNavigation.classList.remove(
+								'hidden-by-default'
+							);
+							removeStyleElement();
+						}
+					}
+					// Handle type as a number (screen size)
+					else if (typeof type === 'number') {
+						const windowWidth = window.width || window.innerWidth;
+						if (windowWidth <= type) {
+							// Show for window sizes type and down
+							hamburgerNavigation.classList.add('always-shown');
+							menuNavigation.classList.add('hidden-by-default');
+							addStyleElement();
+						} else {
+							// Hide for window sizes larger than type
+							hamburgerNavigation.classList.remove(
+								'always-shown'
+							);
+							menuNavigation.classList.remove(
+								'hidden-by-default'
+							);
+							removeStyleElement();
+						}
+					}
 				}
-			};
-			const removeStyleElement = () => {
-				const styleElement = document.getElementById(
-					'maxi-blocks-hide-navigation'
-				);
-				if (styleElement) {
-					styleElement.remove();
-				}
-			};
-			// Handle type as a string ('show' or 'hide')
-			if (typeof type === 'string') {
-				if (type === 'show') {
-					hamburgerNavigation.classList.add('always-shown');
-					menuNavigation.classList.add('hidden-by-default');
-					addStyleElement();
-				} else {
-					hamburgerNavigation.classList.remove('always-shown');
-					menuNavigation.classList.remove('hidden-by-default');
-					removeStyleElement();
-				}
-			}
-			// Handle type as a number (screen size)
-			else if (typeof type === 'number') {
-				const windowWidth = window.width || window.innerWidth;
-				if (windowWidth <= type) {
-					// Show for editor sizes type and down
-					hamburgerNavigation.classList.add('always-shown');
-					menuNavigation.classList.add('hidden-by-default');
-					addStyleElement();
-				} else {
-					// Hide for editor sizes larger than type
-					hamburgerNavigation.classList.remove('always-shown');
-					menuNavigation.classList.remove('hidden-by-default');
-					removeStyleElement();
-				}
-			}
-		}
+			});
+		});
 	};
 
 	const alwaysShowMobileNavigation =

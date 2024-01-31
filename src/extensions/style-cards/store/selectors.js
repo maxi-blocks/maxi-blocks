@@ -81,15 +81,8 @@ const navigationObject = {
 };
 
 const navigationExists = styleCards => {
-	return Object.keys(styleCards).some(key => {
-		const styleCard = styleCards[key];
-		return ['dark', 'light'].some(
-			style =>
-				styleCard[style] &&
-				styleCard[style].defaultStyleCard &&
-				styleCard[style].defaultStyleCard.navigation
-		);
-	});
+	if (styleCards?.[0]?.dark?.defaultStyleCard?.navigation) return true;
+	return false;
 };
 
 const addNavigationToStyleCards = styleCards => {

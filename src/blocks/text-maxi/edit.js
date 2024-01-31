@@ -43,7 +43,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
-		wpVersion: 6.3,
+		wpVersion: 6.4,
 	};
 
 	scProps = scProps;

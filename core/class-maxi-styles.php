@@ -1149,25 +1149,29 @@ class MaxiBlocks_Styles
                     }
                     if($script === 'relations') {
                         foreach ($meta[$block_name] as $json) {
-                            $array = json_decode($json, true);  // Decode the JSON string into an array
-                            if (isset($array['relations'])) {
-                                $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            if (is_string($json)) {
+                                $array = json_decode($json, true);
+                                if (isset($array['relations'])) {
+                                    $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                                }
                             }
                         }
                     } elseif($script === 'navigation') {
                         foreach ($meta[$block_name] as $json) {
-                            $array = json_decode($json, true);  // Decode the JSON string into an array
-                            if (isset($array['navigation'])) {
-                                $block_style = $array['navigation']['style'];
-                                $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'overwrite-mobile');
-                                if($overwrite_mobile) {
-                                    $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'always-show-mobile');
-                                    $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
-                                    $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
-                                    $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
-                                }
+                            if (is_string($json)) {
+                                $array = json_decode($json, true);
+                                if (isset($array['navigation'])) {
+                                    $block_style = $array['navigation']['style'];
+                                    $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'overwrite-mobile');
+                                    if($overwrite_mobile) {
+                                        $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'always-show-mobile');
+                                        $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
+                                        $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
+                                        $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
+                                    }
 
-                                $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                                    $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                                }
                             }
                         }
                     } else {

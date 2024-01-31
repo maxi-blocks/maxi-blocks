@@ -424,16 +424,19 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		addedResponse += `${targetItem} {${sentences?.join(' ')}}`;
 
 		const targetLink = `${targetItem} a`;
+		const targetButton = `${targetItem} button`;
 
-		addedResponse += `${targetLink} { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
-		addedResponse += `${targetLink} span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease; }`;
-		addedResponse += `${targetLink} + span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
-		addedResponse += `${targetLink} + button { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+		[targetLink, targetButton].forEach(target => {
+			addedResponse += `${target} { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease; }`;
+			addedResponse += `${target} + span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} + button { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
 
-		addedResponse += `${targetLink}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		});
 
 		addedResponse += `${targetLink}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLink}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;

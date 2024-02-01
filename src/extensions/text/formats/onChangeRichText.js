@@ -27,7 +27,12 @@ const onChangeRichText = ({
 	 */
 	const hasNativeFormat = getHasNativeFormat(formatValue);
 
-	if (hasNativeFormat) {
+	if (
+		hasNativeFormat &&
+		formatValue.start !== formatValue.end &&
+		formatValue.start === oldFormatValue.start &&
+		formatValue.end === oldFormatValue.end
+	) {
 		const { typeOfList, content, textLevel, isList } = attributes;
 
 		const cleanCustomProps = setCustomFormatsWhenPaste({

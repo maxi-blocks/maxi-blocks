@@ -590,6 +590,30 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteOpacity: 'menu-burger-palette-opacity',
 				color: 'menu-burger-color',
 			},
+			{
+				label: 'Sub-item background',
+				globalAttr: 'menu-item-sub-bg-color-global',
+				paletteStatus: 'menu-item-sub-bg-palette-status',
+				paletteColor: 'menu-item-sub-bg-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-palette-opacity',
+				color: 'menu-item-sub-bg-color',
+			},
+			{
+				label: 'Sub-item background hover',
+				globalAttr: 'menu-item-sub-bg-hover-color-global',
+				paletteStatus: 'menu-item-sub-bg-hover-palette-status',
+				paletteColor: 'menu-item-sub-bg-hover-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-hover-palette-opacity',
+				color: 'menu-item-sub-bg-hover-color',
+			},
+			{
+				label: 'Sub-item background current',
+				globalAttr: 'menu-item-sub-bg-current-color-global',
+				paletteStatus: 'menu-item-sub-bg-current-palette-status',
+				paletteColor: 'menu-item-sub-bg-current-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-current-palette-opacity',
+				color: 'menu-item-sub-bg-current-color',
+			},
 		],
 	};
 

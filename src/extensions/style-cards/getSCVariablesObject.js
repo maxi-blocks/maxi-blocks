@@ -330,6 +330,23 @@ const getSCVariablesObject = (
 					else if (obj['menu-item-color-global'])
 						response[`--maxi-${style}-menu-item-visited`] =
 							getColorString(obj, 'menu-item', style);
+					if (obj['menu-item-sub-bg-color-global'])
+						response[`--maxi-${style}-menu-sub-bg-item`] =
+							getColorString(obj, 'menu-item-sub-bg', style);
+					if (obj['menu-item-sub-bg-hover-color-global'])
+						response[`--maxi-${style}-menu-sub-bg-item-hover`] =
+							getColorString(
+								obj,
+								'menu-sub-bg-item-hover',
+								style
+							);
+					if (obj['menu-item-sub-bg-current-color-global'])
+						response[`--maxi-${style}-menu-sub-bg-item-current`] =
+							getColorString(
+								obj,
+								'menu-item-sub-bg-current',
+								style
+							);
 
 					break;
 

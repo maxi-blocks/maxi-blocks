@@ -39,7 +39,7 @@ import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
 } from '../../extensions/DC/withMaxiContextLoop';
-import getPostTypes from '../../extensions/DC/getPostTypes';
+import getTypes from '../../extensions/DC/getTypes';
 import ACFSettingsControl from '../dynamic-content/acf-settings-control';
 
 /**
@@ -181,7 +181,7 @@ const ContextLoop = props => {
 	});
 
 	useEffect(() => {
-		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
+		getTypes(source === 'wp' ? contentType : source).then(postTypes => {
 			setPostTypesOptions(postTypes);
 		});
 	}, [contentType, source]);

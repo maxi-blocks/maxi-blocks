@@ -13,7 +13,7 @@ import { typeOptions } from './constants';
  */
 import { isEmpty } from 'lodash';
 
-const getPostTypes = async contentType => {
+const getTypes = async contentType => {
 	const customPostTypes = select('maxiBlocks/dynamic-content')
 		.getCustomPostTypes()
 		.map(type => {
@@ -24,13 +24,23 @@ const getPostTypes = async contentType => {
 				value: postType.slug,
 			};
 		});
+	const customTaxonomies = select('maxiBlocks/dynamic-content')
+		.getCustomTaxonomies()
+		.map(type => {
+			const taxonomy = select('core').getTaxonomy(type);
+
+			return {
+				label: taxonomy.labels.singular_name,
+				value: taxonomy.slug,
+			};
+		});
 
 	return isEmpty(customPostTypes)
 		? typeOptions[contentType]
 		: {
 				'Standard types': typeOptions[contentType],
-				'Custom types': customPostTypes,
+				'Custom types': [...customPostTypes, ...customTaxonomies],
 		  };
 };
 
-export default getPostTypes;
+export default getTypes;

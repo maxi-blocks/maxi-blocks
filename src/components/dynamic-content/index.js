@@ -52,7 +52,7 @@ import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
-import getPostTypes from '../../extensions/DC/getPostTypes';
+import getTypes from '../../extensions/DC/getTypes';
 
 /**
  * Styles
@@ -262,7 +262,7 @@ const DynamicContent = props => {
 	}, [contentType, isCustomType, type]);
 
 	useEffect(() => {
-		getPostTypes(source === 'wp' ? contentType : source).then(postTypes => {
+		getTypes(source === 'wp' ? contentType : source).then(postTypes => {
 			setPostTypesOptions(postTypes);
 		});
 	}, [contentType, source]);

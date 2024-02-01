@@ -72,6 +72,24 @@ export const ignoredPostTypes = [
 	'wp_navigation',
 ];
 
+// Taxonomies to show in "Standard types" section
+export const supportedTaxonomies = [
+	'category',
+	'post_tag',
+	'product_cat',
+	'product_tag',
+];
+
+// Taxonomies to hide
+export const ignoredTaxonomies = [
+	'nav_menu',
+	'link_category',
+	'post_format',
+	'product_shipping_class',
+	'wp_pattern_category',
+	'maxi-image-type',
+];
+
 /**
  * Relation constants
  */

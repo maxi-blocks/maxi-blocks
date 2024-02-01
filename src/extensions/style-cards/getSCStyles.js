@@ -482,6 +482,21 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			});
 		});
 
+		// sub-menus
+		const subMenuTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li`;
+		const subMenuTargetEditor = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div`;
+
+		addedResponse += `${subMenuTarget} { background-color: var(--maxi-${style}-menu-item-sub-bg); }`;
+		addedResponse += `${subMenuTarget}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+
+		addedResponse += `${subMenuTargetEditor} { background-color: var(--maxi-${style}-menu-item-sub-bg) !important;  }`;
+		addedResponse += `${subMenuTargetEditor}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover) !important; }`;
+
+		[subMenuTarget, subMenuTargetEditor].forEach(target => {
+			addedResponse += `${target}.current-menu-item { background-color: var(--maxi-${style}-menu-item-sub-bg-current); }`;
+			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+		});
+
 		return addedResponse;
 	};
 

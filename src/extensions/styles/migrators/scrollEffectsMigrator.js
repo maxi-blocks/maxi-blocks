@@ -165,6 +165,9 @@ const migrate = attributes => {
 	attributes['scroll-blur-zones-general'] = createZone('scroll-blur-blur-');
 
 	const attributesToDelete = [
+		'scroll-vertical-offset-start-general',
+		'scroll-vertical-offset-mid-general',
+		'scroll-vertical-offset-end-general',
 		'scroll-horizontal-offset-start-general',
 		'scroll-horizontal-offset-mid-general',
 		'scroll-horizontal-offset-end-general',

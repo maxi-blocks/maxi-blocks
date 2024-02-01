@@ -120,7 +120,7 @@ class MaxiBlocks_DynamicContent
     {
         if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
-        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
+        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             $link = get_author_posts_url($attributes['dc-id']);
@@ -183,7 +183,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_site_content($dc_field);
         } elseif ($dc_type === 'media') {
             $response = self::get_media_content($attributes);
-        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) { // Categories or tags
+        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags'], $this->get_custom_taxonomies()))) {
             $response = self::get_taxonomy_content($attributes);
         } elseif ($dc_type === 'users') { // Users
             $response = self::get_user_content($attributes);
@@ -421,7 +421,7 @@ class MaxiBlocks_DynamicContent
             }
 
             return $post;
-        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) {
+        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags'], $this->get_custom_taxonomies()))) {
             if ($dc_type === 'categories') {
                 $taxonomy = 'category';
             } elseif ($dc_type === 'tags') {
@@ -430,6 +430,8 @@ class MaxiBlocks_DynamicContent
                 $taxonomy = 'product_cat';
             } elseif ($dc_type === 'product_tags') {
                 $taxonomy = 'product_tag';
+            } else {
+                $taxonomy = $dc_type;
             }
 
             $args = [
@@ -1182,5 +1184,23 @@ class MaxiBlocks_DynamicContent
         $post_types = array_diff(get_post_types($args), $supported_post_types);
 
         return $post_types;
+    }
+
+    public function get_custom_taxonomies()
+    {
+        $args = [
+            'public' => true,
+            '_builtin' => false,
+        ];
+
+        // Taxonomies supported by maxi, that are not built in WP taxonomies
+        $supported_taxonomies = [
+            'product_cat',
+            'product_tag',
+        ];
+
+        $taxonomies = array_diff(get_taxonomies($args), $supported_taxonomies);
+
+        return $taxonomies;
     }
 }

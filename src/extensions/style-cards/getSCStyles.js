@@ -470,6 +470,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
 		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
 
+		// mobile menu icon / text
 		const burgerItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open`;
 		const burgerItemClose = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close`;
 

@@ -52,9 +52,13 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const customPostTypes = select(
 		'maxiBlocks/dynamic-content'
 	).getCustomPostTypes();
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
 
 	const getKind = type => {
 		if (customPostTypes.includes(type)) return 'postType';
+		if (customTaxonomies.includes(type)) return 'taxonomy';
 
 		return kindDictionary[type];
 	};
@@ -172,7 +176,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(
-		getKind(type) ?? 'postType',
+		getKind(type) ?? 'postType', // TODO: don't use ?? here
 		nameDictionary[type] ?? type,
 		{
 			include: id,

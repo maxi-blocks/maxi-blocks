@@ -17,6 +17,7 @@ import {
 	nameDictionary,
 	relationDictionary,
 	postTypeRelationOptions,
+	taxonomyRelationOptions,
 } from './constants';
 
 /**
@@ -249,7 +250,7 @@ export const getFields = (contentType, type) => {
 	return fieldOptions[contentType][type];
 };
 
-export const getCustomRelationOptions = type => {
+const getPostTypeRelationOptions = type => {
 	const postType = select('core').getPostType(type);
 
 	const relationOptions = [...postTypeRelationOptions];
@@ -280,4 +281,16 @@ export const getCustomRelationOptions = type => {
 	}
 
 	return relationOptions;
+};
+
+const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
+
+export const getCustomRelationOptions = type => {
+	if (
+		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
+	) {
+		return getPostTypeRelationOptions(type);
+	}
+
+	return getTaxonomyRelationOptions();
 };

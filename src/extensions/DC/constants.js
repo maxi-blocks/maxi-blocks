@@ -143,6 +143,12 @@ export const postTypeRelationOptions = [
 	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 ];
 
+// Relation options available for all taxonomies
+export const taxonomyRelationOptions = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+];
+
 const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
 	pages: generalRelationOptionsPages,

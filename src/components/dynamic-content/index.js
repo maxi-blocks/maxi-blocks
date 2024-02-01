@@ -159,11 +159,14 @@ const DynamicContent = props => {
 
 	const isCustomType = useSelect(
 		select => {
-			const customTypes = select(
+			const customPostTypes = select(
 				'maxiBlocks/dynamic-content'
 			).getCustomPostTypes();
+			const customTaxonomies = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
 
-			return customTypes.includes(type);
+			return [...customPostTypes, ...customTaxonomies].includes(type);
 		},
 		[type]
 	);

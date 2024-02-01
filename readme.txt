@@ -428,16 +428,18 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 1 February 2024_
+MaxiBlocks v1.6.1
+* Update: Upgrade the rendering of MaxiBlocks previews within the Site Editor Experience.
+* Update: Expand avatar functionality for Dynamic Content.
+* Fix: Correct link functionality issues within Text Maxi Block lists.
+* Fix: Prevent caption content from resetting after modifying settings.
+* Fix: Resolve issues with the scale scroll effect.
+* Fix: Optimize shape mask integration in Image Maxi for Dynamic Content.
+* Fix: Address PHP warning issues related to fonts and the Context Loop.
+
 _Updates: 11 January 2024_
 MaxiBlocks v1.6.0
-* Fix: Resolve issues with block tone styles to ensure consistency.
-* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
-* Fix: Improve Interaction Builder on repeater toggle.
-* Fix: Address crash in Text Block when rapidly accessing Typography settings.
-* Fix: Resolve uniqueID conflicts in migrators.
-* Fix: Enhance frontend display of parallax effects and shape dividers.
-* Fix: Improve responsiveness for typography.
-* Fix: Refined application of advanced CSS classes.
 * Update: Remove image URLs within the Interaction Builder for a cleaner interface.
 * Update: Automate hiding of DC blocks on the frontend if content is absent.
 * Update: Enhancements in user interface (UI) elements.
@@ -446,6 +448,14 @@ MaxiBlocks v1.6.0
 * Update: Refine cursor visibility with border adjustment for Text editing.
 * Update: Improve language translations.
 * Update: Add compatibility with the Yoast Duplicate Post plugin.
+* Fix: Resolve issues with block tone styles to ensure consistency.
+* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
+* Fix: Improve Interaction Builder on repeater toggle.
+* Fix: Address crash in Text Block when rapidly accessing Typography settings.
+* Fix: Resolve uniqueID conflicts in migrators.
+* Fix: Enhance frontend display of parallax effects and shape dividers.
+* Fix: Improve responsiveness for typography.
+* Fix: Refined application of advanced CSS classes.
 
 _Updates: 22 December 2023_
 MaxiBlocks V1.5.8
@@ -463,18 +473,6 @@ MaxiBlocks V1.5.8
 * Fix: Margin indicator overlapping.
 * Fix: Dynamic Content in the Editing Experience (EE) when the image is missing from the Media Library.
 * Fix: Hover effects for Image Block.
-
-_Updates: 12 December 2023_
-MaxiBlocks V1.5.7
-* Update: Add image URL source for Image block, Video block, background image layer.
-* Update: Add warning for MariaDB versions below 10.4
-* Update: Make database version warning dismissible.
-* Update: Correct translation code for WordPress plugins directory.
-* Update: Make image resizer support responsive styles.
-* Update: Add unlimited characters option for Dynamic Content.
-* Fix: Resolve broken blocks after standardizing the columns for Repeater.
-* Fix: Repeater styles on frontend.
-
 
 == Upgrade Notice ==
 

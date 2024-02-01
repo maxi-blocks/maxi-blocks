@@ -1154,7 +1154,7 @@ class MaxiBlocks_Styles
                                 if (isset($array['relations'])) {
                                     $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
                                 }
-                             }
+                            }
                         }
                     } else {
                         $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);

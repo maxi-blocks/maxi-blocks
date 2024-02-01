@@ -1169,7 +1169,7 @@ class MaxiBlocks_DynamicContent
     {
         $term = get_term($id);
 
-		// Check if $term is a WP_Error
+        // Check if $term is a WP_Error
         if (is_wp_error($term)) {
             return '';
         }

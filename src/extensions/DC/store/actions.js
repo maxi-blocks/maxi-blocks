@@ -1,4 +1,9 @@
-import { ignoredPostTypes, supportedPostTypes } from '../constants';
+import {
+	ignoredPostTypes,
+	ignoredTaxonomies,
+	supportedPostTypes,
+	supportedTaxonomies,
+} from '../constants';
 
 const actions = {
 	*loadCustomPostTypes() {
@@ -21,9 +26,26 @@ const actions = {
 			.map(postType => postType.slug);
 
 		return {
-			type: 'UPDATE_CUSTOM_POST_TYPES',
+			type: 'LOAD_CUSTOM_POST_TYPES',
 			customPostTypes,
 			customLimitTypes,
+		};
+	},
+	*loadCustomTaxonomies() {
+		const allTaxonomies = yield { type: 'GET_TAXONOMIES' };
+
+		const excludedTaxonomies = new Set([
+			...supportedTaxonomies,
+			...ignoredTaxonomies,
+		]);
+
+		const customTaxonomies = allTaxonomies
+			.filter(taxonomy => !excludedTaxonomies.has(taxonomy.slug))
+			.map(taxonomy => taxonomy.slug);
+
+		return {
+			type: 'LOAD_CUSTOM_TAXONOMIES',
+			customTaxonomies,
 		};
 	},
 };

@@ -24,3 +24,4 @@ const store = createReduxStore('maxiBlocks/dynamic-content', {
 register(store);
 
 dispatch('maxiBlocks/dynamic-content').loadCustomPostTypes();
+dispatch('maxiBlocks/dynamic-content').loadCustomTaxonomies();

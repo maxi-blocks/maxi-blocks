@@ -5,11 +5,12 @@ const initialState = {
 	orderTypes,
 	limitTypes,
 	customPostTypes: [],
+	customTaxonomies: [],
 };
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'UPDATE_CUSTOM_POST_TYPES':
+		case 'LOAD_CUSTOM_POST_TYPES':
 			return {
 				...state,
 				customPostTypes: action.customPostTypes,
@@ -20,7 +21,15 @@ const reducer = (state = initialState, action) => {
 				orderTypes: [...state.orderTypes, ...action.customPostTypes],
 				limitTypes: [...state.limitTypes, ...action.customLimitTypes],
 			};
-
+		case 'LOAD_CUSTOM_TAXONOMIES':
+			return {
+				...state,
+				customTaxonomies: action.customTaxonomies,
+				relationTypes: [
+					...state.relationTypes,
+					...action.customTaxonomies,
+				],
+			};
 		default:
 			return state;
 	}

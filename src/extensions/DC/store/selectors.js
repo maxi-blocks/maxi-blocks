@@ -19,6 +19,11 @@ const selectors = {
 
 		return false;
 	},
+	getCustomTaxonomies: state => {
+		if (state) return state.customTaxonomies;
+
+		return false;
+	},
 };
 
 export default selectors;

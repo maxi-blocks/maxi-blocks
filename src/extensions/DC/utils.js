@@ -194,7 +194,7 @@ export const getRelationKeyForId = (relation, type) => {
 	return null;
 };
 
-const getCustomTypeFields = (contentType, type) => {
+const getCustomPostTypeFields = (contentType, type) => {
 	// TODO: refactor possibly by filtering post/page fields
 	const fields = [];
 
@@ -241,11 +241,41 @@ const getCustomTypeFields = (contentType, type) => {
 	return fields;
 };
 
+const getCustomTaxonomyFields = type => {
+	const fields = [];
+
+	const taxonomy = select('core').getTaxonomy(type);
+
+	const addField = (label, value) => {
+		fields.push({
+			label: __(label, 'maxi-blocks'),
+			value,
+		});
+	};
+
+	addField('Name', 'name');
+	addField('Description', 'description');
+	addField('Slug', 'slug');
+	if (taxonomy.hierarchical) {
+		addField('Parent', 'parent');
+	}
+	addField('Count', 'count');
+	addField('Link', 'link');
+
+	return fields;
+};
+
 export const getFields = (contentType, type) => {
 	if (
 		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
 	)
-		return getCustomTypeFields(contentType, type);
+		return getCustomPostTypeFields(contentType, type);
+	if (
+		select('maxiBlocks/dynamic-content')
+			.getCustomTaxonomies()
+			.includes(type)
+	)
+		return getCustomTaxonomyFields(type);
 
 	return fieldOptions[contentType][type];
 };

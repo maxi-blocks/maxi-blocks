@@ -176,7 +176,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(
-		getKind(type) ?? 'postType', // TODO: don't use ?? here
+		getKind(type),
 		nameDictionary[type] ?? type,
 		{
 			include: id,
@@ -189,7 +189,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	// Get selected entity
 	const entity = await resolveSelect('core').getEntityRecord(
-		getKind(type) ?? 'postType',
+		getKind(type),
 		nameDictionary[type] ?? type,
 		id,
 		{

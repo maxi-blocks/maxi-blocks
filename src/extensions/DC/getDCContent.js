@@ -57,12 +57,20 @@ const getDCContent = async (dataRequest, clientId) => {
 		return `${capitalize(field)}: current`;
 	}
 
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
-		!['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			type
-		)
+		![
+			'tags',
+			'categories',
+			'product_tags',
+			'product_categories',
+			...customTaxonomies,
+		].includes(type)
 	) {
 		contentValue = data?.[field].rendered;
 	} else {
@@ -108,9 +116,13 @@ const getDCContent = async (dataRequest, clientId) => {
 		);
 	}
 	if (
-		['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			type
-		) &&
+		[
+			'tags',
+			'categories',
+			'product_tags',
+			'product_categories',
+			...customTaxonomies,
+		].includes(type) &&
 		field === 'parent'
 	) {
 		if (!contentValue || contentValue === 0)
@@ -120,7 +132,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 			const parent = await getEntityRecords(
 				'taxonomy',
-				nameDictionary[type],
+				nameDictionary[type] ?? type,
 				{
 					per_page: 1,
 					include: contentValue,

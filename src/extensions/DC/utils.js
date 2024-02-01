@@ -103,9 +103,10 @@ export const validationsValues = (
 ) => {
 	if (
 		source === 'acf' ||
-		select('maxiBlocks/dynamic-content')
-			.getCustomPostTypes()
-			.includes(variableValue)
+		[
+			...select('maxiBlocks/dynamic-content').getCustomPostTypes(),
+			...select('maxiBlocks/dynamic-content').getCustomTaxonomies(), // TODO: validation for custom types
+		].includes(variableValue)
 	)
 		return {};
 

@@ -20,12 +20,15 @@ import {
  */
 import { find, isEmpty, isEqual } from 'lodash';
 
-export const getIdOptions = async (type, relation, author) => {
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
-
-	if (![...idTypes, ...customPostTypes].includes(type)) return false;
+export const getIdOptions = async (
+	type,
+	relation,
+	author,
+	isCustomPostType,
+	isCustomTaxonomy
+) => {
+	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy)
+		return false;
 
 	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
@@ -66,9 +69,9 @@ export const getIdOptions = async (type, relation, author) => {
 			? 'product_tag'
 			: 'post_tag';
 		data = await getEntityRecords('taxonomy', tagType, args);
-	} else if (
-		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
-	) {
+	} else if (isCustomTaxonomy) {
+		data = await getEntityRecords('taxonomy', type, args);
+	} else if (isCustomPostType) {
 		data = await getEntityRecords('postType', type, args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
@@ -98,18 +101,27 @@ const getDCOptions = async (
 ) => {
 	const { type, id, field, relation, author } = dataRequest;
 
-	const data = await getIdOptions(type, relation, author);
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+	const isCustomPostType = customPostTypes.includes(type);
+	const isCustomTaxonomy = select('maxiBlocks/dynamic-content')
+		.getCustomTaxonomies()
+		.includes(type);
+
+	const data = await getIdOptions(
+		type,
+		relation,
+		author,
+		isCustomPostType,
+		isCustomTaxonomy
+	);
 
 	if (!data) return null;
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const newValues = {};
-
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
-	const isCustomPostType = customPostTypes.includes(type);
 
 	const newPostIdOptions = data.map(item => {
 		if (
@@ -132,6 +144,12 @@ const getDCOptions = async (
 
 			return {
 				label: `${item.id}${title ? ` - ${title}` : ''}`,
+				value: +item.id,
+			};
+		}
+		if (isCustomTaxonomy) {
+			return {
+				label: `${item.id} - ${item.name?.rendered ?? item.name}`,
 				value: +item.id,
 			};
 		}

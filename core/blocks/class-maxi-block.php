@@ -86,6 +86,12 @@ if (!class_exists('MaxiBlocks_Block')):
             'svg-icon-maxi',
         ];
 
+        protected $blocks_with_pagination = [
+            'row-maxi',
+            'group-maxi',
+            'container-maxi',
+        ];
+
         private static $dynamic_content_attributes = [
             'dc-error' => [
                 'type' => 'string',
@@ -259,6 +265,7 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function render_block($attributes, $content)
         {
+
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);

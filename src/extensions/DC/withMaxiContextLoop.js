@@ -47,6 +47,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			}
 			const { attributes, clientId, name, setAttributes } = ownProps;
 
+			const { uniqueID } = attributes;
+
 			let prevContextLoopAttributes = null;
 
 			if (!attributes.isFirstOnHierarchy) {
@@ -59,6 +61,13 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				attributes,
 				'contextLoop'
 			);
+
+			if (uniqueID === 'row-maxi-4caa4aec-u') {
+				console.log('contextLoopAttributes');
+				console.log(contextLoopAttributes);
+				console.log('attributes');
+				console.log(attributes);
+			}
 
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>

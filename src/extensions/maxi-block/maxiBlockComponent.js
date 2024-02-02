@@ -924,6 +924,11 @@ class MaxiBlockComponent extends Component {
 						},
 					}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+				...(!dcStatus && contextLoop?.['cl-status'] && {
+					context_loop: {
+						[uniqueID]: contextLoop,
+					},
+				}),
 			},
 		};
 	}

@@ -51,14 +51,90 @@ class MaxiBlocks_DynamicContent
     {
     }
 
+    public function render_pagination($attributes, $content)
+    {
+        if (!array_key_exists('cl-pagination', $attributes)) {
+            return $content;
+        }
+        if (!$attributes['cl-pagination']) {
+            return $content;
+        }
+
+        $unique_id = $attributes['uniqueID'];
+        if(str_ends_with($unique_id, '-u')) {
+            $cl = $this->get_cl($unique_id);
+            // echo '<code>';
+            // echo htmlspecialchars($content);
+            // echo '</code>';
+            $pagination_content = $this->get_pagination_content($cl);
+            // Check if the string ends with '</div>'
+            $content = substr($content, 0, -7);
+
+
+            return $content . $pagination_content . '</div>';
+        }
+        return $content;
+
+
+    }
+
+    public function get_pagination_content($cl)
+    {
+        if(empty($cl)) {
+            return '';
+        }
+        @list(
+            'cl-prev-text' => $cl_prev_text,
+            'cl-next-text' => $cl_next_text,
+            'cl-pagination-per-page' => $cl_pagination_per_page,
+            'cl-pagination-total-all' => $cl_pagination_total_all,
+        ) = $cl;
+
+        $content = '<div class="maxi-pagination">';
+        $content .= '<div class="maxi-pagination__prev">';
+        $content .= '<a href="'.'?cl&cl-page=1'.'" class="maxi-pagination__link">';
+        $content .= '<span class="maxi-pagination__icon">';
+        $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
+        $content .= '<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>';
+        $content .= '</svg>';
+        $content .= '</span>';
+        $content .= '<span class="maxi-pagination__text">'.'Previous'.'</span>';
+        $content .= '</a>';
+        $content .= '</div>';
+        $content .= '<div class="maxi-pagination__next">';
+        $content .= '<a href="'.'?cl&cl-page=2'.'" class="maxi-pagination__link">';
+        $content .= '<span class="maxi-pagination__text">'.'Next'.'</span>';
+        $content .= '<span class="maxi-pagination__icon">';
+        $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
+        $content .= '<path d="M0 0h24v24H0z" fill="none"/>';
+        $content .= '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>';
+        $content .= '</svg>';
+        $content .= '</span>';
+        $content .= '</a>';
+        $content .= '</div>';
+        $content .= '</div>';
+
+        return $content;
+
+    }
+
 
     public function render_dc($attributes, $content)
     {
+
         if (!array_key_exists('dc-status', $attributes)) {
+            if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
+                return $this->render_pagination($attributes, $content);
+            }
             return $content;
         }
         if (!$attributes['dc-status']) {
             return $content;
+        }
+
+        $pagination_page = 1;
+        if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
+            $pagination_page = $_GET['cl-page'];
         }
 
         $unique_id = $attributes['uniqueID'];
@@ -73,7 +149,6 @@ class MaxiBlocks_DynamicContent
 
         if(str_ends_with($unique_id, '-u')) {
             self::$custom_data = $this->get_dc_cl($unique_id);
-
         } elseif (self::$custom_data === null) {
 
             if (class_exists('MaxiBlocks_Styles')) {
@@ -89,6 +164,16 @@ class MaxiBlocks_DynamicContent
 
         if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
             $context_loop = self::$custom_data[$unique_id];
+            // echo '<pre>';
+            // print_r(self::$custom_data);
+            // echo '</pre>';
+            $accumulator = $context_loop['cl-accumulator'];
+            if(isset($_GET['cl-page'])) {
+                $context_loop['cl-accumulator'] = $accumulator + 3 * ($pagination_page - 1);
+            }
+            // echo '<pre>';
+            // print_r($context_loop);
+            // echo '</pre>';
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
@@ -1161,6 +1246,29 @@ class MaxiBlocks_DynamicContent
         if (!empty($block_meta)) {
             $block_meta_parsed = json_decode($block_meta, true);
             $response = $block_meta_parsed['dynamic_content'] ?? [];
+            return $response;
+        }
+    }
+
+    /**
+    * Return CL for blocks without DC (for pagination)
+    *
+    * @param string $unique_id
+    */
+    public function get_cl(string $id)
+    {
+        global $wpdb;
+
+        $block_meta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                $id
+            )
+        );
+
+        if (!empty($block_meta)) {
+            $block_meta_parsed = json_decode($block_meta, true);
+            $response = $block_meta_parsed['context_loop'] ?? [];
             return $response;
         }
     }

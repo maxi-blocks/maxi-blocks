@@ -33,7 +33,10 @@ import { textIcon } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import {
+	blockMigrator,
+	listBrMigrator,
+} from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -55,6 +58,7 @@ registerBlockType(metadata, {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [listBrMigrator],
 	}),
 	customCss,
 	scProps,

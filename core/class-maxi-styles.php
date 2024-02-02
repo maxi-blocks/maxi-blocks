@@ -1149,9 +1149,11 @@ class MaxiBlocks_Styles
                     }
                     if($script === 'relations') {
                         foreach ($meta[$block_name] as $json) {
-                            $array = json_decode($json, true);  // Decode the JSON string into an array
-                            if (isset($array['relations'])) {
-                                $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            if (is_string($json)) {
+                                $array = json_decode($json, true);  // Decode the JSON string into an array
+                                if (isset($array['relations'])) {
+                                    $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                                }
                             }
                         }
                     } else {

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-05T10:54:13+00:00\n"
+"POT-Creation-Date: 2024-02-05T15:05:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -3142,12 +3142,12 @@ msgid "Navigation menu globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:628
+#: src/editor/style-cards/maxiStyleCardsTab.js:636
 msgid "Colour palette"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:783
+#: src/editor/style-cards/maxiStyleCardsTab.js:791
 msgid "Typography globals"
 msgstr ""
 

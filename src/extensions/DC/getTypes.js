@@ -13,7 +13,7 @@ import { typeOptions } from './constants';
  */
 import { isEmpty } from 'lodash';
 
-const getTypes = async contentType => {
+const getTypes = (contentType, group = true) => {
 	const customPostTypes = select('maxiBlocks/dynamic-content')
 		.getCustomPostTypes()
 		.map(type => {
@@ -35,12 +35,20 @@ const getTypes = async contentType => {
 			};
 		});
 
-	return isEmpty(customPostTypes)
-		? typeOptions[contentType]
-		: {
-				'Standard types': typeOptions[contentType],
-				'Custom types': [...customPostTypes, ...customTaxonomies],
-		  };
+	if (group) {
+		return isEmpty(customPostTypes)
+			? typeOptions[contentType]
+			: {
+					'Standard types': typeOptions[contentType],
+					'Custom types': [...customPostTypes, ...customTaxonomies],
+			  };
+	}
+
+	return [
+		...typeOptions[contentType],
+		...customPostTypes,
+		...customTaxonomies,
+	];
 };
 
 export default getTypes;

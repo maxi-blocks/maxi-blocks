@@ -6,6 +6,8 @@ const initialState = {
 	limitTypes,
 	customPostTypes: [],
 	customTaxonomies: [],
+	wasCustomPostTypesLoaded: false,
+	wasCustomTaxonomiesLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +22,7 @@ const reducer = (state = initialState, action) => {
 				],
 				orderTypes: [...state.orderTypes, ...action.customPostTypes],
 				limitTypes: [...state.limitTypes, ...action.customLimitTypes],
+				wasCustomPostTypesLoaded: true,
 			};
 		case 'LOAD_CUSTOM_TAXONOMIES':
 			return {
@@ -29,6 +32,7 @@ const reducer = (state = initialState, action) => {
 					...state.relationTypes,
 					...action.customTaxonomies,
 				],
+				wasCustomTaxonomiesLoaded: true,
 			};
 		default:
 			return state;

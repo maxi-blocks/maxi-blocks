@@ -11,7 +11,6 @@ import {
 	fieldOptions,
 	relationOptions,
 	orderByRelations,
-	typeOptions,
 	getHaveLoadedIntegrationsOptions,
 	currentEntityTypes,
 	nameDictionary,
@@ -19,6 +18,7 @@ import {
 	postTypeRelationOptions,
 	taxonomyRelationOptions,
 } from './constants';
+import getTypes from './getTypes';
 
 /**
  * External dependencies
@@ -92,106 +92,6 @@ export const getTaxonomyContent = async (
 	return linkStatus
 		? `<span>${namesArray.join(`${delimiterContent} `)}</span>`
 		: namesArray.join(`${delimiterContent} `);
-};
-
-export const validationsValues = (
-	variableValue,
-	field,
-	relation,
-	contentType,
-	source = 'wp',
-	isCL = false
-) => {
-	if (
-		source === 'acf' ||
-		[
-			...select('maxiBlocks/dynamic-content').getCustomPostTypes(),
-			...select('maxiBlocks/dynamic-content').getCustomTaxonomies(), // TODO: validation for custom types
-		].includes(variableValue)
-	)
-		return {};
-
-	const prefix = isCL ? 'cl-' : 'dc-';
-
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue]?.map(
-		x => x.value
-	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue]?.map(
-		x => x.value
-	);
-	const typeResult = typeOptions[contentType]?.map(item => item.value);
-
-	return {
-		...(!isCL &&
-			fieldResult &&
-			!fieldResult.includes(field) && {
-				[`${prefix}field`]: fieldResult[0],
-			}),
-		...(relationResult &&
-			!relationResult.includes(relation) && {
-				[`${prefix}relation`]: relationResult[0],
-			}),
-		...(typeResult &&
-			!typeResult.includes(variableValue) &&
-			// Only validate type of DC once all integrations have loaded
-			getHaveLoadedIntegrationsOptions() && {
-				[`${prefix}type`]: typeResult[0],
-			}),
-	};
-};
-
-export const getDCDateCustomFormat = date => moment.parseFormat(date);
-
-export const getDCOrder = (relation, orderBy) => {
-	const dictionary = {
-		'by-date': 'date',
-		alphabetical: 'title',
-	};
-
-	if (orderByRelations.includes(relation)) {
-		return dictionary[orderBy];
-	}
-
-	return dictionary[relation];
-};
-
-export const canCurrentEntityBeSelected = type =>
-	currentEntityTypes.includes(type) &&
-	nameDictionary[type] === select('core/editor').getCurrentPostType();
-
-export const validateRelations = (type, relation, isCL) => {
-	const prefix = isCL ? 'cl-' : 'dc-';
-
-	if (relation === 'current' && !canCurrentEntityBeSelected(type)) {
-		const currentType = select('core/editor').getCurrentPostType();
-		const postTypeToDCType = invert(nameDictionary);
-
-		if (currentEntityTypes.includes(postTypeToDCType[currentType])) {
-			return { [`${prefix}type`]: postTypeToDCType[currentType] };
-		}
-	}
-
-	return null;
-};
-
-export const getAttributesWithoutPrefix = (attributes, prefix) => {
-	const result = {};
-
-	Object.keys(attributes).forEach(key => {
-		if (key.startsWith(prefix)) {
-			result[key.replace(prefix, '')] = attributes[key];
-		}
-	});
-
-	return result;
-};
-
-export const getRelationKeyForId = (relation, type) => {
-	const relationType = relationDictionary[relation];
-	if (relationType) {
-		return relationType[type] || relationType.default;
-	}
-	return null;
 };
 
 const getCustomPostTypeFields = (contentType, type) => {
@@ -315,12 +215,133 @@ const getPostTypeRelationOptions = type => {
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
-export const getCustomRelationOptions = type => {
+export const getRelationOptions = (type, contentType) => {
 	if (
 		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
 	) {
 		return getPostTypeRelationOptions(type);
 	}
+	if (
+		select('maxiBlocks/dynamic-content')
+			.getCustomTaxonomies()
+			.includes(type)
+	)
+		return getTaxonomyRelationOptions();
 
-	return getTaxonomyRelationOptions();
+	const options = relationOptions[contentType]?.[type];
+
+	const hideCurrent = {
+		post: 'pages',
+		page: 'posts',
+	};
+
+	if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+		return options.filter(({ value }) => value !== 'current');
+	}
+
+	return options;
+};
+
+export const validationsValues = (
+	variableValue,
+	field,
+	relation,
+	contentType,
+	source = 'wp',
+	isCL = false
+) => {
+	if (
+		source === 'acf' ||
+		[
+			...select(
+				'maxiBlocks/dynamic-content'
+			).getWasCustomPostTypesLoaded(),
+			...select(
+				'maxiBlocks/dynamic-content'
+			).getWasCustomTaxonomiesLoaded(),
+		].includes(variableValue)
+	)
+		return {};
+
+	const prefix = isCL ? 'cl-' : 'dc-';
+
+	const fieldResult = getFields(contentType, variableValue)?.map(
+		x => x.value
+	);
+	const relationResult = getRelationOptions(variableValue, contentType)?.map(
+		x => x.value
+	);
+	const typeResult = getTypes(contentType, false)?.map(item => item.value);
+
+	return {
+		...(!isCL &&
+			fieldResult &&
+			!fieldResult.includes(field) && {
+				[`${prefix}field`]: fieldResult[0],
+			}),
+		...(relationResult &&
+			!relationResult.includes(relation) && {
+				[`${prefix}relation`]: relationResult[0],
+			}),
+		...(typeResult &&
+			!typeResult.includes(variableValue) &&
+			// Only validate type of DC once all integrations have loaded
+			getHaveLoadedIntegrationsOptions() && {
+				[`${prefix}type`]: typeResult[0],
+			}),
+	};
+};
+
+export const getDCDateCustomFormat = date => moment.parseFormat(date);
+
+export const getDCOrder = (relation, orderBy) => {
+	const dictionary = {
+		'by-date': 'date',
+		alphabetical: 'title',
+	};
+
+	if (orderByRelations.includes(relation)) {
+		return dictionary[orderBy];
+	}
+
+	return dictionary[relation];
+};
+
+export const canCurrentEntityBeSelected = type =>
+	currentEntityTypes.includes(type) &&
+	nameDictionary[type] === select('core/editor').getCurrentPostType();
+
+export const validateRelations = (type, relation, isCL) => {
+	const prefix = isCL ? 'cl-' : 'dc-';
+
+	if (relation === 'current' && !canCurrentEntityBeSelected(type)) {
+		const currentType = select('core/editor').getCurrentPostType();
+		const postTypeToDCType = invert(nameDictionary);
+
+		if (currentEntityTypes.includes(postTypeToDCType[currentType])) {
+			return { [`${prefix}type`]: postTypeToDCType[currentType] };
+		}
+	}
+
+	return null;
+};
+
+export const getAttributesWithoutPrefix = (attributes, prefix) => {
+	const result = {};
+
+	Object.keys(attributes).forEach(key => {
+		if (key.startsWith(prefix)) {
+			result[key.replace(prefix, '')] = attributes[key];
+		}
+	});
+
+	return result;
+};
+
+export const getRelationKeyForId = (relation, type) => {
+	const relationType = relationDictionary[relation];
+	if (relationType) {
+		return relationType[type] || relationType.default;
+	}
+	return null;
 };

@@ -24,6 +24,16 @@ const selectors = {
 
 		return false;
 	},
+	getWasCustomPostTypesLoaded: state => {
+		if (state) return state.wasCustomPostTypesLoaded;
+
+		return false;
+	},
+	getWasCustomTaxonomiesLoaded: state => {
+		if (state) return state.wasCustomTaxonomiesLoaded;
+
+		return false;
+	},
 };
 
 export default selectors;

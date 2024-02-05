@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, select, useSelect } from '@wordpress/data';
+import { resolveSelect, useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -30,13 +30,12 @@ const ToggleSwitch = loadable(() => import('../toggle-switch'));
 const TextControl = loadable(() => import('../text-control'));
 
 import {
-	getCustomRelationOptions,
 	getFields,
 	validationsValues,
+	getRelationOptions,
 } from '../../extensions/DC/utils';
 import {
 	fieldOptions,
-	relationOptions,
 	limitOptions,
 	limitFields,
 	orderOptions,
@@ -157,20 +156,6 @@ const DynamicContent = props => {
 		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
 	];
 
-	const isCustomType = useSelect(
-		select => {
-			const customPostTypes = select(
-				'maxiBlocks/dynamic-content'
-			).getCustomPostTypes();
-			const customTaxonomies = select(
-				'maxiBlocks/dynamic-content'
-			).getCustomTaxonomies();
-
-			return [...customPostTypes, ...customTaxonomies].includes(type);
-		},
-		[type]
-	);
-
 	const currentFieldOptions = useMemo(
 		() => getFields(contentType, type),
 		[contentType, type]
@@ -245,29 +230,14 @@ const DynamicContent = props => {
 		}
 	});
 
-	const currentRelationOptions = useMemo(() => {
-		if (isCustomType) {
-			return getCustomRelationOptions(type);
-		}
-
-		const options = relationOptions[contentType]?.[type];
-
-		const hideCurrent = {
-			post: 'pages',
-			page: 'posts',
-		};
-
-		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			return options.filter(({ value }) => value !== 'current');
-		}
-
-		return options;
-	}, [contentType, isCustomType, type]);
+	const currentRelationOptions = useMemo(
+		() => getRelationOptions(type, contentType),
+		[contentType, type]
+	);
 
 	useEffect(() => {
-		getTypes(source === 'wp' ? contentType : source).then(postTypes => {
-			setPostTypesOptions(postTypes);
-		});
+		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		setPostTypesOptions(postTypes);
 	}, [contentType, source]);
 
 	useEffect(() => {

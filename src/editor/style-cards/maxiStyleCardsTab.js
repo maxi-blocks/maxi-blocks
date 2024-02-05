@@ -26,7 +26,19 @@ const TypographyControl = loadable(() =>
 	import('../../components/typography-control')
 );
 const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
-import { processSCAttribute, getDefaultSCAttribute } from './utils';
+const AdvancedNumberControl = loadable(() =>
+	import('../../components/advanced-number-control')
+);
+const PaddingControl = loadable(() =>
+	import('../../components/padding-control')
+);
+import {
+	processSCAttribute,
+	getDefaultSCAttribute,
+	showHideHamburgerNavigation,
+	processSCAttributes,
+	removeNavigationHoverUnderline,
+} from './utils';
 import {
 	getDefaultSCValue,
 	getTypographyFromSC,
@@ -165,6 +177,24 @@ const SCAccordion = props => {
 		tag => groupAttr === tag
 	);
 
+	const ifNavigationTab = ['navigation'].some(tag => groupAttr === tag);
+
+	const overwriteMobile = ifNavigationTab
+		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
+		: false;
+
+	const alwaysShowMobile = ifNavigationTab
+		? processSCAttribute(SC, 'always-show-mobile', groupAttr)
+		: false;
+
+	const removeHoverUnderline = ifNavigationTab
+		? processSCAttribute(SC, 'remove-hover-underline', groupAttr)
+		: false;
+
+	const showMobileFrom = ifNavigationTab
+		? processSCAttribute(SC, 'show-mobile-down-from', groupAttr)
+		: false;
+
 	return (
 		<>
 			{!disableTypography && (
@@ -216,6 +246,107 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
+			{ifNavigationTab && (
+				<>
+					<PaddingControl
+						{...processSCAttributes(SC, 'padding', groupAttr)}
+						label={__('Item padding', 'maxi-blocks')}
+						onChange={obj => onChangeValue(obj, groupAttr)}
+						breakpoint={breakpoint}
+						disableAuto
+					/>
+					<ToggleSwitch
+						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+						label={__(
+							'Remove item underline on hover',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-remove-hover-underline'
+						selected={removeHoverUnderline}
+						onChange={val => {
+							onChangeValue(
+								{
+									'remove-hover-underline': val,
+								},
+								groupAttr
+							);
+							removeNavigationHoverUnderline(val);
+						}}
+					/>
+					<ToggleSwitch
+						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+						label={__(
+							'Overwrite mobile navigation breakpoint',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-overwrite-mobile'
+						selected={overwriteMobile || false}
+						onChange={val => {
+							onChangeValue(
+								{
+									'overwrite-mobile': val,
+								},
+								groupAttr
+							);
+							if (val)
+								showHideHamburgerNavigation(showMobileFrom);
+						}}
+					/>
+					{overwriteMobile && (
+						<>
+							<ToggleSwitch
+								// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
+								label={__(
+									'Show mobile menu for all screen sizes',
+									'maxi-blocks'
+								)}
+								className='maxi-style-cards-control__toggle-always-show-mobile'
+								selected={alwaysShowMobile}
+								onChange={val => {
+									onChangeValue(
+										{
+											'always-show-mobile': val,
+										},
+										groupAttr
+									);
+									showHideHamburgerNavigation(
+										val ? 'show' : 'hide'
+									);
+								}}
+							/>
+							{!alwaysShowMobile && (
+								<AdvancedNumberControl
+									label={__(
+										'Show mobile menu for screen sizes down from (px)',
+										'maxi-blocks'
+									)}
+									value={showMobileFrom}
+									onChangeValue={val => {
+										onChangeValue(
+											{
+												'show-mobile-down-from': val,
+											},
+											groupAttr
+										);
+
+										showHideHamburgerNavigation(val);
+									}}
+									onReset={() =>
+										onChangeValue(
+											{
+												'show-mobile-down-from': 767,
+											},
+											groupAttr
+										)
+									}
+									disableRange
+									max={5000}
+								/>
+							)}
+						</>
+					)}
+				</>
+			)}
 		</>
 	);
 };
@@ -412,6 +543,76 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'palette-color',
 				paletteOpacity: 'palette-opacity',
 				color: 'color',
+			},
+		],
+	};
+	const navigationTabs = {
+		label: __('Navigation menu globals', 'maxi-blocks'),
+		groupAttr: 'navigation',
+		colorContent: [
+			{
+				label: 'Item links',
+				globalAttr: 'menu-item-color-global',
+				paletteStatus: 'menu-item-palette-status',
+				paletteColor: 'menu-item-palette-color',
+				paletteOpacity: 'menu-item-palette-opacity',
+				color: 'menu-item-color',
+			},
+			{
+				label: 'Item hover',
+				globalAttr: 'menu-item-hover-color-global',
+				paletteStatus: 'menu-item-hover-palette-status',
+				paletteColor: 'menu-item-hover-palette-color',
+				paletteOpacity: 'menu-item-hover-palette-opacity',
+				color: 'menu-item-hover-color',
+			},
+			{
+				label: 'Item current',
+				globalAttr: 'menu-item-current-color-global',
+				paletteStatus: 'menu-item-current-palette-status',
+				paletteColor: 'menu-item-current-palette-color',
+				paletteOpacity: 'menu-item-current-palette-opacity',
+				color: 'menu-item-current-color',
+			},
+			{
+				label: 'Item visited',
+				globalAttr: 'menu-item-visited-color-global',
+				paletteStatus: 'menu-item-visited-palette-status',
+				paletteColor: 'menu-item-visited-palette-color',
+				paletteOpacity: 'menu-item-visited-palette-opacity',
+				color: 'menu-item-visited-color',
+			},
+			{
+				label: 'Mobile menu icon / text',
+				globalAttr: 'menu-burger-color-global',
+				paletteStatus: 'menu-burger-palette-status',
+				paletteColor: 'menu-burger-palette-color',
+				paletteOpacity: 'menu-burger-palette-opacity',
+				color: 'menu-burger-color',
+			},
+			{
+				label: 'Sub-item background',
+				globalAttr: 'menu-item-sub-bg-color-global',
+				paletteStatus: 'menu-item-sub-bg-palette-status',
+				paletteColor: 'menu-item-sub-bg-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-palette-opacity',
+				color: 'menu-item-sub-bg-color',
+			},
+			{
+				label: 'Sub-item background hover',
+				globalAttr: 'menu-item-sub-bg-hover-color-global',
+				paletteStatus: 'menu-item-sub-bg-hover-palette-status',
+				paletteColor: 'menu-item-sub-bg-hover-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-hover-palette-opacity',
+				color: 'menu-item-sub-bg-hover-color',
+			},
+			{
+				label: 'Sub-item background current',
+				globalAttr: 'menu-item-sub-bg-current-color-global',
+				paletteStatus: 'menu-item-sub-bg-current-palette-status',
+				paletteColor: 'menu-item-sub-bg-current-palette-color',
+				paletteOpacity: 'menu-item-sub-bg-current-palette-opacity',
+				color: 'menu-item-sub-bg-current-color',
 			},
 		],
 	};
@@ -616,6 +817,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								SCStyle={SCStyle}
 								onChangeValue={onChangeValue}
 								disableTypography
+							/>
+						),
+					},
+					{
+						label: navigationTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--navigation',
+						content: (
+							<SCAccordion
+								key={`sc-accordion__${navigationTabs.label}`}
+								{...navigationTabs}
+								breakpoint={breakpoint}
+								SC={SC}
+								SCStyle={SCStyle}
+								onChangeValue={onChangeValue}
 							/>
 						),
 					},

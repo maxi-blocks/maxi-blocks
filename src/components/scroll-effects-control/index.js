@@ -537,6 +537,11 @@ const ScrollEffectsControl = props => {
 				hasBorder
 			/>
 			{scrollTypes.map(type => {
+				const isBlockZone = getLastBreakpointAttribute({
+					target: `scroll-${type}-is-block-zone`,
+					breakpoint,
+					attributes: props,
+				});
 				const isPreviewEnabled = getLastBreakpointAttribute({
 					target: `scroll-${type}-preview-status`,
 					breakpoint,
@@ -672,26 +677,41 @@ const ScrollEffectsControl = props => {
 											`scroll-${type}-delay-general`
 										)}
 									/>
-									<SelectControl
+									<ToggleSwitch
 										label={__(
-											'Viewport entry',
+											'Use block height as zone reference',
 											'maxi-blocks'
 										)}
-										value={getLastBreakpointAttribute({
-											target: `scroll-${type}-viewport-top`,
-											breakpoint,
-											attributes: props,
-										})}
+										selected={isBlockZone}
 										onChange={val =>
 											onChange({
-												[`scroll-${type}-viewport-top-${breakpoint}`]:
+												[`scroll-${type}-is-block-zone-${breakpoint}`]:
 													val,
 											})
 										}
-										newStyle
-										options={viewportOptions}
-										defaultValue='mid'
 									/>
+									{isBlockZone && (
+										<SelectControl
+											label={__(
+												'Viewport entry',
+												'maxi-blocks'
+											)}
+											value={getLastBreakpointAttribute({
+												target: `scroll-${type}-viewport-top`,
+												breakpoint,
+												attributes: props,
+											})}
+											onChange={val =>
+												onChange({
+													[`scroll-${type}-viewport-top-${breakpoint}`]:
+														val,
+												})
+											}
+											newStyle
+											options={viewportOptions}
+											defaultValue='mid'
+										/>
+									)}
 									{/*
 									// TODO: fix #5002
 									<ToggleSwitch

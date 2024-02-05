@@ -66,6 +66,7 @@ export const scroll = (() => {
 		generateAttr(type, 'delay', 'number', 0);
 		generateAttr(type, 'viewport-top', 'string', 'mid'); // 100
 		generateAttr(type, 'status-reverse', 'boolean', true);
+		generateAttr(type, 'is-block-zone', 'boolean', false);
 
 		if (scrollTypesWithUnits.includes(type)) {
 			generateAttr(type, 'unit', 'string', 'px');

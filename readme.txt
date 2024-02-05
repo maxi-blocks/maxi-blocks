@@ -1,7 +1,7 @@
 === MaxiBlocks Free Page Builder & Template Library ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
+Tags: block, blocks, gutenberg, gutenberg blocks, page builder, template library, fse, icons, landing pages, templates, icon block, starter templates
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.3
@@ -10,7 +10,7 @@ Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
+Classic page builder meets modern WordPress. Work faster with 2000+ block patterns, 150+ page templates, 13.5k SVG icons & 100 free global style cards
 
 == Description ==
 
@@ -427,6 +427,10 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 5 February 2024_
+MaxiBlocks v1.7.0
+* Update: Add global settings for navigation menu to Style Cards editor.
 
 _Updates: 1 February 2024_
 MaxiBlocks v1.6.1

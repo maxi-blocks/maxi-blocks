@@ -92,7 +92,7 @@ class MaxiBlocks_DynamicContent
 
         $content = '<div class="maxi-pagination">';
         $content .= '<div class="maxi-pagination__prev">';
-        $content .= '<a href="'.'?cl&cl-page=1'.'" class="maxi-pagination__link">';
+        $content .= '<a href="'.'?cl&cl-page=1#container-maxi-1c1f9e93-u'.'" class="maxi-pagination__link">';
         $content .= '<span class="maxi-pagination__icon">';
         $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
         $content .= '<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>';
@@ -102,7 +102,7 @@ class MaxiBlocks_DynamicContent
         $content .= '</a>';
         $content .= '</div>';
         $content .= '<div class="maxi-pagination__next">';
-        $content .= '<a href="'.'?cl&cl-page=2'.'" class="maxi-pagination__link">';
+        $content .= '<a href="'.'?cl&cl-page=2#container-maxi-1c1f9e93-u'.'" class="maxi-pagination__link">';
         $content .= '<span class="maxi-pagination__text">'.'Next'.'</span>';
         $content .= '<span class="maxi-pagination__icon">';
         $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';

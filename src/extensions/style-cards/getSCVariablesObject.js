@@ -347,6 +347,9 @@ const getSCVariablesObject = (
 								'menu-item-sub-bg-current',
 								style
 							);
+					if (obj['menu-mobile-bg-color-global'])
+						response[`--maxi-${style}-menu-mobile-bg`] =
+							getColorString(obj, 'menu-mobile-bg', style);
 
 					break;
 

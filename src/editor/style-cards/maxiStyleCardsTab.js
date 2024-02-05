@@ -583,14 +583,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'menu-item-visited-color',
 			},
 			{
-				label: 'Mobile menu icon / text',
-				globalAttr: 'menu-burger-color-global',
-				paletteStatus: 'menu-burger-palette-status',
-				paletteColor: 'menu-burger-palette-color',
-				paletteOpacity: 'menu-burger-palette-opacity',
-				color: 'menu-burger-color',
-			},
-			{
 				label: 'Sub-item background',
 				globalAttr: 'menu-item-sub-bg-color-global',
 				paletteStatus: 'menu-item-sub-bg-palette-status',
@@ -613,6 +605,22 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'menu-item-sub-bg-current-palette-color',
 				paletteOpacity: 'menu-item-sub-bg-current-palette-opacity',
 				color: 'menu-item-sub-bg-current-color',
+			},
+			{
+				label: 'Mobile menu icon / text',
+				globalAttr: 'menu-burger-color-global',
+				paletteStatus: 'menu-burger-palette-status',
+				paletteColor: 'menu-burger-palette-color',
+				paletteOpacity: 'menu-burger-palette-opacity',
+				color: 'menu-burger-color',
+			},
+			{
+				label: 'Mobile menu background',
+				globalAttr: 'menu-mobile-bg-color-global',
+				paletteStatus: 'menu-mobile-bg-palette-status',
+				paletteColor: 'menu-mobile-bg-palette-color',
+				paletteOpacity: 'menu-mobile-bg-palette-opacity',
+				color: 'menu-mobile-bg-color',
 			},
 		],
 	};

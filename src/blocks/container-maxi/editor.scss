@@ -10,6 +10,13 @@
 	&__container {
 		width: 100%;
 	}
+	/* Navigation menu */
+	.wp-block-navigation {
+		.block-list-appender {
+			width: 24px;
+			margin: -15px;
+		}
+	}
 }
 
 body.maxi-blocks--active {

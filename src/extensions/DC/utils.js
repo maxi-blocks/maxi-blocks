@@ -216,27 +216,25 @@ const getPostTypeRelationOptions = type => {
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
 export const getRelationOptions = (type, contentType) => {
+	let options;
+
 	if (
 		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
 	) {
-		return getPostTypeRelationOptions(type);
-	}
-	if (
+		options = getPostTypeRelationOptions(type);
+	} else if (
 		select('maxiBlocks/dynamic-content')
 			.getCustomTaxonomies()
 			.includes(type)
 	)
-		return getTaxonomyRelationOptions();
+		options = getTaxonomyRelationOptions();
+	else options = relationOptions[contentType]?.[type];
 
-	const options = relationOptions[contentType]?.[type];
-
-	const hideCurrent = {
-		post: 'pages',
-		page: 'posts',
-	};
-
-	if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-		return options.filter(({ value }) => value !== 'current');
+	if (select('core/editor').getCurrentPostType() === type) {
+		options.push({
+			label: __('Get current', 'maxi-blocks'),
+			value: 'current',
+		});
 	}
 
 	return options;

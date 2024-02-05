@@ -428,7 +428,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates: 5 February 2024_
+_Updates: 6 February 2024_
 MaxiBlocks v1.7.0
 * Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
  1. Typography, colour, and padding settings for menu items.

@@ -1,16 +1,16 @@
 === MaxiBlocks Free Page Builder & Template Library ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
+Tags: block, blocks, gutenberg, gutenberg blocks, page builder, template library, fse, icons, landing pages, templates, icon block, starter templates
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.3
 Requires PHP: 8.0
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
+Classic page builder meets modern WordPress. Work faster with 2000+ block patterns, 150+ page templates, 13.5k SVG icons & 100 free global style cards
 
 == Description ==
 
@@ -427,6 +427,16 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 6 February 2024_
+MaxiBlocks v1.7.0
+* Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
+ 1. Typography, colour, and padding settings for menu items.
+ 2. Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
+ 3. Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
+ 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nave menu items.
+How to create a menu:
+Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
 
 _Updates: 1 February 2024_
 MaxiBlocks v1.6.1

@@ -483,6 +483,11 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			});
 		});
 
+		// mobile menu background
+		const mobileMenuBgTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open`;
+
+		addedResponse += `${mobileMenuBgTarget} { background-color: var(--maxi-${style}-menu-mobile-bg) !important; }`;
+
 		// sub-menus
 		const subMenuTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li`;
 		const subMenuTargetEditor = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div`;

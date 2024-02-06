@@ -443,7 +443,12 @@ const ContextLoop = props => {
 														'Items total',
 														'maxi-blocks'
 													)}
-													value={paginationTotal}
+													step={paginationPerPage}
+													min={paginationPerPage * 2}
+													value={
+														paginationTotal ||
+														paginationPerPage * 2
+													}
 													onChangeValue={value =>
 														changeProps({
 															'cl-pagination-total':

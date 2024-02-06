@@ -51,6 +51,84 @@ class MaxiBlocks_DynamicContent
     {
     }
 
+    public function get_last_closing_tag($content)
+    {
+        // Get the position of the last '>' character
+        $last_closing_bracket_pos = strrpos($content, '>');
+
+        // If not found, the HTML might be invalid or empty
+        if ($last_closing_bracket_pos === false) {
+            return '';
+        }
+
+        // Find the position of the last '<' before the last '>'
+        $last_opening_bracket_pos = strrpos($content, '<', -$last_closing_bracket_pos);
+
+        if ($last_opening_bracket_pos === false) {
+            return '';
+        }
+
+        // Extract the tag
+        $last_tag = substr($content, $last_opening_bracket_pos, $last_closing_bracket_pos - $last_opening_bracket_pos + 1);
+
+        // Check if this is a closing tag
+        if (strpos($last_tag, '</') !== 0) {
+            return '';
+        }
+
+        return $last_tag;
+    }
+
+    public function get_first_id_value($content)
+    {
+        $pattern = '/id="([^"]+)"/i';
+
+        if (preg_match($pattern, $content, $matches)) {
+            return $matches[1];
+        } else {
+            return '';
+        }
+    }
+
+    public function get_total_posts_by_relation($relation, $id, $type = 'post')
+    {
+        // Initialize the query args array
+        $args = array(
+            'post_type'      => $type, // Set to 'post' by default, can be overridden to 'page' or any custom post type
+            'post_status'    => 'publish', // Get only published posts/pages
+            'fields'         => 'ids', // Retrieve only the IDs for performance
+            'nopaging'       => true, // Retrieve all posts/pages matching the criteria
+        );
+
+        // Modify the query based on the relation
+        switch ($relation) {
+            case 'by-category':
+                if ($type !== 'post') {
+                    throw new Exception("Categories are generally not associated with pages or custom post types.");
+                }
+                $args['category__in'] = array($id); // Array of category IDs
+                break;
+            case 'by-tag':
+                if ($type !== 'post') {
+                    throw new Exception("Tags are generally not associated with pages or custom post types.");
+                }
+                $args['tag__in'] = array($id); // Array of tag IDs
+                break;
+            case 'by-author':
+                // Author queries can be performed on both posts and pages
+                $args['author'] = $id; // Author ID
+                break;
+                // Removed the default case that throws an exception
+        }
+
+        // Create a new WP_Query instance
+        $query = new WP_Query($args);
+
+        // Return the total number of posts/pages found
+        return $query->found_posts;
+    }
+
+
     public function render_pagination($attributes, $content)
     {
         if (!array_key_exists('cl-pagination', $attributes)) {
@@ -63,54 +141,87 @@ class MaxiBlocks_DynamicContent
         $unique_id = $attributes['uniqueID'];
         if(str_ends_with($unique_id, '-u')) {
             $cl = $this->get_cl($unique_id);
-            // echo '<code>';
-            // echo htmlspecialchars($content);
-            // echo '</code>';
-            $pagination_content = $this->get_pagination_content($cl);
-            // Check if the string ends with '</div>'
-            $content = substr($content, 0, -7);
-
-
-            return $content . $pagination_content . '</div>';
+            try {
+                $last_tag = $this->get_last_closing_tag($content);
+                $pagination_anchor = $this->get_first_id_value($content);
+                $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
+                $content = substr($content, 0, strrpos($content, '<'));
+                $content = $content . $pagination_content . $last_tag;
+                return $content;
+            } catch (Exception $e) {
+                // Handle exception
+                echo 'Error: ',  $e->getMessage(), "\n";
+            }
         }
         return $content;
 
-
     }
 
-    public function get_pagination_content($cl)
+    public function get_pagination_content($cl, $pagination_anchor)
     {
         if(empty($cl)) {
             return '';
         }
+
         @list(
             'cl-prev-text' => $cl_prev_text,
             'cl-next-text' => $cl_next_text,
             'cl-pagination-per-page' => $cl_pagination_per_page,
+            'cl-pagination-total' => $cl_pagination_total,
             'cl-pagination-total-all' => $cl_pagination_total_all,
+            'cl-relation' => $cl_relation,
+            'cl-id' => $cl_id,
+            'cl-type' => $cl_type,
         ) = $cl;
+
+        $pagination_total = $cl_pagination_total;
+
+        $type = ($cl_type === 'pages') ? 'page' : (($cl_type === 'posts') ? 'post' : 'post');
+
+        if($cl_pagination_total_all) {
+            $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
+        }
+
+        $pagination_page = 1;
+        if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
+            $pagination_page = $_GET['cl-page'];
+        }
+        $pagination_page_next = $pagination_page + 1;
+        $pagination_page_prev = $pagination_page - 1;
 
         $content = '<div class="maxi-pagination">';
         $content .= '<div class="maxi-pagination__prev">';
-        $content .= '<a href="'.'?cl&cl-page=1#container-maxi-1c1f9e93-u'.'" class="maxi-pagination__link">';
-        $content .= '<span class="maxi-pagination__icon">';
-        $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
-        $content .= '<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>';
-        $content .= '</svg>';
-        $content .= '</span>';
-        $content .= '<span class="maxi-pagination__text">'.'Previous'.'</span>';
-        $content .= '</a>';
+        if($pagination_page_prev > 0) {
+            $pagination_page_prev_link = '?cl&cl-page='.$pagination_page_prev.'#'.$pagination_anchor;
+
+            $content .= '<a href="'.$pagination_page_prev_link.'" class="maxi-pagination__link">';
+            $content .= '<span class="maxi-pagination__text">'.'Previous'.'</span>';
+            $content .= '</a>';
+
+        }
         $content .= '</div>';
+        $content .= '<div class="maxi-pagination__pages">';
+        // Calculate the total number of pages
+        $total_pages = ceil($pagination_total / $cl_pagination_per_page);
+
+        // Pages list
+        for ($page = 1; $page <= $total_pages; $page++) {
+            $pagination_page_link = '?cl&cl-page='.$page.'#'.$pagination_anchor;
+            $content .= '<a href="'.$pagination_page_link.'" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
+            $content .= '<span class="maxi-pagination__text">'.$page.'</span>';
+            $content .= '</a>';
+        }
+        $content .= '</div>';
+
         $content .= '<div class="maxi-pagination__next">';
-        $content .= '<a href="'.'?cl&cl-page=2#container-maxi-1c1f9e93-u'.'" class="maxi-pagination__link">';
-        $content .= '<span class="maxi-pagination__text">'.'Next'.'</span>';
-        $content .= '<span class="maxi-pagination__icon">';
-        $content .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
-        $content .= '<path d="M0 0h24v24H0z" fill="none"/>';
-        $content .= '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>';
-        $content .= '</svg>';
-        $content .= '</span>';
-        $content .= '</a>';
+        if($pagination_page_next <= $pagination_total / $cl_pagination_per_page) {
+            $pagination_page_next_link = '?cl&cl-page='.$pagination_page_next.'#'.$pagination_anchor;
+
+            $content .= '<a href="'.$pagination_page_next_link.'" class="maxi-pagination__link">';
+            $content .= '<span class="maxi-pagination__text">'.'Next'.'</span>';
+            $content .= '</a>';
+
+        }
         $content .= '</div>';
         $content .= '</div>';
 
@@ -163,13 +274,17 @@ class MaxiBlocks_DynamicContent
         $context_loop = [];
 
         if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
+            // echo '<pre>';
+            // print_r(self::$custom_data);
+            // echo '</pre>';
             $context_loop = self::$custom_data[$unique_id];
             // echo '<pre>';
             // print_r(self::$custom_data);
             // echo '</pre>';
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
-                $context_loop['cl-accumulator'] = $accumulator + 3 * ($pagination_page - 1);
+                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 0;
+                $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
             }
             // echo '<pre>';
             // print_r($context_loop);
@@ -1268,7 +1383,7 @@ class MaxiBlocks_DynamicContent
 
         if (!empty($block_meta)) {
             $block_meta_parsed = json_decode($block_meta, true);
-            $response = $block_meta_parsed['context_loop'] ?? [];
+            $response = $block_meta_parsed['context_loop'][$id] ?? [];
             return $response;
         }
     }

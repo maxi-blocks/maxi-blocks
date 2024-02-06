@@ -18,9 +18,14 @@ Classic page builder meets modern WordPress. Work faster with 2000+ block patter
 
 MaxiBlocks is a no-code visual page builder and block library that can create responsive, fast-loading webpages using an integrated design library.
 
-You can choose from 1,830 patterns, 128 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life.
+Choose from 2000+ block patterns, 150+ page templates, and 13.5k SVG icons to kickstart page building and bring your creative vision to life.
 
 _New:_  Bring your own OpenAI API key to create or revise content inside of any Text Maxi block. Read more below.
+_New:_  Build navigation menus with MaxiBlocks in the site editor integrated with our global style cards.
+- Add typography, colour, and padding settings for menu items.
+- Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
+- Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
+- Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
 
 https://youtu.be/EFXhXGFfMF8
 
@@ -31,7 +36,7 @@ We refuse to hold basic features hostage just to sell the “full-version.” Ev
 We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited domains and unlimited downloads.
 
 == Packed with free goodies 🆓 ==
-Get started with 400+ free templates, 13.4k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
+Get started with 400+ free templates, 13.5k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
 
 **Free block patterns (404)**
 - Footer (26)
@@ -58,7 +63,7 @@ Loved by page builder enthusiasts, web designers, and template users, Maxi is he
 
 People simply can't fit all their love for Maxi into one sentence...
 
-[What 32 creators think of Maxi](https://maxiblocks.com/love/)
+[What 46 creators think of Maxi](https://maxiblocks.com/love/)
 
 == Maxi's free custom blocks  💎==
 
@@ -92,9 +97,9 @@ People simply can't fit all their love for Maxi into one sentence...
 
 == MaxiBlocks Theme ==
 
-The free full site editing theme is coming in January 2024. It's going to be epic!
+The free full site editing theme is out soon.
 
-Everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
+Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
 
 Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
@@ -224,7 +229,7 @@ https://youtu.be/OQi1YygiYnk
 
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-== 1426 pro patterns 🌈==
+== 1500+ pro patterns 🌈==
 
 Ready-made block patterns
 
@@ -245,7 +250,7 @@ Ready-made block patterns
 Coming soon
 - Navigation menus
 
-== 121 pro page templates ==
+== 135+ pro page templates ==
 
 Production ready. Just insert and start editing.
 
@@ -434,7 +439,7 @@ MaxiBlocks v1.7.0
  1. Typography, colour, and padding settings for menu items.
  2. Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
  3. Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
- 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nave menu items.
+ 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
 How to create a menu:
 Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
 

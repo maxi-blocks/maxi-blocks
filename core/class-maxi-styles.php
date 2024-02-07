@@ -956,10 +956,10 @@ class MaxiBlocks_Styles
                 );
             }
 
-            // Replaces all ,1)),1) to ,1)
+            // Replaces all ,NUMBER)),SECOND_NUMBER) to ,SECOND_NUMBER) where SECOND_NUMBER can be a decimal
             $new_style = preg_replace(
-                '/,1\)\),1\)/',
-                ',1)',
+                '/,\d+\)\),(\d+(\.\d+)?\))/',
+                ',$1',
                 $new_style
             );
 

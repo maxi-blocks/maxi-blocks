@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.6.1\n"
+"Project-Id-Version: MaxiBlocks 1.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-01T11:30:49+00:00\n"
+"POT-Creation-Date: 2024-02-05T15:05:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -1036,7 +1036,7 @@ msgstr ""
 #: src/blocks/search-maxi/components/button-control/index.js:41
 #: src/blocks/text-maxi/components/list-options-control/index.js:842
 #: src/components/toolbar/components/text-color/index.js:146
-#: src/editor/style-cards/maxiStyleCardsTab.js:259
+#: src/editor/style-cards/maxiStyleCardsTab.js:390
 msgid "Text"
 msgstr ""
 
@@ -3015,24 +3015,49 @@ msgid "Enable active icon state"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:255
+#: src/editor/style-cards/maxiStyleCardsTab.js:253
+msgid "Item padding"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:260
+msgid "Remove item underline on hover"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:278
+msgid "Overwrite mobile navigation breakpoint"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:299
+msgid "Show mobile menu for all screen sizes"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:319
+msgid "Show mobile menu for screen sizes down from (px)"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:386
 msgid "Button globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:267
+#: src/editor/style-cards/maxiStyleCardsTab.js:398
 msgid "Text hover"
 msgstr ""
 
 #: build/2878.js:1
 #: src/components/background-control/colorLayer.js:188
 #: src/components/background-control/index.js:120
-#: src/editor/style-cards/maxiStyleCardsTab.js:276
+#: src/editor/style-cards/maxiStyleCardsTab.js:407
 msgid "Background"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:284
+#: src/editor/style-cards/maxiStyleCardsTab.js:415
 msgid "Background hover"
 msgstr ""
 
@@ -3044,43 +3069,43 @@ msgstr ""
 #: src/components/border-control/index.js:55
 #: src/components/inspector-tabs/inspector-border.js:55
 #: src/components/toolbar/components/border/index.js:52
-#: src/editor/style-cards/maxiStyleCardsTab.js:293
+#: src/editor/style-cards/maxiStyleCardsTab.js:424
 #: src/extensions/relations/getCanvasSettings.js:141
 msgid "Border"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:301
+#: src/editor/style-cards/maxiStyleCardsTab.js:432
 msgid "Border hover"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:312
+#: src/editor/style-cards/maxiStyleCardsTab.js:443
 msgid "Paragraph globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:316
+#: src/editor/style-cards/maxiStyleCardsTab.js:447
 msgid "Paragraph"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:326
+#: src/editor/style-cards/maxiStyleCardsTab.js:457
 msgid "Link globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:365
+#: src/editor/style-cards/maxiStyleCardsTab.js:496
 msgid "Icon globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:369
+#: src/editor/style-cards/maxiStyleCardsTab.js:500
 msgid "Line"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:377
+#: src/editor/style-cards/maxiStyleCardsTab.js:508
 msgid "Line hover"
 msgstr ""
 
@@ -3088,17 +3113,17 @@ msgstr ""
 #: src/components/background-control/imageLayer.js:114
 #: src/components/image-shape/index.js:173
 #: src/components/svg-fill-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:386
+#: src/editor/style-cards/maxiStyleCardsTab.js:517
 msgid "Fill"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:394
+#: src/editor/style-cards/maxiStyleCardsTab.js:525
 msgid "Fill hover"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:405
+#: src/editor/style-cards/maxiStyleCardsTab.js:536
 msgid "Divider globals"
 msgstr ""
 
@@ -3107,17 +3132,22 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:311
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:527
 #: src/components/divider-control/index.js:229
-#: src/editor/style-cards/maxiStyleCardsTab.js:409
+#: src/editor/style-cards/maxiStyleCardsTab.js:540
 msgid "Divider"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:427
+#: src/editor/style-cards/maxiStyleCardsTab.js:550
+msgid "Navigation menu globals"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:636
 msgid "Colour palette"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:582
+#: src/editor/style-cards/maxiStyleCardsTab.js:791
 msgid "Typography globals"
 msgstr ""
 
@@ -6538,8 +6568,8 @@ msgstr ""
 msgid "Load icon library"
 msgstr ""
 
-#: src/editor/style-cards/utils.js:35
-#: src/editor/style-cards/utils.js:67
+#: src/editor/style-cards/utils.js:40
+#: src/editor/style-cards/utils.js:72
 msgid "View"
 msgstr ""
 

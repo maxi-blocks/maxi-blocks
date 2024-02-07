@@ -1,16 +1,16 @@
 === MaxiBlocks Free Page Builder & Template Library ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
+Tags: block, blocks, gutenberg, gutenberg blocks, page builder, template library, fse, icons, landing pages, templates, icon block, starter templates
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.3
 Requires PHP: 8.0
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
+Classic page builder meets modern WordPress. Work faster with 2000+ block patterns, 150+ page templates, 13.5k SVG icons & 100 free global style cards
 
 == Description ==
 
@@ -18,9 +18,18 @@ Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made
 
 MaxiBlocks is a no-code visual page builder and block library that can create responsive, fast-loading webpages using an integrated design library.
 
-You can choose from 1,830 patterns, 128 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life.
+Choose from **2000+ block patterns**, **150+ page templates**, and **13.5k SVG icons** to kickstart page building and bring your creative vision to life.
 
-_New:_  Bring your own OpenAI API key to create or revise content inside of any Text Maxi block. Read more below.
+**New**: Bring your own OpenAI API key to create or revise content inside of any Text Maxi block.
+
+**New**: Navigation menus! Enhance your site's navigation with MaxiBlocks in the Site Editor, now fully integrated with global style cards.
+
+* Customize menu items with advanced typography, color, and padding options.
+* Update navigation for mobile burger menu with extended breakpoints: 4K XXL, 1920 XL, 1366 L, 1024 M, 767 S, & 480 XS.
+* Revamp mobile menu aesthetics, including color and style changes, with future updates to include 20 "hamburger" icons.
+* Improved navigation experience with support for A-current, A-visited, and hover color schemes.
+
+== Top 12 Features of MaxiBlocks
 
 https://youtu.be/EFXhXGFfMF8
 
@@ -31,7 +40,7 @@ We refuse to hold basic features hostage just to sell the “full-version.” Ev
 We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited domains and unlimited downloads.
 
 == Packed with free goodies 🆓 ==
-Get started with 400+ free templates, 13.4k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
+Get started with 400+ free templates, 13.5k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
 
 **Free block patterns (404)**
 - Footer (26)
@@ -54,11 +63,19 @@ Get started with 400+ free templates, 13.4k icons and 100 style cards. You don't
 
 Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
 
-== What they say ==
+== What users say ==
 
-People simply can't fit all their love for Maxi into one sentence...
+People simply can't fit all their love for Maxi into one sentence.
 
-[What 32 creators think of Maxi](https://maxiblocks.com/love/)
+[Read what 46 creators think of Maxi](https://maxiblocks.com/love/)
+
+== MaxiBlocks Theme ==
+
+The free full site editing theme is out soon.
+
+Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
+
+Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
 == Maxi's free custom blocks  💎==
 
@@ -89,14 +106,6 @@ People simply can't fit all their love for Maxi into one sentence...
 **Text Maxi**: Allows the insertion, modification, or styling of text. It's foundational for conveying messages, ensuring content is both readable and aesthetically pleasing.
 
 **Video Maxi**: Facilitates the addition of videos with controls or lightbox. Enhances user engagement by easily incorporating multimedia, enriching the visual experience.
-
-== MaxiBlocks Theme ==
-
-The free full site editing theme is coming in January 2024. It's going to be epic!
-
-Everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
-
-Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
 == Go next-level with pro templates 🆙==
 If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1547 production-ready Pro templates.
@@ -224,7 +233,7 @@ https://youtu.be/OQi1YygiYnk
 
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-== 1426 pro patterns 🌈==
+== 1500+ pro patterns 🌈==
 
 Ready-made block patterns
 
@@ -245,7 +254,7 @@ Ready-made block patterns
 Coming soon
 - Navigation menus
 
-== 121 pro page templates ==
+== 135+ pro page templates ==
 
 Production ready. Just insert and start editing.
 
@@ -427,6 +436,16 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 6 February 2024_
+MaxiBlocks v1.7.0
+* Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
+ 1. Typography, colour, and padding settings for menu items.
+ 2. Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
+ 3. Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
+ 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
+How to create a menu:
+Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
 
 _Updates: 1 February 2024_
 MaxiBlocks v1.6.1

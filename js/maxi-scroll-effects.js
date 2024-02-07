@@ -342,7 +342,7 @@ class ScrollEffects {
 		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
 		const windowHalfHeight = windowHeight / 2;
-		const { height: elementHeight } = this.startData[element.id];
+		const { top, height } = this.startData[element.id];
 
 		let elementTopInCoordinate = Math.round(rect.top);
 		let elementBottomInCoordinate = Math.round(rect.bottom);
@@ -368,17 +368,12 @@ class ScrollEffects {
 			}
 
 			if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
-				Object.entries(zones)
-					.sort((a, b) => b[0] - a[0])
-					.forEach(([zone, value]) => {
-						if (
-							elementTopInCoordinate +
-								elementHeight * (zone / 100) >=
-							0
-						) {
-							this.applyStyle(element, type, value, unit);
-						}
-					});
+				for (const [zone, value] of Object.entries(zones)) {
+					if (elementTopInCoordinate + height * (zone / 100) >= 0) {
+						this.applyStyle(element, type, value, unit);
+						break;
+					}
+				}
 			}
 
 			if (
@@ -386,17 +381,16 @@ class ScrollEffects {
 				scrollDirection === 'up' &&
 				elementBottomInCoordinate >= 0
 			) {
-				Object.entries(zones).forEach(([zone, value]) => {
-					if (
-						elementTopInCoordinate + elementHeight * (zone / 100) <=
-						0
-					) {
+				for (const [zone, value] of Object.entries(zones).sort(
+					(a, b) => b[0] - a[0]
+				)) {
+					if (elementTopInCoordinate + height * (zone / 100) <= 0) {
 						this.applyStyle(element, type, value, unit);
+						break;
 					}
-				});
+				}
 			}
 		} else {
-			const { top } = this.startData[element.id];
 			const elementTopInPercent = Math.round(
 				((window.scrollY - top + windowHeight) / windowHeight) * 100
 			);
@@ -467,8 +461,8 @@ class ScrollEffects {
 			const rects = element.getBoundingClientRect();
 
 			this.startData[id] = {
-				top: rects.top + window.scrollY,
-				height: rects.height,
+				top: Math.round(rects.top + window.scrollY),
+				height: Math.round(rects.height),
 			};
 
 			Object.entries(effect).forEach(([type, data]) => {

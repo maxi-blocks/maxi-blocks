@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useRef, useEffect } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -69,6 +69,7 @@ const ScrollEffectsUniqueControl = props => {
 	const ref = useRef(null);
 
 	useEffect(() => {
+		console.log('zonesAttribute', zonesAttribute);
 		setZones(Object.keys(zonesAttribute).map(Number));
 	}, [zonesAttribute]);
 
@@ -114,7 +115,14 @@ const ScrollEffectsUniqueControl = props => {
 		const timelineRect = ref.current.getBoundingClientRect();
 		const mouseY = e.clientY - timelineRect.top;
 
-		const proximity = Array.from(
+		setMouseY(mouseY);
+
+		const isInsideSlider =
+			e.clientX >= timelineRect.left &&
+			e.clientX <= timelineRect.right &&
+			e.clientY >= timelineRect.top &&
+			e.clientY <= timelineRect.bottom;
+		const isOverThumb = Array.from(
 			ref.current.querySelectorAll(
 				'.maxi-scroll-unique-control-slider__thumb'
 			)
@@ -128,9 +136,7 @@ const ScrollEffectsUniqueControl = props => {
 			);
 		});
 
-		setMouseY(mouseY);
-
-		setShowAddButton(!proximity);
+		setShowAddButton(isInsideSlider && !isOverThumb);
 	};
 
 	const handleMouseLeave = () => {

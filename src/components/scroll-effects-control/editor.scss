@@ -71,6 +71,8 @@
 		}
 	}
 	.maxi-scroll-unique-control {
+		margin: 40px 0;
+
 		&__slider-wrapper {
 			position: relative;
 		}
@@ -81,7 +83,7 @@
 			background-color: var(--maxi-light-blue-2-color) !important;
 			border-radius: 5px;
 			padding: 20px 0;
-			margin: 20px;
+			margin: 0 20px;
 
 			&__thumb {
 				width: 30px;

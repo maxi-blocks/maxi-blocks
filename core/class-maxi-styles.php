@@ -956,18 +956,12 @@ class MaxiBlocks_Styles
                 );
             }
 
-            // echo '$new_style before<br>';
-            // echo $new_style . '<br>';
             // Replaces all ,NUMBER)),SECOND_NUMBER) to ,SECOND_NUMBER) where SECOND_NUMBER can be a decimal
             $new_style = preg_replace(
                 '/,\d+\)\),(\d+(\.\d+)?\))/',
                 ',$1',
                 $new_style
             );
-
-
-            echo '$new_style after<br>';
-            echo $new_style . '<br>';
 
             return $new_style;
         }

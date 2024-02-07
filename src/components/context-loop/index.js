@@ -16,6 +16,7 @@ import { resolveSelect, select } from '@wordpress/data';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
+import TextControl from '../text-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	orderByRelations,
@@ -72,6 +73,9 @@ const ContextLoop = props => {
 		'cl-pagination-per-page': paginationPerPage,
 		'cl-pagination-total': paginationTotal,
 		'cl-pagination-total-all': paginationTotalAll,
+		'cl-pagination-show-page-list': paginationShowPageList,
+		'cl-pagination-previous-text': paginationPreviousText,
+		'cl-pagination-next-text': paginationNextText,
 	} = getCLAttributes(contextLoop);
 
 	const isTypeHasRelations =
@@ -466,6 +470,49 @@ const ContextLoop = props => {
 													disableRange
 												/>
 											)}
+											<TextControl
+												isFullwidth
+												label={__(
+													'Text for previous link',
+													'maxi-blocks'
+												)}
+												value={paginationPreviousText}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-previous-text':
+															value,
+													})
+												}
+											/>
+											<TextControl
+												isFullwidth
+												label={__(
+													'Text for next link',
+													'maxi-blocks'
+												)}
+												value={paginationNextText}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-next-text':
+															value,
+													})
+												}
+											/>
+											<ToggleSwitch
+												label={__(
+													'Show page list (1, 2, 3, …)',
+													'maxi-blocks'
+												)}
+												selected={
+													paginationShowPageList
+												}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-show-page-list':
+															value,
+													})
+												}
+											/>
 										</>
 									)}
 								</>

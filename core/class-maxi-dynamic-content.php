@@ -164,8 +164,9 @@ class MaxiBlocks_DynamicContent
         }
 
         @list(
-            'cl-prev-text' => $cl_prev_text,
-            'cl-next-text' => $cl_next_text,
+            'cl-pagination-previous-text' => $cl_prev_text,
+            'cl-pagination-next-text' => $cl_next_text,
+            'cl-pagination-show-page-list' => $cl_show_page_list,
             'cl-pagination-per-page' => $cl_pagination_per_page,
             'cl-pagination-total' => $cl_pagination_total,
             'cl-pagination-total-all' => $cl_pagination_total_all,
@@ -195,30 +196,33 @@ class MaxiBlocks_DynamicContent
             $pagination_page_prev_link = '?cl&cl-page='.$pagination_page_prev.'#'.$pagination_anchor;
 
             $content .= '<a href="'.$pagination_page_prev_link.'" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'.'Previous'.'</span>';
+            $content .= '<span class="maxi-pagination__text">'. $cl_prev_text .'</span>';
             $content .= '</a>';
 
         }
         $content .= '</div>';
-        $content .= '<div class="maxi-pagination__pages">';
-        // Calculate the total number of pages
-        $total_pages = ceil($pagination_total / $cl_pagination_per_page);
+        if($cl_show_page_list) {
+            $content .= '<div class="maxi-pagination__pages">';
+            // Calculate the total number of pages
+            $total_pages = ceil($pagination_total / $cl_pagination_per_page);
 
-        // Pages list
-        for ($page = 1; $page <= $total_pages; $page++) {
-            $pagination_page_link = '?cl&cl-page='.$page.'#'.$pagination_anchor;
-            $content .= '<a href="'.$pagination_page_link.'" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
-            $content .= '<span class="maxi-pagination__text">'.$page.'</span>';
-            $content .= '</a>';
+            // Pages list
+            for ($page = 1; $page <= $total_pages; $page++) {
+                $pagination_page_link = '?cl&cl-page='.$page.'#'.$pagination_anchor;
+                $content .= '<a href="'.$pagination_page_link.'" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
+                $content .= '<span class="maxi-pagination__text">'.$page.'</span>';
+                $content .= '</a>';
+            }
+            $content .= '</div>';
         }
-        $content .= '</div>';
 
         $content .= '<div class="maxi-pagination__next">';
-        if($pagination_page_next <= $pagination_total / $cl_pagination_per_page) {
+
+        if($pagination_page_next <= ceil($pagination_total / $cl_pagination_per_page)) {
             $pagination_page_next_link = '?cl&cl-page='.$pagination_page_next.'#'.$pagination_anchor;
 
             $content .= '<a href="'.$pagination_page_next_link.'" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'.'Next'.'</span>';
+            $content .= '<span class="maxi-pagination__text">'. $cl_next_text .'</span>';
             $content .= '</a>';
 
         }

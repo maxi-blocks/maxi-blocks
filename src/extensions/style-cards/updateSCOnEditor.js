@@ -67,7 +67,6 @@ const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 	);
 
 	const SCStyles = await getSCStyles(SCObject, gutenbergBlocksStatus, true);
-	console.log(SCStyles);
 
 	if (SCStylesEl) {
 		SCStylesEl.innerHTML = SCStyles;

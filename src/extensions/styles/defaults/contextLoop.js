@@ -42,6 +42,18 @@ const contextLoop = {
 		type: 'boolean',
 		default: true,
 	},
+	'cl-pagination-show-page-list': {
+		type: 'boolean',
+		default: true,
+	},
+	'cl-pagination-previous-text': {
+		type: 'string',
+		default: 'Previous',
+	},
+	'cl-pagination-next-text': {
+		type: 'string',
+		default: 'Next',
+	},
 };
 
 export default contextLoop;

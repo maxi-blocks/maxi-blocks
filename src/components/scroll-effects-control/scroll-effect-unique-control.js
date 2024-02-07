@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useRef } from '@wordpress/element';
+import { useState, useRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -68,6 +68,10 @@ const ScrollEffectsUniqueControl = props => {
 	const [isDragging, setIsDragging] = useState(false);
 	const ref = useRef(null);
 
+	useEffect(() => {
+		setZones(Object.keys(zonesAttribute).map(Number));
+	}, [zonesAttribute]);
+
 	const handleSliderChange = rawValues => {
 		const values = isArray(rawValues) ? rawValues : [rawValues];
 		setZones(values);
@@ -110,9 +114,18 @@ const ScrollEffectsUniqueControl = props => {
 		const timelineRect = ref.current.getBoundingClientRect();
 		const mouseY = e.clientY - timelineRect.top;
 
-		const proximity = zones.some(zone => {
-			const zonePosition = (zone / 100) * timelineRect.height;
-			return Math.abs(mouseY - zonePosition) < 40;
+		const proximity = Array.from(
+			ref.current.querySelectorAll(
+				'.maxi-scroll-unique-control-slider__thumb'
+			)
+		).some(thumb => {
+			const thumbRect = thumb.getBoundingClientRect();
+			return (
+				e.clientX >= thumbRect.left &&
+				e.clientX <= thumbRect.right &&
+				e.clientY >= thumbRect.top &&
+				e.clientY <= thumbRect.bottom
+			);
 		});
 
 		setMouseY(mouseY);

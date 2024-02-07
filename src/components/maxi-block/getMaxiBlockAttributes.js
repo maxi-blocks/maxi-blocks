@@ -104,12 +104,13 @@ const getMaxiBlockAttributes = props => {
 		return enabledScrolls;
 	};
 
-	const enabledScrolls = dataScrollTypeValue();
+	const rawEnabledScrolls = dataScrollTypeValue();
+	const enabledScrolls = [];
 
 	const scroll = {};
 
-	if (!isEmpty(enabledScrolls)) {
-		for (const type of enabledScrolls) {
+	if (!isEmpty(rawEnabledScrolls)) {
+		for (const type of rawEnabledScrolls) {
 			let responseString = '';
 			let scrollSettings;
 
@@ -144,16 +145,17 @@ const getMaxiBlockAttributes = props => {
 
 				if (isNil(scrollSettingValue)) {
 					isOldScrollAttributes = false;
-					enabledScrolls.splice(enabledScrolls.indexOf(type), 1);
 					break;
 				}
 
 				responseString += `${scrollSettingValue} `;
 			}
 
-			if (isOldScrollAttributes && !isEmpty(responseString))
+			if (isOldScrollAttributes && !isEmpty(responseString)) {
+				enabledScrolls.push(type);
 				scroll[`data-scroll-effect-${type}-general`] =
 					responseString.trim();
+			}
 		}
 
 		if (!isEmpty(enabledScrolls))

@@ -30,6 +30,7 @@ class ScrollEffects {
 
 		this.scrollData = !this.isOldScroll ? newScrollData : oldScrollData;
 		this.startData = {};
+		this.isBorderStylesAppliedData = {};
 
 		this.init();
 		this.oldValue = 0;
@@ -339,13 +340,13 @@ class ScrollEffects {
 
 		if (!status) return;
 
-		const rect = element.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
 		const windowHalfHeight = windowHeight / 2;
 		const { top, height } = this.startData[element.id];
 
-		let elementTopInCoordinate = Math.round(rect.top);
-		let elementBottomInCoordinate = Math.round(rect.bottom);
+		let elementTopInCoordinate = top;
+
+		let elementTopInPercent = 0;
 
 		if (isBlockZone) {
 			// Top shift
@@ -364,58 +365,31 @@ class ScrollEffects {
 
 			if (topShiftPx !== 0) {
 				elementTopInCoordinate -= topShiftPx;
-				elementBottomInCoordinate -= topShiftPx;
 			}
-
-			if (scrollDirection === 'down' && elementTopInCoordinate <= 0) {
-				for (const [zone, value] of Object.entries(zones)) {
-					if (elementTopInCoordinate + height * (zone / 100) >= 0) {
-						this.applyStyle(element, type, value, unit);
-						break;
-					}
-				}
-			}
-
-			if (
-				(reverseScroll === true || reverseScroll === 'true') &&
-				scrollDirection === 'up' &&
-				elementBottomInCoordinate >= 0
-			) {
-				for (const [zone, value] of Object.entries(zones).sort(
-					(a, b) => b[0] - a[0]
-				)) {
-					if (elementTopInCoordinate + height * (zone / 100) <= 0) {
-						this.applyStyle(element, type, value, unit);
-						break;
-					}
-				}
-			}
+			elementTopInPercent = Math.round(
+				((window.scrollY - elementTopInCoordinate) / height) * 100
+			);
 		} else {
-			const elementTopInPercent = Math.round(
+			elementTopInPercent = Math.round(
 				((window.scrollY - top + windowHeight) / windowHeight) * 100
 			);
+		}
 
-			if (scrollDirection === 'down' && elementTopInPercent <= 100) {
-				for (const [zone, value] of Object.entries(zones).sort(
-					(a, b) => b[0] - a[0]
-				)) {
-					if (elementTopInPercent >= zone) {
-						this.applyStyle(element, type, value, unit);
-						break;
-					}
-				}
-			}
-
-			if (
-				(reverseScroll === true || reverseScroll === 'true') &&
-				scrollDirection === 'up' &&
-				elementTopInPercent >= 0
-			) {
-				for (const [zone, value] of Object.entries(zones)) {
-					if (elementTopInPercent >= zone) {
-						this.applyStyle(element, type, value, unit);
-						break;
-					}
+		if (
+			(scrollDirection === 'down' ||
+				((reverseScroll === true || reverseScroll === 'true') &&
+					scrollDirection === 'up')) &&
+			((elementTopInPercent >= 0 && elementTopInPercent <= 100) ||
+				!this.isBorderStylesAppliedData[element.id])
+		) {
+			this.isBorderStylesAppliedData[element.id] =
+				elementTopInPercent > 100 || elementTopInPercent < 0;
+			for (const [zone, value] of Object.entries(zones).sort(
+				(a, b) => b[0] - a[0]
+			)) {
+				if (elementTopInPercent >= zone) {
+					this.applyStyle(element, type, value, unit);
+					break;
 				}
 			}
 		}
@@ -464,6 +438,7 @@ class ScrollEffects {
 				top: Math.round(rects.top + window.scrollY),
 				height: Math.round(rects.height),
 			};
+			this.isBorderStylesAppliedData[id] = false;
 
 			Object.entries(effect).forEach(([type, data]) => {
 				const { status, speedValue, easingValue, delayValue } =

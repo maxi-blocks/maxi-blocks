@@ -18,14 +18,18 @@ Classic page builder meets modern WordPress. Work faster with 2000+ block patter
 
 MaxiBlocks is a no-code visual page builder and block library that can create responsive, fast-loading webpages using an integrated design library.
 
-Choose from 2000+ block patterns, 150+ page templates, and 13.5k SVG icons to kickstart page building and bring your creative vision to life.
+Choose from **2000+ block patterns**, **150+ page templates**, and **13.5k SVG icons** to kickstart page building and bring your creative vision to life.
 
-_New:_  Bring your own OpenAI API key to create or revise content inside of any Text Maxi block. Read more below.
-_New:_  Build navigation menus with MaxiBlocks in the site editor integrated with our global style cards.
-- Add typography, colour, and padding settings for menu items.
-- Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
-- Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
-- Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
+**New**: Bring your own OpenAI API key to create or revise content inside of any Text Maxi block.
+
+**New**: Navigation menus! Enhance your site's navigation with MaxiBlocks in the Site Editor, now fully integrated with global style cards.
+
+* Customize menu items with advanced typography, color, and padding options.
+* Update navigation for mobile burger menu with extended breakpoints: 4K XXL, 1920 XL, 1366 L, 1024 M, 767 S, & 480 XS.
+* Revamp mobile menu aesthetics, including color and style changes, with future updates to include 20 "hamburger" icons.
+* Improved navigation experience with support for A-current, A-visited, and hover color schemes.
+
+== Top 12 Features of MaxiBlocks
 
 https://youtu.be/EFXhXGFfMF8
 
@@ -59,11 +63,19 @@ Get started with 400+ free templates, 13.5k icons and 100 style cards. You don't
 
 Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
 
-== What they say ==
+== What users say ==
 
-People simply can't fit all their love for Maxi into one sentence...
+People simply can't fit all their love for Maxi into one sentence.
 
-[What 46 creators think of Maxi](https://maxiblocks.com/love/)
+[Read what 46 creators think of Maxi](https://maxiblocks.com/love/)
+
+== MaxiBlocks Theme ==
+
+The free full site editing theme is out soon.
+
+Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
+
+Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
 == Maxi's free custom blocks  💎==
 
@@ -94,14 +106,6 @@ People simply can't fit all their love for Maxi into one sentence...
 **Text Maxi**: Allows the insertion, modification, or styling of text. It's foundational for conveying messages, ensuring content is both readable and aesthetically pleasing.
 
 **Video Maxi**: Facilitates the addition of videos with controls or lightbox. Enhances user engagement by easily incorporating multimedia, enriching the visual experience.
-
-== MaxiBlocks Theme ==
-
-The free full site editing theme is out soon.
-
-Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
-
-Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
 == Go next-level with pro templates 🆙==
 If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1547 production-ready Pro templates.

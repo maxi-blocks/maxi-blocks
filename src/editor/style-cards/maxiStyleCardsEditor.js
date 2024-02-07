@@ -122,12 +122,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const canBeSaved = keySC => {
 		const currentSC = {
-			...styleCards[keySC].light.styleCard,
-			...styleCards[keySC].dark.styleCard,
+			light: styleCards[keySC].light.styleCard,
+			dark: styleCards[keySC].dark.styleCard,
 		};
 		const savedSC = {
-			...savedStyleCards[keySC]?.light.styleCard,
-			...savedStyleCards[keySC]?.dark.styleCard,
+			light: savedStyleCards[keySC]?.light.styleCard,
+			dark: savedStyleCards[keySC]?.dark.styleCard,
 		};
 
 		if (

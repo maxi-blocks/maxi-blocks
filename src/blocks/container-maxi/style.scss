@@ -10,5 +10,13 @@ body.maxi-blocks--active .maxi-container-block {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		a {
+			text-decoration: none;
+		}
+		.maxi-pagination__pages {
+			a:not(:last-child) {
+				margin-right: 7px;
+			}
+		}
 	}
 }

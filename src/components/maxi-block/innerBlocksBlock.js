@@ -182,9 +182,6 @@ const MainInnerBlocksBlock = forwardRef(
 			})
 		);
 
-		console.log(props);
-		console.log('pagination in innerBlocksBlock:', pagination);
-
 		if (isSave)
 			return (
 				<TagName ref={ref} {...innerBlocksProps}>

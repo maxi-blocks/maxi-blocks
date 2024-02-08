@@ -1,20 +1,16 @@
-/**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
 const Pagination = props => {
-	console.log('Pagination props:');
-	console.log(props);
 	const {
 		'cl-pagination-per-page': clPaginationPerPage,
 		'cl-pagination-total': paginationTotal,
+		'cl-pagination-total-all': clPaginationTotalAll,
 		'cl-pagination-show-page-list': clShowPageList,
 		'cl-pagination-previous-text': clPrevText,
 		'cl-pagination-next-text': clNextText,
 	} = props;
 
-	const totalPages = Math.ceil(paginationTotal / clPaginationPerPage);
+	const totalPages = clPaginationTotalAll
+		? clPaginationPerPage
+		: Math.ceil(paginationTotal / clPaginationPerPage);
 	const clPaginationCurrentPage = 1;
 
 	const renderPageLinks = () => {

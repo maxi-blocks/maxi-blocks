@@ -62,13 +62,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				'contextLoop'
 			);
 
-			if (uniqueID === 'row-maxi-4caa4aec-u') {
-				console.log('contextLoopAttributes');
-				console.log(contextLoopAttributes);
-				console.log('attributes');
-				console.log(attributes);
-			}
-
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>
 					orderRelations.includes(attributes?.['cl-relation']);

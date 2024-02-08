@@ -92,39 +92,62 @@ class MaxiBlocks_DynamicContent
 
     public function get_total_posts_by_relation($relation, $id, $type = 'post')
     {
+        echo '$relation: ' . $relation.'<br>';
+        echo '$id: '.$id.'<br>';
+        echo '$type: '.$type.'<br>';
+
         // Initialize the query args array
         $args = array(
-            'post_type'      => $type, // Set to 'post' by default, can be overridden to 'page' or any custom post type
-            'post_status'    => 'publish', // Get only published posts/pages
+            'post_type'      => $type, // Can be 'post', 'page', 'product', or any custom post type
+            'post_status'    => 'publish', // Get only published items
             'fields'         => 'ids', // Retrieve only the IDs for performance
-            'nopaging'       => true, // Retrieve all posts/pages matching the criteria
+            'nopaging'       => true, // Retrieve all items matching the criteria
         );
 
         // Modify the query based on the relation
         switch ($relation) {
             case 'by-category':
-                if ($type !== 'post') {
-                    throw new Exception("Categories are generally not associated with pages or custom post types.");
+                if ($type === 'product') {
+                    // Use WooCommerce's product category taxonomy
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'product_cat',
+                            'field'    => 'term_id',
+                            'terms'    => array($id),
+                        ),
+                    );
+                } elseif ($type === 'post') {
+                    $args['category__in'] = array($id); // Array of category IDs
+                } else {
+                    throw new Exception("Categories are not associated with this post type.");
                 }
-                $args['category__in'] = array($id); // Array of category IDs
                 break;
             case 'by-tag':
-                if ($type !== 'post') {
-                    throw new Exception("Tags are generally not associated with pages or custom post types.");
+                if ($type === 'product') {
+                    // Use WooCommerce's product tag taxonomy
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'product_tag',
+                            'field'    => 'term_id',
+                            'terms'    => array($id),
+                        ),
+                    );
+                } elseif ($type === 'post') {
+                    $args['tag__in'] = array($id); // Array of tag IDs
+                } else {
+                    throw new Exception("Tags are not associated with this post type.");
                 }
-                $args['tag__in'] = array($id); // Array of tag IDs
                 break;
             case 'by-author':
-                // Author queries can be performed on both posts and pages
+                // Author queries can be performed on posts, pages, and products
                 $args['author'] = $id; // Author ID
                 break;
-                // Removed the default case that throws an exception
         }
 
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
-        // Return the total number of posts/pages found
+        // Return the total number of posts/pages/products found
         return $query->found_posts;
     }
 
@@ -177,7 +200,22 @@ class MaxiBlocks_DynamicContent
 
         $pagination_total = $cl_pagination_total;
 
-        $type = ($cl_type === 'pages') ? 'page' : (($cl_type === 'posts') ? 'post' : 'post');
+        echo '$cl_type: '.$cl_type.'<br>';
+
+        switch ($cl_type) {
+            case 'pages':
+                $type = 'page';
+                break;
+            case 'posts':
+                $type = 'post';
+                break;
+            case 'products':
+                $type = 'product';
+                break;
+            default:
+                $type = 'post';
+                break;
+        }
 
         if($cl_pagination_total_all) {
             $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
@@ -278,21 +316,12 @@ class MaxiBlocks_DynamicContent
         $context_loop = [];
 
         if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
-            // echo '<pre>';
-            // print_r(self::$custom_data);
-            // echo '</pre>';
             $context_loop = self::$custom_data[$unique_id];
-            // echo '<pre>';
-            // print_r(self::$custom_data);
-            // echo '</pre>';
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
                 $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 0;
                 $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
             }
-            // echo '<pre>';
-            // print_r($context_loop);
-            // echo '</pre>';
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 

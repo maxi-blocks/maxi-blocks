@@ -170,7 +170,7 @@ class MaxiBlocks_DynamicContent
                 return $content;
             } catch (Exception $e) {
                 // Handle exception
-                echo 'Error: ',  $e->getMessage(), "\n";
+                error_log('Error: ' . $e->getMessage());
             }
         }
         return $content;
@@ -218,8 +218,9 @@ class MaxiBlocks_DynamicContent
 
         $pagination_page = 1;
         if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
-            $pagination_page = $_GET['cl-page'];
+            $pagination_page = absint($_GET['cl-page']);
         }
+
         $pagination_page_next = $pagination_page + 1;
         $pagination_page_prev = $pagination_page - 1;
 
@@ -228,8 +229,8 @@ class MaxiBlocks_DynamicContent
         if($pagination_page_prev > 0) {
             $pagination_page_prev_link = '?cl&cl-page='.$pagination_page_prev.'#'.$pagination_anchor;
 
-            $content .= '<a href="'.$pagination_page_prev_link.'" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'. $cl_prev_text .'</span>';
+            $content .= '<a href="' . esc_attr($pagination_page_prev_link) . '" class="maxi-pagination__link">';
+            $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_prev_text) .'</span>';
             $content .= '</a>';
 
         }
@@ -242,8 +243,8 @@ class MaxiBlocks_DynamicContent
             // Pages list
             for ($page = 1; $page <= $total_pages; $page++) {
                 $pagination_page_link = '?cl&cl-page='.$page.'#'.$pagination_anchor;
-                $content .= '<a href="'.$pagination_page_link.'" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
-                $content .= '<span class="maxi-pagination__text">'.$page.'</span>';
+                $content .= '<a href="' . esc_attr($pagination_page_link) . '" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
+                $content .= '<span class="maxi-pagination__text">' . $page . '</span>';
                 $content .= '</a>';
             }
             $content .= '</div>';
@@ -254,8 +255,8 @@ class MaxiBlocks_DynamicContent
         if($pagination_page_next <= ceil($pagination_total / $cl_pagination_per_page)) {
             $pagination_page_next_link = '?cl&cl-page='.$pagination_page_next.'#'.$pagination_anchor;
 
-            $content .= '<a href="'.$pagination_page_next_link.'" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'. $cl_next_text .'</span>';
+            $content .= '<a href="' . esc_attr($pagination_page_next_link) . '" class="maxi-pagination__link">';
+            $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_next_text) .'</span>';
             $content .= '</a>';
 
         }
@@ -282,7 +283,7 @@ class MaxiBlocks_DynamicContent
 
         $pagination_page = 1;
         if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
-            $pagination_page = $_GET['cl-page'];
+            $pagination_page = absint($_GET['cl-page']);
         }
 
         $unique_id = $attributes['uniqueID'];

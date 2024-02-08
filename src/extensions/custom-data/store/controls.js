@@ -31,11 +31,7 @@ const controls = {
 		await Promise.all(
 			blockData.map(async data => {
 				const uniqueID = data[0];
-				console.log('uniqueID: ', uniqueID);
 				const [, value] = data;
-
-				console.log('data: ', data);
-				console.log('value: ', value);
 
 				filteredCustomData[uniqueID] = {};
 
@@ -52,7 +48,6 @@ const controls = {
 		);
 
 		if (!isEmpty(filteredCustomData)) {
-			console.log('filteredCustomData: ', filteredCustomData);
 			await apiFetch({
 				path: '/maxi-blocks/v1.0/custom-data',
 				method: 'POST',

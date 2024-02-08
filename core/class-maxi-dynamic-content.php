@@ -92,9 +92,6 @@ class MaxiBlocks_DynamicContent
 
     public function get_total_posts_by_relation($relation, $id, $type = 'post')
     {
-        echo '$relation: ' . $relation.'<br>';
-        echo '$id: '.$id.'<br>';
-        echo '$type: '.$type.'<br>';
 
         // Initialize the query args array
         $args = array(
@@ -199,8 +196,6 @@ class MaxiBlocks_DynamicContent
         ) = $cl;
 
         $pagination_total = $cl_pagination_total;
-
-        echo '$cl_type: '.$cl_type.'<br>';
 
         switch ($cl_type) {
             case 'pages':

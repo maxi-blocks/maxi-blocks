@@ -55,9 +55,6 @@ const ContextLoop = props => {
 
 	const classes = classnames('maxi-context-loop', className);
 
-	console.log('getCLAttributes(contextLoop):');
-	console.log(getCLAttributes(contextLoop));
-
 	const {
 		'cl-status': status,
 		'cl-type': type,

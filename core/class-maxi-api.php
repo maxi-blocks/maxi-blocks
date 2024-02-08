@@ -435,10 +435,6 @@ if (!class_exists('MaxiBlocks_API')):
 
             $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-            // write_log('$styles from post styles');
-            // write_log($styles_arr);
-            // $is_template = $data['isTemplate'];
-            // $template_parts = $data['templateParts'];
 
             $fonts_arr = $meta['fonts'];
             if ($is_json) {
@@ -521,15 +517,17 @@ if (!class_exists('MaxiBlocks_API')):
                 new MaxiBlocks_Local_Fonts();
             }
 
+            $updated_meta = [];
 
-
-            $updated_meta = (array)$wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM $table WHERE $where_clause",
-                    $id
-                ),
-                OBJECT
-            )[0];
+            if($id) {
+                $updated_meta = (array)$wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM $table WHERE $where_clause",
+                        $id
+                    ),
+                    OBJECT
+                )[0];
+            }
 
             return $updated_meta;
         }

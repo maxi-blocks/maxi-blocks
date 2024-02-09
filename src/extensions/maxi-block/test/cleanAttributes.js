@@ -11,7 +11,7 @@ jest.mock('@wordpress/data', () => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
 				receiveMaxiDeviceType: jest.fn(() => 'general'),
-				getPrevSavedAttrs: jest.fn(() => []),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 				getSelectedBlockCount: jest.fn(() => 1),
 			};
 		}),
@@ -347,12 +347,14 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return { prevSavedAttrs: ['test-general'] };
 							case 3:
-								return ['test-general', 'test-l'];
+								return {
+									prevSavedAttrs: ['test-general', 'test-l'],
+								};
 							case 1:
 							default:
-								return [];
+								return { prevSavedAttrs: [] };
 						}
 					}),
 				};
@@ -415,7 +417,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -592,12 +594,18 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return { prevSavedAttrs: ['test-general'] };
 							case 3:
-								return ['test-general', 'test-l', 'test-xxl'];
+								return {
+									prevSavedAttrs: [
+										'test-general',
+										'test-l',
+										'test-xxl',
+									],
+								};
 							case 1:
 							default:
-								return [];
+								return { prevSavedAttrs: [] };
 						}
 					}),
 				};
@@ -665,7 +673,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -708,7 +716,9 @@ describe('cleanAttributes', () => {
 					receiveMaxiDeviceType: jest.fn(() => 'xl'),
 					getSelectedBlockCount: jest.fn(() => 1),
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
-					getPrevSavedAttrs: jest.fn(() => ['test-xl', 'test-m']),
+					getPrevSavedAttrs: jest.fn(() => ({
+						prevSavedAttrs: ['test-xl', 'test-m'],
+					})),
 				};
 			})
 		);
@@ -745,12 +755,12 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-m'];
+								return { prevSavedAttrs: ['test-m'] };
 							case 3:
-								return ['test-m', 'test-s'];
+								return { prevSavedAttrs: ['test-m', 'test-s'] };
 							case 1:
 							default:
-								return [];
+								return { prevSavedAttrs: [] };
 						}
 					}),
 				};
@@ -823,12 +833,14 @@ describe('cleanAttributes', () => {
 						i += 1;
 						switch (i) {
 							case 2:
-								return ['test-general'];
+								return { prevSavedAttrs: ['test-general'] };
 							case 3:
-								return ['test-general', 'test-l'];
+								return {
+									prevSavedAttrs: ['test-general', 'test-l'],
+								};
 							case 1:
 							default:
-								return [];
+								return { prevSavedAttrs: [] };
 						}
 					}),
 				};
@@ -891,7 +903,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -931,7 +943,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -995,7 +1007,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1056,7 +1068,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1112,7 +1124,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1149,7 +1161,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1189,7 +1201,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1230,7 +1242,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1317,7 +1329,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1359,7 +1371,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1400,7 +1412,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1433,7 +1445,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1470,7 +1482,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1507,7 +1519,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1544,7 +1556,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
@@ -1713,7 +1725,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})

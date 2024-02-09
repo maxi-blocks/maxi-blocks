@@ -19,28 +19,58 @@ jest.mock('@wordpress/data', () => {
 					i += 1;
 					switch (i) {
 						case 1:
-							return [];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: [],
+							};
 						case 2:
 						case 3:
-							return ['test-general'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-general'],
+							};
 						case 4:
-							return ['test-general', 'test-xxl'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-general', 'test-xxl'],
+							};
 						case 5:
-							return ['test-xl'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-xl'],
+							};
 						case 6:
-							return ['test-general', 'test-m'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-general', 'test-m'],
+							};
 						case 7:
 						case 8:
 						case 9:
-							return ['test-general'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-general'],
+							};
 						case 10:
-							return [];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: [],
+							};
 						case 11:
-							return ['test-xl'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-xl'],
+							};
 						case 12:
-							return ['test-xl', 'test-m'];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: ['test-xl', 'test-m'],
+							};
 						default:
-							return [];
+							return {
+								prevSavedAttrsClientId: null,
+								prevSavedAttrs: [],
+							};
 					}
 				}),
 			};

@@ -121,18 +121,14 @@ const ScrollEffectsUniqueControl = props => {
 			e.clientX <= timelineRect.right &&
 			e.clientY >= timelineRect.top &&
 			e.clientY <= timelineRect.bottom;
+
 		const isOverThumb = Array.from(
 			ref.current.querySelectorAll(
 				'.maxi-scroll-unique-control-slider__thumb'
 			)
 		).some(thumb => {
 			const thumbRect = thumb.getBoundingClientRect();
-			return (
-				e.clientX >= thumbRect.left &&
-				e.clientX <= thumbRect.right &&
-				e.clientY >= thumbRect.top &&
-				e.clientY <= thumbRect.bottom
-			);
+			return e.clientY >= thumbRect.top && e.clientY <= thumbRect.bottom;
 		});
 
 		setShowAddButton(isInsideSlider && !isOverThumb);

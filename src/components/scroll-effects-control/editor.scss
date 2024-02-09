@@ -141,7 +141,7 @@
 
 			&__add-button {
 				position: absolute;
-				left: 10px; /* Adjust as necessary */
+				left: 10px;
 				transform: translateY(-50%);
 				background-color: #007cba;
 				color: white;
@@ -152,6 +152,7 @@
 				border-radius: 50%;
 				font-size: 16px;
 				user-select: none;
+				cursor: pointer;
 			}
 		}
 

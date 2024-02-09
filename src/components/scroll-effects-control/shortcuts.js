@@ -131,7 +131,7 @@ export const shortcut6 = {
 		0: -90,
 		100: 0,
 	},
-	'scroll-speed-rotate-general': 500,
+	'scroll-rotate-speed-general': 500,
 	'scroll-rotate-status-general': true,
 
 	'scroll-vertical-status-general': false,
@@ -155,7 +155,7 @@ export const shortcut7 = {
 		0: 0,
 		100: 90,
 	},
-	'scroll-speed-rotate-general': 500,
+	'scroll-rotate-speed-general': 500,
 	'scroll-rotate-status-general': true,
 
 	'scroll-vertical-status-general': false,
@@ -878,7 +878,7 @@ export const rotate = {
 			0: -60,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 	shortcut2: {
 		// Left less
@@ -886,7 +886,7 @@ export const rotate = {
 			0: 60,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 	shortcut3: {
 		// Right some
@@ -894,7 +894,7 @@ export const rotate = {
 			0: -120,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 	shortcut4: {
 		// Left some
@@ -902,7 +902,7 @@ export const rotate = {
 			0: 120,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 	shortcut5: {
 		// Right more
@@ -910,7 +910,7 @@ export const rotate = {
 			0: -180,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 	shortcut6: {
 		// Left more
@@ -918,7 +918,7 @@ export const rotate = {
 			0: 180,
 			100: 0,
 		},
-		'scroll-speed-rotate-general': 500,
+		'scroll-rotate-speed-general': 500,
 	},
 };
 

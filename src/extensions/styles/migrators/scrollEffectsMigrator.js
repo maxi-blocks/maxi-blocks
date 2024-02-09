@@ -38,6 +38,8 @@ const maxiVersions = [
 	'1.5.7',
 	'1.5.8',
 	'1.6.0',
+	'1.6.1',
+	'1.7.0',
 ];
 
 const attributes = () => ({
@@ -163,6 +165,13 @@ const migrate = attributes => {
 		'scroll-fade-opacity-'
 	);
 	attributes['scroll-blur-zones-general'] = createZone('scroll-blur-blur-');
+
+	attributes['scroll-vertical-is-block-zone-general'] = true;
+	attributes['scroll-horizontal-is-block-zone-general'] = true;
+	attributes['scroll-rotate-is-block-zone-general'] = true;
+	attributes['scroll-scale-is-block-zone-general'] = true;
+	attributes['scroll-fade-is-block-zone-general'] = true;
+	attributes['scroll-blur-is-block-zone-general'] = true;
 
 	const attributesToDelete = [
 		'scroll-vertical-offset-start-general',

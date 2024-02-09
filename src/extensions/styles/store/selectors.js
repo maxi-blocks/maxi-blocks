@@ -25,7 +25,11 @@ export const getBlockStyles = (state, target) => {
 };
 
 export const getPrevSavedAttrs = state => {
-	if (state.prevSavedAttrs) return state.prevSavedAttrs;
+	if (state.prevSavedAttrs)
+		return {
+			prevSavedAttrs: state.prevSavedAttrs,
+			prevClientID: state.prevClientID,
+		};
 
 	return false;
 };

@@ -2,7 +2,11 @@ export const scrollTypes = [
 	'vertical',
 	'horizontal',
 	'rotate',
+	'rotateX',
+	'rotateY',
 	'scale',
+	'scaleX',
+	'scaleY',
 	'fade',
 	'blur',
 ];
@@ -80,11 +84,11 @@ export const scroll = (() => {
 			generateUniqueAttributes(type, [-200, 0, 200]);
 		}
 
-		if (type === 'rotate') {
+		if (['rotate', 'rotateX', 'rotateY'].includes(type)) {
 			generateUniqueAttributes(type, [90, 0, 0]);
 		}
 
-		if (type === 'scale') {
+		if (['scale', 'scaleX', 'scaleY'].includes(type)) {
 			generateUniqueAttributes(type, [70, 100, 100]);
 		}
 
@@ -102,30 +106,9 @@ export const scroll = (() => {
 			generateAttr(type, 'status', 'boolean', undefined, breakpoint);
 			generateAttr(type, 'easing', 'string', undefined, breakpoint);
 			generateAttr(type, 'speed', 'number', undefined, breakpoint);
-
 			generateAttr(type, 'viewport-top', 'number', undefined, breakpoint);
-
 			generateAttr(type, 'status', 'boolean', undefined, breakpoint);
-
-			if (['vertical', 'horizontal'].includes(type)) {
-				generateUniqueAttributes(type, undefined, breakpoint);
-			}
-
-			if (type === 'rotate') {
-				generateUniqueAttributes(type, undefined, breakpoint);
-			}
-
-			if (type === 'scale') {
-				generateUniqueAttributes(type, undefined, breakpoint);
-			}
-
-			if (type === 'fade') {
-				generateUniqueAttributes(type, undefined, breakpoint);
-			}
-
-			if (type === 'blur') {
-				generateUniqueAttributes(type, undefined, breakpoint);
-			}
+			generateUniqueAttributes(type, undefined, breakpoint);
 		});
 	});
 

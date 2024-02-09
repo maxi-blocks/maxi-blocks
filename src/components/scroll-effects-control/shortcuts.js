@@ -922,6 +922,110 @@ export const rotate = {
 	},
 };
 
+export const rotateX = {
+	shortcut1: {
+		// Right less
+		'scroll-easing-general': 'ease',
+		'scroll-rotateX-zones-general': {
+			0: -60,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+	shortcut2: {
+		// Left less
+		'scroll-rotateX-zones-general': {
+			0: 60,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+	shortcut3: {
+		// Right some
+		'scroll-rotateX-zones-general': {
+			0: -120,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+	shortcut4: {
+		// Left some
+		'scroll-rotateX-zones-general': {
+			0: 120,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+	shortcut5: {
+		// Right more
+		'scroll-rotateX-zones-general': {
+			0: -180,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+	shortcut6: {
+		// Left more
+		'scroll-rotateX-zones-general': {
+			0: 180,
+			100: 0,
+		},
+		'scroll-rotateX-speed-general': 500,
+	},
+};
+
+export const rotateY = {
+	shortcut1: {
+		// Right less
+		'scroll-easing-general': 'ease',
+		'scroll-rotateY-zones-general': {
+			0: -60,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+	shortcut2: {
+		// Left less
+		'scroll-rotateY-zones-general': {
+			0: 60,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+	shortcut3: {
+		// Right some
+		'scroll-rotateY-zones-general': {
+			0: -120,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+	shortcut4: {
+		// Left some
+		'scroll-rotateY-zones-general': {
+			0: 120,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+	shortcut5: {
+		// Right more
+		'scroll-rotateY-zones-general': {
+			0: -180,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+	shortcut6: {
+		// Left more
+		'scroll-rotateY-zones-general': {
+			0: 180,
+			100: 0,
+		},
+		'scroll-rotateY-speed-general': 500,
+	},
+};
+
 export const scale = {
 	shortcut1: {
 		'scroll-scale-easing-general': 'ease',
@@ -974,6 +1078,116 @@ export const scale = {
 			100: 100,
 		},
 		'scroll-scale-speed-general': 500,
+	},
+};
+
+export const scaleX = {
+	shortcut1: {
+		'scroll-scaleX-easing-general': 'ease',
+		'scroll-scaleX-zones-general': {
+			0: 90,
+			50: 110,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+	shortcut2: {
+		'scroll-scaleX-zones-general': {
+			0: 110,
+			50: 90,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+	shortcut3: {
+		'scroll-scaleX-zones-general': {
+			0: 80,
+			50: 120,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+	shortcut4: {
+		'scroll-scaleX-easing-general': 'ease',
+		'scroll-scaleX-zones-general': {
+			0: 120,
+			50: 80,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+	shortcut5: {
+		'scroll-scaleX-easing-general': 'ease',
+		'scroll-scaleX-zones-general': {
+			0: 70,
+			50: 130,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+	shortcut6: {
+		'scroll-scaleX-easing-general': 'ease',
+		'scroll-scaleX-zones-general': {
+			0: 130,
+			50: 70,
+			100: 100,
+		},
+		'scroll-scaleX-speed-general': 500,
+	},
+};
+
+export const scaleY = {
+	shortcut1: {
+		'scroll-scaleY-easing-general': 'ease',
+		'scroll-scaleY-zones-general': {
+			0: 90,
+			50: 110,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
+	},
+	shortcut2: {
+		'scroll-scaleY-zones-general': {
+			0: 110,
+			50: 90,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
+	},
+	shortcut3: {
+		'scroll-scaleY-zones-general': {
+			0: 80,
+			50: 120,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
+	},
+	shortcut4: {
+		'scroll-scaleY-easing-general': 'ease',
+		'scroll-scaleY-zones-general': {
+			0: 120,
+			50: 80,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
+	},
+	shortcut5: {
+		'scroll-scaleY-easing-general': 'ease',
+		'scroll-scaleY-zones-general': {
+			0: 70,
+			50: 130,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
+	},
+	shortcut6: {
+		'scroll-scaleY-easing-general': 'ease',
+		'scroll-scaleY-zones-general': {
+			0: 130,
+			50: 70,
+			100: 100,
+		},
+		'scroll-scaleY-speed-general': 500,
 	},
 };
 

@@ -144,6 +144,12 @@ class ScrollEffects {
 			case 'rotate':
 				this.setTransform(el, `rotate(${value}deg)`, 'rotate');
 				break;
+			case 'rotateX':
+				this.setTransform(el, `rotateX(${value}deg)`, 'rotateX');
+				break;
+			case 'rotateY':
+				this.setTransform(el, `rotateY(${value}deg)`, 'rotateY');
+				break;
 			case 'fade':
 				this.constructor.setOpacity(el, `${value}%`);
 				break;
@@ -153,6 +159,12 @@ class ScrollEffects {
 					`scale3d(${value}%, ${value}%, ${value}%)`,
 					'scale'
 				);
+				break;
+			case 'scaleX':
+				this.setTransform(el, `scaleX(${value}%)`, 'scaleX');
+				break;
+			case 'scaleY':
+				this.setTransform(el, `scaleY(${value}%)`, 'scaleY');
 				break;
 			case 'blur':
 				this.constructor.setBlur(el, `${value}${unit}`);
@@ -412,7 +424,11 @@ class ScrollEffects {
 			case 'vertical':
 			case 'horizontal':
 			case 'rotate':
+			case 'rotateX':
+			case 'rotateY':
 			case 'scale':
+			case 'scaleX':
+			case 'scaleY':
 				transition += `transform ${speedValue}ms ${easingValue} ${delayValue}ms, `;
 				break;
 			case 'fade':

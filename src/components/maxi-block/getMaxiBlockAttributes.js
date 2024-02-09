@@ -137,24 +137,26 @@ const getMaxiBlockAttributes = props => {
 					break;
 			}
 
-			let isOldScrollAttributes = true;
+			if (!isNil(scrollSettings)) {
+				let isOldScrollAttributes = true;
 
-			for (const setting of scrollSettings) {
-				const scrollSettingValue =
-					attributes[`scroll-${type}-${setting}-general`];
+				for (const setting of scrollSettings) {
+					const scrollSettingValue =
+						attributes[`scroll-${type}-${setting}-general`];
 
-				if (isNil(scrollSettingValue)) {
-					isOldScrollAttributes = false;
-					break;
+					if (isNil(scrollSettingValue)) {
+						isOldScrollAttributes = false;
+						break;
+					}
+
+					responseString += `${scrollSettingValue} `;
 				}
 
-				responseString += `${scrollSettingValue} `;
-			}
-
-			if (isOldScrollAttributes && !isEmpty(responseString)) {
-				enabledScrolls.push(type);
-				scroll[`data-scroll-effect-${type}-general`] =
-					responseString.trim();
+				if (isOldScrollAttributes && !isEmpty(responseString)) {
+					enabledScrolls.push(type);
+					scroll[`data-scroll-effect-${type}-general`] =
+						responseString.trim();
+				}
 			}
 		}
 

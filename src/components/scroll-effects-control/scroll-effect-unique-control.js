@@ -69,7 +69,6 @@ const ScrollEffectsUniqueControl = props => {
 	const ref = useRef(null);
 
 	useEffect(() => {
-		console.log('zonesAttribute', zonesAttribute);
 		setZones(Object.keys(zonesAttribute).map(Number));
 	}, [zonesAttribute]);
 
@@ -234,7 +233,7 @@ const ScrollEffectsUniqueControl = props => {
 					}
 					onReset={() => {
 						const newUnit = getDefaultAttribute(
-							`scroll-${type}-unit-general`
+							`scroll-${type}-unit-${breakpoint}`
 						);
 						onChange({
 							[`scroll-${type}-unit-${breakpoint}`]: newUnit,
@@ -342,7 +341,7 @@ const ScrollEffectsUniqueControl = props => {
 						activeThumbIndex === 0
 							? Object.values(
 									getDefaultAttribute(
-										`scroll-${type}-zones-general`
+										`scroll-${type}-zones-${breakpoint}`
 									)
 							  )[activeThumbIndex]
 							: zonesAttribute[

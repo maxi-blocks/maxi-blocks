@@ -217,7 +217,7 @@ export const shortcut9 = {
 export const shortcut10 = {
 	// Fade up less
 	'scroll-fade-easing-general': 'ease',
-	'scroll-face-zones-general': {
+	'scroll-fade-zones-general': {
 		0: 100,
 		50: 50,
 		100: 0,

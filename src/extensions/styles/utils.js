@@ -58,7 +58,7 @@ export const getScrollEffects = (uniqueID, scroll) => {
 
 	Object.entries(scroll).forEach(([key, value]) => {
 		const scrollType = availableScrollTypes.find(type =>
-			key.includes(type)
+			key.includes(`-${type}-`)
 		);
 
 		if (!scrollType) return;
@@ -70,7 +70,6 @@ export const getScrollEffects = (uniqueID, scroll) => {
 	if (!response || isEmpty(response)) return null;
 
 	response.scroll_effects = true;
-
 	return { [uniqueID]: response };
 };
 

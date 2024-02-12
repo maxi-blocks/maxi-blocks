@@ -17,7 +17,12 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import TextControl from '../text-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import TypographyControl from '../typography-control';
+import ColorControl from '../color-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	orderByRelations,
 	orderByOptions,
@@ -46,9 +51,18 @@ import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 const ContextLoop = props => {
-	const { clientId, className, onChange, contentType = 'group' } = props;
+	const {
+		clientId,
+		className,
+		onChange,
+		blockStyle,
+		breakpoint,
+		contentType = 'group',
+	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
+
+	console.log('contextLoop', contextLoop);
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -73,7 +87,27 @@ const ContextLoop = props => {
 		'cl-pagination-show-page-list': paginationShowPageList,
 		'cl-pagination-previous-text': paginationPreviousText,
 		'cl-pagination-next-text': paginationNextText,
+		'cl-pagination-link-hover-color': paginationLinkHoverColor,
+		'cl-pagination-link-hover-palette-status':
+			paginationLinkHoverPaletteStatus,
+		'cl-pagination-link-hover-palette-sc-status':
+			paginationLinkHoverPaletteSCStatus,
+		'cl-pagination-link-hover-palette-color':
+			paginationLinkHoverPaletteColor,
+		'cl-pagination-link-hover-palette-opacity':
+			paginationLinkHoverPaletteOpacity,
+		'cl-pagination-link-current-color': paginationLinkCurrentColor,
+		'cl-pagination-link-current-palette-status':
+			paginationLinkCurrentPaletteStatus,
+		'cl-pagination-link-current-palette-sc-status':
+			paginationLinkCurrentPaletteSCStatus,
+		'cl-pagination-link-current-palette-color':
+			paginationLinkCurrentPaletteColor,
+		'cl-pagination-link-current-palette-opacity':
+			paginationLinkCurrentPaletteOpacity,
 	} = getCLAttributes(contextLoop);
+
+	const clPaginationPrefix = 'cl-pagination-';
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) &&
@@ -509,6 +543,139 @@ const ContextLoop = props => {
 															value,
 													})
 												}
+											/>
+											<TypographyControl
+												{...getGroupAttributes(
+													contextLoop,
+													'typography',
+													false,
+													'cl-'
+												)}
+												textLevel='p'
+												blockStyle={blockStyle}
+												clientId={clientId}
+												breakpoint={breakpoint}
+												disableCustomFormats
+												hideAlignment
+												globalProps={{
+													target: '',
+													type: 'p',
+												}}
+												styleCardPrefix=''
+												prefix='cl-'
+												onChange={obj => onChange(obj)}
+											/>
+											<ColorControl
+												label={__(
+													'Pagination hover',
+													'maxi-blocks'
+												)}
+												className='maxi-pagination-link-hover-color'
+												color={paginationLinkHoverColor}
+												prefix={`${clPaginationPrefix}link-hover-`}
+												paletteStatus={
+													paginationLinkHoverPaletteStatus
+												}
+												paletteSCStatus={
+													paginationLinkHoverPaletteSCStatus
+												}
+												paletteColor={
+													paginationLinkHoverPaletteColor
+												}
+												paletteOpacity={
+													paginationLinkHoverPaletteOpacity
+												}
+												// onChangeInline={({ color }) =>
+												// 	onChangeInline(
+												// 		{ color },
+												// 		'a:hover'
+												// 	)
+												// }
+												onChange={({
+													paletteColor,
+													paletteStatus,
+													paletteSCStatus,
+													paletteOpacity,
+													color,
+												}) =>
+													changeProps({
+														[`${clPaginationPrefix}link-hover-palette-status`]:
+															paletteStatus,
+														[`${clPaginationPrefix}link-hover-palette-sc-status`]:
+															paletteSCStatus,
+														[`${clPaginationPrefix}link-hover-palette-color`]:
+															paletteColor,
+														[`${clPaginationPrefix}link-hover-palette-opacity`]:
+															paletteOpacity,
+														[`${clPaginationPrefix}link-hover-color`]:
+															color,
+													})
+												}
+												textLevel='p'
+												deviceType={breakpoint}
+												clientId={clientId}
+												disableGradient
+												globalProps={{
+													target: 'hover',
+													type: 'link',
+												}}
+											/>
+											<ColorControl
+												label={__(
+													'Pagination current',
+													'maxi-blocks'
+												)}
+												className='maxi-pagination-link-current-color'
+												color={
+													paginationLinkCurrentColor
+												}
+												prefix={`${clPaginationPrefix}link-current-`}
+												paletteStatus={
+													paginationLinkCurrentPaletteStatus
+												}
+												paletteSCStatus={
+													paginationLinkCurrentPaletteSCStatus
+												}
+												paletteColor={
+													paginationLinkCurrentPaletteColor
+												}
+												paletteOpacity={
+													paginationLinkCurrentPaletteOpacity
+												}
+												// onChangeInline={({ color }) =>
+												// 	onChangeInline(
+												// 		{ color },
+												// 		'a:hover'
+												// 	)
+												// }
+												onChange={({
+													paletteColor,
+													paletteStatus,
+													paletteSCStatus,
+													paletteOpacity,
+													color,
+												}) =>
+													changeProps({
+														[`${clPaginationPrefix}link-current-palette-status`]:
+															paletteStatus,
+														[`${clPaginationPrefix}link-current-palette-sc-status`]:
+															paletteSCStatus,
+														[`${clPaginationPrefix}link-current-palette-color`]:
+															paletteColor,
+														[`${clPaginationPrefix}link-current-palette-opacity`]:
+															paletteOpacity,
+														[`${clPaginationPrefix}link-current-color`]:
+															color,
+													})
+												}
+												textLevel='p'
+												deviceType={breakpoint}
+												clientId={clientId}
+												disableGradient
+												globalProps={{
+													target: 'active',
+													type: 'link',
+												}}
 											/>
 										</>
 									)}

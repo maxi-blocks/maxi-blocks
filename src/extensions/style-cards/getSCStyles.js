@@ -274,14 +274,6 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
 		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
 
-		// Pagination Maxi hover, focus, current
-		const paginationLink = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-pagination a`;
-
-		addedResponse += `${paginationLink} { color: rgb(var(--maxi-${style}-color-3)); }`;
-		addedResponse += `${paginationLink}:hover { color: rgb(var(--maxi-${style}-color-4)); }`;
-		addedResponse += `${paginationLink}:focus { color: rgb(var(--maxi-${style}-color-4)); }`;
-		addedResponse += `${paginationLink}.maxi-pagination__link--current { color: rgb(var(--maxi-${style}-color-6)); }`;
-
 		[
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,

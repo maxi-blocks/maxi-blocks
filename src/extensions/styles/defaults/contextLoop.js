@@ -1,3 +1,9 @@
+import prefixAttributesCreator from '../prefixAttributesCreator';
+import { typography } from './typography';
+import paletteAttributesCreator from '../paletteAttributesCreator';
+
+const prefix = 'cl-';
+
 const contextLoop = {
 	'cl-status': {
 		type: 'boolean',
@@ -54,6 +60,18 @@ const contextLoop = {
 		type: 'string',
 		default: 'Next',
 	},
+	...prefixAttributesCreator({
+		obj: typography,
+		prefix,
+	}),
+	...paletteAttributesCreator({
+		prefix: `${prefix}pagination-link-hover-`,
+		palette: 4,
+	}),
+	...paletteAttributesCreator({
+		prefix: `${prefix}pagination-link-current-`,
+		palette: 6,
+	}),
 };
 
 export default contextLoop;

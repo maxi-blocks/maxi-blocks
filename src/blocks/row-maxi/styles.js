@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	styleProcessor,
+	getAttributeValue,
+	getColorRGBAString,
+} from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -14,6 +19,7 @@ import {
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
+	getTypographyStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -105,6 +111,68 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getPaginationStyles = props => {
+	const { blockStyle } = props;
+	const clPrefix = 'cl-';
+
+	const response = {
+		typography: getTypographyStyles({
+			obj: {
+				...getGroupAttributes(props, 'typography', false, clPrefix),
+			},
+			isHover: false,
+			blockStyle,
+			prefix: clPrefix,
+		}),
+	};
+
+	return response;
+};
+
+const getPaginationColours = (props, type) => {
+	const { blockStyle } = props;
+
+	let response = {};
+
+	const prefix = `cl-pagination-link-${type}-`;
+
+	const paletteStatus = getAttributeValue({
+		target: `${prefix}palette-status`,
+		props,
+	});
+
+	const paletteColor = getAttributeValue({
+		target: `${prefix}palette-color`,
+		props,
+	});
+
+	const paletteOpacity = getAttributeValue({
+		target: `${prefix}palette-opacity`,
+		props,
+	});
+
+	const color = getAttributeValue({
+		target: `${prefix}placeholder-color`,
+		props,
+	});
+
+	if (paletteStatus) {
+		response = {
+			color: getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle,
+			}),
+		};
+	} else if (color) {
+		response = {
+			color,
+		};
+	}
+
+	return { [type]: { general: response } };
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -136,6 +204,13 @@ const getStyles = props => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),
+				' .maxi-pagination a': getPaginationStyles(props),
+				' .maxi-pagination a:hover': getPaginationColours(
+					props,
+					'hover'
+				),
+				' .maxi-pagination a.maxi-pagination__link--current':
+					getPaginationColours(props, 'current'),
 			},
 			data,
 			props

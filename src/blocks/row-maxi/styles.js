@@ -113,7 +113,7 @@ const getHoverObject = props => {
 
 const getPaginationStyles = props => {
 	const { blockStyle } = props;
-	const clPrefix = 'cl-';
+	const clPrefix = 'cl-pagination-';
 
 	const response = {
 		typography: getTypographyStyles({

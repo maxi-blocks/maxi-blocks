@@ -19,6 +19,8 @@ import ToggleSwitch from '../toggle-switch';
 import TextControl from '../text-control';
 import TypographyControl from '../typography-control';
 import ColorControl from '../color-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import FlexSettingsControl from '../flex-settings-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -57,6 +59,7 @@ const ContextLoop = props => {
 		onChange,
 		blockStyle,
 		breakpoint,
+		name,
 		contentType = 'group',
 	} = props;
 
@@ -68,6 +71,14 @@ const ContextLoop = props => {
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
 	const classes = classnames('maxi-context-loop', className);
+
+	const { getBlockParents, getBlockName } = select('core/block-editor');
+
+	const parentBlockName = getBlockName(
+		getBlockParents(clientId)
+			?.filter(id => id !== clientId)
+			?.slice(-1)?.[0]
+	);
 
 	const {
 		'cl-status': status,
@@ -108,6 +119,41 @@ const ContextLoop = props => {
 	} = getCLAttributes(contextLoop);
 
 	const clPaginationPrefix = 'cl-pagination-';
+
+	console.log('pagi flex');
+	console.log(
+		getGroupAttributes(contextLoop, 'flex', false, clPaginationPrefix)
+	);
+
+	const paginationFlexNoPrefix = () => {
+		// Define the prefix
+		const clPaginationPrefix = 'cl-pagination-';
+
+		// Assume getGroupAttributes returns an object with prefixed keys
+		const obj = getGroupAttributes(
+			contextLoop,
+			'flex',
+			false,
+			clPaginationPrefix
+		);
+
+		// Create a new object with the prefix removed from keys
+		const newObj = Object.keys(obj).reduce((acc, key) => {
+			// Remove the prefix from each key and use the original value
+			// Make sure to only remove the prefix if the key actually starts with it
+			const newKey = key.startsWith(clPaginationPrefix)
+				? key.slice(clPaginationPrefix.length)
+				: key;
+			acc[newKey] = obj[key];
+			return acc;
+		}, {});
+
+		// Return the new object with the prefix removed from keys
+		return newObj;
+	};
+
+	console.log('paginationFlexNoPrefix');
+	console.log(paginationFlexNoPrefix());
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) &&
@@ -549,7 +595,7 @@ const ContextLoop = props => {
 													contextLoop,
 													'typography',
 													false,
-													'cl-'
+													clPaginationPrefix
 												)}
 												textLevel='p'
 												blockStyle={blockStyle}
@@ -562,7 +608,7 @@ const ContextLoop = props => {
 													type: 'p',
 												}}
 												styleCardPrefix=''
-												prefix='cl-'
+												prefix={clPaginationPrefix}
 												onChange={obj => onChange(obj)}
 											/>
 											<ColorControl
@@ -642,12 +688,6 @@ const ContextLoop = props => {
 												paletteOpacity={
 													paginationLinkCurrentPaletteOpacity
 												}
-												// onChangeInline={({ color }) =>
-												// 	onChangeInline(
-												// 		{ color },
-												// 		'a:hover'
-												// 	)
-												// }
 												onChange={({
 													paletteColor,
 													paletteStatus,
@@ -677,6 +717,46 @@ const ContextLoop = props => {
 													type: 'link',
 												}}
 											/>
+											<ResponsiveTabsControl
+												breakpoint={breakpoint}
+											>
+												<FlexSettingsControl
+													{...paginationFlexNoPrefix}
+													onChange={obj => {
+														console.log(
+															'obj on change flex'
+														);
+														console.log(obj);
+														const newObj =
+															Object.keys(
+																obj
+															).reduce(
+																(acc, key) => {
+																	// Prefix each key with 'cl-pagination-' and use the original value
+																	acc[
+																		`${clPaginationPrefix}${key}`
+																	] =
+																		obj[
+																			key
+																		];
+																	return acc;
+																},
+																{}
+															);
+
+														console.log('newObj');
+														console.log(newObj);
+														// Call the onChange function with the new object
+														onChange(newObj);
+													}}
+													breakpoint={breakpoint}
+													clientId={clientId}
+													name={name}
+													parentBlockName={
+														parentBlockName
+													}
+												/>
+											</ResponsiveTabsControl>
 										</>
 									)}
 								</>

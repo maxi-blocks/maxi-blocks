@@ -1,8 +1,9 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { typography } from './typography';
+import flex from './flex';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
-const prefix = 'cl-';
+const prefix = 'cl-pagination-';
 
 const contextLoop = {
 	'cl-status': {
@@ -65,12 +66,16 @@ const contextLoop = {
 		prefix,
 	}),
 	...paletteAttributesCreator({
-		prefix: `${prefix}pagination-link-hover-`,
+		prefix: `${prefix}link-hover-`,
 		palette: 4,
 	}),
 	...paletteAttributesCreator({
-		prefix: `${prefix}pagination-link-current-`,
+		prefix: `${prefix}link-current-`,
 		palette: 6,
+	}),
+	...prefixAttributesCreator({
+		obj: flex,
+		prefix,
 	}),
 };
 

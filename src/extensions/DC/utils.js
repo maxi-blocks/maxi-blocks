@@ -109,7 +109,7 @@ const getCustomPostTypeFields = (contentType, type) => {
 
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {
-			addField('Featured image', 'featured_image');
+			addField('Featured image', 'featured_media');
 		}
 
 		return fields;

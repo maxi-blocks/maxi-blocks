@@ -7,13 +7,8 @@ import { store as coreStore } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import { limitString } from './utils';
-import {
-	fieldOptions,
-	idOptionByField,
-	idTypes,
-	orderByRelations,
-} from './constants';
+import { getFields, limitString } from './utils';
+import { idOptionByField, idTypes, orderByRelations } from './constants';
 
 /**
  * External dependencies
@@ -199,8 +194,10 @@ const getDCOptions = async (
 
 			// Ensures first field is selected
 			if (!field)
-				newValues[`${prefix}field`] =
-					fieldOptions[contentType][type][0].value;
+				newValues[`${prefix}field`] = getFields(
+					contentType,
+					type
+				)[0].value;
 		}
 
 		return { newValues, newPostIdOptions };

@@ -134,17 +134,17 @@ const getDCOptions = async (
 			};
 		}
 
-		if (isCustomPostType) {
-			const title = item.title?.rendered ?? item.title;
+		if (isCustomPostType || isCustomTaxonomy) {
+			let title;
+
+			if (isCustomPostType) {
+				title = item.title?.rendered ?? item.title;
+			} else {
+				title = item.name?.rendered ?? item.name;
+			}
 
 			return {
 				label: `${item.id}${title ? ` - ${title}` : ''}`,
-				value: +item.id,
-			};
-		}
-		if (isCustomTaxonomy) {
-			return {
-				label: `${item.id} - ${item.name?.rendered ?? item.name}`,
 				value: +item.id,
 			};
 		}

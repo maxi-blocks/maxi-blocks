@@ -61,6 +61,7 @@ const ContextLoop = props => {
 		breakpoint,
 		name,
 		contentType = 'group',
+		isToolbar = false,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -464,16 +465,21 @@ const ContextLoop = props => {
 											}
 										/>
 									)}
-									<ToggleSwitch
-										label={__('Pagination', 'maxi-blocks')}
-										selected={pagination}
-										onChange={value =>
-											changeProps({
-												'cl-pagination': value,
-											})
-										}
-									/>
-									{pagination && (
+									{!isToolbar && (
+										<ToggleSwitch
+											label={__(
+												'Pagination',
+												'maxi-blocks'
+											)}
+											selected={pagination}
+											onChange={value =>
+												changeProps({
+													'cl-pagination': value,
+												})
+											}
+										/>
+									)}
+									{!isToolbar && pagination && (
 										<>
 											<AdvancedNumberControl
 												label={__(

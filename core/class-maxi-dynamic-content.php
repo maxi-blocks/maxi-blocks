@@ -645,14 +645,24 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = $this->get_post($attributes);
-        $media_data = $post->{"post_$dc_field"};
 
-        if ($dc_field === 'author') {
+        // Check if $post is false (boolean) before attempting to access its properties
+        if (!is_object($post)) {
+            return 0;
+        }
+
+        // For fields other than 'author', attempt to dynamically access the property
+        if ($dc_field !== 'author') {
+            $media_data = $post->{"post_$dc_field"};
+        } else {
+            // Specifically handle the 'author' case
             $media_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         return $media_data;
     }
+
+
 
     public function get_user_content($attributes)
     {
@@ -669,10 +679,27 @@ class MaxiBlocks_DynamicContent
             'description' => 'description',
         ];
 
-        $user_data = $user->data->{$user_dictionary[$dc_field]};
+        // Check if the $dc_field is defined in your dictionary
+        if (!array_key_exists($dc_field, $user_dictionary)) {
+            return 0;
+        }
+
+        // Ensure $user->data exists and is an object
+        if (!isset($user->data) || !is_object($user->data)) {
+            return 0;
+        }
+
+        // Check if the property exists in $user->data
+        $property = $user_dictionary[$dc_field];
+        if (!property_exists($user->data, $property)) {
+            return 0;
+        }
+
+        $user_data = $user->data->$property;
 
         return $user_data;
     }
+
 
     public function get_taxonomy_content($attributes)
     {

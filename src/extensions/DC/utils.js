@@ -177,7 +177,7 @@ export const getFields = (contentType, type) => {
 	)
 		return getCustomTaxonomyFields(type);
 
-	return fieldOptions[contentType][type];
+	return fieldOptions[contentType]?.[type];
 };
 
 const getPostTypeRelationOptions = type => {

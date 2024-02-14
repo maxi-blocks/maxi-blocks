@@ -26,7 +26,7 @@ import { linkFields } from './constants';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -129,7 +129,10 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
-						} else if (newLinkSettings) {
+						} else if (
+							newLinkSettings &&
+							!isEqual(attributes.linkSettings, newLinkSettings)
+						) {
 							isSynchronizedAttributesUpdated = true;
 
 							markNextChangeAsNotPersistent();

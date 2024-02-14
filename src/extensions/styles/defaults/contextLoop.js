@@ -76,6 +76,10 @@ const contextLoop = {
 	...prefixAttributesCreator({
 		obj: flex,
 		prefix,
+		diffValAttr: {
+			[`${prefix}justify-content-general`]: 'space-between',
+			[`${prefix}align-content-general`]: 'center',
+		},
 	}),
 };
 

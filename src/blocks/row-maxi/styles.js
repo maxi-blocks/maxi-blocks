@@ -112,17 +112,37 @@ const getHoverObject = props => {
 };
 
 const getPaginationStyles = props => {
+	const clPaginationPrefix = 'cl-pagination-';
+
+	const response = {
+		flex: getFlexStyles(
+			{
+				...getGroupAttributes(props, 'flex', false, clPaginationPrefix),
+			},
+			clPaginationPrefix
+		),
+	};
+
+	return response;
+};
+
+const getPaginationLinksStyles = props => {
 	const { blockStyle } = props;
-	const clPrefix = 'cl-pagination-';
+	const clPaginationPrefix = 'cl-pagination-';
 
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typography', false, clPrefix),
+				...getGroupAttributes(
+					props,
+					'typography',
+					false,
+					clPaginationPrefix
+				),
 			},
 			isHover: false,
 			blockStyle,
-			prefix: clPrefix,
+			prefix: clPaginationPrefix,
 		}),
 	};
 
@@ -204,7 +224,8 @@ const getStyles = props => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),
-				' .maxi-pagination a': getPaginationStyles(props),
+				' .maxi-pagination': getPaginationStyles(props),
+				' .maxi-pagination a': getPaginationLinksStyles(props),
 				' .maxi-pagination a:hover': getPaginationColours(
 					props,
 					'hover'

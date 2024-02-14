@@ -25,7 +25,7 @@ import {
  */
 
 const FlexDirectionControl = props => {
-	const { breakpoint, onChange } = props;
+	const { breakpoint, onChange, prefix = '' } = props;
 
 	const getOptions = () => {
 		const options = [];
@@ -64,21 +64,21 @@ const FlexDirectionControl = props => {
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-direction',
+					target: `${prefix}flex-direction`,
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-direction',
+					target: `${prefix}flex-direction`,
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange({
-					[`flex-direction-${breakpoint}`]: val,
+					[`${prefix}flex-direction-${breakpoint}`]: val,
 				})
 			}
 		/>

@@ -113,41 +113,6 @@ const ContextLoop = props => {
 
 	const clPaginationPrefix = 'cl-pagination-';
 
-	// console.log('pagi flex');
-	// console.log(
-	// 	getGroupAttributes(contextLoop, 'flex', false, clPaginationPrefix)
-	// );
-
-	const paginationFlexNoPrefix = () => {
-		// Define the prefix
-		const clPaginationPrefix = 'cl-pagination-';
-
-		// Assume getGroupAttributes returns an object with prefixed keys
-		const obj = getGroupAttributes(
-			contextLoop,
-			'flex',
-			false,
-			clPaginationPrefix
-		);
-
-		// Create a new object with the prefix removed from keys
-		const newObj = Object.keys(obj).reduce((acc, key) => {
-			// Remove the prefix from each key and use the original value
-			// Make sure to only remove the prefix if the key actually starts with it
-			const newKey = key.startsWith(clPaginationPrefix)
-				? key.slice(clPaginationPrefix.length)
-				: key;
-			acc[newKey] = obj[key];
-			return acc;
-		}, {});
-
-		// Return the new object with the prefix removed from keys
-		return newObj;
-	};
-
-	// console.log('paginationFlexNoPrefix');
-	// console.log(paginationFlexNoPrefix());
-
 	const isTypeHasRelations =
 		relationTypes.includes(type) &&
 		!!relationOptions?.[contentType]?.[type];
@@ -719,38 +684,20 @@ const ContextLoop = props => {
 												breakpoint={breakpoint}
 											>
 												<FlexSettingsControl
-													{...paginationFlexNoPrefix}
+													{...getGroupAttributes(
+														contextLoop,
+														'flex',
+														false,
+														clPaginationPrefix
+													)}
 													onChange={obj => {
-														console.log(
-															'obj on change flex'
-														);
-														console.log(obj);
-														const newObj =
-															Object.keys(
-																obj
-															).reduce(
-																(acc, key) => {
-																	// Prefix each key with 'cl-pagination-' and use the original value
-																	acc[
-																		`${clPaginationPrefix}${key}`
-																	] =
-																		obj[
-																			key
-																		];
-																	return acc;
-																},
-																{}
-															);
-
-														console.log('newObj');
-														console.log(newObj);
-														// Call the onChange function with the new object
-														onChange(newObj);
+														onChange(obj);
 													}}
 													breakpoint={breakpoint}
 													clientId={clientId}
 													name='pagination'
 													parentBlockName={name}
+													prefix={clPaginationPrefix}
 												/>
 											</ResponsiveTabsControl>
 										</>

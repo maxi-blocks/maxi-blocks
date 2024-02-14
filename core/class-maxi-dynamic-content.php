@@ -217,17 +217,25 @@ class MaxiBlocks_DynamicContent
         }
 
         $pagination_page = 1;
-        if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
+
+        if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
         }
 
         $pagination_page_next = $pagination_page + 1;
         $pagination_page_prev = $pagination_page - 1;
 
+        $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $currentQueryParams = [];
+        parse_str(parse_url($currentUrl, PHP_URL_QUERY), $currentQueryParams);
+
         $content = '<div class="maxi-pagination">';
         $content .= '<div class="maxi-pagination__prev">';
         if($pagination_page_prev > 0) {
             $pagination_page_prev_link = '?cl&cl-page='.$pagination_page_prev.'#'.$pagination_anchor;
+            $currentQueryParams['cl-page'] = $pagination_page_prev;
+            $queryString = http_build_query($currentQueryParams);
+            $pagination_page_prev_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
 
             $content .= '<a href="' . esc_attr($pagination_page_prev_link) . '" class="maxi-pagination__link">';
             $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_prev_text) .'</span>';
@@ -242,7 +250,9 @@ class MaxiBlocks_DynamicContent
 
             // Pages list
             for ($page = 1; $page <= $total_pages; $page++) {
-                $pagination_page_link = '?cl&cl-page='.$page.'#'.$pagination_anchor;
+                $currentQueryParams['cl-page'] = $page;
+                $queryString = http_build_query($currentQueryParams);
+                $pagination_page_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
                 $content .= '<a href="' . esc_attr($pagination_page_link) . '" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
                 $content .= '<span class="maxi-pagination__text">' . $page . '</span>';
                 $content .= '</a>';
@@ -253,8 +263,10 @@ class MaxiBlocks_DynamicContent
         $content .= '<div class="maxi-pagination__next">';
 
         if($pagination_page_next <= ceil($pagination_total / $cl_pagination_per_page)) {
-            $pagination_page_next_link = '?cl&cl-page='.$pagination_page_next.'#'.$pagination_anchor;
-
+            $currentQueryParams['cl-page'] = $pagination_page_next;
+            $queryString = http_build_query($currentQueryParams);
+            // Construct the new pagination link
+            $pagination_page_next_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
             $content .= '<a href="' . esc_attr($pagination_page_next_link) . '" class="maxi-pagination__link">';
             $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_next_text) .'</span>';
             $content .= '</a>';
@@ -282,7 +294,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $pagination_page = 1;
-        if (isset($_GET['cl']) && isset($_GET['cl-page'])) {
+        if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
         }
 

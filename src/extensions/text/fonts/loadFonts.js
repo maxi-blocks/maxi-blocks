@@ -23,6 +23,9 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return;
 
+			console.log('fontName', fontName);
+			console.log('backendOnly', backendOnly);
+
 			const fontWeight = fontData?.weight || '400';
 			const fontStyle = fontData?.style;
 

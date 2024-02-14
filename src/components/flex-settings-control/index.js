@@ -75,32 +75,34 @@ const FlexSettingsControl = props => {
 					{
 						label: __('Flex-parent', 'maxi-blocks'),
 						value: 'flex-parent',
-						content: wrapperBlocks.includes(name) ? (
-							<>
-								<div className='maxi-flex-options__wrap'>
-									<FlexWrapControl {...props} />
-									<FlexDirectionControl {...props} />
-									<FlexAlignControl
+						content:
+							wrapperBlocks.includes(name) ||
+							name === 'pagination' ? (
+								<>
+									<div className='maxi-flex-options__wrap'>
+										<FlexWrapControl {...props} />
+										<FlexDirectionControl {...props} />
+										<FlexAlignControl
+											{...props}
+											onChange={onChange}
+											breakpoint={breakpoint}
+										/>
+										<FlexContentAlignControl {...props} />
+									</div>
+									<FlexGapControl
 										{...props}
 										onChange={onChange}
 										breakpoint={breakpoint}
 									/>
-									<FlexContentAlignControl {...props} />
+								</>
+							) : (
+								<div className='maxi-warning-box'>
+									{__(
+										'Block should be a wrapper to use flex-parent properties. Use Flex-child instead.',
+										'maxi-blocks'
+									)}
 								</div>
-								<FlexGapControl
-									{...props}
-									onChange={onChange}
-									breakpoint={breakpoint}
-								/>
-							</>
-						) : (
-							<div className='maxi-warning-box'>
-								{__(
-									'Block should be a wrapper to use flex-parent properties. Use Flex-child instead.',
-									'maxi-blocks'
-								)}
-							</div>
-						),
+							),
 					},
 					{
 						label: __('Flex-child', 'maxi-blocks'),

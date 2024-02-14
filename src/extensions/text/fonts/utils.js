@@ -32,91 +32,132 @@ export const getAllFonts = (
 
 	const getAllFontsRecursively = obj => {
 		breakpoints.forEach(breakpoint => {
-			const fontName = obj[`font-family-${breakpoint}`];
-			const fontWeight = obj[`font-weight-${breakpoint}`];
-			const fontStyle = obj[`font-style-${breakpoint}`];
+			const propertiesToCheck = [
+				'font-family',
+				'font-weight',
+				'font-style',
+				// Add new font property bases here
+				'cl-pagination-font-family',
+				'cl-pagination-font-weight',
+				'cl-pagination-font-style',
+			];
 
-			if (
-				fontName ||
-				fontWeight ||
-				fontStyle ||
-				breakpoint === 'general'
-			) {
-				const finalFontName =
-					fontName ??
-					getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-family',
-						breakpoint,
-						isHover,
-						textLevel,
-						avoidSC: !onlyBackend,
-						styleCard,
-					}) ??
-					`sc_font_${blockStyle}_${textLevel}`;
+			propertiesToCheck.forEach(baseProperty => {
+				const property = `${baseProperty}-${breakpoint}`;
+				const value = obj[property];
 
-				let finalFontWeight =
-					fontWeight ??
-					getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-weight',
-						breakpoint,
-						isHover,
-						textLevel,
-						styleCard,
-					})?.toString();
-
-				let finalFontStyle =
-					fontStyle ??
-					getCustomFormatValue({
-						typography: { ...obj },
-						prop: 'font-style',
-						breakpoint,
-						isHover,
-						textLevel,
-						styleCard,
-					});
-
-				if (result[finalFontName]) {
-					const {
-						fontWeight: currentFontWeight,
-						fontStyle: currentFontStyle,
-					} = result[finalFontName];
-
-					if (
-						currentFontWeight &&
-						!currentFontWeight.includes(finalFontWeight)
+				if (value || breakpoint === 'general') {
+					const finalPropertyName = baseProperty.includes(
+						'cl-pagination'
 					)
-						finalFontWeight = `${currentFontWeight},${finalFontWeight}`;
-					if (
-						currentFontStyle &&
-						!currentFontStyle.includes(finalFontStyle)
-					)
-						finalFontStyle = `${currentFontStyle},${finalFontStyle}`;
+						? baseProperty.replace(`-${breakpoint}`, '')
+						: baseProperty;
+					let finalValue;
+
+					if (baseProperty.includes('font-family')) {
+						finalValue =
+							value ??
+							getCustomFormatValue({
+								typography: { ...obj },
+								prop: 'font-family',
+								breakpoint,
+								isHover,
+								textLevel,
+								avoidSC: !onlyBackend,
+								styleCard,
+							}) ??
+							(finalPropertyName.includes('pagination')
+								? undefined
+								: `sc_font_${blockStyle}_${textLevel}`);
+					} else if (baseProperty.includes('font-weight')) {
+						finalValue =
+							value ??
+							getCustomFormatValue({
+								typography: { ...obj },
+								prop: 'font-weight',
+								breakpoint,
+								isHover,
+								textLevel,
+								avoidSC: !onlyBackend,
+								styleCard,
+							})?.toString();
+					} else if (baseProperty.includes('font-style')) {
+						finalValue =
+							value ??
+							getCustomFormatValue({
+								typography: { ...obj },
+								prop: 'font-style',
+								breakpoint,
+								isHover,
+								textLevel,
+								avoidSC: !onlyBackend,
+								styleCard,
+							});
+					}
+
+					// Process and store the final font information
+					if (finalValue) {
+						let finalFontName;
+						let finalFontWeight;
+						let finalFontStyle;
+
+						if (finalPropertyName.includes('font-family')) {
+							finalFontName = finalValue;
+						} else if (finalPropertyName.includes('font-weight')) {
+							finalFontWeight = finalValue;
+						} else if (finalPropertyName.includes('font-style')) {
+							finalFontStyle = finalValue;
+						}
+
+						// Assuming result is the accumulator for fonts
+						if (finalFontName) {
+							if (!result[finalFontName]) {
+								result[finalFontName] = {
+									weight: undefined,
+									style: undefined,
+								};
+							}
+							if (
+								finalFontWeight &&
+								!result[finalFontName].weight?.includes(
+									finalFontWeight
+								)
+							) {
+								result[finalFontName].weight = result[
+									finalFontName
+								].weight
+									? `${result[finalFontName].weight},${finalFontWeight}`
+									: finalFontWeight;
+							}
+							if (
+								finalFontStyle &&
+								!result[finalFontName].style?.includes(
+									finalFontStyle
+								)
+							) {
+								result[finalFontName].style = result[
+									finalFontName
+								].style
+									? `${result[finalFontName].style},${finalFontStyle}`
+									: finalFontStyle;
+							}
+						}
+					}
 				}
-
-				result[finalFontName] = {
-					weight: finalFontWeight,
-					style: finalFontStyle,
-				};
-			}
+			});
 		});
 
+		// Recursively process nested properties
 		Object.entries(obj).forEach(([key, val]) => {
 			if (
-				typeof val !== 'undefined' &&
-				isString(recursiveKey) &&
+				typeof val === 'object' &&
+				val !== null &&
+				recursiveKey &&
 				key.includes(recursiveKey)
 			) {
-				let recursiveFonts = {};
-				Object.values(val)?.forEach(recursiveVal => {
-					recursiveFonts = {
-						...recursiveFonts,
-						...recursiveVal,
-					};
+				Object.values(val).forEach(recursiveVal => {
+					getAllFontsRecursively(recursiveVal);
 				});
-
-				getAllFontsRecursively(recursiveFonts);
 			}
 		});
 	};
@@ -159,6 +200,7 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/button-maxi',
 		'maxi-blocks/text-maxi',
 		'maxi-blocks/image-maxi',
+		'maxi-blocks/row-maxi', // Pagination
 	];
 
 	const gutenbergBlocksStatus = select(
@@ -186,6 +228,16 @@ export const getPageFonts = (onlyBackend = false) => {
 						...getGroupAttributes(attributes, 'typographyHover'),
 					};
 					textLevel = 'button';
+					break;
+				case 'maxi-blocks/row-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'cl-pagination-'
+						),
+					};
 					break;
 				default:
 					typography = {

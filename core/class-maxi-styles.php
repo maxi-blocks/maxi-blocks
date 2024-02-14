@@ -1043,6 +1043,10 @@ class MaxiBlocks_Styles
 
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
+        echo '<pre>';
+        print_r($content_meta_fonts['fonts']);
+        echo '</pre>';
+
         if ($content_meta_fonts['meta'] !== null) {
 
             $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
@@ -1061,7 +1065,6 @@ class MaxiBlocks_Styles
     {
 
         $data = $this->get_content_for_blocks_frontend($id);
-
 
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);

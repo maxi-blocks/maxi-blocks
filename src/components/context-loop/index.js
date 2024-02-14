@@ -72,14 +72,6 @@ const ContextLoop = props => {
 
 	const classes = classnames('maxi-context-loop', className);
 
-	const { getBlockParents, getBlockName } = select('core/block-editor');
-
-	const parentBlockName = getBlockName(
-		getBlockParents(clientId)
-			?.filter(id => id !== clientId)
-			?.slice(-1)?.[0]
-	);
-
 	const {
 		'cl-status': status,
 		'cl-type': type,
@@ -120,10 +112,10 @@ const ContextLoop = props => {
 
 	const clPaginationPrefix = 'cl-pagination-';
 
-	console.log('pagi flex');
-	console.log(
-		getGroupAttributes(contextLoop, 'flex', false, clPaginationPrefix)
-	);
+	// console.log('pagi flex');
+	// console.log(
+	// 	getGroupAttributes(contextLoop, 'flex', false, clPaginationPrefix)
+	// );
 
 	const paginationFlexNoPrefix = () => {
 		// Define the prefix
@@ -152,8 +144,8 @@ const ContextLoop = props => {
 		return newObj;
 	};
 
-	console.log('paginationFlexNoPrefix');
-	console.log(paginationFlexNoPrefix());
+	// console.log('paginationFlexNoPrefix');
+	// console.log(paginationFlexNoPrefix());
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) &&
@@ -751,10 +743,8 @@ const ContextLoop = props => {
 													}}
 													breakpoint={breakpoint}
 													clientId={clientId}
-													name={name}
-													parentBlockName={
-														parentBlockName
-													}
+													name='pagination'
+													parentBlockName={name}
 												/>
 											</ResponsiveTabsControl>
 										</>

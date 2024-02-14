@@ -25,7 +25,7 @@ import {
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getHasScrollEffects,
+	getScrollEffects,
 	getHasVideo,
 	getParallaxLayers,
 	getRelations,
@@ -904,7 +904,7 @@ class MaxiBlockComponent extends Component {
 
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
-		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
+		const scrollEffects = getScrollEffects(uniqueID, scroll);
 		const relations = getRelations(uniqueID, relationsRaw);
 
 		return {
@@ -916,7 +916,7 @@ class MaxiBlockComponent extends Component {
 					relations,
 				}),
 				...(hasVideo && { bg_video: true }),
-				...(hasScrollEffects && { scroll_effects: true }),
+				...(!isEmpty(scrollEffects) && scrollEffects),
 				...(dcStatus &&
 					contextLoop?.['cl-status'] && {
 						dynamic_content: {

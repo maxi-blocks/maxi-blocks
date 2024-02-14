@@ -287,6 +287,7 @@ const buttonTagFields = [
 
 const mediaPostsPagesFields = [
 	{ label: __('Featured media', 'maxi-blocks'), value: 'featured_media' },
+	{ label: __("Author's avatar", 'maxi-blocks'), value: 'author_avatar' },
 ];
 
 const mediaSettingsFields = [
@@ -582,6 +583,8 @@ export const linkFieldsLabels = {
 	tags: __('Use tags links', 'maxi-blocks'),
 	author: __('Use author link', 'maxi-blocks'),
 };
+
+export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 
 export const descriptionOfErrors = {
 	next: __(

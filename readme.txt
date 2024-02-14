@@ -1,16 +1,16 @@
 === MaxiBlocks Free Page Builder & Template Library ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: template library, page builder, style cards, site builder, starter templates, templates, svg icons shapes, fse, starter templates, gutenberg blocks, blocks, landing pages, elements,
+Tags: block, blocks, gutenberg, gutenberg blocks, page builder, template library, fse, icons, landing pages, templates, icon block, starter templates
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Requires PHP: 8.0
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made templates, 13K icons, 100 design styles. Unlimited sites and downloads.
+Classic page builder meets modern WordPress. Work faster with 2000+ block patterns, 150+ page templates, 13.5k SVG icons & 100 free global style cards
 
 == Description ==
 
@@ -18,9 +18,18 @@ Modern page builder blends simplicity with power. Work faster w/ 1900 ready-made
 
 MaxiBlocks is a no-code visual page builder and block library that can create responsive, fast-loading webpages using an integrated design library.
 
-You can choose from 1,830 patterns, 128 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life.
+Choose from **2000+ block patterns**, **150+ page templates**, and **13.5k SVG icons** to kickstart page building and bring your creative vision to life.
 
-_New:_  Bring your own OpenAI API key to create or revise content inside of any Text Maxi block. Read more below.
+**New**: Bring your own OpenAI API key to create or revise content inside of any Text Maxi block.
+
+**New**: Navigation menus! Enhance your site's navigation with MaxiBlocks in the Site Editor, now fully integrated with global style cards.
+
+* Customize menu items with advanced typography, color, and padding options.
+* Update navigation for mobile burger menu with extended breakpoints: 4K XXL, 1920 XL, 1366 L, 1024 M, 767 S, & 480 XS.
+* Revamp mobile menu aesthetics, including color and style changes, with future updates to include 20 "hamburger" icons.
+* Improved navigation experience with support for A-current, A-visited, and hover color schemes.
+
+== Top 12 Features of MaxiBlocks
 
 https://youtu.be/EFXhXGFfMF8
 
@@ -31,34 +40,13 @@ We refuse to hold basic features hostage just to sell the “full-version.” Ev
 We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited domains and unlimited downloads.
 
 == Packed with free goodies 🆓 ==
-Get started with 400+ free templates, 13.4k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
-
-**Free block patterns (404)**
-- Footer (26)
-- Headlines (60)
-- Hero (20)
-- Icon (20)
-- Image (20)
-- Logo (6)
-- Number counter (18)
-- Pricing tables (6)
-- Story mix (154)
-- Team (28)
-- Testimonial (46)
+Get started with 13.5k icons, 100 style cards and 7 free page templates. You don't even need an account. Just install the plugin and start building.
 
 **Free page templates (7)**
 - Education (3)
 - Entertainment (3)
 - Food & drink (2)
 - Nonprofit (1)
-
-Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
-
-== What they say ==
-
-People simply can't fit all their love for Maxi into one sentence...
-
-[What 32 creators think of Maxi](https://maxiblocks.com/love/)
 
 == Maxi's free custom blocks  💎==
 
@@ -92,11 +80,17 @@ People simply can't fit all their love for Maxi into one sentence...
 
 == MaxiBlocks Theme ==
 
-The free full site editing theme is coming in January 2024. It's going to be epic!
+The free full site editing theme is out soon.
 
-Everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
+Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
 
 Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
+
+== What users say ==
+
+People simply can't fit all their love for Maxi into one sentence.
+
+[Read what 47 creators think of Maxi](https://maxiblocks.com/love/)
 
 == Go next-level with pro templates 🆙==
 If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1547 production-ready Pro templates.
@@ -224,7 +218,7 @@ https://youtu.be/OQi1YygiYnk
 
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-== 1426 pro patterns 🌈==
+== 1600+ pro patterns 🌈==
 
 Ready-made block patterns
 
@@ -245,7 +239,7 @@ Ready-made block patterns
 Coming soon
 - Navigation menus
 
-== 121 pro page templates ==
+== 140+ pro page templates ==
 
 Production ready. Just insert and start editing.
 
@@ -278,10 +272,10 @@ Look forward to exciting additions to enhance your design experience.
 - **More AI tools:** Content creation like images, integrated with style cards and right where you need it.
 - **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
 - **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
-- **Navigation & mega menu:** Create responsive menus for seamless site navigation.
+- **Mega menus:** Create responsive menus for seamless site navigation.
 - **Full site editing:** Further integrate MaxiBlocks for complete site customization.
 - **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.
-- **Menu builder:** A custom navigation block for responsive menus.
+- **Extend navigtion block:** Enhanced navigation block for responsive menus. [NOW LIVE]
 - **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
 
 == Documentation & support 📚==
@@ -317,15 +311,9 @@ _Join us in our mission to provide a user-friendly solution for website creation
 
 _Take care, Kyra - Design lead & co-founder of MaxiBlocks_
 
-== Frequently Asked Questions ==
-
-= Do I own what I create? =
-
-Absolutely! Your creations are yours to keep. It's open source and free to build.
-
 = How many sites can I build? =
 
-There's no limit to the number of sites you can build with MaxiBlocks. The plugin, blocks and all features are free to use for any purpose, personal or commercial.
+There's no limit to the number of sites you can build with MaxiBlocks. The plugin and custom blocks are free to use for any purpose, personal or commercial.
 
 = Do I need to pay for advanced blocks? =
 
@@ -337,7 +325,7 @@ Absolutely. Our strategy is to offer unlimited domains to attract a broad user b
 
 = Is MaxiBlocks compatible with my theme? =
 
-MaxiBlocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing MaxiBlocks with your theme for the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the MaxiBlocks Theme coming soon too.
+MaxiBlocks is designed to be compatible with any WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing MaxiBlocks with your theme for the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the MaxiBlocks Theme coming soon too.
 
 = Does MaxiBlocks work with Gutenberg? =
 
@@ -345,15 +333,15 @@ Yes, MaxiBlocks is fully integrated with the Gutenberg editor, providing custom 
 
 = What is a Pro access account? =
 
-A Pro access account equips both the MaxiBlocks account owner and their invited team members with all the benefits of a Pro template library subscription. It gives access to my.maxiblocks.com account, the pro library and priority support.
+A Pro access account gives access to your my.maxiblocks.com account, the pro library and priority support.
 
 = Who should use a Pro access account? =
 
-Creators, designers and developers who want to save time, get more variety and  be more productive can benefit from a Pro template library access account.
+Website owners, designers and developers who want access to our Pro template library. Pro templates are suitable for both new and seasoned designers, it offers 2000 ready-made templates, an integrated design library, and quick customization via style cards. Pro templates help aspiring designers quickly improve their skills and produce high-quality websites, while the intuitive UI allows end-users to easily update their websites.
 
-= Is the Pro access account for my end client? =
+= I'm a freelancer/developer/designer - is the Pro access account also for my end client? =
 
-No, it’s for creators, designers and developers. End clients don’t need one to use the website you design for them.
+No, not yet. For now pro access accounts are intended you and your direct team. End clients don’t need a pro access account to get updates or use any pro patterns you downloaded or designed for them. In future we may introduce cloud services that allow you make your own templates available to your you customers. Let us know on our socials or support channels if this is what you want.
 
 = What’s the difference between a Pro access account and handing over a completed website? =
 
@@ -428,16 +416,28 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 6 February 2024_
+MaxiBlocks v1.7.0
+* Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
+ 1. Typography, colour, and padding settings for menu items.
+ 2. Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
+ 3. Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
+ 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
+How to create a menu:
+Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
+
+_Updates: 1 February 2024_
+MaxiBlocks v1.6.1
+* Update: Upgrade the rendering of MaxiBlocks previews within the Site Editor Experience.
+* Update: Expand avatar functionality for Dynamic Content.
+* Fix: Correct link functionality issues within Text Maxi Block lists.
+* Fix: Prevent caption content from resetting after modifying settings.
+* Fix: Resolve issues with the scale scroll effect.
+* Fix: Optimize shape mask integration in Image Maxi for Dynamic Content.
+* Fix: Address PHP warning issues related to fonts and the Context Loop.
+
 _Updates: 11 January 2024_
 MaxiBlocks v1.6.0
-* Fix: Resolve issues with block tone styles to ensure consistency.
-* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
-* Fix: Improve Interaction Builder on repeater toggle.
-* Fix: Address crash in Text Block when rapidly accessing Typography settings.
-* Fix: Resolve uniqueID conflicts in migrators.
-* Fix: Enhance frontend display of parallax effects and shape dividers.
-* Fix: Improve responsiveness for typography.
-* Fix: Refined application of advanced CSS classes.
 * Update: Remove image URLs within the Interaction Builder for a cleaner interface.
 * Update: Automate hiding of DC blocks on the frontend if content is absent.
 * Update: Enhancements in user interface (UI) elements.
@@ -446,6 +446,14 @@ MaxiBlocks v1.6.0
 * Update: Refine cursor visibility with border adjustment for Text editing.
 * Update: Improve language translations.
 * Update: Add compatibility with the Yoast Duplicate Post plugin.
+* Fix: Resolve issues with block tone styles to ensure consistency.
+* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
+* Fix: Improve Interaction Builder on repeater toggle.
+* Fix: Address crash in Text Block when rapidly accessing Typography settings.
+* Fix: Resolve uniqueID conflicts in migrators.
+* Fix: Enhance frontend display of parallax effects and shape dividers.
+* Fix: Improve responsiveness for typography.
+* Fix: Refined application of advanced CSS classes.
 
 _Updates: 22 December 2023_
 MaxiBlocks V1.5.8
@@ -463,18 +471,6 @@ MaxiBlocks V1.5.8
 * Fix: Margin indicator overlapping.
 * Fix: Dynamic Content in the Editing Experience (EE) when the image is missing from the Media Library.
 * Fix: Hover effects for Image Block.
-
-_Updates: 12 December 2023_
-MaxiBlocks V1.5.7
-* Update: Add image URL source for Image block, Video block, background image layer.
-* Update: Add warning for MariaDB versions below 10.4
-* Update: Make database version warning dismissible.
-* Update: Correct translation code for WordPress plugins directory.
-* Update: Make image resizer support responsive styles.
-* Update: Add unlimited characters option for Dynamic Content.
-* Fix: Resolve broken blocks after standardizing the columns for Repeater.
-* Fix: Repeater styles on frontend.
-
 
 == Upgrade Notice ==
 

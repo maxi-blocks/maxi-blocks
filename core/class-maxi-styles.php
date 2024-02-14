@@ -218,7 +218,6 @@ class MaxiBlocks_Styles
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
 
-
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
                         wp_enqueue_script(
@@ -757,6 +756,10 @@ class MaxiBlocks_Styles
                                 $font_weight = implode('-', $font_weight);
                             }
 
+                            if(is_array($font_style)) {
+                                $font_style = implode('-', $font_style);
+                            }
+
                             if (!$use_local_fonts) {
 
                                 if ($font_url) {
@@ -953,10 +956,10 @@ class MaxiBlocks_Styles
                 );
             }
 
-            // Replaces all ,1)),1) to ,1)
+            // Replaces all ,NUMBER)),SECOND_NUMBER) to ,SECOND_NUMBER) where SECOND_NUMBER can be a decimal
             $new_style = preg_replace(
-                '/,1\)\),1\)/',
-                ',1)',
+                '/,\d+\)\),(\d+(\.\d+)?\))/',
+                ',$1',
                 $new_style
             );
 
@@ -1083,7 +1086,6 @@ class MaxiBlocks_Styles
      */
     private function process_scripts($post_meta)
     {
-
         $scripts = [
             'hover-effects',
             'bg-video',
@@ -1096,7 +1098,8 @@ class MaxiBlocks_Styles
             'search',
             'map',
             'accordion',
-            'slider'
+            'slider',
+            'navigation',
         ];
 
         $script_attr = [
@@ -1105,6 +1108,7 @@ class MaxiBlocks_Styles
             'scroll-effects',
             'shape-divider',
             'relations',
+            'navigation',
         ];
 
         foreach ($scripts as $script) {
@@ -1145,9 +1149,29 @@ class MaxiBlocks_Styles
                     }
                     if($script === 'relations') {
                         foreach ($meta[$block_name] as $json) {
-                            $array = json_decode($json, true);  // Decode the JSON string into an array
-                            if (isset($array['relations'])) {
-                                $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                            if (is_string($json)) {
+                                $array = json_decode($json, true);
+                                if (isset($array['relations'])) {
+                                    $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                                }
+                            }
+                        }
+                    } elseif($script === 'navigation') {
+                        foreach ($meta[$block_name] as $json) {
+                            if (is_string($json)) {
+                                $array = json_decode($json, true);
+                                if (isset($array['navigation'])) {
+                                    $block_style = $array['navigation']['style'];
+                                    $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'overwrite-mobile');
+                                    if($overwrite_mobile) {
+                                        $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'always-show-mobile');
+                                        $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
+                                        $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
+                                        $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
+                                    }
+
+                                    $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                                }
                             }
                         }
                     } else {
@@ -1227,6 +1251,12 @@ class MaxiBlocks_Styles
 
             if($block_name === 'core/button') {
                 $text_level = 'button';
+            } elseif($block_name === 'core/navigation') {
+                $text_level = 'navigation';
+                $remove_hover_underline = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($maxi_block_style, 'navigation', 'remove-hover-underline');
+                if($remove_hover_underline) {
+                    $styles .= ' .maxi-blocks--active .maxi-container-block .wp-block-navigation ul li a:hover { text-decoration: none; }';
+                }
             } elseif($level) {
                 $text_level = 'h' . $level;
             } else {

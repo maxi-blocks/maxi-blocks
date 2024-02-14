@@ -13,11 +13,16 @@ import {
 	getIsTemplatesListOpened,
 	getSiteEditorIframeBody,
 	getSiteEditorPreviewIframesBodies,
+	getSiteEditorIframe,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '../styles';
 import { authConnect, getMaxiCookieKey } from '../../editor/auth';
+import {
+	showHideHamburgerNavigation,
+	removeNavigationHoverUnderline,
+} from '../../editor/style-cards/utils';
 
 /**
  * External dependencies
@@ -344,5 +349,116 @@ wp.domReady(() => {
 			item.addEventListener('mouseenter', hideMaxiReusableBlocksPreview);
 			item.addEventListener('touchstart', hideMaxiReusableBlocksPreview);
 		});
+	});
+
+	const getDocumentContext = () => {
+		return new Promise(resolve => {
+			if (getIsSiteEditor()) {
+				const waitForIframe = () => {
+					const iframe = getSiteEditorIframe(); // Adjust this line to however you can get the iframe element itself
+					if (iframe) {
+						if (
+							iframe.contentDocument &&
+							iframe.contentDocument.body
+						) {
+							// If the iframe is already loaded, resolve immediately
+							resolve(iframe.contentDocument);
+						} else {
+							// Wait for the iframe to load
+							iframe.addEventListener('load', () => {
+								resolve(iframe.contentDocument.body);
+							});
+						}
+					} else {
+						setTimeout(waitForIframe, 100); // Check for iframe every 100ms
+					}
+				};
+				waitForIframe();
+			} else {
+				resolve(document);
+			}
+		});
+	};
+
+	const waitForMenuBlocks = () => {
+		return new Promise(resolve => {
+			getDocumentContext().then(docContext => {
+				const observer = new MutationObserver(mutationsList => {
+					for (const mutation of mutationsList) {
+						if (mutation.addedNodes.length > 0) {
+							const hamburgerNavigation =
+								docContext.querySelector(
+									'.maxi-container-block .wp-block-navigation__responsive-container-open'
+								);
+							const menuNavigation = docContext.querySelector(
+								'.maxi-container-block .wp-block-navigation__responsive-container'
+							);
+
+							if (hamburgerNavigation || menuNavigation) {
+								const grandparentElement = hamburgerNavigation
+									? hamburgerNavigation.closest(
+											'.maxi-container-block'
+									  )
+									: null;
+								const grandparentClasses = grandparentElement
+									? grandparentElement.classList
+									: [];
+								let blockStyle = '';
+
+								if (grandparentClasses.contains('maxi-light')) {
+									blockStyle = 'light';
+								} else if (
+									grandparentClasses.contains('maxi-dark')
+								) {
+									blockStyle = 'dark';
+								}
+								observer.disconnect();
+								resolve([
+									hamburgerNavigation,
+									menuNavigation,
+									blockStyle,
+								]);
+							}
+						}
+					}
+				});
+
+				observer.observe(docContext, {
+					childList: true,
+					subtree: true,
+				});
+			});
+		});
+	};
+
+	waitForMenuBlocks().then(response => {
+		const activeSC = select(
+			'maxiBlocks/style-cards'
+		).receiveMaxiActiveStyleCard();
+		const blockStyle = response[2];
+		let overwriteMobile = false;
+		let alwaysShowMobile = false;
+		let removeUnderlineHover = false;
+		if (blockStyle !== '') {
+			overwriteMobile =
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
+					'overwrite-mobile'
+				] || false;
+			alwaysShowMobile =
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
+					'always-show-mobile'
+				] || false;
+			if (overwriteMobile && alwaysShowMobile) {
+				showHideHamburgerNavigation('show');
+			} else {
+				showHideHamburgerNavigation('hide');
+			}
+			removeUnderlineHover =
+				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
+					'remove-hover-underline'
+				] || false;
+
+			removeNavigationHoverUnderline(removeUnderlineHover);
+		}
 	});
 });

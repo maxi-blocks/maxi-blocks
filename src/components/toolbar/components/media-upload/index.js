@@ -11,13 +11,7 @@ import { MediaUpload } from '@wordpress/block-editor';
 import Button from '../../../button';
 import Dropdown from '../../../dropdown';
 import ImageUrlUpload from '../../../image-url-upload';
-import { injectImgSVG } from '../../../../extensions/svg';
-
-/**
- * External dependencies
- */
-import DOMPurify from 'dompurify';
-import { isEmpty, uniqueId } from 'lodash';
+import { getUpdatedImgSVG } from '../../../../extensions/svg';
 
 /**
  * Styles
@@ -57,10 +51,12 @@ const ToolbarMediaUpload = props => {
 		playerType,
 		hideImage,
 		uniqueID,
+		'dc-status': dcStatus,
 	} = attributes;
 
 	if (
 		!ALLOWED_BLOCKS.includes(blockName) ||
+		dcStatus ||
 		playerType === 'video' ||
 		hideImage
 	)
@@ -96,6 +92,14 @@ const ToolbarMediaUpload = props => {
 											media?.title) ||
 										null;
 
+									const updatedSVGAttributes =
+										getUpdatedImgSVG(
+											uniqueID,
+											attributes.SVGData,
+											attributes.SVGElement,
+											media
+										);
+
 									maxiSetAttributes({
 										[`${prefix}mediaID`]: media.id,
 										[`${prefix}mediaURL`]: media.url,
@@ -110,42 +114,8 @@ const ToolbarMediaUpload = props => {
 											altSelector === 'wordpress' && !alt
 												? media.title
 												: alt,
+										...updatedSVGAttributes,
 									});
-
-									if (!isEmpty(attributes.SVGData)) {
-										const cleanedContent =
-											DOMPurify.sanitize(
-												attributes.SVGElement
-											);
-
-										const svg = document
-											.createRange()
-											.createContextualFragment(
-												cleanedContent
-											).firstElementChild;
-
-										const resData = {
-											[`${uniqueID}__${uniqueId()}`]: {
-												color: '',
-												imageID: '',
-												imageURL: '',
-											},
-										};
-										const SVGValue = resData;
-										const el = Object.keys(SVGValue)[0];
-
-										SVGValue[el].imageID = media.id;
-										SVGValue[el].imageURL = media.url;
-
-										const resEl = injectImgSVG(
-											svg,
-											resData
-										);
-										maxiSetAttributes({
-											SVGElement: resEl.outerHTML,
-											SVGData: SVGValue,
-										});
-									}
 								}}
 								allowedTypes='image'
 								value={mediaID}

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.6.0\n"
+"Project-Id-Version: MaxiBlocks 1.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-11T12:12:13+00:00\n"
+"POT-Creation-Date: 2024-02-05T15:05:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -790,7 +790,7 @@ msgstr ""
 #: build/480.js:1
 #: build/3477.js:1
 #: build/9184.js:1
-#: src/components/toolbar/components/media-upload/index.js:39
+#: src/components/toolbar/components/media-upload/index.js:33
 #: src/editor/library/MasonryItem.js:106
 #: src/editor/library/MasonryItem.js:196
 #: src/editor/library/toolbar.js:583
@@ -798,12 +798,12 @@ msgid "Insert"
 msgstr ""
 
 #: build/480.js:1
-#: src/components/toolbar/components/media-upload/index.js:154
+#: src/components/toolbar/components/media-upload/index.js:124
 msgid "From media library"
 msgstr ""
 
 #: build/480.js:1
-#: src/components/toolbar/components/media-upload/index.js:167
+#: src/components/toolbar/components/media-upload/index.js:137
 msgid "From URL"
 msgstr ""
 
@@ -1036,7 +1036,7 @@ msgstr ""
 #: src/blocks/search-maxi/components/button-control/index.js:41
 #: src/blocks/text-maxi/components/list-options-control/index.js:842
 #: src/components/toolbar/components/text-color/index.js:146
-#: src/editor/style-cards/maxiStyleCardsTab.js:259
+#: src/editor/style-cards/maxiStyleCardsTab.js:390
 msgid "Text"
 msgstr ""
 
@@ -2866,7 +2866,7 @@ msgstr ""
 
 #: build/2469.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:836
-#: src/components/dynamic-content/index.js:272
+#: src/components/dynamic-content/index.js:295
 msgid "Source"
 msgstr ""
 
@@ -3015,24 +3015,49 @@ msgid "Enable active icon state"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:255
+#: src/editor/style-cards/maxiStyleCardsTab.js:253
+msgid "Item padding"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:260
+msgid "Remove item underline on hover"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:278
+msgid "Overwrite mobile navigation breakpoint"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:299
+msgid "Show mobile menu for all screen sizes"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:319
+msgid "Show mobile menu for screen sizes down from (px)"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:386
 msgid "Button globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:267
+#: src/editor/style-cards/maxiStyleCardsTab.js:398
 msgid "Text hover"
 msgstr ""
 
 #: build/2878.js:1
 #: src/components/background-control/colorLayer.js:188
 #: src/components/background-control/index.js:120
-#: src/editor/style-cards/maxiStyleCardsTab.js:276
+#: src/editor/style-cards/maxiStyleCardsTab.js:407
 msgid "Background"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:284
+#: src/editor/style-cards/maxiStyleCardsTab.js:415
 msgid "Background hover"
 msgstr ""
 
@@ -3044,43 +3069,43 @@ msgstr ""
 #: src/components/border-control/index.js:55
 #: src/components/inspector-tabs/inspector-border.js:55
 #: src/components/toolbar/components/border/index.js:52
-#: src/editor/style-cards/maxiStyleCardsTab.js:293
+#: src/editor/style-cards/maxiStyleCardsTab.js:424
 #: src/extensions/relations/getCanvasSettings.js:141
 msgid "Border"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:301
+#: src/editor/style-cards/maxiStyleCardsTab.js:432
 msgid "Border hover"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:312
+#: src/editor/style-cards/maxiStyleCardsTab.js:443
 msgid "Paragraph globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:316
+#: src/editor/style-cards/maxiStyleCardsTab.js:447
 msgid "Paragraph"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:326
+#: src/editor/style-cards/maxiStyleCardsTab.js:457
 msgid "Link globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:365
+#: src/editor/style-cards/maxiStyleCardsTab.js:496
 msgid "Icon globals"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:369
+#: src/editor/style-cards/maxiStyleCardsTab.js:500
 msgid "Line"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:377
+#: src/editor/style-cards/maxiStyleCardsTab.js:508
 msgid "Line hover"
 msgstr ""
 
@@ -3088,17 +3113,17 @@ msgstr ""
 #: src/components/background-control/imageLayer.js:114
 #: src/components/image-shape/index.js:173
 #: src/components/svg-fill-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:386
+#: src/editor/style-cards/maxiStyleCardsTab.js:517
 msgid "Fill"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:394
+#: src/editor/style-cards/maxiStyleCardsTab.js:525
 msgid "Fill hover"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:405
+#: src/editor/style-cards/maxiStyleCardsTab.js:536
 msgid "Divider globals"
 msgstr ""
 
@@ -3107,17 +3132,22 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:311
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:527
 #: src/components/divider-control/index.js:229
-#: src/editor/style-cards/maxiStyleCardsTab.js:409
+#: src/editor/style-cards/maxiStyleCardsTab.js:540
 msgid "Divider"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:427
+#: src/editor/style-cards/maxiStyleCardsTab.js:550
+msgid "Navigation menu globals"
+msgstr ""
+
+#: build/2878.js:1
+#: src/editor/style-cards/maxiStyleCardsTab.js:636
 msgid "Colour palette"
 msgstr ""
 
 #: build/2878.js:1
-#: src/editor/style-cards/maxiStyleCardsTab.js:582
+#: src/editor/style-cards/maxiStyleCardsTab.js:791
 msgid "Typography globals"
 msgstr ""
 
@@ -3141,7 +3171,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:155
 #: src/components/background-control/imageLayer.js:118
 #: src/components/divider-control/index.js:158
-#: src/components/dynamic-content/index.js:141
+#: src/components/dynamic-content/index.js:149
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
 #: src/components/typography-control/index.js:872
@@ -3697,7 +3727,7 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:177
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:255
+#: src/extensions/DC/constants.js:256
 msgid "Image"
 msgstr ""
 
@@ -4636,18 +4666,18 @@ msgid "Insert from Media Library"
 msgstr ""
 
 #: src/blocks/image-maxi/edit.js:458
-#: src/blocks/image-maxi/edit.js:559
-#: src/blocks/image-maxi/edit.js:620
+#: src/blocks/image-maxi/edit.js:560
+#: src/blocks/image-maxi/edit.js:621
 #: src/extensions/DC/utils.js:63
 msgid "No content found"
 msgstr ""
 
 #: src/blocks/image-maxi/edit.js:470
-#: src/blocks/image-maxi/edit.js:571
+#: src/blocks/image-maxi/edit.js:572
 msgid "Set your Image Maxi caption here…"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:621
+#: src/blocks/image-maxi/edit.js:622
 msgid "Placeholder image"
 msgstr ""
 
@@ -4725,7 +4755,7 @@ msgstr ""
 #: src/extensions/DC/constants.js:175
 #: src/extensions/DC/constants.js:186
 #: src/extensions/DC/constants.js:194
-#: src/extensions/DC/constants.js:284
+#: src/extensions/DC/constants.js:285
 msgid "Description"
 msgstr ""
 
@@ -4826,7 +4856,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:47
 #: src/components/background-control/imageLayer.js:106
 #: src/components/background-control/imageLayer.js:298
-#: src/components/dynamic-content/index.js:144
+#: src/components/dynamic-content/index.js:152
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -5121,7 +5151,7 @@ msgstr ""
 
 #: src/components/clip-path-control/index.js:368
 #: src/components/context-loop/index.js:192
-#: src/components/dynamic-content/index.js:302
+#: src/components/dynamic-content/index.js:325
 msgid "Type"
 msgstr ""
 
@@ -5192,33 +5222,33 @@ msgid "Stop accumulator inheritance"
 msgstr ""
 
 #: src/components/context-loop/index.js:220
-#: src/components/dynamic-content/index.js:334
+#: src/components/dynamic-content/index.js:357
 msgid "This type is empty"
 msgstr ""
 
 #: src/components/context-loop/index.js:225
-#: src/components/dynamic-content/index.js:339
+#: src/components/dynamic-content/index.js:362
 msgid "Relation"
 msgstr ""
 
 #: src/components/context-loop/index.js:247
-#: src/components/dynamic-content/index.js:370
+#: src/components/dynamic-content/index.js:393
 msgid "Author id"
 msgstr ""
 
 #: src/components/context-loop/index.js:301
-#: src/components/dynamic-content/index.js:431
+#: src/components/dynamic-content/index.js:454
 msgid "Order by"
 msgstr ""
 
 #: src/components/context-loop/index.js:323
-#: src/components/dynamic-content/index.js:454
+#: src/components/dynamic-content/index.js:477
 #: src/components/flex-settings-control/index.js:112
 msgid "Order"
 msgstr ""
 
 #: src/components/context-loop/index.js:349
-#: src/components/dynamic-content/index.js:481
+#: src/components/dynamic-content/index.js:504
 msgid "Accumulator"
 msgstr ""
 
@@ -5411,39 +5441,39 @@ msgstr ""
 msgid "Timezone name"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:142
+#: src/components/dynamic-content/index.js:150
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:143
+#: src/components/dynamic-content/index.js:151
 msgid "Semicolon"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:256
+#: src/components/dynamic-content/index.js:264
 msgid "Use dynamic content"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:263
+#: src/components/dynamic-content/index.js:283
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:516
+#: src/components/dynamic-content/index.js:539
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:542
+#: src/components/dynamic-content/index.js:565
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:604
+#: src/components/dynamic-content/index.js:627
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:632
+#: src/components/dynamic-content/index.js:655
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:649
+#: src/components/dynamic-content/index.js:672
 msgid "Image accumulator"
 msgstr ""
 
@@ -5601,7 +5631,7 @@ msgid "Icon Background gradient"
 msgstr ""
 
 #: src/components/image-alt-control/index.js:47
-#: src/components/inspector-tabs/inspector-dc.js:21
+#: src/components/inspector-tabs/inspector-dc.js:24
 msgid "Dynamic content"
 msgstr ""
 
@@ -5929,7 +5959,7 @@ msgstr ""
 #: src/components/relation-control/index.js:410
 #: src/extensions/DC/constants.js:185
 #: src/extensions/DC/constants.js:193
-#: src/extensions/DC/constants.js:283
+#: src/extensions/DC/constants.js:284
 msgid "Name"
 msgstr ""
 
@@ -6538,8 +6568,8 @@ msgstr ""
 msgid "Load icon library"
 msgstr ""
 
-#: src/editor/style-cards/utils.js:35
-#: src/editor/style-cards/utils.js:67
+#: src/editor/style-cards/utils.js:40
+#: src/editor/style-cards/utils.js:72
 msgid "View"
 msgstr ""
 
@@ -6571,18 +6601,18 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:26
 #: src/extensions/DC/constants.js:160
-#: src/extensions/DC/constants.js:297
+#: src/extensions/DC/constants.js:298
 msgid "Categories"
 msgstr ""
 
 #: src/extensions/DC/constants.js:27
 #: src/extensions/DC/constants.js:161
-#: src/extensions/DC/constants.js:298
+#: src/extensions/DC/constants.js:299
 msgid "Tags"
 msgstr ""
 
 #: src/extensions/DC/constants.js:39
-#: src/extensions/DC/constants.js:396
+#: src/extensions/DC/constants.js:397
 msgid "Product"
 msgstr ""
 
@@ -6669,7 +6699,7 @@ msgid "Website"
 msgstr ""
 
 #: src/extensions/DC/constants.js:195
-#: src/extensions/DC/constants.js:289
+#: src/extensions/DC/constants.js:290
 msgid "Slug"
 msgstr ""
 
@@ -6683,8 +6713,8 @@ msgstr ""
 #: src/extensions/DC/constants.js:230
 #: src/extensions/DC/constants.js:237
 #: src/extensions/DC/constants.js:244
-#: src/extensions/DC/constants.js:311
-#: src/extensions/DC/constants.js:339
+#: src/extensions/DC/constants.js:312
+#: src/extensions/DC/constants.js:340
 msgid "Static text"
 msgstr ""
 
@@ -6692,155 +6722,159 @@ msgstr ""
 msgid "Featured media"
 msgstr ""
 
-#: src/extensions/DC/constants.js:252
+#: src/extensions/DC/constants.js:249
+msgid "Author's avatar"
+msgstr ""
+
+#: src/extensions/DC/constants.js:253
 msgid "Logo"
 msgstr ""
 
-#: src/extensions/DC/constants.js:258
+#: src/extensions/DC/constants.js:259
 msgid "Avatar"
 msgstr ""
 
-#: src/extensions/DC/constants.js:286
+#: src/extensions/DC/constants.js:287
 msgid "Short description"
 msgstr ""
 
-#: src/extensions/DC/constants.js:290
+#: src/extensions/DC/constants.js:291
 msgid "SKU"
 msgstr ""
 
-#: src/extensions/DC/constants.js:291
+#: src/extensions/DC/constants.js:292
 msgid "Review count"
 msgstr ""
 
-#: src/extensions/DC/constants.js:292
+#: src/extensions/DC/constants.js:293
 msgid "Average rating"
 msgstr ""
 
-#: src/extensions/DC/constants.js:293
+#: src/extensions/DC/constants.js:294
 msgid "Price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:294
+#: src/extensions/DC/constants.js:295
 msgid "Regular price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:295
+#: src/extensions/DC/constants.js:296
 msgid "Sale price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:296
+#: src/extensions/DC/constants.js:297
 msgid "Price range"
 msgstr ""
 
-#: src/extensions/DC/constants.js:315
+#: src/extensions/DC/constants.js:316
 msgid "Featured image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:316
+#: src/extensions/DC/constants.js:317
 msgid "Gallery image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:320
+#: src/extensions/DC/constants.js:321
 msgid "Total price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:321
+#: src/extensions/DC/constants.js:322
 msgid "Total tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:322
+#: src/extensions/DC/constants.js:323
 msgid "Total shipping"
 msgstr ""
 
-#: src/extensions/DC/constants.js:324
+#: src/extensions/DC/constants.js:325
 msgid "Total shipping tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:327
+#: src/extensions/DC/constants.js:328
 msgid "Total discount"
 msgstr ""
 
-#: src/extensions/DC/constants.js:328
+#: src/extensions/DC/constants.js:329
 msgid "Total items"
 msgstr ""
 
-#: src/extensions/DC/constants.js:330
+#: src/extensions/DC/constants.js:331
 msgid "Total items tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:333
+#: src/extensions/DC/constants.js:334
 msgid "Total fees"
 msgstr ""
 
-#: src/extensions/DC/constants.js:334
+#: src/extensions/DC/constants.js:335
 msgid "Total fees tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:397
+#: src/extensions/DC/constants.js:398
 msgid "Add to cart"
 msgstr ""
 
-#: src/extensions/DC/constants.js:540
+#: src/extensions/DC/constants.js:541
 msgid "Use categories links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:541
+#: src/extensions/DC/constants.js:542
 msgid "Use tags links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:542
+#: src/extensions/DC/constants.js:543
 msgid "Use author link"
 msgstr ""
 
-#: src/extensions/DC/constants.js:546
+#: src/extensions/DC/constants.js:549
 msgid "Sorry, there is no next post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:550
+#: src/extensions/DC/constants.js:553
 msgid "Sorry, there is no previous post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:554
+#: src/extensions/DC/constants.js:557
 msgid "Value is not an object."
 msgstr ""
 
-#: src/extensions/DC/constants.js:555
+#: src/extensions/DC/constants.js:558
 msgid "Sorry, this author has no posts yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:559
+#: src/extensions/DC/constants.js:562
 msgid "Sorry, you do not have any images yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:563
+#: src/extensions/DC/constants.js:566
 msgid "Sorry, you do not have any tags yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:599
+#: src/extensions/DC/constants.js:602
 msgid "By date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:600
+#: src/extensions/DC/constants.js:603
 msgid "Alphabetical"
 msgstr ""
 
-#: src/extensions/DC/constants.js:607
+#: src/extensions/DC/constants.js:610
 msgid "New/old"
 msgstr ""
 
-#: src/extensions/DC/constants.js:608
+#: src/extensions/DC/constants.js:611
 msgid "Old/new"
 msgstr ""
 
-#: src/extensions/DC/constants.js:611
+#: src/extensions/DC/constants.js:614
 msgid "A/Z"
 msgstr ""
 
-#: src/extensions/DC/constants.js:612
+#: src/extensions/DC/constants.js:615
 msgid "Z/A"
 msgstr ""
 
-#: src/extensions/DC/constants.js:688
+#: src/extensions/DC/constants.js:691
 msgid "ACF"
 msgstr ""
 
@@ -6848,15 +6882,15 @@ msgstr ""
 msgid "No parent"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:47
+#: src/extensions/DC/getDCMedia.js:75
 msgid "Error fetching media, try to add Featured Image to the product you want to show"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:56
+#: src/extensions/DC/getDCMedia.js:84
 msgid "Error fetching media, check if it exists in the Media Library"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:64
+#: src/extensions/DC/getDCMedia.js:92
 msgid "Error fetching media, try to add Featured Image to the post you want to show"
 msgstr ""
 

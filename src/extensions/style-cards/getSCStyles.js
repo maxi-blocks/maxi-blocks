@@ -11,13 +11,13 @@ import { times, compact } from 'lodash';
 const styles = ['light', 'dark'];
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const levels = ['p', ...headings];
-const elements = ['button', ...levels, 'icon', 'divider', 'link'];
+const elements = ['button', ...levels, 'icon', 'divider', 'link', 'navigation'];
 const breakpoints = {
 	xxl: 1921,
 	xl: 1920,
 	l: 1366,
 	m: 1024,
-	s: 768,
+	s: 767,
 	xs: 480,
 };
 const breakpointsKeys = ['general', ...Object.keys(breakpoints)];
@@ -32,8 +32,12 @@ const settings = [
 	'letter-spacing',
 	'white-space',
 	'word-spacing',
-	'margin-bottom',
 	'text-indent',
+	'margin-bottom',
+	'padding-bottom',
+	'padding-top',
+	'padding-left',
+	'padding-right',
 ];
 
 const getOrganizedValues = styleCard => {
@@ -398,6 +402,107 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			addedResponse += `${target} {${sentences?.join(' ')}}`;
 		});
 
+		// Navigation inside Maxi Container
+		const navigationSentences = getSentencesByBreakpoint({
+			organizedValues,
+			style,
+			breakpoint,
+			targets: ['navigation'],
+		});
+
+		const targetItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item`;
+		const sentences = [...navigationSentences.navigation];
+
+		// Remove margin-bottom sentences
+		const marginSentence = sentences?.find(
+			sentence => sentence?.indexOf('margin-bottom') > -1
+		);
+
+		if (marginSentence)
+			sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
+		addedResponse += `${targetItem} {${sentences?.join(' ')}}`;
+
+		const targetLink = `${targetItem} a`;
+		const targetButton = `${targetItem} button`;
+
+		[targetLink, targetButton].forEach(target => {
+			addedResponse += `${target} { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease; }`;
+			addedResponse += `${target} + span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} + button { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+
+			addedResponse += `${target}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		});
+
+		addedResponse += `${targetLink}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		addedResponse += `${targetLink}:visited { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited span { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited + span { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited + button { color: var(--maxi-${style}-menu-item-visited); }`;
+
+		addedResponse += `${targetLink}:visited:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		const targetLinkCurrent = `${targetItem}.current-menu-item > a`;
+
+		addedResponse += `${targetLinkCurrent} { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent} span { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent} + span { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent} + button { color: var(--maxi-${style}-menu-item-current); }`;
+
+		addedResponse += `${targetLinkCurrent}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		addedResponse += `${targetLinkCurrent}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
+
+		// mobile menu icon / text
+		const burgerItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open`;
+		const burgerItemClose = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close`;
+
+		[burgerItem, burgerItemClose].forEach(target => {
+			addedResponse += `${target} { color: var(--maxi-${style}-menu-burger); }`;
+			sentences.forEach((sentence, i) => {
+				if (sentence?.includes('font-family')) {
+					addedResponse += `${target} { font-family: var(--maxi-${style}-navigation-font-family-general); }`;
+				}
+			});
+		});
+
+		// mobile menu background
+		const mobileMenuBgTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open`;
+
+		addedResponse += `${mobileMenuBgTarget} { background-color: var(--maxi-${style}-menu-mobile-bg) !important; }`;
+
+		// sub-menus
+		const subMenuTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li`;
+		const subMenuTargetEditor = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div`;
+
+		addedResponse += `${subMenuTarget} { background-color: var(--maxi-${style}-menu-item-sub-bg); }`;
+		addedResponse += `${subMenuTarget}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+
+		addedResponse += `${subMenuTargetEditor} { background-color: var(--maxi-${style}-menu-item-sub-bg) !important;  }`;
+		addedResponse += `${subMenuTargetEditor}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover) !important; }`;
+
+		[subMenuTarget, subMenuTargetEditor].forEach(target => {
+			addedResponse += `${target}.current-menu-item { background-color: var(--maxi-${style}-menu-item-sub-bg-current); }`;
+			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+		});
+
 		return addedResponse;
 	};
 
@@ -444,7 +549,7 @@ const getWPNativeStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
 					level === 'p' &&
-						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button)`,
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item)`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 					level === 'p' &&

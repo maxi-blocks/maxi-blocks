@@ -2,10 +2,15 @@ export const scrollTypes = [
 	'vertical',
 	'horizontal',
 	'rotate',
+	'rotateX',
+	'rotateY',
 	'scale',
+	'scaleX',
+	'scaleY',
 	'fade',
 	'blur',
 ];
+export const scrollTypesWithUnits = ['vertical', 'horizontal', 'blur'];
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -28,7 +33,7 @@ const generateAttr = (
 ) => {
 	const key = `scroll-${scrollType}-${attr}-${breakpoint}`;
 	const value =
-		defaultValue !== 'noDefault'
+		defaultValue !== undefined
 			? {
 					type: valueType,
 					default: defaultValue,
@@ -42,15 +47,16 @@ const generateAttr = (
 	return null;
 };
 
-const generateUniqueAttributes = (
-	type,
-	attr,
-	defaults = [0, 0, 0],
-	breakpoint = 'general'
-) => {
-	generateAttr(type, `${attr}-start`, 'number', defaults[0], breakpoint);
-	generateAttr(type, `${attr}-mid`, 'number', defaults[1], breakpoint);
-	generateAttr(type, `${attr}-end`, 'number', defaults[2], breakpoint);
+const generateUniqueAttributes = (type, defaults, breakpoint = 'general') => {
+	const zones = defaults
+		? {
+				0: defaults[0],
+				50: defaults[1],
+				100: defaults[2],
+		  }
+		: undefined;
+
+	generateAttr(type, 'zones', 'object', zones, breakpoint);
 
 	return null;
 };
@@ -64,92 +70,45 @@ export const scroll = (() => {
 		generateAttr(type, 'delay', 'number', 0);
 		generateAttr(type, 'viewport-top', 'string', 'mid'); // 100
 		generateAttr(type, 'status-reverse', 'boolean', true);
+		generateAttr(type, 'is-block-zone', 'boolean', false);
+
+		if (scrollTypesWithUnits.includes(type)) {
+			generateAttr(type, 'unit', 'string', 'px');
+		}
 
 		if (type === 'vertical') {
-			generateUniqueAttributes(type, 'offset', [-400, 0, 400]);
+			generateUniqueAttributes(type, [-400, 0, 400]);
 		}
 
 		if (type === 'horizontal') {
-			generateUniqueAttributes(type, 'offset', [-200, 0, 200]);
+			generateUniqueAttributes(type, [-200, 0, 200]);
 		}
 
-		if (type === 'rotate') {
-			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
+		if (['rotate', 'rotateX', 'rotateY'].includes(type)) {
+			generateUniqueAttributes(type, [90, 0, 0]);
 		}
 
-		if (type === 'scale') {
-			generateUniqueAttributes(type, 'scale', [70, 100, 100]);
+		if (['scale', 'scaleX', 'scaleY'].includes(type)) {
+			generateUniqueAttributes(type, [70, 100, 100]);
 		}
 
 		if (type === 'fade') {
-			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
+			generateUniqueAttributes(type, [0, 100, 100]);
 		}
 
 		if (type === 'blur') {
-			generateUniqueAttributes(type, 'blur', [10, 0, 0]);
+			generateUniqueAttributes(type, [10, 0, 0]);
 		}
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
 		Object.values(scrollTypes).forEach(type => {
-			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
-			generateAttr(type, 'easing', 'string', 'noDefault', breakpoint);
-			generateAttr(type, 'speed', 'number', 'noDefault', breakpoint);
-
-			generateAttr(
-				type,
-				'viewport-top',
-				'number',
-				'noDefault',
-				breakpoint
-			);
-
-			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
-
-			if (['vertical', 'horizontal'].includes(type)) {
-				generateUniqueAttributes(
-					type,
-					'offset',
-					['noDefault', 'noDefault', 'noDefault'],
-					breakpoint
-				);
-			}
-
-			if (type === 'rotate') {
-				generateUniqueAttributes(
-					type,
-					'rotate',
-					['noDefault', 'noDefault', 'noDefault'],
-					breakpoint
-				);
-			}
-
-			if (type === 'scale') {
-				generateUniqueAttributes(
-					type,
-					'scale',
-					['noDefault', 'noDefault', 'noDefault'],
-					breakpoint
-				);
-			}
-
-			if (type === 'fade') {
-				generateUniqueAttributes(
-					type,
-					'opacity',
-					['noDefault', 'noDefault', 'noDefault'],
-					breakpoint
-				);
-			}
-
-			if (type === 'blur') {
-				generateUniqueAttributes(
-					type,
-					'blur',
-					['noDefault', 'noDefault', 'noDefault'],
-					breakpoint
-				);
-			}
+			generateAttr(type, 'status', 'boolean', undefined, breakpoint);
+			generateAttr(type, 'easing', 'string', undefined, breakpoint);
+			generateAttr(type, 'speed', 'number', undefined, breakpoint);
+			generateAttr(type, 'viewport-top', 'number', undefined, breakpoint);
+			generateAttr(type, 'status', 'boolean', undefined, breakpoint);
+			generateUniqueAttributes(type, undefined, breakpoint);
 		});
 	});
 

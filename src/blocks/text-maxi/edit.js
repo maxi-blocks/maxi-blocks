@@ -43,7 +43,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
-		wpVersion: 6.3,
+		wpVersion: 6.4,
 	};
 
 	scProps = scProps;
@@ -276,7 +276,7 @@ class edit extends MaxiBlockComponent {
 									attributes,
 									maxiSetAttributes,
 									oldFormatValue: this.state.formatValue,
-									onChange: (newState, newContent) => {
+									onChange: newState => {
 										if (this.typingTimeoutFormatValue) {
 											clearTimeout(
 												this.typingTimeoutFormatValue
@@ -287,12 +287,6 @@ class edit extends MaxiBlockComponent {
 											setTimeout(() => {
 												this.setState(newState);
 											}, 10);
-
-										if (newContent) {
-											maxiSetAttributes({
-												content: newContent,
-											});
-										}
 									},
 									richTextValues,
 								})
@@ -320,31 +314,29 @@ class edit extends MaxiBlockComponent {
 							{...commonProps}
 						>
 							{richTextValues => {
-								const { value: formatValue, onChange } =
-									richTextValues;
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: newState => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
 
-								if (!isList || this.state.wpVersion < 6.4)
-									onChangeRichText({
-										attributes,
-										maxiSetAttributes,
-										oldFormatValue: this.state.formatValue,
-										onChange: newState => {
-											if (this.typingTimeoutFormatValue) {
-												clearTimeout(
-													this
-														.typingTimeoutFormatValue
-												);
-											}
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+									},
+									richTextValues,
+								});
 
-											this.typingTimeoutFormatValue =
-												setTimeout(() => {
-													this.setState(newState);
-												}, 10);
-										},
-										richTextValues,
-									});
+								if (isSelected) {
+									const { value: formatValue, onChange } =
+										richTextValues;
 
-								if (isSelected)
 									return (
 										<>
 											<RichTextShortcut
@@ -395,6 +387,7 @@ class edit extends MaxiBlockComponent {
 											/>
 										</>
 									);
+								}
 
 								return null;
 							}}

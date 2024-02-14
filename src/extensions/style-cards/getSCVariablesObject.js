@@ -77,6 +77,7 @@ const getSCVariablesObject = (
 		'icon',
 		'divider',
 		'link',
+		'navigation',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
@@ -92,6 +93,10 @@ const getSCVariablesObject = (
 		'word-spacing',
 		'margin-bottom',
 		'text-indent',
+		'padding-bottom',
+		'padding-top',
+		'padding-left',
+		'padding-right',
 	];
 	const SC = {
 		dark: {
@@ -120,21 +125,64 @@ const getSCVariablesObject = (
 					const isFontFamily = setting === 'font-family';
 
 					breakpoints.forEach(breakpoint => {
-						if (!cleanResponse)
-							response[
-								`--maxi-${style}-${element}-${setting}-${breakpoint}`
-							] = getLastBreakpointAttribute({
-								target: setting,
-								breakpoint,
-								attributes: obj,
-							});
-						else {
-							const value = obj[`${setting}-${breakpoint}`];
-
-							if (getIsValid(value, true))
+						if (!cleanResponse) {
+							if (!setting.includes('padding'))
 								response[
 									`--maxi-${style}-${element}-${setting}-${breakpoint}`
-								] = value;
+								] = getLastBreakpointAttribute({
+									target: setting,
+									breakpoint,
+									attributes: obj,
+								});
+							else {
+								const unitSetting = `${setting}-unit`;
+								const unitValue = getLastBreakpointAttribute({
+									target: unitSetting,
+									breakpoint,
+									attributes: obj,
+								});
+								if (unitValue) {
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = `${getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: obj,
+									})}${unitValue}`;
+								} else {
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = `${getLastBreakpointAttribute({
+										target: setting,
+										breakpoint,
+										attributes: obj,
+									})}px`;
+								}
+							}
+						} else {
+							const value = obj[`${setting}-${breakpoint}`];
+
+							if (getIsValid(value, true)) {
+								if (!setting.includes('padding'))
+									response[
+										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									] = value;
+								else {
+									// Padding
+									const unitSetting = `${setting}-unit`;
+									const unitValue =
+										obj[`${unitSetting}-${breakpoint}`];
+									if (unitValue) {
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = `${value}${unitValue}`;
+									} else {
+										response[
+											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										] = `${value}px`;
+									}
+								}
+							}
 						}
 
 						// Font family needs quotes for values that has space in middle
@@ -257,6 +305,51 @@ const getSCVariablesObject = (
 					if (obj['visited-color-global'])
 						response[`--maxi-${style}-link-visited`] =
 							getColorString(obj, 'visited', style);
+
+					break;
+
+				case 'navigation':
+					if (obj['menu-item-color-global'])
+						response[`--maxi-${style}-menu-item`] = getColorString(
+							obj,
+							'menu-item',
+							style
+						);
+					if (obj['menu-burger-color-global'])
+						response[`--maxi-${style}-menu-burger`] =
+							getColorString(obj, 'menu-burger', style);
+					if (obj['menu-item-hover-color-global'])
+						response[`--maxi-${style}-menu-item-hover`] =
+							getColorString(obj, 'menu-item-hover', style);
+					if (obj['menu-item-current-color-global'])
+						response[`--maxi-${style}-menu-item-current`] =
+							getColorString(obj, 'menu-item-current', style);
+					if (obj['menu-item-visited-color-global'])
+						response[`--maxi-${style}-menu-item-visited`] =
+							getColorString(obj, 'menu-item-visited', style);
+					else if (obj['menu-item-color-global'])
+						response[`--maxi-${style}-menu-item-visited`] =
+							getColorString(obj, 'menu-item', style);
+					if (obj['menu-item-sub-bg-color-global'])
+						response[`--maxi-${style}-menu-item-sub-bg`] =
+							getColorString(obj, 'menu-item-sub-bg', style);
+					if (obj['menu-item-sub-bg-hover-color-global'])
+						response[`--maxi-${style}-menu-item-sub-bg-hover`] =
+							getColorString(
+								obj,
+								'menu-item-sub-bg-hover',
+								style
+							);
+					if (obj['menu-item-sub-bg-current-color-global'])
+						response[`--maxi-${style}-menu-item-sub-bg-current`] =
+							getColorString(
+								obj,
+								'menu-item-sub-bg-current',
+								style
+							);
+					if (obj['menu-mobile-bg-color-global'])
+						response[`--maxi-${style}-menu-mobile-bg`] =
+							getColorString(obj, 'menu-mobile-bg', style);
 
 					break;
 

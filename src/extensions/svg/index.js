@@ -1,4 +1,3 @@
-export { default as shouldSetPreserveAspectRatio } from './shouldSetPreserveAspectRatio';
 export { default as getSVGHasImage } from './getSVGHasImage';
 export { default as getSVGPosition } from './getSVGPosition';
 export { default as getSVGRatio } from './getSVGRatio';
@@ -11,4 +10,6 @@ export { default as setSVGContentWithBlockStyle } from './setSVGContentWithBlock
 export { default as setSVGPosition } from './setSVGPosition';
 export { default as setSVGRatio } from './setSVGRatio';
 export { default as setSVGStrokeWidth } from './setSVGStrokeWidth';
+export { default as shouldSetPreserveAspectRatio } from './shouldSetPreserveAspectRatio';
 export { default as togglePreserveAspectRatio } from './togglePreserveAspectRatio';
+export { default as getUpdatedImgSVG } from './getUpdatedImgSVG';

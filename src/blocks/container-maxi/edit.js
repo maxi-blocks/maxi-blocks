@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -28,6 +28,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import { withMaxiContextLoop } from '../../extensions/DC';
+import getActiveStyleCard from '../../extensions/style-cards/getActiveStyleCard';
 
 /**
  * General
@@ -48,9 +49,21 @@ class edit extends MaxiBlockComponent {
 		return maxiAttributes;
 	}
 
+	hasNavigationInChildren(innerBlocks) {
+		return innerBlocks.some(innerBlock => {
+			if (innerBlock.name === 'core/navigation') {
+				return true;
+			}
+			if (innerBlock.innerBlocks && innerBlock.innerBlocks.length) {
+				return this.hasNavigationInChildren(innerBlock.innerBlocks);
+			}
+			return false;
+		});
+	}
+
 	get getMaxiCustomData() {
-		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { attributes, clientId } = this.props;
+		const { uniqueID, blockStyle } = attributes;
 		const {
 			'shape-divider-top-status': shapeDividerTopStatus,
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
@@ -58,13 +71,33 @@ class edit extends MaxiBlockComponent {
 
 		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
 
-		return {
+		// Prepare the initial data object
+		const data = {
 			...(shapeStatus && {
 				[uniqueID]: {
 					...getGroupAttributes(attributes, 'shapeDivider'),
 				},
 			}),
 		};
+
+		// Check for 'core/navigation' child blocks at any level of nesting
+		const block = select('core/block-editor').getBlock(clientId);
+		if (block && block.innerBlocks && block.innerBlocks.length) {
+			const hasNavigationChild = this.hasNavigationInChildren(
+				block.innerBlocks
+			);
+			if (hasNavigationChild) {
+				// Ensure the uniqueID key exists in the data object
+				if (!data[uniqueID]) {
+					data[uniqueID] = {};
+				}
+
+				// Add 'navigation: true' under the uniqueID key
+				data[uniqueID].navigation = { enable: true, style: blockStyle };
+			}
+		}
+
+		return data;
 	}
 
 	maxiBlockDidUpdate() {

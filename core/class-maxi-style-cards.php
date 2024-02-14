@@ -262,7 +262,6 @@ class MaxiBlocks_StyleCards
 
         $text_level_values = (object) $style_card_values->$text_level;
 
-
         if (!property_exists($text_level_values, 'font-family-general')) {
             $text_level_values = (object) $default_values[$text_level];
         }
@@ -322,6 +321,27 @@ class MaxiBlocks_StyleCards
         }
 
         return $response;
+    }
+
+    /**
+     * Gets a SC property value by block style and, property and name
+     *
+     * @param string $block_style
+     * @param string $property
+     * @param string $name
+     */
+    public static function get_active_style_cards_value_by_name($block_style, $property, $name)
+    {
+        $style_card = self::get_maxi_blocks_active_style_card();
+
+        if (isset($style_card[$block_style]['styleCard'][$property][$name])) {
+            return $style_card[$block_style]['styleCard'][$property][$name];
+        } elseif (isset($style_card[$block_style]['defaultStyleCard'][$property][$name])) {
+            return $style_card[$block_style]['defaultStyleCard'][$property][$name];
+        } else {
+            return null;
+        }
+
     }
 
     public static function get_default_style_card()

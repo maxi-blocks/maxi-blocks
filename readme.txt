@@ -40,42 +40,13 @@ We refuse to hold basic features hostage just to sell the “full-version.” Ev
 We’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited domains and unlimited downloads.
 
 == Packed with free goodies 🆓 ==
-Get started with 400+ free templates, 13.5k icons and 100 style cards. You don't even need an account. Just install the plugin and start building.
-
-**Free block patterns (404)**
-- Footer (26)
-- Headlines (60)
-- Hero (20)
-- Icon (20)
-- Image (20)
-- Logo (6)
-- Number counter (18)
-- Pricing tables (6)
-- Story mix (154)
-- Team (28)
-- Testimonial (46)
+Get started with 13.5k icons, 100 style cards and 7 free page templates. You don't even need an account. Just install the plugin and start building.
 
 **Free page templates (7)**
 - Education (3)
 - Entertainment (3)
 - Food & drink (2)
 - Nonprofit (1)
-
-Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier.
-
-== What users say ==
-
-People simply can't fit all their love for Maxi into one sentence.
-
-[Read what 46 creators think of Maxi](https://maxiblocks.com/love/)
-
-== MaxiBlocks Theme ==
-
-The free full site editing theme is out soon.
-
-Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
-
-Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
 
 == Maxi's free custom blocks  💎==
 
@@ -106,6 +77,20 @@ Follow progress and [get sneak peek of the beautiful designs](https://github.com
 **Text Maxi**: Allows the insertion, modification, or styling of text. It's foundational for conveying messages, ensuring content is both readable and aesthetically pleasing.
 
 **Video Maxi**: Facilitates the addition of videos with controls or lightbox. Enhances user engagement by easily incorporating multimedia, enriching the visual experience.
+
+== MaxiBlocks Theme ==
+
+The free full site editing theme is out soon.
+
+Get everything you need to build amazing websites with menus, headers, footers, blogs, archives like tag, category, author and much more.
+
+Follow progress and [get sneak peek of the beautiful designs](https://github.com/maxi-blocks/maxi-blocks/issues/5232) (scroll down to see the designs).
+
+== What users say ==
+
+People simply can't fit all their love for Maxi into one sentence.
+
+[Read what 47 creators think of Maxi](https://maxiblocks.com/love/)
 
 == Go next-level with pro templates 🆙==
 If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1547 production-ready Pro templates.
@@ -233,7 +218,7 @@ https://youtu.be/OQi1YygiYnk
 
 **Unlimited downloads. Unlimited sites. No locked blocks.**
 
-== 1500+ pro patterns 🌈==
+== 1600+ pro patterns 🌈==
 
 Ready-made block patterns
 
@@ -254,7 +239,7 @@ Ready-made block patterns
 Coming soon
 - Navigation menus
 
-== 135+ pro page templates ==
+== 140+ pro page templates ==
 
 Production ready. Just insert and start editing.
 
@@ -287,10 +272,10 @@ Look forward to exciting additions to enhance your design experience.
 - **More AI tools:** Content creation like images, integrated with style cards and right where you need it.
 - **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
 - **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
-- **Navigation & mega menu:** Create responsive menus for seamless site navigation.
+- **Mega menus:** Create responsive menus for seamless site navigation.
 - **Full site editing:** Further integrate MaxiBlocks for complete site customization.
 - **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.
-- **Menu builder:** A custom navigation block for responsive menus.
+- **Extend navigtion block:** Enhanced navigation block for responsive menus. [NOW LIVE]
 - **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
 
 == Documentation & support 📚==
@@ -326,15 +311,9 @@ _Join us in our mission to provide a user-friendly solution for website creation
 
 _Take care, Kyra - Design lead & co-founder of MaxiBlocks_
 
-== Frequently Asked Questions ==
-
-= Do I own what I create? =
-
-Absolutely! Your creations are yours to keep. It's open source and free to build.
-
 = How many sites can I build? =
 
-There's no limit to the number of sites you can build with MaxiBlocks. The plugin, blocks and all features are free to use for any purpose, personal or commercial.
+There's no limit to the number of sites you can build with MaxiBlocks. The plugin and custom blocks are free to use for any purpose, personal or commercial.
 
 = Do I need to pay for advanced blocks? =
 
@@ -346,7 +325,7 @@ Absolutely. Our strategy is to offer unlimited domains to attract a broad user b
 
 = Is MaxiBlocks compatible with my theme? =
 
-MaxiBlocks is designed to be compatible with most WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing MaxiBlocks with your theme for the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the MaxiBlocks Theme coming soon too.
+MaxiBlocks is designed to be compatible with any WordPress themes. However, some themes may have unique styling or functionality that could affect compatibility. We recommend testing MaxiBlocks with your theme for the best experience. Talk to us if you have any issues. Happy to help where possible. Look out for the MaxiBlocks Theme coming soon too.
 
 = Does MaxiBlocks work with Gutenberg? =
 
@@ -354,15 +333,15 @@ Yes, MaxiBlocks is fully integrated with the Gutenberg editor, providing custom 
 
 = What is a Pro access account? =
 
-A Pro access account equips both the MaxiBlocks account owner and their invited team members with all the benefits of a Pro template library subscription. It gives access to my.maxiblocks.com account, the pro library and priority support.
+A Pro access account gives access to your my.maxiblocks.com account, the pro library and priority support.
 
 = Who should use a Pro access account? =
 
-Creators, designers and developers who want to save time, get more variety and  be more productive can benefit from a Pro template library access account.
+Website owners, designers and developers who want access to our Pro template library. Pro templates are suitable for both new and seasoned designers, it offers 2000 ready-made templates, an integrated design library, and quick customization via style cards. Pro templates help aspiring designers quickly improve their skills and produce high-quality websites, while the intuitive UI allows end-users to easily update their websites.
 
-= Is the Pro access account for my end client? =
+= I'm a freelancer/developer/designer - is the Pro access account also for my end client? =
 
-No, it’s for creators, designers and developers. End clients don’t need one to use the website you design for them.
+No, not yet. For now pro access accounts are intended you and your direct team. End clients don’t need a pro access account to get updates or use any pro patterns you downloaded or designed for them. In future we may introduce cloud services that allow you make your own templates available to your you customers. Let us know on our socials or support channels if this is what you want.
 
 = What’s the difference between a Pro access account and handing over a completed website? =
 

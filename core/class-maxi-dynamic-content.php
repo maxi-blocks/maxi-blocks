@@ -1262,8 +1262,8 @@ class MaxiBlocks_DynamicContent
             return 0;
         }
 
-        // Ensure $user is an object and $user->data exists and is an object
-        if (!is_object($user) || !isset($user->data) || !is_object($user->data)) {
+        // Ensure $user->data exists and is an object
+        if (!isset($user->data) || !is_object($user->data)) {
             return 0;
         }
 
@@ -1277,7 +1277,6 @@ class MaxiBlocks_DynamicContent
 
         return $user_data;
     }
-
 
 
     public function get_taxonomy_content($attributes)

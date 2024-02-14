@@ -934,10 +934,8 @@ class MaxiBlocks_DynamicContent
         try {
             $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
         } catch (Exception $e) {
-            // Handle exception or log error
             error_log('Failed to create DateTime object: ' . $e->getMessage());
-            // Use a fallback date or handle the error appropriately
-            return ''; // Return an empty string or a default message
+            return '';
         }
 
 

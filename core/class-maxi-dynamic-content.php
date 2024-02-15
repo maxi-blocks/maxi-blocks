@@ -235,7 +235,6 @@ class MaxiBlocks_DynamicContent
         $content = '<div class="maxi-pagination">';
         $content .= '<div class="maxi-pagination__prev">';
         if($pagination_page_prev > 0) {
-            $pagination_page_prev_link = '?cl&cl-page='.$pagination_page_prev.'#'.$pagination_anchor;
             $currentQueryParams['cl-page'] = $pagination_page_prev;
             $queryString = http_build_query($currentQueryParams);
             $pagination_page_prev_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;

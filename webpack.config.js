@@ -10,6 +10,10 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer'); // Add this line
+
+// Check if ANALYZE is set to true
+const isAnalyze = process.env.ANALYZE === 'true';
 
 // Frontend scripts config
 const jsFiles = {};
@@ -75,7 +79,11 @@ const blocksConfig = {
 			'react/jsx-runtime': 'react/jsx-runtime.js',
 		},
 	},
-	plugins: [...defaultConfig.plugins, new Dotenv()],
+	plugins: [
+		...defaultConfig.plugins,
+		new Dotenv(),
+		...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
+	],
 };
 
 module.exports = [blocksConfig, scriptsConfig];

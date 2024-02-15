@@ -28,7 +28,7 @@ export const getPrevSavedAttrs = state => {
 	if (state.prevSavedAttrs)
 		return {
 			prevSavedAttrs: state.prevSavedAttrs,
-			prevClientID: state.prevClientID,
+			prevSavedAttrsClientId: state.prevSavedAttrsClientId,
 		};
 
 	return false;

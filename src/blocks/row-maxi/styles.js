@@ -224,14 +224,16 @@ const getStyles = props => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),
-				' .maxi-pagination': getPaginationStyles(props),
-				' .maxi-pagination a': getPaginationLinksStyles(props),
-				' .maxi-pagination a:hover': getPaginationColours(
-					props,
-					'hover'
-				),
-				' .maxi-pagination a.maxi-pagination__link--current':
-					getPaginationColours(props, 'current'),
+				...(props['cl-pagination'] && {
+					' .maxi-pagination': getPaginationStyles(props),
+					' .maxi-pagination a': getPaginationLinksStyles(props),
+					' .maxi-pagination a:hover': getPaginationColours(
+						props,
+						'hover'
+					),
+					' .maxi-pagination a.maxi-pagination__link--current':
+						getPaginationColours(props, 'current'),
+				}),
 			},
 			data,
 			props

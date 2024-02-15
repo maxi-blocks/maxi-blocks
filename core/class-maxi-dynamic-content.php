@@ -248,14 +248,31 @@ class MaxiBlocks_DynamicContent
             // Calculate the total number of pages
             $total_pages = ceil($pagination_total / $cl_pagination_per_page);
 
-            // Pages list
-            for ($page = 1; $page <= $total_pages; $page++) {
+            // Define range of pages to display around current page
+            $range = 1; // Adjust this value to show more or less pages around the current page
+            $initial_pages = range(1, min(3, $total_pages));
+            $middle_pages = range(max(1, $pagination_page - $range), min($total_pages, $pagination_page + $range));
+            $final_pages = range(max(1, $total_pages - 2), $total_pages);
+
+            // Combine all pages and remove duplicates
+            $pages = array_unique(array_merge($initial_pages, $middle_pages, $final_pages));
+            sort($pages);
+
+            // Pages list with "..."
+            $prev_page = 0;
+            foreach ($pages as $page) {
+                // Add ellipsis for gaps
+                if ($prev_page && $page - $prev_page > 1) {
+                    $content .= '<span class="maxi-pagination__text">...</span>';
+                }
                 $currentQueryParams['cl-page'] = $page;
                 $queryString = http_build_query($currentQueryParams);
                 $pagination_page_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
                 $content .= '<a href="' . esc_attr($pagination_page_link) . '" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
                 $content .= '<span class="maxi-pagination__text">' . $page . '</span>';
                 $content .= '</a>';
+
+                $prev_page = $page;
             }
             $content .= '</div>';
         }

@@ -9,7 +9,7 @@ const Pagination = props => {
 	} = props;
 
 	const totalPages = clPaginationTotalAll
-		? clPaginationPerPage
+		? clPaginationPerPage * 2
 		: Math.ceil(paginationTotal / clPaginationPerPage);
 	const clPaginationCurrentPage = 1;
 

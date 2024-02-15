@@ -12,7 +12,8 @@ body.maxi-blocks--active .maxi-container-block {
 			text-decoration: none;
 		}
 		.maxi-pagination__pages {
-			a:not(:last-child) {
+			a:not(:last-child),
+			span:not(:last-child) {
 				margin-right: 7px;
 			}
 		}

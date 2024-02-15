@@ -66,8 +66,6 @@ const ContextLoop = props => {
 
 	const { contextLoop } = useContext(LoopContext);
 
-	console.log('contextLoop', contextLoop);
-
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 

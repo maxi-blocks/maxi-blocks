@@ -227,7 +227,10 @@ class MaxiBlocks_DynamicContent
 
         $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $currentQueryParams = [];
-        parse_str(parse_url($currentUrl, PHP_URL_QUERY), $currentQueryParams);
+        $queryString = parse_url($currentUrl, PHP_URL_QUERY);
+        if ($queryString !== null) {
+            parse_str($queryString, $currentQueryParams);
+        }
 
         $content = '<div class="maxi-pagination">';
         $content .= '<div class="maxi-pagination__prev">';

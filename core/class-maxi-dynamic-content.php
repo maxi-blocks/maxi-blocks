@@ -51,6 +51,16 @@ class MaxiBlocks_DynamicContent
     {
     }
 
+    /**
+     * Extracts the last closing HTML tag from the given content.
+     *
+     * This function searches for the last occurrence of a closing HTML tag
+     * within the provided string. If no valid closing tag is found, an empty
+     * string is returned.
+     *
+     * @param string $content The HTML content to search within.
+     * @return string The last closing HTML tag, or an empty string if none found.
+     */
     public function get_last_closing_tag($content)
     {
         // Get the position of the last '>' character
@@ -62,7 +72,9 @@ class MaxiBlocks_DynamicContent
         }
 
         // Find the position of the last '<' before the last '>'
-        $last_opening_bracket_pos = strrpos($content, '<', -$last_closing_bracket_pos);
+        // Correct the offset for searching
+        $content_before_last_closing = substr($content, 0, $last_closing_bracket_pos);
+        $last_opening_bracket_pos = strrpos($content_before_last_closing, '<');
 
         if ($last_opening_bracket_pos === false) {
             return '';
@@ -79,17 +91,45 @@ class MaxiBlocks_DynamicContent
         return $last_tag;
     }
 
+    /**
+     * Extracts the value of the first 'id' attribute found in the given content.
+     *
+     * This function searches the provided string for an 'id' attribute and returns
+     * its value. The search is case-insensitive and returns the value of the first
+     * 'id' attribute it finds. If no 'id' attribute is found, an empty string is returned.
+     *
+     * @param string $content The content to search for an 'id' attribute.
+     * @return string The value of the first 'id' attribute found, or an empty string if none is found.
+     */
     public function get_first_id_value($content)
     {
+        // Define the regex pattern to match an 'id' attribute
         $pattern = '/id="([^"]+)"/i';
 
+        // Use preg_match to search for the pattern in the content
         if (preg_match($pattern, $content, $matches)) {
+            // If a match is found, return the captured value of the 'id' attribute
             return $matches[1];
         } else {
+            // If no match is found, return an empty string
             return '';
         }
     }
 
+    /**
+     * Retrieves the total number of posts for a given relation and identifier.
+     *
+     * This function allows for counting posts, pages, products, or any custom post type
+     * based on a specified relation (e.g., category, tag, author) and an identifier.
+     * It supports different types of relations and adjusts the query accordingly to
+     * ensure only published items are counted.
+     *
+     * @param string $relation The type of relation to filter by ('by-category', 'by-tag', 'by-author').
+     * @param int|string $id The identifier for the relation (e.g., category ID, tag ID, author ID).
+     * @param string $type Optional. The type of post to count. Defaults to 'post'.
+     * @return int The total number of items found matching the criteria.
+     * @throws Exception If the provided relation is not supported for the given post type.
+     */
     public function get_total_posts_by_relation($relation, $id, $type = 'post')
     {
 
@@ -148,41 +188,26 @@ class MaxiBlocks_DynamicContent
         return $query->found_posts;
     }
 
-
-    public function render_pagination($attributes, $content)
-    {
-        if (!array_key_exists('cl-pagination', $attributes)) {
-            return $content;
-        }
-        if (!$attributes['cl-pagination']) {
-            return $content;
-        }
-
-        $unique_id = $attributes['uniqueID'];
-        if(str_ends_with($unique_id, '-u')) {
-            $cl = $this->get_cl($unique_id);
-            try {
-                $last_tag = $this->get_last_closing_tag($content);
-                $pagination_anchor = $this->get_first_id_value($content);
-                $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
-                $content = substr($content, 0, strrpos($content, '<'));
-                $content = $content . $pagination_content . $last_tag;
-                return $content;
-            } catch (Exception $e) {
-                // Handle exception
-                error_log('Error: ' . $e->getMessage());
-            }
-        }
-        return $content;
-
-    }
-
+    /**
+     * Generates HTML content for pagination links based on the given criteria.
+     *
+     * This function creates pagination links for navigating through a list of posts,
+     * pages, products, or any custom post type. It supports pagination based on categories,
+     * tags, authors, or other specified relations. The function dynamically calculates
+     * the total number of pages and generates previous, next, and specific page number
+     * links according to the current page and total items.
+     *
+     * @param array $cl An array containing pagination and content-related parameters.
+     * @param string $pagination_anchor An anchor tag to append to pagination links for scroll position adjustment.
+     * @return string HTML content for the pagination links.
+     */
     public function get_pagination_content($cl, $pagination_anchor)
     {
         if(empty($cl)) {
             return '';
         }
 
+        // Destructure the $cl array into variables using snake case
         @list(
             'cl-pagination-previous-text' => $cl_prev_text,
             'cl-pagination-next-text' => $cl_next_text,
@@ -197,105 +222,200 @@ class MaxiBlocks_DynamicContent
 
         $pagination_total = $cl_pagination_total;
 
-        switch ($cl_type) {
-            case 'pages':
-                $type = 'page';
-                break;
-            case 'posts':
-                $type = 'post';
-                break;
-            case 'products':
-                $type = 'product';
-                break;
-            default:
-                $type = 'post';
-                break;
-        }
+        // Determine the content type
+        $type = match ($cl_type) {
+            'pages' => 'page',
+            'products' => 'product',
+            default => 'post',
+        };
 
+        // Update total count if necessary
         if($cl_pagination_total_all) {
             $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
         }
 
-        $pagination_page = 1;
+        // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
+        $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
 
-        if (isset($_GET['cl-page'])) {
-            $pagination_page = absint($_GET['cl-page']);
-        }
-
+        // Calculate next and previous page numbers
         $pagination_page_next = $pagination_page + 1;
         $pagination_page_prev = $pagination_page - 1;
 
-        $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $currentQueryParams = [];
-        $queryString = parse_url($currentUrl, PHP_URL_QUERY);
-        if ($queryString !== null) {
-            parse_str($queryString, $currentQueryParams);
-        }
+        // Build the current URL without query parameters
+        $current_url_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+        $current_url = $current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
+        // Initialize an array to hold query parameters
+        $current_query_params = [];
+
+        // Extract the query string from the current URL and parse it if not null
+        $query_string = parse_url($current_url, PHP_URL_QUERY) ?? '';
+        parse_str($query_string, $current_query_params);
+
+
+        // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
-        $content .= '<div class="maxi-pagination__prev">';
-        if($pagination_page_prev > 0) {
-            $currentQueryParams['cl-page'] = $pagination_page_prev;
-            $queryString = http_build_query($currentQueryParams);
-            $pagination_page_prev_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
 
-            $content .= '<a href="' . esc_attr($pagination_page_prev_link) . '" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_prev_text) .'</span>';
-            $content .= '</a>';
+        // Previous link
+        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev');
 
-        }
-        $content .= '</div>';
+        // Page list
         if($cl_show_page_list) {
-            $content .= '<div class="maxi-pagination__pages">';
-            // Calculate the total number of pages
-            $total_pages = ceil($pagination_total / $cl_pagination_per_page);
-
-            // Define range of pages to display around current page
-            $range = 1; // Adjust this value to show more or less pages around the current page
-            $initial_pages = range(1, min(3, $total_pages));
-            $middle_pages = range(max(1, $pagination_page - $range), min($total_pages, $pagination_page + $range));
-            $final_pages = range(max(1, $total_pages - 2), $total_pages);
-
-            // Combine all pages and remove duplicates
-            $pages = array_unique(array_merge($initial_pages, $middle_pages, $final_pages));
-            sort($pages);
-
-            // Pages list with "..."
-            $prev_page = 0;
-            foreach ($pages as $page) {
-                // Add ellipsis for gaps
-                if ($prev_page && $page - $prev_page > 1) {
-                    $content .= '<span class="maxi-pagination__text">...</span>';
-                }
-                $currentQueryParams['cl-page'] = $page;
-                $queryString = http_build_query($currentQueryParams);
-                $pagination_page_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
-                $content .= '<a href="' . esc_attr($pagination_page_link) . '" class="maxi-pagination__link'.(($page == $pagination_page) ? ' maxi-pagination__link--current' : '').'">';
-                $content .= '<span class="maxi-pagination__text">' . $page . '</span>';
-                $content .= '</a>';
-
-                $prev_page = $page;
-            }
-            $content .= '</div>';
+            $content .= $this->build_page_list($pagination_page, $pagination_total, $cl_pagination_per_page, $current_url, $current_query_params, $pagination_anchor);
         }
 
-        $content .= '<div class="maxi-pagination__next">';
+        // Next link
+        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $pagination_total / $cl_pagination_per_page);
 
-        if($pagination_page_next <= ceil($pagination_total / $cl_pagination_per_page)) {
-            $currentQueryParams['cl-page'] = $pagination_page_next;
-            $queryString = http_build_query($currentQueryParams);
-            // Construct the new pagination link
-            $pagination_page_next_link = strtok($currentUrl, '?') . '?' . $queryString . '#' . $pagination_anchor;
-            $content .= '<a href="' . esc_attr($pagination_page_next_link) . '" class="maxi-pagination__link">';
-            $content .= '<span class="maxi-pagination__text">'. esc_attr($cl_next_text) .'</span>';
-            $content .= '</a>';
-
-        }
-        $content .= '</div>';
-        $content .= '</div>';
+        $content .= '</div>'; // Closing maxi-pagination div
 
         return $content;
+    }
 
+    /**
+     * Helper method to build individual pagination links.
+     *
+     * @param int $page The page number for the link.
+     * @param string $text The text to display inside the link.
+     * @param string $base_url The base URL to which the query string will be appended.
+     * @param array $query_params Current set of query parameters.
+     * @param string $anchor The anchor tag to append to the link.
+     * @param string $type 'prev' or 'next' to determine if additional conditions are needed.
+     * @param float|int $max_page Optional. The maximum page number for 'next' link type.
+     * @return string HTML content for a single pagination link.
+     */
+    private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
+    {
+        if(($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
+            $query_params['cl-page'] = $page;
+            $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . $anchor;
+            return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, esc_attr($link), esc_attr($text));
+        }
+        return sprintf('<div class="maxi-pagination__%s"></div>', $type);
+    }
+
+    /**
+     * Builds the HTML content for the list of page numbers, including handling for
+     * large number of pages with ellipses for skipped sections.
+     *
+     * @param int $current_page The current page number being viewed.
+     * @param int $total_items The total number of items to paginate over.
+     * @param int $items_per_page The number of items shown per page.
+     * @param string $base_url The base URL to which the pagination query will be appended.
+     * @param array $query_params An array of current query parameters to preserve in pagination links.
+     * @param string $anchor An HTML anchor to append to pagination links for anchor navigation.
+     * @return string The generated HTML content for the pagination page list.
+     */
+    private function build_page_list($current_page, $total_items, $items_per_page, $base_url, &$query_params, $anchor)
+    {
+        // Determine the total number of pages
+        $total_pages = (int) ceil($total_items / $items_per_page);
+
+        // Start building the page list HTML
+        $page_list_html = '<div class="maxi-pagination__pages">';
+
+        // Define the range of pages to display near the current page
+        $range = 2; // This defines how many pages to show around the current page
+
+        // Calculate the range of pages to show
+        $initial_pages = max(1, $current_page - $range);
+        $final_pages = min($total_pages, $current_page + $range);
+
+        // Show the first page and ellipses if necessary
+        if ($initial_pages > 1) {
+            $page_list_html .= $this->generate_page_link(1, $base_url, $query_params, $anchor);
+            if ($initial_pages > 2) {
+                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+            }
+        }
+
+        // Generate links for the range around the current page
+        for ($page = $initial_pages; $page <= $final_pages; $page++) {
+            $page_list_html .= $this->generate_page_link($page, $base_url, $query_params, $anchor, $current_page);
+        }
+
+        // Show the last page and ellipses if necessary
+        if ($final_pages < $total_pages) {
+            if ($final_pages < $total_pages - 1) {
+                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+            }
+            $page_list_html .= $this->generate_page_link($total_pages, $base_url, $query_params, $anchor);
+        }
+
+        $page_list_html .= '</div>'; // Close the page list container
+
+        return $page_list_html;
+    }
+
+    /**
+     * Generates an individual page link or a current page span.
+     *
+     * @param int $page The page number for the link.
+     * @param string $base_url The base URL for the link.
+     * @param array $query_params The query parameters to include in the link.
+     * @param string $anchor The anchor tag to append to the link.
+     * @param int|null $current_page The current page number, if generating a current page span.
+     * @return string The HTML string for a page link or a current page span.
+     */
+    private function generate_page_link($page, $base_url, &$query_params, $anchor, $current_page = null)
+    {
+        $query_params['cl-page'] = $page;
+        $url = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . $anchor;
+
+        if ($page === $current_page) {
+            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">$page</span>";
+        } else {
+            return "<a href=\"$url\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">$page</span></a>";
+        }
+    }
+
+    /**
+     * Modifies the provided content by appending pagination controls.
+     *
+     * This function checks the provided attributes for pagination settings, and if
+     * pagination is enabled, it dynamically generates pagination links based on
+     * the content's unique identifier. It then inserts these links into the content
+     * string before the last closing tag.
+     *
+     * @param array $attributes Associative array of attributes that may enable pagination and provide necessary identifiers.
+     * @param string $content The original content to which pagination might be added.
+     * @return string The modified content with pagination added, or the original content if pagination is not enabled.
+     */
+    public function render_pagination($attributes, $content)
+    {
+        // Check if pagination is enabled in the attributes
+        if (!array_key_exists('cl-pagination', $attributes) || !$attributes['cl-pagination']) {
+            return $content;
+        }
+
+        // Extract the unique ID and check its format
+        $unique_id = $attributes['uniqueID'] ?? '';
+        if (str_ends_with($unique_id, '-u')) {
+            try {
+                // Retrieve configuration list (cl) for the unique ID
+                $cl = $this->get_cl($unique_id);
+
+                // Extract the last closing tag and the first ID value for the pagination anchor
+                $last_tag = $this->get_last_closing_tag($content);
+                $pagination_anchor = $this->get_first_id_value($content);
+
+                // Generate pagination content based on the cl settings and the anchor
+                $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
+
+                // Insert the pagination content before the last closing tag of the original content
+                $content_before_last_tag = substr($content, 0, strrpos($content, '<'));
+                $modified_content = $content_before_last_tag . $pagination_content . $last_tag;
+
+                return $modified_content;
+            } catch (Exception $e) {
+                // Log any exceptions and return the unmodified content
+                error_log('Error in render_pagination: ' . $e->getMessage());
+                return $content;
+            }
+        }
+
+        // Return the original content if the unique ID doesn't end with '-u'
+        return $content;
     }
 
 

@@ -16,18 +16,24 @@ const Pagination = props => {
 	const renderPageLinks = () => {
 		const links = [];
 		for (let page = 1; page <= totalPages; page += 1) {
-			links.push(
-				<a
-					key={`page_${page}`}
-					className={`maxi-pagination__link${
-						page === clPaginationCurrentPage
-							? ' maxi-pagination__link--current'
-							: ''
-					}`}
-				>
-					<span className='maxi-pagination__text'>{page}</span>
-				</a>
-			);
+			if (page === clPaginationCurrentPage) {
+				// When the page is the current page, push a span with the appropriate class
+				links.push(
+					<span
+						key={`page_${page}`}
+						className='maxi-pagination__link maxi-pagination__link--current'
+					>
+						<span className='maxi-pagination__text'>{page}</span>
+					</span>
+				);
+			} else {
+				// Otherwise, push an anchor element
+				links.push(
+					<a key={`page_${page}`} className='maxi-pagination__link'>
+						<span className='maxi-pagination__text'>{page}</span>
+					</a>
+				);
+			}
 		}
 		return links;
 	};

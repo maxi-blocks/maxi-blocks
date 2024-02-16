@@ -286,7 +286,7 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
-        if(($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
+        if(($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page + 1)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . $anchor;
             return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, esc_attr($link), esc_attr($text));
@@ -1018,20 +1018,40 @@ class MaxiBlocks_DynamicContent
         return $site_data;
     }
 
+    /**
+     * Retrieves media content associated with a post based on given attributes.
+     *
+     * This function dynamically retrieves media content from a post, such as the post's author or a specific field
+     * defined in the 'dc-field' attribute of the input array. If the 'dc-field' is 'author', it fetches the display name
+     * of the post's author. For any other 'dc-field' value, it fetches the corresponding property from the post.
+     *
+     * @param array $attributes An associative array of attributes used to identify the post and the specific media content to retrieve.
+     *                          The array must contain a 'dc-field' key that specifies the content to fetch (e.g., 'author', 'title').
+     * @return mixed Returns the requested media content if available. If the specified content cannot be found or the post does not exist, returns null.
+     */
     public function get_media_content($attributes)
     {
+        // Extract 'dc-field' from attributes, if available
         @list(
             'dc-field' => $dc_field,
         ) = $attributes;
 
+        // Attempt to retrieve the post using the given attributes
         $post = $this->get_post($attributes);
-        $media_data = $post->{"post_$dc_field"};
 
-        if ($dc_field === 'author') {
-            $media_data = get_the_author_meta('display_name', $post->post_author);
+        // Check if the post was successfully retrieved
+        if ($post !== null) {
+            // If 'dc-field' is 'author', fetch and return the post author's display name
+            if ($dc_field === 'author') {
+                return get_the_author_meta('display_name', $post->post_author);
+            } else {
+                // For other 'dc-field' values, fetch and return the corresponding post property
+                return $post->{"post_$dc_field"};
+            }
+        } else {
+            // If the post could not be found
+            return 0;
         }
-
-        return $media_data;
     }
 
     public function get_user_content($attributes)

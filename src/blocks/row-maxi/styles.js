@@ -227,13 +227,13 @@ const getStyles = props => {
 				...(props['cl-pagination'] && {
 					' .maxi-pagination': getPaginationStyles(props),
 					' .maxi-pagination a': getPaginationLinksStyles(props),
-					' .maxi-pagination .maxi-pagination__pages > span:not(.maxi-pagination__link--current)':
+					' .maxi-pagination .maxi-pagination__pages > span':
 						getPaginationLinksStyles(props),
 					' .maxi-pagination a:hover': getPaginationColours(
 						props,
 						'hover'
 					),
-					' .maxi-pagination .maxi-pagination__link--current':
+					' .maxi-pagination .maxi-pagination__pages > span.maxi-pagination__link--current':
 						getPaginationColours(props, 'current'),
 				}),
 			},

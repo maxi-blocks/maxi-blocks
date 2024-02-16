@@ -38,10 +38,11 @@ export function saveStyles(isUpdate) {
 	};
 }
 
-export function savePrevSavedAttrs(prevSavedAttrs) {
+export function savePrevSavedAttrs(prevSavedAttrs, prevSavedAttrsClientId) {
 	return {
 		type: 'SAVE_PREV_SAVED_ATTRS',
 		prevSavedAttrs: Object.keys(prevSavedAttrs),
+		prevSavedAttrsClientId,
 	};
 }
 

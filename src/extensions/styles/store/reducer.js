@@ -19,6 +19,7 @@ function reducer(
 		styles: {},
 		isUpdate: null,
 		prevSavedAttrs: [],
+		prevSavedAttrsClientId: null,
 		cssCache: {},
 		blockMarginValue: '',
 		defaultGroupAttributes: { ...defaultGroupAttributes },
@@ -52,6 +53,7 @@ function reducer(
 			return {
 				...state,
 				prevSavedAttrs: action.prevSavedAttrs,
+				prevSavedAttrsClientId: action.prevSavedAttrsClientId,
 			};
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;

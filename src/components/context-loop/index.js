@@ -286,7 +286,8 @@ const ContextLoop = props => {
 							)}
 							{contentType !== 'container' &&
 								relationTypes.includes(type) &&
-								type === 'users' && (
+								type === 'users' &&
+								relation === 'by-id' && (
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
 										value={author}

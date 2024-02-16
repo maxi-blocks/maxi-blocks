@@ -117,6 +117,21 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
+     * Retrieves the total number of users on the site.
+     *
+     * This function returns the count of all users registered on the site, regardless of their role or status.
+     *
+     * @return int The total number of registered users on the site.
+     */
+    public function get_total_users()
+    {
+        $user_count_data = count_users();
+        $total_users = $user_count_data['total_users'];
+
+        return $total_users;
+    }
+
+    /**
      * Retrieves the total number of posts for a given relation and identifier.
      *
      * This function allows for counting posts, pages, products, or any custom post type
@@ -231,12 +246,18 @@ class MaxiBlocks_DynamicContent
             'pages' => 'page',
             'products' => 'product',
             'media' => 'attachment',
+            'users' => 'users',
             default => 'post',
         };
 
         // Update total count if necessary
         if($cl_pagination_total_all) {
-            $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
+            if ($type === 'users') {
+                // If the type is 'users', get the total number of users
+                $pagination_total = $this->get_total_users();
+            } else {
+                $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
+            }
         }
 
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid

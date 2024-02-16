@@ -13,7 +13,7 @@ import { useContext, useState } from '@wordpress/element';
 import Button from '../../../button';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import Dropdown from '../../../dropdown';
-import { textContext } from '../../../../extensions/text/formats';
+import { TextContext } from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -28,7 +28,7 @@ import './editor.scss';
 
 const TextGenerator = props => {
 	const { onChange, closeMoreSettings } = props;
-	const { content } = useContext(textContext);
+	const { content } = useContext(TextContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);

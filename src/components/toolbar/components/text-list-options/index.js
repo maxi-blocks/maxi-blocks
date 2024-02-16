@@ -15,7 +15,7 @@ import {
 	fromListToText,
 	fromTextToList,
 	getFormattedString,
-	textContext,
+	TextContext,
 } from '../../../../extensions/text/formats';
 import {
 	canIndentListItems,
@@ -56,7 +56,7 @@ const TextListOptions = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const { formatValue } = useContext(textContext);
+	const { formatValue } = useContext(TextContext);
 
 	const getContent = (content, wpVersion) => {
 		if (!isList) return fromTextToList(content, wpVersion);

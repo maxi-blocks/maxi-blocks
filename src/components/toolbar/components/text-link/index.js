@@ -20,7 +20,7 @@ import {
 	applyLinkFormat,
 	removeLinkFormat,
 	getFormatPosition,
-	textContext,
+	TextContext,
 } from '../../../../extensions/text/formats';
 import Link from '../link';
 
@@ -45,7 +45,7 @@ const LinkContent = props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = useContext(TextContext);
 
 	const getFormatOptions = () => {
 		// Checks if the whole text string is under same link
@@ -265,8 +265,8 @@ const TextLink = props => {
 
 	let formatValue;
 
-	if (textContext) {
-		const contextValue = useContext(textContext);
+	if (TextContext) {
+		const contextValue = useContext(TextContext);
 		formatValue = contextValue?.formatValue
 			? contextValue?.formatValue
 			: {};

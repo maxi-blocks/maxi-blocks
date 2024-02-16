@@ -21,7 +21,7 @@ import FontWeightControl from '../font-weight-control';
 import {
 	setFormat,
 	getTypographyValue,
-	textContext,
+	TextContext,
 } from '../../extensions/text/formats';
 import {
 	getDefaultAttribute,
@@ -316,7 +316,7 @@ const TypographyControl = props => {
 		forceIndividualChanges = false,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
-		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
+		!isStyleCards && !disableCustomFormats ? useContext(TextContext) : {};
 
 	const typography =
 		props.typography ||

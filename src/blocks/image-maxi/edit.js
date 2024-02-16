@@ -43,7 +43,7 @@ import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
-import { textContext, onChangeRichText } from '../../extensions/text/formats';
+import { TextContext, onChangeRichText } from '../../extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
@@ -281,7 +281,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			<textContext.Provider
+			<TextContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
 					formatValue: this.state.formatValue,
@@ -625,7 +625,7 @@ class edit extends MaxiBlockComponent {
 						</div>
 					)}
 				</MaxiBlock>
-			</textContext.Provider>,
+			</TextContext.Provider>,
 		];
 	}
 }

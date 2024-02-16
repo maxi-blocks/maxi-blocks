@@ -489,6 +489,7 @@ class MaxiBlocks_DynamicContent
         } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
+
             $content = self::render_dc_image($attributes, $content);
         }
 
@@ -596,6 +597,7 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-field' => $dc_field,
+            'dc-media-id' => $dc_media_id,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -611,7 +613,6 @@ class MaxiBlocks_DynamicContent
         // Get media ID
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
-
             $media_id = is_array($image) && $image['id'];
         } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $post = $this->get_post($attributes);
@@ -628,7 +629,7 @@ class MaxiBlocks_DynamicContent
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
-            $media_id = $dc_id;
+            $media_id = $dc_media_id;
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
             $post = $this->get_post($attributes);
@@ -720,6 +721,7 @@ class MaxiBlocks_DynamicContent
             $dc_order = 'desc';
         }
 
+
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
@@ -772,6 +774,7 @@ class MaxiBlocks_DynamicContent
 
             return end($query->posts);
         } elseif ($dc_type === 'media') {
+
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
@@ -1298,7 +1301,20 @@ class MaxiBlocks_DynamicContent
             'year' => $dc_year === 'none' ? null : $dc_year,
         );
 
-        $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+        // Validate or transform the $date to ensure it's in a proper format
+        if (empty($date) || !strtotime($date)) {
+            // Assuming current date/time if $date is not valid
+            $date = 'now';
+        }
+
+        // Adjusting for timezone
+        try {
+            $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+        } catch (Exception $e) {
+            // Handle exception if DateTime construction fails
+            error_log('Failed to create DateTime object: ' . $e->getMessage());
+            return ''; // Or handle the error as appropriate
+        }
 
         $content = '';
         $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;

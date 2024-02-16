@@ -564,10 +564,6 @@ const ContextLoop = props => {
 												breakpoint={breakpoint}
 												disableCustomFormats
 												hideAlignment
-												globalProps={{
-													target: '',
-													type: 'p',
-												}}
 												styleCardPrefix=''
 												prefix={clPaginationPrefix}
 												onChange={obj => onChange(obj)}
@@ -622,10 +618,6 @@ const ContextLoop = props => {
 												deviceType={breakpoint}
 												clientId={clientId}
 												disableGradient
-												globalProps={{
-													target: 'hover',
-													type: 'link',
-												}}
 											/>
 											<ColorControl
 												label={__(
@@ -673,10 +665,6 @@ const ContextLoop = props => {
 												deviceType={breakpoint}
 												clientId={clientId}
 												disableGradient
-												globalProps={{
-													target: 'active',
-													type: 'link',
-												}}
 											/>
 											<ResponsiveTabsControl
 												breakpoint={breakpoint}

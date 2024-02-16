@@ -136,7 +136,7 @@ class MaxiBlocks_DynamicContent
         // Initialize the query args array
         $args = array(
             'post_type'      => $type, // Can be 'post', 'page', 'product', or any custom post type
-            'post_status'    => 'publish', // Get only published items
+            'post_status'    => ($type === 'attachment' ? 'inherit' : 'publish'), // Only count published items
             'fields'         => 'ids', // Retrieve only the IDs for performance
             'nopaging'       => true, // Retrieve all items matching the criteria
         );
@@ -176,7 +176,11 @@ class MaxiBlocks_DynamicContent
                 }
                 break;
             case 'by-author':
-                // Author queries can be performed on posts, pages, and products
+                if ($type === 'attachment') {
+                    // Ensure correct post_status is set for attachments
+                    $args['post_status'] = 'inherit';
+                }
+                // Author queries can be performed on posts, pages, attachments and products
                 $args['author'] = $id; // Author ID
                 break;
         }
@@ -226,6 +230,7 @@ class MaxiBlocks_DynamicContent
         $type = match ($cl_type) {
             'pages' => 'page',
             'products' => 'product',
+            'media' => 'attachment',
             default => 'post',
         };
 
@@ -489,7 +494,6 @@ class MaxiBlocks_DynamicContent
         } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
-
             $content = self::render_dc_image($attributes, $content);
         }
 
@@ -591,6 +595,7 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_image($attributes, $content)
     {
+
         @list(
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
@@ -629,7 +634,8 @@ class MaxiBlocks_DynamicContent
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
-            $media_id = $dc_media_id;
+            $post = $this->get_post($attributes);
+            $media_id = $post->ID ?? $dc_media_id ?? $dc_id;
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
             $post = $this->get_post($attributes);

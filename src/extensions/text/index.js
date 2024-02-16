@@ -1,3 +1,3 @@
 import './formats';
-//import './fonts';
+import './fonts';
 import './store';

@@ -9,6 +9,7 @@ import { RawHTML, createRef, forwardRef } from '@wordpress/element';
  * External dependencies
  */
 import loadable from '@loadable/component';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -30,11 +31,6 @@ import { copyPasteMapping, maxiAttributes } from './data';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Content

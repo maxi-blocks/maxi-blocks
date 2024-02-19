@@ -10,7 +10,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer'); // Add this line
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -82,7 +82,9 @@ const blocksConfig = {
 	plugins: [
 		...defaultConfig.plugins,
 		new Dotenv(),
-		...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
+		...(isAnalyze
+			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
+			: []),
 	],
 };
 

@@ -17,6 +17,8 @@ import {
 	relationDictionary,
 	postTypeRelationOptions,
 	taxonomyRelationOptions,
+	linkTypesOptions,
+	linkFieldsOptions,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -361,4 +363,18 @@ export const getRelationKeyForId = (relation, type) => {
 		return relationType[type] || relationType.default;
 	}
 	return null;
+};
+
+export const getLinkTargets = (type, field) => {
+	const targets = [];
+
+	targets.push({
+		label: 'Selected entity',
+		value: 'entity',
+	});
+
+	targets.push(...linkTypesOptions[type]);
+	targets.push(...linkFieldsOptions[field]);
+
+	return targets;
 };

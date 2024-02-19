@@ -43,8 +43,6 @@ import {
 	orderByRelations,
 	orderRelations,
 	orderTypes,
-	linkFields,
-	linkFieldsLabels,
 	sourceOptions,
 	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
@@ -103,7 +101,6 @@ const DynamicContent = props => {
 		limit,
 		delimiterContent,
 		customDelimiterStatus,
-		postTaxonomyLinksStatus,
 		error,
 		order,
 		orderBy,
@@ -606,7 +603,7 @@ const DynamicContent = props => {
 									{...dcValuesForDate}
 								/>
 							)}
-							{linkFields.includes(field) && (
+							{/* {linkFields.includes(field) && (
 								<ToggleSwitch
 									label={linkFieldsLabels[field]}
 									selected={postTaxonomyLinksStatus}
@@ -617,7 +614,7 @@ const DynamicContent = props => {
 										})
 									}
 								/>
-							)}
+							)} */}
 							{(['tags', 'categories'].includes(field) ||
 								(source === 'acf' &&
 									acfFieldType === 'checkbox')) &&

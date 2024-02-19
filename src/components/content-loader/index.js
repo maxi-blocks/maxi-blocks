@@ -1,13 +1,15 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * External dependencies
  */
-import { BarLoader, PuffLoader } from 'react-spinners';
-import SVG from 'react-inlinesvg';
+import loadable from '@loadable/component';
+
+const BarLoader = loadable(() =>
+	import('react-spinners').then(c => ({ default: c.BarLoader }))
+);
+const PuffLoader = loadable(() =>
+	import('react-spinners').then(c => ({ default: c.PuffLoader }))
+);
+const SVG = loadable(() => import('react-inlinesvg'));
 
 /**
  * Styles and icons

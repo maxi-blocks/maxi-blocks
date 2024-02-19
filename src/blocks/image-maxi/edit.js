@@ -11,8 +11,14 @@ import { createRef } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
-import DOMPurify from 'dompurify';
 import loadable from '@loadable/component';
+
+// Dynamically import DOMPurify
+const DOMPurify = loadable(() =>
+	import('dompurify').then(DOMPurify => ({
+		default: DOMPurify.sanitize,
+	}))
+);
 
 /**
  * Internal dependencies

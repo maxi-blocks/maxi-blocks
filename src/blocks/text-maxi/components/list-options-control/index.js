@@ -9,6 +9,7 @@ import { isURL } from '@wordpress/url';
  * External dependencies
  */
 import loadable from '@loadable/component';
+import { capitalize } from 'lodash';
 
 /**
  * Internal dependencies
@@ -37,11 +38,6 @@ import {
 	getPaletteAttributes,
 } from '../../../../extensions/styles';
 import { setSVGColor } from '../../../../extensions/svg';
-
-/**
- * External dependencies
- */
-import { capitalize } from 'lodash';
 
 const ListOptionsControl = props => {
 	const {

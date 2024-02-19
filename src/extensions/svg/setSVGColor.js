@@ -7,8 +7,14 @@ import { renderToString } from '@wordpress/element';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import DOMPurify from 'dompurify';
-import parse from 'html-react-parser';
+import loadable from '@loadable/component';
+
+const DOMPurify = loadable(() =>
+	import('dompurify').then(DOMPurify => ({
+		default: DOMPurify.sanitize,
+	}))
+);
+const parse = loadable(() => import('html-react-parser'));
 
 const setSVGColor = ({ svg, color, type = 'fill' }) => {
 	const cleanedSVG = DOMPurify.sanitize(svg, {

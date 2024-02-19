@@ -8,6 +8,7 @@ import { RangeControl } from '@wordpress/components';
  * External dependencies
  */
 import loadable from '@loadable/component';
+import { capitalize, isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -31,11 +32,6 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { capitalize, isNil } from 'lodash';
 
 const DimensionTab = props => {
 	const {

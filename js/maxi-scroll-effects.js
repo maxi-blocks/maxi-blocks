@@ -411,6 +411,8 @@ class ScrollEffects {
 		const scrollDirection = this.getScrollDirection();
 		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			const element = document.getElementById(id);
+			if (!element) return;
+
 			Object.entries(effect).forEach(([type]) => {
 				this.scrollTransform(element, type, scrollDirection);
 			});
@@ -448,6 +450,9 @@ class ScrollEffects {
 		Object.entries(this.scrollData).forEach(([id, effect]) => {
 			let transition = '';
 			const element = document.getElementById(id);
+
+			if (!element) return;
+
 			const rects = element.getBoundingClientRect();
 
 			this.startData[id] = {

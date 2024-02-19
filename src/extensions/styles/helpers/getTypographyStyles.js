@@ -4,6 +4,7 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getAttributeKey from '../getAttributeKey';
+import getDefaultAttribute from '../getDefaultAttribute';
 
 /**
  * External dependencies
@@ -30,6 +31,8 @@ const getTypographyStyles = ({
 	normalTypography, // Just in case is hover,
 	scValues = {},
 	isStyleCards = false,
+	disablePaletteDefaults = false,
+	blockName,
 }) => {
 	const response = {};
 
@@ -60,6 +63,19 @@ const getTypographyStyles = ({
 			isHover: !isCustomFormat && isHover,
 		});
 
+	const getDefaultValue = target =>
+		getDefaultAttribute(
+			getAttributeKey(
+				target,
+				!isCustomFormat && isHover,
+				prefix,
+				'general'
+			),
+			null,
+			false,
+			blockName
+		);
+
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
 			target: `${prefix}palette-status`,
@@ -81,6 +97,11 @@ const getTypographyStyles = ({
 		);
 	};
 
+	const isDefaultOpacity = (opacity, defaultOpacity) =>
+		opacity === defaultOpacity ||
+		(isNil(opacity) && isNil(defaultOpacity)) ||
+		opacity === 1;
+
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
 		const paletteSCStatus = getLastBreakpointValue(
@@ -91,38 +112,75 @@ const getTypographyStyles = ({
 			'palette-color',
 			breakpoint
 		);
-		const paletteOpacity = getLastBreakpointValue(
-			'palette-opacity',
-			breakpoint
-		);
 
 		if (
 			!paletteSCStatus &&
 			paletteStatus &&
 			(!isHover || hoverStatus || globalHoverStatus)
-		)
+		) {
+			if (isNil(paletteColor)) {
+				return {};
+			}
+
+			const paletteOpacity = getLastBreakpointValue(
+				'palette-opacity',
+				breakpoint
+			);
+
+			if (disablePaletteDefaults) {
+				const defaultPaletteColor = getDefaultValue('palette-color');
+				const defaultPaletteOpacity =
+					getDefaultValue('palette-opacity');
+
+				if (
+					paletteColor === defaultPaletteColor &&
+					isDefaultOpacity(paletteOpacity, defaultPaletteOpacity)
+				) {
+					return {};
+				}
+			}
+
 			return {
-				...(!isNil(paletteColor) && {
-					color: getColorRGBAString({
-						firstVar: `${textLevel}-color${
-							isHover ? '-hover' : ''
-						}`,
-						secondVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-					}),
+				color: getColorRGBAString({
+					firstVar: `${textLevel}-color${isHover ? '-hover' : ''}`,
+					secondVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
 				}),
 			};
-		if (paletteStatus)
+		}
+
+		if (paletteStatus) {
+			if (isNil(paletteColor)) {
+				return {};
+			}
+
+			const paletteOpacity = getLastBreakpointValue(
+				'palette-opacity',
+				breakpoint
+			);
+
+			if (disablePaletteDefaults) {
+				const defaultPaletteColor = getDefaultValue('palette-color');
+				const defaultPaletteOpacity =
+					getDefaultValue('palette-opacity');
+
+				if (
+					paletteColor === defaultPaletteColor &&
+					isDefaultOpacity(paletteOpacity, defaultPaletteOpacity)
+				) {
+					return {};
+				}
+			}
+
 			return {
-				...(!isNil(paletteColor) && {
-					color: getColorRGBAString({
-						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-					}),
+				color: getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
 				}),
 			};
+		}
 
 		const color = getValue('color', breakpoint);
 		return {

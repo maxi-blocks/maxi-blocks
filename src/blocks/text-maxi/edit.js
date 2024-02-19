@@ -3,7 +3,11 @@
 /**
  * WordPress dependencies
  */
-import { RichText, RichTextShortcut } from '@wordpress/block-editor';
+import {
+	RichText,
+	RichTextShortcut,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import { resolveSelect } from '@wordpress/data';
 
@@ -19,6 +23,7 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
+const BlockInserter = loadable(() => import('../../components/block-inserter'));
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { RawHTML } from '../../components';
 import {
@@ -29,12 +34,42 @@ import {
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge from './utils';
-import { onChangeRichText, textContext } from '../../extensions/text/formats';
+import {
+	onChangeRichText,
+	TextContext,
+	ListContext,
+} from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping, scProps } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
+
+const List = props => {
+	const { clientId, hasInnerBlocks, typeOfList, start, reversed, className } =
+		props;
+
+	const ALLOWED_BLOCKS = ['maxi-blocks/list-item-maxi'];
+	const ListTagName = typeOfList;
+
+	return (
+		<ListTagName
+			{...useInnerBlocksProps(
+				{
+					className,
+					start,
+					reversed,
+				},
+				{
+					allowedBlocks: ALLOWED_BLOCKS,
+					renderAppender: !hasInnerBlocks
+						? () => <BlockInserter clientId={clientId} />
+						: false,
+				}
+			)}
+		/>
+	);
+};
 
 /**
  * Content
@@ -106,6 +141,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			onReplace,
 			maxiSetAttributes,
+			hasInnerBlocks,
 		} = this.props;
 		const {
 			content,
@@ -217,7 +253,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			<textContext.Provider
+			<TextContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
 					content,
@@ -225,7 +261,7 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						!dcStatus &&
+						if (!dcStatus && !isList)
 							this.state.onChangeFormat?.(newFormatValue);
 
 						onChangeRichText({
@@ -303,98 +339,21 @@ class edit extends MaxiBlockComponent {
 						</DCTagName>
 					)}
 					{!dcStatus && isList && (
-						<RichText
-							multiline={
-								this.state.wpVersion < 6.4 ? 'li' : false
-							}
-							tagName={typeOfList}
-							start={listStart}
-							reversed={listReversed}
-							type={typeOfList}
-							{...commonProps}
+						<ListContext.Provider
+							value={getGroupAttributes(attributes, 'typography')}
 						>
-							{richTextValues => {
-								onChangeRichText({
-									attributes,
-									maxiSetAttributes,
-									oldFormatValue: this.state.formatValue,
-									onChange: newState => {
-										if (this.typingTimeoutFormatValue) {
-											clearTimeout(
-												this.typingTimeoutFormatValue
-											);
-										}
-
-										this.typingTimeoutFormatValue =
-											setTimeout(() => {
-												this.setState(newState);
-											}, 10);
-									},
-									richTextValues,
-								});
-
-								if (isSelected) {
-									const { value: formatValue, onChange } =
-										richTextValues;
-
-									return (
-										<>
-											<RichTextShortcut
-												type='primary'
-												character='['
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character=']'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character='m'
-												onUse={() => {
-													onChange(
-														indentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primaryShift'
-												character='m'
-												onUse={() => {
-													onChange(
-														outdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-										</>
-									);
-								}
-
-								return null;
-							}}
-						</RichText>
+							<List
+								typeOfList={typeOfList}
+								className={className}
+								start={listStart}
+								reversed={listReversed}
+								clientId={clientId}
+								hasInnerBlocks={hasInnerBlocks}
+							/>
+						</ListContext.Provider>
 					)}
 				</MaxiBlock>
-			</textContext.Provider>,
+			</TextContext.Provider>,
 		];
 	}
 }

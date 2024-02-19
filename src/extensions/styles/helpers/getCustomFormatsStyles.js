@@ -6,7 +6,8 @@ const getCustomFormatsStyles = (
 	isHover = false,
 	typography,
 	textLevel,
-	blockStyle
+	blockStyle,
+	disablePaletteDefaults = false
 ) => {
 	const response = {};
 
@@ -19,6 +20,7 @@ const getCustomFormatsStyles = (
 					customFormatTypography: typography,
 					textLevel,
 					blockStyle,
+					disablePaletteDefaults,
 				}),
 			};
 		});

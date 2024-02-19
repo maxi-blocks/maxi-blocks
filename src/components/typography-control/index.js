@@ -22,6 +22,7 @@ import {
 	setFormat,
 	getTypographyValue,
 	TextContext,
+	ListContext,
 } from '../../extensions/text/formats';
 import {
 	getDefaultAttribute,
@@ -37,7 +38,7 @@ import onChangeFontWeight from '../font-weight-control/utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, omitBy } from 'lodash';
 
 /**
  * Styles
@@ -317,8 +318,9 @@ const TypographyControl = props => {
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(TextContext) : {};
+	const listContext = useContext(ListContext);
 
-	const typography =
+	const rawTypography =
 		props.typography ||
 		getGroupAttributes(
 			props,
@@ -330,6 +332,17 @@ const TypographyControl = props => {
 			isHover,
 			prefix
 		);
+
+	const typography = listContext
+		? {
+				...listContext,
+				...omitBy(rawTypography, (value, key) =>
+					key.includes('palette')
+						? value === getDefaultAttribute(key)
+						: value === undefined
+				),
+		  }
+		: rawTypography;
 
 	const { styleCard, baseBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(

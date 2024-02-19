@@ -27,7 +27,7 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/image-maxi',
 ];
 
-const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
+const TEXT_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 const Alignment = props => {
 	const { blockName, onChange, breakpoint, isCaptionToolbar = false } = props;

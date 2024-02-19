@@ -44,7 +44,8 @@ const getBlocksName = clientIds => {
 const getDefaultAttribute = (
 	prop,
 	clientIds = null,
-	avoidBaseBreakpoint = false
+	avoidBaseBreakpoint = false,
+	blockNameProp = null
 ) => {
 	const blockEditorStore = select('core/block-editor');
 	const { getBlockName, getSelectedBlockClientIds } = blockEditorStore;
@@ -55,7 +56,7 @@ const getDefaultAttribute = (
 	} else if (isArray(clientIds)) {
 		blockName = getBlocksName(clientIds);
 	} else if (isNil(clientIds)) {
-		blockName = getBlocksName(getSelectedBlockClientIds());
+		blockName = blockNameProp || getBlocksName(getSelectedBlockClientIds());
 	}
 
 	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
@@ -65,6 +66,7 @@ const getDefaultAttribute = (
 	const maxiBlocksStore = select('maxiBlocks');
 
 	let response = getBlockAttributes(blockName)[prop];
+
 	if (getBlockData(blockName)?.maxiAttributes?.[prop]) {
 		response = getBlockData(blockName).maxiAttributes[prop];
 	}

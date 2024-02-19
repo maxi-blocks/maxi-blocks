@@ -4,7 +4,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { dispatch } from '@wordpress/data';
 import { useContext } from '@wordpress/element';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -52,6 +54,7 @@ const TextListOptions = props => {
 		onChange,
 		content: listContent,
 		wpVersion,
+		clientId,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -105,6 +108,19 @@ const TextListOptions = props => {
 		}
 
 		if (!isList || typeOfList === type) {
+			const block = createBlock('maxi-blocks/list-item-maxi', {
+				content,
+			});
+
+			const {
+				replaceInnerBlocks,
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+			} = dispatch('core/block-editor');
+
+			markNextChangeAsNotPersistent();
+			replaceInnerBlocks(clientId, [block]);
+
 			onChange(changeObject1);
 		} else {
 			onChange(changeObject2);
@@ -122,6 +138,15 @@ const TextListOptions = props => {
 				isList: false,
 				content: getContent(content, wpVersion),
 			});
+
+			const {
+				replaceInnerBlocks,
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+			} = dispatch('core/block-editor');
+
+			markNextChangeAsNotPersistent();
+			replaceInnerBlocks(clientId, []);
 		}
 	};
 

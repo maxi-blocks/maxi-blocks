@@ -358,6 +358,7 @@ const MaxiToolbar = memo(
 						/>
 						{!dcStatus && (
 							<TextListOptions
+								clientId={clientId}
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}

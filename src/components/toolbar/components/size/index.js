@@ -30,6 +30,7 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
+	'maxi-blocks/list-item-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/video-maxi',
 ];

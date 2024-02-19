@@ -54,41 +54,28 @@ class MaxiBlocks_DynamicContent
     /**
      * Extracts the last closing HTML tag from the given content.
      *
-     * This function searches for the last occurrence of a closing HTML tag
-     * within the provided string. If no valid closing tag is found, an empty
-     * string is returned.
+     * This function uses a regular expression to search for the last occurrence of a valid closing HTML tag
+     * within the provided HTML content string. It ensures that the tag is properly formatted as a closing tag.
+     * If no valid closing tag is found, an empty string is returned. This method enhances security and accuracy
+     * by strictly validating the HTML tag format, thus avoiding potential manipulation or malformed HTML content.
      *
-     * @param string $content The HTML content to search within.
-     * @return string The last closing HTML tag, or an empty string if none found.
+     * @param string $content The HTML content to search within for the last closing tag.
+     * @return string The last valid closing HTML tag found in the content, or an empty string if none is found.
      */
     public function get_last_closing_tag($content)
     {
-        // Get the position of the last '>' character
-        $last_closing_bracket_pos = strrpos($content, '>');
+        // Use a regex to find the last valid closing HTML tag
+        // This pattern matches valid closing tags, ensuring correct syntax
+        $pattern = '/<\/([a-zA-Z]+)[^>]*>$/';
 
-        // If not found, the HTML might be invalid or empty
-        if ($last_closing_bracket_pos === false) {
-            return '';
+        // Perform the regex search from the end of the string to find the last closing tag
+        if (preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE)) {
+            // If a match is found, return the full tag
+            return $matches[0][0];
         }
 
-        // Find the position of the last '<' before the last '>'
-        // Correct the offset for searching
-        $content_before_last_closing = substr($content, 0, $last_closing_bracket_pos);
-        $last_opening_bracket_pos = strrpos($content_before_last_closing, '<');
-
-        if ($last_opening_bracket_pos === false) {
-            return '';
-        }
-
-        // Extract the tag
-        $last_tag = substr($content, $last_opening_bracket_pos, $last_closing_bracket_pos - $last_opening_bracket_pos + 1);
-
-        // Check if this is a closing tag
-        if (strpos($last_tag, '</') !== 0) {
-            return '';
-        }
-
-        return $last_tag;
+        // Return an empty string if no valid closing tag is found
+        return '';
     }
 
     /**
@@ -226,7 +213,6 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        // Destructure the $cl array into variables using snake case
         @list(
             'cl-pagination-previous-text' => $cl_prev_text,
             'cl-pagination-next-text' => $cl_next_text,
@@ -238,6 +224,10 @@ class MaxiBlocks_DynamicContent
             'cl-id' => $cl_id,
             'cl-type' => $cl_type,
         ) = $cl;
+
+        if (!isset($cl_type) || !isset($cl_id) || !isset($cl_relation)) {
+            return '';
+        }
 
         $pagination_total = $cl_pagination_total;
 
@@ -312,13 +302,16 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
-        if(($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page + 1)) {
+        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
             $query_params['cl-page'] = $page;
-            $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . $anchor;
-            return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, esc_attr($link), esc_attr($text));
+            $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
+            $escaped_link = esc_url($link); // Escaping the URL for HTML output
+            $escaped_text = esc_html($text); // Escaping the text for HTML content
+            return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, $escaped_link, $escaped_text);
         }
         return sprintf('<div class="maxi-pagination__%s"></div>', $type);
     }
+
 
     /**
      * Builds the HTML content for the list of page numbers, including handling for
@@ -386,14 +379,18 @@ class MaxiBlocks_DynamicContent
     private function generate_page_link($page, $base_url, &$query_params, $anchor, $current_page = null)
     {
         $query_params['cl-page'] = $page;
-        $url = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . $anchor;
+        $url = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor);
+        $escaped_url = esc_url($url); // Escape the URL for HTML output
 
         if ($page === $current_page) {
-            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">$page</span>";
+            // Use esc_html() to escape the page number for safe HTML display
+            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">" . esc_html($page) . "</span>";
         } else {
-            return "<a href=\"$url\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">$page</span></a>";
+            // Use esc_url() for the href attribute and esc_html() for the page number
+            return "<a href=\"" . $escaped_url . "\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">" . esc_html($page) . "</span></a>";
         }
     }
+
 
     /**
      * Modifies the provided content by appending pagination controls.

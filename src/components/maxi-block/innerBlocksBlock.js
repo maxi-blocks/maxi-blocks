@@ -13,7 +13,6 @@ import BackgroundDisplayer from '../background-displayer';
 import BlockInserter from '../block-inserter';
 import DisabledMaxiBlock from './disabledMaxiBlock';
 import Pagination from './pagination';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies

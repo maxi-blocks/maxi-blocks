@@ -215,7 +215,7 @@ class MaxiBlocks_DynamicContent
      */
     public function get_pagination_content($cl, $pagination_anchor)
     {
-        if(empty($cl)) {
+        if(empty($cl) || !is_array($cl)) {
             return '';
         }
 
@@ -441,7 +441,7 @@ class MaxiBlocks_DynamicContent
                 return $modified_content;
             } catch (Exception $e) {
                 // Log any exceptions and return the unmodified content
-                error_log('Error in render_pagination: ' . $e->getMessage());
+                error_log('Error in render_pagination for uniqueID ' . $unique_id . ': ' . $e->getMessage());
                 return $content;
             }
         }

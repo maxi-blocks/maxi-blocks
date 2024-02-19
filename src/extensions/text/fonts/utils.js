@@ -201,6 +201,9 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/text-maxi',
 		'maxi-blocks/image-maxi',
 		'maxi-blocks/row-maxi', // Pagination
+		'maxi-blocks/column-maxi', // Pagination
+		'maxi-blocks/group-maxi', // Pagination
+		'maxi-blocks/container-maxi', // Pagination
 	];
 
 	const gutenbergBlocksStatus = select(
@@ -230,6 +233,36 @@ export const getPageFonts = (onlyBackend = false) => {
 					textLevel = 'button';
 					break;
 				case 'maxi-blocks/row-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'cl-pagination-'
+						),
+					};
+					break;
+				case 'maxi-blocks/column-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'cl-pagination-'
+						),
+					};
+					break;
+				case 'maxi-blocks/group-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'cl-pagination-'
+						),
+					};
+					break;
+				case 'maxi-blocks/container-maxi':
 					typography = {
 						...getGroupAttributes(
 							attributes,

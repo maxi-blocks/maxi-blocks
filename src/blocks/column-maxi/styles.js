@@ -14,6 +14,9 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getPaginationStyles,
+	getPaginationLinksStyles,
+	getPaginationColours,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -140,6 +143,18 @@ const getStyles = (props, rowGapProps, clientId) => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 					rowBorderRadius: props.rowBorderRadius,
+				}),
+				...(props['cl-pagination'] && {
+					' .maxi-pagination': getPaginationStyles(props),
+					' .maxi-pagination a': getPaginationLinksStyles(props),
+					' .maxi-pagination .maxi-pagination__pages > span':
+						getPaginationLinksStyles(props),
+					' .maxi-pagination a:hover': getPaginationColours(
+						props,
+						'hover'
+					),
+					' .maxi-pagination .maxi-pagination__pages > span.maxi-pagination__link--current':
+						getPaginationColours(props, 'current'),
 				}),
 			},
 			data,

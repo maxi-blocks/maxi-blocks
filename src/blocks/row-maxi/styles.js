@@ -1,12 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	getGroupAttributes,
-	styleProcessor,
-	getAttributeValue,
-	getColorRGBAString,
-} from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -19,7 +14,9 @@ import {
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
-	getTypographyStyles,
+	getPaginationStyles,
+	getPaginationLinksStyles,
+	getPaginationColours,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -109,88 +106,6 @@ const getHoverObject = props => {
 	};
 
 	return response;
-};
-
-const getPaginationStyles = props => {
-	const clPaginationPrefix = 'cl-pagination-';
-
-	const response = {
-		flex: getFlexStyles(
-			{
-				...getGroupAttributes(props, 'flex', false, clPaginationPrefix),
-			},
-			clPaginationPrefix
-		),
-	};
-
-	return response;
-};
-
-const getPaginationLinksStyles = props => {
-	const { blockStyle } = props;
-	const clPaginationPrefix = 'cl-pagination-';
-
-	const response = {
-		typography: getTypographyStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					'typography',
-					false,
-					clPaginationPrefix
-				),
-			},
-			isHover: false,
-			blockStyle,
-			prefix: clPaginationPrefix,
-		}),
-	};
-
-	return response;
-};
-
-const getPaginationColours = (props, type) => {
-	const { blockStyle } = props;
-
-	let response = {};
-
-	const prefix = `cl-pagination-link-${type}-`;
-
-	const paletteStatus = getAttributeValue({
-		target: `${prefix}palette-status`,
-		props,
-	});
-
-	const paletteColor = getAttributeValue({
-		target: `${prefix}palette-color`,
-		props,
-	});
-
-	const paletteOpacity = getAttributeValue({
-		target: `${prefix}palette-opacity`,
-		props,
-	});
-
-	const color = getAttributeValue({
-		target: `${prefix}placeholder-color`,
-		props,
-	});
-
-	if (paletteStatus) {
-		response = {
-			color: getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			}),
-		};
-	} else if (color) {
-		response = {
-			color,
-		};
-	}
-
-	return { [type]: { general: response } };
 };
 
 const getStyles = props => {

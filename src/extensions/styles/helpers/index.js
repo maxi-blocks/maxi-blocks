@@ -35,3 +35,4 @@ export { default as getImgWidthStyles } from './getImgWidthStyles';
 export * from './getBackgroundStyles';
 export * from './getShapeDividerStyles';
 export * from './getSVGStyles';
+export * from './getPaginationStyles';

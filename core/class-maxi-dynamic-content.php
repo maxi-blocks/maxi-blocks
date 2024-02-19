@@ -52,31 +52,37 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
-     * Extracts the last closing HTML tag from the given content.
-     *
-     * This function uses a regular expression to search for the last occurrence of a valid closing HTML tag
-     * within the provided HTML content string. It ensures that the tag is properly formatted as a closing tag.
-     * If no valid closing tag is found, an empty string is returned. This method enhances security and accuracy
-     * by strictly validating the HTML tag format, thus avoiding potential manipulation or malformed HTML content.
-     *
-     * @param string $content The HTML content to search within for the last closing tag.
-     * @return string The last valid closing HTML tag found in the content, or an empty string if none is found.
-     */
+    * Extracts the last closing HTML tag from the given content.
+    *
+    * This function searches for the last occurrence of a closing HTML tag
+    * within the provided string. If no valid closing tag is found, an empty
+    * string is returned.
+    *
+    * @param string $content The HTML content to search within.
+    * @return string The last closing HTML tag, or an empty string if none found.
+    */
     public function get_last_closing_tag($content)
     {
-        // Use a regex to find the last valid closing HTML tag
-        // This pattern matches valid closing tags, ensuring correct syntax
-        $pattern = '/<\/([a-zA-Z]+)[^>]*>$/';
+        // Reverse the content to find the last closing tag from the end more easily
+        $reversedContent = strrev($content);
 
-        // Perform the regex search from the end of the string to find the last closing tag
-        if (preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE)) {
-            // If a match is found, return the full tag
-            return $matches[0][0];
+        // Look for the first occurrence of a reversed closing tag
+        if (preg_match('/>([a-zA-Z]+)\/</', $reversedContent, $reversedMatches)) {
+            // Reverse the tag name back to normal
+            $tagName = strrev($reversedMatches[1]);
+            // Construct the closing tag correctly
+            $closingTag = '</' . $tagName . '>';
+
+            // Return the constructed closing tag
+            return $closingTag;
         }
 
         // Return an empty string if no valid closing tag is found
         return '';
     }
+
+
+
 
     /**
      * Extracts the value of the first 'id' attribute found in the given content.
@@ -225,7 +231,7 @@ class MaxiBlocks_DynamicContent
             'cl-type' => $cl_type,
         ) = $cl;
 
-        if (!isset($cl_type) || !isset($cl_id) || !isset($cl_relation)) {
+        if (!isset($cl_id) || !isset($cl_relation)) {
             return '';
         }
 
@@ -302,7 +308,7 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
-        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
+        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page + 1)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
             $escaped_link = esc_url($link); // Escaping the URL for HTML output
@@ -406,6 +412,7 @@ class MaxiBlocks_DynamicContent
      */
     public function render_pagination($attributes, $content)
     {
+
         // Check if pagination is enabled in the attributes
         if (!array_key_exists('cl-pagination', $attributes) || !$attributes['cl-pagination']) {
             return $content;
@@ -420,10 +427,12 @@ class MaxiBlocks_DynamicContent
 
                 // Extract the last closing tag and the first ID value for the pagination anchor
                 $last_tag = $this->get_last_closing_tag($content);
+
                 $pagination_anchor = $this->get_first_id_value($content);
 
                 // Generate pagination content based on the cl settings and the anchor
                 $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
+
 
                 // Insert the pagination content before the last closing tag of the original content
                 $content_before_last_tag = substr($content, 0, strrpos($content, '<'));

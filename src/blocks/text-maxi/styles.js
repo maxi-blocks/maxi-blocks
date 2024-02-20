@@ -38,9 +38,7 @@ import { getSVGListStyle } from './utils';
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
-import loadable from '@loadable/component';
-
-const parse = loadable(() => import('html-react-parser'));
+import parse from 'html-react-parser';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

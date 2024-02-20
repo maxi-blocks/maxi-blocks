@@ -6,13 +6,7 @@ import injectImgSVG from './injectImgSVG';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
-
-const DOMPurify = loadable(() =>
-	import('dompurify').then(DOMPurify => ({
-		default: DOMPurify.sanitize,
-	}))
-);
+import DOMPurify from 'dompurify';
 import { isEmpty, uniqueId } from 'lodash';
 
 /**

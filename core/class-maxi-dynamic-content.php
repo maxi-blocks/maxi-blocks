@@ -1067,34 +1067,37 @@ class MaxiBlocks_DynamicContent
      */
     public function get_media_content($attributes)
     {
-        // Extract 'dc-field' from attributes, if available
         @list(
             'dc-field' => $dc_field,
         ) = $attributes;
 
-        // Attempt to retrieve the post using the given attributes
         $post = $this->get_post($attributes);
 
-        // Check if the post was successfully retrieved
-        if ($post !== null) {
-            // If 'dc-field' is 'author', fetch and return the post author's display name
-            if ($dc_field === 'author') {
-                return get_the_author_meta('display_name', $post->post_author);
-            } else {
-                // For other 'dc-field' values, fetch and return the corresponding post property
-                return $post->{"post_$dc_field"};
-            }
-        } else {
-            // If the post could not be found
+        // Check if $post is false (boolean) before attempting to access its properties
+        if (!is_object($post)) {
             return 0;
         }
+
+        // For fields other than 'author', attempt to dynamically access the property
+        if ($dc_field !== 'author') {
+            $media_data = $post->{"post_$dc_field"};
+        } else {
+            // Specifically handle the 'author' case
+            $media_data = get_the_author_meta('display_name', $post->post_author);
+        }
+
+        return $media_data;
     }
+
 
     public function get_user_content($attributes)
     {
-        @list(
-            'dc-field' => $dc_field,
-        ) = $attributes;
+        // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
+        if (!array_key_exists('dc-field', $attributes)) {
+            return 0;
+        } else {
+            $dc_field = $attributes['dc-field'];
+        }
 
         $user = $this->get_post($attributes);
 
@@ -1105,10 +1108,28 @@ class MaxiBlocks_DynamicContent
             'description' => 'description',
         ];
 
-        $user_data = $user->data->{$user_dictionary[$dc_field]};
+        // Check if the $dc_field is defined in your dictionary
+        if (!array_key_exists($dc_field, $user_dictionary)) {
+            return 0;
+        }
+
+        // Ensure $user is an object and $user->data exists and is an object
+        if (!is_object($user) || !isset($user->data) || !is_object($user->data)) {
+            return 0;
+        }
+
+        // Check if the property exists in $user->data
+        $property = $user_dictionary[$dc_field];
+        if (!property_exists($user->data, $property)) {
+            return 0;
+        }
+
+        $user_data = $user->data->$property;
 
         return $user_data;
     }
+
+
 
     public function get_taxonomy_content($attributes)
     {
@@ -1334,20 +1355,19 @@ class MaxiBlocks_DynamicContent
             'year' => $dc_year === 'none' ? null : $dc_year,
         );
 
-        // Validate or transform the $date to ensure it's in a proper format
-        if (empty($date) || !strtotime($date)) {
-            // Assuming current date/time if $date is not valid
-            $date = 'now';
+        // Validate the $date variable
+        if (empty($date) || strtotime($date) === false) {
+            // Set to current date/time or another default value if invalid
+            $date = date('Y-m-d H:i:s');
         }
 
-        // Adjusting for timezone
         try {
             $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
         } catch (Exception $e) {
-            // Handle exception if DateTime construction fails
             error_log('Failed to create DateTime object: ' . $e->getMessage());
-            return ''; // Or handle the error as appropriate
+            return '';
         }
+
 
         $content = '';
         $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;

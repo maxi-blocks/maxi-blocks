@@ -7,6 +7,10 @@ import { toHTMLString } from '@wordpress/rich-text';
  * External dependencies
  */
 import { inRange } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import getFormatType from './getFormatType';
 
 const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {

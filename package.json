@@ -100,7 +100,8 @@
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"jest-canvas-mock": "^2.4.0",
 		"minify-css-string": "^1.0.0",
-		"prettier": "^2.7.1"
+		"prettier": "^2.7.1",
+		"webpack-bundle-analyzer": "^4.10.1"
 	},
 	"browserslist": {
 		"production": [

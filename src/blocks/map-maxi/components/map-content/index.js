@@ -17,8 +17,17 @@ import { getMaxiAdminSettingsUrl } from '../../utils';
 /**
  * External dependencies
  */
-import { MapContainer, TileLayer } from 'react-leaflet';
-import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
+import loadable from '@loadable/component';
+
+const MapContainer = loadable(() =>
+	import('react-leaflet').then(c => ({ default: c.MapContainer }))
+);
+const TileLayer = loadable(() =>
+	import('react-leaflet').then(c => ({ default: c.TileLayer }))
+);
+const ReactLeafletGoogleLayer = loadable(() =>
+	import('react-leaflet-google-layer')
+);
 
 const MapContent = props => {
 	const {

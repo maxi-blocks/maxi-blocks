@@ -666,9 +666,12 @@ class MaxiBlocks_DynamicContent
 
     public function get_user_content($attributes)
     {
-        @list(
-            'dc-field' => $dc_field,
-        ) = $attributes;
+        // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
+        if (!array_key_exists('dc-field', $attributes)) {
+            return 0;
+        } else {
+            $dc_field = $attributes['dc-field'];
+        }
 
         $user = $this->get_post($attributes);
 
@@ -684,8 +687,8 @@ class MaxiBlocks_DynamicContent
             return 0;
         }
 
-        // Ensure $user->data exists and is an object
-        if (!isset($user->data) || !is_object($user->data)) {
+        // Ensure $user is an object and $user->data exists and is an object
+        if (!is_object($user) || !isset($user->data) || !is_object($user->data)) {
             return 0;
         }
 
@@ -699,6 +702,7 @@ class MaxiBlocks_DynamicContent
 
         return $user_data;
     }
+
 
 
     public function get_taxonomy_content($attributes)

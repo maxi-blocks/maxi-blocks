@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.3
 Requires PHP: 8.0
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -416,6 +416,9 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates: 21 February 2024_
+MaxiBlocks v1.7.1
+
 _Updates: 6 February 2024_
 MaxiBlocks v1.7.0
 * Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
@@ -425,52 +428,6 @@ MaxiBlocks v1.7.0
  4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
 How to create a menu:
 Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
-
-_Updates: 1 February 2024_
-MaxiBlocks v1.6.1
-* Update: Upgrade the rendering of MaxiBlocks previews within the Site Editor Experience.
-* Update: Expand avatar functionality for Dynamic Content.
-* Fix: Correct link functionality issues within Text Maxi Block lists.
-* Fix: Prevent caption content from resetting after modifying settings.
-* Fix: Resolve issues with the scale scroll effect.
-* Fix: Optimize shape mask integration in Image Maxi for Dynamic Content.
-* Fix: Address PHP warning issues related to fonts and the Context Loop.
-
-_Updates: 11 January 2024_
-MaxiBlocks v1.6.0
-* Update: Remove image URLs within the Interaction Builder for a cleaner interface.
-* Update: Automate hiding of DC blocks on the frontend if content is absent.
-* Update: Enhancements in user interface (UI) elements.
-* Update: Upgrade dashboard styles for better responsive support.
-* Update: Enhance support for right-to-left (RTL) language rendering.
-* Update: Refine cursor visibility with border adjustment for Text editing.
-* Update: Improve language translations.
-* Update: Add compatibility with the Yoast Duplicate Post plugin.
-* Fix: Resolve issues with block tone styles to ensure consistency.
-* Fix: Correct malfunctioning tone settings in blocks when using Interaction Builder.
-* Fix: Improve Interaction Builder on repeater toggle.
-* Fix: Address crash in Text Block when rapidly accessing Typography settings.
-* Fix: Resolve uniqueID conflicts in migrators.
-* Fix: Enhance frontend display of parallax effects and shape dividers.
-* Fix: Improve responsiveness for typography.
-* Fix: Refined application of advanced CSS classes.
-
-_Updates: 22 December 2023_
-MaxiBlocks V1.5.8
-* Update: Speed improvements for all Maxi foundation blocks in the Editing Experience (EE). More coming.
-* Update: Hide occasional duplicated Gutenberg toolbar when MaxiBlocks toolbar is active.
-* Update: Better right-to-left (RTL) language support for MaxiBlocks Toolbar, Template Library, Style Card manager, block inserter, breadcrumbs, indicators, pop-overs.
-* Update: UI improvements for MaxiBlocks plugin dashboard.
-* Update: Remove live support chat from MaxiBlocks plugin. You can still chat with us on the helpdesk. https://maxiblocks.com/go/help-desk or https://maxiblocks.com/.
-* Update: Unify Context Loop settings placement in Block Sidebar for all blocks.
-* Update: Change deprecated 'position' prop to 'placement' (removes a WordPress warning in the console).
-* Update: Remove redundant 'Search' button for Link settings in Toolbar.
-* Fix: Woo relation by category/tag in Editing Experience (EE).
-* Fix: Dynamic Content link when changing Context Loop settings.
-* Fix: Dynamic Content link for Icon, Group, Columns.
-* Fix: Margin indicator overlapping.
-* Fix: Dynamic Content in the Editing Experience (EE) when the image is missing from the Media Library.
-* Fix: Hover effects for Image Block.
 
 == Upgrade Notice ==
 

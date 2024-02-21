@@ -24,10 +24,10 @@ Choose from **2000+ block patterns**, **150+ page templates**, and **13.5k SVG i
 
 **New**: Navigation menus! Enhance your site's navigation with MaxiBlocks in the Site Editor, now fully integrated with global style cards.
 
-* Customize menu items with advanced typography, color, and padding options.
+* Customize menu items with advanced typography, colour, and padding options.
 * Update navigation for mobile burger menu with extended breakpoints: 4K XXL, 1920 XL, 1366 L, 1024 M, 767 S, & 480 XS.
-* Revamp mobile menu aesthetics, including color and style changes, with future updates to include 20 "hamburger" icons.
-* Improved navigation experience with support for A-current, A-visited, and hover color schemes.
+* Revamp mobile menu aesthetics, including colour and style changes, with future updates to include 20 "hamburger" icons.
+* Improved navigation experience with support for A-current, A-visited, and hover colour schemes.
 
 == Top 12 Features of MaxiBlocks
 
@@ -123,7 +123,7 @@ https://youtu.be/p37ozp0Kyls
 
 **Dynamic interactions**: Access animation features like hover effects and scroll animations to enhance user engagement.
 
-**Design customization**: Choose from diverse color schemes and font pairings for a distinct look, and use SEO tools to enhance online visibility.
+**Design customization**: Choose from diverse colour schemes and font pairings for a distinct look, and use SEO tools to enhance online visibility.
 
 == Image tools 📸==
 
@@ -418,6 +418,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 _Updates: 21 February 2024_
 MaxiBlocks v1.7.1
+* Update: Implemented code optimizations to enhance the speed of the editor interface, resulting in a more efficient and responsive user experience. Additionally, these optimizations have reduced the overall size of the plugin, improving load times and resource usage.
+* Update: Enhanced scroll effects with the introduction of customizable zones and units, allowing for more precise and versatile animations as users navigate through content.
+* Fix: Adjusted colour opacity settings within Style Cards to ensure accurate and consistent visual representation across all use cases.
+* Fix: Updated the S breakpoint width to 767 pixels for Style Cards on the frontend, ensuring optimal layout and responsiveness across devices.
+* Fix: Resolved a compatibility issue between the Interaction Builder and responsive design features, ensuring seamless functionality and user experience across different screen sizes.
+* Fix: Addressed and corrected potential JavaScript warnings related to scroll effects, enhancing stability and performance of scroll-related animations and interactions.
 
 _Updates: 6 February 2024_
 MaxiBlocks v1.7.0

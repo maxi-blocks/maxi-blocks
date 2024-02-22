@@ -81,15 +81,10 @@ if (!class_exists('MaxiBlocks_Block')):
             'group-maxi',
             'column-maxi',
             'row-maxi',
+            'container-maxi',
             'slide-maxi',
             'pane-maxi',
             'svg-icon-maxi',
-        ];
-
-        protected $blocks_with_pagination = [
-            'row-maxi',
-            'group-maxi',
-            'container-maxi',
         ];
 
         private static $dynamic_content_attributes = [

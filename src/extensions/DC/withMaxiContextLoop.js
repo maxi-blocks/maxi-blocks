@@ -47,8 +47,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			}
 			const { attributes, clientId, name, setAttributes } = ownProps;
 
-			const { uniqueID } = attributes;
-
 			let prevContextLoopAttributes = null;
 
 			if (!attributes.isFirstOnHierarchy) {

@@ -30,6 +30,7 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getListTypographyAttributes } from '../../extensions/text/lists';
 import { getDefaultSCValue } from '../../extensions/style-cards';
 import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
 import onChangeFontWeight from '../font-weight-control/utils';
@@ -38,7 +39,7 @@ import onChangeFontWeight from '../font-weight-control/utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, omitBy } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -334,14 +335,7 @@ const TypographyControl = props => {
 		);
 
 	const typography = listContext
-		? {
-				...listContext,
-				...omitBy(rawTypography, (value, key) =>
-					key.includes('palette')
-						? value === getDefaultAttribute(key)
-						: value === undefined
-				),
-		  }
+		? getListTypographyAttributes(listContext, rawTypography)
 		: rawTypography;
 
 	const { styleCard, baseBreakpoint } = useSelect(select => {

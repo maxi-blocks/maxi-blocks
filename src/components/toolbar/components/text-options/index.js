@@ -25,6 +25,7 @@ import {
 	setFormat,
 	getTypographyValue,
 	TextContext,
+	ListContext,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -45,6 +46,9 @@ import {
 	toolbarTextLineHeight,
 	toolbarTextLetterSpacing,
 } from '../../../../icons';
+import { getListTypographyAttributes } from '../../../../extensions/text/lists';
+
+const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 /**
  * Component
@@ -174,11 +178,15 @@ const TextOptions = props => {
 		isCaptionToolbar = false,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
 	const { formatValue, onChangeTextFormat } = useContext(TextContext);
+	const listContext = useContext(ListContext);
 
-	const typography = { ...getGroupAttributes(props, 'typography') };
+	const rawTypography = getGroupAttributes(props, 'typography');
+	const typography = listContext
+		? getListTypographyAttributes(listContext, rawTypography)
+		: { ...rawTypography };
 
 	const { styleCard, tooltipsHide } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(

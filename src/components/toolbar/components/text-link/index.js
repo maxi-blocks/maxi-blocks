@@ -38,6 +38,7 @@ import { toolbarLink } from '../../../../icons';
 /**
  * TextLink
  */
+const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
@@ -283,7 +284,7 @@ const TextLink = props => {
 			});
 		});
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
 	if (!dcStatus)
 		return (

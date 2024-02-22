@@ -1,10 +1,9 @@
-_Updates: 21 February 2024_
+_Updates: 22 February 2024_
 MaxiBlocks v1.7.1
 * Update: Implemented code optimizations to enhance the speed of the editor interface, resulting in a more efficient and responsive user experience. Additionally, these optimizations have reduced the overall size of the plugin, improving load times and resource usage.
 * Update: Enhanced scroll effects with the introduction of customizable zones and units, allowing for more precise and versatile animations as users navigate through content.
 * Fix: Adjusted colour opacity settings within Style Cards to ensure accurate and consistent visual representation across all use cases.
 * Fix: Updated the S breakpoint width to 767 pixels for Style Cards on the frontend, ensuring optimal layout and responsiveness across devices.
-* Fix: Resolved a compatibility issue between the Interaction Builder and responsive design features, ensuring seamless functionality and user experience across different screen sizes.
 * Fix: Addressed and corrected potential JavaScript warnings related to scroll effects, enhancing stability and performance of scroll-related animations and interactions.
 * Fix: Resolved an issue where the Style Cards Editor save button failed to become active upon making modifications within the Light and Dark tabs, ensuring changes are now properly recognized and can be saved promptly.
 

@@ -10,6 +10,7 @@ body.maxi-blocks--active .maxi-container-block {
 		display: flex;
 		a {
 			text-decoration: none;
+			transition: all 0.5s;
 		}
 		.maxi-pagination__pages {
 			a:not(:last-child),

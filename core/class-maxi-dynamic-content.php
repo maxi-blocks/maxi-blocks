@@ -256,6 +256,12 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        // Adjust $pagination_total to remove remainder
+        $remainder = $pagination_total % $cl_pagination_per_page;
+        if ($remainder !== 0) {
+            $pagination_total -= $remainder;
+        }
+
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
         $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
 
@@ -308,7 +314,7 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
-        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page + 1)) {
+        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
             $escaped_link = esc_url($link); // Escaping the URL for HTML output

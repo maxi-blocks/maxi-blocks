@@ -5,18 +5,4 @@ body.maxi-blocks--active .maxi-container-block {
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 0;
-	.maxi-pagination {
-		width: 100%;
-		display: flex;
-		a {
-			text-decoration: none;
-			transition: all 0.5s;
-		}
-		.maxi-pagination__pages {
-			a:not(:last-child),
-			span:not(:last-child) {
-				margin-right: 7px;
-			}
-		}
-	}
 }

@@ -5,6 +5,7 @@
   "title": "List Item Maxi",
   "category": "maxi-blocks",
   "description": "Insert, modify or style text",
+  "parent": ["maxi-blocks/text-maxi"],
   "example": {
     "attributes": {
       "preview": true

@@ -48,9 +48,6 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-									...inspectorTabs.prompt({
-										props,
-									}),
 									...inspectorTabs.typography({
 										props,
 										styleCardPrefix: '',

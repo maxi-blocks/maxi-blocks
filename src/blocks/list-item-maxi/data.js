@@ -76,21 +76,21 @@ const customCss = {
 	selectors: {
 		...createSelectors(
 			{
-				'text wrapper': '',
+				'list item wrapper': '',
 				links: linkClass,
 			},
 			false
 		),
 		...createSelectors({
-			text: contentClass,
+			'list item': contentClass,
 		}),
 	},
 	categories: [
-		'text wrapper',
-		'text',
+		'list item wrapper',
+		'list item',
 		'links',
-		'before text',
-		'after text',
+		'before list item',
+		'after list item',
 		'background',
 		'background hover',
 	],

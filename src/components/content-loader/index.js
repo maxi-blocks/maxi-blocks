@@ -1,25 +1,12 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * External dependencies
  */
 import { BarLoader, PuffLoader } from 'react-spinners';
-import SVG from 'react-inlinesvg';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import Svg1 from './img/1.svg';
-import Svg2 from './img/2.svg';
-import Svg3 from './img/3.svg';
-import Svg4 from './img/4.svg';
-import Svg5 from './img/5.svg';
-
-const svgImages = [Svg1, Svg2, Svg3, Svg4, Svg5];
 
 const ContentLoader = props => {
 	const { cloud } = props;
@@ -33,18 +20,6 @@ const ContentLoader = props => {
 				height: '100%',
 			}}
 		>
-			{cloud && (
-				<SVG
-					src={
-						svgImages[Math.floor(Math.random() * svgImages.length)]
-					}
-					style={{
-						margin: '0 auto',
-						width: '250px',
-						height: '240px',
-					}}
-				/>
-			)}
 			{cloud && (
 				<>
 					<BarLoader

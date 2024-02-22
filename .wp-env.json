@@ -2,9 +2,6 @@
 	"core": "WordPress/WordPress#6.4.3",
 	"plugins": ["."],
 	"env": {
-		"development": {
-			"themes": ["../maxi-theme"]
-		},
 		"tests": {
 			"config": {
 				"ALLOW_UNFILTERED_UPLOADS": true

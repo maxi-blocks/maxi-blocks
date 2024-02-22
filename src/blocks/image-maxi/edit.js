@@ -13,7 +13,6 @@ import classnames from 'classnames';
 import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
 import loadable from '@loadable/component';
-
 /**
  * Internal dependencies
  */

@@ -8,13 +8,13 @@ import { removeFormat } from '@wordpress/rich-text';
  */
 import getFormatPosition from './getFormatPosition';
 import setFormat from './setFormat';
+import getCustomFormatValue from './getCustomFormatValue';
+import getFormattedString from './getFormattedString';
 
 /**
  * External dependencies
  */
 import { isEqual } from 'lodash';
-import getCustomFormatValue from './getCustomFormatValue';
-import getFormattedString from './getFormattedString';
 
 /**
  * Removes the link and custom formats

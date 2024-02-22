@@ -8,12 +8,12 @@ import { removeFormat, toHTMLString } from '@wordpress/rich-text';
  */
 import getMultiFormatObj from './getMultiFormatObj';
 import { styleObjectManipulator } from './updateCustomFormatStyle';
+import getIsFullFormat from './getIsFullFormat';
 
 /**
  * External dependencies
  */
 import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
-import getIsFullFormat from './getIsFullFormat';
 
 /**
  * Get the classes from custom formats that shares the same

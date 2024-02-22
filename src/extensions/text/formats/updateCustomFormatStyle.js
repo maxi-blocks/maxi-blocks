@@ -7,6 +7,10 @@ import { select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import getCustomFormat from './getCustomFormat';
 import { getBlockStyle } from '../../styles';
 import { getTypographyFromSC } from '../../style-cards';

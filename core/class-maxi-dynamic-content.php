@@ -119,7 +119,12 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === $attributes['dc-field']) {
+            $link = self::get_field_link(
+                self::get_post($attributes),
+                $attributes['dc-field']
+            );
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
             $link = get_term_link($attributes['dc-id']);
@@ -540,7 +545,8 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            'dc-link-target' => $dc_link_target,
+            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
@@ -551,7 +557,7 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content[] = $this->get_post_taxonomy_item_content(
                 $taxonomy_item,
                 $taxonomy_item->name,
-                $dc_post_taxonomy_links_status,
+                $dc_link_status && $dc_link_target === $dc_field,
                 $dc_field
             );
         }
@@ -565,7 +571,8 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            'dc-link-target' => $dc_link_target,
+            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
@@ -603,12 +610,7 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = $this->get_post_taxonomy_item_content(
-                $post->post_author,
-                get_the_author_meta('display_name', $post->post_author),
-                $dc_post_taxonomy_links_status,
-                $dc_field
-            );
+            $post_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {

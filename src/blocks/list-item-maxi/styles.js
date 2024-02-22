@@ -3,7 +3,6 @@
  */
 import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
-	getAlignmentTextStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -59,9 +58,6 @@ const getNormalObject = props => {
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
-		}),
-		textAlignment: getAlignmentTextStyles({
-			...getGroupAttributes(props, 'textAlignment'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -149,7 +145,9 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				' .maxi-list-item-block__content': getTypographyObject(props),
+				' .maxi-list-item-block__content': {
+					...getTypographyObject(props),
+				},
 				' .maxi-list-item-block__content:hover':
 					getTypographyHoverObject(props),
 				...getBlockBackgroundStyles({

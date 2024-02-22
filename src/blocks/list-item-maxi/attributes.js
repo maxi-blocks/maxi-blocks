@@ -24,7 +24,6 @@ const attributes = {
 		default: '',
 	},
 	...attributesData.link,
-	...attributesData.textAlignment,
 	...attributesData.typography,
 	...attributesData.typographyHover,
 	...attributesData.blockBackground,

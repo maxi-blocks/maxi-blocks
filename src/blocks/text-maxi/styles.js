@@ -81,8 +81,10 @@ const getNormalObject = props => {
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
-		textAlignment: getAlignmentTextStyles({
-			...getGroupAttributes(props, 'textAlignment'),
+		...(!props.isList && {
+			textAlignment: getAlignmentTextStyles({
+				...getGroupAttributes(props, 'textAlignment'),
+			}),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -297,6 +299,9 @@ const getListItemObject = props => {
 					'counter-increment': 'li -1',
 				},
 			},
+		}),
+		textAlignment: getAlignmentTextStyles({
+			...getGroupAttributes(props, 'textAlignment'),
 		}),
 		...(() => {
 			const response = {

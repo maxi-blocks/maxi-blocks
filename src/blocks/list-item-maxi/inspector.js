@@ -26,7 +26,7 @@ import { withMaxiInspector } from '../../extensions/inspector';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, context, disableCustomFormats } = props;
+	const { deviceType, context, disableCustomFormats } = props;
 	const { selectors, categories } = customCss;
 
 	return (
@@ -50,10 +50,6 @@ const Inspector = props => {
 								items={[
 									...inspectorTabs.prompt({
 										props,
-									}),
-									...inspectorTabs.alignment({
-										props,
-										isTextAlignment: true,
 									}),
 									...inspectorTabs.typography({
 										props,

@@ -428,6 +428,9 @@ export const mediaFieldOptions = Object.values(fieldOptions.image).map(
 	type => type.map(option => option.value)[0]
 );
 
+// Fields that contain HTML that needs to be rendered in their content
+export const htmlFields = ['tags', 'categories'];
+
 /**
  * Link constants
  */
@@ -441,6 +444,7 @@ export const linkTypesOptions = {
 
 // Fields that can have their own links
 export const linkFields = ['categories', 'tags', 'author'];
+export const inlineLinkFields = ['categories', 'tags'];
 
 export const linkFieldsOptions = {
 	categories: [

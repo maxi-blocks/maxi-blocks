@@ -594,7 +594,12 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === $attributes['dc-field']) {
+            $link = self::get_field_link(
+                self::get_post($attributes),
+                $attributes['dc-field']
+            );
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $link = get_term_link($attributes['dc-id']);

@@ -9,6 +9,7 @@ import { useEffect } from '@wordpress/element';
  * External dependencies
  */
 import loadable from '@loadable/component';
+import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Internal dependencies
@@ -28,11 +29,6 @@ import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-
-/**
- * External dependencies
- */
-import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Icons

@@ -8,13 +8,13 @@ import { RawHTML } from '@wordpress/element';
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { videoValidation } from '../../extensions/video';
+import { placeholderImage } from '../../icons';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
 import classNames from 'classnames';
-import { placeholderImage } from '../../icons';
 
 /**
  * Save

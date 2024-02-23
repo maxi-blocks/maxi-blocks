@@ -521,15 +521,17 @@ if (!class_exists('MaxiBlocks_API')):
                 new MaxiBlocks_Local_Fonts();
             }
 
+            $updated_meta = [];
 
-
-            $updated_meta = (array)$wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM $table WHERE $where_clause",
-                    $id
-                ),
-                OBJECT
-            )[0];
+            if($id) {
+                $updated_meta = (array)$wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM $table WHERE $where_clause",
+                        $id
+                    ),
+                    OBJECT
+                )[0];
+            }
 
             return $updated_meta;
         }

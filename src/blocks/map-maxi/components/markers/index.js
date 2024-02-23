@@ -12,8 +12,15 @@ import { Button } from '../../../../components';
 /**
  * External dependencies
  */
+import loadable from '@loadable/component';
 import { isEmpty } from 'lodash';
-import { Marker, Popup } from 'react-leaflet';
+
+const Marker = loadable(() =>
+	import('react-leaflet').then(c => ({ default: c.Marker }))
+);
+const Popup = loadable(() =>
+	import('react-leaflet').then(c => ({ default: c.Popup }))
+);
 import L from 'leaflet';
 
 const Markers = props => {

@@ -1200,10 +1200,10 @@ class MaxiBlocks_Styles
     private function enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta)
     {
         if ($script === 'number-counter') {
-            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)));
+            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)), [], MAXI_PLUGIN_VERSION);
         }
 
-        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)));
+        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION);
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
     }
 

@@ -9,17 +9,16 @@ import { getBlockAttributes } from '@wordpress/blocks';
  * Internal dependencies
  */
 import AccordionItem from './AccordionItem';
+import {
+	getIsActiveTab,
+	getMaxiAttrsFromChildren,
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
  */
 import { lowerCase, isEmpty } from 'lodash';
 import classnames from 'classnames';
-
-import {
-	getIsActiveTab,
-	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
 
 const Accordion = props => {
 	const {

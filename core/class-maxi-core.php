@@ -53,6 +53,7 @@ if (!class_exists('MaxiBlocks_Core')):
                             'media-editor',
                             'media-views'
                         ),
+                        MAXI_PLUGIN_VERSION,
                     );
                     wp_localize_script(
                         'maxi-media-images-filter',

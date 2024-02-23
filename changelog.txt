@@ -1,3 +1,8 @@
+_Updates: 23 February 2024_
+MaxiBlocks v1.7.2
+* Update: After updating the plugin, a notification will now appear, advising you to check and potentially clear other caches on your site. This step, while manual, is crucial for maintaining optimal site performance and ensuring that all updates are fully applied across your website.
+* Update: Implemented a more sophisticated versioning mechanism to automatically clear scripts and styles cache following each plugin update.
+
 _Updates: 22 February 2024_
 MaxiBlocks v1.7.1
 * Update: Implemented code optimizations to enhance the speed of the editor interface, resulting in a more efficient and responsive user experience. Additionally, these optimizations have reduced the overall size of the plugin, improving load times and resource usage.

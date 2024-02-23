@@ -41,7 +41,6 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
-	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -208,7 +207,6 @@ class MaxiBlockComponent extends Component {
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.originalBlockStyle = attributes?.blockStyle;
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -753,12 +751,6 @@ class MaxiBlockComponent extends Component {
 		if (isSiteEditor) {
 			const siteEditorIframe = getSiteEditorIframe();
 
-			if (this.isPatternsPreview) {
-				if (!iframe) return;
-				const iframeHead = iframe.contentDocument?.head;
-				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
-			}
-
 			if (this.isTemplatePartPreview) {
 				const templateViewIframe = getTemplateViewIframe(uniqueID);
 				if (templateViewIframe) {
@@ -1038,30 +1030,15 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
 
-		if (siteEditorPreviewIframes.length > 0) {
-			siteEditorPreviewIframes.forEach(iframe => {
-				const target = iframe?.contentDocument;
-				if (!target) return;
+		if (!target) return;
 
-				const response = getAllFonts(this.typography, 'custom-formats');
-				if (isEmpty(response)) return;
+		const response = getAllFonts(this.typography, 'custom-formats');
+		if (isEmpty(response)) return;
 
-				loadFonts(response, true, target);
-			});
-			this.areFontsLoaded.current = true;
-		} else {
-			const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-
-			if (!target) return;
-
-			const response = getAllFonts(this.typography, 'custom-formats');
-			if (isEmpty(response)) return;
-
-			loadFonts(response, true, target);
-			this.areFontsLoaded.current = true;
-		}
+		loadFonts(response, true, target);
+		this.areFontsLoaded.current = true;
 	}
 
 	/**
@@ -1082,29 +1059,17 @@ class MaxiBlockComponent extends Component {
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
-				this.rootSlot = this.getRootEl(iframe);
-				if (
-					this.originalBlockStyle &&
-					this.props.attributes.blockStyle !== this.originalBlockStyle
-				) {
-					this.props.attributes.blockStyle = this.originalBlockStyle;
-				}
-				if (this.rootSlot) {
-					const styleComponent = (
-						<StyleComponent
-							uniqueID={uniqueID}
-							blockStyle={this.props.attributes.blockStyle}
-							stylesObj={this.getStylesObject}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={this.getBreakpoints}
-							isSiteEditor
-							isIframe
-						/>
-					);
-					this.rootSlot.render(styleComponent);
-					this.rootSlot = null;
-				}
+				if (!iframe || !iframe.parentNode) return;
+				iframe.parentNode.classList.add('maxi-blocks-pattern-preview');
+				const img = document.createElement('img');
+				img.src =
+					'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
+				img.alt = 'Descriptive text for the image';
+				img.style.width = '100%';
+				img.style.height = 'auto';
+				iframe.parentNode.replaceChild(img, iframe);
 			});
+			return;
 		}
 
 		let obj;

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.4.3
 Requires PHP: 8.0
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -415,6 +415,11 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates: 23 February 2024_
+MaxiBlocks v1.7.2
+* Update: After updating the plugin, a notification will now appear, advising you to check and potentially clear other caches on your site. This step, while manual, is crucial for maintaining optimal site performance and ensuring that all updates are fully applied across your website.
+* Update: Implemented a more sophisticated versioning mechanism to automatically clear scripts and styles cache following each plugin update.
 
 _Updates: 22 February 2024_
 MaxiBlocks v1.7.1

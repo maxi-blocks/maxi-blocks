@@ -45,7 +45,13 @@ import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 const ContextLoop = props => {
-	const { clientId, className, onChange, contentType = 'group' } = props;
+	const {
+		clientId,
+		className,
+		onChange,
+		contentType = 'group',
+		'dc-link-target': linkTarget,
+	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
 
@@ -200,6 +206,7 @@ const ContextLoop = props => {
 								relation,
 								contentType,
 								'wp',
+								linkTarget,
 								true
 							);
 

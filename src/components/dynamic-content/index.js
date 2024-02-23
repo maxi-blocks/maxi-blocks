@@ -119,6 +119,7 @@ const DynamicContent = props => {
 		accumulator,
 		imageAccumulator,
 		acfFieldType,
+		linkTarget,
 		customDate,
 		day,
 		era,
@@ -251,7 +252,9 @@ const DynamicContent = props => {
 				type,
 				field,
 				relation,
-				contentType
+				contentType,
+				undefined,
+				linkTarget
 			);
 
 			changeProps({
@@ -311,7 +314,8 @@ const DynamicContent = props => {
 									field,
 									relation,
 									contentType,
-									value
+									value,
+									linkTarget
 								);
 
 								changeProps({
@@ -342,7 +346,8 @@ const DynamicContent = props => {
 								field,
 								relation,
 								contentType,
-								source
+								source,
+								linkTarget
 							);
 
 							changeProps({

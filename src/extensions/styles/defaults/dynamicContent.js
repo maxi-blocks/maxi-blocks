@@ -1,3 +1,16 @@
+const dynamicContentLink = {
+	'dc-status': {
+		type: 'boolean',
+	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
+	'dc-link-target': {
+		type: 'string',
+		default: 'none',
+	},
+};
+
 const dynamicContent = {
 	'dc-error': {
 		type: 'string',
@@ -143,19 +156,7 @@ const dynamicContent = {
 		type: 'number',
 		default: 0,
 	},
-};
-
-const dynamicContentLink = {
-	'dc-status': {
-		type: 'boolean',
-	},
-	'dc-link-status': {
-		type: 'boolean',
-	},
-	'dc-link-target': {
-		type: 'string',
-		default: 'none',
-	},
+	...dynamicContentLink,
 };
 
 export { dynamicContent, dynamicContentLink };

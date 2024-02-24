@@ -519,6 +519,31 @@ class MaxiBlocks_DynamicContent
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
 
+    public function get_link_attributes_from_link_settings($linkSettings)
+    {
+        $rel = '';
+        $isNoFollow = $linkSettings['noFollow'];
+        $isSponsored = $linkSettings['sponsored'];
+        $isUGC = $linkSettings['ugc'];
+        if ($isNoFollow) {
+            $rel .= ' nofollow';
+        }
+        if ($isSponsored) {
+            $rel .= ' sponsored';
+        }
+        if ($isUGC) {
+            $rel .= ' ugc';
+        }
+        if (!$isNoFollow && !$isSponsored && !$isUGC) {
+            $rel = null;
+        } else {
+            $rel = trim($rel);
+        }
+
+        $target = $linkSettings['opensInNewTab'] ? '_blank' : '_self';
+
+        return array('rel' => $rel, 'target' => $target);
+    }
 
     public function get_field_link($item, $field)
     {
@@ -533,11 +558,23 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field, $linkSettings = null)
     {
-        return ($link_status)
-            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
-            : $content;
+        if ($link_status) {
+            $href = 'href="' . $this->get_field_link($item, $field) . '"';
+            $rel = '';
+            $target = ' target="_self"';
+
+            if ($linkSettings) {
+                $link_attributes = $this->get_link_attributes_from_link_settings($linkSettings);
+                $rel = $link_attributes['rel'] ? ' rel="' . $link_attributes['rel'] . '"' : '';
+                $target = ' target="' . $link_attributes['target'] . '"';
+            }
+
+            return '<a ' . $href . $rel . $target . ' class="maxi-text-block--link"><span>' . $content . '</span></a>';
+        }
+
+        return $content;
     }
 
     public function get_post_taxonomy_content($attributes, $post_id, $taxonomy)
@@ -547,6 +584,7 @@ class MaxiBlocks_DynamicContent
             'dc-delimiter-content' => $dc_delimiter,
             'dc-link-target' => $dc_link_target,
             'dc-link-status' => $dc_link_status,
+            'linkSettings' => $linkSettings,
         ) = $attributes;
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
@@ -558,7 +596,8 @@ class MaxiBlocks_DynamicContent
                 $taxonomy_item,
                 $taxonomy_item->name,
                 $dc_link_status && $dc_link_target === $dc_field,
-                $dc_field
+                $dc_field,
+                $linkSettings
             );
         }
 

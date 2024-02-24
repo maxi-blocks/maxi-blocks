@@ -119,9 +119,9 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === $attributes['dc-field']) {
+        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
             $link = self::get_field_link(
-                self::get_post($attributes),
+                self::get_post($attributes)->post_author,
                 $attributes['dc-field']
             );
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {

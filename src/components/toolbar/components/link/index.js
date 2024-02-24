@@ -170,6 +170,7 @@ const Link = props => {
 											)}
 											value={dcLinkTarget}
 											options={linkTargetOptions}
+											newStyle
 											onChange={async value => {
 												const url =
 													value &&

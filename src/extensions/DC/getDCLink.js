@@ -33,6 +33,10 @@ const getDCContent = async (dataRequest, clientId) => {
 
 	const data = await getDCEntity(dataRequest, clientId);
 
+	if (inlineLinkFields.includes(dataRequest?.linkTarget)) {
+		return 'Multiple Links';
+	}
+
 	if (dataRequest?.type === 'products') {
 		return getProductsLink(dataRequest, data);
 	}
@@ -43,10 +47,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		const user = await getUsers({ include: dataRequest?.author });
 
 		return user?.[0]?.link;
-	}
-
-	if (inlineLinkFields.includes(dataRequest?.linkTarget)) {
-		return 'Multiple Links';
 	}
 
 	const contentValue = data?.link;

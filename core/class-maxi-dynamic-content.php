@@ -1061,6 +1061,31 @@ class MaxiBlocks_DynamicContent
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
 
+    public function get_link_attributes_from_link_settings($linkSettings)
+    {
+        $rel = '';
+        $isNoFollow = $linkSettings['noFollow'];
+        $isSponsored = $linkSettings['sponsored'];
+        $isUGC = $linkSettings['ugc'];
+        if ($isNoFollow) {
+            $rel .= ' nofollow';
+        }
+        if ($isSponsored) {
+            $rel .= ' sponsored';
+        }
+        if ($isUGC) {
+            $rel .= ' ugc';
+        }
+        if (!$isNoFollow && !$isSponsored && !$isUGC) {
+            $rel = null;
+        } else {
+            $rel = trim($rel);
+        }
+
+        $target = $linkSettings['opensInNewTab'] ? '_blank' : '_self';
+
+        return array('rel' => $rel, 'target' => $target);
+    }
 
     public function get_field_link($item, $field)
     {

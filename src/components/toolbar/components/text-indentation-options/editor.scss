@@ -1,0 +1,13 @@
+.toolbar-item.toolbar-item__list-indentation-option {
+	& svg.toolbar-item__icon path {
+		fill: transparent !important;
+		stroke: #000 !important;
+		stroke-width: 1;
+	}
+
+	&:hover {
+		& svg.toolbar-item__icon path {
+			stroke: var(--maxi-secondary-color) !important;
+		}
+	}
+}

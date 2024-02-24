@@ -168,6 +168,11 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					tagName='li'
+					useInnerBlocks
+					innerBlocksSettings={{
+						allowedBlocks: ['maxi-blocks/text-maxi'],
+						renderAppender: false,
+					}}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<RichText

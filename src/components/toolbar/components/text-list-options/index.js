@@ -19,29 +19,12 @@ import {
 	getFormattedString,
 	TextContext,
 } from '../../../../extensions/text/formats';
-import {
-	canIndentListItems,
-	canOutdentListItems,
-	indentListItems,
-	outdentListItems,
-	toHTMLString,
-} from '../../../../extensions/text/lists';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import {
-	toolbarIndentList,
-	toolbarOutdentList,
-	toolbarOrderedList,
-	toolbarUnorderedList,
-} from '../../../../icons';
+import { toolbarOrderedList, toolbarUnorderedList } from '../../../../icons';
 
 /**
  * TextListOptions
@@ -64,24 +47,6 @@ const TextListOptions = props => {
 	const getContent = (content, wpVersion) => {
 		if (!isList) return fromTextToList(content, wpVersion);
 		return fromListToText(content);
-	};
-
-	const onChangeIndent = type => {
-		let newFormat = '';
-
-		if (type === 'indent')
-			newFormat = indentListItems(formatValue, {
-				type: typeOfList,
-			});
-
-		if (type === 'outdent') newFormat = outdentListItems(formatValue);
-
-		const newContent = toHTMLString({
-			value: newFormat,
-			multilineTag: 'li',
-		});
-
-		onChange({ isList: true, typeOfList, content: newContent });
 	};
 
 	const onChangeList = type => {
@@ -176,24 +141,6 @@ const TextListOptions = props => {
 					onClick={() => onChangeList('ul')}
 					aria-pressed={isList && typeOfList === 'ul'}
 				/>
-				{isList && !isEmpty(formatValue) && formatValue.formats && (
-					<>
-						{canOutdentListItems(formatValue) && (
-							<Button
-								className='toolbar-item__popover__list-options__button'
-								icon={toolbarOutdentList}
-								onClick={() => onChangeIndent('outdent')}
-							/>
-						)}
-						{canIndentListItems(formatValue) && (
-							<Button
-								className='toolbar-item__popover__list-options__button'
-								icon={toolbarIndentList}
-								onClick={() => onChangeIndent('indent')}
-							/>
-						)}
-					</>
-				)}
 			</div>
 		</ToolbarPopover>
 	);

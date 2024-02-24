@@ -23,7 +23,10 @@ const save = props => {
 	const className = 'maxi-list-item-block__content';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({ ...props, name })}
+			useInnerBlocks
+		>
 			<RichText.Content
 				className={className}
 				value={content}

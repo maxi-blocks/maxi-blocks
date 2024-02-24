@@ -63,6 +63,9 @@ const TextLink = loadable(() => import('./components/text-link'));
 const TextListOptions = loadable(() =>
 	import('./components/text-list-options')
 );
+const TextIndentationOptions = loadable(() =>
+	import('./components/text-indentation-options')
+);
 const ToolbarColumnPattern = loadable(() =>
 	import('./components/column-pattern')
 );
@@ -370,6 +373,11 @@ const MaxiToolbar = memo(
 								}}
 							/>
 						)}
+						<TextIndentationOptions
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<>
 								{svgType !== 'Line' && (

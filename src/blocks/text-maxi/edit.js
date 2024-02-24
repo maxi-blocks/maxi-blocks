@@ -3,11 +3,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	RichText,
-	RichTextShortcut,
-	useInnerBlocksProps,
-} from '@wordpress/block-editor';
+import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import { resolveSelect } from '@wordpress/data';
 
@@ -41,7 +37,6 @@ import {
 } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping, scProps } from './data';
-import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
@@ -138,7 +133,6 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			clientId,
-			isSelected,
 			onReplace,
 			maxiSetAttributes,
 			hasInnerBlocks,

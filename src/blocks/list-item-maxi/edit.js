@@ -3,6 +3,7 @@
 /**
  * WordPress dependencies
  */
+import { dispatch, select } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
@@ -125,6 +126,59 @@ class edit extends MaxiBlockComponent {
 			},
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
+			onPaste: event => {
+				const htmlData = event.clipboardData.getData('text/html');
+
+				const listRegex = /<ol\s*(.*?)>|<ul\s*(.*?)>/i;
+				const isList = listRegex.test(htmlData);
+
+				if (isList) {
+					event.preventDefault();
+
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(htmlData, 'text/html');
+
+					const liElements = doc.querySelectorAll('li');
+					const listItemBlocks = Array.from(liElements).map(li =>
+						createBlock('maxi-blocks/list-item-maxi', {
+							content: li.textContent,
+						})
+					);
+
+					const { getBlockParentsByBlockName, getBlockIndex } =
+						select('core/block-editor');
+
+					const listParentClientId = getBlockParentsByBlockName(
+						clientId,
+						'maxi-blocks/text-maxi'
+					).at(-1);
+					const listItemIndex = getBlockIndex(clientId);
+
+					const shouldPasteContentIntoCurrentBlock =
+						this.props.attributes.content.length === 0;
+
+					const {
+						insertBlocks,
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
+
+					if (shouldPasteContentIntoCurrentBlock) {
+						maxiSetAttributes({
+							content: listItemBlocks[0].attributes.content,
+						});
+						markNextChangeAsNotPersistent();
+					}
+
+					insertBlocks(
+						shouldPasteContentIntoCurrentBlock
+							? listItemBlocks.slice(1)
+							: listItemBlocks,
+						listItemIndex + 1,
+						listParentClientId
+					);
+				}
+			},
 			// onRemove needs to be commented to avoid removing the block
 			// on pressing backspace with the content empty 👍
 			// onRemove={onRemove}

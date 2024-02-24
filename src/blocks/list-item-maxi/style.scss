@@ -2,75 +2,6 @@ body.maxi-blocks--active .maxi-list-item-block {
 	& * {
 		border-color: inherit;
 	}
-	&.maxi-list-block {
-		overflow: visible;
-
-		ol,
-		ul {
-			list-style-position: inside;
-			list-style-type: none;
-			counter-reset: li;
-			margin: 0;
-			padding: revert;
-
-			> br {
-				display: none;
-			}
-
-			li {
-				counter-increment: li;
-				margin: revert;
-
-				&::before {
-					content: '';
-					position: relative;
-					display: inline-block;
-					line-height: 0.5;
-					vertical-align: middle;
-					word-wrap: normal;
-					text-indent: 0 !important;
-				}
-
-				&::marker {
-					content: '';
-				}
-
-				// Ensures indented numbers are not negative
-				ol,
-				ul {
-					li {
-						counter-increment: li !important;
-					}
-				}
-
-				ul li {
-					min-width: 1em !important;
-				}
-			}
-		}
-
-		> ol li {
-			@mixin listSelectors($times) {
-				$ulChain: '';
-				$olChain: '';
-				@for $i from 1 through $times {
-					$olChain: $olChain + ' > ol > li';
-				}
-
-				#{$ulChain}::before,
-				#{$olChain}::before {
-					@content;
-				}
-			}
-
-			@for $i from 1 through 20 {
-				@include listSelectors($i) {
-					min-width: 1 + ($i * 0.75) + em;
-					margin-left: 0 !important;
-				}
-			}
-		}
-	}
 	&__content {
 		position: relative;
 		display: inline-block;
@@ -85,19 +16,5 @@ body.maxi-blocks--active .maxi-list-item-block {
 		text-decoration: unset;
 		text-underline-offset: inherit !important;
 		text-decoration-skip-ink: auto;
-	}
-}
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-list-item-block {
-		ol,
-		ul {
-			padding-left: 0 !important;
-			li {
-				direction: rtl;
-			}
-		}
 	}
 }

@@ -12,7 +12,7 @@ import { create } from '@wordpress/rich-text';
  * @returns {Object} RichText format value
  */
 const generateFormatValue = node => {
-	const selection = window.getSelection();
+	const selection = node.ownerDocument.defaultView.getSelection();
 	const formatElement = {};
 
 	if (node) {

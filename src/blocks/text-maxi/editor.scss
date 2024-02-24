@@ -8,7 +8,7 @@
 			display: none;
 		}
 	}
-	&__content:not(li),
+	&__content,
 	> ol,
 	> ul {
 		outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
@@ -24,20 +24,20 @@
 	}
 	&__has-text {
 		&:hover {
-			.maxi-text-block__content:not(li),
+			.maxi-text-block__content,
 			> ol,
 			> ul {
 				outline: 1.5px dashed var(--maxi-grey-7-color) !important;
 			}
 		}
 		&.is-selected {
-			.maxi-text-block__content:not(li),
+			.maxi-text-block__content,
 			> ol,
 			> ul {
 				outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
 			}
 		}
-		.maxi-text-block__content:not(li),
+		.maxi-text-block__content,
 		> ol,
 		> ul {
 			outline: 1.5px dashed transparent !important;

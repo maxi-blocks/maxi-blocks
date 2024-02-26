@@ -241,7 +241,6 @@ class edit extends MaxiBlockComponent {
 			},
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
-			onPaste: event => {},
 			// onRemove needs to be commented to avoid removing the block
 			// on pressing backspace with the content empty 👍
 			// onRemove={onRemove}

@@ -627,10 +627,11 @@ const getStyles = props => {
 						...getListParagraphObject(props),
 					},
 					[` ${element} li:hover`]: getTypographyHoverObject(props),
-					[` ${element} li::before`]: getMarkerObject({
-						...props,
-						isRTL,
-					}),
+					[` ${element} li .maxi-list-item-block__content::before`]:
+						getMarkerObject({
+							...props,
+							isRTL,
+						}),
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [

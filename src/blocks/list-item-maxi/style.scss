@@ -4,8 +4,6 @@ body.maxi-blocks--active .maxi-list-item-block {
 	}
 	&__content {
 		position: relative;
-		display: inline-block;
-		width: 100%;
 		margin: 0;
 	}
 	p:not(&__content):not(.maxi-pane-block__title):not(.wp-block):not(.maxi-block--use-sc) {

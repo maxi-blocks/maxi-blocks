@@ -5,7 +5,9 @@
   "title": "List Item Maxi",
   "category": "maxi-blocks",
   "description": "Insert, modify or style text",
-  "parent": ["maxi-blocks/text-maxi"],
+  "parent": [
+    "maxi-blocks/text-maxi"
+  ],
   "example": {
     "attributes": {
       "preview": true
@@ -653,27 +655,6 @@
       "type": "string"
     },
     "link-visited-color-xs": {
-      "type": "string"
-    },
-    "text-alignment-general": {
-      "type": "string"
-    },
-    "text-alignment-xxl": {
-      "type": "string"
-    },
-    "text-alignment-xl": {
-      "type": "string"
-    },
-    "text-alignment-l": {
-      "type": "string"
-    },
-    "text-alignment-m": {
-      "type": "string"
-    },
-    "text-alignment-s": {
-      "type": "string"
-    },
-    "text-alignment-xs": {
       "type": "string"
     },
     "font-family-general": {
@@ -5601,7 +5582,7 @@
           }
         },
         "transform": {
-          "text wrapper": {
+          "list item wrapper": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -5613,19 +5594,19 @@
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "text": {
+          "list item": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "before text": {
+          "before list item": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
             "transition-status-general": true
           },
-          "after text": {
+          "after list item": {
             "transition-duration-general": 0.3,
             "transition-delay-general": 0,
             "easing-general": "ease",
@@ -6347,13 +6328,13 @@
   },
   "customCss": {
     "selectors": {
-      "text wrapper": {
+      "list item wrapper": {
         "normal": {
-          "label": "text wrapper",
+          "label": "list item wrapper",
           "target": ""
         },
         "hover": {
-          "label": "text wrapper on hover",
+          "label": "list item wrapper on hover",
           "target": ":hover"
         }
       },
@@ -6371,55 +6352,55 @@
           "target": ":hover .maxi-list-item-block--link"
         }
       },
-      "text": {
+      "list item": {
         "normal": {
-          "label": "text",
+          "label": "list item",
           "target": " .maxi-list-item-block__content"
         },
         "hover": {
-          "label": "text on hover",
+          "label": "list item on hover",
           "target": " .maxi-list-item-block__content:hover"
         },
         "canvas hover": {
-          "label": "text on canvas hover",
+          "label": "list item on canvas hover",
           "target": ":hover .maxi-list-item-block__content"
         }
       },
-      "before text": {
+      "before list item": {
         "normal": {
-          "label": "text ::before",
+          "label": "list item ::before",
           "target": " .maxi-list-item-block__content::before"
         },
         "hover": {
-          "label": "text ::before on hover",
+          "label": "list item ::before on hover",
           "target": " .maxi-list-item-block__content:hover::before"
         },
         "canvas hover": {
-          "label": "text ::before on canvas hover",
+          "label": "list item ::before on canvas hover",
           "target": ":hover .maxi-list-item-block__content::before"
         }
       },
-      "after text": {
+      "after list item": {
         "normal": {
-          "label": "text ::after",
+          "label": "list item ::after",
           "target": " .maxi-list-item-block__content::after"
         },
         "hover": {
-          "label": "text ::after on hover",
+          "label": "list item ::after on hover",
           "target": " .maxi-list-item-block__content:hover::after"
         },
         "canvas hover": {
-          "label": "text ::after on canvas hover",
+          "label": "list item ::after on canvas hover",
           "target": ":hover .maxi-list-item-block__content::after"
         }
       }
     },
     "categories": [
-      "text wrapper",
-      "text",
+      "list item wrapper",
+      "list item",
       "links",
-      "before text",
-      "after text",
+      "before list item",
+      "after list item",
       "background",
       "background hover"
     ]

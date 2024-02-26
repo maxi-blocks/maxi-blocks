@@ -97,10 +97,10 @@ const getTypographyStyles = ({
 		);
 	};
 
-	const isDefaultOpacity = (opacity, defaultOpacity) =>
+	const isDefaultOpacity = (opacity, defaultOpacity, breakpoint) =>
 		opacity === defaultOpacity ||
 		(isNil(opacity) && isNil(defaultOpacity)) ||
-		opacity === 1;
+		(breakpoint === 'general' && opacity === 1); // supports reset on general
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
@@ -134,7 +134,11 @@ const getTypographyStyles = ({
 
 				if (
 					paletteColor === defaultPaletteColor &&
-					isDefaultOpacity(paletteOpacity, defaultPaletteOpacity)
+					isDefaultOpacity(
+						paletteOpacity,
+						defaultPaletteOpacity,
+						breakpoint
+					)
 				) {
 					return {};
 				}
@@ -167,7 +171,11 @@ const getTypographyStyles = ({
 
 				if (
 					paletteColor === defaultPaletteColor &&
-					isDefaultOpacity(paletteOpacity, defaultPaletteOpacity)
+					isDefaultOpacity(
+						paletteOpacity,
+						defaultPaletteOpacity,
+						breakpoint
+					)
 				) {
 					return {};
 				}

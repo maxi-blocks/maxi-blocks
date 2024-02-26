@@ -33,6 +33,10 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 0)
+);
+
 describe('getTypographyStyles', () => {
 	it('Get a correct typography styles', () => {
 		const obj = {

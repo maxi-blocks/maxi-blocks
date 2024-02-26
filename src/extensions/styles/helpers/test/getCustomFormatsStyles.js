@@ -1,5 +1,9 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 0)
+);
+
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {
 		const object = {

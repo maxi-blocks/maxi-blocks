@@ -27,8 +27,10 @@ import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import { withMaxiContextLoop } from '../../extensions/DC';
-import getActiveStyleCard from '../../extensions/style-cards/getActiveStyleCard';
+import {
+	withMaxiContextLoop,
+	withMaxiContextLoopContext,
+} from '../../extensions/DC';
 
 /**
  * General
@@ -193,4 +195,6 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(withMaxiProps(edit));
+export default withMaxiContextLoop(
+	withMaxiContextLoopContext(withMaxiProps(edit))
+);

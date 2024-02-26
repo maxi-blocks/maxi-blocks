@@ -81,7 +81,13 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.contextLoop,
+	...{
+		...attributesData.contextLoop,
+		'cl-pagination-justify-content-general': {
+			type: 'string',
+			default: 'space-around',
+		},
+	},
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

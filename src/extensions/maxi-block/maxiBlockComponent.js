@@ -42,6 +42,7 @@ import {
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
+	getSiteEditorPreviewIframes,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
@@ -1071,9 +1072,7 @@ class MaxiBlockComponent extends Component {
 
 		this.rootSlot = this.getRootEl(iframe);
 
-		const previewIframes = document.querySelectorAll(
-			'.edit-site-page-content .block-editor-block-preview__container iframe'
-		);
+		const previewIframes = getSiteEditorPreviewIframes();
 
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;

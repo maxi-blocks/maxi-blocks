@@ -1072,12 +1072,23 @@ class MaxiBlockComponent extends Component {
 
 		this.rootSlot = this.getRootEl(iframe);
 
+		// If the block is a pattern preview, we need to replace the iframe with an image
 		const previewIframes = getSiteEditorPreviewIframes();
 
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
 			const disconnectTimeout = 10000; // 10 seconds
 			const timeouts = {};
+			let imgPath =
+				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
+
+			const linkElement = document.querySelector(
+				'#maxi-blocks-block-css'
+			);
+			const href = linkElement?.getAttribute('href');
+			const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
+
+			if (pluginsPath) imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 
@@ -1105,21 +1116,6 @@ class MaxiBlockComponent extends Component {
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
-
-					let imgPath =
-						'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
-
-					const linkElement = document.querySelector(
-						'#maxi-blocks-block-css'
-					);
-					const href = linkElement?.getAttribute('href');
-					const pluginsPath = href?.substring(
-						0,
-						href?.lastIndexOf('/build')
-					);
-
-					if (pluginsPath)
-						imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
 
 					const img = document.createElement('img');
 					img.src = imgPath;

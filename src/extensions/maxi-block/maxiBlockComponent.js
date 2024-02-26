@@ -1060,14 +1060,28 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
-				iframe.parentNode.classList.add('maxi-blocks-pattern-preview');
-				const img = document.createElement('img');
-				img.src =
-					'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
-				img.alt = 'Descriptive text for the image';
-				img.style.width = '100%';
-				img.style.height = 'auto';
-				iframe.parentNode.replaceChild(img, iframe);
+
+				// Add load event listener to the iframe
+				iframe.addEventListener('load', () => {
+					// Now the iframe content is fully loaded, we can access its document
+					if (!iframe.contentDocument) return;
+
+					// Check if the iframe contains an element with the class 'maxi-blocks'
+					const containsMaxiBlocks =
+						iframe.contentDocument.querySelector('.maxi-blocks');
+					if (!containsMaxiBlocks) return; // If not found, skip this iframe
+
+					iframe.parentNode.classList.add(
+						'maxi-blocks-pattern-preview'
+					);
+					const img = document.createElement('img');
+					img.src =
+						'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
+					img.alt = 'Descriptive text for the image';
+					img.style.width = '100%';
+					img.style.height = 'auto';
+					iframe.parentNode.replaceChild(img, iframe);
+				});
 			});
 			return;
 		}

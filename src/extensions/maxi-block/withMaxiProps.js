@@ -22,7 +22,6 @@ import {
 import { excludeAttributes } from '../copy-paste';
 import { getBlockData } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
-import { fromListToText, fromTextToList } from '../text/formats';
 import {
 	handleBlockMove,
 	updateNCLimits,
@@ -180,26 +179,6 @@ const withMaxiProps = createHigherOrderComponent(
 									nonExcludedAttributes,
 									currentAttributes
 								);
-
-								if ('isList' in obj) {
-									if (
-										obj.isList &&
-										!currentAttributes.isList
-									) {
-										nonExcludedAttributes.content =
-											fromTextToList(
-												currentAttributes.content
-											);
-									} else if (
-										!obj.isList &&
-										currentAttributes.isList
-									) {
-										nonExcludedAttributes.content =
-											fromListToText(
-												currentAttributes.content
-											);
-									}
-								}
 
 								const columnClientId =
 									innerBlocksPositions?.[[-1]]?.[

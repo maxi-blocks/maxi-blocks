@@ -73,7 +73,6 @@ class edit extends MaxiBlockComponent {
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
-		wpVersion: 6.4,
 	};
 
 	scProps = scProps;
@@ -158,20 +157,6 @@ class edit extends MaxiBlockComponent {
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
-
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-		receiveMaxiSettings().then(maxiSettings => {
-			const version = maxiSettings?.core?.version;
-			if (version) {
-				const convertVersionStringToNumber = versionString => {
-					// This regex matches the first two groups of digits separated by a dot
-					const matches = versionString.match(/^(\d+\.\d+)/);
-					return matches ? parseFloat(matches[1]) : null;
-				};
-				const wpVersion = convertVersionStringToNumber(version);
-				this.setState({ wpVersion });
-			}
-		});
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -279,7 +264,6 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					disableCustomFormats={dcStatus}
-					wpVersion={this.state.wpVersion}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}

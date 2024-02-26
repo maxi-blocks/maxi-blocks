@@ -9,6 +9,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { Component, createRoot, createRef } from '@wordpress/element';
 import {
 	dispatch,
@@ -1076,6 +1077,8 @@ class MaxiBlockComponent extends Component {
 
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
+			const disconnectTimeout = 10000; // 10 seconds
+			const timeouts = {};
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 
@@ -1084,9 +1087,18 @@ class MaxiBlockComponent extends Component {
 					if (!iframeDocument) return;
 					const iframeBody = iframeDocument.body;
 					if (!iframeBody) return;
+
+					// Clear the timeout when the iframe mutates
+					clearTimeout(timeouts[iframe]);
+					timeouts[iframe] = setTimeout(() => {
+						observer.disconnect();
+						delete timeouts[iframe];
+					}, disconnectTimeout);
 					// Check if the iframe content is fully loaded
 					const containsMaxiBlocksContainer =
-						iframeBody.querySelector('.maxi-block');
+						iframeBody.querySelector(
+							'.is-root-container .maxi-block'
+						);
 
 					if (!containsMaxiBlocksContainer) return; // If not found, skip this iframe
 
@@ -1094,10 +1106,28 @@ class MaxiBlockComponent extends Component {
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
-					const img = document.createElement('img');
-					img.src =
+
+					let imgPath =
 						'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
-					img.alt = 'Descriptive text for the image';
+
+					const linkElement = document.querySelector(
+						'#maxi-blocks-block-css'
+					);
+					const href = linkElement?.getAttribute('href');
+					const pluginsPath = href?.substring(
+						0,
+						href?.lastIndexOf('/build')
+					);
+
+					if (pluginsPath)
+						imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
+
+					const img = document.createElement('img');
+					img.src = imgPath;
+					img.alt = __(
+						'Preview for pattern with MaxiBlocks',
+						'maxi-blocks'
+					);
 					img.style.width = '100%';
 					img.style.height = 'auto';
 

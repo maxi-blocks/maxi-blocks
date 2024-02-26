@@ -63,6 +63,7 @@ const Content = forwardRef((props, ref) => {
 					'maxi-blocks/pane-maxi',
 					'maxi-blocks/maxi-cloud',
 					'maxi-blocks/slide-maxi',
+					'maxi-blocks/list-item-maxi',
 					'core/list-item',
 				].indexOf(blockName) === -1
 		);

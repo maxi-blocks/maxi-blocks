@@ -637,6 +637,9 @@ const MaxiToolbar = memo(
 								attributes,
 								'dynamicContent'
 							)}
+							blockStyle={attributes?.blockStyle}
+							breakpoint={breakpoint}
+							name={name}
 						/>
 						{name === 'maxi-blocks/slider-maxi' && (
 							<>

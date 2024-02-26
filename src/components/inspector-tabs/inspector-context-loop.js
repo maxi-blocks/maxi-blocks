@@ -13,7 +13,7 @@ import { ContextLoop } from '..';
  * Component
  */
 const contextLoop = ({
-	props: { clientId, attributes, maxiSetAttributes },
+	props: { clientId, attributes, maxiSetAttributes, deviceType, name },
 	contentType,
 }) => ({
 	label: __('Context loop', 'maxi-blocks'),
@@ -23,6 +23,9 @@ const contextLoop = ({
 			clientId={clientId}
 			contentType={contentType}
 			onChange={obj => maxiSetAttributes(obj)}
+			blockStyle={attributes?.blockStyle}
+			breakpoint={deviceType}
+			name={name}
 		/>
 	),
 });

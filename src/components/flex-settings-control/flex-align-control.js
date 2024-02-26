@@ -32,7 +32,7 @@ import {
 } from '../../icons';
 
 const FlexAlignControl = props => {
-	const { breakpoint, onChange } = props;
+	const { breakpoint, onChange, prefix = '' } = props;
 
 	const getOptions = () => {
 		const options = [];
@@ -118,29 +118,30 @@ const FlexAlignControl = props => {
 				items={getOptions()}
 				value={
 					getLastBreakpointAttribute({
-						target: 'justify-content',
+						target: `${prefix}justify-content`,
 						breakpoint,
 						attributes: props,
 					}) ?? ''
 				}
 				selected={
 					getLastBreakpointAttribute({
-						target: 'justify-content',
+						target: `${prefix}justify-content`,
 						breakpoint,
 						attributes: props,
 					}) || getOptions()[0].value
 				}
 				onReset={() =>
 					onChange({
-						[`justify-content-${breakpoint}`]: getDefaultAttribute(
-							`justify-content-${breakpoint}`
-						),
+						[`${prefix}justify-content-${breakpoint}`]:
+							getDefaultAttribute(
+								`${prefix}justify-content-${breakpoint}`
+							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[`justify-content-${breakpoint}`]: val,
+						[`${prefix}justify-content-${breakpoint}`]: val,
 					})
 				}
 			/>
@@ -154,29 +155,30 @@ const FlexAlignControl = props => {
 				items={getOptionsVertical()}
 				value={
 					getLastBreakpointAttribute({
-						target: 'align-items',
+						target: `${prefix}align-items`,
 						breakpoint,
 						attributes: props,
 					}) ?? ''
 				}
 				selected={
 					getLastBreakpointAttribute({
-						target: 'align-items',
+						target: `${prefix}align-items`,
 						breakpoint,
 						attributes: props,
 					}) || getOptions()[0].value
 				}
 				onReset={() =>
 					onChange({
-						[`align-items-${breakpoint}`]: getDefaultAttribute(
-							`align-items-${breakpoint}`
-						),
+						[`${prefix}align-items-${breakpoint}`]:
+							getDefaultAttribute(
+								`${prefix}align-items-${breakpoint}`
+							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[`align-items-${breakpoint}`]: val,
+						[`${prefix}align-items-${breakpoint}`]: val,
 					})
 				}
 			/>

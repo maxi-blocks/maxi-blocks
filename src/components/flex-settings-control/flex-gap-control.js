@@ -22,14 +22,22 @@ import classNames from 'classnames';
  */
 
 const FlexGapControl = props => {
-	const { className } = props;
+	const { className, prefix = '' } = props;
 
 	const classes = classNames('maxi-gap-control', className);
 
 	return (
 		<div className={classes}>
-			<GapAxisControl label='Row gap' target='row-gap' {...props} />
-			<GapAxisControl label='Column gap' target='column-gap' {...props} />
+			<GapAxisControl
+				label='Row gap'
+				target={`${prefix}row-gap`}
+				{...props}
+			/>
+			<GapAxisControl
+				label='Column gap'
+				target={`${prefix}column-gap`}
+				{...props}
+			/>
 		</div>
 	);
 };

@@ -197,6 +197,12 @@ class MaxiBlockComponent extends Component {
 		this.isReusable = false;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		this.paginationTypography = getGroupAttributes(
+			attributes,
+			'typography',
+			false,
+			'cl-pagination-'
+		);
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
@@ -924,6 +930,12 @@ class MaxiBlockComponent extends Component {
 						},
 					}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+				...(!dcStatus &&
+					contextLoop?.['cl-status'] && {
+						context_loop: {
+							[uniqueID]: contextLoop,
+						},
+					}),
 			},
 		};
 	}
@@ -1036,7 +1048,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
+		if (
+			this.areFontsLoaded.current ||
+			(isEmpty(this.typography) && isEmpty(this.paginationTypography))
+		)
+			return;
 
 		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 
@@ -1045,7 +1061,9 @@ class MaxiBlockComponent extends Component {
 				const target = iframe?.contentDocument;
 				if (!target) return;
 
-				const response = getAllFonts(this.typography, 'custom-formats');
+				const response = isEmpty(this.paginationTypography)
+					? getAllFonts(this.typography, 'custom-formats')
+					: getAllFonts(this.paginationTypography, 'custom-formats');
 				if (isEmpty(response)) return;
 
 				loadFonts(response, true, target);
@@ -1056,7 +1074,9 @@ class MaxiBlockComponent extends Component {
 
 			if (!target) return;
 
-			const response = getAllFonts(this.typography, 'custom-formats');
+			const response = isEmpty(this.paginationTypography)
+				? getAllFonts(this.typography, 'custom-formats')
+				: getAllFonts(this.paginationTypography, 'custom-formats');
 			if (isEmpty(response)) return;
 
 			loadFonts(response, true, target);

@@ -11,12 +11,13 @@ import { forwardRef, cloneElement, memo } from '@wordpress/element';
  */
 import BackgroundDisplayer from '../background-displayer';
 import BlockInserter from '../block-inserter';
+import DisabledMaxiBlock from './disabledMaxiBlock';
+import Pagination from './pagination';
 
 /**
  * External dependencies
  */
 import { isEmpty, isArray, compact, isEqual } from 'lodash';
-import DisabledMaxiBlock from './disabledMaxiBlock';
 
 const getInnerBlocksChild = ({
 	children,
@@ -139,6 +140,8 @@ const MainInnerBlocksBlock = forwardRef(
 			renderWrapperInserter,
 			isChild,
 			isDisabled,
+			pagination,
+			paginationProps,
 			...props
 		},
 		ref
@@ -185,7 +188,12 @@ const MainInnerBlocksBlock = forwardRef(
 				</TagName>
 			);
 
-		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
+		return (
+			<TagName {...restInnerBlocksProps}>
+				{blockChildren}
+				{pagination && <Pagination {...paginationProps} />}
+			</TagName>
+		);
 	}
 );
 

@@ -12,11 +12,11 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Generates flex styles object
  */
-const getFlexStyles = obj => {
+const getFlexStyles = (obj, prefix = '') => {
 	const response = {};
 	breakpoints.forEach(breakpoint => {
 		let flexBasis = getLastBreakpointAttribute({
-			target: 'flex-basis',
+			target: `${prefix}flex-basis`,
 			breakpoint,
 			attributes: obj,
 		});
@@ -27,61 +27,61 @@ const getFlexStyles = obj => {
 			)
 		) {
 			flexBasis = `${flexBasis}${getLastBreakpointAttribute({
-				target: 'flex-basis-unit',
+				target: `${prefix}flex-basis-unit`,
 				breakpoint,
 				attributes: obj,
 			})}`;
 		}
 
 		const flexGrow = getLastBreakpointAttribute({
-			target: 'flex-grow',
+			target: `${prefix}flex-grow`,
 			breakpoint,
 			attributes: obj,
 		});
 
 		const flexShrink = getLastBreakpointAttribute({
-			target: 'flex-shrink',
+			target: `${prefix}flex-shrink`,
 			breakpoint,
 			attributes: obj,
 		});
 		const flexWrap = getLastBreakpointAttribute({
-			target: 'flex-wrap',
+			target: `${prefix}flex-wrap`,
 			breakpoint,
 			attributes: obj,
 		});
 		const flexOrder = getLastBreakpointAttribute({
-			target: 'order',
+			target: `${prefix}order`,
 			breakpoint,
 			attributes: obj,
 		});
 		const justifyContent = getLastBreakpointAttribute({
-			target: 'justify-content',
+			target: `${prefix}justify-content`,
 			breakpoint,
 			attributes: obj,
 		});
 		const flexDirection = getLastBreakpointAttribute({
-			target: 'flex-direction',
+			target: `${prefix}flex-direction`,
 			breakpoint,
 			attributes: obj,
 		});
 		const alignItems = getLastBreakpointAttribute({
-			target: 'align-items',
+			target: `${prefix}align-items`,
 			breakpoint,
 			attributes: obj,
 		});
 		const alignContent = getLastBreakpointAttribute({
-			target: 'align-content',
+			target: `${prefix}align-content`,
 			breakpoint,
 			attributes: obj,
 		});
 		const rowGapProps = getLastBreakpointAttribute({
-			target: 'row-gap',
+			target: `${prefix}row-gap`,
 			breakpoint,
 			attributes: obj,
 		});
 
 		const columnGap = getLastBreakpointAttribute({
-			target: 'column-gap',
+			target: `${prefix}column-gap`,
 			breakpoint,
 			attributes: obj,
 		});
@@ -112,14 +112,14 @@ const getFlexStyles = obj => {
 			}),
 			...(!isNil(rowGapProps) && {
 				'row-gap': `${rowGapProps}${getLastBreakpointAttribute({
-					target: 'row-gap-unit',
+					target: `${prefix}row-gap-unit`,
 					breakpoint,
 					attributes: obj,
 				})}`,
 			}),
 			...(!isNil(columnGap) && {
 				'column-gap': `${columnGap}${getLastBreakpointAttribute({
-					target: 'column-gap-unit',
+					target: `${prefix}column-gap-unit`,
 					breakpoint,
 					attributes: obj,
 				})}`,

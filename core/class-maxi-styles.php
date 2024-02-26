@@ -1062,7 +1062,6 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks_frontend($id);
 
-
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);

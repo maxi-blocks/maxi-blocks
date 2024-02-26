@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */

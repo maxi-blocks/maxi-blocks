@@ -34,7 +34,15 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 });
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
-	jest.fn(() => 0)
+	jest.fn(prop => {
+		switch (prop) {
+			case 'palette-color-general':
+				return 3;
+			default:
+				// eslint-disable-next-line consistent-return
+				return undefined;
+		}
+	})
 );
 
 describe('getTypographyStyles', () => {
@@ -369,6 +377,154 @@ describe('getTypographyStyles', () => {
 			obj,
 			blockStyle: 'light',
 		});
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct default typography styles with `disablePaletteDefaults`', () => {
+		const obj = {
+			'palette-status-general': true,
+			'palette-sc-status-general': false,
+			'palette-color-general': 3,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles with `disablePaletteDefaults` and changed color', () => {
+		const obj = {
+			'palette-status-general': true,
+			'palette-sc-status-general': false,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+
+			'palette-color-general': 4,
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles with `disablePaletteDefaults` and changed opacity', () => {
+		const obj = {
+			'palette-status-general': true,
+			'palette-sc-status-general': false,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+
+			'palette-color-general': 3,
+			'palette-opacity-general': 0.5,
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles with `disablePaletteDefaults` and reset on general/changed on other bp opacity', () => {
+		const obj = {
+			'palette-status-general': true,
+			'palette-sc-status-general': false,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+
+			'palette-color-general': 3,
+			'palette-opacity-general': 1,
+			'palette-opacity-l': 1,
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles with `disablePaletteDefaults` and disabled palette', () => {
+		const obj = {
+			'palette-status-general': false,
+			'palette-sc-status-general': false,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+
+			'palette-color-general': 3,
+			'palette-opacity-general': 1,
+			'color-general': 'rgb(255, 99, 71)',
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles with `disablePaletteDefaults` and changed color and opacity', () => {
+		const obj = {
+			'palette-status-general': true,
+			'palette-sc-status-general': false,
+			'font-size-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'text-indent-unit-general': 'px',
+			'word-spacing-unit-general': 'px',
+			'bottom-gap-unit-general': 'px',
+
+			'palette-color-general': 4,
+			'palette-opacity-general': 0.5,
+
+			'palette-color-l': 3,
+
+			'palette-status-xs': false,
+			'color-xs': 'rgb(255, 99, 71)',
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
+			disablePaletteDefaults: true,
+		});
+
 		expect(result).toMatchSnapshot();
 	});
 });

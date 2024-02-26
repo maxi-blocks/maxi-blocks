@@ -1068,26 +1068,29 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
+		this.rootSlot = this.getRootEl(iframe);
+
 		const previewIframes = document.querySelectorAll(
 			'.edit-site-page-content .block-editor-block-preview__container iframe'
 		);
 
-		this.rootSlot = this.getRootEl(iframe);
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 
-				// Add load event listener to the iframe
-				iframe.addEventListener('load', () => {
-					// Now the iframe content is fully loaded, we can access its document
-					if (!iframe.contentDocument) return;
+				const replaceIframeWithImage = (iframe, observer) => {
+					const iframeDocument = iframe.contentDocument;
+					if (!iframeDocument) return;
+					const iframeBody = iframeDocument.body;
+					if (!iframeBody) return;
+					// Check if the iframe content is fully loaded
+					const containsMaxiBlocksContainer =
+						iframeBody.querySelector('.maxi-block');
 
-					// Check if the iframe contains an element with the class 'maxi-blocks'
-					const containsMaxiBlocks =
-						iframe.contentDocument.querySelector('.maxi-blocks');
-					if (!containsMaxiBlocks) return; // If not found, skip this iframe
+					if (!containsMaxiBlocksContainer) return; // If not found, skip this iframe
 
+					// Add the pattern preview class to the iframe's parent element
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
@@ -1097,7 +1100,26 @@ class MaxiBlockComponent extends Component {
 					img.alt = 'Descriptive text for the image';
 					img.style.width = '100%';
 					img.style.height = 'auto';
+
 					iframe.parentNode.replaceChild(img, iframe);
+					// Disconnect the observer
+					observer.disconnect();
+				};
+
+				// Create a new MutationObserver
+				const observer = new MutationObserver(
+					(mutationsList, observer) => {
+						for (const mutation of mutationsList) {
+							replaceIframeWithImage(mutation.target, observer);
+						}
+					}
+				);
+
+				// Configure the observer with the iframe and desired attributes
+				observer.observe(iframe, {
+					attributes: true,
+					childList: true,
+					subtree: true,
 				});
 			});
 			return;

@@ -608,18 +608,6 @@ const DynamicContent = props => {
 									{...dcValuesForDate}
 								/>
 							)}
-							{/* {linkFields.includes(field) && (
-								<ToggleSwitch
-									label={linkFieldsLabels[field]}
-									selected={postTaxonomyLinksStatus}
-									onChange={value =>
-										changeProps({
-											'dc-post-taxonomy-links-status':
-												value,
-										})
-									}
-								/>
-							)} */}
 							{(['tags', 'categories'].includes(field) ||
 								(source === 'acf' &&
 									acfFieldType === 'checkbox')) &&

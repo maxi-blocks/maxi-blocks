@@ -103,7 +103,6 @@ const withMaxiDC = createHigherOrderComponent(
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
-							['posts', 'products'].includes(type) &&
 							linkFields.includes(field) &&
 							!isNil(newContent);
 

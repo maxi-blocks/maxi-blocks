@@ -71,6 +71,20 @@
 		padding-inline-start: 0;
 		padding-inline-end: 0;
 	}
+	.maxi-pagination {
+		width: 100%;
+		display: flex;
+		a {
+			text-decoration: none;
+			transition: all 0.5s;
+		}
+		.maxi-pagination__pages {
+			a:not(:last-child),
+			span:not(:last-child) {
+				margin-right: 7px;
+			}
+		}
+	}
 }
 
 .maxi-link-wrapper {

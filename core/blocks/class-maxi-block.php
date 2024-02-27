@@ -81,6 +81,7 @@ if (!class_exists('MaxiBlocks_Block')):
             'group-maxi',
             'column-maxi',
             'row-maxi',
+            'container-maxi',
             'slide-maxi',
             'pane-maxi',
             'svg-icon-maxi',
@@ -263,6 +264,7 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function render_block($attributes, $content)
         {
+
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);

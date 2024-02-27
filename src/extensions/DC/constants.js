@@ -110,7 +110,7 @@ const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
 	pages: generalRelationOptionsPages,
 	settings: generalRelationOptionsPosts,
-	media: generalRelationOptionsPosts,
+	media: generalRelationOptionsPages,
 	users: generalRelationOptionsUsers,
 	categories: generalRelationOptionsCategories,
 	tags: generalRelationOptionsTags,

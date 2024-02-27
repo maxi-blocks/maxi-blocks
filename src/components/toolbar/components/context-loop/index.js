@@ -51,10 +51,12 @@ const ContextLoopToolbar = props => {
 			className='toolbar-item__context-loop'
 			tooltip={__('Context loop', 'maxi-blocks')}
 			icon={toolbarContextLoop}
+			advancedOptions='context loop'
 		>
 			<ContextLoop
 				className='toolbar-item__context-loop__popover'
 				contentType={contentTypes[blockName]}
+				isToolbar
 				{...restProps}
 			/>
 		</ToolbarPopover>

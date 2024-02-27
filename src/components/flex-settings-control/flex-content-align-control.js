@@ -25,7 +25,7 @@ import {
 } from '../../icons';
 
 const FlexContentAlignControl = props => {
-	const { breakpoint, onChange } = props;
+	const { breakpoint, onChange, prefix = '' } = props;
 
 	const getOptions = () => {
 		const options = [];
@@ -84,21 +84,21 @@ const FlexContentAlignControl = props => {
 			showTooltip
 			value={
 				getLastBreakpointAttribute({
-					target: 'align-content',
+					target: `${prefix}align-content`,
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'align-content',
+					target: `${prefix}align-content`,
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[6].value
 			}
 			onChange={val =>
 				onChange({
-					[`align-content-${breakpoint}`]: val,
+					[`${prefix}align-content-${breakpoint}`]: val,
 				})
 			}
 		/>

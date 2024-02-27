@@ -148,7 +148,7 @@ class MaxiBlocks_Styles
     {
         switch ($js_var) {
             case 'search':
-                return [$meta, get_search_link()];
+                return [$meta, home_url('/') . '?s='];
                 break;
             case 'map':
                 return [$meta, get_option('google_api_key_option')];
@@ -1061,7 +1061,6 @@ class MaxiBlocks_Styles
     {
 
         $data = $this->get_content_for_blocks_frontend($id);
-
 
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);

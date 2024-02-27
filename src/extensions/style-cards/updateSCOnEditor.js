@@ -112,26 +112,6 @@ const updateSCOnEditor = (
 					overlayHead.appendChild(overlayEl);
 				}
 			}
-
-			// add SC variables for FSE editor patterns previews
-			let SCVarEl = iframeDocument.getElementById(
-				'maxi-blocks-sc-vars-inline-css'
-			);
-
-			if (!SCVarEl) {
-				SCVarEl = iframeDocument.createElement('style');
-				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
-				SCVarEl.innerHTML = SCVariableString;
-				const previewIframeHead = iframeDocument.head;
-				if (previewIframeHead) {
-					previewIframeHead.appendChild(SCVarEl);
-				}
-			}
-
-			// load SC fonts for FSE editor patterns previews
-			if (!isEmpty(allSCFonts)) {
-				loadFonts(allSCFonts, true, iframe.contentDocument);
-			}
 		});
 	} else {
 		const elements = isArray(rawElements) ? rawElements : [rawElements];

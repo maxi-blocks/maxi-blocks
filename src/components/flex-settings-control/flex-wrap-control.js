@@ -23,7 +23,7 @@ import { flexWrapNowrap, flexWrap, flexWrapReverse } from '../../icons';
  */
 
 const FlexWrapControl = props => {
-	const { breakpoint, onChange } = props;
+	const { breakpoint, onChange, prefix = '' } = props;
 
 	const getOptions = () => {
 		const options = [];
@@ -57,29 +57,29 @@ const FlexWrapControl = props => {
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: `${prefix}flex-wrap`,
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: `${prefix}flex-wrap`,
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onReset={() =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
-						`flex-wrap-${breakpoint}`
+					[`${prefix}flex-wrap-${breakpoint}`]: getDefaultAttribute(
+						`${prefix}flex-wrap-${breakpoint}`
 					),
 					isReset: true,
 				})
 			}
 			onChange={val =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: val,
+					[`${prefix}flex-wrap-${breakpoint}`]: val,
 				})
 			}
 		/>

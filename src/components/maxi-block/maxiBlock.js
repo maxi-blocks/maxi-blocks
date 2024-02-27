@@ -18,6 +18,7 @@ import { dispatch, select } from '@wordpress/data';
 import {
 	getHasParallax,
 	getLastBreakpointAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
@@ -122,6 +123,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcHide,
 		dcLinkStatus,
 		dcLinkTarget,
+		pagination = false,
 		...extraProps
 	} = props;
 
@@ -309,6 +311,12 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 				onDragOver,
 			}),
 		...extraProps,
+		...(pagination && {
+			paginationProps: getGroupAttributes(
+				props?.attributes,
+				'contextLoop'
+			),
+		}),
 	};
 
 	if (!useInnerBlocks)
@@ -322,6 +330,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			hasInnerBlocks={hasInnerBlocks}
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
+			pagination={pagination}
 		>
 			{children}
 		</InnerBlocksBlock>
@@ -331,6 +340,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
 		const { clientId, attributes, deviceType } = props;
+		const pagination = attributes?.['cl-pagination'];
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
 
@@ -366,6 +376,7 @@ const MaxiBlock = memo(
 				onMouseEnter={setHovered}
 				onMouseLeave={setHovered}
 				isHovered={isHovered}
+				pagination={pagination}
 				{...props}
 			/>
 		);

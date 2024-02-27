@@ -10,11 +10,7 @@ import { useCallback, useContext, useEffect } from '@wordpress/element';
  */
 import { getGroupAttributes } from '../styles';
 import getDCContent from './getDCContent';
-import {
-	getDCDateCustomFormat,
-	getSimpleText,
-	sanitizeDCContent,
-} from './utils';
+import { getSimpleText, sanitizeDCContent } from './utils';
 import getDCMedia from './getDCMedia';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
@@ -117,10 +113,6 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent();
 							setAttributes({
 								'dc-content': newContent,
-								...(customDate && {
-									'dc-custom-format':
-										getDCDateCustomFormat(newContent),
-								}),
 								...(newLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -13,10 +12,8 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const SelectControl = loadable(() => import('../../select-control'));
-const SettingTabsControl = loadable(() => import('../../setting-tabs-control'));
+
 const TextControl = loadable(() => import('../../text-control'));
-const DateOptions = loadable(() => import('./constants'));
 
 /**
  * Styles & Icons
@@ -71,24 +68,7 @@ const DateHelperPopover = () => (
 const DateFormatting = props => {
 	const { onChange } = props;
 
-	const [linkStatus, setLinkStatus] = useState('year');
-
-	const {
-		'dc-custom-date': customDate,
-		'dc-day': day,
-		'dc-era': era,
-		'dc-format': format,
-		'dc-hour': hour,
-		'dc-hour12': hour12,
-		'dc-minute': minute,
-		'dc-month': month,
-		'dc-second': second,
-		'dc-locale': locale,
-		'dc-timezone': timeZone,
-		'dc-timezone-name': timeZoneName,
-		'dc-weekday': weekday,
-		'dc-year': year,
-	} = props;
+	const { 'dc-format': format } = props;
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(props).some(([key, val]) => {
@@ -157,156 +137,17 @@ const DateFormatting = props => {
 
 	return (
 		<div className='maxi-info'>
-			{!customDate && (
-				<div className='maxi-info__help-trigger'>
-					<TextControl
-						label={__('Date format', 'maxi-blocks')}
-						help={false}
-						placeholder={__('d.m.Y t', 'maxi-blocks')}
-						value={format}
-						onChange={val => validateAnchor(val)}
-						showHelp
-						helpContent={<DateHelperPopover />}
-					/>
-				</div>
-			)}
-			{customDate && (
-				<>
-					<SettingTabsControl
-						type='buttons'
-						fullWidthMode
-						selected={linkStatus}
-						hasBorder
-						items={[
-							{
-								label: __('Date', 'maxi-blocks'),
-								value: 'year',
-							},
-							{
-								label: __('Time', 'maxi-blocks'),
-								value: 'time',
-							},
-							{
-								label: __('Zone', 'maxi-blocks'),
-								value: 'zone',
-							},
-						]}
-						onChange={value => setLinkStatus(value)}
-					/>
-					{linkStatus === 'year' && (
-						<>
-							<SelectControl
-								label={__('Era', 'maxi-blocks')}
-								value={era}
-								options={DateOptions.era}
-								onChange={value =>
-									changeProps({ 'dc-era': value })
-								}
-							/>
-							<SelectControl
-								label={__('Years', 'maxi-blocks')}
-								value={year}
-								options={DateOptions.year}
-								onChange={value =>
-									changeProps({ 'dc-year': value })
-								}
-							/>
-							<SelectControl
-								label={__('Month', 'maxi-blocks')}
-								value={month}
-								options={DateOptions.month}
-								onChange={value =>
-									changeProps({ 'dc-month': value })
-								}
-							/>
-							<SelectControl
-								label={__('Day', 'maxi-blocks')}
-								value={day}
-								options={DateOptions.day}
-								onChange={value =>
-									changeProps({ 'dc-day': value })
-								}
-							/>
-							<SelectControl
-								label={__('Weekday', 'maxi-blocks')}
-								value={weekday}
-								options={DateOptions.weekday}
-								onChange={value =>
-									changeProps({ 'dc-weekday': value })
-								}
-							/>
-						</>
-					)}
-					{linkStatus === 'time' && (
-						<>
-							<SelectControl
-								label={__('Format', 'maxi-blocks')}
-								value={hour12}
-								options={DateOptions.hour12}
-								onChange={value =>
-									changeProps({ 'dc-hour12': value })
-								}
-							/>
-							<SelectControl
-								label={__('Hour', 'maxi-blocks')}
-								value={hour}
-								options={DateOptions.hour}
-								onChange={value =>
-									changeProps({ 'dc-hour': value })
-								}
-							/>
-							<SelectControl
-								label={__('Minute', 'maxi-blocks')}
-								value={minute}
-								options={DateOptions.minute}
-								onChange={value =>
-									changeProps({ 'dc-minute': value })
-								}
-							/>
-							<SelectControl
-								label={__('Second', 'maxi-blocks')}
-								value={second}
-								options={DateOptions.second}
-								onChange={value =>
-									changeProps({ 'dc-second': value })
-								}
-							/>
-						</>
-					)}
-					{linkStatus === 'zone' && (
-						<>
-							<SelectControl
-								label={__('Locale', 'maxi-blocks')}
-								value={locale}
-								options={DateOptions.locale}
-								onChange={value =>
-									changeProps({ 'dc-locale': value })
-								}
-							/>
-							<SelectControl
-								label={__('Timezone', 'maxi-blocks')}
-								value={timeZone}
-								options={DateOptions.timeZone}
-								onChange={value =>
-									changeProps({
-										'dc-timezone': value,
-									})
-								}
-							/>
-							<SelectControl
-								label={__('Timezone name', 'maxi-blocks')}
-								value={timeZoneName}
-								options={DateOptions.timeZoneName}
-								onChange={value =>
-									changeProps({
-										'dc-timezone-name': value,
-									})
-								}
-							/>
-						</>
-					)}
-				</>
-			)}
+			<div className='maxi-info__help-trigger'>
+				<TextControl
+					label={__('Date format', 'maxi-blocks')}
+					help={false}
+					placeholder={__('d.m.Y t', 'maxi-blocks')}
+					value={format}
+					onChange={val => validateAnchor(val)}
+					showHelp
+					helpContent={<DateHelperPopover />}
+				/>
+			</div>
 		</div>
 	);
 };

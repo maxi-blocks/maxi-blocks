@@ -1409,6 +1409,8 @@ class MaxiBlocks_DynamicContent
         // Use preg_replace to replace each match with an empty string.
         $content = preg_replace($regex, '', $content);
 
+
+
         return $content;
     }
 

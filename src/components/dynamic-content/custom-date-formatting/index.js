@@ -35,10 +35,6 @@ const DateHelperPopover = () => (
 			{__('day in text format, short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>DV - </b>
-			{__('day in text format, very short', 'maxi-blocks')}
-		</p>
-		<p>
 			<b>m - </b>
 			{__('month in numeric format', 'maxi-blocks')}
 		</p>
@@ -124,7 +120,7 @@ const DateFormatting = props => {
 			length.t < 2 &&
 			length.y + length.Y < 4
 		) {
-			const word = '([dDmMyYt]{0,1}|MS{0,1}|DS{0,1}|DV{0,1})';
+			const word = '([dDmMyYt]{0,1}|MS{0,1}|DS{0,1})';
 			const interWord = '(\\s{0,1})([-,\\.\\/]{0,3})(\\s{0,1})';
 			const regex = new RegExp(
 				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`

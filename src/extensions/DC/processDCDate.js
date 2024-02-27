@@ -37,13 +37,9 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 	let newFormat;
 
 	if (!isCustomDate) {
-		newFormat = format
-			.replace(/DV/g, 'x')
-			.replace(/DS/g, 'z')
-			.replace(/MS/g, 'c');
+		newFormat = format.replace(/DS/g, 'z').replace(/MS/g, 'c');
 		const map = {
 			z: 'ddd',
-			x: 'dd',
 			c: 'MMM',
 			d: 'D',
 			D: 'dddd',
@@ -53,7 +49,7 @@ const processDCDate = (dateValue, isCustomDate, format, locale, options) => {
 			Y: 'YYYY',
 			t: 'HH:mm',
 		};
-		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
+		newFormat = newFormat.replace(/[zcdDmMyYt]/g, m => map[m]);
 		content = moment(NewDate).format(newFormat);
 	} else {
 		content = NewDate.toLocaleString(locale, options);

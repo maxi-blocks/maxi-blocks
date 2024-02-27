@@ -423,7 +423,9 @@ const DynamicContent = props => {
 															'by-',
 															''
 													  )
-													: type.replace('_', ' ')
+													: type
+															.replace('_', ' ')
+															.replace('-', ' ')
 											)} id`,
 											'maxi-blocks'
 										)}

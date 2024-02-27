@@ -15,7 +15,7 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
     private static $custom_data = null;
-    private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
+    private static $order_by_relations = ['by-category', 'by-author', 'by-tag', 'current-archive'];
     private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
     private static $link_only_blocks = [
@@ -732,6 +732,45 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
+    public function get_current_archive_type_and_id()
+    {
+        $archive_info = array(
+            'type' => null,
+            'id' => null
+        );
+
+        if (is_category()) {
+            // It's a category archive
+            $archive_info['type'] = 'category';
+            $archive_info['id'] = get_queried_object_id(); // Get the category ID
+        } elseif (is_tag()) {
+            // It's a tag archive
+            $archive_info['type'] = 'tag';
+            $archive_info['id'] = get_queried_object_id(); // Get the tag ID
+        } elseif (is_tax()) {
+            // It's a custom taxonomy archive
+            $queried_object = get_queried_object();
+            $archive_info['type'] = $queried_object->taxonomy;
+            $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
+        } elseif (is_post_type_archive()) {
+            // It's a custom post type archive
+            $queried_object = get_queried_object();
+            $archive_info['type'] = 'post_type';
+            $archive_info['id'] = $queried_object->name; // Use the name for post type
+        } elseif (is_author()) {
+            // It's an author archive
+            $archive_info['type'] = 'author';
+            $archive_info['id'] = get_queried_object_id(); // Get the author ID
+        } else {
+            // Not an archive page or a type not covered above
+            $archive_info['type'] = 'not_an_archive';
+            $archive_info['id'] = null;
+        }
+
+        return $archive_info;
+    }
+
+
     public function get_post($attributes)
     {
         @list(
@@ -760,9 +799,9 @@ class MaxiBlocks_DynamicContent
             $dc_order = 'desc';
         }
 
-
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
+        $is_current_archive = $dc_relation === 'current-archive';
 
         if (in_array($dc_type, ['posts', 'pages', 'products'])) {
             // Basic args
@@ -788,6 +827,9 @@ class MaxiBlocks_DynamicContent
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
                 $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+            } elseif ($is_current_archive) {
+                $archive_info = $this->get_current_archive_type_and_id();
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $archive_info['id'], $archive_info['type']));
             }
 
             if ($dc_type === 'products') {
@@ -801,6 +843,10 @@ class MaxiBlocks_DynamicContent
             }
 
             $query = new WP_Query($args);
+
+            // echo '<pre>';
+            // print_r($query);
+            // echo '</pre>';
 
             if (empty($query->posts)) {
                 $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
@@ -1571,7 +1617,7 @@ class MaxiBlocks_DynamicContent
         return $result;
     }
 
-    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id)
+    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id, $archive_type = null)
     {
         if ($type === 'users') {
             $order_by_arg = $relation === 'by-date' ? 'user_registered' : 'display_name';
@@ -1611,6 +1657,14 @@ class MaxiBlocks_DynamicContent
                 $args['tag'] = [$this->get_term_slug($id)];
             } else {
                 $args['tag_id'] = $id;
+            }
+        } elseif($relation === 'current-archive') {
+            if ($archive_type === 'category') {
+                $args['cat'] = $id;
+            } elseif ($archive_type === 'tag') {
+                $args['tag_id'] = $id;
+            } else {
+                $args[$archive_type] = $id;
             }
         }
 

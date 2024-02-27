@@ -37,6 +37,10 @@ export const getIdOptions = async (type, relation, author) => {
 		per_page: -1,
 	};
 
+	const argsArchive = {
+		per_page: 1,
+	};
+
 	if (type === 'users' || relation === 'by-author') {
 		const users = await getUsers();
 
@@ -48,7 +52,8 @@ export const getIdOptions = async (type, relation, author) => {
 		}
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
-		relation === 'by-category'
+		relation === 'by-category' ||
+		relation === 'current-archive'
 	) {
 		const categoryType = ['products', 'product_categories'].includes(type)
 			? 'product_cat'
@@ -65,6 +70,8 @@ export const getIdOptions = async (type, relation, author) => {
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
+
+	console.log('getIdOptions', data);
 
 	return data;
 };

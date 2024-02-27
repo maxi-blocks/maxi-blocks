@@ -6,7 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * External dependencies
  */
+import { isNil } from 'lodash';
+import classnames from 'classnames';
 import loadable from '@loadable/component';
+
+const BezierEditor = loadable(() => import('bezier-easing-editor'));
 
 /**
  * Internal dependencies
@@ -40,21 +44,10 @@ const TypographyControl = loadable(() =>
 	import('../../../../components/typography-control')
 );
 
-/**
- * External dependencies
- */
-import BezierEditor from 'bezier-easing-editor';
-
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
-import classnames from 'classnames';
 
 /**
  * Styles and icons

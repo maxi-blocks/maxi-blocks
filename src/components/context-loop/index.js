@@ -17,7 +17,15 @@ import { resolveSelect, select, useSelect } from '@wordpress/data';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
-import { getDefaultAttribute } from '../../extensions/styles';
+import TextControl from '../text-control';
+import TypographyControl from '../typography-control';
+import ColorControl from '../color-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import FlexSettingsControl from '../flex-settings-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	orderByRelations,
 	orderByOptions,
@@ -49,7 +57,16 @@ import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 const ContextLoop = props => {
-	const { clientId, className, onChange, contentType = 'group' } = props;
+	const {
+		clientId,
+		className,
+		onChange,
+		blockStyle,
+		breakpoint,
+		name,
+		contentType = 'group',
+		isToolbar = false,
+	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
 
@@ -72,7 +89,34 @@ const ContextLoop = props => {
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
 		'cl-acf-group': acfGroup,
+		'cl-pagination': pagination,
+		'cl-pagination-per-page': paginationPerPage,
+		'cl-pagination-total': paginationTotal,
+		'cl-pagination-total-all': paginationTotalAll,
+		'cl-pagination-show-page-list': paginationShowPageList,
+		'cl-pagination-previous-text': paginationPreviousText,
+		'cl-pagination-next-text': paginationNextText,
+		'cl-pagination-link-hover-color': paginationLinkHoverColor,
+		'cl-pagination-link-hover-palette-status':
+			paginationLinkHoverPaletteStatus,
+		'cl-pagination-link-hover-palette-sc-status':
+			paginationLinkHoverPaletteSCStatus,
+		'cl-pagination-link-hover-palette-color':
+			paginationLinkHoverPaletteColor,
+		'cl-pagination-link-hover-palette-opacity':
+			paginationLinkHoverPaletteOpacity,
+		'cl-pagination-link-current-color': paginationLinkCurrentColor,
+		'cl-pagination-link-current-palette-status':
+			paginationLinkCurrentPaletteStatus,
+		'cl-pagination-link-current-palette-sc-status':
+			paginationLinkCurrentPaletteSCStatus,
+		'cl-pagination-link-current-palette-color':
+			paginationLinkCurrentPaletteColor,
+		'cl-pagination-link-current-palette-opacity':
+			paginationLinkCurrentPaletteOpacity,
 	} = getCLAttributes(contextLoop);
+
+	const clPaginationPrefix = 'cl-pagination-';
 
 	const { relationTypes, orderTypes } = useSelect(select => {
 		const { getRelationTypes, getOrderTypes } = select(
@@ -315,7 +359,8 @@ const ContextLoop = props => {
 							)}
 							{contentType !== 'container' &&
 								relationTypes.includes(type) &&
-								type === 'users' && (
+								type === 'users' &&
+								relation === 'by-id' && (
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
@@ -456,6 +501,266 @@ const ContextLoop = props => {
 												})
 											}
 										/>
+									)}
+									{!isToolbar && (
+										<ToggleSwitch
+											label={__(
+												'Pagination',
+												'maxi-blocks'
+											)}
+											selected={pagination}
+											onChange={value =>
+												changeProps({
+													'cl-pagination': value,
+												})
+											}
+										/>
+									)}
+									{!isToolbar && pagination && (
+										<>
+											<AdvancedNumberControl
+												label={__(
+													'Items per page',
+													'maxi-blocks'
+												)}
+												value={paginationPerPage}
+												onChangeValue={value =>
+													changeProps({
+														'cl-pagination-per-page':
+															value,
+													})
+												}
+												onReset={() =>
+													changeProps({
+														'cl-pagination-per-page':
+															getDefaultAttribute(
+																'cl-pagination-per-page'
+															),
+													})
+												}
+												disableRange
+											/>
+											<ToggleSwitch
+												label={__(
+													'Items total: show all',
+													'maxi-blocks'
+												)}
+												selected={paginationTotalAll}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-total-all':
+															value,
+													})
+												}
+											/>
+											{!paginationTotalAll && (
+												<AdvancedNumberControl
+													label={__(
+														'Items total',
+														'maxi-blocks'
+													)}
+													step={paginationPerPage}
+													min={paginationPerPage * 2}
+													value={
+														paginationTotal ||
+														paginationPerPage * 2
+													}
+													onChangeValue={value =>
+														changeProps({
+															'cl-pagination-total':
+																value,
+														})
+													}
+													onReset={() =>
+														changeProps({
+															'cl-pagination-total':
+																getDefaultAttribute(
+																	'cl-pagination-total'
+																),
+														})
+													}
+													disableRange
+												/>
+											)}
+											<TextControl
+												isFullwidth
+												label={__(
+													'Text for previous link',
+													'maxi-blocks'
+												)}
+												value={paginationPreviousText}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-previous-text':
+															value,
+													})
+												}
+											/>
+											<TextControl
+												isFullwidth
+												label={__(
+													'Text for next link',
+													'maxi-blocks'
+												)}
+												value={paginationNextText}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-next-text':
+															value,
+													})
+												}
+											/>
+											<ToggleSwitch
+												label={__(
+													'Show page list (1, 2, 3, …)',
+													'maxi-blocks'
+												)}
+												selected={
+													paginationShowPageList
+												}
+												onChange={value =>
+													changeProps({
+														'cl-pagination-show-page-list':
+															value,
+													})
+												}
+											/>
+											<TypographyControl
+												{...getGroupAttributes(
+													contextLoop,
+													'typography',
+													false,
+													clPaginationPrefix
+												)}
+												textLevel='p'
+												blockStyle={blockStyle}
+												clientId={clientId}
+												breakpoint={breakpoint}
+												disableCustomFormats
+												hideAlignment
+												styleCardPrefix=''
+												prefix={clPaginationPrefix}
+												onChange={obj => onChange(obj)}
+											/>
+											<ColorControl
+												label={__(
+													'Pagination hover',
+													'maxi-blocks'
+												)}
+												className='maxi-pagination-link-hover-color'
+												color={paginationLinkHoverColor}
+												prefix={`${clPaginationPrefix}link-hover-`}
+												paletteStatus={
+													paginationLinkHoverPaletteStatus
+												}
+												paletteSCStatus={
+													paginationLinkHoverPaletteSCStatus
+												}
+												paletteColor={
+													paginationLinkHoverPaletteColor
+												}
+												paletteOpacity={
+													paginationLinkHoverPaletteOpacity
+												}
+												// onChangeInline={({ color }) =>
+												// 	onChangeInline(
+												// 		{ color },
+												// 		'a:hover'
+												// 	)
+												// }
+												onChange={({
+													paletteColor,
+													paletteStatus,
+													paletteSCStatus,
+													paletteOpacity,
+													color,
+												}) =>
+													changeProps({
+														[`${clPaginationPrefix}link-hover-palette-status`]:
+															paletteStatus,
+														[`${clPaginationPrefix}link-hover-palette-sc-status`]:
+															paletteSCStatus,
+														[`${clPaginationPrefix}link-hover-palette-color`]:
+															paletteColor,
+														[`${clPaginationPrefix}link-hover-palette-opacity`]:
+															paletteOpacity,
+														[`${clPaginationPrefix}link-hover-color`]:
+															color,
+													})
+												}
+												textLevel='p'
+												deviceType={breakpoint}
+												clientId={clientId}
+												disableGradient
+											/>
+											<ColorControl
+												label={__(
+													'Pagination current',
+													'maxi-blocks'
+												)}
+												className='maxi-pagination-link-current-color'
+												color={
+													paginationLinkCurrentColor
+												}
+												prefix={`${clPaginationPrefix}link-current-`}
+												paletteStatus={
+													paginationLinkCurrentPaletteStatus
+												}
+												paletteSCStatus={
+													paginationLinkCurrentPaletteSCStatus
+												}
+												paletteColor={
+													paginationLinkCurrentPaletteColor
+												}
+												paletteOpacity={
+													paginationLinkCurrentPaletteOpacity
+												}
+												onChange={({
+													paletteColor,
+													paletteStatus,
+													paletteSCStatus,
+													paletteOpacity,
+													color,
+												}) =>
+													changeProps({
+														[`${clPaginationPrefix}link-current-palette-status`]:
+															paletteStatus,
+														[`${clPaginationPrefix}link-current-palette-sc-status`]:
+															paletteSCStatus,
+														[`${clPaginationPrefix}link-current-palette-color`]:
+															paletteColor,
+														[`${clPaginationPrefix}link-current-palette-opacity`]:
+															paletteOpacity,
+														[`${clPaginationPrefix}link-current-color`]:
+															color,
+													})
+												}
+												textLevel='p'
+												deviceType={breakpoint}
+												clientId={clientId}
+												disableGradient
+											/>
+											<ResponsiveTabsControl
+												breakpoint={breakpoint}
+											>
+												<FlexSettingsControl
+													{...getGroupAttributes(
+														contextLoop,
+														'flex',
+														false,
+														clPaginationPrefix
+													)}
+													onChange={obj => {
+														onChange(obj);
+													}}
+													breakpoint={breakpoint}
+													clientId={clientId}
+													name='pagination'
+													parentBlockName={name}
+													prefix={clPaginationPrefix}
+												/>
+											</ResponsiveTabsControl>
+										</>
 									)}
 								</>
 							)}

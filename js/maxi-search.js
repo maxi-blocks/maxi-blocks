@@ -2,7 +2,6 @@
 const onSearchEvent = input => {
 	const searchLink = maxiSearch[1];
 	const inputValue = input.value;
-
 	if (input.checkValidity()) {
 		const searchUrl = `${searchLink}${inputValue}`;
 
@@ -59,7 +58,21 @@ const onRevealEvent = (
 	}
 };
 
+const populateSearchInput = () => {
+	const params = new URLSearchParams(window.location.search);
+	const searchQuery = params.get('s'); // Assuming 's' is the query parameter for search
+	if (searchQuery) {
+		const searchInputs = document.querySelectorAll(
+			'.maxi-search-block__input'
+		);
+		searchInputs.forEach(input => {
+			input.value = searchQuery;
+		});
+	}
+};
+
 const search = () => {
+	populateSearchInput(); // Populate search input with the query from URL
 	Object.entries(maxiSearch[0]).forEach(([uniqueID, json]) => {
 		let parsedJson;
 

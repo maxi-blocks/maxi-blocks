@@ -11,7 +11,6 @@ import { __experimentalLinkControl as NativeLinkControl } from '@wordpress/block
  */
 import Button from '../button';
 import ToggleSwitch from '../toggle-switch';
-import DC_LINK_BLOCKS from '../toolbar/components/link/dcLinkBlocks';
 
 /**
  * External dependencies

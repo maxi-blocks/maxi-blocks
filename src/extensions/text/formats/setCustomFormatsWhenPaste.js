@@ -9,10 +9,6 @@ import { removeFormat } from '@wordpress/rich-text';
 import applyLinkFormat from './applyLinkFormat';
 import setFormatWithClass from './setFormatWithClass';
 import getInstancePositions from './getInstancePositions';
-
-/**
- * External dependencies
- */
 import getGroupAttributes from '../../styles/getGroupAttributes';
 
 /**

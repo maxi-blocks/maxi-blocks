@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.7.0\n"
+"Project-Id-Version: MaxiBlocks 1.7.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-05T15:05:07+00:00\n"
+"POT-Creation-Date: 2024-02-23T14:37:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -32,38 +32,38 @@ msgstr ""
 msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:101
+#: core/admin/class-maxi-dashboard.php:105
 msgid "Validating..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:102
+#: core/admin/class-maxi-dashboard.php:106
 msgid "Please add your API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:103
+#: core/admin/class-maxi-dashboard.php:107
 msgid "Invalid API Key, please check your key and try again"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:104
+#: core/admin/class-maxi-dashboard.php:108
 msgid "Referer not allowed, please allow your domain for that key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:105
+#: core/admin/class-maxi-dashboard.php:109
 msgid "Only alphabet, number, \"_\", \"$\", \".\", \"[\", and \"]\" are allowed in the API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:106
+#: core/admin/class-maxi-dashboard.php:110
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:129
-#: core/admin/class-maxi-dashboard.php:170
+#: core/admin/class-maxi-dashboard.php:133
+#: core/admin/class-maxi-dashboard.php:174
 msgid "Start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:137
-#: core/admin/class-maxi-dashboard.php:138
-#: core/admin/class-maxi-dashboard.php:174
+#: core/admin/class-maxi-dashboard.php:141
+#: core/admin/class-maxi-dashboard.php:142
+#: core/admin/class-maxi-dashboard.php:178
 #: build/575.js:1
 #: build/3047.js:1
 #: build/4407.js:1
@@ -81,7 +81,7 @@ msgstr ""
 #: build/9675.js:1
 #: build/9698.js:1
 #: src/blocks/accordion-maxi/inspector.js:104
-#: src/blocks/button-maxi/inspector.js:201
+#: src/blocks/button-maxi/inspector.js:197
 #: src/blocks/column-maxi/inspector.js:51
 #: src/blocks/container-maxi/inspector.js:70
 #: src/blocks/divider-maxi/inspector.js:62
@@ -104,469 +104,469 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:148
-#: core/admin/class-maxi-dashboard.php:149
-#: core/admin/class-maxi-dashboard.php:178
+#: core/admin/class-maxi-dashboard.php:152
+#: core/admin/class-maxi-dashboard.php:153
+#: core/admin/class-maxi-dashboard.php:182
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:157
-#: core/admin/class-maxi-dashboard.php:158
-#: core/admin/class-maxi-dashboard.php:182
+#: core/admin/class-maxi-dashboard.php:161
+#: core/admin/class-maxi-dashboard.php:162
+#: core/admin/class-maxi-dashboard.php:186
 msgid "Pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:200
+#: core/admin/class-maxi-dashboard.php:204
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:265
+#: core/admin/class-maxi-dashboard.php:269
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:267
+#: core/admin/class-maxi-dashboard.php:271
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:273
+#: core/admin/class-maxi-dashboard.php:277
 msgid "Future-proof your web design with the modern page builder that blends simplicity and power"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:280
+#: core/admin/class-maxi-dashboard.php:284
 msgid "MaxiBlocks is a no-code visual page builder that can create responsive, fast-loading webpages using an integrated design library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:287
+#: core/admin/class-maxi-dashboard.php:291
 msgid "You can choose from over 1,800 patterns, 100 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:294
+#: core/admin/class-maxi-dashboard.php:298
 msgid "No locked blocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:298
+#: core/admin/class-maxi-dashboard.php:302
 msgid "We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:305
+#: core/admin/class-maxi-dashboard.php:309
 msgid "Goodbye license keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:309
+#: core/admin/class-maxi-dashboard.php:313
 msgid "Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:316
+#: core/admin/class-maxi-dashboard.php:320
 msgid "Packed with free goodies"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:320
+#: core/admin/class-maxi-dashboard.php:324
 msgid "Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:327
+#: core/admin/class-maxi-dashboard.php:331
 msgid "Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:334
+#: core/admin/class-maxi-dashboard.php:338
 msgid "Go next-level with pro templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:341
+#: core/admin/class-maxi-dashboard.php:345
 msgid "If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:348
+#: core/admin/class-maxi-dashboard.php:352
 msgid "It’s like having a dedicated professional designer crafting unique designs exclusively for you."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:355
+#: core/admin/class-maxi-dashboard.php:359
 msgid "Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:362
+#: core/admin/class-maxi-dashboard.php:366
 msgid "Copy, remix, and learn as you go - it's all possible with MaxiBlocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:374
+#: core/admin/class-maxi-dashboard.php:378
 msgid "News and stories for creators."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:375
+#: core/admin/class-maxi-dashboard.php:379
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:380
+#: core/admin/class-maxi-dashboard.php:384
 msgid "Get a summary of stories you missed."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:381
+#: core/admin/class-maxi-dashboard.php:385
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:386
+#: core/admin/class-maxi-dashboard.php:390
 msgid "Your thoughts can inspire others."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:387
+#: core/admin/class-maxi-dashboard.php:391
 msgid "Give a quick review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:409
+#: core/admin/class-maxi-dashboard.php:413
 msgid "Successfully done"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:417
+#: core/admin/class-maxi-dashboard.php:421
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:421
+#: core/admin/class-maxi-dashboard.php:425
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:425
-#: core/admin/class-maxi-dashboard.php:500
+#: core/admin/class-maxi-dashboard.php:429
+#: core/admin/class-maxi-dashboard.php:504
 #: build/193.js:1
 #: src/editor/style-cards/maxiStyleCardsEditor.js:572
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:432
+#: core/admin/class-maxi-dashboard.php:436
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:433
+#: core/admin/class-maxi-dashboard.php:437
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:434
+#: core/admin/class-maxi-dashboard.php:438
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:436
+#: core/admin/class-maxi-dashboard.php:440
 msgid "Create a Google Cloud Platform account, if you don’t already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:437
+#: core/admin/class-maxi-dashboard.php:441
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:438
+#: core/admin/class-maxi-dashboard.php:442
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:439
+#: core/admin/class-maxi-dashboard.php:443
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:441
+#: core/admin/class-maxi-dashboard.php:445
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:441
+#: core/admin/class-maxi-dashboard.php:445
 msgid "To make this process easy, launch <a href=\"https://maxiblocks.com/go/google-maps-api-quickstart\" target=\"_blank\" rel=\"noreferrer\">"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:443
+#: core/admin/class-maxi-dashboard.php:447
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:454
+#: core/admin/class-maxi-dashboard.php:458
 msgid "Serve Google fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:458
+#: core/admin/class-maxi-dashboard.php:462
 msgid "Local storage: Download, store and serve font files from a WordPress directory on your site. This method blocks Google’s tracking for web visitors. It can improve or degrade performance, depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:465
+#: core/admin/class-maxi-dashboard.php:469
 msgid ""
 "Google servers: Serve Google font files directly from Google’s servers. It may impact\n"
 "            privacy (GDPR) if a web visitor’s IP address is revealed to Google."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:471
+#: core/admin/class-maxi-dashboard.php:475
 msgid "(Default)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:480
+#: core/admin/class-maxi-dashboard.php:484
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:483
+#: core/admin/class-maxi-dashboard.php:487
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:490
+#: core/admin/class-maxi-dashboard.php:494
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:510
+#: core/admin/class-maxi-dashboard.php:514
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:513
+#: core/admin/class-maxi-dashboard.php:517
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:516
+#: core/admin/class-maxi-dashboard.php:520
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:526
+#: core/admin/class-maxi-dashboard.php:530
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:530
+#: core/admin/class-maxi-dashboard.php:534
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:537
+#: core/admin/class-maxi-dashboard.php:541
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:545
+#: core/admin/class-maxi-dashboard.php:549
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:546
+#: core/admin/class-maxi-dashboard.php:550
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:559
+#: core/admin/class-maxi-dashboard.php:563
 msgid "Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:567
+#: core/admin/class-maxi-dashboard.php:571
 msgid "Style Cards change 15 design elements in sync. It works like this:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:575
+#: core/admin/class-maxi-dashboard.php:579
 msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:582
+#: core/admin/class-maxi-dashboard.php:586
 msgid "Browse the template library to find a good page or pattern."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:589
+#: core/admin/class-maxi-dashboard.php:593
 msgid "Insert and watch how templates instantly match your chosen style."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:603
+#: core/admin/class-maxi-dashboard.php:607
 msgid "Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:610
+#: core/admin/class-maxi-dashboard.php:614
 msgid "#maxiblocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:614
+#: core/admin/class-maxi-dashboard.php:618
 msgid " - We’re dying to see what you create. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:622
+#: core/admin/class-maxi-dashboard.php:626
 msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:629
+#: core/admin/class-maxi-dashboard.php:633
 msgid "Learn more about MaxiBlocks Pro."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:645
+#: core/admin/class-maxi-dashboard.php:649
 msgid "There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:652
+#: core/admin/class-maxi-dashboard.php:656
 msgid "See what's planned in the roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:678
+#: core/admin/class-maxi-dashboard.php:682
 msgid "Thousands of premium templates to work faster"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:679
+#: core/admin/class-maxi-dashboard.php:683
 msgid "Unlimited downloads. Unlimited sites. No feature lock-in."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:680
+#: core/admin/class-maxi-dashboard.php:684
 msgid "Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:681
+#: core/admin/class-maxi-dashboard.php:685
 msgid "Let’s create something amazing with Maxi"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:683
+#: core/admin/class-maxi-dashboard.php:687
 msgid "Sign up"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:684
+#: core/admin/class-maxi-dashboard.php:688
 msgid "Already have an account? "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:693
+#: core/admin/class-maxi-dashboard.php:697
 msgid "help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:694
+#: core/admin/class-maxi-dashboard.php:698
 msgid "pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:695
+#: core/admin/class-maxi-dashboard.php:699
 msgid "demo library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:696
+#: core/admin/class-maxi-dashboard.php:700
 msgid "youtube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:697
-#: core/admin/class-maxi-dashboard.php:745
+#: core/admin/class-maxi-dashboard.php:701
+#: core/admin/class-maxi-dashboard.php:749
 msgid "maxiblocks.com"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:698
+#: core/admin/class-maxi-dashboard.php:702
 msgid "twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:699
+#: core/admin/class-maxi-dashboard.php:703
 msgid "discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:700
+#: core/admin/class-maxi-dashboard.php:704
 msgid "roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:707
+#: core/admin/class-maxi-dashboard.php:711
 msgid "Hi "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:710
+#: core/admin/class-maxi-dashboard.php:714
 msgid "[username]"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:716
+#: core/admin/class-maxi-dashboard.php:720
 msgid "You're signed in. Pro library is connected."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:717
+#: core/admin/class-maxi-dashboard.php:721
 msgid "Browse for templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:721
+#: core/admin/class-maxi-dashboard.php:725
 msgid "-  Create a new page to launch the editing experience"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:728
+#: core/admin/class-maxi-dashboard.php:732
 msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:735
+#: core/admin/class-maxi-dashboard.php:739
 msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:741
+#: core/admin/class-maxi-dashboard.php:745
 msgid "Support links"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:743
+#: core/admin/class-maxi-dashboard.php:747
 msgid "Help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:744
+#: core/admin/class-maxi-dashboard.php:748
 msgid "YouTube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:746
+#: core/admin/class-maxi-dashboard.php:750
 msgid "Roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:748
+#: core/admin/class-maxi-dashboard.php:752
 msgid "Community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:750
+#: core/admin/class-maxi-dashboard.php:754
 msgid "Twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:751
+#: core/admin/class-maxi-dashboard.php:755
 msgid "Discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:764
+#: core/admin/class-maxi-dashboard.php:768
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:767
+#: core/admin/class-maxi-dashboard.php:771
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:783
+#: core/admin/class-maxi-dashboard.php:787
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:784
+#: core/admin/class-maxi-dashboard.php:788
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:787
+#: core/admin/class-maxi-dashboard.php:791
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:791
+#: core/admin/class-maxi-dashboard.php:795
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:792
+#: core/admin/class-maxi-dashboard.php:796
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:794
+#: core/admin/class-maxi-dashboard.php:798
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:798
+#: core/admin/class-maxi-dashboard.php:802
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:799
-#: core/admin/class-maxi-dashboard.php:806
+#: core/admin/class-maxi-dashboard.php:803
+#: core/admin/class-maxi-dashboard.php:810
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:801
-#: core/admin/class-maxi-dashboard.php:822
+#: core/admin/class-maxi-dashboard.php:805
+#: core/admin/class-maxi-dashboard.php:826
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:805
+#: core/admin/class-maxi-dashboard.php:809
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:808
+#: core/admin/class-maxi-dashboard.php:812
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:812
+#: core/admin/class-maxi-dashboard.php:816
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:813
+#: core/admin/class-maxi-dashboard.php:817
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:815
+#: core/admin/class-maxi-dashboard.php:819
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:819
+#: core/admin/class-maxi-dashboard.php:823
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:820
+#: core/admin/class-maxi-dashboard.php:824
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
@@ -732,7 +732,7 @@ msgstr ""
 #: src/blocks/column-maxi/components/column-size-control/index.js:109
 #: src/blocks/divider-maxi/inspector.js:142
 #: src/blocks/image-maxi/inspector.js:222
-#: src/blocks/text-maxi/components/list-options-control/index.js:705
+#: src/blocks/text-maxi/components/list-options-control/index.js:701
 #: src/components/arrow-control/index.js:46
 #: src/components/axis-position-control/index.js:42
 #: src/components/clip-path-control/index.js:58
@@ -752,7 +752,7 @@ msgstr ""
 #: src/blocks/column-maxi/components/column-size-control/index.js:117
 #: src/blocks/divider-maxi/inspector.js:156
 #: src/blocks/image-maxi/inspector.js:229
-#: src/blocks/text-maxi/components/list-options-control/index.js:715
+#: src/blocks/text-maxi/components/list-options-control/index.js:711
 #: src/components/arrow-control/index.js:47
 #: src/components/axis-position-control/index.js:46
 #: src/components/clip-path-control/index.js:67
@@ -856,7 +856,7 @@ msgstr ""
 #: build/9675.js:1
 #: build/9698.js:1
 #: src/blocks/accordion-maxi/inspector.js:234
-#: src/blocks/button-maxi/inspector.js:318
+#: src/blocks/button-maxi/inspector.js:314
 #: src/blocks/column-maxi/inspector.js:109
 #: src/blocks/container-maxi/inspector.js:129
 #: src/blocks/divider-maxi/inspector.js:315
@@ -986,7 +986,7 @@ msgstr ""
 #: build/1286.js:1
 #: build/7776.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:280
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:273
 #: src/blocks/slider-maxi/components/slider-control/index.js:106
 #: src/components/toolbar/components/slider-settings/index.js:104
 msgid "Slide"
@@ -995,7 +995,7 @@ msgstr ""
 #: build/1286.js:1
 #: build/7776.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:375
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:368
 #: src/blocks/slider-maxi/components/slider-control/index.js:110
 #: src/components/toolbar/components/slider-settings/index.js:108
 msgid "Fade"
@@ -1020,7 +1020,7 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:35
 #: src/blocks/button-maxi/utils.js:7
 #: src/blocks/search-maxi/components/button-control/index.js:37
-#: src/blocks/text-maxi/components/list-options-control/index.js:850
+#: src/blocks/text-maxi/components/list-options-control/index.js:846
 #: src/components/inspector-tabs/inspector-icon.js:22
 msgid "Icon"
 msgstr ""
@@ -1031,17 +1031,17 @@ msgstr ""
 #: build/3047.js:1
 #: build/4248.js:1
 #: build/7298.js:1
-#: src/blocks/button-maxi/inspector.js:146
+#: src/blocks/button-maxi/inspector.js:142
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:401
 #: src/blocks/search-maxi/components/button-control/index.js:41
-#: src/blocks/text-maxi/components/list-options-control/index.js:842
+#: src/blocks/text-maxi/components/list-options-control/index.js:838
 #: src/components/toolbar/components/text-color/index.js:146
 #: src/editor/style-cards/maxiStyleCardsTab.js:390
 msgid "Text"
 msgstr ""
 
 #: build/1373.js:1
-#: src/blocks/button-maxi/edit.js:182
+#: src/blocks/button-maxi/edit.js:178
 #: src/blocks/search-maxi/components/button-control/index.js:54
 msgid "Button text"
 msgstr ""
@@ -2726,7 +2726,7 @@ msgid "Template library"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:156
+#: src/blocks/text-maxi/components/list-options-control/index.js:152
 msgid "List style position"
 msgstr ""
 
@@ -2734,7 +2734,7 @@ msgstr ""
 #: build/4122.js:1
 #: src/blocks/slider-maxi/components/navigation-control/index.js:72
 #: src/blocks/slider-maxi/components/navigation-control/index.js:105
-#: src/blocks/text-maxi/components/list-options-control/index.js:177
+#: src/blocks/text-maxi/components/list-options-control/index.js:173
 msgid "Inside"
 msgstr ""
 
@@ -2742,130 +2742,130 @@ msgstr ""
 #: build/4122.js:1
 #: src/blocks/slider-maxi/components/navigation-control/index.js:76
 #: src/blocks/slider-maxi/components/navigation-control/index.js:109
-#: src/blocks/text-maxi/components/list-options-control/index.js:181
+#: src/blocks/text-maxi/components/list-options-control/index.js:177
 msgid "Outside"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:192
+#: src/blocks/text-maxi/components/list-options-control/index.js:188
 #: src/components/typography-control/index.js:941
 msgid "Text indent"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:247
+#: src/blocks/text-maxi/components/list-options-control/index.js:243
 msgid "List gap"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:306
+#: src/blocks/text-maxi/components/list-options-control/index.js:302
 msgid "Paragraph spacing"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:369
+#: src/blocks/text-maxi/components/list-options-control/index.js:365
 msgid "Marker width"
 msgstr ""
 
 #: build/2469.js:1
 #: src/blocks/map-maxi/components/map-markers-control/index.js:29
-#: src/blocks/text-maxi/components/list-options-control/index.js:370
+#: src/blocks/text-maxi/components/list-options-control/index.js:366
 msgid "Marker size"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:429
+#: src/blocks/text-maxi/components/list-options-control/index.js:425
 msgid "Marker height"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:470
+#: src/blocks/text-maxi/components/list-options-control/index.js:466
 msgid "Marker line-height"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:510
+#: src/blocks/text-maxi/components/list-options-control/index.js:506
 msgid "Marker vertical offset"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:567
+#: src/blocks/text-maxi/components/list-options-control/index.js:563
 msgid "Marker indent"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:626
+#: src/blocks/text-maxi/components/list-options-control/index.js:622
 msgid "Marker"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:676
+#: src/blocks/text-maxi/components/list-options-control/index.js:672
 msgid "Text position"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:697
+#: src/blocks/text-maxi/components/list-options-control/index.js:693
 msgid "Baseline"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:700
+#: src/blocks/text-maxi/components/list-options-control/index.js:696
 msgid "Sub"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:702
+#: src/blocks/text-maxi/components/list-options-control/index.js:698
 msgid "Super"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:707
+#: src/blocks/text-maxi/components/list-options-control/index.js:703
 msgid "Text-top"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:711
+#: src/blocks/text-maxi/components/list-options-control/index.js:707
 msgid "Middle"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:719
+#: src/blocks/text-maxi/components/list-options-control/index.js:715
 msgid "Text-bottom"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:731
+#: src/blocks/text-maxi/components/list-options-control/index.js:727
 msgid "Type of list"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:746
+#: src/blocks/text-maxi/components/list-options-control/index.js:742
 msgid "Unordered"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:750
+#: src/blocks/text-maxi/components/list-options-control/index.js:746
 msgid "Ordered"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:765
+#: src/blocks/text-maxi/components/list-options-control/index.js:761
 #: src/components/typography-control/index.js:785
 msgid "Style"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:795
+#: src/blocks/text-maxi/components/list-options-control/index.js:791
 msgid "Start from"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:822
+#: src/blocks/text-maxi/components/list-options-control/index.js:818
 msgid "Reverse order"
 msgstr ""
 
 #: build/2469.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:836
+#: src/blocks/text-maxi/components/list-options-control/index.js:832
 #: src/components/dynamic-content/index.js:295
 msgid "Source"
 msgstr ""
@@ -2873,7 +2873,7 @@ msgstr ""
 #: build/2469.js:1
 #: build/7045.js:1
 #: build/7381.js:1
-#: src/blocks/text-maxi/components/list-options-control/index.js:846
+#: src/blocks/text-maxi/components/list-options-control/index.js:842
 #: src/blocks/video-maxi/components/video-control/index.js:75
 #: src/components/image-url-upload/index.js:37
 #: src/components/toolbar/components/video-url/index.js:38
@@ -3185,14 +3185,14 @@ msgstr ""
 
 #: build/3004.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:272
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:265
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:139
 msgid "Zoom in"
 msgstr ""
 
 #: build/3004.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:276
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:269
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:143
 msgid "Zoom out"
 msgstr ""
@@ -3206,7 +3206,7 @@ msgstr ""
 #: build/4920.js:1
 #: build/5233.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:600
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:593
 #: src/blocks/search-maxi/inspector.js:359
 #: src/blocks/video-maxi/inspector.js:226
 #: src/components/background-control/imageLayer.js:523
@@ -3225,7 +3225,7 @@ msgstr ""
 #: build/3041.js:1
 #: build/5317.js:1
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:619
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:612
 #: src/components/margin-control/index.js:19
 #: src/components/toolbar/components/padding-margin/index.js:63
 #: src/components/toolbar/components/text-margin/index.js:33
@@ -3234,13 +3234,13 @@ msgstr ""
 
 #: build/3047.js:1
 #: build/4920.js:1
-#: src/blocks/button-maxi/inspector.js:145
+#: src/blocks/button-maxi/inspector.js:141
 #: src/blocks/search-maxi/inspector.js:155
 msgid "Button"
 msgstr ""
 
 #: build/3047.js:1
-#: src/blocks/button-maxi/inspector.js:207
+#: src/blocks/button-maxi/inspector.js:203
 msgid "Quick styles"
 msgstr ""
 
@@ -3250,7 +3250,7 @@ msgstr ""
 #: build/5233.js:1
 #: build/7223.js:1
 #: build/9675.js:1
-#: src/blocks/button-maxi/inspector.js:292
+#: src/blocks/button-maxi/inspector.js:288
 #: src/blocks/divider-maxi/inspector.js:288
 #: src/blocks/image-maxi/inspector.js:454
 #: src/blocks/number-counter-maxi/inspector.js:130
@@ -3376,7 +3376,7 @@ msgstr ""
 #: build/3550.js:1
 #: build/5913.js:1
 #: build/7298.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:170
+#: src/blocks/image-maxi/components/dimension-tab/index.js:166
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:88
 #: src/components/background-control/sizeAndPositionLayerControl.js:116
 #: src/components/full-size-control/index.js:135
@@ -3569,14 +3569,14 @@ msgstr ""
 #: build/4666.js:1
 #: src/blocks/search-maxi/components/skin-control/index.js:54
 #: src/components/flex-settings-control/utils.js:14
-#: src/components/scroll-effects-control/index.js:134
-#: src/components/scroll-effects-control/index.js:167
-#: src/components/scroll-effects-control/index.js:200
-#: src/components/scroll-effects-control/index.js:233
-#: src/components/scroll-effects-control/index.js:266
-#: src/components/scroll-effects-control/index.js:299
-#: src/components/scroll-effects-control/index.js:332
-#: src/components/scroll-effects-control/index.js:371
+#: src/components/scroll-effects-control/options.js:144
+#: src/components/scroll-effects-control/options.js:275
+#: src/components/scroll-effects-control/options.js:308
+#: src/components/scroll-effects-control/options.js:343
+#: src/components/scroll-effects-control/options.js:378
+#: src/components/scroll-effects-control/options.js:411
+#: src/components/scroll-effects-control/options.js:444
+#: src/components/scroll-effects-control/options.js:477
 msgid "Choose"
 msgstr ""
 
@@ -3742,43 +3742,43 @@ msgid "Divider line"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:113
+#: src/blocks/image-maxi/components/dimension-tab/index.js:109
 msgid "Image size"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:158
+#: src/blocks/image-maxi/components/dimension-tab/index.js:154
 msgid "Use original size"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:210
+#: src/blocks/image-maxi/components/dimension-tab/index.js:206
 #: src/components/image-shape/index.js:165
 msgid "Image ratio"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:215
+#: src/blocks/image-maxi/components/dimension-tab/index.js:211
 msgid "Original size"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:248
+#: src/blocks/image-maxi/components/dimension-tab/index.js:244
 msgid "Fit on wrapper"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:261
+#: src/blocks/image-maxi/components/dimension-tab/index.js:257
 msgid "Adjust size"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:289
+#: src/blocks/image-maxi/components/dimension-tab/index.js:285
 msgid "Image horizontal position"
 msgstr ""
 
 #: build/5913.js:1
-#: src/blocks/image-maxi/components/dimension-tab/index.js:323
+#: src/blocks/image-maxi/components/dimension-tab/index.js:319
 msgid "Image vertical position"
 msgstr ""
 
@@ -3939,7 +3939,7 @@ msgstr ""
 #: build/6898.js:1
 #: src/blocks/accordion-maxi/inspector.js:128
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:36
-#: src/blocks/map-maxi/components/markers/index.js:94
+#: src/blocks/map-maxi/components/markers/index.js:101
 #: src/blocks/pane-maxi/edit.js:243
 #: src/extensions/DC/constants.js:142
 #: src/extensions/DC/constants.js:165
@@ -4391,207 +4391,208 @@ msgid "Dots"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:109
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:102
 msgid "Hover animation"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:130
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:123
 msgid "Show hover preview"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:139
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:132
 msgid "Extend outside boundary"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:158
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:151
 msgid "Duration(s)"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:197
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:190
 #: src/components/transition-control/index.js:175
 msgid "Easing"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:215
-#: src/components/scroll-effects-control/index.js:107
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:208
+#: src/components/scroll-effects-control/options.js:106
 #: src/components/transition-control/index.js:185
 msgid "Ease"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:219
-#: src/components/scroll-effects-control/index.js:111
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:212
+#: src/components/scroll-effects-control/options.js:110
 #: src/components/transition-control/index.js:199
 msgid "Linear"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:223
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:216
 #: src/components/transition-control/index.js:187
 msgid "Ease-in"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:227
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:220
 #: src/components/transition-control/index.js:191
 msgid "Ease-out"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:231
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:224
 #: src/components/transition-control/index.js:195
 msgid "Ease-in-out"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:235
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:228
 msgid "Cubic-bezier"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:254
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:247
 msgid "Effect type"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:284
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:277
+#: src/components/scroll-effects-control/options.js:70
 #: src/components/transform-control/index.js:247
 msgid "Rotate"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:288
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:281
 msgid "Flashing"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:291
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:284
 #: src/components/text-shadow-control/index.js:299
 msgid "Blur"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:293
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:286
 msgid "Sepia"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:297
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:290
 msgid "Clear sepia"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:301
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:294
 msgid "Gray scale"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:305
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:298
 msgid "Clear gray scale"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:309
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:302
 msgid "Shine"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:313
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:306
 msgid "Circle shine"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:325
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:318
 msgid "Amount"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:361
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:354
 msgid "Animation type"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:377
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:370
 msgid "Push up"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:381
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:374
 msgid "Push right"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:385
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:378
 msgid "Push down"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:389
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:382
 msgid "Push left"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:393
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:386
 msgid "Slide up"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:397
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:390
 msgid "Slide right"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:401
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:394
 msgid "Slide down"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:405
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:398
 msgid "Slide left"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:409
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:402
 msgid "Flip horizontal"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:446
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:439
 msgid "Add hover title text here"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:462
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:455
 msgid "Custom hover text"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:496
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:489
 msgid "Add hover content text here"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:512
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:505
 msgid "Custom content text"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:561
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:554
 msgid "Custom border"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:589
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:582
 msgid "Custom padding"
 msgstr ""
 
 #: build/9717.js:1
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:608
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:601
 msgid "Custom margin"
 msgstr ""
 
@@ -4660,24 +4661,24 @@ msgstr ""
 msgid "Clip-path"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:385
+#: src/blocks/image-maxi/edit.js:384
 #: src/blocks/video-maxi/edit.js:242
 msgid "Insert from Media Library"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:458
-#: src/blocks/image-maxi/edit.js:560
-#: src/blocks/image-maxi/edit.js:621
+#: src/blocks/image-maxi/edit.js:457
+#: src/blocks/image-maxi/edit.js:559
+#: src/blocks/image-maxi/edit.js:620
 #: src/extensions/DC/utils.js:63
 msgid "No content found"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:470
-#: src/blocks/image-maxi/edit.js:572
+#: src/blocks/image-maxi/edit.js:469
+#: src/blocks/image-maxi/edit.js:571
 msgid "Set your Image Maxi caption here…"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:622
+#: src/blocks/image-maxi/edit.js:621
 msgid "Placeholder image"
 msgstr ""
 
@@ -4685,11 +4686,11 @@ msgstr ""
 msgid "Release to drop a marker here"
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-content/index.js:116
+#: src/blocks/map-maxi/components/map-content/index.js:125
 msgid "Oops, you can not see the map because you have not set your Google map API key, please navigate to the MaxiBlocks "
 msgstr ""
 
-#: src/blocks/map-maxi/components/map-content/index.js:125
+#: src/blocks/map-maxi/components/map-content/index.js:134
 msgid "Settings > Google Maps API key"
 msgstr ""
 
@@ -4750,7 +4751,7 @@ msgid "Marker title text"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:70
-#: src/blocks/map-maxi/components/markers/index.js:106
+#: src/blocks/map-maxi/components/markers/index.js:113
 #: src/extensions/DC/constants.js:166
 #: src/extensions/DC/constants.js:175
 #: src/extensions/DC/constants.js:186
@@ -4763,7 +4764,7 @@ msgstr ""
 msgid "Marker description text"
 msgstr ""
 
-#: src/blocks/map-maxi/components/markers/index.js:113
+#: src/blocks/map-maxi/components/markers/index.js:120
 msgid "Remove this marker"
 msgstr ""
 
@@ -5256,20 +5257,20 @@ msgstr ""
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
-#: src/components/css-code-editor/index.js:48
+#: src/components/css-code-editor/index.js:50
 msgid "line"
 msgstr ""
 
-#: src/components/css-code-editor/index.js:72
+#: src/components/css-code-editor/index.js:74
 msgid "Valid"
 msgstr ""
 
-#: src/components/css-code-editor/index.js:76
+#: src/components/css-code-editor/index.js:78
 msgid "Failed to check, please try again"
 msgstr ""
 
-#: src/components/css-code-editor/index.js:106
-#: src/components/css-code-editor/index.js:116
+#: src/components/css-code-editor/index.js:108
+#: src/components/css-code-editor/index.js:118
 msgid "Validate"
 msgstr ""
 
@@ -6023,270 +6024,299 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:115
-msgid "Ease In"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:119
-msgid "Ease Out"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:123
-msgid "Ease In Out"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:138
-#: src/components/scroll-effects-control/index.js:237
-msgid "Up less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:142
-#: src/components/scroll-effects-control/index.js:241
-msgid "Down less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:146
-#: src/components/scroll-effects-control/index.js:245
-msgid "Up some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:150
-#: src/components/scroll-effects-control/index.js:249
-msgid "Down some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:154
-#: src/components/scroll-effects-control/index.js:253
-msgid "Up more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:158
-#: src/components/scroll-effects-control/index.js:257
-msgid "Down more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:171
-#: src/components/scroll-effects-control/index.js:204
-msgid "Right less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:175
-#: src/components/scroll-effects-control/index.js:208
-msgid "Left less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:179
-#: src/components/scroll-effects-control/index.js:212
-msgid "Right some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:183
-#: src/components/scroll-effects-control/index.js:216
-msgid "Left some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:187
-#: src/components/scroll-effects-control/index.js:220
-msgid "Right more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:191
-#: src/components/scroll-effects-control/index.js:224
-msgid "Left more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:270
-#: src/components/scroll-effects-control/index.js:303
-msgid "In less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:274
-#: src/components/scroll-effects-control/index.js:307
-msgid "Out less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:278
-#: src/components/scroll-effects-control/index.js:311
-msgid "In some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:282
-#: src/components/scroll-effects-control/index.js:315
-msgid "Out some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:286
-#: src/components/scroll-effects-control/index.js:319
-msgid "In more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:290
-#: src/components/scroll-effects-control/index.js:323
-msgid "Out more"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:336
-msgid "Placeholder effect"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:340
-msgid "Another"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:356
-msgid "Top of screen"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:360
-msgid "Middle of screen"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:364
-msgid "Bottom of screen"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:375
-msgid "Disable all"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:380
-msgid "In vertical Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:384
-msgid "Out vertical Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:388
-msgid "In horizontal Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:392
-msgid "Out horizontal Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:396
-msgid "In rotate Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:400
-msgid "Out rotate Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:404
-msgid "In scale Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:408
-msgid "Out scale Blur"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:413
-msgid "Fade in up less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:417
-msgid "Fade in down less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:421
-msgid "Fade in left less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:425
-msgid "Fade in right less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:429
-msgid "Fade in up some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:433
-msgid "Fade in down some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:437
-msgid "Fade in left some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:441
-msgid "Fade in right some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:446
-msgid "Rotate up less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:450
-msgid "Rotate down less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:454
-msgid "Rotate left less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:458
-msgid "Rotate right less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:462
-msgid "Rotate up some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:466
-msgid "Rotate down some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:470
-msgid "Rotate left some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:474
-msgid "Rotate right some"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:479
-msgid "Scale in Fade in less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:483
-msgid "Scale out Fade out less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:487
-msgid "Scale up Fade in less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:491
-msgid "Scale down Fade in less"
-msgstr ""
-
-#: src/components/scroll-effects-control/index.js:524
+#: src/components/scroll-effects-control/index.js:129
 msgid "Scroll combinations"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:581
+#: src/components/scroll-effects-control/index.js:190
 msgid "Direction preset"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:593
+#: src/components/scroll-effects-control/index.js:197
 msgid "Easing function"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:612
+#: src/components/scroll-effects-control/index.js:213
 msgid "Speed (ms)"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:644
+#: src/components/scroll-effects-control/index.js:244
 msgid "Delay (ms)"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:676
+#: src/components/scroll-effects-control/index.js:275
+msgid "Use block height as zone reference"
+msgstr ""
+
+#: src/components/scroll-effects-control/index.js:289
 msgid "Viewport entry"
 msgstr ""
 
-#: src/components/scroll-effects-control/index.js:783
+#: src/components/scroll-effects-control/index.js:392
 msgid "Reverse scroll playback"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:75
+msgid "Rotate X"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:80
+msgid "Rotate Y"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:87
+#: src/components/transform-control/index.js:237
+msgid "Scale"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:92
+msgid "Scale X"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:97
+msgid "Scale Y"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:114
+msgid "Ease In"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:118
+msgid "Ease Out"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:122
+msgid "Ease In Out"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:129
+msgid "Top of screen"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:133
+msgid "Middle of screen"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:137
+msgid "Bottom of screen"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:148
+msgid "Disable all"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:153
+msgid "In vertical Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:157
+msgid "Out vertical Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:161
+msgid "In horizontal Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:165
+msgid "Out horizontal Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:169
+msgid "In rotate Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:173
+msgid "Out rotate Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:177
+msgid "In scale Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:181
+msgid "Out scale Blur"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:186
+msgid "Fade in up less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:190
+msgid "Fade in down less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:194
+msgid "Fade in left less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:198
+msgid "Fade in right less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:202
+msgid "Fade in up some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:206
+msgid "Fade in down some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:210
+msgid "Fade in left some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:214
+msgid "Fade in right some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:219
+msgid "Rotate up less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:223
+msgid "Rotate down less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:227
+msgid "Rotate left less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:231
+msgid "Rotate right less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:235
+msgid "Rotate up some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:239
+msgid "Rotate down some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:243
+msgid "Rotate left some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:247
+msgid "Rotate right some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:252
+msgid "Scale in Fade in less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:256
+msgid "Scale out Fade out less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:260
+msgid "Scale up Fade in less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:264
+msgid "Scale down Fade in less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:279
+#: src/components/scroll-effects-control/options.js:382
+msgid "Up less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:283
+#: src/components/scroll-effects-control/options.js:386
+msgid "Down less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:287
+#: src/components/scroll-effects-control/options.js:390
+msgid "Up some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:291
+#: src/components/scroll-effects-control/options.js:394
+msgid "Down some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:295
+#: src/components/scroll-effects-control/options.js:398
+msgid "Up more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:299
+#: src/components/scroll-effects-control/options.js:402
+msgid "Down more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:312
+#: src/components/scroll-effects-control/options.js:347
+msgid "Right less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:316
+#: src/components/scroll-effects-control/options.js:351
+msgid "Left less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:320
+#: src/components/scroll-effects-control/options.js:355
+msgid "Right some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:324
+#: src/components/scroll-effects-control/options.js:359
+msgid "Left some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:328
+#: src/components/scroll-effects-control/options.js:363
+msgid "Right more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:332
+#: src/components/scroll-effects-control/options.js:367
+msgid "Left more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:415
+#: src/components/scroll-effects-control/options.js:448
+msgid "In less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:419
+#: src/components/scroll-effects-control/options.js:452
+msgid "Out less"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:423
+#: src/components/scroll-effects-control/options.js:456
+msgid "In some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:427
+#: src/components/scroll-effects-control/options.js:460
+msgid "Out some"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:431
+#: src/components/scroll-effects-control/options.js:464
+msgid "In more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:435
+#: src/components/scroll-effects-control/options.js:468
+msgid "Out more"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:481
+msgid "Placeholder effect"
+msgstr ""
+
+#: src/components/scroll-effects-control/options.js:485
+msgid "Another"
+msgstr ""
+
+#: src/components/scroll-effects-control/scroll-effect-unique-control.js:217
+msgid "Units"
 msgstr ""
 
 #: src/components/svg-fill-control/index.js:202
@@ -6328,10 +6358,6 @@ msgstr ""
 #: src/components/toolbar/components/text-format-overline/index.js:114
 #: src/components/typography-control/index.js:831
 msgid "Overline"
-msgstr ""
-
-#: src/components/transform-control/index.js:237
-msgid "Scale"
 msgstr ""
 
 #: src/components/transform-control/index.js:242

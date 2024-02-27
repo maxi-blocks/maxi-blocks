@@ -51,14 +51,428 @@ class MaxiBlocks_DynamicContent
     {
     }
 
+    /**
+    * Extracts the last closing HTML tag from the given content.
+    *
+    * This function searches for the last occurrence of a closing HTML tag
+    * within the provided string. If no valid closing tag is found, an empty
+    * string is returned.
+    *
+    * @param string $content The HTML content to search within.
+    * @return string The last closing HTML tag, or an empty string if none found.
+    */
+    public function get_last_closing_tag($content)
+    {
+        // Reverse the content to find the last closing tag from the end more easily
+        $reversedContent = strrev($content);
+
+        // Look for the first occurrence of a reversed closing tag
+        if (preg_match('/>([a-zA-Z]+)\/</', $reversedContent, $reversedMatches)) {
+            // Reverse the tag name back to normal
+            $tagName = strrev($reversedMatches[1]);
+            // Construct the closing tag correctly
+            $closingTag = '</' . $tagName . '>';
+
+            // Return the constructed closing tag
+            return $closingTag;
+        }
+
+        // Return an empty string if no valid closing tag is found
+        return '';
+    }
+
+
+
+
+    /**
+     * Extracts the value of the first 'id' attribute found in the given content.
+     *
+     * This function searches the provided string for an 'id' attribute and returns
+     * its value. The search is case-insensitive and returns the value of the first
+     * 'id' attribute it finds. If no 'id' attribute is found, an empty string is returned.
+     *
+     * @param string $content The content to search for an 'id' attribute.
+     * @return string The value of the first 'id' attribute found, or an empty string if none is found.
+     */
+    public function get_first_id_value($content)
+    {
+        // Define the regex pattern to match an 'id' attribute
+        $pattern = '/id="([^"]+)"/i';
+
+        // Use preg_match to search for the pattern in the content
+        if (preg_match($pattern, $content, $matches)) {
+            // If a match is found, return the captured value of the 'id' attribute
+            return $matches[1];
+        } else {
+            // If no match is found, return an empty string
+            return '';
+        }
+    }
+
+    /**
+     * Retrieves the total number of users on the site.
+     *
+     * This function returns the count of all users registered on the site, regardless of their role or status.
+     *
+     * @return int The total number of registered users on the site.
+     */
+    public function get_total_users()
+    {
+        $user_count_data = count_users();
+        $total_users = $user_count_data['total_users'];
+
+        return $total_users;
+    }
+
+    /**
+     * Retrieves the total number of posts for a given relation and identifier.
+     *
+     * This function allows for counting posts, pages, products, or any custom post type
+     * based on a specified relation (e.g., category, tag, author) and an identifier.
+     * It supports different types of relations and adjusts the query accordingly to
+     * ensure only published items are counted.
+     *
+     * @param string $relation The type of relation to filter by ('by-category', 'by-tag', 'by-author').
+     * @param int|string $id The identifier for the relation (e.g., category ID, tag ID, author ID).
+     * @param string $type Optional. The type of post to count. Defaults to 'post'.
+     * @return int The total number of items found matching the criteria.
+     * @throws Exception If the provided relation is not supported for the given post type.
+     */
+    public function get_total_posts_by_relation($relation, $id, $type = 'post')
+    {
+
+        // Initialize the query args array
+        $args = array(
+            'post_type'      => $type, // Can be 'post', 'page', 'product', or any custom post type
+            'post_status'    => ($type === 'attachment' ? 'inherit' : 'publish'), // Only count published items
+            'fields'         => 'ids', // Retrieve only the IDs for performance
+            'nopaging'       => true, // Retrieve all items matching the criteria
+        );
+
+        // Modify the query based on the relation
+        switch ($relation) {
+            case 'by-category':
+                if ($type === 'product') {
+                    // Use WooCommerce's product category taxonomy
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'product_cat',
+                            'field'    => 'term_id',
+                            'terms'    => array($id),
+                        ),
+                    );
+                } elseif ($type === 'post') {
+                    $args['category__in'] = array($id); // Array of category IDs
+                } else {
+                    throw new Exception("Categories are not associated with this post type.");
+                }
+                break;
+            case 'by-tag':
+                if ($type === 'product') {
+                    // Use WooCommerce's product tag taxonomy
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'product_tag',
+                            'field'    => 'term_id',
+                            'terms'    => array($id),
+                        ),
+                    );
+                } elseif ($type === 'post') {
+                    $args['tag__in'] = array($id); // Array of tag IDs
+                } else {
+                    throw new Exception("Tags are not associated with this post type.");
+                }
+                break;
+            case 'by-author':
+                if ($type === 'attachment') {
+                    // Ensure correct post_status is set for attachments
+                    $args['post_status'] = 'inherit';
+                }
+                // Author queries can be performed on posts, pages, attachments and products
+                $args['author'] = $id; // Author ID
+                break;
+        }
+
+        // Create a new WP_Query instance
+        $query = new WP_Query($args);
+
+        // Return the total number of posts/pages/products found
+        return $query->found_posts;
+    }
+
+    /**
+     * Generates HTML content for pagination links based on the given criteria.
+     *
+     * This function creates pagination links for navigating through a list of posts,
+     * pages, products, or any custom post type. It supports pagination based on categories,
+     * tags, authors, or other specified relations. The function dynamically calculates
+     * the total number of pages and generates previous, next, and specific page number
+     * links according to the current page and total items.
+     *
+     * @param array $cl An array containing pagination and content-related parameters.
+     * @param string $pagination_anchor An anchor tag to append to pagination links for scroll position adjustment.
+     * @return string HTML content for the pagination links.
+     */
+    public function get_pagination_content($cl, $pagination_anchor)
+    {
+        if(empty($cl) || !is_array($cl)) {
+            return '';
+        }
+
+        @list(
+            'cl-pagination-previous-text' => $cl_prev_text,
+            'cl-pagination-next-text' => $cl_next_text,
+            'cl-pagination-show-page-list' => $cl_show_page_list,
+            'cl-pagination-per-page' => $cl_pagination_per_page,
+            'cl-pagination-total' => $cl_pagination_total,
+            'cl-pagination-total-all' => $cl_pagination_total_all,
+            'cl-relation' => $cl_relation,
+            'cl-id' => $cl_id,
+            'cl-type' => $cl_type,
+        ) = $cl;
+
+        if (!isset($cl_id) || !isset($cl_relation)) {
+            return '';
+        }
+
+        $pagination_total = $cl_pagination_total;
+
+        // Determine the content type
+        $type = match ($cl_type) {
+            'pages' => 'page',
+            'products' => 'product',
+            'media' => 'attachment',
+            'users' => 'users',
+            default => 'post',
+        };
+
+        // Update total count if necessary
+        if($cl_pagination_total_all) {
+            if ($type === 'users') {
+                // If the type is 'users', get the total number of users
+                $pagination_total = $this->get_total_users();
+            } else {
+                $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
+            }
+        }
+
+        // Adjust $pagination_total to remove remainder
+        $remainder = $pagination_total % $cl_pagination_per_page;
+        if ($remainder !== 0) {
+            $pagination_total -= $remainder;
+        }
+
+        // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
+        $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
+
+        // Calculate next and previous page numbers
+        $pagination_page_next = $pagination_page + 1;
+        $pagination_page_prev = $pagination_page - 1;
+
+        // Build the current URL without query parameters
+        $current_url_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+        $current_url = $current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+        // Initialize an array to hold query parameters
+        $current_query_params = [];
+
+        // Extract the query string from the current URL and parse it if not null
+        $query_string = parse_url($current_url, PHP_URL_QUERY) ?? '';
+        parse_str($query_string, $current_query_params);
+
+
+        // Start building the pagination HTML content
+        $content = '<div class="maxi-pagination">';
+
+        // Previous link
+        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev');
+
+        // Page list
+        if($cl_show_page_list) {
+            $content .= $this->build_page_list($pagination_page, $pagination_total, $cl_pagination_per_page, $current_url, $current_query_params, $pagination_anchor);
+        }
+
+        // Next link
+        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $pagination_total / $cl_pagination_per_page);
+
+        $content .= '</div>'; // Closing maxi-pagination div
+
+        return $content;
+    }
+
+    /**
+     * Helper method to build individual pagination links.
+     *
+     * @param int $page The page number for the link.
+     * @param string $text The text to display inside the link.
+     * @param string $base_url The base URL to which the query string will be appended.
+     * @param array $query_params Current set of query parameters.
+     * @param string $anchor The anchor tag to append to the link.
+     * @param string $type 'prev' or 'next' to determine if additional conditions are needed.
+     * @param float|int $max_page Optional. The maximum page number for 'next' link type.
+     * @return string HTML content for a single pagination link.
+     */
+    private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
+    {
+        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
+            $query_params['cl-page'] = $page;
+            $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
+            $escaped_link = esc_url($link); // Escaping the URL for HTML output
+            $escaped_text = esc_html($text); // Escaping the text for HTML content
+            return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, $escaped_link, $escaped_text);
+        }
+        return sprintf('<div class="maxi-pagination__%s"></div>', $type);
+    }
+
+
+    /**
+     * Builds the HTML content for the list of page numbers, including handling for
+     * large number of pages with ellipses for skipped sections.
+     *
+     * @param int $current_page The current page number being viewed.
+     * @param int $total_items The total number of items to paginate over.
+     * @param int $items_per_page The number of items shown per page.
+     * @param string $base_url The base URL to which the pagination query will be appended.
+     * @param array $query_params An array of current query parameters to preserve in pagination links.
+     * @param string $anchor An HTML anchor to append to pagination links for anchor navigation.
+     * @return string The generated HTML content for the pagination page list.
+     */
+    private function build_page_list($current_page, $total_items, $items_per_page, $base_url, &$query_params, $anchor)
+    {
+        // Determine the total number of pages
+        $total_pages = (int) ceil($total_items / $items_per_page);
+
+        // Start building the page list HTML
+        $page_list_html = '<div class="maxi-pagination__pages">';
+
+        // Define the range of pages to display near the current page
+        $range = 2; // This defines how many pages to show around the current page
+
+        // Calculate the range of pages to show
+        $initial_pages = max(1, $current_page - $range);
+        $final_pages = min($total_pages, $current_page + $range);
+
+        // Show the first page and ellipses if necessary
+        if ($initial_pages > 1) {
+            $page_list_html .= $this->generate_page_link(1, $base_url, $query_params, $anchor);
+            if ($initial_pages > 2) {
+                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+            }
+        }
+
+        // Generate links for the range around the current page
+        for ($page = $initial_pages; $page <= $final_pages; $page++) {
+            $page_list_html .= $this->generate_page_link($page, $base_url, $query_params, $anchor, $current_page);
+        }
+
+        // Show the last page and ellipses if necessary
+        if ($final_pages < $total_pages) {
+            if ($final_pages < $total_pages - 1) {
+                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+            }
+            $page_list_html .= $this->generate_page_link($total_pages, $base_url, $query_params, $anchor);
+        }
+
+        $page_list_html .= '</div>'; // Close the page list container
+
+        return $page_list_html;
+    }
+
+    /**
+     * Generates an individual page link or a current page span.
+     *
+     * @param int $page The page number for the link.
+     * @param string $base_url The base URL for the link.
+     * @param array $query_params The query parameters to include in the link.
+     * @param string $anchor The anchor tag to append to the link.
+     * @param int|null $current_page The current page number, if generating a current page span.
+     * @return string The HTML string for a page link or a current page span.
+     */
+    private function generate_page_link($page, $base_url, &$query_params, $anchor, $current_page = null)
+    {
+        $query_params['cl-page'] = $page;
+        $url = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor);
+        $escaped_url = esc_url($url); // Escape the URL for HTML output
+
+        if ($page === $current_page) {
+            // Use esc_html() to escape the page number for safe HTML display
+            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">" . esc_html($page) . "</span>";
+        } else {
+            // Use esc_url() for the href attribute and esc_html() for the page number
+            return "<a href=\"" . $escaped_url . "\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">" . esc_html($page) . "</span></a>";
+        }
+    }
+
+
+    /**
+     * Modifies the provided content by appending pagination controls.
+     *
+     * This function checks the provided attributes for pagination settings, and if
+     * pagination is enabled, it dynamically generates pagination links based on
+     * the content's unique identifier. It then inserts these links into the content
+     * string before the last closing tag.
+     *
+     * @param array $attributes Associative array of attributes that may enable pagination and provide necessary identifiers.
+     * @param string $content The original content to which pagination might be added.
+     * @return string The modified content with pagination added, or the original content if pagination is not enabled.
+     */
+    public function render_pagination($attributes, $content)
+    {
+
+        // Check if pagination is enabled in the attributes
+        if (!array_key_exists('cl-pagination', $attributes) || !$attributes['cl-pagination']) {
+            return $content;
+        }
+
+        // Extract the unique ID and check its format
+        $unique_id = $attributes['uniqueID'] ?? '';
+        if (str_ends_with($unique_id, '-u')) {
+            try {
+                // Retrieve configuration list (cl) for the unique ID
+                $cl = $this->get_cl($unique_id);
+
+                // Extract the last closing tag and the first ID value for the pagination anchor
+                $last_tag = $this->get_last_closing_tag($content);
+
+                $pagination_anchor = $this->get_first_id_value($content);
+
+                // Generate pagination content based on the cl settings and the anchor
+                $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
+
+
+                // Insert the pagination content before the last closing tag of the original content
+                $content_before_last_tag = substr($content, 0, strrpos($content, '<'));
+                $modified_content = $content_before_last_tag . $pagination_content . $last_tag;
+
+                return $modified_content;
+            } catch (Exception $e) {
+                // Log any exceptions and return the unmodified content
+                error_log('Error in render_pagination for uniqueID ' . $unique_id . ': ' . $e->getMessage());
+                return $content;
+            }
+        }
+
+        // Return the original content if the unique ID doesn't end with '-u'
+        return $content;
+    }
+
 
     public function render_dc($attributes, $content)
     {
+
         if (!array_key_exists('dc-status', $attributes)) {
+            if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
+                return $this->render_pagination($attributes, $content);
+            }
             return $content;
         }
         if (!$attributes['dc-status']) {
             return $content;
+        }
+
+        $pagination_page = 1;
+        if (isset($_GET['cl-page'])) {
+            $pagination_page = absint($_GET['cl-page']);
         }
 
         $unique_id = $attributes['uniqueID'];
@@ -73,7 +487,6 @@ class MaxiBlocks_DynamicContent
 
         if(str_ends_with($unique_id, '-u')) {
             self::$custom_data = $this->get_dc_cl($unique_id);
-
         } elseif (self::$custom_data === null) {
 
             if (class_exists('MaxiBlocks_Styles')) {
@@ -89,6 +502,11 @@ class MaxiBlocks_DynamicContent
 
         if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
             $context_loop = self::$custom_data[$unique_id];
+            $accumulator = $context_loop['cl-accumulator'];
+            if(isset($_GET['cl-page'])) {
+                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 0;
+                $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
+            }
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
@@ -210,12 +628,14 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_image($attributes, $content)
     {
+
         @list(
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-field' => $dc_field,
+            'dc-media-id' => $dc_media_id,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -231,7 +651,6 @@ class MaxiBlocks_DynamicContent
         // Get media ID
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
-
             $media_id = is_array($image) && $image['id'];
         } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $post = $this->get_post($attributes);
@@ -248,7 +667,8 @@ class MaxiBlocks_DynamicContent
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
-            $media_id = $dc_id;
+            $post = $this->get_post($attributes);
+            $media_id = $post->ID ?? $dc_media_id ?? $dc_id;
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
             $post = $this->get_post($attributes);
@@ -340,6 +760,7 @@ class MaxiBlocks_DynamicContent
             $dc_order = 'desc';
         }
 
+
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
 
@@ -397,6 +818,7 @@ class MaxiBlocks_DynamicContent
 
             return end($query->posts);
         } elseif ($dc_type === 'media') {
+
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
@@ -645,6 +1067,17 @@ class MaxiBlocks_DynamicContent
         return $site_data;
     }
 
+    /**
+     * Retrieves media content associated with a post based on given attributes.
+     *
+     * This function dynamically retrieves media content from a post, such as the post's author or a specific field
+     * defined in the 'dc-field' attribute of the input array. If the 'dc-field' is 'author', it fetches the display name
+     * of the post's author. For any other 'dc-field' value, it fetches the corresponding property from the post.
+     *
+     * @param array $attributes An associative array of attributes used to identify the post and the specific media content to retrieve.
+     *                          The array must contain a 'dc-field' key that specifies the content to fetch (e.g., 'author', 'title').
+     * @return mixed Returns the requested media content if available. If the specified content cannot be found or the post does not exist, returns null.
+     */
     public function get_media_content($attributes)
     {
         @list(
@@ -652,20 +1085,32 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = $this->get_post($attributes);
-        $media_data = $post->{"post_$dc_field"};
 
-        if ($dc_field === 'author') {
+        // Check if $post is false (boolean) before attempting to access its properties
+        if (!is_object($post)) {
+            return 0;
+        }
+
+        // For fields other than 'author', attempt to dynamically access the property
+        if ($dc_field !== 'author') {
+            $media_data = $post->{"post_$dc_field"};
+        } else {
+            // Specifically handle the 'author' case
             $media_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         return $media_data;
     }
 
+
     public function get_user_content($attributes)
     {
-        @list(
-            'dc-field' => $dc_field,
-        ) = $attributes;
+        // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
+        if (!array_key_exists('dc-field', $attributes)) {
+            return 0;
+        } else {
+            $dc_field = $attributes['dc-field'];
+        }
 
         $user = $this->get_post($attributes);
 
@@ -676,10 +1121,28 @@ class MaxiBlocks_DynamicContent
             'description' => 'description',
         ];
 
-        $user_data = $user->data->{$user_dictionary[$dc_field]};
+        // Check if the $dc_field is defined in your dictionary
+        if (!array_key_exists($dc_field, $user_dictionary)) {
+            return 0;
+        }
+
+        // Ensure $user is an object and $user->data exists and is an object
+        if (!is_object($user) || !isset($user->data) || !is_object($user->data)) {
+            return 0;
+        }
+
+        // Check if the property exists in $user->data
+        $property = $user_dictionary[$dc_field];
+        if (!property_exists($user->data, $property)) {
+            return 0;
+        }
+
+        $user_data = $user->data->$property;
 
         return $user_data;
     }
+
+
 
     public function get_taxonomy_content($attributes)
     {
@@ -905,7 +1368,19 @@ class MaxiBlocks_DynamicContent
             'year' => $dc_year === 'none' ? null : $dc_year,
         );
 
-        $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+        // Validate the $date variable
+        if (empty($date) || strtotime($date) === false) {
+            // Set to current date/time or another default value if invalid
+            $date = date('Y-m-d H:i:s');
+        }
+
+        try {
+            $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+        } catch (Exception $e) {
+            error_log('Failed to create DateTime object: ' . $e->getMessage());
+            return '';
+        }
+
 
         $content = '';
         $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
@@ -1168,6 +1643,29 @@ class MaxiBlocks_DynamicContent
         if (!empty($block_meta)) {
             $block_meta_parsed = json_decode($block_meta, true);
             $response = $block_meta_parsed['dynamic_content'] ?? [];
+            return $response;
+        }
+    }
+
+    /**
+    * Return CL for blocks without DC (for pagination)
+    *
+    * @param string $unique_id
+    */
+    public function get_cl(string $id)
+    {
+        global $wpdb;
+
+        $block_meta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                $id
+            )
+        );
+
+        if (!empty($block_meta)) {
+            $block_meta_parsed = json_decode($block_meta, true);
+            $response = $block_meta_parsed['context_loop'][$id] ?? [];
             return $response;
         }
     }

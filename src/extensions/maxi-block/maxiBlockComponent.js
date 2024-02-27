@@ -9,6 +9,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { Component, createRoot, createRef } from '@wordpress/element';
 import {
 	dispatch,
@@ -197,6 +198,12 @@ class MaxiBlockComponent extends Component {
 		this.isReusable = false;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		this.paginationTypography = getGroupAttributes(
+			attributes,
+			'typography',
+			false,
+			'cl-pagination-'
+		);
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
@@ -208,7 +215,6 @@ class MaxiBlockComponent extends Component {
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.originalBlockStyle = attributes?.blockStyle;
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
@@ -753,12 +759,6 @@ class MaxiBlockComponent extends Component {
 		if (isSiteEditor) {
 			const siteEditorIframe = getSiteEditorIframe();
 
-			if (this.isPatternsPreview) {
-				if (!iframe) return;
-				const iframeHead = iframe.contentDocument?.head;
-				if (iframeHead) wrapper = getStylesWrapper(iframeHead);
-			}
-
 			if (this.isTemplatePartPreview) {
 				const templateViewIframe = getTemplateViewIframe(uniqueID);
 				if (templateViewIframe) {
@@ -924,6 +924,12 @@ class MaxiBlockComponent extends Component {
 						},
 					}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
+				...(!dcStatus &&
+					contextLoop?.['cl-status'] && {
+						context_loop: {
+							[uniqueID]: contextLoop,
+						},
+					}),
 			},
 		};
 	}
@@ -1036,32 +1042,22 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
+		if (
+			this.areFontsLoaded.current ||
+			(isEmpty(this.typography) && isEmpty(this.paginationTypography))
+		)
+			return;
 
-		const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+		if (!target) return;
 
-		if (siteEditorPreviewIframes.length > 0) {
-			siteEditorPreviewIframes.forEach(iframe => {
-				const target = iframe?.contentDocument;
-				if (!target) return;
+		const response = isEmpty(this.paginationTypography)
+			? getAllFonts(this.typography, 'custom-formats')
+			: getAllFonts(this.paginationTypography, 'custom-formats');
+		if (isEmpty(response)) return;
 
-				const response = getAllFonts(this.typography, 'custom-formats');
-				if (isEmpty(response)) return;
-
-				loadFonts(response, true, target);
-			});
-			this.areFontsLoaded.current = true;
-		} else {
-			const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-
-			if (!target) return;
-
-			const response = getAllFonts(this.typography, 'custom-formats');
-			if (isEmpty(response)) return;
-
-			loadFonts(response, true, target);
-			this.areFontsLoaded.current = true;
-		}
+		loadFonts(response, true, target);
+		this.areFontsLoaded.current = true;
 	}
 
 	/**
@@ -1074,37 +1070,84 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		const previewIframes = document.querySelectorAll(
-			'.edit-site-page-content .block-editor-block-preview__container iframe'
-		);
-
 		this.rootSlot = this.getRootEl(iframe);
+
+		// If the block is a pattern preview, we need to replace the iframe with an image
+		const previewIframes = getSiteEditorPreviewIframes();
+
 		if (previewIframes.length > 0) {
 			this.isPatternsPreview = true;
+			const disconnectTimeout = 10000; // 10 seconds
+			const timeouts = {};
+			let imgPath =
+				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
+
+			const linkElement = document.querySelector(
+				'#maxi-blocks-block-css'
+			);
+			const href = linkElement?.getAttribute('href');
+			const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
+
+			if (pluginsPath) imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
 			previewIframes.forEach(iframe => {
-				this.rootSlot = this.getRootEl(iframe);
-				if (
-					this.originalBlockStyle &&
-					this.props.attributes.blockStyle !== this.originalBlockStyle
-				) {
-					this.props.attributes.blockStyle = this.originalBlockStyle;
-				}
-				if (this.rootSlot) {
-					const styleComponent = (
-						<StyleComponent
-							uniqueID={uniqueID}
-							blockStyle={this.props.attributes.blockStyle}
-							stylesObj={this.getStylesObject}
-							currentBreakpoint={this.props.deviceType}
-							blockBreakpoints={this.getBreakpoints}
-							isSiteEditor
-							isIframe
-						/>
+				if (!iframe || !iframe.parentNode) return;
+
+				const replaceIframeWithImage = (iframe, observer) => {
+					const iframeDocument = iframe.contentDocument;
+					if (!iframeDocument) return;
+					const iframeBody = iframeDocument.body;
+					if (!iframeBody) return;
+
+					// Clear the timeout when the iframe mutates
+					clearTimeout(timeouts[iframe]);
+					timeouts[iframe] = setTimeout(() => {
+						observer.disconnect();
+						delete timeouts[iframe];
+					}, disconnectTimeout);
+					// Check if the iframe content is fully loaded
+					const containsMaxiBlocksContainer =
+						iframeBody.querySelector(
+							'.is-root-container .maxi-block'
+						);
+
+					if (!containsMaxiBlocksContainer) return; // If not found, skip this iframe
+
+					// Add the pattern preview class to the iframe's parent element
+					iframe.parentNode.classList.add(
+						'maxi-blocks-pattern-preview'
 					);
-					this.rootSlot.render(styleComponent);
-					this.rootSlot = null;
-				}
+
+					const img = document.createElement('img');
+					img.src = imgPath;
+					img.alt = __(
+						'Preview for pattern with MaxiBlocks',
+						'maxi-blocks'
+					);
+					img.style.width = '100%';
+					img.style.height = 'auto';
+
+					iframe.parentNode.replaceChild(img, iframe);
+					// Disconnect the observer
+					observer.disconnect();
+				};
+
+				// Create a new MutationObserver
+				const observer = new MutationObserver(
+					(mutationsList, observer) => {
+						for (const mutation of mutationsList) {
+							replaceIframeWithImage(mutation.target, observer);
+						}
+					}
+				);
+
+				// Configure the observer with the iframe and desired attributes
+				observer.observe(iframe, {
+					attributes: true,
+					childList: true,
+					subtree: true,
+				});
 			});
+			return;
 		}
 
 		let obj;

@@ -148,7 +148,7 @@ class MaxiBlocks_Styles
     {
         switch ($js_var) {
             case 'search':
-                return [$meta, get_search_link()];
+                return [$meta, home_url('/') . '?s='];
                 break;
             case 'map':
                 return [$meta, get_option('google_api_key_option')];
@@ -1062,7 +1062,6 @@ class MaxiBlocks_Styles
 
         $data = $this->get_content_for_blocks_frontend($id);
 
-
         if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
@@ -1200,10 +1199,10 @@ class MaxiBlocks_Styles
     private function enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta)
     {
         if ($script === 'number-counter') {
-            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)));
+            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)), [], MAXI_PLUGIN_VERSION);
         }
 
-        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)));
+        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION);
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
     }
 

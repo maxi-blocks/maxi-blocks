@@ -11,7 +11,6 @@ import { dispatch, select, useSelect } from '@wordpress/data';
  * External dependencies
  */
 import classnames from 'classnames';
-import SliderContext from './context';
 import { isEmpty } from 'lodash';
 import loadable from '@loadable/component';
 
@@ -20,6 +19,7 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
+import SliderContext from './context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { withMaxiContextLoop } from '../../extensions/DC';

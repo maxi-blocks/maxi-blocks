@@ -382,8 +382,6 @@ class MaxiBlocks_Styles
             $template_id .= 'single';
         }
 
-        echo '$template_id: '.$template_id.'<br>';
-
         return $template_id;
     }
 

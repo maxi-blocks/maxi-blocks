@@ -6,25 +6,31 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	fromListToText,
-	fromTextToList,
-	getFormatsOnMerge,
-} from '../../extensions/text/formats';
+import { getFormatsOnMerge } from '../../extensions/text/formats';
+import { createBlock } from '@wordpress/blocks';
+
+const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 const onMerge = (props, forward) => {
-	const { attributes, clientId, maxiSetAttributes } = props;
-	const { isList, content, 'custom-formats': customFormats } = attributes;
+	const { name: blockName, attributes, clientId, maxiSetAttributes } = props;
+	const { content, 'custom-formats': customFormats } = attributes;
 
 	const {
 		getNextBlockClientId,
 		getPreviousBlockClientId,
 		getBlockAttributes,
 		getBlock,
+		getBlockIndex,
+		getBlockOrder,
+		getBlockParents,
 	} = select('core/block-editor');
 
-	const { removeBlock, updateBlockAttributes } =
-		dispatch('core/block-editor');
+	const {
+		removeBlock,
+		insertBlock,
+		updateBlockAttributes,
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = dispatch('core/block-editor');
 
 	if (forward) {
 		const nextBlockClientId = getNextBlockClientId(clientId);
@@ -34,22 +40,14 @@ const onMerge = (props, forward) => {
 			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
 			const {
 				content: nextBlockContent,
-				isList: nextBlockIsList,
 				'custom-formats': nextBlockCustomFormats,
 			} = nextBlockAttributes;
-
-			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
-			const newNextBlockContent = nextBlockContentNeedsTransform
-				? nextBlockIsList
-					? fromListToText(nextBlockContent)
-					: fromTextToList(nextBlockContent)
-				: nextBlockContent;
 
 			const { content: newContent, 'custom-formats': newCustomFormats } =
 				getFormatsOnMerge(
 					{ content, 'custom-formats': customFormats },
 					{
-						content: newNextBlockContent,
+						content: nextBlockContent,
 						'custom-formats': nextBlockCustomFormats,
 					}
 				);
@@ -63,9 +61,43 @@ const onMerge = (props, forward) => {
 		}
 	} else {
 		const previousBlockClientId = getPreviousBlockClientId(clientId);
-		const blockName = getBlock(previousBlockClientId)?.name;
+		const previousBlockName = getBlock(previousBlockClientId)?.name;
 
-		if (!previousBlockClientId || blockName !== 'maxi-blocks/text-maxi') {
+		if (
+			// Transform first `list-item-maxi` into `text-maxi` on merge
+			!previousBlockClientId &&
+			blockName === 'maxi-blocks/list-item-maxi'
+		) {
+			const blockParents = getBlockParents(
+				clientId,
+				'maxi-blocks/text-maxi'
+			);
+			const textMaxiParentClientId = blockParents.at(-1);
+
+			if (!content) {
+				const isOneListItem =
+					getBlockOrder(textMaxiParentClientId).length === 1;
+
+				removeBlock(isOneListItem ? textMaxiParentClientId : clientId);
+				return;
+			}
+
+			const textMaxi = createBlock('maxi-blocks/text-maxi', {
+				content,
+				'custom-formats': customFormats,
+			});
+
+			const rootClientId = blockParents.at(-2);
+
+			removeBlock(clientId);
+
+			markNextChangeAsNotPersistent();
+			insertBlock(
+				textMaxi,
+				getBlockIndex(textMaxiParentClientId),
+				rootClientId
+			);
+		} else if (!ALLOWED_BLOCKS.includes(previousBlockName)) {
 			// Basically removes the block when pressing backspace and there's not block before
 			// Commented as is something we might want to come back in future
 			// removeBlock(clientId);
@@ -76,28 +108,47 @@ const onMerge = (props, forward) => {
 			const {
 				content: previousBlockContent,
 				'custom-formats': previousBlockCustomFormats,
+				isList,
 			} = previousBlockAttributes;
 
-			const { content: newContent, 'custom-formats': newCustomFormats } =
-				getFormatsOnMerge(
+			if (!isList && previousBlockName === blockName) {
+				const {
+					content: newContent,
+					'custom-formats': newCustomFormats,
+				} = getFormatsOnMerge(
 					{
 						content: previousBlockContent,
 						'custom-formats': previousBlockCustomFormats,
 					},
 					{
-						content: attributes.isList
-							? fromListToText(content)
-							: content,
+						content,
 						'custom-formats': customFormats,
 					}
 				);
 
-			updateBlockAttributes(previousBlockClientId, {
-				content: newContent,
-				'custom-formats': newCustomFormats,
-			});
+				updateBlockAttributes(previousBlockClientId, {
+					content: newContent,
+					'custom-formats': newCustomFormats,
+				});
 
-			removeBlock(clientId);
+				removeBlock(clientId);
+			} else {
+				const listItem = createBlock('maxi-blocks/list-item-maxi', {
+					content,
+					'custom-formats': customFormats,
+				});
+
+				const {
+					insertBlock,
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+				} = dispatch('core/block-editor');
+
+				removeBlock(clientId);
+
+				markNextChangeAsNotPersistent();
+				insertBlock(listItem, undefined, previousBlockClientId);
+			}
 		}
 	}
 };

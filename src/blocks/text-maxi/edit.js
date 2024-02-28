@@ -5,7 +5,6 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { resolveSelect } from '@wordpress/data';
 
 /**
  * External dependencies

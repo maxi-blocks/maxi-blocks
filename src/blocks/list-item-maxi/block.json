@@ -118,8 +118,7 @@
       "type": "boolean"
     },
     "link-palette-color-general": {
-      "type": "number",
-      "default": 4
+      "type": "number"
     },
     "link-palette-color-xxl": {
       "type": "number"
@@ -226,8 +225,7 @@
       "type": "boolean"
     },
     "link-hover-palette-color-general": {
-      "type": "number",
-      "default": 6
+      "type": "number"
     },
     "link-hover-palette-color-xxl": {
       "type": "number"
@@ -334,8 +332,7 @@
       "type": "boolean"
     },
     "link-active-palette-color-general": {
-      "type": "number",
-      "default": 6
+      "type": "number"
     },
     "link-active-palette-color-xxl": {
       "type": "number"
@@ -442,8 +439,7 @@
       "type": "boolean"
     },
     "link-visited-palette-color-general": {
-      "type": "number",
-      "default": 6
+      "type": "number"
     },
     "link-visited-palette-color-xxl": {
       "type": "number"
@@ -571,8 +567,7 @@
       "type": "boolean"
     },
     "palette-color-general": {
-      "type": "number",
-      "default": 3
+      "type": "number"
     },
     "palette-color-xxl": {
       "type": "number"
@@ -679,8 +674,7 @@
       "type": "boolean"
     },
     "list-palette-color-general": {
-      "type": "number",
-      "default": 4
+      "type": "number"
     },
     "list-palette-color-xxl": {
       "type": "number"
@@ -1258,8 +1252,7 @@
       "type": "boolean"
     },
     "palette-color-general-hover": {
-      "type": "number",
-      "default": 5
+      "type": "number"
     },
     "palette-color-xxl-hover": {
       "type": "number"
@@ -1872,8 +1865,7 @@
       "type": "string"
     },
     "typography-status-hover": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "background-layers": {
       "type": "array"

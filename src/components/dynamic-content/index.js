@@ -419,13 +419,10 @@ const DynamicContent = props => {
 												orderByRelations.includes(
 													relation
 												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type
-															.replace('_', ' ')
+													? relation
+															.replace('by-', '')
 															.replace('-', ' ')
+													: type.replace('_', ' ')
 											)} id`,
 											'maxi-blocks'
 										)}

@@ -761,6 +761,20 @@ class MaxiBlocks_DynamicContent
             // It's an author archive
             $archive_info['type'] = 'author';
             $archive_info['id'] = get_queried_object_id(); // Get the author ID
+        } elseif (is_date()) {
+            // It's a date archive
+            $archive_info['type'] = 'date';
+            $year = get_query_var('year');
+            $month = get_query_var('monthnum');
+            $day = get_query_var('day');
+            $date_id = $year;
+            if ($month) {
+                $date_id .= '-' . sprintf('%02d', $month);
+            }
+            if ($day) {
+                $date_id .= '-' . sprintf('%02d', $day);
+            }
+            $archive_info['id'] = $date_id; // Format: YYYY or YYYY-MM or YYYY-MM-DD
         } else {
             // Not an archive page or a type not covered above
             $archive_info['type'] = 'not_an_archive';
@@ -1659,12 +1673,36 @@ class MaxiBlocks_DynamicContent
                 $args['tag_id'] = $id;
             }
         } elseif($relation === 'current-archive') {
-            if ($archive_type === 'category') {
-                $args['cat'] = $id;
-            } elseif ($archive_type === 'tag') {
-                $args['tag_id'] = $id;
-            } else {
-                $args[$archive_type] = $id;
+            switch ($archive_type) {
+                case 'category':
+                    $args['cat'] = $id;
+                    break;
+                case 'tag':
+                    $args['tag_id'] = $id;
+                    break;
+                case 'author':
+                    $args['author'] = $id;
+                    break;
+                case 'date':
+                    // Assuming $id is in the format 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD'
+                    $dateParts = explode('-', $id);
+                    $args['date_query'] = array(
+                        'inclusive' => true
+                    );
+                    if (isset($dateParts[0])) {
+                        $args['date_query']['year'] = intval($dateParts[0]);
+                    }
+                    if (isset($dateParts[1])) {
+                        $args['date_query']['month'] = intval($dateParts[1]);
+                    }
+                    if (isset($dateParts[2])) {
+                        $args['date_query']['day'] = intval($dateParts[2]);
+                    }
+                    break;
+                default:
+                    // Handle other archive types or defaults if necessary
+                    $args[$archive_type] = $id;
+                    break;
             }
         }
 

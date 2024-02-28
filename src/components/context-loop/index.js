@@ -317,10 +317,9 @@ const ContextLoop = props => {
 												orderByRelations.includes(
 													relation
 												)
-													? relation.replace(
-															'by-',
-															''
-													  )
+													? relation
+															.replace('by-', '')
+															.replace('-', ' ')
 													: type
 											)} id`,
 											'maxi-blocks'

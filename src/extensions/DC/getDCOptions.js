@@ -37,10 +37,6 @@ export const getIdOptions = async (type, relation, author) => {
 		per_page: -1,
 	};
 
-	const argsArchive = {
-		per_page: 1,
-	};
-
 	if (type === 'users' || relation === 'by-author') {
 		const users = await getUsers();
 
@@ -70,8 +66,6 @@ export const getIdOptions = async (type, relation, author) => {
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
-
-	console.log('getIdOptions', data);
 
 	return data;
 };

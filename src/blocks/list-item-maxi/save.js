@@ -23,11 +23,13 @@ const save = props => {
 	const className = 'maxi-list-item-block__content';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			tagName='li'
+			{...getMaxiBlockAttributes({ ...props, name })}
+		>
 			<RichText.Content
 				className={className}
 				value={content}
-				tagName='li'
 				{...(!dcStatus && {
 					reversed: !!listReversed,
 					start: listStart,

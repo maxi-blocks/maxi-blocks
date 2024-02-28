@@ -13,9 +13,9 @@ import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getCustomFormatValue,
-	ListContext,
 	setFormat,
 	TextContext,
+	ListContext,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,

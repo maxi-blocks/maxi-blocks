@@ -1498,17 +1498,19 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         $parts = explode('//', $template_id);
-        $template_slug = $parts[1];
-
+        $template_slug = isset($parts[1]) ? $parts[1] : null;
         // Initialize the array to store all the blocks.
         $all_blocks = [];
+        $templates = [];
 
         // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-            $template_slug
-        );
-        $templates = $wpdb->get_results($query);
+        if($template_slug !== null) {
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+                $template_slug
+            );
+            $templates = $wpdb->get_results($query);
+        }
 
 
         if($template_slug === 'home') {

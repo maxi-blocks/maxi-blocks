@@ -1,10 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
-import { createBlock } from '@wordpress/blocks';
 
 /**
  * External dependencies
@@ -31,6 +29,8 @@ import getStyles from './styles';
 import onMerge from './utils';
 import {
 	onChangeRichText,
+	processContent,
+	handleSplit,
 	TextContext,
 	ListContext,
 } from '../../extensions/text/formats';
@@ -157,72 +157,28 @@ class edit extends MaxiBlockComponent {
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
-		/**
-		 * Prevents losing general link format when the link is affecting whole content
-		 *
-		 * In case we add a whole link format, Gutenberg doesn't keep it when creators write new content.
-		 * This method fixes it
-		 */
-		const processContent = rawContent => {
-			if (rawContent === this.props.attributes.content) {
-				return;
-			}
-
-			/**
-			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
-			 * Does not replace spaces, which inside of HTML tags
-			 */
-			const replaceSpaces = content =>
-				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
-
-			const content = replaceSpaces(rawContent);
-
-			const isWholeLink =
-				content.split('</a>').length === 2 &&
-				content.startsWith('<a') &&
-				content.indexOf('</a>') === content.length - 5;
-
-			if (isWholeLink) {
-				const newContent = content.replace('</a>', '');
-
-				maxiSetAttributes({ content: `${newContent}</a>` });
-			} else {
-				if (this.typingTimeoutContent)
-					clearTimeout(this.typingTimeoutContent);
-
-				this.typingTimeoutContent = setTimeout(() => {
-					maxiSetAttributes({ content });
-				}, 100);
-			}
-		};
-
 		const commonProps = {
 			className: 'maxi-text-block__content',
 			identifier: 'content',
 			value: content,
-			onChange: processContent,
-			onSplit: (value, isOriginal) => {
-				let newAttributes;
-
-				if (isOriginal || value) {
-					newAttributes = {
-						...attributes,
-						content: value,
-						...(!isOriginal && { uniqueID: null }),
-					};
-				}
-
-				const block = createBlock(
-					'maxi-blocks/text-maxi',
-					newAttributes
-				);
-
-				if (isOriginal) {
-					block.clientId = clientId;
-				}
-
-				return block;
-			},
+			onChange: rawContent =>
+				processContent(
+					rawContent,
+					this.props.attributes.content,
+					this.typingTimeoutContent,
+					maxiSetAttributes,
+					typingTimeoutContent => {
+						this.typingTimeoutContent = typingTimeoutContent;
+					}
+				),
+			onSplit: (value, isOriginal) =>
+				handleSplit(
+					value,
+					isOriginal,
+					attributes,
+					clientId,
+					'maxi-blocks/text-maxi'
+				),
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
 			// onRemove needs to be commented to avoid removing the block

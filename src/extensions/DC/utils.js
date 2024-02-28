@@ -33,12 +33,14 @@ export const parseText = value => {
 };
 
 export const cutTags = str => {
+	if (!str) return '';
 	const regex = /( |<([^>]+)>)/gi;
 	const result = str.replace(regex, ' ');
 	return result;
 };
 
 export const getSimpleText = str => {
+	if (!str) return '';
 	const result = str
 		.replace(/<style.*?<\/style>/g, '')
 		.replace(/<svg.*?<\/svg>/g, '');
@@ -104,10 +106,10 @@ export const validationsValues = (
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
+	const fieldResult = fieldOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
+	const relationResult = relationOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
 	const typeResult = typeOptions[contentType]?.map(item => item.value);

@@ -178,6 +178,7 @@ const getStyles = props => {
 					props['custom-formats'],
 					false,
 					{ ...getGroupAttributes(props, 'typography') },
+					undefined,
 					props.blockStyle,
 					true,
 					'maxi-blocks/list-item-maxi'

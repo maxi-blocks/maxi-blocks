@@ -7,7 +7,8 @@ const getCustomFormatsStyles = (
 	typography,
 	textLevel,
 	blockStyle,
-	disablePaletteDefaults = false
+	disablePaletteDefaults = false,
+	blockName
 ) => {
 	const response = {};
 
@@ -21,6 +22,7 @@ const getCustomFormatsStyles = (
 					textLevel,
 					blockStyle,
 					disablePaletteDefaults,
+					blockName,
 				}),
 			};
 		});

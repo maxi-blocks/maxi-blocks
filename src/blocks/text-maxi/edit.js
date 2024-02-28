@@ -273,7 +273,10 @@ class edit extends MaxiBlockComponent {
 					)}
 					{!dcStatus && isList && (
 						<ListContext.Provider
-							value={getGroupAttributes(attributes, 'typography')}
+							value={getGroupAttributes(attributes, [
+								'typography',
+								'link',
+							])}
 						>
 							<List
 								typeOfList={typeOfList}

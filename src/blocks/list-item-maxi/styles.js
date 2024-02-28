@@ -203,7 +203,7 @@ const getStyles = props => {
 							'typographyHover',
 						]),
 					},
-					[' a '],
+					[' a .maxi-list-item-block__content'],
 					props.blockStyle
 				),
 				...getLinkStyles(
@@ -214,28 +214,15 @@ const getStyles = props => {
 							'typographyHover',
 						]),
 					},
-					['  a'],
+					[' .maxi-list-item-block__content a'],
 					props.blockStyle
 				),
-				...(props['dc-status'] && {
-					...getLinkStyles(
-						{
-							...getGroupAttributes(props, [
-								'link',
-								'typography',
-								'typographyHover',
-							]),
-						},
-						['.maxi-block--has-link '],
-						props.blockStyle
-					),
-				}),
 			},
 			data,
 			props
 		),
 	};
-
+	console.log(response);
 	return response;
 };
 

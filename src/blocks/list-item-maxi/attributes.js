@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { transitionAttributesCreator } from '../../extensions/styles';
+import {
+	hoverAttributesCreator,
+	linkAttributesCreator,
+	transitionAttributesCreator,
+	typographyAttributesCreator,
+} from '../../extensions/styles';
 
 /**
  * Imports
@@ -12,6 +17,8 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
+const listItemTypography = typographyAttributesCreator(false);
+
 const attributes = {
 	...attributesData.global,
 
@@ -22,9 +29,17 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.link,
-	...attributesData.typography,
-	...attributesData.typographyHover,
+	...linkAttributesCreator(false),
+	...listItemTypography,
+	...hoverAttributesCreator({
+		obj: listItemTypography,
+		sameValAttr: ['palette-status-general'],
+		newAttr: {
+			'typography-status-hover': {
+				type: 'boolean',
+			},
+		},
+	}),
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

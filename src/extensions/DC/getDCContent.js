@@ -50,6 +50,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		acfFieldType,
 	} = dataRequest;
 
+	console.log('relation', relation);
+	console.log('source', source);
+	console.log('type', type);
+	console.log('field', field);
+
 	let contentValue;
 
 	if (source === 'acf') {

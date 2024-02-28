@@ -433,7 +433,8 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) &&
+							{relation !== 'current-archive' &&
+								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (
@@ -443,9 +444,10 @@ const DynamicContent = props => {
 												orderByRelations.includes(
 													relation
 												)
-													? relation
-															.replace('by-', '')
-															.replace('-', ' ')
+													? relation.replace(
+															'by-',
+															''
+													  )
 													: type.replace('_', ' ')
 											)} id`,
 											'maxi-blocks'

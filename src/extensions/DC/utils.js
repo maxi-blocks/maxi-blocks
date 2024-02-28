@@ -21,8 +21,6 @@ import {
 /**
  * External dependencies
  */
-import moment from 'moment';
-import 'moment-parseformat';
 import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
@@ -132,8 +130,6 @@ export const validationsValues = (
 			}),
 	};
 };
-
-export const getDCDateCustomFormat = date => moment.parseFormat(date);
 
 export const getDCOrder = (relation, orderBy) => {
 	const dictionary = {

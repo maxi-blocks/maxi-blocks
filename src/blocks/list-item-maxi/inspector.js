@@ -109,10 +109,6 @@ const Inspector = props => {
 									...inspectorTabs.advancedCss({
 										props,
 									}),
-									...inspectorTabs.dc({
-										props,
-										contentType: 'text',
-									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

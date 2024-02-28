@@ -626,6 +626,7 @@ const MaxiToolbar = memo(
 							SVGElement={attributes.SVGElement}
 							mediaID={attributes.mediaID}
 							mediaURL={attributes.mediaURL}
+							isList={isList}
 						/>
 						<ContextLoop
 							clientId={clientId}

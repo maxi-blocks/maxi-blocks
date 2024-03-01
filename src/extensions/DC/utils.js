@@ -262,9 +262,7 @@ export const getRelationOptions = (type, contentType) => {
 
 	const isFSE = select('core/edit-site') !== undefined;
 
-	if (!isFSE)
-		options = options.filter(({ value }) => value !== 'current-archive');
-	else {
+	if (isFSE) {
 		const allowedTemplateTypes = [
 			'category',
 			'tag',
@@ -275,11 +273,12 @@ export const getRelationOptions = (type, contentType) => {
 		const currentTemplateType =
 			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
 
-		// Check if currentTemplateType is not one of the allowed types
-		if (!allowedTemplateTypes.includes(currentTemplateType))
-			options = options.filter(
-				({ value }) => value !== 'current-archive'
-			);
+		// Check if currentTemplateType is one of the allowed types
+		if (allowedTemplateTypes.includes(currentTemplateType))
+			options = options.push({
+				label: __('Get current archive', 'maxi-blocks'),
+				value: 'current-archive',
+			});
 	}
 
 	return options;

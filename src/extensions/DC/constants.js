@@ -101,10 +101,6 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by author'), value: 'by-author' },
 	{ label: __('Get by category'), value: 'by-category' },
 	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
-	{
-		label: __('Get current archive', 'maxi-blocks'),
-		value: 'current-archive',
-	},
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];

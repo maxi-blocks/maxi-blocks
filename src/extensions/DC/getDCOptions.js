@@ -68,6 +68,27 @@ export const getIdOptions = async (
 		data = await getEntityRecords('taxonomy', type, args);
 	} else if (isCustomPostType) {
 		data = await getEntityRecords('postType', type, args);
+	} else if (relation === 'current-archive') {
+		const currentTemplateType =
+			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+		if (currentTemplateType === 'author') {
+			const users = await getUsers();
+
+			if (users) {
+				data = users.map(({ id, name }) => ({
+					id,
+					name,
+				}));
+			}
+		} else if (['category', 'tag'].includes(currentTemplateType)) {
+			data = await getEntityRecords(
+				'taxonomy',
+				currentTemplateType,
+				args
+			);
+		} else {
+			data = await getEntityRecords('taxonomy', 'category', args);
+		}
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}

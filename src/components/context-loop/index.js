@@ -66,6 +66,7 @@ const ContextLoop = props => {
 		name,
 		contentType = 'group',
 		isToolbar = false,
+		'dc-link-target': linkTarget,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -317,6 +318,7 @@ const ContextLoop = props => {
 								relation,
 								contentType,
 								'wp',
+								linkTarget,
 								true
 							);
 
@@ -380,7 +382,8 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{relationTypes.includes(type) &&
+							{relation !== 'current-archive' &&
+								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (

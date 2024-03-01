@@ -10,18 +10,14 @@ import { useCallback, useContext, useEffect } from '@wordpress/element';
  */
 import { getGroupAttributes } from '../styles';
 import getDCContent from './getDCContent';
-import {
-	getDCDateCustomFormat,
-	getSimpleText,
-	sanitizeDCContent,
-} from './utils';
+import { getSimpleText, sanitizeDCContent } from './utils';
 import getDCMedia from './getDCMedia';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
-import { linkFields } from './constants';
+import { inlineLinkFields } from './constants';
 
 /**
  * External dependencies
@@ -53,8 +49,7 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				customDate,
-				postTaxonomyLinksStatus,
+				linkTarget,
 				containsHTML,
 			} = dynamicContentProps;
 
@@ -102,8 +97,8 @@ const withMaxiDC = createHigherOrderComponent(
 							clientId
 						);
 						const newContainsHTML =
-							postTaxonomyLinksStatus &&
-							linkFields.includes(field) &&
+							linkTarget === field &&
+							inlineLinkFields.includes(field) &&
 							!isNil(newContent);
 
 						if (!newContainsHTML) {
@@ -116,10 +111,6 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent();
 							setAttributes({
 								'dc-content': newContent,
-								...(customDate && {
-									'dc-custom-format':
-										getDCDateCustomFormat(newContent),
-								}),
 								...(newLinkSettings && {
 									linkSettings: newLinkSettings,
 								}),

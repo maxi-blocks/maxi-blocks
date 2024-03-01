@@ -17,14 +17,14 @@ import {
 	relationDictionary,
 	postTypeRelationOptions,
 	taxonomyRelationOptions,
+	linkTypesOptions,
+	linkFieldsOptions,
 } from './constants';
 import getTypes from './getTypes';
 
 /**
  * External dependencies
  */
-import moment from 'moment';
-import 'moment-parseformat';
 import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
@@ -35,12 +35,14 @@ export const parseText = value => {
 };
 
 export const cutTags = str => {
+	if (!str) return '';
 	const regex = /( |<([^>]+)>)/gi;
 	const result = str.replace(regex, ' ');
 	return result;
 };
 
 export const getSimpleText = str => {
+	if (!str) return '';
 	const result = str
 		.replace(/<style.*?<\/style>/g, '')
 		.replace(/<svg.*?<\/svg>/g, '');
@@ -56,6 +58,27 @@ export const limitString = (value, limit) => {
 	if (str.length > limit && limit !== 0) return `${str.substr(0, limit)}…`;
 
 	return str;
+};
+
+/**
+ * Retrieves the link targets based on selected DC type and field.
+ *
+ * @param {string} type  - DC type.
+ * @param {string} field - DC field.
+ * @returns {Array} An array of link targets with label and value keys.
+ */
+export const getLinkTargets = (type, field) => {
+	const targets = [];
+
+	targets.push({
+		label: 'Selected entity',
+		value: 'entity',
+	});
+
+	targets.push(...linkTypesOptions[type]);
+	targets.push(...linkFieldsOptions[field]);
+
+	return targets;
 };
 
 // In case content is empty, show this text
@@ -237,6 +260,28 @@ export const getRelationOptions = (type, contentType) => {
 		});
 	}
 
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (!isFSE)
+		options = options.filter(({ value }) => value !== 'current-archive');
+	else {
+		const allowedTemplateTypes = [
+			'category',
+			'tag',
+			'author',
+			'date',
+			'archive',
+		];
+		const currentTemplateType =
+			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+
+		// Check if currentTemplateType is not one of the allowed types
+		if (!allowedTemplateTypes.includes(currentTemplateType))
+			options = options.filter(
+				({ value }) => value !== 'current-archive'
+			);
+	}
+
 	return options;
 };
 
@@ -246,6 +291,7 @@ export const validationsValues = (
 	relation,
 	contentType,
 	source = 'wp',
+	linkTarget,
 	isCL = false
 ) => {
 	if (
@@ -270,6 +316,9 @@ export const validationsValues = (
 		x => x.value
 	);
 	const typeResult = getTypes(contentType, false)?.map(item => item.value);
+	const linkTargetResult = getLinkTargets(variableValue, field).map(
+		item => item.value
+	);
 
 	return {
 		...(!isCL &&
@@ -287,10 +336,12 @@ export const validationsValues = (
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
 			}),
+		...(linkTargetResult &&
+			!linkTargetResult.includes(linkTarget) && {
+				[`${prefix}link-target`]: linkTargetResult[0],
+			}),
 	};
 };
-
-export const getDCDateCustomFormat = date => moment.parseFormat(date);
 
 export const getDCOrder = (relation, orderBy) => {
 	const dictionary = {

@@ -1,3 +1,5 @@
+import { inlineLinkFields } from '../DC/constants';
+
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
 	dcStatus,
@@ -26,12 +28,16 @@ const getLinkAttributesFromLinkSettings = (
 const WithLink = props => {
 	const { linkSettings, dynamicContent, children } = props;
 
-	const { 'dc-status': dcStatus, 'dc-link-status': dcLinkStatus } =
-		dynamicContent || false;
+	const {
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
+		'dc-link-target': dcLinkTarget,
+	} = dynamicContent || false;
 
 	const hasLink =
 		!!linkSettings && !!linkSettings.url && !linkSettings?.disabled;
-	const hasDCLink = dcStatus && dcLinkStatus;
+	const hasDCLink =
+		dcStatus && dcLinkStatus && !inlineLinkFields.includes(dcLinkTarget);
 
 	if (hasLink || hasDCLink) {
 		return (

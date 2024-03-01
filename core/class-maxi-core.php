@@ -54,6 +54,9 @@ if (!class_exists('MaxiBlocks_Core')):
                             'media-views'
                         ),
                         MAXI_PLUGIN_VERSION,
+                        array(
+                            'strategy'  => 'defer', 'in_footer' => true
+                            )
                     );
                     wp_localize_script(
                         'maxi-media-images-filter',

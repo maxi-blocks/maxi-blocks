@@ -69,6 +69,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH . 'build/admin.js',
                     [],
                     MAXI_PLUGIN_VERSION,
+                    array(
+                        'strategy'  => 'defer', 'in_footer' => true
+                        )
                 );
                 wp_enqueue_script('maxi-admin');
 

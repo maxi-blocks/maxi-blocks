@@ -364,7 +364,9 @@ const ResponsiveSelector = props => {
 			const postType = select('core/edit-site').getEditedPostType();
 
 			if (
-				(postId.includes('single') || postId.includes('blank')) &&
+				(postId.includes('single') ||
+					postId.includes('blank') ||
+					postId.includes('page')) &&
 				postType === 'wp_template'
 			) {
 				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
@@ -450,7 +452,7 @@ const ResponsiveSelector = props => {
 			<div className='action-buttons'>
 				<Button
 					className='action-buttons__button'
-					aria-label='Template library'
+					aria-label={__('Template library', 'maxi-blocks')}
 					onClick={() => addCloudLibrary()}
 				>
 					<Icon

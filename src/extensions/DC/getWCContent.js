@@ -38,13 +38,8 @@ const getPrice = (rawPrice, data) => {
 const getProductsContent = async (dataRequest, entityData) => {
 	if (!entityData) return null;
 
-	const {
-		field,
-		delimiterContent,
-		postTaxonomyLinksStatus,
-		limit,
-		imageAccumulator,
-	} = dataRequest;
+	const { field, delimiterContent, limit, imageAccumulator, linkTarget } =
+		dataRequest;
 
 	const data = await getProductData(entityData.id);
 
@@ -85,7 +80,7 @@ const getProductsContent = async (dataRequest, entityData) => {
 			return getTaxonomyContent(
 				entityData[taxonomyType],
 				delimiterContent,
-				postTaxonomyLinksStatus,
+				linkTarget === field,
 				taxonomyType
 			);
 		case 'featured_media':

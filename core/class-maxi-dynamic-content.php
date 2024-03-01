@@ -594,7 +594,12 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
+            $link = self::get_field_link(
+                self::get_post($attributes)->post_author,
+                $attributes['dc-field']
+            );
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
             $link = get_term_link($attributes['dc-id']);
@@ -1049,6 +1054,31 @@ class MaxiBlocks_DynamicContent
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
 
+    public function get_link_attributes_from_link_settings($linkSettings)
+    {
+        $rel = '';
+        $isNoFollow = $linkSettings['noFollow'];
+        $isSponsored = $linkSettings['sponsored'];
+        $isUGC = $linkSettings['ugc'];
+        if ($isNoFollow) {
+            $rel .= ' nofollow';
+        }
+        if ($isSponsored) {
+            $rel .= ' sponsored';
+        }
+        if ($isUGC) {
+            $rel .= ' ugc';
+        }
+        if (!$isNoFollow && !$isSponsored && !$isUGC) {
+            $rel = null;
+        } else {
+            $rel = trim($rel);
+        }
+
+        $target = $linkSettings['opensInNewTab'] ? '_blank' : '_self';
+
+        return array('rel' => $rel, 'target' => $target);
+    }
 
     public function get_field_link($item, $field)
     {
@@ -1063,11 +1093,23 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $content, $link_status, $field)
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field, $linkSettings = null)
     {
-        return ($link_status)
-            ? '<a href="' . $this->get_field_link($item, $field) . '" class="maxi-text-block--link"><span>' . $content . '</span></a>'
-            : $content;
+        if ($link_status) {
+            $href = 'href="' . $this->get_field_link($item, $field) . '"';
+            $rel = '';
+            $target = ' target="_self"';
+
+            if ($linkSettings) {
+                $link_attributes = $this->get_link_attributes_from_link_settings($linkSettings);
+                $rel = $link_attributes['rel'] ? ' rel="' . $link_attributes['rel'] . '"' : '';
+                $target = ' target="' . $link_attributes['target'] . '"';
+            }
+
+            return '<a ' . $href . $rel . $target . ' class="maxi-text-block--link"><span>' . $content . '</span></a>';
+        }
+
+        return $content;
     }
 
     public function get_post_taxonomy_content($attributes, $post_id, $taxonomy)
@@ -1075,7 +1117,9 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            'dc-link-target' => $dc_link_target,
+            'dc-link-status' => $dc_link_status,
+            'linkSettings' => $linkSettings,
         ) = $attributes;
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
@@ -1086,8 +1130,9 @@ class MaxiBlocks_DynamicContent
             $taxonomy_content[] = $this->get_post_taxonomy_item_content(
                 $taxonomy_item,
                 $taxonomy_item->name,
-                $dc_post_taxonomy_links_status,
-                $dc_field
+                $dc_link_status && $dc_link_target === $dc_field,
+                $dc_field,
+                $linkSettings
             );
         }
 
@@ -1100,7 +1145,8 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
+            'dc-link-target' => $dc_link_target,
+            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
@@ -1138,12 +1184,7 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = $this->get_post_taxonomy_item_content(
-                $post->post_author,
-                get_the_author_meta('display_name', $post->post_author),
-                $dc_post_taxonomy_links_status,
-                $dc_field
-            );
+            $post_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {

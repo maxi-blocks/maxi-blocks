@@ -30,6 +30,7 @@ const save = props => {
 			<RichText.Content
 				className={className}
 				value={content}
+				tagName='div'
 				{...(!dcStatus && {
 					reversed: !!listReversed,
 					start: listStart,

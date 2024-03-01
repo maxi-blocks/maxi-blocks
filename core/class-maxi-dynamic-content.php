@@ -15,7 +15,7 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
     private static $custom_data = null;
-    private static $order_by_relations = ['by-category', 'by-author', 'by-tag'];
+    private static $order_by_relations = ['by-category', 'by-author', 'by-tag', 'current-archive'];
     private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
     private static $link_only_blocks = [
@@ -149,48 +149,105 @@ class MaxiBlocks_DynamicContent
             'nopaging'       => true, // Retrieve all items matching the criteria
         );
 
-        // Modify the query based on the relation
-        switch ($relation) {
-            case 'by-category':
-                if ($type === 'product') {
-                    // Use WooCommerce's product category taxonomy
-                    $args['tax_query'] = array(
+        if ($relation === 'current-archive') {
+            $archive_info = $this->get_current_archive_type_and_id();
+
+            switch ($archive_info['type']) {
+                case 'category':
+                    $args['category__in'] = array($archive_info['id']); // Array of category IDs
+                    break;
+                case 'tag':
+                    $args['tag__in'] = array($archive_info['id']); // Array of tag IDs
+                    break;
+                case 'author':
+                    if ($type === 'attachment') {
+                        // Ensure correct post_status is set for attachments
+                        $args['post_status'] = 'inherit';
+                    }
+                    $args['author'] = $archive_info['id']; // Author ID
+                    break;
+                case 'date':
+                    // For date archives, you might need to decompose the ID back into components
+                    $date_parts = explode('-', $archive_info['id']);
+                    $args['date_query'] = array(
                         array(
-                            'taxonomy' => 'product_cat',
-                            'field'    => 'term_id',
-                            'terms'    => array($id),
+                            'year'  => $date_parts[0] ?? null,
+                            'month' => $date_parts[1] ?? null,
+                            'day'   => $date_parts[2] ?? null,
                         ),
                     );
-                } elseif ($type === 'post') {
-                    $args['category__in'] = array($id); // Array of category IDs
-                } else {
-                    throw new Exception("Categories are not associated with this post type.");
-                }
-                break;
-            case 'by-tag':
-                if ($type === 'product') {
-                    // Use WooCommerce's product tag taxonomy
-                    $args['tax_query'] = array(
-                        array(
-                            'taxonomy' => 'product_tag',
-                            'field'    => 'term_id',
-                            'terms'    => array($id),
-                        ),
-                    );
-                } elseif ($type === 'post') {
-                    $args['tag__in'] = array($id); // Array of tag IDs
-                } else {
-                    throw new Exception("Tags are not associated with this post type.");
-                }
-                break;
-            case 'by-author':
-                if ($type === 'attachment') {
-                    // Ensure correct post_status is set for attachments
-                    $args['post_status'] = 'inherit';
-                }
-                // Author queries can be performed on posts, pages, attachments and products
-                $args['author'] = $id; // Author ID
-                break;
+                    break;
+                default:
+                    error_log("Unsupported archive type.");
+            }
+        } else {
+            // Modify the query based on the relation
+            switch ($relation) {
+                case 'by-category':
+                    if ($type === 'product') {
+                        // Use WooCommerce's product category taxonomy
+                        $args['tax_query'] = array(
+                            array(
+                                'taxonomy' => 'product_cat',
+                                'field'    => 'term_id',
+                                'terms'    => array($id),
+                            ),
+                        );
+                    } elseif ($type === 'post') {
+                        $args['category__in'] = array($id); // Array of category IDs
+                    } else {
+                        error_log("Categories are not associated with this post type.");
+                    }
+                    break;
+                case 'by-tag':
+                    if ($type === 'product') {
+                        // Use WooCommerce's product tag taxonomy
+                        $args['tax_query'] = array(
+                            array(
+                                'taxonomy' => 'product_tag',
+                                'field'    => 'term_id',
+                                'terms'    => array($id),
+                            ),
+                        );
+                    } elseif ($type === 'post') {
+                        $args['tag__in'] = array($id); // Array of tag IDs
+                    } else {
+                        error_log("Tags are not associated with this post type.");
+                    }
+                    break;
+                case 'by-author':
+                    if ($type === 'attachment') {
+                        // Ensure correct post_status is set for attachments
+                        $args['post_status'] = 'inherit';
+                    }
+                    // Author queries can be performed on posts, pages, attachments and products
+                    $args['author'] = $id; // Author ID
+                    break;
+                    // Detect the type of current archive and adjust $args accordingly
+                    if (is_category()) {
+                        $args['category__in'] = array($id); // Array of category IDs
+                    } elseif (is_tag()) {
+                        $args['tag__in'] = array($id); // Array of tag IDs
+                    } elseif (is_author()) {
+                        if ($type === 'attachment') {
+                            // Ensure correct post_status is set for attachments
+                            $args['post_status'] = 'inherit';
+                        }
+                        $args['author'] = $id; // Author ID
+                    } elseif (is_date()) {
+                        // For date archives, $id needs to be processed differently
+                        // You might pass $id as a date range or specific date components
+                        // Here's a simplified example assuming $id is a year
+                        $args['date_query'] = array(
+                            array(
+                                'year'  => $id,
+                            ),
+                        );
+                    } else {
+                        error_log("Unsupported archive type.");
+                    }
+                    break;
+            }
         }
 
         // Create a new WP_Query instance
@@ -732,6 +789,59 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
+    public function get_current_archive_type_and_id()
+    {
+        $archive_info = array(
+            'type' => null,
+            'id' => null
+        );
+
+        if (is_category()) {
+            // It's a category archive
+            $archive_info['type'] = 'category';
+            $archive_info['id'] = get_queried_object_id(); // Get the category ID
+        } elseif (is_tag()) {
+            // It's a tag archive
+            $archive_info['type'] = 'tag';
+            $archive_info['id'] = get_queried_object_id(); // Get the tag ID
+        } elseif (is_tax()) {
+            // It's a custom taxonomy archive
+            $queried_object = get_queried_object();
+            $archive_info['type'] = $queried_object->taxonomy;
+            $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
+        } elseif (is_post_type_archive()) {
+            // It's a custom post type archive
+            $queried_object = get_queried_object();
+            $archive_info['type'] = 'post_type';
+            $archive_info['id'] = $queried_object->name; // Use the name for post type
+        } elseif (is_author()) {
+            // It's an author archive
+            $archive_info['type'] = 'author';
+            $archive_info['id'] = get_queried_object_id(); // Get the author ID
+        } elseif (is_date()) {
+            // It's a date archive
+            $archive_info['type'] = 'date';
+            $year = get_query_var('year');
+            $month = get_query_var('monthnum');
+            $day = get_query_var('day');
+            $date_id = $year;
+            if ($month) {
+                $date_id .= '-' . sprintf('%02d', $month);
+            }
+            if ($day) {
+                $date_id .= '-' . sprintf('%02d', $day);
+            }
+            $archive_info['id'] = $date_id; // Format: YYYY or YYYY-MM or YYYY-MM-DD
+        } else {
+            // Not an archive page or a type not covered above
+            $archive_info['type'] = 'not_an_archive';
+            $archive_info['id'] = null;
+        }
+
+        return $archive_info;
+    }
+
+
     public function get_post($attributes)
     {
         @list(
@@ -760,9 +870,9 @@ class MaxiBlocks_DynamicContent
             $dc_order = 'desc';
         }
 
-
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
         $is_random = $dc_relation === 'random';
+        $is_current_archive = $dc_relation === 'current-archive';
 
         if (in_array($dc_type, ['posts', 'pages', 'products'])) {
             // Basic args
@@ -788,6 +898,9 @@ class MaxiBlocks_DynamicContent
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
                 $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+            } elseif ($is_current_archive) {
+                $archive_info = $this->get_current_archive_type_and_id();
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $archive_info['id'], $archive_info['type']));
             }
 
             if ($dc_type === 'products') {
@@ -1571,7 +1684,7 @@ class MaxiBlocks_DynamicContent
         return $result;
     }
 
-    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id)
+    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id, $archive_type = null)
     {
         if ($type === 'users') {
             $order_by_arg = $relation === 'by-date' ? 'user_registered' : 'display_name';
@@ -1611,6 +1724,38 @@ class MaxiBlocks_DynamicContent
                 $args['tag'] = [$this->get_term_slug($id)];
             } else {
                 $args['tag_id'] = $id;
+            }
+        } elseif($relation === 'current-archive') {
+            switch ($archive_type) {
+                case 'category':
+                    $args['cat'] = $id;
+                    break;
+                case 'tag':
+                    $args['tag_id'] = $id;
+                    break;
+                case 'author':
+                    $args['author'] = $id;
+                    break;
+                case 'date':
+                    // Assuming $id is in the format 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD'
+                    $dateParts = explode('-', $id);
+                    $args['date_query'] = array(
+                        'inclusive' => true
+                    );
+                    if (isset($dateParts[0])) {
+                        $args['date_query']['year'] = intval($dateParts[0]);
+                    }
+                    if (isset($dateParts[1])) {
+                        $args['date_query']['month'] = intval($dateParts[1]);
+                    }
+                    if (isset($dateParts[2])) {
+                        $args['date_query']['day'] = intval($dateParts[2]);
+                    }
+                    break;
+                default:
+                    // Handle other archive types or defaults if necessary
+                    $args[$archive_type] = $id;
+                    break;
             }
         }
 

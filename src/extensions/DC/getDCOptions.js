@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
@@ -62,6 +62,27 @@ export const getIdOptions = async (type, relation, author) => {
 			? 'product_tag'
 			: 'post_tag';
 		data = await getEntityRecords('taxonomy', tagType, args);
+	} else if (relation === 'current-archive') {
+		const currentTemplateType =
+			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+		if (currentTemplateType === 'author') {
+			const users = await getUsers();
+
+			if (users) {
+				data = users.map(({ id, name }) => ({
+					id,
+					name,
+				}));
+			}
+		} else if (['category', 'tag'].includes(currentTemplateType)) {
+			data = await getEntityRecords(
+				'taxonomy',
+				currentTemplateType,
+				args
+			);
+		} else {
+			data = await getEntityRecords('taxonomy', 'category', args);
+		}
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}

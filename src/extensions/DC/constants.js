@@ -72,6 +72,10 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by category'), value: 'by-category' },
 	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
 	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
+	{
+		label: __('Get current archive', 'maxi-blocks'),
+		value: 'current-archive',
+	},
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -594,7 +598,12 @@ export const limitOptions = {
 	max: 9999,
 };
 
-export const orderByRelations = ['by-category', 'by-author', 'by-tag'];
+export const orderByRelations = [
+	'by-category',
+	'by-author',
+	'by-tag',
+	'current-archive',
+];
 
 export const orderRelations = ['by-date', 'alphabetical', ...orderByRelations];
 

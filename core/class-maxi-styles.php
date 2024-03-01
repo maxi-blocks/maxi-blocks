@@ -366,6 +366,14 @@ class MaxiBlocks_Styles
             $template_id .= 'search';
         } elseif (is_404()) {
             $template_id .= '404';
+        } elseif (is_category()) {
+            $template_id .= 'category';
+        } elseif (is_tag()) {
+            $template_id .= 'tag';
+        } elseif (is_author()) {
+            $template_id .= 'author';
+        } elseif (is_date()) {
+            $template_id .= 'date';
         } elseif (is_archive()) {
             $template_id .= 'archive';
         } elseif (is_page()) {
@@ -1407,7 +1415,29 @@ class MaxiBlocks_Styles
             $post = get_post($id);
         }
         // Fetch blocks from template parts.
-        $blocks = $this->fetch_blocks_by_template_id($this->get_id(true));
+        $template_id = $this->get_id(true);
+        $blocks = $this->fetch_blocks_by_template_id($template_id);
+
+        $specific_archives = ['tag', 'category', 'author', 'date'];
+        // Attempt to replace a specific archive type with 'archive' in the template_id
+        $modified_template_id = $template_id;
+        foreach ($specific_archives as $archive_type) {
+            if (strpos($template_id, $archive_type) !== false) {
+                // Replace the first occurrence of the archive_type with 'archive'
+                $modified_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
+                break; // Exit the loop once a match is found and replacement is done
+            }
+        }
+
+        // Check if the modification was successful and the modified template_id is different
+        if ($modified_template_id !== $template_id) {
+            // Fetch blocks for the modified template_id which now targets 'archive'
+            $blocks_all_archives = $this->fetch_blocks_by_template_id($modified_template_id);
+
+            // Merge the blocks specific to the archive with the general archive blocks
+            $blocks = array_merge($blocks, $blocks_all_archives);
+        }
+
 
         $blocks_post = [];
 
@@ -1426,6 +1456,7 @@ class MaxiBlocks_Styles
                 $blocks_post = parse_blocks($post->post_content);
             }
         }
+
 
         // Merge the blocks.
         if (is_array($blocks_post) && !empty($blocks_post)) {
@@ -1467,17 +1498,19 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         $parts = explode('//', $template_id);
-        $template_slug = $parts[1];
-
+        $template_slug = isset($parts[1]) ? $parts[1] : null;
         // Initialize the array to store all the blocks.
         $all_blocks = [];
+        $templates = [];
 
         // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-            $template_slug
-        );
-        $templates = $wpdb->get_results($query);
+        if($template_slug !== null) {
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
+                $template_slug
+            );
+            $templates = $wpdb->get_results($query);
+        }
 
 
         if($template_slug === 'home') {

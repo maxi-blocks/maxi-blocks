@@ -1092,6 +1092,14 @@ class MaxiBlockComponent extends Component {
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 
+				if (
+					this.hasParentWithClass(
+						iframe.parentNode,
+						'maxiblocks-custom-pattern'
+					)
+				)
+					return;
+
 				const replaceIframeWithImage = (iframe, observer) => {
 					const iframeDocument = iframe.contentDocument;
 					if (!iframeDocument) return;

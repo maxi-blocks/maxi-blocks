@@ -43,8 +43,6 @@ import {
 	orderByRelations,
 	orderRelations,
 	orderTypes,
-	linkFields,
-	linkFieldsLabels,
 	sourceOptions,
 	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
@@ -103,13 +101,13 @@ const DynamicContent = props => {
 		limit,
 		delimiterContent,
 		customDelimiterStatus,
-		postTaxonomyLinksStatus,
 		error,
 		order,
 		orderBy,
 		accumulator,
 		imageAccumulator,
 		acfFieldType,
+		linkTarget,
 		customDate,
 		day,
 		era,
@@ -222,7 +220,7 @@ const DynamicContent = props => {
 	});
 
 	const currentRelationOptions = useMemo(() => {
-		const options = relationOptions[contentType][type];
+		let options = relationOptions[contentType][type];
 
 		const hideCurrent = {
 			post: 'pages',
@@ -230,7 +228,31 @@ const DynamicContent = props => {
 		};
 
 		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			return options.filter(({ value }) => value !== 'current');
+			options = options.filter(({ value }) => value !== 'current');
+		}
+
+		const isFSE = select('core/edit-site') !== undefined;
+
+		if (!isFSE)
+			options = options.filter(
+				({ value }) => value !== 'current-archive'
+			);
+		else {
+			const allowedTemplateTypes = [
+				'category',
+				'tag',
+				'author',
+				'date',
+				'archive',
+			];
+			const currentTemplateType =
+				select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+
+			// Check if currentTemplateType is not one of the allowed types
+			if (!allowedTemplateTypes.includes(currentTemplateType))
+				options = options.filter(
+					({ value }) => value !== 'current-archive'
+				);
 		}
 
 		return options;
@@ -242,7 +264,9 @@ const DynamicContent = props => {
 				type,
 				field,
 				relation,
-				contentType
+				contentType,
+				undefined,
+				linkTarget
 			);
 
 			changeProps({
@@ -302,7 +326,8 @@ const DynamicContent = props => {
 									field,
 									relation,
 									contentType,
-									value
+									value,
+									linkTarget
 								);
 
 								changeProps({
@@ -336,7 +361,8 @@ const DynamicContent = props => {
 								field,
 								relation,
 								contentType,
-								source
+								source,
+								linkTarget
 							);
 
 							changeProps({
@@ -409,7 +435,8 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) &&
+							{relation !== 'current-archive' &&
+								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (
@@ -604,18 +631,6 @@ const DynamicContent = props => {
 								<DateFormatting
 									onChange={obj => changeProps(obj)}
 									{...dcValuesForDate}
-								/>
-							)}
-							{linkFields.includes(field) && (
-								<ToggleSwitch
-									label={linkFieldsLabels[field]}
-									selected={postTaxonomyLinksStatus}
-									onChange={value =>
-										changeProps({
-											'dc-post-taxonomy-links-status':
-												value,
-										})
-									}
 								/>
 							)}
 							{(['tags', 'categories'].includes(field) ||

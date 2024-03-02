@@ -16,6 +16,8 @@ import {
 	currentEntityTypes,
 	nameDictionary,
 	relationDictionary,
+	linkTypesOptions,
+	linkFieldsOptions,
 } from './constants';
 
 /**
@@ -31,12 +33,14 @@ export const parseText = value => {
 };
 
 export const cutTags = str => {
+	if (!str) return '';
 	const regex = /( |<([^>]+)>)/gi;
 	const result = str.replace(regex, ' ');
 	return result;
 };
 
 export const getSimpleText = str => {
+	if (!str) return '';
 	const result = str
 		.replace(/<style.*?<\/style>/g, '')
 		.replace(/<svg.*?<\/svg>/g, '');
@@ -52,6 +56,27 @@ export const limitString = (value, limit) => {
 	if (str.length > limit && limit !== 0) return `${str.substr(0, limit)}…`;
 
 	return str;
+};
+
+/**
+ * Retrieves the link targets based on selected DC type and field.
+ *
+ * @param {string} type  - DC type.
+ * @param {string} field - DC field.
+ * @returns {Array} An array of link targets with label and value keys.
+ */
+export const getLinkTargets = (type, field) => {
+	const targets = [];
+
+	targets.push({
+		label: 'Selected entity',
+		value: 'entity',
+	});
+
+	targets.push(...linkTypesOptions[type]);
+	targets.push(...linkFieldsOptions[field]);
+
+	return targets;
 };
 
 // In case content is empty, show this text
@@ -96,19 +121,23 @@ export const validationsValues = (
 	relation,
 	contentType,
 	source = 'wp',
+	linkTarget,
 	isCL = false
 ) => {
 	if (source === 'acf') return {};
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
+	const fieldResult = fieldOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
+	const relationResult = relationOptions?.[contentType]?.[variableValue]?.map(
 		x => x.value
 	);
 	const typeResult = typeOptions[contentType]?.map(item => item.value);
+	const linkTargetResult = getLinkTargets(variableValue, field).map(
+		item => item.value
+	);
 
 	return {
 		...(!isCL &&
@@ -125,6 +154,10 @@ export const validationsValues = (
 			// Only validate type of DC once all integrations have loaded
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
+			}),
+		...(linkTargetResult &&
+			!linkTargetResult.includes(linkTarget) && {
+				[`${prefix}link-target`]: linkTargetResult[0],
 			}),
 	};
 };

@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useState,
+	useMemo,
 } from '@wordpress/element';
 import { resolveSelect, select } from '@wordpress/data';
 
@@ -62,6 +63,7 @@ const ContextLoop = props => {
 		name,
 		contentType = 'group',
 		isToolbar = false,
+		'dc-link-target': linkTarget,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -186,6 +188,45 @@ const ContextLoop = props => {
 		}
 	});
 
+	const currentRelationOptions = useMemo(() => {
+		let options = relationOptions[contentType][type];
+
+		const hideCurrent = {
+			post: 'pages',
+			page: 'posts',
+		};
+
+		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
+			options = options.filter(({ value }) => value !== 'current');
+		}
+
+		const isFSE = select('core/edit-site') !== undefined;
+
+		if (!isFSE)
+			options = options.filter(
+				({ value }) => value !== 'current-archive'
+			);
+		else {
+			const allowedTemplateTypes = [
+				'category',
+				'tag',
+				'author',
+				'date',
+				'archive',
+			];
+			const currentTemplateType =
+				select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+
+			// Check if currentTemplateType is not one of the allowed types
+			if (!allowedTemplateTypes.includes(currentTemplateType))
+				options = options.filter(
+					({ value }) => value !== 'current-archive'
+				);
+		}
+
+		return options;
+	}, [contentType, type]);
+
 	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
@@ -244,6 +285,7 @@ const ContextLoop = props => {
 								relation,
 								contentType,
 								'wp',
+								linkTarget,
 								true
 							);
 
@@ -268,7 +310,7 @@ const ContextLoop = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={relationOptions[contentType][type]}
+									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({
 											'cl-relation': value,
@@ -307,7 +349,8 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{relationTypes.includes(type) &&
+							{relation !== 'current-archive' &&
+								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (

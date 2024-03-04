@@ -1143,49 +1143,6 @@
     "word-spacing-unit-xs": {
       "type": "string"
     },
-    "bottom-gap-general": {
-      "type": "number"
-    },
-    "bottom-gap-xxl": {
-      "type": "number"
-    },
-    "bottom-gap-xl": {
-      "type": "number"
-    },
-    "bottom-gap-l": {
-      "type": "number"
-    },
-    "bottom-gap-m": {
-      "type": "number"
-    },
-    "bottom-gap-s": {
-      "type": "number"
-    },
-    "bottom-gap-xs": {
-      "type": "number"
-    },
-    "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
-    },
-    "bottom-gap-unit-xxl": {
-      "type": "string"
-    },
-    "bottom-gap-unit-xl": {
-      "type": "string"
-    },
-    "bottom-gap-unit-l": {
-      "type": "string"
-    },
-    "bottom-gap-unit-m": {
-      "type": "string"
-    },
-    "bottom-gap-unit-s": {
-      "type": "string"
-    },
-    "bottom-gap-unit-xs": {
-      "type": "string"
-    },
     "font-family-general-hover": {
       "type": "string"
     },
@@ -1820,48 +1777,6 @@
       "type": "string"
     },
     "word-spacing-unit-xs-hover": {
-      "type": "string"
-    },
-    "bottom-gap-general-hover": {
-      "type": "number"
-    },
-    "bottom-gap-xxl-hover": {
-      "type": "number"
-    },
-    "bottom-gap-xl-hover": {
-      "type": "number"
-    },
-    "bottom-gap-l-hover": {
-      "type": "number"
-    },
-    "bottom-gap-m-hover": {
-      "type": "number"
-    },
-    "bottom-gap-s-hover": {
-      "type": "number"
-    },
-    "bottom-gap-xs-hover": {
-      "type": "number"
-    },
-    "bottom-gap-unit-general-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-xxl-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-xl-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-l-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-m-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-s-hover": {
-      "type": "string"
-    },
-    "bottom-gap-unit-xs-hover": {
       "type": "string"
     },
     "typography-status-hover": {

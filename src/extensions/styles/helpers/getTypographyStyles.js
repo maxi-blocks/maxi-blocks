@@ -32,6 +32,7 @@ const getTypographyStyles = ({
 	scValues = {},
 	isStyleCards = false,
 	disablePaletteDefaults = false,
+	disableBottomGap = false,
 	blockName,
 }) => {
 	const response = {};
@@ -283,12 +284,13 @@ const getTypographyStyles = ({
 					breakpoint
 				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
 			}),
-			...(!isNil(getValue('bottom-gap', breakpoint)) && {
-				'margin-bottom': `${getValue(
-					'bottom-gap',
-					breakpoint
-				)}${getUnitValue('bottom-gap-unit', breakpoint)}`,
-			}),
+			...(!disableBottomGap &&
+				!isNil(getValue('bottom-gap', breakpoint)) && {
+					'margin-bottom': `${getValue(
+						'bottom-gap',
+						breakpoint
+					)}${getUnitValue('bottom-gap-unit', breakpoint)}`,
+				}),
 			...(!isStyleCards && {
 				...(!isNil(getValue('text-orientation', breakpoint)) && {
 					'writing-mode':

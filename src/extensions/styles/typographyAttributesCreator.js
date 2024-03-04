@@ -4,7 +4,10 @@
 import breakpointAttributesCreator from './breakpointAttributesCreator';
 import paletteAttributesCreator from './paletteAttributesCreator';
 
-const typographyAttributesCreator = (withDefaults = true) =>
+const typographyAttributesCreator = (
+	withDefaults = true,
+	disableBottomGap = false
+) =>
 	breakpointAttributesCreator({
 		obj: {
 			'font-family': {
@@ -83,13 +86,15 @@ const typographyAttributesCreator = (withDefaults = true) =>
 				type: 'string',
 				default: 'px',
 			},
-			'bottom-gap': {
-				type: 'number',
-			},
-			'bottom-gap-unit': {
-				type: 'string',
-				default: 'px',
-			},
+			...(!disableBottomGap && {
+				'bottom-gap': {
+					type: 'number',
+				},
+				'bottom-gap-unit': {
+					type: 'string',
+					default: 'px',
+				},
+			}),
 		},
 		noBreakpointAttr: ['custom-formats'],
 	});

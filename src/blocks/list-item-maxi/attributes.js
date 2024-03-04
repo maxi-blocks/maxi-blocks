@@ -17,7 +17,7 @@ import { customCss, transition } from './data';
 /**
  * Attributes
  */
-const listItemTypography = typographyAttributesCreator(false);
+const listItemTypography = typographyAttributesCreator(false, true);
 
 const attributes = {
 	...attributesData.global,

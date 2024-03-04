@@ -140,6 +140,7 @@ const getTypographyObject = props => {
 			},
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
+			disableBottomGap: props.isList,
 		}),
 	};
 

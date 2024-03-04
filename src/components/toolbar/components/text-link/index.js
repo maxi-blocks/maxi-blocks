@@ -201,9 +201,14 @@ const LinkContent = props => {
 		const { url } = attributes;
 
 		if (
-			url?.startsWith('#') ||
-			url?.startsWith('http') ||
-			url.startsWith('localhost')
+			!url ||
+			url.startsWith('#') ||
+			url.startsWith('http') ||
+			url.startsWith('localhost') ||
+			url.startsWith('tel:') ||
+			url.startsWith('mailto:') ||
+			url.startsWith('sftp:') ||
+			url.startsWith('magnet:')
 		)
 			return attributes;
 

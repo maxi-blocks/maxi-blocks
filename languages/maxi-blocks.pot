@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-05T14:42:52+00:00\n"
+"POT-Creation-Date: 2024-03-05T16:00:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -1206,9 +1206,9 @@ msgstr ""
 #: src/components/toolbar/components/link/index.js:101
 #: src/components/toolbar/components/text-link/index.js:297
 #: src/components/typography-control/index.js:73
-#: src/extensions/DC/constants.js:181
-#: src/extensions/DC/constants.js:192
-#: src/extensions/DC/constants.js:202
+#: src/extensions/DC/constants.js:218
+#: src/extensions/DC/constants.js:229
+#: src/extensions/DC/constants.js:239
 #: src/extensions/text/formats/link/index.js:10
 msgid "Link"
 msgstr ""
@@ -1437,7 +1437,8 @@ msgstr ""
 
 #: build/2469.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:832
-#: src/components/dynamic-content/index.js:319
+#: src/components/context-loop/index.js:279
+#: src/components/dynamic-content/index.js:307
 msgid "Source"
 msgstr ""
 
@@ -1448,7 +1449,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:75
 #: src/components/image-url-upload/index.js:37
 #: src/components/toolbar/components/video-url/index.js:38
-#: src/extensions/DC/constants.js:182
+#: src/extensions/DC/constants.js:219
 msgid "URL"
 msgstr ""
 
@@ -1552,7 +1553,7 @@ msgstr ""
 #: build/4538.js:1
 #: src/blocks/image-maxi/inspector.js:180
 #: src/components/toolbar/components/more-settings/index.js:119
-#: src/extensions/DC/constants.js:178
+#: src/extensions/DC/constants.js:215
 msgid "Caption"
 msgstr ""
 
@@ -1742,7 +1743,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:155
 #: src/components/background-control/imageLayer.js:118
 #: src/components/divider-control/index.js:158
-#: src/components/dynamic-content/index.js:149
+#: src/components/dynamic-content/index.js:161
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
 #: src/components/typography-control/index.js:872
@@ -2298,7 +2299,7 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:177
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:260
+#: src/extensions/DC/constants.js:297
 msgid "Image"
 msgstr ""
 
@@ -2512,9 +2513,9 @@ msgstr ""
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:36
 #: src/blocks/map-maxi/components/markers/index.js:101
 #: src/blocks/pane-maxi/edit.js:243
-#: src/extensions/DC/constants.js:146
-#: src/extensions/DC/constants.js:169
-#: src/extensions/DC/constants.js:177
+#: src/extensions/DC/constants.js:183
+#: src/extensions/DC/constants.js:206
+#: src/extensions/DC/constants.js:214
 msgid "Title"
 msgstr ""
 
@@ -2565,7 +2566,7 @@ msgstr ""
 #: src/blocks/pane-maxi/inspector.js:114
 #: src/components/background-control/imageLayer.js:531
 #: src/components/background-control/imageLayer.js:581
-#: src/extensions/DC/constants.js:150
+#: src/extensions/DC/constants.js:187
 msgid "Content"
 msgstr ""
 
@@ -3240,7 +3241,7 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:457
 #: src/blocks/image-maxi/edit.js:559
 #: src/blocks/image-maxi/edit.js:620
-#: src/extensions/DC/utils.js:63
+#: src/extensions/DC/utils.js:65
 msgid "No content found"
 msgstr ""
 
@@ -3323,11 +3324,11 @@ msgstr ""
 
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:70
 #: src/blocks/map-maxi/components/markers/index.js:113
-#: src/extensions/DC/constants.js:170
-#: src/extensions/DC/constants.js:179
-#: src/extensions/DC/constants.js:190
-#: src/extensions/DC/constants.js:198
-#: src/extensions/DC/constants.js:289
+#: src/extensions/DC/constants.js:207
+#: src/extensions/DC/constants.js:216
+#: src/extensions/DC/constants.js:227
+#: src/extensions/DC/constants.js:235
+#: src/extensions/DC/constants.js:326
 msgid "Description"
 msgstr ""
 
@@ -3428,7 +3429,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:47
 #: src/components/background-control/imageLayer.js:106
 #: src/components/background-control/imageLayer.js:298
-#: src/components/dynamic-content/index.js:152
+#: src/components/dynamic-content/index.js:164
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -3678,7 +3679,7 @@ msgid "Block tone"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:106
-#: src/extensions/DC/constants.js:200
+#: src/extensions/DC/constants.js:237
 msgid "Parent"
 msgstr ""
 
@@ -3731,8 +3732,8 @@ msgid "none"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:368
-#: src/components/context-loop/index.js:276
-#: src/components/dynamic-content/index.js:349
+#: src/components/context-loop/index.js:309
+#: src/components/dynamic-content/index.js:338
 msgid "Type"
 msgstr ""
 
@@ -3794,82 +3795,82 @@ msgstr ""
 msgid "Pallet box colour %s"
 msgstr ""
 
-#: src/components/context-loop/index.js:236
+#: src/components/context-loop/index.js:238
 msgid "Use context loop"
 msgstr ""
 
-#: src/components/context-loop/index.js:260
+#: src/components/context-loop/index.js:262
 msgid "Stop accumulator inheritance"
 msgstr ""
 
-#: src/components/context-loop/index.js:304
-#: src/components/dynamic-content/index.js:381
+#: src/components/context-loop/index.js:337
+#: src/components/dynamic-content/index.js:366
 msgid "This type is empty"
 msgstr ""
 
-#: src/components/context-loop/index.js:309
-#: src/components/dynamic-content/index.js:386
+#: src/components/context-loop/index.js:342
+#: src/components/dynamic-content/index.js:371
 msgid "Relation"
 msgstr ""
 
-#: src/components/context-loop/index.js:332
-#: src/components/dynamic-content/index.js:417
+#: src/components/context-loop/index.js:365
+#: src/components/dynamic-content/index.js:402
 msgid "Author id"
 msgstr ""
 
-#: src/components/context-loop/index.js:387
-#: src/components/dynamic-content/index.js:479
+#: src/components/context-loop/index.js:420
+#: src/components/dynamic-content/index.js:464
 msgid "Order by"
 msgstr ""
 
-#: src/components/context-loop/index.js:409
-#: src/components/dynamic-content/index.js:502
+#: src/components/context-loop/index.js:442
+#: src/components/dynamic-content/index.js:487
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
-#: src/components/context-loop/index.js:435
-#: src/components/dynamic-content/index.js:529
+#: src/components/context-loop/index.js:468
+#: src/components/dynamic-content/index.js:514
 msgid "Accumulator"
 msgstr ""
 
-#: src/components/context-loop/index.js:460
+#: src/components/context-loop/index.js:493
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
-#: src/components/context-loop/index.js:475
+#: src/components/context-loop/index.js:508
 msgid "Pagination"
 msgstr ""
 
-#: src/components/context-loop/index.js:490
+#: src/components/context-loop/index.js:523
 msgid "Items per page"
 msgstr ""
 
-#: src/components/context-loop/index.js:512
+#: src/components/context-loop/index.js:545
 msgid "Items total: show all"
 msgstr ""
 
-#: src/components/context-loop/index.js:526
+#: src/components/context-loop/index.js:559
 msgid "Items total"
 msgstr ""
 
-#: src/components/context-loop/index.js:555
+#: src/components/context-loop/index.js:588
 msgid "Text for previous link"
 msgstr ""
 
-#: src/components/context-loop/index.js:569
+#: src/components/context-loop/index.js:602
 msgid "Text for next link"
 msgstr ""
 
-#: src/components/context-loop/index.js:582
+#: src/components/context-loop/index.js:615
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
-#: src/components/context-loop/index.js:614
+#: src/components/context-loop/index.js:647
 msgid "Pagination hover"
 msgstr ""
 
-#: src/components/context-loop/index.js:665
+#: src/components/context-loop/index.js:698
 msgid "Pagination current"
 msgstr ""
 
@@ -5130,39 +5131,39 @@ msgstr ""
 msgid "d.m.Y t"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:150
+#: src/components/dynamic-content/index.js:162
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:151
+#: src/components/dynamic-content/index.js:163
 msgid "Semicolon"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:288
+#: src/components/dynamic-content/index.js:276
 msgid "Use dynamic content"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:307
+#: src/components/dynamic-content/index.js:295
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:564
+#: src/components/dynamic-content/index.js:549
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:590
+#: src/components/dynamic-content/index.js:573
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:652
+#: src/components/dynamic-content/index.js:635
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:680
+#: src/components/dynamic-content/index.js:663
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:697
+#: src/components/dynamic-content/index.js:680
 msgid "Image accumulator"
 msgstr ""
 
@@ -5646,9 +5647,9 @@ msgid "Untitled interaction"
 msgstr ""
 
 #: src/components/relation-control/index.js:411
-#: src/extensions/DC/constants.js:189
-#: src/extensions/DC/constants.js:197
-#: src/extensions/DC/constants.js:288
+#: src/extensions/DC/constants.js:226
+#: src/extensions/DC/constants.js:234
+#: src/extensions/DC/constants.js:325
 msgid "Name"
 msgstr ""
 
@@ -6308,25 +6309,25 @@ msgid "Media"
 msgstr ""
 
 #: src/extensions/DC/constants.js:25
-#: src/extensions/DC/constants.js:158
-#: src/extensions/DC/constants.js:185
+#: src/extensions/DC/constants.js:195
+#: src/extensions/DC/constants.js:222
 msgid "Author"
 msgstr ""
 
 #: src/extensions/DC/constants.js:26
-#: src/extensions/DC/constants.js:164
-#: src/extensions/DC/constants.js:302
+#: src/extensions/DC/constants.js:201
+#: src/extensions/DC/constants.js:339
 msgid "Categories"
 msgstr ""
 
 #: src/extensions/DC/constants.js:27
-#: src/extensions/DC/constants.js:165
-#: src/extensions/DC/constants.js:303
+#: src/extensions/DC/constants.js:202
+#: src/extensions/DC/constants.js:340
 msgid "Tags"
 msgstr ""
 
 #: src/extensions/DC/constants.js:39
-#: src/extensions/DC/constants.js:401
+#: src/extensions/DC/constants.js:438
 msgid "Product"
 msgstr ""
 
@@ -6342,266 +6343,265 @@ msgstr ""
 msgid "Product tags"
 msgstr ""
 
-#: src/extensions/DC/constants.js:67
-#: src/extensions/DC/constants.js:84
-#: src/extensions/DC/constants.js:93
-#: src/extensions/DC/constants.js:100
-#: src/extensions/DC/constants.js:105
+#: src/extensions/DC/constants.js:97
+#: src/extensions/DC/constants.js:109
+#: src/extensions/DC/constants.js:117
+#: src/extensions/DC/constants.js:124
+#: src/extensions/DC/constants.js:129
+#: src/extensions/DC/constants.js:139
+#: src/extensions/DC/constants.js:146
 msgid "Get by id"
 msgstr ""
 
-#: src/extensions/DC/constants.js:73
+#: src/extensions/DC/constants.js:103
+#: src/extensions/DC/utils.js:208
 msgid "Get by tag"
 msgstr ""
 
-#: src/extensions/DC/constants.js:74
-#: src/extensions/DC/constants.js:89
-msgid "Get current"
-msgstr ""
-
-#: src/extensions/DC/constants.js:76
-msgid "Get current archive"
-msgstr ""
-
-#: src/extensions/DC/constants.js:85
-#: src/extensions/DC/constants.js:94
-#: src/extensions/DC/constants.js:101
-#: src/extensions/DC/constants.js:106
+#: src/extensions/DC/constants.js:110
+#: src/extensions/DC/constants.js:118
+#: src/extensions/DC/constants.js:125
+#: src/extensions/DC/constants.js:130
+#: src/extensions/DC/constants.js:140
+#: src/extensions/DC/constants.js:147
 msgid "Get random"
 msgstr ""
 
-#: src/extensions/DC/constants.js:86
-#: src/extensions/DC/constants.js:95
+#: src/extensions/DC/constants.js:111
+#: src/extensions/DC/constants.js:119
+#: src/extensions/DC/constants.js:141
 msgid "Get by date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:87
-#: src/extensions/DC/constants.js:96
+#: src/extensions/DC/constants.js:112
+#: src/extensions/DC/constants.js:120
+#: src/extensions/DC/utils.js:190
 msgid "Get alphabetical"
 msgstr ""
 
-#: src/extensions/DC/constants.js:88
+#: src/extensions/DC/constants.js:113
+#: src/extensions/DC/utils.js:196
 msgid "Get by author"
 msgstr ""
 
-#: src/extensions/DC/constants.js:154
+#: src/extensions/DC/constants.js:191
 msgid "Excerpt"
 msgstr ""
 
-#: src/extensions/DC/constants.js:157
-#: src/extensions/DC/constants.js:184
+#: src/extensions/DC/constants.js:194
+#: src/extensions/DC/constants.js:221
 msgid "Date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:171
+#: src/extensions/DC/constants.js:208
 msgid "Site URL"
 msgstr ""
 
-#: src/extensions/DC/constants.js:172
+#: src/extensions/DC/constants.js:209
 msgid "Admin email"
 msgstr ""
 
-#: src/extensions/DC/constants.js:173
+#: src/extensions/DC/constants.js:210
 msgid "Language"
 msgstr ""
 
-#: src/extensions/DC/constants.js:180
+#: src/extensions/DC/constants.js:217
 msgid "Alt text"
 msgstr ""
 
-#: src/extensions/DC/constants.js:183
+#: src/extensions/DC/constants.js:220
 msgid "Mime type"
 msgstr ""
 
-#: src/extensions/DC/constants.js:191
+#: src/extensions/DC/constants.js:228
 msgid "Email"
 msgstr ""
 
-#: src/extensions/DC/constants.js:193
+#: src/extensions/DC/constants.js:230
 msgid "Website"
 msgstr ""
 
-#: src/extensions/DC/constants.js:199
-#: src/extensions/DC/constants.js:294
+#: src/extensions/DC/constants.js:236
+#: src/extensions/DC/constants.js:331
 msgid "Slug"
 msgstr ""
 
-#: src/extensions/DC/constants.js:201
+#: src/extensions/DC/constants.js:238
 msgid "Count"
 msgstr ""
 
-#: src/extensions/DC/constants.js:213
-#: src/extensions/DC/constants.js:220
-#: src/extensions/DC/constants.js:227
-#: src/extensions/DC/constants.js:234
-#: src/extensions/DC/constants.js:241
-#: src/extensions/DC/constants.js:248
-#: src/extensions/DC/constants.js:316
-#: src/extensions/DC/constants.js:344
+#: src/extensions/DC/constants.js:250
+#: src/extensions/DC/constants.js:257
+#: src/extensions/DC/constants.js:264
+#: src/extensions/DC/constants.js:271
+#: src/extensions/DC/constants.js:278
+#: src/extensions/DC/constants.js:285
+#: src/extensions/DC/constants.js:353
+#: src/extensions/DC/constants.js:381
 msgid "Static text"
 msgstr ""
 
-#: src/extensions/DC/constants.js:252
+#: src/extensions/DC/constants.js:289
 msgid "Featured media"
 msgstr ""
 
-#: src/extensions/DC/constants.js:253
+#: src/extensions/DC/constants.js:290
 msgid "Author's avatar"
 msgstr ""
 
-#: src/extensions/DC/constants.js:257
+#: src/extensions/DC/constants.js:294
 msgid "Logo"
 msgstr ""
 
-#: src/extensions/DC/constants.js:263
+#: src/extensions/DC/constants.js:300
 msgid "Avatar"
 msgstr ""
 
-#: src/extensions/DC/constants.js:291
+#: src/extensions/DC/constants.js:328
 msgid "Short description"
 msgstr ""
 
-#: src/extensions/DC/constants.js:295
+#: src/extensions/DC/constants.js:332
 msgid "SKU"
 msgstr ""
 
-#: src/extensions/DC/constants.js:296
+#: src/extensions/DC/constants.js:333
 msgid "Review count"
 msgstr ""
 
-#: src/extensions/DC/constants.js:297
+#: src/extensions/DC/constants.js:334
 msgid "Average rating"
 msgstr ""
 
-#: src/extensions/DC/constants.js:298
+#: src/extensions/DC/constants.js:335
 msgid "Price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:299
+#: src/extensions/DC/constants.js:336
 msgid "Regular price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:300
+#: src/extensions/DC/constants.js:337
 msgid "Sale price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:301
+#: src/extensions/DC/constants.js:338
 msgid "Price range"
 msgstr ""
 
-#: src/extensions/DC/constants.js:320
+#: src/extensions/DC/constants.js:357
 msgid "Featured image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:321
+#: src/extensions/DC/constants.js:358
 msgid "Gallery image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:325
+#: src/extensions/DC/constants.js:362
 msgid "Total price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:326
+#: src/extensions/DC/constants.js:363
 msgid "Total tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:327
+#: src/extensions/DC/constants.js:364
 msgid "Total shipping"
 msgstr ""
 
-#: src/extensions/DC/constants.js:329
+#: src/extensions/DC/constants.js:366
 msgid "Total shipping tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:332
+#: src/extensions/DC/constants.js:369
 msgid "Total discount"
 msgstr ""
 
-#: src/extensions/DC/constants.js:333
+#: src/extensions/DC/constants.js:370
 msgid "Total items"
 msgstr ""
 
-#: src/extensions/DC/constants.js:335
+#: src/extensions/DC/constants.js:372
 msgid "Total items tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:338
+#: src/extensions/DC/constants.js:375
 msgid "Total fees"
 msgstr ""
 
-#: src/extensions/DC/constants.js:339
+#: src/extensions/DC/constants.js:376
 msgid "Total fees tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:402
+#: src/extensions/DC/constants.js:439
 msgid "Add to cart"
 msgstr ""
 
-#: src/extensions/DC/constants.js:545
+#: src/extensions/DC/constants.js:582
 msgid "Use categories links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:546
+#: src/extensions/DC/constants.js:583
 msgid "Use tags links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:547
+#: src/extensions/DC/constants.js:584
 msgid "Use author link"
 msgstr ""
 
-#: src/extensions/DC/constants.js:553
+#: src/extensions/DC/constants.js:590
 msgid "Sorry, there is no next post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:557
+#: src/extensions/DC/constants.js:594
 msgid "Sorry, there is no previous post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:561
+#: src/extensions/DC/constants.js:598
 msgid "Value is not an object."
 msgstr ""
 
-#: src/extensions/DC/constants.js:562
+#: src/extensions/DC/constants.js:599
 msgid "Sorry, this author has no posts yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:566
+#: src/extensions/DC/constants.js:603
 msgid "Sorry, you do not have any images yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:570
+#: src/extensions/DC/constants.js:607
 msgid "Sorry, you do not have any tags yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:611
+#: src/extensions/DC/constants.js:648
 msgid "By date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:612
+#: src/extensions/DC/constants.js:649
 msgid "Alphabetical"
 msgstr ""
 
-#: src/extensions/DC/constants.js:619
+#: src/extensions/DC/constants.js:656
 msgid "New/old"
 msgstr ""
 
-#: src/extensions/DC/constants.js:620
+#: src/extensions/DC/constants.js:657
 msgid "Old/new"
 msgstr ""
 
-#: src/extensions/DC/constants.js:623
+#: src/extensions/DC/constants.js:660
 msgid "A/Z"
 msgstr ""
 
-#: src/extensions/DC/constants.js:624
+#: src/extensions/DC/constants.js:661
 msgid "Z/A"
 msgstr ""
 
-#: src/extensions/DC/constants.js:700
+#: src/extensions/DC/constants.js:738
 msgid "ACF"
 msgstr ""
 
-#: src/extensions/DC/getDCContent.js:120
+#: src/extensions/DC/getDCContent.js:129
 msgid "No parent"
 msgstr ""
 
@@ -6615,6 +6615,18 @@ msgstr ""
 
 #: src/extensions/DC/getDCMedia.js:92
 msgid "Error fetching media, try to add Featured Image to the post you want to show"
+msgstr ""
+
+#: src/extensions/DC/utils.js:202
+msgid "Get by category"
+msgstr ""
+
+#: src/extensions/DC/utils.js:235
+msgid "Get current"
+msgstr ""
+
+#: src/extensions/DC/utils.js:256
+msgid "Get current archive"
 msgstr ""
 
 #: src/extensions/maxi-block/maxiBlockComponent.js:1130

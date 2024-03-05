@@ -19,13 +19,15 @@ const getCleanResponseIBAttributes = (
 	selectedSettingsObj,
 	breakpoint,
 	prefix,
-	sid
+	sid,
+	blockTriggerClientId
 ) => {
 	const cleanAttributesObject = getRelatedAttributes({
 		IBAttributes: handleSetAttributes({
 			obj: newAttributesObj,
 			attributes: blockAttributes,
 			clientId: getClientIdFromUniqueId(uniqueID),
+			targetClientId: blockTriggerClientId,
 			onChange: response => response,
 			allowXXLOverGeneral: true,
 		}),

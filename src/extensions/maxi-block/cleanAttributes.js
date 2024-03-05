@@ -190,6 +190,7 @@ const flatWithGeneral = (
 	newAttributes,
 	attributes,
 	clientId,
+	targetClientId,
 	defaultAttributes,
 	allowXXLOverGeneral
 ) => {
@@ -206,8 +207,9 @@ const flatWithGeneral = (
 		if (isNil(value)) return;
 
 		const breakpoint = getBreakpointFromAttribute(key);
+		const currentClientId = targetClientId ?? clientId;
 
-		if (prevSavedAttrsClientId === clientId) {
+		if (prevSavedAttrsClientId === currentClientId) {
 			prevSavedAttrs.forEach(attr => {
 				const prevValue = attributes[attr];
 				const attrBreakpoint = getBreakpointFromAttribute(attr);
@@ -623,6 +625,7 @@ const cleanAttributes = ({
 	newAttributes,
 	attributes,
 	clientId,
+	targetClientId,
 	defaultAttributes,
 	allowXXLOverGeneral = false,
 }) => {
@@ -655,6 +658,7 @@ const cleanAttributes = ({
 			result,
 			attributes,
 			clientId,
+			targetClientId,
 			defaultAttributes,
 			allowXXLOverGeneral
 		),
@@ -687,7 +691,8 @@ const cleanAttributes = ({
 				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);
 		}),
-		clientId
+		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
+		targetClientId ?? clientId
 	);
 
 	return result;

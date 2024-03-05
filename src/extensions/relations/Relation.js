@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
+import { getIsSiteEditor, getSiteEditorIframe } from '../fse';
 
 // Relations (IB)
 class Relation {
@@ -13,16 +14,32 @@ class Relation {
 
 		if (!this.uniqueID || this.css.length === 0) return;
 
+		this.mainDocument = document;
+		this.mainWindow = window;
+
+		this.isSiteEditor = getIsSiteEditor();
+		if (this.isSiteEditor) {
+			const siteEditorIframe = getSiteEditorIframe();
+			if (siteEditorIframe) this.mainDocument = siteEditorIframe;
+			const iframe = document.querySelector(
+				'.edit-site-visual-editor .components-resizable-box__container iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+			);
+			if (iframe) this.mainWindow = iframe.contentWindow;
+		}
+
 		this.trigger = item.trigger;
-		this.triggerEl = document.querySelector(`.${this.trigger}`);
+		this.triggerEl = this.mainDocument.querySelector(`.${this.trigger}`);
 
 		this.blockTarget = `.${this.uniqueID}`;
-		this.blockTargetEl = document.querySelector(this.blockTarget);
+		this.blockTargetEl = this.mainDocument.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
-		this.targetPrefix =
-			'.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
+
+		this.targetPrefix = this.isSiteEditor
+			? '.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend'
+			: '.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
+
 		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
-		this.targetEl = document.querySelector(this.fullTarget);
+		this.targetEl = this.mainDocument.querySelector(this.fullTarget);
 		this.dataTarget = `${this.targetPrefix}${
 			this.blockTarget
 		}[data-maxi-relations="true"]${`[data-type="maxi-blocks/${getBlockNameFromUniqueID(
@@ -31,7 +48,7 @@ class Relation {
 
 		if (!this.triggerEl || !this.targetEl) return;
 
-		this.defaultTransition = window
+		this.defaultTransition = this.mainWindow
 			.getComputedStyle(this.targetEl)
 			.getPropertyValue('transition');
 
@@ -129,21 +146,21 @@ class Relation {
 
 	// Create two different <style> elements, one for the styles and one for the transitions.
 	generateStylesEls() {
-		this.stylesEl = document.createElement('style');
+		this.stylesEl = this.mainDocument.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-${this.id}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
 		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
 		if (this.inTransitionString.length > 0) {
-			this.inTransitionEl = document.createElement('style');
+			this.inTransitionEl = this.mainDocument.createElement('style');
 			this.inTransitionEl.id = `relations--${this.uniqueID}-${this.id}-in-transitions`;
 			this.inTransitionEl.setAttribute('data-type', this.action);
 			this.inTransitionEl.setAttribute('data-sids', this.sids);
 			this.inTransitionEl.innerText = this.inTransitionString;
 		}
 		if (this.outTransitionString.length > 0) {
-			this.outTransitionEl = document.createElement('style');
+			this.outTransitionEl = this.mainDocument.createElement('style');
 			this.outTransitionEl.id = `relations--${this.uniqueID}-${this.id}-out-transitions`;
 			this.outTransitionEl.setAttribute('data-type', this.action);
 			this.outTransitionEl.setAttribute('data-sids', this.sids);
@@ -156,11 +173,11 @@ class Relation {
 		if (!styleEl) return;
 
 		if (!this.inlineStylesEl)
-			this.inlineStylesEl = document.querySelector(
+			this.inlineStylesEl = this.mainDocument.querySelector(
 				'style[id*=maxi-blocks]'
 			);
 
-		const currentEl = document.querySelector(`#${styleEl.id}`);
+		const currentEl = this.mainDocument.querySelector(`#${styleEl.id}`);
 
 		if (currentEl) currentEl.remove();
 
@@ -171,7 +188,7 @@ class Relation {
 	}
 
 	getCurrentBreakpoint() {
-		const winWidth = window.innerWidth;
+		const winWidth = this.mainWindow.innerWidth;
 
 		let currentBreakpoint = 'general';
 
@@ -449,7 +466,7 @@ class Relation {
 			this.avoidHoverArray.push(
 				transitionTargets.some(transitionTarget =>
 					Array.from(
-						document.querySelectorAll(
+						this.mainDocument.querySelectorAll(
 							`${this.fullTarget} ${
 								this.fullTarget.includes(transitionTarget)
 									? ''
@@ -570,11 +587,15 @@ class Relation {
 								`[maxi-blocks-responsive="${breakpoint}"]`
 							);
 
-						const selector =
-							`body.maxi-blocks--active ${finalTarget} {`.replace(
-								/\s{2,}/g,
-								' '
-							);
+						const selector = this.isSiteEditor
+							? `body.maxi-blocks--active${finalTarget} {`.replace(
+									/\s{2,}/g,
+									' '
+							  )
+							: `body.maxi-blocks--active ${finalTarget} {`.replace(
+									/\s{2,}/g,
+									' '
+							  );
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
@@ -782,11 +803,15 @@ class Relation {
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
-								let selector =
-									`body.maxi-blocks--active ${transitionTarget} {`.replace(
-										/\s{2,}/g,
-										' '
-									);
+								let selector = this.isSiteEditor
+									? `body.maxi-blocks--active${transitionTarget} {`.replace(
+											/\s{2,}/g,
+											' '
+									  )
+									: `body.maxi-blocks--active ${transitionTarget} {`.replace(
+											/\s{2,}/g,
+											' '
+									  );
 								if (
 									breakpoint !== 'general' &&
 									selector.includes(
@@ -1034,7 +1059,9 @@ class Relation {
 
 		// Function to remove an element by its ID
 		const removeElementsById = elementId => {
-			const elements = document.querySelectorAll(`#${elementId}`);
+			const elements = this.mainDocument.querySelectorAll(
+				`#${elementId}`
+			);
 			elements.forEach(element => {
 				if (element) {
 					element.remove();

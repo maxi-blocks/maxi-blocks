@@ -17,8 +17,7 @@ import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
-import { inlineLinkFields } from './constants';
-
+import { linkFields } from './constants';
 /**
  * External dependencies
  */
@@ -49,7 +48,7 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				linkTarget,
+				postTaxonomyLinksStatus,
 				containsHTML,
 			} = dynamicContentProps;
 
@@ -97,8 +96,8 @@ const withMaxiDC = createHigherOrderComponent(
 							clientId
 						);
 						const newContainsHTML =
-							linkTarget === field &&
-							inlineLinkFields.includes(field) &&
+							postTaxonomyLinksStatus &&
+							linkFields.includes(field) &&
 							!isNil(newContent);
 
 						if (!newContainsHTML) {

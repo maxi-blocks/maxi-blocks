@@ -251,6 +251,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block li`,
 			`${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block li`,
 			`${prefix} ${secondPrefix} .maxi-${style} .maxi-pagination a`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-pagination span.maxi-pagination__link--current`,
 		].forEach(target => {
 			const sentences = [...breakpointLevelSentences.p];
 

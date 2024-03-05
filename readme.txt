@@ -210,7 +210,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 5 March 2024_
+_Updates 6 March 2024_
 MaxiBlocks v1.7.3
 * Update: Introduced pagination functionality for the Context Loop, enhancing navigation through large datasets.
 * Update: Revamped the MaxiBlocks previews within the Site Editor, now utilizing static images for a quicker and more efficient preview experience, replacing the previous live render approach.
@@ -219,7 +219,7 @@ MaxiBlocks v1.7.3
 * Update: Expanded link support to include mailto, tel, sftp, and magnet protocols, broadening the range of link types that can be created and managed.
 * Fix: Corrected the search link functionality within the Search Maxi Block, ensuring accurate and expected search results.
 * Fix: Addressed an issue with inserting templates from the Template Library into Site Editor - Templates - Pages, streamlining the template integration process.
-* Fix: Overhauled the handling of Dynamic Content links for authors, tags, and categories, ensuring more reliable and consistent link generation and navigation.
+* Fix: Resolved an issue where specifying a value for a smaller breakpoint could inadvertently alter the value set for a larger breakpoint.
 
 _Updates: 23 February 2024_
 MaxiBlocks v1.7.2

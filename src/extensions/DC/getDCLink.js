@@ -1,14 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect, select } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
-import { inlineLinkFields } from './constants';
 
 const getProductsLink = async (dataRequest, data) => {
 	const productData = await getProductData(data?.id);
@@ -33,20 +32,8 @@ const getDCContent = async (dataRequest, clientId) => {
 
 	const data = await getDCEntity(dataRequest, clientId);
 
-	if (inlineLinkFields.includes(dataRequest?.linkTarget)) {
-		return 'Multiple Links';
-	}
-
 	if (dataRequest?.type === 'products') {
 		return getProductsLink(dataRequest, data);
-	}
-
-	if (dataRequest?.linkTarget === 'author') {
-		const { getUsers } = resolveSelect('core');
-
-		const user = await getUsers({ include: dataRequest?.author });
-
-		return user?.[0]?.link;
 	}
 
 	const contentValue = data?.link;

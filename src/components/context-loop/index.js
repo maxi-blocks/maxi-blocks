@@ -6,10 +6,10 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
-	useState,
 	useMemo,
+	useState,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -31,21 +31,24 @@ import {
 	orderByOptions,
 	orderOptions,
 	orderRelations,
-	orderTypes,
 	relationOptions,
-	relationTypes,
-	typeOptions,
+	sourceOptions,
 } from '../../extensions/DC/constants';
 import {
 	getCLAttributes,
 	getDCOptions,
 	LoopContext,
 } from '../../extensions/DC';
-import { validationsValues } from '../../extensions/DC/utils';
+import {
+	getRelationOptions,
+	validationsValues,
+} from '../../extensions/DC/utils';
 import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
 } from '../../extensions/DC/withMaxiContextLoop';
+import getTypes from '../../extensions/DC/getTypes';
+import ACFSettingsControl from '../dynamic-content/acf-settings-control';
 
 /**
  * External dependencies
@@ -69,11 +72,13 @@ const ContextLoop = props => {
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+	const [postTypesOptions, setPostTypesOptions] = useState(null);
 
 	const classes = classnames('maxi-context-loop', className);
 
 	const {
 		'cl-status': status,
+		'cl-source': source,
 		'cl-type': type,
 		'cl-relation': relation,
 		'cl-id': id,
@@ -83,6 +88,7 @@ const ContextLoop = props => {
 		'cl-order': order,
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
+		'cl-acf-group': acfGroup,
 		'cl-pagination': pagination,
 		'cl-pagination-per-page': paginationPerPage,
 		'cl-pagination-total': paginationTotal,
@@ -112,9 +118,23 @@ const ContextLoop = props => {
 
 	const clPaginationPrefix = 'cl-pagination-';
 
+	const { relationTypes, orderTypes } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes } = select(
+			'maxiBlocks/dynamic-content'
+		);
+		return {
+			relationTypes: getRelationTypes(),
+			orderTypes: getOrderTypes(),
+		};
+	}, []);
+
+	const currentRelationOptions = useMemo(
+		() => getRelationOptions(type, contentType),
+		[contentType, type]
+	);
+
 	const isTypeHasRelations =
-		relationTypes.includes(type) &&
-		!!relationOptions?.[contentType]?.[type];
+		relationTypes.includes(type) && !!currentRelationOptions;
 
 	const isOrderSettings =
 		orderTypes.includes(type) && orderRelations.includes(relation);
@@ -187,44 +207,26 @@ const ContextLoop = props => {
 		}
 	});
 
-	const currentRelationOptions = useMemo(() => {
-		let options = relationOptions[contentType][type];
+	useEffect(() => {
+		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		setPostTypesOptions(postTypes);
+	}, [contentType, source]);
 
-		const hideCurrent = {
-			post: 'pages',
-			page: 'posts',
-		};
-
-		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			options = options.filter(({ value }) => value !== 'current');
-		}
-
-		const isFSE = select('core/edit-site') !== undefined;
-
-		if (!isFSE)
-			options = options.filter(
-				({ value }) => value !== 'current-archive'
+	useEffect(() => {
+		if (source === 'acf' && typeof acf === 'undefined') {
+			const validatedAttributes = validationsValues(
+				type,
+				field,
+				relation,
+				contentType
 			);
-		else {
-			const allowedTemplateTypes = [
-				'category',
-				'tag',
-				'author',
-				'date',
-				'archive',
-			];
-			const currentTemplateType =
-				select('core/edit-site')?.getEditedPostContext()?.templateSlug;
 
-			// Check if currentTemplateType is not one of the allowed types
-			if (!allowedTemplateTypes.includes(currentTemplateType))
-				options = options.filter(
-					({ value }) => value !== 'current-archive'
-				);
+			changeProps({
+				'cl-source': 'wp',
+				...validatedAttributes,
+			});
 		}
-
-		return options;
-	}, [contentType, type]);
+	}, []);
 
 	useEffect(() => {
 		fetchDcData().catch(console.error);
@@ -272,10 +274,41 @@ const ContextLoop = props => {
 								}
 							/>
 						)}
+					{sourceOptions.length > 1 && (
+						<SelectControl
+							label={__('Source', 'maxi-blocks')}
+							value={source}
+							options={sourceOptions}
+							newStyle
+							onChange={value => {
+								const validatedAttributes = validationsValues(
+									type,
+									field,
+									relation,
+									contentType,
+									value,
+									true
+								);
+
+								changeProps({
+									'cl-source': value,
+									...validatedAttributes,
+								});
+							}}
+						/>
+					)}
+					{source === 'acf' && (
+						<ACFSettingsControl
+							onChange={onChange}
+							contentType={contentType}
+							group={acfGroup}
+							isCL
+						/>
+					)}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={typeOptions[contentType]}
+						options={postTypesOptions}
 						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(

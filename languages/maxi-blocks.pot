@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-04T16:19:35+00:00\n"
+"POT-Creation-Date: 2024-03-05T14:27:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -99,8 +99,8 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:70
 #: src/components/background-control/imageLayer.js:742
 #: src/components/inspector-tabs/inspector-transition.js:139
-#: src/components/relation-control/index.js:509
-#: src/components/relation-control/index.js:651
+#: src/components/relation-control/index.js:510
+#: src/components/relation-control/index.js:652
 msgid "Settings"
 msgstr ""
 
@@ -1203,7 +1203,7 @@ msgstr ""
 
 #: build/1971.js:1
 #: build/6413.js:1
-#: src/components/toolbar/components/link/index.js:110
+#: src/components/toolbar/components/link/index.js:101
 #: src/components/toolbar/components/text-link/index.js:297
 #: src/components/typography-control/index.js:73
 #: src/extensions/DC/constants.js:181
@@ -1215,13 +1215,13 @@ msgstr ""
 
 #: build/1971.js:1
 #: build/6413.js:1
-#: src/components/toolbar/components/link/index.js:123
+#: src/components/toolbar/components/link/index.js:114
 msgid "Use dynamic content link"
 msgstr ""
 
 #: build/1971.js:1
 #: build/6413.js:1
-#: src/components/toolbar/components/link/index.js:167
+#: src/components/toolbar/components/link/index.js:157
 msgid "Link target"
 msgstr ""
 
@@ -1742,7 +1742,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:155
 #: src/components/background-control/imageLayer.js:118
 #: src/components/divider-control/index.js:158
-#: src/components/dynamic-content/index.js:147
+#: src/components/dynamic-content/index.js:149
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
 #: src/components/typography-control/index.js:872
@@ -3240,7 +3240,7 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:457
 #: src/blocks/image-maxi/edit.js:559
 #: src/blocks/image-maxi/edit.js:620
-#: src/extensions/DC/utils.js:86
+#: src/extensions/DC/utils.js:63
 msgid "No content found"
 msgstr ""
 
@@ -3428,7 +3428,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:47
 #: src/components/background-control/imageLayer.js:106
 #: src/components/background-control/imageLayer.js:298
-#: src/components/dynamic-content/index.js:150
+#: src/components/dynamic-content/index.js:152
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -3731,8 +3731,8 @@ msgid "none"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:368
-#: src/components/context-loop/index.js:277
-#: src/components/dynamic-content/index.js:350
+#: src/components/context-loop/index.js:276
+#: src/components/dynamic-content/index.js:349
 msgid "Type"
 msgstr ""
 
@@ -3794,82 +3794,82 @@ msgstr ""
 msgid "Pallet box colour %s"
 msgstr ""
 
-#: src/components/context-loop/index.js:237
+#: src/components/context-loop/index.js:236
 msgid "Use context loop"
 msgstr ""
 
-#: src/components/context-loop/index.js:261
+#: src/components/context-loop/index.js:260
 msgid "Stop accumulator inheritance"
 msgstr ""
 
-#: src/components/context-loop/index.js:306
-#: src/components/dynamic-content/index.js:383
+#: src/components/context-loop/index.js:304
+#: src/components/dynamic-content/index.js:381
 msgid "This type is empty"
 msgstr ""
 
-#: src/components/context-loop/index.js:311
-#: src/components/dynamic-content/index.js:388
+#: src/components/context-loop/index.js:309
+#: src/components/dynamic-content/index.js:386
 msgid "Relation"
 msgstr ""
 
-#: src/components/context-loop/index.js:334
-#: src/components/dynamic-content/index.js:419
+#: src/components/context-loop/index.js:332
+#: src/components/dynamic-content/index.js:417
 msgid "Author id"
 msgstr ""
 
-#: src/components/context-loop/index.js:389
-#: src/components/dynamic-content/index.js:481
+#: src/components/context-loop/index.js:387
+#: src/components/dynamic-content/index.js:479
 msgid "Order by"
 msgstr ""
 
-#: src/components/context-loop/index.js:411
-#: src/components/dynamic-content/index.js:504
+#: src/components/context-loop/index.js:409
+#: src/components/dynamic-content/index.js:502
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
-#: src/components/context-loop/index.js:437
-#: src/components/dynamic-content/index.js:531
+#: src/components/context-loop/index.js:435
+#: src/components/dynamic-content/index.js:529
 msgid "Accumulator"
 msgstr ""
 
-#: src/components/context-loop/index.js:462
+#: src/components/context-loop/index.js:460
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
-#: src/components/context-loop/index.js:477
+#: src/components/context-loop/index.js:475
 msgid "Pagination"
 msgstr ""
 
-#: src/components/context-loop/index.js:492
+#: src/components/context-loop/index.js:490
 msgid "Items per page"
 msgstr ""
 
-#: src/components/context-loop/index.js:514
+#: src/components/context-loop/index.js:512
 msgid "Items total: show all"
 msgstr ""
 
-#: src/components/context-loop/index.js:528
+#: src/components/context-loop/index.js:526
 msgid "Items total"
 msgstr ""
 
-#: src/components/context-loop/index.js:557
+#: src/components/context-loop/index.js:555
 msgid "Text for previous link"
 msgstr ""
 
-#: src/components/context-loop/index.js:571
+#: src/components/context-loop/index.js:569
 msgid "Text for next link"
 msgstr ""
 
-#: src/components/context-loop/index.js:584
+#: src/components/context-loop/index.js:582
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
-#: src/components/context-loop/index.js:616
+#: src/components/context-loop/index.js:614
 msgid "Pagination hover"
 msgstr ""
 
-#: src/components/context-loop/index.js:667
+#: src/components/context-loop/index.js:665
 msgid "Pagination current"
 msgstr ""
 
@@ -5130,11 +5130,11 @@ msgstr ""
 msgid "d.m.Y t"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:148
+#: src/components/dynamic-content/index.js:150
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:149
+#: src/components/dynamic-content/index.js:151
 msgid "Semicolon"
 msgstr ""
 
@@ -5146,23 +5146,23 @@ msgstr ""
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:566
+#: src/components/dynamic-content/index.js:564
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:592
+#: src/components/dynamic-content/index.js:590
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:642
+#: src/components/dynamic-content/index.js:652
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:670
+#: src/components/dynamic-content/index.js:680
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:687
+#: src/components/dynamic-content/index.js:697
 msgid "Image accumulator"
 msgstr ""
 
@@ -5633,62 +5633,62 @@ msgstr ""
 msgid "Choose settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:381
+#: src/components/relation-control/index.js:382
 msgid "Preview all interactions"
 msgstr ""
 
-#: src/components/relation-control/index.js:395
+#: src/components/relation-control/index.js:396
 msgid "Add new interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:405
+#: src/components/relation-control/index.js:406
 msgid "Untitled interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:410
+#: src/components/relation-control/index.js:411
 #: src/extensions/DC/constants.js:189
 #: src/extensions/DC/constants.js:197
 #: src/extensions/DC/constants.js:288
 msgid "Name"
 msgstr ""
 
-#: src/components/relation-control/index.js:412
+#: src/components/relation-control/index.js:413
 msgid "Give memorable name…"
 msgstr ""
 
-#: src/components/relation-control/index.js:430
+#: src/components/relation-control/index.js:431
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
-#: src/components/relation-control/index.js:437
+#: src/components/relation-control/index.js:438
 msgid "Block to affect"
 msgstr ""
 
-#: src/components/relation-control/index.js:445
+#: src/components/relation-control/index.js:446
 msgid "Select block…"
 msgstr ""
 
-#: src/components/relation-control/index.js:466
+#: src/components/relation-control/index.js:467
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:475
+#: src/components/relation-control/index.js:476
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:482
+#: src/components/relation-control/index.js:483
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:489
+#: src/components/relation-control/index.js:490
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:634
+#: src/components/relation-control/index.js:635
 msgid "Open block settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:661
+#: src/components/relation-control/index.js:662
 msgid "Effects"
 msgstr ""
 
@@ -6310,7 +6310,6 @@ msgstr ""
 #: src/extensions/DC/constants.js:25
 #: src/extensions/DC/constants.js:158
 #: src/extensions/DC/constants.js:185
-#: src/extensions/DC/constants.js:427
 msgid "Author"
 msgstr ""
 
@@ -6327,6 +6326,7 @@ msgid "Tags"
 msgstr ""
 
 #: src/extensions/DC/constants.js:39
+#: src/extensions/DC/constants.js:401
 msgid "Product"
 msgstr ""
 
@@ -6533,71 +6533,75 @@ msgstr ""
 msgid "Total fees tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:404
+#: src/extensions/DC/constants.js:402
 msgid "Add to cart"
 msgstr ""
 
-#: src/extensions/DC/constants.js:415
-msgid "Categories links"
+#: src/extensions/DC/constants.js:545
+msgid "Use categories links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:421
-msgid "Tags links"
+#: src/extensions/DC/constants.js:546
+msgid "Use tags links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:571
+#: src/extensions/DC/constants.js:547
+msgid "Use author link"
+msgstr ""
+
+#: src/extensions/DC/constants.js:553
 msgid "Sorry, there is no next post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:575
+#: src/extensions/DC/constants.js:557
 msgid "Sorry, there is no previous post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:579
+#: src/extensions/DC/constants.js:561
 msgid "Value is not an object."
 msgstr ""
 
-#: src/extensions/DC/constants.js:580
+#: src/extensions/DC/constants.js:562
 msgid "Sorry, this author has no posts yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:584
+#: src/extensions/DC/constants.js:566
 msgid "Sorry, you do not have any images yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:588
+#: src/extensions/DC/constants.js:570
 msgid "Sorry, you do not have any tags yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:629
+#: src/extensions/DC/constants.js:611
 msgid "By date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:630
+#: src/extensions/DC/constants.js:612
 msgid "Alphabetical"
 msgstr ""
 
-#: src/extensions/DC/constants.js:637
+#: src/extensions/DC/constants.js:619
 msgid "New/old"
 msgstr ""
 
-#: src/extensions/DC/constants.js:638
+#: src/extensions/DC/constants.js:620
 msgid "Old/new"
 msgstr ""
 
-#: src/extensions/DC/constants.js:641
+#: src/extensions/DC/constants.js:623
 msgid "A/Z"
 msgstr ""
 
-#: src/extensions/DC/constants.js:642
+#: src/extensions/DC/constants.js:624
 msgid "Z/A"
 msgstr ""
 
-#: src/extensions/DC/constants.js:718
+#: src/extensions/DC/constants.js:700
 msgid "ACF"
 msgstr ""
 
-#: src/extensions/DC/getDCContent.js:121
+#: src/extensions/DC/getDCContent.js:120
 msgid "No parent"
 msgstr ""
 

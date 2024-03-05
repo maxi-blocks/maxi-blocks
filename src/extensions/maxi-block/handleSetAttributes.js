@@ -23,6 +23,7 @@ const handleSetAttributes = ({
 	attributes,
 	onChange,
 	clientId = null,
+	targetClientId = null,
 	defaultAttributes,
 	isStyleCard = false,
 	allowXXLOverGeneral = false,
@@ -163,6 +164,7 @@ const handleSetAttributes = ({
 		newAttributes: response,
 		attributes,
 		clientId,
+		targetClientId,
 		defaultAttributes,
 		allowXXLOverGeneral,
 	});

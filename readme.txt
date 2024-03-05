@@ -210,6 +210,17 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 5 March 2024_
+MaxiBlocks v1.7.3
+* Update: Introduced pagination functionality for the Context Loop, enhancing navigation through large datasets.
+* Update: Revamped the MaxiBlocks previews within the Site Editor, now utilizing static images for a quicker and more efficient preview experience, replacing the previous live render approach.
+* Update: Significantly enhanced the performance of both frontend and backend scripts for faster load times and improved efficiency.
+* Update: Implemented a new feature allowing the use of current archive posts as Dynamic Content and within the Context Loop for Archive Templates in the Site Editor, facilitating more dynamic and context-aware designs.
+* Update: Expanded link support to include mailto, tel, sftp, and magnet protocols, broadening the range of link types that can be created and managed.
+* Fix: Corrected the search link functionality within the Search Maxi Block, ensuring accurate and expected search results.
+* Fix: Addressed an issue with inserting templates from the Template Library into Site Editor - Templates - Pages, streamlining the template integration process.
+* Fix: Overhauled the handling of Dynamic Content links for authors, tags, and categories, ensuring more reliable and consistent link generation and navigation.
+
 _Updates: 23 February 2024_
 MaxiBlocks v1.7.2
 * Update: After updating the plugin, a notification will now appear, advising you to check and potentially clear other caches on your site. This step, while manual, is crucial for maintaining optimal site performance and ensuring that all updates are fully applied across your website.
@@ -223,16 +234,6 @@ MaxiBlocks v1.7.1
 * Fix: Updated the S breakpoint width to 767 pixels for Style Cards on the frontend, ensuring optimal layout and responsiveness across devices.
 * Fix: Addressed and corrected potential JavaScript warnings related to scroll effects, enhancing stability and performance of scroll-related animations and interactions.
 * Fix: Resolved an issue where the Style Cards Editor save button failed to become active upon making modifications within the Light and Dark tabs, ensuring changes are now properly recognized and can be saved promptly.
-
-_Updates: 6 February 2024_
-MaxiBlocks v1.7.0
-* Update: Added Gutenberg navigation menu block support when placed inside of a Container Maxi block. Controlled via global Style Cards settings:
- 1. Typography, colour, and padding settings for menu items.
- 2. Extend navigation block mobile menu breakpoint (600px) to MaxiBlocks responsive grid break points 4k XXL, 1920 XL, 1366 L, 1024 M, 767 S & 480 XS.
- 3. Change colours and other styles for mobile/burger menu. Future support planned for 20 "hamburger menu" icons already available in the icon library.
- 4. Supports A-current, A-visited and hover colours. These styles improve navigation by visually indicating the current page, visited pages, and clickable links in nav menu items.
-How to create a menu:
-Start from the WordPress Site Editor Experience (previously called FSE), add a Container Maxi block to the header. Place a Gutenberg navigation menu block inside, then toggle MaxiBlocks Style Cards open. Create/Edit your custom Style Card under "Navigation menu globals" settings panel. Help article to follow.
 
 == Upgrade Notice ==
 

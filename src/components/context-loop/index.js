@@ -63,7 +63,6 @@ const ContextLoop = props => {
 		name,
 		contentType = 'group',
 		isToolbar = false,
-		'dc-link-target': linkTarget,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -285,7 +284,6 @@ const ContextLoop = props => {
 								relation,
 								contentType,
 								'wp',
-								linkTarget,
 								true
 							);
 

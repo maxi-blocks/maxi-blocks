@@ -23,7 +23,6 @@ import {
 import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
-import { inlineLinkFields } from '../../extensions/DC/constants';
 
 /**
  * External dependencies
@@ -121,8 +120,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isChild,
 		dcStatus,
 		dcHide,
-		dcLinkStatus,
-		dcLinkTarget,
 		pagination = false,
 		...extraProps
 	} = props;
@@ -243,10 +240,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
 		paletteClasses,
-		hasLink &&
-			// For links that are rendered in content instead of whole block don't add class
-			(!inlineLinkFields.includes(dcLinkTarget) || !dcLinkStatus) &&
-			'maxi-block--has-link',
+		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
 		isRepeater && 'maxi-block--repeater',

@@ -43,6 +43,8 @@ import {
 	orderByRelations,
 	orderRelations,
 	orderTypes,
+	linkFields,
+	linkFieldsLabels,
 	sourceOptions,
 	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
@@ -101,13 +103,13 @@ const DynamicContent = props => {
 		limit,
 		delimiterContent,
 		customDelimiterStatus,
+		postTaxonomyLinksStatus,
 		error,
 		order,
 		orderBy,
 		accumulator,
 		imageAccumulator,
 		acfFieldType,
-		linkTarget,
 		customDate,
 		day,
 		era,
@@ -264,9 +266,7 @@ const DynamicContent = props => {
 				type,
 				field,
 				relation,
-				contentType,
-				undefined,
-				linkTarget
+				contentType
 			);
 
 			changeProps({
@@ -326,8 +326,7 @@ const DynamicContent = props => {
 									field,
 									relation,
 									contentType,
-									value,
-									linkTarget
+									value
 								);
 
 								changeProps({
@@ -361,8 +360,7 @@ const DynamicContent = props => {
 								field,
 								relation,
 								contentType,
-								source,
-								linkTarget
+								source
 							);
 
 							changeProps({
@@ -631,6 +629,18 @@ const DynamicContent = props => {
 								<DateFormatting
 									onChange={obj => changeProps(obj)}
 									{...dcValuesForDate}
+								/>
+							)}
+							{linkFields.includes(field) && (
+								<ToggleSwitch
+									label={linkFieldsLabels[field]}
+									selected={postTaxonomyLinksStatus}
+									onChange={value =>
+										changeProps({
+											'dc-post-taxonomy-links-status':
+												value,
+										})
+									}
 								/>
 							)}
 							{(['tags', 'categories'].includes(field) ||

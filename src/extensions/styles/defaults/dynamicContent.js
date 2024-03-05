@@ -1,16 +1,3 @@
-const dynamicContentLink = {
-	'dc-status': {
-		type: 'boolean',
-	},
-	'dc-link-status': {
-		type: 'boolean',
-	},
-	'dc-link-target': {
-		type: 'string',
-		default: 'none',
-	},
-};
-
 const dynamicContent = {
 	'dc-error': {
 		type: 'string',
@@ -127,6 +114,9 @@ const dynamicContent = {
 	'dc-link-url': {
 		type: 'string',
 	},
+	'dc-post-taxonomy-links-status': {
+		type: 'boolean',
+	},
 	'dc-custom-delimiter-status': {
 		type: 'boolean',
 	},
@@ -153,11 +143,23 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-link-target': {
+		type: 'string',
+		default: 'none',
+	},
 	'dc-image-accumulator': {
 		type: 'number',
 		default: 0,
 	},
-	...dynamicContentLink,
+};
+
+const dynamicContentLink = {
+	'dc-status': {
+		type: 'boolean',
+	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
 };
 
 export { dynamicContent, dynamicContentLink };

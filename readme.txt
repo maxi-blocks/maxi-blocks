@@ -212,6 +212,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 _Updates 6 March 2024_
 MaxiBlocks v1.7.3
+* Update: Enhanced Dynamic Content and Context Loop with Custom Post Types and Custom Taxonomy support.
 * Update: Introduced pagination functionality for the Context Loop, enhancing navigation through large datasets.
 * Update: Revamped the MaxiBlocks previews within the Site Editor, now utilizing static images for a quicker and more efficient preview experience, replacing the previous live render approach.
 * Update: Significantly enhanced the performance of both frontend and backend scripts for faster load times and improved efficiency.

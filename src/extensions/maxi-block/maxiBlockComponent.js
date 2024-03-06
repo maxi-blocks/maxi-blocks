@@ -1079,8 +1079,14 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview = true;
 			const disconnectTimeout = 10000; // 10 seconds
 			const timeouts = {};
-			let imgPath =
-				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
+
+			const isSiteEditor = getIsSiteEditor();
+
+			const imageName = isSiteEditor
+				? 'pattern-preview.jpg'
+				: 'pattern-preview-edit.jpg';
+
+			let imgPath = `/wp-content/plugins/maxi-blocks/img/${imageName}`;
 
 			const linkElement = document.querySelector(
 				'#maxi-blocks-block-css'
@@ -1088,7 +1094,7 @@ class MaxiBlockComponent extends Component {
 			const href = linkElement?.getAttribute('href');
 			const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
 
-			if (pluginsPath) imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
+			if (pluginsPath) imgPath = `${pluginsPath}/img/${imageName}`;
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 

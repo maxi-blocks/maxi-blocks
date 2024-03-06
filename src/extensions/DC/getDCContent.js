@@ -1,18 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import {
-	limitFields,
-	limitTypes,
-	nameDictionary,
-	renderedFields,
-} from './constants';
+import { limitFields, nameDictionary, renderedFields } from './constants';
 import {
 	getItemLinkContent,
 	getSimpleText,
@@ -62,12 +57,20 @@ const getDCContent = async (dataRequest, clientId) => {
 		return `${capitalize(field)}: current`;
 	}
 
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
-		!['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			type
-		)
+		![
+			'tags',
+			'categories',
+			'product_tags',
+			'product_categories',
+			...customTaxonomies,
+		].includes(type)
 	) {
 		contentValue = data?.[field].rendered;
 	} else {
@@ -80,6 +83,8 @@ const getDCContent = async (dataRequest, clientId) => {
 	if (type === 'cart') {
 		return getCartContent(dataRequest, data);
 	}
+
+	const limitTypes = select('maxiBlocks/dynamic-content').getLimitTypes();
 
 	if (field === 'date') {
 		const options = formatDateOptions(dataRequest);
@@ -111,9 +116,13 @@ const getDCContent = async (dataRequest, clientId) => {
 		);
 	}
 	if (
-		['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			type
-		) &&
+		[
+			'tags',
+			'categories',
+			'product_tags',
+			'product_categories',
+			...customTaxonomies,
+		].includes(type) &&
 		field === 'parent'
 	) {
 		if (!contentValue || contentValue === 0)
@@ -123,7 +132,7 @@ const getDCContent = async (dataRequest, clientId) => {
 
 			const parent = await getEntityRecords(
 				'taxonomy',
-				nameDictionary[type],
+				nameDictionary[type] ?? type,
 				{
 					per_page: 1,
 					include: contentValue,

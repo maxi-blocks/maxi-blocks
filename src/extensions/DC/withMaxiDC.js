@@ -21,7 +21,7 @@ import { linkFields } from './constants';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -48,7 +48,6 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				customDate,
 				postTaxonomyLinksStatus,
 				containsHTML,
 			} = dynamicContentProps;
@@ -98,7 +97,6 @@ const withMaxiDC = createHigherOrderComponent(
 						);
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
-							['posts', 'products'].includes(type) &&
 							linkFields.includes(field) &&
 							!isNil(newContent);
 
@@ -120,7 +118,10 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
-						} else if (newLinkSettings) {
+						} else if (
+							newLinkSettings &&
+							!isEqual(attributes.linkSettings, newLinkSettings)
+						) {
 							isSynchronizedAttributesUpdated = true;
 
 							markNextChangeAsNotPersistent();

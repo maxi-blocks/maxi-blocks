@@ -20,7 +20,6 @@ const contextLoop = ({
 	content: (
 		<ContextLoop
 			{...getGroupAttributes(attributes, 'contextLoop')}
-			{...getGroupAttributes(attributes, 'dynamicContent')}
 			clientId={clientId}
 			contentType={contentType}
 			onChange={obj => maxiSetAttributes(obj)}

@@ -19,8 +19,8 @@ import { acfFieldTypes } from '../../../extensions/DC/constants';
 import { isEmpty } from 'lodash';
 
 const ACFSettingsControl = props => {
-	const { dynamicContent, onChange, contentType } = props;
-	const { acfGroup: group, field } = dynamicContent;
+	const { onChange, contentType, isCL, group, field } = props;
+	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const [groupOptions, setGroupOptions] = useState(null);
 	const [fieldsOptions, setFieldsOptions] = useState(null);
@@ -35,9 +35,9 @@ const ACFSettingsControl = props => {
 			});
 
 			if (!isEmpty(options)) {
-				if (!options.find(option => option.value === field))
+				if (!options.find(option => option.value === group))
 					onChange({
-						'dc-acf-group': options[0].value,
+						[`${prefix}acf-group`]: options[0].value,
 					});
 
 				setGroupOptions(options);
@@ -53,6 +53,8 @@ const ACFSettingsControl = props => {
 	}, []);
 
 	useEffect(() => {
+		if (isCL) return;
+
 		getACFGroupFields(group).then(fields => {
 			const options = fields
 				.filter(field =>
@@ -69,8 +71,8 @@ const ACFSettingsControl = props => {
 			if (!isEmpty(options)) {
 				if (!options.find(option => option.value === field))
 					onChange({
-						'dc-field': options[0].value,
-						'dc-acf-field-type': options[0].type,
+						[`${prefix}field`]: options[0].value,
+						[`${prefix}acf-field-type`]: options[0].type,
 					});
 
 				setFieldsOptions(options);
@@ -101,9 +103,10 @@ const ACFSettingsControl = props => {
 				label='ACF Group'
 				value={group}
 				options={groupOptions}
+				newStyle
 				onChange={value =>
 					onChange({
-						'dc-acf-group': value,
+						[`${prefix}acf-group`]: +value,
 					})
 				}
 			/>
@@ -111,10 +114,11 @@ const ACFSettingsControl = props => {
 				label='ACF Field'
 				value={field}
 				options={fieldsOptions}
+				newStyle
 				onChange={value =>
 					onChange({
-						'dc-field': value,
-						'dc-acf-field-type': fieldsOptions.find(
+						[`${prefix}field`]: value,
+						[`${prefix}acf-field-type`]: fieldsOptions.find(
 							option => option.value === value
 						).type,
 					})

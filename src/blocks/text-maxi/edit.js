@@ -3,6 +3,7 @@
  * WordPress dependencies
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -81,7 +82,13 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		const getListItemsLength = () => {
+			return select('core/block-editor').getBlockOrder(
+				this.props.clientId
+			).length;
+		};
+
+		return getStyles(this.props.attributes, getListItemsLength);
 	}
 
 	maxiBlockDidUpdate() {

@@ -38,7 +38,6 @@ import { getSVGListStyle } from './utils';
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
-import parse from 'html-react-parser';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -165,8 +164,10 @@ const getTypographyHoverObject = props => {
 	return response;
 };
 
-const getListObject = props => {
-	const { listStyle, listStart, listReversed, content } = props;
+const getListObject = (props, getListItemsLength) => {
+	const { listStyle, listStart, listReversed } = props;
+
+	console.log(getListItemsLength());
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -176,13 +177,20 @@ const getListObject = props => {
 				? listStart
 				: 0;
 		counterReset += listStart > 0 ? listStart : 0;
-		counterReset +=
-			listReversed && parse(content).length ? parse(content).length : 1;
+		if (listReversed) {
+			const listItemsLength = getListItemsLength();
+			if (listItemsLength) {
+				counterReset += listItemsLength;
+			}
+		} else {
+			counterReset += 1;
+		}
 		counterReset += listReversed ? 1 : -1;
 		counterReset -= 1;
-	} else if (listReversed)
-		counterReset = parse(content).length ? parse(content).length + 1 : 2;
-	else counterReset = 0;
+	} else if (listReversed) {
+		const listItemsLength = getListItemsLength();
+		counterReset = listItemsLength ? listItemsLength + 1 : 2;
+	} else counterReset = 0;
 
 	const response = {
 		listStart: {
@@ -599,7 +607,7 @@ const getMarkerObject = props => {
 	};
 };
 
-const getStyles = props => {
+const getStyles = (props, getListItemsLength) => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();
@@ -616,10 +624,13 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}`]: getListObject({
-						...props,
-						isRTL,
-					}),
+					[` ${element}`]: getListObject(
+						{
+							...props,
+							isRTL,
+						},
+						getListItemsLength
+					),
 					[` ${element} li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),

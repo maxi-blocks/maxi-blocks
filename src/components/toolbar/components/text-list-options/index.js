@@ -70,13 +70,10 @@ const TextListOptions = props => {
 	const onChangeList = type => {
 		if (isList && type === typeOfList) return;
 
-		const listStyle = type === 'ol' ? 'decimal' : 'disc';
-
 		const changeObject = {
 			isList: true,
 			typeOfList: type,
 			content,
-			listStyle,
 		};
 
 		if (!isList) {

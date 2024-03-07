@@ -35,6 +35,8 @@ describe('Icon Color', () => {
 
 		await openSidebarTab(page, 'style', 'icon colour');
 
+		await page.waitForTimeout(200);
+
 		await editColorControl({
 			page,
 			instance: await page.$('.maxi-color-control__SVG-fill-color'),

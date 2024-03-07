@@ -167,8 +167,6 @@ const getTypographyHoverObject = props => {
 const getListObject = (props, getListItemsLength) => {
 	const { listStyle, listStart, listReversed } = props;
 
-	console.log(getListItemsLength());
-
 	let counterReset;
 	if (isNumber(listStart)) {
 		counterReset =

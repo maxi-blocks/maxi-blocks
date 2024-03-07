@@ -47,11 +47,16 @@ const isEligible = blockAttributes => {
 	} = blockAttributes;
 
 	return (
-		maxiVersions.includes(maxiVersionCurrent) ||
-		(!maxiVersionOrigin &&
-			blockAttributes['dc-status'] &&
-			isNil(blockAttributes['dc-hide']))
+		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
+		blockAttributes['dc-status'] &&
+		isNil(blockAttributes['dc-hide'])
 	);
 };
 
-export default { name, attributes, isEligible };
+const migrate = attributes => {
+	const newAttributes = { ...attributes };
+	newAttributes['dc-hide'] = false;
+	return newAttributes;
+};
+
+export default { name, attributes, isEligible, migrate };

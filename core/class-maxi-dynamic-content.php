@@ -1064,9 +1064,9 @@ class MaxiBlocks_DynamicContent
     public function get_link_attributes_from_link_settings($linkSettings)
     {
         $rel = '';
-        $isNoFollow = $linkSettings['noFollow'];
-        $isSponsored = $linkSettings['sponsored'];
-        $isUGC = $linkSettings['ugc'];
+        $isNoFollow = isset($linkSettings['noFollow']) ? $linkSettings['noFollow'] : false;
+        $isSponsored = isset($linkSettings['sponsored']) ? $linkSettings['sponsored'] : false;
+        $isUGC = isset($linkSettings['ugc']) ? $linkSettings['ugc'] : false;
         if ($isNoFollow) {
             $rel .= ' nofollow';
         }
@@ -1082,7 +1082,7 @@ class MaxiBlocks_DynamicContent
             $rel = trim($rel);
         }
 
-        $target = $linkSettings['opensInNewTab'] ? '_blank' : '_self';
+        $target = (isset($linkSettings['opensInNewTab']) && $linkSettings['opensInNewTab']) ? '_blank' : '_self';
 
         return array('rel' => $rel, 'target' => $target);
     }

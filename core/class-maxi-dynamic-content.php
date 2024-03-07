@@ -1093,14 +1093,16 @@ class MaxiBlocks_DynamicContent
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $content, $link_status, $field, $linkSettings = null)
+    public function get_post_taxonomy_item_content($item, $content, $link_status, $field, $dc_post_taxonomy_links_status, $linkSettings = null)
     {
-        if ($link_status) {
+        // Need to support $dc_post_taxonomy_links_status for blocks that were not migrated (up until 1.7.2 version included)
+        if ($link_status || $dc_post_taxonomy_links_status) {
             $href = 'href="' . $this->get_field_link($item, $field) . '"';
             $rel = '';
             $target = ' target="_self"';
 
-            if ($linkSettings) {
+            // If $dc_post_taxonomy_links_status is true, link settings should not affect inline links
+            if ($linkSettings && !$dc_post_taxonomy_links_status) {
                 $link_attributes = $this->get_link_attributes_from_link_settings($linkSettings);
                 $rel = $link_attributes['rel'] ? ' rel="' . $link_attributes['rel'] . '"' : '';
                 $target = ' target="' . $link_attributes['target'] . '"';
@@ -1119,6 +1121,8 @@ class MaxiBlocks_DynamicContent
             'dc-delimiter-content' => $dc_delimiter,
             'dc-link-target' => $dc_link_target,
             'dc-link-status' => $dc_link_status,
+            // Need to keep old attribute for backward compatibility
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'linkSettings' => $linkSettings,
         ) = $attributes;
 
@@ -1132,7 +1136,8 @@ class MaxiBlocks_DynamicContent
                 $taxonomy_item->name,
                 $dc_link_status && $dc_link_target === $dc_field,
                 $dc_field,
-                $linkSettings
+                $dc_post_taxonomy_links_status,
+                $linkSettings,
             );
         }
 
@@ -1145,7 +1150,8 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
-            'dc-link-target' => $dc_link_target,
+            // Need to keep old attribute for backward compatibility
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
@@ -1184,7 +1190,13 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $post->post_author);
+            $post_data = $this->get_post_taxonomy_item_content(
+                $post->post_author,
+                get_the_author_meta('display_name', $post->post_author),
+                false,
+                $dc_field,
+                $dc_post_taxonomy_links_status
+            );
         }
 
         if (in_array($dc_field, ['categories', 'tags'])) {

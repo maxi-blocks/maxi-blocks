@@ -60,6 +60,36 @@ export const typeOptions = {
 	acf: ACFTypeOptions,
 };
 
+// Post types to show in "Standard types" section
+export const supportedPostTypes = ['post', 'page', 'attachment', 'product'];
+
+// Post types to hide
+export const ignoredPostTypes = [
+	'nav_menu_item',
+	'wp_block',
+	'wp_template',
+	'wp_template_part',
+	'wp_navigation',
+];
+
+// Taxonomies to show in "Standard types" section
+export const supportedTaxonomies = [
+	'category',
+	'post_tag',
+	'product_cat',
+	'product_tag',
+];
+
+// Taxonomies to hide
+export const ignoredTaxonomies = [
+	'nav_menu',
+	'link_category',
+	'post_format',
+	'product_shipping_class',
+	'wp_pattern_category',
+	'maxi-image-type',
+];
+
 /**
  * Relation constants
  */
@@ -71,11 +101,6 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by author'), value: 'by-author' },
 	{ label: __('Get by category'), value: 'by-category' },
 	{ label: __('Get by tag', 'maxi-blocks'), value: 'by-tag' },
-	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
-	{
-		label: __('Get current archive', 'maxi-blocks'),
-		value: 'current-archive',
-	},
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -86,7 +111,6 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
-	{ label: __('Get current', 'maxi-blocks'), value: 'current' },
 ];
 
 const generalRelationOptionsUsers = [
@@ -109,6 +133,19 @@ const generalRelationOptionsTags = [
 const generalRelationOptionsProducts = generalRelationOptionsPosts.filter(
 	({ value }) => !['current', 'by-author'].includes(value)
 );
+
+// Relation options available for all post types
+export const postTypeRelationOptions = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
+];
+
+// Relation options available for all taxonomies
+export const taxonomyRelationOptions = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
+];
 
 const generalRelationOptions = {
 	posts: generalRelationOptionsPosts,
@@ -391,42 +428,15 @@ export const mediaFieldOptions = Object.values(fieldOptions.image).map(
 	type => type.map(option => option.value)[0]
 );
 
-// Fields that contain HTML that needs to be rendered in their content
-export const htmlFields = ['tags', 'categories'];
-
 /**
  * Link constants
  */
 export const multipleLinksTypes = ['products'];
 
-export const linkTypesOptions = {
+export const linkOptions = {
 	products: [
+		{ label: __('Product', 'maxi-blocks'), value: 'product' },
 		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
-	],
-};
-
-// Fields that can have their own links
-export const linkFields = ['categories', 'tags', 'author'];
-export const inlineLinkFields = ['categories', 'tags'];
-
-export const linkFieldsOptions = {
-	categories: [
-		{
-			label: __('Categories links', 'maxi-blocks'),
-			value: 'categories',
-		},
-	],
-	tags: [
-		{
-			label: __('Tags links', 'maxi-blocks'),
-			value: 'tags',
-		},
-	],
-	author: [
-		{
-			label: __('Author', 'maxi-blocks'),
-			value: 'author',
-		},
 	],
 };
 
@@ -527,7 +537,7 @@ export const idOptionByField = {
 };
 
 // Fields that use id field
-export const idFields = [
+export const idTypes = [
 	'posts',
 	'pages',
 	'media',
@@ -564,6 +574,15 @@ export const relationTypes = [
 
 // Types that can have relation "current".
 export const currentEntityTypes = ['posts', 'pages'];
+
+// Fields that can lead to different locations from post
+export const linkFields = ['categories', 'tags', 'author'];
+
+export const linkFieldsLabels = {
+	categories: __('Use categories links', 'maxi-blocks'),
+	tags: __('Use tags links', 'maxi-blocks'),
+	author: __('Use author link', 'maxi-blocks'),
+};
 
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 
@@ -682,6 +701,7 @@ export const relationDictionary = {
 
 export const attributeDefaults = {
 	status: false,
+	source: 'wp',
 	type: 'posts',
 	relation: 'by-id',
 	'order-by': 'by-date',

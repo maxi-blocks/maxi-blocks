@@ -17,12 +17,11 @@ import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
-import { inlineLinkFields } from './constants';
-
+import { linkFields } from './constants';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -49,8 +48,7 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				customDate,
-				linkTarget,
+				postTaxonomyLinksStatus,
 				containsHTML,
 			} = dynamicContentProps;
 
@@ -98,9 +96,8 @@ const withMaxiDC = createHigherOrderComponent(
 							clientId
 						);
 						const newContainsHTML =
-							linkTarget === field &&
-							['posts', 'products'].includes(type) &&
-							inlineLinkFields.includes(field) &&
+							postTaxonomyLinksStatus &&
+							linkFields.includes(field) &&
 							!isNil(newContent);
 
 						if (!newContainsHTML) {
@@ -121,7 +118,10 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
-						} else if (newLinkSettings) {
+						} else if (
+							newLinkSettings &&
+							!isEqual(attributes.linkSettings, newLinkSettings)
+						) {
 							isSynchronizedAttributesUpdated = true;
 
 							markNextChangeAsNotPersistent();

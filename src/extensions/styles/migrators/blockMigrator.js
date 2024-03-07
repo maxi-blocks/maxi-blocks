@@ -31,7 +31,6 @@ import dcLinkBlocksMigrator from './dcLinkBlocksMigrator';
 import DCClassNameMigrator from './DCClassNameMigrator';
 import imageResponsiveWidth from './imageResponsiveWidth';
 import scrollEffectsMigrator from './scrollEffectsMigrator';
-import inlineDCLinkMigrator from './inlineDCLinkMigrator';
 
 /**
  * External dependencies
@@ -138,7 +137,6 @@ const blockMigrator = blockMigratorProps => {
 		imageResponsiveWidth,
 		uniqueIDMigrator,
 		scrollEffectsMigrator,
-		inlineDCLinkMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

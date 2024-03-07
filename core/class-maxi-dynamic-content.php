@@ -594,14 +594,9 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-            $link = self::get_field_link(
-                self::get_post($attributes)->post_author,
-                $attributes['dc-field']
-            );
-        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+        if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
-        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
+        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             $link = get_author_posts_url($attributes['dc-id']);
@@ -658,13 +653,13 @@ class MaxiBlocks_DynamicContent
 
         if ($dc_source === 'acf') {
             $response = self::get_acf_content($attributes);
-        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $response = self::get_post_or_page_content($attributes);
         } elseif ($dc_type === 'settings') { // Site settings
             $response = self::get_site_content($dc_field);
         } elseif ($dc_type === 'media') {
             $response = self::get_media_content($attributes);
-        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) { // Categories or tags
+        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags'], $this->get_custom_taxonomies()))) {
             $response = self::get_taxonomy_content($attributes);
         } elseif ($dc_type === 'users') { // Users
             $response = self::get_user_content($attributes);
@@ -714,7 +709,7 @@ class MaxiBlocks_DynamicContent
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
             $media_id = is_array($image) && $image['id'];
-        } elseif (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
@@ -879,13 +874,18 @@ class MaxiBlocks_DynamicContent
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
-        if (in_array($dc_type, ['posts', 'pages', 'products'])) {
+        if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
             // Basic args
             $args = [
-                'post_type' => self::$type_to_post_type[$dc_type],
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
+
+            if (isset(self::$type_to_post_type[$dc_type])) {
+                $args['post_type'] = self::$type_to_post_type[$dc_type];
+            } else {
+                $args['post_type'] = $dc_type;
+            }
 
             // DC Relation
             if ($dc_relation == 'by-id') {
@@ -970,7 +970,7 @@ class MaxiBlocks_DynamicContent
             }
 
             return $post;
-        } elseif (in_array($dc_type, ['categories', 'tags', 'product_categories', 'product_tags'])) {
+        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags'], $this->get_custom_taxonomies()))) {
             if ($dc_type === 'categories') {
                 $taxonomy = 'category';
             } elseif ($dc_type === 'tags') {
@@ -979,6 +979,8 @@ class MaxiBlocks_DynamicContent
                 $taxonomy = 'product_cat';
             } elseif ($dc_type === 'product_tags') {
                 $taxonomy = 'product_tag';
+            } else {
+                $taxonomy = $dc_type;
             }
 
             $args = [
@@ -1054,31 +1056,6 @@ class MaxiBlocks_DynamicContent
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
 
-    public function get_link_attributes_from_link_settings($linkSettings)
-    {
-        $rel = '';
-        $isNoFollow = $linkSettings['noFollow'];
-        $isSponsored = $linkSettings['sponsored'];
-        $isUGC = $linkSettings['ugc'];
-        if ($isNoFollow) {
-            $rel .= ' nofollow';
-        }
-        if ($isSponsored) {
-            $rel .= ' sponsored';
-        }
-        if ($isUGC) {
-            $rel .= ' ugc';
-        }
-        if (!$isNoFollow && !$isSponsored && !$isUGC) {
-            $rel = null;
-        } else {
-            $rel = trim($rel);
-        }
-
-        $target = $linkSettings['opensInNewTab'] ? '_blank' : '_self';
-
-        return array('rel' => $rel, 'target' => $target);
-    }
 
     public function get_field_link($item, $field)
     {
@@ -1877,4 +1854,38 @@ class MaxiBlocks_DynamicContent
         return '';
     }
 
+    public function get_custom_post_types()
+    {
+        $args = [
+            'public' => true,
+            '_builtin' => false,
+        ];
+
+        // Post types supported by maxi, that are not built in WP post types
+        $supported_post_types = [
+            'product'
+        ];
+
+        $post_types = array_diff(get_post_types($args), $supported_post_types);
+
+        return $post_types;
+    }
+
+    public function get_custom_taxonomies()
+    {
+        $args = [
+            'public' => true,
+            '_builtin' => false,
+        ];
+
+        // Taxonomies supported by maxi, that are not built in WP taxonomies
+        $supported_taxonomies = [
+            'product_cat',
+            'product_tag',
+        ];
+
+        $taxonomies = array_diff(get_taxonomies($args), $supported_taxonomies);
+
+        return $taxonomies;
+    }
 }

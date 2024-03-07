@@ -14,3 +14,5 @@ export { default as useMaxiDCLink } from './useMaxiDCLink';
 export { default as withMaxiContextLoop } from './withMaxiContextLoop';
 export { default as withMaxiContextLoopContext } from './withMaxiContextLoopContext';
 export { default as witMaxiDC } from './withMaxiDC';
+
+import './store';

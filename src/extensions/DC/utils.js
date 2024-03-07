@@ -11,14 +11,14 @@ import {
 	fieldOptions,
 	relationOptions,
 	orderByRelations,
-	typeOptions,
 	getHaveLoadedIntegrationsOptions,
 	currentEntityTypes,
 	nameDictionary,
 	relationDictionary,
-	linkTypesOptions,
-	linkFieldsOptions,
+	postTypeRelationOptions,
+	taxonomyRelationOptions,
 } from './constants';
+import getTypes from './getTypes';
 
 /**
  * External dependencies
@@ -58,27 +58,6 @@ export const limitString = (value, limit) => {
 	return str;
 };
 
-/**
- * Retrieves the link targets based on selected DC type and field.
- *
- * @param {string} type  - DC type.
- * @param {string} field - DC field.
- * @returns {Array} An array of link targets with label and value keys.
- */
-export const getLinkTargets = (type, field) => {
-	const targets = [];
-
-	targets.push({
-		label: 'Selected entity',
-		value: 'entity',
-	});
-
-	targets.push(...linkTypesOptions[type]);
-	targets.push(...linkFieldsOptions[field]);
-
-	return targets;
-};
-
 // In case content is empty, show this text
 export const sanitizeDCContent = content =>
 	!isEmpty(content) || isNumber(content)
@@ -115,29 +94,203 @@ export const getTaxonomyContent = async (
 		: namesArray.join(`${delimiterContent} `);
 };
 
+const getCustomPostTypeFields = (contentType, type) => {
+	// TODO: refactor possibly by filtering post/page fields
+	const fields = [];
+
+	const postType = select('core').getPostType(type);
+
+	const addField = (label, value) => {
+		fields.push({
+			label: __(label, 'maxi-blocks'),
+			value,
+		});
+	};
+
+	if (contentType === 'image') {
+		if (postType.supports.thumbnail) {
+			addField('Featured image', 'featured_media');
+		}
+
+		return fields;
+	}
+
+	if (postType.supports.title) {
+		addField('Title', 'title');
+	}
+	if (postType.supports.editor) {
+		addField('Content', 'content');
+	}
+	if (postType.supports.excerpt) {
+		addField('Excerpt', 'excerpt');
+	}
+	addField('Date', 'date');
+	if (postType.supports.author) {
+		addField('Author', 'author');
+	}
+	if (postType.taxonomies.includes('category')) {
+		addField('Categories', 'categories');
+	}
+	if (postType.taxonomies.includes('post_tag')) {
+		addField('Tags', 'tags');
+	}
+	if (postType.supports.comments) {
+		addField('Comments', 'comments');
+	}
+
+	return fields;
+};
+
+const getCustomTaxonomyFields = type => {
+	const fields = [];
+
+	const taxonomy = select('core').getTaxonomy(type);
+
+	const addField = (label, value) => {
+		fields.push({
+			label: __(label, 'maxi-blocks'),
+			value,
+		});
+	};
+
+	addField('Name', 'name');
+	addField('Description', 'description');
+	addField('Slug', 'slug');
+	if (taxonomy.hierarchical) {
+		addField('Parent', 'parent');
+	}
+	addField('Count', 'count');
+	addField('Link', 'link');
+
+	return fields;
+};
+
+export const getFields = (contentType, type) => {
+	if (
+		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
+	)
+		return getCustomPostTypeFields(contentType, type);
+	if (
+		select('maxiBlocks/dynamic-content')
+			.getCustomTaxonomies()
+			.includes(type)
+	)
+		return getCustomTaxonomyFields(type);
+
+	return fieldOptions[contentType]?.[type];
+};
+
+const getPostTypeRelationOptions = type => {
+	const postType = select('core').getPostType(type);
+
+	const relationOptions = [...postTypeRelationOptions];
+
+	if (postType.supports.title) {
+		relationOptions.push({
+			label: __('Get alphabetical', 'maxi-blocks'),
+			value: 'alphabetical',
+		});
+	}
+	if (postType.supports.author) {
+		relationOptions.push({
+			label: __('Get by author', 'maxi-blocks'),
+			value: 'by-author',
+		});
+	}
+	if (postType.taxonomies.includes('category')) {
+		relationOptions.push({
+			label: __('Get by category', 'maxi-blocks'),
+			value: 'by-category',
+		});
+	}
+	if (postType.taxonomies.includes('post_tag')) {
+		relationOptions.push({
+			label: __('Get by tag', 'maxi-blocks'),
+			value: 'by-tag',
+		});
+	}
+
+	return relationOptions;
+};
+
+const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
+
+export const getRelationOptions = (type, contentType) => {
+	let options;
+
+	if (
+		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
+	) {
+		options = getPostTypeRelationOptions(type);
+	} else if (
+		select('maxiBlocks/dynamic-content')
+			.getCustomTaxonomies()
+			.includes(type)
+	)
+		options = getTaxonomyRelationOptions();
+	else options = relationOptions[contentType]?.[type];
+
+	if (select('core/editor').getCurrentPostType() === type) {
+		options.push({
+			label: __('Get current', 'maxi-blocks'),
+			value: 'current',
+		});
+	}
+
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (isFSE) {
+		const allowedTemplateTypes = [
+			'category',
+			'tag',
+			'author',
+			'date',
+			'archive',
+		];
+		const currentTemplateType =
+			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+
+		// Check if currentTemplateType is one of the allowed types
+		if (allowedTemplateTypes.includes(currentTemplateType))
+			options = options.push({
+				label: __('Get current archive', 'maxi-blocks'),
+				value: 'current-archive',
+			});
+	}
+
+	return options;
+};
+
 export const validationsValues = (
 	variableValue,
 	field,
 	relation,
 	contentType,
 	source = 'wp',
-	linkTarget,
 	isCL = false
 ) => {
-	if (source === 'acf') return {};
+	if (
+		source === 'acf' ||
+		[
+			...select(
+				'maxiBlocks/dynamic-content'
+			).getWasCustomPostTypesLoaded(),
+			...select(
+				'maxiBlocks/dynamic-content'
+			).getWasCustomTaxonomiesLoaded(),
+		].includes(variableValue)
+	)
+		return {};
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = fieldOptions?.[contentType]?.[variableValue]?.map(
+	const fieldResult = getFields(contentType, variableValue)?.map(
 		x => x.value
 	);
-	const relationResult = relationOptions?.[contentType]?.[variableValue]?.map(
+	const relationResult = getRelationOptions(variableValue, contentType)?.map(
 		x => x.value
 	);
-	const typeResult = typeOptions[contentType]?.map(item => item.value);
-	const linkTargetResult = getLinkTargets(variableValue, field).map(
-		item => item.value
-	);
+	const typeResult = getTypes(contentType, false)?.map(item => item.value);
 
 	return {
 		...(!isCL &&
@@ -154,10 +307,6 @@ export const validationsValues = (
 			// Only validate type of DC once all integrations have loaded
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
-			}),
-		...(linkTargetResult &&
-			!linkTargetResult.includes(linkTarget) && {
-				[`${prefix}link-target`]: linkTargetResult[0],
 			}),
 	};
 };

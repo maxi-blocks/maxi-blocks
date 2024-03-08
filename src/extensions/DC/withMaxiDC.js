@@ -4,6 +4,7 @@
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { useCallback, useContext, useEffect } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -95,6 +96,9 @@ const withMaxiDC = createHigherOrderComponent(
 							lastDynamicContentProps,
 							clientId
 						);
+						// Parses symbols like &#038; to their respective characters (in this case, &)
+						newContent = decodeEntities(newContent);
+
 						const newContainsHTML =
 							postTaxonomyLinksStatus &&
 							linkFields.includes(field) &&

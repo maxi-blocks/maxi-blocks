@@ -102,30 +102,46 @@ const transforms = {
 					attributes['text-alignment-general'] = textAlign;
 				}
 
-				const formatElement = {
-					multilineTag: isList ? 'li' : undefined,
-					multilineWrapperTags: isList ? nodeName : undefined,
-				};
+				if (!isList) {
+					const formatValue = generateFormatValue(node);
 
-				const formatValue = generateFormatValue(formatElement, node);
+					const { typeOfList, content, textLevel } = attributes;
 
-				const { typeOfList, content, textLevel } = attributes;
+					const cleanCustomProps = setCustomFormatsWhenPaste({
+						formatValue,
+						typography: getGroupAttributes(
+							attributes,
+							'typography'
+						),
+						isList,
+						typeOfList,
+						content,
+						textLevel,
+					});
 
-				const cleanCustomProps = setCustomFormatsWhenPaste({
-					formatValue,
-					typography: getGroupAttributes(attributes, 'typography'),
-					isList,
-					typeOfList,
-					content,
-					textLevel,
-				});
+					const newAttributes = {
+						...attributes,
+						...cleanCustomProps,
+					};
 
-				const newAttributes = {
-					...attributes,
-					...cleanCustomProps,
-				};
+					return createBlock(name, newAttributes);
+				}
+				const listItemBlocks = Array.from(node.children).map(li =>
+					createBlock('maxi-blocks/list-item-maxi', {
+						content: li.textContent,
+					})
+				);
 
-				return createBlock(name, newAttributes);
+				return createBlock(
+					'maxi-blocks/text-maxi',
+					{
+						...attributes,
+						isList: true,
+						typeOfList: nodeName,
+						content: '',
+					},
+					listItemBlocks
+				);
 			},
 			priority: 1,
 		},

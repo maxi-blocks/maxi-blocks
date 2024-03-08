@@ -36,6 +36,7 @@ import { textIcon } from '../../icons';
 import {
 	blockMigrator,
 	listBrMigrator,
+	listItemMigrator,
 } from '../../extensions/styles/migrators';
 
 /**
@@ -58,7 +59,7 @@ registerBlockType(metadata, {
 		attributes,
 		save,
 		selectors: customCss.selectors,
-		migrators: [listBrMigrator],
+		migrators: [listBrMigrator, listItemMigrator],
 	}),
 	customCss,
 	scProps,

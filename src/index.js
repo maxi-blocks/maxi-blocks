@@ -28,6 +28,7 @@ import './blocks/number-counter-maxi';
 import './blocks/row-maxi';
 import './blocks/svg-icon-maxi';
 import './blocks/text-maxi';
+import './blocks/list-item-maxi';
 import './blocks/slider-maxi';
 import './blocks/slide-maxi';
 import './blocks/accordion-maxi';

@@ -138,7 +138,6 @@ const MaxiToolbar = memo(
 			'dc-status': dcStatus,
 			content: listContent,
 			listStyle,
-			wpVersion,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -358,12 +357,12 @@ const MaxiToolbar = memo(
 						/>
 						{!dcStatus && (
 							<TextListOptions
+								clientId={clientId}
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
 								listStyle={listStyle}
 								content={listContent}
-								wpVersion={wpVersion}
 								onChange={obj => {
 									maxiSetAttributes(obj);
 								}}
@@ -627,6 +626,7 @@ const MaxiToolbar = memo(
 							SVGElement={attributes.SVGElement}
 							mediaID={attributes.mediaID}
 							mediaURL={attributes.mediaURL}
+							isList={isList}
 						/>
 						<ContextLoop
 							clientId={clientId}

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RichText } from '@wordpress/block-editor';
+import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -31,21 +31,39 @@ const save = props => {
 	const className = 'maxi-text-block__content';
 	const value = content?.replace(/\n/g, '<br />');
 
+	const ListTagName = typeOfList;
+
 	return (
 		<MaxiBlock.save
-			classes={classnames(isList && 'maxi-list-block')}
+			classes={classnames(
+				// https://github.com/yeahcan/maxi-blocks/issues/3555 sometimes causes validation error,
+				// remove next line once it is fixed.
+				'wp-block-maxi-blocks-text-maxi',
+				isList && 'maxi-list-block'
+			)}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
-			<RichText.Content
-				className={className}
-				value={dcStatus ? '$text-to-replace' : value}
-				// TODO: avoid DC for lists
-				tagName={isList && !dcStatus ? typeOfList : textLevel}
-				{...(!dcStatus && {
-					reversed: !!listReversed,
-					start: listStart,
-				})}
-			/>
+			{!isList && (
+				<RichText.Content
+					className={className}
+					value={dcStatus ? '$text-to-replace' : value}
+					// TODO: avoid DC for lists
+					tagName={isList && !dcStatus ? typeOfList : textLevel}
+					{...(!dcStatus && {
+						reversed: !!listReversed,
+						start: listStart,
+					})}
+				/>
+			)}
+			{isList && (
+				<ListTagName
+					{...useInnerBlocksProps.save({
+						className,
+						reversed: !!listReversed,
+						start: listStart,
+					})}
+				/>
+			)}
 		</MaxiBlock.save>
 	);
 };

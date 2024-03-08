@@ -31,9 +31,9 @@ const ALLOWED_BLOCKS = [
 ];
 
 const DC = props => {
-	const { blockName, ...restProps } = props;
+	const { blockName, isList, ...restProps } = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) || isList) return null;
 
 	const contentTypes = {
 		'maxi-blocks/text-maxi': 'text',

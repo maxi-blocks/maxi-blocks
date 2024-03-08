@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**

@@ -1,0 +1,18 @@
+body.maxi-blocks--active .maxi-list-item-block {
+	& * {
+		border-color: inherit;
+	}
+	&__content {
+		position: relative;
+		margin: 0;
+	}
+	p:not(&__content):not(.maxi-pane-block__title):not(.wp-block):not(.maxi-block--use-sc) {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	a {
+		text-decoration: unset;
+		text-underline-offset: inherit !important;
+		text-decoration-skip-ink: auto;
+	}
+}

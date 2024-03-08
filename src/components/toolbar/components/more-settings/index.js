@@ -72,7 +72,10 @@ const MoreSettings = props => {
 							closeMoreSettings={args.onClose}
 							copyPasteMapping={copyPasteMapping}
 						/>
-						{blockName === 'maxi-blocks/text-maxi' && (
+						{[
+							'maxi-blocks/text-maxi',
+							'maxi-blocks/list-item-maxi',
+						].includes(blockName) && (
 							<TextGenerator
 								onChange={onChange}
 								closeMoreSettings={args.onClose}

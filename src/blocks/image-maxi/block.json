@@ -15,5 +15,5 @@
 		"anchor": false,
 		"html": false
 	},
-	"editorScript": "file:editor.js"
+	"editorScript": "maxi-blocks-block-editor"
 }

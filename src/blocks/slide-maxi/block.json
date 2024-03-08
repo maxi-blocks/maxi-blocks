@@ -15,5 +15,6 @@
 		"align": false,
 		"anchor": false,
 		"html": false
-	}
+	},
+	"editorScript": "file:editor.js"
 }

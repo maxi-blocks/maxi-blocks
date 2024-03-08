@@ -15,6 +15,7 @@
 		"anchor": false,
 		"html": false
 	},
+	"editorScript": "file:editor.js",
 	"scProps": {
 		"scElements": [
 			"hover-border-color-global",

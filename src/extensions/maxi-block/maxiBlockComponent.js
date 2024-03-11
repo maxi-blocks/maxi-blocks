@@ -242,19 +242,22 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview = true;
 			const disconnectTimeout = 10000; // 10 seconds
 			const timeouts = {};
-			let imgPath =
-				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
 
+			const defaultImgPath =
+				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
 			const linkElement = document.querySelector(
 				'#maxi-blocks-block-css'
 			);
 			const href = linkElement?.getAttribute('href');
 			const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
+			const imgPath = pluginsPath
+				? `${pluginsPath}/img/pattern-preview.jpg`
+				: defaultImgPath;
 
-			if (pluginsPath) imgPath = `${pluginsPath}/img/pattern-preview.jpg`;
 			previewIframes.forEach(iframe => {
 				if (!iframe || !iframe.parentNode) return;
 
+				// Refactor condition to exit early, improving readability
 				if (
 					this.hasParentWithClass(
 						iframe.parentNode,
@@ -265,30 +268,26 @@ class MaxiBlockComponent extends Component {
 
 				const replaceIframeWithImage = (iframe, observer) => {
 					const iframeDocument = iframe.contentDocument;
-					if (!iframeDocument) return;
-					const iframeBody = iframeDocument.body;
+					const iframeBody = iframeDocument?.body;
 					if (!iframeBody) return;
 
-					// Clear the timeout when the iframe mutates
+					// Clear and reset the timeout for this iframe
 					clearTimeout(timeouts[iframe]);
 					timeouts[iframe] = setTimeout(() => {
 						observer.disconnect();
 						delete timeouts[iframe];
 					}, disconnectTimeout);
-					// Check if the iframe content is fully loaded
+
 					const containsMaxiBlocksContainer =
 						iframeBody.querySelector(
 							'.is-root-container .maxi-block'
 						);
+					if (!containsMaxiBlocksContainer) return;
 
-					if (!containsMaxiBlocksContainer) return; // If not found, skip this iframe
-
-					// Add the pattern preview class to the iframe's parent element
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
-
-					const img = document.createElement('img');
+					const img = new Image();
 					img.src = imgPath;
 					img.alt = __(
 						'Preview for pattern with MaxiBlocks',
@@ -296,22 +295,18 @@ class MaxiBlockComponent extends Component {
 					);
 					img.style.width = '100%';
 					img.style.height = 'auto';
-
 					iframe.parentNode.replaceChild(img, iframe);
-					// Disconnect the observer
 					observer.disconnect();
 				};
 
-				// Create a new MutationObserver
 				const observer = new MutationObserver(
 					(mutationsList, observer) => {
-						for (const mutation of mutationsList) {
-							replaceIframeWithImage(mutation.target, observer);
-						}
+						mutationsList.forEach(mutation =>
+							replaceIframeWithImage(mutation.target, observer)
+						);
 					}
 				);
 
-				// Configure the observer with the iframe and desired attributes
 				observer.observe(iframe, {
 					attributes: true,
 					childList: true,

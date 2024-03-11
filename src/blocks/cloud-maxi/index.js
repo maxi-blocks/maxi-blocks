@@ -50,6 +50,7 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 			default: false,
 		},
 	},
+	editorScript: 'maxi-blocks-block-editor',
 	/* Save the block markup. */
 	edit,
 	save: () => null,

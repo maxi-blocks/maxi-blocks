@@ -15,6 +15,7 @@
 		"anchor": false,
 		"html": false
 	},
+	"editorScript": "maxi-blocks-block-editor",
 	"scProps": {
 		"scElements": [1, 2, 3, 4, 5, 6, 7, 8],
 		"scType": "color"

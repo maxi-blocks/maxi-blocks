@@ -15,5 +15,6 @@
 		"align": false,
 		"anchor": false,
 		"html": false
-	}
+	},
+	"editorScript": "maxi-blocks-block-editor"
 }

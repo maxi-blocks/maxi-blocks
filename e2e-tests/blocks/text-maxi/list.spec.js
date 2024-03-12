@@ -47,6 +47,8 @@ const createTextWithList = async (
 		(button, index) => button[index].click(),
 		typeIndex
 	);
+
+	await page.waitForTimeout(500);
 };
 
 describe('List in Text-maxi', () => {
@@ -56,6 +58,8 @@ describe('List in Text-maxi', () => {
 		await openSidebarTab(page, 'style', 'list options');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		await page.waitForTimeout(200);
 
 		// Text style position
 		const textStylePosition = await page.$(

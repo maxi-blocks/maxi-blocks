@@ -34,6 +34,14 @@ import {
 } from '../../../../extensions/DC/constants';
 import SelectControl from '../../../select-control';
 
+const DISABLED_BLOCKS = [
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/list-item-maxi',
+	'maxi-blocks/slider-maxi',
+];
+
 /**
  * Link
  */
@@ -56,13 +64,7 @@ const Link = props => {
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
 
-	if (
-		(blockName === 'maxi-blocks/divider-maxi' ||
-			blockName === 'maxi-blocks/accordion-maxi' ||
-			blockName === 'maxi-blocks/text-maxi' ||
-			blockName === 'maxi-blocks/slider-maxi') &&
-		!disableCustomFormats
-	)
+	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
 
 	const removeLinkHandle = () => {

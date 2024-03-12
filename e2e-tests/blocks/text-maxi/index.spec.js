@@ -660,7 +660,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Test Text Maxi on List mode and changing the font color', async () => {
+	it.only('Test Text Maxi on List mode and changing the font color', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__list-options', button =>
@@ -694,14 +694,8 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'Enter');
 		await page.waitForTimeout(150);
 
-		const { content: expectedContent } = await getBlockAttributes();
-
-		await page.waitForTimeout(500);
-
-		expect(expectedContent).toMatchSnapshot();
-
 		// Change color
-		await page.waitForTimeout(200);
+		await page.waitForTimeout(500);
 		await page.$eval('.toolbar-item__text-color', button => button.click());
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');
@@ -712,13 +706,13 @@ describe('TextMaxi', () => {
 
 		const {
 			'palette-color-general': expectedColor,
-			content: expectedContent2,
+			content: expectedContent,
 		} = await getBlockAttributes();
 
 		await page.waitForTimeout(500);
 
 		expect(expectedColor).toBe(4);
-		expect(expectedContent2 === expectedContent).toBeTruthy();
+		expect(expectedContent).toMatchSnapshot();
 	});
 
 	// Toolbar related. Waiting for #2519

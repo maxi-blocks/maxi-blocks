@@ -4,19 +4,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { dispatch, select } from '@wordpress/data';
 import { useContext } from '@wordpress/element';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
-import {
-	fromListToText,
-	fromTextToList,
-	getFormattedString,
-	textContext,
-} from '../../../../extensions/text/formats';
+import { TextContext } from '../../../../extensions/text/formats';
 import {
 	canIndentListItems,
 	canOutdentListItems,
@@ -45,23 +42,12 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const {
-		blockName,
-		isList,
-		typeOfList,
-		onChange,
-		content: listContent,
-		wpVersion,
-	} = props;
+	const { blockName, isList, typeOfList, onChange, content, clientId } =
+		props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const { formatValue } = useContext(textContext);
-
-	const getContent = (content, wpVersion) => {
-		if (!isList) return fromTextToList(content, wpVersion);
-		return fromListToText(content);
-	};
+	const { formatValue } = useContext(TextContext);
 
 	const onChangeIndent = type => {
 		let newFormat = '';
@@ -82,47 +68,61 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		const content =
-			wpVersion < 6.4
-				? getFormattedString({ formatValue, isList })
-				: listContent;
+		if (isList && type === typeOfList) return;
 
-		const changeObject1 = {
-			isList: !isList,
-			typeOfList: type,
-			content: getContent(content, wpVersion),
-		};
-
-		const changeObject2 = {
-			isList,
+		const changeObject = {
+			isList: true,
 			typeOfList: type,
 			content,
 		};
 
-		if (wpVersion >= 6.4) {
-			changeObject1.listStyle = type === 'ol' ? 'decimal' : 'disc';
-			changeObject2.listStyle = type === 'ol' ? 'decimal' : 'disc';
-		}
+		if (!isList) {
+			const contentArray = content.split('\n');
+			const listItemBlocks = contentArray.map(liContent =>
+				createBlock('maxi-blocks/list-item-maxi', {
+					content: liContent,
+				})
+			);
 
-		if (!isList || typeOfList === type) {
-			onChange(changeObject1);
+			const {
+				replaceInnerBlocks,
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+			} = dispatch('core/block-editor');
+
+			markNextChangeAsNotPersistent();
+			replaceInnerBlocks(clientId, listItemBlocks);
+
+			onChange(changeObject);
 		} else {
-			onChange(changeObject2);
+			onChange(changeObject);
 		}
 	};
 
 	const onChangeP = () => {
-		const content =
-			wpVersion < 6.4
-				? getFormattedString({ formatValue, isList })
-				: listContent;
+		if (!isList) return;
 
-		if (isList) {
-			onChange({
-				isList: false,
-				content: getContent(content, wpVersion),
-			});
-		}
+		const { getBlock } = select('core/block-editor');
+		const content = getBlock(clientId).innerBlocks.reduce(
+			(acc, block) =>
+				acc
+					? `${acc}\n${block.attributes.content}`
+					: block.attributes.content,
+			''
+		);
+		onChange({
+			isList: false,
+			content,
+		});
+
+		const {
+			replaceInnerBlocks,
+			__unstableMarkNextChangeAsNotPersistent:
+				markNextChangeAsNotPersistent,
+		} = dispatch('core/block-editor');
+
+		markNextChangeAsNotPersistent();
+		replaceInnerBlocks(clientId, []);
 	};
 
 	return (

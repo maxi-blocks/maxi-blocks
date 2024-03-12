@@ -19,6 +19,10 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 0)
+);
+
 describe('getSCStyles', () => {
 	it('Should return a correct frontend styles for SC', async () => {
 		const SCVariables = {

@@ -19,7 +19,7 @@ const SettingTabsControl = loadable(() => import('../setting-tabs-control'));
 const GenerateTab = loadable(() => import('./tabs/generate-tab'));
 const ResultsTab = loadable(() => import('./tabs/results-tab'));
 const ModifyTab = loadable(() => import('./tabs/modify-tab'));
-import TextContext from '../../extensions/text/formats/textContext';
+import TextContext from '../../extensions/text/formats/TextContext';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {

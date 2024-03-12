@@ -199,6 +199,7 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/number-counter-maxi',
 		'maxi-blocks/button-maxi',
 		'maxi-blocks/text-maxi',
+		'maxi-blocks/list-item-maxi',
 		'maxi-blocks/image-maxi',
 		'maxi-blocks/row-maxi', // Pagination
 		'maxi-blocks/column-maxi', // Pagination

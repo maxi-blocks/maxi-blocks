@@ -12,6 +12,7 @@ import loadable from '@loadable/component';
  * Internal dependencies
  */
 const DynamicContent = loadable(() => import('../dynamic-content'));
+const InfoBox = loadable(() => import('../info-box'));
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -22,7 +23,7 @@ const dc = ({
 	contentType,
 }) => ({
 	label: __('Dynamic content', 'maxi-blocks'),
-	content: (
+	content: !attributes.isList ? (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
 			onChange={obj => {
@@ -40,6 +41,13 @@ const dc = ({
 			SVGElement={attributes.SVGElement}
 			mediaID={attributes.mediaID}
 			mediaURL={attributes.mediaURL}
+		/>
+	) : (
+		<InfoBox
+			message={__(
+				'Dynamic content is not available for lists.',
+				'maxi-blocks'
+			)}
 		/>
 	),
 });

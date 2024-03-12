@@ -22,7 +22,6 @@ import {
 import { excludeAttributes } from '../copy-paste';
 import { getBlockData } from '../attributes';
 import BlockInserter from '../../components/block-inserter';
-import { fromListToText, fromTextToList } from '../text/formats';
 import {
 	handleBlockMove,
 	updateNCLimits,
@@ -36,6 +35,8 @@ import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+
+const DISABLED_BLOCKS = ['maxi-blocks/list-item-maxi'];
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
@@ -178,26 +179,6 @@ const withMaxiProps = createHigherOrderComponent(
 									nonExcludedAttributes,
 									currentAttributes
 								);
-
-								if ('isList' in obj) {
-									if (
-										obj.isList &&
-										!currentAttributes.isList
-									) {
-										nonExcludedAttributes.content =
-											fromTextToList(
-												currentAttributes.content
-											);
-									} else if (
-										!obj.isList &&
-										currentAttributes.isList
-									) {
-										nonExcludedAttributes.content =
-											fromListToText(
-												currentAttributes.content
-											);
-									}
-								}
 
 								const columnClientId =
 									innerBlocksPositions?.[[-1]]?.[
@@ -357,7 +338,7 @@ const withMaxiProps = createHigherOrderComponent(
 						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
 						It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
 					*/}
-					{!isTyping && (
+					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (
 						<BlockInserter.InterBlockInserter
 							ref={ref}
 							{...ownProps}

@@ -187,15 +187,16 @@ const Popover = (
 	 */
 	const frameOffset = useMemo(() => {
 		const { defaultView } = ownerDocument;
+		if (!defaultView) {
+			return null; // Explicitly return null for clarity
+		}
+
 		const { frameElement } = defaultView;
 
-		return (
-			frameElement &&
-			ownerDocument !== document && {
-				x: 0,
-				y: 0,
-			}
-		);
+		if (frameElement && ownerDocument !== document) {
+			return { x: 0, y: 0 }; // Consistently returning an object
+		}
+		return null; // Consistently return null when conditions aren't met
 	}, [ownerDocument]);
 
 	const middleware = [

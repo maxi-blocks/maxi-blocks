@@ -1,0 +1,28 @@
+name: TestDriver.ai
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: "TestDriver"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dashcamio/testdriver@main
+        id: testdriver
+        with:
+          prompt: |
+            1. Navigate to https://maxiblocks.com/
+            1. Click 'TestDrive'
+            1. Wait for the loading bar to finish
+            1. Click 'Edit Page'
+            1. Click 'Choose a style card'
+            1. Change the text to 'Hello from TestDriver'
+            1. Click 'update'
+            1. Click the preview button on the top right. It looks like a laptop.
+            1. Click 'Mobile'
+            1. Verify everything looks correct in mobile view

@@ -50,7 +50,6 @@ import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
-import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
@@ -195,8 +194,6 @@ class MaxiBlockComponent extends Component {
 		const { clientId, attributes } = this.props;
 		const { uniqueID } = attributes;
 
-		this.isReusable = false;
-		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.paginationTypography = getGroupAttributes(
 			attributes,
@@ -448,17 +445,6 @@ class MaxiBlockComponent extends Component {
 				console.error('MaxiBlocks: Could not load settings', error)
 			);
 
-		// Check if the block is reusable
-		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
-
-		if (this.isReusable) {
-			this.widthObserver = updateReusableBlockSize(
-				this.blockRef.current,
-				this.props.attributes.uniqueID,
-				this.props.clientId
-			);
-		}
-
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.loadFonts();
@@ -634,16 +620,13 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (!shouldDisplayStyles) {
-			!this.isReusable &&
-				this.displayStyles(
-					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint),
-					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle
-				);
-			this.isReusable && this.displayStyles();
+			this.displayStyles(
+				this.props.deviceType !== prevProps.deviceType ||
+					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint),
+				this.props.attributes.blockStyle !==
+					prevProps.attributes.blockStyle
+			);
 		}
 
 		this.hideGutenbergPopover();
@@ -1307,8 +1290,7 @@ class MaxiBlockComponent extends Component {
 	removeStyles() {
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
-		if (!this.isReusable && this.rootSlot)
-			setTimeout(() => this.rootSlot.unmount(), 0);
+		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
 
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID
@@ -1335,15 +1317,6 @@ class MaxiBlockComponent extends Component {
 			return;
 
 		editorElement?.getElementById(this.wrapperId)?.remove();
-
-		if (this.isReusable) {
-			this.widthObserver?.disconnect();
-			editorElement
-				?.getElementById(
-					`maxi-block-size-checker-${this.props.clientId}`
-				)
-				?.remove();
-		}
 	}
 
 	/**

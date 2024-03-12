@@ -17,7 +17,7 @@ jobs:
         with:
           prompt: |
             1. Navigate to https://maxiblocks.com/
-            1. Click 'TestDrive'
+            1. Click 'Test drive'
             1. Wait for the loading bar to finish
             1. Click 'Edit Page'
             1. Click 'Choose a style card'

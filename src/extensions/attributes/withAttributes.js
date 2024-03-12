@@ -121,18 +121,31 @@ const withAttributes = createHigherOrderComponent(
 				let isFirstOnHierarchyUpdated = false;
 
 				if (!isFirstOnHierarchy) {
-					const firstMaxiParentBlock =
+					const firstParentBlock =
 						select('core/block-editor').getBlock(blockRootClientId);
-					if (firstMaxiParentBlock) {
-						const { blockStyle } = firstMaxiParentBlock.attributes;
+					if (firstParentBlock) {
+						// If the first parent block is a reusable block, we need to check if it's the first on hierarchy to apply full width.
+						if (firstParentBlock.name === 'core/block') {
+							const isReusableFirstOnHierarchy = !select(
+								'core/block-editor'
+							).getBlockRootClientId(firstParentBlock.clientId);
 
-						if (blockStyle !== attributes.blockStyle) {
 							isFirstOnHierarchyUpdated = true;
 							markNextChangeAsNotPersistent();
 							setAttributes({
-								blockStyle,
-								isFirstOnHierarchy,
+								isFirstOnHierarchy: isReusableFirstOnHierarchy,
 							});
+						} else {
+							const { blockStyle } = firstParentBlock.attributes;
+
+							if (blockStyle !== attributes.blockStyle) {
+								isFirstOnHierarchyUpdated = true;
+								markNextChangeAsNotPersistent();
+								setAttributes({
+									blockStyle,
+									isFirstOnHierarchy,
+								});
+							}
 						}
 					}
 				}

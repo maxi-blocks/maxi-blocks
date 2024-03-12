@@ -1125,6 +1125,18 @@ class MaxiBlockComponent extends Component {
 						'maxi-blocks-pattern-preview'
 					);
 
+					const parentWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__media'
+					);
+
+					// If such a parent exists, add the new class to it
+					if (parentWithClass !== null) {
+						parentWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid'
+						);
+					}
+
 					const img = document.createElement('img');
 					img.src = imgPath;
 					img.alt = __(
@@ -1366,6 +1378,18 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	findParentWithClass(element, className) {
+		let currentElement = element;
+		while (
+			currentElement &&
+			!currentElement.classList.contains(className)
+		) {
+			currentElement = currentElement.parentElement;
+		}
+		return currentElement;
 	}
 
 	/**

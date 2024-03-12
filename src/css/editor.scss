@@ -442,6 +442,10 @@ svg path#styleCardBoat_b,
 
 body .maxi-blocks-pattern-preview {
 	transform: none !important;
+	aspect-ratio: inherit !important;
+}
+body .maxi-blocks-pattern-preview-grid {
+	aspect-ratio: inherit !important;
 }
 
 /*******************************

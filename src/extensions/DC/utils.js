@@ -17,6 +17,8 @@ import {
 	relationDictionary,
 	postTypeRelationOptions,
 	taxonomyRelationOptions,
+	linkTypesOptions,
+	linkFieldsOptions,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -56,6 +58,27 @@ export const limitString = (value, limit) => {
 	if (str.length > limit && limit !== 0) return `${str.substr(0, limit)}…`;
 
 	return str;
+};
+
+/**
+ * Retrieves the link targets based on selected DC type and field.
+ *
+ * @param {string} type  - DC type.
+ * @param {string} field - DC field.
+ * @returns {Array} An array of link targets with label and value keys.
+ */
+export const getLinkTargets = (type, field) => {
+	const targets = [];
+
+	targets.push({
+		label: 'Selected entity',
+		value: 'entity',
+	});
+
+	targets.push(...linkTypesOptions[type]);
+	targets.push(...linkFieldsOptions[field]);
+
+	return targets;
 };
 
 // In case content is empty, show this text
@@ -267,6 +290,7 @@ export const validationsValues = (
 	relation,
 	contentType,
 	source = 'wp',
+	linkTarget,
 	isCL = false
 ) => {
 	if (
@@ -291,6 +315,9 @@ export const validationsValues = (
 		x => x.value
 	);
 	const typeResult = getTypes(contentType, false)?.map(item => item.value);
+	const linkTargetResult = getLinkTargets(variableValue, field).map(
+		item => item.value
+	);
 
 	return {
 		...(!isCL &&
@@ -307,6 +334,10 @@ export const validationsValues = (
 			// Only validate type of DC once all integrations have loaded
 			getHaveLoadedIntegrationsOptions() && {
 				[`${prefix}type`]: typeResult[0],
+			}),
+		...(linkTargetResult &&
+			!linkTargetResult.includes(linkTarget) && {
+				[`${prefix}link-target`]: linkTargetResult[0],
 			}),
 	};
 };

@@ -428,15 +428,42 @@ export const mediaFieldOptions = Object.values(fieldOptions.image).map(
 	type => type.map(option => option.value)[0]
 );
 
+// Fields that contain HTML that needs to be rendered in their content
+export const htmlFields = ['tags', 'categories'];
+
 /**
  * Link constants
  */
 export const multipleLinksTypes = ['products'];
 
-export const linkOptions = {
+export const linkTypesOptions = {
 	products: [
-		{ label: __('Product', 'maxi-blocks'), value: 'product' },
 		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
+	],
+};
+
+// Fields that can have their own links
+export const linkFields = ['categories', 'tags', 'author'];
+export const inlineLinkFields = ['categories', 'tags'];
+
+export const linkFieldsOptions = {
+	categories: [
+		{
+			label: __('Categories links', 'maxi-blocks'),
+			value: 'categories',
+		},
+	],
+	tags: [
+		{
+			label: __('Tags links', 'maxi-blocks'),
+			value: 'tags',
+		},
+	],
+	author: [
+		{
+			label: __('Author', 'maxi-blocks'),
+			value: 'author',
+		},
 	],
 };
 
@@ -574,15 +601,6 @@ export const relationTypes = [
 
 // Types that can have relation "current".
 export const currentEntityTypes = ['posts', 'pages'];
-
-// Fields that can lead to different locations from post
-export const linkFields = ['categories', 'tags', 'author'];
-
-export const linkFieldsLabels = {
-	categories: __('Use categories links', 'maxi-blocks'),
-	tags: __('Use tags links', 'maxi-blocks'),
-	author: __('Use author link', 'maxi-blocks'),
-};
 
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 

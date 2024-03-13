@@ -24,6 +24,7 @@ import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '../../extensions/DC/constants';
+import { getSiteEditorPreviewIframes } from '../../extensions/fse';
 
 /**
  * External dependencies
@@ -48,6 +49,7 @@ const getBlockClassName = blockName => {
 };
 
 const getBlockStyle = (attributes, breakpoint, marginValue) => {
+	if (!marginValue) return '';
 	const getValue = target =>
 		getLastBreakpointAttribute({
 			target,
@@ -339,6 +341,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
+		const previewIframes = getSiteEditorPreviewIframes();
+
+		if (previewIframes.length > 0) return <div className='maxi-block' />;
 		const { clientId, attributes, deviceType } = props;
 		const pagination = attributes?.['cl-pagination'];
 

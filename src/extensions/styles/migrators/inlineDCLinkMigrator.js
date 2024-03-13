@@ -1,6 +1,4 @@
-import { isNil } from 'lodash';
-
-const name = 'DC Class Name';
+const name = 'DC Inline Links';
 
 const maxiVersions = [
 	'0.1',
@@ -31,14 +29,16 @@ const maxiVersions = [
 	'1.5.3',
 	'1.5.4',
 	'1.5.5',
+	'1.5.6',
+	'1.5.7',
+	'1.5.8',
+	'1.6.0',
+	'1.6.1',
+	'1.7.0',
+	'1.7.1',
+	'1.7.2',
+	'1.7.3',
 ];
-
-const attributes = () => ({
-	'dc-hide': {
-		type: 'boolean',
-		default: false,
-	},
-});
 
 const isEligible = blockAttributes => {
 	const {
@@ -48,15 +48,19 @@ const isEligible = blockAttributes => {
 
 	return (
 		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		blockAttributes['dc-status'] &&
-		isNil(blockAttributes['dc-hide'])
+		blockAttributes['dc-post-taxonomy-links-status']
 	);
 };
 
 const migrate = attributes => {
 	const newAttributes = { ...attributes };
-	newAttributes['dc-hide'] = false;
+
+	// Instead of saving saving the inline link status, save selected field as link target and enable the link
+	delete newAttributes['dc-post-taxonomy-links-status'];
+	newAttributes['dc-link-target'] = newAttributes['dc-field'];
+	newAttributes['dc-link-status'] = true;
+
 	return newAttributes;
 };
 
-export default { name, attributes, isEligible, migrate };
+export default { migrate, isEligible, name };

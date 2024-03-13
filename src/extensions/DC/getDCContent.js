@@ -43,6 +43,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		locale,
 		postTaxonomyLinksStatus,
 		acfFieldType,
+		linkTarget,
 	} = dataRequest;
 
 	let contentValue;
@@ -151,7 +152,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,
-			postTaxonomyLinksStatus,
+			linkTarget === field,
 			nameDictionary[field]
 		);
 	}

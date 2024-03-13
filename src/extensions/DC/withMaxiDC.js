@@ -18,7 +18,8 @@ import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
-import { linkFields } from './constants';
+import { inlineLinkFields } from './constants';
+
 /**
  * External dependencies
  */
@@ -49,7 +50,7 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				postTaxonomyLinksStatus,
+				linkTarget,
 				containsHTML,
 			} = dynamicContentProps;
 
@@ -100,8 +101,8 @@ const withMaxiDC = createHigherOrderComponent(
 						newContent = decodeEntities(newContent);
 
 						const newContainsHTML =
-							postTaxonomyLinksStatus &&
-							linkFields.includes(field) &&
+							linkTarget === field &&
+							inlineLinkFields.includes(field) &&
 							!isNil(newContent);
 
 						if (!newContainsHTML) {

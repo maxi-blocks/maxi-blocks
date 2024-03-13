@@ -584,7 +584,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		// Return if it's a preview block
-		if (this.isTemplatePartPreview) return;
+		if (this.isTemplatePartPreview || this.isPatternsPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -982,8 +982,6 @@ class MaxiBlockComponent extends Component {
 			? `${pluginsPath}/img/${imageName}`
 			: defaultImgPath;
 
-		console.log('imgPath', imgPath);
-
 		previewIframes.forEach(iframe => {
 			if (!iframe || !iframe.parentNode) return;
 
@@ -1185,7 +1183,7 @@ class MaxiBlockComponent extends Component {
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
-			if (this.rootSlot) {
+			if (this.rootSlot && !this.isPatternsPreview) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
@@ -1311,6 +1309,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
+		if (this.isPatternsPreview) return;
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
 		if (!this.isReusable && this.rootSlot)
@@ -1344,6 +1343,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isReusable) {
 			this.widthObserver?.disconnect();
+
 			editorElement
 				?.getElementById(
 					`maxi-block-size-checker-${this.props.clientId}`

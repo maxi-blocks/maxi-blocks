@@ -223,7 +223,6 @@ const ResponsiveSelector = props => {
 						maxiStyles.forEach(rawMaxiStyle => {
 							const maxiStyle = rawMaxiStyle.cloneNode(true);
 							const { id } = maxiStyle;
-
 							iframeDocument.querySelector(`#${id}`)?.remove();
 
 							maxiStyle.children[0].innerText =

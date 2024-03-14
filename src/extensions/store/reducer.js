@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
 
 /**
@@ -47,6 +48,30 @@ const breakpointResizer = ({
 		);
 	});
 
+	// Function to get the current preview device type
+	const getCurrentPreviewDeviceType = () => {
+		// First, try to use the new preferred method if it exists
+		if (select('core/editor') && select('core/editor').getDeviceType) {
+			return select('core/editor').getDeviceType();
+		}
+		// Determine if we are in the site editor or post editor as a fallback
+		const isSiteEditor = getIsSiteEditor(); // Ensure you have implemented this check
+		const editorStore = isSiteEditor ? 'core/edit-site' : 'core/edit-post';
+
+		// Check and call the deprecated method if available
+		const storeSelect = select(editorStore);
+		if (storeSelect.__experimentalGetPreviewDeviceType) {
+			return storeSelect.__experimentalGetPreviewDeviceType();
+		}
+		console.error(
+			__(
+				'Unable to get the preview device type. The required method is not available.',
+				'maxi-blocks'
+			)
+		);
+		return 'Desktop'; // Fallback to 'Desktop' as a default
+	};
+
 	if (changeSize) {
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
@@ -75,19 +100,17 @@ const breakpointResizer = ({
 			editorWrapper.style.margin =
 				winHeight > responsiveWidth ? '0 auto' : '';
 
-			if (isGutenbergButton) editorWrapper.style = null;
-			else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
-				const {
-					__experimentalGetPreviewDeviceType: getPreviewDeviceType,
-				} = select('core/edit-post');
-
-				const gutenbergDeviceType = getPreviewDeviceType();
+			if (isGutenbergButton) {
+				editorWrapper.style = null;
+			} else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
+				const gutenbergDeviceType = getCurrentPreviewDeviceType();
 
 				if (gutenbergDeviceType !== 'Desktop')
 					editorWrapper.style.width = 'fit-content';
 				else editorWrapper.style.width = `${responsiveWidth}px`;
-			} else if (editorWrapper.style.width !== `${responsiveWidth}px`)
+			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
 				editorWrapper.style.width = `${responsiveWidth}px`;
+			}
 		}
 	}
 

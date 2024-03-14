@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
 
 /**
@@ -96,7 +97,10 @@ const actions = {
 						);
 					} else {
 						console.error(
-							'Unable to set the preview device type. The required method is not available.'
+							__(
+								'Unable to set the preview device type. The required method is not available.',
+								'maxi-blocks'
+							)
 						);
 					}
 				}

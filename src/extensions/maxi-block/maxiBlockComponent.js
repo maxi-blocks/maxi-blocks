@@ -194,6 +194,8 @@ class MaxiBlockComponent extends Component {
 		const { clientId, attributes } = this.props;
 		const { uniqueID } = attributes;
 
+		this.isReusable = false;
+		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.paginationTypography = getGroupAttributes(
 			attributes,
@@ -445,6 +447,9 @@ class MaxiBlockComponent extends Component {
 				console.error('MaxiBlocks: Could not load settings', error)
 			);
 
+		// Check if the block is reusable
+		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.loadFonts();
@@ -620,13 +625,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (!shouldDisplayStyles) {
-			this.displayStyles(
-				this.props.deviceType !== prevProps.deviceType ||
-					(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
-						!!prevProps.baseBreakpoint),
-				this.props.attributes.blockStyle !==
-					prevProps.attributes.blockStyle
-			);
+			!this.isReusable &&
+				this.displayStyles(
+					this.props.deviceType !== prevProps.deviceType ||
+						(this.props.baseBreakpoint !==
+							prevProps.baseBreakpoint &&
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
+				);
+			this.isReusable && this.displayStyles();
 		}
 
 		this.hideGutenbergPopover();
@@ -1290,7 +1298,8 @@ class MaxiBlockComponent extends Component {
 	removeStyles() {
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
-		if (this.rootSlot) setTimeout(() => this.rootSlot.unmount(), 0);
+		if (!this.isReusable && this.rootSlot)
+			setTimeout(() => this.rootSlot.unmount(), 0);
 
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID

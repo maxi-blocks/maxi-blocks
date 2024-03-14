@@ -436,10 +436,10 @@ if (!class_exists('MaxiBlocks_API')):
             $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
             $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
 
-            $fonts_arr = $meta['fonts'];
+            $fonts_arr = $meta['fonts'] ?? [];
             if ($is_json) {
                 foreach ($fonts_arr as $key => $font) {
-                    $fonts_arr[$key] = json_decode($font, true);
+                    $fonts_arr[$key] = json_decode($font, true) ?? [];
                 }
             }
             $fonts = json_encode(array_merge_recursive(...$fonts_arr));

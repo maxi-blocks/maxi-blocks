@@ -341,9 +341,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const previewIframes = getSiteEditorPreviewIframes();
-
-		if (previewIframes.length > 0) return <div className='maxi-block' />;
 		const { clientId, attributes, deviceType } = props;
 		const pagination = attributes?.['cl-pagination'];
 

@@ -293,10 +293,20 @@ class MaxiBlockComponent extends Component {
 						'dataviews-view-grid__media'
 					);
 
-					// If such a parent exists, add the new class to it
 					if (parentWithClass !== null) {
 						parentWithClass.classList.add(
 							'maxi-blocks-pattern-preview-grid'
+						);
+					}
+
+					const parentCardWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__card'
+					);
+
+					if (parentCardWithClass !== null) {
+						parentCardWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid__card'
 						);
 					}
 					const img = new Image();

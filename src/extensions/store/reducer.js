@@ -41,6 +41,8 @@ const breakpointResizer = ({
 	};
 	const editorWrapper = getEditorWrapper();
 
+	if (!editorWrapper) return;
+
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
 			'maxi-blocks-responsive',

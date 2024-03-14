@@ -83,6 +83,7 @@ const BlockStylesControl = props => {
 
 	console.log('showBlockStyle', showBlockStyle);
 	console.log('BlockStyle', blockStyle);
+	console.log('getBlockStyle(clientId)', getBlockStyle(clientId));
 
 	return (
 		<>

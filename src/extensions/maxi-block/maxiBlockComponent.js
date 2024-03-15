@@ -238,7 +238,13 @@ class MaxiBlockComponent extends Component {
 		// If the block is a pattern preview, we need to replace the iframe with an image
 		const previewIframes = getSiteEditorPreviewIframes();
 
-		if (previewIframes.length > 0) {
+		// The blocks in preview are not saved in the store,
+		// so we can check if the block is a pattern preview by trying to get the block name.
+		const blockName = select('core/block-editor').getBlockName(
+			this.props.clientId
+		);
+
+		if (previewIframes.length > 0 && !blockName) {
 			this.isPatternsPreview = true;
 			const disconnectTimeout = 10000; // 10 seconds
 			const timeouts = {};

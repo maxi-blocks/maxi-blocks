@@ -1086,12 +1086,7 @@ class MaxiBlockComponent extends Component {
 					clientId
 				)
 			) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-				markNextChangeAsNotPersistent();
+				const { updateBlockAttributes } = dispatch('core/block-editor');
 				updateBlockAttributes(clientId, {
 					uniqueID: newUniqueID,
 				});

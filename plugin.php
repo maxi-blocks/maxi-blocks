@@ -355,3 +355,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
 if (class_exists('MaxiBlocks_DynamicContent')) {
     MaxiBlocks_DynamicContent::register();
 }
+
+//======================================================================
+// MaxiBlocks CLI
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-cli.php';
+if (class_exists('MaxiBlocks_CLI')) {
+    add_action('plugins_loaded', array( 'MaxiBlocks_CLI', 'register' ));
+}

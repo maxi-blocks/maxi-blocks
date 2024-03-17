@@ -29,6 +29,17 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
+         * Get the instance
+         */
+        public static function get_instance()
+        {
+            if (null === self::$instance) {
+                self::$instance = new MaxiBlocks_API();
+            }
+            return self::$instance;
+        }
+
+        /**
          * Variables
          */
         private $version;
@@ -711,12 +722,12 @@ if (!class_exists('MaxiBlocks_API')):
             return $this->get_api_response($response);
         }
 
-        public function set_maxi_blocks_current_style_cards($request)
+        public function set_maxi_blocks_current_style_cards($request, $is_wp_request = true)
         {
             global $wpdb;
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
 
-            $request_result = $request->get_json_params();
+			$request_result = $is_wp_request ? $request->get_json_params() : $request;
 
             $response = $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',

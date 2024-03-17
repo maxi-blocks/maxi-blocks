@@ -56,80 +56,84 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         {
             list($post_title) = $args;
 
-            // Initialize Typesense client
-            $client = new Client(
-                [
-                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                    'nodes' => [
-                        [
-                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                            'port' => '443',
-                            'protocol' => 'https',
+            try {
+                // Initialize Typesense client
+                $client = new Client(
+                    [
+                        'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
+                        'nodes' => [
+                            [
+                                'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
+                                'port' => '443',
+                                'protocol' => 'https',
+                            ],
                         ],
-                    ],
-                ]
-            );
-
-            // Search for the style card by post title
-            $searchParameters = [
-                'q' => $post_title,
-                'query_by' => 'post_title',
-                'per_page' => 1,
-            ];
-
-            $result = $client->collections['style_card']->documents->search($searchParameters);
-
-            if ($result['found'] > 0) {
-                $style_card = $result['hits'][0]['document'];
-                $style_card_title = $style_card['post_title'];
-
-                if($style_card_title !== $post_title) {
-                    WP_CLI::confirm(
-                        sprintf(
-                            'Style card not found. Did you mean "%s"?',
-                            $style_card_title
-                        )
-                    );
-                }
-
-
-                $sc_code = json_decode($style_card['sc_code'], true);
-                $sc_code['status'] = 'active';
-                $sc_code['selected'] = true;
-                $sc_code['gutenberg_blocks_status'] = true;
-
-                $var_sc = get_sc_variables_object($sc_code, null, true);
-                $var_sc_string = create_sc_style_string($var_sc);
-                $sc_styles = get_sc_styles(
-                    $var_sc,
-                    $sc_code['gutenberg_blocks_status']
+                    ]
                 );
 
-                $maxi_api = MaxiBlocks_API::get_instance();
+                // Search for the style card by post title
+                $searchParameters = [
+                    'q' => $post_title,
+                    'query_by' => 'post_title',
+                    'per_page' => 1,
+                ];
 
-                $style_cards =  json_decode($maxi_api->get_maxi_blocks_current_style_cards(), true);
+                $result = $client->collections['style_card']->documents->search($searchParameters);
 
-                foreach ($style_cards as $key => $value) {
-                    $style_cards[$key]['status'] = '';
-                    $style_cards[$key]['selected'] = false;
+                if ($result['found'] > 0) {
+                    $style_card = $result['hits'][0]['document'];
+                    $style_card_title = $style_card['post_title'];
+
+                    if($style_card_title !== $post_title) {
+                        WP_CLI::confirm(
+                            sprintf(
+                                'Style card not found. Did you mean "%s"?',
+                                $style_card_title
+                            )
+                        );
+                    }
+
+
+                    $sc_code = json_decode($style_card['sc_code'], true);
+                    $sc_code['status'] = 'active';
+                    $sc_code['selected'] = true;
+                    $sc_code['gutenberg_blocks_status'] = true;
+
+                    $var_sc = get_sc_variables_object($sc_code, null, true);
+                    $var_sc_string = create_sc_style_string($var_sc);
+                    $sc_styles = get_sc_styles(
+                        $var_sc,
+                        $sc_code['gutenberg_blocks_status']
+                    );
+
+                    $maxi_api = MaxiBlocks_API::get_instance();
+
+                    $style_cards =  json_decode($maxi_api->get_maxi_blocks_current_style_cards(), true);
+
+                    foreach ($style_cards as $key => $value) {
+                        $style_cards[$key]['status'] = '';
+                        $style_cards[$key]['selected'] = false;
+                    }
+
+                    $style_cards['sc_daemon'] = $sc_code;
+
+                    $maxi_api->set_maxi_blocks_current_style_cards([
+                        'styleCards' => json_encode($style_cards),
+                    ], false);
+
+
+                    $maxi_api->post_maxi_blocks_sc_string([
+                        'sc_variables' => $var_sc_string,
+                        'sc_styles' => $sc_styles,
+                        'update' => true,
+                    ]);
+
+                    WP_CLI::success('Style card set successfully.');
+                } else {
+                    WP_CLI::error('Style card not found.');
                 }
-
-                $style_cards['sc_daemon'] = $sc_code;
-
-                $maxi_api->set_maxi_blocks_current_style_cards([
-                    'styleCards' => json_encode($style_cards),
-                ], false);
-
-
-                $maxi_api->post_maxi_blocks_sc_string([
-                    'sc_variables' => $var_sc_string,
-                    'sc_styles' => $sc_styles,
-                    'update' => true,
-                ]);
-
-                WP_CLI::success('Style card set successfully.');
-            } else {
-                WP_CLI::error('Style card not found.');
+            } catch (Exception $e) {
+                WP_CLI::error('Error setting style card: ' . $e->getMessage());
             }
         }
 
@@ -150,45 +154,49 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         */
         public function list_style_cards($args, $assoc_args)
         {
-            // Initialize Typesense client
-            $client = new Client(
-                [
-                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                    'nodes' => [
-                        [
-                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                            'port' => '443',
-                            'protocol' => 'https',
+            try {
+                // Initialize Typesense client
+                $client = new Client(
+                    [
+                        'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
+                        'nodes' => [
+                            [
+                                'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
+                                'port' => '443',
+                                'protocol' => 'https',
+                            ],
                         ],
-                    ],
-                ]
-            );
+                    ]
+                );
 
-            // Get the count argument
-            $count = isset($assoc_args['count']) ? $assoc_args['count'] : 10;
+                // Get the count argument
+                $count = isset($assoc_args['count']) ? $assoc_args['count'] : 10;
 
-            // Search for style cards
-            $searchParameters = [
-                'q' => '*',
-                'query_by' => 'post_title',
-                'sort_by' => 'post_date_int:desc',
-                'per_page' => $count === 'all' ? 100 : intval($count),
-                'page' => 1,
-            ];
+                // Search for style cards
+                $searchParameters = [
+                    'q' => '*',
+                    'query_by' => 'post_title',
+                    'sort_by' => 'post_date_int:desc',
+                    'per_page' => $count === 'all' ? 100 : intval($count),
+                    'page' => 1,
+                ];
 
-            $styleCards = $client->collections['style_card']->documents->search($searchParameters);
+                $styleCards = $client->collections['style_card']->documents->search($searchParameters);
 
-            // Display the total number of style cards found
-            WP_CLI::line(sprintf('Found %d style card(s).', $styleCards['found']));
+                // Display the total number of style cards found
+                WP_CLI::line(sprintf('Found %d style card(s).', $styleCards['found']));
 
-            // Display the names of the style cards
-            foreach ($styleCards['hits'] as $styleCard) {
-                WP_CLI::line('- ' . $styleCard['document']['post_title']);
-            }
+                // Display the names of the style cards
+                foreach ($styleCards['hits'] as $styleCard) {
+                    WP_CLI::line('- ' . $styleCard['document']['post_title']);
+                }
 
-            // Display a message if there are more style cards available
-            if ($count !== 'all' && $styleCards['found'] > $count) {
-                WP_CLI::line(sprintf('Displaying the first %d style card(s). Use --count=all to see all style cards.', $count));
+                // Display a message if there are more style cards available
+                if ($count !== 'all' && $styleCards['found'] > $count) {
+                    WP_CLI::line(sprintf('Displaying the first %d style card(s). Use --count=all to see all style cards.', $count));
+                }
+            } catch (Exception $e) {
+                WP_CLI::error('Error listing style cards: ' . $e->getMessage());
             }
         }
     }

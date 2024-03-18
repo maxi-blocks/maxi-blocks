@@ -385,7 +385,11 @@ const ResponsiveSelector = props => {
 
 			console.log('postType', postType);
 
-			if (postType === 'wp_template' || postType === 'wp_block') {
+			if (
+				postType === 'wp_template' ||
+				postType === 'wp_block' ||
+				postType === 'wp_template_part'
+			) {
 				console.log('insertBlock 1');
 				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 			}

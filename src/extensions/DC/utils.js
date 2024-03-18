@@ -238,6 +238,17 @@ const getPostTypeRelationOptions = type => {
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
+// Utility function to add an item to the options array if it doesn't already exist
+const addUniqueOption = (options, newItem) => {
+	if (
+		!options.some(
+			item => item.label === newItem.label && item.value === newItem.value
+		)
+	) {
+		options.push(newItem);
+	}
+};
+
 export const getRelationOptions = (type, contentType) => {
 	let options;
 
@@ -259,14 +270,7 @@ export const getRelationOptions = (type, contentType) => {
 			value: 'current',
 		};
 
-		if (
-			!options.some(
-				item =>
-					item.label === newItem.label && item.value === newItem.value
-			)
-		) {
-			options.push(newItem);
-		}
+		addUniqueOption(options, newItem);
 	}
 
 	const isFSE = select('core/edit-site') !== undefined;
@@ -289,15 +293,7 @@ export const getRelationOptions = (type, contentType) => {
 				value: 'current-archive',
 			};
 
-			if (
-				!options.some(
-					item =>
-						item.label === newItem.label &&
-						item.value === newItem.value
-				)
-			) {
-				options.push(newItem);
-			}
+			addUniqueOption(options, newItem);
 		}
 	}
 

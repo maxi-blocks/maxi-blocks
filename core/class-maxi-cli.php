@@ -38,6 +38,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
             WP_CLI::add_command('maxiblocks set_style_card', [self::$instance, 'set_style_card']);
             WP_CLI::add_command('maxiblocks list_style_cards', [self::$instance, 'list_style_cards']);
+            WP_CLI::add_command('maxiblocks get_current_style_card', [self::$instance, 'get_current_style_card']);
         }
 
         /**
@@ -198,6 +199,39 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 }
             } catch (Exception $e) {
                 WP_CLI::error('Error listing style cards: ' . $e->getMessage());
+            }
+        }
+
+        /**
+         * Get the current style card.
+         *
+         * ## EXAMPLES
+         *
+         *     wp maxiblocks get_current_style_card
+         */
+        public function get_current_style_card()
+        {
+            try {
+                $maxi_api = MaxiBlocks_API::get_instance();
+                $style_cards = json_decode($maxi_api->get_maxi_blocks_current_style_cards(), true);
+
+                $style_card = null;
+
+                foreach ($style_cards as $key => $value) {
+                    if ($value['selected']) {
+                        $style_card = $value;
+                        break;
+                    }
+                }
+
+                if ($style_card) {
+                    WP_CLI::line('Current style card: ' . $style_card['name']);
+                } else {
+                    WP_CLI::error('No style card selected.');
+                }
+
+            } catch (Exception $e) {
+                WP_CLI::error('Error getting current style card: ' . $e->getMessage());
             }
         }
     }

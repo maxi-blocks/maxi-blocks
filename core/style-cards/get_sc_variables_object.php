@@ -12,7 +12,7 @@ function get_color_string($obj, $target, $style)
     $palette_status = $obj["{$prefix}palette-status"];
     $palette_color = $obj["{$prefix}palette-color"];
     $palette_opacity = $obj["{$prefix}palette-opacity"];
-	$color = $obj["{$prefix}color"] ?? null;
+    $color = $obj["{$prefix}color"] ?? null;
 
     if ($palette_status) {
         return get_color_rgba_string([
@@ -143,7 +143,7 @@ function get_sc_variables_object($style_cards, $raw_active_sc_colour = null, $cl
                                     ]) . 'px';
                                 }
                             }
-                        } elseif(isset($obj["{$setting}-{$breakpoint}"])) {
+                        } elseif(isset($obj["{$setting}-{$breakpoint}"]) && $obj["{$setting}-{$breakpoint}"]) {
                             $value = $obj["{$setting}-{$breakpoint}"];
                             if (get_is_valid($value, true)) {
                                 if (!str_contains($setting, 'padding')) {
@@ -164,6 +164,7 @@ function get_sc_variables_object($style_cards, $raw_active_sc_colour = null, $cl
                         if (
                             $is_font_family &&
                             isset($response["--maxi-{$style}-{$element}-{$setting}-{$breakpoint}"]) &&
+                            $response["--maxi-{$style}-{$element}-{$setting}-{$breakpoint}"] &&
                             get_is_valid(
                                 $response["--maxi-{$style}-{$element}-{$setting}-{$breakpoint}"],
                                 true
@@ -196,83 +197,83 @@ function get_sc_variables_object($style_cards, $raw_active_sc_colour = null, $cl
                     }
                 }
             }
-            if (isset($obj['color-global'])) {
+            if (isset($obj['color-global']) && $obj['color-global']) {
                 $response["--maxi-{$style}-{$element}-color"] = get_color_string($obj, null, $style);
             }
             switch ($element) {
                 case 'button':
-                    if (isset($obj['background-color-global'])) {
+                    if (isset($obj['background-color-global']) && $obj['background-color-global']) {
                         $response["--maxi-{$style}-{$element}-background-color"] = get_color_string($obj, 'background', $style);
                     }
-                    if (isset($obj['hover-background-color-global'])) {
+                    if (isset($obj['hover-background-color-global']) && $obj['hover-background-color-global']) {
                         $response["--maxi-{$style}-{$element}-background-color-hover"] = get_color_string($obj, 'hover-background', $style);
                     }
-                    if (isset($obj['hover-color-global'])) {
+                    if (isset($obj['hover-color-global']) && $obj['hover-color-global']) {
                         $response["--maxi-{$style}-{$element}-color-hover"] = get_color_string($obj, 'hover', $style);
                     }
-                    if (isset($obj['border-color-global'])) {
+                    if (isset($obj['border-color-global']) && $obj['border-color-global']) {
                         $response["--maxi-{$style}-{$element}-border-color"] = get_color_string($obj, 'border', $style);
                     }
-                    if (isset($obj['hover-border-color-global'])) {
+                    if (isset($obj['hover-border-color-global']) && $obj['hover-border-color-global']) {
                         $response["--maxi-{$style}-{$element}-border-color-hover"] = get_color_string($obj, 'hover-border', $style);
                     }
                     break;
                 case 'icon':
-                    if (isset($obj['line-color-global'])) {
+                    if (isset($obj['line-color-global']) && $obj['line-color-global']) {
                         $response["--maxi-{$style}-{$element}-stroke"] = get_color_string($obj, 'line', $style);
                     }
-                    if (isset($obj['fill-color-global'])) {
+                    if (isset($obj['fill-color-global']) && $obj['fill-color-global']) {
                         $response["--maxi-{$style}-{$element}-fill"] = get_color_string($obj, 'fill', $style);
                     }
-                    if (isset($obj['hover-line-color-global'])) {
+                    if (isset($obj['hover-line-color-global']) && $obj['hover-line-color-global']) {
                         $response["--maxi-{$style}-{$element}-stroke-hover"] = get_color_string($obj, 'hover-line', $style);
                     }
-                    if (isset($obj['hover-fill-color-global'])) {
+                    if (isset($obj['hover-fill-color-global']) && $obj['hover-fill-color-global']) {
                         $response["--maxi-{$style}-{$element}-fill-hover"] = get_color_string($obj, 'hover-fill', $style);
                     }
                     break;
                 case 'link':
-                    if (isset($obj['link-color-global'])) {
+                    if (isset($obj['link-color-global']) && $obj['link-color-global']) {
                         $response["--maxi-{$style}-link"] = get_color_string($obj, 'link', $style);
                     }
-                    if (isset($obj['hover-color-global'])) {
+                    if (isset($obj['hover-color-global']) && $obj['hover-color-global']) {
                         $response["--maxi-{$style}-link-hover"] = get_color_string($obj, 'hover', $style);
                     }
-                    if (isset($obj['active-color-global'])) {
+                    if (isset($obj['active-color-global']) && $obj['active-color-global']) {
                         $response["--maxi-{$style}-link-active"] = get_color_string($obj, 'active', $style);
                     }
-                    if (isset($obj['visited-color-global'])) {
+                    if (isset($obj['visited-color-global']) && $obj['visited-color-global']) {
                         $response["--maxi-{$style}-link-visited"] = get_color_string($obj, 'visited', $style);
                     }
                     break;
                 case 'navigation':
-                    if (isset($obj['menu-item-color-global'])) {
+                    if (isset($obj['menu-item-color-global']) && $obj['menu-item-color-global']) {
                         $response["--maxi-{$style}-menu-item"] = get_color_string($obj, 'menu-item', $style);
                     }
-                    if (isset($obj['menu-burger-color-global'])) {
+                    if (isset($obj['menu-burger-color-global']) && $obj['menu-burger-color-global']) {
                         $response["--maxi-{$style}-menu-burger"] = get_color_string($obj, 'menu-burger', $style);
                     }
-                    if (isset($obj['menu-item-hover-color-global'])) {
+                    if (isset($obj['menu-item-hover-color-global']) && $obj['menu-item-hover-color-global']) {
                         $response["--maxi-{$style}-menu-item-hover"] = get_color_string($obj, 'menu-item-hover', $style);
                     }
-                    if (isset($obj['menu-item-current-color-global'])) {
+                    if (isset($obj['menu-item-current-color-global']) && $obj['menu-item-current-color-global']) {
                         $response["--maxi-{$style}-menu-item-current"] = get_color_string($obj, 'menu-item-current', $style);
                     }
-                    if (isset($obj['menu-item-visited-color-global'])) {
+                    if (isset($obj['menu-item-visited-color-global']) && $obj['menu-item-visited-color-global']) {
                         $response["--maxi-{$style}-menu-item-visited"] = get_color_string($obj, 'menu-item-visited', $style);
-                    } elseif (isset($obj['menu-item-color-global'])) {
+                    } elseif (isset($obj['menu-item-color-global']) && $obj['menu-item-color-global']) {
                         $response["--maxi-{$style}-menu-item-visited"] = get_color_string($obj, 'menu-item', $style);
                     }
-                    if (isset($obj['menu-item-sub-bg-color-global'])) {
+                    if (isset($obj['menu-item-sub-bg-color-global']) && $obj['menu-item-sub-bg-color-global']) {
                         $response["--maxi-{$style}-menu-item-sub-bg"] = get_color_string($obj, 'menu-item-sub-bg', $style);
                     }
-                    if (isset($obj['menu-item-sub-bg-hover-color-global'])) {
+                    if (isset($obj['menu-item-sub-bg-hover-color-global']) && $obj['menu-item-sub-bg-hover-color-global']) {
                         $response["--maxi-{$style}-menu-item-sub-bg-hover"] = get_color_string($obj, 'menu-item-sub-bg-hover', $style);
                     }
-                    if (isset($obj['menu-item-sub-bg-current-color-global'])) {
+                    if (isset($obj['menu-item-sub-bg-current-color-global']) && $obj['menu-item-sub-bg-current-color-global']) {
                         $response["--maxi-{$style}-menu-item-sub-bg-current"] = get_color_string($obj, 'menu-item-sub-bg-current', $style);
                     }
-                    if (isset($obj['menu-mobile-bg-color-global'])) {
+                    if (isset($obj['menu-mobile-bg-color-global']) && $obj['menu-mobile-bg-color-global']) {
                         $response["--maxi-{$style}-menu-mobile-bg"] = get_color_string($obj, 'menu-mobile-bg', $style);
                     }
                     break;
@@ -280,7 +281,7 @@ function get_sc_variables_object($style_cards, $raw_active_sc_colour = null, $cl
                     break;
             }
         }
-        if (isset($sc[$style]['color'])) {
+        if (isset($sc[$style]['color']) && $sc[$style]['color']) {
             for ($n = 1; $n <= 8; $n++) {
                 if (isset($sc[$style]['color'][$n])) {
                     $response["--maxi-{$style}-color-{$n}"] = $sc[$style]['color'][$n];

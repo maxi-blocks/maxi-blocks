@@ -115,7 +115,8 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                         $style_cards[$key]['selected'] = false;
                     }
 
-                    $style_cards['sc_daemon'] = $sc_code;
+					$style_cards_key = 'sc_' . strtolower($sc_code['name']);
+					$style_cards[$style_cards_key] = $sc_code;
 
                     $maxi_api->set_maxi_blocks_current_style_cards([
                         'styleCards' => json_encode($style_cards),

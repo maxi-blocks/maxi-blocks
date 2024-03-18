@@ -373,24 +373,17 @@ const ResponsiveSelector = props => {
 
 	const addCloudLibrary = () => {
 		let rootClientId;
-
-		console.log('addCloudLibrary');
-
 		const isFSE = getIsSiteEditor();
 
 		if (isFSE) {
-			console.log('getIsSiteEditor');
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
-
-			console.log('postType', postType);
 
 			if (
 				postType === 'wp_template' ||
 				postType === 'wp_block' ||
 				postType === 'wp_template_part'
 			) {
-				console.log('insertBlock 1');
 				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 			}
 
@@ -405,16 +398,13 @@ const ResponsiveSelector = props => {
 			}
 		}
 
-		console.log('rootClientId', rootClientId);
 		if (rootClientId || !isFSE) {
-			console.log('insertBlock 2');
 			insertBlock(
 				createBlock('maxi-blocks/maxi-cloud'),
 				undefined,
 				rootClientId
 			);
 		}
-		console.log('===================');
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);

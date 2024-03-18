@@ -361,6 +361,8 @@ const MaxiBlock = memo(
 			if (isFirstOnHierarchy && styleStr) {
 				const style = document.createElement('style');
 				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
+				// Same full-width styles for the reusable blocks
+				style.innerHTML += `.is-reusable:has(#block-${clientId}) { ${styleStr} }`;
 				ref.current.ownerDocument.head.appendChild(style);
 
 				return () => {

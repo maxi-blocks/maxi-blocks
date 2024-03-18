@@ -50,7 +50,6 @@ import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
-import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
@@ -208,13 +207,18 @@ class MaxiBlockComponent extends Component {
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
-		this.isPatternsPreview = false;
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
-		if (previewIframes.length > 0) {
+		const blockName = select('core/block-editor').getBlockName(
+			this.props.clientId
+		);
+
+		if (previewIframes.length > 0 && !blockName) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
+		} else {
+			this.isPatternsPreview = false;
 		}
 		if (this.isPatternsPreview) return;
 
@@ -243,10 +247,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		// If the block is a pattern preview, we need to replace the iframe with an image
-
-		if (this.isPatternsPreview) return;
-
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -380,14 +380,6 @@ class MaxiBlockComponent extends Component {
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
-
-		if (this.isReusable) {
-			this.widthObserver = updateReusableBlockSize(
-				this.blockRef.current,
-				this.props.attributes.uniqueID,
-				this.props.clientId
-			);
-		}
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -985,7 +977,6 @@ class MaxiBlockComponent extends Component {
 		previewIframes.forEach(iframe => {
 			if (!iframe || !iframe.parentNode) return;
 
-			// Refactor condition to exit early, improving readability
 			if (
 				this.hasParentWithClass(
 					iframe.parentNode,
@@ -1012,6 +1003,28 @@ class MaxiBlockComponent extends Component {
 				if (!containsMaxiBlocksContainer) return;
 
 				iframe.parentNode.classList.add('maxi-blocks-pattern-preview');
+
+				const parentWithClass = this.findParentWithClass(
+					iframe,
+					'dataviews-view-grid__media'
+				);
+
+				if (parentWithClass !== null) {
+					parentWithClass.classList.add(
+						'maxi-blocks-pattern-preview-grid'
+					);
+				}
+
+				const parentCardWithClass = this.findParentWithClass(
+					iframe,
+					'dataviews-view-grid__card'
+				);
+
+				if (parentCardWithClass !== null) {
+					parentCardWithClass.classList.add(
+						'maxi-blocks-pattern-preview-grid__card'
+					);
+				}
 				const img = new Image();
 				img.src = imgPath;
 				img.alt = __(
@@ -1094,12 +1107,7 @@ class MaxiBlockComponent extends Component {
 					clientId
 				)
 			) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-				markNextChangeAsNotPersistent();
+				const { updateBlockAttributes } = dispatch('core/block-editor');
 				updateBlockAttributes(clientId, {
 					uniqueID: newUniqueID,
 				});
@@ -1340,16 +1348,6 @@ class MaxiBlockComponent extends Component {
 			return;
 
 		editorElement?.getElementById(this.wrapperId)?.remove();
-
-		if (this.isReusable) {
-			this.widthObserver?.disconnect();
-
-			editorElement
-				?.getElementById(
-					`maxi-block-size-checker-${this.props.clientId}`
-				)
-				?.remove();
-		}
 	}
 
 	/**
@@ -1369,6 +1367,18 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	findParentWithClass(element, className) {
+		let currentElement = element;
+		while (
+			currentElement &&
+			!currentElement.classList.contains(className)
+		) {
+			currentElement = currentElement.parentElement;
+		}
+		return currentElement;
 	}
 
 	/**

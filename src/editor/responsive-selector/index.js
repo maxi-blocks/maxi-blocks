@@ -121,8 +121,19 @@ const ResponsiveSelector = props => {
 			receiveMaxiBreakpoints,
 			receiveBaseBreakpoint,
 		} = select('maxiBlocks');
-		const { isListViewOpened, isInserterOpened } =
-			select('core/edit-post') || select('core/edit-site');
+		// Fallback logic for determining which selector to use
+		let listViewOpenedSelector;
+		let inserterOpenedSelector;
+		if (select('core/editor')) {
+			listViewOpenedSelector = select('core/editor').isListViewOpened;
+			inserterOpenedSelector = select('core/editor').isInserterOpened;
+		} else if (select('core/edit-post')) {
+			listViewOpenedSelector = select('core/edit-post').isListViewOpened;
+			inserterOpenedSelector = select('core/edit-post').isInserterOpened;
+		} else if (select('core/edit-site')) {
+			listViewOpenedSelector = select('core/edit-site').isListViewOpened;
+			inserterOpenedSelector = select('core/edit-site').isInserterOpened;
+		}
 
 		const baseBreakpoint = receiveBaseBreakpoint();
 
@@ -130,8 +141,12 @@ const ResponsiveSelector = props => {
 			deviceType: receiveMaxiDeviceType(),
 			breakpoints: receiveMaxiBreakpoints(),
 			baseBreakpoint,
-			isListViewOpened: isListViewOpened(),
-			isInserterOpened: isInserterOpened(),
+			isListViewOpened: listViewOpenedSelector
+				? listViewOpenedSelector()
+				: false,
+			isInserterOpened: inserterOpenedSelector
+				? inserterOpenedSelector()
+				: false,
 		};
 	});
 
@@ -358,16 +373,16 @@ const ResponsiveSelector = props => {
 
 	const addCloudLibrary = () => {
 		let rootClientId;
+		const isFSE = getIsSiteEditor();
 
-		if (getIsSiteEditor()) {
+		if (isFSE) {
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
 
 			if (
-				(postId.includes('single') ||
-					postId.includes('blank') ||
-					postId.includes('page')) &&
-				postType === 'wp_template'
+				postType === 'wp_template' ||
+				postType === 'wp_block' ||
+				postType === 'wp_template_part'
 			) {
 				insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 			}
@@ -383,11 +398,13 @@ const ResponsiveSelector = props => {
 			}
 		}
 
-		insertBlock(
-			createBlock('maxi-blocks/maxi-cloud'),
-			undefined,
-			rootClientId
-		);
+		if (rootClientId || !isFSE) {
+			insertBlock(
+				createBlock('maxi-blocks/maxi-cloud'),
+				undefined,
+				rootClientId
+			);
+		}
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);

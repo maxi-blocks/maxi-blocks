@@ -287,6 +287,28 @@ class MaxiBlockComponent extends Component {
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
+
+					const parentWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__media'
+					);
+
+					if (parentWithClass !== null) {
+						parentWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid'
+						);
+					}
+
+					const parentCardWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__card'
+					);
+
+					if (parentCardWithClass !== null) {
+						parentCardWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid__card'
+						);
+					}
 					const img = new Image();
 					img.src = imgPath;
 					img.alt = __(
@@ -1363,6 +1385,18 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	findParentWithClass(element, className) {
+		let currentElement = element;
+		while (
+			currentElement &&
+			!currentElement.classList.contains(className)
+		) {
+			currentElement = currentElement.parentElement;
+		}
+		return currentElement;
 	}
 
 	/**

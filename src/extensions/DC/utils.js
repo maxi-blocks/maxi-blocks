@@ -253,11 +253,20 @@ export const getRelationOptions = (type, contentType) => {
 		options = getTaxonomyRelationOptions();
 	else options = relationOptions[contentType]?.[type];
 
-	if (select('core/editor').getCurrentPostType() === type) {
-		options.push({
+	if (type.includes(select('core/editor').getCurrentPostType())) {
+		const newItem = {
 			label: __('Get current', 'maxi-blocks'),
 			value: 'current',
-		});
+		};
+
+		if (
+			!options.some(
+				item =>
+					item.label === newItem.label && item.value === newItem.value
+			)
+		) {
+			options.push(newItem);
+		}
 	}
 
 	const isFSE = select('core/edit-site') !== undefined;
@@ -274,11 +283,22 @@ export const getRelationOptions = (type, contentType) => {
 			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
 
 		// Check if currentTemplateType is one of the allowed types
-		if (allowedTemplateTypes.includes(currentTemplateType))
-			options = options.push({
+		if (allowedTemplateTypes.includes(currentTemplateType)) {
+			const newItem = {
 				label: __('Get current archive', 'maxi-blocks'),
 				value: 'current-archive',
-			});
+			};
+
+			if (
+				!options.some(
+					item =>
+						item.label === newItem.label &&
+						item.value === newItem.value
+				)
+			) {
+				options.push(newItem);
+			}
+		}
 	}
 
 	return options;
@@ -311,9 +331,10 @@ export const validationsValues = (
 	const fieldResult = getFields(contentType, variableValue)?.map(
 		x => x.value
 	);
-	const relationResult = getRelationOptions(variableValue, contentType)?.map(
-		x => x.value
-	);
+	const relationOptions = getRelationOptions(variableValue, contentType);
+	const relationResult = Array.isArray(relationOptions)
+		? relationOptions.map(x => x.value)
+		: [];
 	const typeResult = getTypes(contentType, false)?.map(item => item.value);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value

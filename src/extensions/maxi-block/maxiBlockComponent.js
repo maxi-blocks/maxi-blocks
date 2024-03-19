@@ -216,15 +216,12 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (previewIframes.length > 0 && !blockName) {
-			console.log('preview mode');
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
-		console.log('this.isPatternsPreview', this.isPatternsPreview);
 		if (this.isPatternsPreview) return;
 
-		console.log('remove deprecated block');
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
@@ -578,8 +575,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log('unmount');
-		console.log('this.isPatternsPreview', this.isPatternsPreview);
 		// Return if it's a preview block
 		if (this.isTemplatePartPreview || this.isPatternsPreview) return;
 
@@ -610,7 +605,6 @@ class MaxiBlockComponent extends Component {
 			// Styles
 			const obj = this.getStylesObject;
 			styleResolver({ styles: obj, remover: true });
-			console.log('remove in isBlockBeingRemoved');
 
 			this.removeStyles();
 
@@ -1354,8 +1348,6 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		console.log('remove in removeStyles');
-
 		editorElement?.getElementById(this.wrapperId)?.remove();
 	}
 
@@ -1404,8 +1396,6 @@ class MaxiBlockComponent extends Component {
 			this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
 			document.head.appendChild(this.popoverStyles);
 		} else if (!this.props.isSelected && this.popoverStyles) {
-			console.log('remove popover styles');
-
 			this.popoverStyles.remove();
 			this.popoverStyles = null;
 		}

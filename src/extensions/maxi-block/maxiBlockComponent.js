@@ -50,7 +50,6 @@ import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
-import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
@@ -237,7 +236,6 @@ class MaxiBlockComponent extends Component {
 	componentDidMount() {
 		// If the block is a pattern preview, we need to replace the iframe with an image
 		const previewIframes = getSiteEditorPreviewIframes();
-
 		// The blocks in preview are not saved in the store,
 		// so we can check if the block is a pattern preview by trying to get the block name.
 		const blockName = select('core/block-editor').getBlockName(
@@ -293,6 +291,28 @@ class MaxiBlockComponent extends Component {
 					iframe.parentNode.classList.add(
 						'maxi-blocks-pattern-preview'
 					);
+
+					const parentWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__media'
+					);
+
+					if (parentWithClass !== null) {
+						parentWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid'
+						);
+					}
+
+					const parentCardWithClass = this.findParentWithClass(
+						iframe,
+						'dataviews-view-grid__card'
+					);
+
+					if (parentCardWithClass !== null) {
+						parentCardWithClass.classList.add(
+							'maxi-blocks-pattern-preview-grid__card'
+						);
+					}
 					const img = new Image();
 					img.src = imgPath;
 					img.alt = __(
@@ -456,14 +476,6 @@ class MaxiBlockComponent extends Component {
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
-
-		if (this.isReusable) {
-			this.widthObserver = updateReusableBlockSize(
-				this.blockRef.current,
-				this.props.attributes.uniqueID,
-				this.props.clientId
-			);
-		}
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -1101,12 +1113,7 @@ class MaxiBlockComponent extends Component {
 					clientId
 				)
 			) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-				markNextChangeAsNotPersistent();
+				const { updateBlockAttributes } = dispatch('core/block-editor');
 				updateBlockAttributes(clientId, {
 					uniqueID: newUniqueID,
 				});
@@ -1346,15 +1353,6 @@ class MaxiBlockComponent extends Component {
 			return;
 
 		editorElement?.getElementById(this.wrapperId)?.remove();
-
-		if (this.isReusable) {
-			this.widthObserver?.disconnect();
-			editorElement
-				?.getElementById(
-					`maxi-block-size-checker-${this.props.clientId}`
-				)
-				?.remove();
-		}
 	}
 
 	/**
@@ -1374,6 +1372,18 @@ class MaxiBlockComponent extends Component {
 			parent = parent.parentNode;
 		}
 		return false;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	findParentWithClass(element, className) {
+		let currentElement = element;
+		while (
+			currentElement &&
+			!currentElement.classList.contains(className)
+		) {
+			currentElement = currentElement.parentElement;
+		}
+		return currentElement;
 	}
 
 	/**

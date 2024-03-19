@@ -7,7 +7,7 @@ import { store as coreStore } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import { getFields, limitString } from './utils';
+import { getFields, limitString, getCurrentTemplateSlug } from './utils';
 import { idOptionByField, idTypes, orderByRelations } from './constants';
 
 /**
@@ -69,8 +69,7 @@ export const getIdOptions = async (
 	} else if (isCustomPostType) {
 		data = await getEntityRecords('postType', type, args);
 	} else if (relation === 'current-archive') {
-		const currentTemplateType =
-			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+		const currentTemplateType = getCurrentTemplateSlug();
 		if (currentTemplateType === 'author') {
 			const users = await getUsers();
 

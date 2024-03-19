@@ -249,6 +249,21 @@ const addUniqueOption = (options, newItem) => {
 	}
 };
 
+export const getCurrentTemplateSlug = () => {
+	const currentTemplateTypeRaw =
+		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
+		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
+
+	let currentTemplateType = currentTemplateTypeRaw;
+
+	// Use array destructuring to extract the part after '//' if it exists
+	if (currentTemplateType && currentTemplateType.includes('//')) {
+		[, currentTemplateType] = currentTemplateType.split('//');
+	}
+
+	return currentTemplateType;
+};
+
 export const getRelationOptions = (type, contentType) => {
 	let options;
 
@@ -283,8 +298,7 @@ export const getRelationOptions = (type, contentType) => {
 			'date',
 			'archive',
 		];
-		const currentTemplateType =
-			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+		const currentTemplateType = getCurrentTemplateSlug();
 
 		// Check if currentTemplateType is one of the allowed types
 		if (allowedTemplateTypes.includes(currentTemplateType)) {

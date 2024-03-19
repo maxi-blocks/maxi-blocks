@@ -237,7 +237,6 @@ export const showHideHamburgerNavigation = type => {
 				// Handle type as a number (screen size)
 				else if (typeof type === 'number') {
 					const editorWidth = editor.clientWidth;
-					console.log('editorWidth', editorWidth);
 					if (editorWidth <= type) {
 						// Show for editor sizes type and down
 						hamburgerNavigation.classList.add('always-shown');

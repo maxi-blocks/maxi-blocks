@@ -77,9 +77,6 @@ const BlockStylesControl = props => {
 		getAllInnerBlocksHelper(id);
 	};
 
-	console.log('BlockStyle', blockStyle);
-	console.log('getBlockStyle(clientId)', getBlockStyle(clientId));
-
 	return (
 		<>
 			<div className='block-info-icon' onClick={setDescVisibility}>

@@ -16,17 +16,6 @@ const getBlockStyle = clientId => {
 		getSelectedBlockClientId() ||
 		getFirstMultiSelectedBlockClientId();
 
-	const uniqueID = getBlockAttributes(id)?.uniqueID;
-	if (uniqueID === 'container-maxi-cb5e2657-u') {
-		console.log('uniqueID', uniqueID);
-		console.log('id', id);
-		console.log('clientId', clientId);
-		console.log(
-			'getBlockAttributes(id)?.blockStyle',
-			getBlockAttributes(id)?.blockStyle
-		);
-	}
-
 	if (getBlockAttributes(id)?.blockStyle)
 		return getBlockAttributes(id).blockStyle;
 

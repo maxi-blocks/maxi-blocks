@@ -10,7 +10,6 @@ import { select, dispatch } from '@wordpress/data';
  */
 import SelectControl from '../select-control';
 import { getBlockStyle } from '../../extensions/styles';
-import { getTemplatePartParent } from '../../extensions/fse';
 
 /**
  * External dependencies
@@ -31,11 +30,8 @@ const BlockStylesControl = props => {
 
 	const classes = classnames('maxi-block-style-control', className);
 
-	const showBlockStyle =
-		isFirstOnHierarchy || getTemplatePartParent(clientId);
-
 	const getSelectorOptions = () => {
-		if (showBlockStyle)
+		if (isFirstOnHierarchy)
 			return [
 				{ label: __('Dark', 'maxi-blocks'), value: 'dark' },
 				{ label: __('Light', 'maxi-blocks'), value: 'light' },
@@ -81,7 +77,6 @@ const BlockStylesControl = props => {
 		getAllInnerBlocksHelper(id);
 	};
 
-	console.log('showBlockStyle', showBlockStyle);
 	console.log('BlockStyle', blockStyle);
 	console.log('getBlockStyle(clientId)', getBlockStyle(clientId));
 
@@ -90,7 +85,7 @@ const BlockStylesControl = props => {
 			<div className='block-info-icon' onClick={setDescVisibility}>
 				<span className='block-info-icon-span'>i</span>
 			</div>
-			{showBlockStyle ? (
+			{isFirstOnHierarchy ? (
 				<SelectControl
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}

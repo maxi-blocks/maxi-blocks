@@ -10,4 +10,3 @@ export { default as getTemplatePartSlug } from './getTemplatePartSlug';
 export { default as getTemplatePartTagName } from './getTemplatePartTagName';
 export { default as getTemplateViewIframe } from './getTemplateViewIframe';
 export { default as getSiteEditorPreviewIframes } from './getSiteEditorPreviewIframes';
-export { default as getTemplatePartParent } from './getTemplatePartParent';

@@ -125,7 +125,10 @@ const withAttributes = createHigherOrderComponent(
 						select('core/block-editor').getBlock(blockRootClientId);
 					if (firstParentBlock) {
 						// If the first parent block is a reusable block, we need to check if it's the first on hierarchy to apply full width.
-						if (firstParentBlock.name === 'core/block') {
+						if (
+							firstParentBlock.name === 'core/block' ||
+							firstParentBlock.name === 'core/template-part'
+						) {
 							const isReusableFirstOnHierarchy = !select(
 								'core/block-editor'
 							).getBlockRootClientId(firstParentBlock.clientId);

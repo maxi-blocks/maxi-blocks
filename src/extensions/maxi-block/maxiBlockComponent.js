@@ -1043,11 +1043,6 @@ class MaxiBlockComponent extends Component {
 
 		const newBlockStyle = getBlockStyle(clientId);
 
-		console.log('getCurrentBlockStyle');
-		console.log('newBlockStyle', newBlockStyle);
-		console.log('blockStyle', blockStyle);
-		console.log('----------------');
-
 		if (blockStyle !== newBlockStyle) {
 			this.props.attributes.blockStyle = newBlockStyle;
 

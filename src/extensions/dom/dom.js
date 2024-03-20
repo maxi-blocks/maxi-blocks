@@ -414,6 +414,7 @@ wp.domReady(() => {
 		let overwriteMobile = false;
 		let alwaysShowMobile = false;
 		let removeUnderlineHover = false;
+		let showMobileFrom = 767;
 		if (blockStyle !== '') {
 			overwriteMobile =
 				activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
@@ -425,6 +426,12 @@ wp.domReady(() => {
 				] || false;
 			if (overwriteMobile && alwaysShowMobile) {
 				showHideHamburgerNavigation('show');
+			} else if (overwriteMobile && !alwaysShowMobile) {
+				showMobileFrom =
+					activeSC?.value?.[blockStyle]?.styleCard?.navigation?.[
+						'show-mobile-down-from'
+					];
+				showHideHamburgerNavigation(showMobileFrom);
 			} else {
 				showHideHamburgerNavigation('hide');
 			}

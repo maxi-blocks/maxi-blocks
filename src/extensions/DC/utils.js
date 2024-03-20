@@ -238,6 +238,32 @@ const getPostTypeRelationOptions = type => {
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
+// Utility function to add an item to the options array if it doesn't already exist
+const addUniqueOption = (options, newItem) => {
+	if (
+		!options.some(
+			item => item.label === newItem.label && item.value === newItem.value
+		)
+	) {
+		options.push(newItem);
+	}
+};
+
+export const getCurrentTemplateSlug = () => {
+	const currentTemplateTypeRaw =
+		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
+		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
+
+	let currentTemplateType = currentTemplateTypeRaw;
+
+	// Use array destructuring to extract the part after '//' if it exists
+	if (currentTemplateType && currentTemplateType.includes('//')) {
+		[, currentTemplateType] = currentTemplateType.split('//');
+	}
+
+	return currentTemplateType;
+};
+
 export const getRelationOptions = (type, contentType) => {
 	let options;
 
@@ -253,11 +279,13 @@ export const getRelationOptions = (type, contentType) => {
 		options = getTaxonomyRelationOptions();
 	else options = relationOptions[contentType]?.[type];
 
-	if (select('core/editor').getCurrentPostType() === type) {
-		options.push({
+	if (type.includes(select('core/editor').getCurrentPostType())) {
+		const newItem = {
 			label: __('Get current', 'maxi-blocks'),
 			value: 'current',
-		});
+		};
+
+		addUniqueOption(options, newItem);
 	}
 
 	const isFSE = select('core/edit-site') !== undefined;
@@ -270,15 +298,17 @@ export const getRelationOptions = (type, contentType) => {
 			'date',
 			'archive',
 		];
-		const currentTemplateType =
-			select('core/edit-site')?.getEditedPostContext()?.templateSlug;
+		const currentTemplateType = getCurrentTemplateSlug();
 
 		// Check if currentTemplateType is one of the allowed types
-		if (allowedTemplateTypes.includes(currentTemplateType))
-			options = options.push({
+		if (allowedTemplateTypes.includes(currentTemplateType)) {
+			const newItem = {
 				label: __('Get current archive', 'maxi-blocks'),
 				value: 'current-archive',
-			});
+			};
+
+			addUniqueOption(options, newItem);
+		}
 	}
 
 	return options;
@@ -311,9 +341,10 @@ export const validationsValues = (
 	const fieldResult = getFields(contentType, variableValue)?.map(
 		x => x.value
 	);
-	const relationResult = getRelationOptions(variableValue, contentType)?.map(
-		x => x.value
-	);
+	const relationOptions = getRelationOptions(variableValue, contentType);
+	const relationResult = Array.isArray(relationOptions)
+		? relationOptions.map(x => x.value)
+		: [];
 	const typeResult = getTypes(contentType, false)?.map(item => item.value);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value

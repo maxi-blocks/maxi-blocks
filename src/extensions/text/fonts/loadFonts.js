@@ -85,10 +85,6 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 						: fontName
 				).replaceAll("''", "'");
 
-				fontDataNew = {
-					...fontDataNew,
-				};
-
 				const fontLoad = new FontFace(
 					cleanFontName,
 					`url(${url})`,

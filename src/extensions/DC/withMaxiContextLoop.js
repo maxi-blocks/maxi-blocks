@@ -14,7 +14,7 @@ import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
 import { getAttributesWithoutPrefix } from './utils';
-import { getSiteEditorPreviewIframes } from '../fse';
+import { isInSiteEditorPreviewIframe } from '../fse';
 
 /**
  * External dependencies
@@ -39,7 +39,7 @@ export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const isPreview = getSiteEditorPreviewIframes().length > 0;
+			const isPreview = isInSiteEditorPreviewIframe();
 
 			if (isPreview) {
 				// If in FSE preview mode, render the wrapped component without the LoopContext.Provider

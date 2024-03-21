@@ -78,7 +78,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getSiteEditorPreviewIframes } from '../../extensions/fse';
+import { isInSiteEditorPreviewIframe } from '../../extensions/fse';
 
 /**
  * Styles & icons
@@ -92,9 +92,9 @@ import { toolbarPin, toolbarPinLocked } from '../../icons';
 const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
 		if (isEmpty(props) || !ref) return null;
-		const previewIframes = getSiteEditorPreviewIframes();
+		const isPreviewIframe = isInSiteEditorPreviewIframe();
 
-		if (previewIframes.length > 0) return null;
+		if (isPreviewIframe) return null;
 		const inlineStylesTargetsDefault = {
 			background: '',
 			border: '',

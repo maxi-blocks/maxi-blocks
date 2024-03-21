@@ -24,7 +24,6 @@ import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '../../extensions/DC/constants';
-import { getSiteEditorPreviewIframes } from '../../extensions/fse';
 
 /**
  * External dependencies

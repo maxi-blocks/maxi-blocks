@@ -46,6 +46,11 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 				fontDataNew = { ...fontData, ...{ weight: fontWeight } };
 			}
 
+			fontDataNew = {
+				...fontDataNew,
+				...{ display: 'swap' },
+			};
+
 			let fontStyleArr = [];
 
 			if (Array.isArray(fontStyle) && !isEmpty(fontStyle)) {

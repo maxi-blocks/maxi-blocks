@@ -209,7 +209,10 @@ class MaxiBlocks_Local_Fonts
                     $font_url .= 'wght@400';
                 }
             }
+
+            $font_url .= '&display=swap';
         } else {
+            $font_url .= 'display=swap';
             $font_url = rtrim($font_url, ':');
         }
 

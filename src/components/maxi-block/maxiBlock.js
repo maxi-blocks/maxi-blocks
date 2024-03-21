@@ -48,6 +48,7 @@ const getBlockClassName = blockName => {
 };
 
 const getBlockStyle = (attributes, breakpoint, marginValue) => {
+	if (!marginValue) return '';
 	const getValue = target =>
 		getLastBreakpointAttribute({
 			target,

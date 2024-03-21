@@ -209,6 +209,19 @@ class MaxiBlockComponent extends Component {
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 
+		const previewIframes = getSiteEditorPreviewIframes();
+
+		const blockName = select('core/block-editor').getBlockName(
+			this.props.clientId
+		);
+
+		if (previewIframes.length > 0 && !blockName) {
+			this.isPatternsPreview = true;
+			this.showPreviewImage(previewIframes);
+			return;
+		}
+		if (this.isPatternsPreview) return;
+
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
@@ -234,115 +247,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		// If the block is a pattern preview, we need to replace the iframe with an image
-		const previewIframes = getSiteEditorPreviewIframes();
-		// The blocks in preview are not saved in the store,
-		// so we can check if the block is a pattern preview by trying to get the block name.
-		const blockName = select('core/block-editor').getBlockName(
-			this.props.clientId
-		);
-
-		if (previewIframes.length > 0 && !blockName) {
-			this.isPatternsPreview = true;
-			const disconnectTimeout = 10000; // 10 seconds
-			const timeouts = {};
-
-			const defaultImgPath =
-				'/wp-content/plugins/maxi-blocks/img/pattern-preview.jpg';
-			const linkElement = document.querySelector(
-				'#maxi-blocks-block-css'
-			);
-			const href = linkElement?.getAttribute('href');
-			const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
-			const imgPath = pluginsPath
-				? `${pluginsPath}/img/pattern-preview.jpg`
-				: defaultImgPath;
-
-			previewIframes.forEach(iframe => {
-				if (!iframe || !iframe.parentNode) return;
-
-				// Refactor condition to exit early, improving readability
-				if (
-					this.hasParentWithClass(
-						iframe.parentNode,
-						'maxiblocks-custom-pattern'
-					)
-				)
-					return;
-
-				const replaceIframeWithImage = (iframe, observer) => {
-					const iframeDocument = iframe.contentDocument;
-					const iframeBody = iframeDocument?.body;
-					if (!iframeBody) return;
-
-					// Clear and reset the timeout for this iframe
-					clearTimeout(timeouts[iframe]);
-					timeouts[iframe] = setTimeout(() => {
-						observer.disconnect();
-						delete timeouts[iframe];
-					}, disconnectTimeout);
-
-					const containsMaxiBlocksContainer =
-						iframeBody.querySelector(
-							'.is-root-container .maxi-block'
-						);
-					if (!containsMaxiBlocksContainer) return;
-
-					iframe.parentNode.classList.add(
-						'maxi-blocks-pattern-preview'
-					);
-
-					const parentWithClass = this.findParentWithClass(
-						iframe,
-						'dataviews-view-grid__media'
-					);
-
-					if (parentWithClass !== null) {
-						parentWithClass.classList.add(
-							'maxi-blocks-pattern-preview-grid'
-						);
-					}
-
-					const parentCardWithClass = this.findParentWithClass(
-						iframe,
-						'dataviews-view-grid__card'
-					);
-
-					if (parentCardWithClass !== null) {
-						parentCardWithClass.classList.add(
-							'maxi-blocks-pattern-preview-grid__card'
-						);
-					}
-					const img = new Image();
-					img.src = imgPath;
-					img.alt = __(
-						'Preview for pattern with MaxiBlocks',
-						'maxi-blocks'
-					);
-					img.style.width = '100%';
-					img.style.height = 'auto';
-					iframe.parentNode.replaceChild(img, iframe);
-					observer.disconnect();
-				};
-
-				const observer = new MutationObserver(
-					(mutationsList, observer) => {
-						mutationsList.forEach(mutation =>
-							replaceIframeWithImage(mutation.target, observer)
-						);
-					}
-				);
-
-				observer.observe(iframe, {
-					attributes: true,
-					childList: true,
-					subtree: true,
-				});
-			});
-			return;
-		}
-		if (this.isPatternsPreview) return;
-
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -672,7 +576,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		// Return if it's a preview block
-		if (this.isTemplatePartPreview) return;
+		if (this.isTemplatePartPreview || this.isPatternsPreview) return;
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -701,6 +605,7 @@ class MaxiBlockComponent extends Component {
 			// Styles
 			const obj = this.getStylesObject;
 			styleResolver({ styles: obj, remover: true });
+
 			this.removeStyles();
 
 			// Block
@@ -1052,6 +957,101 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
+	showPreviewImage(previewIframes) {
+		const disconnectTimeout = 10000; // 10 seconds
+		const timeouts = {};
+
+		const isSiteEditor = getIsSiteEditor();
+
+		const imageName = isSiteEditor
+			? 'pattern-preview.jpg'
+			: 'pattern-preview-edit.jpg';
+
+		const defaultImgPath = `/wp-content/plugins/maxi-blocks/img/${imageName}`;
+		const linkElement = document.querySelector('#maxi-blocks-block-css');
+		const href = linkElement?.getAttribute('href');
+		const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
+		const imgPath = pluginsPath
+			? `${pluginsPath}/img/${imageName}`
+			: defaultImgPath;
+
+		previewIframes.forEach(iframe => {
+			if (!iframe || !iframe.parentNode) return;
+
+			if (
+				this.hasParentWithClass(
+					iframe.parentNode,
+					'maxiblocks-custom-pattern'
+				)
+			)
+				return;
+
+			const replaceIframeWithImage = (iframe, observer) => {
+				const iframeDocument = iframe.contentDocument;
+				const iframeBody = iframeDocument?.body;
+				if (!iframeBody) return;
+
+				// Clear and reset the timeout for this iframe
+				clearTimeout(timeouts[iframe]);
+				timeouts[iframe] = setTimeout(() => {
+					observer.disconnect();
+					delete timeouts[iframe];
+				}, disconnectTimeout);
+
+				const containsMaxiBlocksContainer = iframeBody.querySelector(
+					'.is-root-container .maxi-block'
+				);
+				if (!containsMaxiBlocksContainer) return;
+
+				iframe.parentNode.classList.add('maxi-blocks-pattern-preview');
+
+				const parentWithClass = this.findParentWithClass(
+					iframe,
+					'dataviews-view-grid__media'
+				);
+
+				if (parentWithClass !== null) {
+					parentWithClass.classList.add(
+						'maxi-blocks-pattern-preview-grid'
+					);
+				}
+
+				const parentCardWithClass = this.findParentWithClass(
+					iframe,
+					'dataviews-view-grid__card'
+				);
+
+				if (parentCardWithClass !== null) {
+					parentCardWithClass.classList.add(
+						'maxi-blocks-pattern-preview-grid__card'
+					);
+				}
+				const img = new Image();
+				img.src = imgPath;
+				img.alt = __(
+					'Preview for pattern with MaxiBlocks',
+					'maxi-blocks'
+				);
+				img.style.width = '100%';
+				img.style.height = 'auto';
+				iframe.parentNode.replaceChild(img, iframe);
+				observer.disconnect();
+			};
+
+			const observer = new MutationObserver((mutationsList, observer) => {
+				mutationsList.forEach(mutation =>
+					replaceIframeWithImage(mutation.target, observer)
+				);
+			});
+
+			observer.observe(iframe, {
+				attributes: true,
+				childList: true,
+				subtree: true,
+			});
+		});
+	}
+
 	// This function saves the last inserted blocks' clientIds, so we can use them
 	// to update IB relations.
 	updateLastInsertedBlocks() {
@@ -1192,7 +1192,7 @@ class MaxiBlockComponent extends Component {
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
-			if (this.rootSlot) {
+			if (this.rootSlot && !this.isPatternsPreview) {
 				const styleComponent = (
 					<StyleComponent
 						uniqueID={uniqueID}
@@ -1318,6 +1318,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
+		if (this.isPatternsPreview) return;
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
 		if (!this.isReusable && this.rootSlot)

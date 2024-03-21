@@ -215,6 +215,8 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 
+		console.log('blockName', blockName);
+
 		if (previewIframes.length > 0 && !blockName) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
@@ -222,6 +224,11 @@ class MaxiBlockComponent extends Component {
 		}
 		if (this.isPatternsPreview) return;
 
+		console.log(
+			'removing deprecated block',
+			this.isPatternsPreview,
+			previewIframes.length
+		);
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
@@ -606,6 +613,10 @@ class MaxiBlockComponent extends Component {
 			const obj = this.getStylesObject;
 			styleResolver({ styles: obj, remover: true });
 
+			console.log(
+				'removing styles isBlockBeingRemoved',
+				this.isPatternsPreview
+			);
 			this.removeStyles();
 
 			// Block

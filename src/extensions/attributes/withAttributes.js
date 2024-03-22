@@ -119,34 +119,37 @@ const withAttributes = createHigherOrderComponent(
 			if (allowedBlocks.includes(blockName)) {
 				const isFirstOnHierarchy = !blockRootClientId;
 				let isFirstOnHierarchyUpdated = false;
+				const currentClientId = blockRootClientId;
+
+				// Function to recursively check parent blocks
+				const checkParentBlocks = clientId => {
+					const block =
+						select('core/block-editor').getBlock(clientId);
+					if (block) {
+						if (block.name.startsWith('core')) {
+							const parentClientId = select(
+								'core/block-editor'
+							).getBlockRootClientId(block.clientId);
+							if (parentClientId) {
+								return checkParentBlocks(parentClientId);
+							}
+							// This is the topmost 'core' block in the hierarchy
+							return true;
+						}
+					}
+					return false;
+				};
 
 				if (!isFirstOnHierarchy) {
-					const firstParentBlock =
-						select('core/block-editor').getBlock(blockRootClientId);
-					if (firstParentBlock) {
-						// If the first parent block is a reusable block, we need to check if it's the first on hierarchy to apply full width.
-						if (firstParentBlock.name.startsWith('core')) {
-							const isReusableFirstOnHierarchy = !select(
-								'core/block-editor'
-							).getBlockRootClientId(firstParentBlock.clientId);
+					const isReusableFirstOnHierarchy =
+						checkParentBlocks(currentClientId);
 
-							isFirstOnHierarchyUpdated = true;
-							markNextChangeAsNotPersistent();
-							setAttributes({
-								isFirstOnHierarchy: isReusableFirstOnHierarchy,
-							});
-						} else {
-							const { blockStyle } = firstParentBlock.attributes;
-
-							if (blockStyle !== attributes.blockStyle) {
-								isFirstOnHierarchyUpdated = true;
-								markNextChangeAsNotPersistent();
-								setAttributes({
-									blockStyle,
-									isFirstOnHierarchy,
-								});
-							}
-						}
+					if (isReusableFirstOnHierarchy) {
+						isFirstOnHierarchyUpdated = true;
+						markNextChangeAsNotPersistent();
+						setAttributes({
+							isFirstOnHierarchy: isReusableFirstOnHierarchy,
+						});
 					}
 				}
 
@@ -160,8 +163,12 @@ const withAttributes = createHigherOrderComponent(
 					});
 				}
 			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [blockRootClientId]);
+		}, [
+			blockRootClientId,
+			allowedBlocks,
+			blockName,
+			attributes.isFirstOnHierarchy,
+		]);
 
 		return <BlockEdit {...props} />;
 	},

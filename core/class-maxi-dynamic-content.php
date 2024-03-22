@@ -643,6 +643,12 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
+        echo 'dc-source: '.$dc_source.'<br>';
+        echo 'dc-type: '.$dc_type.'<br>';
+        echo 'dc-relation: '.$dc_relation.'<br>';
+        echo 'dc-field: '.$dc_field.'<br>';
+        echo '====================<br>';
+
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
         }
@@ -901,6 +907,23 @@ class MaxiBlocks_DynamicContent
                 // because we can't get what type of post user is editing on FSE,
                 // so we can't disallow users to choose the wrong type
                 $args['post_type'] = get_post_type();
+                if (is_category()) {
+                    $args['category_name'] = single_cat_title('', false);
+                } elseif (is_tag()) {
+                    $args['tag'] = single_tag_title('', false);
+                } elseif (is_archive()) {
+                    $args['year'] = get_the_date('Y');
+                    $args['monthnum'] = get_the_date('m');
+                } elseif (is_tax()) {
+                    $taxonomy = get_queried_object()->taxonomy;
+                    $term_id = get_queried_object_id();
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => $taxonomy,
+                            'terms' => $term_id,
+                        )
+                    );
+                }
                 unset($args['post_status']);
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
@@ -1271,14 +1294,20 @@ class MaxiBlocks_DynamicContent
 
     public function get_user_content($attributes)
     {
+        @list(
+            'dc-relation' => $dc_relation,
+        ) = $attributes;
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
         if (!array_key_exists('dc-field', $attributes)) {
             return 0;
         } else {
             $dc_field = $attributes['dc-field'];
         }
-
-        $user = $this->get_post($attributes);
+        if($dc_relation === 'current') {
+            $user = get_queried_object();
+        } else {
+            $user = $this->get_post($attributes);
+        }
 
         $user_dictionary = [
             'name' => 'display_name',
@@ -1314,9 +1343,15 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
+            'dc-relation' => $dc_relation,
         ) = $attributes;
 
-        $term = $this->get_post($attributes);
+        if($dc_relation === 'current') {
+            $term = get_queried_object();
+        } else {
+            $term = $this->get_post($attributes);
+        }
+
         if ($dc_field === 'link') {
             $tax_data = get_term_link($term);
         } else {

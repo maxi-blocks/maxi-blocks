@@ -44,7 +44,7 @@ const isEligible = blockAttributes => {
 
 	const defaultTransitionByBlock =
 		data?.transition ||
-		transitionAttributesCreator({ selectors: data?.customCss.selectors });
+		transitionAttributesCreator({ selectors: data?.customCss?.selectors });
 
 	// Check if all transition keys exist on each transition selector object
 	const allSelectorHasAllTransitions = Object.entries(
@@ -74,7 +74,7 @@ const migrate = newAttributes => {
 	// Includes the missing transition keys on each transition selector object
 	const defaultTransitions = transitionAttributesCreator({
 		transition: data?.transition,
-		selectors: data?.customCss.selectors,
+		selectors: data?.customCss?.selectors,
 	}).transition.default;
 
 	Object.entries(defaultTransitions).forEach(

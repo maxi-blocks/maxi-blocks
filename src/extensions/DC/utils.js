@@ -309,6 +309,26 @@ export const getRelationOptions = (type, contentType) => {
 
 			addUniqueOption(options, newItem);
 		}
+
+		const allowedTemplateTypesCurrent = [
+			'category',
+			'tag',
+			'author',
+			'date',
+			'archive',
+			'date',
+			'single',
+			'page',
+		];
+		// Check if currentTemplateType is one of the allowed types
+		if (allowedTemplateTypesCurrent.includes(currentTemplateType)) {
+			const newItem = {
+				label: __('Get current', 'maxi-blocks'),
+				value: 'current',
+			};
+
+			addUniqueOption(options, newItem);
+		}
 	}
 
 	return options;

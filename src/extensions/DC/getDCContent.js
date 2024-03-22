@@ -55,7 +55,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	}
 
 	if (relation === 'current' && isEmpty(data)) {
-		return `${capitalize(field)}: current`;
+		return `${capitalize(field)}: example ${field}`;
 	}
 
 	const customTaxonomies = select(

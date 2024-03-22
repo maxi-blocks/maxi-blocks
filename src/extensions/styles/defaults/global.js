@@ -33,6 +33,9 @@ const global = {
 		type: 'array',
 	},
 	preview: { type: 'boolean', default: false },
+	ariaLabels: {
+		type: 'object',
+	},
 };
 
 export default global;

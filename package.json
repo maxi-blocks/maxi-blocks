@@ -72,7 +72,7 @@
 		"tilt.js": "latest",
 		"tinycolor2": "latest",
 		"typesense": "^1.8.0-2",
-		"typesense-instantsearch-adapter": "latest",
+		"typesense-instantsearch-adapter": "^2.8.0",
 		"uuid": "latest",
 		"w3c-css-validator": "latest"
 	},

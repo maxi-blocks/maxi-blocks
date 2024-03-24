@@ -85,7 +85,7 @@
 		"@wordpress/e2e-test-utils": "10.10.0",
 		"@wordpress/env": "^9.4.0",
 		"@wordpress/jest-preset-default": "^11.10.0",
-		"@wordpress/scripts": "^26.10.0",
+		"@wordpress/scripts": "^27.5.0",
 		"css-minimizer-webpack-plugin": "^4.0.0",
 		"dotenv-webpack": "^8.0.1",
 		"enzyme": "^3.11.0",

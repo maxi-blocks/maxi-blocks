@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, useSelect } from '@wordpress/data';
+import { resolveSelect, useSelect, select } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -61,7 +61,7 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
-const UnlimitedCharacterPoppover = ({ message }) => (
+const UnlimitedCharacterPopover = ({ message }) => (
 	<Popover className='maxi-info-helper-popover maxi-popover-button'>
 		<p>{message}</p>
 	</Popover>
@@ -187,6 +187,8 @@ const DynamicContent = props => {
 				who: 'authors',
 			});
 
+			console.log('authors', authors);
+
 			if (authors) {
 				setPostAuthorOptions(
 					authors.map(({ id, name }) => ({
@@ -214,6 +216,8 @@ const DynamicContent = props => {
 				author,
 			};
 
+			console.log('dataRequest', dataRequest);
+
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
@@ -221,6 +225,8 @@ const DynamicContent = props => {
 				false,
 				contextLoop
 			);
+
+			console.log('postIDSettings', postIDSettings);
 
 			if (postIDSettings) {
 				const { newValues, newPostIdOptions } = postIDSettings;
@@ -243,6 +249,15 @@ const DynamicContent = props => {
 
 	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		if (
+			select('core/edit-site').getEditedPostId().endsWith('archive') &&
+			!postTypes?.find(({ value }) => value === 'archive')
+		) {
+			const newItem = { label: 'Archive', value: 'archive' };
+			postTypes.push(newItem);
+		}
+		console.log('postTypes', postTypes);
+
 		setPostTypesOptions(postTypes);
 	}, [contentType, source]);
 
@@ -579,7 +594,7 @@ const DynamicContent = props => {
 											value={limit}
 											showHelp
 											helpContent={
-												<UnlimitedCharacterPoppover message='Type 0 for unlimited' />
+												<UnlimitedCharacterPopover message='Type 0 for unlimited' />
 											}
 											onChangeValue={value =>
 												changeProps({

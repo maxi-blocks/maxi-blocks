@@ -320,8 +320,13 @@ export const getRelationOptions = (type, contentType) => {
 			'single',
 			'page',
 		];
+		console.log('currentTemplateType', currentTemplateType);
+		console.log('type', type);
 		// Check if currentTemplateType is one of the allowed types
-		if (allowedTemplateTypesCurrent.includes(currentTemplateType)) {
+		if (
+			allowedTemplateTypesCurrent.includes(currentTemplateType) &&
+			type.includes(currentTemplateType)
+		) {
 			const newItem = {
 				label: __('Get current', 'maxi-blocks'),
 				value: 'current',

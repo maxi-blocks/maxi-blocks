@@ -135,9 +135,12 @@ body.maxi-blocks--active.page-template-full-width-template .ast-container {
 	}
 }
 
-body.maxi-blocks--active .is-reusable:has(.maxi-block) {
-	min-width: 100%;
-	max-width: 100%;
+body.maxi-blocks--active {
+	.is-reusable:has(.maxi-block),
+	.wp-block-template-part:has(.maxi-block) {
+		min-width: 100%;
+		max-width: 100%;
+	}
 }
 
 /* Fix for links inside of map maxi */

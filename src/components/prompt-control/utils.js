@@ -12,13 +12,13 @@ import { CONTENT_TYPE_EXAMPLES } from './constants';
 /**
  * External dependencies
  */
-import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { ChatOpenAI } from '@langchain/openai';
 import {
 	ChatPromptTemplate,
 	HumanMessagePromptTemplate,
 	SystemMessagePromptTemplate,
-} from 'langchain/prompts';
-import { ceil, floor, isEmpty } from 'lodash';
+} from '@langchain/core/prompts';
+import { isEmpty } from 'lodash';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeysToLabels = {

@@ -137,6 +137,13 @@ const customCss = {
 		'dot icon',
 	],
 };
+const ariaLabelsCategories = [
+	'slider',
+	'first arrow',
+	'second arrow',
+	'all dots',
+	'dot',
+];
 const interactionBuilderSettings = {
 	block: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
@@ -149,5 +156,10 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

@@ -178,6 +178,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['button', 'icon'];
 const transition = {
 	...transitionDefault,
 	block: {
@@ -423,5 +424,6 @@ export {
 	interactionBuilderSettings,
 	maxiAttributes,
 	scProps,
+	ariaLabelsCategories,
 };
 export default data;

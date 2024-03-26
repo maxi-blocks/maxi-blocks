@@ -165,6 +165,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['text', 'links'];
 const transition = {
 	canvas: {
 		...transitionDefault.canvas,
@@ -233,5 +234,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	scProps,
+	ariaLabelsCategories,
 };
 export default data;

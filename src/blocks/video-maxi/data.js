@@ -123,6 +123,7 @@ const customCss = {
 		'play icon',
 	],
 };
+const ariaLabelsCategories = ['video', 'close icon', 'play icon'];
 const transition = {
 	...transitionDefault,
 	block: {
@@ -173,5 +174,11 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

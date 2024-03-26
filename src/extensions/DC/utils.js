@@ -28,6 +28,30 @@ import getTypes from './getTypes';
 import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
+const allowedTemplateTypesCurrent = [
+	'category',
+	'tag',
+	'author',
+	'date',
+	'archive',
+	'single',
+	'page',
+];
+
+const showCurrent = (type, currentTemplateType) => {
+	if (
+		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
+		type.includes(currentTemplateType)
+	)
+		return true;
+
+	if (currentTemplateType === 'single' && type === 'posts') return true;
+	if (currentTemplateType === 'category' && type === 'categories')
+		return true;
+
+	return false;
+};
+
 export const parseText = value => {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(DOMPurify.sanitize(value), 'text/html');
@@ -123,8 +147,6 @@ const getCustomPostTypeFields = (contentType, type) => {
 
 	const postType = select('core').getPostType(type);
 
-	console.log('postType field', postType);
-
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -190,6 +212,32 @@ const getCustomTaxonomyFields = type => {
 	return fields;
 };
 
+export const getCurrentTemplateSlug = () => {
+	const currentTemplateTypeRaw =
+		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
+		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
+
+	let currentTemplateType = currentTemplateTypeRaw;
+
+	// Use array destructuring to extract the part after '//' if it exists
+	if (currentTemplateType && currentTemplateType.includes('//')) {
+		[, currentTemplateType] = currentTemplateType.split('//');
+	}
+
+	return currentTemplateType;
+};
+
+// Utility function to add an item to the options array if it doesn't already exist
+const addUniqueOption = (options, newItem) => {
+	if (
+		!options.some(
+			item => item.label === newItem.label && item.value === newItem.value
+		)
+	) {
+		options.push(newItem);
+	}
+};
+
 export const getFields = (contentType, type) => {
 	if (
 		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
@@ -201,6 +249,23 @@ export const getFields = (contentType, type) => {
 			.includes(type)
 	)
 		return getCustomTaxonomyFields(type);
+
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (isFSE) {
+		console.log('getCurrentTemplateSlug', getCurrentTemplateSlug());
+		console.log('type', type);
+		if (showCurrent(type, getCurrentTemplateSlug())) {
+			const newItem = {
+				label: __('Archive type', 'maxi-blocks'),
+				value: 'archive-type',
+			};
+			const options = fieldOptions[contentType]?.[type] || [];
+			addUniqueOption(options, newItem);
+			console.log('options', options);
+			return options;
+		}
+	}
 
 	return fieldOptions[contentType]?.[type];
 };
@@ -239,32 +304,6 @@ const getPostTypeRelationOptions = type => {
 };
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
-
-// Utility function to add an item to the options array if it doesn't already exist
-const addUniqueOption = (options, newItem) => {
-	if (
-		!options.some(
-			item => item.label === newItem.label && item.value === newItem.value
-		)
-	) {
-		options.push(newItem);
-	}
-};
-
-export const getCurrentTemplateSlug = () => {
-	const currentTemplateTypeRaw =
-		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
-		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
-
-	let currentTemplateType = currentTemplateTypeRaw;
-
-	// Use array destructuring to extract the part after '//' if it exists
-	if (currentTemplateType && currentTemplateType.includes('//')) {
-		[, currentTemplateType] = currentTemplateType.split('//');
-	}
-
-	return currentTemplateType;
-};
 
 export const getRelationOptions = (type, contentType) => {
 	let options;
@@ -312,32 +351,10 @@ export const getRelationOptions = (type, contentType) => {
 			addUniqueOption(options, newItem);
 		}
 
-		const allowedTemplateTypesCurrent = [
-			'category',
-			'tag',
-			'author',
-			'date',
-			'archive',
-			'date',
-			'single',
-			'page',
-		];
-		const showCurrent = () => {
-			if (
-				allowedTemplateTypesCurrent.includes(currentTemplateType) &&
-				type.includes(currentTemplateType)
-			)
-				return true;
-
-			if (currentTemplateType === 'single' && type === 'posts')
-				return true;
-
-			return false;
-		};
 		console.log('currentTemplateType', currentTemplateType);
 		console.log('type', type);
 		// Check if currentTemplateType is one of the allowed types
-		if (showCurrent()) {
+		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {
 				label: __('Get current', 'maxi-blocks'),
 				value: 'current',

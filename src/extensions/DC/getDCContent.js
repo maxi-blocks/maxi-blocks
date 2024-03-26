@@ -14,6 +14,7 @@ import {
 	getTaxonomyContent,
 	limitString,
 	parseText,
+	getCurrentTemplateSlug,
 } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
@@ -45,6 +46,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		acfFieldType,
 		linkTarget,
 	} = dataRequest;
+
+	if (field === 'archive-type') {
+		return getCurrentTemplateSlug().replace(/-/g, ' ');
+	}
 
 	let contentValue;
 

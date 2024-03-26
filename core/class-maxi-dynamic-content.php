@@ -643,11 +643,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
-        // echo 'dc-source: '.$dc_source.'<br>';
-        // echo 'dc-type: '.$dc_type.'<br>';
-        // echo 'dc-relation: '.$dc_relation.'<br>';
-        // echo 'dc-field: '.$dc_field.'<br>';
-        // echo '====================<br>';
+
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
@@ -684,12 +680,17 @@ class MaxiBlocks_DynamicContent
             $response = self::get_date($response, $attributes);
         }
 
+        if($dc_field === 'archive-type') {
+            $response = get_queried_object()->taxonomy;
+        }
+
         if (empty($response) && $response !== '0') {
             $this->is_empty = true;
             $response = 'No content found';
         }
 
         $content = str_replace('$text-to-replace', $response, $content);
+
 
         return $content;
     }
@@ -885,6 +886,8 @@ class MaxiBlocks_DynamicContent
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
+        //echo 'dc-type: '.$dc_type.'<br>';
+
         if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
             // Basic args
             $args = [
@@ -934,6 +937,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_current_archive) {
                 $archive_info = $this->get_current_archive_type_and_id();
                 $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $archive_info['id'], $archive_info['type']));
+                print_r($args);
             }
 
             if ($dc_type === 'products') {

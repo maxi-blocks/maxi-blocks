@@ -229,6 +229,7 @@ export const getCurrentTemplateSlug = () => {
 
 // Utility function to add an item to the options array if it doesn't already exist
 const addUniqueOption = (options, newItem) => {
+	if (!options) return;
 	if (
 		!options.some(
 			item => item.label === newItem.label && item.value === newItem.value
@@ -260,7 +261,9 @@ export const getFields = (contentType, type) => {
 				label: __('Archive type', 'maxi-blocks'),
 				value: 'archive-type',
 			};
-			const options = fieldOptions[contentType]?.[type] || [];
+			const options =
+				fieldOptions[contentType]?.[type] ||
+				fieldOptions[contentType]?.categories;
 			addUniqueOption(options, newItem);
 			console.log('options', options);
 			return options;

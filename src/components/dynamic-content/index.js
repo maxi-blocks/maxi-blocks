@@ -250,14 +250,35 @@ const DynamicContent = props => {
 	);
 
 	useEffect(() => {
-		const postTypes = getTypes(source === 'wp' ? contentType : source);
-		if (
-			select('core/edit-site').getEditedPostId().endsWith('archive') &&
-			!postTypes?.find(({ value }) => value === 'archive')
-		) {
-			const newItem = { label: 'Archive', value: 'archive' };
-			postTypes.push(newItem);
+		const postTypes =
+			getTypes(source === 'wp' ? contentType : source) || [];
+
+		console.log('postTypes', postTypes);
+
+		if (Array.isArray(postTypes)) {
+			// Handle the case where postTypes is an array
+			if (
+				select('core/edit-site')
+					.getEditedPostId()
+					.endsWith('archive') &&
+				!postTypes.find(({ value }) => value === 'archive')
+			) {
+				const newItem = { label: 'Archive', value: 'archive' };
+				postTypes.push(newItem);
+			}
+		} else if (typeof postTypes === 'object') {
+			// Handle the case where postTypes is an object
+			// Assuming you want to add to 'Standard types'
+			if (
+				!postTypes['Standard types'].find(
+					({ value }) => value === 'archive'
+				)
+			) {
+				const newItem = { label: 'Archive', value: 'archive' };
+				postTypes['Standard types'].push(newItem);
+			}
 		}
+
 		console.log('postTypes', postTypes);
 
 		setPostTypesOptions(postTypes);

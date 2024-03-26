@@ -118,30 +118,16 @@ const getDCOptions = async (
 	contextLoop
 ) => {
 	const { type, id, field, relation, author } = dataRequest;
-	console.log('dataRequest');
-	console.log(dataRequest);
-	console.log('postIdOptions');
-	console.log(postIdOptions);
-	console.log('contentType');
-	console.log(contentType);
-	console.log('isCL');
-	console.log(isCL);
-	console.log('contextLoop');
-	console.log(contextLoop);
 
 	const customPostTypes = select(
 		'maxiBlocks/dynamic-content'
 	).getCustomPostTypes();
-	console.log('customPostTypes');
-	console.log(customPostTypes);
+
 	const isCustomPostType = customPostTypes.includes(type);
-	console.log('isCustomPostType');
-	console.log(isCustomPostType);
+
 	const isCustomTaxonomy = select('maxiBlocks/dynamic-content')
 		.getCustomTaxonomies()
 		.includes(type);
-	console.log('isCustomTaxonomy');
-	console.log(isCustomTaxonomy);
 
 	const data = await getIdOptions(
 		type,
@@ -150,9 +136,6 @@ const getDCOptions = async (
 		isCustomPostType,
 		isCustomTaxonomy
 	);
-
-	console.log('data');
-	console.log(data);
 
 	if (!data) return null;
 

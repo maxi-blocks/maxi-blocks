@@ -167,6 +167,8 @@ const DynamicContent = props => {
 		[contentType, type]
 	);
 
+	console.log('currentFieldOptions', currentFieldOptions);
+
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
 			([key, val]) => {

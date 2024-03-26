@@ -123,6 +123,8 @@ const getCustomPostTypeFields = (contentType, type) => {
 
 	const postType = select('core').getPostType(type);
 
+	console.log('postType field', postType);
+
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -320,13 +322,22 @@ export const getRelationOptions = (type, contentType) => {
 			'single',
 			'page',
 		];
+		const showCurrent = () => {
+			if (
+				allowedTemplateTypesCurrent.includes(currentTemplateType) &&
+				type.includes(currentTemplateType)
+			)
+				return true;
+
+			if (currentTemplateType === 'single' && type === 'posts')
+				return true;
+
+			return false;
+		};
 		console.log('currentTemplateType', currentTemplateType);
 		console.log('type', type);
 		// Check if currentTemplateType is one of the allowed types
-		if (
-			allowedTemplateTypesCurrent.includes(currentTemplateType) &&
-			type.includes(currentTemplateType)
-		) {
+		if (showCurrent()) {
 			const newItem = {
 				label: __('Get current', 'maxi-blocks'),
 				value: 'current',

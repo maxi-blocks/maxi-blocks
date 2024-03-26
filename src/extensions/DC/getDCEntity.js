@@ -201,8 +201,15 @@ const getDCEntity = async (dataRequest, clientId) => {
 						per_page: 1,
 					}
 				);
-				console.log('entity', entity);
 				if (entity) return entity;
+			}
+			if (currentTemplateType.includes('taxonomy')) {
+				const taxonomies = select('core').getTaxonomies({
+					per_page: -1,
+				});
+				const taxonomy = taxonomies.find(tax => tax.slug === type);
+				console.log('taxonomy', taxonomy);
+				if (taxonomy) return taxonomy;
 			}
 		}
 		return (

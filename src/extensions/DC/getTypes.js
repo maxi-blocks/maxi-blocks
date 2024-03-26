@@ -23,7 +23,12 @@ const getTypes = (contentType, group = true) => {
 				label: postType.labels.singular_name,
 				value: postType.slug,
 			};
-		});
+		})
+		.filter(
+			type =>
+				type.value !== 'wp_font_family' && type.value !== 'wp_font_face'
+		);
+	console.log('fonts', customPostTypes);
 	const customTaxonomies = select('maxiBlocks/dynamic-content')
 		.getCustomTaxonomies()
 		.map(type => {

@@ -258,6 +258,7 @@ const DynamicContent = props => {
 		if (Array.isArray(postTypes)) {
 			// Handle the case where postTypes is an array
 			if (
+				select('core/edit-site') &&
 				select('core/edit-site')
 					.getEditedPostId()
 					.endsWith('archive') &&

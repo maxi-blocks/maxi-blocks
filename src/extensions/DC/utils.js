@@ -48,6 +48,11 @@ const showCurrent = (type, currentTemplateType) => {
 	if (currentTemplateType === 'single' && type === 'posts') return true;
 	if (currentTemplateType === 'category' && type === 'categories')
 		return true;
+	if (
+		currentTemplateType.includes('taxonomy') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
 
 	return false;
 };

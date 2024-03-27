@@ -127,6 +127,8 @@ function get_svg_path_styles($obj, $prefix = 'svg-', $is_hover = false)
 
 function get_svg_path_fill_styles($obj, $block_style, $prefix = 'svg-', $is_hover = false)
 {
+	$prefix = $prefix === '' ? 'svg-' : $prefix;
+
     $response = [
         'label' => 'SVG path-fill',
         'general' => [],
@@ -169,6 +171,8 @@ function get_svg_path_fill_styles($obj, $block_style, $prefix = 'svg-', $is_hove
 
 function get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix = 'svg-', $use_icon_color = true)
 {
+    $prefix = $prefix === '' ? 'svg-' : $prefix;
+
     $response = [
         'label' => 'SVG Path stroke',
     ];
@@ -181,7 +185,7 @@ function get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix = 'sv
         return $response;
     }
 
-    $breakpoints = !$use_icon_color ? ['breakpoints'] : ['general'];
+    $breakpoints = $use_icon_color ? ['general'] : ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
         $response[$breakpoint] = [];

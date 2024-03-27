@@ -205,7 +205,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'position' => get_position_styles(get_group_attributes($props, 'position')),
                     'display' => get_display_styles(get_group_attributes($props, 'display')),
                     'alignment' => get_alignment_flex_styles(get_group_attributes($props, 'alignment')),
-                    'size' => get_size_styles(get_group_attributes($props, 'size')), $fit_parent_size,
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'), ['fitParentSize' => $props['fitParentSize'] ?? false])),
                     'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
                     'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
                 ];
@@ -277,7 +277,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             );
 
             if (isset($props['imageRatio']) && $props['imageRatio']) {
-                $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
+                $response = array_merge($response, get_aspect_ratio($props['imageRatio'] ?? [], $props['imageRatioCustom']));
             }
 
             return $response;
@@ -425,8 +425,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             $fit_parent_size = $props['fitParentSize'] ?? false;
             $image_ratio = $props['imageRatio'];
-			$image_ratio_custom = $props['imageRatioCustom'];
-            $img_width = $props['imgWidth'];
+            $image_ratio_custom = $props['imageRatioCustom'];
+            $img_width = $props['img-width-general'] ?? null;
             $use_init_size = $props['useInitSize'] ?? false;
             $media_width = $props['mediaWidth'];
             $is_first_on_hierarchy = $props['isFirstOnHierarchy'];
@@ -470,11 +470,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             ]);
 
             if ($img_width && !$fit_parent_size) {
-                $response['imgWidth'] = [
-                    'general' => [
-                        'width' => !$use_init_size ? "$img_width%" : $media_width . "px",
-                    ],
-                ];
+				$response['imgWidth'] = get_img_width_styles(
+					get_group_attributes($props, 'width', false, 'img-'),
+					$use_init_size,
+					$media_width
+				);
             }
 
             if (!$is_first_on_hierarchy) {
@@ -578,7 +578,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 get_group_attributes($props, 'textAlignment')
             );
 
-            if ($props['imgWidth']) {
+            if (isset($props['imgWidth']) && $props['imgWidth']) {
                 $response['imgWidth'] = ['general' => ['width' => $props['imgWidth'] . '%']];
             }
 
@@ -624,7 +624,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             }
 
             if ($target === 'svg' && isset($props['imageRatio']) && $props['imageRatio']) {
-                $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
+                $response = array_merge($response, get_aspect_ratio($props['imageRatio'] ?? [], $props['imageRatioCustom']));
             }
 
             return $response;

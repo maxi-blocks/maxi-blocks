@@ -5,7 +5,7 @@ function validate_origin_value($val)
         if (!is_string($val)) {
             return false;
         }
-        return !is_nan($val) && !is_nan(floatval($val));
+        return is_numeric($val) && !is_nan(floatval($val));
     };
 
     $words = ['top', 'bottom', 'left', 'right', 'center', 'middle'];

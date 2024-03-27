@@ -171,7 +171,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return termsEntity[0];
 	}
 
-	if (relation === 'current') {
+	if (relation === 'current' || type === 'archive') {
 		const isFSE = select('core/edit-site') !== undefined;
 
 		if (isFSE) {

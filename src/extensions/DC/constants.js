@@ -691,6 +691,7 @@ export const kindDictionary = {
 	products: 'postType',
 	product_categories: 'taxonomy',
 	product_tags: 'taxonomy',
+	archive: 'taxonomy',
 };
 export const nameDictionary = {
 	posts: 'post',
@@ -702,6 +703,7 @@ export const nameDictionary = {
 	products: 'product',
 	product_categories: 'product_cat',
 	product_tags: 'product_tag',
+	archive: 'category',
 };
 
 export const relationDictionary = {

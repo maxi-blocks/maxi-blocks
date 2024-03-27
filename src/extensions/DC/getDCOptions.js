@@ -39,6 +39,8 @@ export const getIdOptions = async (
 		per_page: -1,
 	};
 
+	const currentTemplateType = getCurrentTemplateSlug();
+
 	if (type === 'users' || relation === 'by-author') {
 		const users = await getUsers();
 
@@ -55,10 +57,7 @@ export const getIdOptions = async (
 		const categoryType = ['products', 'product_categories'].includes(type)
 			? 'product_cat'
 			: 'category';
-		console.log('categoryType', categoryType);
-		console.log('args', args);
 		data = await getEntityRecords('taxonomy', categoryType, args);
-		console.log('data', data);
 	} else if (
 		['tags', 'product_tags'].includes(type) ||
 		relation === 'by-tag'
@@ -72,7 +71,6 @@ export const getIdOptions = async (
 	} else if (isCustomPostType) {
 		data = await getEntityRecords('postType', type, args);
 	} else if (relation === 'current-archive') {
-		const currentTemplateType = getCurrentTemplateSlug();
 		if (currentTemplateType === 'author') {
 			const users = await getUsers();
 
@@ -91,6 +89,8 @@ export const getIdOptions = async (
 		} else {
 			data = await getEntityRecords('taxonomy', 'category', args);
 		}
+	} else if (['archive'].includes(currentTemplateType)) {
+		data = await getEntityRecords('taxonomy', 'category', args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
@@ -150,6 +150,7 @@ const getDCOptions = async (
 				'categories',
 				'product_tags',
 				'product_categories',
+				'archive',
 			].includes(type) ||
 			orderByRelations.includes(relation)
 		) {

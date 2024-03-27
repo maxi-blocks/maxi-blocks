@@ -104,6 +104,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 		'maxiBlocks/dynamic-content'
 	).getRelationTypes();
 
+	console.log('relationTypes', relationTypes);
+
 	if (relationTypes.includes(type) && relation === 'random') {
 		return getRandomEntity(
 			await resolveSelect('core').getEntityRecords(
@@ -208,7 +210,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 					per_page: -1,
 				});
 				const taxonomy = taxonomies.find(tax => tax.slug === type);
-				console.log('taxonomy', taxonomy);
 				if (taxonomy) return taxonomy;
 			}
 		}

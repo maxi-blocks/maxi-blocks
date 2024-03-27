@@ -28,7 +28,6 @@ const getTypes = (contentType, group = true) => {
 			type =>
 				type.value !== 'wp_font_family' && type.value !== 'wp_font_face'
 		);
-	console.log('fonts', customPostTypes);
 	const customTaxonomies = select('maxiBlocks/dynamic-content')
 		.getCustomTaxonomies()
 		.map(type => {

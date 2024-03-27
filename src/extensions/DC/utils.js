@@ -349,6 +349,8 @@ export const getRelationOptions = (type, contentType) => {
 		];
 		const currentTemplateType = getCurrentTemplateSlug();
 
+		console.log('currentTemplateType CURRENT', currentTemplateType);
+
 		// Check if currentTemplateType is one of the allowed types
 		if (allowedTemplateTypes.includes(currentTemplateType)) {
 			const newItem = {
@@ -361,6 +363,7 @@ export const getRelationOptions = (type, contentType) => {
 
 		console.log('currentTemplateType', currentTemplateType);
 		console.log('type', type);
+		console.log('showCurrent', showCurrent(type, currentTemplateType));
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {

@@ -189,8 +189,6 @@ const DynamicContent = props => {
 				who: 'authors',
 			});
 
-			console.log('authors', authors);
-
 			if (authors) {
 				setPostAuthorOptions(
 					authors.map(({ id, name }) => ({
@@ -309,6 +307,8 @@ const DynamicContent = props => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
+	console.log('post id options', postIdOptions);
+
 	return (
 		<div className={classes}>
 			<ToggleSwitch
@@ -407,7 +407,8 @@ const DynamicContent = props => {
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>
-							{relationTypes.includes(type) && (
+							{(relationTypes.includes(type) ||
+								type === 'archive') && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}

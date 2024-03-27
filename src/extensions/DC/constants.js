@@ -575,6 +575,7 @@ export const idTypes = [
 	'products',
 	'product_categories',
 	'product_tags',
+	'archive',
 ];
 
 // Fields that have rendered and raw content

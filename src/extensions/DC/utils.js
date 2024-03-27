@@ -53,6 +53,7 @@ const showCurrent = (type, currentTemplateType) => {
 		currentTemplateType.includes(type)
 	)
 		return true;
+	if (currentTemplateType === 'author' && type === 'users') return true;
 
 	return false;
 };

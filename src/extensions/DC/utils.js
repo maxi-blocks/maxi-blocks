@@ -54,6 +54,11 @@ const showCurrent = (type, currentTemplateType) => {
 	)
 		return true;
 	if (currentTemplateType === 'author' && type === 'users') return true;
+	if (
+		currentTemplateType.includes('single-') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
 
 	return false;
 };
@@ -260,8 +265,8 @@ export const getFields = (contentType, type) => {
 	const isFSE = select('core/edit-site') !== undefined;
 
 	if (isFSE) {
-		console.log('getCurrentTemplateSlug', getCurrentTemplateSlug());
-		console.log('type', type);
+		// console.log('getCurrentTemplateSlug', getCurrentTemplateSlug());
+		// console.log('type', type);
 		if (showCurrent(type, getCurrentTemplateSlug())) {
 			const newItem = {
 				label: __('Archive type', 'maxi-blocks'),
@@ -271,7 +276,7 @@ export const getFields = (contentType, type) => {
 				fieldOptions[contentType]?.[type] ||
 				fieldOptions[contentType]?.categories;
 			addUniqueOption(options, newItem);
-			console.log('options', options);
+			// console.log('options', options);
 			return options;
 		}
 	}
@@ -350,7 +355,7 @@ export const getRelationOptions = (type, contentType) => {
 		];
 		const currentTemplateType = getCurrentTemplateSlug();
 
-		console.log('currentTemplateType CURRENT', currentTemplateType);
+		// console.log('currentTemplateType CURRENT', currentTemplateType);
 
 		// Check if currentTemplateType is one of the allowed types
 		if (allowedTemplateTypes.includes(currentTemplateType)) {
@@ -362,9 +367,9 @@ export const getRelationOptions = (type, contentType) => {
 			addUniqueOption(options, newItem);
 		}
 
-		console.log('currentTemplateType', currentTemplateType);
-		console.log('type', type);
-		console.log('showCurrent', showCurrent(type, currentTemplateType));
+		// console.log('currentTemplateType', currentTemplateType);
+		// console.log('type', type);
+		// console.log('showCurrent', showCurrent(type, currentTemplateType));
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {

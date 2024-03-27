@@ -167,8 +167,6 @@ const DynamicContent = props => {
 		[contentType, type]
 	);
 
-	console.log('currentFieldOptions', currentFieldOptions);
-
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
 			([key, val]) => {
@@ -216,8 +214,6 @@ const DynamicContent = props => {
 				author,
 			};
 
-			console.log('dataRequest', dataRequest);
-
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
@@ -225,8 +221,6 @@ const DynamicContent = props => {
 				false,
 				contextLoop
 			);
-
-			console.log('postIDSettings', postIDSettings);
 
 			if (postIDSettings) {
 				const { newValues, newPostIdOptions } = postIDSettings;
@@ -250,8 +244,6 @@ const DynamicContent = props => {
 	useEffect(() => {
 		const postTypes =
 			getTypes(source === 'wp' ? contentType : source) || [];
-
-		console.log('postTypes', postTypes);
 
 		if (Array.isArray(postTypes)) {
 			// Handle the case where postTypes is an array
@@ -277,8 +269,6 @@ const DynamicContent = props => {
 				postTypes['Standard types'].push(newItem);
 			}
 		}
-
-		console.log('postTypes', postTypes);
 
 		setPostTypesOptions(postTypes);
 	}, [contentType, source]);
@@ -306,8 +296,6 @@ const DynamicContent = props => {
 	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
-
-	console.log('post id options', postIdOptions);
 
 	return (
 		<div className={classes}>

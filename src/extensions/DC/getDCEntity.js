@@ -191,9 +191,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 			console.log('getKind(type)', getKind(type));
 			console.log('nameDictionary[type]', nameDictionary[type]);
 			const currentTemplateType = getCurrentTemplateSlug();
+			console.log('currentTemplateType', currentTemplateType);
 			if (
-				type.includes(currentTemplateType) &&
-				allowedTemplateTypesCurrent.includes(currentTemplateType)
+				(type.includes(currentTemplateType) &&
+					allowedTemplateTypesCurrent.includes(
+						currentTemplateType
+					)) ||
+				(currentTemplateType.includes('single') &&
+					currentTemplateType.includes(type))
 			) {
 				const entity = await resolveSelect('core').getEntityRecord(
 					getKind(type),
@@ -203,6 +208,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 						per_page: 1,
 					}
 				);
+				console.log('entity', entity);
 				if (entity) return entity;
 			}
 			if (currentTemplateType.includes('taxonomy')) {

@@ -6,21 +6,23 @@
 			&-info {
 				display: none;
 			}
-			&-top {
-				justify-content: space-between;
-			}
-			&-header {
-				max-width: 190px !important;
-			}
-			&-details {
-				max-width: 170px !important;
-			}
-			&-title {
-				margin-bottom: 0 !important;
-			}
-			button.has-icon {
-				justify-content: end;
-			}
+		}
+	}
+	.block-editor-link-control__search-item {
+		&-top {
+			justify-content: space-between;
+		}
+		&-header {
+			max-width: 190px !important;
+		}
+		&-details {
+			max-width: 170px !important;
+		}
+		&-title {
+			margin-bottom: 0 !important;
+		}
+		button.has-icon {
+			justify-content: end;
 		}
 	}
 

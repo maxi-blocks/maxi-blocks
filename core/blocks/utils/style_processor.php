@@ -440,22 +440,7 @@ function get_transform_selectors($selectors, $attributes = [])
     return $result;
 }
 
-function array_merge_recursive_with($arr1, $arr2, $customizer)
-{
-    $merged = $arr1;
-
-    foreach ($arr2 as $key => $value) {
-        // If key exists in both arrays and is an array in both
-        if (isset($arr1[$key]) && is_array($arr1[$key]) && is_array($arr2[$key])) {
-            $merged[$key] = $customizer($arr1[$key], $arr2[$key]);
-        } else {
-            $merged[$key] = $value;
-        }
-    }
-
-    return $merged;
-}
-
+// TODO: check if it can be replaced with `merge_with`
 function deepMergeArrays($arr1, $arr2)
 {
     foreach ($arr2 as $key => $value) {
@@ -467,6 +452,36 @@ function deepMergeArrays($arr1, $arr2)
     }
 
     return $arr1;
+}
+
+/**
+ * Merges the given arrays recursively.
+ *
+ * @param array $array1 The first array to merge.
+ * @param array $array2 The second array to merge.
+ * @param callable|null $callback The callback function to handle merging of values.
+ * @return array The merged array.
+ */
+function merge_with(&$array1, $array2, $callback = null)
+{
+    foreach ($array2 as $key => $value) {
+        if (is_array($value) && isset($array1[$key]) && is_array($array1[$key])) {
+            $array1[$key] = merge_with($array1[$key], $value, $callback);
+        } else {
+            if ($callback) {
+                $result = $callback($array1[$key] ?? null, $value);
+                if ($result !== null) {
+                    $array1[$key] = $result;
+                } else {
+                    $array1[$key] = $value;
+                }
+            } else {
+                $array1[$key] = $value;
+            }
+        }
+    }
+
+    return $array1;
 }
 
 function style_processor($obj, $data, $props)
@@ -520,27 +535,19 @@ function style_processor($obj, $data, $props)
 
         if (!empty($transform_object)) {
             $is_transform_string = function ($string) {
-                return is_string($string) && in_array($string, array('rotate', 'scale', 'translate'));
+                return is_string($string) && array_reduce(['rotate', 'scale', 'translate'], function ($carry, $word) use ($string) {
+                    return $carry || strpos($string, $word) !== false;
+                }, false);
             };
 
             $merge_callback = function ($obj_value, $src_value) use ($is_transform_string) {
                 if ($is_transform_string($obj_value) && $is_transform_string($src_value)) {
                     return $obj_value . ' ' . $src_value;
                 }
+                return null;
             };
 
-
-
-            //array_merge_recursive_with($styles, $transform_object, $merge_callback);
-            // $styles = deepMergeArrays($styles, $transform_object);
-
-            foreach ($styles as $key => &$value) {
-                if (is_array($value)) {
-                    $value = deepMergeArrays($value, $transform_object);
-                }
-            }
-
-            unset($value);  // Unset reference to avoid unexpected behavior
+            merge_with($styles[$props['uniqueID']], $transform_object, $merge_callback);
 
         }
     }

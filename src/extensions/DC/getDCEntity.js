@@ -104,8 +104,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		'maxiBlocks/dynamic-content'
 	).getRelationTypes();
 
-	console.log('relationTypes', relationTypes);
-
 	if (relationTypes.includes(type) && relation === 'random') {
 		return getRandomEntity(
 			await resolveSelect('core').getEntityRecords(
@@ -184,14 +182,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				'single',
 				'page',
 			];
-			console.log('GETTING CURRENT ENTITY');
-			console.log('type', type);
-			console.log('getCurrentTemplateSlug()', getCurrentTemplateSlug());
-			console.log('id', id);
-			console.log('getKind(type)', getKind(type));
-			console.log('nameDictionary[type]', nameDictionary[type]);
 			const currentTemplateType = getCurrentTemplateSlug();
-			console.log('currentTemplateType', currentTemplateType);
 			if (
 				(type.includes(currentTemplateType) &&
 					allowedTemplateTypesCurrent.includes(
@@ -208,7 +199,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 						per_page: 1,
 					}
 				);
-				console.log('entity', entity);
 				if (entity) return entity;
 			}
 			if (currentTemplateType.includes('taxonomy')) {

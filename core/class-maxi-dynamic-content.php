@@ -643,12 +643,6 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
-        // echo $dc_field.'<br>';
-        // echo $dc_type.'<br>';
-        // echo $dc_relation.'<br>';
-        // echo $dc_source.'<br>';
-        // echo '=======';
-
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
         }

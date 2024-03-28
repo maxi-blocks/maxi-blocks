@@ -129,10 +129,17 @@ const ContextLoop = props => {
 		};
 	}, []);
 
-	const currentRelationOptions = useMemo(
-		() => getRelationOptions(type, contentType),
-		[contentType, type]
-	);
+	const currentRelationOptions = useMemo(() => {
+		// Assuming getRelationOptions(type, contentType) returns an array
+		const options = getRelationOptions(type, contentType);
+
+		// Filter out the item where the value is 'current'
+		const filteredOptions = options.filter(
+			item => item.value !== 'current'
+		);
+
+		return filteredOptions;
+	}, [contentType, type]);
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) && !!currentRelationOptions;

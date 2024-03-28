@@ -333,7 +333,7 @@ export const getRelationOptions = (type, contentType) => {
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
 		const newItem = {
-			label: __('Get current', 'maxi-blocks'),
+			label: __('Current item', 'maxi-blocks'),
 			value: 'current',
 		};
 
@@ -355,7 +355,7 @@ export const getRelationOptions = (type, contentType) => {
 		// Check if currentTemplateType is one of the allowed types
 		if (allowedTemplateTypes.includes(currentTemplateType)) {
 			const newItem = {
-				label: __('Get current archive', 'maxi-blocks'),
+				label: __('Current archive items', 'maxi-blocks'),
 				value: 'current-archive',
 			};
 
@@ -365,7 +365,7 @@ export const getRelationOptions = (type, contentType) => {
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Get current', 'maxi-blocks'),
+				label: __('Current item', 'maxi-blocks'),
 				value: 'current',
 			};
 

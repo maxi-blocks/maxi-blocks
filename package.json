@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@babel/traverse": "latest",
 		"@floating-ui/react-dom": "latest",
+		"@langchain/openai": "^0.0.23",
 		"@loadable/component": "latest",
 		"@uiw/react-textarea-code-editor": "latest",
 		"@wordpress/block-editor": "latest",
@@ -45,7 +46,7 @@
 		"dompurify": "latest",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
-		"langchain": "^0.1.28",
+		"langchain": "^0.1.30",
 		"leaflet": "latest",
 		"masonry-layout": "latest",
 		"re-resizable": "latest",

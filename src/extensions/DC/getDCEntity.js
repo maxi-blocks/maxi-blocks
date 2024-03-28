@@ -7,7 +7,11 @@ import { resolveSelect, select } from '@wordpress/data';
  * Internal dependencies
  */
 import getDCErrors from './getDCErrors';
-import { getDCOrder, getRelationKeyForId } from './utils';
+import {
+	getDCOrder,
+	getRelationKeyForId,
+	getCurrentTemplateSlug,
+} from './utils';
 import { getCartData } from './getWooCommerceData';
 import { kindDictionary, nameDictionary, orderRelations } from './constants';
 
@@ -165,7 +169,46 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return termsEntity[0];
 	}
 
-	if (relation === 'current') {
+	if (relation === 'current' || type === 'archive') {
+		const isFSE = select('core/edit-site') !== undefined;
+
+		if (isFSE) {
+			const allowedTemplateTypesCurrent = [
+				'category',
+				'tag',
+				'author',
+				'date',
+				'archive',
+				'single',
+				'page',
+			];
+			const currentTemplateType = getCurrentTemplateSlug();
+			if (
+				(type.includes(currentTemplateType) &&
+					allowedTemplateTypesCurrent.includes(
+						currentTemplateType
+					)) ||
+				(currentTemplateType.includes('single') &&
+					currentTemplateType.includes(type))
+			) {
+				const entity = await resolveSelect('core').getEntityRecord(
+					getKind(type),
+					nameDictionary[type] ?? type,
+					id,
+					{
+						per_page: 1,
+					}
+				);
+				if (entity) return entity;
+			}
+			if (currentTemplateType.includes('taxonomy')) {
+				const taxonomies = select('core').getTaxonomies({
+					per_page: -1,
+				});
+				const taxonomy = taxonomies.find(tax => tax.slug === type);
+				if (taxonomy) return taxonomy;
+			}
+		}
 		return (
 			resolveSelect('core').getEditedEntityRecord(
 				getKind(type),

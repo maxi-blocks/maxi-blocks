@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, useSelect } from '@wordpress/data';
+import { resolveSelect, useSelect, select } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -61,7 +61,7 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
-const UnlimitedCharacterPoppover = ({ message }) => (
+const UnlimitedCharacterPopover = ({ message }) => (
 	<Popover className='maxi-info-helper-popover maxi-popover-button'>
 		<p>{message}</p>
 	</Popover>
@@ -242,7 +242,34 @@ const DynamicContent = props => {
 	);
 
 	useEffect(() => {
-		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		const postTypes =
+			getTypes(source === 'wp' ? contentType : source) || [];
+
+		if (Array.isArray(postTypes)) {
+			// Handle the case where postTypes is an array
+			if (
+				select('core/edit-site') &&
+				select('core/edit-site')
+					.getEditedPostId()
+					.endsWith('archive') &&
+				!postTypes.find(({ value }) => value === 'archive')
+			) {
+				const newItem = { label: 'Archive', value: 'archive' };
+				postTypes.push(newItem);
+			}
+		} else if (typeof postTypes === 'object') {
+			// Handle the case where postTypes is an object
+			// Assuming you want to add to 'Standard types'
+			if (
+				!postTypes['Standard types'].find(
+					({ value }) => value === 'archive'
+				)
+			) {
+				const newItem = { label: 'Archive', value: 'archive' };
+				postTypes['Standard types'].push(newItem);
+			}
+		}
+
 		setPostTypesOptions(postTypes);
 	}, [contentType, source]);
 
@@ -368,7 +395,8 @@ const DynamicContent = props => {
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>
-							{relationTypes.includes(type) && (
+							{(relationTypes.includes(type) ||
+								type === 'archive') && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -579,7 +607,7 @@ const DynamicContent = props => {
 											value={limit}
 											showHelp
 											helpContent={
-												<UnlimitedCharacterPoppover message='Type 0 for unlimited' />
+												<UnlimitedCharacterPopover message='Type 0 for unlimited' />
 											}
 											onChangeValue={value =>
 												changeProps({

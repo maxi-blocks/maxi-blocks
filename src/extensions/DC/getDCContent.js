@@ -14,6 +14,7 @@ import {
 	getTaxonomyContent,
 	limitString,
 	parseText,
+	getCurrentTemplateSlug,
 } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 import getDCEntity from './getDCEntity';
@@ -46,6 +47,10 @@ const getDCContent = async (dataRequest, clientId) => {
 		linkTarget,
 	} = dataRequest;
 
+	if (field === 'archive-type') {
+		return getCurrentTemplateSlug().replace(/-/g, ' ');
+	}
+
 	let contentValue;
 
 	if (source === 'acf') {
@@ -55,7 +60,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	}
 
 	if (relation === 'current' && isEmpty(data)) {
-		return `${capitalize(field)}: current`;
+		return `${capitalize(field)}: example ${field}`;
 	}
 
 	const customTaxonomies = select(

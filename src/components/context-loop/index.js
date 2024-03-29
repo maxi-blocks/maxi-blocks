@@ -130,7 +130,6 @@ const ContextLoop = props => {
 	}, []);
 
 	const currentRelationOptions = useMemo(() => {
-		// Assuming getRelationOptions(type, contentType) returns an array
 		const options = getRelationOptions(type, contentType);
 
 		// Filter out the item where the value is 'current'

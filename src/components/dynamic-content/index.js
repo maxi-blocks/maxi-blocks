@@ -33,6 +33,7 @@ import {
 	getFields,
 	validationsValues,
 	getRelationOptions,
+	getCurrentTemplateSlug,
 } from '../../extensions/DC/utils';
 import {
 	fieldOptions,
@@ -245,28 +246,28 @@ const DynamicContent = props => {
 		const postTypes =
 			getTypes(source === 'wp' ? contentType : source) || [];
 
-		if (Array.isArray(postTypes)) {
-			// Handle the case where postTypes is an array
-			if (
-				select('core/edit-site') &&
-				select('core/edit-site')
-					.getEditedPostId()
-					.endsWith('archive') &&
-				!postTypes.find(({ value }) => value === 'archive')
-			) {
-				const newItem = { label: 'Archive', value: 'archive' };
-				postTypes.push(newItem);
-			}
-		} else if (typeof postTypes === 'object') {
-			// Handle the case where postTypes is an object
-			// Assuming you want to add to 'Standard types'
-			if (
-				!postTypes['Standard types'].find(
-					({ value }) => value === 'archive'
-				)
-			) {
-				const newItem = { label: 'Archive', value: 'archive' };
-				postTypes['Standard types'].push(newItem);
+		const isFSE = select('core/edit-site') !== undefined;
+
+		if (isFSE && getCurrentTemplateSlug().includes('archive')) {
+			const newItem = {
+				label: __('Archive', 'maxi-blocks'),
+				value: 'archive',
+			};
+			if (Array.isArray(postTypes)) {
+				// Handle the case where postTypes is an array
+				if (!postTypes.find(({ value }) => value === 'archive')) {
+					postTypes.push(newItem);
+				}
+			} else if (typeof postTypes === 'object') {
+				// Handle the case where postTypes is an object
+				// Assuming we want to add to 'Standard types'
+				if (
+					!postTypes['Standard types'].find(
+						({ value }) => value === 'archive'
+					)
+				) {
+					postTypes['Standard types'].push(newItem);
+				}
 			}
 		}
 

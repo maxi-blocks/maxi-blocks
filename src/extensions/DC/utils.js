@@ -28,17 +28,16 @@ import getTypes from './getTypes';
 import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
-const allowedTemplateTypesCurrent = [
-	'category',
-	'tag',
-	'author',
-	'date',
-	'archive',
-	'single',
-	'page',
-];
-
 const showCurrent = (type, currentTemplateType) => {
+	const allowedTemplateTypesCurrent = [
+		'category',
+		'tag',
+		'author',
+		'date',
+		'archive',
+		'single',
+		'page',
+	];
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
 		type.includes(currentTemplateType)
@@ -56,6 +55,30 @@ const showCurrent = (type, currentTemplateType) => {
 	if (currentTemplateType === 'author' && type === 'users') return true;
 	if (
 		currentTemplateType.includes('single-') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+
+	return false;
+};
+
+const showCurrentArchive = (type, currentTemplateType) => {
+	const allowedTemplateTypes = [
+		'category',
+		'tag',
+		'author',
+		'date',
+		'archive',
+	];
+
+	if (
+		allowedTemplateTypes.includes(currentTemplateType) &&
+		type.includes('posts')
+	)
+		return true;
+
+	if (
+		currentTemplateType.includes('taxonomy') &&
 		currentTemplateType.includes(type)
 	)
 		return true;
@@ -224,6 +247,10 @@ const getCustomTaxonomyFields = type => {
 };
 
 export const getCurrentTemplateSlug = () => {
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (!isFSE) return null;
+
 	const currentTemplateTypeRaw =
 		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
 		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
@@ -333,7 +360,7 @@ export const getRelationOptions = (type, contentType) => {
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
 		const newItem = {
-			label: __('Current item', 'maxi-blocks'),
+			label: __('Get current item', 'maxi-blocks'),
 			value: 'current',
 		};
 
@@ -343,19 +370,12 @@ export const getRelationOptions = (type, contentType) => {
 	const isFSE = select('core/edit-site') !== undefined;
 
 	if (isFSE) {
-		const allowedTemplateTypes = [
-			'category',
-			'tag',
-			'author',
-			'date',
-			'archive',
-		];
 		const currentTemplateType = getCurrentTemplateSlug();
 
 		// Check if currentTemplateType is one of the allowed types
-		if (allowedTemplateTypes.includes(currentTemplateType)) {
+		if (showCurrentArchive(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Current archive items', 'maxi-blocks'),
+				label: __('Get current archive items', 'maxi-blocks'),
 				value: 'current-archive',
 			};
 
@@ -365,7 +385,7 @@ export const getRelationOptions = (type, contentType) => {
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Current item', 'maxi-blocks'),
+				label: __('Get current item', 'maxi-blocks'),
 				value: 'current',
 			};
 

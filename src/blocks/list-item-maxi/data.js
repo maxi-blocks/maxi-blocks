@@ -95,7 +95,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = ['list item wrapper', 'list item', 'links'];
+const ariaLabelsCategories = ['list item wrapper', 'list item'];
 const transition = {
 	canvas: {
 		...transitionDefault.canvas,

@@ -381,13 +381,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = [
-	'accordion',
-	'pane',
-	'pane header',
-	'pane content',
-	'pane icon',
-];
+const ariaLabelsCategories = ['accordion'];
 const transition = {
 	...transitionDefault,
 	block: {

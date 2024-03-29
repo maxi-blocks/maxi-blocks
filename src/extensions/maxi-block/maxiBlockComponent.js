@@ -383,7 +383,6 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
-		console.log('MaxiBlockComponent loadFonts');
 		this.loadFonts();
 
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from

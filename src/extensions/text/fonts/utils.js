@@ -280,8 +280,6 @@ export const getPageFonts = (onlyBackend = false) => {
 					onlyBackend
 				);
 
-			console.log('response', response);
-
 			mergedResponse = mergeDeep(
 				cloneDeep(oldResponse),
 				cloneDeep(response)

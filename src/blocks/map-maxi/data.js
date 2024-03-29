@@ -121,7 +121,7 @@ const customCss = {
 		'before description',
 	],
 };
-const ariaLabelsCategories = ['map', 'popup', 'title', 'description'];
+const ariaLabelsCategories = ['map', 'popup'];
 const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };

@@ -8,7 +8,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, ariaLabels = {} } = attributes;
 
 	const classes = 'maxi-map-block';
 
@@ -17,6 +17,7 @@ const save = props => {
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
+			aria-label={ariaLabels.map}
 		>
 			<div
 				className='maxi-map-block__container'

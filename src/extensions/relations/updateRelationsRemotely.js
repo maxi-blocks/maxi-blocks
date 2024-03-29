@@ -90,7 +90,8 @@ const updateRelationsRemotely = ({
 				selectedSettings,
 				breakpoint,
 				prefix,
-				item.sid
+				item.sid,
+				blockTriggerClientId
 			);
 
 		const styles = getIBStyles({

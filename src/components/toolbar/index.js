@@ -78,6 +78,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { isInSiteEditorPreviewIframe } from '../../extensions/fse';
 
 /**
  * Styles & icons
@@ -90,6 +91,10 @@ import { toolbarPin, toolbarPinLocked } from '../../icons';
  */
 const MaxiToolbar = memo(
 	forwardRef((props, ref) => {
+		if (isEmpty(props) || !ref) return null;
+		const isPreviewIframe = isInSiteEditorPreviewIframe();
+
+		if (isPreviewIframe) return null;
 		const inlineStylesTargetsDefault = {
 			background: '',
 			border: '',
@@ -138,7 +143,6 @@ const MaxiToolbar = memo(
 			'dc-status': dcStatus,
 			content: listContent,
 			listStyle,
-			wpVersion,
 		} = attributes;
 
 		const { getBlockParents } = useSelect(select =>
@@ -358,12 +362,12 @@ const MaxiToolbar = memo(
 						/>
 						{!dcStatus && (
 							<TextListOptions
+								clientId={clientId}
 								blockName={name}
 								isList={isList}
 								typeOfList={typeOfList}
 								listStyle={listStyle}
 								content={listContent}
-								wpVersion={wpVersion}
 								onChange={obj => {
 									maxiSetAttributes(obj);
 								}}
@@ -627,6 +631,7 @@ const MaxiToolbar = memo(
 							SVGElement={attributes.SVGElement}
 							mediaID={attributes.mediaID}
 							mediaURL={attributes.mediaURL}
+							isList={isList}
 						/>
 						<ContextLoop
 							clientId={clientId}
@@ -672,7 +677,7 @@ const MaxiToolbar = memo(
 							blockName={name}
 							onChange={(linkSettings, obj) => {
 								const filteredObj = Object.fromEntries(
-									Object.entries(obj).filter(
+									Object.entries(obj ?? {}).filter(
 										([key, value]) => value !== undefined
 									)
 								);

@@ -4,6 +4,7 @@
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { useCallback, useContext, useEffect } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -17,12 +18,12 @@ import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
 import { getUpdatedImgSVG } from '../svg';
 import LoopContext from './loopContext';
-import { linkFields } from './constants';
+import { inlineLinkFields } from './constants';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -49,8 +50,7 @@ const withMaxiDC = createHigherOrderComponent(
 				type,
 				field,
 				id,
-				customDate,
-				postTaxonomyLinksStatus,
+				linkTarget,
 				containsHTML,
 			} = dynamicContentProps;
 
@@ -97,10 +97,12 @@ const withMaxiDC = createHigherOrderComponent(
 							lastDynamicContentProps,
 							clientId
 						);
+						// Parses symbols like &#038; to their respective characters (in this case, &)
+						newContent = decodeEntities(newContent);
+
 						const newContainsHTML =
-							postTaxonomyLinksStatus &&
-							['posts', 'products'].includes(type) &&
-							linkFields.includes(field) &&
+							linkTarget === field &&
+							inlineLinkFields.includes(field) &&
 							!isNil(newContent);
 
 						if (!newContainsHTML) {
@@ -121,7 +123,10 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-contains-html': newContainsHTML,
 								}),
 							});
-						} else if (newLinkSettings) {
+						} else if (
+							newLinkSettings &&
+							!isEqual(attributes.linkSettings, newLinkSettings)
+						) {
 							isSynchronizedAttributesUpdated = true;
 
 							markNextChangeAsNotPersistent();

@@ -226,6 +226,10 @@ if (!class_exists('MaxiBlocks_Block')):
                 'type' => 'boolean',
                 'default' => true,
             ],
+            // Required to render inline DC links correctly
+            'linkSettings' => [
+                'type' => 'object',
+            ],
         ];
 
         /**

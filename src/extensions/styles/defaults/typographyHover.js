@@ -1,5 +1,5 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import { typography } from './typography';
+import { typography, listItemTypography } from './typography';
 
 const typographyHover = hoverAttributesCreator({
 	obj: typography,

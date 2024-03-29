@@ -1,6 +1,10 @@
 import standardSC from '../../../../core/defaults/defaultSC.json';
 import getSCVariablesObject from '../getSCVariablesObject';
 
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+	jest.fn(() => 0)
+);
+
 describe('getSCVariablesObject', () => {
 	it('Returns the correct object from default SC', () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);

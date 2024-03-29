@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, select } from '@wordpress/data';
+import { resolveSelect, useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -29,22 +29,19 @@ const SelectControl = loadable(() => import('../select-control'));
 const ToggleSwitch = loadable(() => import('../toggle-switch'));
 const TextControl = loadable(() => import('../text-control'));
 
-import { validationsValues } from '../../extensions/DC/utils';
 import {
-	typeOptions,
+	getFields,
+	validationsValues,
+	getRelationOptions,
+} from '../../extensions/DC/utils';
+import {
 	fieldOptions,
-	relationOptions,
-	relationTypes,
 	limitOptions,
-	limitTypes,
 	limitFields,
 	orderOptions,
 	orderByOptions,
 	orderByRelations,
 	orderRelations,
-	orderTypes,
-	linkFields,
-	linkFieldsLabels,
 	sourceOptions,
 	ignoreEmptyFields,
 } from '../../extensions/DC/constants';
@@ -54,6 +51,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
 import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
+import getTypes from '../../extensions/DC/getTypes';
 
 /**
  * Styles
@@ -86,6 +84,18 @@ const DynamicContent = props => {
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+	const [postTypesOptions, setPostTypesOptions] = useState(null);
+
+	const { relationTypes, orderTypes, limitTypes } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes, getLimitTypes } = select(
+			'maxiBlocks/dynamic-content'
+		);
+		return {
+			relationTypes: getRelationTypes(),
+			orderTypes: getOrderTypes(),
+			limitTypes: getLimitTypes(),
+		};
+	}, []);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -103,13 +113,13 @@ const DynamicContent = props => {
 		limit,
 		delimiterContent,
 		customDelimiterStatus,
-		postTaxonomyLinksStatus,
 		error,
 		order,
 		orderBy,
 		accumulator,
 		imageAccumulator,
 		acfFieldType,
+		linkTarget,
 		customDate,
 		day,
 		era,
@@ -151,6 +161,11 @@ const DynamicContent = props => {
 		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
 		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
 	];
+
+	const currentFieldOptions = useMemo(
+		() => getFields(contentType, type),
+		[contentType, type]
+	);
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -221,20 +236,15 @@ const DynamicContent = props => {
 		}
 	});
 
-	const currentRelationOptions = useMemo(() => {
-		const options = relationOptions[contentType][type];
+	const currentRelationOptions = useMemo(
+		() => getRelationOptions(type, contentType),
+		[contentType, type]
+	);
 
-		const hideCurrent = {
-			post: 'pages',
-			page: 'posts',
-		};
-
-		if (hideCurrent[select('core/editor').getCurrentPostType()] === type) {
-			return options.filter(({ value }) => value !== 'current');
-		}
-
-		return options;
-	}, [contentType, type]);
+	useEffect(() => {
+		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		setPostTypesOptions(postTypes);
+	}, [contentType, source]);
 
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
@@ -242,7 +252,9 @@ const DynamicContent = props => {
 				type,
 				field,
 				relation,
-				contentType
+				contentType,
+				undefined,
+				linkTarget
 			);
 
 			changeProps({
@@ -302,7 +314,8 @@ const DynamicContent = props => {
 									field,
 									relation,
 									contentType,
-									value
+									value,
+									linkTarget
 								);
 
 								changeProps({
@@ -317,18 +330,15 @@ const DynamicContent = props => {
 					{source === 'acf' && (
 						<ACFSettingsControl
 							onChange={onChange}
-							dynamicContent={dcValues}
 							contentType={contentType}
+							group={dcValues.acfGroup}
+							field={field}
 						/>
 					)}
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={
-							source === 'wp'
-								? typeOptions[contentType]
-								: typeOptions[source]
-						}
+						options={postTypesOptions}
 						newStyle
 						onChange={value => {
 							const validatedAttributes = validationsValues(
@@ -336,7 +346,8 @@ const DynamicContent = props => {
 								field,
 								relation,
 								contentType,
-								source
+								source,
+								linkTarget
 							);
 
 							changeProps({
@@ -409,7 +420,8 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) &&
+							{relation !== 'current-archive' &&
+								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (
@@ -523,7 +535,7 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-							{['wp', 'wc'].includes(source) &&
+							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
 									(relation === 'by-author' &&
@@ -538,9 +550,7 @@ const DynamicContent = props => {
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}
 										value={field}
-										options={
-											fieldOptions[contentType][type]
-										}
+										options={currentFieldOptions}
 										newStyle
 										onChange={value =>
 											changeProps({
@@ -604,18 +614,6 @@ const DynamicContent = props => {
 								<DateFormatting
 									onChange={obj => changeProps(obj)}
 									{...dcValuesForDate}
-								/>
-							)}
-							{linkFields.includes(field) && (
-								<ToggleSwitch
-									label={linkFieldsLabels[field]}
-									selected={postTaxonomyLinksStatus}
-									onChange={value =>
-										changeProps({
-											'dc-post-taxonomy-links-status':
-												value,
-										})
-									}
 								/>
 							)}
 							{(['tags', 'categories'].includes(field) ||

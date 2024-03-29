@@ -14,7 +14,8 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getCustomFormatValue,
 	setFormat,
-	textContext,
+	TextContext,
+	ListContext,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -27,6 +28,9 @@ import {
  */
 import './editor.scss';
 import { toolbarType } from '../../../../icons';
+import { getListTypographyAttributes } from '../../../../extensions/text/lists';
+
+const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 /**
  * TextColor
@@ -45,11 +49,15 @@ const TextColor = props => {
 		disableCustomFormats,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
-	const { formatValue, onChangeTextFormat } = useContext(textContext);
+	const { formatValue, onChangeTextFormat } = useContext(TextContext);
+	const listContext = useContext(ListContext);
 
-	const typography = { ...getGroupAttributes(props, 'typography') };
+	const rawTypography = getGroupAttributes(props, 'typography');
+	const typography = listContext
+		? getListTypographyAttributes(listContext, rawTypography)
+		: { ...rawTypography };
 
 	const color = getCustomFormatValue({
 		typography,

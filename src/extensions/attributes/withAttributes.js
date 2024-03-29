@@ -27,6 +27,7 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/text-maxi',
+	'maxi-blocks/list-item-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
@@ -118,21 +119,37 @@ const withAttributes = createHigherOrderComponent(
 			if (allowedBlocks.includes(blockName)) {
 				const isFirstOnHierarchy = !blockRootClientId;
 				let isFirstOnHierarchyUpdated = false;
+				const currentClientId = blockRootClientId;
+
+				// Function to recursively check parent blocks
+				const checkParentBlocks = clientId => {
+					const block =
+						select('core/block-editor').getBlock(clientId);
+					if (block) {
+						if (block.name.startsWith('core')) {
+							const parentClientId = select(
+								'core/block-editor'
+							).getBlockRootClientId(block.clientId);
+							if (parentClientId) {
+								return checkParentBlocks(parentClientId);
+							}
+							// This is the topmost 'core' block in the hierarchy
+							return true;
+						}
+					}
+					return false;
+				};
 
 				if (!isFirstOnHierarchy) {
-					const firstMaxiParentBlock =
-						select('core/block-editor').getBlock(blockRootClientId);
-					if (firstMaxiParentBlock) {
-						const { blockStyle } = firstMaxiParentBlock.attributes;
+					const isReusableFirstOnHierarchy =
+						checkParentBlocks(currentClientId);
 
-						if (blockStyle !== attributes.blockStyle) {
-							isFirstOnHierarchyUpdated = true;
-							markNextChangeAsNotPersistent();
-							setAttributes({
-								blockStyle,
-								isFirstOnHierarchy,
-							});
-						}
+					if (isReusableFirstOnHierarchy) {
+						isFirstOnHierarchyUpdated = true;
+						markNextChangeAsNotPersistent();
+						setAttributes({
+							isFirstOnHierarchy: isReusableFirstOnHierarchy,
+						});
 					}
 				}
 
@@ -146,8 +163,12 @@ const withAttributes = createHigherOrderComponent(
 					});
 				}
 			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [blockRootClientId]);
+		}, [
+			blockRootClientId,
+			allowedBlocks,
+			blockName,
+			attributes.isFirstOnHierarchy,
+		]);
 
 		return <BlockEdit {...props} />;
 	},

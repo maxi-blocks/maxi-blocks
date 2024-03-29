@@ -23,6 +23,7 @@ import {
 import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
+import { inlineLinkFields } from '../../extensions/DC/constants';
 
 /**
  * External dependencies
@@ -47,6 +48,7 @@ const getBlockClassName = blockName => {
 };
 
 const getBlockStyle = (attributes, breakpoint, marginValue) => {
+	if (!marginValue) return '';
 	const getValue = target =>
 		getLastBreakpointAttribute({
 			target,
@@ -121,6 +123,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcStatus,
 		dcHide,
 		pagination = false,
+		dcLinkStatus,
+		dcLinkTarget,
 		...extraProps
 	} = props;
 
@@ -240,7 +244,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
 		paletteClasses,
-		hasLink && 'maxi-block--has-link',
+		hasLink &&
+			// For links that are rendered in content instead of whole block don't add class
+			(!inlineLinkFields.includes(dcLinkTarget) || !dcLinkStatus) &&
+			'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
 		isRepeater && 'maxi-block--repeater',
@@ -353,6 +360,8 @@ const MaxiBlock = memo(
 			if (isFirstOnHierarchy && styleStr) {
 				const style = document.createElement('style');
 				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
+				// Same full-width styles for the reusable blocks
+				style.innerHTML += `.is-reusable:has(#block-${clientId}) { ${styleStr} }`;
 				ref.current.ownerDocument.head.appendChild(style);
 
 				return () => {

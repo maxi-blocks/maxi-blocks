@@ -1,27 +1,29 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
  * Internal dependencies
  */
-import { limitString } from './utils';
-import {
-	fieldOptions,
-	idFields,
-	idOptionByField,
-	orderByRelations,
-} from './constants';
+import { getFields, limitString, getCurrentTemplateSlug } from './utils';
+import { idOptionByField, idTypes, orderByRelations } from './constants';
 
 /**
  * External dependencies
  */
 import { find, isEmpty, isEqual } from 'lodash';
 
-export const getIdOptions = async (type, relation, author) => {
-	if (!idFields.includes(type)) return false;
+export const getIdOptions = async (
+	type,
+	relation,
+	author,
+	isCustomPostType,
+	isCustomTaxonomy
+) => {
+	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy)
+		return false;
 
 	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
@@ -62,6 +64,30 @@ export const getIdOptions = async (type, relation, author) => {
 			? 'product_tag'
 			: 'post_tag';
 		data = await getEntityRecords('taxonomy', tagType, args);
+	} else if (isCustomTaxonomy) {
+		data = await getEntityRecords('taxonomy', type, args);
+	} else if (isCustomPostType) {
+		data = await getEntityRecords('postType', type, args);
+	} else if (relation === 'current-archive') {
+		const currentTemplateType = getCurrentTemplateSlug();
+		if (currentTemplateType === 'author') {
+			const users = await getUsers();
+
+			if (users) {
+				data = users.map(({ id, name }) => ({
+					id,
+					name,
+				}));
+			}
+		} else if (['category', 'tag'].includes(currentTemplateType)) {
+			data = await getEntityRecords(
+				'taxonomy',
+				currentTemplateType,
+				args
+			);
+		} else {
+			data = await getEntityRecords('taxonomy', 'category', args);
+		}
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
@@ -90,7 +116,21 @@ const getDCOptions = async (
 ) => {
 	const { type, id, field, relation, author } = dataRequest;
 
-	const data = await getIdOptions(type, relation, author);
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+	const isCustomPostType = customPostTypes.includes(type);
+	const isCustomTaxonomy = select('maxiBlocks/dynamic-content')
+		.getCustomTaxonomies()
+		.includes(type);
+
+	const data = await getIdOptions(
+		type,
+		relation,
+		author,
+		isCustomPostType,
+		isCustomTaxonomy
+	);
 
 	if (!data) return null;
 
@@ -110,6 +150,21 @@ const getDCOptions = async (
 		) {
 			return {
 				label: limitString(item.name, 10),
+				value: +item.id,
+			};
+		}
+
+		if (isCustomPostType || isCustomTaxonomy) {
+			let title;
+
+			if (isCustomPostType) {
+				title = item.title?.rendered ?? item.title;
+			} else {
+				title = item.name?.rendered ?? item.name;
+			}
+
+			return {
+				label: `${item.id}${title ? ` - ${title}` : ''}`,
 				value: +item.id,
 			};
 		}
@@ -135,7 +190,7 @@ const getDCOptions = async (
 					newValues[`${prefix}order`] = 'desc';
 				} else {
 					newValues[`${prefix}id`] = Number(data[0].id);
-					idFields.current = data[0].id;
+					idTypes.current = data[0].id;
 				}
 			} else {
 				newValues[`${prefix}id`] = undefined;
@@ -159,8 +214,10 @@ const getDCOptions = async (
 
 			// Ensures first field is selected
 			if (!field)
-				newValues[`${prefix}field`] =
-					fieldOptions[contentType][type][0].value;
+				newValues[`${prefix}field`] = getFields(
+					contentType,
+					type
+				)[0].value;
 		}
 
 		return { newValues, newPostIdOptions };

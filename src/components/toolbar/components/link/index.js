@@ -5,7 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useContext } from '@wordpress/element';
+import { useContext, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,10 +29,19 @@ import { isNil, isEmpty } from 'lodash';
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
 import {
-	linkOptions,
+	linkFields,
 	multipleLinksTypes,
 } from '../../../../extensions/DC/constants';
 import SelectControl from '../../../select-control';
+import { getLinkTargets } from '../../../../extensions/DC/utils';
+
+const DISABLED_BLOCKS = [
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/list-item-maxi',
+	'maxi-blocks/slider-maxi',
+];
 
 /**
  * Link
@@ -48,21 +57,17 @@ const Link = props => {
 		'dc-link-status': dcLinkStatus,
 		'dc-link-target': dcLinkTarget,
 		'dc-type': dcType,
+		'dc-field': dcField,
 	} = props;
 
+	const [linkTargetOptions, setLinkTargetOptions] = useState([]);
 	const { contextLoop } = useContext(LoopContext) ?? {};
 	const { 'cl-status': clStatus, 'cl-type': clType } = contextLoop ?? {};
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
 
-	if (
-		(blockName === 'maxi-blocks/divider-maxi' ||
-			blockName === 'maxi-blocks/accordion-maxi' ||
-			blockName === 'maxi-blocks/text-maxi' ||
-			blockName === 'maxi-blocks/slider-maxi') &&
-		!disableCustomFormats
-	)
+	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
 
 	const removeLinkHandle = () => {
@@ -93,6 +98,12 @@ const Link = props => {
 			});
 		}
 	}
+
+	useEffect(() => {
+		if (dcLinkStatus) {
+			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
+		}
+	}, [selectedDCType, dcField, dcLinkStatus]);
 
 	return (
 		<div className='toolbar-item toolbar-item__link'>
@@ -151,7 +162,8 @@ const Link = props => {
 										);
 									}}
 								/>
-								{multipleLinksTypes.includes(selectedDCType) &&
+								{(multipleLinksTypes.includes(selectedDCType) ||
+									linkFields.includes(dcField)) &&
 									dcLinkStatus && (
 										<SelectControl
 											label={__(
@@ -159,9 +171,8 @@ const Link = props => {
 												'maxi-blocks'
 											)}
 											value={dcLinkTarget}
-											options={
-												linkOptions[selectedDCType]
-											}
+											options={linkTargetOptions}
+											newStyle
 											onChange={async value => {
 												const url =
 													value &&

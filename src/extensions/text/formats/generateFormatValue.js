@@ -11,8 +11,9 @@ import { create } from '@wordpress/rich-text';
  *
  * @returns {Object} RichText format value
  */
-const generateFormatValue = (formatElement, node) => {
-	const selection = window.getSelection();
+const generateFormatValue = node => {
+	const selection = node?.ownerDocument?.defaultView?.getSelection() || {};
+	const formatElement = {};
 
 	if (node) {
 		const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;

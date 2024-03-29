@@ -32,6 +32,8 @@ describe('Column Maxi', () => {
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForTimeout(300);
+
 		await page.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);
@@ -127,8 +129,7 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
-		await page.waitForTimeout(200);
-
+		await page.waitForTimeout(300);
 		await page.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);
@@ -221,6 +222,7 @@ describe('Column Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// check last column
+		await page.waitForTimeout(300);
 		await page.waitForSelector('.maxi-container-block .maxi-column-block');
 		await page.waitForTimeout(500);
 

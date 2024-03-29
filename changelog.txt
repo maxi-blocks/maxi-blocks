@@ -1,3 +1,15 @@
+_Updates 6 March 2024_
+MaxiBlocks v1.7.3
+* Update: Enhanced Dynamic Content and Context Loop with Custom Post Types and Custom Taxonomy support.
+* Update: Introduced pagination functionality for the Context Loop, enhancing navigation through large datasets.
+* Update: Revamped the MaxiBlocks previews within the Site Editor, now utilizing static images for a quicker and more efficient preview experience, replacing the previous live render approach.
+* Update: Significantly enhanced the performance of both frontend and backend scripts for faster load times and improved efficiency.
+* Update: Implemented a new feature allowing the use of current archive posts as Dynamic Content and within the Context Loop for Archive Templates in the Site Editor, facilitating more dynamic and context-aware designs.
+* Update: Expanded link support to include mailto, tel, sftp, and magnet protocols, broadening the range of link types that can be created and managed.
+* Fix: Corrected the search link functionality within the Search Maxi Block, ensuring accurate and expected search results.
+* Fix: Addressed an issue with inserting templates from the Template Library into Site Editor - Templates - Pages, streamlining the template integration process.
+* Fix: Resolved an issue where specifying a value for a smaller breakpoint could inadvertently alter the value set for a larger breakpoint.
+
 _Updates: 23 February 2024_
 MaxiBlocks v1.7.2
 * Update: After updating the plugin, a notification will now appear, advising you to check and potentially clear other caches on your site. This step, while manual, is crucial for maintaining optimal site performance and ensuring that all updates are fully applied across your website.

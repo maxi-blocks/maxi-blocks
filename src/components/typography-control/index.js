@@ -21,7 +21,8 @@ import FontWeightControl from '../font-weight-control';
 import {
 	setFormat,
 	getTypographyValue,
-	textContext,
+	TextContext,
+	ListContext,
 } from '../../extensions/text/formats';
 import {
 	getDefaultAttribute,
@@ -29,6 +30,7 @@ import {
 	getIsValid,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getListTypographyAttributes } from '../../extensions/text/lists';
 import { getDefaultSCValue } from '../../extensions/style-cards';
 import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
 import onChangeFontWeight from '../font-weight-control/utils';
@@ -56,9 +58,24 @@ const LinkOptions = props => {
 		breakpoint,
 		textLevel,
 		clientId,
+		isListItem,
 	} = props;
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
+
+	const handleReset = () => {
+		onChangeFormat(
+			{
+				[`${prefix}link-color`]: undefined,
+				[`${prefix}link-palette-color`]: undefined,
+				[`${prefix}link-palette-status`]: undefined,
+				[`${prefix}link-palette-sc-status`]: undefined,
+				[`${prefix}link-palette-opacity`]: undefined,
+			},
+			undefined,
+			true
+		);
+	};
 
 	return (
 		<>
@@ -145,6 +162,9 @@ const LinkOptions = props => {
 							{ forceDisableCustomFormats: false, tag: 'a' }
 						)
 					}
+					{...(isListItem && {
+						onReset: handleReset,
+					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
 					clientId={clientId}
@@ -187,6 +207,9 @@ const LinkOptions = props => {
 							{ forceDisableCustomFormats: false, tag: 'a:hover' }
 						)
 					}
+					{...(isListItem && {
+						onReset: handleReset,
+					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
 					clientId={clientId}
@@ -232,6 +255,9 @@ const LinkOptions = props => {
 							}
 						)
 					}
+					{...(isListItem && {
+						onReset: handleReset,
+					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
 					clientId={clientId}
@@ -277,6 +303,9 @@ const LinkOptions = props => {
 							}
 						)
 					}
+					{...(isListItem && {
+						onReset: handleReset,
+					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
 					clientId={clientId}
@@ -316,9 +345,10 @@ const TypographyControl = props => {
 		forceIndividualChanges = false,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
-		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
+		!isStyleCards && !disableCustomFormats ? useContext(TextContext) : {};
+	const listContext = useContext(ListContext);
 
-	const typography =
+	const rawTypography =
 		props.typography ||
 		getGroupAttributes(
 			props,
@@ -330,6 +360,10 @@ const TypographyControl = props => {
 			isHover,
 			prefix
 		);
+
+	const typography = listContext
+		? getListTypographyAttributes(listContext, rawTypography)
+		: rawTypography;
 
 	const { styleCard, baseBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
@@ -446,7 +480,8 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {}
+		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {},
+		disableFilter = false
 	) => {
 		if (forceIndividualChanges) {
 			const obj = Object.entries(value).reduce((acc, [key, val]) => {
@@ -473,12 +508,14 @@ const TypographyControl = props => {
 			returnFormatValue: true,
 		});
 
-		const filteredObj = Object.fromEntries(
-			Object.entries(obj).filter(
-				([key, value]) =>
-					value !== undefined || key.includes('font-family')
-			)
-		);
+		const filteredObj = !disableFilter
+			? Object.fromEntries(
+					Object.entries(obj).filter(
+						([key, value]) =>
+							value !== undefined || key.includes('font-family')
+					)
+			  )
+			: obj;
 
 		if (!isEmpty(filteredObj.formatValue)) {
 			const newFormatValue = {
@@ -585,6 +622,27 @@ const TypographyControl = props => {
 								[`${prefix}palette-opacity`]: paletteOpacity,
 							})
 						}
+						{...(listContext
+							? {
+									onReset: () => {
+										onChangeFormat(
+											{
+												[`${prefix}color`]: undefined,
+												[`${prefix}palette-color`]:
+													undefined,
+												[`${prefix}palette-status`]:
+													undefined,
+												[`${prefix}palette-sc-status`]:
+													undefined,
+												[`${prefix}palette-opacity`]:
+													undefined,
+											},
+											undefined,
+											true
+										);
+									},
+							  }
+							: {})}
 						globalProps={globalProps}
 						textLevel={textLevel}
 						isHover={isHover}
@@ -1192,6 +1250,7 @@ const TypographyControl = props => {
 						isHover={isHover}
 						clientId={clientId}
 						getOpacityValue={getOpacityValue}
+						isListItem={!!listContext}
 					/>
 				)}
 			</div>

@@ -21,7 +21,9 @@ body.maxi-blocks--active .maxi-text-block {
 				counter-increment: li;
 				margin: revert;
 
-				&::before {
+				& .maxi-list-item-block__content::before,
+				// Old text-maxi support
+				&:not(:has(.maxi-list-item-block__content))::before {
 					content: '';
 					position: relative;
 					display: inline-block;
@@ -54,11 +56,15 @@ body.maxi-blocks--active .maxi-text-block {
 				$ulChain: '';
 				$olChain: '';
 				@for $i from 1 through $times {
+					$ulChain: $ulChain + ' > ul > li';
 					$olChain: $olChain + ' > ol > li';
 				}
 
-				#{$ulChain}::before,
-				#{$olChain}::before {
+				#{$ulChain} .maxi-list-item-block__content::before,
+				#{$olChain} .maxi-list-item-block__content::before,
+				// Old text-maxi support
+				#{$ulChain}:not(:has(.maxi-list-item-block__content))::before,
+				#{$olChain}:not(:has(.maxi-list-item-block__content))::before {
 					@content;
 				}
 			}
@@ -76,7 +82,7 @@ body.maxi-blocks--active .maxi-text-block {
 		display: block;
 		margin: 0;
 	}
-	p:not(&__content):not(.maxi-pane-block__title):not(.wp-block):not(.maxi-block--use-sc) {
+	p:not([class*='__content']):not(.maxi-pane-block__title):not(.wp-block):not(.maxi-block--use-sc) {
 		margin-left: auto;
 		margin-right: auto;
 	}

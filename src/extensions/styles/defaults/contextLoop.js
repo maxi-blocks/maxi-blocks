@@ -9,6 +9,9 @@ const contextLoop = {
 	'cl-status': {
 		type: 'boolean',
 	},
+	'cl-source': {
+		type: 'string',
+	},
 	'cl-type': {
 		type: 'string',
 	},
@@ -33,6 +36,9 @@ const contextLoop = {
 	'cl-grandchild-accumulator': {
 		type: 'boolean',
 		default: false,
+	},
+	'cl-acf-group': {
+		type: 'number',
 	},
 	'cl-pagination': {
 		type: 'boolean',

@@ -36,9 +36,22 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 self::$instance = new MaxiBlocks_CLI();
             }
 
-            WP_CLI::add_command('maxiblocks set_style_card', [self::$instance, 'set_style_card']);
-            WP_CLI::add_command('maxiblocks list_style_cards', [self::$instance, 'list_style_cards']);
-            WP_CLI::add_command('maxiblocks get_current_style_card', [self::$instance, 'get_current_style_card']);
+            WP_CLI::add_command('maxiblocks set_style_card', [
+                self::$instance,
+                'set_style_card',
+            ]);
+            WP_CLI::add_command('maxiblocks list_style_cards', [
+                self::$instance,
+                'list_style_cards',
+            ]);
+            WP_CLI::add_command('maxiblocks get_current_style_card', [
+                self::$instance,
+                'get_current_style_card',
+            ]);
+            WP_CLI::add_command('maxiblocks replace_post_content', [
+                self::$instance,
+                'replace_post_content',
+            ]);
         }
 
         /**
@@ -55,22 +68,20 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          */
         public function set_style_card($args)
         {
-            list($post_title) = $args;
+            [$post_title] = $args;
 
             try {
                 // Initialize Typesense client
-                $client = new Client(
-                    [
-                        'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                        'nodes' => [
-                            [
-                                'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                                'port' => '443',
-                                'protocol' => 'https',
-                            ],
+                $client = new Client([
+                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
+                    'nodes' => [
+                        [
+                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
+                            'port' => '443',
+                            'protocol' => 'https',
                         ],
-                    ]
-                );
+                    ],
+                ]);
 
                 // Search for the style card by post title
                 $searchParameters = [
@@ -79,21 +90,22 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                     'per_page' => 1,
                 ];
 
-                $result = $client->collections['style_card']->documents->search($searchParameters);
+                $result = $client->collections['style_card']->documents->search(
+                    $searchParameters,
+                );
 
                 if ($result['found'] > 0) {
                     $style_card = $result['hits'][0]['document'];
                     $style_card_title = $style_card['post_title'];
 
-                    if($style_card_title !== $post_title) {
+                    if ($style_card_title !== $post_title) {
                         WP_CLI::confirm(
                             sprintf(
                                 'Style card not found. Did you mean "%s"?',
-                                $style_card_title
-                            )
+                                $style_card_title,
+                            ),
                         );
                     }
-
 
                     $sc_code = json_decode($style_card['sc_code'], true);
                     $sc_code['status'] = 'active';
@@ -104,25 +116,30 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                     $var_sc_string = create_sc_style_string($var_sc);
                     $sc_styles = get_sc_styles(
                         $var_sc,
-                        $sc_code['gutenberg_blocks_status']
+                        $sc_code['gutenberg_blocks_status'],
                     );
 
                     $maxi_api = MaxiBlocks_API::get_instance();
 
-                    $style_cards =  json_decode($maxi_api->get_maxi_blocks_current_style_cards(), true);
+                    $style_cards = json_decode(
+                        $maxi_api->get_maxi_blocks_current_style_cards(),
+                        true,
+                    );
 
                     foreach ($style_cards as $key => $value) {
                         $style_cards[$key]['status'] = '';
                         $style_cards[$key]['selected'] = false;
                     }
 
-					$style_cards_key = 'sc_' . strtolower($sc_code['name']);
-					$style_cards[$style_cards_key] = $sc_code;
+                    $style_cards_key = 'sc_' . strtolower($sc_code['name']);
+                    $style_cards[$style_cards_key] = $sc_code;
 
-                    $maxi_api->set_maxi_blocks_current_style_cards([
-                        'styleCards' => json_encode($style_cards),
-                    ], false);
-
+                    $maxi_api->set_maxi_blocks_current_style_cards(
+                        [
+                            'styleCards' => json_encode($style_cards),
+                        ],
+                        false,
+                    );
 
                     $maxi_api->post_maxi_blocks_sc_string([
                         'sc_variables' => $var_sc_string,
@@ -153,26 +170,26 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *     wp maxiblocks list_style_cards
          *     wp maxiblocks list_style_cards --count=20
          *     wp maxiblocks list_style_cards --count=all
-        */
+         */
         public function list_style_cards($args, $assoc_args)
         {
             try {
                 // Initialize Typesense client
-                $client = new Client(
-                    [
-                        'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                        'nodes' => [
-                            [
-                                'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                                'port' => '443',
-                                'protocol' => 'https',
-                            ],
+                $client = new Client([
+                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
+                    'nodes' => [
+                        [
+                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
+                            'port' => '443',
+                            'protocol' => 'https',
                         ],
-                    ]
-                );
+                    ],
+                ]);
 
                 // Get the count argument
-                $count = isset($assoc_args['count']) ? $assoc_args['count'] : 10;
+                $count = isset($assoc_args['count'])
+                    ? $assoc_args['count']
+                    : 10;
 
                 // Search for style cards
                 $searchParameters = [
@@ -183,10 +200,14 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                     'page' => 1,
                 ];
 
-                $styleCards = $client->collections['style_card']->documents->search($searchParameters);
+                $styleCards = $client->collections[
+                    'style_card'
+                ]->documents->search($searchParameters);
 
                 // Display the total number of style cards found
-                WP_CLI::line(sprintf('Found %d style card(s).', $styleCards['found']));
+                WP_CLI::line(
+                    sprintf('Found %d style card(s).', $styleCards['found']),
+                );
 
                 // Display the names of the style cards
                 foreach ($styleCards['hits'] as $styleCard) {
@@ -195,7 +216,12 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
                 // Display a message if there are more style cards available
                 if ($count !== 'all' && $styleCards['found'] > $count) {
-                    WP_CLI::line(sprintf('Displaying the first %d style card(s). Use --count=all to see all style cards.', $count));
+                    WP_CLI::line(
+                        sprintf(
+                            'Displaying the first %d style card(s). Use --count=all to see all style cards.',
+                            $count,
+                        ),
+                    );
                 }
             } catch (Exception $e) {
                 WP_CLI::error('Error listing style cards: ' . $e->getMessage());
@@ -213,7 +239,10 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         {
             try {
                 $maxi_api = MaxiBlocks_API::get_instance();
-                $style_cards = json_decode($maxi_api->get_maxi_blocks_current_style_cards(), true);
+                $style_cards = json_decode(
+                    $maxi_api->get_maxi_blocks_current_style_cards(),
+                    true,
+                );
 
                 $style_card = null;
 
@@ -229,9 +258,96 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 } else {
                     WP_CLI::error('No style card selected.');
                 }
-
             } catch (Exception $e) {
-                WP_CLI::error('Error getting current style card: ' . $e->getMessage());
+                WP_CLI::error(
+                    'Error getting current style card: ' . $e->getMessage(),
+                );
+            }
+        }
+
+        /**
+         * Replaces the content of a post.
+         *
+         * ## OPTIONS
+         * <post_id>
+         * : The ID of the post to replace the content.
+         *
+         * [--append]
+         * : Append the new content to the existing content.
+         *
+         * [--prepend]
+         * : Prepend the new content to the existing content.
+         *
+         * ## EXAMPLES
+         *    wp maxiblocks replace_post_content 123
+         *    wp maxiblocks replace_post_content 123 --append
+         *    wp maxiblocks replace_post_content 123 --prepend
+         */
+        public function replace_post_content($args, $assoc_args)
+        {
+            [$post_id] = $args;
+
+            $handle = fopen('php://stdin', 'r');
+            $content = '';
+            WP_CLI::log(
+                'Please enter the content (press Ctrl-D when finished):',
+            );
+
+            while (!feof($handle)) {
+                $line = fgets($handle);
+                $content .= $line;
+                WP_CLI::log('Press Ctrl-D to finish.');
+            }
+            fclose($handle);
+
+            WP_CLI::success('Content received successfully. Processing...');
+
+            $append = isset($assoc_args['append']);
+            $prepend = isset($assoc_args['prepend']);
+
+            if ($append && $prepend) {
+                WP_CLI::error(
+                    'Cannot use both --append and --prepend options.',
+                );
+            }
+
+            try {
+                $post = get_post($post_id);
+
+                if (!$post) {
+                    WP_CLI::error('Post not found.');
+                }
+
+                $new_content = $content;
+
+                if ($append) {
+                    $new_content = $post->post_content . $content;
+                } elseif ($prepend) {
+                    $new_content = $content . $post->post_content;
+                }
+
+                set_transient(
+                    'maxi_blocks_update_' . $post_id,
+                    true,
+                    10 * MINUTE_IN_SECONDS,
+                );
+
+                $result = wp_update_post([
+                    'ID' => $post_id,
+                    'post_content' => $new_content,
+                ]);
+
+                if (is_wp_error($result)) {
+                    WP_CLI::error(
+                        'Error updating post: ' . $result->get_error_message(),
+                    );
+                }
+
+                WP_CLI::success('Post content updated successfully.');
+            } catch (Exception $e) {
+                WP_CLI::error(
+                    'Error replacing post content: ' . $e->getMessage(),
+                );
             }
         }
     }

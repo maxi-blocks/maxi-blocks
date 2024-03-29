@@ -103,6 +103,7 @@ class MaxiBlocks_Styles
         add_action('wp_ajax_maxi_process_all_site_content', [$this, 'process_all_site_content']);
         $this->max_execution_time = ini_get('max_execution_time');
 
+        add_action('save_post', [$this, 'process_post_content'], 10, 3);
     }
 
     private function should_apply_content_filter()
@@ -138,6 +139,17 @@ class MaxiBlocks_Styles
 
         echo 'Processing completed for all posts.';
         wp_die(); // this is required to terminate immediately and return a proper response
+    }
+
+    /**
+     * Process post content
+     */
+    public function process_post_content($post_id, $post, $update)
+    {
+        if(get_transient('maxi_blocks_update_' . $post_id)) {
+            delete_transient('maxi_blocks_update_' . $post_id);
+            $this->get_styles_meta_fonts_from_blocks($post_id, true);
+        }
     }
 
     /**
@@ -1598,25 +1610,43 @@ class MaxiBlocks_Styles
         return "{$name}-{$uniquePart}-u";
     }
 
-    public function process_block_unique_id(&$block)
+    public function process_block_unique_id(&$block, $process_without_check = false)
     {
         // Check the block's uniqueID and update it if necessary
-        if (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u') {
+        if ($process_without_check || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u')) {
 
             // Get the block name
-            $blockName = $block['blockName'];
+            $blockName = $block['blockName'] ?? null;
 
-            // Generate a new uniqueID
-            $new_uniqueID = self::unique_id_generator($blockName);
+            if($blockName !== null && strpos($blockName, 'maxi-blocks') !== false) {
+                // TODO: IB support and other uniqueID relative things
+                // Generate a new uniqueID
+                $new_uniqueID = self::unique_id_generator($blockName);
 
-            // Replace the old uniqueID with the new one in the block
-            $block['attrs']['uniqueID'] = $new_uniqueID;
+                // Replace the old uniqueID with the new one in the block's innerHTML
+                $block['innerHTML'] = str_replace($block['attrs']['uniqueID'], $new_uniqueID, $block['innerHTML']);
+
+                // Replace the old uniqueID with the new one in the block's innerContent
+                $block['innerContent'] = array_map(function ($item) use ($new_uniqueID, $block) {
+                    if(!is_string($item)) {
+                        return $item;
+                    }
+                    return str_replace($block['attrs']['uniqueID'], $new_uniqueID, $item);
+                }, $block['innerContent']);
+
+                // Replace the old uniqueID with the new one in the block
+                $block['attrs']['uniqueID'] = $new_uniqueID;
+
+                if(isset($block['attrs']['content'])) {
+                    $block['attrs']['content'] = $this->decode_unicode_entities($block['attrs']['content']);
+                }
+            }
         }
 
         // Recursively process any inner blocks
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as &$innerBlock) {
-                $this->process_block_unique_id($innerBlock);
+                $this->process_block_unique_id($innerBlock, $process_without_check);
             }
         }
     }
@@ -1628,7 +1658,7 @@ class MaxiBlocks_Styles
      *
      * @return bool
      */
-    public function get_styles_meta_fonts_from_blocks($post_id)
+    public function get_styles_meta_fonts_from_blocks($post_id, $process_without_check = false)
     {
         $post = get_post($post_id);
 
@@ -1639,24 +1669,25 @@ class MaxiBlocks_Styles
         // Get all blocks from post content
         $blocks = parse_blocks($post->post_content);
 
+        $blocks = array_filter($blocks, function ($block) {
+            return isset($block['blockName']);
+        });
+
         if (empty($blocks)) {
             return false;
         }
 
         // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3);
+        $block_chunks = array_chunk($blocks, 3, true);
 
-        foreach ($block_chunks as $block_chunk) {
-            // Iterate over each block and check its uniqueID
-            foreach ($block_chunk as $block) {
-                foreach ($block_chunk as &$block) {
-                    $this->process_block_unique_id($block);
-                }
+        foreach ($block_chunks as $chunk_index => $block_chunk) {
+            foreach ($block_chunk as $block_index => $block) {
+                // Process each block and directly update the original $blocks array
+                $this->process_block_unique_id($blocks[$chunk_index * 3 + $block_index], $process_without_check);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
             if ($this->max_execution_time != 0) {
-
                 set_time_limit($this->max_execution_time - 2);
             }
         }
@@ -1722,6 +1753,22 @@ class MaxiBlocks_Styles
 
 
         return $response;
+    }
+
+    /**
+     * Decodes Unicode entities in the content.
+     *
+     * @param string $content The content to process.
+     * @return string Processed content without Unicode entities.
+     */
+    public function decode_unicode_entities($content)
+    {
+        $decodedString = preg_replace_callback('/u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+        }, $content);
+
+        return $decodedString;
+
     }
 
     /**

@@ -18,6 +18,7 @@ const save = props => {
 		'number-counter-stroke': stroke,
 		'number-counter-circle-status': circleStatus,
 		'number-counter-rounded-status': roundedStatus,
+		ariaLabels = {},
 	} = attributes;
 
 	const classes = 'maxi-number-counter-block';
@@ -29,6 +30,7 @@ const save = props => {
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
+			aria-label={ariaLabels.canvas}
 		>
 			<div className='maxi-number-counter__box'>
 				{!circleStatus && (
@@ -37,6 +39,7 @@ const save = props => {
 							viewBox={`0 0 ${radius * 2 + stroke} ${
 								radius * 2 + stroke
 							}`}
+							aria-label={ariaLabels.circle}
 						>
 							<circle
 								className='maxi-number-counter__box__background'

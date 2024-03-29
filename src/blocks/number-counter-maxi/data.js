@@ -91,7 +91,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = ['canvas', 'number', 'circle'];
+const ariaLabelsCategories = ['canvas', 'circle'];
 const transition = {
 	...transitionDefault,
 	block: {

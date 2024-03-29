@@ -30,6 +30,7 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 		'dc-field': dcField,
+		ariaLabels = {},
 	} = props.attributes;
 
 	const name = 'maxi-blocks/button-maxi';
@@ -64,6 +65,7 @@ const save = props => {
 				className={buttonClasses}
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
+				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
 			>
 				{!iconOnly && (
 					<RichText.Content

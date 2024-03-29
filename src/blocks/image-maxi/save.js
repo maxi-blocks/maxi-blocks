@@ -61,6 +61,7 @@ const save = props => {
 		captionPosition,
 		fitParentSize,
 		'dc-status': dcStatus,
+		ariaLabels = {},
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -83,6 +84,7 @@ const save = props => {
 		<MaxiBlock.save
 			tagName='figure'
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.canvas}
 		>
 			<>
 				{captionPosition === 'top' && (
@@ -128,6 +130,7 @@ const save = props => {
 							}
 							src={dcStatus ? '$media-url-to-replace' : mediaURL}
 							alt={dcStatus ? '$media-alt-to-replace' : mediaAlt}
+							aria-label={ariaLabels.image}
 							{...(!dcStatus && {
 								width: mediaWidth,
 								height: mediaHeight,

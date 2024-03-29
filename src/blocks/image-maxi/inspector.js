@@ -45,7 +45,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { transitionFilterEffects } from './components/hover-effect-control/constants';
 
@@ -484,6 +484,10 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

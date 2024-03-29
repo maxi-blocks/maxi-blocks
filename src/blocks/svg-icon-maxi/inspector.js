@@ -41,7 +41,7 @@ import {
 } from '../../extensions/styles';
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -341,6 +341,10 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

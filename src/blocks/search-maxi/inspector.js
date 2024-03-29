@@ -28,7 +28,7 @@ const PlaceholderColorControl = loadable(() =>
 	import('./components/placeholder-color-control')
 );
 import { getGroupAttributes } from '../../extensions/styles';
-import { customCss, prefixes } from './data';
+import { ariaLabelsCategories, customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
@@ -394,6 +394,10 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

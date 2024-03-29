@@ -26,7 +26,7 @@ const DefaultStylesControl = loadable(() =>
 const Icon = loadable(() => import('../../components/icon'));
 import * as defaultPresets from './defaults';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -316,6 +316,10 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

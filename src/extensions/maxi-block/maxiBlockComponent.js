@@ -383,6 +383,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
+		console.log('MaxiBlockComponent loadFonts');
 		this.loadFonts();
 
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
@@ -1149,7 +1150,11 @@ class MaxiBlockComponent extends Component {
 
 		const response = isEmpty(this.paginationTypography)
 			? getAllFonts(this.typography, 'custom-formats')
-			: getAllFonts(this.paginationTypography, 'custom-formats');
+			: getAllFonts(
+					{ ...this.typography, ...this.paginationTypography },
+					'custom-formats'
+			  );
+
 		if (isEmpty(response)) return;
 
 		loadFonts(response, true, target);

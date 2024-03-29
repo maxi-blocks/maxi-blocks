@@ -42,16 +42,15 @@ export const getAllFonts = (
 				'cl-pagination-font-style',
 			];
 
+			let finalFontName = null;
+			let finalFontWeight = null;
+			let finalFontStyle = null;
+
 			propertiesToCheck.forEach(baseProperty => {
 				const property = `${baseProperty}-${breakpoint}`;
 				const value = obj[property];
 
 				if (value || breakpoint === 'general') {
-					const finalPropertyName = baseProperty.includes(
-						'cl-pagination'
-					)
-						? baseProperty.replace(`-${breakpoint}`, '')
-						: baseProperty;
 					let finalValue;
 
 					if (baseProperty.includes('font-family')) {
@@ -65,10 +64,8 @@ export const getAllFonts = (
 								textLevel,
 								avoidSC: !onlyBackend,
 								styleCard,
-							}) ??
-							(finalPropertyName.includes('pagination')
-								? undefined
-								: `sc_font_${blockStyle}_${textLevel}`);
+							});
+						finalFontName = finalValue;
 					} else if (baseProperty.includes('font-weight')) {
 						finalValue =
 							value ??
@@ -80,7 +77,8 @@ export const getAllFonts = (
 								textLevel,
 								avoidSC: !onlyBackend,
 								styleCard,
-							})?.toString();
+							});
+						finalFontWeight = finalValue;
 					} else if (baseProperty.includes('font-style')) {
 						finalValue =
 							value ??
@@ -93,54 +91,24 @@ export const getAllFonts = (
 								avoidSC: !onlyBackend,
 								styleCard,
 							});
+						finalFontStyle = finalValue;
 					}
 
-					// Process and store the final font information
-					if (finalValue) {
-						let finalFontName;
-						let finalFontWeight;
-						let finalFontStyle;
-
-						if (finalPropertyName.includes('font-family')) {
-							finalFontName = finalValue;
-						} else if (finalPropertyName.includes('font-weight')) {
-							finalFontWeight = finalValue;
-						} else if (finalPropertyName.includes('font-style')) {
-							finalFontStyle = finalValue;
+					// Update the result object if we have a final font name
+					if (finalFontName) {
+						if (!result[finalFontName]) {
+							result[finalFontName] = {
+								weight: undefined,
+								style: undefined,
+							};
 						}
 
-						// Assuming result is the accumulator for fonts
-						if (finalFontName) {
-							if (!result[finalFontName]) {
-								result[finalFontName] = {
-									weight: undefined,
-									style: undefined,
-								};
-							}
-							if (
-								finalFontWeight &&
-								!result[finalFontName].weight?.includes(
-									finalFontWeight
-								)
-							) {
-								result[finalFontName].weight = result[
-									finalFontName
-								].weight
-									? `${result[finalFontName].weight},${finalFontWeight}`
-									: finalFontWeight;
-							}
-							if (
-								finalFontStyle &&
-								!result[finalFontName].style?.includes(
-									finalFontStyle
-								)
-							) {
-								result[finalFontName].style = result[
-									finalFontName
-								].style
-									? `${result[finalFontName].style},${finalFontStyle}`
-									: finalFontStyle;
-							}
+						if (finalFontWeight) {
+							result[finalFontName].weight = finalFontWeight;
+						}
+
+						if (finalFontStyle) {
+							result[finalFontName].style = finalFontStyle;
 						}
 					}
 				}
@@ -311,6 +279,8 @@ export const getPageFonts = (onlyBackend = false) => {
 					blockStyle,
 					onlyBackend
 				);
+
+			console.log('response', response);
 
 			mergedResponse = mergeDeep(
 				cloneDeep(oldResponse),

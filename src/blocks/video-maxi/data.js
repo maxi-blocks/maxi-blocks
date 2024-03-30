@@ -123,7 +123,7 @@ const customCss = {
 		'play icon',
 	],
 };
-const ariaLabelsCategories = ['video', 'close icon', 'play icon'];
+const ariaLabelsCategories = ['block', 'video', 'close icon', 'play icon'];
 const transition = {
 	...transitionDefault,
 	block: {

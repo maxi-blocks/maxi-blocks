@@ -36,6 +36,7 @@ const save = props => {
 		hideImage,
 		'close-icon-position': closeIconPosition,
 		popAnimation,
+		ariaLabels = {},
 	} = props.attributes;
 
 	const name = 'maxi-blocks/video-maxi';
@@ -53,6 +54,7 @@ const save = props => {
 		<MaxiBlock.save
 			classes={`maxi-video-block--${videoType}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.block}
 		>
 			{embedUrl &&
 				videoValidation(embedUrl) &&
@@ -72,7 +74,10 @@ const save = props => {
 									</div>
 								))}
 							<div className='maxi-video-block__overlay-background' />
-							<div className='maxi-video-block__play-button'>
+							<div
+								className='maxi-video-block__play-button'
+								aria-label={ariaLabels['play icon']}
+							>
 								<RawHTML>{playIcon}</RawHTML>
 							</div>
 						</div>
@@ -81,14 +86,20 @@ const save = props => {
 							style={{ display: 'none' }}
 						>
 							{closeIconPosition === 'top-screen-right' && (
-								<div className='maxi-video-block__close-button'>
+								<div
+									className='maxi-video-block__close-button'
+									aria-label={ariaLabels['close icon']}
+								>
 									<RawHTML>{closeIcon}</RawHTML>
 								</div>
 							)}
 							<div className={videoContainerClassNames}>
 								{closeIconPosition ===
 									'top-right-above-video' && (
-									<div className='maxi-video-block__close-button'>
+									<div
+										className='maxi-video-block__close-button'
+										aria-label={ariaLabels['close icon']}
+									>
 										<RawHTML>{closeIcon}</RawHTML>
 									</div>
 								)}
@@ -99,6 +110,7 @@ const save = props => {
 										muted={isMuted}
 										autoPlay={isAutoplay}
 										controls={showPlayerControls}
+										aria-label={ariaLabels.video}
 									>
 										<track kind='captions' />
 									</video>
@@ -109,6 +121,7 @@ const save = props => {
 										allowFullScreen
 										allow='autoplay'
 										frameBorder={0}
+										aria-label={ariaLabels.video}
 									/>
 								)}
 							</div>
@@ -123,6 +136,7 @@ const save = props => {
 							autoPlay={isAutoplay}
 							controls={showPlayerControls}
 							src={embedUrl}
+							aria-label={ariaLabels.video}
 						>
 							<track kind='captions' />
 						</video>
@@ -136,6 +150,7 @@ const save = props => {
 							allow='autoplay'
 							src={embedUrl}
 							frameBorder={0}
+							aria-label={ariaLabels.video}
 						/>
 					</div>
 				))}

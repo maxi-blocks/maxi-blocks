@@ -63,7 +63,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
         {
 
             $uniqueID = $props['uniqueID'];
-            $block_style = $props['blockStyle'];
+            $block_style = $props['blockStyle'] ?? 'light';
 
             $data = [
                 'customCss' => $customCss,
@@ -226,7 +226,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
 
         public static function get_normal_object($props)
         {
-            $block_style = $props['blockStyle'];
+            $block_style = $props['blockStyle'] ?? 'light';
 
             $response =
                 [
@@ -262,7 +262,7 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
 
         public static function get_hover_object($props)
         {
-            $block_style = $props['blockStyle'];
+            $block_style = $props['blockStyle'] ?? 'light';
 
             $response = [
                 'border' => array_key_exists('border-status-hover', $props) && $props['border-status-hover'] ? get_border_styles([

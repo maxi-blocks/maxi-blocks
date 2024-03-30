@@ -1762,7 +1762,7 @@ class MaxiBlocks_Styles
         $typography = [];
         $typography_hover = [];
         $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
-        $block_style = $props['blockStyle'];
+        $block_style = $props['blockStyle'] ?? 'light';
 
         switch ($block_name) {
             case 'maxi-blocks/number-counter-maxi':
@@ -1832,7 +1832,7 @@ class MaxiBlocks_Styles
         }
 
         $props = $block['attrs'];
-        $block_style = $props['blockStyle'];
+        $block_style = $props['blockStyle'] ?? 'light';
 
         $unique_id = $props['uniqueID'];
 

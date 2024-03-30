@@ -25,6 +25,7 @@ const save = props => {
 		pauseOnHover,
 		pauseOnInteraction,
 		numberOfSlides,
+		ariaLabels = {},
 	} = attributes;
 
 	const sliderTransition = attributes['slider-transition'];
@@ -43,6 +44,7 @@ const save = props => {
 		<MaxiBlock.save
 			className={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.slider}
 			data-infinite-loop={isLoop}
 			data-autoplay={isAutoplay}
 			data-autoplay-speed={sliderAutoplaySpeed}
@@ -59,7 +61,10 @@ const save = props => {
 				/>
 				<div className='maxi-slider-block__nav'>
 					{attributes['navigation-arrow-first-icon-content'] && (
-						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
+						<span
+							className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
+							aria-label={ariaLabels['first arrow']}
+						>
 							<RawHTML>
 								{
 									attributes[
@@ -70,7 +75,10 @@ const save = props => {
 						</span>
 					)}
 					{attributes['navigation-arrow-second-icon-content'] && (
-						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
+						<span
+							className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
+							aria-label={ariaLabels['second arrow']}
+						>
 							<RawHTML>
 								{
 									attributes[
@@ -81,7 +89,10 @@ const save = props => {
 						</span>
 					)}
 					{attributes['navigation-dot-icon-content'] && (
-						<div className='maxi-slider-block__dots'>
+						<div
+							className='maxi-slider-block__dots'
+							aria-label={ariaLabels['all dots']}
+						>
 							{Array.from(Array(numberOfSlides).keys()).map(i => {
 								return (
 									<span
@@ -91,6 +102,7 @@ const save = props => {
 											i === 0 &&
 												' maxi-slider-block__dot--active'
 										)}
+										aria-label={ariaLabels.dot}
 										key={`maxi-slider-block__dot--${i}`}
 									>
 										<RawHTML className='maxi-navigation-dot-icon-block__icon'>

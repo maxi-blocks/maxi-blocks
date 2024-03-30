@@ -361,12 +361,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = [
-	'pane',
-	'pane header',
-	'pane content',
-	'pane icon',
-];
+const ariaLabelsCategories = ['pane', 'header', 'content', 'icon'];
 const transition = {
 	pane: {
 		...transitionDefault.canvas,

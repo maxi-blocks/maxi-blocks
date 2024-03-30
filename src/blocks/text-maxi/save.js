@@ -25,6 +25,7 @@ const save = props => {
 		listReversed,
 		listStart,
 		'dc-status': dcStatus,
+		ariaLabels = {},
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
@@ -42,6 +43,7 @@ const save = props => {
 				isList && 'maxi-list-block'
 			)}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.block}
 		>
 			{!isList && (
 				<RichText.Content
@@ -49,6 +51,7 @@ const save = props => {
 					value={dcStatus ? '$text-to-replace' : value}
 					// TODO: avoid DC for lists
 					tagName={isList && !dcStatus ? typeOfList : textLevel}
+					aria-label={ariaLabels.text}
 					{...(!dcStatus && {
 						reversed: !!listReversed,
 						start: listStart,
@@ -59,6 +62,7 @@ const save = props => {
 				<ListTagName
 					{...useInnerBlocksProps.save({
 						className,
+						'aria-label': ariaLabels.list,
 						reversed: !!listReversed,
 						start: listStart,
 					})}

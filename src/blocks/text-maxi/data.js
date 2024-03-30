@@ -165,7 +165,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = ['text'];
+const ariaLabelsCategories = ['block', 'text', 'list'];
 const transition = {
 	canvas: {
 		...transitionDefault.canvas,

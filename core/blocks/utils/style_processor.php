@@ -486,8 +486,6 @@ function merge_with(&$array1, $array2, $callback = null)
 
 function style_processor($obj, $data, $props)
 {
-
-
     $selectors = $data['customCss']['selectors'] ?? null;
     $transition_selectors = $data['transition'] ?? null;
 
@@ -512,7 +510,6 @@ function style_processor($obj, $data, $props)
             }
         }
     }
-
 
     // Process custom styles if they exist
     $new_css_selectors = get_selectors_css($selectors, $props);
@@ -551,8 +548,6 @@ function style_processor($obj, $data, $props)
 
         }
     }
-
-
 
     return style_cleaner($styles);
 }

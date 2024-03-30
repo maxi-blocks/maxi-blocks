@@ -16,6 +16,8 @@ function get_custom_css($obj, $category, $index)
         $value = $customCssValue[$category][$index] ?? null;
 
         if ($value) {
+            // Line brake may be broken ("n" instead of "\n"), so remove all alone "n" characters after ";"
+            $value = preg_replace('/;\s*n\s*/', ';', $value);
             $response[$breakpoint] = [
                 'css' => $value,
             ];

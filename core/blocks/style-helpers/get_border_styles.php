@@ -27,9 +27,9 @@ function get_border_styles($args)
 
     $is_active = $sc_values->{'hover-border-color-global'} ?? false;
     $affect_all = $sc_values->{'hover-border-color-all'} ?? false;
-    
+
     $global_hover_status = $is_active && $affect_all;
-    
+
     if ($is_hover && isset($hover_status) && !$hover_status && !$global_hover_status) {
         return $response;
     }
@@ -72,13 +72,13 @@ function get_border_styles($args)
                 'breakpoint' => $breakpoint,
             ]);
             $current_unit = get_attributes_value([
-                'target' => $target . '-unit',
+                'target' => "$unit_target",
                 'props' => $obj,
                 'is_hover' => $is_hover,
                 'prefix' => $prefix,
                 'breakpoint' => $breakpoint,
             ]) ?? get_attributes_value([
-                'target' => "$unit_target",
+                'target' => $target . '-unit',
                 'props' => $obj,
                 'is_hover' => $is_hover,
                 'prefix' => $prefix,
@@ -103,14 +103,12 @@ function get_border_styles($args)
             }
 
             $last_unit = get_last_breakpoint_attribute([
-                'target' => "$target-unit",
-                'prefix' => $prefix,
+                'target' => $prefix . $unit_target,
                 'breakpoint' => $breakpoint,
                 'attributes' => $obj,
                 'is_hover' => $is_hover,
             ]) ?? get_last_breakpoint_attribute([
-                'target' => $unit_target,
-                'prefix' => $prefix,
+                'target' =>$prefix . "$target-unit",
                 'breakpoint' => $breakpoint,
                 'attributes' => $obj,
                 'is_hover' => $is_hover,

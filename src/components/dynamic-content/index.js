@@ -237,9 +237,11 @@ const DynamicContent = props => {
 		}
 	});
 
+	const currentTemplateType = getCurrentTemplateSlug();
+
 	const currentRelationOptions = useMemo(
-		() => getRelationOptions(type, contentType),
-		[contentType, type]
+		() => getRelationOptions(type, contentType, currentTemplateType),
+		[contentType, type, currentTemplateType]
 	);
 
 	useEffect(() => {

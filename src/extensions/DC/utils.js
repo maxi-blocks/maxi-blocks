@@ -343,7 +343,7 @@ const getPostTypeRelationOptions = type => {
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
-export const getRelationOptions = (type, contentType) => {
+export const getRelationOptions = (type, contentType, currentTemplateType) => {
 	let options;
 
 	if (
@@ -367,11 +367,7 @@ export const getRelationOptions = (type, contentType) => {
 		addUniqueOption(options, newItem);
 	}
 
-	const isFSE = select('core/edit-site') !== undefined;
-
-	if (isFSE) {
-		const currentTemplateType = getCurrentTemplateSlug();
-
+	if (currentTemplateType) {
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrentArchive(type, currentTemplateType)) {
 			const newItem = {
@@ -390,6 +386,8 @@ export const getRelationOptions = (type, contentType) => {
 			};
 
 			addUniqueOption(options, newItem);
+		} else {
+			options = options.filter(option => option.value !== 'current');
 		}
 	}
 

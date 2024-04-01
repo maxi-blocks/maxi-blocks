@@ -18,7 +18,6 @@ import { uniq } from 'lodash';
 function reducer(state = { fonts: { ...fonts }, postFonts: [] }, action) {
 	switch (action.type) {
 		case 'UPDATE_FONTS':
-			console.log('UPDATE_FONTS', uniq([...action.fonts]));
 			return {
 				...state,
 				postFonts: uniq([...action.fonts]),

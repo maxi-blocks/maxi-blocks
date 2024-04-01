@@ -150,8 +150,6 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			});
 		});
 
-		console.log('font before dispatch');
-		console.log(font);
 		if (!backendOnly)
 			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
 	}

@@ -51,6 +51,11 @@ export const getAllFonts = (
 				const value = obj[property];
 
 				if (value || breakpoint === 'general') {
+					const finalPropertyName = baseProperty.includes(
+						'cl-pagination'
+					)
+						? baseProperty.replace(`-${breakpoint}`, '')
+						: baseProperty;
 					let finalValue;
 
 					if (baseProperty.includes('font-family')) {
@@ -64,7 +69,10 @@ export const getAllFonts = (
 								textLevel,
 								avoidSC: !onlyBackend,
 								styleCard,
-							});
+							}) ??
+							(finalPropertyName.includes('pagination')
+								? undefined
+								: `sc_font_${blockStyle}_${textLevel}`);
 						finalFontName = finalValue;
 					} else if (baseProperty.includes('font-weight')) {
 						finalValue =
@@ -77,7 +85,7 @@ export const getAllFonts = (
 								textLevel,
 								avoidSC: !onlyBackend,
 								styleCard,
-							});
+							})?.toString();
 						finalFontWeight = finalValue;
 					} else if (baseProperty.includes('font-style')) {
 						finalValue =

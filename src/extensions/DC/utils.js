@@ -294,7 +294,7 @@ export const getFields = (contentType, type) => {
 	if (isFSE) {
 		if (showCurrent(type, getCurrentTemplateSlug())) {
 			const newItem = {
-				label: __('Archive type', 'maxi-blocks'),
+				label: __("Archive type's name", 'maxi-blocks'),
 				value: 'archive-type',
 			};
 			const options =
@@ -360,7 +360,7 @@ export const getRelationOptions = (type, contentType) => {
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
 		const newItem = {
-			label: __('Get current item', 'maxi-blocks'),
+			label: __("Get the current item's data", 'maxi-blocks'),
 			value: 'current',
 		};
 
@@ -375,7 +375,7 @@ export const getRelationOptions = (type, contentType) => {
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrentArchive(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Get current archive items', 'maxi-blocks'),
+				label: __("Get the current archive's posts", 'maxi-blocks'),
 				value: 'current-archive',
 			};
 
@@ -385,7 +385,7 @@ export const getRelationOptions = (type, contentType) => {
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrent(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Get current item', 'maxi-blocks'),
+				label: __("Get the current item's data", 'maxi-blocks'),
 				value: 'current',
 			};
 

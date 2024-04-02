@@ -896,7 +896,6 @@ class MaxiBlockComponent extends Component {
 			'dc-status': dcStatus,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
-			ariaLabels,
 		} = this.props.attributes;
 
 		const { contextLoop } = this.props.contextLoopContext ?? {};
@@ -937,11 +936,6 @@ class MaxiBlockComponent extends Component {
 							[uniqueID]: contextLoop,
 						},
 					}),
-				...(!isEmpty(ariaLabels) && {
-					ariaLabels: {
-						[uniqueID]: ariaLabels,
-					},
-				}),
 			},
 		};
 	}

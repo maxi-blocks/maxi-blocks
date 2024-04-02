@@ -12,6 +12,9 @@ MaxiBlocks v1.8.0
 * Fix: Addressed issue of Maxi blocks losing styles inside core blocks, ensuring design integrity.
 * Fix: Fixed Dynamic Content link migrator, ensuring reliable and accurate link migration.
 * Fix: Improved styling for reusable blocks, enhancing visual consistency and usability.
+* Fix: Resolved the PHP error related to the key length exceeding 1000 bytes in certain database configurations.
+* Fix: Addressed the issue of list styles impacting the search page of WordPress Dashboard plugins
+* Fix: Corrected the display of fonts that have issues with bold and thin weights.
 
 _Updates 6 March 2024_
 MaxiBlocks v1.7.3

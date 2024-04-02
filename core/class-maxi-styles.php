@@ -682,8 +682,10 @@ class MaxiBlocks_Styles
                     if (empty($font_weights)) {
                         $font_weights = [$font_data['weight']];
                     }
-                    if (empty($font_styles)) {
+                    if (empty($font_styles) && isset($font_data['style'])) {
                         $font_styles = [$font_data['style']];
+                    } else {
+                        $font_styles = ['normal'];
                     }
 
                     if ($use_local_fonts) {

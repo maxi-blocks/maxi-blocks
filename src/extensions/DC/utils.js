@@ -366,13 +366,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 		addUniqueOption(options, newItem);
 	}
-	console.log('currentTemplateType', currentTemplateType);
 	if (currentTemplateType) {
-		console.log('type', type);
-		console.log(
-			'showCurrentArchive',
-			showCurrentArchive(type, currentTemplateType)
-		);
 		// Check if currentTemplateType is one of the allowed types
 		if (showCurrentArchive(type, currentTemplateType)) {
 			const newItem = {

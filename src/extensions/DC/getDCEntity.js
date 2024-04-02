@@ -48,7 +48,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		order,
 		accumulator,
 	} = dataRequest;
-	console.log('dataRequest', dataRequest);
 
 	const contentError = getDCErrors(type, error, show, relation);
 

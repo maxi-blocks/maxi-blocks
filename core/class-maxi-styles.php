@@ -682,8 +682,10 @@ class MaxiBlocks_Styles
                     if (empty($font_weights)) {
                         $font_weights = [$font_data['weight']];
                     }
-                    if (empty($font_styles)) {
+                    if (empty($font_styles) && isset($font_data['style'])) {
                         $font_styles = [$font_data['style']];
+                    } else {
+                        $font_styles = ['normal'];
                     }
 
                     if ($use_local_fonts) {
@@ -1301,6 +1303,8 @@ class MaxiBlocks_Styles
             ARRAY_A
         );
 
+
+
         $content_block = $content_array_block[0] ?? null;
 
         if (!isset($content_block) || empty($content_block)) {
@@ -1355,7 +1359,7 @@ class MaxiBlocks_Styles
 
         // fonts
         // TODO: split fonts and prev_fonts
-        foreach (['fonts_value', 'prev_fonts_value'] as $fonts_key) {
+        foreach (['prev_fonts_value', 'fonts_value'] as $fonts_key) {
             $fonts_json = $content_block[$fonts_key] ?? null;
 
             if ($fonts_json !== '' && $fonts_json !== null) {
@@ -1365,6 +1369,7 @@ class MaxiBlocks_Styles
             }
 
             $fonts = array_merge($fonts, $fonts_array);
+
         }
 
         // Process inner blocks, if any
@@ -1610,6 +1615,7 @@ class MaxiBlocks_Styles
         foreach ($blocks as $block) {
             $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
         }
+
 
         return [$styles, $prev_styles, $active_custom_data_array, $fonts];
     }

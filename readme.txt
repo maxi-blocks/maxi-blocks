@@ -4,9 +4,9 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: block, blocks, gutenberg blocks, page builder, template library
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.4.3
+Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.7.3
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -210,6 +210,24 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 2 April 2024_
+MaxiBlocks v1.8.0
+* Update: Implemented fixes for WordPress 6.5, ensuring compatibility and stability.
+* Update: Updated npm packages for improved speed and security.
+* Update: Implemented list items as inner blocks in Text Maxi lists, enhancing modularity.
+* Update: Added Site Editor patterns previews for Maxi Patterns, facilitating a more intuitive design experience.
+* Update: Added images as previews for Maxi Patterns in the Block Inserter, enhancing the Editor speed.
+* Update: Enhanced parsing of special characters, improving content accuracy and display.
+* Update: Enabled block style application from a template part within a Site Editor template, enhancing design consistency.
+* Update: Ensured text remains visible during webfont load, improving user experience during page load.
+* Fix: Resolved mobile navigation issues in the backend on breakpoint changes, enhancing responsiveness.
+* Fix: Addressed issue of Maxi blocks losing styles inside core blocks, ensuring design integrity.
+* Fix: Fixed Dynamic Content link migrator, ensuring reliable and accurate link migration.
+* Fix: Improved styling for reusable blocks, enhancing visual consistency and usability.
+* Fix: Resolved the PHP error related to the key length exceeding 1000 bytes in certain database configurations.
+* Fix: Addressed the issue of list styles impacting the search page of WordPress Dashboard plugins
+* Fix: Corrected the display of fonts that have issues with bold and thin weights.
+
 _Updates 6 March 2024_
 MaxiBlocks v1.7.3
 * Update: Enhanced Dynamic Content and Context Loop with Custom Post Types and Custom Taxonomy support.
@@ -221,20 +239,6 @@ MaxiBlocks v1.7.3
 * Fix: Corrected the search link functionality within the Search Maxi Block, ensuring accurate and expected search results.
 * Fix: Addressed an issue with inserting templates from the Template Library into Site Editor - Templates - Pages, streamlining the template integration process.
 * Fix: Resolved an issue where specifying a value for a smaller breakpoint could inadvertently alter the value set for a larger breakpoint.
-
-_Updates: 23 February 2024_
-MaxiBlocks v1.7.2
-* Update: After updating the plugin, a notification will now appear, advising you to check and potentially clear other caches on your site. This step, while manual, is crucial for maintaining optimal site performance and ensuring that all updates are fully applied across your website.
-* Update: Implemented a more sophisticated versioning mechanism to automatically clear scripts and styles cache following each plugin update.
-
-_Updates: 22 February 2024_
-MaxiBlocks v1.7.1
-* Update: Implemented code optimizations to enhance the speed of the editor interface, resulting in a more efficient and responsive user experience. Additionally, these optimizations have reduced the overall size of the plugin, improving load times and resource usage.
-* Update: Enhanced scroll effects with the introduction of customizable zones and units, allowing for more precise and versatile animations as users navigate through content.
-* Fix: Adjusted colour opacity settings within Style Cards to ensure accurate and consistent visual representation across all use cases.
-* Fix: Updated the S breakpoint width to 767 pixels for Style Cards on the frontend, ensuring optimal layout and responsiveness across devices.
-* Fix: Addressed and corrected potential JavaScript warnings related to scroll effects, enhancing stability and performance of scroll-related animations and interactions.
-* Fix: Resolved an issue where the Style Cards Editor save button failed to become active upon making modifications within the Light and Dark tabs, ensuring changes are now properly recognized and can be saved promptly.
 
 == Upgrade Notice ==
 

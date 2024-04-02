@@ -48,6 +48,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		order,
 		accumulator,
 	} = dataRequest;
+	console.log('dataRequest', dataRequest);
 
 	const contentError = getDCErrors(type, error, show, relation);
 
@@ -151,24 +152,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		return cart;
 	}
-	if (
-		['tags', 'categories', 'product_categories', 'product_tags'].includes(
-			type
-		)
-	) {
-		const termsEntity = await resolveSelect('core').getEntityRecords(
-			getKind(type),
-			nameDictionary[type] ?? type,
-			{
-				per_page: 1,
-				hide_empty: false,
-				include: id,
-			}
-		);
-
-		return termsEntity[0];
-	}
-
 	if (relation === 'current' || type === 'archive') {
 		const isFSE = select('core/edit-site') !== undefined;
 
@@ -216,6 +199,23 @@ const getDCEntity = async (dataRequest, clientId) => {
 				select('core/editor').getCurrentPostId()
 			) ?? {}
 		);
+	}
+	if (
+		['tags', 'categories', 'product_categories', 'product_tags'].includes(
+			type
+		)
+	) {
+		const termsEntity = await resolveSelect('core').getEntityRecords(
+			getKind(type),
+			nameDictionary[type] ?? type,
+			{
+				per_page: 1,
+				hide_empty: false,
+				include: id,
+			}
+		);
+
+		return termsEntity[0];
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(

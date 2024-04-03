@@ -420,7 +420,12 @@ export const validationsValues = (
 	const fieldResult = getFields(contentType, variableValue)?.map(
 		x => x.value
 	);
-	const relationOptions = getRelationOptions(variableValue, contentType);
+	const currentTemplateType = getCurrentTemplateSlug();
+	const relationOptions = getRelationOptions(
+		variableValue,
+		contentType,
+		currentTemplateType
+	);
 	const relationResult = Array.isArray(relationOptions)
 		? relationOptions.map(x => x.value)
 		: [];

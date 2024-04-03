@@ -252,7 +252,7 @@ const DynamicContent = props => {
 
 		if (isFSE && getCurrentTemplateSlug().includes('archive')) {
 			const newItem = {
-				label: __('Archive', 'maxi-blocks'),
+				label: __('All archives', 'maxi-blocks'),
 				value: 'archive',
 			};
 			if (Array.isArray(postTypes)) {

@@ -643,6 +643,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
+
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
         }
@@ -678,7 +679,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_date($response, $attributes);
         }
 
-        if($dc_field === 'archive-type') {
+        if($dc_field === 'archive-type' && $dc_type !== 'users') {
             $response = get_queried_object()->taxonomy;
             $response = preg_replace('/^post_/', '', $response);
         }
@@ -1308,6 +1309,8 @@ class MaxiBlocks_DynamicContent
         }
         if($dc_relation === 'current') {
             $user = get_queried_object();
+            $user_id = get_queried_object_id();
+
         } else {
             $user = $this->get_post($attributes);
         }
@@ -1316,7 +1319,9 @@ class MaxiBlocks_DynamicContent
             'name' => 'display_name',
             'email' => 'user_email',
             'url' => 'user_url',
+            'link' => get_author_posts_url($user_id),
             'description' => 'description',
+            'archive-type' => __('author', 'maxi-blocks'),
         ];
 
         // Check if the $dc_field is defined in your dictionary
@@ -1331,6 +1336,9 @@ class MaxiBlocks_DynamicContent
 
         // Check if the property exists in $user->data
         $property = $user_dictionary[$dc_field];
+        if($dc_field === 'archive-type' || $dc_field === 'link') {
+            return $property;
+        }
         if (!property_exists($user->data, $property)) {
             return 0;
         }

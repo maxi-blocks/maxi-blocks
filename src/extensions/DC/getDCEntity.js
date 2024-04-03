@@ -170,9 +170,71 @@ const getDCEntity = async (dataRequest, clientId) => {
 					allowedTemplateTypesCurrent.includes(
 						currentTemplateType
 					)) ||
-				(currentTemplateType.includes('single') &&
-					currentTemplateType.includes(type))
+				currentTemplateType === 'single'
 			) {
+				const categories = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					'category',
+					{ per_page: 2 }
+				);
+
+				const categoriesIds = categories
+					? categories.map(category => category.id)
+					: [];
+
+				const tags = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					'post_tag',
+					{ per_page: 2 }
+				);
+
+				const tagsIds = tags ? tags.map(tag => tag.id) : [];
+				const templateEntity = {
+					id: 10000,
+					date: '2024-04-02T12:20:15',
+					date_gmt: '2024-04-02T11:20:15',
+					modified: '2024-04-02T12:21:30',
+					modified_gmt: '2024-04-02T11:21:30',
+					password: '',
+					slug: 'example',
+					status: 'publish',
+					type: 'post',
+					link: '/example/',
+					title: {
+						raw: 'Title: example title',
+						rendered: 'Title: example title',
+					},
+					content: {
+						raw: '<!-- wp:paragraph -->\n<p>Content: example content.</p>\n<!-- /wp:paragraph -->',
+						rendered: '<p>Content: example content.</p>',
+						protected: false,
+						block_version: 1,
+					},
+					excerpt: {
+						raw: 'Excerpt: example excerpt.',
+						rendered: '<p>Excerpt: example excerpt.</p>',
+						protected: false,
+					},
+					author: 1,
+					featured_media: 123,
+					comment_status: 'open',
+					ping_status: 'closed',
+					sticky: false,
+					template: '',
+					format: 'standard',
+					meta: {
+						_acf_changed: true,
+						footnotes: 'Footnotes: Example footnotes.',
+					},
+					categories: categoriesIds,
+					tags: tagsIds,
+					generated_slug: 'example-post',
+					acf: {
+						custom_field: 'Field: example custom field',
+					},
+					description: 'Description: example description.',
+					count: 100,
+				};
 				const entity = await resolveSelect('core').getEntityRecord(
 					getKind(type),
 					nameDictionary[type] ?? type,
@@ -181,7 +243,36 @@ const getDCEntity = async (dataRequest, clientId) => {
 						per_page: 1,
 					}
 				);
-				if (entity) return entity;
+
+				if (entity) {
+					if (!entity.categories || entity.categories.length === 0) {
+						entity.categories = categoriesIds;
+					}
+					if (!entity.tags || entity.tags.length === 0) {
+						entity.tags = tagsIds;
+					}
+					if (!entity.title) {
+						entity.title = templateEntity.title;
+					}
+					if (!entity?.content?.rendered) {
+						entity.content = templateEntity.content.rendered;
+					}
+					if (!entity?.excerpt?.rendered) {
+						entity.excerpt = templateEntity.excerpt.rendered;
+					}
+					if (!entity.link) {
+						entity.link = templateEntity.link;
+					}
+					if (!entity?.description) {
+						entity.description = templateEntity.description;
+					}
+					if (!entity?.count) {
+						entity.count = templateEntity.count;
+					}
+
+					return entity;
+				}
+				return templateEntity;
 			}
 			if (currentTemplateType.includes('taxonomy')) {
 				const taxonomies = select('core').getTaxonomies({

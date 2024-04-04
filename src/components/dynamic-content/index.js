@@ -373,7 +373,8 @@ const DynamicContent = props => {
 						}
 					/>
 					{isEmpty(postIdOptions) &&
-					!['settings', 'cart'].includes(type) ? (
+					!['settings', 'cart'].includes(type) &&
+					type !== 'archive' ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>

@@ -596,6 +596,7 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
+
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
             $link = self::get_field_link(
                 self::get_post($attributes)->post_author,
@@ -606,7 +607,16 @@ class MaxiBlocks_DynamicContent
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
-            $link = get_author_posts_url($attributes['dc-id']);
+            if(isset($attributes['dc-relation']) && $attributes['dc-relation'] === 'current') {
+                $user_id = get_queried_object_id();
+                $link = get_author_posts_url($user_id);
+            } else {
+                if (isset($attributes['dc-author']) && !empty($attributes['dc-author'])) {
+                    $link = get_author_posts_url($attributes['dc-author']);
+                } else {
+                    $link = get_author_posts_url($attributes['dc-id']);
+                }
+            }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
             $product = self::get_post($attributes);
 
@@ -644,7 +654,6 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
         ) = $attributes;
-
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             return $content;
@@ -685,8 +694,6 @@ class MaxiBlocks_DynamicContent
             $response = get_queried_object()->taxonomy;
             $response = preg_replace('/^post_/', '', $response);
         }
-
-
 
         if (empty($response) && $response !== '0') {
             $this->is_empty = true;

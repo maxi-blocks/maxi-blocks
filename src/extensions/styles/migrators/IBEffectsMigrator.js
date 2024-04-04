@@ -51,7 +51,9 @@ const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
 	blockAttributes.relations.some(relation => {
 		const transitionSetting = getIBDataItem(relation);
+
 		return (
+			!relation.migrated &&
 			transitionSetting &&
 			settingsToMigrate.some(({ isEligible }) =>
 				isEligible(transitionSetting, relation)
@@ -68,9 +70,11 @@ const migrate = newAttributes => {
 		if (!transitionSetting) return;
 		settingsToMigrate.forEach(
 			({ key, attributeKey, attributeValue, isEligible }) => {
-				if (isEligible(transitionSetting, relation))
+				if (isEligible(transitionSetting, relation)) {
 					relations[i].effects[attributeKey ?? key] =
 						attributeValue ?? transitionSetting[key];
+					relations[i].migrated = true;
+				} else relations[i].migrated = true;
 			}
 		);
 	});

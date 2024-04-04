@@ -589,11 +589,16 @@ class MaxiBlocks_DynamicContent
 
         $content = self::render_dc_classes($attributes, $content);
 
+        $content = str_replace('$link-to-replace', '', $content);
+
         return $content;
     }
 
     public function render_dc_link($attributes, $content)
     {
+        echo '<pre>';
+        print_r($attributes);
+        echo '</pre>';
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
             $link = self::get_field_link(
                 self::get_post($attributes)->post_author,

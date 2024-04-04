@@ -386,7 +386,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 			addUniqueOption(options, newItem);
 		} else {
-			options = options.filter(option => option.value !== 'current');
+			options?.filter(option => option.value !== 'current');
 		}
 	}
 
@@ -429,7 +429,9 @@ export const validationsValues = (
 	const relationResult = Array.isArray(relationOptions)
 		? relationOptions.map(x => x.value)
 		: [];
-	const typeResult = getTypes(contentType, false)?.map(item => item.value);
+	const typeResult = getTypes(contentType, false, currentTemplateType)?.map(
+		item => item.value
+	);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value
 	);

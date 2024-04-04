@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, useSelect, select } from '@wordpress/data';
+import { resolveSelect, useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -246,35 +246,14 @@ const DynamicContent = props => {
 
 	useEffect(() => {
 		const postTypes =
-			getTypes(source === 'wp' ? contentType : source) || [];
-
-		const isFSE = select('core/edit-site') !== undefined;
-
-		if (isFSE && getCurrentTemplateSlug().includes('archive')) {
-			const newItem = {
-				label: __('All archives', 'maxi-blocks'),
-				value: 'archive',
-			};
-			if (Array.isArray(postTypes)) {
-				// Handle the case where postTypes is an array
-				if (!postTypes.find(({ value }) => value === 'archive')) {
-					postTypes.push(newItem);
-				}
-			} else if (typeof postTypes === 'object') {
-				// Handle the case where postTypes is an object
-				// Assuming we want to add to 'Standard types'
-				if (
-					!postTypes['Standard types'].find(
-						({ value }) => value === 'archive'
-					)
-				) {
-					postTypes['Standard types'].push(newItem);
-				}
-			}
-		}
+			getTypes(
+				source === 'wp' ? contentType : source,
+				true,
+				getCurrentTemplateSlug()
+			) || [];
 
 		setPostTypesOptions(postTypes);
-	}, [contentType, source]);
+	}, [contentType, source, currentTemplateType]);
 
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {

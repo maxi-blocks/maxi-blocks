@@ -1680,9 +1680,23 @@ class MaxiBlocks_Styles
                 // Replace the old uniqueID with the new one in the block
                 $block['attrs']['uniqueID'] = $new_uniqueID;
 
-                if(isset($block['attrs']['content'])) {
-                    $block['attrs']['content'] = $this->decode_unicode_entities($block['attrs']['content']);
+                $attributes_to_decode = ['content', 'icon-content'];
+                foreach ($attributes_to_decode as $attribute) {
+                    if(isset($block['attrs'][$attribute])) {
+                        $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);
+                    }
                 }
+
+                if(isset($block['attrs']['background-layers'])) {
+                    $background_layers = $block['attrs']['background-layers'];
+                    foreach ($background_layers as $key => $layer) {
+                        if(isset($layer['background-svg-SVGElement'])) {
+                            $block['attrs']['background-layers'][$key]['background-svg-SVGElement'] = $this->decode_unicode_entities($layer['background-svg-SVGElement']);
+                        }
+                    }
+                }
+
+
             }
         }
 

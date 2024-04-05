@@ -210,6 +210,10 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 4 April 2024_
+MaxiBlocks v1.8.1
+* Fix: Resolved List Item migrator issue on WordPress 6.5.
+
 _Updates 2 April 2024_
 MaxiBlocks v1.8.0
 * Update: Implemented fixes for WordPress 6.5, ensuring compatibility and stability.

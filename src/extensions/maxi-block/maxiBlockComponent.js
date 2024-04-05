@@ -1149,7 +1149,11 @@ class MaxiBlockComponent extends Component {
 
 		const response = isEmpty(this.paginationTypography)
 			? getAllFonts(this.typography, 'custom-formats')
-			: getAllFonts(this.paginationTypography, 'custom-formats');
+			: getAllFonts(
+					{ ...this.typography, ...this.paginationTypography },
+					'custom-formats'
+			  );
+
 		if (isEmpty(response)) return;
 
 		loadFonts(response, true, target);

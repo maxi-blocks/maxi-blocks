@@ -28,6 +28,64 @@ import getTypes from './getTypes';
 import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
+const showCurrent = (type, currentTemplateType) => {
+	const allowedTemplateTypesCurrent = [
+		'category',
+		'tag',
+		'author',
+		'date',
+		'archive',
+		'single',
+		'page',
+	];
+	if (
+		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
+		type.includes(currentTemplateType)
+	)
+		return true;
+
+	if (currentTemplateType === 'single' && type === 'posts') return true;
+	if (currentTemplateType === 'category' && type === 'categories')
+		return true;
+	if (
+		currentTemplateType.includes('taxonomy') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+	if (currentTemplateType === 'author' && type === 'users') return true;
+	if (
+		currentTemplateType.includes('single-') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+
+	return false;
+};
+
+const showCurrentArchive = (type, currentTemplateType) => {
+	const allowedTemplateTypes = [
+		'category',
+		'tag',
+		'author',
+		'date',
+		'archive',
+	];
+
+	if (
+		allowedTemplateTypes.includes(currentTemplateType) &&
+		type.includes('posts')
+	)
+		return true;
+
+	if (
+		currentTemplateType.includes('taxonomy') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+
+	return false;
+};
+
 export const parseText = value => {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(DOMPurify.sanitize(value), 'text/html');
@@ -188,6 +246,37 @@ const getCustomTaxonomyFields = type => {
 	return fields;
 };
 
+export const getCurrentTemplateSlug = () => {
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (!isFSE) return null;
+
+	const currentTemplateTypeRaw =
+		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
+		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
+
+	let currentTemplateType = currentTemplateTypeRaw;
+
+	// Use array destructuring to extract the part after '//' if it exists
+	if (currentTemplateType && currentTemplateType.includes('//')) {
+		[, currentTemplateType] = currentTemplateType.split('//');
+	}
+
+	return currentTemplateType;
+};
+
+// Utility function to add an item to the options array if it doesn't already exist
+const addUniqueOption = (options, newItem) => {
+	if (!options) return;
+	if (
+		!options.some(
+			item => item.label === newItem.label && item.value === newItem.value
+		)
+	) {
+		options.push(newItem);
+	}
+};
+
 export const getFields = (contentType, type) => {
 	if (
 		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
@@ -199,6 +288,22 @@ export const getFields = (contentType, type) => {
 			.includes(type)
 	)
 		return getCustomTaxonomyFields(type);
+
+	const isFSE = select('core/edit-site') !== undefined;
+
+	if (isFSE) {
+		if (showCurrent(type, getCurrentTemplateSlug())) {
+			const newItem = {
+				label: __("Archive type's name", 'maxi-blocks'),
+				value: 'archive-type',
+			};
+			const options =
+				fieldOptions[contentType]?.[type] ||
+				fieldOptions[contentType]?.categories;
+			addUniqueOption(options, newItem);
+			return options;
+		}
+	}
 
 	return fieldOptions[contentType]?.[type];
 };
@@ -238,33 +343,7 @@ const getPostTypeRelationOptions = type => {
 
 const getTaxonomyRelationOptions = () => taxonomyRelationOptions;
 
-// Utility function to add an item to the options array if it doesn't already exist
-const addUniqueOption = (options, newItem) => {
-	if (
-		!options.some(
-			item => item.label === newItem.label && item.value === newItem.value
-		)
-	) {
-		options.push(newItem);
-	}
-};
-
-export const getCurrentTemplateSlug = () => {
-	const currentTemplateTypeRaw =
-		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
-		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
-
-	let currentTemplateType = currentTemplateTypeRaw;
-
-	// Use array destructuring to extract the part after '//' if it exists
-	if (currentTemplateType && currentTemplateType.includes('//')) {
-		[, currentTemplateType] = currentTemplateType.split('//');
-	}
-
-	return currentTemplateType;
-};
-
-export const getRelationOptions = (type, contentType) => {
+export const getRelationOptions = (type, contentType, currentTemplateType) => {
 	let options;
 
 	if (
@@ -281,33 +360,33 @@ export const getRelationOptions = (type, contentType) => {
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
 		const newItem = {
-			label: __('Get current', 'maxi-blocks'),
+			label: __("Get the current item's data", 'maxi-blocks'),
 			value: 'current',
 		};
 
 		addUniqueOption(options, newItem);
 	}
-
-	const isFSE = select('core/edit-site') !== undefined;
-
-	if (isFSE) {
-		const allowedTemplateTypes = [
-			'category',
-			'tag',
-			'author',
-			'date',
-			'archive',
-		];
-		const currentTemplateType = getCurrentTemplateSlug();
-
+	if (currentTemplateType) {
 		// Check if currentTemplateType is one of the allowed types
-		if (allowedTemplateTypes.includes(currentTemplateType)) {
+		if (showCurrentArchive(type, currentTemplateType)) {
 			const newItem = {
-				label: __('Get current archive', 'maxi-blocks'),
+				label: __("Get the current archive's posts", 'maxi-blocks'),
 				value: 'current-archive',
 			};
 
 			addUniqueOption(options, newItem);
+		}
+
+		// Check if currentTemplateType is one of the allowed types
+		if (showCurrent(type, currentTemplateType)) {
+			const newItem = {
+				label: __("Get the current item's data", 'maxi-blocks'),
+				value: 'current',
+			};
+
+			addUniqueOption(options, newItem);
+		} else {
+			options?.filter(option => option.value !== 'current');
 		}
 	}
 
@@ -341,11 +420,18 @@ export const validationsValues = (
 	const fieldResult = getFields(contentType, variableValue)?.map(
 		x => x.value
 	);
-	const relationOptions = getRelationOptions(variableValue, contentType);
+	const currentTemplateType = getCurrentTemplateSlug();
+	const relationOptions = getRelationOptions(
+		variableValue,
+		contentType,
+		currentTemplateType
+	);
 	const relationResult = Array.isArray(relationOptions)
 		? relationOptions.map(x => x.value)
 		: [];
-	const typeResult = getTypes(contentType, false)?.map(item => item.value);
+	const typeResult = getTypes(contentType, false, currentTemplateType)?.map(
+		item => item.value
+	);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value
 	);

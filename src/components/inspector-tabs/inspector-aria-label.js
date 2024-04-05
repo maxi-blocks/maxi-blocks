@@ -11,8 +11,8 @@ import AriaLabelControl from '../aria-label-control';
 /**
  * Component
  */
-const ariaLabel = ({ props, targets }) => {
-	const { attributes, maxiSetAttributes } = props;
+const ariaLabel = ({ props, targets, getIcon, onChange }) => {
+	const { attributes } = props;
 
 	return {
 		label: __('Aria label', 'maxi-blocks'),
@@ -20,7 +20,8 @@ const ariaLabel = ({ props, targets }) => {
 			<AriaLabelControl
 				targets={targets}
 				ariaLabels={attributes.ariaLabels}
-				onChange={maxiSetAttributes}
+				onChange={onChange}
+				getIcon={getIcon}
 			/>
 		),
 	};

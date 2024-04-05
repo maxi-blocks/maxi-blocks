@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useMemo, useState } from '@wordpress/element';
+import { useCallback, useMemo, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import SelectControl from '../select-control';
  */
 import { isEmpty } from 'lodash';
 
-const AriaLabelControl = ({ ariaLabels, targets, onChange }) => {
+const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 	const [target, setTarget] = useState(targets[0]);
 
 	const targetsOptions = useMemo(() => {
@@ -25,17 +25,37 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange }) => {
 		}));
 	}, [targets]);
 
-	const onChangeAriaLabel = value => {
-		const newAriaLabels = { ...ariaLabels };
+	const onChangeSVGAria = useCallback(
+		value => {
+			const { documentElement } = new DOMParser().parseFromString(
+				getIcon(target),
+				'text/html'
+			);
+			const svg = documentElement.querySelector('svg');
+			svg.setAttribute('aria-label', value);
+			return svg.outerHTML;
+		},
+		[getIcon, target]
+	);
 
-		if (isEmpty(value)) {
-			delete newAriaLabels[target];
-		} else {
-			newAriaLabels[target] = value;
-		}
+	const onChangeAriaLabel = useCallback(
+		value => {
+			const newAriaLabels = { ...ariaLabels };
 
-		onChange({ ariaLabels: newAriaLabels });
-	};
+			if (isEmpty(value)) {
+				delete newAriaLabels[target];
+			} else {
+				newAriaLabels[target] = value;
+			}
+
+			onChange({
+				obj: { ariaLabels: newAriaLabels },
+				target,
+				icon: onChangeSVGAria(value),
+			});
+		},
+		[ariaLabels, onChange, onChangeSVGAria, target]
+	);
 
 	return (
 		<>

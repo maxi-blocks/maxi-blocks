@@ -8714,7 +8714,7 @@
     },
     "title-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "title-list-palette-color-xxl": {
       "type": "number"
@@ -10084,7 +10084,7 @@
     },
     "active-title-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "active-title-list-palette-color-xxl": {
       "type": "number"
@@ -24451,6 +24451,9 @@
     "cl-status": {
       "type": "boolean"
     },
+    "cl-source": {
+      "type": "string"
+    },
     "cl-type": {
       "type": "string"
     },
@@ -24475,6 +24478,9 @@
     "cl-grandchild-accumulator": {
       "type": "boolean",
       "default": false
+    },
+    "cl-acf-group": {
+      "type": "number"
     },
     "cl-pagination": {
       "type": "boolean",
@@ -24678,7 +24684,7 @@
     },
     "cl-pagination-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "cl-pagination-list-palette-color-xxl": {
       "type": "number"
@@ -32047,8 +32053,7 @@
       "type": "boolean"
     },
     "dc-source": {
-      "type": "string",
-      "default": "wp"
+      "type": "string"
     },
     "dc-type": {
       "type": "string"
@@ -32150,9 +32155,6 @@
     "dc-link-url": {
       "type": "string"
     },
-    "dc-post-taxonomy-links-status": {
-      "type": "boolean"
-    },
     "dc-custom-delimiter-status": {
       "type": "boolean"
     },
@@ -32179,13 +32181,13 @@
       "type": "boolean",
       "default": false
     },
-    "dc-link-target": {
-      "type": "string",
-      "default": "none"
-    },
     "dc-image-accumulator": {
       "type": "number",
       "default": 0
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
     }
   },
   "dynamicContentLink": {
@@ -32194,6 +32196,10 @@
     },
     "dc-link-status": {
       "type": "boolean"
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
     }
   },
   "flex": {
@@ -34109,7 +34115,7 @@
     },
     "hover-content-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "hover-content-list-palette-color-xxl": {
       "type": "number"
@@ -35207,7 +35213,7 @@
     },
     "hover-title-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "hover-title-list-palette-color-xxl": {
       "type": "number"
@@ -40713,7 +40719,7 @@
     },
     "list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "list-palette-color-xxl": {
       "type": "number"
@@ -41400,7 +41406,7 @@
     },
     "description-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "description-list-palette-color-xxl": {
       "type": "number"
@@ -44019,119 +44025,6 @@
       "default": false
     }
   },
-  "rawTypography": {
-    "font-family": {
-      "type": "string"
-    },
-    "palette-status": {
-      "type": "boolean",
-      "default": true
-    },
-    "palette-sc-status": {
-      "type": "boolean",
-      "default": false
-    },
-    "palette-color": {
-      "type": "number",
-      "default": 3
-    },
-    "palette-opacity": {
-      "type": "number"
-    },
-    "color": {
-      "type": "string"
-    },
-    "list-palette-status": {
-      "type": "boolean",
-      "default": true
-    },
-    "list-palette-sc-status": {
-      "type": "boolean",
-      "default": false
-    },
-    "list-palette-color": {
-      "type": "number",
-      "default": 4
-    },
-    "list-palette-opacity": {
-      "type": "number"
-    },
-    "list-color": {
-      "type": "string"
-    },
-    "font-size-unit": {
-      "type": "string",
-      "default": "px"
-    },
-    "font-size": {
-      "type": "number"
-    },
-    "line-height-unit": {
-      "type": "string",
-      "default": "px"
-    },
-    "line-height": {
-      "type": "number"
-    },
-    "letter-spacing-unit": {
-      "type": "string",
-      "default": "px"
-    },
-    "letter-spacing": {
-      "type": "number"
-    },
-    "font-weight": {
-      "type": "string"
-    },
-    "text-transform": {
-      "type": "string"
-    },
-    "font-style": {
-      "type": "string"
-    },
-    "text-decoration": {
-      "type": "string"
-    },
-    "text-indent": {
-      "type": "number"
-    },
-    "text-indent-unit": {
-      "type": "string",
-      "default": "px"
-    },
-    "text-shadow": {
-      "type": "string"
-    },
-    "vertical-align": {
-      "type": "string"
-    },
-    "custom-formats": {
-      "type": "object"
-    },
-    "text-orientation": {
-      "type": "string"
-    },
-    "text-direction": {
-      "type": "string"
-    },
-    "white-space": {
-      "type": "string"
-    },
-    "word-spacing": {
-      "type": "number"
-    },
-    "word-spacing-unit": {
-      "type": "string",
-      "default": "px"
-    },
-    "bottom-gap": {
-      "type": "number"
-    },
-    "bottom-gap-unit": {
-      "type": "string",
-      "default": "px"
-    }
-  },
   "rawWidth": {
     "width-unit": {
       "type": "string",
@@ -46743,7 +46636,7 @@
     },
     "list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "list-palette-color-xxl": {
       "type": "number"

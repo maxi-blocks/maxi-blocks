@@ -2348,7 +2348,7 @@
     },
     "input-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "input-list-palette-color-xxl": {
       "type": "number"
@@ -5490,7 +5490,7 @@
     },
     "button-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "button-list-palette-color-xxl": {
       "type": "number"

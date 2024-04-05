@@ -2570,7 +2570,7 @@
     },
     "list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "list-palette-color-xxl": {
       "type": "number"
@@ -3258,7 +3258,7 @@
     },
     "description-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "description-list-palette-color-xxl": {
       "type": "number"

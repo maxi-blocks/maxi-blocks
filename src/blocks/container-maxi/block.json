@@ -2668,6 +2668,9 @@
     "cl-status": {
       "type": "boolean"
     },
+    "cl-source": {
+      "type": "string"
+    },
     "cl-type": {
       "type": "string"
     },
@@ -2692,6 +2695,9 @@
     "cl-grandchild-accumulator": {
       "type": "boolean",
       "default": false
+    },
+    "cl-acf-group": {
+      "type": "number"
     },
     "cl-pagination": {
       "type": "boolean",
@@ -2895,7 +2901,7 @@
     },
     "cl-pagination-list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "cl-pagination-list-palette-color-xxl": {
       "type": "number"

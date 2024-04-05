@@ -3218,7 +3218,7 @@
     },
     "list-palette-color-general": {
       "type": "number",
-      "default": 4
+      "default": 3
     },
     "list-palette-color-xxl": {
       "type": "number"
@@ -9598,8 +9598,7 @@
       "type": "boolean"
     },
     "dc-source": {
-      "type": "string",
-      "default": "wp"
+      "type": "string"
     },
     "dc-type": {
       "type": "string"
@@ -9701,9 +9700,6 @@
     "dc-link-url": {
       "type": "string"
     },
-    "dc-post-taxonomy-links-status": {
-      "type": "boolean"
-    },
     "dc-custom-delimiter-status": {
       "type": "boolean"
     },
@@ -9730,13 +9726,13 @@
       "type": "boolean",
       "default": false
     },
-    "dc-link-target": {
-      "type": "string",
-      "default": "none"
-    },
     "dc-image-accumulator": {
       "type": "number",
       "default": 0
+    },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
     },
     "shortcutEffect": {
       "type": "number",

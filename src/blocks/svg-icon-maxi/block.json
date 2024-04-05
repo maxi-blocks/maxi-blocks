@@ -5830,6 +5830,10 @@
     "dc-link-status": {
       "type": "boolean"
     },
+    "dc-link-target": {
+      "type": "string",
+      "default": "none"
+    },
     "shortcutEffect": {
       "type": "number",
       "default": 0

@@ -22,7 +22,7 @@ const name = 'List item';
 
 const isEligible = (blockAttributes, innerBlocks) => {
 	const { content, isList } = blockAttributes;
-	return isList && isEmpty(innerBlocks) && content.includes('<li>');
+	return isList && isEmpty(innerBlocks) && content?.includes('<li>');
 };
 
 const migrate = newAttributes => {

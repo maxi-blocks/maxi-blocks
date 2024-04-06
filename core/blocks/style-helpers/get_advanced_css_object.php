@@ -26,16 +26,16 @@ function trim_unmatched_brace(string $code)
  */
 function set_advanced_css(array &$obj, string $selector, string $breakpoint, string $css)
 {
-    $trimmed_css = str_replace(["\t", "\n", "\s\s+"], ['', ' ', ' '], $css);
+    $trimmed_css = preg_replace('/\s+/', ' ', $css);
     $trimmed_css = trim($trimmed_css);
 
     if (isset($obj[$selector])) {
-        $obj[$selector]['advanced_css'][$breakpoint] = [
+        $obj[$selector]['advancedCss'][$breakpoint] = [
             'css' => $trimmed_css,
         ];
     } else {
         $obj[$selector] = [
-            'advanced_css' => [
+            'advancedCss' => [
                 $breakpoint => [
                     'css' => $trimmed_css,
                 ],

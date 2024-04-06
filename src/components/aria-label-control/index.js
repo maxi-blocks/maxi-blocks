@@ -27,11 +27,12 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 
 	const onChangeSVGAria = useCallback(
 		value => {
-			const { documentElement } = new DOMParser().parseFromString(
-				getIcon(target),
-				'text/html'
-			);
-			const svg = documentElement.querySelector('svg');
+			const svg = new DOMParser()
+				.parseFromString(getIcon(target), 'text/html')
+				.documentElement.querySelector('svg');
+
+			if (!svg) return null;
+
 			svg.setAttribute('aria-label', value);
 			return svg.outerHTML;
 		},
@@ -51,10 +52,10 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 			onChange({
 				obj: { ariaLabels: newAriaLabels },
 				target,
-				icon: onChangeSVGAria(value),
+				...(!!getIcon && { icon: onChangeSVGAria(value) }),
 			});
 		},
-		[ariaLabels, onChange, onChangeSVGAria, target]
+		[ariaLabels, onChange, onChangeSVGAria, target, getIcon]
 	);
 
 	return (

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -44,20 +45,19 @@ const Inspector = props => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+
+	const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 	const {
 		'icon-position': buttonPosition,
 		buttonSkin,
 		iconRevealAction,
 		skin,
+		'icon-content': iconContent,
+		[`${closeIconPrefix}icon-content`]: closeIconContent,
 	} = attributes;
 	const { selectors, categories } = customCss;
-	const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 	const getCategoriesCss = () => {
-		const {
-			'icon-content': iconContent,
-			[`${closeIconPrefix}icon-content`]: closeIconContent,
-		} = attributes;
 		return without(
 			categories,
 			isEmpty(iconContent) && 'icon',
@@ -65,6 +65,31 @@ const Inspector = props => {
 			skin !== 'icon-reveal' && 'close icon'
 		);
 	};
+
+	const onChangeAriaLabel = useCallback(
+		({ obj, target, icon }) => {
+			maxiSetAttributes({
+				...obj,
+				...(target === 'icon' && {
+					'icon-content': icon,
+				}),
+				...(target === 'close icon' && {
+					[`${closeIconPrefix}icon-content`]: icon,
+				}),
+			});
+		},
+		[closeIconPrefix, maxiSetAttributes]
+	);
+
+	const getAriaIcon = useCallback(
+		target => {
+			if (target === 'icon') return iconContent;
+			if (target === 'close icon') return closeIconContent;
+
+			return null;
+		},
+		[iconContent, closeIconContent]
+	);
 
 	const iconControlsDisabledProps = {
 		disableBackground: true,
@@ -397,6 +422,8 @@ const Inspector = props => {
 									...inspectorTabs.ariaLabel({
 										props,
 										targets: ariaLabelsCategories,
+										onChange: onChangeAriaLabel,
+										getIcon: getAriaIcon,
 									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({

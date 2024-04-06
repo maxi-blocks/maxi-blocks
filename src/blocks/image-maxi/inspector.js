@@ -4,6 +4,7 @@
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -118,6 +119,24 @@ const Inspector = props => {
 		}
 		return response;
 	};
+
+	const onChangeAriaLabel = useCallback(
+		({ obj, target, icon }) => {
+			maxiSetAttributes({
+				...obj,
+				...(target === 'image' &&
+					SVGElement && {
+						SVGElement: icon,
+					}),
+			});
+		},
+		[SVGElement, maxiSetAttributes]
+	);
+
+	const getAriaIcon = useCallback(
+		target => (target === 'image' ? SVGElement : null),
+		[SVGElement]
+	);
 
 	return (
 		<InspectorControls>
@@ -487,6 +506,8 @@ const Inspector = props => {
 									...inspectorTabs.ariaLabel({
 										props,
 										targets: ariaLabelsCategories,
+										onChange: onChangeAriaLabel,
+										getIcon: getAriaIcon,
 									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({

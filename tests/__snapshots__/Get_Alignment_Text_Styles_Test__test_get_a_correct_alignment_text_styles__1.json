@@ -1,0 +1,23 @@
+{
+    "general": {
+        "text-align": "right"
+    },
+    "xxl": {
+        "text-align": "left"
+    },
+    "xl": {
+        "text-align": "right"
+    },
+    "l": {
+        "text-align": "left"
+    },
+    "m": {
+        "text-align": "right"
+    },
+    "s": {
+        "text-align": "left"
+    },
+    "xs": {
+        "text-align": "right"
+    }
+}

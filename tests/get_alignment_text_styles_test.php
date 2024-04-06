@@ -1,7 +1,11 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
+
 class Get_Alignment_Text_Styles_Test extends WP_UnitTestCase
 {
+    use MatchesSnapshots;
+
     public function test_get_a_correct_alignment_text_styles()
     {
         $object = [
@@ -16,28 +20,6 @@ class Get_Alignment_Text_Styles_Test extends WP_UnitTestCase
 
         $result = get_alignment_text_styles($object);
 
-        $this->assertEquals($result, [
-            'general' => [
-                'text-align' => 'right',
-            ],
-            'xxl' => [
-                'text-align' => 'left',
-            ],
-            'xl' => [
-                'text-align' => 'right',
-            ],
-            'l' => [
-                'text-align' => 'left',
-            ],
-            'm' => [
-                'text-align' => 'right',
-            ],
-            's' => [
-                'text-align' => 'left',
-            ],
-            'xs' => [
-                'text-align' => 'right',
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 }

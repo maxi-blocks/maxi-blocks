@@ -1,0 +1,70 @@
+{
+    " .maxi-block-button": {
+        "advancedCss": {
+            "general": {
+                "css": "display: block; margin: 10px 0; text-align: center; transition: background-color 0.3s ease;"
+            },
+            "xxl": {
+                "css": "padding: 15px 25px; border-radius: 5px;"
+            },
+            "xl": {
+                "css": "padding: 14px 23px;"
+            },
+            "l": {
+                "css": "padding: 13px 21px;"
+            },
+            "m": {
+                "css": "padding: 12px 20px;"
+            },
+            "s": {
+                "css": "padding: 11px 18px;"
+            },
+            "xs": {
+                "css": "padding: 10px 15px; font-size: 12px;"
+            }
+        }
+    },
+    "": {
+        "advancedCss": {
+            "general": {
+                "css": "font-family: Arial, sans-serif; background-color: #f4f4f4;"
+            },
+            "xxl": {
+                "css": "font-size: 18px;"
+            },
+            "xl": {
+                "css": "font-size: 16px;"
+            },
+            "l": {
+                "css": "font-size: 15px;"
+            },
+            "m": {
+                "css": "font-size: 14px;"
+            }
+        }
+    },
+    " .maxi-block-button:hover": {
+        "advancedCss": {
+            "xxl": {
+                "css": "background-color: #eee;"
+            }
+        }
+    },
+    " .maxi-block-button::before": {
+        "advancedCss": {
+            "xl": {
+                "css": "content: 'XL';"
+            }
+        }
+    },
+    " nav ul li": {
+        "advancedCss": {
+            "l": {
+                "css": "display: inline-block; margin-right: 20px;"
+            },
+            "m": {
+                "css": "display: block; margin-bottom: 10px;"
+            }
+        }
+    }
+}

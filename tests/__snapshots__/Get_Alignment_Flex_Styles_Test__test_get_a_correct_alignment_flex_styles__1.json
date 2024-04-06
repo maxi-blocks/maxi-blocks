@@ -1,0 +1,23 @@
+{
+    "general": {
+        "justify-content": "flex-end"
+    },
+    "xxl": {
+        "justify-content": "flex-start"
+    },
+    "xl": {
+        "justify-content": "flex-end"
+    },
+    "l": {
+        "justify-content": "flex-start"
+    },
+    "m": {
+        "justify-content": "flex-end"
+    },
+    "s": {
+        "justify-content": "flex-start"
+    },
+    "xs": {
+        "justify-content": "flex-end"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    " .maxi-block-button": {
+        "advancedCss": {
+            "general": {
+                "css": "color: yellow;"
+            }
+        }
+    },
+    " .maxi-block-button:hover": {
+        "advancedCss": {
+            "general": {
+                "css": "color: red;"
+            }
+        }
+    },
+    " .maxi-block-button::before": {
+        "advancedCss": {
+            "general": {
+                "css": "content: 'before';"
+            }
+        }
+    },
+    "": {
+        "advancedCss": {
+            "general": {
+                "css": "background: green;"
+            }
+        }
+    }
+}

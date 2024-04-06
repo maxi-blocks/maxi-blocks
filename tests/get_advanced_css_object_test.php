@@ -1,7 +1,11 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
+
 class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 {
+    use MatchesSnapshots;
+
     public function test_should_handle_basic_css_correctly()
     {
         $input = [
@@ -15,23 +19,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: red;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: yellow;',
-                    ],
-                ],
-            ],
-        ]);
-
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_no_selectors()
@@ -42,15 +30,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: blue;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_selectors_with_spaces()
@@ -66,22 +46,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: green;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button button .maxi-block-button__content' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: yellow;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_multiple_selectors()
@@ -101,29 +66,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: green;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: red;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button:hover' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: red;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_pseudo_selectors()
@@ -145,36 +88,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: green;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: yellow;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button::before' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'content: \'before\';',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button:hover' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'color: red;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_all_responsive_breakpoints_correctly()
@@ -219,33 +133,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: white;',
-                    ],
-                    'l' => [
-                        'css' => 'font-size: 20px;',
-                    ],
-                    'm' => [
-                        'css' => 'font-size: 18px;',
-                    ],
-                    's' => [
-                        'css' => 'font-size: 16px;',
-                    ],
-                    'xl' => [
-                        'css' => 'font-size: 22px;',
-                    ],
-                    'xs' => [
-                        'css' => 'font-size: 14px;',
-                    ],
-                    'xxl' => [
-                        'css' => 'font-size: 24px;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_a_subset_of_responsive_breakpoints_correctly()
@@ -275,24 +163,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: white;',
-                    ],
-                    'm' => [
-                        'css' => 'font-size: 18px;',
-                    ],
-                    's' => [
-                        'css' => 'font-size: 16px;',
-                    ],
-                    'xxl' => [
-                        'css' => 'font-size: 24px;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_complex_css_structures_across_breakpoints()
@@ -362,79 +233,10 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'font-family: Arial, sans-serif; background-color: #f4f4f4;',
-                    ],
-                    'l' => [
-                        'css' => 'font-size: 15px;',
-                    ],
-                    'm' => [
-                        'css' => 'font-size: 14px;',
-                    ],
-                    'xl' => [
-                        'css' => 'font-size: 16px;',
-                    ],
-                    'xxl' => [
-                        'css' => 'font-size: 18px;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'display: block; margin: 10px 0; text-align: center; transition: background-color 0.3s ease;',
-                    ],
-                    'l' => [
-                        'css' => 'padding: 13px 21px;',
-                    ],
-                    'm' => [
-                        'css' => 'padding: 12px 20px;',
-                    ],
-                    's' => [
-                        'css' => 'padding: 11px 18px;',
-                    ],
-                    'xl' => [
-                        'css' => 'padding: 14px 23px;',
-                    ],
-                    'xs' => [
-                        'css' => 'padding: 10px 15px; font-size: 12px;',
-                    ],
-                    'xxl' => [
-                        'css' => 'padding: 15px 25px; border-radius: 5px;',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button::before' => [
-                'advancedCss' => [
-                    'xl' => [
-                        'css' => 'content: \'XL\';',
-                    ],
-                ],
-            ],
-            ' .maxi-block-button:hover' => [
-                'advancedCss' => [
-                    'xxl' => [
-                        'css' => 'background-color: #eee;',
-                    ],
-                ],
-            ],
-            ' nav ul li' => [
-                'advancedCss' => [
-                    'l' => [
-                        'css' => 'display: inline-block; margin-right: 20px;',
-                    ],
-                    'm' => [
-                        'css' => 'display: block; margin-bottom: 10px;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
-	public function test_should_handle_css_with_missing_closing_brace()
+    public function test_should_handle_css_with_missing_closing_brace()
     {
         $input = [
             'advanced-css-general' => '
@@ -446,15 +248,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: yellow;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_missing_closing_brace_in_nested_braces()
@@ -472,22 +266,7 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: yellow;',
-                    ],
-                ],
-            ],
-            ' p' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'text-align: center;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
     public function test_should_handle_css_with_multiple_unmatched_braces()
@@ -504,25 +283,17 @@ class Get_Advanced_Css_Object_Test extends WP_UnitTestCase
 
         $result = get_advanced_css_object($input);
 
-        $this->assertEquals($result, [
-            '' => [
-                'advancedCss' => [
-                    'general' => [
-                        'css' => 'background: teal;',
-                    ],
-                ],
-            ],
-        ]);
+        $this->assertMatchesJsonSnapshot(json_encode($result));
     }
 
-	public function test_should_handle_empty_css_correctly()
-	{
-		$input = [
-			'advanced-css-general' => '',
-		];
+    public function test_should_handle_empty_css_correctly()
+    {
+        $input = [
+            'advanced-css-general' => '',
+        ];
 
-		$result = get_advanced_css_object($input);
+        $result = get_advanced_css_object($input);
 
-		$this->assertEquals($result, []);
-	}
+        $this->assertMatchesJsonSnapshot(json_encode($result));
+    }
 }

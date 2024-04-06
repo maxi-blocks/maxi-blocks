@@ -16,6 +16,7 @@ build
 /artifacts
 js/min
 vendor
+.phpunit.result.cache
 
 # Ignore Mac DS_Store files
 **/.DS_Store

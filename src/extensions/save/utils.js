@@ -39,6 +39,18 @@ const WithLink = props => {
 	const hasDCLink =
 		dcStatus && dcLinkStatus && !inlineLinkFields.includes(dcLinkTarget);
 
+	if (hasDCLink) {
+		console.log('linkSettings', linkSettings);
+		console.log('dynamicContent', dynamicContent);
+		console.log('children', children);
+		console.log(getLinkAttributesFromLinkSettings(
+			linkSettings,
+			dcStatus,
+			dcLinkStatus
+		));
+	}
+
+
 	if (hasLink || hasDCLink) {
 		return (
 			<a

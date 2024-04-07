@@ -1322,6 +1322,7 @@ class MaxiBlocks_DynamicContent
 
         } else {
             $user = $this->get_post($attributes);
+            $user_id = $user->data->ID;
         }
 
         $user_dictionary = [

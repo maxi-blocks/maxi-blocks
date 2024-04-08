@@ -249,11 +249,14 @@ const DynamicContent = props => {
 			getTypes(
 				source === 'wp' ? contentType : source,
 				true,
-				getCurrentTemplateSlug()
+				currentTemplateType
 			) || [];
 
 		setPostTypesOptions(postTypes);
 	}, [contentType, source, currentTemplateType]);
+
+	console.log('postTypesOptions');
+	console.log(postTypesOptions);
 
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {

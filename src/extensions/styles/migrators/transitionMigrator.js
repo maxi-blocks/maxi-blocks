@@ -13,7 +13,7 @@ import { isNil } from 'lodash';
 /**
  * This migrator is used to ensure transition objects are complete
  */
-const name = 'Transition migrator';
+const name = 'Transition attributes';
 
 const attributes = breakpointAttributesCreator({
 	obj: {
@@ -44,7 +44,8 @@ const isEligible = blockAttributes => {
 
 	const defaultTransitionByBlock =
 		data?.transition ||
-		transitionAttributesCreator({ selectors: data?.customCss?.selectors });
+		transitionAttributesCreator({ selectors: data?.customCss?.selectors })
+			?.transition?.default;
 
 	// Check if all transition keys exist on each transition selector object
 	const allSelectorHasAllTransitions = Object.entries(

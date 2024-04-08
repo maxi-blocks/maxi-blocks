@@ -214,7 +214,7 @@ _Updates 8 April 2024_
 MaxiBlocks v1.8.2
 * Update: Added Dynamic Content current item info to Archive templates.
 * Fix: Resolved migrators for Transition and Interaction Builder running on every Editor load.
-* Fix: Addressed issue of Dynamic Content links loosing styles on frontend.
+* Fix: Addressed issue of Dynamic Content links losing styles on frontend.
 
 _Updates 4 April 2024_
 MaxiBlocks v1.8.1

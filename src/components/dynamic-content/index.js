@@ -255,9 +255,6 @@ const DynamicContent = props => {
 		setPostTypesOptions(postTypes);
 	}, [contentType, source, currentTemplateType]);
 
-	console.log('postTypesOptions');
-	console.log(postTypesOptions);
-
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
 			const validatedAttributes = validationsValues(

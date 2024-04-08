@@ -640,10 +640,6 @@ class MaxiBlocks_DynamicContent
             $link = get_permalink($post->ID);
         }
 
-        // echo $link.'<br>';
-        // echo htmlspecialchars($content).'<br>';
-        // echo '<br>==========================<br>';
-
         $content = str_replace('$link-to-replace', $link, $content);
 
         return $content;
@@ -657,6 +653,7 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
+            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
@@ -704,26 +701,14 @@ class MaxiBlocks_DynamicContent
             $response = 'No content found';
         }
 
-        // Before replacing the placeholder in the content, check if the response contains two or more <a> tags
-        if (substr_count($response, '<a') >= 2) {
-            // If yes, wrap the response in a div
-            // echo htmlspecialchars($response);
-            // echo '<br>';
-            // echo htmlspecialchars($content);
-            // echo '<br>';
-
+        if ($dc_link_status) {
             $response = "<p class=\"maxi-text-block__content\">{$response}</p>";
             $pattern = '/<p class="maxi-text-block__content">\s*\$text-to-replace\s*<\/p>/';
             $replacement = "<p class=\"maxi-text-block__content\">{$response}</p>";
-            $content = preg_replace($pattern, $replacement, $content, 1); // Limit to 1 replacement to ensure only the targeted part is replaced
+            $content = preg_replace($pattern, $replacement, $content, 1);
 
-            // First, remove the opening <a class="maxi-link-wrapper"> tag
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
 
-            // Then, remove the closing </a> tag
-            //$content = str_replace('</a>', '', $content);
-
-            // Now, replace the $text-to-replace placeholder with $response
             $content = str_replace('$text-to-replace', $response, $content);
 
             return $content;

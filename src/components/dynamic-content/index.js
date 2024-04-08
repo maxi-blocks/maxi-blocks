@@ -249,7 +249,7 @@ const DynamicContent = props => {
 			getTypes(
 				source === 'wp' ? contentType : source,
 				true,
-				getCurrentTemplateSlug()
+				currentTemplateType
 			) || [];
 
 		setPostTypesOptions(postTypes);

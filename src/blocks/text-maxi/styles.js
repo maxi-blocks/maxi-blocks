@@ -724,6 +724,19 @@ const getStyles = (props, getListItemsLength) => {
 						props.blockStyle
 					),
 				}),
+				...(props['dc-status'] && {
+					...getLinkStyles(
+						{
+							...getGroupAttributes(props, [
+								'link',
+								'typography',
+								'typographyHover',
+							]),
+						},
+						[`${element} > .maxi-block--has-link`],
+						props.blockStyle
+					),
+				}),
 			},
 			data,
 			props

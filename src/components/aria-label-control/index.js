@@ -9,6 +9,7 @@ import { useCallback, useMemo, useState } from '@wordpress/element';
  */
 import TextControl from '../text-control';
 import SelectControl from '../select-control';
+import { setSVGAriaLabel } from '../../extensions/svg';
 
 /**
  * External dependencies
@@ -25,20 +26,6 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 		}));
 	}, [targets]);
 
-	const onChangeSVGAria = useCallback(
-		value => {
-			const svg = new DOMParser()
-				.parseFromString(getIcon(target), 'text/html')
-				.documentElement.querySelector('svg');
-
-			if (!svg) return null;
-
-			svg.setAttribute('aria-label', value);
-			return svg.outerHTML;
-		},
-		[getIcon, target]
-	);
-
 	const onChangeAriaLabel = useCallback(
 		value => {
 			const newAriaLabels = { ...ariaLabels };
@@ -52,10 +39,12 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 			onChange({
 				obj: { ariaLabels: newAriaLabels },
 				target,
-				...(!!getIcon && { icon: onChangeSVGAria(value) }),
+				...(!!getIcon && {
+					icon: setSVGAriaLabel(value, getIcon, target),
+				}),
 			});
 		},
-		[ariaLabels, onChange, onChangeSVGAria, target, getIcon]
+		[ariaLabels, onChange, target, getIcon]
 	);
 
 	return (

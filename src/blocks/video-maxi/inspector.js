@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useCallback } from '@wordpress/element';
 import loadable from '@loadable/component';
 
 /**
@@ -50,8 +51,31 @@ const Inspector = props => {
 		playerType,
 		'overlay-mediaID': overlayMediaId,
 		'overlay-altSelector': overlayAltSelector,
+		'close-icon-content': closeIconContent,
+		'play-icon-content': playIconContent,
 	} = attributes;
 	const { selectors, categories } = customCss;
+
+	const onChangeAriaLabel = useCallback(
+		({ obj, target, icon }) => {
+			maxiSetAttributes({
+				...obj,
+				...(target === 'close icon' && {
+					'close-icon-content': icon,
+				}),
+				...(target === 'play icon' && {
+					'play-icon-content': icon,
+				}),
+			});
+		},
+		[maxiSetAttributes]
+	);
+
+	const getAriaIcon = useCallback(
+		target =>
+			target === 'close icon' ? closeIconContent : playIconContent,
+		[closeIconContent, playIconContent]
+	);
 
 	return (
 		<InspectorControls>
@@ -130,6 +154,9 @@ const Inspector = props => {
 													breakpoint={deviceType}
 													clientId={clientId}
 													blockStyle={blockStyle}
+													ariaLabels={
+														attributes.ariaLabels
+													}
 													onChange={obj =>
 														maxiSetAttributes(obj)
 													}
@@ -164,6 +191,9 @@ const Inspector = props => {
 															inlineStylesTargets.playIcon
 														);
 													}}
+													ariaLabels={
+														attributes.ariaLabels
+													}
 													{...getGroupAttributes(
 														attributes,
 														['icon', 'iconHover'],
@@ -268,6 +298,8 @@ const Inspector = props => {
 									...inspectorTabs.ariaLabel({
 										props,
 										targets: ariaLabelsCategories,
+										onChange: onChangeAriaLabel,
+										getIcon: getAriaIcon,
 									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({

@@ -50,6 +50,7 @@ const icon = ({
 		[`${prefix}icon-status-hover-target`]: hoverStatusTarget,
 		blockStyle,
 		[`${prefix}svgType`]: svgType,
+		ariaLabels,
 	} = attributes;
 
 	const iconControlBasicProps = {
@@ -69,6 +70,7 @@ const icon = ({
 		type,
 		prefix,
 		getIconWithColor: args => getIconWithColor(attributes, args, prefix),
+		ariaLabels,
 	};
 
 	const groupAttributes = [

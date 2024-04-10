@@ -2,9 +2,10 @@
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/convert_aspect_ratio_to_decimal.php';
 
-function get_aspect_ratio($ratio, $custom_ratio) {
+function get_aspect_ratio($ratio, $custom_ratio = null)
+{
     if ($ratio === 'original') {
-        return [];
+        return null;
     }
 
     $aspect_ratio = null;
@@ -25,8 +26,9 @@ function get_aspect_ratio($ratio, $custom_ratio) {
         case 'ar169':
             $aspect_ratio = '16 / 9';
             break;
-		case 'custom':
-			$aspect_ratio = strval(convert_aspect_ratio_to_decimal($custom_ratio));
+        case 'custom':
+            $aspect_ratio = strval(convert_aspect_ratio_to_decimal($custom_ratio));
+            break;
         default:
             $aspect_ratio = '';
             break;

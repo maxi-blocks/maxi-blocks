@@ -158,8 +158,8 @@ window.onload = () => {
 						? `aria-label='${ariaLabels.popup}'`
 						: '';
 					const popupContent = `
-					<div class='maxi-map-block__popup' >
-						<div class='maxi-map-block__popup__content' ${ariaLabel}>
+					<div class='maxi-map-block__popup' ${ariaLabel}>
+						<div class='maxi-map-block__popup__content'>
 						${
 							heading &&
 							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`

@@ -274,6 +274,7 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		addedResponse += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
 		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
 		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
+		addedResponse += `${textMaxiLinkPrefix}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
 
 		[
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
@@ -288,6 +289,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			addedResponse += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
 			addedResponse += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
 			addedResponse += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
+			addedResponse += `${target}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target}:visited:hover span { color: var(--maxi-${style}-link-hover); }`;
 		});
 
 		// Image Maxi
@@ -588,6 +591,9 @@ const getWPNativeStyles = ({
 			}
 			if (styleCard[`--maxi-${style}-link-visited`]) {
 				addedResponse += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
+				if (styleCard[`--maxi-${style}-link-hover`]) {
+					addedResponse += `${WPNativeLinkPrefix}${suffix}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
+				}
 			}
 		});
 

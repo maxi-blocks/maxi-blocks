@@ -22,10 +22,13 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		[`.block-editor-block-list__block ${target}:visited`]: {
 			link: {},
 		},
-		[`${target}:visited span`]: { link: {} },
+		[`.block-editor-block-list__block ${target}:visited:hover`]: {
+			link: {},
+		},
 		[`${target}:visited:hover`]: {
 			link: {},
 		},
+		[`${target}:visited:hover span`]: { link: {} },
 	};
 
 	const getTextDecoration = (breakpoint, isHover = false) => {

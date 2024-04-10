@@ -114,10 +114,18 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		if (isBoolean(linkHoverPaletteStatus) && !linkHoverPaletteStatus) {
 			response[[`${target}:visited:hover`]].link[breakpoint] = {};
+			response[
+				[`.block-editor-block-list__block ${target}:visited:hover`]
+			].link[breakpoint] = {};
+			response[[`${target}:visited:hover span`]].link[breakpoint] = {};
 
 			response[`${target}:hover`].link[breakpoint].color = linkHoverColor;
-
 			response[[`${target}:visited:hover`]].link[breakpoint].color =
+				linkHoverColor;
+			response[
+				[`.block-editor-block-list__block ${target}:visited:hover`]
+			].link[breakpoint].color = linkHoverColor;
+			response[[`${target}:visited:hover span`]].link[breakpoint].color =
 				linkHoverColor;
 		} else if (linkHoverPaletteColor) {
 			const color = getColorRGBAString(
@@ -136,8 +144,13 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			);
 
 			response[`${target}:hover`].link[breakpoint].color = color;
-
 			response[[`${target}:visited:hover`]].link[breakpoint] = { color };
+			response[
+				[`.block-editor-block-list__block ${target}:visited:hover`]
+			].link[breakpoint] = { color };
+			response[[`${target}:visited:hover span`]].link[breakpoint] = {
+				color,
+			};
 		}
 
 		const {

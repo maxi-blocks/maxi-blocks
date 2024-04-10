@@ -58,7 +58,7 @@ const save = props => {
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			aria-label={attributes.ariaLabels?.block}
+			aria-label={attributes.ariaLabels?.canvas}
 		>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{addAlt(

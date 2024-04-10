@@ -60,7 +60,10 @@ const save = props => {
 	const showDCContent = dcStatus && dcField !== 'static_text';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.canvas}
+		>
 			<Button
 				className={buttonClasses}
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}

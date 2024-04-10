@@ -54,7 +54,7 @@ const save = props => {
 		<MaxiBlock.save
 			classes={`maxi-video-block--${videoType}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			aria-label={ariaLabels.block}
+			aria-label={ariaLabels.canvas}
 		>
 			{embedUrl &&
 				videoValidation(embedUrl) &&

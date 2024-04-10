@@ -43,7 +43,7 @@ const save = props => {
 				isList && 'maxi-list-block'
 			)}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			aria-label={ariaLabels.block}
+			aria-label={ariaLabels['text wrapper']}
 		>
 			{!isList && (
 				<RichText.Content

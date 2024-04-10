@@ -178,7 +178,7 @@ const customCss = {
 		'background hover',
 	],
 };
-const ariaLabelsCategories = ['button', 'icon'];
+const ariaLabelsCategories = ['canvas', 'button', 'icon'];
 const transition = {
 	...transitionDefault,
 	block: {

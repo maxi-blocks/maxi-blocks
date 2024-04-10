@@ -14,13 +14,17 @@ import AriaLabelControl from '../aria-label-control';
 const ariaLabel = ({ props, targets, getIcon, onChange }) => {
 	const { attributes } = props;
 
+	const defaultOnChange = ({ obj }) => {
+		props.setAttributes(obj);
+	};
+
 	return {
 		label: __('Aria label', 'maxi-blocks'),
 		content: (
 			<AriaLabelControl
 				targets={targets}
 				ariaLabels={attributes.ariaLabels}
-				onChange={onChange}
+				onChange={onChange ?? defaultOnChange}
 				getIcon={getIcon}
 			/>
 		),

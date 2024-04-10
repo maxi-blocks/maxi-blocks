@@ -121,6 +121,7 @@ window.onload = () => {
 					'map-markers': mapMarkers,
 					'map-marker-icon': mapMarkerIcon,
 					'map-marker-heading-level': mapMarkerHeadingLevel,
+					ariaLabels,
 				} = item;
 
 				const map = L.map(`maxi-map-block__container-${uniqueID}`, {
@@ -153,9 +154,12 @@ window.onload = () => {
 					const { latitude, longitude, heading, description } =
 						marker;
 
+					const ariaLabel = ariaLabels?.popup
+						? `aria-label='${ariaLabels.popup}'`
+						: '';
 					const popupContent = `
-					<div class='maxi-map-block__popup'>
-						<div class='maxi-map-block__popup__content'>
+					<div class='maxi-map-block__popup' >
+						<div class='maxi-map-block__popup__content' ${ariaLabel}>
 						${
 							heading &&
 							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`

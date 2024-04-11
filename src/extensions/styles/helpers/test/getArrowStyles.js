@@ -1,5 +1,15 @@
 import getArrowStyles from '../getArrowStyles';
 
+/**
+ * PHP snapshots
+ */
+import differentResponsiveStagesColorBackgroundSettings from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_styles_with_different_responsive_stages_color_background_settings__1.json';
+import hoverStylesWithBackgroundShadowAndBorderCustomColors from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_hover_styles_with_background_shadow_and_border_custom_colors__1.json';
+import emptyArrowStylesWhenArrowStatusIsOff from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_arrow_status_is_off__1.json';
+import emptyArrowStylesWhenBackgroundColorIsNotSelected from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_not_selected__1.json';
+import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButSomeStyleOnHoverIsNotSolid from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_some_style_on_hover_is_not_solid__1.json';
+import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButStyleIsNotSolid from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_style_is_not_solid__1.json';
+
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)
 );
@@ -28,6 +38,24 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 			},
 		};
 	});
+});
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
 });
 
 describe('getArrowStyles', () => {
@@ -132,6 +160,9 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			differentResponsiveStagesColorBackgroundSettings
+		);
 	});
 
 	it.skip('Get a correct palette colors arrow hover styles', () => {
@@ -248,6 +279,9 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			hoverStylesWithBackgroundShadowAndBorderCustomColors
+		);
 	});
 
 	it('Return empty arrow styles when arrow status is off', () => {
@@ -259,6 +293,7 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(emptyArrowStylesWhenArrowStatusIsOff);
 	});
 
 	it('Return empty arrow styles when background color is not selected', () => {
@@ -271,6 +306,9 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			emptyArrowStylesWhenBackgroundColorIsNotSelected
+		);
 	});
 
 	it('Return empty arrow styles when background color is selected and border is active but the style is not solid', () => {
@@ -285,6 +323,9 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButStyleIsNotSolid
+		);
 	});
 
 	it('Return empty arrow styles when background color is selected and border is active but some style on hover is not solid', () => {
@@ -300,5 +341,8 @@ describe('getArrowStyles', () => {
 
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButSomeStyleOnHoverIsNotSolid
+		);
 	});
 });

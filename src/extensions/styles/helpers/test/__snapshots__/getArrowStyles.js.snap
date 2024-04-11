@@ -125,16 +125,16 @@ exports[`getArrowStyles Get a correct arrow styles with different values for dif
     "arrow": {
       "general": {
         "display": "block",
-        "height": "2px",
-        "left": "1%",
-        "top": "-1.4142135623730951px",
-        "width": "2px",
+        "height": "3px",
+        "left": "2%",
+        "top": "-2px",
+        "width": "3px",
       },
       "l": {
         "display": "none",
         "height": "1px",
         "left": "4%",
-        "top": "-0.7071067811865476px",
+        "top": "-0px",
         "width": "1px",
       },
       "m": {
@@ -155,7 +155,7 @@ exports[`getArrowStyles Get a correct arrow styles with different values for dif
         "display": "block",
         "height": "3px",
         "left": "2%",
-        "top": "-2.121320343559643px",
+        "top": "-2px",
         "width": "3px",
       },
       "xs": {
@@ -169,7 +169,7 @@ exports[`getArrowStyles Get a correct arrow styles with different values for dif
         "display": "block",
         "height": "1px",
         "left": "4%",
-        "top": "-0.7071067811865476px",
+        "top": "-0px",
         "width": "1px",
       },
     },

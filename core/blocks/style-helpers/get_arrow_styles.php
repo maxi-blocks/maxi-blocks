@@ -181,7 +181,7 @@ function get_arrow_styles($props)
         !$is_background_color ||
         ($is_border_active && !$is_correct_border)
     ) {
-        return [];
+        return (object)[];
     }
 
     $response = [];
@@ -195,17 +195,17 @@ function get_arrow_styles($props)
     $response["{$target} .maxi-container-arrow"] = [
         'shadow' => get_box_shadow_styles([
             'obj' => get_group_attributes($props, 'boxShadow'),
-            'dropShadow' => true,
+            'drop_shadow' => true,
             'block_style' => $block_style,
         ]),
     ];
 
     if (array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover']) {
-        $response[$target . $is_hover ? ':hover' : '' . " .maxi-container-arrow"] = [
+        $response[$target . ($is_hover ? ':hover' : '') . " .maxi-container-arrow"] = [
             'shadow' => get_box_shadow_styles([
                 'obj' => get_group_attributes($props, 'boxShadow', $is_hover),
                 'is_hover' => $is_hover,
-                'dropShadow' => true,
+                'drop_shadow' => true,
                 'block_style' => $block_style,
             ]),
         ];
@@ -223,7 +223,7 @@ function get_arrow_styles($props)
         ),
     ];
 
-    if ($props['block-background-status-hover']) {
+    if(isset($props['block-background-status-hover']) && $props['block-background-status-hover']) {
         $response["{$target}:hover .maxi-container-arrow:before"] = [
             'background' => get_arrow_color_object($bg_layers, $block_style, true),
             'borderRadius' => get_arrow_border(
@@ -233,7 +233,7 @@ function get_arrow_styles($props)
         ];
     }
 
-    if ($props['block-background-status-hover']) {
+    if (isset($props['block-background-status-hover']) && $props['block-background-status-hover']) {
         $response["{$target}:hover .maxi-container-arrow .maxi-container-arrow--content:after"] = [
             'background' => get_arrow_color_object($bg_layers, $block_style, $is_hover),
         ];

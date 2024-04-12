@@ -389,13 +389,13 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
     "color": {
       "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "height": "102px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
@@ -474,13 +474,13 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
     "color": {
       "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "height": "102px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",
@@ -554,12 +554,12 @@ exports[`getBackgroundStyles Get correct block background styles for color layer
     "color": {
       "general": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.59)",
-        "bottom": "11%",
-        "height": "101px",
-        "left": "11%",
-        "right": "11%",
-        "top": "11%",
-        "width": "101px",
+        "bottom": "13%",
+        "height": "103px",
+        "left": "13%",
+        "right": "13%",
+        "top": "13%",
+        "width": "103px",
       },
       "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.59)",
@@ -1091,14 +1091,14 @@ exports[`getBackgroundStyles Get correct block background styles for gradient la
     "gradient": {
       "general": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
-        "bottom": "10%",
+        "bottom": "12%",
         "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "height": "102px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
@@ -1178,13 +1178,13 @@ exports[`getBackgroundStyles Get correct block background styles for gradient la
     "gradient": {
       "general": {
         "background": "radial-gradient(rgba(26,229,6,0.71) 0%,rgba(186,69,107,0.71) 52%,rgba(224,218,82,0.71) 100%)",
-        "bottom": "11%",
+        "bottom": "13%",
         "clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
-        "height": "101px",
-        "left": "11%",
-        "right": "11%",
-        "top": "11%",
-        "width": "101px",
+        "height": "103px",
+        "left": "13%",
+        "right": "13%",
+        "top": "13%",
+        "width": "103px",
       },
       "l": {
         "background": "radial-gradient(rgba(26,229,6,0.37) 0%,rgba(89,136,156,0.37) 25%,rgba(186,69,107,0.37) 52%,rgba(0,114,163,0.03) 74%,rgba(224,218,82,0.37) 100%)",
@@ -1539,12 +1539,12 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
     "shape": {
       "general": {
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "bottom": "13%",
@@ -1686,12 +1686,12 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
     "shape": {
       "general": {
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "bottom": "13%",
@@ -1784,11 +1784,11 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
   "maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
     "shape": {
       "general": {
-        "bottom": "11%",
-        "left": "11%",
-        "right": "11%",
-        "top": "11%",
-        "width": "101px",
+        "bottom": "13%",
+        "left": "13%",
+        "right": "13%",
+        "top": "13%",
+        "width": "103px",
       },
       "l": {
         "bottom": "14%",
@@ -1888,14 +1888,14 @@ exports[`getBackgroundStyles Get correct block background styles for video layer
       "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
+        "height": "102px",
+        "left": "12%",
         "opacity": 0.11,
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
@@ -1987,14 +1987,14 @@ exports[`getBackgroundStyles Get correct block background styles for video layer
       "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
+        "height": "102px",
+        "left": "12%",
         "opacity": 0.11,
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
@@ -2081,13 +2081,13 @@ exports[`getBackgroundStyles Get correct block background styles for video layer
       "general": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
         "background-size": "cover",
-        "bottom": "11%",
-        "height": "101px",
-        "left": "11%",
+        "bottom": "13%",
+        "height": "103px",
+        "left": "13%",
         "opacity": 0.82,
-        "right": "11%",
-        "top": "11%",
-        "width": "101px",
+        "right": "13%",
+        "top": "13%",
+        "width": "103px",
       },
       "l": {
         "background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
@@ -2430,13 +2430,13 @@ exports[`getBackgroundStyles Get correct block background styles when hover stat
     "color": {
       "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.07)",
-        "bottom": "10%",
+        "bottom": "12%",
         "display": "block",
-        "height": "100px",
-        "left": "10%",
-        "right": "10%",
-        "top": "10%",
-        "width": "100px",
+        "height": "102px",
+        "left": "12%",
+        "right": "12%",
+        "top": "12%",
+        "width": "102px",
       },
       "l": {
         "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.3)",

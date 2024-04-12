@@ -523,7 +523,6 @@ const getWPNativeStyles = ({
 	style,
 	isBackend,
 }) => {
-	console.log('getWPNativeStyles');
 	let response = '';
 	const nativeWPPrefix = isBackend
 		? 'wp-block[data-type^="core/"]'
@@ -589,8 +588,6 @@ const getWPNativeStyles = ({
 					}`;
 			}
 		);
-
-		console.log('addedResponse', addedResponse);
 
 		// WP native block when has link
 		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;

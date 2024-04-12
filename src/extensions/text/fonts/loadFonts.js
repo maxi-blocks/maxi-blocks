@@ -21,7 +21,7 @@ import { isEmpty, uniq } from 'lodash';
 const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
-			if (isEmpty(fontName)) return;
+			if (!fontName || fontName === 'undefined') return;
 
 			const fontWeight = fontData?.weight || '400';
 			const fontStyle = fontData?.style;

@@ -4,7 +4,7 @@
 	"name": "maxi-blocks/pane-maxi",
 	"title": "Pane Maxi",
 	"category": "maxi-blocks",
-	"description": "Hide some content inside of it",
+	"description": "Expand or collapse content inside of a panel",
 	"parent": ["maxi-blocks/accordion-maxi"],
 	"example": {
 		"attributes": {

@@ -4,7 +4,7 @@
 	"name": "maxi-blocks/list-item-maxi",
 	"title": "List Item Maxi",
 	"category": "maxi-blocks",
-	"description": "Insert, modify or style text",
+	"description": "Create list items with numbers, bullets or icons",
 	"parent": ["maxi-blocks/text-maxi"],
 	"example": {
 		"attributes": {

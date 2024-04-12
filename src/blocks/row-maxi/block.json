@@ -4,7 +4,7 @@
 	"name": "maxi-blocks/row-maxi",
 	"title": "Row Maxi",
 	"category": "maxi-blocks",
-	"description": "Hide some content inside of it",
+	"description": "Organise blocks horizontally inside a row",
 	"parent": ["maxi-blocks/container-maxi"],
 	"example": {
 		"attributes": {

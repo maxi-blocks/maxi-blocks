@@ -42,6 +42,7 @@ import {
 import {
 	getRelationOptions,
 	validationsValues,
+	getCurrentTemplateSlug,
 } from '../../extensions/DC/utils';
 import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
@@ -129,10 +130,22 @@ const ContextLoop = props => {
 		};
 	}, []);
 
-	const currentRelationOptions = useMemo(
-		() => getRelationOptions(type, contentType),
-		[contentType, type]
-	);
+	const currentTemplateType = getCurrentTemplateSlug();
+
+	const currentRelationOptions = useMemo(() => {
+		const options = getRelationOptions(
+			type,
+			contentType,
+			currentTemplateType
+		);
+
+		// Filter out the item where the value is 'current'
+		const filteredOptions = options.filter(
+			item => item.value !== 'current'
+		);
+
+		return filteredOptions;
+	}, [contentType, type]);
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) && !!currentRelationOptions;

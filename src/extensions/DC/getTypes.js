@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
 /**
@@ -13,7 +14,7 @@ import { typeOptions } from './constants';
  */
 import { isEmpty } from 'lodash';
 
-const getTypes = (contentType, group = true) => {
+const getTypes = (contentType, group = true, currentTemplateSlug = false) => {
 	const customPostTypes = select('maxiBlocks/dynamic-content')
 		.getCustomPostTypes()
 		.map(type => {
@@ -23,7 +24,11 @@ const getTypes = (contentType, group = true) => {
 				label: postType.labels.singular_name,
 				value: postType.slug,
 			};
-		});
+		})
+		.filter(
+			type =>
+				type.value !== 'wp_font_family' && type.value !== 'wp_font_face'
+		);
 	const customTaxonomies = select('maxiBlocks/dynamic-content')
 		.getCustomTaxonomies()
 		.map(type => {
@@ -35,11 +40,23 @@ const getTypes = (contentType, group = true) => {
 			};
 		});
 
+	const allArchives =
+		currentTemplateSlug && currentTemplateSlug.includes('archive')
+			? [
+					{
+						label: __('All archives', 'maxi-blocks'),
+						value: 'archive',
+					},
+			  ]
+			: [];
+
 	if (group) {
 		return isEmpty(customPostTypes)
-			? typeOptions[contentType]
+			? [...typeOptions[contentType], ...allArchives]
 			: {
-					'Standard types': typeOptions[contentType],
+					'Standard types': currentTemplateSlug
+						? [...typeOptions[contentType], ...allArchives]
+						: typeOptions[contentType],
 					'Custom types': [...customPostTypes, ...customTaxonomies],
 			  };
 	}
@@ -48,6 +65,7 @@ const getTypes = (contentType, group = true) => {
 		...typeOptions[contentType],
 		...customPostTypes,
 		...customTaxonomies,
+		...allArchives,
 	];
 };
 

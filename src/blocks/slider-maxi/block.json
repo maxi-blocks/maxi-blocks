@@ -4,7 +4,7 @@
 	"name": "maxi-blocks/slider-maxi",
 	"title": "Slider Maxi (beta)",
 	"category": "maxi-blocks",
-	"description": "Position one or more blocks, arranged side-by-side (horizontal)",
+	"description": "Create slider with blocks, controls and animations",
 	"example": {
 		"attributes": {
 			"preview": true

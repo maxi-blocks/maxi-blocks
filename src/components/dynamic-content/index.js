@@ -33,6 +33,7 @@ import {
 	getFields,
 	validationsValues,
 	getRelationOptions,
+	getCurrentTemplateSlug,
 } from '../../extensions/DC/utils';
 import {
 	fieldOptions,
@@ -61,7 +62,7 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
-const UnlimitedCharacterPoppover = ({ message }) => (
+const UnlimitedCharacterPopover = ({ message }) => (
 	<Popover className='maxi-info-helper-popover maxi-popover-button'>
 		<p>{message}</p>
 	</Popover>
@@ -236,15 +237,23 @@ const DynamicContent = props => {
 		}
 	});
 
+	const currentTemplateType = getCurrentTemplateSlug();
+
 	const currentRelationOptions = useMemo(
-		() => getRelationOptions(type, contentType),
-		[contentType, type]
+		() => getRelationOptions(type, contentType, currentTemplateType),
+		[contentType, type, currentTemplateType]
 	);
 
 	useEffect(() => {
-		const postTypes = getTypes(source === 'wp' ? contentType : source);
+		const postTypes =
+			getTypes(
+				source === 'wp' ? contentType : source,
+				true,
+				currentTemplateType
+			) || [];
+
 		setPostTypesOptions(postTypes);
-	}, [contentType, source]);
+	}, [contentType, source, currentTemplateType]);
 
 	useEffect(() => {
 		if (source === 'acf' && typeof acf === 'undefined') {
@@ -364,11 +373,13 @@ const DynamicContent = props => {
 						}
 					/>
 					{isEmpty(postIdOptions) &&
-					!['settings', 'cart'].includes(type) ? (
+					!['settings', 'cart'].includes(type) &&
+					type !== 'archive' ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>
-							{relationTypes.includes(type) && (
+							{(relationTypes.includes(type) ||
+								type === 'archive') && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -579,7 +590,7 @@ const DynamicContent = props => {
 											value={limit}
 											showHelp
 											helpContent={
-												<UnlimitedCharacterPoppover message='Type 0 for unlimited' />
+												<UnlimitedCharacterPopover message='Type 0 for unlimited' />
 											}
 											onChangeValue={value =>
 												changeProps({

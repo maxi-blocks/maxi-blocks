@@ -22,6 +22,11 @@ class Relation {
 			.getComputedStyle(this.targetEl)
 			.getPropertyValue('transition');
 
+		// Normalize the default transition to ensure consistency across browsers
+		if (this.defaultTransition.trim() === 'none') {
+			this.defaultTransition = 'none 0s ease 0s';
+		}
+
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>
 			Object.keys(item).some(key => !this.breakpoints.includes(key))

@@ -523,6 +523,7 @@ const getWPNativeStyles = ({
 	style,
 	isBackend,
 }) => {
+	console.log('getWPNativeStyles');
 	let response = '';
 	const nativeWPPrefix = isBackend
 		? 'wp-block[data-type^="core/"]'
@@ -558,7 +559,19 @@ const getWPNativeStyles = ({
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input`,
+					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-reply-title small a`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-navigation-link a`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-previous`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-next`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers a`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers span`,
 				].join(', ');
 
 				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
@@ -576,6 +589,8 @@ const getWPNativeStyles = ({
 					}`;
 			}
 		);
+
+		console.log('addedResponse', addedResponse);
 
 		// WP native block when has link
 		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;
@@ -650,6 +665,11 @@ const getWPNativeStyles = ({
 				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
 		]?.join(' ')}}`;
 
+		if (styleCard[`--maxi-${style}-button-color`])
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p.form-submit input {
+			color: var(--maxi-${style}-button-color);
+		}`;
+
 		if (styleCard[`--maxi-${style}-button-color-hover`]) {
 			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
 				color: var(--maxi-${style}-button-color-hover);
@@ -684,6 +704,12 @@ const getWPNativeStyles = ({
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea {
 				background: transparent;
 				color: inherit;
+		}`;
+
+		// Remove form input background
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+			background: transparent;
+			color: inherit;
 		}`;
 
 		return addedResponse;

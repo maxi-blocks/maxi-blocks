@@ -562,6 +562,12 @@ const getWPNativeStyles = ({
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-reply-title small a`,
 					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-comments-form .comment-form textarea`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input`,
+					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-comments-form .comment-reply-title small a`,
+					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-navigation-link a`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-previous`,
@@ -701,12 +707,26 @@ const getWPNativeStyles = ({
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea {
 				background: transparent;
 				color: inherit;
+				maxi-width: 100%;
+		}`;
+
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-comments-form .comment-form textarea {
+			background: transparent;
+			color: inherit;
+			maxi-width: 100%;
 		}`;
 
 		// Remove form input background
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input {
 			background: transparent;
 			color: inherit;
+			maxi-width: 100%;
+		}`;
+
+		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+			background: transparent;
+			color: inherit;
+			maxi-width: 100%;
 		}`;
 
 		return addedResponse;

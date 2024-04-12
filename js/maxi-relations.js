@@ -22,6 +22,13 @@ class Relation {
 			.getComputedStyle(this.targetEl)
 			.getPropertyValue('transition');
 
+		// Normalize the default transition to ensure consistency across browsers
+		if (this.defaultTransition.trim() === 'none') {
+			this.defaultTransition = 'none 0s ease 0s';
+		}
+
+		console.log('defaultTransition', this.defaultTransition); // 🔥
+
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>
 			Object.keys(item).some(key => !this.breakpoints.includes(key))
@@ -931,6 +938,10 @@ class Relation {
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
+		console.log('getTransitionString'); // 🔥
+		console.log('styleObj', styleObj); // 🔥
+		console.log('effectsObj', effectsObj); // 🔥
+		console.log('isIcon', isIcon); // 🔥
 		const {
 			'transition-status': status,
 			'transition-duration': duration,
@@ -954,8 +965,13 @@ class Relation {
 			this.defaultTransition !== 'none 0s ease 0s' &&
 			!transitionString.includes(this.defaultTransition)
 		) {
+			console.log(
+				'defaultTransition',
+				`${this.defaultTransition}, ${transitionString}`
+			); // 🔥
 			return `${this.defaultTransition}, ${transitionString}`;
 		}
+		console.log('transitionString', transitionString); // 🔥
 		return transitionString;
 	}
 

@@ -177,6 +177,31 @@ exports[`getLinkStyles Returns a correct object 1`] = `
       },
     },
   },
+  " p.maxi-text-block__content a:visited:hover span": {
+    "link": {
+      "general": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "l": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "m": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "s": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xl": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xs": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xxl": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+    },
+  },
   ".block-editor-block-list__block  p.maxi-text-block__content a:visited": {
     "link": {
       "general": {
@@ -199,6 +224,31 @@ exports[`getLinkStyles Returns a correct object 1`] = `
       },
       "xxl": {
         "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+    },
+  },
+  ".block-editor-block-list__block  p.maxi-text-block__content a:visited:hover": {
+    "link": {
+      "general": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "l": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "m": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "s": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xl": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xs": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
+      },
+      "xxl": {
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))",
       },
     },
   },
@@ -382,6 +432,31 @@ exports[`getLinkStyles Returns a correct object with custom colors 1`] = `
       },
     },
   },
+  " p.maxi-text-block__content a:visited:hover span": {
+    "link": {
+      "general": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "l": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "m": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "s": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xl": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xs": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xxl": {
+        "color": "rgba(191,192,86,1)",
+      },
+    },
+  },
   ".block-editor-block-list__block  p.maxi-text-block__content a:visited": {
     "link": {
       "general": {
@@ -404,6 +479,31 @@ exports[`getLinkStyles Returns a correct object with custom colors 1`] = `
       },
       "xxl": {
         "color": "rgba(57,189,39,1)",
+      },
+    },
+  },
+  ".block-editor-block-list__block  p.maxi-text-block__content a:visited:hover": {
+    "link": {
+      "general": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "l": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "m": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "s": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xl": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xs": {
+        "color": "rgba(191,192,86,1)",
+      },
+      "xxl": {
+        "color": "rgba(191,192,86,1)",
       },
     },
   },

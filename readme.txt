@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -210,6 +210,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 8 April 2024_
+MaxiBlocks v1.8.2
+* Update: Added Dynamic Content current item info to Archive templates.
+* Fix: Resolved migrators for Transition and Interaction Builder running on every Editor load.
+* Fix: Addressed issue of Dynamic Content links losing styles on frontend.
+
 _Updates 4 April 2024_
 MaxiBlocks v1.8.1
 * Fix: Resolved List Item migrator issue on WordPress 6.5.
@@ -231,18 +237,6 @@ MaxiBlocks v1.8.0
 * Fix: Resolved the PHP error related to the key length exceeding 1000 bytes in certain database configurations.
 * Fix: Addressed the issue of list styles impacting the search page of WordPress Dashboard plugins
 * Fix: Corrected the display of fonts that have issues with bold and thin weights.
-
-_Updates 6 March 2024_
-MaxiBlocks v1.7.3
-* Update: Enhanced Dynamic Content and Context Loop with Custom Post Types and Custom Taxonomy support.
-* Update: Introduced pagination functionality for the Context Loop, enhancing navigation through large datasets.
-* Update: Revamped the MaxiBlocks previews within the Site Editor, now utilizing static images for a quicker and more efficient preview experience, replacing the previous live render approach.
-* Update: Significantly enhanced the performance of both frontend and backend scripts for faster load times and improved efficiency.
-* Update: Implemented a new feature allowing the use of current archive posts as Dynamic Content and within the Context Loop for Archive Templates in the Site Editor, facilitating more dynamic and context-aware designs.
-* Update: Expanded link support to include mailto, tel, sftp, and magnet protocols, broadening the range of link types that can be created and managed.
-* Fix: Corrected the search link functionality within the Search Maxi Block, ensuring accurate and expected search results.
-* Fix: Addressed an issue with inserting templates from the Template Library into Site Editor - Templates - Pages, streamlining the template integration process.
-* Fix: Resolved an issue where specifying a value for a smaller breakpoint could inadvertently alter the value set for a larger breakpoint.
 
 == Upgrade Notice ==
 

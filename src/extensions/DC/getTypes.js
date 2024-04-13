@@ -52,7 +52,7 @@ const getTypes = (contentType, group = true, currentTemplateSlug = false) => {
 
 	if (group) {
 		return isEmpty(customPostTypes)
-			? typeOptions[contentType]
+			? [...typeOptions[contentType], ...allArchives]
 			: {
 					'Standard types': currentTemplateSlug
 						? [...typeOptions[contentType], ...allArchives]

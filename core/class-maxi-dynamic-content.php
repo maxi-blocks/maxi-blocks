@@ -653,6 +653,8 @@ class MaxiBlocks_DynamicContent
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-field' => $dc_field,
+            'dc-link-status' => $dc_link_status,
+            'dc-link-target' => $dc_link_target,
         ) = $attributes;
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
@@ -699,6 +701,16 @@ class MaxiBlocks_DynamicContent
             $this->is_empty = true;
             $response = 'No content found';
         }
+
+        if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
+
+            $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
+
+            $content = str_replace('$text-to-replace', $response, $content);
+
+            return $content;
+        }
+
 
         $content = str_replace('$text-to-replace', $response, $content);
 
@@ -1322,6 +1334,10 @@ class MaxiBlocks_DynamicContent
 
         } else {
             $user = $this->get_post($attributes);
+            if (!is_object($user) || !isset($user->data)) {
+                return 0;
+            }
+            $user_id = $user->data->ID;
         }
 
         $user_dictionary = [

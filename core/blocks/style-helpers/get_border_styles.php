@@ -19,6 +19,12 @@ function get_border_styles($args)
 
     $response = [];
 
+    foreach ($obj as $key => $value) {
+        if (strpos($key, 'palette-sc-status') !== false) {
+            unset($obj[$key]);
+        }
+    }
+
     $hover_status = get_attributes_value([
         'target' => 'border-status-hover',
         'props' => $obj,
@@ -30,24 +36,56 @@ function get_border_styles($args)
 
     $global_hover_status = $is_active && $affect_all;
 
-    if ($is_hover && isset($hover_status) && !$hover_status && !$global_hover_status) {
+    if ($is_hover && !is_null($hover_status) && !$hover_status && !$global_hover_status) {
         return $response;
     }
 
-    $width_keys = [
-        'top',
-        'right',
-        'bottom',
-        'left'
-    ];
-    $radius_keys = [
+    $key_words = [
         'top-left',
         'top-right',
         'bottom-right',
-        'bottom-left'
+        'bottom-left',
+        'top',
+        'right',
+        'bottom',
+        'left',
     ];
 
     $omit_border_style = !$is_IB && !$hover_status && !$global_hover_status;
+
+    $get_color_string = function ($breakpoint) use ($obj, $prefix, $is_hover, $is_button, $hover_status, $global_hover_status, $block_style) {
+        $palette_attributes = get_palette_attributes([
+            'obj' => $obj,
+            'prefix' => $prefix . 'border-',
+            'is_hover' => $is_hover,
+            'breakpoint' => $breakpoint,
+        ]);
+
+        $palette_status = $palette_attributes['palette_status'];
+        $palette_sc_status = $palette_attributes['palette_sc_status'];
+        $palette_color = $palette_attributes['palette_color'];
+        $palette_opacity = $palette_attributes['palette_opacity'];
+        $color = $palette_attributes['color'];
+
+        if (!$palette_status) {
+            return $color;
+        }
+
+        if (!$palette_sc_status && $is_button && (!$is_hover || $hover_status || $global_hover_status)) {
+            return get_color_rgba_string([
+                'first_var' => ($is_button ? 'button-' : '') . 'border-color' . ($is_hover ? '-hover' : ''),
+                'second_var' => 'color-' . $palette_color,
+                'opacity' => $palette_opacity,
+                'block_style' => $block_style,
+            ]);
+        }
+
+        return get_color_rgba_string([
+            'first_var' => 'color-' . $palette_color,
+            'opacity' => $palette_opacity,
+            'block_style' => $block_style,
+        ]);
+    };
 
     // iterate over breakpoints
     foreach ($breakpoints as $breakpoint) {
@@ -57,173 +95,76 @@ function get_border_styles($args)
             'target' => $prefix . 'border-style',
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
-            'isHover' => $is_hover,
+            'is_hover' => $is_hover,
         ]);
 
-        $is_border_none = !isset($border_style) || $border_style === 'none';
+        $is_border_none = is_null($border_style) || $border_style === 'none';
         $omit_border_style = $omit_border_style ? $is_border_none : false;
 
-        $get_value_and_unit = function ($target, $unit_target) use ($obj, $is_hover, $prefix, $breakpoint) {
-            $current_value = get_attributes_value([
-                'target' => $target,
-                'props' => $obj,
-                'is_hover' => $is_hover,
-                'prefix' => $prefix,
-                'breakpoint' => $breakpoint,
-            ]);
-            $current_unit = get_attributes_value([
-                'target' => "$unit_target",
-                'props' => $obj,
-                'is_hover' => $is_hover,
-                'prefix' => $prefix,
-                'breakpoint' => $breakpoint,
-            ]) ?? get_attributes_value([
-                'target' => $target . '-unit',
-                'props' => $obj,
-                'is_hover' => $is_hover,
-                'prefix' => $prefix,
-                'breakpoint' => $breakpoint,
-            ]);
+        $replacer = '/-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b(?!.*\b-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b)/';
 
-            $has_current = isset($current_value) || isset($current_unit);
+        foreach ($obj as $key => $raw_value) {
+            $new_key = $prefix ? str_replace($prefix, '', $key) : $key;
+            $includes_breakpoint = strpos($new_key, '-' . $breakpoint . ($is_hover ? '-hover' : '')) === (strlen($new_key) - strlen('-' . $breakpoint . ($is_hover ? '-hover' : '')));
+            $new_label = preg_replace($replacer, '', $new_key);
 
-            if (!$has_current) {
-                return null;
-            }
-
-            $last_value = get_last_breakpoint_attribute([
-                'target' => $prefix . $target,
+            $value = get_last_breakpoint_attribute([
+                'target' => $prefix . $new_label,
+                'is_hover' => $is_hover,
                 'breakpoint' => $breakpoint,
                 'attributes' => $obj,
-                'is_hover' => $is_hover,
             ]);
 
-            if (!isset($last_value)) {
-                return null;
-            }
+            $is_key_word = array_reduce($key_words, function ($acc, $key_word) use ($new_label) {
+                return $acc || strpos($new_label, $key_word) !== false;
+            }, false);
 
-            $last_unit = get_last_breakpoint_attribute([
-                'target' => $prefix . $unit_target,
-                'breakpoint' => $breakpoint,
-                'attributes' => $obj,
-                'is_hover' => $is_hover,
-            ]) ?? get_last_breakpoint_attribute([
-                'target' =>$prefix . "$target-unit",
-                'breakpoint' => $breakpoint,
-                'attributes' => $obj,
-                'is_hover' => $is_hover,
-            ]) ?? 'px';
+            if (
+                (get_is_valid($value, true) || ($is_hover && $global_hover_status && strpos($key, 'color') !== false) || $key === $prefix . 'border-palette-color-' . $breakpoint) &&
+                $includes_breakpoint &&
+                strpos($new_key, 'sync') === false &&
+                strpos($new_key, 'unit') === false
+            ) {
+                $unit_key = array_filter($key_words, function ($keyword) use ($new_label) {
+                    return strpos($new_label, $keyword) !== false;
+                });
+                $unit_key = reset($unit_key);
 
-            return $last_value . $last_unit;
-        };
-
-        $prev_breakpoint = get_prev_breakpoint($breakpoint);
-
-        if (!$is_border_none) {
-            $get_color_string = function ($breakpoint) use ($obj, $is_hover, $prefix, $is_button, $hover_status, $global_hover_status, $block_style) {
-                $current_color = get_attributes_value([
-                    'target' => ['border-palette-status', 'border-palette-color', 'border-palette-opacity', 'border-color'],
-                    'props' => $obj,
-                    'is_hover' => $is_hover,
-                    'prefix' => $prefix,
+                $unit = get_last_breakpoint_attribute([
+                    'target' => $prefix . str_replace($unit_key, 'unit', $new_label),
                     'breakpoint' => $breakpoint,
-                    'return_object' => true
-                ]);
+                    'attributes' => $obj,
+                    'is_hover' => $is_hover,
+                ]) ?: 'px';
 
-                $has_different_color_attributes = false;
-
-                foreach ($current_color as $value) {
-                    if (!is_null($value)) {
-                        $has_different_color_attributes = true;
-                        break;
+                if (strpos($key, 'style') !== false) {
+                    if (!$omit_border_style) {
+                        if (($is_hover || $is_IB) && $is_border_none) {
+                            $response[$breakpoint]['border'] = 'none';
+                        } else {
+                            $response[$breakpoint]['border-style'] = $border_style;
+                        }
                     }
-                }
-
-                if (!$has_different_color_attributes) {
-                    return null;
-                }
-
-                $palette_attributes = get_palette_attributes([
-                    'obj' => $obj,
-                    'prefix' => $prefix . 'border-',
-                    'breakpoint' => $breakpoint,
-                    'is_hover' => $is_hover,
-                ]);
-
-                $palette_status = $palette_attributes['palette_status'];
-                $palette_color = $palette_attributes['palette_color'];
-                $palette_opacity = $palette_attributes['palette_opacity'];
-                $color = $palette_attributes['color'];
-
-                if ($palette_status) {
-                    if ($is_button && (!$is_hover || $hover_status || $global_hover_status)) {
-                        return get_color_rgba_string([
-                            'first_var' => ($is_button ? 'button-' : '') . 'border-color' . ($is_hover ? '-hover' : ''),
-                            'second_var' => 'color-' . $palette_color,
-                            'opacity' => $palette_opacity,
-                            'block_style' => $block_style
-                            ]);
+                } elseif (!$is_key_word) {
+                    if ((strpos($key, 'color') !== false || strpos($key, 'opacity') !== false) && (!$is_border_none || ($is_hover && $global_hover_status))) {
+                        $response[$breakpoint][$border_color_property] = $get_color_string($breakpoint);
+                    } elseif (!in_array($new_label, ['border-palette-status', 'border-palette-color', 'border-palette-opacity'])) {
+                        $response[$breakpoint][$new_label] = (string) $value;
+                    }
+                } elseif (in_array($new_label, ['border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width'])) {
+                    if ($is_border_none) {
+                        continue;
+                    }
+                    if (is_numeric($value)) {
+                        $response[$breakpoint][$new_label] = $value . $unit;
                     } else {
-                        return get_color_rgba_string([
-                            'first_var' => 'color-' . $palette_color,
-                            'opacity' => $palette_opacity,
-                            'block_style' => $block_style
-                        ]);
+                        $response[$breakpoint][$new_label] = '0' . $unit;
                     }
+                } elseif (is_numeric($value)) {
+                    $response[$breakpoint][$new_label] = $value . $unit;
+                } else {
+                    $response[$breakpoint][$new_label] = '0' . $unit;
                 }
-
-                return $color;
-            };
-
-            $border_style_key = get_attribute_key('border-style', $is_hover, $prefix, $breakpoint);
-            $current_border_style = null;
-
-            if (array_key_exists($border_style_key, $obj)) {
-                $current_border_style = $obj[$border_style_key];
-            }
-
-            if (!is_null($current_border_style)) {
-                $response[$breakpoint]['border-style'] = $border_style;
-            }
-
-            $border_color = $get_color_string($breakpoint);
-            if ($border_color) {
-                $response[$breakpoint][$border_color_property] = $border_color;
-            }
-
-            foreach ($width_keys as $axis) {
-                $css_property = 'border-' . $axis . '-width';
-                $val = $get_value_and_unit($css_property, 'border-unit-width');
-                $prev_val = null;
-
-                if (array_key_exists($css_property, $response[$prev_breakpoint])) {
-                    $prev_val = $response[$prev_breakpoint][$css_property];
-                }
-
-                if ($val && $val !== $prev_val) {
-                    $response[$breakpoint][$css_property] = $val;
-                }
-            }
-        } elseif (
-            array_key_exists(get_attribute_key('border-style', $is_hover, $prefix, $breakpoint), $obj) &&
-            !is_null($obj[get_attribute_key('border-style', $is_hover, $prefix, $breakpoint)]) &&
-            $border_style === 'none'
-        ) {
-            $response[$breakpoint]['border'] = 'none';
-        }
-
-        // Border radius doesn't need border style
-        foreach ($radius_keys as $axis) {
-            $css_property = 'border-' . $axis . '-radius';
-            $val = $get_value_and_unit($css_property, 'border-unit-radius');
-            $prev_val = null;
-
-            if (array_key_exists($css_property, $response[$prev_breakpoint])) {
-                $prev_val = $response[$prev_breakpoint][$css_property];
-            }
-
-            if ($val && $val !== $prev_val) {
-                $response[$breakpoint][$css_property] = $val;
             }
         }
     }

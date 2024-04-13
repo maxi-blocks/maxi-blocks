@@ -43,15 +43,11 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const hoverStatus = props[`${prefix}background-status-hover`];
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
-
-	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
-		return {};
 
 	const response = {
 		label: 'Background Color',
@@ -88,7 +84,7 @@ export const getColorBackgroundObject = ({
 	if (!paletteStatus && !isEmpty(color))
 		response[breakpoint][backgroundColorProperty] = color;
 	else if (paletteStatus && (paletteColor || paletteOpacity)) {
-		if (isButton && (!isHover || hoverStatus || globalHoverStatus))
+		if (isButton && (!isHover || globalHoverStatus))
 			response[breakpoint].background = getColorRGBAString(
 				paletteSCStatus
 					? {

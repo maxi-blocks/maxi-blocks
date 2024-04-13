@@ -13,14 +13,9 @@ function get_color_background_object($args)
     $background_color_property = $args['background_color_property'] ?? 'background-color';
     $props = $args;
 
-    $hover_status = $props[$prefix . 'background-status-hover'] ?? false;
     $is_active = $sc_values['hover-background-color-global'] ?? false;
     $affect_all = $sc_values['hover-background-color-all'] ?? false;
     $global_hover_status = $is_active && $affect_all;
-
-    if ($is_hover && !is_null($hover_status) && !$hover_status && !$global_hover_status) {
-        return [];
-    }
 
     $response = [
         'label' => 'Background Color',
@@ -57,7 +52,7 @@ function get_color_background_object($args)
     if (!$palette_status && !empty($color)) {
         $response[$breakpoint][$background_color_property] = $color;
     } elseif ($palette_status && ($palette_color || $palette_opacity)) {
-        if ($is_button && (!$is_hover || $hover_status || $global_hover_status)) {
+        if ($is_button && (!$is_hover || $global_hover_status)) {
             $response[$breakpoint]['background'] = get_color_rgba_string(
                 $palette_sc_status
                     ? [
@@ -719,6 +714,7 @@ function get_background_layers($args)
                         isset($response[$layerTarget][$type]) ? $response[$layerTarget][$type] : [],
                         get_image_background_object(array_merge(
                             get_group_attributes($layer, 'backgroundImage', $is_hover),
+                            (!$is_hover ? get_group_attributes($layer, 'backgroundImage', true) : []),
                             [
                                 'breakpoint' => $breakpoint,
                                 'is_hover' => $is_hover,
@@ -970,46 +966,31 @@ function get_general_background_styles(
     unset($border['general']['border-style']);
 
     if (!empty($size)) {
-        foreach (array_reverse($breakpoints) as $index => $breakpoint) {
-            if ($index - 1 < 0) {
-                continue;
+        $reversed_breakpoints = array_reverse($breakpoints);
+
+        foreach ($breakpoints as $breakpoint) {
+            $currentIndex = array_search($breakpoint, $breakpoints);
+            $previousIndex = $currentIndex - 1;
+
+            // Check if the previous breakpoint exists
+            if (isset($breakpoints[$previousIndex])) {
+                $prevBreakpoint = $breakpoints[$previousIndex];
+
+                // Compare and delete properties if they are the same
+                foreach (['top', 'left', 'bottom', 'right'] as $property) {
+                    if (isset($size[$prevBreakpoint][$property], $size[$breakpoint][$property]) &&
+                        $size[$prevBreakpoint][$property] === $size[$breakpoint][$property]) {
+                        unset($size[$breakpoint][$property]);
+                    }
+                }
+
+                // If the previous size array is empty, delete it
+                if (empty($size[$prevBreakpoint])) {
+                    unset($size[$prevBreakpoint]);
+                }
             }
 
-            if (
-                isset($size[$breakpoints[$index - 1]]['top']) &&
-                isset($size[$breakpoint]['top']) &&
-                $size[$breakpoints[$index - 1]]['top'] === $size[$breakpoint]['top']
-            ) {
-                unset($size[$breakpoint]['top']);
-            }
-
-            if (
-                isset($size[$breakpoints[$index - 1]]['left']) &&
-                isset($size[$breakpoint]['left']) &&
-                $size[$breakpoints[$index - 1]]['left'] === $size[$breakpoint]['left']
-            ) {
-                unset($size[$breakpoint]['left']);
-            }
-
-            if (
-                isset($size[$breakpoints[$index - 1]]['bottom']) &&
-                isset($size[$breakpoint]['bottom']) &&
-                $size[$breakpoints[$index - 1]]['bottom'] === $size[$breakpoint]['bottom']
-            ) {
-                unset($size[$breakpoint]['bottom']);
-            }
-
-            if (
-                isset($size[$breakpoints[$index - 1]]['right']) &&
-                isset($size[$breakpoint]['right']) &&
-                $size[$breakpoints[$index - 1]]['right'] === $size[$breakpoint]['right']
-            ) {
-                unset($size[$breakpoint]['right']);
-            }
-
-            if (empty($size[$breakpoints[$index - 1]])) {
-                unset($size[$breakpoints[$index - 1]]);
-            }
+            // If the current size array is empty, delete it
             if (empty($size[$breakpoint])) {
                 unset($size[$breakpoint]);
             }
@@ -1021,14 +1002,13 @@ function get_general_background_styles(
 
 function get_basic_response_object($args)
 {
-    $target = $args['target'] ?? '';
     $is_hover = $args['is_hover'] ?? false;
     $prefix = $args['prefix'] = '';
     $block_style = $args['block_style'];
     $row_border_radius = $args['row_border_radius'] ?? [];
 
     $include_border =
-        !$is_hover || ($is_hover && isset($args[$prefix . 'border-status-hover']) && $args[$prefix . 'border-status-hover']);
+        !$is_hover || (isset($args[$prefix . 'border-status-hover']) && $args[$prefix . 'border-status-hover']);
 
     $border_obj = $include_border
         ? get_general_background_styles(
@@ -1046,10 +1026,15 @@ function get_basic_response_object($args)
         $is_hover
     );
 
-    $merged_border_obj = !is_null($border_obj) ? array_merge($row_border_radius_obj, $border_obj) : $row_border_radius_obj;
+    $merged_border_obj = [];
+    if (!is_null($border_obj)) {
+        $merged_border_obj = array_merge($row_border_radius_obj, $border_obj);
+    } else {
+        $merged_border_obj = $row_border_radius_obj;
+    }
 
     return [
-        $target . ' > .maxi-background-displayer' => $include_border && !empty($border_obj['border']['general'])
+        $args['target'] . ' > .maxi-background-displayer' => $include_border && !empty($border_obj['border']['general'])
             ? $merged_border_obj
             : $row_border_radius_obj,
     ];
@@ -1057,11 +1042,19 @@ function get_basic_response_object($args)
 
 function get_block_background_styles($args)
 {
-    $is_hover = $args['is_hover'] ?? false;
-    $target = ($args['target'] ?? '') . ($is_hover ? ':hover' : '');
-    $prefix = $args['prefix'] ?? '';
-    $block_style = $args['block_style'];
-    $ignore_media_attributes = $args['ignore_media_attributes'] ?? false;
+    $args['is_hover'] = $args['is_hover'] ?? false;
+    $args['target'] = ($args['target'] ?? '') . ($args['is_hover'] ? ':hover' : '');
+    $args['prefix'] = $args['prefix'] ?? '';
+    $args['block_style'] = $args['block_style'];
+    $args['ignore_media_attributes'] = $args['ignore_media_attributes'] ?? false;
+
+    [
+        'is_hover' => $is_hover,
+        'target' => $target,
+        'prefix' => $prefix,
+        'block_style' => $block_style,
+        'ignore_media_attributes' => $ignore_media_attributes,
+    ] = $args;
 
     $response = get_basic_response_object($args);
 

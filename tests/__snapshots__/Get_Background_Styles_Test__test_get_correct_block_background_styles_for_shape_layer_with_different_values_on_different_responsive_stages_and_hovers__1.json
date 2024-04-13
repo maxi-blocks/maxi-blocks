@@ -1,0 +1,186 @@
+{
+	"maxi-test > .maxi-background-displayer": {
+		"border": {
+			"general": {},
+			"xxl": {},
+			"xl": {},
+			"l": {},
+			"m": {},
+			"s": {},
+			"xs": {}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+		"shape": {
+			"label": "Background layer wrapper",
+			"general": {
+				"width": "101px",
+				"top": "11%",
+				"right": "11%",
+				"bottom": "11%",
+				"left": "11%",
+				"display": "block"
+			},
+			"xxl": {
+				"width": "100px",
+				"top": "10%",
+				"right": "10%",
+				"bottom": "10%",
+				"left": "10%"
+			},
+			"xl": {
+				"width": "101px",
+				"top": "11%",
+				"right": "11%",
+				"bottom": "11%",
+				"left": "11%"
+			},
+			"l": {
+				"width": "102px",
+				"top": "12%",
+				"right": "12%",
+				"bottom": "12%",
+				"left": "12%"
+			},
+			"m": {
+				"width": "103px",
+				"top": "13%",
+				"right": "13%",
+				"bottom": "13%",
+				"left": "13%"
+			},
+			"s": {
+				"width": "104px",
+				"top": "14%",
+				"right": "14%",
+				"bottom": "14%",
+				"left": "14%"
+			},
+			"xs": {
+				"width": "105px",
+				"top": "15%",
+				"right": "15%",
+				"bottom": "15%",
+				"left": "15%"
+			}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0 svg *": {
+		"shape": {
+			"label": "Icon background",
+			"general": {
+				"fill": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+			},
+			"xxl": {
+				"fill": "rgba(var(--maxi-light-color-2,242,249,253),0.37)"
+			},
+			"xl": {
+				"fill": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+			},
+			"l": {
+				"fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)"
+			},
+			"m": {
+				"fill": "rgba(var(--maxi-light-color-3,155,155,155),0.37)"
+			},
+			"s": {
+				"fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)"
+			},
+			"xs": {
+				"fill": "rgba(var(--maxi-light-color-7,8,18,25),0.37)"
+			}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": {
+		"shape": {}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
+		"shape": {}
+	},
+	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+		"shape": {
+			"label": "Background layer wrapper",
+			"general": {
+				"width": "102px",
+				"top": "12%",
+				"right": "12%",
+				"bottom": "12%",
+				"left": "12%"
+			},
+			"xxl": {
+				"width": "101px",
+				"top": "11%",
+				"right": "11%",
+				"bottom": "11%",
+				"left": "11%"
+			},
+			"xl": {
+				"width": "102px",
+				"top": "12%",
+				"right": "12%",
+				"bottom": "12%",
+				"left": "12%"
+			},
+			"l": {
+				"width": "103px",
+				"top": "13%",
+				"right": "13%",
+				"bottom": "13%",
+				"left": "13%"
+			},
+			"m": {
+				"width": "104px",
+				"top": "14%",
+				"right": "14%",
+				"bottom": "14%",
+				"left": "14%"
+			},
+			"s": {
+				"width": "105px",
+				"top": "15%",
+				"right": "15%",
+				"bottom": "15%",
+				"left": "15%"
+			},
+			"xs": {
+				"width": "106px",
+				"top": "16%",
+				"right": "16%",
+				"bottom": "16%",
+				"left": "16%"
+			}
+		}
+	},
+	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 svg *": {
+		"shape": {
+			"label": "Icon background",
+			"general": {
+				"fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)"
+			},
+			"xxl": {
+				"fill": "rgba(var(--maxi-light-color-3,155,155,155),0.17)"
+			},
+			"xl": {
+				"fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)"
+			},
+			"l": {
+				"fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)"
+			},
+			"m": {
+				"fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)"
+			},
+			"s": {
+				"fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)"
+			},
+			"xs": {
+				"fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)"
+			}
+		}
+	},
+	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child": {
+		"shape": {}
+	},
+	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
+		"shape": {}
+	}
+}

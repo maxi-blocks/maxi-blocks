@@ -251,9 +251,17 @@ function get_gradient_background_object($options)
             $color_background = get_color_background_object(array_merge(
                 get_group_attributes(
                     $props,
-                    ['background', 'backgroundColor'],
+                    'background',
                     $is_hover,
-                    $prefix
+                    $prefix,
+                ),
+                get_group_attributes(
+                    $props,
+                    'backgroundColor',
+                    $is_hover,
+                    $prefix,
+                    false,
+                    false
                 ),
                 [
                     'block_style' => $block_style,
@@ -268,7 +276,7 @@ function get_gradient_background_object($options)
 
             $background =
                 $color_background[$breakpoint]['background'] ??
-                $color_background[$breakpoint]['background-color'];
+                $color_background[$breakpoint]['background-color'] ?? null;
 
             if ($background) {
                 $response[$breakpoint]['background'] = $background;
@@ -291,7 +299,7 @@ function get_image_background_object($args)
     $is_hover = $args['is_hover'] ?? false;
     $prefix = $args['prefix'] ?? '';
     $breakpoint = $args['breakpoint'];
-    $is_parallax = $args['isParallax'] ?? false;
+    $is_parallax = $args['is_parallax'] ?? false;
     $ignore_media_attributes = $args['ignore_media_attributes'] ?? false;
     $props = $args;
 
@@ -313,7 +321,7 @@ function get_image_background_object($args)
     $get_bg_image_attribute_value = function ($target, $is_hover_param = null) use ($prefix, $breakpoint, $props, $is_hover) {
         return get_attributes_value([
             'target' => $target,
-            'is_hover' => $is_hover_param ?? $is_hover,
+            'isHover' => $is_hover_param ?? $is_hover,
             'prefix' => $prefix,
             'breakpoint' => $breakpoint,
             'props' => $props,
@@ -329,13 +337,7 @@ function get_image_background_object($args)
         ]);
     };
 
-    $bg_image_size = get_last_breakpoint_attribute([
-        'target' => $prefix . 'background-image-size',
-        'breakpoint' => $breakpoint,
-        'attributes' => $props,
-        'is_hover' => $is_hover,
-    ]);
-
+    $bg_image_size = $get_bg_image_last_breakpoint_attribute('background-image-size');
     $bg_image_crop_options = $get_bg_image_attribute_value('background-image-crop-options');
     $bg_image_repeat = $get_bg_image_attribute_value('background-image-repeat');
     $bg_image_position = get_last_breakpoint_attribute([
@@ -348,20 +350,8 @@ function get_image_background_object($args)
     $bg_image_clip = $get_bg_image_attribute_value('background-image-clip');
     $bg_image_attachment = $get_bg_image_attribute_value('background-image-attachment');
     $bg_image_opacity = $get_bg_image_attribute_value('background-image-opacity');
-    $bg_image_clip_path = get_last_breakpoint_attribute([
-        'target' => $prefix . 'background-image-clip-path',
-        'breakpoint' => $breakpoint,
-        'attributes' => $props,
-        'is_hover' => $is_hover,
-    ]);
-    $is_bg_image_clip_path_active = get_last_breakpoint_attribute([
-        'target' => $prefix . 'background-image-clip-path-status',
-        'breakpoint' => $breakpoint,
-        'attributes' => $props,
-        'is_hover' => $is_hover,
-    ]);
-
-
+    $bg_image_clip_path = $get_bg_image_last_breakpoint_attribute('background-image-clip-path');
+    $is_bg_image_clip_path_active = $get_bg_image_last_breakpoint_attribute('background-image-clip-path-status');
 
     if (!$is_parallax) {
         // Image
@@ -460,7 +450,7 @@ function get_image_background_object($args)
     }
 
     // Opacity
-    if (is_int($bg_image_opacity)) {
+    if (is_numeric($bg_image_opacity)) {
         $response[$breakpoint]['opacity'] = $bg_image_opacity;
 
         // To avoid image blinking on opacity hover
@@ -543,7 +533,7 @@ function get_wrapper_object($args)
     $breakpoint = $args['breakpoint'];
     $is_hover = $args['is_hover'] ?? false;
     $prefix = $args['prefix'] ?? '';
-    $setSameWidthAndHeight = $args['setSameWidthAndHeight'] ?? false;
+    $set_same_width_and_height = $args['set_same_width_and_height'] ?? false;
 
     $response = [
         'label' => 'Background layer wrapper',
@@ -568,7 +558,7 @@ function get_wrapper_object($args)
                 'is_hover' => $is_hover,
             ]);
 
-            if (!($setSameWidthAndHeight && $size === 'height')) {
+            if (!($set_same_width_and_height && $size === 'height')) {
                 $response[$breakpoint][$size] = $bgSize . $bgSVGSizeUnit;
             }
         }
@@ -766,7 +756,8 @@ function get_background_layers($args)
                                 'breakpoint' => $breakpoint,
                                 'is_hover' => $is_hover,
                                 'prefix' => $prefix,
-                                'block_style' => $block_style
+                                'block_style' => $block_style,
+                                'is_parallax' => true,
                             ]
                         )),
                         get_display_styles(
@@ -812,7 +803,7 @@ function get_background_layers($args)
                                 'breakpoint' => $breakpoint,
                                 'is_hover' => $is_hover,
                                 'prefix' => 'background-svg-',
-                                'isSameWidthAndHeight' => true
+                                'set_same_width_and_height' => true
                             ]
                         )
                     ),
@@ -927,7 +918,7 @@ function get_general_background_styles(
             ) {
                 $get_size = function ($width, $target) use ($breakpoint, $widthUnit, $is_hover, $get_border_value) {
                     if (!is_numeric($width)) {
-                        return null;
+                        return [];
                     }
 
                     if ($is_hover) {
@@ -935,7 +926,7 @@ function get_general_background_styles(
                             $get_border_value($target, $breakpoint, false) === $width;
 
                         if ($isSameThanNormal) {
-                            return null;
+                            return [];
                         }
                     }
 
@@ -953,24 +944,26 @@ function get_general_background_styles(
     }
 
     foreach ($breakpoints as $breakpoint) {
-        if (isset($border[$breakpoint]['border-top-width'])) {
-            $border[$breakpoint]['border-top-style'] =
-                $border[$breakpoint]['border-style'];
-        }
+        if(isset($border[$breakpoint]['border-style'])) {
+            if (isset($border[$breakpoint]['border-top-width'])) {
+                $border[$breakpoint]['border-top-style'] =
+                    $border[$breakpoint]['border-style'];
+            }
 
-        if (isset($border[$breakpoint]['border-right-width'])) {
-            $border[$breakpoint]['border-right-style'] =
-                $border[$breakpoint]['border-style'];
-        }
+            if (isset($border[$breakpoint]['border-right-width'])) {
+                $border[$breakpoint]['border-right-style'] =
+                    $border[$breakpoint]['border-style'];
+            }
 
-        if (isset($border[$breakpoint]['border-bottom-width'])) {
-            $border[$breakpoint]['border-bottom-style'] =
-                $border[$breakpoint]['border-style'];
-        }
+            if (isset($border[$breakpoint]['border-bottom-width'])) {
+                $border[$breakpoint]['border-bottom-style'] =
+                    $border[$breakpoint]['border-style'];
+            }
 
-        if (isset($border[$breakpoint]['border-left-width'])) {
-            $border[$breakpoint]['border-left-style'] =
-                $border[$breakpoint]['border-style'];
+            if (isset($border[$breakpoint]['border-left-width'])) {
+                $border[$breakpoint]['border-left-style'] =
+                    $border[$breakpoint]['border-style'];
+            }
         }
     }
 
@@ -1035,7 +1028,7 @@ function get_basic_response_object($args)
     $row_border_radius = $args['row_border_radius'] ?? [];
 
     $include_border =
-        !$is_hover || ($is_hover && $args[$prefix . 'border-status-hover']);
+        !$is_hover || ($is_hover && isset($args[$prefix . 'border-status-hover']) && $args[$prefix . 'border-status-hover']);
 
     $border_obj = $include_border
         ? get_general_background_styles(
@@ -1072,7 +1065,7 @@ function get_block_background_styles($args)
 
     $response = get_basic_response_object($args);
 
-    if ($is_hover && !$args[$prefix . 'block-background-status-hover']) {
+    if($is_hover && (!isset($args[$prefix . 'block-background-status-hover']) || !$args[$prefix . 'block-background-status-hover'])) {
         return $response;
     }
 
@@ -1089,7 +1082,7 @@ function get_block_background_styles($args)
                 'target' => 'background-layers',
                 'props' => $args,
                 'prefix' => $prefix,
-                'is_hover' => $is_hover,
+                'isHover' => $is_hover,
             ]),
         ];
     }

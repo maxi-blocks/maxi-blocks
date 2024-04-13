@@ -5,6 +5,19 @@ import {
 	getBackgroundStyles,
 } from '../getBackgroundStyles';
 
+/**
+ * PHP snapshots
+ */
+import colorLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_different_values_on_different_responsive_stages__1.json';
+import imageLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_image_layer_with_different_values_on_different_responsive_stages__1.json';
+import imageLayerWithParallaxAndDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_image_layer_with_parallax_and_different_values_on_different_responsive_stages__1.json';
+import videoLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_video_layer_with_different_values_on_different_responsive_stages__1.json';
+import gradientLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_gradient_layer_with_different_values_on_different_responsive_stages__1.json';
+import shapeLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_shape_layer_with_different_values_on_different_responsive_stages__1.json';
+import generalResponsiveStage from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_general_responsive_stage__1.json';
+import simpleBackgroundStyles from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_simple_background_styles__1.json';
+import colorLayerWithDifferentValuesOnDifferentResponsiveStagesAndHover from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_different_values_on_different_responsive_stages_and_hover__1.json';
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -194,6 +207,9 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			colorLayerWithDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for image layer with different values on different responsive stages', () => {
@@ -260,11 +276,18 @@ describe('getBackgroundStyles', () => {
 					'background-image-width-xs': 600,
 					'background-image-height-xs': 600,
 					'background-image-size-xs': 'auto',
+					'background-image-wrapper-width-general': 100,
+					'background-image-wrapper-width-unit-general': '%',
+					'background-image-wrapper-height-general': 100,
+					'background-image-wrapper-height-unit-general': '%',
 				},
 			],
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			imageLayerWithDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for image layer with parallax and different values on different responsive stages', () => {
@@ -337,6 +360,9 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			imageLayerWithParallaxAndDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages', () => {
@@ -383,6 +409,9 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			videoLayerWithDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages', () => {
@@ -418,11 +447,18 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-s': 0.17,
 					'background-gradient-clip-path-s':
 						'polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)',
+					'background-gradient-wrapper-width-general': 100,
+					'background-gradient-wrapper-width-unit-general': '%',
+					'background-gradient-wrapper-height-general': 100,
+					'background-gradient-wrapper-height-unit-general': '%',
 				},
 			],
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			gradientLayerWithDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages', () => {
@@ -480,6 +516,9 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			shapeLayerWithDifferentValuesOnDifferentResponsiveStages
+		);
 	});
 
 	it('Get correct block background styles for general responsive stage', () => {
@@ -496,6 +535,10 @@ describe('getBackgroundStyles', () => {
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					order: 0,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 				{
 					type: 'image',
@@ -524,6 +567,10 @@ describe('getBackgroundStyles', () => {
 						isResponsive: false,
 					}),
 					order: 1,
+					'background-image-wrapper-width-general': 100,
+					'background-image-wrapper-width-unit-general': '%',
+					'background-image-wrapper-height-general': 100,
+					'background-image-wrapper-height-unit-general': '%',
 				},
 				{
 					type: 'video',
@@ -539,6 +586,10 @@ describe('getBackgroundStyles', () => {
 					'background-video-playOnMobile-general': false,
 					'background-video-opacity-general': 1,
 					order: 2,
+					'background-video-wrapper-width-general': 100,
+					'background-video-wrapper-width-unit-general': '%',
+					'background-video-wrapper-height-general': 100,
+					'background-video-wrapper-height-unit-general': '%',
 				},
 				{
 					type: 'gradient',
@@ -547,6 +598,10 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-opacity-general': 1,
 					'background-gradient-clip-path-general': '',
 					order: 3,
+					'background-gradient-wrapper-width-general': 100,
+					'background-gradient-wrapper-width-unit-general': '%',
+					'background-gradient-wrapper-height-general': 100,
+					'background-gradient-wrapper-height-unit-general': '%',
 				},
 				{
 					type: 'shape',
@@ -562,6 +617,10 @@ describe('getBackgroundStyles', () => {
 					'background-svg-width-general': 100,
 					'background-svg-width-unit-general': '%',
 					order: 4,
+					'background-svg-wrapper-width-general': 100,
+					'background-svg-wrapper-width-unit-general': '%',
+					'background-svg-wrapper-height-general': 100,
+					'background-svg-wrapper-height-unit-general': '%',
 				},
 			],
 			'border-palette-status-general': true,
@@ -573,6 +632,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(generalResponsiveStage);
 	});
 
 	it('Get correct simple background styles', () => {
@@ -616,6 +676,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(simpleBackgroundStyles);
 	});
 
 	it('Get correct block background styles for color layer with different values on different responsive stages and hover', () => {
@@ -699,6 +760,9 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			colorLayerWithDifferentValuesOnDifferentResponsiveStagesAndHover
+		);
 	});
 
 	it('Get correct block background styles for image layer with different values on different responsive stages and hovers', () => {

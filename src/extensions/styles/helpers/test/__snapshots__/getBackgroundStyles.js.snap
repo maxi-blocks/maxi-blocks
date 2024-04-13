@@ -844,25 +844,39 @@ exports[`getBackgroundStyles Get correct block background styles for general res
       "general": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
         "display": "block",
+        "height": "100%",
+        "width": "100%",
       },
       "l": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
       "label": "Background Color",
       "m": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
       "s": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
       "xl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
       "xs": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
       "xxl": {
         "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "height": "100%",
+        "width": "100%",
       },
     },
   },
@@ -932,26 +946,40 @@ exports[`getBackgroundStyles Get correct block background styles for general res
     "video": {
       "general": {
         "display": "block",
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
       "l": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
-      "label": "Video Background",
+      "label": "Background layer wrapper",
       "m": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
       "s": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
       "xl": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
       "xs": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
       "xxl": {
+        "height": "100%",
         "opacity": 1,
+        "width": "100%",
       },
     },
   },
@@ -959,14 +987,34 @@ exports[`getBackgroundStyles Get correct block background styles for general res
     "gradient": {
       "general": {
         "display": "block",
+        "height": "100%",
+        "width": "100%",
       },
-      "l": {},
-      "label": "Background gradient",
-      "m": {},
-      "s": {},
-      "xl": {},
-      "xs": {},
-      "xxl": {},
+      "l": {
+        "height": "100%",
+        "width": "100%",
+      },
+      "label": "Background layer wrapper",
+      "m": {
+        "height": "100%",
+        "width": "100%",
+      },
+      "s": {
+        "height": "100%",
+        "width": "100%",
+      },
+      "xl": {
+        "height": "100%",
+        "width": "100%",
+      },
+      "xs": {
+        "height": "100%",
+        "width": "100%",
+      },
+      "xxl": {
+        "height": "100%",
+        "width": "100%",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": {
@@ -1049,25 +1097,39 @@ exports[`getBackgroundStyles Get correct block background styles for gradient la
       "general": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
         "display": "block",
+        "height": "100%",
+        "width": "100%",
       },
       "l": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
-      "label": "Background gradient",
+      "label": "Background layer wrapper",
       "m": {
         "background": "radial-gradient(rgba(6,147,227,0.8) 0%,rgba(89,121,135,0.8) 29%,rgba(68,150,185,0.8) 52%,rgba(155,81,224,0.8) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
       "s": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
       "xl": {
         "background": "radial-gradient(rgba(6,147,227,0.15) 0%,rgba(68,150,185,0.15) 52%,rgba(155,81,224,0.15) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
       "xs": {
         "background": "radial-gradient(rgba(6,147,227,0.17) 0%,rgba(89,121,135,0.17) 29%,rgba(68,150,185,0.17) 52%,rgba(118,170,192,0.17) 76%,rgba(155,81,224,0.17) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
       "xxl": {
         "background": "radial-gradient(rgba(6,147,227,0.48) 0%,rgba(68,150,185,0.48) 52%,rgba(155,81,224,0.48) 100%)",
+        "height": "100%",
+        "width": "100%",
       },
     },
   },
@@ -1277,7 +1339,9 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
         "background-repeat": "repeat-x",
         "background-size": "cover",
         "display": "block",
+        "height": "100%",
         "opacity": 0.52,
+        "width": "100%",
       },
       "l": {
         "background-attachment": "fixed",
@@ -1286,18 +1350,24 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
         "background-position": "right top",
         "background-repeat": "space",
         "background-size": "contain",
+        "height": "100%",
+        "width": "100%",
       },
-      "label": "Background Image",
+      "label": "Background layer wrapper",
       "m": {
         "background-position": "right top",
         "background-size": "contain",
+        "height": "100%",
         "opacity": 0.91,
+        "width": "100%",
       },
       "s": {
         "background-attachment": "scroll",
         "background-position": "center top",
         "background-repeat": "repeat-x",
         "background-size": "contain",
+        "height": "100%",
+        "width": "100%",
       },
       "xl": {
         "background-attachment": "local",
@@ -1306,16 +1376,22 @@ exports[`getBackgroundStyles Get correct block background styles for image layer
         "background-position": "left top",
         "background-repeat": "repeat-x",
         "background-size": "cover",
+        "height": "100%",
         "opacity": 0.52,
+        "width": "100%",
       },
       "xs": {
         "background-position": "center top",
         "background-size": "auto",
+        "height": "100%",
+        "width": "100%",
       },
       "xxl": {
         "background-position": "left top",
         "background-size": "cover",
+        "height": "100%",
         "opacity": 0.11,
+        "width": "100%",
       },
     },
   },
@@ -1619,25 +1695,25 @@ exports[`getBackgroundStyles Get correct block background styles for shape layer
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0 > svg:first-child pattern image": {
     "shape": {
       "general": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "l": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "m": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "s": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "xl": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "xs": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
       "xxl": {
-        "transform": "scale(1.3888888888888888) rotate(-104deg) ",
+        "transform": "scale(1.3889) rotate(-104deg) ",
       },
     },
   },

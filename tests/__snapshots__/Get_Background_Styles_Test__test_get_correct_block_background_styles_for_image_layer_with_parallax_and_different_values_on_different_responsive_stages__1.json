@@ -1,0 +1,59 @@
+{
+	"maxi-test > .maxi-background-displayer": {
+		"border": {
+			"general": {},
+			"xxl": {},
+			"xl": {},
+			"l": {},
+			"m": {},
+			"s": {},
+			"xs": {}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+		"image": {
+			"general": {
+				"display": "block"
+			}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0 img": {
+		"image": {
+			"label": "Background Image",
+			"general": {
+				"object-fit": "cover",
+				"object-position": "left top",
+				"opacity": 0.52,
+				"-webkit-transform": "translate3d(0,0,0)",
+				"display": "block"
+			},
+			"xxl": {
+				"object-fit": "cover",
+				"object-position": "left top",
+				"opacity": 0.11
+			},
+			"xl": {
+				"object-fit": "cover",
+				"object-position": "left top",
+				"opacity": 0.52
+			},
+			"l": {
+				"object-fit": "contain",
+				"object-position": "right top"
+			},
+			"m": {
+				"object-fit": "contain",
+				"object-position": "right top",
+				"opacity": 0.91
+			},
+			"s": {
+				"object-fit": "contain",
+				"object-position": "center top"
+			},
+			"xs": {
+				"object-fit": "auto",
+				"object-position": "center top"
+			}
+		}
+	}
+}

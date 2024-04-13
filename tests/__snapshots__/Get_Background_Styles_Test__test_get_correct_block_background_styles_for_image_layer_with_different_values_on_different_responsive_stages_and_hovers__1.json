@@ -1,0 +1,151 @@
+{
+	"maxi-test > .maxi-background-displayer": {
+		"border": {
+			"general": {},
+			"xxl": {},
+			"xl": {},
+			"l": {},
+			"m": {},
+			"s": {},
+			"xs": {}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+		"image": {
+			"label": "Background layer wrapper",
+			"general": {
+				"background-image": "url('http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg')",
+				"background-size": "cover",
+				"background-repeat": "repeat-x",
+				"background-position": "left top",
+				"background-origin": "border-box",
+				"background-clip": "padding-box",
+				"background-attachment": "local",
+				"opacity": 0.52,
+				"-webkit-transform": "translate3d(0,0,0)",
+				"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+				"width": "100%",
+				"height": "100%",
+				"display": "block"
+			},
+			"xxl": {
+				"background-size": "cover",
+				"background-position": "left top",
+				"opacity": 0.11,
+				"clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"xl": {
+				"background-size": "cover",
+				"background-repeat": "repeat-x",
+				"background-position": "left top",
+				"background-origin": "border-box",
+				"background-clip": "padding-box",
+				"background-attachment": "local",
+				"opacity": 0.52,
+				"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"l": {
+				"background-size": "contain",
+				"background-repeat": "space",
+				"background-position": "right top",
+				"background-origin": "content-box",
+				"background-clip": "padding-box",
+				"background-attachment": "fixed",
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"m": {
+				"background-size": "contain",
+				"background-position": "right top",
+				"opacity": 0.91,
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"s": {
+				"background-size": "contain",
+				"background-repeat": "repeat-x",
+				"background-position": "center top",
+				"background-attachment": "scroll",
+				"clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"xs": {
+				"background-size": "auto",
+				"background-position": "center top",
+				"clip-path": "polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)",
+				"width": "100%",
+				"height": "100%"
+			}
+		}
+	},
+	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {
+		"image": {
+			"label": "Background layer wrapper",
+			"general": {
+				"background-image": "url('http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg')",
+				"background-size": "cover",
+				"background-repeat": "repeat-x",
+				"background-position": "left top",
+				"background-origin": "border-box",
+				"background-clip": "padding-box",
+				"background-attachment": "local",
+				"opacity": 0.17,
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"xxl": {
+				"background-size": "cover",
+				"background-position": "left top",
+				"opacity": 0.79,
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"xl": {
+				"background-size": "cover",
+				"background-position": "left top",
+				"opacity": 0.17,
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"l": {
+				"background-size": "contain",
+				"background-position": "right top",
+				"opacity": 0.81,
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"m": {
+				"background-size": "contain",
+				"background-position": "right top",
+				"clip-path": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"s": {
+				"background-size": "contain",
+				"background-position": "center top",
+				"clip-path": "ellipse(25% 40% at 50% 50%)",
+				"width": "100%",
+				"height": "100%"
+			},
+			"xs": {
+				"background-size": "auto",
+				"background-position": "center top",
+				"clip-path": "ellipse(25% 40% at 50% 50%)",
+				"width": "100%",
+				"height": "100%"
+			}
+		}
+	}
+}

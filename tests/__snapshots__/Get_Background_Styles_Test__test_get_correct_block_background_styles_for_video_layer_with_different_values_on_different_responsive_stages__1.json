@@ -1,0 +1,96 @@
+{
+	"maxi-test > .maxi-background-displayer": {
+		"border": {
+			"general": {},
+			"xxl": {},
+			"xl": {},
+			"l": {},
+			"m": {},
+			"s": {},
+			"xs": {}
+		}
+	},
+	"maxi-test > .maxi-background-displayer .maxi-background-displayer__0": {
+		"video": {
+			"label": "Background layer wrapper",
+			"general": {
+				"opacity": 0.11,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
+				"background-size": "cover",
+				"width": "102px",
+				"height": "102px",
+				"top": "12%",
+				"right": "12%",
+				"bottom": "12%",
+				"left": "12%",
+				"display": "block"
+			},
+			"xxl": {
+				"opacity": 0.37,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-IMG_9344-scaled-1.jpg)",
+				"background-size": "cover",
+				"width": "101px",
+				"height": "101px",
+				"top": "11%",
+				"right": "11%",
+				"bottom": "11%",
+				"left": "11%"
+			},
+			"xl": {
+				"opacity": 0.11,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg)",
+				"background-size": "cover",
+				"width": "102px",
+				"height": "102px",
+				"top": "12%",
+				"right": "12%",
+				"bottom": "12%",
+				"left": "12%"
+			},
+			"l": {
+				"opacity": 0.65,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
+				"background-size": "cover",
+				"width": "103px",
+				"height": "103px",
+				"top": "13%",
+				"right": "13%",
+				"bottom": "13%",
+				"left": "13%"
+			},
+			"m": {
+				"opacity": 0.65,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
+				"background-size": "cover",
+				"width": "104px",
+				"height": "104px",
+				"top": "14%",
+				"right": "14%",
+				"bottom": "14%",
+				"left": "14%"
+			},
+			"s": {
+				"opacity": 0.25,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
+				"background-size": "cover",
+				"width": "105px",
+				"height": "105px",
+				"top": "15%",
+				"right": "15%",
+				"bottom": "15%",
+				"left": "15%"
+			},
+			"xs": {
+				"opacity": 0.9,
+				"background": "url(http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg)",
+				"background-size": "cover",
+				"width": "106px",
+				"height": "106px",
+				"top": "16%",
+				"right": "16%",
+				"bottom": "16%",
+				"left": "16%"
+			}
+		}
+	}
+}

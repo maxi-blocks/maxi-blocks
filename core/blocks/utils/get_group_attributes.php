@@ -21,7 +21,8 @@ function get_group_attributes(
     $target,
     $is_hover = false,
     $prefix = '',
-    $cleaned = false
+    $cleaned = false,
+    $add_default_attributes = true
 ) {
     if (!$target) {
         return null;
@@ -50,7 +51,7 @@ function get_group_attributes(
             foreach (array_keys($default_attributes) as $key) {
                 if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
                     $response[$prefix . $key] = $attributes[$prefix . $key];
-                } elseif (isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {
+                } elseif ($add_default_attributes && isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {
                     $response[$prefix . $key] = $default_attributes[$prefix . $key]['default'];
                 }
             }
@@ -65,7 +66,7 @@ function get_group_attributes(
 
                     if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
                         $response[$prefix . $key] = $attributes[$prefix . $key];
-                    } elseif (isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {
+                    } elseif ($add_default_attributes && isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {
                         $response[$prefix . $key] = $default_attributes[$prefix . $key]['default'];
                     }
                 }

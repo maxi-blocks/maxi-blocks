@@ -101,11 +101,11 @@ function get_border_styles($args)
         $is_border_none = is_null($border_style) || $border_style === 'none';
         $omit_border_style = $omit_border_style ? $is_border_none : false;
 
-        $replacer = '/-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b(?!.*\b-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b)/';
+        $replacer = '/-(' . implode('|', $breakpoints) . ')(-hover)?\b(?!.*\b-(' . implode('|', $breakpoints) . ')(-hover)?\b)/m';
 
         foreach ($obj as $key => $raw_value) {
             $new_key = $prefix ? str_replace($prefix, '', $key) : $key;
-            $includes_breakpoint = strpos($new_key, '-' . $breakpoint . ($is_hover ? '-hover' : '')) === (strlen($new_key) - strlen('-' . $breakpoint . ($is_hover ? '-hover' : '')));
+            $includes_breakpoint = preg_match($replacer, $new_key);
             $new_label = preg_replace($replacer, '', $new_key);
 
             $value = get_last_breakpoint_attribute([

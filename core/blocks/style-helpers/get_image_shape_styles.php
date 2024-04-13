@@ -43,7 +43,7 @@ function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_gen
             $calculation_numbers = $target === 'svg' ? [$scale, 100] : [100, $scale];
 
             if ($breakpoint === 'general' && $ignore_general_omit || $scale !== 100 || !$omit_transform_scale) {
-                $transform_string .= 'scale(' . ($calculation_numbers[0] / $calculation_numbers[1]) . ') ';
+                $transform_string .= 'scale(' . round($calculation_numbers[0] / $calculation_numbers[1], 4) . ') ';
             }
         }
 

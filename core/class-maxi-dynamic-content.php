@@ -1050,7 +1050,11 @@ class MaxiBlocks_DynamicContent
 
             $terms = get_terms($args);
 
-            return $terms[0];
+            if (!empty($terms) && isset($terms[0])) {
+                return $terms[0];
+            } else {
+                return null;
+            }
         } elseif ($dc_type === 'users') {
             $args = [
                 'capability' => 'edit_posts',

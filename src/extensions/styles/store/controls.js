@@ -46,14 +46,10 @@ const controls = {
 			await Promise.all(
 				blockStyles.map(async blockStyle => {
 					const { uniqueID } = blockStyle[1];
-					console.log('uniqueID', uniqueID);
 
 					const processedStyle = await processCss(
 						frontendStyleGenerator(blockStyle)
 					);
-
-					// console.log('processedStyles');
-					// console.log(processedStyle);
 
 					// Check if the uniqueID already exists in parsedStyles
 					// If it does, concatenate the styles; otherwise, assign the processedStyle

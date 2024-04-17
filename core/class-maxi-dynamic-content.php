@@ -1050,7 +1050,11 @@ class MaxiBlocks_DynamicContent
 
             $terms = get_terms($args);
 
-            return $terms[0];
+            if (!empty($terms) && isset($terms[0])) {
+                return $terms[0];
+            } else {
+                return null;
+            }
         } elseif ($dc_type === 'users') {
             $args = [
                 'capability' => 'edit_posts',
@@ -1389,25 +1393,32 @@ class MaxiBlocks_DynamicContent
             $term = $this->get_post($attributes);
         }
 
-        if ($dc_field === 'link') {
-            $tax_data = get_term_link($term);
-        } else {
-            $tax_data = $term->{"$dc_field"};
-        }
-
-        if ($dc_field === 'parent') {
-            if ($tax_data === 0) {
-                $tax_data = 'No parent';
+        if($term) {
+            if ($dc_field === 'link') {
+                $tax_data = get_term_link($term);
+            } elseif (isset($term->$dc_field)) {
+                $tax_data = $term->$dc_field;
             } else {
-                $tax_data = get_term($tax_data)->name;
+                return null;
             }
+
+            if ($dc_field === 'parent') {
+                if ($tax_data === 0) {
+                    $tax_data = 'No parent';
+                } else {
+                    $parent_term = get_term($tax_data);
+                    $tax_data = $parent_term ? $parent_term->name : null;
+                }
+            }
+
+            if ($dc_field === 'description') {
+                $tax_data = self::get_limited_string($tax_data, $dc_limit);
+            }
+            return $tax_data;
         }
 
-        if ($dc_field === 'description') {
-            $tax_data = self::get_limited_string($tax_data, $dc_limit);
-        }
+        return null;
 
-        return $tax_data;
     }
 
     public function get_product_content($attributes)

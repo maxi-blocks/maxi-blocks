@@ -1397,7 +1397,6 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-relation' => $dc_relation,
             'dc-type' => $dc_type,
-            'uniqueID' => $unique_id,
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {

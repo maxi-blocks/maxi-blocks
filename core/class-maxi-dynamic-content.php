@@ -696,6 +696,9 @@ class MaxiBlocks_DynamicContent
         if($dc_field === 'archive-type' && $dc_type !== 'users') {
             if (is_author()) {
                 $response = __('author', 'maxi-blocks');
+
+            } elseif (is_date()) {
+                $response = __('date', 'maxi-blocks');
             } else {
                 $response = get_queried_object()->taxonomy;
                 $response = preg_replace('/^post_/', '', $response);
@@ -1398,6 +1401,30 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {
+            if (is_date()) {
+                global $wp_query;
+                $year = $wp_query->get('year');
+                $month = $wp_query->get('monthnum');
+                $day = $wp_query->get('day');
+                // Get the WordPress date format
+                $format = get_option('date_format');
+
+                // Format the date based on the available date components
+                if ($day) {
+                    $formatted_date = date($format, mktime(0, 0, 0, $month, $day, $year));
+                } elseif ($month) {
+                    $formatted_date = date('F Y', mktime(0, 0, 0, $month, 1, $year));
+                } elseif ($year) {
+                    $formatted_date = $year;
+                } else {
+                    $formatted_date = '';
+                }
+
+                // Use the $formatted_date as needed
+                if (!empty($formatted_date)) {
+                    return $formatted_date;
+                }
+            }
             $term = get_queried_object();
 
         } else {

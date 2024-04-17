@@ -32,6 +32,7 @@
 				"background-size": "cover",
 				"background-position": "left top",
 				"opacity": 0.11,
+				"-webkit-transform": "translate3d(0,0,0)",
 				"clip-path": "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
 				"width": "100%",
 				"height": "100%"
@@ -44,6 +45,7 @@
 				"background-clip": "padding-box",
 				"background-attachment": "local",
 				"opacity": 0.52,
+				"-webkit-transform": "translate3d(0,0,0)",
 				"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
 				"width": "100%",
 				"height": "100%"
@@ -83,6 +85,17 @@
 				"width": "100%",
 				"height": "100%"
 			}
+		}
+	},
+	"maxi-test:hover > .maxi-background-displayer": {
+		"border": {
+			"general": {},
+			"xxl": {},
+			"xl": {},
+			"l": {},
+			"m": {},
+			"s": {},
+			"xs": {}
 		}
 	},
 	"maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__0": {

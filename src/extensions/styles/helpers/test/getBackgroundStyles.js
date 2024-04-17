@@ -17,6 +17,18 @@ import shapeLayerWithDifferentValuesOnDifferentResponsiveStages from '../../../.
 import generalResponsiveStage from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_general_responsive_stage__1.json';
 import simpleBackgroundStyles from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_simple_background_styles__1.json';
 import colorLayerWithDifferentValuesOnDifferentResponsiveStagesAndHover from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_different_values_on_different_responsive_stages_and_hover__1.json';
+import imageLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_image_layer_with_different_values_on_different_responsive_stages_and_hovers__1.json';
+import videoLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_video_layer_with_different_values_on_different_responsive_stages_and_hovers__1.json';
+import gradientLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_gradient_layer_with_different_values_on_different_responsive_stages_and_hovers__1.json';
+import shapeLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_shape_layer_with_different_values_on_different_responsive_stages_and_hovers__1.json';
+import differentLayersOncesCreatedOnNormalAndHover from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_different_layers_onces_created_on_normal_and_other_on_hover__1.json';
+import colorLayerWithBorder from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_border__1.json';
+import colorLayerWithDifferentValuesForBorderOnDifferentResponsiveStagesAndHovers from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_different_values_for_border_on_different_responsive_stages_and_hovers__1.json';
+import colorLayerWithRowBorderRadius from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_row_border_radius__1.json';
+import colorLayerWithBorderRadiusAndRowBorderRadius from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_for_color_layer_with_border_radius_and_row_border_radius__1.json';
+import hoverStatusDisabledButHoverAttributesSet from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_when_hover_status_is_disabled_but_hover_attributes_are_set__1.json';
+import borderAttributesAreDefault from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_when_border_attributes_are_default__1.json';
+import mostBorderAttributesAreDefault from '../../../../../tests/__snapshots__/Get_Background_Styles_Test__test_get_correct_block_background_styles_when_most_border_attributes_are_default__1.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
@@ -854,6 +866,10 @@ describe('getBackgroundStyles', () => {
 					'background-image-clip-path-status-s-hover': true,
 					'background-image-clip-path-s-hover':
 						'ellipse(25% 40% at 50% 50%)',
+					'background-image-wrapper-width-general': 100,
+					'background-image-wrapper-width-unit-general': '%',
+					'background-image-wrapper-height-general': 100,
+					'background-image-wrapper-height-unit-general': '%',
 				},
 			],
 		};
@@ -861,6 +877,9 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			imageLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers
+		);
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {
@@ -914,6 +933,9 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			videoLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers
+		);
 	});
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages and hovers', () => {
@@ -994,6 +1016,9 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			gradientLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers
+		);
 	});
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages and hovers', () => {
@@ -1104,6 +1129,9 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			shapeLayerWithDifferentValuesOnDifferentResponsiveStagesAndHovers
+		);
 	});
 	it('Get correct block background styles for different layers, onces created on normal and other on hover', () => {
 		const result = getBlockBackgroundStyles({
@@ -1123,6 +1151,10 @@ describe('getBackgroundStyles', () => {
 					'background-palette-color-xl-hover': 4,
 					'background-palette-status-general-hover': true,
 					'background-palette-color-general-hover': 4,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 				{
 					type: 'shape',
@@ -1161,6 +1193,10 @@ describe('getBackgroundStyles', () => {
 					'background-video-opacity-general': 1,
 					'background-video-reduce-border-general': false,
 					order: 4,
+					'background-video-wrapper-width-general': 100,
+					'background-video-wrapper-width-unit-general': '%',
+					'background-video-wrapper-height-general': 100,
+					'background-video-wrapper-height-unit-general': '%',
 				},
 			],
 			'background-layers-hover': [
@@ -1259,6 +1295,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(differentLayersOncesCreatedOnNormalAndHover);
 	});
 
 	it('Get correct block background styles for color layer with border', () => {
@@ -1278,6 +1315,10 @@ describe('getBackgroundStyles', () => {
 					'background-color-clip-path-general':
 						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					order: 0,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			'border-bottom-left-radius-general': 180,
@@ -1302,6 +1343,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(colorLayerWithBorder);
 	});
 
 	it('Get correct block background styles for color layer different values for border on different responsive stages and hovers', () => {
@@ -1313,7 +1355,6 @@ describe('getBackgroundStyles', () => {
 			'background-layers': [
 				{
 					type: 'color',
-					isHover: false,
 					'display-general': 'block',
 					'background-palette-status-general': true,
 					'background-palette-color-general': 4,
@@ -1329,6 +1370,8 @@ describe('getBackgroundStyles', () => {
 					id: 1,
 					'background-color-wrapper-width-general': 100,
 					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			'block-background-status-hover': false,
@@ -1375,6 +1418,9 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			colorLayerWithDifferentValuesForBorderOnDifferentResponsiveStagesAndHovers
+		);
 	});
 
 	it('Get correct block background styles for color layer with row border radius', () => {
@@ -1391,6 +1437,10 @@ describe('getBackgroundStyles', () => {
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
 					order: 0,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			rowBorderRadius: {
@@ -1402,6 +1452,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(colorLayerWithRowBorderRadius);
 	});
 
 	it('Get correct block background styles for color layer with border radius and row border radius', () => {
@@ -1418,6 +1469,10 @@ describe('getBackgroundStyles', () => {
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
 					order: 0,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			rowBorderRadius: {
@@ -1431,6 +1486,7 @@ describe('getBackgroundStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(colorLayerWithBorderRadiusAndRowBorderRadius);
 	});
 
 	it('Get correct block background styles when hover status is disabled, but hover attributes are set', () => {
@@ -1501,6 +1557,10 @@ describe('getBackgroundStyles', () => {
 						'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
 					'background-color-clip-path-s-hover':
 						'polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)',
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 					...getGeneralSizeAndPositionAttributes({
 						type: 'color',
 						isResponsive: true,
@@ -1513,6 +1573,7 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(hoverStatusDisabledButHoverAttributesSet);
 	});
 
 	it('Get correct block background styles when border attributes are default, so the source is the normal attributes', () => {
@@ -1537,6 +1598,10 @@ describe('getBackgroundStyles', () => {
 						'px',
 					'background-color-wrapper-position-right-unit-general':
 						'px',
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			'block-background-status-hover': true,
@@ -1568,6 +1633,7 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(borderAttributesAreDefault);
 	});
 
 	it('Get correct block background styles when most border attributes are default, so the source is the normal attributes and the one different', () => {
@@ -1592,6 +1658,10 @@ describe('getBackgroundStyles', () => {
 						'px',
 					'background-color-wrapper-position-right-unit-general':
 						'px',
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
 				},
 			],
 			'block-background-status-hover': true,
@@ -1624,5 +1694,6 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(mostBorderAttributesAreDefault);
 	});
 });

@@ -54,7 +54,7 @@ class Get_Background_Styles_Test extends WP_UnitTestCase
         $response = [];
         $units = ['px', '%', 'em', 'vw', 'vh'];
         foreach ($general_attributes as $rawKey => $rawValue) {
-            foreach (['', ($is_hover ? '-hover' : '')] as $suffixIndex => $suffix) {
+            foreach ($is_hover ? ['', '-hover'] : [''] as $suffixIndex => $suffix) {
                 foreach (['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'] as $index => $breakpoint) {
                     $value = null;
                     if (is_numeric($rawValue)) {
@@ -1042,7 +1042,7 @@ class Get_Background_Styles_Test extends WP_UnitTestCase
                     'order' => 3,
                     'background-svg-palette-status-xl' => true,
                     'background-svg-palette-color-xl' => 4,
-                ],
+                ] + $this->get_general_size_and_position_attributes([ 'type' => 'svg', 'is_responsive' => false]),
                 [
                     'type' => 'video',
                     'is_hover' => false,
@@ -1209,20 +1209,19 @@ class Get_Background_Styles_Test extends WP_UnitTestCase
             'background-layers' => [
                 [
                     'type' => 'color',
-                    'is_hover' => false,
                     'display-general' => 'block',
                     'background-palette-status-general' => true,
                     'background-palette-color-general' => 4,
                     'background-color-clip-path-status-general' => false,
                     'background-color-wrapper-position-sync-general' => 'all',
                     'background-color-wrapper-position-top-unit-general' => 'px',
-                    'background-color-wrapper-position-right-unit-general' => 'px',
-                    'background-color-wrapper-position-bottom-unit-general' => 'px',
+                    'background-color-wrapper-position-right-unit-general' =>
+                        'px',
+                    'background-color-wrapper-position-bottom-unit-general' =>
+                        'px',
                     'background-color-wrapper-position-left-unit-general' => 'px',
                     'order' => 1,
                     'id' => 1,
-                    'background-color-wrapper-width-general' => 100,
-                    'background-color-wrapper-width-unit-general' => '%',
                 ],
             ],
             'block-background-status-hover' => false,
@@ -1289,7 +1288,7 @@ class Get_Background_Styles_Test extends WP_UnitTestCase
                     'order' => 0,
                 ],
             ],
-            'rowBorderRadius' => [
+            'row_border_radius' => [
                 'border-bottom-left-radius-general' => 181,
                 'border-bottom-right-radius-general' => 182,
                 'border-top-left-radius-general' => 183,
@@ -1318,7 +1317,7 @@ class Get_Background_Styles_Test extends WP_UnitTestCase
                     'order' => 0,
                 ],
             ],
-            'rowBorderRadius' => [
+            'row_border_radius' => [
                 'border-bottom-left-radius-general' => 180,
                 'border-bottom-right-radius-general' => 181,
                 'border-top-left-radius-general' => 182,

@@ -56,25 +56,53 @@
 			"label": "Background layer wrapper",
 			"general": {
 				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px",
 				"display": "block"
 			},
 			"xxl": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			},
 			"xl": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			},
 			"l": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			},
 			"m": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			},
 			"s": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			},
 			"xs": {
-				"width": "100%"
+				"width": "100%",
+				"top": "10px",
+				"right": "10px",
+				"bottom": "10px",
+				"left": "10px"
 			}
 		}
 	},

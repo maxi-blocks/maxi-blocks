@@ -1,5 +1,21 @@
 import getAdvancedCssObject from '../getAdvancedCssObject';
 
+/**
+ * PHP snapshots
+ */
+import handleBasicCssCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_basic_css_correctly__1.json';
+import handleCssWithNoSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_no_selectors__1.json';
+import handleCssWithSelectorsWithSpaces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_selectors_with_spaces__1.json';
+import handleCssWithMultipleSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_selectors__1.json';
+import handleCssWithPseudoSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_pseudo_selectors__1.json';
+import handleAllResponsiveBreakpointsCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_all_responsive_breakpoints_correctly__1.json';
+import handleSubsetOfResponsiveBreakpointsCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_a_subset_of_responsive_breakpoints_correctly__1.json';
+import handleComplexCssStructuresAcrossBreakpoints from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_complex_css_structures_across_breakpoints__1.json';
+import handleCssWithMissingClosingBrace from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace__1.json';
+import handleCssWithMissingClosingBraceInNestedBraces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace_in_nested_braces__1.json';
+import handleCssWithMultipleUnmatchedBraces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_unmatched_braces__1.json';
+import handleEmptyCssCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_empty_css_correctly__1.json';
+
 describe('getAdvancedCssObject', () => {
 	it('should handle basic CSS correctly', () => {
 		const input = {
@@ -12,6 +28,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleBasicCssCorrectly);
 	});
 
 	it('should handle CSS with no selectors', () => {
@@ -20,6 +37,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithNoSelectors);
 	});
 
 	it('should handle CSS with selectors with spaces', () => {
@@ -33,6 +51,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithSelectorsWithSpaces);
 	});
 
 	it('should handle CSS with multiple selectors', () => {
@@ -51,6 +70,7 @@ describe('getAdvancedCssObject', () => {
 
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithMultipleSelectors);
 	});
 
 	it('should handle CSS with pseudo selectors', () => {
@@ -70,6 +90,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithPseudoSelectors);
 	});
 
 	it('should handle all responsive breakpoints correctly', () => {
@@ -113,6 +134,7 @@ describe('getAdvancedCssObject', () => {
 
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleAllResponsiveBreakpointsCorrectly);
 	});
 
 	it('should handle a subset of responsive breakpoints correctly', () => {
@@ -141,6 +163,7 @@ describe('getAdvancedCssObject', () => {
 
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleSubsetOfResponsiveBreakpointsCorrectly);
 	});
 
 	it('should handle complex CSS structures across breakpoints', () => {
@@ -209,6 +232,7 @@ describe('getAdvancedCssObject', () => {
 
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleComplexCssStructuresAcrossBreakpoints);
 	});
 
 	// Edge/invalid cases
@@ -222,6 +246,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithMissingClosingBrace);
 	});
 
 	it('should handle CSS with missing closing brace in nested braces', () => {
@@ -238,6 +263,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithMissingClosingBraceInNestedBraces);
 	});
 
 	it('should handle CSS with multiple unmatched braces', () => {
@@ -252,6 +278,7 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleCssWithMultipleUnmatchedBraces);
 	});
 
 	it('should handle empty CSS correctly', () => {
@@ -260,5 +287,6 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(handleEmptyCssCorrectly);
 	});
 });

@@ -1,7 +1,12 @@
 {
 	"maxi-test > .maxi-background-displayer": {
 		"border": {
-			"general": {},
+			"general": {
+				"border-bottom-left-radius": "181px",
+				"border-bottom-right-radius": "182px",
+				"border-top-left-radius": "183px",
+				"border-top-right-radius": "184px"
+			},
 			"xxl": {},
 			"xl": {},
 			"l": {},

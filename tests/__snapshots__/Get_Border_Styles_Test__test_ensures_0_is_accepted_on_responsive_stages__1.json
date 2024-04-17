@@ -1,0 +1,23 @@
+{
+	"general": {
+		"border-color": "rgba(var(--maxi-light-color-7,8,18,25),1)",
+		"border-style": "solid",
+		"border-top-width": "2px",
+		"border-right-width": "2px",
+		"border-bottom-width": "2px",
+		"border-left-width": "2px",
+		"border-top-radius": "2px",
+		"border-right-radius": "2px",
+		"border-bottom-radius": "2px",
+		"border-left-radius": "2px"
+	},
+	"xxl": {},
+	"xl": {},
+	"l": {},
+	"m": {},
+	"s": {
+		"border-right-width": "0px",
+		"border-right-radius": "0px"
+	},
+	"xs": {}
+}

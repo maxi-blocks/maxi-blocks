@@ -1,0 +1,38 @@
+{
+	"general": {
+		"border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
+		"border-style": "solid",
+		"border-top-width": "1px",
+		"border-right-width": "2px",
+		"border-bottom-width": "3px",
+		"border-left-width": "1px"
+	},
+	"xxl": {
+		"border-right-width": "6px",
+		"border-left-width": "6px",
+		"border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+	},
+	"xl": {
+		"border-top-width": "1px",
+		"border-bottom-width": "3px",
+		"border-left-width": "1px",
+		"border-top-left-radius": "50px",
+		"border-top-right-radius": "50px",
+		"border-bottom-right-radius": "50px",
+		"border-bottom-left-radius": "50px"
+	},
+	"l": {
+		"border-color": "rgba(23, 63, 194, 0.38)",
+		"border-top-width": "20px",
+		"border-right-width": "0px",
+		"border-bottom-width": "0px",
+		"border-left-width": "30px"
+	},
+	"m": {},
+	"s": {
+		"border-color": "rgba(51,54,62,0.38)"
+	},
+	"xs": {
+		"border-color": "rgba(var(--maxi-light-color-5,0,0,0),0.94)"
+	}
+}

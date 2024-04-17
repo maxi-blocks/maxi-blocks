@@ -1,5 +1,17 @@
 import getBorderStyles from '../getBorderStyles';
 
+/**
+ * PHP snapshots
+ */
+import simpleAndDefaultBorderAttributes from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_simple_and_default_border_attributes__1.json';
+import objectWithAllTheSettings from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_border_styles_object_with_all_the_settings__1.json';
+import objectWithHoverOptions from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_with_hover_options__1.json';
+import objectWithZeroValues from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_ensures_0_is_accepted_on_responsive_stages__1.json';
+import objectBasedOnButtonMaxi from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi__1.json';
+import objectBasedOnButtonMaxiWithHoverActive from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_active_and_non_global_sc_settings_enabled__1.json';
+import objectBasedOnButtonMaxiWithHoverDisabled from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_disabled_and_global_sc_settings_enabled__1.json';
+import objectBasedOnIB from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_an_ib_border_styles_when_border_style_none__1.json';
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -64,6 +76,7 @@ describe('getBorderStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(simpleAndDefaultBorderAttributes);
 	});
 
 	it('Return border styles object with all the settings', () => {
@@ -121,6 +134,7 @@ describe('getBorderStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectWithAllTheSettings);
 	});
 
 	it('Return a border styles object with hover options', () => {
@@ -235,6 +249,7 @@ describe('getBorderStyles', () => {
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectWithHoverOptions);
 	});
 
 	it('Ensures 0 is accepted on responsive stages', () => {
@@ -264,6 +279,7 @@ describe('getBorderStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectWithZeroValues);
 	});
 
 	it('Return a border styles object based on Button Maxi', async () => {
@@ -343,6 +359,7 @@ describe('getBorderStyles', () => {
 			prefix: 'button-',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectBasedOnButtonMaxi);
 	});
 
 	it('Return a border styles object based on Button Maxi with hover active and non global SC settings enabled', async () => {
@@ -387,6 +404,7 @@ describe('getBorderStyles', () => {
 			prefix: 'button-',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectBasedOnButtonMaxiWithHoverActive);
 	});
 
 	it('Return a border styles object based on Button Maxi with hover disabled and global SC settings enabled', async () => {
@@ -436,6 +454,7 @@ describe('getBorderStyles', () => {
 		});
 		// The snapshot of this test should be equal than the snapshot of the previous test
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectBasedOnButtonMaxiWithHoverDisabled);
 	});
 
 	it('Return an IB border styles when border-style - none', async () => {
@@ -445,5 +464,6 @@ describe('getBorderStyles', () => {
 			isIB: true,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(objectBasedOnIB);
 	});
 });

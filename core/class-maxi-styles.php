@@ -1548,7 +1548,7 @@ class MaxiBlocks_Styles
         }
 
         if (get_template() === 'maxiblocks') {
-            $this->fetch_blocks_from_beta_maxi_theme_template_parts($template_id);
+            $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
         }
 
         return $all_blocks;
@@ -1559,35 +1559,26 @@ class MaxiBlocks_Styles
         if (get_template() !== 'maxiblocks') {
             return;
         }
-        global $wpdb;
         $all_blocks = [];
 
         $theme_directory = get_template_directory();
-        echo $theme_directory;
+
         $parts_directory = $theme_directory . '/parts/';
 
         // Get a list of HTML files in the parts directory
-        $html_files = glob($parts_directory . '*.html');
+        $file =  $parts_directory . $template_id . '*.html';
 
-        print_r($html_files);
 
-        // Loop through each HTML file
-        foreach ($html_files as $file) {
-            // Read the contents of the file
-            $file_contents = file_get_contents($file);
+        $file_contents = file_get_contents($file);
 
-            // Example: Using DOMDocument to parse the HTML
-            $dom = new DOMDocument();
-            $dom->loadHTML($file_contents);
+        // Example: Using DOMDocument to parse the HTML
+        $dom = new DOMDocument();
+        $dom->loadHTML($file_contents);
 
-            // Example: Extract all the text from the HTML
-            $text_content = $dom->textContent;
-            $part_blocks = parse_blocks($text_content);
-            $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
-            //  echo $text_content;
-        }
-
-        print_r($all_blocks);
+        // Example: Extract all the text from the HTML
+        $text_content = $dom->textContent;
+        $part_blocks = parse_blocks($text_content);
+        $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
 
         return $all_blocks;
     }
@@ -1601,7 +1592,46 @@ class MaxiBlocks_Styles
         global $wpdb;
         $all_blocks = [];
 
+        echo $template_id;
 
+        $parts = explode('//', $template_id);
+        if(!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
+            return;
+        }
+
+        $template_slug = isset($parts[1]) ? $parts[1] : null;
+
+        if(!$template_slug) {
+            return;
+        }
+
+        $theme_directory = get_template_directory();
+        $template_directory = $theme_directory . '/templates/';
+
+        // Get a list of HTML files in the parts directory
+        $file =  $template_directory . $template_slug.'.html';
+
+        echo 'file: '.$file.'<br>';
+
+        $file_contents = file_get_contents($file);
+
+        if(!$file_contents) {
+            return;
+        }
+
+        if (strpos($file_contents, '"slug":"header"') !== false) {
+            $header_blocks =   $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+            $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
+
+        }
+
+        if (strpos($file_contents, '"slug":"footer"') !== false) {
+
+            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
+            $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
+
+
+        }
 
         return $all_blocks;
     }

@@ -61,9 +61,9 @@ const updateSVG = (updatedAttributes, blockAttributes) => {
 			);
 		};
 
-		if (ariaLabels.svg) {
+		if (ariaLabels?.svg) {
 			updateIcon(ariaLabels.svg);
-		} else if (ariaLabels.icon) {
+		} else if (ariaLabels?.icon) {
 			updateIcon(ariaLabels.icon);
 		}
 	}

@@ -860,7 +860,7 @@ function get_general_background_styles(
     $size = [];
 
     $get_border_value = function ($target, $breakpoint, $force_is_hover = null) use ($border_props, $is_hover, $props) {
-        $lastValue = get_last_breakpoint_attribute(
+        $last_value = get_last_breakpoint_attribute(
             [
                 'target' => "border-$target-width",
                 'breakpoint' => $breakpoint,
@@ -870,7 +870,7 @@ function get_general_background_styles(
             ]
         );
 
-        return is_numeric($lastValue) ? $lastValue : 2;
+        return is_numeric($last_value) ? $last_value : 2;
     };
 
     $border = get_border_styles([
@@ -887,11 +887,10 @@ function get_general_background_styles(
             $width_right = null;
 
             if (
-                array_key_exists("border-style-$breakpoint", $props) &&
-                $props["border-style-$breakpoint"] !== 'none' &&
-                (($props['border-style-general'] &&
-                    $props['border-style-general'] !== 'none') ||
-                    $props["border-style-$breakpoint"])
+                ((array_key_exists("border-style-$breakpoint", $props) &&
+                $props["border-style-$breakpoint"] !== 'none') || !array_key_exists("border-style-$breakpoint", $props)) &&
+                (array_key_exists('border-style-general', $props) && $props['border-style-general'] &&
+                    $props['border-style-general'] !== 'none')
             ) {
                 $width_top = $get_border_value('top', $breakpoint);
                 $width_bottom = $get_border_value('bottom', $breakpoint);
@@ -926,7 +925,8 @@ function get_general_background_styles(
                         }
                     }
 
-                    return [$target =>  strval(-round($width, 2)) . $widthUnit];
+                    $finalValue = $width === 0 ? 0 : -round($width, 2);
+                    return [$target =>  strval($finalValue) . $widthUnit];
                 };
 
                 $size[$breakpoint] = array_merge(
@@ -968,29 +968,30 @@ function get_general_background_styles(
     if (!empty($size)) {
         $reversed_breakpoints = array_reverse($breakpoints);
 
-        foreach ($breakpoints as $breakpoint) {
-            $currentIndex = array_search($breakpoint, $breakpoints);
-            $previousIndex = $currentIndex - 1;
+        foreach ($reversed_breakpoints as $breakpoint) {
+            $prev_breakpoint_index = array_search($breakpoint, $breakpoints) - 1;
+            $prev_breakpoint = $breakpoints[$prev_breakpoint_index] ?? null;
 
-            // Check if the previous breakpoint exists
-            if (isset($breakpoints[$previousIndex])) {
-                $prevBreakpoint = $breakpoints[$previousIndex];
-
-                // Compare and delete properties if they are the same
-                foreach (['top', 'left', 'bottom', 'right'] as $property) {
-                    if (isset($size[$prevBreakpoint][$property], $size[$breakpoint][$property]) &&
-                        $size[$prevBreakpoint][$property] === $size[$breakpoint][$property]) {
-                        unset($size[$breakpoint][$property]);
-                    }
-                }
-
-                // If the previous size array is empty, delete it
-                if (empty($size[$prevBreakpoint])) {
-                    unset($size[$prevBreakpoint]);
-                }
+            if ($prev_breakpoint !== null && isset($size[$prev_breakpoint]['top']) && $size[$prev_breakpoint]['top'] === ($size[$breakpoint]['top'] ?? null)) {
+                unset($size[$breakpoint]['top']);
             }
 
-            // If the current size array is empty, delete it
+            if ($prev_breakpoint !== null && isset($size[$prev_breakpoint]['left']) && $size[$prev_breakpoint]['left'] === ($size[$breakpoint]['left'] ?? null)) {
+                unset($size[$breakpoint]['left']);
+            }
+
+            if ($prev_breakpoint !== null && isset($size[$prev_breakpoint]['bottom']) && $size[$prev_breakpoint]['bottom'] === ($size[$breakpoint]['bottom'] ?? null)) {
+                unset($size[$breakpoint]['bottom']);
+            }
+
+            if ($prev_breakpoint !== null && isset($size[$prev_breakpoint]['right']) && $size[$prev_breakpoint]['right'] === ($size[$breakpoint]['right'] ?? null)) {
+                unset($size[$breakpoint]['right']);
+            }
+
+            if ($prev_breakpoint !== null && empty($size[$prev_breakpoint])) {
+                unset($size[$prev_breakpoint]);
+            }
+
             if (empty($size[$breakpoint])) {
                 unset($size[$breakpoint]);
             }
@@ -1028,7 +1029,7 @@ function get_basic_response_object($args)
 
     $merged_border_obj = [];
     if (!is_null($border_obj)) {
-        $merged_border_obj = array_merge($row_border_radius_obj, $border_obj);
+		$merged_border_obj = array_replace_recursive($row_border_radius_obj, $border_obj);
     } else {
         $merged_border_obj = $row_border_radius_obj;
     }

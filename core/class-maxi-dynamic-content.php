@@ -527,6 +527,7 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
@@ -693,8 +694,13 @@ class MaxiBlocks_DynamicContent
         }
 
         if($dc_field === 'archive-type' && $dc_type !== 'users') {
-            $response = get_queried_object()->taxonomy;
-            $response = preg_replace('/^post_/', '', $response);
+            if (is_author()) {
+                $response = __('author', 'maxi-blocks');
+            } else {
+                $response = get_queried_object()->taxonomy;
+                $response = preg_replace('/^post_/', '', $response);
+            }
+
         }
 
         if (empty($response) && $response !== '0') {
@@ -713,7 +719,6 @@ class MaxiBlocks_DynamicContent
 
 
         $content = str_replace('$text-to-replace', $response, $content);
-
 
         return $content;
     }
@@ -1326,11 +1331,15 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-relation' => $dc_relation,
         ) = $attributes;
+
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
         if (!array_key_exists('dc-field', $attributes)) {
             return 0;
         } else {
             $dc_field = $attributes['dc-field'];
+        }
+        if($dc_relation === 'by-id' && $attributes['dc-type'] === 'archive' && is_author()) {
+            $dc_relation = 'current';
         }
         if($dc_relation === 'current') {
             $user = get_queried_object();
@@ -1385,10 +1394,12 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-relation' => $dc_relation,
             'dc-type' => $dc_type,
+            'uniqueID' => $unique_id,
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {
             $term = get_queried_object();
+
         } else {
             $term = $this->get_post($attributes);
         }
@@ -1399,7 +1410,11 @@ class MaxiBlocks_DynamicContent
             } elseif (isset($term->$dc_field)) {
                 $tax_data = $term->$dc_field;
             } else {
-                return null;
+                if(isset($term->data->user_login) && $dc_type === 'archive') {
+                    return self::get_user_content($attributes);
+                } else {
+                    $tax_data = null;
+                }
             }
 
             if ($dc_field === 'parent') {
@@ -1868,6 +1883,7 @@ class MaxiBlocks_DynamicContent
                 $args['tag_id'] = $id;
             }
         } elseif($relation === 'current-archive') {
+
             switch ($archive_type) {
                 case 'category':
                     $args['cat'] = $id;

@@ -101,7 +101,7 @@ function get_border_styles($args)
         $is_border_none = is_null($border_style) || $border_style === 'none';
         $omit_border_style = $omit_border_style ? $is_border_none : false;
 
-        $replacer = '/-(' . implode('|', $breakpoints) . ')(-hover)?\b(?!.*\b-(' . implode('|', $breakpoints) . ')(-hover)?\b)/m';
+        $replacer = '/-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b(?!.*\b-' . $breakpoint . ($is_hover ? '-hover' : '') . '\b)/';
 
         foreach ($obj as $key => $raw_value) {
             $new_key = $prefix ? str_replace($prefix, '', $key) : $key;

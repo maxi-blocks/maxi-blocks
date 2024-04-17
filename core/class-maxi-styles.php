@@ -1547,6 +1547,62 @@ class MaxiBlocks_Styles
             $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
         }
 
+        if (get_template() === 'maxiblocks') {
+            $this->fetch_blocks_from_beta_maxi_theme_template_parts($template_id);
+        }
+
+        return $all_blocks;
+    }
+
+    public function fetch_blocks_from_beta_maxi_theme_template_parts($template_id)
+    {
+        if (get_template() !== 'maxiblocks') {
+            return;
+        }
+        global $wpdb;
+        $all_blocks = [];
+
+        $theme_directory = get_template_directory();
+        echo $theme_directory;
+        $parts_directory = $theme_directory . '/parts/';
+
+        // Get a list of HTML files in the parts directory
+        $html_files = glob($parts_directory . '*.html');
+
+        print_r($html_files);
+
+        // Loop through each HTML file
+        foreach ($html_files as $file) {
+            // Read the contents of the file
+            $file_contents = file_get_contents($file);
+
+            // Example: Using DOMDocument to parse the HTML
+            $dom = new DOMDocument();
+            $dom->loadHTML($file_contents);
+
+            // Example: Extract all the text from the HTML
+            $text_content = $dom->textContent;
+            $part_blocks = parse_blocks($text_content);
+            $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
+            //  echo $text_content;
+        }
+
+        print_r($all_blocks);
+
+        return $all_blocks;
+    }
+
+
+    public function fetch_blocks_from_beta_maxi_theme_templates($template_id)
+    {
+        if (get_template() !== 'maxiblocks') {
+            return;
+        }
+        global $wpdb;
+        $all_blocks = [];
+
+
+
         return $all_blocks;
     }
 

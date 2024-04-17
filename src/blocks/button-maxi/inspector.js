@@ -336,6 +336,7 @@ const Inspector = props => {
 									...inspectorTabs.ariaLabel({
 										props,
 										targets: ariaLabelsCategories,
+										blockName: props.name,
 										getIcon: getAriaIcon,
 										onChange: onChangeAriaLabel,
 									}),

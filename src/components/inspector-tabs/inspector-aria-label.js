@@ -7,11 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AriaLabelControl from '../aria-label-control';
+import filterAriaLabelCategories from '../aria-label-control/utils';
 
 /**
  * Component
  */
-const ariaLabel = ({ props, targets, getIcon, onChange }) => {
+const ariaLabel = ({ props, targets, blockName, getIcon, onChange }) => {
 	const { attributes } = props;
 
 	const defaultOnChange = ({ obj }) => {
@@ -22,7 +23,11 @@ const ariaLabel = ({ props, targets, getIcon, onChange }) => {
 		label: __('Aria label', 'maxi-blocks'),
 		content: (
 			<AriaLabelControl
-				targets={targets}
+				targets={filterAriaLabelCategories(
+					targets,
+					blockName,
+					attributes
+				)}
 				ariaLabels={attributes.ariaLabels}
 				onChange={onChange ?? defaultOnChange}
 				getIcon={getIcon}

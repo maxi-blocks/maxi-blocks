@@ -134,6 +134,7 @@ const Inspector = props => {
 									...inspectorTabs.ariaLabel({
 										props,
 										targets: ariaLabelsCategories,
+										blockName: props.name,
 									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useCallback, useMemo, useState } from '@wordpress/element';
+import { useCallback, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,12 +19,10 @@ import { isEmpty } from 'lodash';
 const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 	const [target, setTarget] = useState(targets[0]);
 
-	const targetsOptions = useMemo(() => {
-		return targets.map(value => ({
-			label: value.charAt(0).toUpperCase() + value.slice(1),
-			value,
-		}));
-	}, [targets]);
+	const targetsOptions = targets.map(value => ({
+		label: value.charAt(0).toUpperCase() + value.slice(1),
+		value,
+	}));
 
 	const onChangeAriaLabel = useCallback(
 		value => {

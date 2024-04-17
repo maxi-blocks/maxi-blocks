@@ -1,5 +1,12 @@
 import getBoxShadowStyles from '../getBoxShadowStyles';
 
+/**
+ * PHP snapshots
+ */
+import valuesInAllResponsiveAndWithCustomColor from '../../../../../tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_get_correct_box_shadow_styles_with_values_in_all_responsive_and_with_custom_color__1.json';
+import differentColorsBasedOnPalette from '../../../../../tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_returns_box_shadow_object_with_different_colors_based_on_palette__1.json';
+import defaultStylesForIB from '../../../../../tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_returns_box_shadow_default_styles_for_IB__1.json';
+
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 4)
 );
@@ -113,6 +120,7 @@ describe('getBoxShadowStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(valuesInAllResponsiveAndWithCustomColor);
 	});
 
 	it('Returns box-shadow object with different colors based on palette', () => {
@@ -136,6 +144,7 @@ describe('getBoxShadowStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(differentColorsBasedOnPalette);
 	});
 
 	it('Returns box-shadow default styles for IB', () => {
@@ -170,5 +179,6 @@ describe('getBoxShadowStyles', () => {
 			isIB: true,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(defaultStylesForIB);
 	});
 });

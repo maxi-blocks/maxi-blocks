@@ -26,6 +26,24 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
+});
+
 describe('getBorderStyles', () => {
 	const defaultAttributes = {
 		'border-style-general': 'none',

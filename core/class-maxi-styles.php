@@ -1548,7 +1548,8 @@ class MaxiBlocks_Styles
         }
 
         if (get_template() === 'maxiblocks') {
-            $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
+            $templates_blocks = $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
+            $all_blocks = array_merge_recursive($all_blocks, $templates_blocks);
         }
 
         return $all_blocks;
@@ -1556,20 +1557,21 @@ class MaxiBlocks_Styles
 
     public function fetch_blocks_from_beta_maxi_theme_template_parts($template_id)
     {
-        if (get_template() !== 'maxiblocks') {
-            return;
-        }
+
         $all_blocks = [];
-
         $theme_directory = get_template_directory();
-
         $parts_directory = $theme_directory . '/parts/';
 
         // Get a list of HTML files in the parts directory
-        $file =  $parts_directory . $template_id . '*.html';
-
+        $file =  $parts_directory . $template_id . '.html';
+        if(!file_exists($file)) {
+            return [];
+        }
 
         $file_contents = file_get_contents($file);
+        if(!$file_contents) {
+            return [];
+        }
 
         // Example: Using DOMDocument to parse the HTML
         $dom = new DOMDocument();
@@ -1589,10 +1591,7 @@ class MaxiBlocks_Styles
         if (get_template() !== 'maxiblocks') {
             return;
         }
-        global $wpdb;
         $all_blocks = [];
-
-        echo $template_id;
 
         $parts = explode('//', $template_id);
         if(!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
@@ -1610,11 +1609,11 @@ class MaxiBlocks_Styles
 
         // Get a list of HTML files in the parts directory
         $file =  $template_directory . $template_slug.'.html';
-
-        echo 'file: '.$file.'<br>';
+        if(!file_exists($file)) {
+            return [];
+        }
 
         $file_contents = file_get_contents($file);
-
         if(!$file_contents) {
             return;
         }
@@ -1622,18 +1621,63 @@ class MaxiBlocks_Styles
         if (strpos($file_contents, '"slug":"header"') !== false) {
             $header_blocks =   $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
             $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
-
         }
 
         if (strpos($file_contents, '"slug":"footer"') !== false) {
-
             $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
             $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
+        }
 
+        $pattern = '/<!-- wp:pattern \{"slug":"(maxiblocks\/[^"]+)"\} \/-->/';
+        preg_match_all($pattern, $file_contents, $matches);
 
+        if (!empty($matches[1])) {
+            foreach ($matches[1] as $slug) {
+                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns($slug);
+                $all_blocks = array_merge_recursive($all_blocks, $parsed_blocks);
+            }
         }
 
         return $all_blocks;
+    }
+
+    public function fetch_blocks_from_beta_maxi_theme_patterns($pattern_id)
+    {
+        $all_blocks = [];
+        $parts = explode('/', $pattern_id);
+        if(!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
+            return [];
+        }
+
+        $pattern_slug = isset($parts[1]) ? $parts[1] : null;
+
+        if(!$pattern_slug) {
+            return [];
+        }
+
+        $theme_directory = get_template_directory();
+        $html_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.html';
+        $php_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.php';
+
+        $pattern_file = '';
+
+        if (file_exists($html_pattern)) {
+            $pattern_file = $html_pattern;
+        } elseif (file_exists($php_pattern)) {
+            $pattern_file = $php_pattern;
+        }
+
+        if (!empty($pattern_file)) {
+            $file_contents = file_get_contents($pattern_file);
+
+            if(!$file_contents) {
+                return;
+            }
+            $pattern_blocks = parse_blocks($file_contents);
+            $all_blocks = array_merge_recursive($all_blocks, $pattern_blocks);
+        }
+        return $all_blocks;
+
     }
 
     public function get_reusable_blocks_ids($blocks)

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useCallback } from '@wordpress/element';
 import loadable from '@loadable/component';
 
 /**
@@ -51,31 +50,8 @@ const Inspector = props => {
 		playerType,
 		'overlay-mediaID': overlayMediaId,
 		'overlay-altSelector': overlayAltSelector,
-		'close-icon-content': closeIconContent,
-		'play-icon-content': playIconContent,
 	} = attributes;
 	const { selectors, categories } = customCss;
-
-	const onChangeAriaLabel = useCallback(
-		({ obj, target, icon }) => {
-			maxiSetAttributes({
-				...obj,
-				...(target === 'close icon' && {
-					'close-icon-content': icon,
-				}),
-				...(target === 'play icon' && {
-					'play-icon-content': icon,
-				}),
-			});
-		},
-		[maxiSetAttributes]
-	);
-
-	const getAriaIcon = useCallback(
-		target =>
-			target === 'close icon' ? closeIconContent : playIconContent,
-		[closeIconContent, playIconContent]
-	);
 
 	return (
 		<InspectorControls>
@@ -299,8 +275,6 @@ const Inspector = props => {
 										props,
 										targets: ariaLabelsCategories,
 										blockName: props.name,
-										onChange: onChangeAriaLabel,
-										getIcon: getAriaIcon,
 									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({

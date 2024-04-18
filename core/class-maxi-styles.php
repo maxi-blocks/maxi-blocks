@@ -1614,13 +1614,22 @@ class MaxiBlocks_Styles
             return;
         }
 
+        if($template_slug === 'index') {
+            $template_slug = 'front-page';
+        }
+
         $theme_directory = get_template_directory();
         $template_directory = $theme_directory . '/templates/';
 
         // Get a list of HTML files in the parts directory
         $file =  $template_directory . $template_slug.'.html';
         if(!file_exists($file)) {
-            return [];
+            $header_blocks =   $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+            $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
+
+            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
+            $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
+            return $all_blocks;
         }
 
         $file_contents = file_get_contents($file);

@@ -1582,6 +1582,16 @@ class MaxiBlocks_Styles
         $part_blocks = parse_blocks($text_content);
         $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
 
+        $pattern = '/<!-- wp:pattern \{"slug":"(maxiblocks\/[^"]+)"\} \/-->/';
+        preg_match_all($pattern, $file_contents, $matches);
+
+        if (!empty($matches[1])) {
+            foreach ($matches[1] as $slug) {
+                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns($slug);
+                $all_blocks = array_merge_recursive($all_blocks, $parsed_blocks);
+            }
+        }
+
         return $all_blocks;
     }
 

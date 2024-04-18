@@ -20,12 +20,18 @@ import entityRecordsWrapper from '../entityRecordsWrapper';
 export const processCss = async code => {
 	if (!code) return null;
 
-	const { css } = postcss([autoprefixer]).process(code);
-	if (!css) return null;
+	try {
+		const { css } = postcss([autoprefixer]).process(code);
+		if (!css) return null;
 
-	const minifiedCss = minifyCssString(css);
+		const minifiedCss = minifyCssString(css);
 
-	return minifiedCss;
+		return minifiedCss;
+	} catch (error) {
+		console.error('Error processing CSS:', error);
+		console.error('Problematic code:', code);
+		throw error;
+	}
 };
 
 /**
@@ -40,6 +46,7 @@ const controls = {
 			await Promise.all(
 				blockStyles.map(async blockStyle => {
 					const { uniqueID } = blockStyle[1];
+
 					const processedStyle = await processCss(
 						frontendStyleGenerator(blockStyle)
 					);

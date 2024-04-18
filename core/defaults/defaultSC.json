@@ -1115,6 +1115,7 @@
 					"padding-left-unit-general": "px"
 				}
 			}
-		}
+		},
+		"gutenberg_blocks_status": true
 	}
 }

@@ -527,6 +527,7 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
@@ -693,8 +694,16 @@ class MaxiBlocks_DynamicContent
         }
 
         if($dc_field === 'archive-type' && $dc_type !== 'users') {
-            $response = get_queried_object()->taxonomy;
-            $response = preg_replace('/^post_/', '', $response);
+            if (is_author()) {
+                $response = __('author', 'maxi-blocks');
+
+            } elseif (is_date()) {
+                $response = __('date', 'maxi-blocks');
+            } else {
+                $response = get_queried_object()->taxonomy;
+                $response = preg_replace('/^post_/', '', $response);
+            }
+
         }
 
         if (empty($response) && $response !== '0') {
@@ -713,7 +722,6 @@ class MaxiBlocks_DynamicContent
 
 
         $content = str_replace('$text-to-replace', $response, $content);
-
 
         return $content;
     }
@@ -1050,7 +1058,11 @@ class MaxiBlocks_DynamicContent
 
             $terms = get_terms($args);
 
-            return $terms[0];
+            if (!empty($terms) && isset($terms[0])) {
+                return $terms[0];
+            } else {
+                return null;
+            }
         } elseif ($dc_type === 'users') {
             $args = [
                 'capability' => 'edit_posts',
@@ -1322,11 +1334,15 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-relation' => $dc_relation,
         ) = $attributes;
+
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
         if (!array_key_exists('dc-field', $attributes)) {
             return 0;
         } else {
             $dc_field = $attributes['dc-field'];
+        }
+        if($dc_relation === 'by-id' && $attributes['dc-type'] === 'archive' && is_author()) {
+            $dc_relation = 'current';
         }
         if($dc_relation === 'current') {
             $user = get_queried_object();
@@ -1384,30 +1400,66 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {
+            if (is_date()) {
+                global $wp_query;
+                $year = $wp_query->get('year');
+                $month = $wp_query->get('monthnum');
+                $day = $wp_query->get('day');
+                // Get the WordPress date format
+                $format = get_option('date_format');
+
+                // Format the date based on the available date components
+                if ($day) {
+                    $formatted_date = date($format, mktime(0, 0, 0, $month, $day, $year));
+                } elseif ($month) {
+                    $formatted_date = date('F Y', mktime(0, 0, 0, $month, 1, $year));
+                } elseif ($year) {
+                    $formatted_date = $year;
+                } else {
+                    $formatted_date = '';
+                }
+
+                // Use the $formatted_date as needed
+                if (!empty($formatted_date)) {
+                    return $formatted_date;
+                }
+            }
             $term = get_queried_object();
+
         } else {
             $term = $this->get_post($attributes);
         }
 
-        if ($dc_field === 'link') {
-            $tax_data = get_term_link($term);
-        } else {
-            $tax_data = $term->{"$dc_field"};
-        }
-
-        if ($dc_field === 'parent') {
-            if ($tax_data === 0) {
-                $tax_data = 'No parent';
+        if($term) {
+            if ($dc_field === 'link') {
+                $tax_data = get_term_link($term);
+            } elseif (isset($term->$dc_field)) {
+                $tax_data = $term->$dc_field;
             } else {
-                $tax_data = get_term($tax_data)->name;
+                if(isset($term->data->user_login) && $dc_type === 'archive') {
+                    return self::get_user_content($attributes);
+                } else {
+                    $tax_data = null;
+                }
             }
+
+            if ($dc_field === 'parent') {
+                if ($tax_data === 0) {
+                    $tax_data = 'No parent';
+                } else {
+                    $parent_term = get_term($tax_data);
+                    $tax_data = $parent_term ? $parent_term->name : null;
+                }
+            }
+
+            if ($dc_field === 'description') {
+                $tax_data = self::get_limited_string($tax_data, $dc_limit);
+            }
+            return $tax_data;
         }
 
-        if ($dc_field === 'description') {
-            $tax_data = self::get_limited_string($tax_data, $dc_limit);
-        }
+        return null;
 
-        return $tax_data;
     }
 
     public function get_product_content($attributes)
@@ -1857,6 +1909,7 @@ class MaxiBlocks_DynamicContent
                 $args['tag_id'] = $id;
             }
         } elseif($relation === 'current-archive') {
+
             switch ($archive_type) {
                 case 'category':
                     $args['cat'] = $id;

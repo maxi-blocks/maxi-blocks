@@ -1,3 +1,11 @@
+_Updates 18 April 2024_
+MaxiBlocks v1.8.3
+* Update: Laid the groundwork for the upcoming MaxiBlocks theme, ensuring seamless integration and enhanced user experience.
+* Update: Implemented console error logging for the style processor on the backend, facilitating easier troubleshooting and issue resolution.
+* Fix: Resolved an issue with the visited hover colour for consistent and accurate colour representation across the site.
+* Fix: Addressed transition errors occurring in the Firefox browser, providing a smoother and more reliable user experience.
+* Fix: Eliminated PHP warnings related to Dynamic Content on the frontend, improving overall plugin stability and performance.
+
 _Updates 8 April 2024_
 MaxiBlocks v1.8.2
 * Update: Added Dynamic Content current item info to Archive templates.

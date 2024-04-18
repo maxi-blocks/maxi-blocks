@@ -210,6 +210,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 18 April 2024_
+MaxiBlocks v1.8.3
+* Update: Laid the groundwork for the upcoming MaxiBlocks theme, ensuring seamless integration and enhanced user experience.
+* Update: Implemented console error logging for the style processor on the backend, facilitating easier troubleshooting and issue resolution.
+* Fix: Resolved an issue with the visited hover colour for consistent and accurate colour representation across the site.
+* Fix: Addressed transition errors occurring in the Firefox browser, providing a smoother and more reliable user experience.
+* Fix: Eliminated PHP warnings related to Dynamic Content on the frontend, improving overall plugin stability and performance.
+
 _Updates 8 April 2024_
 MaxiBlocks v1.8.2
 * Update: Added Dynamic Content current item info to Archive templates.
@@ -219,24 +227,6 @@ MaxiBlocks v1.8.2
 _Updates 4 April 2024_
 MaxiBlocks v1.8.1
 * Fix: Resolved List Item migrator issue on WordPress 6.5.
-
-_Updates 2 April 2024_
-MaxiBlocks v1.8.0
-* Update: Implemented fixes for WordPress 6.5, ensuring compatibility and stability.
-* Update: Updated npm packages for improved speed and security.
-* Update: Implemented list items as inner blocks in Text Maxi lists, enhancing modularity.
-* Update: Added Site Editor patterns previews for Maxi Patterns, facilitating a more intuitive design experience.
-* Update: Added images as previews for Maxi Patterns in the Block Inserter, enhancing the Editor speed.
-* Update: Enhanced parsing of special characters, improving content accuracy and display.
-* Update: Enabled block style application from a template part within a Site Editor template, enhancing design consistency.
-* Update: Ensured text remains visible during webfont load, improving user experience during page load.
-* Fix: Resolved mobile navigation issues in the backend on breakpoint changes, enhancing responsiveness.
-* Fix: Addressed issue of Maxi blocks losing styles inside core blocks, ensuring design integrity.
-* Fix: Fixed Dynamic Content link migrator, ensuring reliable and accurate link migration.
-* Fix: Improved styling for reusable blocks, enhancing visual consistency and usability.
-* Fix: Resolved the PHP error related to the key length exceeding 1000 bytes in certain database configurations.
-* Fix: Addressed the issue of list styles impacting the search page of WordPress Dashboard plugins
-* Fix: Corrected the display of fonts that have issues with bold and thin weights.
 
 == Upgrade Notice ==
 

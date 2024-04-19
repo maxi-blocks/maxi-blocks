@@ -1233,8 +1233,8 @@ class MaxiBlocks_DynamicContent
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $post->post_content;
         }
-        // In case is content, remove blocks and strip tags
-        if (in_array($dc_field, ['title', 'content', 'excerpt'])) {
+        // In case is title, excerpt, remove blocks and strip tags
+        if (in_array($dc_field, ['title', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
             if($dc_field === 'excerpt') {
                 $post_data = excerpt_remove_blocks($post_data);
@@ -1249,6 +1249,16 @@ class MaxiBlocks_DynamicContent
             // In case is not set, put the default limit
             if (!isset($dc_limit)) {
                 $dc_limit = 100;
+            }
+
+            // Limit content
+            $post_data = self::get_limited_string($post_data, $dc_limit);
+        }
+
+        if ($dc_field === 'content') {
+            // In case is not set, put the default limit
+            if (!isset($dc_limit)) {
+                $dc_limit = 0;
             }
 
             // Limit content

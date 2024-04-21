@@ -19,37 +19,37 @@ function get_hover_effects_background_styles($props, $block_style)
             continue;
         }
 
-        $response = array_merge($response, [
-            (boolval($current_active_media) && $current_active_media === 'color'
-                ? [
-                    'background' => get_color_background_object([
-                        ...get_group_attributes(
-                            $props,
-                            'background_color',
-                            false,
-                            'hover-'
-                        ),
-                        'block_style' => $block_style,
-                        'breakpoint' => $breakpoint,
-                        'prefix' => 'hover-',
-                    ]),
-                ]
-                : []),
-            (boolval($current_active_media) && $current_active_media === 'gradient'
-                ? [
-                    'background' => get_gradient_background_object([
-                        ...get_group_attributes(
-                            $props,
-                            'background_gradient',
-                            false,
-                            'hover-'
-                        ),
-                        'breakpoint' => $breakpoint,
-                        'prefix' => 'hover-',
-                    ]),
-                ]
-                : []),
-        ]);
+        if($current_active_media && $current_active_media === 'color') {
+            $response = merge_with($response, [
+                'background' => get_color_background_object([
+                    ...get_group_attributes(
+                        $props,
+                        'backgroundColor',
+                        false,
+                        'hover-'
+                    ),
+                    'block_style' => $block_style,
+                    'breakpoint' => $breakpoint,
+                    'prefix' => 'hover-',
+                ]),
+            ]);
+        }
+
+        if($current_active_media && $current_active_media === 'gradient') {
+            $response = merge_with($response, [
+                'background' => get_gradient_background_object([
+                    ...get_group_attributes(
+                        $props,
+                        'backgroundGradient',
+                        false,
+                        'hover-'
+                    ),
+                    'block_style' => $block_style,
+                    'breakpoint' => $breakpoint,
+                    'prefix' => 'hover-',
+                ]),
+            ]);
+        }
 
         if (
             $current_active_media === 'gradient' &&

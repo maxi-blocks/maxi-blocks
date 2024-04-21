@@ -1,0 +1,27 @@
+{
+	"general": {},
+	"background": {
+		"label": "Background Color",
+		"general": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"xxl": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"xl": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"l": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"m": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"s": {
+			"background-color": "rgb(255,99,71)"
+		},
+		"xs": {
+			"background-color": "rgb(255,99,71)"
+		}
+	}
+}

@@ -1029,7 +1029,7 @@ function get_basic_response_object($args)
 
     $merged_border_obj = [];
     if (!is_null($border_obj)) {
-		$merged_border_obj = array_replace_recursive($row_border_radius_obj, $border_obj);
+        $merged_border_obj = array_replace_recursive($row_border_radius_obj, $border_obj);
     } else {
         $merged_border_obj = $row_border_radius_obj;
     }

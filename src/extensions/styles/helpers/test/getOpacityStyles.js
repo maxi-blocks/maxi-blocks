@@ -1,5 +1,10 @@
 import getOpacityStyles from '../getOpacityStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_Opacity_Styles_Test__test_get_a_correct_opacity_styles__1.json';
+
 describe('getOpacityStyles', () => {
 	it('Get a correct opacity styles', () => {
 		const object = {
@@ -14,5 +19,6 @@ describe('getOpacityStyles', () => {
 
 		const result = getOpacityStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 });

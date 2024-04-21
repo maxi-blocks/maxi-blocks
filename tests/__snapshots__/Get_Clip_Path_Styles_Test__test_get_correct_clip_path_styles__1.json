@@ -1,0 +1,21 @@
+{
+	"general": {
+		"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)"
+	},
+	"xxl": {
+		"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)"
+	},
+	"xl": {
+		"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)"
+	},
+	"l": {
+		"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)"
+	},
+	"m": {
+		"clip-path": "none"
+	},
+	"s": {},
+	"xs": {
+		"clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)"
+	}
+}

@@ -1,5 +1,32 @@
 import getClipPathStyles from '../getClipPathStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_clip_path_styles__1.json';
+import correctHoverClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_hover_clip_path_styles__1.json';
+import emptyHoverClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_hover_clip_path_styles_when_hover_status_is_false__1.json';
+import emptyClipPathStylesWhenNone from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_clip_path_styles_when_clip_path_is_none__1.json';
+import emptyHoverClipPathStylesWhenNone from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_none_hover_clip_path_styles_when_clip_path_is_none__1.json';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
+});
+
 describe('getClipPathStyles', () => {
 	const object = {
 		'clip-path-status-general': true,
@@ -30,11 +57,13 @@ describe('getClipPathStyles', () => {
 	it('Get a correct clipPath styles', () => {
 		const result = getClipPathStyles({ obj: object });
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctClipPathStyles);
 	});
 
 	it('Get a correct hover clipPath styles', () => {
 		const result = getClipPathStyles({ obj: object, isHover: true });
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctHoverClipPathStyles);
 	});
 
 	it('Get an empty hover clipPath styles, when hover-status is false', () => {
@@ -43,6 +72,7 @@ describe('getClipPathStyles', () => {
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(emptyHoverClipPathStyles);
 	});
 
 	it('Get an empty clipPath styles, when clipPath - none', () => {
@@ -53,6 +83,7 @@ describe('getClipPathStyles', () => {
 			},
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(emptyClipPathStylesWhenNone);
 	});
 
 	it('Get a none hover clipPath styles, when clipPath - none', () => {
@@ -64,5 +95,6 @@ describe('getClipPathStyles', () => {
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(emptyHoverClipPathStylesWhenNone);
 	});
 });

@@ -1,0 +1,23 @@
+{
+    "m": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "s": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xs": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    }
+}

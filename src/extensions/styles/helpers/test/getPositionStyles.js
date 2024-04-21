@@ -1,5 +1,12 @@
 import getPositionStyles from '../getPositionStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctPositionStyles from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_get_correct_position_styles__1.json';
+import unnecessaryPositionStylesNotAdded from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__1.json';
+import unnecessaryPositionStylesNotAdded2 from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__2.json';
+
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {
 		const object = {
@@ -73,6 +80,7 @@ describe('getPositionStyles', () => {
 		};
 		const result = getPositionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctPositionStyles);
 	});
 
 	it('Ensure unnecessary position styles are not added', () => {
@@ -97,6 +105,7 @@ describe('getPositionStyles', () => {
 		};
 		const result = getPositionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(unnecessaryPositionStylesNotAdded);
 
 		const object2 = {
 			'position-general': 'relative',
@@ -129,5 +138,6 @@ describe('getPositionStyles', () => {
 
 		const result2 = getPositionStyles(object2);
 		expect(result2).toMatchSnapshot();
+		expect(result2).toEqual(unnecessaryPositionStylesNotAdded2);
 	});
 });

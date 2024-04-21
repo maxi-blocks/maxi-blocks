@@ -31,14 +31,18 @@ const getOverflowStyles = obj => {
 		omitOverflowX = omitOverflowX ? overflowX === 'visible' : false;
 		omitOverflowY = omitOverflowY ? overflowY === 'visible' : false;
 
-		response[breakpoint] = {
-			...(!omitOverflowX && {
+		if (!omitOverflowX) {
+			response[breakpoint] = {
 				'overflow-x': overflowX,
-			}),
-			...(!omitOverflowY && {
+			};
+		}
+
+		if (!omitOverflowY) {
+			response[breakpoint] = {
+				...response[breakpoint],
 				'overflow-y': overflowY,
-			}),
-		};
+			};
+		}
 	});
 
 	return response;

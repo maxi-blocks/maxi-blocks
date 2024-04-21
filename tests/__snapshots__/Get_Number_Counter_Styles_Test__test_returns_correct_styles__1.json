@@ -1,0 +1,72 @@
+{
+    " .maxi-number-counter__box .maxi-number-counter__box__circle": {
+        "numberCounterCircleBar": {
+            "label": "Number Counter",
+            "general": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "xxl": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "xl": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "l": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "m": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "s": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            },
+            "xs": {
+                "stroke": "rgba(var(--maxi-light-color-4,255,74,23),1)"
+            }
+        }
+    },
+    " .maxi-number-counter__box .maxi-number-counter__box__background": {
+        "numberCounterBackground": {
+            "label": "Number Counter",
+            "general": {
+                "stroke": "rgba(var(--maxi-light-color-2,242,249,253),1)"
+            }
+        }
+    },
+    " .maxi-number-counter__box .maxi-number-counter__box__text": {
+        "numberCounterText": {
+            "label": "Number Counter",
+            "general": {
+                "font-size": "40px",
+                "font-family": "Roboto",
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "xxl": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "xl": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "l": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "m": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "s": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            },
+            "xs": {
+                "color": "rgba(var(--maxi-light-color-5,0,0,0),1)"
+            }
+        }
+    },
+    " .maxi-number-counter__box .maxi-number-counter__box__text tspan": {
+        "numberCounterSup": {
+            "label": "Number Counter",
+            "general": {
+                "font-size": "26.67px"
+            }
+        }
+    }
+}

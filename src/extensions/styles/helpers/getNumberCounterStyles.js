@@ -6,7 +6,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -84,6 +84,7 @@ const getTextStyles = (obj, blockStyle) => {
 				opacity: paletteOpacity,
 				blockStyle,
 			});
+		return null;
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -114,9 +115,10 @@ const getSupStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		if (!isNil(obj[`number-counter-title-font-size-${breakpoint}`]))
-			response.general['font-size'] = `${
-				obj[`number-counter-title-font-size-${breakpoint}`] / 1.5
-			}px`;
+			response.general['font-size'] = `${round(
+				obj[`number-counter-title-font-size-${breakpoint}`] / 1.5,
+				2
+			)}px`;
 	});
 
 	return { numberCounterSup: response };

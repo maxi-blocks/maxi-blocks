@@ -1,5 +1,10 @@
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_Number_Counter_Styles_Test__test_returns_correct_styles__1.json';
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -56,5 +61,6 @@ describe('getNumberCounterStyles', () => {
 		const result = getNumberCounterStyles({ obj, target, blockStyle });
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 });

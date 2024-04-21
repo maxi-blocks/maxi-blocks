@@ -1,9 +1,35 @@
 import getColumnSizeStyles, { getColumnNum } from '../getColumnSizeStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctColumnSizeStyles from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles__1.json';
+import correctColumnSizeStylesWithSomeFitContent from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fit_content__1.json';
+import correctColumnSizeStylesWithSomeFullwidthColumns from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fullwidth_columns__1.json';
+import correctColumnSizeStylesWithGapOptions from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_gap_options__1.json';
+
 const rowGapProps = {
 	rowElements: ['', ''],
 	columnNum: 2,
 };
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
+});
 
 describe('getColumnSizeStyles', () => {
 	it('Get a correct column size styles', () => {
@@ -18,6 +44,7 @@ describe('getColumnSizeStyles', () => {
 		};
 
 		const result = getColumnSizeStyles(object, rowGapProps);
+		expect(result).toEqual(correctColumnSizeStyles);
 		expect(result).toMatchSnapshot();
 	});
 
@@ -34,6 +61,7 @@ describe('getColumnSizeStyles', () => {
 
 		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctColumnSizeStylesWithSomeFitContent);
 	});
 
 	it('Get a correct column size styles with some fullwidth columns', () => {
@@ -49,6 +77,7 @@ describe('getColumnSizeStyles', () => {
 
 		const result = getColumnSizeStyles(object, rowGapProps);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctColumnSizeStylesWithSomeFullwidthColumns);
 	});
 
 	it('Get a correct column size styles with gap options', () => {
@@ -115,6 +144,7 @@ describe('getColumnSizeStyles', () => {
 		);
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctColumnSizeStylesWithGapOptions);
 	});
 
 	it('Return number of columns', async () => {

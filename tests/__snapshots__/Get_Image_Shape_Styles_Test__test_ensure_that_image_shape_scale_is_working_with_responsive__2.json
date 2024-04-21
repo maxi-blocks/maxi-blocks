@@ -1,0 +1,23 @@
+{
+    "general": {
+        "transform": "scale(0.5) "
+    },
+    "xxl": {
+        "transform": "scale(0.5) "
+    },
+    "xl": {
+        "transform": "scale(0.5) "
+    },
+    "l": {
+        "transform": "scale(0.5) "
+    },
+    "m": {
+        "transform": "scale(1) "
+    },
+    "s": {
+        "transform": "scale(0.5) "
+    },
+    "xs": {
+        "transform": "scale(0.5) "
+    }
+}

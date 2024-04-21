@@ -1,6 +1,6 @@
 <?php
 
-function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_general_omit = false, $is_hover = false)
+function get_image_shape_styles($target = 'svg', $obj, $prefix = '', $ignore_general_omit = false, $is_hover = false)
 {
     if (!is_array($obj)) {
         return [];

@@ -1,5 +1,12 @@
 import getImageShapeStyles from '../getImageShapeStyles';
 
+/**
+ * PHP snapshots
+ */
+import imageShapeScaleResponsive from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__1.json';
+import imageShapeScaleResponsive2 from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__2.json';
+import imageShapeScaleIgnoreOmit from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_ignore_omit_is_working__1.json';
+
 describe('getImageShapeStyles', () => {
 	const object = {
 		'background-svg-image-shape-scale-general': 100,
@@ -10,6 +17,7 @@ describe('getImageShapeStyles', () => {
 	it('Ensure that image shape scale is working with responsive', () => {
 		const result = getImageShapeStyles('svg', object, 'background-svg-');
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(imageShapeScaleResponsive);
 
 		const object2 = {
 			'background-svg-image-shape-scale-general': 50,
@@ -19,6 +27,7 @@ describe('getImageShapeStyles', () => {
 
 		const result2 = getImageShapeStyles('svg', object2, 'background-svg-');
 		expect(result2).toMatchSnapshot();
+		expect(result2).toEqual(imageShapeScaleResponsive2);
 	});
 
 	it('Ensure that ignoreOmit is working', () => {
@@ -29,5 +38,6 @@ describe('getImageShapeStyles', () => {
 			true
 		);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(imageShapeScaleIgnoreOmit);
 	});
 });

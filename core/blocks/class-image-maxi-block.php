@@ -470,11 +470,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             ]);
 
             if ($img_width && !$fit_parent_size) {
-				$response['imgWidth'] = get_img_width_styles(
-					get_group_attributes($props, 'width', false, 'img-'),
-					$use_init_size,
-					$media_width
-				);
+                $response['imgWidth'] = get_img_width_styles(
+                    get_group_attributes($props, 'width', false, 'img-'),
+                    $use_init_size,
+                    $media_width
+                );
             }
 
             if (!$is_first_on_hierarchy) {
@@ -616,7 +616,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $response = [];
 
             if (isset($props['SVGElement']) && $props['SVGElement']) {
-                $response['transform'] = get_image_shape_styles(get_group_attributes($props, 'imageShape'), $target);
+                $response['transform'] = get_image_shape_styles($target, get_group_attributes($props, 'imageShape'));
             }
 
             if (isset($props['clipPath']) && $props['clipPath']) {

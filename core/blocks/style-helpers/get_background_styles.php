@@ -823,8 +823,8 @@ function get_background_layers($args)
                     $response[$layerTarget . ' > svg:first-child'][$type] = array_replace_recursive(
                         isset($response[$layerTarget . ' > svg:first-child'][$type]) ? $response[$layerTarget . ' > svg:first-child'][$type] : [],
                         get_image_shape_styles(
-                            get_group_attributes($layer, 'imageShape', $is_hover, 'background-svg-'),
                             'svg',
+                            get_group_attributes($layer, 'imageShape', $is_hover, 'background-svg-'),
                             'background-svg-',
                             false,
                             $is_hover
@@ -833,8 +833,8 @@ function get_background_layers($args)
                     $response[$layerTarget . ' > svg:first-child pattern image'][$type] = array_replace_recursive(
                         isset($response[$layerTarget . ' > svg:first-child pattern image'][$type]) ? $response[$layerTarget . ' > svg:first-child pattern image'][$type] : [],
                         get_image_shape_styles(
-                            get_group_attributes($layer, 'imageShape', false, 'background-svg-'),
                             'image',
+                            get_group_attributes($layer, 'imageShape', false, 'background-svg-'),
                             'background-svg-'
                         )
                     );

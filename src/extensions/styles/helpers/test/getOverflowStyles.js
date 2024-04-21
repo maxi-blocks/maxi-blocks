@@ -1,5 +1,30 @@
 import getOverflowStyles from '../getOverflowStyles';
 
+/**
+ * PHP snapshots
+ */
+import defaultValues from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_with_default_values__1.json';
+import allVisible from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_when_all_values_visible__1.json';
+import correctStyles from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles__1.json';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
+});
+
 describe('getOverflowStyles', () => {
 	it('Get a correct overflow styles with default values', () => {
 		const object = {
@@ -9,6 +34,7 @@ describe('getOverflowStyles', () => {
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(defaultValues);
 	});
 
 	it('Get a correct overflow styles when all values visible', () => {
@@ -31,6 +57,7 @@ describe('getOverflowStyles', () => {
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(allVisible);
 	});
 
 	it('Get a correct overflow styles', () => {
@@ -53,5 +80,6 @@ describe('getOverflowStyles', () => {
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 });

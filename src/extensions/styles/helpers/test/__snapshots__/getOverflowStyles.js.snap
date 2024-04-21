@@ -3,7 +3,8 @@
 exports[`getOverflowStyles Get a correct overflow styles 1`] = `
 {
   "general": {
-    "overflow-y": "hidden",
+    "overflow-x": "auto",
+    "overflow-y": "clip",
   },
   "l": {
     "overflow-x": "clip",

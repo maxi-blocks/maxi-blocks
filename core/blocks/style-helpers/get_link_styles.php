@@ -11,7 +11,9 @@ function get_link_styles(array $obj, string $target, string $blockStyle)
         "{$target}:visited" => ['link' => []],
         "{$target}:visited span" => ['link' => []],
         ".block-editor-block-list__block {$target}:visited" => ['link' => []],
+		".block-editor-block-list__block {$target}:visited:hover" => ['link' => []],
         "{$target}:visited:hover" => ['link' => []],
+		"{$target}:visited:hover span" => ['link' => []],
     ];
 
     $getTextDecoration = function ($breakpoint, $isHover = false) use ($obj) {
@@ -88,9 +90,13 @@ function get_link_styles(array $obj, string $target, string $blockStyle)
 
         if (is_bool($linkHoverPaletteStatus) && !$linkHoverPaletteStatus) {
             $response["{$target}:visited:hover"]['link'][$breakpoint] = [];
+			$response[".block-editor-block-list__block {$target}:visited:hover"]['link'][$breakpoint] = [];
+			$response["{$target}:visited:hover span"]['link'][$breakpoint] = [];
 
             $response["{$target}:hover"]['link'][$breakpoint]['color'] = $linkHoverColor;
-            $response["{$target}:visited:hover"]['link'][$breakpoint]['color'] = $linkHoverColor;
+			$response["{$target}:visited:hover"]['link'][$breakpoint]['color'] = $linkHoverColor;
+            $response[".block-editor-block-list__block {$target}:visited:hover"]['link'][$breakpoint]['color'] = $linkHoverColor;
+			$response["{$target}:visited:hover span"]['link'][$breakpoint]['color'] = $linkHoverColor;
         } elseif ($linkHoverPaletteColor) {
             $color = get_color_rgba_string(
                 $linkHoverPaletteSCStatus
@@ -110,6 +116,8 @@ function get_link_styles(array $obj, string $target, string $blockStyle)
             $response["{$target}:hover"]['link'][$breakpoint]['color'] = $color;
 
             $response["{$target}:visited:hover"]['link'][$breakpoint] = ['color' => $color];
+			$response[".block-editor-block-list__block {$target}:visited:hover"]['link'][$breakpoint] = ['color' => $color];
+			$response["{$target}:visited:hover span"]['link'][$breakpoint] = ['color' => $color];
         }
 
         $activePaletteAttributes = get_palette_attributes([

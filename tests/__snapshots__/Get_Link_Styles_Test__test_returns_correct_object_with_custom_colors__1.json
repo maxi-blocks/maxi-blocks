@@ -1,0 +1,252 @@
+{
+    " p.maxi-text-block__content a": {
+        "link": {
+            "general": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xxl": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xl": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "l": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "m": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "s": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xs": {
+                "color": "rgba(57,189,39,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:hover": {
+        "link": {
+            "general": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xxl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "l": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "m": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "s": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xs": {
+                "color": "rgba(191,192,86,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:active": {
+        "link": {
+            "general": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xxl": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xl": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "l": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "m": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "s": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xs": {
+                "color": "rgba(221,32,32,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:active span": {
+        "link": {
+            "general": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xxl": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xl": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "l": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "m": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "s": {
+                "color": "rgba(221,32,32,1)"
+            },
+            "xs": {
+                "color": "rgba(221,32,32,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited": {
+        "link": {
+            "general": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xxl": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xl": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "l": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "m": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "s": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xs": {
+                "color": "rgba(27,109,168,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited span": {
+        "link": {
+            "general": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xxl": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xl": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "l": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "m": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "s": {
+                "color": "rgba(27,109,168,1)"
+            },
+            "xs": {
+                "color": "rgba(27,109,168,1)"
+            }
+        }
+    },
+    ".block-editor-block-list__block  p.maxi-text-block__content a:visited": {
+        "link": {
+            "general": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xxl": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xl": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "l": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "m": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "s": {
+                "color": "rgba(57,189,39,1)"
+            },
+            "xs": {
+                "color": "rgba(57,189,39,1)"
+            }
+        }
+    },
+    ".block-editor-block-list__block  p.maxi-text-block__content a:visited:hover": {
+        "link": {
+            "general": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xxl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "l": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "m": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "s": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xs": {
+                "color": "rgba(191,192,86,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited:hover": {
+        "link": {
+            "general": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xxl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "l": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "m": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "s": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xs": {
+                "color": "rgba(191,192,86,1)"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited:hover span": {
+        "link": {
+            "general": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xxl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xl": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "l": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "m": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "s": {
+                "color": "rgba(191,192,86,1)"
+            },
+            "xs": {
+                "color": "rgba(191,192,86,1)"
+            }
+        }
+    }
+}

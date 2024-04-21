@@ -1,0 +1,59 @@
+{
+    "label": "Divider",
+    "general": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "border-top-style": "dashed",
+        "border-right-style": "none",
+        "border-top-width": "38px",
+        "height": "38px",
+        "width": "79%"
+    },
+    "xxl": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "border-top-style": "dashed",
+        "border-right-style": "none",
+        "border-top-width": "38px",
+        "height": "38px",
+        "width": "79%"
+    },
+    "xl": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+        "border-top-style": "dashed",
+        "border-right-style": "none",
+        "border-top-width": "38px",
+        "height": "38px",
+        "width": "79%"
+    },
+    "l": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-4,255,74,23),0.56))",
+        "border-top-style": "none",
+        "border-right-style": "solid",
+        "border-right-width": "14px",
+        "width": "14px",
+        "height": "41%"
+    },
+    "m": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-4,255,74,23),0.56))",
+        "border-top-style": "none",
+        "border-right-style": "solid",
+        "border-right-width": "14px",
+        "width": "14px",
+        "height": "41%"
+    },
+    "s": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-3,155,155,155),0.56))",
+        "border-top-style": "solid",
+        "border-right-style": "none",
+        "border-top-width": "149px",
+        "height": "149px",
+        "width": "23%"
+    },
+    "xs": {
+        "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-3,155,155,155),0.56))",
+        "border-top-style": "solid",
+        "border-right-style": "none",
+        "border-top-width": "149px",
+        "height": "149px",
+        "width": "23%"
+    }
+}

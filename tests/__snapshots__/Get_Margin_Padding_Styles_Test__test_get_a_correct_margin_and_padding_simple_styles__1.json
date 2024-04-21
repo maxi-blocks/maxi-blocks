@@ -1,0 +1,27 @@
+{
+	"general": {
+		"margin-top": "1px",
+		"margin-right": "2px",
+		"margin-bottom": "3px",
+		"margin-left": "4px",
+		"padding-top": "1px",
+		"padding-right": "2px",
+		"padding-bottom": "3px",
+		"padding-left": "4px"
+	},
+	"xxl": {},
+	"xl": {
+		"margin-top": "1px",
+		"margin-right": "2px",
+		"margin-bottom": "3px",
+		"margin-left": "4px",
+		"padding-top": "1px",
+		"padding-right": "2px",
+		"padding-bottom": "3px",
+		"padding-left": "4px"
+	},
+	"l": {},
+	"m": {},
+	"s": {},
+	"xs": {}
+}

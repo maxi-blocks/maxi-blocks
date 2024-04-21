@@ -1,5 +1,32 @@
 import getMarginPaddingStyles from '../getMarginPaddingStyles';
 
+/**
+ * PHP snapshots
+ */
+import simpleCorrectMarginPadding from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_simple_styles__1.json';
+import correctMarginPadding from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding__1.json';
+import valuesDependsOnResponsive from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_different_values_depends_on_the_responsive__1.json';
+import withOnlyUnitChanged from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_only_unit_on_some_breakpoint_was_changed__1.json';
+import valueUndefinedUnitDefined from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_value_is_undefined_but_unit_is_defined__1.json';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		createReduxStore: jest.fn(),
+		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
+	};
+});
+
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct margin and padding simple styles', () => {
 		const obj = {
@@ -39,6 +66,7 @@ describe('getMarginPaddingStyles', () => {
 
 		const result = getMarginPaddingStyles({ obj });
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(simpleCorrectMarginPadding);
 	});
 
 	it('Get a correct margin and padding', () => {
@@ -112,6 +140,7 @@ describe('getMarginPaddingStyles', () => {
 			obj,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctMarginPadding);
 	});
 
 	it('Different values ​​depends on the responsive', () => {
@@ -185,6 +214,7 @@ describe('getMarginPaddingStyles', () => {
 			obj,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(valuesDependsOnResponsive);
 	});
 
 	it('Get a correct margin and padding styles, when only unit on some breakpoint was changed', () => {
@@ -200,6 +230,7 @@ describe('getMarginPaddingStyles', () => {
 			obj,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(withOnlyUnitChanged);
 	});
 
 	it('Get a correct margin and padding styles, when value is undefined but unit is defined', () => {
@@ -219,5 +250,6 @@ describe('getMarginPaddingStyles', () => {
 			obj,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(valueUndefinedUnitDefined);
 	});
 });

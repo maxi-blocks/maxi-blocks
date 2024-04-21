@@ -3,6 +3,12 @@ import {
 	getShapeDividerSVGStyles,
 } from '../getShapeDividerStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctShapeDividerStyles from '../../../../../tests/__snapshots__/Get_Shape_Divider_Styles_Test__test_get_a_correct_shape_divider_styles__1.json';
+import correctShapeDividerSVGStyles from '../../../../../tests/__snapshots__/Get_Shape_Divider_Styles_Test__test_get_a_correct_shape_divider_styles__2.json';
+
 describe('getShapeDividerStyles', () => {
 	it('Get a correct shape divider styles', () => {
 		const object = {
@@ -41,11 +47,13 @@ describe('getShapeDividerStyles', () => {
 
 		const result = getShapeDividerStyles(object, 'top');
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctShapeDividerStyles);
 
 		const resultSVGStyles = getShapeDividerSVGStyles(
 			objectSVGStyles,
 			'bottom'
 		);
 		expect(resultSVGStyles).toMatchSnapshot();
+		expect(resultSVGStyles).toEqual(correctShapeDividerSVGStyles);
 	});
 });

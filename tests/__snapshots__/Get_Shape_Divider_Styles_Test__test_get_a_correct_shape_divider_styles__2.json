@@ -1,0 +1,24 @@
+{
+    "label": "Shape Divider SVG",
+    "general": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "xxl": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "xl": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "l": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "m": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "s": {
+        "fill": "rgb(255, 99, 71)"
+    },
+    "xs": {
+        "fill": "rgb(255, 99, 71)"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "general": {
+        "display": "block"
+    },
+    "xxl": {
+        "display": "block"
+    },
+    "xl": {
+        "display": "block"
+    },
+    "l": {
+        "display": "block"
+    },
+    "m": {
+        "display": "flex"
+    },
+    "s": {
+        "display": "flex"
+    },
+    "xs": {
+        "display": "flex"
+    }
+}

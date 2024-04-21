@@ -1,5 +1,10 @@
 import getDisplayStyles from '../getDisplayStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctDisplayStyles from '../../../../../tests/__snapshots__/Get_Display_Styles_Test__test_get_a_correct_display_styles__1.json';
+
 describe('getDisplayStyles', () => {
 	it('Get a correct display styles', () => {
 		const object = {
@@ -14,5 +19,6 @@ describe('getDisplayStyles', () => {
 
 		const result = getDisplayStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctDisplayStyles);
 	});
 });

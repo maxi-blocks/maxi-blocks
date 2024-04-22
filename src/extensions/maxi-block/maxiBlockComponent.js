@@ -569,6 +569,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		this.hideGutenbergPopover();
+		this.getCurrentBlockStyle();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);

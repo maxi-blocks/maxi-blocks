@@ -1615,7 +1615,11 @@ class MaxiBlocks_DynamicContent
                 }, $acf_value));
                 break;
             case 'image':
-                $content = $acf_value['id'];
+                if (is_array($acf_value) && isset($acf_value['id'])) {
+                    $content = $acf_value['id'];
+                } else {
+                    $content = '';
+                }
                 break;
             default:
                 $content = $acf_value;

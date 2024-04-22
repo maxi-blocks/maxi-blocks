@@ -216,10 +216,12 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (previewIframes.length > 0 && !blockName) {
+			console.log('uniqueID', uniqueID);
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
+
 		if (this.isPatternsPreview) return;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
@@ -247,7 +249,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (this.isPatternsPreview) return false;
+		if (this.isPatternsPreview) return;
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -459,6 +461,7 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
+		if (this.isPatternsPreview) return false;
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
@@ -499,6 +502,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		if (this.isPatternsPreview) return;
 		const { uniqueID } = this.props.attributes;
 
 		// Gets the differences between the previous and current attributes
@@ -839,6 +843,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	setMaxiAttributes() {
+		if (this.isPatternsPreview) return;
 		const maxiAttributes = this.getMaxiAttributes();
 
 		if (!maxiAttributes) return;
@@ -861,6 +866,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	setRelations() {
+		if (this.isPatternsPreview) return;
 		const { clientId, attributes } = this.props;
 		const { relations, uniqueID } = attributes;
 
@@ -1056,6 +1062,7 @@ class MaxiBlockComponent extends Component {
 	// This function saves the last inserted blocks' clientIds, so we can use them
 	// to update IB relations.
 	updateLastInsertedBlocks() {
+		if (this.isPatternsPreview) return;
 		const { clientId } = this.props;
 
 		if (

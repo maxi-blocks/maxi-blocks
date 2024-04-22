@@ -14,6 +14,7 @@ import {
  * Internal dependencies
  */
 import { ContentLoader } from '../../components';
+import { getSiteEditorPreviewIframes } from '../fse';
 
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);
@@ -65,6 +66,9 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+			if (siteEditorPreviewIframes.length > 0)
+				return <WrappedComponent {...ownProps} />;
 			const {
 				clientId,
 				attributes: { uniqueID },

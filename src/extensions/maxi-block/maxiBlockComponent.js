@@ -247,6 +247,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		if (this.isPatternsPreview) return false;
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -388,7 +389,7 @@ class MaxiBlockComponent extends Component {
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
 		// unnecessary amount of process and resources
-		this.displayStyles(!!this.rootSlot);
+		this?.displayStyles(!!this?.rootSlot);
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -1211,7 +1212,13 @@ class MaxiBlockComponent extends Component {
 						isIframe={!!iframe}
 					/>
 				);
-				this.rootSlot.render(styleComponent);
+				// Check if the root slot is still mounted before rendering
+				if (
+					this.rootSlot._internalRoot &&
+					this.rootSlot._internalRoot.containerInfo
+				) {
+					this.rootSlot.render(styleComponent);
+				}
 			}
 
 			if (customDataRelations) {

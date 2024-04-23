@@ -442,7 +442,10 @@ if (!class_exists('MaxiBlocks_API')):
                     $fonts_arr[$key] = json_decode($font, true) ?? [];
                 }
             }
-            $fonts = json_encode(array_merge_recursive(...$fonts_arr));
+            $fonts = '';
+            if (!empty($fonts_arr)) {
+                $fonts = json_encode(array_merge_recursive(...$fonts_arr));
+            }
 
             ['table' => $table, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
 
@@ -519,7 +522,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             $updated_meta = [];
 
-            if($id) {
+            if(isset($id) && $id) {
                 $updated_meta = (array)$wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT * FROM $table WHERE $where_clause",

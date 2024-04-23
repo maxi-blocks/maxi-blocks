@@ -433,9 +433,8 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
 
-            $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
-            $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-
+            $meta = $is_json && isset($data['meta']) ? json_decode($data['meta'], true) : ($data['meta'] ?? []);
+            $styles_arr = $is_json && isset($data['styles']) ? json_decode($data['styles'], true) : ($data['styles'] ?? []);
             $fonts_arr = $meta['fonts'] ?? [];
             if ($is_json) {
                 foreach ($fonts_arr as $key => $font) {

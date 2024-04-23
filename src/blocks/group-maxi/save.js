@@ -11,7 +11,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, ariaLabels = {} } = attributes;
 
 	const name = 'maxi-blocks/group-maxi';
 
@@ -19,6 +19,7 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			aria-label={ariaLabels.group}
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${uniqueID}`}

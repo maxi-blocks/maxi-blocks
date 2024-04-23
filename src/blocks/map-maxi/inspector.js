@@ -21,7 +21,7 @@ import {
 	MapPopupTextControl,
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
@@ -201,6 +201,11 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+										blockName: props.name,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

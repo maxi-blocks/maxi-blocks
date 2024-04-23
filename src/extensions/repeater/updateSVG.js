@@ -9,10 +9,11 @@ import {
 	setSVGPosition,
 	setSVGRatio,
 	togglePreserveAspectRatio,
+	setSVGAriaLabel,
 } from '../svg';
 
 /**
- * Sets correct uniqueID, mediaURL, SVGPosition and SVGRatio for repeated SVGs
+ * Sets correct uniqueID, mediaURL, SVGPosition, SVGRatio and aria-label for repeated SVGs
  *
  * @param {Object} updatedAttributes
  * @param {Object} blockAttributes
@@ -45,6 +46,25 @@ const updateSVG = (updatedAttributes, blockAttributes) => {
 				blockAttributes[contentKey],
 				true
 			);
+		}
+	}
+
+	if ('ariaLabels' in updatedAttributes) {
+		const { ariaLabels } = updatedAttributes;
+		const contentKey = `${prefix === 'svg-' ? '' : prefix}content`;
+
+		const updateIcon = ariaLabel => {
+			updatedAttributes[contentKey] = setSVGAriaLabel(
+				ariaLabel,
+				() =>
+					updatedAttributes[contentKey] || blockAttributes[contentKey]
+			);
+		};
+
+		if (ariaLabels?.svg) {
+			updateIcon(ariaLabels.svg);
+		} else if (ariaLabels?.icon) {
+			updateIcon(ariaLabels.icon);
 		}
 	}
 

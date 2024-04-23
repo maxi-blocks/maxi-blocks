@@ -2,6 +2,7 @@ export { default as AccordionControl } from './accordion-control';
 export { default as AdvancedCssControl } from './advanced-css-control';
 export { default as AdvancedNumberControl } from './advanced-number-control';
 export { default as AlignmentControl } from './alignment-control';
+export { default as AriaLabelControl } from './aria-label-control';
 export { default as ArrowControl } from './arrow-control';
 export { default as ArrowDisplayer } from './arrow-displayer';
 export { default as AspectRatioControl } from './aspect-ratio-control';

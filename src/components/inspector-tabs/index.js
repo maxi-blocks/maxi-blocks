@@ -1,6 +1,7 @@
 export { default as advancedCss } from './inspector-advanced-css';
 export { default as alignment } from './inspector-alignment';
 export { default as anchor } from './inspector-anchor';
+export { default as ariaLabel } from './inspector-aria-label';
 export { default as background } from './inspector-background';
 export { default as blockBackground } from './inspector-block-background';
 export { default as blockSettings } from './inspector-block-settings';

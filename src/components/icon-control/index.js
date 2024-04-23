@@ -39,6 +39,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
+	setSVGAriaLabel,
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
 } from '../../extensions/svg';
@@ -683,6 +684,7 @@ const IconControl = props => {
 		disableModal = false,
 		disableHeightFitContent = false,
 		getIconWithColor,
+		ariaLabels,
 		type = 'button-icon',
 		prefix = '',
 		[`${prefix}icon-content`]: iconContent,
@@ -715,6 +717,34 @@ const IconControl = props => {
 							)
 						) {
 							icon = togglePreserveAspectRatio(icon, true);
+						}
+
+						if (type === 'button-icon') {
+							if (icon && ariaLabels?.icon) {
+								icon = setSVGAriaLabel(
+									ariaLabels.icon,
+									() => icon,
+									'icon'
+								);
+							}
+						} else if (type === 'search-icon') {
+							if (
+								prefix === 'close-' &&
+								icon &&
+								ariaLabels?.['close icon']
+							) {
+								icon = setSVGAriaLabel(
+									ariaLabels['close icon'],
+									() => icon,
+									'search'
+								);
+							} else {
+								icon = setSVGAriaLabel(
+									ariaLabels.icon,
+									() => icon,
+									'search'
+								);
+							}
 						}
 
 						onChange({

@@ -121,6 +121,7 @@ const customCss = {
 		'before description',
 	],
 };
+const ariaLabelsCategories = ['map', 'popup'];
 const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
@@ -132,5 +133,10 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

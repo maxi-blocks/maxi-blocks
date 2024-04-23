@@ -30,7 +30,7 @@ const SettingTabsControl = loadable(() =>
 const ColumnPattern = loadable(() => import('./components/column-pattern'));
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 function ColumnPicker(props) {
@@ -152,6 +152,11 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+										blockName: props.name,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

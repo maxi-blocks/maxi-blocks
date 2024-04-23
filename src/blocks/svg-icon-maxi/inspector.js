@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -41,7 +42,7 @@ import {
 } from '../../extensions/styles';
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -57,8 +58,26 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy, svgType, content } =
+		attributes;
 	const { selectors, categories } = customCss;
+
+	const onChangeAriaLabel = useCallback(
+		({ obj, target, icon }) => {
+			maxiSetAttributes({
+				...obj,
+				...(target === 'svg' && {
+					content: icon,
+				}),
+			});
+		},
+		[maxiSetAttributes]
+	);
+
+	const getAriaIcon = useCallback(
+		target => (target === 'svg' ? content : null),
+		[content]
+	);
 
 	return (
 		<InspectorControls>
@@ -341,6 +360,13 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+										blockName: props.name,
+										onChange: onChangeAriaLabel,
+										getIcon: getAriaIcon,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

@@ -71,6 +71,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['column'];
 const interactionBuilderSettings = {
 	block: [
 		{
@@ -140,5 +141,10 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

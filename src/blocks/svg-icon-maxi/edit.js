@@ -36,6 +36,7 @@ import {
 	shouldSetPreserveAspectRatio,
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,
+	setSVGAriaLabel,
 } from '../../extensions/svg';
 import { withMaxiContextLoopContext } from '../../extensions/DC';
 import getStyles from './styles';
@@ -197,7 +198,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			isSelected,
 		} = this.props;
-		const { content, blockStyle, uniqueID } = attributes;
+		const { content, blockStyle, uniqueID, ariaLabels } = attributes;
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
@@ -244,6 +245,13 @@ class edit extends MaxiBlockComponent {
 					shouldSetPreserveAspectRatio(attributes, 'svg-')
 				) {
 					obj.content = togglePreserveAspectRatio(content, true);
+				}
+				if (content && ariaLabels?.svg) {
+					obj.content = setSVGAriaLabel(
+						ariaLabels.svg,
+						() => content,
+						'svg'
+					);
 				}
 
 				maxiSetAttributes(obj);

@@ -105,6 +105,11 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = [
+	'container',
+	'top shape divider',
+	'bottom shape divider',
+];
 const interactionBuilderSettings = {
 	block: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
@@ -136,5 +141,6 @@ export {
 	customCss,
 	interactionBuilderSettings,
 	maxiAttributes,
+	ariaLabelsCategories,
 };
 export default data;

@@ -57,6 +57,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['group'];
 const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
@@ -69,5 +70,10 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

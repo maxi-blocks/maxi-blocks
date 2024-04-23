@@ -28,7 +28,7 @@ const ariaLabel = ({ props, targets, blockName, getIcon, onChange }) => {
 					blockName,
 					attributes
 				)}
-				ariaLabels={attributes.ariaLabels}
+				ariaLabels={attributes?.ariaLabels}
 				onChange={onChange ?? defaultOnChange}
 				getIcon={getIcon}
 			/>

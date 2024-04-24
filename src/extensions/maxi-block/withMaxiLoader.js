@@ -67,7 +67,12 @@ const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
-			if (siteEditorPreviewIframes.length > 0)
+			if (
+				siteEditorPreviewIframes.length > 0 ||
+				document.querySelector(
+					'.editor-post-template__swap-template-modal'
+				)
+			)
 				return <WrappedComponent {...ownProps} />;
 			const {
 				clientId,

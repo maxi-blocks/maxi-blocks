@@ -181,6 +181,12 @@ const StyleComponent = ({
  * Class
  */
 class MaxiBlockComponent extends Component {
+	static isSwapTemplateModalOpened() {
+		return !!document.querySelector(
+			'.editor-post-template__swap-template-modal'
+		);
+	}
+
 	constructor(...args) {
 		super(...args);
 
@@ -216,7 +222,6 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (previewIframes.length > 0 && !blockName) {
-			console.log('uniqueID', uniqueID);
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
@@ -249,7 +254,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (this.isPatternsPreview) return;
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
 		// setting this snippet here that should act the same way as a migrator
 		const blocksIBRelations = select(
@@ -400,6 +405,12 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		if (this.isSwapTemplateModalOpened) {
+			console.log('editor-post-template__swap-template-modal');
+			return false;
+		}
+		console.log('shouldComponentUpdate', this.props.attributes.uniqueID);
+
 		if (this.isPatternsPreview) return false;
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
@@ -461,7 +472,9 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
-		if (this.isPatternsPreview) return false;
+		console.log('getSnapshotBeforeUpdate', this.props.attributes.uniqueID);
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened)
+			return false;
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
@@ -502,7 +515,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		if (this.isPatternsPreview) return;
+		console.log('componentDidUpdate', this.props.attributes.uniqueID);
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		const { uniqueID } = this.props.attributes;
 
 		// Gets the differences between the previous and current attributes
@@ -844,7 +858,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	setMaxiAttributes() {
-		if (this.isPatternsPreview) return;
+		console.log('setMaxiAttributes', this.props.attributes.uniqueID);
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		const maxiAttributes = this.getMaxiAttributes();
 
 		if (!maxiAttributes) return;
@@ -867,7 +882,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	setRelations() {
-		if (this.isPatternsPreview) return;
+		console.log('setRelations', this.props.attributes.uniqueID);
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		const { clientId, attributes } = this.props;
 		const { relations, uniqueID } = attributes;
 
@@ -899,6 +915,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened)
+			return null;
 		const {
 			uniqueID,
 			'dc-status': dcStatus,
@@ -966,7 +984,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	showPreviewImage(previewIframes) {
-		console.log('showPreviewImage');
 		const disconnectTimeout = 10000; // 10 seconds
 		const timeouts = {};
 
@@ -1064,7 +1081,7 @@ class MaxiBlockComponent extends Component {
 	// This function saves the last inserted blocks' clientIds, so we can use them
 	// to update IB relations.
 	updateLastInsertedBlocks() {
-		if (this.isPatternsPreview) return;
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		const { clientId } = this.props;
 
 		if (
@@ -1082,6 +1099,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened)
+			return idToCheck;
+
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
@@ -1148,6 +1168,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
+
 		if (
 			this.areFontsLoaded.current ||
 			(isEmpty(this.typography) && isEmpty(this.paginationTypography))
@@ -1174,6 +1196,8 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
+
 		const { uniqueID } = this.props.attributes;
 
 		const iframe = document.querySelector(
@@ -1338,7 +1362,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		if (this.isPatternsPreview) return;
+		if (this.isPatternsPreview || this.isSwapTemplateModalOpened) return;
 		// TODO: check if the code below is still necessary after this root unmount
 		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
 		if (!this.isReusable && this.rootSlot)
@@ -1406,6 +1430,8 @@ class MaxiBlockComponent extends Component {
 	 * Hides Gutenberg's popover when the Maxi block is selected.
 	 */
 	hideGutenbergPopover() {
+		if (this.isPatternsPreview) return;
+
 		if (this.props.isSelected && !this.popoverStyles) {
 			this.popoverStyles = document.createElement('style');
 			this.popoverStyles.innerHTML = `

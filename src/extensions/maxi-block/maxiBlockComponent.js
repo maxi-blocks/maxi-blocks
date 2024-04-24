@@ -966,6 +966,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	showPreviewImage(previewIframes) {
+		console.log('showPreviewImage');
 		const disconnectTimeout = 10000; // 10 seconds
 		const timeouts = {};
 

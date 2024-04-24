@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.8.3\n"
+"Project-Id-Version: MaxiBlocks 1.8.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-18T12:33:25+00:00\n"
+"POT-Creation-Date: 2024-04-24T16:32:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -82,21 +82,21 @@ msgstr ""
 #: build/9594.js:1
 #: build/9596.js:1
 #: src/blocks/accordion-maxi/inspector.js:104
-#: src/blocks/button-maxi/inspector.js:197
+#: src/blocks/button-maxi/inspector.js:214
 #: src/blocks/column-maxi/inspector.js:51
 #: src/blocks/container-maxi/inspector.js:70
 #: src/blocks/divider-maxi/inspector.js:62
 #: src/blocks/group-maxi/inspector.js:45
-#: src/blocks/image-maxi/inspector.js:136
+#: src/blocks/image-maxi/inspector.js:155
 #: src/blocks/list-item-maxi/inspector.js:46
 #: src/blocks/map-maxi/inspector.js:59
 #: src/blocks/number-counter-maxi/inspector.js:59
 #: src/blocks/pane-maxi/inspector.js:81
 #: src/blocks/row-maxi/inspector.js:94
-#: src/blocks/search-maxi/inspector.js:125
+#: src/blocks/search-maxi/inspector.js:150
 #: src/blocks/slide-maxi/inspector.js:45
 #: src/blocks/slider-maxi/inspector.js:81
-#: src/blocks/svg-icon-maxi/inspector.js:153
+#: src/blocks/svg-icon-maxi/inspector.js:172
 #: src/blocks/text-maxi/inspector.js:60
 #: src/blocks/video-maxi/inspector.js:70
 #: src/components/background-control/imageLayer.js:742
@@ -573,7 +573,7 @@ msgid "Outline your business operations, share the origins of your venture, deta
 msgstr ""
 
 #: core/class-maxi-dynamic-content.php:698
-#: core/class-maxi-dynamic-content.php:1365
+#: core/class-maxi-dynamic-content.php:1376
 msgid "author"
 msgstr ""
 
@@ -598,8 +598,8 @@ msgstr ""
 #: build/7219.js:1
 #: build/9594.js:1
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:593
-#: src/blocks/search-maxi/inspector.js:359
-#: src/blocks/video-maxi/inspector.js:226
+#: src/blocks/search-maxi/inspector.js:384
+#: src/blocks/video-maxi/inspector.js:232
 #: src/components/background-control/imageLayer.js:523
 #: src/components/background-control/imageLayer.js:577
 #: src/components/padding-control/index.js:19
@@ -608,7 +608,7 @@ msgid "Padding"
 msgstr ""
 
 #: build/29.js:1
-#: src/components/icon-control/index.js:659
+#: src/components/icon-control/index.js:660
 #: src/components/toolbar/components/padding-margin/index.js:51
 msgid "Icon padding"
 msgstr ""
@@ -644,14 +644,14 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:150
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:56
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:83
-#: src/blocks/video-maxi/components/video-icon-control/index.js:405
+#: src/blocks/video-maxi/components/video-icon-control/index.js:428
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:343
 #: src/components/inspector-tabs/inspector-background.js:78
 #: src/components/inspector-tabs/inspector-block-background.js:46
 #: src/components/inspector-tabs/inspector-border.js:60
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
 #: src/components/inspector-tabs/inspector-clip-path.js:37
-#: src/components/inspector-tabs/inspector-icon.js:93
+#: src/components/inspector-tabs/inspector-icon.js:95
 #: src/components/inspector-tabs/inspector-opacity.js:39
 #: src/components/inspector-tabs/inspector-typography.js:62
 #: src/components/transform-control/index.js:289
@@ -669,14 +669,14 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:160
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:86
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:87
-#: src/blocks/video-maxi/components/video-icon-control/index.js:409
+#: src/blocks/video-maxi/components/video-icon-control/index.js:432
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:347
 #: src/components/inspector-tabs/inspector-background.js:102
 #: src/components/inspector-tabs/inspector-block-background.js:74
 #: src/components/inspector-tabs/inspector-border.js:87
 #: src/components/inspector-tabs/inspector-box-shadow.js:73
 #: src/components/inspector-tabs/inspector-clip-path.js:46
-#: src/components/inspector-tabs/inspector-icon.js:123
+#: src/components/inspector-tabs/inspector-icon.js:125
 #: src/components/inspector-tabs/inspector-opacity.js:49
 #: src/components/inspector-tabs/inspector-typography.js:103
 #: src/components/transform-control/index.js:296
@@ -1219,23 +1219,23 @@ msgstr ""
 #: build/9594.js:1
 #: build/9596.js:1
 #: src/blocks/accordion-maxi/inspector.js:234
-#: src/blocks/button-maxi/inspector.js:314
+#: src/blocks/button-maxi/inspector.js:331
 #: src/blocks/column-maxi/inspector.js:109
 #: src/blocks/container-maxi/inspector.js:129
 #: src/blocks/divider-maxi/inspector.js:315
 #: src/blocks/group-maxi/inspector.js:78
-#: src/blocks/image-maxi/inspector.js:482
+#: src/blocks/image-maxi/inspector.js:501
 #: src/blocks/list-item-maxi/inspector.js:88
 #: src/blocks/map-maxi/inspector.js:199
 #: src/blocks/number-counter-maxi/inspector.js:156
 #: src/blocks/pane-maxi/inspector.js:158
 #: src/blocks/row-maxi/inspector.js:150
-#: src/blocks/search-maxi/inspector.js:392
+#: src/blocks/search-maxi/inspector.js:417
 #: src/blocks/slide-maxi/inspector.js:78
 #: src/blocks/slider-maxi/inspector.js:210
-#: src/blocks/svg-icon-maxi/inspector.js:339
+#: src/blocks/svg-icon-maxi/inspector.js:358
 #: src/blocks/text-maxi/inspector.js:156
-#: src/blocks/video-maxi/inspector.js:263
+#: src/blocks/video-maxi/inspector.js:269
 msgid "Advanced"
 msgstr ""
 
@@ -1296,7 +1296,7 @@ msgstr ""
 
 #: build/2417.js:1
 #: build/9236.js:1
-#: src/blocks/image-maxi/data.js:305
+#: src/blocks/image-maxi/data.js:306
 #: src/components/background-control/imageLayer.js:527
 #: src/components/background-control/imageLayer.js:573
 #: src/components/border-control/index.js:55
@@ -1323,12 +1323,12 @@ msgstr ""
 #: build/6891.js:1
 #: build/9594.js:1
 #: build/9596.js:1
-#: src/blocks/button-maxi/inspector.js:288
+#: src/blocks/button-maxi/inspector.js:305
 #: src/blocks/divider-maxi/inspector.js:288
-#: src/blocks/image-maxi/inspector.js:454
+#: src/blocks/image-maxi/inspector.js:473
 #: src/blocks/number-counter-maxi/inspector.js:130
-#: src/blocks/svg-icon-maxi/inspector.js:309
-#: src/blocks/video-maxi/inspector.js:237
+#: src/blocks/svg-icon-maxi/inspector.js:328
+#: src/blocks/video-maxi/inspector.js:243
 msgid "Canvas"
 msgstr ""
 
@@ -1353,7 +1353,7 @@ msgstr ""
 
 #: build/2490.js:1
 #: build/6038.js:1
-#: src/blocks/video-maxi/components/video-icon-control/index.js:208
+#: src/blocks/video-maxi/components/video-icon-control/index.js:212
 #: src/components/toolbar/components/icon-position/index.js:36
 msgid "Icon position"
 msgstr ""
@@ -1366,7 +1366,7 @@ msgstr ""
 #: build/9596.js:1
 #: src/blocks/column-maxi/components/column-size-control/index.js:109
 #: src/blocks/divider-maxi/inspector.js:142
-#: src/blocks/image-maxi/inspector.js:222
+#: src/blocks/image-maxi/inspector.js:241
 #: src/blocks/text-maxi/components/list-options-control/index.js:701
 #: src/components/arrow-control/index.js:46
 #: src/components/axis-position-control/index.js:42
@@ -1386,7 +1386,7 @@ msgstr ""
 #: build/9596.js:1
 #: src/blocks/column-maxi/components/column-size-control/index.js:117
 #: src/blocks/divider-maxi/inspector.js:156
-#: src/blocks/image-maxi/inspector.js:229
+#: src/blocks/image-maxi/inspector.js:248
 #: src/blocks/text-maxi/components/list-options-control/index.js:711
 #: src/components/arrow-control/index.js:47
 #: src/components/axis-position-control/index.js:46
@@ -1706,9 +1706,9 @@ msgstr ""
 
 #: build/3904.js:1
 #: src/blocks/divider-maxi/inspector.js:68
-#: src/blocks/image-maxi/data.js:230
-#: src/blocks/list-item-maxi/data.js:118
-#: src/blocks/text-maxi/data.js:188
+#: src/blocks/image-maxi/data.js:231
+#: src/blocks/list-item-maxi/data.js:119
+#: src/blocks/text-maxi/data.js:189
 #: src/components/inspector-tabs/inspector-alignment.js:33
 #: src/components/typography-control/index.js:659
 msgid "Alignment"
@@ -1750,7 +1750,7 @@ msgstr ""
 #: build/3904.js:1
 #: build/5097.js:1
 #: src/blocks/accordion-maxi/inspector.js:169
-#: src/blocks/divider-maxi/data.js:168
+#: src/blocks/divider-maxi/data.js:169
 #: src/blocks/divider-maxi/inspector.js:246
 msgid "Line settings"
 msgstr ""
@@ -1891,7 +1891,7 @@ msgstr ""
 #: build/6836.js:1
 #: build/7228.js:1
 #: build/9236.js:1
-#: src/blocks/button-maxi/inspector.js:142
+#: src/blocks/button-maxi/inspector.js:159
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:401
 #: src/blocks/search-maxi/components/button-control/index.js:41
 #: src/blocks/text-maxi/components/list-options-control/index.js:838
@@ -2139,7 +2139,7 @@ msgstr ""
 #: build/5244.js:1
 #: build/7219.js:1
 #: src/blocks/search-maxi/components/button-control/index.js:32
-#: src/blocks/search-maxi/inspector.js:131
+#: src/blocks/search-maxi/inspector.js:156
 msgid "Skin"
 msgstr ""
 
@@ -2157,7 +2157,7 @@ msgstr ""
 #: build/5372.js:1
 #: build/8612.js:1
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:62
-#: src/components/icon-control/index.js:425
+#: src/components/icon-control/index.js:426
 #: src/components/toolbar/components/icon-color/index.js:132
 msgid "Icon fill"
 msgstr ""
@@ -2342,13 +2342,13 @@ msgstr ""
 #: build/5616.js:1
 #: build/9442.js:1
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:89
-#: src/components/icon-control/index.js:230
+#: src/components/icon-control/index.js:231
 #: src/components/toolbar/components/icon-size/index.js:51
 msgid "Spacing"
 msgstr ""
 
 #: build/5721.js:1
-#: src/blocks/column-maxi/data.js:78
+#: src/blocks/column-maxi/data.js:79
 #: src/blocks/column-maxi/inspector.js:57
 msgid "Column settings"
 msgstr ""
@@ -2356,22 +2356,22 @@ msgstr ""
 #: build/6038.js:1
 #: build/6383.js:1
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:90
-#: src/blocks/video-maxi/components/video-icon-control/index.js:82
+#: src/blocks/video-maxi/components/video-icon-control/index.js:86
 msgid "Enable icon hover"
 msgstr ""
 
 #: build/6038.js:1
-#: src/blocks/video-maxi/components/video-icon-control/index.js:225
+#: src/blocks/video-maxi/components/video-icon-control/index.js:229
 msgid "Top screen right"
 msgstr ""
 
 #: build/6038.js:1
-#: src/blocks/video-maxi/components/video-icon-control/index.js:232
+#: src/blocks/video-maxi/components/video-icon-control/index.js:236
 msgid "Top right above video"
 msgstr ""
 
 #: build/6038.js:1
-#: src/blocks/video-maxi/components/video-icon-control/index.js:320
+#: src/blocks/video-maxi/components/video-icon-control/index.js:324
 msgid "Icon spacing"
 msgstr ""
 
@@ -2455,13 +2455,13 @@ msgstr ""
 
 #: build/6836.js:1
 #: build/7219.js:1
-#: src/blocks/button-maxi/inspector.js:141
-#: src/blocks/search-maxi/inspector.js:155
+#: src/blocks/button-maxi/inspector.js:158
+#: src/blocks/search-maxi/inspector.js:180
 msgid "Button"
 msgstr ""
 
 #: build/6836.js:1
-#: src/blocks/button-maxi/inspector.js:203
+#: src/blocks/button-maxi/inspector.js:220
 msgid "Quick styles"
 msgstr ""
 
@@ -2476,45 +2476,45 @@ msgid "Alt description"
 msgstr ""
 
 #: build/6891.js:1
-#: src/blocks/svg-icon-maxi/inspector.js:164
+#: src/blocks/svg-icon-maxi/inspector.js:183
 msgid "Icon alt"
 msgstr ""
 
 #: build/6891.js:1
-#: src/blocks/svg-icon-maxi/data.js:191
-#: src/blocks/svg-icon-maxi/inspector.js:178
+#: src/blocks/svg-icon-maxi/data.js:192
+#: src/blocks/svg-icon-maxi/inspector.js:197
 msgid "Icon colour"
 msgstr ""
 
 #: build/6891.js:1
-#: src/blocks/svg-icon-maxi/inspector.js:218
+#: src/blocks/svg-icon-maxi/inspector.js:237
 msgid "Icon line width"
 msgstr ""
 
 #: build/6891.js:1
-#: src/blocks/svg-icon-maxi/inspector.js:268
+#: src/blocks/svg-icon-maxi/inspector.js:287
 #: src/components/inspector-tabs/inspector-size.js:43
 #: src/extensions/relations/getCanvasSettings.js:189
 msgid "Height / Width"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:143
+#: src/blocks/search-maxi/inspector.js:168
 msgid "Search settings"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:164
+#: src/blocks/search-maxi/inspector.js:189
 msgid "Shortcut"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:215
+#: src/blocks/search-maxi/inspector.js:240
 msgid "Close icon"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:226
+#: src/blocks/search-maxi/inspector.js:251
 #: src/components/arrow-control/index.js:148
 #: src/components/inspector-tabs/inspector-position.js:19
 #: src/components/position-control/index.js:113
@@ -2523,12 +2523,12 @@ msgid "Position"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:286
+#: src/blocks/search-maxi/inspector.js:311
 msgid "Input"
 msgstr ""
 
 #: build/7219.js:1
-#: src/blocks/search-maxi/inspector.js:306
+#: src/blocks/search-maxi/inspector.js:331
 msgid "Placeholder"
 msgstr ""
 
@@ -2714,8 +2714,8 @@ msgid "Inherit colour/background from button"
 msgstr ""
 
 #: build/7889.js:1
-#: src/blocks/svg-icon-maxi/data.js:250
-#: src/components/icon-control/index.js:527
+#: src/blocks/svg-icon-maxi/data.js:251
+#: src/components/icon-control/index.js:528
 #: src/components/toolbar/components/icon-background/index.js:67
 msgid "Icon background"
 msgstr ""
@@ -2836,7 +2836,7 @@ msgstr ""
 
 #: build/8194.js:1
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:180
+#: src/blocks/image-maxi/inspector.js:199
 #: src/components/toolbar/components/more-settings/index.js:122
 #: src/extensions/DC/constants.js:215
 msgid "Caption"
@@ -2882,7 +2882,7 @@ msgid "Icon Colour"
 msgstr ""
 
 #: build/8612.js:1
-#: src/components/icon-control/index.js:308
+#: src/components/icon-control/index.js:309
 #: src/components/toolbar/components/icon-color/index.js:61
 msgid "Icon stroke"
 msgstr ""
@@ -3129,17 +3129,17 @@ msgid "Popup settings"
 msgstr ""
 
 #: build/9594.js:1
-#: src/blocks/video-maxi/inspector.js:140
+#: src/blocks/video-maxi/inspector.js:143
 msgid "Playback icon"
 msgstr ""
 
 #: build/9594.js:1
-#: src/blocks/video-maxi/inspector.js:148
+#: src/blocks/video-maxi/inspector.js:151
 msgid "Play icon"
 msgstr ""
 
 #: build/9594.js:1
-#: src/blocks/video-maxi/inspector.js:177
+#: src/blocks/video-maxi/inspector.js:183
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
 #: src/extensions/DC/constants.js:297
@@ -3147,33 +3147,33 @@ msgid "Image"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:145
+#: src/blocks/image-maxi/inspector.js:164
 msgid "Dimension"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:167
+#: src/blocks/image-maxi/inspector.js:186
 msgid "Alt tag"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:212
+#: src/blocks/image-maxi/inspector.js:231
 msgid "Caption position"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:245
+#: src/blocks/image-maxi/inspector.js:264
 msgid "Caption gap"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/inspector.js:368
+#: src/blocks/image-maxi/inspector.js:387
 msgid "Hover effect"
 msgstr ""
 
 #: build/9596.js:1
-#: src/blocks/image-maxi/data.js:239
-#: src/blocks/image-maxi/inspector.js:404
+#: src/blocks/image-maxi/data.js:240
+#: src/blocks/image-maxi/inspector.js:423
 msgid "Shape mask"
 msgstr ""
 
@@ -3183,32 +3183,32 @@ msgid "Icon size"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:81
-#: src/components/inspector-tabs/inspector-icon.js:128
+#: src/components/inspector-tabs/inspector-icon.js:130
 msgid "Enable Icon Hover"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:219
+#: src/blocks/button-maxi/data.js:220
 #: src/extensions/styles/migrators/test/utils.js:152
 msgid "Button icon"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:270
+#: src/blocks/button-maxi/data.js:271
 msgid "Button typography"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:292
+#: src/blocks/button-maxi/data.js:293
 msgid "Button border"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:316
+#: src/blocks/button-maxi/data.js:317
 msgid "Button background"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:348
+#: src/blocks/button-maxi/data.js:349
 msgid "Button box shadow"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:374
+#: src/blocks/button-maxi/data.js:375
 msgid "Button margin/padding"
 msgstr ""
 
@@ -3237,12 +3237,12 @@ msgstr ""
 msgid "Fit content"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:134
+#: src/blocks/divider-maxi/data.js:135
 #: src/extensions/styles/migrators/test/utils.js:160
 msgid "Divider box shadow"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:279
+#: src/blocks/image-maxi/data.js:280
 #: src/components/inspector-tabs/inspector-clip-path.js:32
 msgid "Clip-path"
 msgstr ""
@@ -3268,8 +3268,8 @@ msgstr ""
 msgid "Placeholder image"
 msgstr ""
 
-#: src/blocks/list-item-maxi/data.js:126
-#: src/blocks/text-maxi/data.js:196
+#: src/blocks/list-item-maxi/data.js:127
+#: src/blocks/text-maxi/data.js:197
 #: src/components/inspector-tabs/inspector-typography.js:56
 msgid "Typography"
 msgstr ""
@@ -3392,7 +3392,7 @@ msgstr ""
 msgid "Map interaction"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/data.js:278
+#: src/blocks/svg-icon-maxi/data.js:279
 msgid "Icon border"
 msgstr ""
 
@@ -3403,6 +3403,14 @@ msgstr ""
 #: src/components/advanced-number-control/index.js:239
 #: src/components/background-control/imageLayer.js:92
 msgid "Auto"
+msgstr ""
+
+#: src/components/aria-label-control/index.js:51
+msgid "Target"
+msgstr ""
+
+#: src/components/aria-label-control/index.js:60
+msgid "Aria Label"
 msgstr ""
 
 #: src/components/arrow-control/index.js:90
@@ -5307,31 +5315,31 @@ msgstr ""
 msgid "Gradient opacity"
 msgstr ""
 
-#: src/components/icon-control/index.js:178
+#: src/components/icon-control/index.js:179
 msgid "Icon only (remove text)"
 msgstr ""
 
-#: src/components/icon-control/index.js:275
+#: src/components/icon-control/index.js:276
 msgid "Inherit stroke colour/background from button"
 msgstr ""
 
-#: src/components/icon-control/index.js:395
+#: src/components/icon-control/index.js:396
 msgid "Icon stroke colour is inheriting from button."
 msgstr ""
 
-#: src/components/icon-control/index.js:401
+#: src/components/icon-control/index.js:402
 msgid "Button colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:620
+#: src/components/icon-control/index.js:621
 msgid "Icon background is inheriting from button."
 msgstr ""
 
-#: src/components/icon-control/index.js:626
+#: src/components/icon-control/index.js:627
 msgid "Button Background colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:643
+#: src/components/icon-control/index.js:644
 msgid "Icon Background gradient"
 msgstr ""
 
@@ -5421,6 +5429,10 @@ msgstr ""
 msgid "Allowed chars: 0-9, A-Z, a-z, _ , -"
 msgstr ""
 
+#: src/components/inspector-tabs/inspector-aria-label.js:23
+msgid "Aria label"
+msgstr ""
+
 #: src/components/inspector-tabs/inspector-background.js:107
 #: src/components/inspector-tabs/inspector-block-background.js:79
 msgid "Enable background hover"
@@ -5483,7 +5495,7 @@ msgstr ""
 msgid "Flexbox"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-icon.js:142
+#: src/components/inspector-tabs/inspector-icon.js:144
 #: src/components/transform-control/index.js:365
 msgid "Switch hover target to canvas"
 msgstr ""
@@ -6620,15 +6632,15 @@ msgstr ""
 msgid "No parent"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:75
+#: src/extensions/DC/getDCMedia.js:43
 msgid "Error fetching media, try to add Featured Image to the product you want to show"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:84
+#: src/extensions/DC/getDCMedia.js:52
 msgid "Error fetching media, check if it exists in the Media Library"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:92
+#: src/extensions/DC/getDCMedia.js:60
 msgid "Error fetching media, try to add Featured Image to the post you want to show"
 msgstr ""
 
@@ -6653,7 +6665,7 @@ msgstr ""
 msgid "Get the current archive's posts"
 msgstr ""
 
-#: src/extensions/maxi-block/maxiBlockComponent.js:1031
+#: src/extensions/maxi-block/maxiBlockComponent.js:1082
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 

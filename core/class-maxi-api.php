@@ -433,16 +433,18 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
 
-            $meta = $is_json ? json_decode($data['meta'], true) : $data['meta'];
-            $styles_arr = $is_json ? json_decode($data['styles'], true) : $data['styles'];
-
+            $meta = $is_json && isset($data['meta']) ? json_decode($data['meta'], true) : ($data['meta'] ?? []);
+            $styles_arr = $is_json && isset($data['styles']) ? json_decode($data['styles'], true) : ($data['styles'] ?? []);
             $fonts_arr = $meta['fonts'] ?? [];
             if ($is_json) {
                 foreach ($fonts_arr as $key => $font) {
                     $fonts_arr[$key] = json_decode($font, true) ?? [];
                 }
             }
-            $fonts = json_encode(array_merge_recursive(...$fonts_arr));
+            $fonts = '';
+            if (!empty($fonts_arr)) {
+                $fonts = json_encode(array_merge_recursive(...$fonts_arr));
+            }
 
             ['table' => $table, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
 
@@ -519,7 +521,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             $updated_meta = [];
 
-            if($id) {
+            if(isset($id) && $id) {
                 $updated_meta = (array)$wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT * FROM $table WHERE $where_clause",

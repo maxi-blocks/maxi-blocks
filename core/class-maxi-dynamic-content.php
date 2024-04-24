@@ -751,7 +751,8 @@ class MaxiBlocks_DynamicContent
         // Get media ID
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
-            $media_id = is_array($image) && $image['id'];
+            $media_id = $image['id'] ?? '';
+            $media_src = $image['url'] ?? '';
         } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
             $post = $this->get_post($attributes);
 
@@ -1614,6 +1615,19 @@ class MaxiBlocks_DynamicContent
                 $content = implode("$dc_delimiter ", array_map(function ($item) {
                     return is_array($item) ? $item['label'] : $item;
                 }, $acf_value));
+                break;
+            case 'image':
+                if ($acf_data['return_format'] === 'url') {
+                    $content = [
+                        'url' => $acf_value,
+                    ];
+                } elseif ($acf_data['return_format'] === 'id') {
+                    $content = [
+                        'id' => $acf_value,
+                    ];
+                } else {
+                    $content = $acf_value;
+                }
                 break;
             default:
                 $content = $acf_value;

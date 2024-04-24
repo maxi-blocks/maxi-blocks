@@ -361,6 +361,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['pane', 'header', 'content', 'icon'];
 const transition = {
 	pane: {
 		...transitionDefault.canvas,
@@ -443,5 +444,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	targets,
+	ariaLabelsCategories,
 };
 export default data;

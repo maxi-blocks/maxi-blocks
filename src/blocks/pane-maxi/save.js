@@ -15,7 +15,13 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
+	const {
+		title,
+		titleLevel,
+		accordionUniqueId,
+		linkSettings,
+		ariaLabels = {},
+	} = attributes;
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 
 	const name = 'maxi-blocks/pane-maxi';
@@ -28,8 +34,12 @@ const save = props => {
 			className='wp-block-maxi-blocks-pane-maxi'
 			data-accordion={accordionUniqueId}
 			aria-expanded={false}
+			aria-label={ariaLabels.pane}
 		>
-			<div className='maxi-pane-block__header'>
+			<div
+				className='maxi-pane-block__header'
+				aria-label={ariaLabels.header}
+			>
 				<div className='maxi-pane-block__header-content'>
 					<WithLink
 						linkSettings={linkSettings ?? {}}
@@ -41,7 +51,10 @@ const save = props => {
 							tagName={titleLevel}
 						/>
 					</WithLink>
-					<div className='maxi-pane-block__icon' />
+					<div
+						className='maxi-pane-block__icon'
+						aria-label={ariaLabels.icon}
+					/>
 				</div>
 				<div className='maxi-pane-block__header-line-container maxi-pane-block__line-container'>
 					<hr className='maxi-pane-block__header-line maxi-pane-block__line' />
@@ -51,6 +64,7 @@ const save = props => {
 				<div
 					{...useInnerBlocksProps.save({
 						className: 'maxi-pane-block__content',
+						'aria-label': ariaLabels.content,
 					})}
 				/>
 			</div>

@@ -148,7 +148,11 @@ const ShapeDivider = ({ location, ...props }) => {
 	);
 
 	return (
-		!isEmpty(showShapes()) && <div className={classes}>{showShapes()}</div>
+		!isEmpty(showShapes()) && (
+			<div className={classes} aria-label={props['aria-label']}>
+				{showShapes()}
+			</div>
+		)
 	);
 };
 

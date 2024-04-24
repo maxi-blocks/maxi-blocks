@@ -13,7 +13,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { lineOrientation } = attributes;
+	const { lineOrientation, ariaLabels = {} } = attributes;
 
 	const name = 'maxi-blocks/divider-maxi';
 
@@ -27,9 +27,13 @@ const save = props => {
 		<MaxiBlock.save
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels.canvas}
 		>
 			{attributes['divider-border-style'] !== 'none' && (
-				<hr className='maxi-divider-block__divider' />
+				<hr
+					className='maxi-divider-block__divider'
+					aria-label={ariaLabels.divider}
+				/>
 			)}
 		</MaxiBlock.save>
 	);

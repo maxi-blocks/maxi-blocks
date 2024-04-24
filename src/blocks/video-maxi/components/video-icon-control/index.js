@@ -33,7 +33,11 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
+import {
+	setSVGAriaLabel,
+	setSVGContent,
+	setSVGContentHover,
+} from '../../../../extensions/svg';
 
 /**
  * External dependencies
@@ -385,7 +389,7 @@ const IconSettings = props => {
 };
 
 const VideoIconControl = props => {
-	const { blockStyle, onChange, prefix, label, type } = props;
+	const { blockStyle, onChange, prefix, label, type, ariaLabels } = props;
 
 	return (
 		<>
@@ -393,7 +397,26 @@ const VideoIconControl = props => {
 				type={type}
 				prefix={prefix}
 				style={blockStyle}
-				onSelect={obj => onChange(obj)}
+				onSelect={obj => {
+					if (
+						obj[`${prefix}icon-content`] &&
+						((ariaLabels?.['close icon'] &&
+							type === 'video-icon-close') ||
+							(ariaLabels?.['play icon'] &&
+								type === 'video-icon-play'))
+					) {
+						obj[`${prefix}icon-content`] = setSVGAriaLabel(
+							ariaLabels[
+								type === 'video-icon-close'
+									? 'close icon'
+									: 'play icon'
+							],
+							() => obj[`${prefix}icon-content`]
+						);
+					}
+
+					onChange(obj);
+				}}
 				onRemove={obj => onChange(obj)}
 				icon={props[`${prefix}icon-content`]}
 				label={label}

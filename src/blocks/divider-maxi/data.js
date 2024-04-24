@@ -116,6 +116,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['canvas', 'divider'];
 const transition = {
 	...transitionDefault,
 	block: {
@@ -186,5 +187,11 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	ariaLabelsCategories,
+};
 export default data;

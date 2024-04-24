@@ -95,6 +95,7 @@ const customCss = {
 		'background hover',
 	],
 };
+const ariaLabelsCategories = ['list item wrapper', 'list item'];
 const transition = {
 	canvas: {
 		...transitionDefault.canvas,
@@ -163,5 +164,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	scProps,
+	ariaLabelsCategories,
 };
 export default data;

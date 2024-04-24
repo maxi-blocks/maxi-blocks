@@ -13,6 +13,7 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			aria-label={props.attributes.ariaLabels?.slide}
 		/>
 	);
 };

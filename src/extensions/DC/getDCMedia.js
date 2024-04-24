@@ -31,39 +31,7 @@ const getAvatar = user => {
 	};
 };
 
-const getDCMedia = async (dataRequest, clientId) => {
-	const data = await getDCEntity(dataRequest, clientId);
-
-	const { field, source, type } = dataRequest;
-	let id;
-
-	if (source === 'acf') {
-		const contentValue = await getACFFieldContent(field, data.id);
-
-		return contentValue;
-	}
-
-	if (field === 'avatar' && type === 'users') {
-		return getAvatar(data);
-	}
-
-	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
-		const { author: authorId } = data;
-		const { getUser } = resolveSelect('core');
-
-		const author = await getUser(authorId);
-
-		return getAvatar(author);
-	}
-
-	if (type === 'products') {
-		id = await getProductsContent(dataRequest, data);
-	} else {
-		id = data?.[field];
-	}
-
-	if (isNil(id)) return null;
-
+const getMediaById = async (id, type) => {
 	const { getMedia } = resolveSelect('core');
 
 	let media;
@@ -104,6 +72,51 @@ const getDCMedia = async (dataRequest, clientId) => {
 		url: media.source_url,
 		caption: media.caption?.rendered,
 	};
+};
+
+const getDCMedia = async (dataRequest, clientId) => {
+	const data = await getDCEntity(dataRequest, clientId);
+
+	const { field, source, type } = dataRequest;
+	let id;
+
+	if (source === 'acf') {
+		const image = await getACFFieldContent(field, data.id);
+
+		if (image.return_format === 'url') {
+			return {
+				url: image.value,
+			};
+		}
+		if (image.return_format === 'id') {
+			return getMediaById(image.value, type);
+		}
+
+		return image;
+	}
+
+	if (field === 'avatar' && type === 'users') {
+		return getAvatar(data);
+	}
+
+	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
+		const { author: authorId } = data;
+		const { getUser } = resolveSelect('core');
+
+		const author = await getUser(authorId);
+
+		return getAvatar(author);
+	}
+
+	if (type === 'products') {
+		id = await getProductsContent(dataRequest, data);
+	} else {
+		id = data?.[field];
+	}
+
+	if (isNil(id)) return null;
+
+	return getMediaById(id, type);
 };
 
 export default getDCMedia;

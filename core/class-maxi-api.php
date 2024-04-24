@@ -968,7 +968,18 @@ if (!class_exists('MaxiBlocks_API')):
                 return null;
             }
 
-            return json_encode(get_field_object($request['field_id'], $request['post_id'])['value']);
+            $field = get_field_object($request['field_id'], $request['post_id']);
+
+            if ($field['type'] === 'image') {
+                return json_encode(
+                    [
+                        'value' => $field['value'],
+                        'return_format' => $field['return_format']
+                    ]
+                );
+            }
+
+            return json_encode($field['value']);
         }
 
         public function get_maxi_blocks_pro_status()

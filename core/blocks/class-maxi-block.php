@@ -97,7 +97,6 @@ if (!class_exists('MaxiBlocks_Block')):
             ],
             'dc-source' => [
                 'type' => 'string',
-                'default' => 'wp',
             ],
             'dc-type' => [
                 'type' => 'string',

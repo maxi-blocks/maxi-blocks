@@ -997,14 +997,18 @@ class MaxiBlocks_Styles
 
             $api = new MaxiBlocks_API();
 
+            $styles = isset($home_content['css_value']) && is_string($home_content['css_value']) ? $home_content['css_value'] : '';
+            $fonts_value = isset($home_content['fonts_value']) && is_string($home_content['fonts_value']) ? json_decode($home_content['fonts_value'], true) : [];
+            $template_parts = isset($home_content['template_parts']) && is_array($home_content['template_parts']) ? $home_content['template_parts'] : [];
+
             $api->post_maxi_blocks_styles([
                 'id' => $front_page_id,
                 'meta' => [
-                    'styles' => $home_content['css_value'],
-                    'fonts' => [json_decode($home_content['fonts_value'], true)],
+                    'styles' => $styles,
+                    'fonts' => [$fonts_value],
                 ],
                 'isTemplate' => true,
-                'templateParts' => $home_content['template_parts'],
+                'templateParts' => $template_parts,
                 'update' => true,
             ], false);
 

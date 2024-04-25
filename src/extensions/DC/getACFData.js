@@ -1,4 +1,13 @@
+/**
+ * Wordpress dependencies
+ */
 import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * External dependencies
+ */
+import memoize from 'memize';
+import { isNil } from 'lodash';
 
 const getACFFieldGroups = async () =>
 	apiFetch({
@@ -14,12 +23,13 @@ const getACFGroupFields = async group =>
 		  }).then(res => JSON.parse(res))
 		: [];
 
-const getACFFieldContent = async (field, post) =>
-	typeof acf !== 'undefined'
+const getACFFieldContent = memoize(async (field, post) =>
+	typeof acf !== 'undefined' && !isNil(field) && !isNil(post)
 		? apiFetch({
 				path: `/maxi-blocks/v1.0/acf/get-field-value/${field}/${post}`,
 				method: 'GET',
 		  }).then(res => JSON.parse(res))
-		: null;
+		: null
+);
 
 export { getACFFieldGroups, getACFGroupFields, getACFFieldContent };

@@ -14,6 +14,11 @@ const isEligible = blockAttributes => {
 
 	if (!blockDataTransition) return false;
 
+	console.log(uniqueID);
+	console.log(Object.keys(blockDataTransition.block).sort());
+	console.log(Object.keys(transition.block).sort());
+	console.log('=========================');
+
 	return !isEqual(
 		Object.keys(blockDataTransition.block).sort(),
 		Object.keys(transition.block).sort()

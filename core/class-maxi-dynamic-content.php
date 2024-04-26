@@ -317,12 +317,6 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        // Adjust $pagination_total to remove remainder
-        $remainder = $pagination_total % $cl_pagination_per_page;
-        if ($remainder !== 0) {
-            $pagination_total -= $remainder;
-        }
-
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
         $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
 

@@ -18,6 +18,10 @@ class MaxiBlocks_DynamicContent
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag', 'current-archive'];
     private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
+    private static $global_dc_accumulator_cl = null;
+    private static $global_dc_id_cl = null;
+
+
     private static $link_only_blocks = [
         'group-maxi',
         'column-maxi',
@@ -736,6 +740,8 @@ class MaxiBlocks_DynamicContent
             'dc-id' => $dc_id,
             'dc-field' => $dc_field,
             'dc-media-id' => $dc_media_id,
+            'dc-accumulator' => $dc_accumulator,
+
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -757,6 +763,14 @@ class MaxiBlocks_DynamicContent
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
+                $post_id = $post->ID;
+                if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+                    echo 'REPEATED POST ID: '.$post_id.'<br>';
+                    return '';
+                }
+
+                self::$global_dc_accumulator_cl = $dc_accumulator;
+                self::$global_dc_id_cl = $post_id;
                 if ($dc_field === 'featured_media') {
                     $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
                 } elseif ($dc_field === 'author_avatar') {
@@ -1192,7 +1206,18 @@ class MaxiBlocks_DynamicContent
             // Need to keep old attribute for backward compatibility
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'linkSettings' => $linkSettings,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
+
+        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            echo 'REPEATED POST ID: '.$post_id.'<br>';
+            return '';
+        }
+
+        self::$global_dc_accumulator_cl = $dc_accumulator;
+        self::$global_dc_id_cl = $post_id;
+
+
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
 
@@ -1221,13 +1246,38 @@ class MaxiBlocks_DynamicContent
             // Need to keep old attribute for backward compatibility
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'dc-link-status' => $dc_link_status,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
 
+
+
+
         if(is_null($post)) {
             return '';
         }
+
+
+        $post_id = $post->ID;
+
+
+        // echo '$dc_accumulator: ///////////'.$dc_accumulator.'<br>';
+        // echo '$global_dc_accumulator_cl : '.self::$global_dc_accumulator_cl.'<br>';
+        // echo '$post_id: ////'.$post_id.'<br>';
+        // echo '$global_dc_id_cl: '.self::$global_dc_id_cl.'<br>';
+        // echo '====================================<br>';
+
+        // Compare with global variables
+        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            //  echo 'REPEATED POST ID: '.$post_id.'<br>';
+            return '';
+        }
+
+        self::$global_dc_accumulator_cl = $dc_accumulator;
+        self::$global_dc_id_cl = $post->ID;
+
+
 
         $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
 
@@ -1327,6 +1377,25 @@ class MaxiBlocks_DynamicContent
         if (!is_object($post)) {
             return 0;
         }
+
+        $post_id = $post->ID;
+        $dc_accumulator = $attributes['dc-accumulator'];
+
+        echo '$dc_accumulator: ///////////'.$dc_accumulator.'<br>';
+        echo '$global_dc_accumulator_cl : '.self::$global_dc_accumulator_cl.'<br>';
+        echo '$post_id: ////'.$post_id.'<br>';
+        echo '$global_dc_id_cl: '.self::$global_dc_id_cl.'<br>';
+        echo '====================================<br>';
+
+        // Compare with global variables
+
+        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            echo 'REPEATED POST ID: '.$post_id.'<br>';
+            return '';
+        }
+
+        self::$global_dc_accumulator_cl = $dc_accumulator;
+        self::$global_dc_id_cl = $post_id;
 
         // For fields other than 'author', attempt to dynamically access the property
         if ($dc_field !== 'author') {

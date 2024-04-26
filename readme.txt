@@ -210,6 +210,18 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 29 April 2024_
+MaxiBlocks v1.8.4
+* Update: Introduced aria label support in the Advanced settings tab, improving accessibility for users relying on assistive technologies.
+* Fix: Resolved an issue with rendering HTML content for Dynamic Content on the frontend, ensuring proper display of page elements.
+* Fix: Addressed a bug where nested block styles were not switching correctly when inserted inside a block with a different style, maintaining consistent styling across nested blocks.
+* Fix: Fixed a problem with Advanced Custom Fields images not loading on the frontend, ensuring seamless integration and proper image display.
+* Fix: Eliminated PHP warnings to improve overall plugin stability and provide a cleaner development experience.
+* Fix: Corrected styling issues for native blocks that are not inside Maxi blocks, ensuring consistent appearance throughout the site.
+* Fix: Resolved an issue with the rendering of previews when swapping templates in the Editor experience, improving editor speed during template selection.
+* Fix: Addressed Firefox console errors related to pattern previews, enhancing browser compatibility and user experience.
+
+
 _Updates 18 April 2024_
 MaxiBlocks v1.8.3
 * Update: Laid the groundwork for the upcoming MaxiBlocks theme, ensuring seamless integration and enhanced user experience.
@@ -217,16 +229,6 @@ MaxiBlocks v1.8.3
 * Fix: Resolved an issue with the visited hover colour for consistent and accurate colour representation across the site.
 * Fix: Addressed transition errors occurring in the Firefox browser, providing a smoother and more reliable user experience.
 * Fix: Eliminated PHP warnings related to Dynamic Content on the frontend, improving overall plugin stability and performance.
-
-_Updates 8 April 2024_
-MaxiBlocks v1.8.2
-* Update: Added Dynamic Content current item info to Archive templates.
-* Fix: Resolved migrators for Transition and Interaction Builder running on every Editor load.
-* Fix: Addressed issue of Dynamic Content links losing styles on frontend.
-
-_Updates 4 April 2024_
-MaxiBlocks v1.8.1
-* Fix: Resolved List Item migrator issue on WordPress 6.5.
 
 == Upgrade Notice ==
 

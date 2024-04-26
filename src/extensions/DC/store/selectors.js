@@ -35,16 +35,10 @@ const selectors = {
 		return false;
 	},
 	getACFGroups: state => {
-		if (state) return state.acfGroups;
-
-		return false;
+		return state?.acfGroups;
 	},
 	getACFFields: (state, groupId) => {
-		if (state && state.acfFields) {
-			return state.acfFields[groupId];
-		}
-
-		return false;
+		return state?.acfFields?.[groupId];
 	},
 };
 

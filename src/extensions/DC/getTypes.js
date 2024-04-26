@@ -14,7 +14,12 @@ import { typeOptions } from './constants';
  */
 import { isEmpty } from 'lodash';
 
-const getTypes = (contentType, group = true, currentTemplateSlug = false) => {
+const getTypes = (
+	contentType,
+	group = true,
+	currentTemplateSlug = false,
+	source = 'wp'
+) => {
 	const customPostTypes = select('maxiBlocks/dynamic-content')
 		.getCustomPostTypes()
 		.map(type => {
@@ -50,19 +55,22 @@ const getTypes = (contentType, group = true, currentTemplateSlug = false) => {
 			  ]
 			: [];
 
+	const defaultOptions =
+		source === 'acf' ? typeOptions.acf : typeOptions[contentType];
+
 	if (group) {
 		return isEmpty(customPostTypes)
-			? [...typeOptions[contentType], ...allArchives]
+			? [...defaultOptions, ...allArchives]
 			: {
 					'Standard types': currentTemplateSlug
-						? [...typeOptions[contentType], ...allArchives]
-						: typeOptions[contentType],
+						? [...defaultOptions, ...allArchives]
+						: defaultOptions,
 					'Custom types': [...customPostTypes, ...customTaxonomies],
 			  };
 	}
 
 	return [
-		...typeOptions[contentType],
+		...defaultOptions,
 		...customPostTypes,
 		...customTaxonomies,
 		...allArchives,

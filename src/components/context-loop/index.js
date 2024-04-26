@@ -301,7 +301,9 @@ const ContextLoop = props => {
 									relation,
 									contentType,
 									value,
-									true
+									linkTarget,
+									true,
+									acfGroup
 								);
 
 								changeProps({

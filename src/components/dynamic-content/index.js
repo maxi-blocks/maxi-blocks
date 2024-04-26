@@ -136,6 +136,7 @@ const DynamicContent = props => {
 		weekday,
 		year,
 		customFormat,
+		acfGroup,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -324,7 +325,9 @@ const DynamicContent = props => {
 									relation,
 									contentType,
 									value,
-									linkTarget
+									linkTarget,
+									false,
+									acfGroup
 								);
 
 								changeProps({
@@ -340,7 +343,7 @@ const DynamicContent = props => {
 						<ACFSettingsControl
 							onChange={onChange}
 							contentType={contentType}
-							group={dcValues.acfGroup}
+							group={acfGroup}
 							field={field}
 						/>
 					)}
@@ -356,7 +359,9 @@ const DynamicContent = props => {
 								relation,
 								contentType,
 								source,
-								linkTarget
+								linkTarget,
+								false,
+								acfGroup
 							);
 
 							changeProps({

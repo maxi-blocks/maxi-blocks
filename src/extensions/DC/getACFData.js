@@ -21,7 +21,7 @@ const getACFGroupFields = async group =>
 				path: `/maxi-blocks/v1.0/acf/get-group-fields/${group}`,
 				method: 'GET',
 		  }).then(res => JSON.parse(res))
-		: [];
+		: null;
 
 const getACFFieldContent = memoize(async (field, post) =>
 	typeof acf !== 'undefined' && !isNil(field) && !isNil(post)

@@ -21,7 +21,8 @@ const getValidatedDCAttributes = async (
 		contentType,
 		attributes.source,
 		attributes.linkTarget,
-		isCL
+		isCL,
+		attributes.acfGroup
 	);
 	const validatedRelations = validateRelations(
 		attributes.type,

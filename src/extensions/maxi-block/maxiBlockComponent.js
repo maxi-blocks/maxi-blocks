@@ -1044,6 +1044,9 @@ class MaxiBlockComponent extends Component {
 				if (
 					iframe?.parentNode?.classList?.contains(
 						'maxi-blocks-pattern-preview'
+					) ||
+					iframe?.parentNode?.querySelector(
+						'img.maxiblocks-pattern-preview-image'
 					)
 				)
 					return;

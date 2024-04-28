@@ -7,7 +7,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
 /**
  * External dependencies
  */
-import { isNumber, isNil } from 'lodash';
+import { isFinite, isNil } from 'lodash';
 
 /**
  * General
@@ -96,7 +96,7 @@ const getSizeStyles = (obj, prefix = '') => {
 		}
 
 		if (
-			isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
+			isFinite(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
 			obj[`${prefix}${target}-unit-${breakpoint}`]
 		) {
 			const num = getLastBreakpointAttribute({

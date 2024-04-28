@@ -1,5 +1,15 @@
 import { getSVGStyles, getSVGWidthStyles } from '../getSVGStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_returns_correct_styles__1.json';
+import correctIconSize from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size__1.json';
+import correctStylesWithDisabledHeightFalse from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size_with_disable_height_false__1.json';
+import correctStylesOnResponsive from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_work_on_responsive__1.json';
+import correctStylesWithHeightFitContentAndHeightRationLessThanOne from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_less_than_1_with_disable_height_true__1.json';
+import correctStylesWithHeightFitContentAndHeightRatioGreaterThanOne from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_greater_than_1_with_disable_height_true__1.json';
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -46,6 +56,7 @@ describe('getSVGStyles', () => {
 		const result = getSVGStyles({ obj, target, blockStyle });
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 
 	it('Should return correct icon size', () => {
@@ -57,9 +68,9 @@ describe('getSVGStyles', () => {
 			'svg-icon-width-unit-general': '%',
 		};
 
-		expect(
-			getSVGWidthStyles({ obj: attributes, prefix: 'svg-' })
-		).toMatchSnapshot();
+		const result = getSVGWidthStyles({ obj: attributes, prefix: 'svg-' });
+		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctIconSize);
 	});
 
 	it('Should return correct icon size with disableHeight: false', () => {
@@ -71,13 +82,14 @@ describe('getSVGStyles', () => {
 			'svg-icon-width-unit-general': '%',
 		};
 
-		expect(
-			getSVGWidthStyles({
-				obj: attributes,
-				prefix: 'svg-',
-				disableHeight: false,
-			})
-		).toMatchSnapshot();
+		const result = getSVGWidthStyles({
+			obj: attributes,
+			prefix: 'svg-',
+			disableHeight: false,
+		});
+
+		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesWithDisabledHeightFalse);
 	});
 
 	it('Should work on responsive', () => {
@@ -90,9 +102,10 @@ describe('getSVGStyles', () => {
 			[`${prefix}icon-height-unit-m`]: 'em',
 		};
 
-		expect(
-			getSVGWidthStyles({ obj: attributes, prefix })
-		).toMatchSnapshot();
+		const result = getSVGWidthStyles({ obj: attributes, prefix });
+
+		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesOnResponsive);
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio > 1 with disableHeight true', () => {
@@ -109,13 +122,15 @@ describe('getSVGStyles', () => {
 			'icon-stroke-m': '4',
 		};
 
-		expect(
-			getSVGWidthStyles({
-				obj: attributes,
-				iconWidthHeightRatio: 3,
-				disableHeight: true,
-			})
-		).toMatchSnapshot();
+		const result = getSVGWidthStyles({
+			obj: attributes,
+			iconWidthHeightRatio: 3,
+			disableHeight: true,
+		});
+		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithHeightFitContentAndHeightRatioGreaterThanOne
+		);
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio < 1 with disableHeight: true', () => {
@@ -132,12 +147,14 @@ describe('getSVGStyles', () => {
 			'icon-stroke-m': '4',
 		};
 
-		expect(
-			getSVGWidthStyles({
-				obj: attributes,
-				iconWidthHeightRatio: 0.5,
-				disableHeight: true,
-			})
-		).toMatchSnapshot();
+		const result = getSVGWidthStyles({
+			obj: attributes,
+			iconWidthHeightRatio: 0.5,
+			disableHeight: true,
+		});
+		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithHeightFitContentAndHeightRationLessThanOne
+		);
 	});
 });

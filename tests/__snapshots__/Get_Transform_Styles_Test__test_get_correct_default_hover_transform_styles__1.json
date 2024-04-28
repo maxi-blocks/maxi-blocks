@@ -1,0 +1,34 @@
+{
+    "": {
+        "transform": {
+            "general": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "xxl": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "xl": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "l": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "m": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "s": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            },
+            "xs": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+                "transform-origin": "0% 0% "
+            }
+        }
+    }
+}

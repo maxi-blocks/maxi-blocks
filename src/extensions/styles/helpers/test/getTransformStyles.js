@@ -1,6 +1,12 @@
 import { createSelectors } from '../../custom-css';
 import getTransformStyles from '../getTransformStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_transform_styles__1.json';
+import correctStylesWithDefaultHover from '../../../../../tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_default_hover_transform_styles__1.json';
+
 describe('getTransformStyles', () => {
 	const selectors = createSelectors({
 		canvas: '',
@@ -58,6 +64,7 @@ describe('getTransformStyles', () => {
 
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 
 	it('Get a correct default hover transform styles', () => {
@@ -106,5 +113,6 @@ describe('getTransformStyles', () => {
 
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesWithDefaultHover);
 	});
 });

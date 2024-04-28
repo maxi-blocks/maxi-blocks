@@ -383,7 +383,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
         public static function get_icon_object($props, $prefix, $target, $is_hover = false)
         {
             $hover_flag = $is_hover ? ':hover' : '';
-            $full_target = $target . $hover_flag;
+			$full_target = ' ' . $target . $hover_flag;
             $is_active = strpos($prefix, 'active') !== false;
 
             $response = array_merge(

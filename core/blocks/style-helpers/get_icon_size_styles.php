@@ -10,7 +10,7 @@ function get_icon_size(
         'obj' => $obj,
         'is_hover' => $is_hover,
         'prefix' => $prefix.'icon-',
-        'iconWidthHeightRatio' => $icon_width_height_ratio,
-        'disableHeight' => false,
+        'icon_width_height_ratio' => $icon_width_height_ratio,
+        'disable_height' => false,
     ]);
 }

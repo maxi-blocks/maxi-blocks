@@ -295,9 +295,9 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         public static function get_aspect_ratio_styles($props, $isPopup = false)
         {
             $videoRatio = $props['videoRatio'];
-			$videoRatioCustom = $props['videoRatioCustom'];
+            $videoRatioCustom = $props['videoRatioCustom'];
             $popupRatio = $props['popupRatio'];
-			$popupRatioCustom = $props['popupRatioCustom'];
+            $popupRatioCustom = $props['popupRatioCustom'];
 
             $response = [];
 
@@ -356,13 +356,19 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         {
             $iconHoverStatus = $obj[$prefix . 'icon-status-hover'] ?? false;
 
-            $response = [
+            $response = array_merge([
                 " .maxi-video-block__{$prefix}button svg" => get_icon_size($obj, false, $prefix),
                 " .maxi-video-block__{$prefix}button svg path" => get_icon_path_styles($obj, false, $prefix),
                 " .maxi-video-block__{$prefix}button" => [
                     'icon' => get_icon_styles($obj, $obj['blockStyle'], false, false, $prefix),
                 ],
-            ];
+            ], get_svg_styles([
+                'obj' => $obj,
+                'target' => " .maxi-video-block__{$prefix}button",
+                'block_style' => $obj['blockStyle'],
+                'prefix' => $prefix,
+                'use_icon_color' => true,
+            ]));
 
             if(strpos($prefix, 'close-') !== false) {
                 $response[ " .maxi-video-block__{$prefix}button"] = array_merge(

@@ -211,7 +211,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 get_svg_width_styles([
                     'obj' => get_group_attributes($props, 'svg'),
                     'prefix' => 'svg-',
-                    'iconWidthHeightRatio' => $icon_width_height_ratio
+                    'icon_width_height_ratio' => $icon_width_height_ratio
                 ]),
                 get_background_styles(
                     array_merge(

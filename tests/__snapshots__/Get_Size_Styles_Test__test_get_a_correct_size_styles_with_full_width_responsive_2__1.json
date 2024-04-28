@@ -1,0 +1,49 @@
+{
+    "general": {
+        "max-width": "3px",
+        "width": "fit-content",
+        "min-width": "1px",
+        "max-height": "2px",
+        "height": "4px",
+        "min-height": "4px"
+    },
+    "xxl": {
+        "min-width": "100%",
+        "max-height": "1px",
+        "height": "2px",
+        "min-height": "2px"
+    },
+    "xl": {
+        "max-width": "3px",
+        "min-width": "1px",
+        "width": "fit-content",
+        "max-height": "2px",
+        "min-height": "4px"
+    },
+    "l": {
+        "min-width": "100%",
+        "max-height": "2px",
+        "min-height": "1px"
+    },
+    "m": {
+        "max-width": "2px",
+        "min-width": "initial",
+        "width": "fit-content",
+        "max-height": "1px",
+        "min-height": "2px"
+    },
+    "s": {
+        "min-width": "100%",
+        "max-height": "1px",
+        "height": "1px",
+        "min-height": "2px"
+    },
+    "xs": {
+        "max-width": "3px",
+        "min-width": "1px",
+        "width": "fit-content",
+        "max-height": "2px",
+        "height": "3px",
+        "min-height": "4px"
+    }
+}

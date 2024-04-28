@@ -1,0 +1,26 @@
+{
+    "general": {
+        "min-width": "100%",
+        "max-height": "3px",
+        "height": "4px",
+        "min-height": "1px"
+    },
+    "xxl": {
+        "min-width": "100%"
+    },
+    "xl": {
+        "min-width": "100%"
+    },
+    "l": {
+        "min-width": "100%"
+    },
+    "m": {
+        "min-width": "100%"
+    },
+    "s": {
+        "min-width": "100%"
+    },
+    "xs": {
+        "min-width": "100%"
+    }
+}

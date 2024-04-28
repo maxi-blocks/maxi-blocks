@@ -67,7 +67,7 @@ function get_size_styles($obj, $prefix = '')
                 ]);
 
                 if ($force_aspect_ratio) {
-                    return ['aspect-ratio' => 1, 'height' => 'auto'];
+                    return ['aspect-ratio' => 1, 'height' => 'auto !important'];
                 }
                 if (isset($obj['fitParentSize'])) {
                     return ['height' => '100% !important'];

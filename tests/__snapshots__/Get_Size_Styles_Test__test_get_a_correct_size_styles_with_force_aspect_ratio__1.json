@@ -1,0 +1,64 @@
+{
+    "general": {
+        "min-width": "1px",
+        "max-width": "3px",
+        "width": "4px",
+        "max-height": "2px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "4px"
+    },
+    "xxl": {
+        "min-width": "4px",
+        "max-width": "2px",
+        "width": "3px",
+        "max-height": "1px",
+        "height": "2px",
+        "min-height": "2px"
+    },
+    "xl": {
+        "min-width": "1px",
+        "max-width": "3px",
+        "width": "4px",
+        "max-height": "2px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "4px"
+    },
+    "l": {
+        "min-width": "3px",
+        "max-width": "2px",
+        "width": "1px",
+        "max-height": "2px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "1px"
+    },
+    "m": {
+        "min-width": "4px",
+        "max-width": "2px",
+        "width": "3px",
+        "max-height": "1px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "2px"
+    },
+    "s": {
+        "min-width": "1px",
+        "max-width": "3px",
+        "width": "4px",
+        "max-height": "1px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "2px"
+    },
+    "xs": {
+        "min-width": "1px",
+        "max-width": "3px",
+        "width": "4px",
+        "max-height": "2px",
+        "aspect-ratio": 1,
+        "height": "auto !important",
+        "min-height": "4px"
+    }
+}

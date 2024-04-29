@@ -1027,18 +1027,30 @@ class MaxiBlockComponent extends Component {
 			: defaultImgPath;
 
 		previewIframes.forEach(iframe => {
-			if (!iframe || !iframe.parentNode) return;
-
 			if (
+				!iframe ||
+				!iframe?.parentNode ||
+				iframe?.parentNode.classList.contains(
+					'maxi-blocks-pattern-preview'
+				) ||
 				this.hasParentWithClass(
-					iframe.parentNode,
+					iframe?.parentNode,
 					'maxiblocks-custom-pattern'
 				)
 			)
 				return;
 
 			const replaceIframeWithImage = (iframe, observer) => {
-				const iframeDocument = iframe.contentDocument;
+				if (
+					iframe?.parentNode?.classList?.contains(
+						'maxi-blocks-pattern-preview'
+					) ||
+					iframe?.parentNode?.querySelector(
+						'img.maxiblocks-pattern-preview-image'
+					)
+				)
+					return;
+				const iframeDocument = iframe?.contentDocument;
 				const iframeBody = iframeDocument?.body;
 				if (!iframeBody) return;
 
@@ -1054,7 +1066,7 @@ class MaxiBlockComponent extends Component {
 				);
 				if (!containsMaxiBlocksContainer) return;
 
-				iframe.parentNode.classList.add('maxi-blocks-pattern-preview');
+				iframe?.parentNode.classList.add('maxi-blocks-pattern-preview');
 
 				const parentWithClass = this.findParentWithClass(
 					iframe,
@@ -1085,7 +1097,11 @@ class MaxiBlockComponent extends Component {
 				);
 				img.style.width = '100%';
 				img.style.height = 'auto';
-				iframe.parentNode.replaceChild(img, iframe);
+				img.classList.add('maxi-blocks-pattern-preview-image');
+
+				iframe?.parentNode?.insertBefore(img, iframe);
+				iframe.style.display = 'none';
+
 				observer.disconnect();
 			};
 

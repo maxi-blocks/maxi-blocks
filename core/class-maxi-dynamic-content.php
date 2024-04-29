@@ -525,6 +525,11 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        echo '<pre>';
+        print_r($attributes);
+        echo '</pre>';
+        echo '====================================';
+
 
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
@@ -595,8 +600,14 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
+        @list(
+            'dc-accumulator' => $dc_accumulator,
+        ) = $attributes;
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
+            if($this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator)) {
+                return '';
+            }
             $link = self::get_field_link(
                 self::get_post($attributes)->post_author,
                 $attributes['dc-field']
@@ -604,6 +615,9 @@ class MaxiBlocks_DynamicContent
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
+            }
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             if(isset($attributes['dc-relation']) && $attributes['dc-relation'] === 'current') {
@@ -631,6 +645,10 @@ class MaxiBlocks_DynamicContent
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
+
+            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
+            }
 
             if (empty($post)) {
                 return $content;
@@ -687,7 +705,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_cart_content($attributes);
         }
 
-        if ($dc_field === 'date') {
+        if ($dc_field === 'date' && $response !== '') {
             $response = self::get_date($response, $attributes);
         }
 
@@ -757,14 +775,9 @@ class MaxiBlocks_DynamicContent
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
-                $post_id = $post->ID;
-                if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-                    echo 'REPEATED POST ID: '.$post_id.'<br>';
+                if($this->is_repeated_post($post->ID, $dc_accumulator)) {
                     return '';
                 }
-
-                self::$global_dc_accumulator_cl = $dc_accumulator;
-                self::$global_dc_id_cl = $post_id;
                 if ($dc_field === 'featured_media') {
                     $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
                 } elseif ($dc_field === 'author_avatar') {
@@ -1203,15 +1216,9 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-            echo 'REPEATED POST ID: '.$post_id.'<br>';
+        if($this->is_repeated_post($post_id, $dc_accumulator)) {
             return '';
         }
-
-        self::$global_dc_accumulator_cl = $dc_accumulator;
-        self::$global_dc_id_cl = $post_id;
-
-
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
 
@@ -1245,33 +1252,13 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-
-
-
         if(is_null($post)) {
             return '';
         }
 
-
-        $post_id = $post->ID;
-
-
-        // echo '$dc_accumulator: ///////////'.$dc_accumulator.'<br>';
-        // echo '$global_dc_accumulator_cl : '.self::$global_dc_accumulator_cl.'<br>';
-        // echo '$post_id: ////'.$post_id.'<br>';
-        // echo '$global_dc_id_cl: '.self::$global_dc_id_cl.'<br>';
-        // echo '====================================<br>';
-
-        // Compare with global variables
-        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-            //  echo 'REPEATED POST ID: '.$post_id.'<br>';
+        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
-
-        self::$global_dc_accumulator_cl = $dc_accumulator;
-        self::$global_dc_id_cl = $post->ID;
-
-
 
         $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
 
@@ -1375,21 +1362,9 @@ class MaxiBlocks_DynamicContent
         $post_id = $post->ID;
         $dc_accumulator = $attributes['dc-accumulator'];
 
-        echo '$dc_accumulator: ///////////'.$dc_accumulator.'<br>';
-        echo '$global_dc_accumulator_cl : '.self::$global_dc_accumulator_cl.'<br>';
-        echo '$post_id: ////'.$post_id.'<br>';
-        echo '$global_dc_id_cl: '.self::$global_dc_id_cl.'<br>';
-        echo '====================================<br>';
-
-        // Compare with global variables
-
-        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-            echo 'REPEATED POST ID: '.$post_id.'<br>';
-            return '';
+        if($this->is_repeated_post($post_id, $dc_accumulator)) {
+            return 0;
         }
-
-        self::$global_dc_accumulator_cl = $dc_accumulator;
-        self::$global_dc_id_cl = $post_id;
 
         // For fields other than 'author', attempt to dynamically access the property
         if ($dc_field !== 'author') {
@@ -1471,6 +1446,7 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-relation' => $dc_relation,
             'dc-type' => $dc_type,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {
@@ -1505,6 +1481,9 @@ class MaxiBlocks_DynamicContent
         }
 
         if($term) {
+            if($this->is_repeated_post($term->term_id, $dc_accumulator)) {
+                return null;
+            }
             if ($dc_field === 'link') {
                 $tax_data = get_term_link($term);
             } elseif (isset($term->$dc_field)) {
@@ -2128,5 +2107,18 @@ class MaxiBlocks_DynamicContent
         $taxonomies = array_diff(get_taxonomies($args), $supported_taxonomies);
 
         return $taxonomies;
+    }
+
+    private function is_repeated_post($post_id, $dc_accumulator)
+    {
+        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            echo 'REPEATED POST ID: '.$post_id.'<br>';
+            return true;
+        }
+
+        self::$global_dc_accumulator_cl = $dc_accumulator;
+        self::$global_dc_id_cl = $post_id;
+
+        return false;
     }
 }

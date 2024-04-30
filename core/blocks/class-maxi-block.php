@@ -267,10 +267,18 @@ if (!class_exists('MaxiBlocks_Block')):
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);
-                return $dynamic_content->render_dc($attributes, $content);
+                $dc_content = $dynamic_content->render_dc($attributes, $content);
+                if($this->check_if_content_is_empty($attributes, $dc_content)) {
+                    $dc_content = str_replace('class="', 'class="maxi-block--hidden ', $dc_content);
+
+                }
+                return $dc_content;
             }
 
             // If not, proceed with the regular render logic
+            if($this->check_if_content_is_empty($attributes, $content)) {
+                $content = str_replace('class="', 'class="maxi-block--hidden ', $content);
+            }
             return $content;
         }
 
@@ -355,6 +363,27 @@ if (!class_exists('MaxiBlocks_Block')):
             $sc_props = $block_sc_props['scElements'];
             $sc_entry = $block_sc_props['scType'];
             return $this->block_sc_vars = MaxiBlocks_StyleCards::get_style_cards_values($sc_props, $block_style, $sc_entry);
+        }
+
+        public function check_if_content_is_empty($attributes, $content)
+        {
+            $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
+            if (isset($attributes['uniqueID'])) {
+                $unique_id = $attributes['uniqueID'];
+                foreach ($blocks_to_check as $block) {
+                    if (strpos($unique_id, $block) !== false) {
+                        $allowed_tags = '<svg><img>';
+                        $text_content = strip_tags($content, $allowed_tags);
+
+                        // Check if the text content contains only "No content found" and spaces
+                        if (empty($text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $text_content) || preg_match('/^\s*$/', $text_content)) {
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            return false;
         }
 
     }

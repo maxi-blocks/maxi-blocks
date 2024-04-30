@@ -296,6 +296,8 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
+        // echo '$cl_pagination_per_page: '.$cl_pagination_per_page.'<br>';
+
         $pagination_total = $cl_pagination_total;
 
         // Determine the content type
@@ -525,12 +527,6 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
-        echo '<pre>';
-        print_r($attributes);
-        echo '</pre>';
-        echo '====================================';
-
-
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
@@ -565,8 +561,17 @@ class MaxiBlocks_DynamicContent
             $context_loop = self::$custom_data[$unique_id];
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
+                // echo $unique_id.'<br>';
+                // echo '<pre>';
+                // print_r(self::$custom_data);
+                // echo '</pre>';
                 $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 0;
+                //   echo 'cl_pagination_per_page: '.$cl_pagination_per_page.'<br>';
+                // echo 'pagination_page: '.$pagination_page.'<br>';
+                // echo 'accumulator: '.$accumulator.'<br>';
                 $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
+                // echo 'cl-accumulator: '.$context_loop['cl-accumulator'].'<br>';
+                // echo '====================<br>';
             }
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
@@ -592,7 +597,6 @@ class MaxiBlocks_DynamicContent
         }
 
         $content = self::render_dc_classes($attributes, $content);
-
         $content = str_replace('$link-to-replace', '', $content);
 
         return $content;
@@ -604,18 +608,22 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
+        if($this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator, $attributes)) {
+
+            return '';
+        }
+
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-            if($this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator)) {
-                return '';
-            }
+
             $link = self::get_field_link(
                 self::get_post($attributes)->post_author,
                 $attributes['dc-field']
             );
+
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
-            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator, $attributes)) {
                 return '';
             }
             $link = get_term_link($attributes['dc-id']);
@@ -645,8 +653,15 @@ class MaxiBlocks_DynamicContent
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
+            // echo '$post->ID: '.$post->ID.'<br>';
 
-            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+            // if($post->ID === 15238) {
+            //     echo '<pre>';
+            //     print_r($attributes);
+            //     echo '</pre>';
+            // }
+
+            if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
                 return '';
             }
 
@@ -775,7 +790,7 @@ class MaxiBlocks_DynamicContent
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
-                if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+                if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
                     return '';
                 }
                 if ($dc_field === 'featured_media') {
@@ -1216,7 +1231,7 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-        if($this->is_repeated_post($post_id, $dc_accumulator)) {
+        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
             return '';
         }
 
@@ -1256,7 +1271,7 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+        if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
             return '';
         }
 
@@ -1362,7 +1377,7 @@ class MaxiBlocks_DynamicContent
         $post_id = $post->ID;
         $dc_accumulator = $attributes['dc-accumulator'];
 
-        if($this->is_repeated_post($post_id, $dc_accumulator)) {
+        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
             return 0;
         }
 
@@ -1481,7 +1496,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if($term) {
-            if($this->is_repeated_post($term->term_id, $dc_accumulator)) {
+            if($this->is_repeated_post($term->term_id, $dc_accumulator, $attributes)) {
                 return null;
             }
             if ($dc_field === 'link') {
@@ -2109,10 +2124,28 @@ class MaxiBlocks_DynamicContent
         return $taxonomies;
     }
 
-    private function is_repeated_post($post_id, $dc_accumulator)
+    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
     {
+        //return false;
+        if(!isset($post_id) || !isset($dc_accumulator)) {
+            return false;
+        }
+
+        if(self::$global_dc_id_cl === null && self::$global_dc_accumulator_cl === null) {
+            self::$global_dc_id_cl = $post_id;
+            self::$global_dc_accumulator_cl = $dc_accumulator;
+            return false;
+        }
+
+
+        // echo 'unique_id: '.$attributes['uniqueID'] . '<br>';
+        // echo 'post_id: '.$post_id . '<br>';
+        // echo 'global_dc_id_cl: '.self::$global_dc_id_cl . '<br>';
+        // echo 'dc_accumulator: ' . $dc_accumulator . '<br>';
+        // echo 'global_dc_accumulator_cl: ' . self::$global_dc_accumulator_cl . '<br>';
+        // echo '====================================<br>';
+
         if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-            echo 'REPEATED POST ID: '.$post_id.'<br>';
             return true;
         }
 

@@ -52,6 +52,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			if (!attributes.isFirstOnHierarchy) {
 				const context = useContext(LoopContext);
 
+				// console.log('context', context);
+
 				if (context) prevContextLoopAttributes = context.contextLoop;
 			}
 
@@ -59,6 +61,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				attributes,
 				'contextLoop'
 			);
+
+			// console.log('contextLoopAttributes', contextLoopAttributes);
+			// console.log('===============================');
 
 			const getAccumulator = () => {
 				const getIsAccumulator = attributes =>
@@ -173,6 +178,17 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					contextLoop,
 				};
 			}, [contextLoop]);
+
+			console.log(attributes.uniqueID);
+			console.log('prevContextLoopAttributes', prevContextLoopAttributes);
+			console.log('contextLoopAttributes', contextLoopAttributes);
+			console.log(
+				'merge',
+				merge({}, prevContextLoopAttributes, contextLoopAttributes)
+			);
+			console.log('contextLoop', contextLoop);
+			console.log('memoizedValue', memoizedValue);
+			console.log('===============================');
 
 			const wasRelationValidated = useRef(false);
 			// Check if category or tag by which the post is filtered exists

@@ -341,8 +341,9 @@ class MaxiBlocks_DynamicContent
         // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
 
+        $max_page = ceil($pagination_total / $cl_pagination_per_page);
         // Previous link
-        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev');
+        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
 
         // Page list
         if($cl_show_page_list) {
@@ -350,7 +351,7 @@ class MaxiBlocks_DynamicContent
         }
 
         // Next link
-        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $pagination_total / $cl_pagination_per_page);
+        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $max_page);
 
         $content .= '</div>'; // Closing maxi-pagination div
 
@@ -371,6 +372,7 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
+
         if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction

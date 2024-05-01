@@ -47,8 +47,6 @@ const controls = {
 			})
 		);
 
-		console.log('filteredCustomData', filteredCustomData);
-
 		if (!isEmpty(filteredCustomData)) {
 			await apiFetch({
 				path: '/maxi-blocks/v1.0/custom-data',

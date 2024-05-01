@@ -245,6 +245,11 @@ const ContextLoop = props => {
 	);
 
 	useEffect(() => {
+		if (!paginationPerPage)
+			changeProps({ 'cl-pagination-per-page': usePaginationPerPage });
+	}, [usePaginationPerPage]);
+
+	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);
 		setPostTypesOptions(postTypes);
 	}, [contentType, source]);

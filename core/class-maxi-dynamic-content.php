@@ -296,8 +296,6 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        //echo '$cl_pagination_per_page: ' . $cl_pagination_per_page . '<br>';
-
         $pagination_total = $cl_pagination_total;
 
         // Determine the content type

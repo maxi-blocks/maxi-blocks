@@ -398,6 +398,9 @@ class MaxiBlocks_DynamicContent
     {
         // Determine the total number of pages
         $total_pages = (int) ceil($total_items / $items_per_page);
+        if($total_pages <= 1) {
+            return '';
+        }
 
         // Start building the page list HTML
         $page_list_html = '<div class="maxi-pagination__pages">';

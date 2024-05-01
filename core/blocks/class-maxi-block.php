@@ -368,7 +368,14 @@ if (!class_exists('MaxiBlocks_Block')):
         public function check_if_content_is_empty($attributes, $content)
         {
             $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
-            if (isset($attributes['uniqueID']) && ($attributes['cl-status'] || $attributes['dc-status'] || $attributes['dc-hide'])) {
+            if (
+                isset($attributes['uniqueID']) &&
+                (
+                    (isset($attributes['cl-status']) && $attributes['cl-status']) ||
+                    (isset($attributes['dc-status']) && $attributes['dc-status']) ||
+                    (isset($attributes['dc-hide']) && $attributes['dc-hide'])
+                )
+            ) {
                 $unique_id = $attributes['uniqueID'];
                 foreach ($blocks_to_check as $block) {
                     if (strpos($unique_id, $block) !== false) {

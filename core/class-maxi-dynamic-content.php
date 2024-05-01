@@ -603,8 +603,8 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-        if($this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator)) {
-
+        $post = self::get_post($attributes);
+        if($post && $this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator)) {
             return '';
         }
 
@@ -660,7 +660,11 @@ class MaxiBlocks_DynamicContent
             $link = get_permalink($post->ID);
         }
 
-        $content = str_replace('$link-to-replace', $link, $content);
+        if ($link instanceof WP_Error) {
+            return $content; // Return the original content without replacing the link
+        } else {
+            $content = str_replace('$link-to-replace', $link, $content);
+        }
 
         return $content;
     }

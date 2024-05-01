@@ -372,7 +372,7 @@ if (!class_exists('MaxiBlocks_Block')):
                 $unique_id = $attributes['uniqueID'];
                 foreach ($blocks_to_check as $block) {
                     if (strpos($unique_id, $block) !== false) {
-                        $allowed_tags = '<svg><img>';
+                        $allowed_tags = '<svg><img><iframe>';
                         $text_content = strip_tags($content, $allowed_tags);
 
                         // Check if the text content contains only "No content found" and spaces

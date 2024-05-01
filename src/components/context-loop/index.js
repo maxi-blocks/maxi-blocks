@@ -232,11 +232,7 @@ const ContextLoop = props => {
 			if (selectedBlockClientId) {
 				const childBlocks = getBlockOrder(selectedBlockClientId);
 				const childBlocksLength = childBlocks.length;
-				if (!paginationPerPage) {
-					changeProps({
-						'cl-pagination-per-page': childBlocksLength,
-					});
-				}
+
 				return childBlocksLength;
 			}
 			return 0;
@@ -244,8 +240,9 @@ const ContextLoop = props => {
 		[selectedBlockClientId]
 	);
 
-	console.log('childBlocksLength', childBlocksCount);
-	console.log('paginationPerPage', paginationPerPage);
+	const [usePaginationPerPage, setUsePaginationPerPage] = useState(
+		paginationPerPage || childBlocksCount
+	);
 
 	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);
@@ -565,22 +562,25 @@ const ContextLoop = props => {
 													'Items per page',
 													'maxi-blocks'
 												)}
-												value={
-													paginationPerPage ||
-													childBlocksCount
-												}
-												onChangeValue={value =>
+												value={usePaginationPerPage}
+												onChangeValue={value => {
 													changeProps({
 														'cl-pagination-per-page':
 															value,
-													})
-												}
-												onReset={() =>
+													});
+													setUsePaginationPerPage(
+														value
+													);
+												}}
+												onReset={() => {
 													changeProps({
 														'cl-pagination-per-page':
 															childBlocksCount,
-													})
-												}
+													});
+													setUsePaginationPerPage(
+														childBlocksCount
+													);
+												}}
 												disableRange
 											/>
 											<ToggleSwitch
@@ -602,11 +602,13 @@ const ContextLoop = props => {
 														'Items total',
 														'maxi-blocks'
 													)}
-													step={paginationPerPage}
-													min={paginationPerPage * 2}
+													step={usePaginationPerPage}
+													min={
+														usePaginationPerPage * 2
+													}
 													value={
 														paginationTotal ||
-														paginationPerPage * 2
+														usePaginationPerPage * 2
 													}
 													onChangeValue={value =>
 														changeProps({

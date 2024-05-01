@@ -15,8 +15,8 @@ const isEligible = blockAttributes => {
 	if (!blockDataTransition) return false;
 
 	return !isEqual(
-		Object.keys(blockDataTransition.block),
-		Object.keys(transition.block)
+		Object.keys(blockDataTransition.block).sort(),
+		Object.keys(transition.block).sort()
 	);
 };
 

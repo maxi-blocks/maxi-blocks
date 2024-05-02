@@ -367,6 +367,7 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function check_if_content_is_empty($attributes, $content)
         {
+            return false;
             $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
             if (
                 isset($attributes['uniqueID']) &&

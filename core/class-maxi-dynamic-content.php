@@ -538,6 +538,11 @@ class MaxiBlocks_DynamicContent
         $unique_id = $attributes['uniqueID'];
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
+        if(strpos($unique_id, 'container-maxi') !== false) {
+            self::$global_dc_id_cl = null;
+            self::$global_dc_accumulator_cl = null;
+        }
+
         if (str_ends_with($unique_id, '-u')) {
             $block_name = substr($unique_id, 0, -2);
             $block_name = substr($block_name, 0, strrpos($block_name, '-'));

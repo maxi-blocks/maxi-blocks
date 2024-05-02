@@ -211,6 +211,8 @@ class edit extends MaxiBlockComponent {
 						if ((!dcStatus || dcField === 'static_text') && !isList)
 							this.state.onChangeFormat?.(newFormatValue);
 
+						console.log('newFormatValue', newFormatValue);
+
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -253,7 +255,8 @@ class edit extends MaxiBlockComponent {
 							multiline={false}
 							{...commonProps}
 						>
-							{richTextValues =>
+							{richTextValues => {
+								console.log('richTextValues', richTextValues);
 								onChangeRichText({
 									attributes,
 									maxiSetAttributes,
@@ -271,8 +274,8 @@ class edit extends MaxiBlockComponent {
 											}, 10);
 									},
 									richTextValues,
-								})
-							}
+								});
+							}}
 						</RichText>
 					)}
 					{dcStatus && dcField !== 'static_text' && (

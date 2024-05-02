@@ -162,11 +162,6 @@ class edit extends MaxiBlockComponent {
 			this.props?.contextLoopContext?.contextLoop
 		);
 
-		console.log('dcStatus', dcStatus);
-		console.log('dcContent', dcContent);
-		console.log('dcContainsHTML', dcContainsHTML);
-		console.log('dcField', dcField);
-
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
 
@@ -211,8 +206,6 @@ class edit extends MaxiBlockComponent {
 						if ((!dcStatus || dcField === 'static_text') && !isList)
 							this.state.onChangeFormat?.(newFormatValue);
 
-						console.log('newFormatValue', newFormatValue);
-
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -256,7 +249,6 @@ class edit extends MaxiBlockComponent {
 							{...commonProps}
 						>
 							{richTextValues => {
-								console.log('richTextValues', richTextValues);
 								onChangeRichText({
 									attributes,
 									maxiSetAttributes,

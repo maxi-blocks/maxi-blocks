@@ -370,12 +370,14 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
+        //  echo 'page: ' . $page . ' text: ' . $text . ' base_url: ' . $base_url . ' anchor: ' . $anchor . ' type: ' . $type . ' max_page: ' . $max_page . '<br>';
 
         if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
             $escaped_link = esc_url($link); // Escaping the URL for HTML output
             $escaped_text = esc_html($text); // Escaping the text for HTML content
+            //  echo 'escaped_link: ' . $escaped_link . ' escaped_text: ' . $escaped_text . '<br>';
             return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, $escaped_link, $escaped_text);
         }
         return sprintf('<div class="maxi-pagination__%s"></div>', $type);
@@ -684,9 +686,14 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-link-status' => $dc_link_status,
             'dc-link-target' => $dc_link_target,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+            $post = $this->get_post($attributes);
+            if(!is_null($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
+            }
             return $content;
         }
 
@@ -2124,11 +2131,14 @@ class MaxiBlocks_DynamicContent
     private function is_repeated_post($post_id, $dc_accumulator)
     {
 
+
+
         if(!isset($post_id) || !isset($dc_accumulator)) {
             return false;
         }
 
         if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            //  echo 'HIDING<br>';
             return true;
         }
 

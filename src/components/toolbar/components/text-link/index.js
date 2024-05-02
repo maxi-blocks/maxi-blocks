@@ -262,7 +262,6 @@ const LinkContent = props => {
 };
 
 const TextLink = props => {
-	console.log('TextLink', props);
 	const {
 		blockName,
 		isCaptionToolbar = false,

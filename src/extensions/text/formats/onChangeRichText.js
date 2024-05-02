@@ -49,9 +49,6 @@ const onChangeRichText = ({
 		maxiSetAttributes(cleanCustomProps);
 	}
 
-	console.log('oldFormatValue', oldFormatValue);
-	console.log('formatValue', formatValue);
-
 	// Returns the new state
 	if (!isEqual(oldFormatValue, formatValue))
 		onChange({

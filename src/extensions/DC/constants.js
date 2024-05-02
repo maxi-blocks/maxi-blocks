@@ -193,6 +193,7 @@ const generalPostsPagesFields = [
 	},
 	{ label: __('Date', 'maxi-blocks'), value: 'date' },
 	{ label: __('Author', 'maxi-blocks'), value: 'author' },
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 	// TODO: add URL
 ];
 

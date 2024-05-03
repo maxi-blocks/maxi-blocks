@@ -1296,7 +1296,7 @@ class MaxiBlocks_DynamicContent
 
             // In case is not set, put the default limit
             if (!isset($dc_limit)) {
-                $dc_limit = 100;
+                $dc_limit = 150;
             }
 
             // Limit content
@@ -1311,6 +1311,7 @@ class MaxiBlocks_DynamicContent
 
             // Limit content
             $post_data = self::get_limited_string($post_data, $dc_limit);
+
         }
 
         // In case is author, get author name
@@ -1335,6 +1336,9 @@ class MaxiBlocks_DynamicContent
 
         return $post_data;
     }
+
+
+
 
     public function get_site_content($dc_field)
     {
@@ -1849,7 +1853,15 @@ class MaxiBlocks_DynamicContent
     {
         if ($limit > 0 && strlen($string) > $limit) {
             $string = trim($string);
-            $string = substr($string, 0, $limit) . '…';
+            $truncated = substr($string, 0, $limit);
+
+            // Check if the truncated string has any unclosed HTML tags
+            if (preg_match('/<[^>]*$/', $truncated, $matches)) {
+                // If there are unclosed tags, remove the last unclosed tag
+                $truncated = preg_replace('/<[^>]*$/', '', $truncated);
+            }
+
+            $string = $truncated . '…';
         }
 
         return $string;

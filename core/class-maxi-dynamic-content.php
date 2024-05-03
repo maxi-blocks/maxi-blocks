@@ -370,7 +370,6 @@ class MaxiBlocks_DynamicContent
      */
     private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
     {
-
         if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
             $query_params['cl-page'] = $page;
             $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
@@ -684,9 +683,14 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-link-status' => $dc_link_status,
             'dc-link-target' => $dc_link_target,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+            $post = $this->get_post($attributes);
+            if(!is_null($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
+            }
             return $content;
         }
 
@@ -1292,7 +1296,7 @@ class MaxiBlocks_DynamicContent
 
             // In case is not set, put the default limit
             if (!isset($dc_limit)) {
-                $dc_limit = 100;
+                $dc_limit = 150;
             }
 
             // Limit content
@@ -1307,6 +1311,7 @@ class MaxiBlocks_DynamicContent
 
             // Limit content
             $post_data = self::get_limited_string($post_data, $dc_limit);
+
         }
 
         // In case is author, get author name
@@ -1331,6 +1336,9 @@ class MaxiBlocks_DynamicContent
 
         return $post_data;
     }
+
+
+
 
     public function get_site_content($dc_field)
     {
@@ -1845,7 +1853,15 @@ class MaxiBlocks_DynamicContent
     {
         if ($limit > 0 && strlen($string) > $limit) {
             $string = trim($string);
-            $string = substr($string, 0, $limit) . '…';
+            $truncated = substr($string, 0, $limit);
+
+            // Check if the truncated string has any unclosed HTML tags
+            if (preg_match('/<[^>]*$/', $truncated, $matches)) {
+                // If there are unclosed tags, remove the last unclosed tag
+                $truncated = preg_replace('/<[^>]*$/', '', $truncated);
+            }
+
+            $string = $truncated . '…';
         }
 
         return $string;
@@ -2121,28 +2137,27 @@ class MaxiBlocks_DynamicContent
         return $taxonomies;
     }
 
-    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
+    /**
+     * Check if a post is repeated based on the post ID and dynamic content accumulator.
+     *
+     * @param int|null $post_id The ID of the post to check.
+     * @param string|null $dc_accumulator The dynamic content accumulator string.
+     * @return bool True if the post is repeated, false otherwise.
+     */
+    private function is_repeated_post($post_id, $dc_accumulator)
     {
-
-        if(!isset($post_id) || !isset($dc_accumulator)) {
+        // Check if either $post_id or $dc_accumulator is not set
+        if (!isset($post_id) || !isset($dc_accumulator)) {
             return false;
         }
 
-        echo $attributes['uniqueID'].'<br>';
-        echo $post_id.'-'.$dc_accumulator.'<br>';
-        echo self::$global_dc_id_cl.'-'.self::$global_dc_accumulator_cl.'<br>';
-
-
+        // Check if the current post ID matches the global post ID
+        // and the current accumulator is different from the global accumulator
         if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
-            echo 'HIDDEN<br>';
-            echo '<pre>';
-            print_r($attributes);
-            echo '</pre>';
-            echo '==========================<br>';
             return true;
         }
-        echo '==========================<br>';
 
+        // Update the global accumulator and post ID with the current values
         self::$global_dc_accumulator_cl = $dc_accumulator;
         self::$global_dc_id_cl = $post_id;
 

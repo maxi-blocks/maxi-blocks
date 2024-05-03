@@ -128,48 +128,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		...extraProps
 	} = props;
 
-	// To forbid the use of links for container blocks from having links when their child has one
-	if (!isSave && useInnerBlocks && hasLink) {
-		let childHasLink = false;
-		const childrenClientIds = select(
-			'core/block-editor'
-		).getClientIdsOfDescendants([clientId]);
-
-		for (const childClientId of childrenClientIds) {
-			const attributes =
-				select('core/block-editor').getBlockAttributes(childClientId);
-
-			if (
-				!isEmpty(attributes.linkSettings?.url) ||
-				(select('core/block-editor').getBlockName(childClientId) ===
-					'maxi-blocks/text-maxi' &&
-					(attributes.content.includes('<a ') ||
-						attributes['dc-content']?.includes('<a ')))
-			) {
-				childHasLink = true;
-				break;
-			}
-		}
-		const attributes = extraProps?.attributes || {};
-		setTimeout(() => {
-			if (childHasLink) {
-				dispatch('core/block-editor').updateBlockAttributes(clientId, {
-					linkSettings: {
-						...attributes?.linkSettings,
-						disabled: true,
-					},
-				});
-			} else if (attributes?.linkSettings.disabled) {
-				dispatch('core/block-editor').updateBlockAttributes(clientId, {
-					linkSettings: {
-						...attributes.linkSettings,
-						disabled: false,
-					},
-				});
-			}
-		}, 10);
-	}
-
 	// Gets if the block is full-width
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',

@@ -555,3 +555,10 @@ body[maxi-blocks-responsive] {
 		width: 0;
 	}
 }
+
+/** Fix templates padding in the editor */
+
+body.maxi-blocks--active .editor-styles-wrapper .has-global-padding {
+	padding-right: 0;
+	padding-left: 0;
+}

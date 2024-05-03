@@ -143,7 +143,14 @@ body.maxi-blocks--active {
 		margin-block-start: 0;
 		margin-block-end: 0;
 	}
-	.maxi-block--use-sc {
+	.maxi-block {
+		.maxi-block--use-sc,
+		&.maxi-block--use-sc {
+			margin-block-start: 0;
+			margin-block-end: 0;
+		}
+	}
+	main.maxi-block--use-sc:has(.maxi-block) {
 		margin-block-start: 0;
 		margin-block-end: 0;
 	}

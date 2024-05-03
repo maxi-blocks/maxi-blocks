@@ -599,8 +599,12 @@ class MaxiBlocks_DynamicContent
     {
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
+            $post =  self::get_post($attributes);
+            if (is_null($post) || !isset($post->post_author)) {
+                $link = '';
+            }
             $link = self::get_field_link(
-                self::get_post($attributes)->post_author,
+                $post->post_author,
                 $attributes['dc-field']
             );
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
@@ -641,7 +645,9 @@ class MaxiBlocks_DynamicContent
             $link = get_permalink($post->ID);
         }
 
-        $content = str_replace('$link-to-replace', $link, $content);
+        if(gettype($link) === 'string') {
+            $content = str_replace('$link-to-replace', $link, $content);
+        }
 
         return $content;
     }

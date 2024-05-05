@@ -1,5 +1,18 @@
 import getTypographyStyles from '../getTypographyStyles';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles__1.json';
+import correctHoverStyles from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_hover__1.json';
+import correctStylesWithUnitOnXXL from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_when_there_is_a_unit_value_set_for_xxl_and_general_has_no_value__1.json';
+import correctStylesWithDisablePaletteDefaults from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_default_typography_styles_with_disable_palette_defaults__1.json';
+import correctStylesWithDisablePaletteDefaultsAndChangedColor from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_disable_palette_defaults_and_changed_color__1.json';
+import correctStylesWithDisablePaletteDefaultsAndDisabledPalette from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_disable_palette_defaults_and_disabled_palette__1.json';
+import correctStylesWithDisablePaletteDefaultsAndChangedOpacity from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_disable_palette_defaults_and_changed_opacity__1.json';
+import correctStylesWithDisablePaletteDefaultsAndResetOpacity from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_disable_palette_defaults_and_reset_on_general_changed_on_other_bp_opacity__1.json';
+import correctStylesWithDisablePaletteDefaultsAndChangedColorAndOpacity from '../../../../../tests/__snapshots__/Get_Typography_Styles_Test__test_get_a_correct_typography_styles_with_disable_palette_defaults_and_changed_color_and_opacity__1.json';
+
 jest.mock('@wordpress/data', () => {
 	return {
 		select: jest.fn(),
@@ -168,6 +181,7 @@ describe('getTypographyStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 
 	it('Get a correct typography styles with hover', () => {
@@ -340,6 +354,7 @@ describe('getTypographyStyles', () => {
 			normalTypography: obj,
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctHoverStyles);
 	});
 
 	it('Get a correct typography styles when there is a unit value set for XXL and general has no value (it has unit)', () => {
@@ -378,6 +393,7 @@ describe('getTypographyStyles', () => {
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesWithUnitOnXXL);
 	});
 
 	it('Get a correct default typography styles with `disablePaletteDefaults`', () => {
@@ -400,6 +416,7 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesWithDisablePaletteDefaults);
 	});
 
 	it('Get a correct typography styles with `disablePaletteDefaults` and changed color', () => {
@@ -423,6 +440,9 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithDisablePaletteDefaultsAndChangedColor
+		);
 	});
 
 	it('Get a correct typography styles with `disablePaletteDefaults` and changed opacity', () => {
@@ -447,6 +467,9 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithDisablePaletteDefaultsAndChangedOpacity
+		);
 	});
 
 	it('Get a correct typography styles with `disablePaletteDefaults` and reset on general/changed on other bp opacity', () => {
@@ -472,6 +495,9 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithDisablePaletteDefaultsAndResetOpacity
+		);
 	});
 
 	it('Get a correct typography styles with `disablePaletteDefaults` and disabled palette', () => {
@@ -497,6 +523,9 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithDisablePaletteDefaultsAndDisabledPalette
+		);
 	});
 
 	it('Get a correct typography styles with `disablePaletteDefaults` and changed color and opacity', () => {
@@ -526,5 +555,8 @@ describe('getTypographyStyles', () => {
 		});
 
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(
+			correctStylesWithDisablePaletteDefaultsAndChangedColorAndOpacity
+		);
 	});
 });

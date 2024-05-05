@@ -11,10 +11,13 @@ function get_typography_styles($args)
     $normal_typography = isset($args['normal_typography']) ? $args['normal_typography'] : null;
     $sc_values = isset($args['sc_values']) ? $args['sc_values'] : array();
     $is_style_cards = isset($args['is_style_cards']) ? $args['is_style_cards'] : false;
+    $disable_palette_defaults = isset($args['disable_palette_defaults']) ? $args['disable_palette_defaults'] : false;
+    $disable_bottom_gap = isset($args['disable_bottom_gap']) ? $args['disable_bottom_gap'] : false;
 
     $response = array();
 
     $hover_status = array_key_exists($prefix . 'typography-status-hover', $obj) && $obj[$prefix . 'typography-status-hover'];
+
     $is_active = isset($sc_values['hover-color-global']) ? $sc_values['hover-color-global'] : null;
     $affect_all = isset($sc_values['hover-color-all']) ? $sc_values['hover-color-all'] : null;
 
@@ -31,95 +34,138 @@ function get_typography_styles($args)
         return isset($obj[$attribute_key]) ? $obj[$attribute_key] : null;
     };
 
-    $get_palette_color_status = function ($breakpoint) use ($obj, $custom_format_typography, $is_hover, $prefix, $is_custom_format) {
-        $palette_status = get_last_breakpoint_attribute(
-            array(
-                'target' => $prefix . 'palette-status',
-                'breakpoint' => $breakpoint,
-                'attributes' => $is_custom_format ? $custom_format_typography : $obj,
-                'is_hover' => $is_hover
-            )
-        );
+    $get_last_breakpoint_value = function ($target, $breakpoint) use ($prefix, $obj, $is_custom_format, $is_hover) {
+        return get_last_breakpoint_attribute([
+            'target' => "{$prefix}{$target}",
+            'breakpoint' => $breakpoint,
+            'attributes' => $obj,
+            'is_hover' => !$is_custom_format && $is_hover,
+        ]);
+    };
+
+    $get_default_value = function ($target) use ($is_custom_format, $is_hover, $prefix) {
+        return get_default_attribute(get_attribute_key($target, !$is_custom_format && $is_hover, $prefix, 'general'));
+    };
+
+    $get_palette_color_status = function ($breakpoint) use ($prefix, $obj, $is_hover, $normal_typography, $custom_format_typography) {
+        $palette_status = get_last_breakpoint_attribute([
+            'target' => "{$prefix}palette-status",
+            'breakpoint' => $breakpoint,
+            'attributes' => array_merge($obj ?? [], $normal_typography ?? []),
+            'is_hover' => $is_hover,
+        ]);
 
         if (!is_null($palette_status)) {
             return $palette_status;
         }
 
-        if ($is_custom_format) {
-            return get_last_breakpoint_attribute(
-                array(
-                    'target' => $prefix . 'palette-status',
-                    'breakpoint' => $breakpoint,
-                    'attributes' => $custom_format_typography,
-                    'is_hover' => $is_hover
-                )
-            );
-        }
-
-        return null;
+        return $custom_format_typography && get_last_breakpoint_attribute([
+            'target' => "{$prefix}palette-status",
+            'breakpoint' => $breakpoint,
+            'attributes' => $custom_format_typography,
+            'is_hover' => $is_hover,
+        ]);
     };
 
-    $get_color_string = function ($breakpoint) use ($get_palette_color_status, $get_value, $is_hover, $hover_status, $text_level, $block_style, $global_hover_status) {
+    $is_default_opacity = function ($opacity, $default_opacity, $breakpoint) {
+        return $opacity === $default_opacity ||
+            (is_null($opacity) && is_null($default_opacity)) ||
+            ($breakpoint === 'general' && $opacity === 1); // supports reset on general
+    };
+
+    $get_color_string = function ($breakpoint) use (
+        $get_palette_color_status,
+        $is_default_opacity,
+        $get_value,
+        $is_hover,
+        $hover_status,
+        $global_hover_status,
+        $get_last_breakpoint_value,
+        $disable_palette_defaults,
+        $get_default_value,
+        $text_level,
+        $block_style,
+    ) {
         $palette_status = $get_palette_color_status($breakpoint);
-        $palette_sc_status = $get_value('palette-sc-status', $breakpoint);
-        $palette_color = $get_value('palette-color', $breakpoint);
-        $palette_opacity = $get_value('palette-opacity', $breakpoint);
+        $palette_sc_status = $get_last_breakpoint_value('palette-sc-status', $breakpoint);
+        $palette_color = $get_last_breakpoint_value('palette-color', $breakpoint);
 
         if (!$palette_sc_status && $palette_status && (!$is_hover || $hover_status || $global_hover_status)) {
-            $text_level_color = $is_hover ? $text_level . '-color-hover' : $text_level . '-color';
+            if (is_null($palette_color)) {
+                return [];
+            }
 
-            return !is_null($palette_color) ? array(
-                'color' => get_color_rgba_string(
-                    array(
-                        'first_var' => $text_level_color,
-                        'second_var' => 'color-' . $palette_color,
-                        'opacity' => $palette_opacity,
-                        'block_style' => $block_style
-                    )
-                )
-            ) : array();
+            $palette_opacity = $get_last_breakpoint_value('palette-opacity', $breakpoint);
+
+            if ($disable_palette_defaults) {
+                $default_palette_color = $get_default_value('palette-color');
+                $default_palette_opacity = $get_default_value('palette-opacity');
+
+                if ($palette_color === $default_palette_color && $is_default_opacity($palette_opacity, $default_palette_opacity, $breakpoint)) {
+                    return [];
+                }
+            }
+
+            return [
+                'color' => get_color_rgba_string([
+                    'first_var' => "{$text_level}-color" . ($is_hover ? '-hover' : ''),
+                    'second_var' => "color-{$palette_color}",
+                    'opacity' => $palette_opacity,
+                    'block_style' => $block_style,
+                ]),
+            ];
         }
 
         if ($palette_status) {
-            return !is_null($palette_color) ? array(
-                'color' => get_color_rgba_string(
-                    array(
-                        'first_var' => 'color-' . $palette_color,
-                        'opacity' => $palette_opacity,
-                        'block_style' => $block_style
-                    )
-                )
-            ) : array();
+            if (is_null($palette_color)) {
+                return [];
+            }
+
+            $palette_opacity = $get_last_breakpoint_value('palette-opacity', $breakpoint);
+
+            if ($disable_palette_defaults) {
+                $default_palette_color = $get_default_value('palette-color');
+                $default_palette_opacity = $get_default_value('palette-opacity');
+
+                if ($palette_color === $default_palette_color && $is_default_opacity($palette_opacity, $default_palette_opacity, $breakpoint)) {
+                    return [];
+                }
+            }
+
+            return [
+                'color' => get_color_rgba_string([
+                    'first_var' => "color-{$palette_color}",
+                    'opacity' => $palette_opacity,
+                    'block_style' => $block_style,
+                ]),
+            ];
         }
 
         $color = $get_value('color', $breakpoint);
-        return !is_null($color) ? array('color' => $color) : array();
+        return !is_null($color) ? ['color' => $color] : [];
     };
 
+    // As sometimes creators just change the value and not the unit, we need to
+    // be able to request the non-hover unit
     $get_unit_value = function ($prop, $breakpoint) use ($custom_format_typography, $obj, $normal_typography, $is_custom_format, $prefix) {
-        $unit = get_last_breakpoint_attribute(
-            array(
-                'target' => $prefix . $prop,
-                'breakpoint' => $breakpoint,
-                'attributes' => $is_custom_format ? $custom_format_typography : $obj,
-                'forceUseBreakpoint' => true
-            )
-        );
+        $unit = get_last_breakpoint_attribute([
+            'target' => $prefix . $prop,
+            'breakpoint' => $breakpoint,
+            'attributes' => $is_custom_format ? $custom_format_typography : $obj,
+        ]);
 
-        if (!is_null($unit)) {
+        if (!$normal_typography || $unit) {
             return $unit === '-' ? '' : $unit;
         }
 
-        return get_last_breakpoint_attribute(
-            array(
-                'target' => $prefix . $prop,
-                'breakpoint' => $breakpoint,
-                'attributes' => $normal_typography
-            )
-        );
+        return get_last_breakpoint_attribute([
+            'target' => $prefix . $prop,
+            'breakpoint' => $breakpoint,
+            'attributes' => $normal_typography
+        ]);
     };
 
-    $breakpoints = array('general', 'sm', 'md', 'lg', 'xl', 'xxl');
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
         $typography = array_merge(

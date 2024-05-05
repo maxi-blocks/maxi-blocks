@@ -1,0 +1,31 @@
+{
+    "general": {
+        "font-size": "90px",
+        "line-height": "99px",
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "xxl": {
+        "font-size": "6.12em",
+        "line-height": "1.19em",
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "xl": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "l": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "m": {
+        "font-size": "60px",
+        "line-height": "70px",
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "s": {
+        "font-size": "36px",
+        "line-height": "48px",
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    },
+    "xs": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5,0,0,0),1))"
+    }
+}

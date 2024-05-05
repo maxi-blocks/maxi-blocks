@@ -3,9 +3,9 @@ import getOverflowStyles from '../getOverflowStyles';
 /**
  * PHP snapshots
  */
-import defaultValues from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_with_default_values__1.json';
-import allVisible from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_when_all_values_visible__1.json';
-import correctStyles from '../../../../../tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles__1.json';
+import defaultValues from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_with_default_values__1.json';
+import allVisible from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles_when_all_values_visible__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Overflow_Styles_Test__test_get_correct_overflow_styles__1.json';
 
 jest.mock('@wordpress/data', () => {
 	return {

@@ -3,14 +3,14 @@ import getSizeStyles from '../getSizeStyles';
 /**
  * PHP snapshots
  */
-import correctSizeStyles from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles__1.json';
-import correctSizeStylesWithForceAspectRatio from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_force_aspect_ratio__1.json';
-import correctSizeStylesWithWidthFitContent from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_width_fit_content__1.json';
-import correctSizeStylesWithFullWidth from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width__1.json';
-import correctSizeStylesWithFullWidth2 from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_2__1.json';
-import correctSizeStylesWithFullWidth3 from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_3__1.json';
-import correctSizeStylesWithFullWidthResponsive from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_responsive__1.json';
-import correctSizeStylesWithFullWidthResponsive2 from '../../../../../tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_responsive_2__1.json';
+import correctSizeStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles__1.json';
+import correctSizeStylesWithForceAspectRatio from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_force_aspect_ratio__1.json';
+import correctSizeStylesWithWidthFitContent from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_width_fit_content__1.json';
+import correctSizeStylesWithFullWidth from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width__1.json';
+import correctSizeStylesWithFullWidth2 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_2__1.json';
+import correctSizeStylesWithFullWidth3 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_3__1.json';
+import correctSizeStylesWithFullWidthResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_responsive__1.json';
+import correctSizeStylesWithFullWidthResponsive2 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Size_Styles_Test__test_get_a_correct_size_styles_with_full_width_responsive_2__1.json';
 
 jest.mock('../../getDefaultAttribute', () => {
 	return jest.fn(attribute => {

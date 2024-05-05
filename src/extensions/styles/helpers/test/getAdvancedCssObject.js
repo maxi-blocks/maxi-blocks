@@ -3,18 +3,18 @@ import getAdvancedCssObject from '../getAdvancedCssObject';
 /**
  * PHP snapshots
  */
-import handleBasicCssCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_basic_css_correctly__1.json';
-import handleCssWithNoSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_no_selectors__1.json';
-import handleCssWithSelectorsWithSpaces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_selectors_with_spaces__1.json';
-import handleCssWithMultipleSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_selectors__1.json';
-import handleCssWithPseudoSelectors from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_pseudo_selectors__1.json';
-import handleAllResponsiveBreakpointsCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_all_responsive_breakpoints_correctly__1.json';
-import handleSubsetOfResponsiveBreakpointsCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_a_subset_of_responsive_breakpoints_correctly__1.json';
-import handleComplexCssStructuresAcrossBreakpoints from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_complex_css_structures_across_breakpoints__1.json';
-import handleCssWithMissingClosingBrace from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace__1.json';
-import handleCssWithMissingClosingBraceInNestedBraces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace_in_nested_braces__1.json';
-import handleCssWithMultipleUnmatchedBraces from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_unmatched_braces__1.json';
-import handleEmptyCssCorrectly from '../../../../../tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_empty_css_correctly__1.json';
+import handleBasicCssCorrectly from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_basic_css_correctly__1.json';
+import handleCssWithNoSelectors from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_no_selectors__1.json';
+import handleCssWithSelectorsWithSpaces from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_selectors_with_spaces__1.json';
+import handleCssWithMultipleSelectors from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_selectors__1.json';
+import handleCssWithPseudoSelectors from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_pseudo_selectors__1.json';
+import handleAllResponsiveBreakpointsCorrectly from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_all_responsive_breakpoints_correctly__1.json';
+import handleSubsetOfResponsiveBreakpointsCorrectly from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_a_subset_of_responsive_breakpoints_correctly__1.json';
+import handleComplexCssStructuresAcrossBreakpoints from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_complex_css_structures_across_breakpoints__1.json';
+import handleCssWithMissingClosingBrace from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace__1.json';
+import handleCssWithMissingClosingBraceInNestedBraces from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_missing_closing_brace_in_nested_braces__1.json';
+import handleCssWithMultipleUnmatchedBraces from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_css_with_multiple_unmatched_braces__1.json';
+import handleEmptyCssCorrectly from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Advanced_Css_Object_Test__test_should_handle_empty_css_correctly__1.json';
 
 describe('getAdvancedCssObject', () => {
 	it('should handle basic CSS correctly', () => {

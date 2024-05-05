@@ -3,8 +3,8 @@ import getDividerStyles from '../getDividerStyles';
 /**
  * PHP snapshots
  */
-import correctLine from '../../../../../tests/__snapshots__/Get_Divider_Styles_Test__test_get_a_correct_divider_styles__1.json';
-import correctAlign from '../../../../../tests/__snapshots__/Get_Divider_Styles_Test__test_get_a_correct_divider_styles__2.json';
+import correctLine from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Divider_Styles_Test__test_get_a_correct_divider_styles__1.json';
+import correctAlign from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Divider_Styles_Test__test_get_a_correct_divider_styles__2.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

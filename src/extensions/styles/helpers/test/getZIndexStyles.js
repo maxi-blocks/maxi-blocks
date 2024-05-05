@@ -3,7 +3,7 @@ import getZIndexStyles from '../getZIndexStyles';
 /**
  * PHP snapshots
  */
-import correctStyles from '../../../../../tests/__snapshots__/Get_ZIndex_Styles_Test__test_get_a_correct_z_index_style__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_ZIndex_Styles_Test__test_get_a_correct_z_index_style__1.json';
 
 describe('getZIndexStyle', () => {
 	it('Get a correct z-index style', () => {

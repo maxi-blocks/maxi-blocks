@@ -12,13 +12,13 @@ import { merge } from 'lodash';
 /**
  * PHP snapshots
  */
-import correctStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transition_styles__1.json';
-import correctResponsiveStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles__1.json';
-import correctStylesWithCustomTransitionObj from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles_with_custom_transition_obj__1.json';
-import correctInOutStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_in_out_transition_styles__1.json';
-import correctResponsiveInOutStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_in_out_transition_styles__1.json';
-import correctTransformStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transform_transition_styles__1.json';
-import correctTranformResponsiveStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transform_mixed_with_others_transition_styles__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transition_styles__1.json';
+import correctResponsiveStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles__1.json';
+import correctStylesWithCustomTransitionObj from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles_with_custom_transition_obj__1.json';
+import correctInOutStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_in_out_transition_styles__1.json';
+import correctResponsiveInOutStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_in_out_transition_styles__1.json';
+import correctTransformStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transform_transition_styles__1.json';
+import correctTranformResponsiveStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transform_mixed_with_others_transition_styles__1.json';
 
 describe('getTransitionStyles', () => {
 	it('Get a correct transition styles', () => {

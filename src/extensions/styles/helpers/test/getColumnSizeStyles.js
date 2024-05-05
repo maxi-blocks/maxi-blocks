@@ -3,10 +3,10 @@ import getColumnSizeStyles, { getColumnNum } from '../getColumnSizeStyles';
 /**
  * PHP snapshots
  */
-import correctColumnSizeStyles from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles__1.json';
-import correctColumnSizeStylesWithSomeFitContent from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fit_content__1.json';
-import correctColumnSizeStylesWithSomeFullwidthColumns from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fullwidth_columns__1.json';
-import correctColumnSizeStylesWithGapOptions from '../../../../../tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_gap_options__1.json';
+import correctColumnSizeStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles__1.json';
+import correctColumnSizeStylesWithSomeFitContent from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fit_content__1.json';
+import correctColumnSizeStylesWithSomeFullwidthColumns from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_some_fullwidth_columns__1.json';
+import correctColumnSizeStylesWithGapOptions from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Column_Size_Styles_Test__test_get_a_correct_column_size_styles_with_gap_options__1.json';
 
 const rowGapProps = {
 	rowElements: ['', ''],

@@ -3,9 +3,9 @@ import getImageShapeStyles from '../getImageShapeStyles';
 /**
  * PHP snapshots
  */
-import imageShapeScaleResponsive from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__1.json';
-import imageShapeScaleResponsive2 from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__2.json';
-import imageShapeScaleIgnoreOmit from '../../../../../tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_ignore_omit_is_working__1.json';
+import imageShapeScaleResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__1.json';
+import imageShapeScaleResponsive2 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_image_shape_scale_is_working_with_responsive__2.json';
+import imageShapeScaleIgnoreOmit from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Image_Shape_Styles_Test__test_ensure_that_ignore_omit_is_working__1.json';
 
 describe('getImageShapeStyles', () => {
 	const object = {

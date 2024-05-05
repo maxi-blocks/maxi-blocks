@@ -3,19 +3,19 @@ import getIconSize from '../getIconSize';
 /**
  * PHP snapshots
  */
-import correctIconSize from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_correct_icon_size__1.json';
-import correctIconSizeHover from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_correct_icon_size__2.json';
-import widthIsnotSpecified from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_use_height_when_width_is_not_specified__1.json';
-import widthIsnotSpecifiedHover from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_use_height_when_width_is_not_specified__2.json';
-import worksWithPrefixes from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_work_with_prefixes__1.json';
-import worksWithPrefixesHover from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_work_with_prefixes__2.json';
-import worksOnResponsive from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_work_on_responsive__1.json';
-import worksOnResponsiveHover from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_work_on_responsive__2.json';
-import hoverStyles from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_hover_styles_with_only_value_specified_on_hover__1.json';
-import hoverStylesUnit from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_hover_styles_with_only_unit_specified_on_hover__1.json';
-import stylesWithOnlyUnitSpecifiedOnResponsive from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_only_unit_specified_on_responsive__1.json';
-import heightFitContentWidthHeightRatioGreaterThan1 from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_height_fit_content_and_width_height_ratio_greater_than_1__1.json';
-import heightFitContentWidthHeightRatioLessThan1 from '../../../../../tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_height_fit_content_and_width_height_ratio_less_than_1__1.json';
+import correctIconSize from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_correct_icon_size__1.json';
+import correctIconSizeHover from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_correct_icon_size__2.json';
+import widthIsnotSpecified from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_use_height_when_width_is_not_specified__1.json';
+import widthIsnotSpecifiedHover from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_use_height_when_width_is_not_specified__2.json';
+import worksWithPrefixes from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_work_with_prefixes__1.json';
+import worksWithPrefixesHover from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_work_with_prefixes__2.json';
+import worksOnResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_work_on_responsive__1.json';
+import worksOnResponsiveHover from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_work_on_responsive__2.json';
+import hoverStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_hover_styles_with_only_value_specified_on_hover__1.json';
+import hoverStylesUnit from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_hover_styles_with_only_unit_specified_on_hover__1.json';
+import stylesWithOnlyUnitSpecifiedOnResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_only_unit_specified_on_responsive__1.json';
+import heightFitContentWidthHeightRatioGreaterThan1 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_height_fit_content_and_width_height_ratio_greater_than_1__1.json';
+import heightFitContentWidthHeightRatioLessThan1 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Icon_Size_Test__test_should_return_right_styles_with_height_fit_content_and_width_height_ratio_less_than_1__1.json';
 
 describe('getIconSize', () => {
 	it('Should return correct icon size', () => {

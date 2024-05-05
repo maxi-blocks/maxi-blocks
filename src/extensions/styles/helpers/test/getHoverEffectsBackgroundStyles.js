@@ -3,8 +3,8 @@ import getHoverEffectsBackgroundStyles from '../getHoverEffectsBackgroundStyles'
 /**
  * PHP snapshots
  */
-import correctHoverEffectColorBackgroundStyle from '../../../../../tests/__snapshots__/Get_Hover_Effects_Background_Styles_Test__test_get_a_correct_hover_effects_color_background_style__1.json';
-import correctHoverEffectGradientBackgroundStyle from '../../../../../tests/__snapshots__/Get_Hover_Effects_Background_Styles_Test__test_get_a_correct_hover_effects_gradient_background_style__1.json';
+import correctHoverEffectColorBackgroundStyle from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Hover_Effects_Background_Styles_Test__test_get_a_correct_hover_effects_color_background_style__1.json';
+import correctHoverEffectGradientBackgroundStyle from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Hover_Effects_Background_Styles_Test__test_get_a_correct_hover_effects_gradient_background_style__1.json';
 
 describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects color background style', () => {

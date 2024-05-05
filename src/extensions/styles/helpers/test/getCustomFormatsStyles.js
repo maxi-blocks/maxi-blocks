@@ -3,7 +3,7 @@ import getCustomFormatsStyles from '../getCustomFormatsStyles';
 /**
  * PHP snapshots
  */
-import customFormatsStyles from '../../../../../tests/__snapshots__/Get_Custom_Formats_Styles_Test__test_get_a_correct_custom_formats_styles__1.json';
+import customFormatsStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Custom_Formats_Styles_Test__test_get_a_correct_custom_formats_styles__1.json';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

@@ -5,7 +5,12 @@
  * @package Maxi_Blocks
  */
 
-require dirname(dirname(__FILE__)) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+function get_maxi_plugin_dir_path()
+{
+    return dirname(__FILE__);
+}
+
+require get_maxi_plugin_dir_path() . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 
 $_tests_dir = getenv('WP_TESTS_DIR');
@@ -33,7 +38,7 @@ require_once "{$_tests_dir}/includes/functions.php";
  */
 function _manually_load_plugin()
 {
-    require dirname(dirname(__FILE__)) . '/plugin.php';
+    require get_maxi_plugin_dir_path() . '/plugin.php';
 }
 
 tests_add_filter('muplugins_loaded', '_manually_load_plugin');

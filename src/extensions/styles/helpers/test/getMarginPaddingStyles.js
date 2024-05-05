@@ -3,11 +3,11 @@ import getMarginPaddingStyles from '../getMarginPaddingStyles';
 /**
  * PHP snapshots
  */
-import simpleCorrectMarginPadding from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_simple_styles__1.json';
-import correctMarginPadding from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding__1.json';
-import valuesDependsOnResponsive from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_different_values_depends_on_the_responsive__1.json';
-import withOnlyUnitChanged from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_only_unit_on_some_breakpoint_was_changed__1.json';
-import valueUndefinedUnitDefined from '../../../../../tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_value_is_undefined_but_unit_is_defined__1.json';
+import simpleCorrectMarginPadding from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_simple_styles__1.json';
+import correctMarginPadding from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding__1.json';
+import valuesDependsOnResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_different_values_depends_on_the_responsive__1.json';
+import withOnlyUnitChanged from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_only_unit_on_some_breakpoint_was_changed__1.json';
+import valueUndefinedUnitDefined from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Margin_Padding_Styles_Test__test_get_a_correct_margin_and_padding_styles_when_value_is_undefined_but_unit_is_defined__1.json';
 
 jest.mock('@wordpress/data', () => {
 	return {

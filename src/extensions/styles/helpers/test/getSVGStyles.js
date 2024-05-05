@@ -3,12 +3,12 @@ import { getSVGStyles, getSVGWidthStyles } from '../getSVGStyles';
 /**
  * PHP snapshots
  */
-import correctStyles from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_returns_correct_styles__1.json';
-import correctIconSize from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size__1.json';
-import correctStylesWithDisabledHeightFalse from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size_with_disable_height_false__1.json';
-import correctStylesOnResponsive from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_work_on_responsive__1.json';
-import correctStylesWithHeightFitContentAndHeightRationLessThanOne from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_less_than_1_with_disable_height_true__1.json';
-import correctStylesWithHeightFitContentAndHeightRatioGreaterThanOne from '../../../../../tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_greater_than_1_with_disable_height_true__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_returns_correct_styles__1.json';
+import correctIconSize from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size__1.json';
+import correctStylesWithDisabledHeightFalse from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_correct_icon_size_with_disable_height_false__1.json';
+import correctStylesOnResponsive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_should_work_on_responsive__1.json';
+import correctStylesWithHeightFitContentAndHeightRationLessThanOne from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_less_than_1_with_disable_height_true__1.json';
+import correctStylesWithHeightFitContentAndHeightRatioGreaterThanOne from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_SVG_Styles_Test__test_should_return_right_styles_with_height_fit_content_width_height_ratio_greater_than_1_with_disable_height_true__1.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

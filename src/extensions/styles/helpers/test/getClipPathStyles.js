@@ -3,11 +3,11 @@ import getClipPathStyles from '../getClipPathStyles';
 /**
  * PHP snapshots
  */
-import correctClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_clip_path_styles__1.json';
-import correctHoverClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_hover_clip_path_styles__1.json';
-import emptyHoverClipPathStyles from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_hover_clip_path_styles_when_hover_status_is_false__1.json';
-import emptyClipPathStylesWhenNone from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_clip_path_styles_when_clip_path_is_none__1.json';
-import emptyHoverClipPathStylesWhenNone from '../../../../../tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_none_hover_clip_path_styles_when_clip_path_is_none__1.json';
+import correctClipPathStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_clip_path_styles__1.json';
+import correctHoverClipPathStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_correct_hover_clip_path_styles__1.json';
+import emptyHoverClipPathStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_hover_clip_path_styles_when_hover_status_is_false__1.json';
+import emptyClipPathStylesWhenNone from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_empty_clip_path_styles_when_clip_path_is_none__1.json';
+import emptyHoverClipPathStylesWhenNone from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Clip_Path_Styles_Test__test_get_none_hover_clip_path_styles_when_clip_path_is_none__1.json';
 
 jest.mock('@wordpress/data', () => {
 	return {

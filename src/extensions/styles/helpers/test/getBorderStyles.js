@@ -3,14 +3,14 @@ import getBorderStyles from '../getBorderStyles';
 /**
  * PHP snapshots
  */
-import simpleAndDefaultBorderAttributes from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_simple_and_default_border_attributes__1.json';
-import objectWithAllTheSettings from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_border_styles_object_with_all_the_settings__1.json';
-import objectWithHoverOptions from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_with_hover_options__1.json';
-import objectWithZeroValues from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_ensures_0_is_accepted_on_responsive_stages__1.json';
-import objectBasedOnButtonMaxi from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi__1.json';
-import objectBasedOnButtonMaxiWithHoverActive from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_active_and_non_global_sc_settings_enabled__1.json';
-import objectBasedOnButtonMaxiWithHoverDisabled from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_disabled_and_global_sc_settings_enabled__1.json';
-import objectBasedOnIB from '../../../../../tests/__snapshots__/Get_Border_Styles_Test__test_return_an_ib_border_styles_when_border_style_none__1.json';
+import simpleAndDefaultBorderAttributes from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_simple_and_default_border_attributes__1.json';
+import objectWithAllTheSettings from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_border_styles_object_with_all_the_settings__1.json';
+import objectWithHoverOptions from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_with_hover_options__1.json';
+import objectWithZeroValues from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_ensures_0_is_accepted_on_responsive_stages__1.json';
+import objectBasedOnButtonMaxi from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi__1.json';
+import objectBasedOnButtonMaxiWithHoverActive from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_active_and_non_global_sc_settings_enabled__1.json';
+import objectBasedOnButtonMaxiWithHoverDisabled from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_a_border_styles_object_based_on_button_maxi_with_hover_disabled_and_global_sc_settings_enabled__1.json';
+import objectBasedOnIB from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Border_Styles_Test__test_return_an_ib_border_styles_when_border_style_none__1.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

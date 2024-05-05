@@ -3,12 +3,12 @@ import getArrowStyles from '../getArrowStyles';
 /**
  * PHP snapshots
  */
-import differentResponsiveStagesColorBackgroundSettings from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_styles_with_different_responsive_stages_color_background_settings__1.json';
-import hoverStylesWithBackgroundShadowAndBorderCustomColors from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_hover_styles_with_background_shadow_and_border_custom_colors__1.json';
-import emptyArrowStylesWhenArrowStatusIsOff from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_arrow_status_is_off__1.json';
-import emptyArrowStylesWhenBackgroundColorIsNotSelected from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_not_selected__1.json';
-import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButSomeStyleOnHoverIsNotSolid from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_some_style_on_hover_is_not_solid__1.json';
-import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButStyleIsNotSolid from '../../../../../tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_style_is_not_solid__1.json';
+import differentResponsiveStagesColorBackgroundSettings from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_styles_with_different_responsive_stages_color_background_settings__1.json';
+import hoverStylesWithBackgroundShadowAndBorderCustomColors from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_get_correct_arrow_hover_styles_with_background_shadow_and_border_custom_colors__1.json';
+import emptyArrowStylesWhenArrowStatusIsOff from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_arrow_status_is_off__1.json';
+import emptyArrowStylesWhenBackgroundColorIsNotSelected from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_not_selected__1.json';
+import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButSomeStyleOnHoverIsNotSolid from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_some_style_on_hover_is_not_solid__1.json';
+import emptyArrowStylesWhenBackgroundColorIsSelectedAndBorderIsActiveButStyleIsNotSolid from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Arrow_Styles_Test__test_return_empty_arrow_styles_when_background_color_is_selected_and_border_is_active_but_style_is_not_solid__1.json';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

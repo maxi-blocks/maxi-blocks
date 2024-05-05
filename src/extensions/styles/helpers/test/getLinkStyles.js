@@ -3,8 +3,8 @@ import getLinkStyles from '../getLinkStyles';
 /**
  * PHP snapshots
  */
-import correctObject from '../../../../../tests/__snapshots__/Get_Link_Styles_Test__test_returns_correct_object__1.json';
-import correctObjectWithCustomColors from '../../../../../tests/__snapshots__/Get_Link_Styles_Test__test_returns_correct_object_with_custom_colors__1.json';
+import correctObject from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Link_Styles_Test__test_returns_correct_object__1.json';
+import correctObjectWithCustomColors from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Link_Styles_Test__test_returns_correct_object_with_custom_colors__1.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

@@ -3,7 +3,7 @@ import getNumberCounterStyles from '../getNumberCounterStyles';
 /**
  * PHP snapshots
  */
-import correctStyles from '../../../../../tests/__snapshots__/Get_Number_Counter_Styles_Test__test_returns_correct_styles__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Number_Counter_Styles_Test__test_returns_correct_styles__1.json';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

@@ -4,8 +4,8 @@ import getTransformStyles from '../getTransformStyles';
 /**
  * PHP snapshots
  */
-import correctStyles from '../../../../../tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_transform_styles__1.json';
-import correctStylesWithDefaultHover from '../../../../../tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_default_hover_transform_styles__1.json';
+import correctStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_transform_styles__1.json';
+import correctStylesWithDefaultHover from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Transform_Styles_Test__test_get_correct_default_hover_transform_styles__1.json';
 
 describe('getTransformStyles', () => {
 	const selectors = createSelectors({

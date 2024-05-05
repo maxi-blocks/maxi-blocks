@@ -3,9 +3,9 @@ import getPositionStyles from '../getPositionStyles';
 /**
  * PHP snapshots
  */
-import correctPositionStyles from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_get_correct_position_styles__1.json';
-import unnecessaryPositionStylesNotAdded from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__1.json';
-import unnecessaryPositionStylesNotAdded2 from '../../../../../tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__2.json';
+import correctPositionStyles from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Position_Styles_Test__test_get_correct_position_styles__1.json';
+import unnecessaryPositionStylesNotAdded from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__1.json';
+import unnecessaryPositionStylesNotAdded2 from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Position_Styles_Test__test_ensure_unnecessary_position_styles_are_not_added__2.json';
 
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {

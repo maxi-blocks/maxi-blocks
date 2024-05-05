@@ -2,7 +2,7 @@
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
 
-function get_transition_styles($props, $transition_obj)
+function get_transition_styles($props, $transition_obj = null)
 {
 
     if(empty($transition_obj)) {
@@ -108,7 +108,7 @@ function get_transition_styles($props, $transition_obj)
 
                         if ($is_some_value) {
                             foreach ($properties as $property) {
-                                $transition_property = $property ?? 'all';
+                                $transition_property = $property ? $property : 'all';
 
                                 if (!$last_transition_status) {
                                     $transition_string .= $transition_property . ' 0s 0s, ';

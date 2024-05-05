@@ -9,6 +9,17 @@ import transitionDefault from '../../transitions/transitionDefault';
  */
 import { merge } from 'lodash';
 
+/**
+ * PHP snapshots
+ */
+import correctStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transition_styles__1.json';
+import correctResponsiveStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles__1.json';
+import correctStylesWithCustomTransitionObj from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transition_styles_with_custom_transition_obj__1.json';
+import correctInOutStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_in_out_transition_styles__1.json';
+import correctResponsiveInOutStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_in_out_transition_styles__1.json';
+import correctTransformStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_transform_transition_styles__1.json';
+import correctTranformResponsiveStyles from '../../../../../tests/__snapshots__/Get_Transition_Styles_Test__test_get_a_correct_responsive_transform_mixed_with_others_transition_styles__1.json';
+
 describe('getTransitionStyles', () => {
 	it('Get a correct transition styles', () => {
 		const object = {
@@ -45,6 +56,7 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStyles);
 	});
 
 	const repeatedAttributes = {
@@ -119,6 +131,7 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctResponsiveStyles);
 	});
 
 	const customTransitionObj = {
@@ -174,6 +187,7 @@ describe('getTransitionStyles', () => {
 			customTransitionObj
 		);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctStylesWithCustomTransitionObj);
 	});
 
 	it('Get a correct in/out transition styles', () => {
@@ -225,6 +239,7 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctInOutStyles);
 	});
 
 	it('Get a correct responsive in/out transition styles', () => {
@@ -314,6 +329,7 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctResponsiveInOutStyles);
 	});
 
 	const transformTransitionObj = {
@@ -368,6 +384,7 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object, transformTransitionObj);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctTransformStyles);
 	});
 
 	it('Get a correct responsive transform(mixed with others) transition styles', () => {
@@ -414,5 +431,6 @@ describe('getTransitionStyles', () => {
 
 		const result = getTransitionStyles(object, transitionObj);
 		expect(result).toMatchSnapshot();
+		expect(result).toEqual(correctTranformResponsiveStyles);
 	});
 });

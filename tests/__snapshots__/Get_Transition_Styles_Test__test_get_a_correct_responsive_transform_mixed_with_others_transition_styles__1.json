@@ -1,0 +1,31 @@
+{
+    "": {
+        "transition": {
+            "general": {
+                "transition": "transform 0.3s 0s ease"
+            },
+            "xxl": {
+                "transition": "transform 0s 0s"
+            },
+            "l": {
+                "transition": "transform 0s 0s"
+            },
+            "m": {
+                "transition": "transform 0.5s 0.2s ease-out"
+            }
+        }
+    },
+    " .block-class": {
+        "transition": {
+            "m": {
+                "transition": "transform 0.5s 0.2s ease-out"
+            },
+            "s": {
+                "transition": "transform 0s 0s"
+            },
+            "xs": {
+                "transition": "transform 0.7s 0.4s linear"
+            }
+        }
+    }
+}

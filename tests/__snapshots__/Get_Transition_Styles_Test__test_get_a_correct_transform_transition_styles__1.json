@@ -1,0 +1,16 @@
+{
+    "": {
+        "transition": {
+            "general": {
+                "transition": "transform 0.3s 0s ease"
+            }
+        }
+    },
+    " .block-class": {
+        "transition": {
+            "general": {
+                "transition": "transform 0.3s 0s ease"
+            }
+        }
+    }
+}

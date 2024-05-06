@@ -28,6 +28,7 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
+
     ];
 
     private static $type_to_post_type = [
@@ -525,6 +526,7 @@ class MaxiBlocks_DynamicContent
             }
             return $content;
         }
+
         if (!$attributes['dc-status']) {
             return $content;
         }
@@ -689,11 +691,15 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
+
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+
             $post = $this->get_post($attributes);
-            if(!is_null($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+
+            if (is_null($post) || $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
                 return '';
             }
+
             return $content;
         }
 
@@ -2147,8 +2153,9 @@ class MaxiBlocks_DynamicContent
      * @param string|null $dc_accumulator The dynamic content accumulator string.
      * @return bool True if the post is repeated, false otherwise.
      */
-    private function is_repeated_post($post_id, $dc_accumulator)
+    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
     {
+
         // Check if either $post_id or $dc_accumulator is not set
         if (!isset($post_id) || !isset($dc_accumulator)) {
             return false;

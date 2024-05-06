@@ -58,6 +58,7 @@ export const typeOptions = {
 	accordion: generalTypeOptions,
 	slider: generalTypeOptions,
 	acf: ACFTypeOptions,
+	divider: generalTypeOptions,
 };
 
 // Post types to show in "Standard types" section
@@ -173,6 +174,7 @@ export const relationOptions = {
 	slide: generalRelationOptions,
 	accordion: generalRelationOptions,
 	slider: generalRelationOptions,
+	divider: generalRelationOptions,
 };
 
 /**
@@ -382,6 +384,10 @@ const buttonCartFields = [
 	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
+const dividerFields = [
+	{ label: __('Static', 'maxi-blocks'), value: 'static_text' },
+];
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -416,6 +422,19 @@ export const fieldOptions = {
 		media: mediaMediaFields,
 		users: mediaAuthorFields,
 		products: imageProductFields,
+	},
+	divider: {
+		posts: dividerFields,
+		pages: dividerFields,
+		settings: dividerFields,
+		media: dividerFields,
+		users: dividerFields,
+		categories: dividerFields,
+		tags: dividerFields,
+		products: dividerFields,
+		cart: dividerFields,
+		product_categories: dividerFields,
+		product_tags: dividerFields,
 	},
 };
 

@@ -540,6 +540,7 @@ class MaxiBlocks_DynamicContent
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
         if(strpos($unique_id, 'container-maxi') !== false) {
+            echo 'GLOBALS TO 0<br>';
             self::$global_dc_id_cl = null;
             self::$global_dc_accumulator_cl = null;
         }
@@ -610,7 +611,7 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = self::get_post($attributes);
-        if($post && $this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator, $attributes)) {
+        if($post && $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
             return '';
         }
 
@@ -650,12 +651,19 @@ class MaxiBlocks_DynamicContent
             if (empty($product)) {
                 return $content;
             }
+            if($this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+                return '';
+            }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
                 $link = $product->add_to_cart_url();
             } else {
                 $link = get_permalink($product->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            $product = self::get_post($attributes);
+            if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+                return '';
+            }
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
@@ -1550,11 +1558,15 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-image-accumulator' => $dc_image_accumulator,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $product = $this->get_post($attributes);
-
         if($product) {
+            if($this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+                $this->is_empty = true;
+                return null;
+            }
             switch ($dc_field) {
                 case 'name':
                 case 'slug':
@@ -1622,9 +1634,16 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if (!WC()->cart) {
+            return null;
+        }
+
+        $product = $this->get_post($attributes);
+        if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+            $this->is_empty = true;
             return null;
         }
 
@@ -1670,9 +1689,14 @@ class MaxiBlocks_DynamicContent
             'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
+        if($post && $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+            return '';
+        }
+
         $acf_data = get_field_object($dc_field, $post->ID);
         $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
         $content = null;
@@ -2155,9 +2179,8 @@ class MaxiBlocks_DynamicContent
      */
     private function is_repeated_post($post_id, $dc_accumulator, $attributes)
     {
-
         // Check if either $post_id or $dc_accumulator is not set
-        if (!isset($post_id) || !isset($dc_accumulator)) {
+        if (!isset($post_id) || !isset($dc_accumulator) || $post_id === null || $post_id === '') {
             return false;
         }
 

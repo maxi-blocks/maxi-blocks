@@ -92,7 +92,7 @@ const getDCMedia = async (dataRequest, clientId) => {
 			return getMediaById(image.value, type);
 		}
 
-		return image;
+		return image.value;
 	}
 
 	if (field === 'avatar' && type === 'users') {

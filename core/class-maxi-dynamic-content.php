@@ -540,7 +540,6 @@ class MaxiBlocks_DynamicContent
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
         if(strpos($unique_id, 'container-maxi') !== false) {
-            echo 'GLOBALS TO 0<br>';
             self::$global_dc_id_cl = null;
             self::$global_dc_accumulator_cl = null;
         }

@@ -611,7 +611,7 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = self::get_post($attributes);
-        if($post && $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+        if($post && $this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
 
@@ -630,7 +630,7 @@ class MaxiBlocks_DynamicContent
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
-            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator, $attributes)) {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
                 return '';
             }
             $link = get_term_link($attributes['dc-id']);
@@ -651,7 +651,7 @@ class MaxiBlocks_DynamicContent
             if (empty($product)) {
                 return $content;
             }
-            if($this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+            if($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
                 return '';
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
@@ -661,14 +661,14 @@ class MaxiBlocks_DynamicContent
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
             $product = self::get_post($attributes);
-            if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+            if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator)) {
                 return '';
             }
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
 
-            if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
                 return '';
             }
 
@@ -704,7 +704,7 @@ class MaxiBlocks_DynamicContent
 
             $post = $this->get_post($attributes);
 
-            if (is_null($post) || $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+            if (is_null($post) || $this->is_repeated_post($post->ID, $dc_accumulator)) {
                 return '';
             }
 
@@ -808,7 +808,7 @@ class MaxiBlocks_DynamicContent
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
-                if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+                if($this->is_repeated_post($post->ID, $dc_accumulator)) {
                     return '';
                 }
                 if ($dc_field === 'featured_media') {
@@ -1249,7 +1249,7 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
+        if($this->is_repeated_post($post_id, $dc_accumulator)) {
             return '';
         }
 
@@ -1289,7 +1289,7 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
 
@@ -1399,7 +1399,7 @@ class MaxiBlocks_DynamicContent
         $post_id = $post->ID;
         $dc_accumulator = $attributes['dc-accumulator'];
 
-        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
+        if($this->is_repeated_post($post_id, $dc_accumulator)) {
             return 0;
         }
 
@@ -1518,7 +1518,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if($term) {
-            if($this->is_repeated_post($term->term_id, $dc_accumulator, $attributes)) {
+            if($this->is_repeated_post($term->term_id, $dc_accumulator)) {
                 return null;
             }
             if ($dc_field === 'link') {
@@ -1563,7 +1563,7 @@ class MaxiBlocks_DynamicContent
 
         $product = $this->get_post($attributes);
         if($product) {
-            if($this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+            if($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
                 $this->is_empty = true;
                 return null;
             }
@@ -1642,7 +1642,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $product = $this->get_post($attributes);
-        if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator, $attributes)) {
+        if($product && $this->is_repeated_post($product->get_id(), $dc_accumulator)) {
             $this->is_empty = true;
             return null;
         }
@@ -1693,7 +1693,7 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = $this->get_post($attributes);
-        if($post && $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+        if($post && $this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
 
@@ -2177,7 +2177,7 @@ class MaxiBlocks_DynamicContent
      * @param string|null $dc_accumulator The dynamic content accumulator string.
      * @return bool True if the post is repeated, false otherwise.
      */
-    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
+    private function is_repeated_post($post_id, $dc_accumulator)
     {
         // Check if either $post_id or $dc_accumulator is not set
         if (!isset($post_id) || !isset($dc_accumulator) || $post_id === null || $post_id === '') {

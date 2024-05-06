@@ -174,7 +174,6 @@ const ContextLoop = props => {
 			const authors = await resolveSelect('core').getUsers({
 				who: 'authors',
 			});
-
 			if (authors) {
 				setPostAuthorOptions(
 					authors.map(({ id, name }) => ({

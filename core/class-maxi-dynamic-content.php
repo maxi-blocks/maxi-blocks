@@ -614,10 +614,15 @@ class MaxiBlocks_DynamicContent
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
 
-            $link = self::get_field_link(
-                self::get_post($attributes)->post_author,
-                $attributes['dc-field']
-            );
+            $post =  self::get_post($attributes);
+            if (is_null($post) || !isset($post->post_author)) {
+                $link = '';
+            } else {
+                $link = self::get_field_link(
+                    $post->post_author,
+                    $attributes['dc-field']
+                );
+            }
 
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
@@ -664,9 +669,7 @@ class MaxiBlocks_DynamicContent
             $link = get_permalink($post->ID);
         }
 
-        if ($link instanceof WP_Error) {
-            return $content; // Return the original content without replacing the link
-        } else {
+        if(gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
         }
 

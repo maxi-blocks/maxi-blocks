@@ -18,12 +18,17 @@ class MaxiBlocks_DynamicContent
     private static $order_by_relations = ['by-category', 'by-author', 'by-tag', 'current-archive'];
     private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
+    private static $global_dc_accumulator_cl = null;
+    private static $global_dc_id_cl = null;
+
+
     private static $link_only_blocks = [
         'group-maxi',
         'column-maxi',
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
+
     ];
 
     private static $type_to_post_type = [
@@ -286,7 +291,7 @@ class MaxiBlocks_DynamicContent
             'cl-relation' => $cl_relation,
             'cl-id' => $cl_id,
             'cl-type' => $cl_type,
-        ) = $cl;
+        ) = $cl + ['cl-pagination-per-page' => 3];
 
         if (!isset($cl_id) || !isset($cl_relation)) {
             return '';
@@ -313,12 +318,6 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        // Adjust $pagination_total to remove remainder
-        $remainder = $pagination_total % $cl_pagination_per_page;
-        if ($remainder !== 0) {
-            $pagination_total -= $remainder;
-        }
-
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
         $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
 
@@ -341,8 +340,9 @@ class MaxiBlocks_DynamicContent
         // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
 
+        $max_page = ceil($pagination_total / $cl_pagination_per_page);
         // Previous link
-        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev');
+        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
 
         // Page list
         if($cl_show_page_list) {
@@ -350,7 +350,7 @@ class MaxiBlocks_DynamicContent
         }
 
         // Next link
-        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $pagination_total / $cl_pagination_per_page);
+        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $max_page);
 
         $content .= '</div>'; // Closing maxi-pagination div
 
@@ -398,6 +398,9 @@ class MaxiBlocks_DynamicContent
     {
         // Determine the total number of pages
         $total_pages = (int) ceil($total_items / $items_per_page);
+        if($total_pages <= 1) {
+            return '';
+        }
 
         // Start building the page list HTML
         $page_list_html = '<div class="maxi-pagination__pages">';
@@ -523,10 +526,10 @@ class MaxiBlocks_DynamicContent
             }
             return $content;
         }
+
         if (!$attributes['dc-status']) {
             return $content;
         }
-
 
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
@@ -535,6 +538,11 @@ class MaxiBlocks_DynamicContent
 
         $unique_id = $attributes['uniqueID'];
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
+
+        if(strpos($unique_id, 'container-maxi') !== false) {
+            self::$global_dc_id_cl = null;
+            self::$global_dc_accumulator_cl = null;
+        }
 
         if (str_ends_with($unique_id, '-u')) {
             $block_name = substr($unique_id, 0, -2);
@@ -562,8 +570,9 @@ class MaxiBlocks_DynamicContent
             $context_loop = self::$custom_data[$unique_id];
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
-                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 0;
+                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
                 $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
+
             }
         }
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
@@ -589,7 +598,6 @@ class MaxiBlocks_DynamicContent
         }
 
         $content = self::render_dc_classes($attributes, $content);
-
         $content = str_replace('$link-to-replace', '', $content);
 
         return $content;
@@ -597,19 +605,33 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
+        @list(
+            'dc-accumulator' => $dc_accumulator,
+        ) = $attributes;
+
+        $post = self::get_post($attributes);
+        if($post && $this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator, $attributes)) {
+            return '';
+        }
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
+
             $post =  self::get_post($attributes);
             if (is_null($post) || !isset($post->post_author)) {
                 $link = '';
+            } else {
+                $link = self::get_field_link(
+                    $post->post_author,
+                    $attributes['dc-field']
+                );
             }
-            $link = self::get_field_link(
-                $post->post_author,
-                $attributes['dc-field']
-            );
+
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator, $attributes)) {
+                return '';
+            }
             $link = get_term_link($attributes['dc-id']);
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
             if(isset($attributes['dc-relation']) && $attributes['dc-relation'] === 'current') {
@@ -638,6 +660,10 @@ class MaxiBlocks_DynamicContent
         } else {
             $post = self::get_post($attributes);
 
+            if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+                return '';
+            }
+
             if (empty($post)) {
                 return $content;
             }
@@ -662,9 +688,18 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-link-status' => $dc_link_status,
             'dc-link-target' => $dc_link_target,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
+
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+
+            $post = $this->get_post($attributes);
+
+            if (is_null($post) || $this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+                return '';
+            }
+
             return $content;
         }
 
@@ -695,7 +730,7 @@ class MaxiBlocks_DynamicContent
             $response = self::get_cart_content($attributes);
         }
 
-        if ($dc_field === 'date') {
+        if ($dc_field === 'date' && $response !== '') {
             $response = self::get_date($response, $attributes);
         }
 
@@ -742,6 +777,8 @@ class MaxiBlocks_DynamicContent
             'dc-id' => $dc_id,
             'dc-field' => $dc_field,
             'dc-media-id' => $dc_media_id,
+            'dc-accumulator' => $dc_accumulator,
+
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -763,6 +800,9 @@ class MaxiBlocks_DynamicContent
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
+                if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
+                    return '';
+                }
                 if ($dc_field === 'featured_media') {
                     $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
                 } elseif ($dc_field === 'author_avatar') {
@@ -1198,7 +1238,12 @@ class MaxiBlocks_DynamicContent
             // Need to keep old attribute for backward compatibility
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'linkSettings' => $linkSettings,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
+
+        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
+            return '';
+        }
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
 
@@ -1227,11 +1272,16 @@ class MaxiBlocks_DynamicContent
             // Need to keep old attribute for backward compatibility
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'dc-link-status' => $dc_link_status,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
 
         if(is_null($post)) {
+            return '';
+        }
+
+        if($this->is_repeated_post($post->ID, $dc_accumulator, $attributes)) {
             return '';
         }
 
@@ -1255,7 +1305,7 @@ class MaxiBlocks_DynamicContent
 
             // In case is not set, put the default limit
             if (!isset($dc_limit)) {
-                $dc_limit = 100;
+                $dc_limit = 150;
             }
 
             // Limit content
@@ -1270,6 +1320,7 @@ class MaxiBlocks_DynamicContent
 
             // Limit content
             $post_data = self::get_limited_string($post_data, $dc_limit);
+
         }
 
         // In case is author, get author name
@@ -1294,6 +1345,9 @@ class MaxiBlocks_DynamicContent
 
         return $post_data;
     }
+
+
+
 
     public function get_site_content($dc_field)
     {
@@ -1331,6 +1385,13 @@ class MaxiBlocks_DynamicContent
 
         // Check if $post is false (boolean) before attempting to access its properties
         if (!is_object($post)) {
+            return 0;
+        }
+
+        $post_id = $post->ID;
+        $dc_accumulator = $attributes['dc-accumulator'];
+
+        if($this->is_repeated_post($post_id, $dc_accumulator, $attributes)) {
             return 0;
         }
 
@@ -1414,6 +1475,7 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-relation' => $dc_relation,
             'dc-type' => $dc_type,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if($dc_relation === 'current' || $dc_type === 'archive') {
@@ -1448,6 +1510,9 @@ class MaxiBlocks_DynamicContent
         }
 
         if($term) {
+            if($this->is_repeated_post($term->term_id, $dc_accumulator, $attributes)) {
+                return null;
+            }
             if ($dc_field === 'link') {
                 $tax_data = get_term_link($term);
             } elseif (isset($term->$dc_field)) {
@@ -1797,7 +1862,15 @@ class MaxiBlocks_DynamicContent
     {
         if ($limit > 0 && strlen($string) > $limit) {
             $string = trim($string);
-            $string = substr($string, 0, $limit) . '…';
+            $truncated = substr($string, 0, $limit);
+
+            // Check if the truncated string has any unclosed HTML tags
+            if (preg_match('/<[^>]*$/', $truncated, $matches)) {
+                // If there are unclosed tags, remove the last unclosed tag
+                $truncated = preg_replace('/<[^>]*$/', '', $truncated);
+            }
+
+            $string = $truncated . '…';
         }
 
         return $string;
@@ -2071,5 +2144,33 @@ class MaxiBlocks_DynamicContent
         $taxonomies = array_diff(get_taxonomies($args), $supported_taxonomies);
 
         return $taxonomies;
+    }
+
+    /**
+     * Check if a post is repeated based on the post ID and dynamic content accumulator.
+     *
+     * @param int|null $post_id The ID of the post to check.
+     * @param string|null $dc_accumulator The dynamic content accumulator string.
+     * @return bool True if the post is repeated, false otherwise.
+     */
+    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
+    {
+
+        // Check if either $post_id or $dc_accumulator is not set
+        if (!isset($post_id) || !isset($dc_accumulator)) {
+            return false;
+        }
+
+        // Check if the current post ID matches the global post ID
+        // and the current accumulator is different from the global accumulator
+        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+            return true;
+        }
+
+        // Update the global accumulator and post ID with the current values
+        self::$global_dc_accumulator_cl = $dc_accumulator;
+        self::$global_dc_id_cl = $post_id;
+
+        return false;
     }
 }

@@ -220,6 +220,34 @@ const ContextLoop = props => {
 		}
 	});
 
+	const selectedBlockClientId = useSelect(
+		select => select('core/block-editor').getSelectedBlockClientId(),
+		[]
+	);
+
+	const childBlocksCount = useSelect(
+		select => {
+			const { getBlockOrder } = select('core/block-editor');
+			if (selectedBlockClientId) {
+				const childBlocks = getBlockOrder(selectedBlockClientId);
+				const childBlocksLength = childBlocks.length;
+
+				return childBlocksLength;
+			}
+			return 0;
+		},
+		[selectedBlockClientId]
+	);
+
+	const [usePaginationPerPage, setUsePaginationPerPage] = useState(
+		paginationPerPage || childBlocksCount
+	);
+
+	useEffect(() => {
+		if (!paginationPerPage)
+			changeProps({ 'cl-pagination-per-page': usePaginationPerPage });
+	}, [usePaginationPerPage]);
+
 	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);
 		setPostTypesOptions(postTypes);
@@ -538,21 +566,25 @@ const ContextLoop = props => {
 													'Items per page',
 													'maxi-blocks'
 												)}
-												value={paginationPerPage}
-												onChangeValue={value =>
+												value={usePaginationPerPage}
+												onChangeValue={value => {
 													changeProps({
 														'cl-pagination-per-page':
 															value,
-													})
-												}
-												onReset={() =>
+													});
+													setUsePaginationPerPage(
+														value
+													);
+												}}
+												onReset={() => {
 													changeProps({
 														'cl-pagination-per-page':
-															getDefaultAttribute(
-																'cl-pagination-per-page'
-															),
-													})
-												}
+															childBlocksCount,
+													});
+													setUsePaginationPerPage(
+														childBlocksCount
+													);
+												}}
 												disableRange
 											/>
 											<ToggleSwitch
@@ -574,11 +606,13 @@ const ContextLoop = props => {
 														'Items total',
 														'maxi-blocks'
 													)}
-													step={paginationPerPage}
-													min={paginationPerPage * 2}
+													step={usePaginationPerPage}
+													min={
+														usePaginationPerPage * 2
+													}
 													value={
 														paginationTotal ||
-														paginationPerPage * 2
+														usePaginationPerPage * 2
 													}
 													onChangeValue={value =>
 														changeProps({

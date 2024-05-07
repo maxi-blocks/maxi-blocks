@@ -19,6 +19,7 @@ import {
 	taxonomyRelationOptions,
 	linkTypesOptions,
 	linkFieldsOptions,
+	acfFieldTypes,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -421,7 +422,12 @@ export const validationsValues = (
 		source === 'acf'
 			? select('maxiBlocks/dynamic-content')
 					.getACFFields(acfGroup)
-					?.map(field => field.id)
+					?.map(field => {
+						return acfFieldTypes[contentType].includes(field.type)
+							? field.id
+							: null;
+					})
+					.filter(Boolean)
 			: getFields(contentType, variableValue)?.map(x => x.value);
 	const currentTemplateType = getCurrentTemplateSlug();
 	const relationOptions = getRelationOptions(

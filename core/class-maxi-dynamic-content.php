@@ -2153,7 +2153,7 @@ class MaxiBlocks_DynamicContent
      * @param string|null $dc_accumulator The dynamic content accumulator string.
      * @return bool True if the post is repeated, false otherwise.
      */
-    private function is_repeated_post($post_id, $dc_accumulator, $attributes)
+    private function is_repeated_post($post_id, $dc_accumulator)
     {
 
         // Check if either $post_id or $dc_accumulator is not set

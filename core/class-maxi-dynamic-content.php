@@ -798,6 +798,7 @@ class MaxiBlocks_DynamicContent
         // Get media ID
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
+
             $media_id = $image['id'] ?? '';
             $media_src = $image['url'] ?? '';
         } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
@@ -862,10 +863,18 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-caption-to-replace', $media_caption, $content);
         } else {
             $this->is_empty = true;
+
+            // Check if the content is just one <figure> element
+            if (preg_match('/^<figure[^>]*>.*<\/figure>$/s', trim($content))) {
+
+                return '';
+            }
+
             $content = str_replace('$media-id-to-replace', '', $content);
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
+
         }
 
         return $content;
@@ -1696,9 +1705,17 @@ class MaxiBlocks_DynamicContent
             'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
+        if(empty($post)) {
+            return '';
+        }
+
+        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+            return '';
+        }
         $acf_data = get_field_object($dc_field, $post->ID);
         $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
         $content = null;

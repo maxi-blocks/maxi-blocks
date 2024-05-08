@@ -584,7 +584,12 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 
 		if (
 			!breakpoint ||
-			breakpoint === 'general' ||
+			(breakpoint === 'general' &&
+				!attrExistsOnResponsive(
+					{ ...attributes, ...newAttributes },
+					key,
+					baseBreakpoint
+				)) ||
 			breakpoint === baseBreakpoint ||
 			isNil(value)
 		)
@@ -614,7 +619,8 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 				!isEqual(generalAttr, value)) ||
 			(!isNil(generalAttr) &&
 				isNil(baseAttr) &&
-				!isEqual(generalAttr, value))
+				!isEqual(generalAttr, value)) ||
+			(breakpoint === 'general' && baseAttr !== newGeneralAttr)
 		)
 			result[baseLabel] = generalAttr;
 	});

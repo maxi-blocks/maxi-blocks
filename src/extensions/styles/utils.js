@@ -134,6 +134,19 @@ export const getSimpleLabel = (key, breakpoint) =>
 
 export const getIsHoverAttribute = key => key.includes('-hover');
 
+export const attrExistsOnResponsive = (attributes, key, baseBreakpoint) => {
+	const isHover = getIsHoverAttribute(key);
+	const breakpoint = getBreakpointFromAttribute(key);
+	const baseKey = getSimpleLabel(key, breakpoint);
+	return BREAKPOINTS.filter(
+		breakpoint => breakpoint !== baseBreakpoint && breakpoint !== 'general'
+	).some(
+		breakpoint =>
+			!isNil(
+				attributes[getAttributeKey(baseKey, isHover, null, breakpoint)]
+			)
+	);
+};
 
 export const replaceAttrKeyBreakpoint = (key, breakpoint) =>
 	`${getAttrKeyWithoutBreakpoint(key)}-${breakpoint}`;

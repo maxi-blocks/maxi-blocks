@@ -68,6 +68,7 @@ const ContextLoop = props => {
 		isToolbar = false,
 		contentType = 'group',
 		'dc-link-target': linkTarget,
+		blockName,
 	} = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -343,6 +344,7 @@ const ContextLoop = props => {
 							onChange={onChange}
 							contentType={contentType}
 							group={acfGroup}
+							isDivider={blockName === 'maxi-blocks/divider-maxi'}
 							isCL
 						/>
 					)}

@@ -19,7 +19,14 @@ import { acfFieldTypes } from '../../../extensions/DC/constants';
 import { isEmpty } from 'lodash';
 
 const ACFSettingsControl = props => {
-	const { onChange, contentType, isCL, group, field } = props;
+	const {
+		onChange,
+		contentType,
+		isCL,
+		group,
+		field,
+		isDivider = false,
+	} = props;
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const [groupOptions, setGroupOptions] = useState(null);
@@ -87,12 +94,20 @@ const ACFSettingsControl = props => {
 					]);
 				}
 
-				setFieldsOptions([
-					{
-						label: 'No fields found',
-						value: '',
-					},
-				]);
+				if (isDivider)
+					setFieldsOptions([
+						{
+							label: 'Static',
+							value: 'static_text',
+						},
+					]);
+				else
+					setFieldsOptions([
+						{
+							label: 'No fields found',
+							value: '',
+						},
+					]);
 			}
 		});
 	}, [group]);

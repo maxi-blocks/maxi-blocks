@@ -611,7 +611,7 @@ class MaxiBlocks_DynamicContent
 
         $post = self::get_post($attributes);
 
-        if($post) {
+        if(!empty($post)) {
             $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
             $item_id = $is_product ? $post->get_id() : $post->ID;
             if($this->is_repeated_post($item_id, $dc_accumulator)) {
@@ -620,9 +620,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-
             $post =  self::get_post($attributes);
-            if (is_null($post) || !isset($post->post_author)) {
+            if (empty($post) || !isset($post->post_author)) {
                 $link = '';
             } else {
                 $link = self::get_field_link(
@@ -664,7 +663,6 @@ class MaxiBlocks_DynamicContent
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
-
             if (empty($post)) {
                 return $content;
             }
@@ -698,7 +696,7 @@ class MaxiBlocks_DynamicContent
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
             $post = $this->get_post($attributes);
-            if($post) {
+            if(!empty($post)) {
                 $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
                 if($this->is_repeated_post($item_id, $dc_accumulator)) {
@@ -1335,7 +1333,15 @@ class MaxiBlocks_DynamicContent
             }
 
             // Limit content
-            $post_data = self::get_limited_string($post_data, $dc_limit);
+            if(isset($dc_limit) && $dc_limit > 0) {
+                $post_data = wp_strip_all_tags($post_data);
+
+                // Ensures no double or more line breaks
+                $post_data = preg_replace("/[\r\n]+/", "\n", $post_data);
+                $post_data = preg_replace("/\n{2,}/", "\n", $post_data);
+                $post_data = nl2br($post_data);
+                $post_data = self::get_limited_string($post_data, $dc_limit);
+            }
 
         }
 
@@ -1400,7 +1406,7 @@ class MaxiBlocks_DynamicContent
         $post = $this->get_post($attributes);
 
         // Check if $post is false (boolean) before attempting to access its properties
-        if (!is_object($post)) {
+        if (empty($post)) {
             return 0;
         }
 

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-09T10:42:10+00:00\n"
+"POT-Creation-Date: 2024-05-09T11:21:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -833,7 +833,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:155
 #: src/components/background-control/imageLayer.js:118
 #: src/components/divider-control/index.js:158
-#: src/components/dynamic-content/index.js:160
+#: src/components/dynamic-content/index.js:161
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
 #: src/components/typography-control/index.js:930
@@ -1881,7 +1881,7 @@ msgstr ""
 #: build/4114.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:832
 #: src/components/context-loop/index.js:321
-#: src/components/dynamic-content/index.js:316
+#: src/components/dynamic-content/index.js:317
 msgid "Source"
 msgstr ""
 
@@ -3452,7 +3452,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:47
 #: src/components/background-control/imageLayer.js:106
 #: src/components/background-control/imageLayer.js:298
-#: src/components/dynamic-content/index.js:163
+#: src/components/dynamic-content/index.js:164
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -3755,8 +3755,8 @@ msgid "none"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:368
-#: src/components/context-loop/index.js:352
-#: src/components/dynamic-content/index.js:349
+#: src/components/context-loop/index.js:354
+#: src/components/dynamic-content/index.js:352
 msgid "Type"
 msgstr ""
 
@@ -3826,74 +3826,74 @@ msgstr ""
 msgid "Stop accumulator inheritance"
 msgstr ""
 
-#: src/components/context-loop/index.js:381
-#: src/components/dynamic-content/index.js:379
+#: src/components/context-loop/index.js:383
+#: src/components/dynamic-content/index.js:384
 msgid "This type is empty"
 msgstr ""
 
-#: src/components/context-loop/index.js:386
-#: src/components/dynamic-content/index.js:385
+#: src/components/context-loop/index.js:388
+#: src/components/dynamic-content/index.js:390
 msgid "Relation"
 msgstr ""
 
-#: src/components/context-loop/index.js:409
-#: src/components/dynamic-content/index.js:416
+#: src/components/context-loop/index.js:411
+#: src/components/dynamic-content/index.js:421
 msgid "Author id"
 msgstr ""
 
-#: src/components/context-loop/index.js:464
-#: src/components/dynamic-content/index.js:478
+#: src/components/context-loop/index.js:466
+#: src/components/dynamic-content/index.js:483
 msgid "Order by"
 msgstr ""
 
-#: src/components/context-loop/index.js:486
-#: src/components/dynamic-content/index.js:501
+#: src/components/context-loop/index.js:488
+#: src/components/dynamic-content/index.js:506
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
-#: src/components/context-loop/index.js:512
-#: src/components/dynamic-content/index.js:528
+#: src/components/context-loop/index.js:514
+#: src/components/dynamic-content/index.js:533
 msgid "Accumulator"
 msgstr ""
 
-#: src/components/context-loop/index.js:537
+#: src/components/context-loop/index.js:539
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
-#: src/components/context-loop/index.js:552
+#: src/components/context-loop/index.js:554
 msgid "Pagination"
 msgstr ""
 
-#: src/components/context-loop/index.js:567
+#: src/components/context-loop/index.js:569
 msgid "Items per page"
 msgstr ""
 
-#: src/components/context-loop/index.js:593
+#: src/components/context-loop/index.js:595
 msgid "Items total: show all"
 msgstr ""
 
-#: src/components/context-loop/index.js:607
+#: src/components/context-loop/index.js:609
 msgid "Items total"
 msgstr ""
 
-#: src/components/context-loop/index.js:638
+#: src/components/context-loop/index.js:640
 msgid "Text for previous link"
 msgstr ""
 
-#: src/components/context-loop/index.js:652
+#: src/components/context-loop/index.js:654
 msgid "Text for next link"
 msgstr ""
 
-#: src/components/context-loop/index.js:665
+#: src/components/context-loop/index.js:667
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
-#: src/components/context-loop/index.js:697
+#: src/components/context-loop/index.js:699
 msgid "Pagination hover"
 msgstr ""
 
-#: src/components/context-loop/index.js:748
+#: src/components/context-loop/index.js:750
 msgid "Pagination current"
 msgstr ""
 
@@ -5154,39 +5154,39 @@ msgstr ""
 msgid "d.m.Y t"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:161
+#: src/components/dynamic-content/index.js:162
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:162
+#: src/components/dynamic-content/index.js:163
 msgid "Semicolon"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:285
+#: src/components/dynamic-content/index.js:286
 msgid "Use dynamic content"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:304
+#: src/components/dynamic-content/index.js:305
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:563
+#: src/components/dynamic-content/index.js:568
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:587
+#: src/components/dynamic-content/index.js:592
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:637
+#: src/components/dynamic-content/index.js:642
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:665
+#: src/components/dynamic-content/index.js:670
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:682
+#: src/components/dynamic-content/index.js:687
 msgid "Image accumulator"
 msgstr ""
 
@@ -6649,7 +6649,7 @@ msgstr ""
 msgid "Error fetching media, try to add Featured Image to the post you want to show"
 msgstr ""
 
-#: src/extensions/DC/getTypes.js:47
+#: src/extensions/DC/getTypes.js:52
 msgid "All archives"
 msgstr ""
 

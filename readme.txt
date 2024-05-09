@@ -210,7 +210,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 29 April 2024_
+_Updates 9 May 2024_
 MaxiBlocks v1.8.4
 * Update: Introduced aria label support in the Advanced settings tab, improving accessibility for users relying on assistive technologies.
 * Fix: Resolved an issue with rendering HTML content for Dynamic Content on the frontend, ensuring proper display of page elements.

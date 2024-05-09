@@ -19,7 +19,6 @@ import {
 	taxonomyRelationOptions,
 	linkTypesOptions,
 	linkFieldsOptions,
-	acfFieldTypes,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -413,16 +412,8 @@ export const validationsValues = (
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const fieldResult =
-		source === 'acf'
-			? select('maxiBlocks/dynamic-content')
-					.getACFFields(acfGroup)
-					?.map(field => {
-						return acfFieldTypes[contentType].includes(field.type)
-							? field.id
-							: null;
-					})
-					.filter(Boolean)
-			: getFields(contentType, variableValue)?.map(x => x.value);
+		source !== 'acf' &&
+		getFields(contentType, variableValue)?.map(x => x.value);
 	const currentTemplateType = getCurrentTemplateSlug();
 	const relationOptions = getRelationOptions(
 		variableValue,
@@ -441,12 +432,6 @@ export const validationsValues = (
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value
 	);
-	const groupResult =
-		source === 'acf'
-			? select('maxiBlocks/dynamic-content')
-					.getACFGroups()
-					?.map(group => group.id)
-			: null;
 
 	return {
 		...(!isCL &&
@@ -467,10 +452,6 @@ export const validationsValues = (
 		...(linkTargetResult &&
 			!linkTargetResult.includes(linkTarget) && {
 				[`${prefix}link-target`]: linkTargetResult[0],
-			}),
-		...(groupResult &&
-			!groupResult.includes(acfGroup) && {
-				[`${prefix}acf-group`]: groupResult[0],
 			}),
 	};
 };

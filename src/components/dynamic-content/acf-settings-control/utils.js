@@ -38,7 +38,7 @@ export const getValidatedACFAttributes = async (
 	).getACFFields(currentGroup);
 
 	const filteredFields = fields.filter(field =>
-		acfFieldTypes[contentType].includes(field.type)
+		acfFieldTypes[contentType]?.includes(field.type)
 	);
 
 	if (!isEmpty(filteredFields)) {
@@ -86,7 +86,7 @@ export const getACFOptions = async (
 		'maxiBlocks/dynamic-content'
 	).getACFFields(currentGroup);
 	const filteredFields = fields.filter(field =>
-		acfFieldTypes[contentType].includes(field.type)
+		acfFieldTypes[contentType]?.includes(field.type)
 	);
 
 	if (!isEmpty(filteredFields)) {

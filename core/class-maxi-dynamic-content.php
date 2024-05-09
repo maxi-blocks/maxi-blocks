@@ -305,7 +305,9 @@ class MaxiBlocks_DynamicContent
             'products' => 'product',
             'media' => 'attachment',
             'users' => 'users',
-            default => 'post',
+            'posts' => 'post',
+            null => 'post',
+            default => $cl_type,
         };
 
         // Update total count if necessary
@@ -341,6 +343,7 @@ class MaxiBlocks_DynamicContent
         $content = '<div class="maxi-pagination">';
 
         $max_page = ceil($pagination_total / $cl_pagination_per_page);
+
         // Previous link
         $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
 

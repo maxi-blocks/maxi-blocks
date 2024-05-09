@@ -571,7 +571,7 @@ class MaxiBlocks_DynamicContent
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
                 $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
-                $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
+                $context_loop['cl-accumulator'] = $accumulator + intval($cl_pagination_per_page) * (intval($pagination_page) - 1);
 
             }
         }

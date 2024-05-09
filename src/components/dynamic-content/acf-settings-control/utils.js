@@ -52,7 +52,13 @@ export const getValidatedACFAttributes = async (
 	return { validatedAttributes, currentGroup };
 };
 
-export const getACFOptions = async (group, field, contentType, prefix) => {
+export const getACFOptions = async (
+	group,
+	field,
+	contentType,
+	prefix,
+	isDivider
+) => {
 	const { validatedAttributes, currentGroup } =
 		await getValidatedACFAttributes(group, field, contentType, prefix);
 	const groupOptions = [];
@@ -90,6 +96,11 @@ export const getACFOptions = async (group, field, contentType, prefix) => {
 				value: field.id,
 				type: field.type,
 			});
+		});
+	} else if (isDivider) {
+		fieldOptions.push({
+			label: 'Static',
+			value: 'static_text',
 		});
 	}
 	// In case we receive fields but none of them are suitable for the current content type

@@ -14,14 +14,21 @@ import SelectControl from '../../select-control';
 import { getACFOptions } from './utils';
 
 const ACFSettingsControl = props => {
-	const { onChange, contentType, isCL, group, field } = props;
+	const {
+		onChange,
+		contentType,
+		isCL,
+		group,
+		field,
+		isDivider = false,
+	} = props;
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const [groupOptions, setGroupOptions] = useState(null);
 	const [fieldsOptions, setFieldsOptions] = useState(null);
 
 	useEffect(() => {
-		getACFOptions(group, field, contentType, prefix).then(
+		getACFOptions(group, field, contentType, prefix, isDivider).then(
 			({ validatedAttributes, groupOptions, fieldOptions }) => {
 				setGroupOptions(groupOptions);
 				setFieldsOptions(fieldOptions);
@@ -29,7 +36,7 @@ const ACFSettingsControl = props => {
 				onChange(validatedAttributes);
 			}
 		);
-	}, [group, field, contentType, prefix, onChange]);
+	}, [group, field, contentType, prefix, onChange, isDivider]);
 
 	return (
 		<>

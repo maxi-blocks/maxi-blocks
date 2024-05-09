@@ -69,6 +69,7 @@ const attributes = {
 	...attributesData.customCss,
 	...attributesData.advancedCss,
 	...attributesData.flex,
+	...attributesData.dynamicContent,
 };
 
 export default attributes;

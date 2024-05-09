@@ -341,6 +341,10 @@ const Inspector = props => {
 									...inspectorTabs.advancedCss({
 										props,
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'divider',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

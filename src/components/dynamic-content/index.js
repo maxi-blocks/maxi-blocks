@@ -342,6 +342,7 @@ const DynamicContent = props => {
 							contentType={contentType}
 							group={dcValues.acfGroup}
 							field={field}
+							isDivider={blockName === 'maxi-blocks/divider-maxi'}
 						/>
 					)}
 					<SelectControl

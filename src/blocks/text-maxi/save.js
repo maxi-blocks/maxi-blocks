@@ -25,6 +25,7 @@ const save = props => {
 		listReversed,
 		listStart,
 		'dc-status': dcStatus,
+		'dc-field': dcField,
 		ariaLabels = {},
 	} = props.attributes;
 
@@ -48,11 +49,19 @@ const save = props => {
 			{!isList && (
 				<RichText.Content
 					className={className}
-					value={dcStatus ? '$text-to-replace' : value}
+					value={
+						dcStatus && dcField !== 'static_text'
+							? '$text-to-replace'
+							: value
+					}
 					// TODO: avoid DC for lists
-					tagName={isList && !dcStatus ? typeOfList : textLevel}
+					tagName={
+						isList && (!dcStatus || dcField === 'static_text')
+							? typeOfList
+							: textLevel
+					}
 					aria-label={ariaLabels.text}
-					{...(!dcStatus && {
+					{...((!dcStatus || dcField === 'static_text') && {
 						reversed: !!listReversed,
 						start: listStart,
 					})}

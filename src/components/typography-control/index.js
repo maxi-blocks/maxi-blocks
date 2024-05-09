@@ -707,7 +707,7 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
-							[`${prefix}line-height`]: getValue('font-size'),
+							[`${prefix}line-height`]: getValue('line-height'),
 						});
 					}}
 					placeholder={getValue('line-height')}

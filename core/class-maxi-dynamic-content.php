@@ -610,14 +610,18 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = self::get_post($attributes);
-        if($post && $this->is_repeated_post(self::get_post($attributes)->ID, $dc_accumulator)) {
-            return '';
+
+        if(!empty($post)) {
+            $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
+            $item_id = $is_product ? $post->get_id() : $post->ID;
+            if($this->is_repeated_post($item_id, $dc_accumulator)) {
+                return '';
+            }
         }
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-
             $post =  self::get_post($attributes);
-            if (is_null($post) || !isset($post->post_author)) {
+            if (empty($post) || !isset($post->post_author)) {
                 $link = '';
             } else {
                 $link = self::get_field_link(
@@ -659,13 +663,11 @@ class MaxiBlocks_DynamicContent
             $link = wc_get_cart_url();
         } else {
             $post = self::get_post($attributes);
-
-            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
-                return '';
-            }
-
             if (empty($post)) {
                 return $content;
+            }
+            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
             }
 
             $link = get_permalink($post->ID);
@@ -693,11 +695,13 @@ class MaxiBlocks_DynamicContent
 
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
-
             $post = $this->get_post($attributes);
-
-            if (is_null($post) || $this->is_repeated_post($post->ID, $dc_accumulator)) {
-                return '';
+            if(!empty($post)) {
+                $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
+                $item_id = $is_product ? $post->get_id() : $post->ID;
+                if($this->is_repeated_post($item_id, $dc_accumulator)) {
+                    return '';
+                }
             }
 
             return $content;
@@ -794,6 +798,7 @@ class MaxiBlocks_DynamicContent
         // Get media ID
         if ($dc_source === 'acf') {
             $image = self::get_acf_content($attributes);
+
             $media_id = $image['id'] ?? '';
             $media_src = $image['url'] ?? '';
         } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
@@ -815,12 +820,22 @@ class MaxiBlocks_DynamicContent
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $post = $this->get_post($attributes);
+            if(!empty($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
+            }
             $media_id = $post->ID ?? $dc_media_id ?? $dc_id;
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
             $post = $this->get_post($attributes);
+            if(!empty($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+                return '';
+            }
             $media_src = get_avatar_url($post->ID);
         } elseif ($dc_type === 'products') {
+            $product = self::get_post($attributes);
+            if(!empty($product) && $this->is_repeated_post($product->get_id(), $dc_accumulator)) {
+                return '';
+            }
             $media_id = self::get_product_content($attributes);
         }
 
@@ -836,7 +851,7 @@ class MaxiBlocks_DynamicContent
 
             $post = get_post($media_id);
             $media_caption = 'No content found';
-            if ($post && !empty($post->post_excerpt)) {
+            if (!empty($post) && !empty($post->post_excerpt)) {
                 $media_caption = $post->post_excerpt;
             }
         }
@@ -848,10 +863,18 @@ class MaxiBlocks_DynamicContent
             $content = str_replace('$media-caption-to-replace', $media_caption, $content);
         } else {
             $this->is_empty = true;
+
+            // Check if the content is just one <figure> element
+            if (preg_match('/^<figure[^>]*>.*<\/figure>$/s', trim($content))) {
+
+                return '';
+            }
+
             $content = str_replace('$media-id-to-replace', '', $content);
             $content = str_replace('$media-url-to-replace', '', $content);
             $content = str_replace('$media-alt-to-replace', '', $content);
             $content = str_replace('$media-caption-to-replace', '', $content);
+
         }
 
         return $content;
@@ -1277,7 +1300,7 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        if(is_null($post)) {
+        if(empty($post)) {
             return '';
         }
 
@@ -1392,7 +1415,7 @@ class MaxiBlocks_DynamicContent
         $post = $this->get_post($attributes);
 
         // Check if $post is false (boolean) before attempting to access its properties
-        if (!is_object($post)) {
+        if (empty($post)) {
             return 0;
         }
 
@@ -1517,7 +1540,7 @@ class MaxiBlocks_DynamicContent
             $term = $this->get_post($attributes);
         }
 
-        if($term) {
+        if(!empty($term)) {
             if($this->is_repeated_post($term->term_id, $dc_accumulator)) {
                 return null;
             }
@@ -1558,11 +1581,15 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-image-accumulator' => $dc_image_accumulator,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $product = $this->get_post($attributes);
 
-        if($product) {
+        if(!empty($product)) {
+            if($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
+                return '';
+            }
             switch ($dc_field) {
                 case 'name':
                 case 'slug':
@@ -1678,9 +1705,17 @@ class MaxiBlocks_DynamicContent
             'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
+        if(empty($post)) {
+            return '';
+        }
+
+        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+            return '';
+        }
         $acf_data = get_field_object($dc_field, $post->ID);
         $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
         $content = null;
@@ -2163,7 +2198,6 @@ class MaxiBlocks_DynamicContent
      */
     private function is_repeated_post($post_id, $dc_accumulator)
     {
-
         // Check if either $post_id or $dc_accumulator is not set
         if (!isset($post_id) || !isset($dc_accumulator)) {
             return false;

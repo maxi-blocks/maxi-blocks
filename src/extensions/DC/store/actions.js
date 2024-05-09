@@ -48,6 +48,19 @@ const actions = {
 			customTaxonomies,
 		};
 	},
+	setACFGroups(acfGroups) {
+		return {
+			type: 'SET_ACF_GROUPS',
+			acfGroups,
+		};
+	},
+	setACFFields(groupId, acfFields) {
+		return {
+			type: 'SET_ACF_FIELDS',
+			groupId,
+			acfFields,
+		};
+	},
 };
 
 export default actions;

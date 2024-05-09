@@ -1,3 +1,4 @@
+import { getValidatedACFAttributes } from '../../components/dynamic-content/acf-settings-control/utils';
 import getDCOptions from './getDCOptions';
 import { validateRelations, validationsValues } from './utils';
 
@@ -21,19 +22,35 @@ const getValidatedDCAttributes = async (
 		contentType,
 		attributes.source,
 		attributes.linkTarget,
-		isCL
+		isCL,
+		attributes.acfGroup
 	);
 	const validatedRelations = validateRelations(
 		attributes.type,
 		attributes.relation,
 		isCL
 	);
+	const validatedACFAttributes =
+		attributes.source === 'acf'
+			? await getValidatedACFAttributes(
+					attributes.acfGroup,
+					attributes.field,
+					contentType,
+					isCL ? 'cl-' : 'dc-'
+			  )
+			: {};
 
-	if (dcOptions?.newValues || validatedAttributes || validatedRelations) {
+	if (
+		dcOptions?.newValues ||
+		validatedAttributes ||
+		validatedRelations ||
+		validatedACFAttributes.validatedAttributes
+	) {
 		const newAttributes = {
 			...dcOptions?.newValues,
 			...validatedAttributes,
 			...validatedRelations,
+			...validatedACFAttributes.validatedAttributes,
 		};
 
 		return newAttributes;

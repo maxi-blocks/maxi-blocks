@@ -4,6 +4,8 @@ const initialState = {
 	relationTypes,
 	orderTypes,
 	limitTypes,
+	acfGroups: null,
+	acfFields: null,
 	customPostTypes: [],
 	customTaxonomies: [],
 	wasCustomPostTypesLoaded: false,
@@ -33,6 +35,19 @@ const reducer = (state = initialState, action) => {
 					...action.customTaxonomies,
 				],
 				wasCustomTaxonomiesLoaded: true,
+			};
+		case 'SET_ACF_GROUPS':
+			return {
+				...state,
+				acfGroups: action.acfGroups,
+			};
+		case 'SET_ACF_FIELDS':
+			return {
+				...state,
+				acfFields: {
+					...state.acfFields,
+					[action.groupId]: action.acfFields,
+				},
 			};
 		default:
 			return state;

@@ -400,26 +400,20 @@ export const validationsValues = (
 	contentType,
 	source = 'wp',
 	linkTarget,
-	isCL = false
+	isCL = false,
+	acfGroup
 ) => {
 	if (
-		source === 'acf' ||
-		[
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomPostTypesLoaded(),
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomTaxonomiesLoaded(),
-		].includes(variableValue)
+		!select('maxiBlocks/dynamic-content').getWasCustomPostTypesLoaded() ||
+		!select('maxiBlocks/dynamic-content').getWasCustomTaxonomiesLoaded()
 	)
 		return {};
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = getFields(contentType, variableValue)?.map(
-		x => x.value
-	);
+	const fieldResult =
+		source !== 'acf' &&
+		getFields(contentType, variableValue)?.map(x => x.value);
 	const currentTemplateType = getCurrentTemplateSlug();
 	const relationOptions = getRelationOptions(
 		variableValue,
@@ -429,9 +423,12 @@ export const validationsValues = (
 	const relationResult = Array.isArray(relationOptions)
 		? relationOptions.map(x => x.value)
 		: [];
-	const typeResult = getTypes(contentType, false, currentTemplateType)?.map(
-		item => item.value
-	);
+	const typeResult = getTypes(
+		contentType,
+		false,
+		currentTemplateType,
+		source
+	)?.map(item => item.value);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value
 	);

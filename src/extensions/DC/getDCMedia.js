@@ -83,16 +83,16 @@ const getDCMedia = async (dataRequest, clientId) => {
 	if (source === 'acf') {
 		const image = await getACFFieldContent(field, data.id);
 
-		if (image.return_format === 'url') {
+		if (image?.return_format === 'url') {
 			return {
 				url: image.value,
 			};
 		}
-		if (image.return_format === 'id') {
+		if (image?.return_format === 'id') {
 			return getMediaById(image.value, type);
 		}
 
-		return image;
+		return image.value;
 	}
 
 	if (field === 'avatar' && type === 'users') {

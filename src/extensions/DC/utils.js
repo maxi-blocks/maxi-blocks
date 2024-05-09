@@ -405,14 +405,8 @@ export const validationsValues = (
 	acfGroup
 ) => {
 	if (
-		[
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomPostTypesLoaded(),
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomTaxonomiesLoaded(),
-		].includes(variableValue)
+		!select('maxiBlocks/dynamic-content').getWasCustomPostTypesLoaded() ||
+		!select('maxiBlocks/dynamic-content').getWasCustomTaxonomiesLoaded()
 	)
 		return {};
 

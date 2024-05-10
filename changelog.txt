@@ -1,4 +1,4 @@
-_Updates 9 May 2024_
+_Updates 13 May 2024_
 MaxiBlocks v1.8.4
 * Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.
 * Update: Enhanced Dynamic Content blocks to automatically update when changing the Advanced Custom Fields group or switching the source to Advanced Custom Fields within the Context Loop, streamlining the content management process.

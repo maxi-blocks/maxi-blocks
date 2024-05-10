@@ -318,6 +318,13 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        $max_page = (int) ceil($pagination_total / $cl_pagination_per_page);
+
+        // If there is only one page, return an empty string
+        if($max_page <= 1) {
+            return '';
+        }
+
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
         $pagination_page = max(1, absint($_GET['cl-page'] ?? 1));
 
@@ -339,8 +346,6 @@ class MaxiBlocks_DynamicContent
 
         // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
-
-        $max_page = ceil($pagination_total / $cl_pagination_per_page);
 
         // Previous link
         $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
@@ -499,7 +504,6 @@ class MaxiBlocks_DynamicContent
 
                 // Generate pagination content based on the cl settings and the anchor
                 $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
-
 
                 // Insert the pagination content before the last closing tag of the original content
                 $content_before_last_tag = substr($content, 0, strrpos($content, '<'));

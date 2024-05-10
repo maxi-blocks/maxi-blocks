@@ -83,6 +83,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
+	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -301,7 +302,7 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					{!ignoreEmptyFields.includes(field) && (
+					{!ignoreEmptyFields.includes(field) && !isCL && (
 						<ToggleSwitch
 							label={__(
 								'Hide if no content found on frontend',

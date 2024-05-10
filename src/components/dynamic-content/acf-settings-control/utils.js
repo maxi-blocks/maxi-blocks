@@ -41,7 +41,10 @@ export const getValidatedACFAttributes = async (
 		acfFieldTypes[contentType]?.includes(field.type)
 	);
 
-	if (!isEmpty(filteredFields)) {
+	if (field === 'static_text') {
+		validatedAttributes[`${prefix}field`] = 'static_text';
+		validatedAttributes[`${prefix}acf-field-type`] = 'text';
+	} else if (!isEmpty(filteredFields)) {
 		if (!filteredFields.find(option => option.id === field)) {
 			validatedAttributes[`${prefix}field`] = filteredFields[0].id;
 			validatedAttributes[`${prefix}acf-field-type`] =
@@ -57,7 +60,7 @@ export const getACFOptions = async (
 	field,
 	contentType,
 	prefix,
-	isDivider
+	showStaticOption
 ) => {
 	const { validatedAttributes, currentGroup } =
 		await getValidatedACFAttributes(group, field, contentType, prefix);
@@ -97,10 +100,18 @@ export const getACFOptions = async (
 				type: field.type,
 			});
 		});
-	} else if (isDivider) {
+		if (showStaticOption) {
+			fieldOptions.push({
+				label: 'Static Text',
+				value: 'static_text',
+				type: 'text',
+			});
+		}
+	} else if (showStaticOption) {
 		fieldOptions.push({
 			label: 'Static',
 			value: 'static_text',
+			type: 'text',
 		});
 	}
 	// In case we receive fields but none of them are suitable for the current content type

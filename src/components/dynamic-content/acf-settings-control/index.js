@@ -20,7 +20,7 @@ const ACFSettingsControl = props => {
 		isCL,
 		group,
 		field,
-		isDivider = false,
+		showStaticOption = false,
 	} = props;
 	const prefix = isCL ? 'cl-' : 'dc-';
 
@@ -28,7 +28,7 @@ const ACFSettingsControl = props => {
 	const [fieldsOptions, setFieldsOptions] = useState(null);
 
 	useEffect(() => {
-		getACFOptions(group, field, contentType, prefix, isDivider).then(
+		getACFOptions(group, field, contentType, prefix, showStaticOption).then(
 			({ validatedAttributes, groupOptions, fieldOptions }) => {
 				setGroupOptions(groupOptions);
 				setFieldsOptions(fieldOptions);
@@ -36,7 +36,7 @@ const ACFSettingsControl = props => {
 				onChange(validatedAttributes);
 			}
 		);
-	}, [group, field, contentType, prefix, onChange, isDivider]);
+	}, [group, field, contentType, prefix, onChange, showStaticOption]);
 
 	return (
 		<>

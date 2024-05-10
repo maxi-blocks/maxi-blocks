@@ -53,6 +53,7 @@ import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 import getTypes from '../../extensions/DC/getTypes';
+import showStaticOption from '../../extensions/DC/showStaticOption';
 
 /**
  * Styles
@@ -345,7 +346,7 @@ const DynamicContent = props => {
 							contentType={contentType}
 							group={acfGroup}
 							field={field}
-							isDivider={blockName === 'maxi-blocks/divider-maxi'}
+							showStaticOption={showStaticOption(blockName)}
 						/>
 					)}
 					<SelectControl

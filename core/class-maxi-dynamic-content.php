@@ -305,9 +305,7 @@ class MaxiBlocks_DynamicContent
             'products' => 'product',
             'media' => 'attachment',
             'users' => 'users',
-            'posts' => 'post',
-            null => 'post',
-            default => $cl_type,
+            default => ($cl_type === 'posts' || $cl_type === null) ? 'post' : $cl_type,
         };
 
         // Update total count if necessary

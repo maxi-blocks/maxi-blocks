@@ -347,22 +347,23 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		subtree: true,
 	};
 
-	const observer = new MutationObserver(function (mutationsList, observer) {
+	const observer = new MutationObserver(function hideMaxiImageType(
+		mutationsList,
+		observer
+	) {
 		for (const mutation of mutationsList) {
 			if (mutation.type === 'childList') {
 				const { addedNodes } = mutation;
 				for (const node of addedNodes) {
 					if (
 						node.nodeType === Node.ELEMENT_NODE &&
-						node.matches(
-							'.components-modal__frame.edit-site-add-new-template__modal.edit-site-add-new-template__modal_template_list'
-						)
+						node.matches('div.components-modal__screen-overlay')
 					) {
 						const buttons = node.querySelectorAll(
 							'.edit-site-add-new-template__template-button.components-button'
 						);
 
-						buttons.forEach(function (button) {
+						buttons.forEach(function hideButton(button) {
 							const buttonText = button.querySelector(
 								'.edit-site-add-new-template__template-name span[data-wp-component="Text"]'
 							);

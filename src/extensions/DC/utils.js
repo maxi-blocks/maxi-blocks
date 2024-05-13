@@ -196,6 +196,10 @@ const getCustomPostTypeFields = (contentType, type) => {
 		return fields;
 	}
 
+	if (contentType === 'text' || contentType === 'button') {
+		addField('Static text', 'static_text');
+	}
+
 	if (postType.supports.title) {
 		addField('Title', 'title');
 	}

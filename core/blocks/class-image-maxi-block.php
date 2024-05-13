@@ -133,18 +133,16 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                false,
+                $block_style,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
-                ' .maxi-image-block__caption',
+                ':hover .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                $block_style,
-                get_group_attributes($props, 'typography'),
+                get_group_attributes($props, 'typographyHover'),
                 'p',
-                true,
+                $block_style,
             );
             $link_styles = array_merge(
                 get_link_styles(

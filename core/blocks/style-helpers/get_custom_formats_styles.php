@@ -3,22 +3,29 @@
 function get_custom_formats_styles(
     $target,
     $custom_formats,
-    $block_style,
     $typography,
     $text_level,
-    $is_hover = false,
+    $block_style,
+    $disable_palette_defaults = false,
 ) {
     $response = [];
 
     if (is_array($custom_formats)) {
         foreach ($custom_formats as $key => $val) {
+            $key = str_replace(
+                'u002d',
+                '-',
+                $key
+            );
+
             $response[$target . ' .' . $key] = [
                 'typography' => get_typography_styles([
                     'obj' => $val,
-                    'isHover' => $is_hover,
-                    'customFormatTypography' => $typography,
-                    'textLevel' => $text_level,
+                    'is_hover' => false,
+                    'custom_format_typography' => $typography,
+                    'text_level' => $text_level,
                     'block_style' => $block_style,
+                    'disable_palette_defaults' => $disable_palette_defaults,
                 ]),
             ];
         }

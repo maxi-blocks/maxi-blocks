@@ -40,6 +40,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'Image_Maxi_Block',
             'SVG_Icon_Maxi_Block',
             'Text_Maxi_Block',
+            'List_Item_Maxi_Block',
             'Video_Maxi_Block',
             'Number_Counter_Maxi_Block',
             'Search_Maxi_Block',

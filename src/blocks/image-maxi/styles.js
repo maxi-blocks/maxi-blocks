@@ -773,7 +773,6 @@ const getStyles = props => {
 				...getCustomFormatsStyles(
 					' .maxi-image-block__caption',
 					props['custom-formats'],
-					false,
 					{ ...getGroupAttributes(props, 'typography') },
 					'p',
 					props.blockStyle
@@ -781,7 +780,6 @@ const getStyles = props => {
 				...getCustomFormatsStyles(
 					':hover .maxi-image-block__caption',
 					props['custom-formats-hover'],
-					true,
 					getGroupAttributes(props, 'typographyHover'),
 					'p',
 					props.blockStyle

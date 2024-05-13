@@ -128,9 +128,9 @@ class Get_Custom_Formats_Styles_Test extends WP_UnitTestCase
         $result = get_custom_formats_styles(
             $target,
             $object,
-            $isHover,
             $objectTypography,
-            $textLevel
+            $textLevel,
+            'light'
         );
 
         $this->assertMatchesJsonSnapshot(json_encode($result));

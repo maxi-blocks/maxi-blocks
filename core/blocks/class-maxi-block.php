@@ -305,7 +305,7 @@ if (!class_exists('MaxiBlocks_Block')):
         public function get_block_attributes($props)
         {
             $default_attributes = $this->get_block_metadata()['attributes'] ?? [];
-            
+
             foreach (array_keys($default_attributes) as $key) {
                 if (isset($default_attributes[$key]['default'])) {
                     $props[$key] = $props[$key] ?? $default_attributes[$key]['default'];

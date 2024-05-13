@@ -3,7 +3,6 @@ import getTypographyStyles from './getTypographyStyles';
 const getCustomFormatsStyles = (
 	target,
 	customFormats,
-	isHover = false,
 	typography,
 	textLevel,
 	blockStyle,

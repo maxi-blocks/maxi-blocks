@@ -60,9 +60,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public static function get_styles($props, $customCss, $sc_props, $context)
         {
-
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $is_list = $props['isList'];
@@ -70,7 +69,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $type_of_list = $props['typeOfList'];
             $element = $is_list ? $type_of_list : $text_level;
             $is_rtl = is_rtl();
-
+            $list_items_length = $props['isList'] ? $context['list_items_length'] : 0;
 
             // transition
             $defaults = new StylesDefaults();
@@ -112,18 +111,19 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 $styles_obj[$uniqueID] = array_merge(
                     $styles_obj[$uniqueID],
                     [
-                        " $element.maxi-text-block__content" => self::get_list_object(
-                            array_merge($props, [$is_rtl => $is_rtl])
+                        " $element" => self::get_list_object(
+                            array_merge($props, [$is_rtl => $is_rtl]),
+                            $list_items_length
                         ),
-                        " $element.maxi-text-block__content li" => array_merge(
+                        " $element li" => array_merge(
                             self::get_typography_object($props),
                             self::get_list_item_object($props),
                         ),
-                        " $element.maxi-text-block__content li:not(:first-child)" =>
+                        " $element li:not(:first-child)" =>
                             self::get_list_paragraph_object($props),
-                        " $element.maxi-text-block__content li:hover" =>
+                        " $element li:hover" =>
                             self::get_typography_hover_object($props),
-                        " $element.maxi-text-block__content li::before" =>
+                        " $element li .maxi-list-item-block__content::before" =>
                             self::get_marker_object(array_merge($props, [$is_rtl => $is_rtl])),
                     ]
                 );
@@ -171,20 +171,18 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         ? ' .maxi-text-block__content'
                         : ' .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 $text_level,
-                false,
+                $block_style,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 !$is_list
                 ? ':hover .maxi-text-block__content'
                 : ':hover .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 $text_level,
-                true,
+                $block_style,
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -221,35 +219,36 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
 
-            $response =
-                [
-                    'border' => get_border_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, array(
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        ))),
-                        'block_style' => $block_style,
-                    )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
-                    'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
-                        'block_style' => $block_style,
-                    )),
-                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
-                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
-                    ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
-                    "textAlignment" => get_alignment_text_styles(get_group_attributes($props, 'textAlignment')),
-                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
-                ];
+            $response = [
+                'border' => get_border_styles(array(
+                    'obj' => array_merge(get_group_attributes($props, array(
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                    ))),
+                    'block_style' => $block_style,
+                )),
+                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'boxShadow' => get_box_shadow_styles(array(
+                    'obj' => get_group_attributes($props, 'boxShadow'),
+                    'block_style' => $block_style,
+                )),
+                'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                'position' => get_position_styles(get_group_attributes($props, 'position')),
+                'display' => get_display_styles(get_group_attributes($props, 'display')),
+                'margin' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'margin'),
+                ]),
+                'padding' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'padding'),
+                ]),
+                'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
+            ];
+            if(!$props['isList']) {
+                $response['textAlignment'] = get_alignment_text_styles(get_group_attributes($props, 'textAlignment'));
+            }
 
             return $response;
         }
@@ -285,10 +284,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_typography_object($props)
         {
             $response = [
-            'typography' => get_typography_styles([
+                'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
-                    'text_level' => $props['textLevel']
+                    'text_level' => $props['textLevel'],
+                    'disable_bottom_gap' => $props['isList']
                 ])
             ];
 
@@ -298,7 +298,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_typography_hover_object($props)
         {
             $response = [
-            'typography' => get_typography_styles([
+                'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography', true),
                     'is_hover' => true,
                     'block_style' => $props['blockStyle'],
@@ -310,12 +310,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             return $response;
         }
 
-        public static function get_list_object($props)
+        public static function get_list_object($props, $list_items_length)
         {
             $listStyle = $props['listStyle'] ?? false;
             $listStart = $props['listStart'] ?? false;
             $listReversed = $props['listReversed'] ?? false;
-
 
             $content = $props['content'];
 
@@ -327,12 +326,15 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         ? $listStart
                         : 0;
                 $counterReset += $listStart > 0 ? $listStart : 0;
-                $counterReset +=
-                    $listReversed && parse($content).length ? parse($content).length : 1;
+                if($listReversed) {
+                    $counterReset += $list_items_length;
+                } else {
+                    $counterReset += 1;
+                }
                 $counterReset += $listReversed ? 1 : -1;
                 $counterReset -= 1;
             } elseif ($listReversed) {
-                $counterReset = parse($content).length ? parse($content).length + 1 : 2;
+                $counterReset = $list_items_length + 1 ?? 2;
             } else {
                 $counterReset = 0;
             }
@@ -398,10 +400,10 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
                 $indentMarkerSum = $indentMarkerNum + $indentMarkerUnit;
 
-                $padding =
-                    $listStylePosition === 'inside'
-                        ? $gapNum + $gapUnit
-                        : "calc($gapNum + $gapUnit + $sizeNum + $sizeUnit + $indentMarkerSum)";
+                $padding = $listStylePosition === 'inside'
+                    ? $gapNum + $gapUnit
+                    : 'calc('.$gapNum . $gapUnit.' + '.$sizeNum . $sizeUnit.' + '.$indentMarkerSum.')';
+
 
                 if (!is_null($gapNum) && !is_null($gapUnit)) {
                     $response['listGap'][$breakpoint] = [
@@ -432,11 +434,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_item_object($props)
         {
-
-
             $listReversed = $props['listReversed'] ?? false;
-
-
 
             $response = [];
 
@@ -447,6 +445,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 ];
             }
+
+            $response['textAlignment'] = get_alignment_text_styles(get_group_attributes($props, 'textAlignment'));
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -519,7 +519,6 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_marker_object($props)
         {
-
             $response = [];
             $list_style = $props['listStyle'] ?? false;
             $type_of_list = $props['typeOfList'] ?? false;
@@ -584,10 +583,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 }
 
                 $response['listContent']['general'] = $general_list_style;
-
             }
-
-
 
             $response_list_size = [];
 

@@ -42,6 +42,7 @@ $blockClasses = [
     'class-image-maxi-block',
     'class-svg-icon-maxi-block',
     'class-text-maxi-block',
+    'class-list-item-maxi-block',
     'class-video-maxi-block',
     'class-number-counter-maxi-block',
     'class-search-maxi-block',
@@ -1509,11 +1510,11 @@ class MaxiBlocks_Styles
     }
 
     /**
- * Fetches blocks from template and template parts based on the template slug.
- *
- * @param string $template_id The ID of the template you want to fetch.
- * @return array
- */
+	 * Fetches blocks from template and template parts based on the template slug.
+	 *
+	 * @param string $template_id The ID of the template you want to fetch.
+	 * @return array
+ 	*/
     public function fetch_blocks_by_template_id($template_id)
     {
         global $wpdb;
@@ -1870,6 +1871,7 @@ class MaxiBlocks_Styles
             'maxi-blocks/image-maxi' => 'MaxiBlocks_Image_Maxi_Block',
             'maxi-blocks/svg-icon-maxi' => 'MaxiBlocks_SVG_Icon_Maxi_Block',
             'maxi-blocks/text-maxi' => 'MaxiBlocks_Text_Maxi_Block',
+            'maxi-blocks/list-item-maxi' => 'MaxiBlocks_List_Item_Maxi_Block',
             'maxi-blocks/video-maxi' => 'MaxiBlocks_Video_Maxi_Block',
             'maxi-blocks/number-counter-maxi' => 'MaxiBlocks_Number_Counter_Maxi_Block',
             'maxi-blocks/search-maxi' => 'MaxiBlocks_Search_Maxi_Block',
@@ -1886,14 +1888,19 @@ class MaxiBlocks_Styles
             return $styles;
         }
 
+        $inner_blocks = $block['innerBlocks'];
+
+        if($block_name === 'maxi-blocks/text-maxi' && isset($props['isList']) && $props['isList']) {
+            $context = [
+                'list_items_length' => count($inner_blocks),
+            ];
+        }
+
         $props = $block_instance->get_block_attributes($props);
 
         $customCss = $block_instance->get_block_custom_css($props);
         $sc_props = $block_instance->get_block_sc_vars($block_style);
         $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
-
-
-        $inner_blocks = $block['innerBlocks'];
 
         // Context creator
         if ($block_name === 'maxi-blocks/row-maxi') {

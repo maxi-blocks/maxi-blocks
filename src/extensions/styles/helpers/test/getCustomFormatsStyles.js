@@ -123,13 +123,11 @@ describe('getCustomFormatsStyles', () => {
 			'custom-formats': 'object',
 		};
 		const target = 'test';
-		const isHover = false;
 		const textLevel = 'p';
 
 		const result = getCustomFormatsStyles(
 			target,
 			object,
-			isHover,
 			objectTypography,
 			textLevel
 		);

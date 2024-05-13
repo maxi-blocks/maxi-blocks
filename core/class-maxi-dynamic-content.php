@@ -1736,11 +1736,11 @@ class MaxiBlocks_DynamicContent
                 }, $acf_value));
                 break;
             case 'image':
-                if ($acf_data['return_format'] === 'url') {
+                if (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'url') {
                     $content = [
                         'url' => $acf_value,
                     ];
-                } elseif ($acf_data['return_format'] === 'id') {
+                } elseif (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'id') {
                     $content = [
                         'id' => $acf_value,
                     ];

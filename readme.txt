@@ -215,6 +215,7 @@ MaxiBlocks v1.8.4
 * Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.
 * Update: Enhanced Dynamic Content blocks to automatically update when changing the Advanced Custom Fields group or switching the source to Advanced Custom Fields within the Context Loop, streamlining the content management process.
 * Update: Introduced aria label support in the Advanced settings tab, improving accessibility for users relying on assistive technologies.
+* Update: Added an option to use Static value in Dynamic Content for Text, Button, and Divider blocks inside a Context Loop for Advanced Custom Fields and Custom Post Types.
 * Fix: Resolved an issue with rendering HTML content for Dynamic Content on the frontend, ensuring proper display of page elements.
 * Fix: Addressed a bug where nested block styles were not switching correctly when inserted inside a block with a different style, maintaining consistent styling across nested blocks.
 * Fix: Fixed a problem with Advanced Custom Fields images not loading on the frontend, ensuring seamless integration and proper image display.

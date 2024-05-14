@@ -28,7 +28,6 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
-
     ];
 
     private static $type_to_post_type = [
@@ -625,7 +624,6 @@ class MaxiBlocks_DynamicContent
         }
 
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-            $post =  self::get_post($attributes);
             if (empty($post) || !isset($post->post_author)) {
                 $link = '';
             } else {
@@ -654,20 +652,18 @@ class MaxiBlocks_DynamicContent
                 }
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
-            $product = self::get_post($attributes);
 
-            if (empty($product)) {
+            if (empty($post)) {
                 return $content;
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
-                $link = $product->add_to_cart_url();
+                $link = $post->add_to_cart_url();
             } else {
-                $link = get_permalink($product->get_id());
+                $link = get_permalink($post->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
             $link = wc_get_cart_url();
         } else {
-            $post = self::get_post($attributes);
             if (empty($post)) {
                 return $content;
             }
@@ -679,7 +675,11 @@ class MaxiBlocks_DynamicContent
         }
 
         if(gettype($link) === 'string') {
+            // echo 'content before: ' . htmlentities($content) . '<br>';
             $content = str_replace('$link-to-replace', $link, $content);
+            // echo 'content after: ' . htmlentities($content) . '<br>';
+            // echo '============================<br>';
+
         }
 
         return $content;
@@ -697,6 +697,15 @@ class MaxiBlocks_DynamicContent
             'dc-link-target' => $dc_link_target,
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
+
+        // echo 'dc-source: ' . $dc_source . '<br>';
+        // echo 'dc-type: ' . $dc_type . '<br>';
+        // echo 'dc-relation: ' . $dc_relation . '<br>';
+        // echo 'dc-field: ' . $dc_field . '<br>';
+        // echo 'dc-link-status: ' . $dc_link_status . '<br>';
+        // echo 'dc-link-target: ' . $dc_link_target . '<br>';
+        // echo 'dc-accumulator: ' . $dc_accumulator . '<br>';
+        // echo '============================<br>';
 
 
         if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
@@ -762,9 +771,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
-
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
-
             $content = str_replace('$text-to-replace', $response, $content);
 
             return $content;
@@ -2042,7 +2049,9 @@ class MaxiBlocks_DynamicContent
         $args = [
             'orderby' => $order_by_arg,
             'order' => $order,
-            $limit_key => $accumulator + 1,
+           // $limit_key => $accumulator + 1,
+            $limit_key => 1, // Fetch only one post
+            'offset' => $accumulator, // Set the offset to get the specific post
         ];
 
         if($relation === 'by-category') {

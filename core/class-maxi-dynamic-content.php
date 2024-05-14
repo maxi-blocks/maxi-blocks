@@ -609,8 +609,10 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
+
         @list(
             'dc-accumulator' => $dc_accumulator,
+            'linkSettings' => $linkSettings,
         ) = $attributes;
 
         $post = self::get_post($attributes);
@@ -620,6 +622,14 @@ class MaxiBlocks_DynamicContent
             $item_id = $is_product ? $post->get_id() : $post->ID;
             if($this->is_repeated_post($item_id, $dc_accumulator)) {
                 return '';
+            }
+        }
+
+        if(isset($linkSettings)) {
+            if(isset($linkSettings['title']) && isset($linkSettings['url'])) {
+                if($linkSettings['title'] === $linkSettings['url']) {
+                    $content = str_replace('title="'.$linkSettings['title'].'"', 'title="$link-to-replace"', $content);
+                }
             }
         }
 

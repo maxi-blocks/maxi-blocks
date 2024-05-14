@@ -685,10 +685,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if(gettype($link) === 'string') {
-            // echo 'content before: ' . htmlentities($content) . '<br>';
             $content = str_replace('$link-to-replace', $link, $content);
-            // echo 'content after: ' . htmlentities($content) . '<br>';
-            // echo '============================<br>';
 
         }
 
@@ -708,24 +705,19 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-        // echo 'dc-source: ' . $dc_source . '<br>';
-        // echo 'dc-type: ' . $dc_type . '<br>';
-        // echo 'dc-relation: ' . $dc_relation . '<br>';
-        // echo 'dc-field: ' . $dc_field . '<br>';
-        // echo 'dc-link-status: ' . $dc_link_status . '<br>';
-        // echo 'dc-link-target: ' . $dc_link_target . '<br>';
-        // echo 'dc-accumulator: ' . $dc_accumulator . '<br>';
-        // echo '============================<br>';
-
-
-        if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+        if (!isset($dc_field) || $dc_field === 'static_text') {
             $post = $this->get_post($attributes);
+
             if(!empty($post)) {
                 $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
+
                 if($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';
                 }
+            }
+            if (empty($post) && $dc_type === 'posts') {
+                return '';
             }
 
             return $content;
@@ -887,8 +879,7 @@ class MaxiBlocks_DynamicContent
             $this->is_empty = true;
 
             // Check if the content is just one <figure> element
-            if (preg_match('/^<figure[^>]*>.*<\/figure>$/s', trim($content))) {
-
+            if (preg_match('/^(?:<a[^>]*>)?\s*<figure[^>]*>.*<\/figure>\s*(?:<\/a>)?$/s', trim($content))) {
                 return '';
             }
 

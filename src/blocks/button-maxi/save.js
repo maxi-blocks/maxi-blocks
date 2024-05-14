@@ -43,8 +43,6 @@ const save = props => {
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 
-	console.log('linkProps', linkProps);
-
 	const relValues = [];
 	if (linkOpt.noFollow) relValues.push('nofollow');
 	if (linkOpt.sponsored) relValues.push('sponsored');

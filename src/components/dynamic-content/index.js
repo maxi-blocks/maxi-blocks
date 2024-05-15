@@ -53,6 +53,7 @@ import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 import getTypes from '../../extensions/DC/getTypes';
+import showStaticOption from '../../extensions/DC/showStaticOption';
 
 /**
  * Styles
@@ -82,6 +83,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
+	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -300,7 +302,7 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					{!ignoreEmptyFields.includes(field) && (
+					{!ignoreEmptyFields.includes(field) && !isCL && (
 						<ToggleSwitch
 							label={__(
 								'Hide if no content found on frontend',
@@ -345,7 +347,7 @@ const DynamicContent = props => {
 							contentType={contentType}
 							group={acfGroup}
 							field={field}
-							isDivider={blockName === 'maxi-blocks/divider-maxi'}
+							showStaticOption={showStaticOption(blockName)}
 						/>
 					)}
 					<SelectControl

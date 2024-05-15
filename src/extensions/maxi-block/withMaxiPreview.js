@@ -12,9 +12,12 @@ import { capitalize } from 'lodash';
 const withMaxiPreview = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			if (!ownProps) {
+				return null;
+			}
 			const { attributes } = ownProps;
 
-			if (attributes.preview) {
+			if (attributes && attributes?.preview) {
 				const blockName = ownProps.name
 					.replace('maxi-blocks/', '')
 					.replace('-maxi', '');

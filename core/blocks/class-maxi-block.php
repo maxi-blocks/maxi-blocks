@@ -384,8 +384,11 @@ if (!class_exists('MaxiBlocks_Block')):
                         $allowed_tags = '<svg><img><iframe><hr>';
                         $text_content = strip_tags($content, $allowed_tags);
 
-                        // Check if the text content contains only "No content found" and spaces
-                        if (empty($text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $text_content) || preg_match('/^\s*$/', $text_content)) {
+                        // Trim the text content to remove leading and trailing whitespace
+                        $trimmed_text_content = trim($text_content);
+
+                        // Check if the trimmed text content contains only "No content found" and spaces
+                        if (empty($trimmed_text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $trimmed_text_content) || preg_match('/^\s*$/', $trimmed_text_content)) {
                             return true;
                         }
                         break;

@@ -972,7 +972,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             $field = get_field_object($request['field_id'], $request['post_id']);
 
-            if ($field['type'] === 'image') {
+            if (is_array($field) && $field['type'] === 'image') {
                 return json_encode(
                     [
                         'value' => $field['value'],
@@ -981,7 +981,9 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
-            return json_encode($field['value']);
+            if(is_array($field)) {
+                return json_encode($field['value']);
+            }
         }
 
         public function get_maxi_blocks_pro_status()

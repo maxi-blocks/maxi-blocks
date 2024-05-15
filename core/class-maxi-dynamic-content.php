@@ -28,7 +28,6 @@ class MaxiBlocks_DynamicContent
         'row-maxi',
         'slide-maxi',
         'pane-maxi',
-
     ];
 
     private static $type_to_post_type = [
@@ -305,7 +304,7 @@ class MaxiBlocks_DynamicContent
             'products' => 'product',
             'media' => 'attachment',
             'users' => 'users',
-            default => 'post',
+            default => ($cl_type === 'posts' || $cl_type === null) ? 'post' : $cl_type,
         };
 
         // Update total count if necessary
@@ -316,6 +315,13 @@ class MaxiBlocks_DynamicContent
             } else {
                 $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
             }
+        }
+
+        $max_page = (int) ceil($pagination_total / $cl_pagination_per_page);
+
+        // If there is only one page, return an empty string
+        if($max_page <= 1) {
+            return '';
         }
 
         // Safely determine the current page, defaulting to 1 if 'cl-page' is not set or is invalid
@@ -340,7 +346,6 @@ class MaxiBlocks_DynamicContent
         // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
 
-        $max_page = ceil($pagination_total / $cl_pagination_per_page);
         // Previous link
         $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
 
@@ -499,7 +504,6 @@ class MaxiBlocks_DynamicContent
                 // Generate pagination content based on the cl settings and the anchor
                 $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
 
-
                 // Insert the pagination content before the last closing tag of the original content
                 $content_before_last_tag = substr($content, 0, strrpos($content, '<'));
                 $modified_content = $content_before_last_tag . $pagination_content . $last_tag;
@@ -571,7 +575,7 @@ class MaxiBlocks_DynamicContent
             $accumulator = $context_loop['cl-accumulator'];
             if(isset($_GET['cl-page'])) {
                 $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
-                $context_loop['cl-accumulator'] = $accumulator + $cl_pagination_per_page * ($pagination_page - 1);
+                $context_loop['cl-accumulator'] = $accumulator + intval($cl_pagination_per_page) * (intval($pagination_page) - 1);
 
             }
         }
@@ -605,8 +609,10 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
+
         @list(
             'dc-accumulator' => $dc_accumulator,
+            'linkSettings' => $linkSettings,
         ) = $attributes;
 
         $post = self::get_post($attributes);
@@ -619,8 +625,15 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        if(isset($linkSettings)) {
+            if(isset($linkSettings['title']) && isset($linkSettings['url'])) {
+                if($linkSettings['title'] === $linkSettings['url']) {
+                    $content = str_replace('title="'.$linkSettings['title'].'"', 'title="$link-to-replace"', $content);
+                }
+            }
+        }
+
         if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
-            $post =  self::get_post($attributes);
             if (empty($post) || !isset($post->post_author)) {
                 $link = '';
             } else {
@@ -649,20 +662,18 @@ class MaxiBlocks_DynamicContent
                 }
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
-            $product = self::get_post($attributes);
 
-            if (empty($product)) {
+            if (empty($post)) {
                 return $content;
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
-                $link = $product->add_to_cart_url();
+                $link = $post->add_to_cart_url();
             } else {
-                $link = get_permalink($product->get_id());
+                $link = get_permalink($post->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
             $link = wc_get_cart_url();
         } else {
-            $post = self::get_post($attributes);
             if (empty($post)) {
                 return $content;
             }
@@ -675,6 +686,7 @@ class MaxiBlocks_DynamicContent
 
         if(gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
+
         }
 
         return $content;
@@ -693,15 +705,19 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
-
-        if (!isset($attributes['dc-field']) || $attributes['dc-field'] === 'static_text') {
+        if (!isset($dc_field) || $dc_field === 'static_text') {
             $post = $this->get_post($attributes);
+
             if(!empty($post)) {
                 $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
+
                 if($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';
                 }
+            }
+            if (empty($post) && $dc_type === 'posts') {
+                return '';
             }
 
             return $content;
@@ -757,9 +773,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
-
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
-
             $content = str_replace('$text-to-replace', $response, $content);
 
             return $content;
@@ -865,8 +879,7 @@ class MaxiBlocks_DynamicContent
             $this->is_empty = true;
 
             // Check if the content is just one <figure> element
-            if (preg_match('/^<figure[^>]*>.*<\/figure>$/s', trim($content))) {
-
+            if (preg_match('/^(?:<a[^>]*>)?\s*<figure[^>]*>.*<\/figure>\s*(?:<\/a>)?$/s', trim($content))) {
                 return '';
             }
 
@@ -1731,11 +1744,11 @@ class MaxiBlocks_DynamicContent
                 }, $acf_value));
                 break;
             case 'image':
-                if ($acf_data['return_format'] === 'url') {
+                if (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'url') {
                     $content = [
                         'url' => $acf_value,
                     ];
-                } elseif ($acf_data['return_format'] === 'id') {
+                } elseif (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'id') {
                     $content = [
                         'id' => $acf_value,
                     ];
@@ -2037,7 +2050,9 @@ class MaxiBlocks_DynamicContent
         $args = [
             'orderby' => $order_by_arg,
             'order' => $order,
-            $limit_key => $accumulator + 1,
+           // $limit_key => $accumulator + 1,
+            $limit_key => 1, // Fetch only one post
+            'offset' => $accumulator, // Set the offset to get the specific post
         ];
 
         if($relation === 'by-category') {

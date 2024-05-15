@@ -49,6 +49,7 @@ import {
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
 } from '../../extensions/DC/withMaxiContextLoop';
 import getTypes from '../../extensions/DC/getTypes';
+import showStaticOption from '../../extensions/DC/showStaticOption';
 import ACFSettingsControl from '../dynamic-content/acf-settings-control';
 
 /**
@@ -346,7 +347,7 @@ const ContextLoop = props => {
 							onChange={onChange}
 							contentType={contentType}
 							group={acfGroup}
-							isDivider={blockName === 'maxi-blocks/divider-maxi'}
+							showStaticOption={showStaticOption(blockName)}
 							isCL
 						/>
 					)}

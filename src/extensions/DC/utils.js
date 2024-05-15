@@ -179,8 +179,6 @@ const getCustomPostTypeFields = (contentType, type) => {
 	// TODO: refactor possibly by filtering post/page fields
 	const fields = [];
 
-	const postType = select('core').getPostType(type);
-
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -188,12 +186,23 @@ const getCustomPostTypeFields = (contentType, type) => {
 		});
 	};
 
+	if (contentType === 'divider') {
+		addField('Static', 'static_text');
+		return fields;
+	}
+
+	const postType = select('core').getPostType(type);
+
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {
 			addField('Featured image', 'featured_media');
 		}
 
 		return fields;
+	}
+
+	if (contentType === 'text' || contentType === 'button') {
+		addField('Static text', 'static_text');
 	}
 
 	if (postType.supports.title) {

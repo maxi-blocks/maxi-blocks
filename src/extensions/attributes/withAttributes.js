@@ -51,6 +51,9 @@ const allowedBlocks = [
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
+		if (!props) {
+			return null;
+		}
 		const { attributes, name: blockName, clientId, setAttributes } = props;
 		const { uniqueID } = attributes;
 

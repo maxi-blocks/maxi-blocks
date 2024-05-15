@@ -46,7 +46,6 @@ const contextLoop = {
 	},
 	'cl-pagination-per-page': {
 		type: 'number',
-		default: 3,
 	},
 	'cl-pagination-total': {
 		type: 'number',

@@ -27,6 +27,8 @@ import {
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { copyPasteMapping } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { withMaxiContextLoopContext } from '../../extensions/DC';
 
 /**
  * Content
@@ -226,4 +228,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

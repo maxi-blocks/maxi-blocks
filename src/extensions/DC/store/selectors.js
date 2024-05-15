@@ -34,6 +34,12 @@ const selectors = {
 
 		return false;
 	},
+	getACFGroups: state => {
+		return state?.acfGroups;
+	},
+	getACFFields: (state, groupId) => {
+		return state?.acfFields?.[groupId];
+	},
 };
 
 export default selectors;

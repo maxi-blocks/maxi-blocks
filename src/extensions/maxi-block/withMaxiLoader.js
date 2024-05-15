@@ -74,6 +74,10 @@ const withMaxiLoader = createHigherOrderComponent(
 				)
 			)
 				return <WrappedComponent {...ownProps} />;
+
+			if (!ownProps) {
+				return null;
+			}
 			const {
 				clientId,
 				attributes: { uniqueID },

@@ -179,8 +179,6 @@ const getCustomPostTypeFields = (contentType, type) => {
 	// TODO: refactor possibly by filtering post/page fields
 	const fields = [];
 
-	const postType = select('core').getPostType(type);
-
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -188,12 +186,23 @@ const getCustomPostTypeFields = (contentType, type) => {
 		});
 	};
 
+	if (contentType === 'divider') {
+		addField('Static', 'static_text');
+		return fields;
+	}
+
+	const postType = select('core').getPostType(type);
+
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {
 			addField('Featured image', 'featured_media');
 		}
 
 		return fields;
+	}
+
+	if (contentType === 'text' || contentType === 'button') {
+		addField('Static text', 'static_text');
 	}
 
 	if (postType.supports.title) {
@@ -400,26 +409,20 @@ export const validationsValues = (
 	contentType,
 	source = 'wp',
 	linkTarget,
-	isCL = false
+	isCL = false,
+	acfGroup
 ) => {
 	if (
-		source === 'acf' ||
-		[
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomPostTypesLoaded(),
-			...select(
-				'maxiBlocks/dynamic-content'
-			).getWasCustomTaxonomiesLoaded(),
-		].includes(variableValue)
+		!select('maxiBlocks/dynamic-content').getWasCustomPostTypesLoaded() ||
+		!select('maxiBlocks/dynamic-content').getWasCustomTaxonomiesLoaded()
 	)
 		return {};
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
-	const fieldResult = getFields(contentType, variableValue)?.map(
-		x => x.value
-	);
+	const fieldResult =
+		source !== 'acf' &&
+		getFields(contentType, variableValue)?.map(x => x.value);
 	const currentTemplateType = getCurrentTemplateSlug();
 	const relationOptions = getRelationOptions(
 		variableValue,
@@ -429,9 +432,12 @@ export const validationsValues = (
 	const relationResult = Array.isArray(relationOptions)
 		? relationOptions.map(x => x.value)
 		: [];
-	const typeResult = getTypes(contentType, false, currentTemplateType)?.map(
-		item => item.value
-	);
+	const typeResult = getTypes(
+		contentType,
+		false,
+		currentTemplateType,
+		source
+	)?.map(item => item.value);
 	const linkTargetResult = getLinkTargets(variableValue, field).map(
 		item => item.value
 	);

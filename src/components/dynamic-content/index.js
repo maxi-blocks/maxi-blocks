@@ -53,6 +53,7 @@ import { getUpdatedImgSVG } from '../../extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
 import { getDCValues, LoopContext } from '../../extensions/DC';
 import getTypes from '../../extensions/DC/getTypes';
+import showStaticOption from '../../extensions/DC/showStaticOption';
 
 /**
  * Styles
@@ -82,6 +83,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
+	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -136,6 +138,7 @@ const DynamicContent = props => {
 		weekday,
 		year,
 		customFormat,
+		acfGroup,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -299,7 +302,7 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					{!ignoreEmptyFields.includes(field) && (
+					{!ignoreEmptyFields.includes(field) && !isCL && (
 						<ToggleSwitch
 							label={__(
 								'Hide if no content found on frontend',
@@ -324,7 +327,9 @@ const DynamicContent = props => {
 									relation,
 									contentType,
 									value,
-									linkTarget
+									linkTarget,
+									false,
+									acfGroup
 								);
 
 								changeProps({
@@ -340,8 +345,9 @@ const DynamicContent = props => {
 						<ACFSettingsControl
 							onChange={onChange}
 							contentType={contentType}
-							group={dcValues.acfGroup}
+							group={acfGroup}
 							field={field}
+							showStaticOption={showStaticOption(blockName)}
 						/>
 					)}
 					<SelectControl
@@ -356,7 +362,9 @@ const DynamicContent = props => {
 								relation,
 								contentType,
 								source,
-								linkTarget
+								linkTarget,
+								false,
+								acfGroup
 							);
 
 							changeProps({

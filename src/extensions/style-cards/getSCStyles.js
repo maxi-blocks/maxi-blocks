@@ -554,7 +554,7 @@ const getWPNativeStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix} a`,
 					level === 'p' &&
-						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item)`,
+						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 					level === 'p' &&

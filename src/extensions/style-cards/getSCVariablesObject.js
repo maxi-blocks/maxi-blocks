@@ -99,39 +99,26 @@ const getSCVariablesObject = (
 		'padding-left',
 		'padding-right',
 	];
+
+	const mergeStyleCards = (defaultStyleCard, styleCard) =>
+		merge(
+			{
+				...cloneDeep(replaceUndefinedWithNull(defaultStyleCard)),
+			},
+			{
+				...cloneDeep(replaceUndefinedWithNull(styleCard)),
+			}
+		);
+
 	const SC = {
-		dark: {
-			...merge(
-				{
-					...cloneDeep(
-						replaceUndefinedWithNull(
-							styleCards?.dark?.defaultStyleCard
-						)
-					),
-				},
-				{
-					...cloneDeep(
-						replaceUndefinedWithNull(styleCards?.dark?.styleCard)
-					),
-				}
-			),
-		},
-		light: {
-			...merge(
-				{
-					...cloneDeep(
-						replaceUndefinedWithNull(
-							styleCards?.light?.defaultStyleCard
-						)
-					),
-				},
-				{
-					...cloneDeep(
-						replaceUndefinedWithNull(styleCards?.light?.styleCard)
-					),
-				}
-			),
-		},
+		dark: mergeStyleCards(
+			styleCards?.dark?.defaultStyleCard,
+			styleCards?.dark?.styleCard
+		),
+		light: mergeStyleCards(
+			styleCards?.light?.defaultStyleCard,
+			styleCards?.light?.styleCard
+		),
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 

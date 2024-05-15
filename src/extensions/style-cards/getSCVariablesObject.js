@@ -8,6 +8,7 @@ import { getIsValid } from '../styles/utils';
 import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 import getTypographyStyles from '../styles/helpers/getTypographyStyles';
+import replaceUndefinedWithNull from './utils';
 
 /**
  * External dependencies
@@ -101,14 +102,34 @@ const getSCVariablesObject = (
 	const SC = {
 		dark: {
 			...merge(
-				{ ...cloneDeep(styleCards?.dark?.defaultStyleCard) },
-				{ ...cloneDeep(styleCards?.dark?.styleCard) }
+				{
+					...cloneDeep(
+						replaceUndefinedWithNull(
+							styleCards?.dark?.defaultStyleCard
+						)
+					),
+				},
+				{
+					...cloneDeep(
+						replaceUndefinedWithNull(styleCards?.dark?.styleCard)
+					),
+				}
 			),
 		},
 		light: {
 			...merge(
-				{ ...cloneDeep(styleCards?.light?.defaultStyleCard) },
-				{ ...cloneDeep(styleCards?.light?.styleCard) }
+				{
+					...cloneDeep(
+						replaceUndefinedWithNull(
+							styleCards?.light?.defaultStyleCard
+						)
+					),
+				},
+				{
+					...cloneDeep(
+						replaceUndefinedWithNull(styleCards?.light?.styleCard)
+					),
+				}
 			),
 		},
 	};

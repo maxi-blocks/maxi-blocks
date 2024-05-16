@@ -658,7 +658,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingAfterReset = {
 			'button-padding-top-general': '15',
-			'button-padding-top-xl': undefined,
+			'button-padding-top-xl': '15',
 			'button-padding-top-xxl': '23',
 		};
 

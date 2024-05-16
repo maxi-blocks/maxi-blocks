@@ -1,4 +1,8 @@
 const replaceUndefinedWithNull = obj => {
+	if (typeof obj !== 'object' || obj === null) {
+		return obj;
+	}
+
 	Object.entries(obj).forEach(([key, value]) => {
 		if (value === undefined) {
 			obj[key] = null;

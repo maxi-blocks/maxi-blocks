@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -210,6 +210,10 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 16 May 2024_
+MaxiBlocks v1.8.5
+* Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.
+
 _Updates 15 May 2024_
 MaxiBlocks v1.8.4
 * Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.
@@ -227,14 +231,6 @@ MaxiBlocks v1.8.4
 * Fix: Removed legacy code that caused Dynamic Content options to freeze when a pattern contained links in child blocks, improving overall stability and usability.
 * Fix: Resolved an issue with incorrect bottom spacing for the Group Maxi block on the frontend, ensuring consistent layout and design.
 * Fix: Corrected the link title behaviour when using the URL as the title in combination with pagination. The title now accurately reflects the intended Dynamic Content value, ensuring proper accessibility and user experience.
-
-_Updates 18 April 2024_
-MaxiBlocks v1.8.3
-* Update: Laid the groundwork for the upcoming MaxiBlocks theme, ensuring seamless integration and enhanced user experience.
-* Update: Implemented console error logging for the style processor on the backend, facilitating easier troubleshooting and issue resolution.
-* Fix: Resolved an issue with the visited hover colour for consistent and accurate colour representation across the site.
-* Fix: Addressed transition errors occurring in the Firefox browser, providing a smoother and more reliable user experience.
-* Fix: Eliminated PHP warnings related to Dynamic Content on the frontend, improving overall plugin stability and performance.
 
 == Upgrade Notice ==
 

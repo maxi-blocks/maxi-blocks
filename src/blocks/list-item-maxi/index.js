@@ -32,7 +32,10 @@ import { textIcon } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import {
+	blockMigrator,
+	listItemDoubleLinkMigrator,
+} from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -53,6 +56,7 @@ registerBlockType(metadata, {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [listItemDoubleLinkMigrator],
 	}),
 	customCss,
 	scProps,

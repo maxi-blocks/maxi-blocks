@@ -1,3 +1,7 @@
+_Updates 16 May 2024_
+MaxiBlocks v1.8.5
+* Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.
+
 _Updates 15 May 2024_
 MaxiBlocks v1.8.4
 * Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.

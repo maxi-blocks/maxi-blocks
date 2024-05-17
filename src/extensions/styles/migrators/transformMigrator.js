@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
+import { getBreakpointFromAttribute } from '../utils';
 import { getBlockSelectorsByUniqueID } from './utils';
 
 /**

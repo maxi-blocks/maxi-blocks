@@ -35,7 +35,14 @@ import {
 	Configure,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
-import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
+import {
+	isEmpty,
+	uniqueId,
+	orderBy,
+	capitalize,
+	unescape,
+	merge,
+} from 'lodash';
 import DOMPurify from 'dompurify';
 
 /**
@@ -748,10 +755,63 @@ const LibraryContainer = props => {
 
 		const newId = `sc_${parsedCard.name.toLowerCase()}`;
 
+		const defaultSCvalues = {
+			gutenberg_blocks_status: true,
+			dark: {
+				defaultStyleCard: {
+					button: { 'hover-background-color-global': true },
+					link: {
+						'link-color-global': true,
+						'link-palette-color': 5,
+					},
+					navigation: {
+						'menu-item-color-global': true,
+						'menu-item-palette-color': 5,
+						'menu-item-hover-color-global': true,
+						'menu-item-hover-palette-color': 6,
+						'menu-item-visited-palette-color': 2,
+						'menu-item-sub-bg-color-global': true,
+						'menu-burger-color-global': true,
+						'menu-burger-palette-color': 1,
+						'font-size-m': 22,
+						'line-height-unit-m': '%',
+						'line-height-m': 180,
+						'overwrite-mobile': true,
+						'show-mobile-down-from': 1024,
+						'remove-hover-underline': true,
+					},
+				},
+			},
+			light: {
+				defaultStyleCard: {
+					button: { 'hover-background-color-global': true },
+					link: {
+						'link-color-global': true,
+						'link-palette-color': 5,
+					},
+					navigation: {
+						'menu-item-color-global': true,
+						'menu-item-palette-color': 5,
+						'menu-item-hover-color-global': true,
+						'menu-item-hover-palette-color': 6,
+						'menu-item-visited-palette-color': 2,
+						'menu-item-sub-bg-color-global': true,
+						'menu-burger-color-global': true,
+						'menu-burger-palette-color': 1,
+						'font-size-m': 22,
+						'line-height-unit-m': '%',
+						'line-height-m': 180,
+						'overwrite-mobile': true,
+						'show-mobile-down-from': 1024,
+						'remove-hover-underline': true,
+					},
+				},
+			},
+		};
+
 		const newAllSCs = {
 			...styleCards,
-			// gutenberg_blocks_status: true should be true by default
-			[newId]: { ...parsedCard, gutenberg_blocks_status: true },
+			[newId]: merge(parsedCard, defaultSCvalues),
 		};
 
 		saveMaxiStyleCards(newAllSCs);

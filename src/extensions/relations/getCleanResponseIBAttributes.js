@@ -3,7 +3,7 @@
  */
 import { getClientIdFromUniqueId } from '../attributes';
 import { handleSetAttributes } from '../maxi-block';
-import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
+import { getBreakpointFromAttribute } from '../styles/utils';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
 

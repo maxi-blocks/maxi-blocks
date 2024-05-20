@@ -66,18 +66,7 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
-			if (
-				siteEditorPreviewIframes.length > 0 ||
-				document.querySelector(
-					'.editor-post-template__swap-template-modal'
-				)
-			)
-				return <WrappedComponent {...ownProps} />;
-
-			if (!ownProps) {
-				return null;
-			}
+			if (!ownProps) return null;
 			const {
 				clientId,
 				attributes: { uniqueID },

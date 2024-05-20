@@ -23,6 +23,7 @@ const typographyAttributesCreator = (
 			}),
 			'font-size-unit': {
 				type: 'string',
+				default: 'px',
 			},
 			'font-size': {
 				type: 'number',
@@ -87,6 +88,7 @@ const typographyAttributesCreator = (
 				},
 				'bottom-gap-unit': {
 					type: 'string',
+					default: 'px',
 				},
 			}),
 		},

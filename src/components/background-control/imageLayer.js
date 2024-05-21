@@ -27,6 +27,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import DynamicContent from '../dynamic-content';
 
 /**
  * External dependencies
@@ -695,43 +696,52 @@ const ImageLayer = props => {
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
 				<>
-					<MediaUploaderControl
-						mediaID={mediaID}
-						isImageUrl={getAttributeValue({
-							target: 'background-image-isImageUrl',
-							props: imageOptions,
-							prefix,
-						})}
-						onSelectImage={handleSelectImage}
-						onRemoveImage={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-mediaID',
-									false,
-									prefix
-								)]: '',
-								[getAttributeKey(
-									'background-image-mediaURL',
-									false,
-									prefix
-								)]: '',
-								[getAttributeKey(
-									'background-image-width',
-									isHover,
-									prefix
-								)]: '',
-								[getAttributeKey(
-									'background-image-height',
-									isHover,
-									prefix
-								)]: '',
-							})
-						}
-					/>
-					<ImageUrlUpload
-						attributes={imageOptions}
-						prefix={`${prefix}background-image-`}
-						onChange={handleSelectImage}
+					{!imageOptions['dc-status'] && (
+						<>
+							<MediaUploaderControl
+								mediaID={mediaID}
+								isImageUrl={getAttributeValue({
+									target: 'background-image-isImageUrl',
+									props: imageOptions,
+									prefix,
+								})}
+								onSelectImage={handleSelectImage}
+								onRemoveImage={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-mediaID',
+											false,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-mediaURL',
+											false,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-width',
+											isHover,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-height',
+											isHover,
+											prefix
+										)]: '',
+									})
+								}
+							/>
+							<ImageUrlUpload
+								attributes={imageOptions}
+								prefix={`${prefix}background-image-`}
+								onChange={handleSelectImage}
+							/>
+						</>
+					)}
+					<DynamicContent
+						{...getGroupAttributes(imageOptions, 'dynamicContent')}
+						onChange={onChange}
+						contentType='image'
 					/>
 				</>
 			)}

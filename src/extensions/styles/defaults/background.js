@@ -3,6 +3,7 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
+import { dynamicContent } from './dynamicContent';
 
 const prefix = 'background-';
 
@@ -255,15 +256,18 @@ export const backgroundColor = breakpointAttributesCreator({
 	obj: rawBackgroundColor,
 });
 
-export const backgroundImage = breakpointAttributesCreator({
-	obj: rawBackgroundImage,
-	noBreakpointAttr: [
-		'background-image-mediaURL',
-		'background-image-mediaID',
-		'background-image-parallax-alt',
-		'background-image-parallax-alt-selector',
-	],
-});
+export const backgroundImage = {
+	...breakpointAttributesCreator({
+		obj: rawBackgroundImage,
+		noBreakpointAttr: [
+			'background-image-mediaURL',
+			'background-image-mediaID',
+			'background-image-parallax-alt',
+			'background-image-parallax-alt-selector',
+		],
+	}),
+	...dynamicContent,
+};
 
 export const backgroundVideo = breakpointAttributesCreator({
 	obj: rawBackgroundVideo,

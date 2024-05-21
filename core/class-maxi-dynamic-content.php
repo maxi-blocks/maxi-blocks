@@ -2279,10 +2279,12 @@ class MaxiBlocks_DynamicContent
 
             foreach ($blocks_to_check as $block) {
                 if (strpos($unique_id, $block) !== false) {
-
                     // Replace the invalid parts of the data-stroke attribute
                     $content_sanitized = str_replace(',1))"#081219"', ',1))"', $content);
                     $content_sanitized = str_replace(',1))\\u0022#081219\\u0022', ',1))\\u0022', $content_sanitized);
+
+                    // Remove <div> elements containing <svg> with the class 'maxi-background-displayer__svg'
+                    $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
 
                     $allowed_tags = '<svg><img><iframe><hr>';
                     $text_content = strip_tags($content_sanitized, $allowed_tags);

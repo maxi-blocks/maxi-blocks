@@ -520,22 +520,31 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
+    private function check_inner_blocks($block, $attributes, $content)
+    {
+        if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
+            foreach ($block->inner_blocks as $inner_block) {
+                // Access the attributes of the inner block
+                $inner_block_attributes = $inner_block->attributes;
+
+                // Check if the inner block has dc-status set to true
+                if (isset($inner_block_attributes['dc-status']) && $inner_block_attributes['dc-status']) {
+                    $content = self::render_dc_classes($attributes, $content);
+                    break;
+                }
+            }
+        }
+
+        return $content;
+    }
+
 
     public function render_dc($attributes, $content, $block)
     {
 
         if (!array_key_exists('dc-status', $attributes)) {
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
-                foreach ($block->inner_blocks as $inner_block) {
-                    // Access the attributes of the inner block
-                    $inner_block_attributes = $inner_block->attributes;
-
-                    // Check if the inner block has dc-status set to true
-                    if (isset($inner_block_attributes['dc-status']) && $inner_block_attributes['dc-status']) {
-                        $content = self::render_dc_classes($attributes, $content);
-                        break;
-                    }
-                }
+                $content = $this->check_inner_blocks($block, $attributes, $content);
             }
 
             if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
@@ -546,6 +555,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (!$attributes['dc-status']) {
+            $content = $this->check_inner_blocks($block, $attributes, $content);
+
             return $content;
         }
 

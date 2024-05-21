@@ -1,8 +1,10 @@
 /**
  * Internal dependencies
  */
-import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
-import { replaceAttrKeyBreakpoint } from '../styles/utils';
+import {
+	replaceAttrKeyBreakpoint,
+	getBreakpointFromAttribute,
+} from '../styles/utils';
 
 /**
  * External dependencies

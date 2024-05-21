@@ -262,13 +262,15 @@ if (!class_exists('MaxiBlocks_Block')):
             );
         }
 
-        public function render_block($attributes, $content)
+        public function render_block($attributes, $content, $block)
         {
+
 
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
+
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);
-                $dc_content = $dynamic_content->render_dc($attributes, $content);
+                $dc_content = $dynamic_content->render_dc($attributes, $content, $block);
                 return $dc_content;
             }
 

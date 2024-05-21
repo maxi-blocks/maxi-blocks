@@ -521,18 +521,31 @@ class MaxiBlocks_DynamicContent
     }
 
 
-    public function render_dc($attributes, $content)
+    public function render_dc($attributes, $content, $block)
     {
 
         if (!array_key_exists('dc-status', $attributes)) {
+            if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
+                foreach ($block->inner_blocks as $inner_block) {
+                    // Access the attributes of the inner block
+                    $inner_block_attributes = $inner_block->attributes;
+
+                    // Check if the inner block has dc-status set to true
+                    if (isset($inner_block_attributes['dc-status']) && $inner_block_attributes['dc-status']) {
+                        $content = self::render_dc_classes($attributes, $content);
+                        break;
+                    }
+                }
+            }
+
             if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
+                $content = self::render_dc_classes($attributes, $content);
                 return $this->render_pagination($attributes, $content);
             }
             return $content;
         }
 
         if (!$attributes['dc-status']) {
-            $content = self::render_dc_classes($attributes, $content);
             return $content;
         }
 
@@ -899,11 +912,12 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-hide' => $dc_hide,
             'dc-field' => $dc_field,
+            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         $classes = [];
 
-        if ($this->check_if_content_is_empty($attributes, $content)) {
+        if ($this->check_if_content_is_empty($attributes, $content) || (!in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)) {
             $content = str_replace('class="', 'class="maxi-block--hidden ', $content);
             return $content;
         }
@@ -2239,7 +2253,9 @@ class MaxiBlocks_DynamicContent
 
     public function check_if_content_is_empty($attributes, $content)
     {
+
         $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
+
         if (
             isset($attributes['uniqueID']) &&
             (
@@ -2265,12 +2281,7 @@ class MaxiBlocks_DynamicContent
 
                     // Check if the trimmed text content contains only "No content found" and spaces
                     if (empty($trimmed_text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $trimmed_text_content) || preg_match('/^\s*$/', $trimmed_text_content)) {
-                        echo $unique_id.'<br>';
-                        echo htmlspecialchars($content).'<br>';
-                        echo 'STRIP'.  htmlspecialchars($text_content).'<br>';
-                        echo 'TRIMMED'.  $trimmed_text_content.'<br>';
-                        echo $text_content.'<br>';
-                        echo '-----------------<br>';
+
                         return true;
                     }
                     break;

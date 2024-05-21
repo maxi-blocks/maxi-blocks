@@ -532,6 +532,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if (!$attributes['dc-status']) {
+            $content = self::render_dc_classes($attributes, $content);
             return $content;
         }
 
@@ -901,6 +902,11 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $classes = [];
+
+        if ($this->check_if_content_is_empty($attributes, $content)) {
+            $content = str_replace('class="', 'class="maxi-block--hidden ', $content);
+            return $content;
+        }
 
         $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
             ? 'maxi-block--hidden'
@@ -2228,6 +2234,49 @@ class MaxiBlocks_DynamicContent
         self::$global_dc_accumulator_cl = $dc_accumulator;
         self::$global_dc_id_cl = $post_id;
 
+        return false;
+    }
+
+    public function check_if_content_is_empty($attributes, $content)
+    {
+        $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
+        if (
+            isset($attributes['uniqueID']) &&
+            (
+                (isset($attributes['cl-status']) && $attributes['cl-status']) ||
+                (isset($attributes['dc-status']) && $attributes['dc-status']) ||
+                (isset($attributes['dc-hide']) && $attributes['dc-hide'])
+            )
+        ) {
+            $unique_id = $attributes['uniqueID'];
+
+            foreach ($blocks_to_check as $block) {
+                if (strpos($unique_id, $block) !== false) {
+
+                    // Replace the invalid parts of the data-stroke attribute
+                    $content_sanitized = str_replace(',1))"#081219"', ',1))"', $content);
+                    $content_sanitized = str_replace(',1))\\u0022#081219\\u0022', ',1))\\u0022', $content_sanitized);
+
+                    $allowed_tags = '<svg><img><iframe><hr>';
+                    $text_content = strip_tags($content_sanitized, $allowed_tags);
+
+                    // Trim the text content to remove leading and trailing whitespace
+                    $trimmed_text_content = trim($text_content);
+
+                    // Check if the trimmed text content contains only "No content found" and spaces
+                    if (empty($trimmed_text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $trimmed_text_content) || preg_match('/^\s*$/', $trimmed_text_content)) {
+                        echo $unique_id.'<br>';
+                        echo htmlspecialchars($content).'<br>';
+                        echo 'STRIP'.  htmlspecialchars($text_content).'<br>';
+                        echo 'TRIMMED'.  $trimmed_text_content.'<br>';
+                        echo $text_content.'<br>';
+                        echo '-----------------<br>';
+                        return true;
+                    }
+                    break;
+                }
+            }
+        }
         return false;
     }
 }

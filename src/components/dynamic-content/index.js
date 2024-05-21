@@ -180,7 +180,14 @@ const DynamicContent = props => {
 			}
 		);
 
-		if (hasChangesToSave) onChange(params);
+		if (hasChangesToSave) {
+			const filteredObj = Object.fromEntries(
+				Object.entries(params).filter(
+					([key, value]) => value !== undefined
+				)
+			);
+			onChange(filteredObj);
+		}
 	};
 
 	const fetchDcData = useCallback(async () => {
@@ -343,7 +350,7 @@ const DynamicContent = props => {
 					)}
 					{source === 'acf' && (
 						<ACFSettingsControl
-							onChange={onChange}
+							onChange={changeProps}
 							contentType={contentType}
 							group={acfGroup}
 							field={field}

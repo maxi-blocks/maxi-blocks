@@ -212,9 +212,9 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 _Updates 22 May 2024_
 MaxiBlocks v1.8.6
-* Fix: Resolved an issue where broken icons were causing content to be hidden for Pure Footer Pro 103 / 104 / 105. This ensures that the footer content is properly displayed, enhancing the overall user experience.
-* Update: Implemented support for using empty Group and Column Maxi blocks (without Dynamic Content blocks inside), providing more flexibility in designing layouts.
-* Fix: Addressed pagination issues with Pure Blog Pro 12 and 24. To resolve this, Dynamic Content needs to be enabled for all blocks within these patterns, ensuring seamless pagination functionality.
+* Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
+* Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
+* Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
 
 _Updates 16 May 2024_
 MaxiBlocks v1.8.5

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.8.5
+Stable tag: 1.8.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 22 May 2024_
+MaxiBlocks v1.8.6
+* Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
+* Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
+* Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
 
 _Updates 16 May 2024_
 MaxiBlocks v1.8.5

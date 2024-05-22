@@ -743,11 +743,15 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         if (!isset($dc_field) || $dc_field === 'static_text') {
+            echo 'static_text<br>';
+            echo $attributes['uniqueID'].'<br>';
             $post = $this->get_post($attributes);
 
             if(!empty($post)) {
                 $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
+
+                echo $item_id.'<br>';
 
                 if($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';
@@ -756,7 +760,6 @@ class MaxiBlocks_DynamicContent
             if (empty($post) && $dc_type === 'posts') {
                 return '';
             }
-
             return $content;
         }
 
@@ -815,7 +818,6 @@ class MaxiBlocks_DynamicContent
 
             return $content;
         }
-
 
         $content = str_replace('$text-to-replace', $response, $content);
 
@@ -939,6 +941,16 @@ class MaxiBlocks_DynamicContent
 
         $classes = [];
 
+        $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
+        ? 'maxi-block--hidden'
+        : '';
+
+        $content = str_replace(
+            '$class-to-replace',
+            implode(' ', array_filter($classes)),
+            $content
+        );
+
         if ($this->check_if_content_is_empty($attributes, $content) || (!in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)) {
             // Add the class only to elements that don't have it yet
             $content = preg_replace_callback(
@@ -959,22 +971,6 @@ class MaxiBlocks_DynamicContent
             );
 
             return $content;
-        }
-
-
-        if ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty) {
-            $classes[] = 'maxi-block--hidden';
-        }
-
-        $class_to_add = implode(' ', array_filter($classes));
-
-        // Only replace the placeholder if the class doesn't already exist
-        if (strpos($content, 'maxi-block--hidden') === false && !empty($class_to_add)) {
-            $content = str_replace(
-                '$class-to-replace',
-                $class_to_add,
-                $content
-            );
         }
 
         return $content;

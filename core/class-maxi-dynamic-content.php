@@ -935,28 +935,51 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-hide' => $dc_hide,
             'dc-field' => $dc_field,
-            'dc-link-status' => $dc_link_status,
         ) = $attributes;
 
         $classes = [];
 
         if ($this->check_if_content_is_empty($attributes, $content) || (!in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)) {
-            $content = str_replace('class="', 'class="maxi-block--hidden ', $content);
+            // Add the class only to elements that don't have it yet
+            $content = preg_replace_callback(
+                '/<([a-z]+)([^>]*?)class="([^"]*?)"/i',
+                function ($matches) {
+                    $tag = $matches[1];
+                    $attributes = $matches[2];
+                    $classes = $matches[3];
+
+                    // Check if the class already exists
+                    if (strpos($classes, 'maxi-block--hidden') === false) {
+                        $classes = 'maxi-block--hidden ' . $classes;
+                    }
+
+                    return "<$tag$attributes class=\"$classes\"";
+                },
+                $content
+            );
+
             return $content;
         }
 
-        $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
-            ? 'maxi-block--hidden'
-            : '';
 
-        $content = str_replace(
-            '$class-to-replace',
-            implode(' ', array_filter($classes)),
-            $content
-        );
+        if ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty) {
+            $classes[] = 'maxi-block--hidden';
+        }
+
+        $class_to_add = implode(' ', array_filter($classes));
+
+        // Only replace the placeholder if the class doesn't already exist
+        if (strpos($content, 'maxi-block--hidden') === false && !empty($class_to_add)) {
+            $content = str_replace(
+                '$class-to-replace',
+                $class_to_add,
+                $content
+            );
+        }
 
         return $content;
     }
+
 
     public function get_current_archive_type_and_id()
     {

@@ -743,15 +743,11 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         if (!isset($dc_field) || $dc_field === 'static_text') {
-            echo 'static_text<br>';
-            echo $attributes['uniqueID'].'<br>';
             $post = $this->get_post($attributes);
 
             if(!empty($post)) {
                 $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
-
-                echo $item_id.'<br>';
 
                 if($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';

@@ -522,6 +522,13 @@ class MaxiBlocks_DynamicContent
 
     private function check_inner_blocks($block, $attributes, $content)
     {
+        // Recursively check inner blocks
+        $content = $this->recursive_check($block, $attributes, $content);
+        return $content;
+    }
+
+    private function recursive_check($block, $attributes, $content)
+    {
         if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
             foreach ($block->inner_blocks as $inner_block) {
                 // Access the attributes of the inner block
@@ -532,6 +539,9 @@ class MaxiBlocks_DynamicContent
                     $content = self::render_dc_classes($attributes, $content);
                     break;
                 }
+
+                // Recursively check the inner blocks of the current inner block
+                $content = $this->recursive_check($inner_block, $inner_block_attributes, $content);
             }
         }
 
@@ -539,10 +549,13 @@ class MaxiBlocks_DynamicContent
     }
 
 
+
     public function render_dc($attributes, $content, $block)
     {
 
+
         if (!array_key_exists('dc-status', $attributes)) {
+
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
                 $content = $this->check_inner_blocks($block, $attributes, $content);
             }
@@ -556,7 +569,6 @@ class MaxiBlocks_DynamicContent
 
         if (!$attributes['dc-status']) {
             $content = $this->check_inner_blocks($block, $attributes, $content);
-
             return $content;
         }
 

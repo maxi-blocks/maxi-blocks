@@ -10,6 +10,7 @@ import reducer from './reducer';
 import actions from './actions';
 import selectors from './selectors';
 import controls from './controls';
+import resolvers from './resolvers';
 
 /**
  * Register Store
@@ -19,6 +20,7 @@ const store = createReduxStore('maxiBlocks/dynamic-content', {
 	actions,
 	selectors,
 	controls,
+	resolvers,
 });
 
 register(store);

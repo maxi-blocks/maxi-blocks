@@ -140,6 +140,19 @@ body.maxi-blocks--active {
 	.wp-block-template-part:has(.maxi-block) {
 		min-width: 100%;
 		max-width: 100%;
+		margin-block-start: 0;
+		margin-block-end: 0;
+	}
+	.maxi-block {
+		.maxi-block--use-sc,
+		&.maxi-block--use-sc {
+			margin-block-start: 0;
+			margin-block-end: 0;
+		}
+	}
+	main.maxi-block--use-sc:has(.maxi-block) {
+		margin-block-start: 0;
+		margin-block-end: 0;
 	}
 }
 

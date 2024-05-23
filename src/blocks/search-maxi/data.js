@@ -213,6 +213,7 @@ const customCss = {
 		'close icon',
 	],
 };
+const ariaLabelsCategories = ['block', 'button', 'input', 'icon', 'close icon'];
 const transition = {
 	block: {
 		border: {
@@ -314,5 +315,6 @@ export {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	ariaLabelsCategories,
 };
 export default data;

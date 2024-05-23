@@ -990,7 +990,7 @@ class Relation {
 
 	// Removes the observer added by the addRelationSubscriber method
 	removeRelationSubscriber() {
-		this.observer.disconnect();
+		this.observer?.disconnect();
 	}
 
 	init() {

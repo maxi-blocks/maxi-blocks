@@ -33,7 +33,7 @@ const AccordionTitleSettings = loadable(() =>
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 
 /**
  * Inspector
@@ -236,6 +236,11 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+										blockName: props.name,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props: {

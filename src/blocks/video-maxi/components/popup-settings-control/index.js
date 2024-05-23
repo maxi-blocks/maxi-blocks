@@ -158,6 +158,7 @@ const PopupSettingsControl = props => {
 				breakpoint={breakpoint}
 				clientId={clientId}
 				onChange={obj => onChange(obj)}
+				ariaLabels={props.ariaLabels}
 				{...getGroupAttributes(
 					props,
 					['icon', 'iconHover'],

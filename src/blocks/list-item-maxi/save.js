@@ -17,6 +17,7 @@ const save = props => {
 		listReversed,
 		listStart,
 		'dc-status': dcStatus,
+		ariaLabels = {},
 	} = props.attributes;
 
 	const name = 'maxi-blocks/list-item-maxi';
@@ -26,11 +27,13 @@ const save = props => {
 		<MaxiBlock.save
 			tagName='li'
 			{...getMaxiBlockAttributes({ ...props, name })}
+			aria-label={ariaLabels['list item wrapper']}
 		>
 			<RichText.Content
 				className={className}
 				value={content}
 				tagName='div'
+				aria-label={ariaLabels['list item']}
 				{...(!dcStatus && {
 					reversed: !!listReversed,
 					start: listStart,

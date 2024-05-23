@@ -28,6 +28,7 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/divider-maxi',
 ];
 
 const DC = props => {
@@ -39,6 +40,7 @@ const DC = props => {
 		'maxi-blocks/text-maxi': 'text',
 		'maxi-blocks/button-maxi': 'button',
 		'maxi-blocks/image-maxi': 'image',
+		'maxi-blocks/divider-maxi': 'divider',
 	};
 
 	return (

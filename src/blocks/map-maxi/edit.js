@@ -46,6 +46,7 @@ class edit extends MaxiBlockComponent {
 					'mapPopupText',
 				]),
 				breakpoints: { ...getBreakpoints(attributes) },
+				ariaLabels: attributes?.ariaLabels || {},
 			},
 		};
 	}

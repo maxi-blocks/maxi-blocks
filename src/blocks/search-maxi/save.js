@@ -21,6 +21,7 @@ const save = props => {
 		buttonSkin,
 		placeholder,
 		skin,
+		ariaLabels = {},
 	} = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
 
@@ -43,14 +44,19 @@ const save = props => {
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			classes={classes}
+			aria-label={ariaLabels.block}
 		>
 			<input
 				className={inputClasses}
 				type='text'
 				placeholder={placeholder}
 				required
+				aria-label={ariaLabels.input}
 			/>
-			<div className='maxi-search-block__button'>
+			<div
+				className='maxi-search-block__button'
+				aria-label={ariaLabels.button}
+			>
 				{searchButtonIsIcon ? (
 					buttonIcon && (
 						<div className={buttonIconClasses}>

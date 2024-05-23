@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useEffect } from '@wordpress/element';
+import { useCallback, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -26,7 +26,7 @@ const DefaultStylesControl = loadable(() =>
 const Icon = loadable(() => import('../../components/icon'));
 import * as defaultPresets from './defaults';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
-import { customCss } from './data';
+import { ariaLabelsCategories, customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -41,8 +41,25 @@ import * as iconPresets from '../../icons/button-presets/index';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
-	const { 'icon-only': iconOnly } = attributes;
+	const { 'icon-only': iconOnly, 'icon-content': icon } = attributes;
 	const { selectors, categories } = customCss;
+
+	const onChangeAriaLabel = useCallback(
+		({ obj, target, icon }) => {
+			maxiSetAttributes({
+				...obj,
+				...(target === 'icon' && {
+					'icon-content': icon,
+				}),
+			});
+		},
+		[maxiSetAttributes]
+	);
+
+	const getAriaIcon = useCallback(
+		target => (target === 'icon' ? icon : null),
+		[icon]
+	);
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -316,6 +333,13 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.ariaLabel({
+										props,
+										targets: ariaLabelsCategories,
+										blockName: props.name,
+										getIcon: getAriaIcon,
+										onChange: onChangeAriaLabel,
+									}),
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
 											props,

@@ -10,7 +10,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, ariaLabels = {} } = attributes;
 
 	const name = 'maxi-blocks/container-maxi';
 
@@ -19,6 +19,7 @@ const save = props => {
 			tagName='section'
 			{...getMaxiBlockAttributes({ ...props, name })}
 			useInnerBlocks
+			aria-label={ariaLabels?.container}
 		>
 			<ArrowDisplayer
 				key={`maxi-arrow-displayer__${uniqueID}`}
@@ -33,6 +34,7 @@ const save = props => {
 					key={`maxi-shape-divider-top__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='top'
+					aria-label={ariaLabels?.['top shape divider']}
 				/>
 			)}
 			{attributes['shape-divider-bottom-status'] && (
@@ -40,6 +42,7 @@ const save = props => {
 					key={`maxi-shape-divider-bottom__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='bottom'
+					aria-label={ariaLabels?.['bottom shape divider']}
 					afterInnerProps
 				/>
 			)}

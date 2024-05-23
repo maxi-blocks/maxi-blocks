@@ -1,13 +1,15 @@
 /**
  * Internal dependencies
  */
-import getBreakpointFromAttribute from './getBreakpointFromAttribute';
 import { scrollTypes } from './defaults/scroll';
 
 /**
  * External dependencies
  */
 import { cloneDeep, isBoolean, isEmpty, isNil, isNumber, round } from 'lodash';
+import getAttributeKey from './getAttributeKey';
+
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 export const getIsValid = (val, cleaned = false) =>
 	(cleaned &&
@@ -106,12 +108,44 @@ export const getHoverAttributeKey = key =>
 // Accepts (possibly) hover attribute key and returns normal key.
 export const getNormalAttributeKey = hoverKey => hoverKey.replace(/-hover/, '');
 
+export const getBreakpointFromAttribute = rawTarget => {
+	const target = getNormalAttributeKey(rawTarget);
+	const lastDash = target.lastIndexOf('-');
+
+	if (lastDash <= -1) return false;
+
+	const breakpoint = target.slice(lastDash).replace('-', '');
+
+	if (!BREAKPOINTS.includes(breakpoint)) return false;
+
+	return breakpoint;
+};
+
 export const getAttrKeyWithoutBreakpoint = key => {
 	const breakpoint = getBreakpointFromAttribute(key);
 
 	const regex = new RegExp(`-${breakpoint}(?!.*-${breakpoint})`);
 
 	return key.replace(regex, '');
+};
+
+export const getSimpleLabel = (key, breakpoint) =>
+	getNormalAttributeKey(key).slice(0, -(breakpoint.length + 1));
+
+export const getIsHoverAttribute = key => key.includes('-hover');
+
+export const attrExistsOnResponsive = (attributes, key, baseBreakpoint) => {
+	const isHover = getIsHoverAttribute(key);
+	const breakpoint = getBreakpointFromAttribute(key);
+	const baseKey = getSimpleLabel(key, breakpoint);
+	return BREAKPOINTS.filter(
+		breakpoint => breakpoint !== baseBreakpoint && breakpoint !== 'general'
+	).some(
+		breakpoint =>
+			!isNil(
+				attributes[getAttributeKey(baseKey, isHover, null, breakpoint)]
+			)
+	);
 };
 
 export const replaceAttrKeyBreakpoint = (key, breakpoint) =>

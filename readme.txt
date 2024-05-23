@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.8.2
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -210,33 +210,27 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 8 April 2024_
-MaxiBlocks v1.8.2
-* Update: Added Dynamic Content current item info to Archive templates.
-* Fix: Resolved migrators for Transition and Interaction Builder running on every Editor load.
-* Fix: Addressed issue of Dynamic Content links losing styles on frontend.
+_Updates 16 May 2024_
+MaxiBlocks v1.8.5
+* Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.
 
-_Updates 4 April 2024_
-MaxiBlocks v1.8.1
-* Fix: Resolved List Item migrator issue on WordPress 6.5.
-
-_Updates 2 April 2024_
-MaxiBlocks v1.8.0
-* Update: Implemented fixes for WordPress 6.5, ensuring compatibility and stability.
-* Update: Updated npm packages for improved speed and security.
-* Update: Implemented list items as inner blocks in Text Maxi lists, enhancing modularity.
-* Update: Added Site Editor patterns previews for Maxi Patterns, facilitating a more intuitive design experience.
-* Update: Added images as previews for Maxi Patterns in the Block Inserter, enhancing the Editor speed.
-* Update: Enhanced parsing of special characters, improving content accuracy and display.
-* Update: Enabled block style application from a template part within a Site Editor template, enhancing design consistency.
-* Update: Ensured text remains visible during webfont load, improving user experience during page load.
-* Fix: Resolved mobile navigation issues in the backend on breakpoint changes, enhancing responsiveness.
-* Fix: Addressed issue of Maxi blocks losing styles inside core blocks, ensuring design integrity.
-* Fix: Fixed Dynamic Content link migrator, ensuring reliable and accurate link migration.
-* Fix: Improved styling for reusable blocks, enhancing visual consistency and usability.
-* Fix: Resolved the PHP error related to the key length exceeding 1000 bytes in certain database configurations.
-* Fix: Addressed the issue of list styles impacting the search page of WordPress Dashboard plugins
-* Fix: Corrected the display of fonts that have issues with bold and thin weights.
+_Updates 15 May 2024_
+MaxiBlocks v1.8.4
+* Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.
+* Update: Enhanced Dynamic Content blocks to automatically update when changing the Advanced Custom Fields group or switching the source to Advanced Custom Fields within the Context Loop, streamlining the content management process.
+* Update: Introduced aria label support in the Advanced settings tab, improving accessibility for users relying on assistive technologies.
+* Update: Added an option to use Static value in Dynamic Content for Text, Button, and Divider blocks inside a Context Loop for Advanced Custom Fields and Custom Post Types.
+* Update: Enhanced Dynamic Content performance on the frontend when using pagination with a large number of posts (exceeding 100). The optimization significantly improves loading speed and reduces resource consumption, resulting in a smoother browsing experience for users.
+* Fix: Resolved an issue with rendering HTML content for Dynamic Content on the frontend, ensuring proper display of page elements.
+* Fix: Addressed a bug where nested block styles were not switching correctly when inserted inside a block with a different style, maintaining consistent styling across nested blocks.
+* Fix: Fixed a problem with Advanced Custom Fields images not loading on the frontend, ensuring seamless integration and proper image display.
+* Fix: Eliminated PHP warnings to improve overall plugin stability and provide a cleaner development experience.
+* Fix: Corrected styling issues for native blocks that are not inside Maxi blocks, ensuring consistent appearance throughout the site.
+* Fix: Resolved an issue with the rendering of previews when swapping templates in the Editor experience, improving editor speed during template selection.
+* Fix: Addressed Firefox console errors related to pattern previews, enhancing browser compatibility and user experience.
+* Fix: Removed legacy code that caused Dynamic Content options to freeze when a pattern contained links in child blocks, improving overall stability and usability.
+* Fix: Resolved an issue with incorrect bottom spacing for the Group Maxi block on the frontend, ensuring consistent layout and design.
+* Fix: Corrected the link title behaviour when using the URL as the title in combination with pagination. The title now accurately reflects the intended Dynamic Content value, ensuring proper accessibility and user experience.
 
 == Upgrade Notice ==
 

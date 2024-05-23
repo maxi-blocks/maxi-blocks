@@ -3,6 +3,7 @@ export { default as getSVGPosition } from './getSVGPosition';
 export { default as getSVGRatio } from './getSVGRatio';
 export { default as getSVGWidthHeightRatio } from './getSVGWidthHeightRatio';
 export { default as injectImgSVG } from './injectImgSVG';
+export { default as setSVGAriaLabel } from './setSVGAriaLabel';
 export { default as setSVGColor } from './setSVGColor';
 export { default as setSVGContent } from './setSVGContent';
 export { default as setSVGContentHover } from './setSVGContentHover';

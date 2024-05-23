@@ -105,6 +105,13 @@ class MaxiBlocks_Styles
         $this->max_execution_time = ini_get('max_execution_time');
 
         add_action('save_post', [$this, 'process_post_content'], 10, 3);
+
+        add_action('wp_import_post_data_raw', [$this,'process_imported_post'], 10, 1);
+    }
+
+    public function process_imported_post($post)
+    {
+        return $this->get_styles_meta_fonts_from_blocks($post, true);
     }
 
     private function should_apply_content_filter()
@@ -131,9 +138,8 @@ class MaxiBlocks_Styles
             // We need to setup the postdata for each post before calling the function
             setup_postdata($post);
 
-
             // Call the function here
-            $this->get_styles_meta_fonts_from_blocks($post->ID);
+            $this->get_styles_meta_fonts_from_blocks($post);
         }
 
         wp_reset_postdata(); // Reset Post Data after the loop
@@ -149,7 +155,7 @@ class MaxiBlocks_Styles
     {
         if(get_transient('maxi_blocks_update_' . $post_id)) {
             delete_transient('maxi_blocks_update_' . $post_id);
-            $this->get_styles_meta_fonts_from_blocks($post_id, true);
+            $this->get_styles_meta_fonts_from_blocks($post, true);
         }
     }
 
@@ -1514,11 +1520,11 @@ class MaxiBlocks_Styles
     }
 
     /**
-	 * Fetches blocks from template and template parts based on the template slug.
-	 *
-	 * @param string $template_id The ID of the template you want to fetch.
-	 * @return array
- 	*/
+     * Fetches blocks from template and template parts based on the template slug.
+     *
+     * @param string $template_id The ID of the template you want to fetch.
+     * @return array
+    */
     public function fetch_blocks_by_template_id($template_id)
     {
         global $wpdb;
@@ -1849,8 +1855,6 @@ class MaxiBlocks_Styles
                         }
                     }
                 }
-
-
             }
         }
 
@@ -1866,50 +1870,45 @@ class MaxiBlocks_Styles
 
     /**
      * Get styles meta fonts from blocks
-     *
-     * @return bool
      */
-    public function get_styles_meta_fonts_from_blocks($post_id, $process_without_check = false)
+    public function get_styles_meta_fonts_from_blocks($post, $process_without_check = false)
     {
-        $post = get_post($post_id);
+        if(!$post) {
+            return $post;
+        }
 
-        if (!$post_id) {
-            return false;
+        $post_content = $post->post_content ?? $post['post_content'];
+        if(!$post_content) {
+            return $post;
         }
 
         // Get all blocks from post content
-        $blocks = parse_blocks($post->post_content);
-
+        $blocks = parse_blocks($post_content);
         $blocks = array_filter($blocks, function ($block) {
             return isset($block['blockName']);
         });
 
         if (empty($blocks)) {
-            return false;
+            return $post;
         }
 
-        // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3, true);
-
-        foreach ($block_chunks as $chunk_index => $block_chunk) {
-            foreach ($block_chunk as $block_index => $block) {
-                // Process each block and directly update the original $blocks array
-                $this->process_block_unique_id($blocks[$chunk_index * 3 + $block_index], $process_without_check);
-            }
-
-            // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($this->max_execution_time != 0) {
-                set_time_limit($this->max_execution_time - 2);
-            }
-        }
+        $this->update_unique_ids($blocks, function ($block) use ($process_without_check) {
+            return $process_without_check || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u');
+        });
 
         // Save the post with the updated blocks
-        $post->post_content = serialize_blocks($blocks);
-        wp_update_post($post);
+        $serialized_blocks = serialize_blocks($blocks);
+        if(is_object($post)) {
+            $post->post_content = $serialized_blocks;
+        } else {
+            $post['post_content'] = $serialized_blocks;
+        }
 
-        // Parse the blocks again after the content has been updated
-        $post = get_post($post_id);
-        $blocks = parse_blocks($post->post_content);
+        if(is_object($post)) {
+            wp_update_post($post);
+        }
+
+        $blocks = parse_blocks($serialized_blocks);
 
         // Split blocks array into chunks of 3 blocks
         $block_chunks = array_chunk($blocks, 3);
@@ -1925,6 +1924,8 @@ class MaxiBlocks_Styles
                 set_time_limit($this->max_execution_time - 2);
             }
         }
+
+        return $post;
     }
 
 
@@ -2434,81 +2435,100 @@ class MaxiBlocks_Styles
      * It also recursively updates any inner blocks.
      *
      * @param array $blocks Reference to the array of blocks to be updated.
+    * @param callable $should_update_unique_id Callback function to determine if the block's unique ID should be updated.
      * @return void
     */
-    private function update_unique_ids(&$blocks)
+    private function update_unique_ids(&$blocks, $should_update_unique_id = null)
     {
-        $idMapping = [];
-        $blocksWithRelations = [];
+        $id_mapping = [];
+        $blocks_with_relations = [];
 
-        foreach ($blocks as &$block) {
-            $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
-            if(!$previous_unique_id) {
-                continue;
-            }
+        $block_chunks = array_chunk($blocks, 3, true);
 
-            $block_name = $block['blockName'];
-            if(strpos($block_name, 'maxi-blocks') === false) {
-                continue;
-            }
+        foreach ($block_chunks as $chunk_index => $block_chunk) {
+            foreach ($block_chunk as $block_index => $_) {
+                $block = &$blocks[$block_index];
 
-            $new_unique_id = self::unique_id_generator($block_name);
-            $idMapping[$previous_unique_id] = $new_unique_id;
+                $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
+                if(!$previous_unique_id) {
+                    continue;
+                }
 
-            $block['attrs']['uniqueID'] = $new_unique_id;
+                $block_name = $block['blockName'];
+                if(strpos($block_name, 'maxi-blocks') === false) {
+                    continue;
+                }
 
-            if(isset($block['attrs']['background-layers'])) {
-                foreach($block['attrs']['background-layers'] as $key => &$value) {
-                    if(isset($value['background-svg-SVGData'])) {
-                        $svg_data = $value['background-svg-SVGData'];
-                        foreach($svg_data as $svg_data_key => $svg_data_value) {
-                            if(strpos($svg_data_key, $previous_unique_id) !== false) {
-                                $svg_data[$new_unique_id] = $svg_data_value;
-                                unset($svg_data[$svg_data_key]);
+                $new_unique_id = self::unique_id_generator($block_name);
+                $id_mapping[$previous_unique_id] = $new_unique_id;
+
+                $block['attrs']['uniqueID'] = $new_unique_id;
+
+                $attributes_to_decode = ['content', 'icon-content'];
+                foreach ($attributes_to_decode as $attribute) {
+                    if(isset($block['attrs'][$attribute])) {
+                        $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);
+                    }
+                }
+
+                if(isset($block['attrs']['background-layers'])) {
+                    foreach($block['attrs']['background-layers'] as $key => &$value) {
+                        if(isset($value['background-svg-SVGData'])) {
+                            $svg_data = $value['background-svg-SVGData'];
+                            foreach($svg_data as $svg_data_key => $svg_data_value) {
+                                if(strpos($svg_data_key, $previous_unique_id) !== false) {
+                                    $svg_data[$new_unique_id] = $svg_data_value;
+                                    unset($svg_data[$svg_data_key]);
+                                }
                             }
                         }
-                    }
 
-                    if(isset($value['background-svg-SVGElement'])) {
-                        $svg_element = $value['background-svg-SVGElement'];
-                        $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
-                        $value['background-svg-SVGElement'] = $svg_element;
+                        if(isset($value['background-svg-SVGElement'])) {
+                            $svg_element = $value['background-svg-SVGElement'];
+                            $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
+                            $value['background-svg-SVGElement'] = $this->decode_unicode_entities($svg_element);
+                        }
                     }
+                }
+
+                $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
+                $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
+                    return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
+                }, $block['innerContent']);
+
+                if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
+                    $blocks_with_relations[] = &$block;
+                }
+
+                if (!empty($block['innerBlocks'])) {
+                    $this->update_unique_ids($block['innerBlocks'], $should_update_unique_id);
                 }
             }
 
-            $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
-            $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
-                return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
-            }, $block['innerContent']);
-
-            if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
-                $blocksWithRelations[] = &$block;
-            }
-
-            if (!empty($block['innerBlocks'])) {
-                $this->update_unique_ids($block['innerBlocks']);
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($this->max_execution_time != 0) {
+                set_time_limit($this->max_execution_time - 2);
             }
         }
 
-        $this->update_attribute_relations($blocksWithRelations, $idMapping);
+        $this->update_attribute_relations($blocks_with_relations, $id_mapping);
     }
 
     /**
      * Updates the unique IDs in the attribute relations of the given blocks.
      *
-     * @param array &$blocksWithRelations Array of references to blocks that contain attribute relations.
-     * @param array &$idMapping Mapping of old unique IDs to new unique IDs.
+     * @param array &$blocks_with_relations Array of references to blocks that contain attribute relations.
+     * @param array &$id_mapping Mapping of old unique IDs to new unique IDs.
      *
      * @return void
      */
-    private function update_attribute_relations(&$blocksWithRelations, &$idMapping)
+    private function update_attribute_relations(&$blocks_with_relations, &$id_mapping)
     {
-        foreach ($blocksWithRelations as &$block) {
+        foreach ($blocks_with_relations as &$block) {
             if (is_array($block['attrs']['relations'])) {
                 foreach ($block['attrs']['relations'] as &$relation) {
-                    if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
-                        $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+                    if (isset($relation['uniqueID']) && isset($id_mapping[$relation['uniqueID']])) {
+                        $relation['uniqueID'] = $id_mapping[$relation['uniqueID']];
                     }
                 }
             }

@@ -210,7 +210,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 22 May 2024_
+_Updates 23 May 2024_
 MaxiBlocks v1.8.6
 * Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
 * Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.

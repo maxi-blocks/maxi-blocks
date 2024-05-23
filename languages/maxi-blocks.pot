@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-22T11:17:58+00:00\n"
+"POT-Creation-Date: 2024-05-23T08:45:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -572,12 +572,12 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:796
-#: core/class-maxi-dynamic-content.php:1530
+#: core/class-maxi-dynamic-content.php:795
+#: core/class-maxi-dynamic-content.php:1545
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:799
+#: core/class-maxi-dynamic-content.php:798
 msgid "date"
 msgstr ""
 

@@ -11,7 +11,7 @@
 <h3 align="center">MaxiBlocks</h3>
 
 <p align="center">
-Design like a pro with fast-styling web templates.
+We help website builders with a passion for design create professional websites and raise rates using our cloud library of fast-styling web templates.
 <br />
 <a href="https://maxiblocks.com/">Website</a> | <a href="https://maxiblocks.com/go/maxi-discord">Join Discord community</a>
 </p>

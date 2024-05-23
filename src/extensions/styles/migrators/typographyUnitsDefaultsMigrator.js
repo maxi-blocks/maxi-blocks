@@ -1,5 +1,9 @@
 import { isNil } from 'lodash';
-import { getBreakpointFromAttribute, getSimpleLabel } from '../utils';
+import {
+	getAttrKeyWithoutBreakpoint,
+	getBreakpointFromAttribute,
+	getSimpleLabel,
+} from '../utils';
 
 const name = 'Typography Units Defaults';
 
@@ -60,12 +64,16 @@ const affectedAttributes = [
 
 // Only changed typography attributes are eligible
 const isEligibleAttr = (attr, blockAttributes) => {
-	const breakpoint = getBreakpointFromAttribute(attr);
-	const simpleLable = getSimpleLabel(attr, breakpoint);
-	const unitLabel = `${simpleLable}-unit-general`;
+	if (isNil(blockAttributes[attr])) return false;
+
+	const simpleLabel = getAttrKeyWithoutBreakpoint(attr);
+	const unitLabel = `${simpleLabel}-unit-general`;
 
 	return (
-		affectedAttributes.includes(simpleLable) &&
+		!simpleLabel.includes('unit') &&
+		affectedAttributes.some(affectedAttribute =>
+			simpleLabel.includes(affectedAttribute)
+		) &&
 		isNil(blockAttributes[unitLabel])
 	);
 };

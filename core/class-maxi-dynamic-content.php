@@ -2313,7 +2313,7 @@ class MaxiBlocks_DynamicContent
                     // Remove <div> elements containing <svg> with the class 'maxi-background-displayer__svg'
                     $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
 
-                    $allowed_tags = '<svg><img><iframe';
+                    $allowed_tags = '<svg><img><iframe><hr>';
                     $text_content = strip_tags($content_sanitized, $allowed_tags);
 
                     // Trim the text content to remove leading and trailing whitespace

@@ -483,6 +483,16 @@ class MaxiBlockComponent extends Component {
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
+		// Force render styles when changing CL
+		if (
+			this.props.attributes['dc-status'] &&
+			!isEqual(
+				this.props?.contextLoopContext,
+				prevProps?.contextLoopContext
+			)
+		)
+			return false;
+
 		if (this.maxiBlockGetSnapshotBeforeUpdate) {
 			return (
 				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&

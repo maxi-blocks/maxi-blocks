@@ -1,3 +1,13 @@
+_Updates 24 May 2024_
+MaxiBlocks v1.8.7
+* Fix: Blocks now correctly update in the Editor Experience to reflect the selected category or tag when changed in the Context Loop settings. Previously, some blocks were not displaying the new category or tag value after being switched.
+
+_Updates 23 May 2024_
+MaxiBlocks v1.8.6
+* Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
+* Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
+* Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
+
 _Updates 16 May 2024_
 MaxiBlocks v1.8.5
 * Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.

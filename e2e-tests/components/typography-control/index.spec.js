@@ -364,6 +364,21 @@ describe('TypographyControl', () => {
 	it('Check Size, line height and letter spacing', async () => {
 		await changeResponsive(page, 'base');
 
+		// Units should not be initialized at first
+		const result = await getAttributes([
+			'line-height-unit-general',
+			'letter-spacing-unit-general',
+			'font-size-unit-general',
+		]);
+
+		const expectedAttributesUnits = {
+			'line-height-unit-general': undefined,
+			'letter-spacing-unit-general': undefined,
+			'font-size-unit-general': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedAttributesUnits);
+
 		await addTypographyOptions({
 			page,
 			instance: page,
@@ -374,14 +389,21 @@ describe('TypographyControl', () => {
 
 		const attributeResult = await getAttributes([
 			'line-height-general',
+			'line-height-unit-general',
 			'letter-spacing-general',
+			'letter-spacing-unit-general',
 			'font-size-general',
+			'font-size-unit-general',
 		]);
 
+		// Units are saved when the values are saved
 		const expectedAttributes = {
 			'line-height-general': 22,
+			'line-height-unit-general': 'px',
 			'letter-spacing-general': 10,
+			'letter-spacing-unit-general': 'px',
 			'font-size-general': 19,
+			'font-size-unit-general': 'px',
 		};
 
 		expect(attributeResult).toStrictEqual(expectedAttributes);

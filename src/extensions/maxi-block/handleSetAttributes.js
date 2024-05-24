@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
+import { getBreakpointFromAttribute } from '../styles/utils';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import handleOnReset from '../attributes/handleOnReset';
 import cleanAttributes from './cleanAttributes';
@@ -25,7 +25,6 @@ const handleSetAttributes = ({
 	clientId = null,
 	targetClientId = null,
 	defaultAttributes,
-	isStyleCard = false,
 	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
@@ -157,8 +156,6 @@ const handleSetAttributes = ({
 
 		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
-
-	if (isStyleCard) return onChange(response);
 
 	const cleanedResponse = cleanAttributes({
 		newAttributes: response,

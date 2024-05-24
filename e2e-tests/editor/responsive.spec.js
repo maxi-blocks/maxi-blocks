@@ -587,7 +587,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
 	});
 
-	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
+	it('On change XL default attributes from General responsive and then reset, changes on General and baseBreakpoint', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1920, height: 700 });
 
@@ -614,7 +614,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingOnM = {
 			'button-padding-top-general': '10',
-			'button-padding-top-xl': undefined,
+			'button-padding-top-xl': '10',
 		};
 
 		const paddingOnM = await getAttributes([
@@ -630,7 +630,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingOnXl = {
 			'button-padding-top-general': '10',
-			'button-padding-top-xl': undefined,
+			'button-padding-top-xl': '10',
 			'button-padding-top-xxl': '23',
 		};
 
@@ -658,7 +658,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingAfterReset = {
 			'button-padding-top-general': '15',
-			'button-padding-top-xl': undefined,
+			'button-padding-top-xl': '15',
 			'button-padding-top-xxl': '23',
 		};
 

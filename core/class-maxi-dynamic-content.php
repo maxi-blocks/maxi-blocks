@@ -1058,7 +1058,6 @@ class MaxiBlocks_DynamicContent
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
-
         if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
             // Basic args
             $args = [
@@ -2291,7 +2290,6 @@ class MaxiBlocks_DynamicContent
 
     public function check_if_content_is_empty($attributes, $content)
     {
-
         $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
 
         if (

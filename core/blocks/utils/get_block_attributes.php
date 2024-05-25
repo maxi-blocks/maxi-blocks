@@ -2,6 +2,13 @@
 
 function get_block_attributes($block_name)
 {
+    $cache_key = 'maxi_blocks_block_attributes_' . $block_name;
+    $cached_attributes = get_transient($cache_key);
+
+    if ($cached_attributes !== false) {
+        return $cached_attributes;
+    }
+
     $path = MAXI_PLUGIN_DIR_PATH . './build/blocks/' . $block_name . '/block.json';
 
     if (!file_exists($path)) {
@@ -15,7 +22,6 @@ function get_block_attributes($block_name)
     }
 
     $attributes = $block['attributes'];
-
     $response = array();
 
     foreach ($attributes as $key => $attribute) {
@@ -23,6 +29,9 @@ function get_block_attributes($block_name)
             $response[$key] = $attribute['default'];
         }
     }
+
+    // Cache the result for 1 hour (3600 seconds)
+    set_transient($cache_key, $response, 3600);
 
     return $response;
 }

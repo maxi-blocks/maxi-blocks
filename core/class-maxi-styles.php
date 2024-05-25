@@ -2464,7 +2464,7 @@ class MaxiBlocks_Styles
 
                 $block['attrs']['uniqueID'] = $new_unique_id;
 
-                $attributes_to_decode = ['content', 'icon-content'];
+                $attributes_to_decode = ['content', 'icon-content', 'listStyleCustom'];
                 foreach ($attributes_to_decode as $attribute) {
                     if(isset($block['attrs'][$attribute])) {
                         $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);

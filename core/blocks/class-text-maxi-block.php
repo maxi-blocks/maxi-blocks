@@ -218,6 +218,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response = [
                 'border' => get_border_styles(array(
@@ -228,10 +229,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ))),
                     'block_style' => $block_style,
                 )),
-                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                 'boxShadow' => get_box_shadow_styles(array(
                     'obj' => get_group_attributes($props, 'boxShadow'),
                     'block_style' => $block_style,
+                    'block_name' => $block_name,
                 )),
                 'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
                 'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
@@ -270,7 +272,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -312,37 +315,37 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_object($props, $list_items_length)
         {
-            $listStyle = $props['listStyle'] ?? false;
-            $listStart = $props['listStart'] ?? false;
-            $listReversed = $props['listReversed'] ?? false;
+            $list_style = $props['listStyle'] ?? false;
+            $list_start = $props['listStart'] ?? false;
+            $list_reversed = $props['listReversed'] ?? false;
 
             $content = $props['content'];
 
-            $counterReset = null;
-            if (is_int($listStart)) {
-                $counterReset =
-                    $listStart < 0 &&
-                    (in_array($listStyle, ['decimal', 'details']) || !$listStyle)
-                        ? $listStart
+            $counter_reset = null;
+            if (is_int($list_start)) {
+                $counter_reset =
+                    $list_start < 0 &&
+                    (in_array($list_style, ['decimal', 'details']) || !$list_style)
+                        ? $list_start
                         : 0;
-                $counterReset += $listStart > 0 ? $listStart : 0;
-                if($listReversed) {
-                    $counterReset += $list_items_length;
+                $counter_reset += $list_start > 0 ? $list_start : 0;
+                if($list_reversed) {
+                    $counter_reset += $list_items_length;
                 } else {
-                    $counterReset += 1;
+                    $counter_reset += 1;
                 }
-                $counterReset += $listReversed ? 1 : -1;
-                $counterReset -= 1;
-            } elseif ($listReversed) {
-                $counterReset = $list_items_length + 1 ?? 2;
+                $counter_reset += $list_reversed ? 1 : -1;
+                $counter_reset -= 1;
+            } elseif ($list_reversed) {
+                $counter_reset = $list_items_length + 1 ?? 2;
             } else {
-                $counterReset = 0;
+                $counter_reset = 0;
             }
 
             $response = [
                 'listStart' => [
                     'general' => [
-                        'counter-reset' => "li $counterReset"
+                        'counter-reset' => "li $counter_reset"
                     ]
                 ],
                 'listGap' => [],
@@ -352,79 +355,79 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
             foreach ($breakpoints as $breakpoint) {
-                $isRTL = ($props['isRTL'] ?? false) ||
+                $is_rtl = ($props['isRTL'] ?? false) ||
                 (get_last_breakpoint_attribute([
                     'target' => 'text-direction',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]) === 'rtl' ? true : false);
 
-                $gapNum = get_last_breakpoint_attribute([
+                $gap_num = get_last_breakpoint_attribute([
                     'target' => 'list-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-                $gapUnit = get_last_breakpoint_attribute([
+                $gap_unit = get_last_breakpoint_attribute([
                     'target' => 'list-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                $listStylePosition = get_last_breakpoint_attribute([
+                $list_style_position = get_last_breakpoint_attribute([
                     'target' => 'list-style-position',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                $sizeNum = get_last_breakpoint_attribute([
+                $size_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
-                $sizeUnit = get_last_breakpoint_attribute([
+                ]) ?? 0;
+                $size_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
-                $indentMarkerNum = get_last_breakpoint_attribute([
+                $indent_marker_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
-                $indentMarkerUnit = get_last_breakpoint_attribute([
+                ]) ?? 0;
+                $indent_marker_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
-                $indentMarkerSum = $indentMarkerNum + $indentMarkerUnit;
+                $indent_marker_sum = $indent_marker_num . $indent_marker_unit;
 
-                $padding = $listStylePosition === 'inside'
-                    ? $gapNum + $gapUnit
-                    : 'calc('.$gapNum . $gapUnit.' + '.$sizeNum . $sizeUnit.' + '.$indentMarkerSum.')';
+                $padding = $list_style_position === 'inside'
+                    ? $gap_num . $gap_unit
+                    : 'calc('.$gap_num . $gap_unit.' + '.$size_num . $size_unit.' + '.$indent_marker_sum.')';
 
 
-                if (!is_null($gapNum) && !is_null($gapUnit)) {
+                if (!is_null($gap_num) && !is_null($gap_unit)) {
                     $response['listGap'][$breakpoint] = [
-                        "padding-" . ($isRTL ? 'right' : 'left') => $padding
+                        "padding-" . ($is_rtl ? 'right' : 'left') => $padding
                     ];
                 }
 
-                $bottomGapNum = get_last_breakpoint_attribute([
+                $bottom_gap_num = get_last_breakpoint_attribute([
                     'target' => 'bottom-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-                $bottomGapUnit = get_last_breakpoint_attribute([
+                $bottom_gap_unit = get_last_breakpoint_attribute([
                     'target' => 'bottom-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                if (!is_null($bottomGapNum) && !is_null($bottomGapUnit)) {
+                if (!is_null($bottom_gap_num) && !is_null($bottom_gap_unit)) {
                     $response['bottomGap'][$breakpoint] = [
-                        'margin-bottom' => $bottomGapNum . $bottomGapUnit
+                        'margin-bottom' => $bottom_gap_num . $bottom_gap_unit
                     ];
                 }
             }
@@ -434,11 +437,11 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_item_object($props)
         {
-            $listReversed = $props['listReversed'] ?? false;
+            $list_reversed = $props['listReversed'] ?? false;
 
             $response = [];
 
-            if ($listReversed) {
+            if ($list_reversed) {
                 $response['listReversed'] = [
                     'general' => [
                         'counter-increment' => 'li -1'

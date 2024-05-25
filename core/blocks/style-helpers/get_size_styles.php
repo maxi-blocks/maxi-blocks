@@ -3,14 +3,14 @@
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_last_breakpoint_attribute.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_default_attribute.php';
 
-function get_size_styles($obj, $prefix = '')
+function get_size_styles($obj, $block_name = null, $prefix = '')
 {
     $response = [];
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints) {
+        $get_value = function ($target) use ($obj, $prefix, $breakpoint, $breakpoints, $block_name) {
             $full_width_normal_styles = [];
 
             if (in_array($target, ['width', 'max-width', 'min-width'])) {
@@ -31,16 +31,18 @@ function get_size_styles($obj, $prefix = '')
                         ];
                     }
 
-                    $is_min_width_needed = array_reduce(
-                        array_slice($breakpoints, 0, array_search($breakpoint, $breakpoints) + 1),
-                        function ($carry, $bp) use ($obj, $prefix) {
-                            $val = $obj[$prefix . 'full-width-' . $bp] ?? null;
-                            $default_val = get_default_attribute($prefix . 'full-width-' . $bp);
-
-                            return $carry || $val !== $default_val;
-                        },
-                        false
-                    );
+                    $is_min_width_needed = false;
+                    foreach ($breakpoints as $bp) {
+                        $val = $obj[$prefix . 'full-width-' . $bp] ?? null;
+                        $default_val = get_default_attribute($prefix . 'full-width-' . $bp, $block_name);
+                        if ($val !== $default_val) {
+                            $is_min_width_needed = true;
+                            break;
+                        }
+                        if($breakpoint === $bp) {
+                            break;
+                        }
+                    }
 
                     if (!$full_width && $is_min_width_needed) {
                         $full_width_normal_styles = [
@@ -69,7 +71,7 @@ function get_size_styles($obj, $prefix = '')
                 if ($force_aspect_ratio) {
                     return ['aspect-ratio' => 1, 'height' => 'auto !important'];
                 }
-                if (isset($obj['fitParentSize'])) {
+                if (isset($obj['fitParentSize']) && $obj['fitParentSize']) {
                     return ['height' => '100% !important'];
                 }
             }

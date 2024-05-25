@@ -58,7 +58,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
         {
             return self::$instance;
         }
-        
+
         public static function get_styles($props, $customCss, $sc_props)
         {
             $uniqueID = $props['uniqueID'];
@@ -159,6 +159,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -169,24 +170,25 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
                     'border' => get_border_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, array(
+                        'obj' => get_group_attributes($props, array(
                             'border',
                             'borderWidth',
                             'borderRadius',
-                        ))),
+                        )),
                         'block_style' => $block_style,
                     )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                     'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
+                        'obj' => get_group_attributes($props, 'boxShadow'),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
-                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
-                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
+                    'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                    'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                    'position' => get_position_styles(get_group_attributes($props, 'position')),
+                    'display' => get_display_styles(get_group_attributes($props, 'display')),
+                    'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                    'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
                 ];
 
             return $response;
@@ -209,14 +211,15 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
     }

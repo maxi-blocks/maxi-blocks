@@ -180,12 +180,14 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'border' => get_border_styles(array(
                         'obj' => array_merge(get_group_attributes($props, array(
@@ -204,7 +206,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
                     'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
@@ -225,7 +227,8 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                 'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -264,6 +267,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             $response = [
                 'size' => get_size_styles(
                     get_group_attributes($props, 'size', false, $prefix),
+                    (new self())->get_block_name(),
                     $prefix
                 ),
                 'opacity' => get_opacity_styles(
@@ -464,6 +468,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                             'block_style' => $props['blockStyle'],
                             'prefix' => $videoPrefix,
                             'isHover' => $isHover,
+							'block_name' => (new self())->get_block_name(),
                         ]),
                     ]
                 );
@@ -479,6 +484,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                         ]),
                         'size' => get_size_styles(
                             get_group_attributes($props, 'size', false, $videoPrefix),
+                            (new self())->get_block_name(),
                             $videoPrefix
                         ),
                     ]

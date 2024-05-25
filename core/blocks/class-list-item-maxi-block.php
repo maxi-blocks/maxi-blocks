@@ -181,15 +181,18 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
 
         public static function get_normal_object($props)
         {
+            $block_name = (new self())->get_block_name();
+
             $response = [
                 'border'    => get_border_styles([
                     'obj'         => get_group_attributes($props, [ 'border', 'borderWidth', 'borderRadius' ]),
                     'block_style' => $props['blockStyle'],
                 ]),
-                'size'      => get_size_styles(get_group_attributes($props, 'size')),
+                'size'      => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                 'boxShadow' => get_box_shadow_styles([
                     'obj'         => get_group_attributes($props, 'boxShadow'),
                     'block_style' => $props['blockStyle'],
+                    'block_name'  => $block_name,
                 ]),
                 'opacity'   => get_opacity_styles(get_group_attributes($props, 'opacity')),
                 'zIndex'    => get_zindex_styles(get_group_attributes($props, 'zIndex')),
@@ -220,6 +223,7 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                     'obj'         => get_group_attributes($props, 'boxShadow', true),
                     'is_hover'    => true,
                     'block_style' => $props['blockStyle'],
+                    'block_name'  => (new self())->get_block_name(),
                 ]) : null,
                 'opacity'   => isset($props['opacity-status-hover']) && $props['opacity-status-hover'] ? get_opacity_styles(get_group_attributes($props, 'opacity', true), true) : null,
             ];

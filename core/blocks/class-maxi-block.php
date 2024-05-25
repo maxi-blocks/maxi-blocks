@@ -302,7 +302,6 @@ if (!class_exists('MaxiBlocks_Block')):
                 file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'),
                 true
             ));
-
         }
 
         public function get_block_attributes($props)

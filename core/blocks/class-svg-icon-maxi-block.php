@@ -112,7 +112,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
-
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -127,9 +127,10 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
                     ]),
@@ -164,7 +165,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -183,7 +185,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 'box_shadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', false, 'svg-'),
                     'block_style' => $block_style,
-                    'prefix' => 'svg-'
+                    'prefix' => 'svg-',
+                    'block_name' => (new self())->get_block_name(),
                 ]),
                 'padding' => get_margin_padding_styles([
                     'obj' => get_group_attributes($props, 'margin', false, 'svg-'),
@@ -252,7 +255,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'boxShadow', true, 'svg-'),
                     'isHover' => true,
                     'block_style' => $block_style,
-                    'prefix' => 'svg-'
+                    'prefix' => 'svg-',
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null
             ];
 

@@ -181,7 +181,7 @@ function get_arrow_styles($props)
         !$is_background_color ||
         ($is_border_active && !$is_correct_border)
     ) {
-        return (object)[];
+        return [];
     }
 
     $response = [];

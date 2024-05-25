@@ -10,7 +10,7 @@ function get_default_attribute($prop, $block_name = null)
     // so we need to get the default attributes from the block.json file, maybe merging
     // and combining all together
     if ($block_name) {
-        $response = get_block_attributes($block_name)[$prop];
+        $response = get_block_attributes($block_name)[$prop] ?? null;
 
         return $response;
     }
@@ -42,6 +42,7 @@ function get_default_attribute($prop, $block_name = null)
         'map-maxi',
         'search-maxi',
         'text-maxi',
+        'list-item-maxi',
         'divider-maxi',
         'number-counter-maxi',
         'slide-maxi',

@@ -128,6 +128,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response = [
                 'alignment' => get_alignment_flex_styles(get_group_attributes($props, 'alignment')),
@@ -152,9 +153,10 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 ]),
                 'boxShadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow'),
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => $block_name,
                 ]),
-                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                 'flex' => get_flex_styles(get_group_attributes($props, 'flex'))
             ];
 
@@ -180,7 +182,8 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                get_box_shadow_styles([
                                    'obj' => get_group_attributes($props, 'boxShadow', true),
                                    'isHover' => true,
-                                   'block_style' => $block_style
+                                   'block_style' => $block_style,
+                                   'block_name' => (new self())->get_block_name(),
                                ]) : null,
                 'opacity' => isset($props['opacity-status-hover']) ?
                              get_opacity_styles(get_group_attributes($props, 'opacity', true), true) : null
@@ -193,14 +196,13 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
         {
             $end_count_value = ceil(($props['number-counter-end'] * 360) / 100);
 
-            $size = array_merge(
-                get_size_styles(
+            $size = get_size_styles(
+                array_merge(
                     get_group_attributes($props, 'size', false, 'number-counter-'),
-                    'number-counter-'
+                    get_group_attributes($props, 'numberCounter')
                 ),
-                get_group_attributes($props, 'numberCounter')
+                (new self())->get_block_name()
             );
-
 
             $block_style = $props['blockStyle'];
 
@@ -223,7 +225,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                         'number-counter-'
                     ),
                     'prefix' => 'number-counter-',
-        ]),
+                 ]),
                 'boxShadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes(
                         $props,
@@ -233,7 +235,8 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                     ),
                     'block_style' => $block_style,
                     'prefix' => 'number-counter-',
-        ]),
+                    'block_name' => (new self())->get_block_name(),
+                ]),
                 'border' => get_border_styles([
                     'obj' => get_group_attributes(
                         $props,
@@ -243,7 +246,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                     ),
                     'block_style' => $block_style,
                     'prefix' => 'number-counter-',
-        ]),
+                ]),
             ];
 
             return $response;
@@ -277,7 +280,9 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                    'isHover' => true,
                                    'block_style' => $block_style,
                                    'prefix' => 'number-counter-',
-                       ]) : null,
+                                   'block_name' => (new self())->get_block_name(),
+                                   ])
+                                : null,
             ];
 
             return $response;

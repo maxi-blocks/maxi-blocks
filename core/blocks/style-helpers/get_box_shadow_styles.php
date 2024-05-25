@@ -9,6 +9,7 @@ function get_box_shadow_styles($params)
     $block_style = $params['block_style'];
     $for_clip_path = isset($params['for_clip_path']) ? $params['for_clip_path'] : false;
     $is_IB = isset($params['is_IB']) ? $params['is_IB'] : false;
+    $block_name = isset($params['block_name']) ? $params['block_name'] : null;
 
     $response = [];
 
@@ -17,7 +18,7 @@ function get_box_shadow_styles($params)
     foreach ($breakpoints as $breakpoint) {
         $box_shadow_string = '';
 
-        $get_value = function ($target) use ($obj, $is_hover, $prefix, $breakpoint) {
+        $get_value = function ($target) use ($obj, $is_hover, $prefix, $breakpoint, $block_name) {
             $value = get_attributes_value([
                 'target' => $target,
                 'props' => $obj,
@@ -28,7 +29,7 @@ function get_box_shadow_styles($params)
 
             $default_value =
                 $breakpoint === 'general' ?
-                    get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint)
+                    get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint, $block_name)
                     : get_last_breakpoint_attribute([
                         'target' => $prefix . 'box-shadow-' . $target,
                         'breakpoint' => get_prev_breakpoint($breakpoint),

@@ -218,14 +218,14 @@ function get_svg_styles($params)
 {
     $obj = $params['obj'];
     $target = $params['target'];
-    $blockStyle = $params['block_style'];
+    $block_style = $params['block_style'];
     $prefix = $params['prefix'] ?? '';
     $is_hover = isset($params['is_hover']) ? $params['is_hover'] : false;
     $use_icon_color = isset($params['use_icon_color']) ? $params['use_icon_color'] : true;
     $icon_type = isset($params['icon_type']) ? $params['icon_type'] : '';
 
-    $path_fill_styles = get_svg_path_fill_styles($obj, $blockStyle, $prefix, $is_hover);
-    $path_stroke_styles = get_svg_path_stroke_styles($obj, $blockStyle, $is_hover, $prefix, $use_icon_color);
+    $path_fill_styles = get_svg_path_fill_styles($obj, $block_style, $prefix, $is_hover);
+    $path_stroke_styles = get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix, $use_icon_color);
     $path_styles = get_svg_path_styles($obj, $prefix, $is_hover);
 
     $fill_selectors = [

@@ -145,6 +145,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 get_group_attributes($props, 'typography'),
                 $text_level,
                 $block_style,
+                (new self())->get_block_name(),
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 !$is_list
@@ -154,6 +155,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 get_group_attributes($props, 'typography'),
                 $text_level,
                 $block_style,
+                (new self())->get_block_name(),
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -262,7 +264,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
                     'text_level' => $props['textLevel'],
-                    'disable_bottom_gap' => $props['isList']
+                    'disable_bottom_gap' => $props['isList'],
+                    'block_name' => (new self())->get_block_name(),
                 ])
             ];
 
@@ -278,6 +281,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                     'text_level' => $props['textLevel'],
                     'normal_typography' => get_group_attributes($props, 'typography'),
+                    'block_name' => (new self())->get_block_name(),
                 ])
             ];
 

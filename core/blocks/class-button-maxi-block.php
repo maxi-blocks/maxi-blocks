@@ -299,7 +299,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $block_style,
-                    'text_level' => 'button'
+                    'text_level' => 'button',
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 
@@ -318,6 +319,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'is_hover' => true,
                     'normal_typography' => get_group_attributes($props, 'typography'),
                     'sc_values' => $sc_values,
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 

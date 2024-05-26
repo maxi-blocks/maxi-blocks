@@ -6,6 +6,7 @@ function get_custom_formats_styles(
     $typography,
     $text_level,
     $block_style,
+    $block_name = null,
     $disable_palette_defaults = false,
 ) {
     $response = [];
@@ -26,6 +27,7 @@ function get_custom_formats_styles(
                     'text_level' => $text_level,
                     'block_style' => $block_style,
                     'disable_palette_defaults' => $disable_palette_defaults,
+                    'block_name' => $block_name,
                 ]),
             ];
         }

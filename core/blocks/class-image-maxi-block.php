@@ -132,6 +132,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 get_group_attributes($props, 'typography'),
                 'p',
                 $block_style,
+                (new self())->get_block_name(),
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 ':hover .maxi-image-block__caption',
@@ -139,6 +140,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 get_group_attributes($props, 'typographyHover'),
                 'p',
                 $block_style,
+                (new self())->get_block_name(),
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -290,6 +292,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'hoverTitleTypography'),
                     'prefix' => 'hover-title-',
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -305,6 +308,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'hoverContentTypography'),
                     'prefix' => 'hover-content-',
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -378,7 +382,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'target' => 'object-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
-                ]) : get_default_attribute('object-size-general');
+                ]) : get_default_attribute('object-size-general', (new self())->get_block_name());
                 $size = round($object_size * 100, 2);
                 $displacement_coefficient = 100 - $size;
 
@@ -574,6 +578,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 

@@ -220,9 +220,9 @@ function get_svg_styles($params)
     $target = $params['target'];
     $block_style = $params['block_style'];
     $prefix = $params['prefix'] ?? '';
-    $is_hover = isset($params['is_hover']) ? $params['is_hover'] : false;
-    $use_icon_color = isset($params['use_icon_color']) ? $params['use_icon_color'] : true;
-    $icon_type = isset($params['icon_type']) ? $params['icon_type'] : '';
+    $is_hover = $params['is_hover'] ?? false;
+    $use_icon_color = $params['use_icon_color'] ?? true;
+    $icon_type = $params['icon_type'] ?? '';
 
     $path_fill_styles = get_svg_path_fill_styles($obj, $block_style, $prefix, $is_hover);
     $path_stroke_styles = get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix, $use_icon_color);
@@ -250,33 +250,28 @@ function get_svg_styles($params)
         "{$target} svg path" => $path_styles,
     ];
 
+    $apply_styles = function ($selectors, $styles) use (&$response, $is_hover) {
+        foreach ($selectors as $selector) {
+            $response[$selector] = $styles;
+            if ($is_hover) {
+                $hover_selector = str_replace('[data-fill]', '[data-hover-fill]', $selector);
+                $hover_selector = str_replace('[data-stroke]', '[data-hover-stroke]', $hover_selector);
+                $response[$hover_selector] = $styles;
+            }
+        }
+    };
+
     if ($is_hover) {
         $response["{$target} svg[data-hover-stroke] path"] = $path_styles;
         $response["{$target} svg path[data-hover-stroke]"] = $path_styles;
     }
 
     if ($icon_type !== 'line') {
-        foreach ($fill_selectors as $selector) {
-            $response[$selector] = $path_fill_styles;
-        }
-        if ($is_hover) {
-            foreach ($fill_selectors as $selector) {
-                $hover_selector = str_replace('[data-fill]', '[data-hover-fill]', $selector);
-                $response[$hover_selector] = $path_fill_styles;
-            }
-        }
+        $apply_styles($fill_selectors, $path_fill_styles);
     }
 
     if ($icon_type !== 'shape') {
-        foreach ($stroke_selectors as $selector) {
-            $response[$selector] = $path_stroke_styles;
-        }
-        if ($is_hover) {
-            foreach ($stroke_selectors as $selector) {
-                $hover_selector = str_replace('[data-stroke]', '[data-hover-stroke]', $selector);
-                $response[$hover_selector] = $path_stroke_styles;
-            }
-        }
+        $apply_styles($stroke_selectors, $path_stroke_styles);
     }
 
     return $response;

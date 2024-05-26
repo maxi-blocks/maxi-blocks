@@ -281,7 +281,8 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 'prefix' => $prefix,
                 'block_style' => $props['blockStyle'],
                 'textLevel' => $props['titleLevel'],
-                ];
+                'block_name' => (new self())->get_block_name(),
+            ];
             $typography_styles_obj['obj'] = $accordion_title_attrs;
 
             if($is_hover) {

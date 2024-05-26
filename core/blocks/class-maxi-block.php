@@ -52,6 +52,11 @@ if (!class_exists('MaxiBlocks_Block')):
         protected $block;
 
         /**
+         * Block attributes
+         */
+        protected $block_attributes = [];
+
+        /**
          * Block metadata
          */
         protected $block_metadata = [];
@@ -269,14 +274,10 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function render_block($attributes, $content, $block)
         {
-
-
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
-
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);
-                $dc_content = $dynamic_content->render_dc($attributes, $content, $block);
-                return $dc_content;
+                return $dynamic_content->render_dc($attributes, $content, $block);
             }
 
             // If not, proceed with the regular render logic
@@ -311,6 +312,10 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function get_block_attributes($props)
         {
+            if(isset($this->block_attributes) && !empty($this->block_attributes)) {
+                return $this->block_attributes;
+            }
+
             $default_attributes = $this->get_block_metadata()['attributes'] ?? [];
 
             foreach (array_keys($default_attributes) as $key) {
@@ -319,7 +324,8 @@ if (!class_exists('MaxiBlocks_Block')):
                 }
             }
 
-            return $this->block->prepare_attributes_for_render($props);
+            $this->block_attributes = $this->block->prepare_attributes_for_render($props);
+            return $this->block_attributes;
         }
 
         /**

@@ -236,6 +236,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                     'is_hover' => $isHover,
                     'block_style' => $blockStyle,
                     'prefix' => $buttonPrefix,
+                    'block_name' => (new self())->get_block_name(),
                 ))
             );
 
@@ -272,6 +273,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                         'block_style' => $blockStyle,
                         'is_hover' => $isHover,
                         'prefix' => $inputPrefix,
+                        'block_name' => (new self())->get_block_name(),
                     ))
                 )
             );

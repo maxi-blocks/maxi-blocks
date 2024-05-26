@@ -122,7 +122,6 @@ class Get_Custom_Formats_Styles_Test extends WP_UnitTestCase
         ];
 
         $target = 'test';
-        $isHover = false;
         $textLevel = 'p';
 
         $result = get_custom_formats_styles(

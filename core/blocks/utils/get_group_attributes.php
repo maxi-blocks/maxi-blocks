@@ -4,23 +4,25 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)
 {
-    $cache_key = 'json_file_to_array_' . $item . ($is_hover ? '_hover' : '');
+    $cache_key = 'maxi_blocks_json_file_to_array_' . $item . ($is_hover ? '_hover' : '');
     $cached_data = get_transient($cache_key);
 
     if ($cached_data !== false) {
         return $cached_data;
     }
 
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/'.$item . ($is_hover ? 'Hover' : '').'.json';
-    if ($is_hover && file_exists($file_path)) {
+    $file_name = $item . ($is_hover ? 'Hover' : '') . '.json';
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $file_name;
+
+    if (!file_exists($file_path) && $is_hover) {
+        $file_name = $item . '.json';
+        $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $file_name;
+    }
+
+    if (file_exists($file_path)) {
         $data = json_decode(file_get_contents($file_path), true);
     } else {
-        $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/'.$item.'.json';
-        if (file_exists($file_path)) {
-            $data = json_decode(file_get_contents($file_path), true);
-        } else {
-            $data = null;
-        }
+        $data = null;
     }
 
     // Cache the result for 1 hour (3600 seconds)
@@ -57,7 +59,7 @@ function get_group_attributes(
         }
     }
 
-    if (is_string($target)) {
+    $process_target = function ($target) use ($attributes, $is_hover, $prefix, $cleaned, $add_default_attributes, &$response) {
         $default_attributes = json_file_to_array($target, $is_hover);
 
         if (isset($default_attributes) && is_array($default_attributes)) {
@@ -69,19 +71,13 @@ function get_group_attributes(
                 }
             }
         }
+    };
+
+    if (is_string($target)) {
+        $process_target($target);
     } else {
         foreach ($target as $el) {
-            $default_attributes = json_file_to_array($el, $is_hover);
-
-            if (isset($default_attributes) && is_array($default_attributes)) {
-                foreach (array_keys($default_attributes) as $key) {
-                    if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
-                        $response[$prefix . $key] = $attributes[$prefix . $key];
-                    } elseif ($add_default_attributes) {
-                        $response[$prefix . $key] = $default_attributes[$prefix . $key]['default'] ?? null;
-                    }
-                }
-            }
+            $process_target($el);
         }
     }
 

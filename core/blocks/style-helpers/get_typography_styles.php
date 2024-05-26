@@ -13,6 +13,7 @@ function get_typography_styles($args)
     $is_style_cards = isset($args['is_style_cards']) ? $args['is_style_cards'] : false;
     $disable_palette_defaults = isset($args['disable_palette_defaults']) ? $args['disable_palette_defaults'] : false;
     $disable_bottom_gap = isset($args['disable_bottom_gap']) ? $args['disable_bottom_gap'] : false;
+    $block_name = isset($args['block_name']) ? $args['block_name'] : null;
 
     $response = array();
 
@@ -43,8 +44,8 @@ function get_typography_styles($args)
         ]);
     };
 
-    $get_default_value = function ($target) use ($is_custom_format, $is_hover, $prefix) {
-        return get_default_attribute(get_attribute_key($target, !$is_custom_format && $is_hover, $prefix, 'general'));
+    $get_default_value = function ($target) use ($is_custom_format, $is_hover, $prefix, $block_name) {
+        return get_default_attribute(get_attribute_key($target, !$is_custom_format && $is_hover, $prefix, 'general'), $block_name);
     };
 
     $get_palette_color_status = function ($breakpoint) use ($prefix, $obj, $is_hover, $normal_typography, $custom_format_typography) {

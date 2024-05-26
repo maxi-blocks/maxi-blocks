@@ -112,6 +112,7 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                 get_group_attributes($props, 'typography'),
                 null,
                 $block_style,
+                (new self())->get_block_name(),
                 true,
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
@@ -120,6 +121,7 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                 get_group_attributes($props, ['typography', 'typographyHover']),
                 null,
                 $block_style,
+                (new self())->get_block_name(),
                 true,
             );
             $link_styles = array_merge(
@@ -212,7 +214,7 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                     'obj'                    => get_group_attributes($props, 'typography'),
                     'block_style'            => $props['blockStyle'],
                     'disable_palette_defaults' => true,
-                    'block_name'             => 'maxi-blocks/list-item-maxi',
+                    'block_name' 			 => (new self())->get_block_name(),
                 ]),
             ];
 
@@ -227,6 +229,7 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                     'is_hover'          => true,
                     'block_style'       => $props['blockStyle'],
                     'normal_typography' => get_group_attributes($props, 'typography'),
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 

@@ -207,6 +207,7 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                         'block_style' => $blockStyle,
                         'prefix' => $prefix,
                         'text_level' => $textLevel,
+                        'block_name' => (new self())->get_block_name(),
                     )
                 )
             );

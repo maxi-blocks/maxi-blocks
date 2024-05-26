@@ -59,17 +59,13 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $svg_element = $props['SVGElement'] ?? false;
 
             $img_tag = $svg_element === '' || !$svg_element ? 'img' : 'svg';
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $styles_obj = [
                 $uniqueID => [

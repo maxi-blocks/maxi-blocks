@@ -59,14 +59,9 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
-
-            $data = [
-                'customCss' => $customCss,
-            ];
-
 
             $slideStyles = style_processor(
                 array(

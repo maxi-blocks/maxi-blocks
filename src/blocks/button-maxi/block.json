@@ -83,6 +83,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "buttonContent": {
       "type": "string"
     },
@@ -3281,8 +3284,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -3367,8 +3369,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -3515,8 +3516,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -3666,8 +3666,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -3709,8 +3708,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -12891,5 +12889,216 @@
       "background",
       "background hover"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "block": {
+      "typography": {
+        "title": "Typography",
+        "target": " .maxi-button-block__content",
+        "property": false,
+        "hoverProp": "typography-status-hover"
+      },
+      "button background": {
+        "title": "Button background",
+        "target": " .maxi-button-block__button",
+        "property": "background",
+        "hoverProp": "button-background-status-hover"
+      },
+      "border": {
+        "title": "Border",
+        "target": " .maxi-button-block__button",
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "hoverProp": "button-border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": " .maxi-button-block__button",
+        "property": "box-shadow",
+        "hoverProp": "button-box-shadow-status-hover"
+      },
+      "icon colour": {
+        "title": "Icon colour",
+        "target": "  .maxi-button-block__icon svg > *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon colour two": {
+        "title": "Icon colour two",
+        "target": "  .maxi-button-block__icon svg g *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon background": {
+        "title": "Icon background",
+        "target": " .maxi-button-block__icon",
+        "property": "background",
+        "hoverProp": "icon-status-hover"
+      },
+      "icon width": {
+        "title": "Icon width",
+        "target": " .maxi-button-block__icon svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "icon-status-hover"
+      },
+      "icon border": {
+        "title": "Icon border",
+        "target": " .maxi-button-block__icon",
+        "property": "border",
+        "hoverProp": "icon-status-hover"
+      }
+    },
+    "transform": {
+      "canvas": {
+        "title": "Canvas",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "button": {
+        "title": "Button",
+        "target": " .maxi-button-block__button",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "content": {
+        "title": "Content",
+        "target": " .maxi-button-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before canvas": {
+        "title": "Before canvas",
+        "target": "::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before button": {
+        "title": "Before button",
+        "target": " .maxi-button-block__button::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before content": {
+        "title": "Before content",
+        "target": " .maxi-button-block__content::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after canvas": {
+        "title": "After canvas",
+        "target": "::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after button": {
+        "title": "After button",
+        "target": " .maxi-button-block__button::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after content": {
+        "title": "After content",
+        "target": " .maxi-button-block__content::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "icon": {
+        "title": "Icon",
+        "target": " .maxi-button-block__icon",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before icon": {
+        "title": "Before icon",
+        "target": " .maxi-button-block__icon::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after icon": {
+        "title": "After icon",
+        "target": " .maxi-button-block__icon::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

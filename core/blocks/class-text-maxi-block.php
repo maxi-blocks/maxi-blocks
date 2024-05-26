@@ -60,7 +60,7 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props, $context)
+        public function get_styles($props, $data, $sc_props = null, $context = [])
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
@@ -70,35 +70,6 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $element = $is_list ? $type_of_list : $text_level;
             $is_rtl = is_rtl();
             $list_items_length = $props['isList'] ? $context['list_items_length'] : 0;
-
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default_canvas = $defaults->transitionDefault['canvas'];
-
-            $block_class = ' .maxi-text-block';
-            $content_class = $block_class . '__content';
-            $link_class = $block_class . '--link';
-
-            $transition = [
-                'canvas' => array_merge($transition_default_canvas, [
-                    'typography' => [
-                        'title' => 'Typography',
-                        'target' => [$content_class, $content_class . ' li', $content_class . ' ol'],
-                        'property' => false,
-                        'hoverProp' => 'typography-status-hover',
-                    ],
-                    'link' => [
-                        'title' => 'Link',
-                        'target' => [$link_class, $link_class . ' span'],
-                        'property' => 'color',
-                    ],
-                ]),
-            ];
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
 
             $styles_obj = [
                 $uniqueID => [
@@ -577,12 +548,14 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             if ($list_style && $type_of_list === 'ul') {
                 $general_list_style = [];
 
-                if($list_style === 'custom' && $list_style_custom && is_link($list_style_custom)) {
-                    $general_list_style['content'] = "url('".$list_style_custom."')";
-                } elseif ($list_style_custom && strpos($list_style_custom, '</svg>') !== false) {
-                    $general_list_style['content'] = "url(\"data:image/svg+xml,".self::get_svg_list_style($list_style_custom)."\")";
-                } elseif (!is_link($list_style_custom) && !strpos($list_style_custom, '</svg>')) {
-                    $general_list_style['content'] = "\"".$list_style_custom."\"";
+                if($list_style === 'custom' && $list_style_custom) {
+                    if(is_link($list_style_custom)) {
+                        $general_list_style['content'] = "url('".$list_style_custom."')";
+                    } elseif (strpos($list_style_custom, '</svg>') !== false) {
+                        $general_list_style['content'] = "url(\"data:image/svg+xml,".self::get_svg_list_style($list_style_custom)."\")";
+                    } elseif (!strpos($list_style_custom, '</svg>')) {
+                        $general_list_style['content'] = "\"".$list_style_custom."\"";
+                    }
                 }
 
                 $response['listContent']['general'] = $general_list_style;

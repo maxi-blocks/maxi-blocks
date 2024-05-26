@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "border-palette-status-general": {
       "type": "boolean",
       "default": true
@@ -2633,8 +2636,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -2676,8 +2678,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -2719,8 +2720,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -2867,8 +2867,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -3018,8 +3017,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -3062,8 +3060,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -3321,8 +3318,7 @@
       "type": "string"
     },
     "description-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-font-size-unit-xxl": {
       "type": "string"
@@ -3365,8 +3361,7 @@
       "type": "number"
     },
     "description-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-line-height-unit-xxl": {
       "type": "string"
@@ -3408,8 +3403,7 @@
       "type": "number"
     },
     "description-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-letter-spacing-unit-xxl": {
       "type": "string"
@@ -3556,8 +3550,7 @@
       "type": "number"
     },
     "description-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-text-indent-unit-xxl": {
       "type": "string"
@@ -3707,8 +3700,7 @@
       "type": "number"
     },
     "description-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-word-spacing-unit-xxl": {
       "type": "string"
@@ -3750,8 +3742,7 @@
       "type": "number"
     },
     "description-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-bottom-gap-unit-xxl": {
       "type": "string"

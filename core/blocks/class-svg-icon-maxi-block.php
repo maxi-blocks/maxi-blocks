@@ -59,14 +59,10 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             // TODO: get the correct value
             $icon_width_height_ratio = false;

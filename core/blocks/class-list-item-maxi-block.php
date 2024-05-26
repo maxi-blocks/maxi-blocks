@@ -60,39 +60,13 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default_canvas = $defaults->transitionDefault['canvas'];
-
             $block_class = ' .maxi-list-item-block';
             $content_class = $block_class . '__content';
-            $link_class = $block_class . '--link';
-
-            $transition = [
-                'canvas' => array_merge($transition_default_canvas, [
-                    'typography' => [
-                        'title' => 'Typography',
-                        'target' => [$content_class, $content_class . ' li', $content_class . ' ol'],
-                        'property' => false,
-                        'hoverProp' => 'typography-status-hover',
-                    ],
-                    'link' => [
-                        'title' => 'Link',
-                        'target' => [$link_class, $link_class . ' span'],
-                        'property' => 'color',
-                    ],
-                ]),
-            ];
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
 
             $styles_obj = [
                 $uniqueID => [

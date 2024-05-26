@@ -59,15 +59,9 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
-
-            // TODO: add custom transition
-            $data = [
-                'customCss' => $customCss,
-            ];
-
 
             $styles_obj = array(
                 '' => self::get_normal_object($props),

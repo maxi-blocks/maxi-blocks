@@ -59,15 +59,11 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props, $context = [])
+        public function get_styles($props, $data, $sc_props = null, $context = [])
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $row_border_radius = $context['row_border_radius'] ?? [];
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $styles_obj = [
                 $uniqueID => [

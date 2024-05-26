@@ -59,16 +59,11 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
-            $time_start = microtime(true);
             $performance = [];
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $performance['styles_obj_start'] = microtime(true);
             $styles_obj = [
@@ -123,24 +118,7 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
             );
             $performance['merge_end'] = microtime(true);
 
-            WP_CLI::log('Row Maxi Block Styles Performance:');
-            WP_CLI::log('Styles Object: ' . (string)($performance['styles_obj_end'] - $performance['styles_obj_start']));
-            WP_CLI::log('Background Styles: ' . (string)($performance['background_styles_end'] - $performance['background_styles_start']));
-            WP_CLI::log('Merge: ' . (string)($performance['merge_end'] - $performance['merge_start']));
-            WP_CLI::log('Total: ' . (string)(microtime(true) - $time_start));
-
             return $response;
-        }
-
-        public static function measure_time($function, ...$args)
-        {
-            $start = microtime(true);
-            $result = call_user_func_array($function, $args);
-            $end = microtime(true);
-            $execution_time = $end - $start;
-            $execution_time = round($execution_time, 4);
-            WP_CLI::log($function . ' took ' . $execution_time . ' seconds');
-            return $result;
         }
 
         public static function get_normal_object($props)
@@ -149,33 +127,29 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
             $block_name = (new self())->get_block_name();
 
             $response = [
-                'boxShadow' => self::measure_time('get_box_shadow_styles', [
-                    'obj' => self::measure_time('get_group_attributes', $props, 'boxShadow'),
+                'boxShadow' => get_box_shadow_styles([
+                    'obj' => get_group_attributes($props, 'boxShadow'),
                     'block_style' => $block_style,
                     'block_name' => $block_name,
                 ]),
-                'border' => self::measure_time('get_border_styles', [
-                    'obj' => self::measure_time('get_group_attributes', $props, [
-                        'border',
-                        'borderWidth',
-                        'borderRadius',
-                    ]),
-                    'block_style' => $block_style,
+                'border' => get_border_styles([
+                    'obj' => get_group_attributes($props, ['border', 'borderWidth', 'borderRadius']),
+                    'block_style' => $block_style
                 ]),
-                'size' => self::measure_time('get_size_styles', self::measure_time('get_group_attributes', $props, 'size'), $block_name),
-                'margin' => self::measure_time('get_margin_padding_styles', [
-                    'obj' => self::measure_time('get_group_attributes', $props, 'margin'),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
+                'margin' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'margin')
                 ]),
-                'padding' => self::measure_time('get_margin_padding_styles', [
-                    'obj' => self::measure_time('get_group_attributes', $props, 'padding'),
+                'padding' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'padding')
                 ]),
-                'opacity' => self::measure_time('get_opacity_styles', self::measure_time('get_group_attributes', $props, 'opacity')),
-                'zIndex' => self::measure_time('get_zindex_styles', self::measure_time('get_group_attributes', $props, 'zIndex')),
-                'position' => self::measure_time('get_position_styles', self::measure_time('get_group_attributes', $props, 'position')),
-                'display' => self::measure_time('get_display_styles', self::measure_time('get_group_attributes', $props, 'display')),
-                'row' => [ 'general' => [ ]],
-                'overflow' => self::measure_time('get_overflow_styles', self::measure_time('get_group_attributes', $props, 'overflow')),
-                'flex' => self::measure_time('get_flex_styles', self::measure_time('get_group_attributes', $props, 'flex')),
+                'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                'position' => get_position_styles(get_group_attributes($props, 'position')),
+                'display' => get_display_styles(get_group_attributes($props, 'display')),
+                'row' => ['general' => []],
+                'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                'flex' => get_flex_styles(get_group_attributes($props, 'flex'))
             ];
 
             return $response;

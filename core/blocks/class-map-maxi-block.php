@@ -59,15 +59,11 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $blockStyle = $props['blockStyle'];
             $block_name = $this->get_block_name();
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $response = array(
                 $uniqueID => style_processor(

@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "accordionLayout": {
       "type": "string",
       "default": "simple"
@@ -6491,8 +6494,7 @@
       "type": "string"
     },
     "title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-font-size-unit-xxl": {
       "type": "string"
@@ -6534,8 +6536,7 @@
       "type": "number"
     },
     "title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-line-height-unit-xxl": {
       "type": "string"
@@ -6577,8 +6578,7 @@
       "type": "number"
     },
     "title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -6725,8 +6725,7 @@
       "type": "number"
     },
     "title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-text-indent-unit-xxl": {
       "type": "string"
@@ -6876,8 +6875,7 @@
       "type": "number"
     },
     "title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-word-spacing-unit-xxl": {
       "type": "string"
@@ -6919,8 +6917,7 @@
       "type": "number"
     },
     "title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -7861,8 +7858,7 @@
       "type": "string"
     },
     "active-title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-font-size-unit-xxl": {
       "type": "string"
@@ -7904,8 +7900,7 @@
       "type": "number"
     },
     "active-title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-line-height-unit-xxl": {
       "type": "string"
@@ -7947,8 +7942,7 @@
       "type": "number"
     },
     "active-title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -8095,8 +8089,7 @@
       "type": "number"
     },
     "active-title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-text-indent-unit-xxl": {
       "type": "string"
@@ -8246,8 +8239,7 @@
       "type": "number"
     },
     "active-title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-word-spacing-unit-xxl": {
       "type": "string"
@@ -8289,8 +8281,7 @@
       "type": "number"
     },
     "active-title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -12560,8 +12551,7 @@
       "default": false
     },
     "cl-pagination-per-page": {
-      "type": "number",
-      "default": 3
+      "type": "number"
     },
     "cl-pagination-total": {
       "type": "number"
@@ -12820,8 +12810,7 @@
       "type": "string"
     },
     "cl-pagination-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-font-size-unit-xxl": {
       "type": "string"
@@ -12863,8 +12852,7 @@
       "type": "number"
     },
     "cl-pagination-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-line-height-unit-xxl": {
       "type": "string"
@@ -12906,8 +12894,7 @@
       "type": "number"
     },
     "cl-pagination-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-letter-spacing-unit-xxl": {
       "type": "string"
@@ -13054,8 +13041,7 @@
       "type": "number"
     },
     "cl-pagination-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-text-indent-unit-xxl": {
       "type": "string"
@@ -13205,8 +13191,7 @@
       "type": "number"
     },
     "cl-pagination-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-word-spacing-unit-xxl": {
       "type": "string"
@@ -13248,8 +13233,7 @@
       "type": "number"
     },
     "cl-pagination-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-bottom-gap-unit-xxl": {
       "type": "string"
@@ -16266,5 +16250,288 @@
       "background",
       "background hover"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "block": {
+      "header line": {
+        "title": "Header line",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line",
+        "hoverProp": "header-line-status-hover",
+        "limitless": true
+      },
+      "content line": {
+        "title": "Content line",
+        "target": " > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line",
+        "hoverProp": "content-line-status-hover",
+        "limitless": true
+      },
+      "pane title": {
+        "title": "Pane title",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title",
+        "property": false,
+        "hoverProp": [
+          "title-typography-status-hover",
+          "title-typography-status-active"
+        ]
+      },
+      "pane title background": {
+        "title": "Pane title background",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content",
+        "property": "background-color",
+        "hoverProp": "title-background-status-hover"
+      },
+      "icon colour": {
+        "title": "Icon colour",
+        "target": "  > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon svg > *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon colour two": {
+        "title": "Icon colour two",
+        "target": "  > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon svg g *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon background": {
+        "title": "Icon background",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon",
+        "property": "background",
+        "hoverProp": "icon-status-hover"
+      },
+      "icon width": {
+        "title": "Icon width",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "icon-status-hover"
+      },
+      "icon border": {
+        "title": "Icon border",
+        "target": " > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon",
+        "property": "border",
+        "hoverProp": "icon-status-hover"
+      }
+    },
+    "transform": {
+      "accordion": {
+        "title": "Accordion",
+        "target": ".maxi-accordion-block",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before accordion": {
+        "title": "Before accordion",
+        "target": ".maxi-accordion-block::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after accordion": {
+        "title": "After accordion",
+        "target": ".maxi-accordion-block::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane": {
+        "title": "Pane",
+        "target": " .maxi-pane-block",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before pane": {
+        "title": "Before pane",
+        "target": " .maxi-pane-block::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after pane": {
+        "title": "After pane",
+        "target": " .maxi-pane-block::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane header": {
+        "title": "Pane header",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before header": {
+        "title": "Before header",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after header": {
+        "title": "After header",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before header content": {
+        "title": "Before header content",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after header content": {
+        "title": "After header content",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__header-content::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane icon": {
+        "title": "Pane icon",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before icon": {
+        "title": "Before icon",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after icon": {
+        "title": "After icon",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__icon::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane content": {
+        "title": "Pane content",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before content": {
+        "title": "Before content",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after content": {
+        "title": "After content",
+        "target": ".maxi-pane-block[aria-expanded] .maxi-pane-block__content::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane header content": {
+        "title": "Pane header content",
+        "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane header line": {
+        "title": "Pane header line",
+        "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "pane content line": {
+        "title": "Pane content line",
+        "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

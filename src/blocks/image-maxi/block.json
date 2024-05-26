@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "alignment-general": {
       "type": "string",
       "default": "center"
@@ -1080,8 +1083,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -1123,8 +1125,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -1166,8 +1167,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -1314,8 +1314,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -1465,8 +1464,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -1508,8 +1506,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -3129,8 +3126,7 @@
       "type": "string"
     },
     "hover-content-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-font-size-unit-xxl": {
       "type": "string"
@@ -3173,8 +3169,7 @@
       "type": "number"
     },
     "hover-content-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-line-height-unit-xxl": {
       "type": "string"
@@ -3216,8 +3211,7 @@
       "type": "number"
     },
     "hover-content-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-letter-spacing-unit-xxl": {
       "type": "string"
@@ -3364,8 +3358,7 @@
       "type": "number"
     },
     "hover-content-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-text-indent-unit-xxl": {
       "type": "string"
@@ -3515,8 +3508,7 @@
       "type": "number"
     },
     "hover-content-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-word-spacing-unit-xxl": {
       "type": "string"
@@ -3558,8 +3550,7 @@
       "type": "number"
     },
     "hover-content-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-bottom-gap-unit-xxl": {
       "type": "string"
@@ -4221,8 +4212,7 @@
       "type": "string"
     },
     "hover-title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-font-size-unit-xxl": {
       "type": "string"
@@ -4265,8 +4255,7 @@
       "type": "number"
     },
     "hover-title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-line-height-unit-xxl": {
       "type": "string"
@@ -4308,8 +4297,7 @@
       "type": "number"
     },
     "hover-title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -4456,8 +4444,7 @@
       "type": "number"
     },
     "hover-title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-text-indent-unit-xxl": {
       "type": "string"
@@ -4607,8 +4594,7 @@
       "type": "number"
     },
     "hover-title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-word-spacing-unit-xxl": {
       "type": "string"
@@ -4650,8 +4636,7 @@
       "type": "number"
     },
     "hover-title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -11321,5 +11306,132 @@
       "background",
       "background hover"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "block": {
+      "border": {
+        "title": "Border",
+        "target": [
+          " .maxi-image-block-wrapper img",
+          " .maxi-image-block-wrapper svg"
+        ],
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "hoverProp": "image-border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": [
+          " .maxi-image-block-wrapper img",
+          " .maxi-image-block-wrapper svg"
+        ],
+        "property": "box-shadow",
+        "hoverProp": "image-box-shadow-status-hover"
+      },
+      "clip path": {
+        "title": "Clip path",
+        "target": [
+          " .maxi-image-block-wrapper img",
+          " .maxi-image-block-wrapper svg"
+        ],
+        "property": "clip-path",
+        "hoverProp": "clip-path-status-hover"
+      }
+    },
+    "transform": {
+      "canvas": {
+        "title": "Canvas",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "image": {
+        "title": "Image",
+        "target": " .maxi-image-block__image",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before canvas": {
+        "title": "Before canvas",
+        "target": "::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before image": {
+        "title": "Before image",
+        "target": " .maxi-image-block__image::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after canvas": {
+        "title": "After canvas",
+        "target": "::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after image": {
+        "title": "After image",
+        "target": " .maxi-image-block__image::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

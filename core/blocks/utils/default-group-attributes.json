@@ -8777,8 +8777,7 @@
       "type": "string"
     },
     "title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-font-size-unit-xxl": {
       "type": "string"
@@ -8820,8 +8819,7 @@
       "type": "number"
     },
     "title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-line-height-unit-xxl": {
       "type": "string"
@@ -8863,8 +8861,7 @@
       "type": "number"
     },
     "title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -9011,8 +9008,7 @@
       "type": "number"
     },
     "title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-text-indent-unit-xxl": {
       "type": "string"
@@ -9162,8 +9158,7 @@
       "type": "number"
     },
     "title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-word-spacing-unit-xxl": {
       "type": "string"
@@ -9205,8 +9200,7 @@
       "type": "number"
     },
     "title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -10147,8 +10141,7 @@
       "type": "string"
     },
     "active-title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-font-size-unit-xxl": {
       "type": "string"
@@ -10190,8 +10183,7 @@
       "type": "number"
     },
     "active-title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-line-height-unit-xxl": {
       "type": "string"
@@ -10233,8 +10225,7 @@
       "type": "number"
     },
     "active-title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -10381,8 +10372,7 @@
       "type": "number"
     },
     "active-title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-text-indent-unit-xxl": {
       "type": "string"
@@ -10532,8 +10522,7 @@
       "type": "number"
     },
     "active-title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-word-spacing-unit-xxl": {
       "type": "string"
@@ -10575,8 +10564,7 @@
       "type": "number"
     },
     "active-title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "active-title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -24487,8 +24475,7 @@
       "default": false
     },
     "cl-pagination-per-page": {
-      "type": "number",
-      "default": 3
+      "type": "number"
     },
     "cl-pagination-total": {
       "type": "number"
@@ -24747,8 +24734,7 @@
       "type": "string"
     },
     "cl-pagination-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-font-size-unit-xxl": {
       "type": "string"
@@ -24790,8 +24776,7 @@
       "type": "number"
     },
     "cl-pagination-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-line-height-unit-xxl": {
       "type": "string"
@@ -24833,8 +24818,7 @@
       "type": "number"
     },
     "cl-pagination-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-letter-spacing-unit-xxl": {
       "type": "string"
@@ -24981,8 +24965,7 @@
       "type": "number"
     },
     "cl-pagination-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-text-indent-unit-xxl": {
       "type": "string"
@@ -25132,8 +25115,7 @@
       "type": "number"
     },
     "cl-pagination-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-word-spacing-unit-xxl": {
       "type": "string"
@@ -25175,8 +25157,7 @@
       "type": "number"
     },
     "cl-pagination-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "cl-pagination-bottom-gap-unit-xxl": {
       "type": "string"
@@ -32580,6 +32561,9 @@
     "preview": {
       "type": "boolean",
       "default": false
+    },
+    "ariaLabels": {
+      "type": "object"
     }
   },
   "height": {
@@ -34178,8 +34162,7 @@
       "type": "string"
     },
     "hover-content-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-font-size-unit-xxl": {
       "type": "string"
@@ -34222,8 +34205,7 @@
       "type": "number"
     },
     "hover-content-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-line-height-unit-xxl": {
       "type": "string"
@@ -34265,8 +34247,7 @@
       "type": "number"
     },
     "hover-content-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-letter-spacing-unit-xxl": {
       "type": "string"
@@ -34413,8 +34394,7 @@
       "type": "number"
     },
     "hover-content-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-text-indent-unit-xxl": {
       "type": "string"
@@ -34564,8 +34544,7 @@
       "type": "number"
     },
     "hover-content-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-word-spacing-unit-xxl": {
       "type": "string"
@@ -34607,8 +34586,7 @@
       "type": "number"
     },
     "hover-content-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-content-bottom-gap-unit-xxl": {
       "type": "string"
@@ -35276,8 +35254,7 @@
       "type": "string"
     },
     "hover-title-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-font-size-unit-xxl": {
       "type": "string"
@@ -35320,8 +35297,7 @@
       "type": "number"
     },
     "hover-title-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-line-height-unit-xxl": {
       "type": "string"
@@ -35363,8 +35339,7 @@
       "type": "number"
     },
     "hover-title-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-letter-spacing-unit-xxl": {
       "type": "string"
@@ -35511,8 +35486,7 @@
       "type": "number"
     },
     "hover-title-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-text-indent-unit-xxl": {
       "type": "string"
@@ -35662,8 +35636,7 @@
       "type": "number"
     },
     "hover-title-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-word-spacing-unit-xxl": {
       "type": "string"
@@ -35705,8 +35678,7 @@
       "type": "number"
     },
     "hover-title-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "hover-title-bottom-gap-unit-xxl": {
       "type": "string"
@@ -40782,8 +40754,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -40825,8 +40796,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -40868,8 +40838,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -41016,8 +40985,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -41167,8 +41135,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -41210,8 +41177,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -41469,8 +41435,7 @@
       "type": "string"
     },
     "description-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-font-size-unit-xxl": {
       "type": "string"
@@ -41513,8 +41478,7 @@
       "type": "number"
     },
     "description-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-line-height-unit-xxl": {
       "type": "string"
@@ -41556,8 +41520,7 @@
       "type": "number"
     },
     "description-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-letter-spacing-unit-xxl": {
       "type": "string"
@@ -41704,8 +41667,7 @@
       "type": "number"
     },
     "description-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-text-indent-unit-xxl": {
       "type": "string"
@@ -41855,8 +41817,7 @@
       "type": "number"
     },
     "description-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-word-spacing-unit-xxl": {
       "type": "string"
@@ -41898,8 +41859,7 @@
       "type": "number"
     },
     "description-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "description-bottom-gap-unit-xxl": {
       "type": "string"
@@ -46699,8 +46659,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -46742,8 +46701,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -46785,8 +46743,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -46933,8 +46890,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -47084,8 +47040,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -47127,8 +47082,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"

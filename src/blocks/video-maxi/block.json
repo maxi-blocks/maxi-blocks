@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "url": {
       "type": "string",
       "default": "https://www.youtube.com/watch?v=ScMzIvxBSi4"
@@ -8995,5 +8998,252 @@
       "close icon",
       "play icon"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "block": {
+      "border": {
+        "title": "Border",
+        "target": [
+          " .maxi-video-block__overlay",
+          " .maxi-video-block__video-player"
+        ],
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": [
+          " .maxi-video-block__overlay",
+          " .maxi-video-block__video-player"
+        ],
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "overlay colour": {
+        "title": "Overlay colour",
+        "target": " .maxi-video-block__overlay-background",
+        "property": "background-color",
+        "hoverProp": "overlay-background-status-hover"
+      },
+      "play icon colour": {
+        "title": "Play icon colour",
+        "target": "  .maxi-video-block__play-button svg > *:not(g)",
+        "property": false,
+        "hoverProp": "play-icon-status-hover"
+      },
+      "play icon colour two": {
+        "title": "Play icon colour two",
+        "target": "  .maxi-video-block__play-button svg g *:not(g)",
+        "property": false,
+        "hoverProp": "play-icon-status-hover"
+      },
+      "play icon width": {
+        "title": "Play icon width",
+        "target": " .maxi-video-block__play-button svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "play-icon-status-hover"
+      },
+      "close icon colour": {
+        "title": "Close icon colour",
+        "target": "  .maxi-video-block__close-button svg > *:not(g)",
+        "property": false,
+        "hoverProp": "close-icon-status-hover"
+      },
+      "close icon colour two": {
+        "title": "Close icon colour two",
+        "target": "  .maxi-video-block__close-button svg g *:not(g)",
+        "property": false,
+        "hoverProp": "close-icon-status-hover"
+      },
+      "close icon width": {
+        "title": "Close icon width",
+        "target": " .maxi-video-block__close-button svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "close-icon-status-hover"
+      }
+    },
+    "transform": {
+      "canvas": {
+        "title": "Canvas",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "video": {
+        "title": "Video",
+        "target": " .maxi-video-block__video-player",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "overlay": {
+        "title": "Overlay",
+        "target": " .maxi-video-block__overlay",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before canvas": {
+        "title": "Before canvas",
+        "target": "::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before video": {
+        "title": "Before video",
+        "target": " .maxi-video-block__video-player::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before overlay": {
+        "title": "Before overlay",
+        "target": " .maxi-video-block__overlay::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after canvas": {
+        "title": "After canvas",
+        "target": "::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after video": {
+        "title": "After video",
+        "target": " .maxi-video-block__video-player::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after overlay": {
+        "title": "After overlay",
+        "target": " .maxi-video-block__overlay::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "close icon": {
+        "title": "Close icon",
+        "target": " .maxi-video-block__close-button",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "play icon": {
+        "title": "Play icon",
+        "target": " .maxi-video-block__play-button",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before close icon": {
+        "title": "Before close icon",
+        "target": " .maxi-video-block__close-button::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before play icon": {
+        "title": "Before play icon",
+        "target": " .maxi-video-block__play-button::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after close icon": {
+        "title": "After close icon",
+        "target": " .maxi-video-block__close-button::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after play icon": {
+        "title": "After play icon",
+        "target": " .maxi-video-block__play-button::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

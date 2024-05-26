@@ -59,15 +59,11 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $player_type = $props['playerType'];
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $styles_obj = [
                 $uniqueID => [
@@ -468,7 +464,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                             'block_style' => $props['blockStyle'],
                             'prefix' => $videoPrefix,
                             'isHover' => $isHover,
-							'block_name' => (new self())->get_block_name(),
+                            'block_name' => (new self())->get_block_name(),
                         ]),
                     ]
                 );

@@ -59,15 +59,11 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
 
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'] ?? 'light';
-
-            $data = [
-                'customCss' => $customCss,
-            ];
 
             $styles_obj = [
                 $uniqueID => [

@@ -62,6 +62,11 @@ if (!class_exists('MaxiBlocks_Block')):
         protected $block_custom_css = [];
 
         /**
+         * Block transition
+         */
+        protected $block_transition = [];
+
+        /**
          * Block sc props
          */
         protected $block_sc_props = [];
@@ -331,6 +336,34 @@ if (!class_exists('MaxiBlocks_Block')):
 
         }
 
+        /**
+         * Get block transition.
+         *
+         * Retrieves the transition properties from the block metadata.
+         *
+         * @return array The transition properties for the block.
+         */
+        public function get_block_transition()
+        {
+            return $this->block_transition = (!empty($this->block_transition) ? $this->block_transition : $this->get_block_metadata()['transition'] ?? []);
+        }
+
+        /**
+         * Get block data.
+         *
+         * Retrieves the block data, including custom CSS and transition properties.
+         *
+         * @return array The block data.
+         */
+        public function get_block_data()
+        {
+            return [
+                'customCss' => $this->get_block_custom_css(),
+                'transition' => $this->get_block_transition(),
+            ];
+        }
+
+
 
         /**
          * Get block style card properties.
@@ -368,6 +401,17 @@ if (!class_exists('MaxiBlocks_Block')):
             return $this->block_sc_vars = MaxiBlocks_StyleCards::get_style_cards_values($sc_props, $block_style, $sc_entry);
         }
 
+        /**
+         * Get block styles.
+         * This method is intended to be overridden by the child class.
+         *
+         * @param array $props The block properties.
+         * @param array $data The block data (custom CSS and transition properties).
+         */
+        public function get_styles($props, $data)
+        {
+
+        }
     }
 
 endif;

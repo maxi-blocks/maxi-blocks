@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "openFirstTime": {
       "type": "boolean",
       "default": true
@@ -8048,5 +8051,117 @@
       "background",
       "background hover"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "block": {
+      "border": {
+        "title": "Border",
+        "target": " .maxi-svg-icon-block__icon",
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "hoverProp": "svg-border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": " .maxi-svg-icon-block__icon",
+        "property": "box-shadow",
+        "hoverProp": "svg-box-shadow-status-hover"
+      },
+      "colour": {
+        "title": "Colour",
+        "target": "  .maxi-svg-icon-block__icon svg > *:not(g)",
+        "property": false,
+        "hoverProp": "svg-status-hover"
+      },
+      "colour two": {
+        "title": "Colour two",
+        "target": "  .maxi-svg-icon-block__icon svg g *:not(g)",
+        "property": false,
+        "hoverProp": "svg-status-hover"
+      },
+      "background": {
+        "title": "Background",
+        "target": " .maxi-svg-icon-block__icon",
+        "property": "background",
+        "hoverProp": "svg-background-status-hover"
+      }
+    },
+    "transform": {
+      "canvas": {
+        "title": "Canvas",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before canvas": {
+        "title": "Before canvas",
+        "target": "::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after canvas": {
+        "title": "After canvas",
+        "target": "::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "svg": {
+        "title": "Svg",
+        "target": " .maxi-svg-icon-block__icon svg",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

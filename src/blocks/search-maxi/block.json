@@ -72,6 +72,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "border-palette-status-general": {
       "type": "boolean",
       "default": true
@@ -2411,8 +2414,7 @@
       "type": "string"
     },
     "input-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-font-size-unit-xxl": {
       "type": "string"
@@ -2455,8 +2457,7 @@
       "type": "number"
     },
     "input-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-line-height-unit-xxl": {
       "type": "string"
@@ -2498,8 +2499,7 @@
       "type": "number"
     },
     "input-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-letter-spacing-unit-xxl": {
       "type": "string"
@@ -2646,8 +2646,7 @@
       "type": "number"
     },
     "input-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-text-indent-unit-xxl": {
       "type": "string"
@@ -2797,8 +2796,7 @@
       "type": "number"
     },
     "input-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-word-spacing-unit-xxl": {
       "type": "string"
@@ -2840,8 +2838,7 @@
       "type": "number"
     },
     "input-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "input-bottom-gap-unit-xxl": {
       "type": "string"
@@ -5553,8 +5550,7 @@
       "type": "string"
     },
     "button-font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-font-size-unit-xxl": {
       "type": "string"
@@ -5596,8 +5592,7 @@
       "type": "number"
     },
     "button-line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-line-height-unit-xxl": {
       "type": "string"
@@ -5639,8 +5634,7 @@
       "type": "number"
     },
     "button-letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-letter-spacing-unit-xxl": {
       "type": "string"
@@ -5787,8 +5781,7 @@
       "type": "number"
     },
     "button-text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-text-indent-unit-xxl": {
       "type": "string"
@@ -5938,8 +5931,7 @@
       "type": "number"
     },
     "button-word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-word-spacing-unit-xxl": {
       "type": "string"
@@ -5981,8 +5973,7 @@
       "type": "number"
     },
     "button-bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "button-bottom-gap-unit-xxl": {
       "type": "string"
@@ -12118,5 +12109,241 @@
       "icon",
       "close icon"
     ]
+  },
+  "transition": {
+    "block": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      }
+    },
+    "button": {
+      "icon colour": {
+        "title": "Icon colour",
+        "target": "  .maxi-search-block__button__default-icon svg > *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon colour two": {
+        "title": "Icon colour two",
+        "target": "  .maxi-search-block__button__default-icon svg g *:not(g)",
+        "property": false,
+        "hoverProp": "icon-status-hover"
+      },
+      "icon width": {
+        "title": "Icon width",
+        "target": " .maxi-search-block__button__default-icon svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "icon-status-hover"
+      },
+      "close icon colour": {
+        "title": "Close icon colour",
+        "target": "  .maxi-search-block__button__close-icon svg > *:not(g)",
+        "property": false,
+        "hoverProp": "close-icon-status-hover"
+      },
+      "close icon colour two": {
+        "title": "Close icon colour two",
+        "target": "  .maxi-search-block__button__close-icon svg g *:not(g)",
+        "property": false,
+        "hoverProp": "close-icon-status-hover"
+      },
+      "close icon width": {
+        "title": "Close icon width",
+        "target": " .maxi-search-block__button__close-icon svg",
+        "property": [
+          "width",
+          "height"
+        ],
+        "hoverProp": "close-icon-status-hover"
+      },
+      "typography": {
+        "title": "Typography",
+        "target": " .maxi-search-block__button__content",
+        "property": false,
+        "hoverProp": "button-typography-status-hover"
+      },
+      "border": {
+        "title": "Border",
+        "target": " .maxi-search-block__button",
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "prefix": "button-"
+      },
+      "button background": {
+        "title": "button background",
+        "target": " .maxi-search-block__button",
+        "property": "background",
+        "hoverProp": "button-background-status-hover"
+      }
+    },
+    "input": {
+      "typography": {
+        "title": "Typography",
+        "target": " .maxi-search-block__input",
+        "property": false,
+        "hoverProp": "input-typography-status-hover"
+      },
+      "border": {
+        "title": "Border",
+        "target": " .maxi-search-block__input",
+        "property": [
+          "border",
+          "border-radius"
+        ],
+        "hoverProp": "input-border-status-hover"
+      },
+      "input background": {
+        "title": "Input background",
+        "target": " .maxi-search-block__input",
+        "property": "background",
+        "hoverProp": "input-background-status-hover"
+      },
+      "icon reveal appear": {
+        "title": "Icon reveal appear",
+        "target": " .maxi-search-block__input",
+        "property": [
+          "opacity",
+          "visibility",
+          "width"
+        ]
+      }
+    },
+    "transform": {
+      "block": {
+        "title": "Block",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "button": {
+        "title": "Button",
+        "target": " .maxi-search-block__button",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "input": {
+        "title": "Input",
+        "target": " .maxi-search-block__input",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before block": {
+        "title": "Before block",
+        "target": "::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before button": {
+        "title": "Before button",
+        "target": " .maxi-search-block__button::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before input": {
+        "title": "Before input",
+        "target": " .maxi-search-block__input::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after block": {
+        "title": "After block",
+        "target": "::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after button": {
+        "title": "After button",
+        "target": " .maxi-search-block__button::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after input": {
+        "title": "After input",
+        "target": " .maxi-search-block__input::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "placeholder input": {
+        "title": "Placeholder input",
+        "target": " .maxi-search-block__input::placeholder",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "icon": {
+        "title": "Icon",
+        "target": " .maxi-search-block__button__default-icon",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "close icon": {
+        "title": "Close icon",
+        "target": " .maxi-search-block__button__close-icon",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

@@ -69,6 +69,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "content": {
       "type": "string",
       "default": ""
@@ -737,8 +740,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -780,8 +782,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -823,8 +824,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -971,8 +971,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -1122,8 +1121,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -6173,5 +6171,105 @@
       8
     ],
     "scType": "color"
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      },
+      "typography": {
+        "title": "Typography",
+        "target": " .maxi-list-item-block__content",
+        "property": false,
+        "hoverProp": "typography-status-hover"
+      },
+      "link": {
+        "title": "Link",
+        "target": [
+          " .maxi-list-item-block--link",
+          " .maxi-list-item-block--link span"
+        ],
+        "property": "color"
+      }
+    },
+    "transform": {
+      "list item wrapper": {
+        "title": "List item wrapper",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "links": {
+        "title": "Links",
+        "target": " .maxi-list-item-block--link",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "list item": {
+        "title": "List item",
+        "target": " .maxi-list-item-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before list item": {
+        "title": "Before list item",
+        "target": " .maxi-list-item-block__content::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after list item": {
+        "title": "After list item",
+        "target": " .maxi-list-item-block__content::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

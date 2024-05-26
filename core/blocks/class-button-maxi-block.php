@@ -59,63 +59,10 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_values)
+        public function get_styles($props, $data, $sc_values = null)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
-
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default = $defaults->transitionDefault;
-
-            $button_wrapper_class = ' .maxi-button-block';
-            $button_class = $button_wrapper_class . '__button';
-            $icon_class = $button_wrapper_class . '__icon';
-            $content_class = $button_wrapper_class . '__content';
-            $prefix = 'button-';
-
-            $transition = array_merge($transition_default, [
-                'block' => [
-                    'typography' => [
-                        'title' => 'Typography',
-                        'target' => $content_class,
-                        'property' => false,
-                        'hover_prop' => 'typography-status-hover',
-                    ],
-                    'button background' => [
-                        'title' => 'Button background',
-                        'target' => $button_class,
-                        'property' => 'background',
-                        'hover_prop' => $prefix . 'background-status-hover',
-                    ],
-                    'border' => [
-                        'title' => 'Border',
-                        'target' => $button_class,
-                        'property' => ['border', 'border-radius'],
-                        'hover_prop' => $prefix . 'border-status-hover',
-                    ],
-                    'box shadow' => [
-                        'title' => 'Box shadow',
-                        'target' => $button_class,
-                        'property' => 'box-shadow',
-                        'hover_prop' => $prefix . 'box-shadow-status-hover',
-                    ],
-                ]
-            ]);
-
-            // Call the create_icon_transitions function and merge its results into the 'block' array
-            $icon_transitions = create_icon_transitions([
-                'target' => ' ' . $icon_class,
-                'prefix' => 'icon-',
-                'title_prefix' => 'icon',
-            ]);
-
-            $transition['block'] = array_merge($transition['block'], $icon_transitions);
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
 
             $styles_obj = [
                 $uniqueID => [

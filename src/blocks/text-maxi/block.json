@@ -85,6 +85,9 @@
       "type": "boolean",
       "default": false
     },
+    "ariaLabels": {
+      "type": "object"
+    },
     "dc-error": {
       "type": "string",
       "default": ""
@@ -1363,8 +1366,7 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -1406,8 +1408,7 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -1449,8 +1450,7 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -1597,8 +1597,7 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -1748,8 +1747,7 @@
       "type": "number"
     },
     "word-spacing-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "word-spacing-unit-xxl": {
       "type": "string"
@@ -1791,8 +1789,7 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string",
-      "default": "px"
+      "type": "string"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -6909,5 +6906,127 @@
       "background",
       "background hover"
     ]
+  },
+  "transition": {
+    "canvas": {
+      "border": {
+        "title": "Border",
+        "target": [
+          "",
+          " > .maxi-background-displayer"
+        ],
+        "property": [
+          "border",
+          "border-radius",
+          "top",
+          "left"
+        ],
+        "hoverProp": "border-status-hover"
+      },
+      "box shadow": {
+        "title": "Box shadow",
+        "target": "",
+        "property": "box-shadow",
+        "hoverProp": "box-shadow-status-hover"
+      },
+      "background / layer": {
+        "title": "Background / Layer",
+        "target": [
+          " > .maxi-background-displayer > div",
+          " > .maxi-background-displayer > div > svg"
+        ],
+        "property": false,
+        "hoverProp": "block-background-status-hover"
+      },
+      "opacity": {
+        "title": "Opacity",
+        "target": "",
+        "property": "opacity",
+        "hoverProp": "opacity-status-hover"
+      },
+      "typography": {
+        "title": "Typography",
+        "target": [
+          " .maxi-text-block__content",
+          " .maxi-text-block__content li",
+          " .maxi-text-block__content ol"
+        ],
+        "property": false,
+        "hoverProp": "typography-status-hover"
+      },
+      "link": {
+        "title": "Link",
+        "target": [
+          " .maxi-text-block--link",
+          " .maxi-text-block--link span"
+        ],
+        "property": "color"
+      }
+    },
+    "transform": {
+      "text wrapper": {
+        "title": "Text wrapper",
+        "target": "",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "links": {
+        "title": "Links",
+        "target": " .maxi-text-block--link",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "ordered list": {
+        "title": "Ordered list",
+        "target": " ol.maxi-text-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "unordered list": {
+        "title": "Unordered list",
+        "target": " ul.maxi-text-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "text": {
+        "title": "Text",
+        "target": " .maxi-text-block__content",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "before text": {
+        "title": "Before text",
+        "target": " .maxi-text-block__content::before",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      },
+      "after text": {
+        "title": "After text",
+        "target": " .maxi-text-block__content::after",
+        "property": [
+          "transform",
+          "transform-origin"
+        ],
+        "isTransform": true
+      }
+    }
   }
 }

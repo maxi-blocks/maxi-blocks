@@ -63,6 +63,7 @@ const blockJsonAbstracter = async () => {
 			attributes: blockAttributes,
 			customCss: blockCustomCss,
 			scProps: blockSCProps,
+			transition: blockTransition,
 		} = maxiBlock;
 		const blockName = maxiBlock.name.replace('maxi-blocks/', '');
 
@@ -96,6 +97,11 @@ const blockJsonAbstracter = async () => {
 
 		// Replace the customCss of the block.json file
 		blockFileContent.customCss = blockCustomCss;
+
+		// Replace the transition of the block.json file
+		if (blockTransition) {
+			blockFileContent.transition = blockTransition;
+		}
 
 		// Replace the scProps of the block.json file if they exist
 		if (blockSCProps) {

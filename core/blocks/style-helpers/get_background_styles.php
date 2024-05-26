@@ -316,7 +316,7 @@ function get_image_background_object($args)
     $get_bg_image_attribute_value = function ($target, $is_hover_param = null) use ($prefix, $breakpoint, $props, $is_hover) {
         return get_attributes_value([
             'target' => $target,
-            'isHover' => $is_hover_param ?? $is_hover,
+            'is_hover' => $is_hover_param ?? $is_hover,
             'prefix' => $prefix,
             'breakpoint' => $breakpoint,
             'props' => $props,
@@ -1076,7 +1076,7 @@ function get_block_background_styles($args)
                 'target' => 'background-layers',
                 'props' => $args,
                 'prefix' => $prefix,
-                'isHover' => $is_hover,
+                'is_hover' => $is_hover,
             ]),
         ];
     }

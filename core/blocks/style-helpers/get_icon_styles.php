@@ -23,7 +23,7 @@ function get_icon_styles(
         $palette_attributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => $prefix,
-            'isHover' => $is_hover,
+            'is_hover' => $is_hover,
             'breakpoint' => 'general',
         ]);
         $response['general']['fill'] = 'none';
@@ -41,7 +41,7 @@ function get_icon_styles(
         $palette_attributes = get_palette_attributes([
             'obj' => $obj,
             'prefix' => "{$prefix}icon-",
-            'isHover' => $is_hover,
+            'is_hover' => $is_hover,
         ]);
 
         if (!$is_shape && !$palette_attributes['palette_status'] && !is_null($palette_attributes['color'])) {

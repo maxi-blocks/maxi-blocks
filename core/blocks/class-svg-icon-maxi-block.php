@@ -243,13 +243,13 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         true,
                         'svg-'
                     ),
-                    'isHover' => true,
+                    'is_hover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'svg-'
                 ]) : null,
                 'boxShadow' => ($props['svg-box-shadow-status-hover']) ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true, 'svg-'),
-                    'isHover' => true,
+                    'is_hover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'svg-',
                     'block_name' => (new self())->get_block_name(),

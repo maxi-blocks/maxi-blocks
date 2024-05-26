@@ -171,13 +171,13 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                     'borderWidth',
                                     'borderRadius'
                                 ], true),
-                                'isHover' => true,
+                                'is_hover' => true,
                                 'block_style' => $block_style
                             ]) : null,
                 'boxShadow' => isset($props['box-shadow-status-hover']) ?
                                get_box_shadow_styles([
                                    'obj' => get_group_attributes($props, 'boxShadow', true),
-                                   'isHover' => true,
+                                   'is_hover' => true,
                                    'block_style' => $block_style,
                                    'block_name' => (new self())->get_block_name(),
                                ]) : null,
@@ -261,7 +261,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                     true,
                                     'number-counter-'
                                 ),
-                                'isHover' => true,
+                                'is_hover' => true,
                                 'block_style' => $block_style,
                                 'prefix' => 'number-counter-',
                             ]) : null,
@@ -273,7 +273,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                        true,
                                        'number-counter-'
                                    ),
-                                   'isHover' => true,
+                                   'is_hover' => true,
                                    'block_style' => $block_style,
                                    'prefix' => 'number-counter-',
                                    'block_name' => (new self())->get_block_name(),

@@ -246,7 +246,6 @@ function get_svg_styles($params)
         "{$target} svg circle[data-stroke]:not([stroke^=\"none\"])",
     ];
 
-
     $response = [
         "{$target} svg path" => $path_styles,
     ];

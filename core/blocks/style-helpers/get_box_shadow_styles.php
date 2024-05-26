@@ -22,7 +22,7 @@ function get_box_shadow_styles($params)
             $value = get_attributes_value([
                 'target' => $target,
                 'props' => $obj,
-                'isHover' => $is_hover,
+                'is_hover' => $is_hover,
                 'prefix' => $prefix . 'box-shadow-',
                 'breakpoint' => $breakpoint
             ]);

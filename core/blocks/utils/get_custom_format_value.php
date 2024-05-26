@@ -68,7 +68,7 @@ function get_custom_format_value($args)
     $typography = $args['typography'] ?? null;
     $prop = $args['prop'] ?? null;
     $breakpoint = $args['breakpoint'] ?? null;
-    $is_hover = $args['isHover'] ?? false;
+    $is_hover = $args['is_hover'] ?? false;
     $text_level = $args['textLevel'] ?? 'p';
     $block_style = $args['blockStyle'] ?? 'light';
     $style_card = $args['styleCard'] ?? null;
@@ -102,7 +102,7 @@ function get_custom_format_value($args)
     'target' => $prop,
     'breakpoint' => $breakpoint,
     'attributes' => $typography,
-    'isHover' => $is_hover,
+    'is_hover' => $is_hover,
     'avoidXXL' => $avoid_xxl
     ]);
 
@@ -120,7 +120,7 @@ function get_custom_format_value($args)
     'target' => $prop,
     'breakpoint' => $breakpoint,
     'attributes' => $current_sc,
-    'isHover' => $is_hover,
+    'is_hover' => $is_hover,
     'avoidXXL' => $avoid_xxl
     ]);
 
@@ -134,7 +134,7 @@ function get_custom_format_value($args)
     'target' => $prop,
     'breakpoint' => $breakpoint,
     'attributes' => $default_sc,
-    'isHover' => $is_hover,
+    'is_hover' => $is_hover,
     'avoidXXL' => $avoid_xxl
     ]);
 

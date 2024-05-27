@@ -79,6 +79,8 @@ export const handleBlockMigrator = ({
 				dispatch('maxiBlocks').saveDeprecatedBlock({
 					uniqueID,
 					attributes: result,
+					ignoreAttributesForSave:
+						newMigrator.ignoreAttributesForSave,
 				});
 
 				// eslint-disable-next-line no-console
@@ -96,8 +98,10 @@ export const handleBlockMigrator = ({
 			newMigrator.save = props => {
 				const { uniqueID } = props.attributes;
 
-				const prevAttr =
-					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+				const prevAttr = select('maxiBlocks').receiveDeprecatedBlock(
+					uniqueID,
+					true
+				);
 
 				if (!isNil(prevAttr))
 					Object.keys(prevAttr).forEach(key => {

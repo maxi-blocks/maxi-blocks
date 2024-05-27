@@ -4,6 +4,7 @@ import {
 	getBreakpointFromAttribute,
 	getSimpleLabel,
 } from '../utils';
+import bottomGapMigrator from './bottomGapMigrator';
 
 const name = 'Typography Units Defaults';
 
@@ -82,10 +83,11 @@ const isEligible = blockAttributes => {
 	const { 'maxi-version-current': maxiVersionCurrent } = blockAttributes;
 
 	return (
-		maxiVersions.includes(maxiVersionCurrent) &&
-		Object.keys(blockAttributes).some(attr =>
-			isEligibleAttr(attr, blockAttributes)
-		)
+		(maxiVersions.includes(maxiVersionCurrent) &&
+			Object.keys(blockAttributes).some(attr =>
+				isEligibleAttr(attr, blockAttributes)
+			)) ||
+		bottomGapMigrator.isEligible(blockAttributes)
 	);
 };
 
@@ -102,6 +104,11 @@ const migrate = newAttributes => {
 			changedAttributes[unitLabel] = 'px';
 		}
 	});
+
+	// Since bottom-gap can be added by a migrator, add check to enusre it will have the default value
+	if (bottomGapMigrator.isEligible(newAttributes)) {
+		changedAttributes['bottom-gap-unit-general'] = 'px';
+	}
 
 	return { ...newAttributes, ...changedAttributes };
 };

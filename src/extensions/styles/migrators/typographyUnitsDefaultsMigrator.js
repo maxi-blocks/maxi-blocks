@@ -1,9 +1,5 @@
 import { isNil } from 'lodash';
-import {
-	getAttrKeyWithoutBreakpoint,
-	getBreakpointFromAttribute,
-	getSimpleLabel,
-} from '../utils';
+import { getAttrKeyWithoutBreakpoint } from '../utils';
 import bottomGapMigrator from './bottomGapMigrator';
 
 const name = 'Typography Units Defaults';
@@ -67,6 +63,10 @@ const affectedAttributes = [
 const isEligibleAttr = (attr, blockAttributes) => {
 	if (isNil(blockAttributes[attr])) return false;
 
+	if (attr === 'custom-formats') {
+		return true;
+	}
+
 	const simpleLabel = getAttrKeyWithoutBreakpoint(attr);
 	const unitLabel = `${simpleLabel}-unit-general`;
 
@@ -96,9 +96,32 @@ const migrate = newAttributes => {
 
 	Object.keys(newAttributes).forEach(attr => {
 		if (isEligibleAttr(attr, newAttributes)) {
-			const breakpoint = getBreakpointFromAttribute(attr);
-			const simpleLable = getSimpleLabel(attr, breakpoint);
-			const unitLabel = `${simpleLable}-unit-general`;
+			if (attr === 'custom-formats') {
+				Object.entries(newAttributes[attr] ?? {}).forEach(
+					([formatName, formatValues]) => {
+						Object.entries(formatValues ?? {}).forEach(
+							([formatAttr, formatValue]) => {
+								if (
+									isEligibleAttr(formatAttr, {
+										...newAttributes,
+										...formatValues,
+									})
+								) {
+									const simpleLabel =
+										getAttrKeyWithoutBreakpoint(formatAttr);
+									const unitLabel = `${simpleLabel}-unit-general`;
+
+									// Set the old default value explicitly
+									changedAttributes[unitLabel] = 'px';
+								}
+							}
+						);
+					}
+				);
+			}
+
+			const simpleLabel = getAttrKeyWithoutBreakpoint(attr);
+			const unitLabel = `${simpleLabel}-unit-general`;
 
 			// Set the old default value explicitly
 			changedAttributes[unitLabel] = 'px';

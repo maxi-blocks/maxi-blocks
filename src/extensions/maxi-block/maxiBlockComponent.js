@@ -227,13 +227,6 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		console.log('MaxiBlockComponent constructor');
-		console.log('uniqueID', uniqueID);
-
-		console.log('blockName', blockName);
-		console.log('isTemplatePartPreview', this.isTemplatePartPreview);
-		console.log('=========================');
-
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init

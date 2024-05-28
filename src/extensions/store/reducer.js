@@ -130,6 +130,7 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
+		deprecatedBlocksSave: {},
 		blocksToRender: [],
 		isPageLoaded: false,
 		isIframeObserverSet: false,
@@ -221,17 +222,29 @@ const reducer = (
 				inspectorPath: newInspectorPath,
 			};
 		}
-		case 'SAVE_DEPRECATED_BLOCK':
+		case 'SAVE_DEPRECATED_BLOCK': {
+			const { uniqueID, attributes, ignoreAttributesForSave } = action;
+
 			return {
 				...state,
 				deprecatedBlocks: {
 					...state.deprecatedBlocks,
-					[action.uniqueID]: {
-						...state.deprecatedBlocks[action.uniqueID],
-						...action.attributes,
+					[uniqueID]: {
+						...state.deprecatedBlocks[uniqueID],
+						...attributes,
 					},
 				},
+				...(!ignoreAttributesForSave && {
+					deprecatedBlocksSave: {
+						...state.deprecatedBlocksSave,
+						[uniqueID]: {
+							...state.deprecatedBlocksSave[uniqueID],
+							...attributes,
+						},
+					},
+				}),
 			};
+		}
 		case 'REMOVE_DEPRECATED_BLOCK':
 			return {
 				...state,

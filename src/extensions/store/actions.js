@@ -140,11 +140,12 @@ const actions = {
 			inspectorPath,
 		};
 	},
-	saveDeprecatedBlock({ uniqueID, attributes }) {
+	saveDeprecatedBlock({ uniqueID, attributes, ignoreAttributesForSave }) {
 		return {
 			type: 'SAVE_DEPRECATED_BLOCK',
 			uniqueID,
 			attributes,
+			ignoreAttributesForSave,
 		};
 	},
 	removeDeprecatedBlock(uniqueID) {

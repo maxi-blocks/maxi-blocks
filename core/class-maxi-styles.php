@@ -340,7 +340,7 @@ class MaxiBlocks_Styles
 
             if ($has_front_page_and_home) {
                 if (is_home() && !is_front_page()) {
-                    $template_id .= 'index';
+                    $template_id .= 'home';
                 } else {
                     $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }

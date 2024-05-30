@@ -7,7 +7,8 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
+import { getDCValues } from '../../extensions/DC';
 
 /**
  * External dependencies
@@ -25,7 +26,7 @@ import './style.scss';
  * Component
  */
 const BackgroundContent = props => {
-	const { wrapperRef, prefix = '' } = props;
+	const { wrapperRef, prefix = '', isSave = false } = props;
 
 	const layers = compact([
 		...props['background-layers'],
@@ -55,6 +56,19 @@ const BackgroundContent = props => {
 						/>
 					);
 				case 'image': {
+					const {
+						status: dcStatus,
+						mediaId: dcMediaId,
+						mediaUrl: dcMediaUrl,
+					} = getDCValues(
+						getGroupAttributes(
+							layer,
+							'dynamicContent',
+							false,
+							prefix
+						),
+						{}
+					);
 					const parallaxStatus = getAttributeValue({
 						target: 'background-image-parallax-status',
 						props: layer,
@@ -98,7 +112,7 @@ const BackgroundContent = props => {
 							  })
 							: undefined;
 
-					if (!mediaURL) return null;
+					if (!mediaURL && !dcStatus) return null;
 
 					return (
 						<div
@@ -112,8 +126,10 @@ const BackgroundContent = props => {
 							)}
 						>
 							<img
-								className={`wp-image-${mediaID}`}
-								src={mediaURL}
+								className={`wp-image-${
+									dcStatus ? dcMediaId : mediaID
+								}`}
+								src={dcStatus ? dcMediaUrl : mediaURL}
 								alt={alt}
 							/>
 						</div>

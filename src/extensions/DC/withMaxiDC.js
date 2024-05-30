@@ -22,6 +22,7 @@ const DCBlocks = [
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/button-maxi',
+	'maxi-blocks/divider-maxi',
 ];
 
 const withMaxiDC = createHigherOrderComponent(

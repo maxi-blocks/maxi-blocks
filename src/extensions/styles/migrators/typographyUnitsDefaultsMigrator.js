@@ -130,7 +130,7 @@ const migrate = newAttributes => {
 		}
 	});
 
-	// Since bottom-gap can be added by a migrator, add check to enusre it will have the default value
+	// Since bottom-gap can be added by a migrator, add check to ensure it will have the default value
 	if (bottomGapMigrator.isEligible(newAttributes)) {
 		changedAttributes['bottom-gap-unit-general'] = 'px';
 	}

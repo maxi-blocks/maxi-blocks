@@ -17,6 +17,7 @@ import { getBreakpoints } from '../../extensions/styles/helpers';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Edit
@@ -104,4 +105,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

@@ -25,6 +25,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import SliderContext from '../slider-maxi/context';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Editor
@@ -134,5 +135,5 @@ class edit extends MaxiBlockComponent {
 }
 
 export default withMaxiContextLoop(
-	withMaxiContextLoopContext(withMaxiProps(edit))
+	withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)))
 );

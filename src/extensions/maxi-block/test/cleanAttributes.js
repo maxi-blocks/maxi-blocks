@@ -395,7 +395,6 @@ describe('cleanAttributes', () => {
 
 		const expectedFirstRound = {
 			'test-general': 3,
-			'test-xl': 3,
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
@@ -534,15 +533,6 @@ describe('cleanAttributes', () => {
 					numberWhichIsNotChanging: 1,
 				},
 			},
-			'test-xl': {
-				normal: {
-					numberWhichIsChanging: 3,
-					keyOfUndefined: undefined,
-				},
-				hover: {
-					numberWhichIsNotChanging: 1,
-				},
-			},
 		};
 		const expectedSecondRound = {
 			'test-general': {
@@ -658,7 +648,6 @@ describe('cleanAttributes', () => {
 
 		const expectedFirstRound = {
 			'test-general': 3,
-			'test-xl': 3,
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
@@ -891,7 +880,6 @@ describe('cleanAttributes', () => {
 
 		const expectedFirstRound = {
 			'test-general': 4,
-			'test-xl': 4,
 		};
 		const expectedSecondRound = {
 			'test-general': 40,
@@ -1040,7 +1028,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'border-palette-color-general': 2,
-			'border-palette-color-l': 2,
+			'border-palette-color-l': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1241,7 +1229,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'em',
-			'test-xl': 'em',
+			'test-xl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1371,7 +1359,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '%',
-			'test-xl': '%',
+			'test-xl': undefined,
 			'test-l': '%',
 		};
 

@@ -8,7 +8,6 @@ import { getIsValid } from '../styles/utils';
 import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 import getTypographyStyles from '../styles/helpers/getTypographyStyles';
-import replaceUndefinedWithNull from './utils';
 
 /**
  * External dependencies
@@ -100,25 +99,19 @@ const getSCVariablesObject = (
 		'padding-right',
 	];
 
-	const mergeStyleCards = (defaultStyleCard, styleCard) =>
-		merge(
-			{
-				...cloneDeep(replaceUndefinedWithNull(defaultStyleCard)),
-			},
-			{
-				...cloneDeep(replaceUndefinedWithNull(styleCard)),
-			}
-		);
-
 	const SC = {
-		dark: mergeStyleCards(
-			styleCards?.dark?.defaultStyleCard,
-			styleCards?.dark?.styleCard
-		),
-		light: mergeStyleCards(
-			styleCards?.light?.defaultStyleCard,
-			styleCards?.light?.styleCard
-		),
+		dark: {
+			...merge(
+				{ ...cloneDeep(styleCards?.dark?.defaultStyleCard) },
+				{ ...cloneDeep(styleCards?.dark?.styleCard) }
+			),
+		},
+		light: {
+			...merge(
+				{ ...cloneDeep(styleCards?.light?.defaultStyleCard) },
+				{ ...cloneDeep(styleCards?.light?.styleCard) }
+			),
+		},
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 

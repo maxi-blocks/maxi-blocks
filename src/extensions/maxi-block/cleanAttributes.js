@@ -7,16 +7,13 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import getAttributeKey from '../styles/getAttributeKey';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 import {
+	getBreakpointFromAttribute,
 	getHoverAttributeKey,
 	getNormalAttributeKey,
-	getBreakpointFromAttribute,
-	attrExistsOnResponsive,
-	getIsHoverAttribute,
-	getSimpleLabel,
 } from '../styles/utils';
+import getDefaultAttribute from '../styles/getDefaultAttribute';
+import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -24,6 +21,11 @@ import {
 import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
+
+const getSimpleLabel = (key, breakpoint) =>
+	getNormalAttributeKey(key).slice(0, -(breakpoint.length + 1));
+
+const getIsHover = key => key.includes('-hover');
 
 const getShouldPreserveAttribute = (
 	attributes,
@@ -81,7 +83,7 @@ const flatSameAsPrev = (
 		}
 
 		const isXXL = breakpoint === 'xxl';
-		const isHover = getIsHoverAttribute(key);
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		if (isXXL) {
 			const generalKey = getAttributeKey(
@@ -282,7 +284,7 @@ const flatWithGeneral = (
 					select('maxiBlocks').receiveMaxiDeviceType();
 
 				if (attrBreakpoint === 'general') {
-					const isHover = getIsHoverAttribute(attr);
+					const isHover = getIsHover(attr);
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
 
 					const generalKey = getAttributeKey(
@@ -334,7 +336,7 @@ const flatWithGeneral = (
 		}
 		if (breakpoint !== 'general') return;
 
-		const isHover = getIsHoverAttribute(key);
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
 		const attrOnXXL = attributes[keyOnXXL];
@@ -391,7 +393,7 @@ const flatNewAttributes = (
 			return;
 		}
 
-		const isHover = getIsHoverAttribute(key);
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const generalKey = getAttributeKey(simpleLabel, isHover, '', 'general');
 		const existsGeneralAttr = generalKey in newAttributes;
@@ -481,7 +483,7 @@ const flatLowerAttr = (
 		if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
-		const isHover = getIsHoverAttribute(key);
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const lowerBreakpoints = breakpoints.slice(
 			breakpoints.indexOf(breakpoint) + 1
@@ -584,18 +586,13 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 
 		if (
 			!breakpoint ||
-			(breakpoint === 'general' &&
-				!attrExistsOnResponsive(
-					{ ...attributes, ...newAttributes },
-					key,
-					baseBreakpoint
-				)) ||
+			breakpoint === 'general' ||
 			breakpoint === baseBreakpoint ||
 			isNil(value)
 		)
 			return;
 
-		const isHover = getIsHoverAttribute(key);
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const baseLabel = getAttributeKey(
 			simpleLabel,
@@ -619,8 +616,7 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 				!isEqual(generalAttr, value)) ||
 			(!isNil(generalAttr) &&
 				isNil(baseAttr) &&
-				!isEqual(generalAttr, value)) ||
-			(breakpoint === 'general' && baseAttr !== newGeneralAttr)
+				!isEqual(generalAttr, value))
 		)
 			result[baseLabel] = generalAttr;
 	});

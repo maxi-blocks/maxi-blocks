@@ -13,6 +13,7 @@ import {
 	getAttributeValue,
 	getBlockStyle,
 	getColorRGBAString,
+	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { handleSetAttributes } from '../../extensions/maxi-block';
@@ -38,6 +39,7 @@ import { cloneDeep, isEmpty, omit } from 'lodash';
  * Icons
  */
 import { toolbarDrop, toolbarShow } from '../../icons';
+import { getDCValues } from '../../extensions/DC';
 
 /**
  * Component
@@ -252,6 +254,10 @@ const getLayerCardTitle = props => {
 				};
 			}
 			case 'image': {
+				const { status: dcStatus, mediaUrl: dcMediaUrl } = getDCValues(
+					getGroupAttributes(layer, 'dynamicContent'),
+					{}
+				);
 				const bgImageURL = getAttributeValue({
 					target: 'background-image-mediaURL',
 					props: layer,
@@ -263,10 +269,10 @@ const getLayerCardTitle = props => {
 					isHover,
 				});
 
+				const url = dcStatus ? dcMediaUrl : bgImageURL;
+
 				return {
-					background: !isEmpty(bgImageURL)
-						? `url(${bgImageURL})`
-						: '',
+					background: !isEmpty(url) ? `url(${url})` : '',
 					opacity: bgImageOpacity,
 				};
 			}

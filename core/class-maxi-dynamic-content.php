@@ -547,7 +547,7 @@ class MaxiBlocks_DynamicContent
 
         $content = self::render_dc_background($attributes, $content, $context_loop);
 
-        if (!$attributes['dc-status']) {
+        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
             return $content;
         }
 
@@ -620,6 +620,10 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         foreach ([$background_layers, $background_layers_hover] as $layers) {
+            if (!is_array($layers)) {
+                continue;
+            }
+
             foreach ($layers as $layer) {
                 if (array_key_exists('dc-status', $layer) && $layer['dc-status'] &&
                     array_key_exists('type', $layer) && $layer['type'] === 'image') {

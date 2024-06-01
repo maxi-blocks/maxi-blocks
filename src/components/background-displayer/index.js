@@ -58,8 +58,8 @@ const BackgroundContent = props => {
 				case 'image': {
 					const {
 						status: dcStatus,
-						mediaId: dcMediaId,
-						mediaUrl: dcMediaUrl,
+						mediaId: rawDCMediaId,
+						mediaUrl: rawDCMediaUrl,
 					} = getDCValues(
 						getGroupAttributes(
 							layer,
@@ -69,6 +69,14 @@ const BackgroundContent = props => {
 						),
 						{}
 					);
+
+					const dcMediaId = isSave
+						? '$bg-media-id-to-replace'
+						: rawDCMediaId;
+					const dcMediaUrl = isSave
+						? '$bg-media-url-to-replace'
+						: rawDCMediaUrl;
+
 					const parallaxStatus = getAttributeValue({
 						target: 'background-image-parallax-status',
 						props: layer,
@@ -85,6 +93,13 @@ const BackgroundContent = props => {
 									'maxi-background-displayer__layer',
 									`maxi-background-displayer__${order}`
 								)}
+								style={
+									dcStatus
+										? {
+												backgroundImage: `url(${dcMediaUrl})`,
+										  }
+										: {}
+								}
 							/>
 						);
 

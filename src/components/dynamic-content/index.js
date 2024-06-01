@@ -79,6 +79,7 @@ const DynamicContent = props => {
 		mediaID,
 		mediaURL,
 		onChange,
+		disableHideOnFrontend = false,
 		...dynamicContent
 	} = props;
 
@@ -309,18 +310,20 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					{!ignoreEmptyFields.includes(field) && !isCL && (
-						<ToggleSwitch
-							label={__(
-								'Hide if no content found on frontend',
-								'maxi-blocks'
-							)}
-							selected={hide}
-							onChange={value =>
-								changeProps({ 'dc-hide': value })
-							}
-						/>
-					)}
+					{!disableHideOnFrontend &&
+						!ignoreEmptyFields.includes(field) &&
+						!isCL && (
+							<ToggleSwitch
+								label={__(
+									'Hide if no content found on frontend',
+									'maxi-blocks'
+								)}
+								selected={hide}
+								onChange={value =>
+									changeProps({ 'dc-hide': value })
+								}
+							/>
+						)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
 							label={__('Source', 'maxi-blocks')}

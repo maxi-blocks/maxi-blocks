@@ -742,6 +742,7 @@ const ImageLayer = props => {
 						{...getGroupAttributes(imageOptions, 'dynamicContent')}
 						onChange={onChange}
 						contentType='image'
+						disableHideOnFrontend
 					/>
 				</>
 			)}

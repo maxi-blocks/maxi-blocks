@@ -32,6 +32,7 @@ import DCClassNameMigrator from './DCClassNameMigrator';
 import imageResponsiveWidth from './imageResponsiveWidth';
 import scrollEffectsMigrator from './scrollEffectsMigrator';
 import inlineDCLinkMigrator from './inlineDCLinkMigrator';
+import typographyUnitsDefaultsMigrator from './typographyUnitsDefaultsMigrator';
 
 /**
  * External dependencies
@@ -78,6 +79,8 @@ export const handleBlockMigrator = ({
 				dispatch('maxiBlocks').saveDeprecatedBlock({
 					uniqueID,
 					attributes: result,
+					ignoreAttributesForSave:
+						newMigrator.ignoreAttributesForSave,
 				});
 
 				// eslint-disable-next-line no-console
@@ -95,8 +98,10 @@ export const handleBlockMigrator = ({
 			newMigrator.save = props => {
 				const { uniqueID } = props.attributes;
 
-				const prevAttr =
-					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+				const prevAttr = select('maxiBlocks').receiveDeprecatedBlock(
+					uniqueID,
+					true
+				);
 
 				if (!isNil(prevAttr))
 					Object.keys(prevAttr).forEach(key => {
@@ -139,6 +144,7 @@ const blockMigrator = blockMigratorProps => {
 		uniqueIDMigrator,
 		scrollEffectsMigrator,
 		inlineDCLinkMigrator,
+		typographyUnitsDefaultsMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

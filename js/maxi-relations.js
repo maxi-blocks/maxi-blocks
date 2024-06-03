@@ -772,6 +772,26 @@ class Relation {
 								transitionTarget,
 								fullTransitionStringRaw
 							) => {
+								// console.log(
+								// 	'fullTransitionStringRaw',
+								// 	fullTransitionStringRaw
+								// );
+								// console.log(
+								// 	'transitionString',
+								// 	transitionString
+								// );
+								// console.log(
+								// 	'transitionTarget',
+								// 	transitionTarget
+								// );
+
+								if (
+									fullTransitionStringRaw.includes(
+										transitionString
+									)
+								)
+									return fullTransitionStringRaw;
+
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
@@ -880,6 +900,9 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
+			// console.log('====================================='); // 🔥
+			// console.log(this.uniqueID);
+			// console.log('stylesObj', stylesObj);
 			if (this.effects[index].disableTransition) return;
 
 			if (this.hasMultipleTargetsArray[index]) {
@@ -925,6 +948,8 @@ class Relation {
 
 		this.inTransitionString = inTransitionString;
 		this.outTransitionString = outTransitionString;
+		// console.log('inTransitionString', inTransitionString);
+		// console.log('outTransitionString', outTransitionString);
 	}
 
 	addTransition(element) {

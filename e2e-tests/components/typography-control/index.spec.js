@@ -372,9 +372,9 @@ describe('TypographyControl', () => {
 		]);
 
 		const expectedAttributesUnits = {
-			'line-height-unit-general': undefined,
-			'letter-spacing-unit-general': undefined,
-			'font-size-unit-general': undefined,
+			'line-height-unit-general': 'px',
+			'letter-spacing-unit-general': 'px',
+			'font-size-unit-general': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedAttributesUnits);

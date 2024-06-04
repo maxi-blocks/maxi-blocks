@@ -28,8 +28,9 @@ class Relation {
 		}
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		this.breakpointsSet = new Set(this.breakpoints);
 		this.hasMultipleTargetsArray = this.css.map(item =>
-			Object.keys(item).some(key => !this.breakpoints.includes(key))
+			Object.keys(item).some(key => !this.breakpointsSet.has(key))
 		);
 
 		this.action = item.action;
@@ -190,10 +191,13 @@ class Relation {
 	}
 
 	getLastUsableBreakpoint(currentBreakpoint, callback) {
-		return [...this.breakpoints]
-			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
-			.reverse()
-			.find(breakpoint => callback(breakpoint));
+		const index = this.breakpoints.indexOf(currentBreakpoint);
+		for (let i = index; i > -1; i -= 1) {
+			if (callback(this.breakpoints[i])) {
+				return this.breakpoints[i];
+			}
+		}
+		return null;
 	}
 
 	getTransitionTimeout() {
@@ -578,15 +582,8 @@ class Relation {
 								const selectorRegExp = new RegExp(
 									`(${this.escapeRegExp(selector)})`
 								);
-								console.log('selectorRegExp', selectorRegExp);
 								if (!this.stylesString.match(selectorRegExp)) {
-									console.log('NO MATCH');
-									console.log('postLine', postLine);
 									this.stylesString += `${selector}}${postLine}`;
-									console.log(
-										'stylesString after no MATCH',
-										this.stylesString
-									);
 								}
 
 								// Generate the property-value pair string
@@ -605,12 +602,6 @@ class Relation {
 											`$1 ${propertyValuePair}`
 										);
 								}
-								console.log(
-									'stylesString after replace',
-									this.stylesString
-								);
-								console.log('final string', this.stylesString);
-								console.log('========================');
 							}
 						);
 
@@ -913,9 +904,6 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
-			// console.log('====================================='); // 🔥
-			// console.log(this.uniqueID);
-			// console.log('stylesObj', stylesObj);
 			if (this.effects[index].disableTransition) return;
 
 			if (this.hasMultipleTargetsArray[index]) {
@@ -961,8 +949,6 @@ class Relation {
 
 		this.inTransitionString = inTransitionString;
 		this.outTransitionString = outTransitionString;
-		// console.log('inTransitionString', inTransitionString);
-		// console.log('outTransitionString', outTransitionString);
 	}
 
 	addTransition(element) {

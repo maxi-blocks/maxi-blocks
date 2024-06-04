@@ -1128,8 +1128,8 @@ class MaxiBlocks_Styles
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
             $js_script_name = 'maxi-' . $script;
-            //$js_script_path = '//js//min//' . $js_script_name . '.min.js';
-            $js_script_path = '//js//' . $js_script_name . '.js';
+            $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            //$js_script_path = '//js//' . $js_script_name . '.js';
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);
@@ -1218,8 +1218,13 @@ class MaxiBlocks_Styles
                 ));
         }
 
+        $strategy = 'defer';
+        if ($script === 'relations') {
+            $strategy = 'async';
+        }
+
         wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
-            'strategy'  => 'defer', 'in_footer' => true
+            'strategy'  => $strategy, 'in_footer' => true
             ));
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
     }

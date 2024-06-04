@@ -578,13 +578,39 @@ class Relation {
 								const selectorRegExp = new RegExp(
 									`(${this.escapeRegExp(selector)})`
 								);
-								if (!this.stylesString.match(selectorRegExp))
+								console.log('selectorRegExp', selectorRegExp);
+								if (!this.stylesString.match(selectorRegExp)) {
+									console.log('NO MATCH');
+									console.log('postLine', postLine);
 									this.stylesString += `${selector}}${postLine}`;
+									console.log(
+										'stylesString after no MATCH',
+										this.stylesString
+									);
+								}
 
-								this.stylesString = this.stylesString.replace(
-									selectorRegExp,
-									`$1 ${key}: ${value};`
+								// Generate the property-value pair string
+								const propertyValuePair = `${key}: ${value};`;
+
+								// Check if the property-value pair already exists in the stylesString
+								if (
+									!this.stylesString.includes(
+										propertyValuePair
+									)
+								) {
+									// If it doesn't exist, perform the replace operation
+									this.stylesString =
+										this.stylesString.replace(
+											selectorRegExp,
+											`$1 ${propertyValuePair}`
+										);
+								}
+								console.log(
+									'stylesString after replace',
+									this.stylesString
 								);
+								console.log('final string', this.stylesString);
+								console.log('========================');
 							}
 						);
 
@@ -772,19 +798,6 @@ class Relation {
 								transitionTarget,
 								fullTransitionStringRaw
 							) => {
-								// console.log(
-								// 	'fullTransitionStringRaw',
-								// 	fullTransitionStringRaw
-								// );
-								// console.log(
-								// 	'transitionString',
-								// 	transitionString
-								// );
-								// console.log(
-								// 	'transitionTarget',
-								// 	transitionTarget
-								// );
-
 								if (
 									fullTransitionStringRaw.includes(
 										transitionString

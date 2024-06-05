@@ -80,7 +80,7 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 				);
 			}, [
-				fetchAndUpdateDCData,
+				contextLoop,
 				dynamicContentProps,
 				backgroundLayers,
 				backgroundLayersHover,

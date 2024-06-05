@@ -1975,11 +1975,12 @@ class MaxiBlocks_Styles
      */
     public function decode_unicode_entities($content)
     {
-        $decodedString = preg_replace_callback('/u([0-9a-fA-F]{4})/', function ($match) {
+        $decoded_string = preg_replace_callback('/u([0-9a-fA-F]{4})/', function ($match) {
             return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
         }, $content);
+        $decoded_string = preg_replace('/;\s*n\s*/', ';', $decoded_string);
 
-        return $decodedString;
+        return $decoded_string;
 
     }
 
@@ -2051,10 +2052,9 @@ class MaxiBlocks_Styles
         }
 
         $props = $block_instance->get_block_attributes($props);
-
-        $customCss = $block_instance->get_block_custom_css($props);
+        $data = $block_instance->get_block_data();
         $sc_props = $block_instance->get_block_sc_vars($block_style);
-        $styles = $block_instance->get_styles($props, $customCss, $sc_props, $context);
+        $styles = $block_instance->get_styles($props, $data, $sc_props, $context);
 
         // Context creator
         if ($block_name === 'maxi-blocks/row-maxi') {
@@ -2171,6 +2171,7 @@ class MaxiBlocks_Styles
             'maxi-blocks/number-counter-maxi',
             'maxi-blocks/button-maxi',
             'maxi-blocks/text-maxi',
+            'maxi-blocks/list-item-maxi',
             'maxi-blocks/image-maxi',
         ];
 

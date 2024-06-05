@@ -13100,5 +13100,12 @@
         "isTransform": true
       }
     }
+  },
+  "maxiAttributes": {
+    "button-padding-sync-xxl": "axis",
+    "button-padding-top-xxl": "23",
+    "button-padding-right-xxl": "55",
+    "button-padding-bottom-xxl": "23",
+    "button-padding-left-xxl": "55"
   }
 }

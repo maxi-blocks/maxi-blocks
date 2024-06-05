@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-media.php';
 
 $coreClasses = [
     'class-maxi-local-fonts',
@@ -1813,61 +1814,6 @@ class MaxiBlocks_Styles
         return "{$name}-{$uniquePart}-u";
     }
 
-    public function process_block_unique_id(&$block, $process_without_check = false)
-    {
-        // Check the block's uniqueID and update it if necessary
-        if ($process_without_check || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u')) {
-
-            // Get the block name
-            $blockName = $block['blockName'] ?? null;
-
-            if($blockName !== null && strpos($blockName, 'maxi-blocks') !== false) {
-                // TODO: IB support and other uniqueID relative things
-                // Generate a new uniqueID
-                $new_uniqueID = self::unique_id_generator($blockName);
-
-                // Replace the old uniqueID with the new one in the block's innerHTML
-                $block['innerHTML'] = str_replace($block['attrs']['uniqueID'], $new_uniqueID, $block['innerHTML']);
-
-                // Replace the old uniqueID with the new one in the block's innerContent
-                $block['innerContent'] = array_map(function ($item) use ($new_uniqueID, $block) {
-                    if(!is_string($item)) {
-                        return $item;
-                    }
-                    return str_replace($block['attrs']['uniqueID'], $new_uniqueID, $item);
-                }, $block['innerContent']);
-
-                // Replace the old uniqueID with the new one in the block
-                $block['attrs']['uniqueID'] = $new_uniqueID;
-
-                $attributes_to_decode = ['content', 'icon-content'];
-                foreach ($attributes_to_decode as $attribute) {
-                    if(isset($block['attrs'][$attribute])) {
-                        $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);
-                    }
-                }
-
-                if(isset($block['attrs']['background-layers'])) {
-                    $background_layers = $block['attrs']['background-layers'];
-                    foreach ($background_layers as $key => $layer) {
-                        if(isset($layer['background-svg-SVGElement'])) {
-                            $block['attrs']['background-layers'][$key]['background-svg-SVGElement'] = $this->decode_unicode_entities($layer['background-svg-SVGElement']);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Recursively process any inner blocks
-        if (!empty($block['innerBlocks'])) {
-            foreach ($block['innerBlocks'] as &$innerBlock) {
-                $this->process_block_unique_id($innerBlock, $process_without_check);
-            }
-        }
-    }
-
-
-
     /**
      * Get styles meta fonts from blocks
      */
@@ -1881,6 +1827,8 @@ class MaxiBlocks_Styles
         if(!$post_content) {
             return $post;
         }
+
+        $post_content = MaxiBlocks_Media::add_media($post_content);
 
         // Get all blocks from post content
         $blocks = parse_blocks($post_content);

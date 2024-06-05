@@ -357,6 +357,14 @@ if (class_exists('MaxiBlocks_DynamicContent')) {
 }
 
 //======================================================================
+// MaxiBlocks Media
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-media.php';
+if (class_exists('MaxiBlocks_Media')) {
+    MaxiBlocks_Media::register();
+}
+
+//======================================================================
 // MaxiBlocks CLI
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-cli.php';

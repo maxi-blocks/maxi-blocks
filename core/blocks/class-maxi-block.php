@@ -52,11 +52,6 @@ if (!class_exists('MaxiBlocks_Block')):
         protected $block;
 
         /**
-         * Block attributes
-         */
-        protected $block_attributes = [];
-
-        /**
          * Block metadata
          */
         protected $block_metadata = [];
@@ -312,20 +307,15 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function get_block_attributes($props)
         {
-            if(isset($this->block_attributes) && !empty($this->block_attributes)) {
-                return $this->block_attributes;
-            }
-
-            $default_attributes = $this->get_block_metadata()['attributes'] ?? [];
+            $default_attributes = get_block_attributes($this->block_name);
 
             foreach (array_keys($default_attributes) as $key) {
-                if (isset($default_attributes[$key]['default'])) {
-                    $props[$key] = $props[$key] ?? $default_attributes[$key]['default'];
+                if (isset($default_attributes[$key])) {
+                    $props[$key] = $props[$key] ?? $default_attributes[$key];
                 }
             }
 
-            $this->block_attributes = $this->block->prepare_attributes_for_render($props);
-            return $this->block_attributes;
+            return $this->block->prepare_attributes_for_render($props);
         }
 
         /**

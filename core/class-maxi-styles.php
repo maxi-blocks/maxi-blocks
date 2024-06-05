@@ -2491,6 +2491,18 @@ class MaxiBlocks_Styles
                     }
                 }
 
+                $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                foreach($breakpoints as $breakpoint) {
+                    $custom_css = $block['attrs']["custom-css-{$breakpoint}"] ?? null;
+                    if(!$custom_css || !is_array($custom_css)) {
+                        continue;
+                    }
+                    foreach($custom_css as $key => $value) {
+                        $custom_css[$key] = $this->decode_unicode_entities($value);
+                    }
+                    $block['attrs']["custom-css-{$breakpoint}"] = $custom_css;
+                }
+
                 $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
                 $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
                     return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;

@@ -226,10 +226,20 @@ if (!class_exists('MaxiBlocks_Media')):
             $attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
             wp_update_attachment_metadata($attach_id, $attach_data);
 
+            $maxi_term = self::get_maxi_image_type_term();
+            if ($maxi_term) {
+                wp_set_object_terms($attach_id, $maxi_term->term_id, 'maxi-image-type');
+            }
+
             return [
                 'id' => $attach_id,
                 'url' => wp_get_attachment_url($attach_id),
             ];
+        }
+
+        private static function get_maxi_image_type_term()
+        {
+            return get_term_by('slug', 'maxi-image', 'maxi-image-type');
         }
     }
 endif;

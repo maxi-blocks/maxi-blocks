@@ -331,9 +331,6 @@ class MaxiBlocks_Styles
         $template_slug = get_page_template_slug();
         $template_id = $this->get_template_name() . '//';
 
-        echo $template_slug.'<br>';
-        echo $template_id.'<br>';
-
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
         } elseif (is_home() || is_front_page()) {
@@ -384,8 +381,6 @@ class MaxiBlocks_Styles
         } else {
             $template_id .= 'single';
         }
-
-        echo 'final id: '.$template_id.'<br>';
 
         return $template_id;
     }

@@ -93,14 +93,11 @@ if (!class_exists('MaxiBlocks_Media')):
 
         private static function get_or_replace_image(string $url)
         {
-            $placeholder_path = MAXI_PLUGIN_DIR_PATH  . 'img/patterns-placeholder.jpeg';
+            $placeholder_path = MAXI_PLUGIN_DIR_PATH . 'img/patterns-placeholder.jpeg';
 
             $image = self::get_image_by_url($url);
             if ($image) {
-                return [
-                    'id' => $image->ID,
-                    'url' => wp_get_attachment_url($image->ID),
-                ];
+                return self::prepare_image_response($image);
             }
 
             $uploaded_image = self::fetch_and_upload_image($url);
@@ -110,19 +107,15 @@ if (!class_exists('MaxiBlocks_Media')):
 
             $placeholder_image = self::get_image_by_content($placeholder_path);
             if ($placeholder_image) {
-                return [
-                    'id' => $placeholder_image->ID,
-                    'url' => wp_get_attachment_url($placeholder_image->ID),
-                ];
+                return self::prepare_image_response($placeholder_image);
             }
 
-            // Use placeholder image
-            return self::upload_local_image($placeholder_path, 'patterns-placeholder');
+            return self::process_file_and_upload($placeholder_path, 'patterns-placeholder');
         }
 
         private static function fetch_and_upload_image(string $url)
         {
-            if(!$url) {
+            if (empty($url)) {
                 return false;
             }
 
@@ -131,97 +124,60 @@ if (!class_exists('MaxiBlocks_Media')):
                 return false;
             }
 
-            $tmp_file = tempnam(sys_get_temp_dir(), 'upload_');
-            file_put_contents($tmp_file, $file_content);
+            $tmp_file = self::create_temp_file($file_content);
+            if (!$tmp_file) {
+                return false;
+            }
 
             $exist_image = self::get_image_by_content($tmp_file);
-            if($exist_image) {
-                return [
-                    'id' => $exist_image->ID,
-                    'url' => wp_get_attachment_url($exist_image->ID),
-                ];
-            }
-
-            $file_info = pathinfo($url);
-            $file_name = sanitize_file_name($file_info['basename']);
-            $filetype = wp_check_filetype($file_name, null);
-
-            if (!isset($filetype['type']) || !$filetype['type']) {
+            if ($exist_image) {
                 unlink($tmp_file);
-                return false;
+                return self::prepare_image_response($exist_image);
             }
 
-            $attachment = array(
-                'post_mime_type' => $filetype['type'],
-                'post_title' => $file_name,
-                'post_content' => '',
-                'post_status' => 'inherit',
-            );
-
-            $upload_dir = wp_upload_dir();
-            $target_file = $upload_dir['path'] . '/' . $file_name;
-
-            if (!rename($tmp_file, $target_file)) {
-                unlink($tmp_file);
-                return false;
-            }
-
-            $attach_id = wp_insert_attachment($attachment, $target_file);
-            $attach_data = wp_generate_attachment_metadata($attach_id, $target_file);
-            wp_update_attachment_metadata($attach_id, $attach_data);
-
-            return [
-                'id' => $attach_id,
-                'url' => wp_get_attachment_url($attach_id),
-            ];
+            $result = self::process_file_and_upload($tmp_file, pathinfo($url, PATHINFO_BASENAME));
+            unlink($tmp_file);
+            return $result;
         }
 
-
-        private static function upload_local_image(string $local_path, string $title)
+        private static function process_file_and_upload(string $file_path, string $title = '')
         {
-            $file_content = file_get_contents($local_path);
-            $upload_dir = wp_upload_dir();
-            $unique_file_name = wp_unique_filename($upload_dir['path'], basename($local_path));
-            $file = $upload_dir['path'] . '/' . $unique_file_name;
-
-            if (!file_put_contents($file, $file_content)) {
-                return [
-                    'id' => 0,
-                    'url' => '',
-                ];
+            $file_content = @file_get_contents($file_path);
+            if ($file_content === false) {
+                return false;
             }
 
-            $filetype = wp_check_filetype($file, null);
-            $attachment = array(
-                'post_mime_type' => $filetype['type'],
-                'post_title' => $title,
-                'post_content' => '',
-                'post_status' => 'inherit',
-            );
+            $upload_dir = wp_upload_dir();
+            $unique_file_name = self::generate_unique_file_name($file_path, $title, $upload_dir['path']);
+            $upload_file_path = $upload_dir['path'] . '/' . $unique_file_name;
 
-            $attach_id = wp_insert_attachment($attachment, $file);
+            if (!file_put_contents($upload_file_path, $file_content)) {
+                return false;
+            }
 
-            return [
-                'id' => $attach_id,
-                'url' => wp_get_attachment_url($attach_id),
-            ];
+            $filetype = wp_check_filetype($upload_file_path);
+            if (!isset($filetype['type']) || !$filetype['type']) {
+                unlink($upload_file_path);
+                return false;
+            }
+
+            return self::create_attachment($upload_file_path, $filetype['type'], $title, $unique_file_name);
         }
 
         private static function get_image_by_url(string $url)
         {
             global $wpdb;
-            $query = "SELECT * FROM {$wpdb->posts} WHERE guid='%s' AND post_type='attachment'";
-            $result = $wpdb->get_row($wpdb->prepare($query, $url));
-            return $result;
+            $query = "SELECT * FROM {$wpdb->posts} WHERE guid = %s AND post_type = 'attachment'";
+            return $wpdb->get_row($wpdb->prepare($query, $url));
         }
 
         private static function get_image_by_content(string $file_path)
         {
             global $wpdb;
-            $file_content = file_get_contents($file_path);
+            $file_content = @file_get_contents($file_path);
             $file_hash = md5($file_content);
 
-            $query = "SELECT * FROM {$wpdb->posts} WHERE post_type='attachment'";
+            $query = "SELECT * FROM {$wpdb->posts} WHERE post_type = 'attachment'";
             $attachments = $wpdb->get_results($query);
 
             foreach ($attachments as $attachment) {
@@ -232,6 +188,48 @@ if (!class_exists('MaxiBlocks_Media')):
             }
 
             return null;
+        }
+
+        private static function prepare_image_response($image)
+        {
+            return [
+                'id' => $image->ID,
+                'url' => wp_get_attachment_url($image->ID),
+            ];
+        }
+
+        private static function create_temp_file($content)
+        {
+            $tmp_file = tempnam(sys_get_temp_dir(), 'upload_');
+            if ($tmp_file && file_put_contents($tmp_file, $content)) {
+                return $tmp_file;
+            }
+            return false;
+        }
+
+        private static function generate_unique_file_name($file_path, $title, $upload_dir)
+        {
+            $file_info = pathinfo($file_path);
+            return wp_unique_filename($upload_dir, $title ? $title . '.' . pathinfo($file_path, PATHINFO_EXTENSION) : $file_info['basename']);
+        }
+
+        private static function create_attachment($file_path, $file_type, $title, $unique_file_name)
+        {
+            $attachment = [
+                'post_mime_type' => $file_type,
+                'post_title' => $title ?: $unique_file_name,
+                'post_content' => '',
+                'post_status' => 'inherit',
+            ];
+
+            $attach_id = wp_insert_attachment($attachment, $file_path);
+            $attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
+            wp_update_attachment_metadata($attach_id, $attach_data);
+
+            return [
+                'id' => $attach_id,
+                'url' => wp_get_attachment_url($attach_id),
+            ];
         }
     }
 endif;

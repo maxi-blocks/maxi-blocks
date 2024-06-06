@@ -22,7 +22,6 @@ function get_block_attributes($block_name)
     }
 
     $attributes = $block['attributes'];
-    $maxi_attributes = $block['maxiAttributes'] ?? [];
 
     $response = [];
 
@@ -32,7 +31,7 @@ function get_block_attributes($block_name)
         }
     }
 
-    $response = array_merge($response, $maxi_attributes);
+    $response = array_merge($response);
 
     // Cache the result for 1 hour (3600 seconds)
     set_transient($cache_key, $response, 3600);

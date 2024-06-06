@@ -61,7 +61,6 @@ const blockJsonAbstracter = async () => {
 	for (const maxiBlock of maxiBlocks) {
 		const {
 			attributes: blockAttributes,
-			maxiAttributes: blockMaxiAttributes,
 			customCss: blockCustomCss,
 			scProps: blockSCProps,
 			transition: blockTransition,
@@ -95,10 +94,6 @@ const blockJsonAbstracter = async () => {
 
 		// Replace the attributes of the block.json file
 		blockFileContent.attributes = blockAttributes;
-
-		if (blockMaxiAttributes) {
-			blockFileContent.maxiAttributes = blockMaxiAttributes;
-		}
 
 		// Replace the customCss of the block.json file
 		blockFileContent.customCss = blockCustomCss;

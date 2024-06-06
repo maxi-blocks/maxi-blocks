@@ -331,6 +331,9 @@ class MaxiBlocks_Styles
         $template_slug = get_page_template_slug();
         $template_id = $this->get_template_name() . '//';
 
+        echo $template_slug.'<br>';
+        echo $template_id.'<br>';
+
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
         } elseif (is_home() || is_front_page()) {
@@ -381,6 +384,8 @@ class MaxiBlocks_Styles
         } else {
             $template_id .= 'single';
         }
+
+        echo 'final id: '.$template_id.'<br>';
 
         return $template_id;
     }
@@ -1519,8 +1524,8 @@ class MaxiBlocks_Styles
         // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
         if($template_slug !== null) {
             $query = $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-                $template_slug
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name LIKE %s AND post_status = 'publish'",
+                '%' . $wpdb->esc_like($template_slug) . '%'
             );
             $templates = $wpdb->get_results($query);
         }

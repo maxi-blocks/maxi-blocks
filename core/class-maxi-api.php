@@ -765,10 +765,11 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
 
-            // write_log('$data');
-            // write_log($data);
-
             $update = $data['update'];
+
+            if(!is_string($data['data'])) {
+                return null;
+            }
 
             $dataArray = json_decode($data['data'], true);
 

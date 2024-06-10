@@ -93,7 +93,7 @@ class MaxiBlocks_Styles
 
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
-            add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
+            //add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
         }
 
         if(self::should_apply_content_filter()) {

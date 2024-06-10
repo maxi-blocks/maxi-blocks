@@ -340,7 +340,7 @@ class MaxiBlocks_Styles
 
             if ($has_front_page_and_home) {
                 if (is_home() && !is_front_page()) {
-                    $template_id .= 'index';
+                    $template_id .= 'home';
                 } else {
                     $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }
@@ -1519,8 +1519,8 @@ class MaxiBlocks_Styles
         // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
         if($template_slug !== null) {
             $query = $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-                $template_slug
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name LIKE %s AND post_status = 'publish'",
+                '%' . $wpdb->esc_like($template_slug) . '%'
             );
             $templates = $wpdb->get_results($query);
         }

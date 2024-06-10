@@ -587,6 +587,18 @@ const getWPNativeStyles = ({
 						' '
 					)}}`;
 
+				// In case the level is paragraph, we add the same styles for span data-rich-text-placeholder on backend
+				if (level === 'p' && style === 'light')
+					addedResponse += `${prefix} ${secondPrefix} p > span[data-rich-text-placeholder]::after {${sentences?.join(
+						' '
+					)}}`;
+
+				// In case the level is H1, we add the same styles the backends titles
+				if (level === 'h1' && style === 'light')
+					addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {${sentences?.join(
+						' '
+					)}}`;
+
 				// Adds margin-bottom sentence to all elements except the last one
 				if (marginSentence)
 					addedResponse += `:is(${selectors}):not(:last-child) {
@@ -690,6 +702,11 @@ const getWPNativeStyles = ({
 				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
 			}`;
 		});
+
+		// backend page / post title
+		addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {
+			color: var(--maxi-light-h1-color,rgba(var(--maxi-light-color-5,0,0,0),1));
+		}`;
 
 		// Button color
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {

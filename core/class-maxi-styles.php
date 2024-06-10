@@ -1678,8 +1678,8 @@ class MaxiBlocks_Styles
         }
 
         $theme_directory = get_template_directory();
-        $html_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.html';
-        $php_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.php';
+        $html_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.html';
+        $php_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.php';
 
         $pattern_file = '';
 

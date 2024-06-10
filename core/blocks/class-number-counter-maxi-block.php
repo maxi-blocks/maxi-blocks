@@ -65,12 +65,10 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ':hover .maxi-number-counter__box' => self::get_hover_box_object($props),
-                    ' .maxi-number-counter__box'=> self::get_box_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ':hover .maxi-number-counter__box' => self::get_hover_box_object($props),
+                ' .maxi-number-counter__box'=> self::get_box_object($props),
             ];
 
             $number_counter_styles = get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style);
@@ -105,18 +103,20 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $number_counter_styles,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

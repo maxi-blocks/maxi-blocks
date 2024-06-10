@@ -65,9 +65,9 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
             $blockStyle = $props['blockStyle'];
             $block_name = $this->get_block_name();
 
-            $response = array(
+            $response = [
                 $uniqueID => style_processor(
-                    array(
+                    [
                         '' => self::get_normal_object($props),
                         ':hover' => self::get_hover_object($props),
                         ' .maxi-map-block__popup__content__title' => self::get_popup_typography_styles($props, true),
@@ -117,11 +117,11 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                                 'block_style' => $blockStyle,
                             )
                         ),
-                    ),
+                    ],
                     $data,
                     $props
                 )
-            );
+            ];
 
             return $response;
         }

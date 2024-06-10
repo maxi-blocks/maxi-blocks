@@ -63,7 +63,7 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
         {
             $uniqueID = $props['uniqueID'];
 
-            $slideStyles = style_processor(
+            $slide_styles = style_processor(
                 array(
                     '' => self::get_normal_object($props),
                     ':hover' => self::get_hover_object($props)
@@ -79,10 +79,10 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
             );
 
             $response = array(
-                $uniqueID => $slideStyles,
+                $uniqueID => $slide_styles,
                 // On frontend styles are applied by id of the block,
                 // this makes clones of the block have the same style as the block, while having different id
-                $uniqueID . '-clone' => $slideStyles
+                $uniqueID . '-clone' => $slide_styles
             );
 
             return $response;

@@ -63,7 +63,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
         {
             $uniqueID = $props['uniqueID'];
 
-            $styles_obj = array(
+            $styles_obj = [
                 '' => self::get_normal_object($props),
                 ' .maxi-search-block__input' => self::get_search_input_styles($props),
                 ' .maxi-search-block__input::placeholder' => self::get_search_input_placeholder_styles($props),
@@ -73,17 +73,19 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                 ':hover' => self::get_hover_object($props),
                 ' .maxi-search-block__input:hover' => self::get_search_input_styles($props, true),
                 ' .maxi-search-block__button:hover' => self::get_search_button_styles($props, true),
-            );
+            ];
 
             $styles_obj = array_merge($styles_obj, self::get_search_button_icon_styles($props));
 
-            $button_hover = array(' .maxi-search-block__button:hover .maxi-search-block__button__content' => self::get_search_button_content_styles($props, true));
+            $button_hover = [
+                ' .maxi-search-block__button:hover .maxi-search-block__button__content' => self::get_search_button_content_styles($props, true)
+            ];
 
             $styles_obj = array_merge($styles_obj, $button_hover);
 
-            $response = array(
+            $response = [
                 $uniqueID => style_processor($styles_obj, $data, $props)
-            );
+            ];
 
             return $response;
         }

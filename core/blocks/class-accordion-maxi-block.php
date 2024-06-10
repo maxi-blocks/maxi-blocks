@@ -65,10 +65,8 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -105,23 +103,20 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 $uniqueID
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $icon_styles
             );
 
-            $styles_obj[$uniqueID.' .maxi-pane-block[data-accordion="$uniqueID"]'] = array_merge(
-                self::get_pane_header_object($props),
-                self::get_pane_content_object($props),
-            );
-
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor($styles_obj, $data, $props),
+                "{$uniqueID} .maxi-pane-block[data-accordion='{$uniqueID}']" =>  style_processor(array_merge(
+                    self::get_pane_header_object($props),
+                    self::get_pane_content_object($props),
+                ), $data, $props),
+            ];
 
             return $response;
         }

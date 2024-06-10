@@ -68,33 +68,31 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $img_tag = $svg_element === '' || !$svg_element ? 'img' : 'svg';
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ' .maxi-block__resizer--overflow' => array_merge(
-                        self::get_image_overflow($props),
-                        ['border' => get_border_styles([
-                            'obj' => get_group_attributes($props, [
-                                'borderRadius',
-                            ]),
-                            'block_style' => $block_style,
-                        ])]
-                    ),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-image-block-wrapper' => array_merge(
-                        self::get_image_wrapper_object($props),
-                        self::get_clip_path_drop_shadow_object($props),
-                    ),
-                    " .maxi-image-block-wrapper $img_tag" => self::get_image_object($props),
-                    ":hover .maxi-image-block-wrapper $img_tag" => self::get_hover_image_object($props),
-                    ':hover .maxi-image-block-wrapper' => self::get_clip_path_drop_shadow_object($props, true),
-                    ' .maxi-image-block__image' => self::get_image_shape_object('svg', $props),
-                    ' .maxi-image-block__image:hover' => self::get_image_shape_object('svg', $props),
-                    ' .maxi-image-block__image pattern image' => self::get_image_shape_object('image', $props),
-                    ' figcaption' => self::get_figcaption_object($props),
-                    ' .maxi-hover-details .maxi-hover-details__content h4' => self::get_hover_effect_title_text_object($props),
-                    ' .maxi-hover-details .maxi-hover-details__content p' => self::get_hover_effect_content_text_object($props),
-                    ' .maxi-hover-details' => self::get_hover_effect_details_box_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ' .maxi-block__resizer--overflow' => array_merge(
+                    self::get_image_overflow($props),
+                    ['border' => get_border_styles([
+                        'obj' => get_group_attributes($props, [
+                            'borderRadius',
+                        ]),
+                        'block_style' => $block_style,
+                    ])]
+                ),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-image-block-wrapper' => array_merge(
+                    self::get_image_wrapper_object($props),
+                    self::get_clip_path_drop_shadow_object($props),
+                ),
+                " .maxi-image-block-wrapper $img_tag" => self::get_image_object($props),
+                ":hover .maxi-image-block-wrapper $img_tag" => self::get_hover_image_object($props),
+                ':hover .maxi-image-block-wrapper' => self::get_clip_path_drop_shadow_object($props, true),
+                ' .maxi-image-block__image' => self::get_image_shape_object('svg', $props),
+                ' .maxi-image-block__image:hover' => self::get_image_shape_object('svg', $props),
+                ' .maxi-image-block__image pattern image' => self::get_image_shape_object('image', $props),
+                ' figcaption' => self::get_figcaption_object($props),
+                ' .maxi-hover-details .maxi-hover-details__content h4' => self::get_hover_effect_title_text_object($props),
+                ' .maxi-hover-details .maxi-hover-details__content p' => self::get_hover_effect_content_text_object($props),
+                ' .maxi-hover-details' => self::get_hover_effect_details_box_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -155,8 +153,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $custom_formats_styles,
@@ -164,11 +162,13 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 $link_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

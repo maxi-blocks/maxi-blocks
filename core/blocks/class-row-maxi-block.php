@@ -61,19 +61,13 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
 
         public function get_styles($props, $data)
         {
-            $performance = [];
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            $performance['styles_obj_start'] = microtime(true);
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
-            $performance['styles_obj_end'] = microtime(true);
-            $performance['background_styles_start'] = microtime(true);
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -103,20 +97,19 @@ if (!class_exists('MaxiBlocks_Row_Maxi_Block')):
                     ]
                 )
             );
-            $performance['background_styles_end'] = microtime(true);
-            $performance['merge_start'] = microtime(true);
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
-            $performance['merge_end'] = microtime(true);
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

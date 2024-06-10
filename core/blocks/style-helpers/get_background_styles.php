@@ -859,6 +859,7 @@ function get_general_background_styles(
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
     $size = [];
 
+    // TODO: check why always 20px defaults add as well
     $get_border_value = function ($target, $breakpoint, $force_is_hover = null) use ($border_props, $is_hover, $props) {
         $last_value = get_last_breakpoint_attribute(
             [
@@ -898,7 +899,7 @@ function get_general_background_styles(
                 $width_right = $get_border_value('right', $breakpoint);
             }
 
-            $widthUnit = get_last_breakpoint_attribute([
+            $width_unit = get_last_breakpoint_attribute([
                 'target' => 'border-unit-width',
                 'breakpoint' => $breakpoint,
                 'attributes' => $props
@@ -911,22 +912,22 @@ function get_general_background_styles(
                 is_numeric($width_left) ||
                 is_numeric($width_right)
             ) {
-                $get_size = function ($width, $target) use ($breakpoint, $widthUnit, $is_hover, $get_border_value) {
+                $get_size = function ($width, $target) use ($breakpoint, $width_unit, $is_hover, $get_border_value) {
                     if (!is_numeric($width)) {
                         return [];
                     }
 
                     if ($is_hover) {
-                        $isSameThanNormal =
+                        $is_same_than_normal =
                             $get_border_value($target, $breakpoint, false) === $width;
 
-                        if ($isSameThanNormal) {
+                        if ($is_same_than_normal) {
                             return [];
                         }
                     }
 
                     $finalValue = $width === 0 ? 0 : -round($width, 2);
-                    return [$target =>  strval($finalValue) . $widthUnit];
+                    return [$target =>  strval($finalValue) . $width_unit];
                 };
 
                 $size[$breakpoint] = array_merge(

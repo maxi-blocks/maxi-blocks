@@ -65,15 +65,13 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-button-block__button' => self::get_normal_object($props),
-                    ' .maxi-button-block__content'=> self::get_content_object($props),
-                    // Hover
-                    ' .maxi-button-block__button:hover' => self::get_hover_object($props, $sc_values),
-                    ' .maxi-button-block__content:hover' => self::get_hover_content_object($props, $sc_values),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-button-block__button' => self::get_normal_object($props),
+                ' .maxi-button-block__content'=> self::get_content_object($props),
+                // Hover
+                ' .maxi-button-block__button:hover' => self::get_hover_object($props, $sc_values),
+                ' .maxi-button-block__content:hover' => self::get_hover_content_object($props, $sc_values),
             ];
 
             $button_icon_styles = get_button_icon_styles([
@@ -99,16 +97,18 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 $button_icon_hover_styles
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $icon_styles
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

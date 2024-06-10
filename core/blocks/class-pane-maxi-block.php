@@ -65,16 +65,14 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
             $block_style = $props['blockStyle'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                    ' .maxi-pane-block__header' => self::get_normal_styles($props, 'header-'),
-                    ' .maxi-pane-block__content' => self::get_normal_styles($props, 'content-'),
-                    '[aria-expanded] .maxi-pane-block__header:hover' => self::get_hover_styles($props, 'header-'),
-                    '[aria-expanded] .maxi-pane-block__content:hover' => self::get_hover_styles($props, 'content-'),
-                    '[aria-expanded="true"] .maxi-pane-block__header' => self::get_active_styles($props, 'header-'),
-                    '[aria-expanded="true"] .maxi-pane-block__content' => self::get_active_styles($props, 'content-'),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
+                ' .maxi-pane-block__header' => self::get_normal_styles($props, 'header-'),
+                ' .maxi-pane-block__content' => self::get_normal_styles($props, 'content-'),
+                '[aria-expanded] .maxi-pane-block__header:hover' => self::get_hover_styles($props, 'header-'),
+                '[aria-expanded] .maxi-pane-block__content:hover' => self::get_hover_styles($props, 'content-'),
+                '[aria-expanded="true"] .maxi-pane-block__header' => self::get_active_styles($props, 'header-'),
+                '[aria-expanded="true"] .maxi-pane-block__content' => self::get_active_styles($props, 'content-'),
             ];
 
             $background_styles = get_block_background_styles(
@@ -107,17 +105,19 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

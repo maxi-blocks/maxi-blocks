@@ -157,10 +157,10 @@ function repeated_breakpoint_cleaner($obj)
         }
 
         foreach ($obj[$breakpoint] as $key => $val) {
-            // Define the previous breakpoint
-            $prev_breakpoint = ($breakpoint !== 'xl' && $breakpoint !== 'general') ? $breakpoints[$i + 1] : 'general';
+            $prev_breakpoint = ($breakpoint !== 'xl')
+                ? $breakpoints[$i + 1] ?? null
+                : 'general';
 
-            // If the property is the same as in the previous breakpoint, remove it
             if (isset($obj[$prev_breakpoint][$key]) && $obj[$prev_breakpoint][$key] === $val) {
                 unset($response[$breakpoint][$key]);
             }
@@ -294,7 +294,7 @@ function style_cleaner($styles)
         $styles[$target] = $val;
 
         // Clean breakpoint repeated values
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             // If the type has more than one breakpoint, clean the repeated values
             if (count(array_keys($type_val)) > 1) {
                 $styles[$target][$type_key] = repeated_breakpoint_cleaner($type_val);
@@ -302,7 +302,7 @@ function style_cleaner($styles)
         }
 
         // Clean non-necessary breakpoint values when is same than general
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             // If the type has more than one breakpoint, clean the non-necessary values
             if (count(array_keys($type_val)) > 1) {
                 $styles[$target][$type_key] = general_breakpoint_cleaner($type_val);
@@ -316,12 +316,12 @@ function style_cleaner($styles)
 
             // If the non-hover target exists, clean the hover values
             if(isset($styles[$normal_key])) {
-                $styles[$target] = hover_styles_cleaner($styles[$normal_key], $val);
+                $styles[$target] = hover_styles_cleaner($styles[$normal_key], $styles[$target]);
             }
         }
 
         // Clean empty breakpoints
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             foreach ($type_val as $breakpoint => $breakpoint_val) {
                 // If the breakpoint is empty, remove it from the styles
                 if (!is_array($breakpoint_val) || empty($breakpoint_val)) {
@@ -463,22 +463,12 @@ function style_processor($obj, $data, $props)
 
     $transition_object = get_transition_styles($props, $transition_selectors);
     if (!empty($transition_object)) {
-        foreach ($styles as $key => &$value) {
-            if (is_array($value)) {
-                $value = deepMergeArrays($value, $transition_object);
-            }
-        }
-
-        unset($value);  // Unset reference to avoid unexpected behavior
+        $styles = deepMergeArrays($styles, $transition_object);
     }
 
     $advanced_css_object = get_advanced_css_object($props);
     if(!empty($advanced_css_object)) {
-        foreach ($styles as $key => &$value) {
-            if (is_array($value)) {
-                $value = deepMergeArrays($value, $advanced_css_object);
-            }
-        }
+        $styles = deepMergeArrays($styles, $advanced_css_object);
     }
 
     // Process custom styles if they exist
@@ -488,13 +478,7 @@ function style_processor($obj, $data, $props)
     if (!empty($new_css_selectors)) {
         $custom_css_object = get_custom_css_object($new_css_selectors, $props);
         if (!empty($custom_css_object)) {
-            foreach ($styles as $key => &$value) {
-                if (is_array($value)) {
-                    $value = deepMergeArrays($value, $custom_css_object);
-                }
-            }
-
-            unset($value);  // Unset reference to avoid unexpected behavior
+            $styles = deepMergeArrays($styles, $custom_css_object);
         }
     }
     if (!empty($new_transform_selectors)) {
@@ -514,7 +498,7 @@ function style_processor($obj, $data, $props)
                 return null;
             };
 
-            merge_with($styles[$props['uniqueID']], $transform_object, $merge_callback);
+            merge_with($styles, $transform_object, $merge_callback);
 
         }
     }

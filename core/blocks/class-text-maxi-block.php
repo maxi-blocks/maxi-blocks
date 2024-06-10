@@ -72,15 +72,13 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $list_items_length = $props['isList'] ? $context['list_items_length'] : 0;
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             if($is_list) {
-                $styles_obj[$uniqueID] = array_merge(
-                    $styles_obj[$uniqueID],
+                $styles_obj = array_merge(
+                    $styles_obj,
                     [
                         " $element" => self::get_list_object(
                             array_merge($props, [$is_rtl => $is_rtl]),
@@ -99,8 +97,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     ]
                 );
             } else {
-                $styles_obj[$uniqueID] = array_merge(
-                    $styles_obj[$uniqueID],
+                $styles_obj = array_merge(
+                    $styles_obj,
                     [
                         " $element.maxi-text-block__content" => self::get_typography_object($props, $is_list),
                         " $element.maxi-text-block__content:hover" => self::get_typography_hover_object($props),
@@ -170,8 +168,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 ),
             );
 
-            $styles_obj[$uniqueID] = array_merge(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $custom_formats_styles,
@@ -179,11 +177,13 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 $link_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

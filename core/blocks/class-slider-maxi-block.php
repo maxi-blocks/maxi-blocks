@@ -66,10 +66,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             $arrow_icon_hover_status = $props['navigation-arrow-both-icon-status-hover'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             $background_styles = get_block_background_styles(array_merge(
@@ -82,8 +80,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                 ['is_hover' => true, 'block_style' => $block_style]
             ));
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 self::get_dots_icon_object($props),
@@ -92,11 +90,13 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             );
 
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props
+                ),
+            ];
 
 
             return $response;

@@ -66,10 +66,8 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
             $block_style = $props['blockStyle'] ?? 'light';
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             $shape_divider_top_styles =
@@ -201,8 +199,8 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $shape_divider_top_styles,
                 $shape_divider_bottom_styles,
                 $background_styles,
@@ -211,11 +209,13 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                 $arrow_hover_styles
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                )
+            ];
 
             return $response;
         }

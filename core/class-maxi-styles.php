@@ -2012,9 +2012,9 @@ class MaxiBlocks_Styles
                 foreach ($inner_blocks as $inner_block) {
                     $attrs = $inner_block['attrs'];
                     $column_size_attrs = get_group_attributes($attrs, 'columnSize');
-                    $unique_id = $attrs['uniqueID'];
+                    $column_unique_id = $attrs['uniqueID'];
 
-                    $column_size[$unique_id] = $column_size_attrs;
+                    $column_size[$column_unique_id] = $column_size_attrs;
                 }
             }
 
@@ -2043,7 +2043,7 @@ class MaxiBlocks_Styles
             foreach ($inner_block_chunks as $inner_block_chunk) {
                 // Process each block in the current chunk
                 foreach($inner_block_chunk as $inner_block) {
-                    $styles = array_merge($styles, $this->get_styles_meta_fonts_from_block($inner_block, $context));
+                    $this->get_styles_meta_fonts_from_block($inner_block, $context);
                 }
 
                 // Reset PHP maximum execution time for each chunk to avoid a timeout
@@ -2384,14 +2384,12 @@ class MaxiBlocks_Styles
      * It also recursively updates any inner blocks.
      *
      * @param array $blocks Reference to the array of blocks to be updated.
-    * @param callable $should_update_unique_id Callback function to determine if the block's unique ID should be updated.
+     * @param callable $should_update_unique_id Callback function to determine if the block's unique ID should be updated.
      * @return void
     */
-    private function update_unique_ids(&$blocks, $should_update_unique_id = null)
+    private function update_unique_ids(&$blocks, $should_update_unique_id = null, &$id_mapping = [], &$blocks_with_relations = [], $recursion_level = 0)
     {
-        $id_mapping = [];
-        $blocks_with_relations = [];
-
+        $is_highest_level = $recursion_level === 0;
         $block_chunks = array_chunk($blocks, 3, true);
 
         foreach ($block_chunks as $chunk_index => $block_chunk) {
@@ -2399,12 +2397,12 @@ class MaxiBlocks_Styles
                 $block = &$blocks[$block_index];
 
                 $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
-                if(!$previous_unique_id) {
+                if (!$previous_unique_id) {
                     continue;
                 }
 
                 $block_name = $block['blockName'];
-                if(strpos($block_name, 'maxi-blocks') === false) {
+                if (strpos($block_name, 'maxi-blocks') === false) {
                     continue;
                 }
 
@@ -2415,24 +2413,24 @@ class MaxiBlocks_Styles
 
                 $attributes_to_decode = ['content', 'icon-content', 'listStyleCustom'];
                 foreach ($attributes_to_decode as $attribute) {
-                    if(isset($block['attrs'][$attribute])) {
+                    if (isset($block['attrs'][$attribute])) {
                         $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);
                     }
                 }
 
-                if(isset($block['attrs']['background-layers'])) {
-                    foreach($block['attrs']['background-layers'] as $key => &$value) {
-                        if(isset($value['background-svg-SVGData'])) {
+                if (isset($block['attrs']['background-layers'])) {
+                    foreach ($block['attrs']['background-layers'] as $key => &$value) {
+                        if (isset($value['background-svg-SVGData'])) {
                             $svg_data = $value['background-svg-SVGData'];
-                            foreach($svg_data as $svg_data_key => $svg_data_value) {
-                                if(strpos($svg_data_key, $previous_unique_id) !== false) {
+                            foreach ($svg_data as $svg_data_key => $svg_data_value) {
+                                if (strpos($svg_data_key, $previous_unique_id) !== false) {
                                     $svg_data[$new_unique_id] = $svg_data_value;
                                     unset($svg_data[$svg_data_key]);
                                 }
                             }
                         }
 
-                        if(isset($value['background-svg-SVGElement'])) {
+                        if (isset($value['background-svg-SVGElement'])) {
                             $svg_element = $value['background-svg-SVGElement'];
                             $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
                             $value['background-svg-SVGElement'] = $this->decode_unicode_entities($svg_element);
@@ -2441,12 +2439,12 @@ class MaxiBlocks_Styles
                 }
 
                 $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-                foreach($breakpoints as $breakpoint) {
+                foreach ($breakpoints as $breakpoint) {
                     $custom_css = $block['attrs']["custom-css-{$breakpoint}"] ?? null;
-                    if(!$custom_css || !is_array($custom_css)) {
+                    if (!$custom_css || !is_array($custom_css)) {
                         continue;
                     }
-                    foreach($custom_css as $key => $value) {
+                    foreach ($custom_css as $key => $value) {
                         $custom_css[$key] = $this->decode_unicode_entities($value);
                     }
                     $block['attrs']["custom-css-{$breakpoint}"] = $custom_css;
@@ -2462,7 +2460,7 @@ class MaxiBlocks_Styles
                 }
 
                 if (!empty($block['innerBlocks'])) {
-                    $this->update_unique_ids($block['innerBlocks'], $should_update_unique_id);
+                    $this->update_unique_ids($block['innerBlocks'], $should_update_unique_id, $id_mapping, $blocks_with_relations, $recursion_level + 1);
                 }
             }
 
@@ -2472,8 +2470,11 @@ class MaxiBlocks_Styles
             }
         }
 
-        $this->update_attribute_relations($blocks_with_relations, $id_mapping);
+        if ($is_highest_level) {
+            $this->update_attribute_relations($blocks_with_relations, $id_mapping);
+        }
     }
+
 
     /**
      * Updates the unique IDs in the attribute relations of the given blocks.
@@ -2495,5 +2496,4 @@ class MaxiBlocks_Styles
             }
         }
     }
-
 }

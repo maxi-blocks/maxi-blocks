@@ -66,10 +66,8 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
             $row_border_radius = $context['row_border_radius'] ?? [];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props, $context),
-                    ':hover' => self::get_hover_object($props, $context),
-                ],
+                '' => self::get_normal_object($props, $context),
+                ':hover' => self::get_hover_object($props, $context),
             ];
 
             $background_styles = get_block_background_styles(
@@ -106,17 +104,19 @@ if (!class_exists('MaxiBlocks_Column_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

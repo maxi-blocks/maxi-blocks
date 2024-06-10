@@ -66,12 +66,10 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             $player_type = $props['playerType'];
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                    ' .maxi-video-block__popup-wrapper' => self::get_lightbox_object($props),
-                    ' .maxi-video-block__overlay-background' => self::get_overlay_background_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
+                ' .maxi-video-block__popup-wrapper' => self::get_lightbox_object($props),
+                ' .maxi-video-block__overlay-background' => self::get_overlay_background_object($props),
             ];
 
             if (isset($props['overlay-background-status-hover']) && $props['overlay-background-status-hover']) {
@@ -138,18 +136,20 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                 self::get_icon_object('close-', $props),
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $icon_object,
             );
 
-            $video_response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $video_response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             $popup_styles_obj = [
                 "popup-$uniqueID" => array_merge(

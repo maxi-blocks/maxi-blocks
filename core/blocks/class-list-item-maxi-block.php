@@ -69,12 +69,10 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
             $content_class = $block_class . '__content';
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                    $content_class => self::get_typography_object($props),
-                    " $content_class:hover" => self::get_typography_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
+                $content_class => self::get_typography_object($props),
+                " $content_class:hover" => self::get_typography_hover_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -137,8 +135,8 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                 ),
             );
 
-            $styles_obj[$uniqueID] = array_merge(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $custom_formats_styles,
@@ -146,11 +144,13 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
                 $link_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

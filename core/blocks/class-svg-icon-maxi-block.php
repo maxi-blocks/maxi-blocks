@@ -68,12 +68,10 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             $icon_width_height_ratio = false;
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-svg-icon-block__icon' => self::get_normal_object($props, $icon_width_height_ratio),
-                    ' .maxi-svg-icon-block__icon:hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-svg-icon-block__icon' => self::get_normal_object($props, $icon_width_height_ratio),
+                ' .maxi-svg-icon-block__icon:hover' => self::get_hover_object($props),
             ];
 
             $svg_styles = get_svg_styles([
@@ -89,17 +87,19 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             ]) : [];
 
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $svg_styles,
                 $svg_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }

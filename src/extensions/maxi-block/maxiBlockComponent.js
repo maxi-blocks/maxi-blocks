@@ -216,17 +216,19 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 
-		if (previewIframes.length > 0 && !blockName) {
+		if (
+			previewIframes.length > 0 &&
+			(!blockName ||
+				document.querySelector(
+					'.editor-post-template__swap-template-modal'
+				))
+		) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
 
-		if (
-			this.isPatternsPreview ||
-			document.querySelector('.editor-post-template__swap-template-modal')
-		)
-			return;
+		if (this.isPatternsPreview) return;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 

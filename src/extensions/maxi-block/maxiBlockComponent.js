@@ -46,6 +46,7 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
+import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
 import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
@@ -825,10 +826,19 @@ class MaxiBlockComponent extends Component {
 			}
 		} else if (iframe) {
 			wrapper = getPreviewWrapper(iframe.contentDocument, false);
-			iframe.contentDocument.body.setAttribute(
-				'maxi-blocks-responsive',
-				document.querySelector('.is-tablet-preview') ? 's' : 'xs'
-			);
+
+			const currentPreviewDeviceType = getCurrentPreviewDeviceType();
+
+			if (currentPreviewDeviceType !== 'Desktop')
+				iframe.contentDocument.body.setAttribute(
+					'maxi-blocks-responsive',
+					document.querySelector('.is-tablet-preview') ? 's' : 'xs'
+				);
+			if (currentPreviewDeviceType === 'Tablet')
+				iframe.contentDocument.body.setAttribute(
+					'maxi-blocks-responsive',
+					's'
+				);
 			if (!select('maxiBlocks').getIsIframeObserverSet()) {
 				dispatch('maxiBlocks').setIsIframeObserverSet(true);
 				const iframeObserver = new MutationObserver(() => {

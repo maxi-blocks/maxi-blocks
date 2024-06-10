@@ -61,14 +61,13 @@ const goThroughMaxiBlocks = (
 					const blocks = select('core/block-editor').getBlocks(
 						block.clientId
 					);
-
 					if (blocks?.length) {
 						innerBlocks = blocks;
 					}
 				}
 			}
 
-			if (block.name === 'core/block') {
+			if (block.name === 'core/block' || block.name === 'core/group') {
 				const blocks = select('core/block-editor').getBlocks(
 					block.clientId
 				);

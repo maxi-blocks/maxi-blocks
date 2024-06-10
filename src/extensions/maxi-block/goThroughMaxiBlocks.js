@@ -45,6 +45,8 @@ const goThroughMaxiBlocks = (
 					return callbackResult;
 				}
 
+				if (!select('core/edit-site')) return false;
+
 				const { postType, postId } =
 					select('core/edit-site').getEditedPostContext();
 

@@ -97,6 +97,8 @@ const updateSCOnEditor = (
 		siteEditorPreviewIframes.forEach(iframe => {
 			const iframeDocument = iframe?.contentDocument;
 
+			if (!iframeDocument) return;
+
 			// remove white overlay for FSE editor patterns previews
 			let overlayEl = iframeDocument.getElementById(
 				'maxi-blocks-fse-white-overlay-remove-styles'

@@ -675,3 +675,11 @@ html[dir='rtl'] {
 		margin: 4px 43px 17px 0 !important;
 	}
 }
+
+/** Hide maxi-image-type template from the editor */
+body.site-editor-php
+	.edit-site-add-new-template__template-button.components-button:has(.edit-site-add-new-template__template-name
+		span[data-wp-component='Text']:contains('maxi-image-type')) {
+	display: none !important;
+	background: yellow;
+}

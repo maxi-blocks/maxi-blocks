@@ -185,7 +185,7 @@ export const getPageFonts = (onlyBackend = false) => {
 
 	const gutenbergBlocksStatus = select(
 		'maxiBlocks/style-cards'
-	).receiveMaxiActiveStyleCard().value.gutenberg_blocks_status;
+	).receiveMaxiActiveStyleCard()?.value?.gutenberg_blocks_status;
 
 	goThroughMaxiBlocks(({ clientId, attributes, name }) => {
 		if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {

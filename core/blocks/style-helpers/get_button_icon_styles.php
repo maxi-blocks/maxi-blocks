@@ -140,10 +140,25 @@ function get_button_icon_styles($params)
     $has_icon = !empty($obj[$prefix . 'icon-content']);
     $icon_inherit = $obj[$prefix . 'icon-inherit'] ?? false;
     $icon_hover_status = $obj[$prefix . 'icon-status-hover'] ?? false;
+    $icon_hover_status_target = $obj[$prefix . 'icon-status-hover-target'] ?? false;
 
     $use_icon_color = !$icon_inherit;
-    $normal_target = $wrapper_target . ' ' . $target;
-    $hover_target = $hover_on_icon ? $wrapper_target . ' ' . $target . ':hover' : $wrapper_target . ':hover ' . $target;
+    $normal_target = " $wrapper_target $target";
+
+    $get_hover_target = function () use ($icon_hover_status_target, $hover_on_icon, $wrapper_target, $target) {
+        if (!$icon_hover_status_target) {
+            return ":hover $wrapper_target $target";
+        }
+
+        if ($hover_on_icon) {
+            return " $wrapper_target $target:hover";
+        }
+
+        return " $wrapper_target:hover $target";
+    };
+
+    $hover_target = $get_hover_target();
+
 
     $icon_type = strtolower($obj['svgType'] ?? '');
 
@@ -172,10 +187,10 @@ function get_button_icon_styles($params)
         $response = array_merge(
             $response,
             [
-                " $hover_target" => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
-                " $hover_target svg > *" => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
-                " $hover_target svg" => get_icon_size($obj, true, $prefix, $icon_width_height_ratio),
-                " $hover_target svg path" => get_icon_path_styles($obj, true, $prefix),
+                "$hover_target" => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
+                "$hover_target svg > *" => get_icon_hover_object($obj, 'iconHover', $prefix, $icon_type),
+                "$hover_target svg" => get_icon_size($obj, true, $prefix, $icon_width_height_ratio),
+                "$hover_target svg path" => get_icon_path_styles($obj, true, $prefix),
             ],
             get_svg_styles([
                 'obj' => $obj,

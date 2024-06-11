@@ -78,7 +78,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'obj' => $props,
                 'block_style' => $block_style,
                 'target' => '.maxi-button-block__icon',
-                'wrapper_target' => ' .maxi-button-block__button',
+                'wrapper_target' => '.maxi-button-block__button',
                 'is_hover' => false,
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
             ]);
@@ -87,7 +87,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'obj' => $props,
                 'block_style' => $block_style,
                 'target' => '.maxi-button-block__icon',
-                'wrapper_target' => ' .maxi-button-block__button',
+                'wrapper_target' => '.maxi-button-block__button',
                 // 'icon_width_height_ratio' = $icon_width_height_ratio,
                 'is_hover' => true,
             ]);
@@ -97,9 +97,43 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 $button_icon_hover_styles
             );
 
+            $background_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes($props, [
+                        'blockBackground',
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                    ]),
+                    [
+                        'block_style' => $block_style,
+                    ]
+                )
+            );
+            $background_hover_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes(
+                        $props,
+                        [
+                            'blockBackground',
+                            'border',
+                            'borderWidth',
+                            'borderRadius',
+                        ],
+                        true
+                    ),
+                    [
+                        'block_style' => $block_style,
+                        'is_hover' => true,
+                    ]
+                )
+            );
+
             $styles_obj = array_merge_recursive(
                 $styles_obj,
-                $icon_styles
+                $icon_styles,
+                $background_styles,
+                $background_hover_styles,
             );
 
             $response = [

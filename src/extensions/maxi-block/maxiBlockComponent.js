@@ -32,6 +32,7 @@ import {
 	getRelations,
 	styleGenerator,
 	styleResolver,
+	getHasDC,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsIDTrulyUnique from './getIsIDTrulyUnique';
@@ -961,6 +962,7 @@ class MaxiBlockComponent extends Component {
 
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
+		const hasDC = dcStatus || getHasDC(bgLayers);
 		const scrollEffects = getScrollEffects(uniqueID, scroll);
 		const relations = getRelations(uniqueID, relationsRaw);
 
@@ -974,14 +976,14 @@ class MaxiBlockComponent extends Component {
 				}),
 				...(hasVideo && { bg_video: true }),
 				...(!isEmpty(scrollEffects) && scrollEffects),
-				...(dcStatus &&
+				...(hasDC &&
 					contextLoop?.['cl-status'] && {
 						dynamic_content: {
 							[uniqueID]: contextLoop,
 						},
 					}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
-				...(!dcStatus &&
+				...(!hasDC &&
 					contextLoop?.['cl-status'] && {
 						context_loop: {
 							[uniqueID]: contextLoop,

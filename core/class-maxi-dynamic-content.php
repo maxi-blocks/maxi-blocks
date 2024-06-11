@@ -533,24 +533,6 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
-        $context_loop = [];
-
-        if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
-            $context_loop = self::$custom_data[$unique_id];
-            $accumulator = $context_loop['cl-accumulator'];
-            if(isset($_GET['cl-page'])) {
-                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
-                $context_loop['cl-accumulator'] = $accumulator + intval($cl_pagination_per_page) * (intval($pagination_page) - 1);
-
-            }
-        }
-
-        $content = self::render_dc_background($attributes, $content, $context_loop);
-
-        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
-            return $content;
-        }
-
         $pagination_page = 1;
         if (isset($_GET['cl-page'])) {
             $pagination_page = absint($_GET['cl-page']);
@@ -582,6 +564,24 @@ class MaxiBlocks_DynamicContent
                 self::$custom_data = [];
             }
 
+        }
+
+        $context_loop = [];
+
+        if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
+            $context_loop = self::$custom_data[$unique_id];
+            $accumulator = $context_loop['cl-accumulator'];
+            if(isset($_GET['cl-page'])) {
+                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
+                $context_loop['cl-accumulator'] = $accumulator + intval($cl_pagination_per_page) * (intval($pagination_page) - 1);
+
+            }
+        }
+
+        $content = self::render_dc_background($attributes, $content, $context_loop);
+
+        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
+            return $content;
         }
 
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));

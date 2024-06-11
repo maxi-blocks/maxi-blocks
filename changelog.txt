@@ -1,3 +1,15 @@
+_Updates 11 Jun 2024_
+MaxiBlocks v1.8.8
+* Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.
+* Update: Default Style Card now has Navigation and Link hover styles enabled by default for new installations, providing a more user-friendly experience right out of the box.
+* Update: Enhancements to Patterns and Template UI for MaxiBlocks items, offering a more intuitive design process and improved usability.
+* Fix: Enabled the use of empty groups and columns for backgrounds without hiding them, allowing designers more flexibility in creating complex layouts without visual artefacts.
+* Fix: Corrected a broken icon for Footer patterns 103, 104, 105, ensuring all footer elements display correctly.
+* Fix: Resolved pagination issues for Blog patterns 12 and 24, ensuring smooth navigation and accurate content display across multiple pages.
+* Fix: Made Style Cards responsive for font size and line height adjustments, ensuring consistent and adaptive text presentation across different devices and screen sizes.
+* Fix: Ensured MaxiBlocks compatibility with the Editor Template menu, facilitating a straightforward workflow and preventing potential conflicts when using templates.
+* Fix: Addressed various PHP warnings when using the Site Editor, improving overall stability and providing a cleaner development environment for users.
+
 _Updates 24 May 2024_
 MaxiBlocks v1.8.7
 * Fix: Blocks now correctly update in the Editor Experience to reflect the selected category or tag when changed in the Context Loop settings. Previously, some blocks were not displaying the new category or tag value after being switched.

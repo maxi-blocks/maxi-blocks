@@ -331,7 +331,11 @@ class MaxiBlocks_Styles
         $template_id = $this->get_template_name() . '//';
 
         if ($template_slug != '' && $template_slug !== false) {
-            $template_id .= $template_slug;
+            if(is_search()) {
+                $template_id .= 'search';
+            } else {
+                $template_id .= $template_slug;
+            }
         } elseif (is_home() || is_front_page()) {
             $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
 

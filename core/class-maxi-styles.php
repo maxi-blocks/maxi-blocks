@@ -93,7 +93,6 @@ class MaxiBlocks_Styles
 
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
-            add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
         }
 
         if(self::should_apply_content_filter()) {
@@ -1679,8 +1678,8 @@ class MaxiBlocks_Styles
         }
 
         $theme_directory = get_template_directory();
-        $html_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.html';
-        $php_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.php';
+        $html_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.html';
+        $php_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.php';
 
         $pattern_file = '';
 

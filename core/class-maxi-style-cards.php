@@ -84,7 +84,32 @@ class MaxiBlocks_StyleCards
             )
         );
 
+        if (!$style_card) {
+            $this->add_default_maxi_blocks_sc_string();
+            $style_card = maybe_unserialize(
+                $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                        'sc_string'
+                    )
+                )
+            );
+        }
+
         return $style_card;
+    }
+
+    public function add_default_maxi_blocks_sc_string()
+    {
+        global $wpdb;
+        global $default_sc_string;
+        // Include the default SC string from the specified path
+        require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
+
+        $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+            'id' => 'sc_string',
+            'object' => serialize($default_sc_string),
+        ));
     }
 
     /**

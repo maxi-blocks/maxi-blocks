@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -13,6 +12,7 @@ import {
 	getSiteEditorIframeBody,
 } from '../fse';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
+import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
 
 /**
  * External dependencies
@@ -49,30 +49,6 @@ const breakpointResizer = ({
 			size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
 		);
 	});
-
-	// Function to get the current preview device type
-	const getCurrentPreviewDeviceType = () => {
-		// First, try to use the new preferred method if it exists
-		if (select('core/editor') && select('core/editor').getDeviceType) {
-			return select('core/editor').getDeviceType();
-		}
-		// Determine if we are in the site editor or post editor as a fallback
-		const isSiteEditor = getIsSiteEditor(); // Ensure you have implemented this check
-		const editorStore = isSiteEditor ? 'core/edit-site' : 'core/edit-post';
-
-		// Check and call the deprecated method if available
-		const storeSelect = select(editorStore);
-		if (storeSelect.__experimentalGetPreviewDeviceType) {
-			return storeSelect.__experimentalGetPreviewDeviceType();
-		}
-		console.error(
-			__(
-				'Unable to get the preview device type. The required method is not available.',
-				'maxi-blocks'
-			)
-		);
-		return 'Desktop'; // Fallback to 'Desktop' as a default
-	};
 
 	if (changeSize) {
 		const winHeight = window.outerWidth;
@@ -130,6 +106,7 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
+		deprecatedBlocksSave: {},
 		blocksToRender: [],
 		isPageLoaded: false,
 		isIframeObserverSet: false,
@@ -221,17 +198,29 @@ const reducer = (
 				inspectorPath: newInspectorPath,
 			};
 		}
-		case 'SAVE_DEPRECATED_BLOCK':
+		case 'SAVE_DEPRECATED_BLOCK': {
+			const { uniqueID, attributes, ignoreAttributesForSave } = action;
+
 			return {
 				...state,
 				deprecatedBlocks: {
 					...state.deprecatedBlocks,
-					[action.uniqueID]: {
-						...state.deprecatedBlocks[action.uniqueID],
-						...action.attributes,
+					[uniqueID]: {
+						...state.deprecatedBlocks[uniqueID],
+						...attributes,
 					},
 				},
+				...(!ignoreAttributesForSave && {
+					deprecatedBlocksSave: {
+						...state.deprecatedBlocksSave,
+						[uniqueID]: {
+							...state.deprecatedBlocksSave[uniqueID],
+							...attributes,
+						},
+					},
+				}),
 			};
+		}
 		case 'REMOVE_DEPRECATED_BLOCK':
 			return {
 				...state,

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.8.5
+Stable tag: 1.8.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -210,27 +210,32 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 11 Jun 2024_
+MaxiBlocks v1.8.8
+* Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.
+* Update: Default Style Card now has Navigation and Link hover styles enabled by default for new installations, providing a more user-friendly experience right out of the box.
+* Update: Enhancements to Patterns and Template UI for MaxiBlocks items, offering a more intuitive design process and improved usability.
+* Fix: Enabled the use of empty groups and columns for backgrounds without hiding them, allowing designers more flexibility in creating complex layouts without visual artefacts.
+* Fix: Corrected a broken icon for Footer patterns 103, 104, 105, ensuring all footer elements display correctly.
+* Fix: Resolved pagination issues for Blog patterns 12 and 24, ensuring smooth navigation and accurate content display across multiple pages.
+* Fix: Made Style Cards responsive for font size and line height adjustments, ensuring consistent and adaptive text presentation across different devices and screen sizes.
+* Fix: Ensured MaxiBlocks compatibility with the Editor Template menu, facilitating a straightforward workflow and preventing potential conflicts when using templates.
+* Fix: Addressed various PHP warnings when using the Site Editor, improving overall stability and providing a cleaner development environment for users.
+
+_Updates 24 May 2024_
+MaxiBlocks v1.8.7
+* Fix: Blocks now correctly update in the Editor Experience to reflect the selected category or tag when changed in the Context Loop settings. Previously, some blocks were not displaying the new category or tag value after being switched.
+
+_Updates 23 May 2024_
+MaxiBlocks v1.8.6
+* Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
+* Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
+* Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
+
 _Updates 16 May 2024_
 MaxiBlocks v1.8.5
 * Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.
 
-_Updates 15 May 2024_
-MaxiBlocks v1.8.4
-* Update: Implemented a feature to hide repeated Context Loop content during pagination, providing a cleaner and more intuitive user experience.
-* Update: Enhanced Dynamic Content blocks to automatically update when changing the Advanced Custom Fields group or switching the source to Advanced Custom Fields within the Context Loop, streamlining the content management process.
-* Update: Introduced aria label support in the Advanced settings tab, improving accessibility for users relying on assistive technologies.
-* Update: Added an option to use Static value in Dynamic Content for Text, Button, and Divider blocks inside a Context Loop for Advanced Custom Fields and Custom Post Types.
-* Update: Enhanced Dynamic Content performance on the frontend when using pagination with a large number of posts (exceeding 100). The optimization significantly improves loading speed and reduces resource consumption, resulting in a smoother browsing experience for users.
-* Fix: Resolved an issue with rendering HTML content for Dynamic Content on the frontend, ensuring proper display of page elements.
-* Fix: Addressed a bug where nested block styles were not switching correctly when inserted inside a block with a different style, maintaining consistent styling across nested blocks.
-* Fix: Fixed a problem with Advanced Custom Fields images not loading on the frontend, ensuring seamless integration and proper image display.
-* Fix: Eliminated PHP warnings to improve overall plugin stability and provide a cleaner development experience.
-* Fix: Corrected styling issues for native blocks that are not inside Maxi blocks, ensuring consistent appearance throughout the site.
-* Fix: Resolved an issue with the rendering of previews when swapping templates in the Editor experience, improving editor speed during template selection.
-* Fix: Addressed Firefox console errors related to pattern previews, enhancing browser compatibility and user experience.
-* Fix: Removed legacy code that caused Dynamic Content options to freeze when a pattern contained links in child blocks, improving overall stability and usability.
-* Fix: Resolved an issue with incorrect bottom spacing for the Group Maxi block on the frontend, ensuring consistent layout and design.
-* Fix: Corrected the link title behaviour when using the URL as the title in combination with pagination. The title now accurately reflects the intended Dynamic Content value, ensuring proper accessibility and user experience.
 
 == Upgrade Notice ==
 

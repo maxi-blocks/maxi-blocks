@@ -2,21 +2,21 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.8.5\n"
+"Project-Id-Version: MaxiBlocks 1.8.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-16T11:59:47+00:00\n"
+"POT-Creation-Date: 2024-06-11T10:02:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
 
 #. Plugin Name of the plugin
 #. Author of the plugin
-#: core/class-maxi-blocks.php:205
+#: core/class-maxi-blocks.php:209
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:432
 #: core/admin/class-maxi-dashboard.php:507
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:572
+#: src/editor/style-cards/maxiStyleCardsEditor.js:571
 msgid "Save changes"
 msgstr ""
 
@@ -572,12 +572,12 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:759
-#: core/class-maxi-dynamic-content.php:1487
+#: core/class-maxi-dynamic-content.php:795
+#: core/class-maxi-dynamic-content.php:1544
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:762
+#: core/class-maxi-dynamic-content.php:798
 msgid "date"
 msgstr ""
 
@@ -836,7 +836,7 @@ msgstr ""
 #: src/components/dynamic-content/index.js:163
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
-#: src/components/typography-control/index.js:930
+#: src/components/typography-control/index.js:937
 msgid "None"
 msgstr ""
 
@@ -1444,13 +1444,13 @@ msgstr ""
 
 #: build/2517.js:1
 #: src/components/toolbar/components/text-format-underline/index.js:74
-#: src/components/typography-control/index.js:897
+#: src/components/typography-control/index.js:904
 msgid "Underline"
 msgstr ""
 
 #: build/2517.js:1
 #: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:854
+#: src/components/typography-control/index.js:861
 msgid "Italic"
 msgstr ""
 
@@ -1622,73 +1622,73 @@ msgid "Preview"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:166
+#: src/editor/library/container.js:173
 #: src/editor/library/MasonryItem.js:136
 msgid "Free"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:183
+#: src/editor/library/container.js:190
 #: src/editor/library/MasonryItem.js:141
 msgid "Pro"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:64
+#: src/editor/library/container.js:71
 msgid "Returned"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:68
+#: src/editor/library/container.js:75
 msgid "result"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:69
+#: src/editor/library/container.js:76
 msgid "results"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:149
-#: src/editor/library/container.js:246
+#: src/editor/library/container.js:156
+#: src/editor/library/container.js:253
 msgid "All"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:380
-#: src/editor/library/container.js:1179
+#: src/editor/library/container.js:387
+#: src/editor/library/container.js:1239
 msgid "Clear filters"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:871
-#: src/editor/library/container.js:990
-#: src/editor/library/container.js:1003
+#: src/editor/library/container.js:931
+#: src/editor/library/container.js:1050
+#: src/editor/library/container.js:1063
 msgid "All icons"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:881
-#: src/editor/library/container.js:915
-#: src/editor/library/container.js:926
-#: src/editor/library/container.js:935
-#: src/editor/library/container.js:1014
-#: src/editor/library/container.js:1025
+#: src/editor/library/container.js:941
+#: src/editor/library/container.js:975
+#: src/editor/library/container.js:986
+#: src/editor/library/container.js:995
+#: src/editor/library/container.js:1074
+#: src/editor/library/container.js:1085
 msgid "Find"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:818
+#: src/editor/library/container.js:878
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:827
+#: src/editor/library/container.js:887
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:790
+#: src/editor/library/container.js:850
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
@@ -1762,7 +1762,7 @@ msgstr ""
 
 #: build/4114.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:188
-#: src/components/typography-control/index.js:999
+#: src/components/typography-control/index.js:1006
 msgid "Text indent"
 msgstr ""
 
@@ -1864,7 +1864,7 @@ msgstr ""
 
 #: build/4114.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:761
-#: src/components/typography-control/index.js:843
+#: src/components/typography-control/index.js:850
 msgid "Style"
 msgstr ""
 
@@ -1937,53 +1937,53 @@ msgid "Edit view"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:304
+#: src/editor/style-cards/maxiStyleCardsEditor.js:303
 msgid "Template"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:409
+#: src/editor/style-cards/maxiStyleCardsEditor.js:408
 msgid "Active style card"
 msgstr ""
 
 #: build/4490.js:1
 #: src/components/dialog-box/index.js:79
 #: src/components/image-url/index.js:106
-#: src/editor/style-cards/maxiStyleCardsEditor.js:420
+#: src/editor/style-cards/maxiStyleCardsEditor.js:419
 msgid "Close"
 msgstr ""
 
 #: build/4490.js:1
 #: build/8419.js:1
 #: src/components/prompt-control/components/history-buttons/index.js:70
-#: src/editor/style-cards/maxiStyleCardsEditor.js:464
+#: src/editor/style-cards/maxiStyleCardsEditor.js:463
 msgid "Import"
 msgstr ""
 
 #: build/4490.js:1
 #: build/8419.js:1
 #: src/components/prompt-control/components/history-buttons/index.js:76
-#: src/editor/style-cards/maxiStyleCardsEditor.js:485
+#: src/editor/style-cards/maxiStyleCardsEditor.js:484
 msgid "Export"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:491
+#: src/editor/style-cards/maxiStyleCardsEditor.js:490
 msgid "Style card editor"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:493
+#: src/editor/style-cards/maxiStyleCardsEditor.js:492
 msgid "Preview, edit or activate style card"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:502
+#: src/editor/style-cards/maxiStyleCardsEditor.js:501
 msgid "Imported card already exists."
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:516
+#: src/editor/style-cards/maxiStyleCardsEditor.js:515
 msgid "Type to search…"
 msgstr ""
 
@@ -1993,9 +1993,9 @@ msgstr ""
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:284
 #: src/components/repeater/index.js:88
-#: src/editor/style-cards/maxiStyleCardsEditor.js:538
-#: src/editor/style-cards/maxiStyleCardsEditor.js:580
-#: src/editor/style-cards/maxiStyleCardsEditor.js:692
+#: src/editor/style-cards/maxiStyleCardsEditor.js:537
+#: src/editor/style-cards/maxiStyleCardsEditor.js:579
+#: src/editor/style-cards/maxiStyleCardsEditor.js:691
 msgid "Cancel"
 msgstr ""
 
@@ -2005,63 +2005,63 @@ msgstr ""
 #: src/components/prompt-control/components/result-card/index.js:285
 #: src/components/prompt-control/components/result-card/index.js:291
 #: src/components/toolbar/components/delete/index.js:49
-#: src/editor/style-cards/maxiStyleCardsEditor.js:539
-#: src/editor/style-cards/maxiStyleCardsEditor.js:548
+#: src/editor/style-cards/maxiStyleCardsEditor.js:538
+#: src/editor/style-cards/maxiStyleCardsEditor.js:547
 msgid "Delete"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:563
+#: src/editor/style-cards/maxiStyleCardsEditor.js:562
 msgid "Customise card"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:564
+#: src/editor/style-cards/maxiStyleCardsEditor.js:563
 msgid "Copy card"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:581
+#: src/editor/style-cards/maxiStyleCardsEditor.js:580
 msgid "Activate"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:591
+#: src/editor/style-cards/maxiStyleCardsEditor.js:590
 msgid "Activate now"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:594
+#: src/editor/style-cards/maxiStyleCardsEditor.js:593
 msgid "Save and activate now"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:604
+#: src/editor/style-cards/maxiStyleCardsEditor.js:603
 msgid "Affect Gutenberg native blocks inside MaxiBlocks"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:620
+#: src/editor/style-cards/maxiStyleCardsEditor.js:619
 msgid "Create new style from"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:628
+#: src/editor/style-cards/maxiStyleCardsEditor.js:627
 msgid "Short memorable name*"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:687
+#: src/editor/style-cards/maxiStyleCardsEditor.js:686
 msgid "Create"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:719
+#: src/editor/style-cards/maxiStyleCardsEditor.js:718
 msgid "Light tone globals"
 msgstr ""
 
 #: build/4490.js:1
-#: src/editor/style-cards/maxiStyleCardsEditor.js:735
+#: src/editor/style-cards/maxiStyleCardsEditor.js:734
 msgid "Dark tone globals"
 msgstr ""
 
@@ -6076,7 +6076,7 @@ msgid "Columns Handlers"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-overline/index.js:114
-#: src/components/typography-control/index.js:889
+#: src/components/typography-control/index.js:896
 msgid "Overline"
 msgstr ""
 
@@ -6132,113 +6132,113 @@ msgstr ""
 msgid "Font size"
 msgstr ""
 
-#: src/components/typography-control/index.js:701
+#: src/components/typography-control/index.js:703
 msgid "Line height"
 msgstr ""
 
-#: src/components/typography-control/index.js:744
+#: src/components/typography-control/index.js:746
 msgid "Letter spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:804
+#: src/components/typography-control/index.js:811
 msgid "Text transform"
 msgstr ""
 
-#: src/components/typography-control/index.js:811
-#: src/components/typography-control/index.js:850
-#: src/components/typography-control/index.js:885
+#: src/components/typography-control/index.js:818
+#: src/components/typography-control/index.js:857
+#: src/components/typography-control/index.js:892
 msgid "Default"
 msgstr ""
 
-#: src/components/typography-control/index.js:815
+#: src/components/typography-control/index.js:822
 msgid "Capitalize"
 msgstr ""
 
-#: src/components/typography-control/index.js:819
+#: src/components/typography-control/index.js:826
 msgid "Uppercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:823
+#: src/components/typography-control/index.js:830
 msgid "Lowercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:858
+#: src/components/typography-control/index.js:865
 msgid "Oblique"
 msgstr ""
 
-#: src/components/typography-control/index.js:878
+#: src/components/typography-control/index.js:885
 msgid "Text decoration"
 msgstr ""
 
-#: src/components/typography-control/index.js:893
+#: src/components/typography-control/index.js:900
 msgid "Line through"
 msgstr ""
 
-#: src/components/typography-control/index.js:901
+#: src/components/typography-control/index.js:908
 msgid "Underline overline"
 msgstr ""
 
-#: src/components/typography-control/index.js:923
+#: src/components/typography-control/index.js:930
 msgid "Text orientation"
 msgstr ""
 
-#: src/components/typography-control/index.js:934
+#: src/components/typography-control/index.js:941
 msgid "Mixed"
 msgstr ""
 
-#: src/components/typography-control/index.js:938
+#: src/components/typography-control/index.js:945
 msgid "Upright"
 msgstr ""
 
-#: src/components/typography-control/index.js:942
+#: src/components/typography-control/index.js:949
 msgid "Sideways"
 msgstr ""
 
-#: src/components/typography-control/index.js:965
+#: src/components/typography-control/index.js:972
 msgid "Text direction"
 msgstr ""
 
-#: src/components/typography-control/index.js:972
+#: src/components/typography-control/index.js:979
 msgid "Left to right"
 msgstr ""
 
-#: src/components/typography-control/index.js:976
+#: src/components/typography-control/index.js:983
 msgid "Right to left"
 msgstr ""
 
-#: src/components/typography-control/index.js:1054
+#: src/components/typography-control/index.js:1065
 msgid "White space"
 msgstr ""
 
-#: src/components/typography-control/index.js:1061
+#: src/components/typography-control/index.js:1072
 msgid "Normal"
 msgstr ""
 
-#: src/components/typography-control/index.js:1065
+#: src/components/typography-control/index.js:1076
 msgid "No wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1069
+#: src/components/typography-control/index.js:1080
 msgid "Pre"
 msgstr ""
 
-#: src/components/typography-control/index.js:1073
+#: src/components/typography-control/index.js:1084
 msgid "Pre line"
 msgstr ""
 
-#: src/components/typography-control/index.js:1077
+#: src/components/typography-control/index.js:1088
 msgid "Pre wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1081
+#: src/components/typography-control/index.js:1092
 msgid "Break spaces"
 msgstr ""
 
-#: src/components/typography-control/index.js:1102
+#: src/components/typography-control/index.js:1113
 msgid "Word Spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1159
+#: src/components/typography-control/index.js:1174
 msgid "Bottom gap"
 msgstr ""
 
@@ -6670,7 +6670,11 @@ msgstr ""
 msgid "Get the current archive's posts"
 msgstr ""
 
-#: src/extensions/maxi-block/maxiBlockComponent.js:1094
+#: src/extensions/dom/getCurrentPreviewDeviceType.js:27
+msgid "Unable to get the preview device type. The required method is not available."
+msgstr ""
+
+#: src/extensions/maxi-block/maxiBlockComponent.js:1116
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -6680,10 +6684,6 @@ msgstr ""
 
 #: src/extensions/store/actions.js:100
 msgid "Unable to set the preview device type. The required method is not available."
-msgstr ""
-
-#: src/extensions/store/reducer.js:69
-msgid "Unable to get the preview device type. The required method is not available."
 msgstr ""
 
 #: src/extensions/styles/defaults/hover.js:154

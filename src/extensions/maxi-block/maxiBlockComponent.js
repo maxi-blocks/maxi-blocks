@@ -47,6 +47,7 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
+import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
 import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
@@ -216,17 +217,19 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 
-		if (previewIframes.length > 0 && !blockName) {
+		if (
+			previewIframes.length > 0 &&
+			(!blockName ||
+				document.querySelector(
+					'.editor-post-template__swap-template-modal'
+				))
+		) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
 
-		if (
-			this.isPatternsPreview ||
-			document.querySelector('.editor-post-template__swap-template-modal')
-		)
-			return;
+		if (this.isPatternsPreview) return;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
@@ -483,6 +486,16 @@ class MaxiBlockComponent extends Component {
 
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
+
+		// Force render styles when changing CL
+		if (
+			this.props.attributes['dc-status'] &&
+			!isEqual(
+				this.props?.contextLoopContext,
+				prevProps?.contextLoopContext
+			)
+		)
+			return false;
 
 		if (this.maxiBlockGetSnapshotBeforeUpdate) {
 			return (
@@ -816,10 +829,19 @@ class MaxiBlockComponent extends Component {
 			}
 		} else if (iframe) {
 			wrapper = getPreviewWrapper(iframe.contentDocument, false);
-			iframe.contentDocument.body.setAttribute(
-				'maxi-blocks-responsive',
-				document.querySelector('.is-tablet-preview') ? 's' : 'xs'
-			);
+
+			const currentPreviewDeviceType = getCurrentPreviewDeviceType();
+
+			if (currentPreviewDeviceType !== 'Desktop')
+				iframe.contentDocument.body.setAttribute(
+					'maxi-blocks-responsive',
+					document.querySelector('.is-tablet-preview') ? 's' : 'xs'
+				);
+			if (currentPreviewDeviceType === 'Tablet')
+				iframe.contentDocument.body.setAttribute(
+					'maxi-blocks-responsive',
+					's'
+				);
 			if (!select('maxiBlocks').getIsIframeObserverSet()) {
 				dispatch('maxiBlocks').setIsIframeObserverSet(true);
 				const iframeObserver = new MutationObserver(() => {

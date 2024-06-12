@@ -14,6 +14,7 @@ import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
 
 /**
  * Styles and icons
@@ -35,5 +36,10 @@ registerBlockType(metadata, {
 	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: customCss.selectors,
+	}),
 	customCss,
 });

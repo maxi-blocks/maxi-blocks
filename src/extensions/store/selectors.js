@@ -56,8 +56,11 @@ const selectors = {
 
 		return getWinBreakpoint(editorContentWidth, state.breakpoints);
 	},
-	receiveDeprecatedBlock(state, uniqueID) {
-		if (state) return state.deprecatedBlocks?.[uniqueID] ?? null;
+	receiveDeprecatedBlock(state, uniqueID, isSave = false) {
+		if (state)
+			return isSave
+				? state.deprecatedBlocksSave?.[uniqueID] || {}
+				: state.deprecatedBlocks?.[uniqueID] || {};
 
 		return false;
 	},

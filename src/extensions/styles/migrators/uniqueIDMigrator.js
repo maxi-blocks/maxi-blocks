@@ -6,6 +6,7 @@ import uniqueIDGenerator from '../../attributes/uniqueIDGenerator';
 import getCustomLabel from '../../maxi-block/getCustomLabel';
 
 const name = 'uniqueID';
+const ignoreAttributesForSave = true;
 
 const isEligible = blockAttributes => !blockAttributes.uniqueID.endsWith('-u');
 
@@ -24,4 +25,4 @@ const migrate = newAttributes => {
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name, isEligible, migrate, ignoreAttributesForSave };

@@ -176,7 +176,11 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'show_admin_column' => true,
             'show_in_menu' => false,
             'show_ui' => false,
-            'show_in_rest' => true
+            'show_in_rest' => true,
+            'show_in_nav_menus' => false,
+            'show_tagcloud'     => false,
+            'show_in_quick_edit' => false,
+            'meta_box_cb'       => false,
         );
 
             register_taxonomy('maxi-image-type', 'attachment', $args);

@@ -520,14 +520,48 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
+    private function check_inner_blocks($block, $attributes, $content)
+    {
+        // Recursively check inner blocks
+        $content = $this->recursive_check($block, $attributes, $content);
+        return $content;
+    }
 
-    public function render_dc($attributes, $content)
+    private function recursive_check($block, $attributes, $content)
+    {
+        if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
+            foreach ($block->inner_blocks as $inner_block) {
+                // Access the attributes of the inner block
+                $inner_block_attributes = $inner_block->attributes;
+
+                // Check if the inner block has dc-status set to true
+                if (isset($inner_block_attributes['dc-status']) && $inner_block_attributes['dc-status']) {
+                    $content = self::render_dc_classes($attributes, $content);
+                    break;
+                }
+
+                // Recursively check the inner blocks of the current inner block
+                $content = $this->recursive_check($inner_block, $inner_block_attributes, $content);
+            }
+        }
+
+        return $content;
+    }
+
+
+
+    public function render_dc($attributes, $content, $block)
     {
 
         if (!array_key_exists('dc-status', $attributes) &&
         !array_key_exists('background-layers', $attributes) &&
         !array_key_exists('background-layers-hover', $attributes)) {
+            if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
+                $content = $this->check_inner_blocks($block, $attributes, $content);
+            }
+
             if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
+                $content = self::render_dc_classes($attributes, $content);
                 return $this->render_pagination($attributes, $content);
             }
             return $content;
@@ -581,6 +615,7 @@ class MaxiBlocks_DynamicContent
         $content = self::render_dc_background($attributes, $content, $context_loop);
 
         if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
+            $content = $this->check_inner_blocks($block, $attributes, $content);
             return $content;
         }
 
@@ -749,7 +784,6 @@ class MaxiBlocks_DynamicContent
             if (empty($post) && $dc_type === 'posts') {
                 return '';
             }
-
             return $content;
         }
 
@@ -808,7 +842,6 @@ class MaxiBlocks_DynamicContent
 
             return $content;
         }
-
 
         $content = str_replace('$text-to-replace', $response, $content);
 
@@ -937,8 +970,8 @@ class MaxiBlocks_DynamicContent
         $classes = [];
 
         $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
-            ? 'maxi-block--hidden'
-            : '';
+        ? 'maxi-block--hidden'
+        : '';
 
         $content = str_replace(
             '$class-to-replace',
@@ -946,8 +979,31 @@ class MaxiBlocks_DynamicContent
             $content
         );
 
+        if ($this->check_if_content_is_empty($attributes, $content) || (!in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)) {
+            // Add the class only to elements that don't have it yet
+            $content = preg_replace_callback(
+                '/<([a-z]+)([^>]*?)class="([^"]*?)"/i',
+                function ($matches) {
+                    $tag = $matches[1];
+                    $attributes = $matches[2];
+                    $classes = $matches[3];
+
+                    // Check if the class already exists
+                    if (strpos($classes, 'maxi-block--hidden') === false) {
+                        $classes = 'maxi-block--hidden ' . $classes;
+                    }
+
+                    return "<$tag$attributes class=\"$classes\"";
+                },
+                $content
+            );
+
+            return $content;
+        }
+
         return $content;
     }
+
 
     public function get_current_archive_type_and_id()
     {
@@ -1034,7 +1090,6 @@ class MaxiBlocks_DynamicContent
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
-
         if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
             // Basic args
             $args = [
@@ -1098,7 +1153,7 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts)) {
+            if (empty($query->posts) && !$is_current_archive) {
                 $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
                 if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
                     return $this->get_post(array_replace($attributes, $validated_attributes));
@@ -2262,6 +2317,47 @@ class MaxiBlocks_DynamicContent
         self::$global_dc_accumulator_cl = $dc_accumulator;
         self::$global_dc_id_cl = $post_id;
 
+        return false;
+    }
+
+    public function check_if_content_is_empty($attributes, $content)
+    {
+        $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
+
+        if (
+            isset($attributes['uniqueID']) &&
+            (
+                (isset($attributes['cl-status']) && $attributes['cl-status']) ||
+                (isset($attributes['dc-status']) && $attributes['dc-status']) ||
+                (isset($attributes['dc-hide']) && $attributes['dc-hide'])
+            )
+        ) {
+            $unique_id = $attributes['uniqueID'];
+
+            foreach ($blocks_to_check as $block) {
+                if (strpos($unique_id, $block) !== false) {
+                    // Replace the invalid parts of the data-stroke attribute
+                    $content_sanitized = str_replace(',1))"#081219"', ',1))"', $content);
+                    $content_sanitized = str_replace(',1))\\u0022#081219\\u0022', ',1))\\u0022', $content_sanitized);
+
+                    // Remove <div> elements containing <svg> with the class 'maxi-background-displayer__svg'
+                    $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
+
+                    $allowed_tags = '<svg><img><iframe><hr>';
+                    $text_content = strip_tags($content_sanitized, $allowed_tags);
+
+                    // Trim the text content to remove leading and trailing whitespace
+                    $trimmed_text_content = trim($text_content);
+
+                    // Check if the trimmed text content contains only "No content found" and spaces
+                    if (empty($trimmed_text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $trimmed_text_content) || preg_match('/^\s*$/', $trimmed_text_content)) {
+
+                        return true;
+                    }
+                    break;
+                }
+            }
+        }
         return false;
     }
 }

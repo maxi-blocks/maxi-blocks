@@ -45,7 +45,7 @@ class MaxiBlocks_ImageCrop
             $old_media = esc_url_raw($_POST['old_media_src']);//phpcs:ignore
             $this->delete_old_file($old_media);
         }
-       
+
         if (isset($_POST['src'], $_POST['src_x'], $_POST['src_y'], $_POST['src_w'], $_POST['src_h'], $_POST['dst_w'], $_POST['dst_h'])) {//phpcs:ignore
             $new_media = [
             'src' => sanitize_text_field($_POST['src']),//phpcs:ignore
@@ -56,7 +56,7 @@ class MaxiBlocks_ImageCrop
             'dst_w' => sanitize_text_field($_POST['dst_w']),//phpcs:ignore
             'dst_h' => sanitize_text_field($_POST['dst_h']),//phpcs:ignore
         ];
-        
+
             $this->upload_new_file($new_media);
         }
 
@@ -94,7 +94,7 @@ class MaxiBlocks_ImageCrop
 
         $file_url = str_replace(ABSPATH, site_url() . '/', $upload_file);
 
-        echo json_encode($file_url);
+        echo wp_json_encode($file_url);
     }
 
     public function maxi_remove_custom_image_size()
@@ -106,7 +106,7 @@ class MaxiBlocks_ImageCrop
             global $wp_filesystem;
             WP_Filesystem();
         }
-        
+
         die();
     }
 }

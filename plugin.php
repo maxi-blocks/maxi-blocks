@@ -106,7 +106,12 @@ function maxi_show_database_version_notice()
     $isMariaDB = strpos(strtolower($wpdb->db_server_info()), 'maria') !== false;
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
     $databaseType = $isMariaDB ? 'MariaDB' : 'MySQL';
-    $message = __('Highly recommend to update to', 'maxi-blocks') . ' ' . $databaseType . ' ' . $requiredVersion . '+ ' . __('for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks') . ' <a href="https://maxiblocks.com/go/database-version-requirements" target="_blank">' . __('Learn more', 'maxi-blocks') . '</a>';
+    $message = sprintf(
+        /* translators: %1$s: database type, %2$s: required version, %3$s: link URL */
+        esc_html__('Highly recommend to update to %1$s %2$s+ for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks'),
+        esc_html($databaseType),
+        esc_html($requiredVersion)
+    ) . ' <a href="' . esc_url('https://maxiblocks.com/go/database-version-requirements') . '" target="_blank">' . esc_html__('Learn more', 'maxi-blocks') . '</a>';
 
     echo '<tr class="plugin-update-tr active maxi-blocks-db-notice" data-slug="maxi-blocks" data-plugin="maxi-blocks/plugin.php">';
     echo '<td colspan="4" class="plugin-update colspanchange">';

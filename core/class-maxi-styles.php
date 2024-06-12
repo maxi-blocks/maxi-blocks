@@ -466,7 +466,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        return json_decode(json_encode($content), true);
+        return json_decode(wp_json_encode($content), true);
     }
 
     /**
@@ -1500,7 +1500,7 @@ class MaxiBlocks_Styles
             'prev_css_value' => $prev_styles,
         ];
 
-        return ['content' => json_decode(json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+        return ['content' => json_decode(wp_json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
     }
 
     /**
@@ -2064,7 +2064,7 @@ class MaxiBlocks_Styles
         $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
 
         if(!empty($custom_meta)) {
-            $custom_meta_json = json_encode($custom_meta);
+            $custom_meta_json = wp_json_encode($custom_meta);
             $exists = $wpdb->get_row(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
@@ -2109,7 +2109,7 @@ class MaxiBlocks_Styles
         ];
 
         if (in_array($block_name, $blocks_with_fonts) && !empty($props)) {
-            $fonts = json_encode($this->get_block_fonts($block_name, $props));
+            $fonts = wp_json_encode($this->get_block_fonts($block_name, $props));
         } else {
             $fonts = '';
         }

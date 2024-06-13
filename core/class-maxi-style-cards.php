@@ -49,7 +49,7 @@ class MaxiBlocks_StyleCards
 
             // SC variables
             if ($vars) {
-                wp_register_style('maxi-blocks-sc-vars', false);
+                wp_register_style('maxi-blocks-sc-vars', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-vars');
                 wp_add_inline_style('maxi-blocks-sc-vars', $vars);
             }
@@ -65,7 +65,7 @@ class MaxiBlocks_StyleCards
 
             // SC styles
             if ($styles) {
-                wp_register_style('maxi-blocks-sc-styles', false);
+                wp_register_style('maxi-blocks-sc-styles', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-styles');
                 wp_add_inline_style('maxi-blocks-sc-styles', $styles);
             }
@@ -214,10 +214,19 @@ class MaxiBlocks_StyleCards
         global $wpdb;
 
         // Check if table exists
+        // Check if table exists
         $table_name = $wpdb->prefix . 'maxi_blocks_general';
-        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+
+        // Prepare the query safely
+        $table_exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SHOW TABLES LIKE %s",
+                $table_name
+            )
+        );
+
+        if ($table_exists != $table_name) {
             // Table doesn't exist
-            // Handle the case here - return false, throw an exception, etc.
             return false;
         }
 

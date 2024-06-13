@@ -1147,7 +1147,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 if (is_dir($file)) {
                     $this->delete_all_files($file);
                 } else {
-                    unlink($file);
+                    wp_delete_file($file);
                 }
             }
             rmdir($folder);

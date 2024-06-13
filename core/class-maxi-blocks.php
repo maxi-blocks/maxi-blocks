@@ -116,7 +116,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 plugins_url($index_js, dirname(__FILE__)),
                 $script_asset['dependencies'],
-                MAXI_PLUGIN_VERSION
+                MAXI_PLUGIN_VERSION,
+                true
             );
 
             $editor_css = 'build/index.css';

@@ -339,7 +339,7 @@ class MaxiBlocks_DynamicContent
         $current_query_params = [];
 
         // Extract the query string from the current URL and parse it if not null
-        $query_string = parse_url($current_url, PHP_URL_QUERY) ?? '';
+        $query_string = wp_parse_url($current_url, PHP_URL_QUERY) ?? '';
         parse_str($query_string, $current_query_params);
 
 
@@ -554,6 +554,7 @@ class MaxiBlocks_DynamicContent
     {
 
 
+        echo "render_dc";
         if (!array_key_exists('dc-status', $attributes)) {
 
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
@@ -807,6 +808,9 @@ class MaxiBlocks_DynamicContent
             $this->is_empty = true;
             $response = 'No content found';
         }
+
+        echo htmlentities($content);
+
 
         if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
@@ -1590,9 +1594,9 @@ class MaxiBlocks_DynamicContent
 
                 // Format the date based on the available date components
                 if ($day) {
-                    $formatted_date = date($format, mktime(0, 0, 0, $month, $day, $year));
+                    $formatted_date = gmdate($format, gmmktime(0, 0, 0, $month, $day, $year));
                 } elseif ($month) {
-                    $formatted_date = date('F Y', mktime(0, 0, 0, $month, 1, $year));
+                    $formatted_date = gmdate('F Y', gmmktime(0, 0, 0, $month, 1, $year));
                 } elseif ($year) {
                     $formatted_date = $year;
                 } else {
@@ -1677,17 +1681,17 @@ class MaxiBlocks_DynamicContent
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
-                    return strip_tags(wc_price($price));
+                    return wp_strip_all_tags(wc_price($price));
                 case 'sale_price':
                     $price = $product->get_sale_price();
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
                     if ($product->is_on_sale()) {
-                        return strip_tags(wc_price($price));
+                        return wp_strip_all_tags(wc_price($price));
                     }
 
-                    return strip_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'price_range':
                     if ($product->is_type('variable')) {
 
@@ -1699,7 +1703,7 @@ class MaxiBlocks_DynamicContent
                         }
                     }
 
-                    return strip_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'description':
                     return self::get_limited_string($product->get_description(), $dc_limit);
                 case 'short_description':
@@ -1758,7 +1762,7 @@ class MaxiBlocks_DynamicContent
                 if (empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])) {
                     $this->is_empty = true;
                 }
-                return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
+                return wp_strip_all_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
             default:
                 return null;
         }
@@ -1868,7 +1872,7 @@ class MaxiBlocks_DynamicContent
         // Validate the $date variable
         if (empty($date) || strtotime($date) === false) {
             // Set to current date/time or another default value if invalid
-            $date = date('Y-m-d H:i:s');
+            $date = gmdate('Y-m-d H:i:s');
         }
 
         try {
@@ -2312,7 +2316,7 @@ class MaxiBlocks_DynamicContent
                     $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
 
                     $allowed_tags = '<svg><img><iframe><hr>';
-                    $text_content = strip_tags($content_sanitized, $allowed_tags);
+                    $text_content = wp_strip_all_tags($content_sanitized, $allowed_tags);
 
                     // Trim the text content to remove leading and trailing whitespace
                     $trimmed_text_content = trim($text_content);

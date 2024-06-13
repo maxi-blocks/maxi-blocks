@@ -116,7 +116,7 @@ function maxi_show_database_version_notice()
     echo '<tr class="plugin-update-tr active maxi-blocks-db-notice" data-slug="maxi-blocks" data-plugin="maxi-blocks/plugin.php">';
     echo '<td colspan="4" class="plugin-update colspanchange">';
     echo '<div class="update-message notice inline notice-warning notice-alt is-dismissible"><p>';
-    echo $message;
+    echo wp_kses_post($message);
     echo '</p></div></td></tr>';
 }
 
@@ -219,19 +219,7 @@ function maxi_blocks_dismiss_plugin_update_notice()
 require_once(MAXI_PLUGIN_DIR_PATH . 'core/admin/maxi-allowed-html-tags.php');
 
 // Temporally removing patterns download
-add_filter('should_load_remote_block_patterns', '__return_false');
-
-/* Enabled option */
-
-if (!get_option('maxi_enable')) {
-    add_option('maxi_enable', 'enabled');
-}
-
-function maxi_get_option()
-{
-    echo esc_attr(get_option('maxi_enable'));
-    die();
-}
+//add_filter('should_load_remote_block_patterns', '__return_false');
 
 function maxi_insert_block()
 {
@@ -240,14 +228,7 @@ function maxi_insert_block()
         $this_content = sanitize_text_field($_POST['maxi_content']);//phpcs:ignore
 
         if ($this_content && $this_title) {
-            // 	$has_reusable_block = get_posts( array(
-            // 	'name'           => $_POST['maxi_title'],
-            // 	'post_type'      => 'wp_block',
-            // 	'posts_per_page' => 1
-            // ) );
 
-            // if ( ! $has_reusable_block ) {
-            // No reusable block like ours detected.
             wp_insert_post([
             'post_content' =>  $this_content,
             'post_title' => $this_title,
@@ -262,8 +243,6 @@ function maxi_insert_block()
             ),
         ]);
             echo 'success';
-            //} //if ( ! $has_reusable_block )
-            //else {echo 'You already have Block with the same name';}
         } else {
             echo 'JSON Error';
         }

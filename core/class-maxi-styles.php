@@ -2435,6 +2435,8 @@ class MaxiBlocks_Styles
                             $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
                             $value['background-svg-SVGElement'] = $this->decode_unicode_entities($svg_element);
                         }
+
+                        unset($value);
                     }
                 }
 
@@ -2474,7 +2476,6 @@ class MaxiBlocks_Styles
             $this->update_attribute_relations($blocks_with_relations, $id_mapping);
         }
     }
-
 
     /**
      * Updates the unique IDs in the attribute relations of the given blocks.

@@ -553,8 +553,6 @@ class MaxiBlocks_DynamicContent
     public function render_dc($attributes, $content, $block)
     {
 
-
-        echo "render_dc";
         if (!array_key_exists('dc-status', $attributes)) {
 
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
@@ -808,9 +806,6 @@ class MaxiBlocks_DynamicContent
             $this->is_empty = true;
             $response = 'No content found';
         }
-
-        echo htmlentities($content);
-
 
         if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);

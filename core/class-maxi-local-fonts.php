@@ -59,42 +59,50 @@ class MaxiBlocks_Local_Fonts
         $prev_blocks_content_array = [];
         $sc_string = '';
 
-        if($this->check_table_exists('maxi_blocks_styles')) {
-            $post_content_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
+        if ($this->check_table_exists('maxi_blocks_styles')) {
+            // Fetch the distinct fonts_value directly
+            $post_content_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
             );
-            $prev_post_content_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles",
+
+            // Fetch the distinct prev_fonts_value directly
+            $prev_post_content_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles"
             );
         }
 
-        // for templates
-        if($this->check_table_exists('maxi_blocks_styles_templates')) {
-            $post_content_templates_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+        // For templates
+        if ($this->check_table_exists('maxi_blocks_styles_templates')) {
+            $post_content_templates_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates"
             );
 
-            $prev_post_content_templates_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
+            $prev_post_content_templates_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates"
             );
         }
 
-        // blocks
-        if($this->check_table_exists('maxi_blocks_styles_blocks')) {
-            $blocks_content_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks",
+        // For blocks
+        if ($this->check_table_exists('maxi_blocks_styles_blocks')) {
+            $blocks_content_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks"
             );
-            $prev_blocks_content_array = (array) $wpdb->get_results(
-                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks",
+
+            $prev_blocks_content_array = (array) $wpdb->get_col(
+                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_blocks"
             );
         }
 
         // $sc_string
-        if($this->check_table_exists('maxi_blocks_general')) {
+        if ($this->check_table_exists('maxi_blocks_general')) {
             $sc_string = $wpdb->get_var(
-                "SELECT id FROM {$wpdb->prefix}maxi_blocks_general WHERE id = 'sc_string'"
+                $wpdb->prepare(
+                    "SELECT id FROM {$wpdb->prefix}maxi_blocks_general WHERE id = %s",
+                    'sc_string'
+                )
             );
         }
+
 
         if (
             empty($post_content_array) &&
@@ -277,12 +285,16 @@ class MaxiBlocks_Local_Fonts
 
     public function uploadCssFiles($all_urls)
     {
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
         foreach ($all_urls as $font_name => $font_url) {
             if (strpos($font_name, 'sc_font') !== false) {
-                $split_font = explode(
-                    '_',
-                    str_replace('sc_font_', '', $font_name),
-                );
+                $split_font = explode('_', str_replace('sc_font_', '', $font_name));
                 $block_style = $split_font[0];
                 $text_level = $split_font[1];
                 $breakpoint = $split_font[2];
@@ -291,7 +303,7 @@ class MaxiBlocks_Local_Fonts
                     $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts(
                         $block_style,
                         $text_level,
-                        $breakpoint,
+                        $breakpoint
                     );
 
                     @[$font_name] = $sc_fonts;
@@ -302,14 +314,10 @@ class MaxiBlocks_Local_Fonts
 
             $all_fonts_names[] = $font_name_sanitized;
 
-            $font_uploads_dir =
-                $this->fontsUploadDir . '/' . $font_name_sanitized;
+            $font_uploads_dir = $this->fontsUploadDir . '/' . $font_name_sanitized;
             wp_mkdir_p($font_uploads_dir);
 
-            $font_url_dir =
-                wp_upload_dir()['baseurl'] .
-                '/maxi/fonts/' .
-                $font_name_sanitized;
+            $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized;
 
             if (!preg_match('/wght@.*?400/', $font_url)) {
                 // Add '400;' before the weight value
@@ -336,26 +344,18 @@ class MaxiBlocks_Local_Fonts
 
                 $new_font_files[] = $font_url_dir . '/' . $file_name;
 
-                if (!file_exists($new_file_path)) {
-                    file_put_contents($new_file_path, $font_body);
+                if (!$wp_filesystem->exists($new_file_path)) {
+                    $wp_filesystem->put_contents($new_file_path, $font_body);
                 }
             }
 
-            $new_css_file = str_replace(
-                $font_files,
-                $new_font_files,
-                $css_file,
-            );
+            $new_css_file = str_replace($font_files, $new_font_files, $css_file);
 
-            $new_css_file = str_replace(
-                '}',
-                'font-display: swap; }',
-                $new_css_file,
-            );
+            $new_css_file = str_replace('}', 'font-display: swap; }', $new_css_file);
 
             $new_css_file = $this->minimizeFontCss($new_css_file);
 
-            file_put_contents($font_uploads_dir . '/style.css', $new_css_file);
+            $wp_filesystem->put_contents($font_uploads_dir . '/style.css', $new_css_file);
         }
 
         // remove not used fonts directories
@@ -363,11 +363,14 @@ class MaxiBlocks_Local_Fonts
         foreach ($directories as $directory) {
             $folder_name = basename($directory);
             if (!in_array($folder_name, $all_fonts_names)) {
-                array_map('unlink', glob("$directory/*"));
-                rmdir($directory);
+                foreach (glob("$directory/*") as $file) {
+                    $wp_filesystem->delete($file);
+                }
+                $wp_filesystem->delete($directory, true);
             }
         }
     }
+
 
     public function check_table_exists($table_name)
     {
@@ -376,8 +379,15 @@ class MaxiBlocks_Local_Fonts
         // Prepare the table name with the WP prefix
         $full_table_name = $wpdb->prefix . $table_name;
 
-        // Check if table exists
-        if($wpdb->get_var("SHOW TABLES LIKE '$full_table_name'") != $full_table_name) {
+        // Check if table exists using wpdb->prepare()
+        $table_exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SHOW TABLES LIKE %s",
+                $full_table_name
+            )
+        );
+
+        if ($table_exists != $full_table_name) {
             // Table doesn't exist
             return false;
         }

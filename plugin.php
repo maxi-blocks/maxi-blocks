@@ -218,9 +218,6 @@ function maxi_blocks_dismiss_plugin_update_notice()
 
 require_once(MAXI_PLUGIN_DIR_PATH . 'core/admin/maxi-allowed-html-tags.php');
 
-// Temporally removing patterns download
-//add_filter('should_load_remote_block_patterns', '__return_false');
-
 function maxi_insert_block()
 {
     if (isset($_POST['maxi_title']) && isset($_POST['maxi_content'])) {//phpcs:ignore

@@ -213,7 +213,6 @@ class MaxiBlocks_StyleCards
         global $wpdb;
 
         // Check if table exists
-        // Check if table exists
         $table_name = $wpdb->prefix . 'maxi_blocks_general';
 
         // Prepare the query safely

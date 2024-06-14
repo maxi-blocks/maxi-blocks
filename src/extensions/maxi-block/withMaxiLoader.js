@@ -14,7 +14,6 @@ import {
  * Internal dependencies
  */
 import { ContentLoader } from '../../components';
-import { getSiteEditorPreviewIframes } from '../fse';
 
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);
@@ -66,18 +65,7 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
-			if (
-				siteEditorPreviewIframes.length > 0 ||
-				document.querySelector(
-					'.editor-post-template__swap-template-modal'
-				)
-			)
-				return <WrappedComponent {...ownProps} />;
-
-			if (!ownProps) {
-				return null;
-			}
+			if (!ownProps) return null;
 			const {
 				clientId,
 				attributes: { uniqueID },
@@ -90,19 +78,18 @@ const withMaxiLoader = createHigherOrderComponent(
 
 			const [hasBeenConsolidated, setHasBeenConsolidated] =
 				useState(false);
-
 			const { blockWantsToRender } = useDispatch('maxiBlocks');
 
 			useLayoutEffect(() => {
 				blockWantsToRender(uniqueID, clientId);
-			}, []);
+			}, [blockWantsToRender, uniqueID, clientId]);
 
 			const [canRender, setCanRender] = useState(
 				canBlockRender(uniqueID, clientId)
 			);
 
 			useEffect(() => {
-				if (canRender && hasBeenConsolidated) return () => {};
+				if (canRender && hasBeenConsolidated) return;
 
 				const interval = setInterval(() => {
 					if (canBlockRender(uniqueID, clientId)) {
@@ -113,15 +100,22 @@ const withMaxiLoader = createHigherOrderComponent(
 				}, 100);
 
 				return () => clearInterval(interval);
-			});
+			}, [
+				canRender,
+				hasBeenConsolidated,
+				canBlockRender,
+				uniqueID,
+				clientId,
+			]);
 
 			const onMountBlock = useCallback(() => {
 				setHasBeenConsolidated(true);
 				setCanRender(true);
 			}, []);
 
-			if (canRender && hasBeenConsolidated)
+			if (canRender && hasBeenConsolidated) {
 				return <WrappedComponent {...ownProps} />;
+			}
 
 			return (
 				<SuspendedBlock

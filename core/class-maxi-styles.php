@@ -93,7 +93,6 @@ class MaxiBlocks_Styles
 
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
-            add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3); // legacy code
         }
 
         if(self::should_apply_content_filter()) {
@@ -332,7 +331,11 @@ class MaxiBlocks_Styles
         $template_id = $this->get_template_name() . '//';
 
         if ($template_slug != '' && $template_slug !== false) {
-            $template_id .= $template_slug;
+            if(is_search()) {
+                $template_id .= 'search';
+            } else {
+                $template_id .= $template_slug;
+            }
         } elseif (is_home() || is_front_page()) {
             $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
 
@@ -340,7 +343,7 @@ class MaxiBlocks_Styles
 
             if ($has_front_page_and_home) {
                 if (is_home() && !is_front_page()) {
-                    $template_id .= 'index';
+                    $template_id .= 'home';
                 } else {
                     $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }
@@ -1524,8 +1527,8 @@ class MaxiBlocks_Styles
         // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
         if($template_slug !== null) {
             $query = $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-                $template_slug
+                "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name LIKE %s AND post_status = 'publish'",
+                '%' . $wpdb->esc_like($template_slug) . '%'
             );
             $templates = $wpdb->get_results($query);
         }
@@ -1684,8 +1687,8 @@ class MaxiBlocks_Styles
         }
 
         $theme_directory = get_template_directory();
-        $html_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.html';
-        $php_pattern = $theme_directory . '/maxi-patterns/' . $pattern_slug . '/code.php';
+        $html_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.html';
+        $php_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.php';
 
         $pattern_file = '';
 

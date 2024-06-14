@@ -1121,7 +1121,7 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts)) {
+            if (empty($query->posts) && !$is_current_archive) {
                 $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
                 if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
                     return $this->get_post(array_replace($attributes, $validated_attributes));

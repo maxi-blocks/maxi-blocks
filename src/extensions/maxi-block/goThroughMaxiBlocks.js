@@ -45,21 +45,29 @@ const goThroughMaxiBlocks = (
 					return callbackResult;
 				}
 
-				const { postType, postId } =
-					select('core/edit-site').getEditedPostContext();
+				if (select('core/edit-site') !== undefined) {
+					const { postType, postId } =
+						select('core/edit-site').getEditedPostContext();
 
-				const { blocks } = select('core').getEditedEntityRecord(
-					'postType',
-					postType,
-					postId
-				);
-
-				if (blocks?.length) {
-					innerBlocks = blocks;
+					const { blocks } = select('core').getEditedEntityRecord(
+						'postType',
+						postType,
+						postId
+					);
+					if (blocks?.length) {
+						innerBlocks = blocks;
+					}
+				} else {
+					const blocks = select('core/block-editor').getBlocks(
+						block.clientId
+					);
+					if (blocks?.length) {
+						innerBlocks = blocks;
+					}
 				}
 			}
 
-			if (block.name === 'core/block') {
+			if (block.name === 'core/block' || block.name === 'core/group') {
 				const blocks = select('core/block-editor').getBlocks(
 					block.clientId
 				);

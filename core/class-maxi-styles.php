@@ -1545,7 +1545,9 @@ class MaxiBlocks_Styles
 
         if (get_template() === 'maxiblocks') {
             $templates_blocks = $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
-            $all_blocks = array_merge_recursive($all_blocks, $templates_blocks);
+            if($templates_blocks) {
+                $all_blocks = array_merge_recursive($all_blocks, $templates_blocks);
+            }
         }
 
         return $all_blocks;
@@ -1607,27 +1609,26 @@ class MaxiBlocks_Styles
         $all_blocks = [];
 
         $parts = explode('//', $template_id);
-        if(!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
+        if (!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
             return;
         }
 
         $template_slug = isset($parts[1]) ? $parts[1] : null;
 
-        if(!$template_slug) {
+        if (!$template_slug) {
             return;
         }
 
-        if($template_slug === 'index') {
+        if ($template_slug === 'index') {
             $template_slug = 'front-page';
         }
 
         $theme_directory = get_template_directory();
         $template_directory = $theme_directory . '/templates/';
+        $file = $template_directory . $template_slug . '.html';
 
-        // Get a list of HTML files in the parts directory
-        $file =  $template_directory . $template_slug.'.html';
-        if(!file_exists($file)) {
-            $header_blocks =   $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+        if (!file_exists($file)) {
+            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
             $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
 
             $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
@@ -1635,13 +1636,19 @@ class MaxiBlocks_Styles
             return $all_blocks;
         }
 
-        $file_contents = file_get_contents($file);
-        if(!$file_contents) {
+        global $wp_filesystem;
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        $file_contents = $wp_filesystem->get_contents($file);
+        if (!$file_contents) {
             return;
         }
 
         if (strpos($file_contents, '"slug":"header"') !== false) {
-            $header_blocks =   $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
             $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
         }
 
@@ -1663,17 +1670,18 @@ class MaxiBlocks_Styles
         return $all_blocks;
     }
 
+
     public function fetch_blocks_from_beta_maxi_theme_patterns($pattern_id)
     {
         $all_blocks = [];
         $parts = explode('/', $pattern_id);
-        if(!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
+        if (!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
             return [];
         }
 
         $pattern_slug = isset($parts[1]) ? $parts[1] : null;
 
-        if(!$pattern_slug) {
+        if (!$pattern_slug) {
             return [];
         }
 
@@ -1690,17 +1698,25 @@ class MaxiBlocks_Styles
         }
 
         if (!empty($pattern_file)) {
-            $file_contents = file_get_contents($pattern_file);
-
-            if(!$file_contents) {
-                return;
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
             }
+
+            $file_contents = $wp_filesystem->get_contents($pattern_file);
+
+            if (!$file_contents) {
+                return [];
+            }
+
             $pattern_blocks = parse_blocks($file_contents);
             $all_blocks = array_merge_recursive($all_blocks, $pattern_blocks);
         }
-        return $all_blocks;
 
+        return $all_blocks;
     }
+
 
     public function get_reusable_blocks_ids($blocks)
     {

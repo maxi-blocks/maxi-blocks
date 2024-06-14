@@ -1,5 +1,4 @@
 <?php
-require_once MAXI_PLUGIN_DIR_PATH . 'core/utils/get-last-breakpoint-attribute.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 
@@ -380,8 +379,23 @@ class MaxiBlocks_StyleCards
 
     public static function get_default_style_card()
     {
-        $json = file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json");
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        $file_path = MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json";
+
+        // Ensure the file exists before attempting to read
+        if (!$wp_filesystem->exists($file_path)) {
+            return null;
+        }
+
+        $json = $wp_filesystem->get_contents($file_path);
 
         return $json;
     }
+
 }

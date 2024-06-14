@@ -1143,15 +1143,36 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function delete_all_files($folder)
         {
-            foreach (glob($folder . '/*') as $file) {
-                if (is_dir($file)) {
-                    $this->delete_all_files($file);
+            global $wp_filesystem;
+
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
+            $folder = trailingslashit($folder);
+
+            // Ensure the folder exists before attempting to delete
+            if (!$wp_filesystem->exists($folder)) {
+                return;
+            }
+
+            $files = $wp_filesystem->dirlist($folder);
+
+            foreach ($files as $file) {
+                $file_path = $folder . $file['name'];
+
+                if ($file['type'] === 'd') { // Check if it's a directory
+                    $this->delete_all_files($file_path);
                 } else {
-                    wp_delete_file($file);
+                    $wp_filesystem->delete($file_path);
                 }
             }
-            rmdir($folder);
+
+            // Finally, remove the empty folder itself
+            $wp_filesystem->rmdir($folder);
         }
+
 
         public function remove_local_fonts()
         {

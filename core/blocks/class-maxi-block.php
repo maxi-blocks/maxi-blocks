@@ -317,21 +317,41 @@ if (!class_exists('MaxiBlocks_Block')):
         }
 
         /**
-        * Get block metadata.
-        *
-        * Reads the block.json file to retrieve the block metadata.
-        *
-        * @return array The block metadata.
-        */
+ * Get block metadata.
+ *
+ * Reads the block.json file to retrieve the block metadata.
+ *
+ * @return array The block metadata.
+ */
         public function get_block_metadata()
         {
             // If the block metadata is not yet retrieved, read it from the block.json file.
-            return $this->block_metadata = (!empty($this->block_metadata) ? $this->block_metadata : json_decode(
-                file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'),
-                true
-            ));
+            if (!empty($this->block_metadata)) {
+                return $this->block_metadata;
+            }
 
+            $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
+
+            if (!file_exists($path)) {
+                return null;
+            }
+
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
+            $file_contents = $wp_filesystem->get_contents($path);
+            if (!$file_contents) {
+                return null;
+            }
+
+            $this->block_metadata = json_decode($file_contents, true);
+            return $this->block_metadata;
         }
+
+
 
         public function get_block_attributes($props)
         {

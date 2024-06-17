@@ -48,6 +48,7 @@ class Parallax {
 
 	// eslint-disable-next-line class-methods-use-this
 	getBoundingClientRect(element) {
+		if (!element?.getBoundingClientRect()) return null;
 		const { top, right, bottom, left, width, height, x, y } =
 			element.getBoundingClientRect();
 

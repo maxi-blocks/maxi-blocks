@@ -103,7 +103,6 @@ class MaxiBlocks_Local_Fonts
             );
         }
 
-
         if (
             empty($post_content_array) &&
             empty($prev_post_content_array) &&
@@ -119,25 +118,27 @@ class MaxiBlocks_Local_Fonts
         $post_content_array = array_merge($post_content_array, $blocks_content_array);
         $prev_post_content_array = array_merge($prev_post_content_array, $prev_blocks_content_array);
 
+        $array = [];
+
         foreach ($post_content_array as $font) {
-            $array[] = $font->fonts_value;
+            $array[] = $font;
         }
 
         if (!empty($prev_post_content_array)) {
             foreach ($prev_post_content_array as $font) {
-                $array[] = $font->prev_fonts_value;
+                $array[] = $font;
             }
         }
 
         if (!empty($post_content_templates_array)) {
             foreach ($post_content_templates_array as $font) {
-                $array[] = $font->fonts_value;
+                $array[] = $font;
             }
         }
 
         if (!empty($prev_post_content_templates_array)) {
             foreach ($prev_post_content_templates_array as $font) {
-                $array[] = $font->prev_fonts_value;
+                $array[] = $font;
             }
         }
 
@@ -146,12 +147,14 @@ class MaxiBlocks_Local_Fonts
         }
 
         foreach ($array as $key => $value) {
-            if(isset($value)) {
+            if (isset($value)) {
                 $array[$key] = json_decode($value, true);
             }
         }
 
-        $array = array_filter($array, function ($arr) {return $arr !== null && $arr !== false && $arr !== '';});
+        $array = array_filter($array, function ($arr) {
+            return $arr !== null && $arr !== false && $arr !== '';
+        });
 
         if (empty($array)) {
             return false;

@@ -34,6 +34,8 @@ import DynamicContent from '../dynamic-content';
  */
 import { cloneDeep } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 /**
  * Component
  */
@@ -101,7 +103,7 @@ const ImageLayerSettings = props => {
 						label: __('Contain', 'maxi-blocks'),
 						value: 'contain',
 					},
-					...(!parallaxStatus
+					...(!parallaxStatus && !imageOptions['dc-status']
 						? [
 								{
 									label: __('Custom', 'maxi-blocks'),
@@ -740,7 +742,33 @@ const ImageLayer = props => {
 					)}
 					<DynamicContent
 						{...getGroupAttributes(imageOptions, 'dynamicContent')}
-						onChange={onChange}
+						onChange={obj => {
+							const newObj = { ...obj };
+
+							// Reset background-image-size to auto if dynamic content is enabled
+							breakpoints.forEach(bp => {
+								if (
+									obj['dc-status'] &&
+									getLastBreakpointAttribute({
+										target: `${prefix}background-image-size`,
+										breakpoint: bp,
+										attributes: imageOptions,
+										isHover,
+									}) === 'custom'
+								) {
+									newObj[
+										getAttributeKey(
+											'background-image-size',
+											isHover,
+											prefix,
+											bp
+										)
+									] = 'auto';
+								}
+							});
+
+							onChange(newObj);
+						}}
 						contentType='image'
 						disableHideOnFrontend
 					/>

@@ -1176,9 +1176,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function remove_local_fonts()
         {
-            $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-            $this->delete_all_files($fonts_uploads_dir);
-            update_option('remove_local_fonts', 0);
+            if((bool) get_option('remove_local_fonts')) {
+                $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+                $this->delete_all_files($fonts_uploads_dir);
+                update_option('remove_local_fonts', 0);
+            }
         }
 
         public function local_fonts_upload()

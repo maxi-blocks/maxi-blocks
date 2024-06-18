@@ -551,15 +551,18 @@ if (!class_exists('MaxiBlocks_API')):
             ));
 
             if (!$response) {
-                $response = '';
-                $empty_sc_string = [
-                            '_maxi_blocks_style_card' =>'',
-                            '_maxi_blocks_style_card_preview' => '',
-                        ];
-                $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
-                            'id' => 'sc_string',
-                            'object' =>  serialize($empty_sc_string),
-                        ));
+                if (class_exists('MaxiBlocks_StyleCards')) {
+                    $maxi_blocks_style_cards = new MaxiBlocks_StyleCards();
+                    $maxi_blocks_style_cards->add_default_maxi_blocks_sc_string();
+                    $response = maybe_unserialize($wpdb->get_var(
+                        $wpdb->prepare(
+                            "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                            'sc_string'
+                        )
+                    ));
+                } else {
+                    $response = '';
+                }
             }
 
             return $response;
@@ -718,6 +721,18 @@ if (!class_exists('MaxiBlocks_API')):
                 'id' => 'style_cards_current',
                 'object' => $default_style_card,
             ]);
+
+            $wpdb->delete(
+                "{$wpdb->prefix}maxi_blocks_general",
+                array(
+                    'id' => 'sc_string'
+                )
+            );
+
+            if (class_exists('MaxiBlocks_StyleCards')) {
+                $maxi_blocks_style_cards = new MaxiBlocks_StyleCards();
+                $maxi_blocks_style_cards->add_default_maxi_blocks_sc_string();
+            }
 
             return $this->get_api_response($response);
         }

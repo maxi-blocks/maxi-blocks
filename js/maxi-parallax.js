@@ -4,6 +4,10 @@ class Parallax {
 		this.wrapperEl = el;
 		this.imgEl = el.querySelector('img');
 
+		if (!this.imgEl) {
+			return;
+		}
+
 		this.getIsMobile();
 		this.getWinValues();
 		this.getOptions(speed);

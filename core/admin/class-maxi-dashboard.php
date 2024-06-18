@@ -113,6 +113,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'server_error' => __('Error validating API Key, please try again later', 'maxi-blocks')
                     )
                 );
+
+                // Add inline script to handle cache busting on form submit
+                $cache_buster_script = "
+					document.addEventListener('DOMContentLoaded', function() {
+						var form = document.querySelector('.maxi-dashboard_form');
+						if (form) {
+							form.addEventListener('submit', function(e) {
+								var cacheBuster = new Date().getTime();
+								var actionUrl = new URL(form.action);
+								actionUrl.searchParams.set('t', cacheBuster);
+								form.action = actionUrl.toString();
+							});
+						}
+					});
+				";
+                wp_add_inline_script('maxi-admin', $cache_buster_script);
             }
         }
 

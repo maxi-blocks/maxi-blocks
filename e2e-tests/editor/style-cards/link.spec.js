@@ -29,7 +29,6 @@ describe('SC Link', () => {
 			page,
 			block: 'link',
 			type: 'link',
-			clickToActive: false,
 		});
 
 		// hover Colour

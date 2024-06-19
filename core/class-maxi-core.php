@@ -62,12 +62,7 @@ if (!class_exists('MaxiBlocks_Core')):
                         'maxi-media-images-filter',
                         'maxiImagesFilterTerms',
                         array(
-                            'terms' => get_terms(
-                                'maxi-image-type',
-                                array(
-                                    'hide_empty' => false
-                                )
-                            ),
+                            'terms' => get_terms('maxi-image-type'),
                         )
                     );
                 }

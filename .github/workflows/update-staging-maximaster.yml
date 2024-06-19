@@ -66,6 +66,7 @@ jobs:
                       CODEOWNERS,
                       LICENSE,
                       readme.md]'
+                  dangerous-clean-slate: true
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

@@ -210,6 +210,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 19 Jun 2024_
+MaxiBlocks v1.8.9
+* Update: Optimized PHP code for faster execution and improved overall plugin performance.
+* Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
+* Fix: Corrected default Style Card style generation on the first plugin installation.
+
 _Updates 11 Jun 2024_
 MaxiBlocks v1.8.8
 * Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.
@@ -231,11 +237,6 @@ MaxiBlocks v1.8.6
 * Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
 * Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
 * Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
-
-_Updates 16 May 2024_
-MaxiBlocks v1.8.5
-* Fix: Resolved an issue where links were being duplicated on the frontend when using the Text block with lists. This ensures that links within list items are rendered correctly without any unintended repetition, providing a cleaner and more accurate representation of the content.
-
 
 == Upgrade Notice ==
 

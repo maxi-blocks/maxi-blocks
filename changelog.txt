@@ -1,3 +1,9 @@
+_Updates 19 Jun 2024_
+MaxiBlocks v1.8.9
+* Update: Optimized PHP code for faster execution and improved overall plugin performance.
+* Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
+* Fix: Corrected default Style Card style generation on the first plugin installation.
+
 _Updates 11 Jun 2024_
 MaxiBlocks v1.8.8
 * Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.

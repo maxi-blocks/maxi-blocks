@@ -230,6 +230,13 @@ if (!class_exists('MaxiBlocks_Block')):
             'linkSettings' => [
                 'type' => 'object',
             ],
+			// Required to render backcground DC
+			'background-layers' => [
+				'type' => 'array',
+			],
+			'background-layers-hover' => [
+				'type' => 'array',
+			],
         ];
 
         /**

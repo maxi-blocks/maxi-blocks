@@ -26,14 +26,7 @@ const dc = ({
 	content: !attributes.isList ? (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
-			onChange={obj => {
-				const filteredObj = Object.fromEntries(
-					Object.entries(obj).filter(
-						([key, value]) => value !== undefined
-					)
-				);
-				maxiSetAttributes(filteredObj);
-			}}
+			onChange={maxiSetAttributes}
 			contentType={contentType}
 			blockName={blockName}
 			uniqueID={attributes.uniqueID}

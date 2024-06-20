@@ -318,8 +318,23 @@ export const getImageBackgroundObject = ({
 		props,
 		prefix,
 	});
+	const dcStatus = getAttributeValue({
+		target: 'dc-status',
+		props,
+		prefix,
+	});
+	const dcMediaUrl = getAttributeValue({
+		target: 'dc-media-url',
+		props,
+		prefix,
+	});
 
-	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
+	if (
+		((isEmpty(bgImageUrl) && !dcStatus) ||
+			(isEmpty(dcMediaUrl) && dcStatus)) &&
+		!ignoreMediaAttributes
+	)
+		return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
 		getAttributeValue({
@@ -377,18 +392,19 @@ export const getImageBackgroundObject = ({
 	if (!isParallax) {
 		// Image
 		if (breakpoint === 'general') {
-			if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
-				response[breakpoint][
-					'background-image'
-				] = `url('${bgImageCropOptions.image.source_url}')`;
+			let url = '';
+
+			if (dcStatus) url = dcMediaUrl;
+			else if (bgImageSize === 'custom' && !isNil(bgImageCropOptions)) {
+				url = bgImageCropOptions.image.source_url;
 			} else if (
 				(bgImageSize === 'custom' && isNil(bgImageCropOptions)) ||
 				(bgImageSize !== 'custom' && !isNil(bgImageUrl))
 			) {
-				response[breakpoint][
-					'background-image'
-				] = `url('${bgImageUrl}')`;
+				url = bgImageUrl;
 			}
+
+			response[breakpoint]['background-image'] = `url('${url}')`;
 		}
 
 		// Size

@@ -29,6 +29,7 @@ import {
 	TextContext,
 } from '../../extensions/text/formats';
 import { copyPasteMapping, scProps } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
@@ -216,4 +217,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

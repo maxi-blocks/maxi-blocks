@@ -554,8 +554,9 @@ class MaxiBlocks_DynamicContent
     public function render_dc($attributes, $content, $block)
     {
 
-        if (!array_key_exists('dc-status', $attributes)) {
-
+        if (!array_key_exists('dc-status', $attributes) &&
+        !array_key_exists('background-layers', $attributes) &&
+        !array_key_exists('background-layers-hover', $attributes)) {
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
                 $content = $this->check_inner_blocks($block, $attributes, $content);
             }
@@ -564,11 +565,6 @@ class MaxiBlocks_DynamicContent
                 $content = self::render_dc_classes($attributes, $content);
                 return $this->render_pagination($attributes, $content);
             }
-            return $content;
-        }
-
-        if (!$attributes['dc-status']) {
-            $content = $this->check_inner_blocks($block, $attributes, $content);
             return $content;
         }
 
@@ -616,6 +612,14 @@ class MaxiBlocks_DynamicContent
 
             }
         }
+
+        $content = self::render_dc_background($attributes, $content, $context_loop);
+
+        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
+            $content = $this->check_inner_blocks($block, $attributes, $content);
+            return $content;
+        }
+
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -640,6 +644,31 @@ class MaxiBlocks_DynamicContent
 
         $content = self::render_dc_classes($attributes, $content);
         $content = str_replace('$link-to-replace', '', $content);
+
+        return $content;
+    }
+
+    public function render_dc_background($attributes, $content, $context_loop)
+    {
+        @list(
+            'background-layers' => $background_layers,
+            'background-layers-hover' => $background_layers_hover,
+        ) = $attributes;
+
+        foreach ([$background_layers, $background_layers_hover] as $layers) {
+            if (!is_array($layers)) {
+                continue;
+            }
+
+            foreach ($layers as $layer) {
+                if (array_key_exists('dc-status', $layer) && $layer['dc-status'] &&
+                    array_key_exists('type', $layer) && $layer['type'] === 'image') {
+                    $layer = array_merge($layer, $this->get_dc_values($layer, $context_loop));
+
+                    $content = self::render_dc_image($layer, $content, true);
+                }
+            }
+        }
 
         return $content;
     }
@@ -820,7 +849,7 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-    public function render_dc_image($attributes, $content)
+    public function render_dc_image($attributes, $content, $is_background = false)
     {
 
         @list(
@@ -905,11 +934,16 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        $mediaIdToReplace = ($is_background) ? '$bg-media-id-to-replace' : '$media-id-to-replace';
+        $mediaUrlToReplace = ($is_background) ? '$bg-media-url-to-replace' : '$media-url-to-replace';
+        $mediaAltToReplace = ($is_background) ? '$bg-media-alt-to-replace' : '$media-alt-to-replace';
+        $mediaCaptionToReplace = ($is_background) ? '$bg-media-caption-to-replace' : '$media-caption-to-replace';
+
         if (!empty($media_src)) {
-            $content = str_replace('$media-id-to-replace', $media_id, $content);
-            $content = str_replace('$media-url-to-replace', $media_src, $content);
-            $content = str_replace('$media-alt-to-replace', $media_alt, $content);
-            $content = str_replace('$media-caption-to-replace', $media_caption, $content);
+            $content = str_replace($mediaIdToReplace, $media_id, $content);
+            $content = str_replace($mediaUrlToReplace, $media_src, $content);
+            $content = str_replace($mediaAltToReplace, $media_alt, $content);
+            $content = str_replace($mediaCaptionToReplace, $media_caption, $content);
         } else {
             $this->is_empty = true;
 
@@ -918,11 +952,10 @@ class MaxiBlocks_DynamicContent
                 return '';
             }
 
-            $content = str_replace('$media-id-to-replace', '', $content);
-            $content = str_replace('$media-url-to-replace', '', $content);
-            $content = str_replace('$media-alt-to-replace', '', $content);
-            $content = str_replace('$media-caption-to-replace', '', $content);
-
+            $content = str_replace($mediaIdToReplace, '', $content);
+            $content = str_replace($mediaUrlToReplace, '', $content);
+            $content = str_replace($mediaAltToReplace, '', $content);
+            $content = str_replace($mediaCaptionToReplace, '', $content);
         }
 
         return $content;

@@ -49,7 +49,13 @@ const getDCEntity = async (dataRequest, clientId) => {
 		accumulator,
 	} = dataRequest;
 
+	console.log('getDCEntity starts');
+	console.log('dataRequest', dataRequest);
+	console.log('relation', relation);
+
 	const contentError = getDCErrors(type, error, show, relation);
+
+	console.log('contentError', contentError);
 
 	if (contentError) return contentError;
 
@@ -123,6 +129,17 @@ const getDCEntity = async (dataRequest, clientId) => {
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
 		const relationKeyForId = getRelationKeyForId(relation, type);
 
+		console.log('getKind(type)', getKind(type));
+		console.log('nameDictionary[type]', nameDictionary[type]);
+		console.log('type', type);
+		console.log('per_page', accumulator + 1);
+		console.log('order', order);
+		console.log(
+			'getDCOrder(relation, orderBy)',
+			getDCOrder(relation, orderBy)
+		);
+		console.log('relationKeyForId', relationKeyForId);
+		console.log('id', id);
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,
@@ -134,6 +151,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
+		console.log('entities', entities);
+		console.log('entities?.at(-1)', entities?.at(-1));
+		console.log('=====================');
 
 		return entities?.at(-1);
 	}

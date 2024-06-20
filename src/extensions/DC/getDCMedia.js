@@ -75,7 +75,11 @@ const getMediaById = async (id, type) => {
 };
 
 const getDCMedia = async (dataRequest, clientId) => {
+	console.log('dataRequest', dataRequest);
 	const data = await getDCEntity(dataRequest, clientId);
+
+	console.log('data', data);
+	if (!data) return null;
 
 	const { field, source, type } = dataRequest;
 	let id;
@@ -100,6 +104,7 @@ const getDCMedia = async (dataRequest, clientId) => {
 	}
 
 	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
+		console.log('data for author_avatar', data);
 		const { author: authorId } = data;
 		const { getUser } = resolveSelect('core');
 

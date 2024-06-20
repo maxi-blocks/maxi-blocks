@@ -212,6 +212,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 _Updates 20 Jun 2024_
 MaxiBlocks v1.8.9
+* Update: Added Dynamic Content and Context Loop support for Background Image.
 * Update: Optimized PHP code for faster execution and improved overall plugin performance.
 * Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
 * Fix: Corrected default Style Card style generation on the first plugin installation.

@@ -254,6 +254,7 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
@@ -1120,7 +1121,7 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts) && !$is_current_archive) {
+            if (empty($query->posts) && !$is_current_archive && $dc_relation !== 'by-author') {
                 $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
                 if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
                     return $this->get_post(array_replace($attributes, $validated_attributes));
@@ -2119,6 +2120,7 @@ class MaxiBlocks_DynamicContent
             }
         } elseif($relation === 'by-author') {
             $args['author'] = $id;
+
         } elseif($relation === 'by-tag') {
             if ($type === 'products') {
                 $args['tag'] = [$this->get_term_slug($id)];

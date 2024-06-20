@@ -77,6 +77,8 @@ const getMediaById = async (id, type) => {
 const getDCMedia = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
 
+	if (!data) return null;
+
 	const { field, source, type } = dataRequest;
 	let id;
 

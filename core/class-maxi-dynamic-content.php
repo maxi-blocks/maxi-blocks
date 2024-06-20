@@ -334,7 +334,7 @@ class MaxiBlocks_DynamicContent
 
         // Build the current URL without query parameters
         $current_url_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
-        $current_url = $current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $current_url = esc_url($current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 
         // Initialize an array to hold query parameters
         $current_query_params = [];

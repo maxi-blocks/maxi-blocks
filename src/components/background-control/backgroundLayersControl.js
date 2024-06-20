@@ -13,6 +13,7 @@ import {
 	getAttributeValue,
 	getBlockStyle,
 	getColorRGBAString,
+	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { handleSetAttributes } from '../../extensions/maxi-block';
@@ -23,7 +24,7 @@ import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
-import { setBreakpointToLayer } from './utils';
+import { onChangeLayer, setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -32,20 +33,13 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	cloneDeep,
-	findIndex,
-	isEmpty,
-	isEqual,
-	isNil,
-	omit,
-	omitBy,
-} from 'lodash';
+import { cloneDeep, isEmpty, omit } from 'lodash';
 
 /**
  * Icons
  */
 import { toolbarDrop, toolbarShow } from '../../icons';
+import { getDCValues } from '../../extensions/DC';
 
 /**
  * Component
@@ -260,6 +254,10 @@ const getLayerCardTitle = props => {
 				};
 			}
 			case 'image': {
+				const { status: dcStatus, mediaUrl: dcMediaUrl } = getDCValues(
+					getGroupAttributes(layer, 'dynamicContent'),
+					{}
+				);
 				const bgImageURL = getAttributeValue({
 					target: 'background-image-mediaURL',
 					props: layer,
@@ -271,10 +269,10 @@ const getLayerCardTitle = props => {
 					isHover,
 				});
 
+				const url = dcStatus ? dcMediaUrl : bgImageURL;
+
 				return {
-					background: !isEmpty(bgImageURL)
-						? `url(${bgImageURL})`
-						: '',
+					background: !isEmpty(url) ? `url(${url})` : '',
 					opacity: bgImageOpacity,
 				};
 			}
@@ -485,29 +483,6 @@ const BackgroundLayersControl = ({
 			},
 		});
 
-	const onChangeLayer = (rawLayer, target = false) => {
-		const layer = omitBy(rawLayer, isNil);
-		const isHoverLayer = layer.isHover;
-		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
-
-		allLayers.forEach((lay, i) => {
-			if (lay.order === layer.order) {
-				const index = findIndex(newLayers, { order: layer.order });
-
-				newLayers[index] = layer;
-			}
-		});
-
-		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
-			onChange(
-				{
-					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
-						newLayers,
-				},
-				target
-			);
-	};
-
 	const onAddLayer = layer => {
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
@@ -569,7 +544,14 @@ const BackgroundLayersControl = ({
 										isHover,
 										clientId,
 										layer,
-										onChange: onChangeLayer,
+										onChange: (rawLayer, target = false) =>
+											onChangeLayer(
+												rawLayer,
+												onChange,
+												layersHover,
+												layers,
+												target
+											),
 										breakpoint,
 										handleOnChangeLayer,
 										previewRef,
@@ -581,7 +563,14 @@ const BackgroundLayersControl = ({
 										isIB,
 										layer,
 										onChangeInline,
-										onChange: onChangeLayer,
+										onChange: (rawLayer, target = false) =>
+											onChangeLayer(
+												rawLayer,
+												onChange,
+												layersHover,
+												layers,
+												target
+											),
 										previewRef,
 										getBounds,
 										getBlockClipPath, // for IB

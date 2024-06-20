@@ -35,6 +35,7 @@ import {
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
 import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Editor
@@ -301,5 +302,5 @@ class edit extends MaxiBlockComponent {
 }
 
 export default withMaxiContextLoop(
-	withMaxiContextLoopContext(withMaxiProps(edit))
+	withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)))
 );

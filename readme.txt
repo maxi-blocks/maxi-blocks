@@ -234,16 +234,6 @@ MaxiBlocks v1.8.8
 * Fix: Ensured MaxiBlocks compatibility with the Editor Template menu, facilitating a straightforward workflow and preventing potential conflicts when using templates.
 * Fix: Addressed various PHP warnings when using the Site Editor, improving overall stability and providing a cleaner development environment for users.
 
-_Updates 24 May 2024_
-MaxiBlocks v1.8.7
-* Fix: Blocks now correctly update in the Editor Experience to reflect the selected category or tag when changed in the Context Loop settings. Previously, some blocks were not displaying the new category or tag value after being switched.
-
-_Updates 23 May 2024_
-MaxiBlocks v1.8.6
-* Update: Added support for using empty Group and Column Maxi blocks. This allows for more flexibility when creating layouts.
-* Fix: Resolved an issue with broken icons hiding content in Pure Footer Pro 103/104/105 patterns. The footer content should now display properly.
-* Fix: Fixed pagination problems with Pure Blog Pro 12 and 24 patterns. To make pagination work correctly, Dynamic Content must be turned on for all blocks used in these patterns.
-
 == Upgrade Notice ==
 
 New version of MaxiBlocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or try the update on a staging site. Use the rollback feature in the plugin settings if needed.

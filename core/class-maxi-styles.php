@@ -1204,9 +1204,6 @@ class MaxiBlocks_Styles
         }
 
         $strategy = 'defer';
-        if ($script === 'relations') {
-            $strategy = 'async';
-        }
 
         wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
             'strategy'  => $strategy, 'in_footer' => true

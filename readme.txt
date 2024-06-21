@@ -210,6 +210,10 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 21 Jun 2024_
+MaxiBlocks v1.9.0
+* Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
+
 _Updates 20 Jun 2024_
 MaxiBlocks v1.8.9
 * Update: Added Dynamic Content and Context Loop support for Background Image.

@@ -614,14 +614,7 @@ const MaxiToolbar = memo(
 						/>
 						<DynamicContent
 							blockName={name}
-							onChange={obj => {
-								const filteredObj = Object.fromEntries(
-									Object.entries(obj).filter(
-										([key, value]) => value !== undefined
-									)
-								);
-								maxiSetAttributes(filteredObj);
-							}}
+							onChange={maxiSetAttributes}
 							{...getGroupAttributes(
 								attributes,
 								'dynamicContent'

@@ -443,7 +443,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
             $fonts = '';
             if (!empty($fonts_arr)) {
-                $fonts = json_encode(array_merge_recursive(...$fonts_arr));
+                $fonts = wp_json_encode(array_merge_recursive(...$fonts_arr));
             }
 
             ['table' => $table, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles_blocks');
@@ -631,7 +631,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'xl' => 1920,
                 ];
                 $breakpoints = $default_breakpoints;
-                update_option('maxi_breakpoints', json_encode($breakpoints));
+                update_option('maxi_breakpoints', wp_json_encode($breakpoints));
             }
 
             return $breakpoints;
@@ -790,7 +790,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             $processed_data = array();
             foreach($dataArray as $key => $value) {
-                $processed_data[$key] = json_encode($value);
+                $processed_data[$key] = wp_json_encode($value);
             }
 
             ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data_blocks');
@@ -966,7 +966,7 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }, $acf_field_groups);
 
-            return json_encode($acf_field_groups);
+            return wp_json_encode($acf_field_groups);
         }
 
         public function get_acf_group_fields($request)
@@ -986,7 +986,7 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }, $fields);
 
-            return json_encode($fields);
+            return wp_json_encode($fields);
         }
 
         public function get_acf_field_value($request)
@@ -998,7 +998,7 @@ if (!class_exists('MaxiBlocks_API')):
             $field = get_field_object($request['field_id'], $request['post_id']);
 
             if (is_array($field) && $field['type'] === 'image') {
-                return json_encode(
+                return wp_json_encode(
                     [
                         'value' => $field['value'],
                         'return_format' => $field['return_format']
@@ -1007,7 +1007,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             if(is_array($field)) {
-                return json_encode($field['value']);
+                return wp_json_encode($field['value']);
             }
         }
 

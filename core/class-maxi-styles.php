@@ -1204,8 +1204,14 @@ class MaxiBlocks_Styles
         }
 
         $strategy = 'defer';
+        $version = MAXI_PLUGIN_VERSION;
 
-        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
+        if ($script === 'relations') {
+            $strategy = 'async';
+            $version = time();
+        }
+
+        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], $version, array(
             'strategy'  => $strategy, 'in_footer' => true
             ));
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));

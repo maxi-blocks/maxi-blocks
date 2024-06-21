@@ -1158,7 +1158,7 @@ class Relation {
 	}
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+function initializeRelations() {
 	let relations;
 
 	if (typeof maxiRelations?.[0] === 'string') {
@@ -1225,4 +1225,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	const createRelation = relation => new Relation(relation);
 	uniqueRelations.forEach(createRelation);
-});
+}
+
+initializeRelations();

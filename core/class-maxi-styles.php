@@ -1919,23 +1919,6 @@ class MaxiBlocks_Styles
     }
 
     /**
-     * Decodes Unicode entities in the content.
-     *
-     * @param string $content The content to process.
-     * @return string Processed content without Unicode entities.
-     */
-    public function decode_unicode_entities($content)
-    {
-        $decoded_string = preg_replace_callback('/u([0-9a-fA-F]{4})/', function ($match) {
-            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
-        }, $content);
-        $decoded_string = preg_replace('/;\s*n\s*/', ';', $decoded_string);
-
-        return $decoded_string;
-
-    }
-
-    /**
      * Get styles meta fonts from block
      *
      * @param array $block
@@ -2414,45 +2397,24 @@ class MaxiBlocks_Styles
 
                 $block['attrs']['uniqueID'] = $new_unique_id;
 
-                $attributes_to_decode = ['content', 'icon-content', 'listStyleCustom'];
-                foreach ($attributes_to_decode as $attribute) {
-                    if (isset($block['attrs'][$attribute])) {
-                        $block['attrs'][$attribute] = $this->decode_unicode_entities($block['attrs'][$attribute]);
-                    }
-                }
-
                 if (isset($block['attrs']['background-layers'])) {
                     foreach ($block['attrs']['background-layers'] as $key => &$value) {
                         if (isset($value['background-svg-SVGData'])) {
-                            $svg_data = $value['background-svg-SVGData'];
+                            $svg_data = &$value['background-svg-SVGData'];
                             foreach ($svg_data as $svg_data_key => $svg_data_value) {
                                 if (strpos($svg_data_key, $previous_unique_id) !== false) {
                                     $svg_data[$new_unique_id] = $svg_data_value;
                                     unset($svg_data[$svg_data_key]);
                                 }
                             }
+                            unset($svg_data);
                         }
 
                         if (isset($value['background-svg-SVGElement'])) {
-                            $svg_element = $value['background-svg-SVGElement'];
-                            $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
-                            $value['background-svg-SVGElement'] = $this->decode_unicode_entities($svg_element);
+                            $value['background-svg-SVGElement'] = str_replace($previous_unique_id, $new_unique_id, $value['background-svg-SVGElement']);
                         }
-
                         unset($value);
                     }
-                }
-
-                $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-                foreach ($breakpoints as $breakpoint) {
-                    $custom_css = $block['attrs']["custom-css-{$breakpoint}"] ?? null;
-                    if (!$custom_css || !is_array($custom_css)) {
-                        continue;
-                    }
-                    foreach ($custom_css as $key => $value) {
-                        $custom_css[$key] = $this->decode_unicode_entities($value);
-                    }
-                    $block['attrs']["custom-css-{$breakpoint}"] = $custom_css;
                 }
 
                 $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);

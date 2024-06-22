@@ -388,69 +388,6 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
         }
 
-        private function get_content($source)
-        {
-            if (is_numeric($source)) {
-                $content = $this->get_attachment_content($source);
-                if ($content === false) {
-                    WP_CLI::log('Invalid attachment ID.');
-                    $source = $this->prompt_for_attachment();
-                    return $this->get_content($source);
-                }
-            } else {
-                $content = file_get_contents($source);
-                if ($content === false) {
-                    WP_CLI::error('Unable to read content file.');
-                }
-            }
-            return $content;
-        }
-
-        private function get_attachment_content($attachment_id)
-        {
-            $attachment = get_post($attachment_id);
-            if (!$attachment || $attachment->post_type !== 'attachment') {
-                return false;
-            }
-
-            $file_path = get_attached_file($attachment_id);
-            if (!$file_path || !file_exists($file_path)) {
-                return false;
-            }
-
-            return file_get_contents($file_path);
-        }
-
-        private function prompt_for_attachment()
-        {
-            $attachments = get_posts([
-                'post_type' => 'attachment',
-                'posts_per_page' => -1,
-                'post_status' => 'inherit',
-                'post_mime_type' => 'text/plain',
-            ]);
-
-            if (empty($attachments)) {
-                WP_CLI::error('No attachments found. Add a text file attachment to the media library or provide a file path.');
-            }
-
-            WP_CLI::log('Please select an attachment ID from the list below:');
-            foreach ($attachments as $attachment) {
-                WP_CLI::log("ID: {$attachment->ID} - Title: {$attachment->post_title}");
-            }
-
-            $input = readline('Enter attachment ID: ');
-            $attachment_id = intval($input);
-
-            if (!$attachment_id) {
-                WP_CLI::log('Invalid attachment ID.');
-                return $this->prompt_for_attachment();
-            }
-
-            return $attachment_id;
-        }
-
-
         /**
          * Creates a new post with the given title and content.
          *
@@ -506,6 +443,94 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             WP_CLI::success('Post created successfully (' . get_permalink($post_id) . ')');
+        }
+
+        private function get_content($source)
+        {
+            if (is_numeric($source)) {
+                $content = $this->get_attachment_content($source);
+                if ($content === false) {
+                    WP_CLI::log('Invalid attachment ID.');
+                    $source = $this->prompt_for_attachment();
+                    return $this->get_content($source);
+                }
+            } else {
+                $content = file_get_contents($source);
+                if ($content === false) {
+                    WP_CLI::error('Unable to read content file.');
+                }
+            }
+
+            return $this->prepare_content($content);
+        }
+
+        /**
+         * Transforms all string attributes in the content to JSON format
+         * to get correct array of blocks from `parse_blocks` function later on.
+         */
+        private function prepare_content($content)
+        {
+            $pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
+            if (preg_match_all($pattern, $content, $blockMatches)) {
+                foreach ($blockMatches[1] as $blockContent) {
+                    $attributePattern = '/"([^"]+)":\s*"([^"]+)"/';
+                    if (preg_match_all($attributePattern, $blockContent, $matches)) {
+                        foreach ($matches[2] as $match) {
+                            $decoded = json_encode($match);
+                            $decoded = substr($decoded, 1, -1);
+                            if ($decoded) {
+                                $content = str_replace($match, $decoded, $content);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $content;
+        }
+
+        private function get_attachment_content($attachment_id)
+        {
+            $attachment = get_post($attachment_id);
+            if (!$attachment || $attachment->post_type !== 'attachment') {
+                return false;
+            }
+
+            $file_path = get_attached_file($attachment_id);
+            if (!$file_path || !file_exists($file_path)) {
+                return false;
+            }
+
+            return file_get_contents($file_path);
+        }
+
+        private function prompt_for_attachment()
+        {
+            $attachments = get_posts([
+                'post_type' => 'attachment',
+                'posts_per_page' => -1,
+                'post_status' => 'inherit',
+                'post_mime_type' => 'text/plain',
+            ]);
+
+            if (empty($attachments)) {
+                WP_CLI::error('No attachments found. Add a text file attachment to the media library or provide a file path.');
+            }
+
+            WP_CLI::log('Please select an attachment ID from the list below:');
+            foreach ($attachments as $attachment) {
+                WP_CLI::log("ID: {$attachment->ID} - Title: {$attachment->post_title}");
+            }
+
+            $input = readline('Enter attachment ID: ');
+            $attachment_id = intval($input);
+
+            if (!$attachment_id) {
+                WP_CLI::log('Invalid attachment ID.');
+                return $this->prompt_for_attachment();
+            }
+
+            return $attachment_id;
         }
     }
 endif;

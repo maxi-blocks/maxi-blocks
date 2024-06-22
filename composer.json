@@ -13,6 +13,7 @@
 	"require-dev": {
 		"yoast/phpunit-polyfills": "^2.0",
 		"phpunit/phpunit": "^8.0",
-		"spatie/phpunit-snapshot-assertions": "^4.2"
+		"spatie/phpunit-snapshot-assertions": "^4.2",
+		"php-stubs/wp-cli-stubs": "^2.10"
 	}
 }

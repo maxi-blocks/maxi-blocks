@@ -74,7 +74,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          *     wp maxiblocks set_style_card "Style Card Name"
          */
-        public function set_style_card($args)
+        public static function set_style_card($args)
         {
             [$post_title] = $args;
 
@@ -179,7 +179,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *     wp maxiblocks list_style_cards --count=20
          *     wp maxiblocks list_style_cards --count=all
          */
-        public function list_style_cards($args, $assoc_args)
+        public static function list_style_cards($args, $assoc_args)
         {
             try {
                 // Initialize Typesense client
@@ -243,7 +243,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          *     wp maxiblocks get_current_style_card
          */
-        public function get_current_style_card()
+        public static function get_current_style_card()
         {
             try {
                 $maxi_api = MaxiBlocks_API::get_instance();
@@ -277,24 +277,36 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * Import a page set.
          *
          * ## OPTIONS
-         * <page_set_path>
-         * : Path to valid WXR files for importing.
+         * [<page_set_path>]
+         * : Path to valid WXR files for importing or attachment ID. If not provided, you will be prompted to select an attachment.
          *
          * ## EXAMPLES
          *   wp maxiblocks import_page_set /path/to/page-set.xml
+         *   wp maxiblocks import_page_set 456  # where 456 is an attachment ID
+         *   wp maxiblocks import_page_set
          */
-        public function import_page_set($args, $assoc_args)
+        public static function import_page_set($args, $assoc_args)
         {
-            [$page_set_path] = $args;
+            $page_set_path = isset($args[0]) ? $args[0] : null;
+
+            if (!$page_set_path) {
+                $page_set_path = self::prompt_for_attachment('application/xml');
+            }
+
+            if (is_numeric($page_set_path)) {
+                $page_set_path = get_attached_file($page_set_path);
+                if (!$page_set_path) {
+                    WP_CLI::error('Invalid attachment ID or unable to get file path.');
+                }
+            }
 
             $import_command = 'wp import ' . $page_set_path . ' --authors=skip';
             $descriptorspec = array(
-                0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-                1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-                2 => array("pipe", "w") // stderr is a pipe that the child will write to
+                0 => array("pipe", "r"),
+                1 => array("pipe", "w"),
+                2 => array("pipe", "w")
             );
 
-            # FIXME: possible to use WP_CLI::runcommand()?
             $process = proc_open($import_command, $descriptorspec, $pipes, null, null);
 
             if (is_resource($process)) {
@@ -336,16 +348,16 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *    wp maxiblocks replace_post_content 123 /path/to/content.txt --append
          *    wp maxiblocks replace_post_content 123 /path/to/content.txt --prepend
          */
-        public function replace_post_content($args, $assoc_args)
+        public static function replace_post_content($args, $assoc_args)
         {
             $post_id = $args[0];
             $content_source = isset($args[1]) ? $args[1] : null;
 
             if (!$content_source) {
-                $content_source = $this->prompt_for_attachment();
+                $content_source = self::prompt_for_attachment();
             }
 
-            $content = $this->get_content($content_source);
+            $content = self::get_content($content_source);
 
             $append = isset($assoc_args['append']);
             $prepend = isset($assoc_args['prepend']);
@@ -366,9 +378,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 $new_content = $content;
 
                 if ($append) {
-                    $new_content = $post->post_content . $content;
+                    $new_content = self::prepare_content($post->post_content) . $content;
                 } elseif ($prepend) {
-                    $new_content = $content . $post->post_content;
+                    $new_content = $content . self::prepare_content($post->post_content);
                 }
 
                 set_transient('maxi_blocks_update_' . $post_id, true, 10 * MINUTE_IN_SECONDS);
@@ -404,18 +416,18 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * ## EXAMPLES
          * wp maxiblocks create_post "Post Title" /path/to/content.txt
          * wp maxiblocks create_post "Post Title" 456  # where 456 is an attachment ID
-         * wp maxiblocks create_post "Post Title" /path/to/content.txt --post_type=page
+         * wp maxiblocks create_post "Post Title" --post_type=page
          */
-        public function create_post($args, $assoc_args)
+        public static function create_post($args, $assoc_args)
         {
             $title = $args[0];
             $content_source = isset($args[1]) ? $args[1] : null;
 
             if (!$content_source) {
-                $content_source = $this->prompt_for_attachment();
+                $content_source = self::prompt_for_attachment();
             }
 
-            $content = $this->get_content($content_source);
+            $content = self::get_content($content_source);
 
             $post_type = isset($assoc_args['post_type']) ? $assoc_args['post_type'] : 'post';
 
@@ -445,14 +457,14 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             WP_CLI::success('Post created successfully (' . get_permalink($post_id) . ')');
         }
 
-        private function get_content($source)
+        private static function get_content($source)
         {
             if (is_numeric($source)) {
-                $content = $this->get_attachment_content($source);
+                $content = self::get_attachment_content($source);
                 if ($content === false) {
                     WP_CLI::log('Invalid attachment ID.');
-                    $source = $this->prompt_for_attachment();
-                    return $this->get_content($source);
+                    $source = self::prompt_for_attachment();
+                    return self::get_content($source);
                 }
             } else {
                 $content = file_get_contents($source);
@@ -461,14 +473,14 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 }
             }
 
-            return $this->prepare_content($content);
+            return self::prepare_content($content);
         }
 
         /**
          * Transforms all string attributes in the content to JSON format
          * to get correct array of blocks from `parse_blocks` function later on.
          */
-        private function prepare_content($content)
+        private static function prepare_content($content)
         {
             $pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
             if (preg_match_all($pattern, $content, $blockMatches)) {
@@ -489,7 +501,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return $content;
         }
 
-        private function get_attachment_content($attachment_id)
+        private static function get_attachment_content($attachment_id)
         {
             $attachment = get_post($attachment_id);
             if (!$attachment || $attachment->post_type !== 'attachment') {
@@ -504,17 +516,17 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return file_get_contents($file_path);
         }
 
-        private function prompt_for_attachment()
+        private static function prompt_for_attachment($mime_type = 'text/plain')
         {
             $attachments = get_posts([
                 'post_type' => 'attachment',
                 'posts_per_page' => -1,
                 'post_status' => 'inherit',
-                'post_mime_type' => 'text/plain',
+                'post_mime_type' => $mime_type,
             ]);
 
             if (empty($attachments)) {
-                WP_CLI::error('No attachments found. Add a text file attachment to the media library or provide a file path.');
+                WP_CLI::error("No attachments found with mime type: $mime_type. Add a file attachment to the media library or provide a file path.");
             }
 
             WP_CLI::log('Please select an attachment ID from the list below:');
@@ -527,7 +539,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
             if (!$attachment_id) {
                 WP_CLI::log('Invalid attachment ID.');
-                return $this->prompt_for_attachment();
+                return self::prompt_for_attachment($mime_type);
             }
 
             return $attachment_id;

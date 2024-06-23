@@ -30,6 +30,7 @@ import {
 import getStyles from './styles';
 import { getBreakpoints } from '../../extensions/styles/helpers';
 import { copyPasteMapping } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
@@ -333,4 +334,4 @@ const NumberCounter = attributes => {
 	);
 };
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

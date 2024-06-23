@@ -38,7 +38,7 @@ function get_clean_content($content)
             continue;
         }
 
-        if (json_encode($new_content[$target]) === json_encode([ 'general' => [] ])) {
+        if (wp_json_encode($new_content[$target]) === wp_json_encode([ 'general' => [] ])) {
             unset($new_content[$target]);
         }
     }

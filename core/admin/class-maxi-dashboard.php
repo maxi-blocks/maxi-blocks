@@ -113,6 +113,31 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'server_error' => __('Error validating API Key, please try again later', 'maxi-blocks')
                     )
                 );
+
+                // Add inline script to handle cache busting with delay on specific page and tab
+                $delay_script = "
+		document.addEventListener('DOMContentLoaded', function() {
+			var urlParams = new URLSearchParams(window.location.search);
+			var page = urlParams.get('page');
+			var tab = urlParams.get('tab');
+			var maxiDashboardNeedsCacheBusting = localStorage.getItem('maxiDashboardNeedsCacheBusting');
+
+			if (page === 'maxi-blocks-dashboard' && tab === 'maxi_blocks_settings') {
+				if (maxiDashboardNeedsCacheBusting) {
+					localStorage.removeItem('maxiDashboardNeedsCacheBusting');
+					setTimeout(function() {
+						var newCacheBuster = new Date().getTime();
+						var newUrl = new URL(window.location.href);
+						newUrl.searchParams.set('t', newCacheBuster);
+						window.location.href = newUrl.toString();
+					}, 100);
+				} else {
+					localStorage.setItem('maxiDashboardNeedsCacheBusting', 'true');
+				}
+			}
+		});
+	";
+                wp_add_inline_script('maxi-admin', $delay_script);
             }
         }
 
@@ -122,8 +147,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_register_menu()
         {
             add_menu_page(
-                __(self::$maxi_plugin_name, 'maxi-blocks'),
-                __(self::$maxi_plugin_name, 'maxi-blocks'),
+                self::$maxi_plugin_name,
+                self::$maxi_plugin_name,
                 'manage_options',
                 self::$maxi_slug_dashboard,
                 [$this, 'maxi_config_page'],
@@ -132,7 +157,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
-                __(self::$maxi_plugin_name, 'maxi-blocks'),
+                self::$maxi_plugin_name,
                 __('Start', 'maxi-blocks'),
                 'manage_options',
                 self::$maxi_slug_dashboard,
@@ -417,7 +442,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     '</h2>';
             }
 
-            $content .= $this->generate_item_header('Editor preferences', true);
+            $content .= $this->generate_item_header(__('Editor preferences', 'maxi-blocks'), true);
 
             $description =
                 '<h4>' .
@@ -434,7 +459,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Google Maps API key', false);
+            $content .= $this->generate_item_header(__('Google Maps API key', 'maxi-blocks'), false);
 
             $content .= '<h4>'.__('Create Google Maps API key', 'maxi-blocks').'</h4>';
             $content .= '<p>'.__('To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf.', 'maxi-blocks').'</p>';
@@ -445,7 +470,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li>'.__('Enable Google Maps Platform APIs.', 'maxi-blocks').'</li>';
             $content .= '<li>'.__('Generate an API key.', 'maxi-blocks').'</li>';
             $content .= '</ol>';
-            $content .= '<p>'.__('To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">'.__('Google Maps API Quickstart', 'maxi-blocks').'</a> which will handle the setup of your account and generate the API key that you can insert below.', 'maxi-blocks').'</p>';
+            $content .= '<p>'.__('To make this process easy, launch', 'maxi-blocks').' ';
+            $content .= '<a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">';
+            $content .= __('Google Maps API Quickstart', 'maxi-blocks');
+            $content .= '</a> ';
+            $content .= __('which will handle the setup of your account and generate the API key that you can insert below.', 'maxi-blocks').'</p>';
 
             $description = '<h4>'.__('Insert Google Maps API Key here', 'maxi-blocks').'</h4>';
             $content .= $this->generate_setting($description, 'google_api_key_option', '', 'password');
@@ -454,7 +483,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-            $content .= $this->generate_item_header('Fonts and files', false);
+            $content .= $this->generate_item_header(__('Fonts and files', 'maxi-blocks'), false);
 
             $description =
                 '<h4>' .
@@ -510,7 +539,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header(
-                'Documentation & support',
+                __('Documentation & support', 'maxi-blocks'),
                 false,
             );
 
@@ -526,7 +555,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Troubleshooting', false);
+            $content .= $this->generate_item_header(__('Troubleshooting', 'maxi-blocks'), false);
 
             $content .=
                 '<h4>' .
@@ -547,7 +576,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Experimental preferences', false);
+            $content .= $this->generate_item_header(__('Experimental preferences', 'maxi-blocks'), false);
 
             $description = '<h4>'.__('Enable settings indicators', 'maxi-blocks').'</h4>';
             $description .= '<p>'.__('Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings', 'maxi-blocks').'</p>';
@@ -559,7 +588,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Template library and Style Cards', false);
+            $content .= $this->generate_item_header(__('Template library and Style Cards', 'maxi-blocks'), false);
 
             $content .=
                 '<p>' .
@@ -603,7 +632,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('MaxiBlocks is free and open source', false);
+            $content .= $this->generate_item_header(__('MaxiBlocks is free and open source', 'maxi-blocks'), false);
 
             $content .=
                 '<p>' .
@@ -645,7 +674,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Roadmap', false);
+            $content .= $this->generate_item_header(__('Roadmap', 'maxi-blocks'), false);
 
             $content .=
                 '<p>' .
@@ -766,7 +795,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            $content .= $this->generate_item_header('Integrations', true);
+            $content .= $this->generate_item_header(__('Integrations', 'maxi-blocks'), true);
 
             $description = '<h4>'.__('Insert OpenAI API Key here', 'maxi-blocks').'</h4>';
             $content .= $this->generate_setting($description, 'openai_api_key_option', '', 'password');
@@ -784,7 +813,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Website identity', true);
+            $content .= $this->generate_item_header(__('Website identity', 'maxi-blocks'), true);
 
             $description = '
 				<h4>'.__('Tell us about your site', 'maxi-blocks').'</h4>
@@ -862,7 +891,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $header .= $label;
             $header .=
                 '" class="maxi-dashboard_main-content_accordion-item-label">';
-            $header .= '<h3>' . __($title, 'maxi-blocks') . '</h3>';
+            $header .= '<h3>' . $title . '</h3>';
             $header .= '</label>';
             $header .=
                 '<div class="maxi-dashboard_main-content_accordion-item-content">';
@@ -980,7 +1009,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 );
             }
 
-            $breakpoints_string = esc_html(json_encode($breakpoints_array));
+            $breakpoints_string = esc_html(wp_json_encode($breakpoints_array));
 
             $breakpoints_html .=
                 '<input type="hidden" name="maxi_breakpoints" id="maxi-breakpoints" value="';
@@ -1139,21 +1168,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function delete_all_files($folder)
         {
-            foreach (glob($folder . '/*') as $file) {
-                if (is_dir($file)) {
-                    $this->delete_all_files($file);
+            global $wp_filesystem;
+
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
+            $folder = trailingslashit($folder);
+
+            // Ensure the folder exists before attempting to delete
+            if (!$wp_filesystem->exists($folder)) {
+                return;
+            }
+
+            $files = $wp_filesystem->dirlist($folder);
+
+            foreach ($files as $file) {
+                $file_path = $folder . $file['name'];
+
+                if ($file['type'] === 'd') { // Check if it's a directory
+                    $this->delete_all_files($file_path);
                 } else {
-                    unlink($file);
+                    $wp_filesystem->delete($file_path);
                 }
             }
-            rmdir($folder);
+
+            // Finally, remove the empty folder itself
+            $wp_filesystem->rmdir($folder);
         }
+
 
         public function remove_local_fonts()
         {
-            $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-            $this->delete_all_files($fonts_uploads_dir);
-            update_option('remove_local_fonts', 0);
+            if((bool) get_option('remove_local_fonts')) {
+                $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+                $this->delete_all_files($fonts_uploads_dir);
+                update_option('remove_local_fonts', 0);
+            }
         }
 
         public function local_fonts_upload()

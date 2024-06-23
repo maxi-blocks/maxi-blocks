@@ -48,7 +48,7 @@ class MaxiBlocks_StyleCards
 
             // SC variables
             if ($vars) {
-                wp_register_style('maxi-blocks-sc-vars', false);
+                wp_register_style('maxi-blocks-sc-vars', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-vars');
                 wp_add_inline_style('maxi-blocks-sc-vars', $vars);
             }
@@ -64,7 +64,7 @@ class MaxiBlocks_StyleCards
 
             // SC styles
             if ($styles) {
-                wp_register_style('maxi-blocks-sc-styles', false);
+                wp_register_style('maxi-blocks-sc-styles', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-styles');
                 wp_add_inline_style('maxi-blocks-sc-styles', $styles);
             }
@@ -214,9 +214,17 @@ class MaxiBlocks_StyleCards
 
         // Check if table exists
         $table_name = $wpdb->prefix . 'maxi_blocks_general';
-        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+
+        // Prepare the query safely
+        $table_exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SHOW TABLES LIKE %s",
+                $table_name
+            )
+        );
+
+        if ($table_exists != $table_name) {
             // Table doesn't exist
-            // Handle the case here - return false, throw an exception, etc.
             return false;
         }
 
@@ -370,8 +378,23 @@ class MaxiBlocks_StyleCards
 
     public static function get_default_style_card()
     {
-        $json = file_get_contents(MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json");
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        $file_path = MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json";
+
+        // Ensure the file exists before attempting to read
+        if (!$wp_filesystem->exists($file_path)) {
+            return null;
+        }
+
+        $json = $wp_filesystem->get_contents($file_path);
 
         return $json;
     }
+
 }

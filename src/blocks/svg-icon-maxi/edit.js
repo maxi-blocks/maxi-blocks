@@ -41,6 +41,7 @@ import {
 import { withMaxiContextLoopContext } from '../../extensions/DC';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 class edit extends MaxiBlockComponent {
 	constructor(props) {
@@ -359,4 +360,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoopContext(withMaxiProps(edit));
+export default withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)));

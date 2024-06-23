@@ -1,35 +1,34 @@
 <?php
-
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)
 {
-    $cache_key = 'maxi_blocks_json_file_to_array_' . $item . ($is_hover ? '_hover' : '');
-    $cached_data = get_transient($cache_key);
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . ($is_hover ? 'Hover' : '') . '.json';
 
-    if ($cached_data !== false) {
-        return $cached_data;
-    }
-
-    $file_name = $item . ($is_hover ? 'Hover' : '') . '.json';
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $file_name;
-
-    if (!file_exists($file_path) && $is_hover) {
-        $file_name = $item . '.json';
-        $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $file_name;
+    global $wp_filesystem;
+    if (empty($wp_filesystem)) {
+        require_once ABSPATH . '/wp-admin/includes/file.php';
+        WP_Filesystem();
     }
 
     if (file_exists($file_path)) {
-        $data = json_decode(file_get_contents($file_path), true);
-    } else {
-        $data = null;
+        $file_contents = $wp_filesystem->get_contents($file_path);
+        if ($file_contents) {
+            return json_decode($file_contents, true);
+        }
     }
 
-    // Cache the result for 1 hour (3600 seconds)
-    set_transient($cache_key, $data, 3600);
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . '.json';
+    if (file_exists($file_path)) {
+        $file_contents = $wp_filesystem->get_contents($file_path);
+        if ($file_contents) {
+            return json_decode($file_contents, true);
+        }
+    }
 
-    return $data;
+    return null;
 }
+
 
 function get_group_attributes(
     $attributes,

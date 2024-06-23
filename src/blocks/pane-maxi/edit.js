@@ -25,6 +25,7 @@ import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,
@@ -281,5 +282,5 @@ class edit extends MaxiBlockComponent {
 }
 
 export default withMaxiContextLoop(
-	withMaxiContextLoopContext(withMaxiProps(edit))
+	withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)))
 );

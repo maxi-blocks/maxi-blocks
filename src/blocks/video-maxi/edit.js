@@ -32,6 +32,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
 import { copyPasteMapping } from './data';
 import { placeholderImage, toolbarReplaceImage } from '../../icons';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Video player
@@ -300,4 +301,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

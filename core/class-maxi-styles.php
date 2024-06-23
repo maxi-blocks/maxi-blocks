@@ -330,6 +330,7 @@ class MaxiBlocks_Styles
                 $template_id .= $template_slug;
             }
         } elseif (is_home() || is_front_page()) {
+            /** @disregard P1010 Undefined type */
             $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
 
             $has_front_page_and_home = count($block_templates) > 2;
@@ -2331,25 +2332,25 @@ class MaxiBlocks_Styles
         $relations_raw = $props['relations'] ?? [];
         $context_loop = $context['contextLoop'] ?? null;
 
-        // Calculate scroll attributes
-        $scroll = get_group_attributes($props, 'scroll', false, '', true);
-
         // Calculate parallax layers if background layers are not empty
         $bg_parallax_layers = !empty($bg_layers) ? get_parallax_layers($unique_id, $bg_layers) : [];
 
-        // Calculate video and scroll effects flags
+        // Calculate video flag
         $has_video = get_has_video($unique_id, $bg_layers);
-        $has_scroll_effects = get_has_scroll_effects($unique_id, $scroll);
 
         // Calculate relations if exist
         $relations = get_relations($unique_id, $relations_raw);
+
+        // Calculate scroll effects
+        $scroll = get_group_attributes($props, 'scroll', false, '', true);
+        $scroll_effects = get_scroll_effects($unique_id, $scroll);
 
         // Construct the response by merging all calculated data and the data from another method
         $response = array_merge(
             !empty($bg_parallax_layers) ? ['parallax' => $bg_parallax_layers] : [],
             !empty($relations) ? ['relations' => $relations] : [],
+            !empty($scroll_effects) ? $scroll_effects : [],
             $has_video ? ['bg_video' => true] : [],
-            $has_scroll_effects ? ['scroll_effects' => true] : [],
             $dc_status && isset($context_loop['cl-status'])
                     ? ['dynamic_content' => [$unique_id => $context_loop]]
                     : [],

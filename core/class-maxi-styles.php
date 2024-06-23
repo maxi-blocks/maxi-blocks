@@ -1919,8 +1919,6 @@ class MaxiBlocks_Styles
         return $post;
     }
 
-
-
     public function get_block_fonts($block_name, $props, $only_backend = false)
     {
         $response = [];
@@ -2079,7 +2077,6 @@ class MaxiBlocks_Styles
             }
         }
 
-
         $resolved_styles = style_resolver($styles);
         $frontend_styles = frontend_style_generator($resolved_styles, $unique_id);
 
@@ -2165,20 +2162,17 @@ class MaxiBlocks_Styles
 
         if (!empty($exists)) {
             // Update the existing row.
-            $old_css = $exists->css_value;
-            $old_custom_meta = $exists->active_custom_data;
-            $old_fonts = $exists->fonts_value;
             $wpdb->query(
                 $wpdb->prepare(
                     "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
 					SET css_value = %s, prev_css_value = %s, prev_fonts_value = %s, fonts_value = %s, active_custom_data = %d, prev_active_custom_data = %d
 					WHERE block_style_id = %s",
                     $frontend_styles,
-                    $old_css,
-                    $old_fonts,
+                    $frontend_styles,
+                    $fonts,
                     $fonts,
                     $custom_meta_block,
-                    $old_custom_meta,
+                    $custom_meta_block,
                     $unique_id
                 )
             );
@@ -2190,11 +2184,11 @@ class MaxiBlocks_Styles
 					VALUES (%s, %s, %s, %s, %s, %d, %d)",
                     $unique_id,
                     $frontend_styles,
-                    '',
+                    $frontend_styles,
                     $fonts,
-                    '',
+                    $fonts,
                     $custom_meta_block,
-                    0
+                    $custom_meta_block
                 )
             );
         }
@@ -2306,9 +2300,6 @@ class MaxiBlocks_Styles
         // If no matching block type was found, return an empty array
         return [];
     }
-
-
-
     /**
      * Retrieves custom data from a block, based on the block's name, properties and context.
      *

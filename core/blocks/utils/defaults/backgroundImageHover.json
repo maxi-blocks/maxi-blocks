@@ -724,5 +724,131 @@
   },
   "background-image-wrapper-height-unit-xs-hover": {
     "type": "string"
+  },
+  "dc-error-hover": {
+    "type": "string"
+  },
+  "dc-hide-hover": {
+    "type": "boolean"
+  },
+  "dc-status-hover": {
+    "type": "boolean"
+  },
+  "dc-source-hover": {
+    "type": "string"
+  },
+  "dc-type-hover": {
+    "type": "string"
+  },
+  "dc-relation-hover": {
+    "type": "string"
+  },
+  "dc-id-hover": {
+    "type": "number"
+  },
+  "dc-author-hover": {
+    "type": "number"
+  },
+  "dc-show-hover": {
+    "type": "string"
+  },
+  "dc-field-hover": {
+    "type": "string"
+  },
+  "dc-format-hover": {
+    "type": "string"
+  },
+  "dc-custom-format-hover": {
+    "type": "string"
+  },
+  "dc-custom-date-hover": {
+    "type": "boolean"
+  },
+  "dc-year-hover": {
+    "type": "string"
+  },
+  "dc-month-hover": {
+    "type": "string"
+  },
+  "dc-day-hover": {
+    "type": "string"
+  },
+  "dc-hour-hover": {
+    "type": "boolean"
+  },
+  "dc-hour12-hover": {
+    "type": "string"
+  },
+  "dc-minute-hover": {
+    "type": "string"
+  },
+  "dc-second-hover": {
+    "type": "string"
+  },
+  "dc-locale-hover": {
+    "type": "string"
+  },
+  "dc-timezone-hover": {
+    "type": "string"
+  },
+  "dc-timezone-name-hover": {
+    "type": "string"
+  },
+  "dc-weekday-hover": {
+    "type": "string"
+  },
+  "dc-era-hover": {
+    "type": "string"
+  },
+  "dc-limit-hover": {
+    "type": "number"
+  },
+  "dc-content-hover": {
+    "type": "string"
+  },
+  "dc-media-id-hover": {
+    "type": "number"
+  },
+  "dc-media-url-hover": {
+    "type": "string"
+  },
+  "dc-media-caption-hover": {
+    "type": "string"
+  },
+  "dc-link-status-hover": {
+    "type": "boolean"
+  },
+  "dc-link-url-hover": {
+    "type": "string"
+  },
+  "dc-custom-delimiter-status-hover": {
+    "type": "boolean"
+  },
+  "dc-delimiter-content-hover": {
+    "type": "string"
+  },
+  "dc-order-by-hover": {
+    "type": "string"
+  },
+  "dc-order-hover": {
+    "type": "string"
+  },
+  "dc-accumulator-hover": {
+    "type": "number"
+  },
+  "dc-acf-group-hover": {
+    "type": "number"
+  },
+  "dc-acf-field-type-hover": {
+    "type": "string"
+  },
+  "dc-contains-html-hover": {
+    "type": "boolean"
+  },
+  "dc-image-accumulator-hover": {
+    "type": "number"
+  },
+  "dc-link-target-hover": {
+    "type": "string"
   }
 }

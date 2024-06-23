@@ -66,7 +66,10 @@ function get_group_attributes(
                 if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
                     $response[$prefix . $key] = $attributes[$prefix . $key];
                 } elseif ($add_default_attributes) {
-                    $response[$prefix . $key] = $default_attributes[$prefix . $key]['default'] ?? null;
+                    $default_attribute = $default_attributes[$prefix . $key]['default'] ?? null;
+                    if(get_is_valid($default_attribute, $cleaned)) {
+                        $response[$prefix . $key] = $default_attributes[$prefix . $key]['default'] ?? null;
+                    }
                 }
             }
         }

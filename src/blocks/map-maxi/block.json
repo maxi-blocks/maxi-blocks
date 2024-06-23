@@ -2636,7 +2636,8 @@
       "type": "string"
     },
     "font-size-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "font-size-unit-xxl": {
       "type": "string"
@@ -2678,7 +2679,8 @@
       "type": "number"
     },
     "line-height-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "line-height-unit-xxl": {
       "type": "string"
@@ -2720,7 +2722,8 @@
       "type": "number"
     },
     "letter-spacing-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "letter-spacing-unit-xxl": {
       "type": "string"
@@ -2867,7 +2870,8 @@
       "type": "number"
     },
     "text-indent-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "text-indent-unit-xxl": {
       "type": "string"
@@ -3060,7 +3064,8 @@
       "type": "number"
     },
     "bottom-gap-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "bottom-gap-unit-xxl": {
       "type": "string"
@@ -3318,7 +3323,8 @@
       "type": "string"
     },
     "description-font-size-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "description-font-size-unit-xxl": {
       "type": "string"
@@ -3361,7 +3367,8 @@
       "type": "number"
     },
     "description-line-height-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "description-line-height-unit-xxl": {
       "type": "string"
@@ -3403,7 +3410,8 @@
       "type": "number"
     },
     "description-letter-spacing-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "description-letter-spacing-unit-xxl": {
       "type": "string"
@@ -3550,7 +3558,8 @@
       "type": "number"
     },
     "description-text-indent-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "description-text-indent-unit-xxl": {
       "type": "string"
@@ -3742,7 +3751,8 @@
       "type": "number"
     },
     "description-bottom-gap-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "description-bottom-gap-unit-xxl": {
       "type": "string"

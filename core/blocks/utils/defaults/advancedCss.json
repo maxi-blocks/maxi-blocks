@@ -1,23 +1,23 @@
 {
-  "row-pattern-general": {
+  "advanced-css-general": {
     "type": "string"
   },
-  "row-pattern-xxl": {
+  "advanced-css-xxl": {
     "type": "string"
   },
-  "row-pattern-xl": {
+  "advanced-css-xl": {
     "type": "string"
   },
-  "row-pattern-l": {
+  "advanced-css-l": {
     "type": "string"
   },
-  "row-pattern-m": {
+  "advanced-css-m": {
     "type": "string"
   },
-  "row-pattern-s": {
+  "advanced-css-s": {
     "type": "string"
   },
-  "row-pattern-xs": {
+  "advanced-css-xs": {
     "type": "string"
   }
 }

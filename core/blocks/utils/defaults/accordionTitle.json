@@ -511,7 +511,7 @@
   },
   "title-list-palette-color-general": {
     "type": "number",
-    "default": 4
+    "default": 3
   },
   "title-list-palette-color-xxl": {
     "type": "number"
@@ -959,8 +959,7 @@
     "type": "number"
   },
   "title-word-spacing-unit-general": {
-    "type": "string",
-    "default": "px"
+    "type": "string"
   },
   "title-word-spacing-unit-xxl": {
     "type": "string"
@@ -1881,7 +1880,7 @@
   },
   "active-title-list-palette-color-general": {
     "type": "number",
-    "default": 4
+    "default": 3
   },
   "active-title-list-palette-color-xxl": {
     "type": "number"
@@ -2329,8 +2328,7 @@
     "type": "number"
   },
   "active-title-word-spacing-unit-general": {
-    "type": "string",
-    "default": "px"
+    "type": "string"
   },
   "active-title-word-spacing-unit-xxl": {
     "type": "string"

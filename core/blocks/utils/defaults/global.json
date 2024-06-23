@@ -53,5 +53,8 @@
   "preview": {
     "type": "boolean",
     "default": false
+  },
+  "ariaLabels": {
+    "type": "object"
   }
 }

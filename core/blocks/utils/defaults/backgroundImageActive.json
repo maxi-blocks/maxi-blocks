@@ -753,5 +753,153 @@
   },
   "active-background-image-wrapper-height-unit-xs": {
     "type": "string"
+  },
+  "active-dc-error": {
+    "type": "string",
+    "default": ""
+  },
+  "active-dc-hide": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-dc-status": {
+    "type": "boolean"
+  },
+  "active-dc-source": {
+    "type": "string"
+  },
+  "active-dc-type": {
+    "type": "string"
+  },
+  "active-dc-relation": {
+    "type": "string"
+  },
+  "active-dc-id": {
+    "type": "number"
+  },
+  "active-dc-author": {
+    "type": "number"
+  },
+  "active-dc-show": {
+    "type": "string",
+    "default": "current"
+  },
+  "active-dc-field": {
+    "type": "string"
+  },
+  "active-dc-format": {
+    "type": "string",
+    "default": "d.m.Y t"
+  },
+  "active-dc-custom-format": {
+    "type": "string"
+  },
+  "active-dc-custom-date": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-dc-year": {
+    "type": "string",
+    "default": "numeric"
+  },
+  "active-dc-month": {
+    "type": "string",
+    "default": "numeric"
+  },
+  "active-dc-day": {
+    "type": "string",
+    "default": "numeric"
+  },
+  "active-dc-hour": {
+    "type": "boolean",
+    "default": "numeric"
+  },
+  "active-dc-hour12": {
+    "type": "string",
+    "default": false
+  },
+  "active-dc-minute": {
+    "type": "string",
+    "default": "numeric"
+  },
+  "active-dc-second": {
+    "type": "string",
+    "default": "numeric"
+  },
+  "active-dc-locale": {
+    "type": "string",
+    "default": "en"
+  },
+  "active-dc-timezone": {
+    "type": "string",
+    "default": "Europe/London"
+  },
+  "active-dc-timezone-name": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-dc-weekday": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-dc-era": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-dc-limit": {
+    "type": "number",
+    "default": 100
+  },
+  "active-dc-content": {
+    "type": "string"
+  },
+  "active-dc-media-id": {
+    "type": "number"
+  },
+  "active-dc-media-url": {
+    "type": "string"
+  },
+  "active-dc-media-caption": {
+    "type": "string"
+  },
+  "active-dc-link-status": {
+    "type": "boolean"
+  },
+  "active-dc-link-url": {
+    "type": "string"
+  },
+  "active-dc-custom-delimiter-status": {
+    "type": "boolean"
+  },
+  "active-dc-delimiter-content": {
+    "type": "string",
+    "default": ""
+  },
+  "active-dc-order-by": {
+    "type": "string"
+  },
+  "active-dc-order": {
+    "type": "string"
+  },
+  "active-dc-accumulator": {
+    "type": "number"
+  },
+  "active-dc-acf-group": {
+    "type": "number"
+  },
+  "active-dc-acf-field-type": {
+    "type": "string"
+  },
+  "active-dc-contains-html": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-dc-image-accumulator": {
+    "type": "number",
+    "default": 0
+  },
+  "active-dc-link-target": {
+    "type": "string",
+    "default": "none"
   }
 }

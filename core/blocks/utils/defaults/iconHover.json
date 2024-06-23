@@ -240,5 +240,9 @@
   "icon-status-hover": {
     "type": "boolean",
     "default": false
+  },
+  "icon-status-hover-target": {
+    "type": "boolean",
+    "default": true
   }
 }

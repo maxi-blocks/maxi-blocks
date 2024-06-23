@@ -135,22 +135,25 @@ const blockJsonAbstracter = async () => {
 		return;
 	}
 
-	// Save the default group attributes to the `core/blocks/utils/default-group-attributes.json` file
-	const defaultGroupAttributesFilePath = path.join(
-		'core/blocks/utils/default-group-attributes.json'
-	);
-
-	writeFile(
-		defaultGroupAttributesFilePath,
-		JSON.stringify(defaultGroupAttributes, null, 2)
-	)
-		.catch(err => console.error(err))
-		.then(() =>
-			// eslint-disable-next-line no-console
-			console.log(
-				'✅ default-group-attributes.json file created with the default group attributes'
-			)
+	for (const groupAttributeKey in defaultGroupAttributes) {
+		const groupAttribute = defaultGroupAttributes[groupAttributeKey];
+		const groupAttributeFilePath = path.join(
+			'core/blocks/utils/defaults',
+			`${groupAttributeKey}.json`
 		);
+
+		writeFile(
+			groupAttributeFilePath,
+			JSON.stringify(groupAttribute, null, 2)
+		)
+			.catch(err => console.error(err))
+			.then(() =>
+				// eslint-disable-next-line no-console
+				console.log(
+					`✅ ${groupAttributeKey}.json file created with the default group attributes`
+				)
+			);
+	}
 
 	await browser.close();
 };

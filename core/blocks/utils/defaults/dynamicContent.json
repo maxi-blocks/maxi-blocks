@@ -3,8 +3,15 @@
     "type": "string",
     "default": ""
   },
+  "dc-hide": {
+    "type": "boolean",
+    "default": true
+  },
   "dc-status": {
     "type": "boolean"
+  },
+  "dc-source": {
+    "type": "string"
   },
   "dc-type": {
     "type": "string"
@@ -77,10 +84,12 @@
     "default": "none"
   },
   "dc-weekday": {
-    "type": "string"
+    "type": "string",
+    "default": "none"
   },
   "dc-era": {
-    "type": "string"
+    "type": "string",
+    "default": "none"
   },
   "dc-limit": {
     "type": "number",
@@ -104,9 +113,6 @@
   "dc-link-url": {
     "type": "string"
   },
-  "dc-post-taxonomy-links-status": {
-    "type": "boolean"
-  },
   "dc-custom-delimiter-status": {
     "type": "boolean"
   },
@@ -114,18 +120,31 @@
     "type": "string",
     "default": ""
   },
+  "dc-order-by": {
+    "type": "string"
+  },
   "dc-order": {
     "type": "string"
   },
   "dc-accumulator": {
     "type": "number"
   },
+  "dc-acf-group": {
+    "type": "number"
+  },
+  "dc-acf-field-type": {
+    "type": "string"
+  },
   "dc-contains-html": {
     "type": "boolean",
     "default": false
   },
-	"dc-link-target": {
-		"type": "string",
-		"default": "none"
-	}
+  "dc-image-accumulator": {
+    "type": "number",
+    "default": 0
+  },
+  "dc-link-target": {
+    "type": "string",
+    "default": "none"
+  }
 }

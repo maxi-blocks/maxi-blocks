@@ -36,8 +36,5 @@ function get_block_attributes($block_name)
 
     $response = array_merge($response);
 
-    // Cache the result for 1 hour (3600 seconds)
-    set_transient($cache_key, $response, 3600);
-
     return $response;
 }

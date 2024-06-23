@@ -1815,6 +1815,10 @@
     "type": "boolean",
     "default": false
   },
+  "active-icon-status-hover-target": {
+    "type": "boolean",
+    "default": true
+  },
   "active-icon-background-active-media-general-hover": {
     "type": "string"
   },
@@ -4724,6 +4728,10 @@
   "icon-status-hover": {
     "type": "boolean",
     "default": false
+  },
+  "icon-status-hover-target": {
+    "type": "boolean",
+    "default": true
   },
   "icon-background-active-media-general-hover": {
     "type": "string"

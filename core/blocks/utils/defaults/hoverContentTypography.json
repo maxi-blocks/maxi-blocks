@@ -174,7 +174,7 @@
   },
   "hover-content-list-palette-color-general": {
     "type": "number",
-    "default": 4
+    "default": 3
   },
   "hover-content-list-palette-color-xxl": {
     "type": "number"
@@ -623,8 +623,7 @@
     "type": "number"
   },
   "hover-content-word-spacing-unit-general": {
-    "type": "string",
-    "default": "px"
+    "type": "string"
   },
   "hover-content-word-spacing-unit-xxl": {
     "type": "string"

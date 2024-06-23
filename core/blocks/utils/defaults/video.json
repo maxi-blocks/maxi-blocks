@@ -17,9 +17,17 @@
     "type": "string",
     "default": "ar169"
   },
+  "videoRatioCustom": {
+    "type": "string",
+    "default": "1"
+  },
   "popupRatio": {
     "type": "string",
     "default": "ar169"
+  },
+  "popupRatioCustom": {
+    "type": "string",
+    "default": "1"
   },
   "videoType": {
     "type": "string",
@@ -548,6 +556,10 @@
     "type": "boolean",
     "default": false
   },
+  "close-icon-status-hover-target": {
+    "type": "boolean",
+    "default": true
+  },
   "play-svgType": {
     "type": "string"
   },
@@ -1043,5 +1055,9 @@
   "play-icon-status-hover": {
     "type": "boolean",
     "default": false
+  },
+  "play-icon-status-hover-target": {
+    "type": "boolean",
+    "default": true
   }
 }

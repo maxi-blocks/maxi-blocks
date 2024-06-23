@@ -174,7 +174,7 @@
   },
   "list-palette-color-general": {
     "type": "number",
-    "default": 4
+    "default": 3
   },
   "list-palette-color-xxl": {
     "type": "number"
@@ -622,8 +622,7 @@
     "type": "number"
   },
   "word-spacing-unit-general": {
-    "type": "string",
-    "default": "px"
+    "type": "string"
   },
   "word-spacing-unit-xxl": {
     "type": "string"

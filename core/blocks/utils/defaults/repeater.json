@@ -1,5 +1,5 @@
 {
-  "full-width": {
+  "repeater-status": {
     "type": "boolean",
     "default": false
   }

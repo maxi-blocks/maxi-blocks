@@ -2414,7 +2414,8 @@
       "type": "string"
     },
     "input-font-size-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "input-font-size-unit-xxl": {
       "type": "string"
@@ -2457,7 +2458,8 @@
       "type": "number"
     },
     "input-line-height-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "input-line-height-unit-xxl": {
       "type": "string"
@@ -2499,7 +2501,8 @@
       "type": "number"
     },
     "input-letter-spacing-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "input-letter-spacing-unit-xxl": {
       "type": "string"
@@ -2646,7 +2649,8 @@
       "type": "number"
     },
     "input-text-indent-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "input-text-indent-unit-xxl": {
       "type": "string"
@@ -2838,7 +2842,8 @@
       "type": "number"
     },
     "input-bottom-gap-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "input-bottom-gap-unit-xxl": {
       "type": "string"
@@ -5550,7 +5555,8 @@
       "type": "string"
     },
     "button-font-size-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "button-font-size-unit-xxl": {
       "type": "string"
@@ -5592,7 +5598,8 @@
       "type": "number"
     },
     "button-line-height-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "button-line-height-unit-xxl": {
       "type": "string"
@@ -5634,7 +5641,8 @@
       "type": "number"
     },
     "button-letter-spacing-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "button-letter-spacing-unit-xxl": {
       "type": "string"
@@ -5781,7 +5789,8 @@
       "type": "number"
     },
     "button-text-indent-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "button-text-indent-unit-xxl": {
       "type": "string"
@@ -5973,7 +5982,8 @@
       "type": "number"
     },
     "button-bottom-gap-unit-general": {
-      "type": "string"
+      "type": "string",
+      "default": "px"
     },
     "button-bottom-gap-unit-xxl": {
       "type": "string"

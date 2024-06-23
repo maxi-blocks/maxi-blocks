@@ -17,6 +17,67 @@ use Typesense\Client;
 $dotenv = Dotenv\Dotenv::createImmutable(MAXI_PLUGIN_DIR_PATH);
 $dotenv->load();
 
+class MaxiBlocksTransientData
+{
+    public $new_blocks;
+
+    public function __construct(array $data)
+    {
+        if (!isset($data['new_blocks'])) {
+            throw new InvalidArgumentException('The key "new_blocks" is required.');
+        }
+
+        if (!is_bool($data['new_blocks'])) {
+            throw new InvalidArgumentException('The value of "new_blocks" must be a boolean.');
+        }
+
+        $this->new_blocks = $data['new_blocks'];
+    }
+
+    public function toArray()
+    {
+        return ['new_blocks' => $this->new_blocks];
+    }
+}
+
+class MaxiBlocksTransient
+{
+    const TRANSIENT_PREFIX = 'maxi_blocks_update_';
+
+    public static function set_transient($post_id, MaxiBlocksTransientData $data, $expiration = 600)
+    {
+        if (!is_numeric($post_id) || $post_id <= 0) {
+            throw new InvalidArgumentException('Invalid post ID.');
+        }
+
+        set_transient(self::TRANSIENT_PREFIX . $post_id, $data->toArray(), $expiration);
+    }
+
+    public static function get_transient($post_id)
+    {
+        if (!is_int($post_id) || $post_id <= 0) {
+            throw new InvalidArgumentException('Invalid post ID.');
+        }
+
+        $data = get_transient(self::TRANSIENT_PREFIX . $post_id);
+
+        if ($data === false) {
+            return null;
+        }
+
+        return new MaxiBlocksTransientData($data);
+    }
+
+    public static function delete_transient($post_id)
+    {
+        if (!is_int($post_id) || $post_id <= 0) {
+            throw new InvalidArgumentException('Invalid post ID.');
+        }
+
+        delete_transient(self::TRANSIENT_PREFIX . $post_id);
+    }
+}
+
 if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
     class MaxiBlocks_CLI
     {
@@ -26,6 +87,8 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * @var MaxiBlocks_CLI
          */
         private static $instance;
+        private static $typesense_client;
+        private static $maxi_api;
 
         /**
          * Registers the plugin.
@@ -33,32 +96,41 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function register()
         {
             if (null == self::$instance) {
-                self::$instance = new MaxiBlocks_CLI();
+                self::$instance = new self();
             }
 
-            WP_CLI::add_command('maxiblocks set_style_card', [
-                self::$instance,
+            $commands = [
                 'set_style_card',
-            ]);
-            WP_CLI::add_command('maxiblocks list_style_cards', [
-                self::$instance,
                 'list_style_cards',
-            ]);
-            WP_CLI::add_command('maxiblocks get_current_style_card', [
-                self::$instance,
                 'get_current_style_card',
-            ]);
-            WP_CLI::add_command('maxiblocks import_page_set', [
-                self::$instance,
                 'import_page_set',
-            ]);
-            WP_CLI::add_command('maxiblocks replace_post_content', [
-                self::$instance,
                 'replace_post_content',
-            ]);
-            WP_CLI::add_command('maxiblocks create_post', [
-                self::$instance,
                 'create_post',
+                'update_post_styles',
+            ];
+
+            foreach ($commands as $command) {
+                WP_CLI::add_command("maxiblocks $command", [self::$instance, $command]);
+            }
+        }
+
+        private function __construct()
+        {
+            self::init_typesense_client();
+            self::$maxi_api = MaxiBlocks_API::get_instance();
+        }
+
+        private static function init_typesense_client()
+        {
+            self::$typesense_client = new Client([
+                'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
+                'nodes' => [
+                    [
+                        'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
+                        'port' => '443',
+                        'protocol' => 'https',
+                    ],
+                ],
             ]);
         }
 
@@ -79,89 +151,77 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             [$post_title] = $args;
 
             try {
-                // Initialize Typesense client
-                $client = new Client([
-                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                    'nodes' => [
-                        [
-                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                            'port' => '443',
-                            'protocol' => 'https',
-                        ],
-                    ],
-                ]);
-
-                // Search for the style card by post title
-                $searchParameters = [
-                    'q' => $post_title,
-                    'query_by' => 'post_title',
-                    'per_page' => 1,
-                ];
-
-                $result = $client->collections['style_card']->documents->search(
-                    $searchParameters,
-                );
-
-                if ($result['found'] > 0) {
-                    $style_card = $result['hits'][0]['document'];
-                    $style_card_title = $style_card['post_title'];
-
-                    if ($style_card_title !== $post_title) {
-                        WP_CLI::confirm(
-                            sprintf(
-                                'Style card not found. Did you mean "%s"?',
-                                $style_card_title,
-                            ),
-                        );
-                    }
-
-                    $sc_code = json_decode($style_card['sc_code'], true);
-                    $sc_code['status'] = 'active';
-                    $sc_code['selected'] = true;
-                    $sc_code['gutenberg_blocks_status'] = true;
-
-                    $var_sc = get_sc_variables_object($sc_code, null, true);
-                    $var_sc_string = create_sc_style_string($var_sc);
-                    $sc_styles = get_sc_styles(
-                        $var_sc,
-                        $sc_code['gutenberg_blocks_status'],
-                    );
-
-                    $maxi_api = MaxiBlocks_API::get_instance();
-
-                    $style_cards = json_decode(
-                        $maxi_api->get_maxi_blocks_current_style_cards(),
-                        true,
-                    );
-
-                    foreach ($style_cards as $key => $value) {
-                        $style_cards[$key]['status'] = '';
-                        $style_cards[$key]['selected'] = false;
-                    }
-
-                    $style_cards_key = 'sc_' . strtolower($sc_code['name']);
-                    $style_cards[$style_cards_key] = $sc_code;
-
-                    $maxi_api->set_maxi_blocks_current_style_cards(
-                        [
-                            'styleCards' => json_encode($style_cards),
-                        ],
-                        false,
-                    );
-
-                    $maxi_api->post_maxi_blocks_sc_string([
-                        'sc_variables' => $var_sc_string,
-                        'sc_styles' => $sc_styles,
-                        'update' => true,
-                    ]);
-
-                    WP_CLI::success('Style card set successfully.');
-                } else {
+                $style_card = self::find_style_card($post_title);
+                if (!$style_card) {
                     WP_CLI::error('Style card not found.');
+                    return;
                 }
+
+                self::update_style_card($style_card);
+                WP_CLI::success('Style card set successfully.');
             } catch (Exception $e) {
                 WP_CLI::error('Error setting style card: ' . $e->getMessage());
             }
+        }
+
+        private static function find_style_card($post_title)
+        {
+            $searchParameters = [
+                'q' => $post_title,
+                'query_by' => 'post_title',
+                'per_page' => 1,
+            ];
+
+            $result = self::$typesense_client->collections['style_card']->documents->search($searchParameters);
+
+            if ($result['found'] > 0) {
+                $style_card = $result['hits'][0]['document'];
+                $style_card_title = $style_card['post_title'];
+
+                if ($style_card_title !== $post_title) {
+                    WP_CLI::confirm(sprintf('Style card not found. Did you mean "%s"?', $style_card_title));
+                }
+
+                return $style_card;
+            }
+
+            return null;
+        }
+
+        private static function update_style_card($style_card)
+        {
+            $sc_code = json_decode($style_card['sc_code'], true);
+            $sc_code['status'] = 'active';
+            $sc_code['selected'] = true;
+            $sc_code['gutenberg_blocks_status'] = true;
+
+            $var_sc = get_sc_variables_object($sc_code, null, true);
+            $var_sc_string = create_sc_style_string($var_sc);
+            $sc_styles = get_sc_styles($var_sc, $sc_code['gutenberg_blocks_status']);
+
+            $style_cards = self::get_and_update_style_cards($sc_code);
+
+            self::$maxi_api->set_maxi_blocks_current_style_cards(['styleCards' => json_encode($style_cards)], false);
+            self::$maxi_api->post_maxi_blocks_sc_string([
+                'sc_variables' => $var_sc_string,
+                'sc_styles' => $sc_styles,
+                'update' => true,
+            ]);
+        }
+
+        private static function get_and_update_style_cards($sc_code)
+        {
+            $style_cards = json_decode(self::$maxi_api->get_maxi_blocks_current_style_cards(), true);
+
+            foreach ($style_cards as $key => $value) {
+                $style_cards[$key]['status'] = '';
+                $style_cards[$key]['selected'] = false;
+            }
+
+            $style_cards_key = 'sc_' . strtolower($sc_code['name']);
+            $style_cards[$style_cards_key] = $sc_code;
+
+            return $style_cards;
         }
 
         /**
@@ -182,57 +242,38 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function list_style_cards($args, $assoc_args)
         {
             try {
-                // Initialize Typesense client
-                $client = new Client([
-                    'api_key' => $_ENV['REACT_APP_TYPESENSE_API_KEY'],
-                    'nodes' => [
-                        [
-                            'host' => $_ENV['REACT_APP_TYPESENSE_API_URL'],
-                            'port' => '443',
-                            'protocol' => 'https',
-                        ],
-                    ],
-                ]);
+                $count = isset($assoc_args['count']) ? $assoc_args['count'] : 10;
+                $style_cards = self::search_style_cards($count);
 
-                // Get the count argument
-                $count = isset($assoc_args['count'])
-                    ? $assoc_args['count']
-                    : 10;
-
-                // Search for style cards
-                $searchParameters = [
-                    'q' => '*',
-                    'query_by' => 'post_title',
-                    'sort_by' => 'post_date_int:desc',
-                    'per_page' => $count === 'all' ? 100 : intval($count),
-                    'page' => 1,
-                ];
-
-                $styleCards = $client->collections[
-                    'style_card'
-                ]->documents->search($searchParameters);
-
-                // Display the total number of style cards found
-                WP_CLI::line(
-                    sprintf('Found %d style card(s).', $styleCards['found']),
-                );
-
-                // Display the names of the style cards
-                foreach ($styleCards['hits'] as $styleCard) {
-                    WP_CLI::line('- ' . $styleCard['document']['post_title']);
-                }
-
-                // Display a message if there are more style cards available
-                if ($count !== 'all' && $styleCards['found'] > $count) {
-                    WP_CLI::line(
-                        sprintf(
-                            'Displaying the first %d style card(s). Use --count=all to see all style cards.',
-                            $count,
-                        ),
-                    );
-                }
+                self::display_style_cards($style_cards, $count);
             } catch (Exception $e) {
                 WP_CLI::error('Error listing style cards: ' . $e->getMessage());
+            }
+        }
+
+        private static function search_style_cards($count)
+        {
+            $searchParameters = [
+                'q' => '*',
+                'query_by' => 'post_title',
+                'sort_by' => 'post_date_int:desc',
+                'per_page' => $count === 'all' ? 100 : intval($count),
+                'page' => 1,
+            ];
+
+            return self::$typesense_client->collections['style_card']->documents->search($searchParameters);
+        }
+
+        private static function display_style_cards($style_cards, $count)
+        {
+            WP_CLI::line(sprintf('Found %d style card(s).', $style_cards['found']));
+
+            foreach ($style_cards['hits'] as $style_card) {
+                WP_CLI::line('- ' . $style_card['document']['post_title']);
+            }
+
+            if ($count !== 'all' && $style_cards['found'] > $count) {
+                WP_CLI::line(sprintf('Displaying the first %d style card(s). Use --count=all to see all style cards.', $count));
             }
         }
 
@@ -246,31 +287,27 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function get_current_style_card()
         {
             try {
-                $maxi_api = MaxiBlocks_API::get_instance();
-                $style_cards = json_decode(
-                    $maxi_api->get_maxi_blocks_current_style_cards(),
-                    true,
-                );
+                $style_cards = json_decode(self::$maxi_api->get_maxi_blocks_current_style_cards(), true);
+                $current_style_card = self::find_current_style_card($style_cards);
 
-                $style_card = null;
-
-                foreach ($style_cards as $key => $value) {
-                    if ($value['selected']) {
-                        $style_card = $value;
-                        break;
-                    }
-                }
-
-                if ($style_card) {
-                    WP_CLI::line('Current style card: ' . $style_card['name']);
+                if ($current_style_card) {
+                    WP_CLI::line('Current style card: ' . $current_style_card['name']);
                 } else {
                     WP_CLI::error('No style card selected.');
                 }
             } catch (Exception $e) {
-                WP_CLI::error(
-                    'Error getting current style card: ' . $e->getMessage(),
-                );
+                WP_CLI::error('Error getting current style card: ' . $e->getMessage());
             }
+        }
+
+        private static function find_current_style_card($style_cards)
+        {
+            foreach ($style_cards as $style_card) {
+                if ($style_card['selected']) {
+                    return $style_card;
+                }
+            }
+            return null;
         }
 
         /**
@@ -293,14 +330,26 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 $page_set_path = self::prompt_for_attachment('application/xml');
             }
 
-            if (is_numeric($page_set_path)) {
-                $page_set_path = get_attached_file($page_set_path);
-                if (!$page_set_path) {
+            $page_set_path = self::get_file_path($page_set_path);
+
+            self::run_import_command($page_set_path);
+        }
+
+        private static function get_file_path($source)
+        {
+            if (is_numeric($source)) {
+                $file_path = get_attached_file($source);
+                if (!$file_path) {
                     WP_CLI::error('Invalid attachment ID or unable to get file path.');
                 }
+                return $file_path;
             }
+            return $source;
+        }
 
-            $import_command = 'wp import ' . $page_set_path . ' --authors=skip';
+        private static function run_import_command($file_path)
+        {
+            $import_command = 'wp import ' . $file_path . ' --authors=skip';
             $descriptorspec = array(
                 0 => array("pipe", "r"),
                 1 => array("pipe", "w"),
@@ -310,21 +359,26 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             $process = proc_open($import_command, $descriptorspec, $pipes, null, null);
 
             if (is_resource($process)) {
-                while ($s = fgets($pipes[1])) {
-                    if (strpos($s, 'Success') !== false) {
-                        $s = trim(str_replace('Success:', '', $s));
-                        WP_CLI::success($s);
-                    } elseif (strpos($s, 'Error') !== false) {
-                        $s = trim(str_replace('Error:', '', $s));
-                        WP_CLI::error($s);
-                    } else {
-                        WP_CLI::log($s);
-                    }
-                }
-                fclose($pipes[1]);
-                fclose($pipes[2]);
+                self::process_import_output($pipes);
                 proc_close($process);
             }
+        }
+
+        private static function process_import_output($pipes)
+        {
+            while ($s = fgets($pipes[1])) {
+                if (strpos($s, 'Success') !== false) {
+                    $s = trim(str_replace('Success:', '', $s));
+                    WP_CLI::success($s);
+                } elseif (strpos($s, 'Error') !== false) {
+                    $s = trim(str_replace('Error:', '', $s));
+                    WP_CLI::error($s);
+                } else {
+                    WP_CLI::log($s);
+                }
+            }
+            fclose($pipes[1]);
+            fclose($pipes[2]);
         }
 
         /**
@@ -359,45 +413,46 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
             $content = self::get_content($content_source);
 
-            $append = isset($assoc_args['append']);
-            $prepend = isset($assoc_args['prepend']);
+            self::update_post_content($post_id, $content, $assoc_args);
+        }
 
-            if ($append && $prepend) {
-                WP_CLI::error('Cannot use both --append and --prepend options.');
+        private static function update_post_content($post_id, $content, $assoc_args)
+        {
+            $post = get_post($post_id);
+
+            if (!$post) {
+                WP_CLI::error('Post not found.');
             }
 
-            WP_CLI::log('Updating post content...');
+            $new_content = self::prepare_new_content($post->post_content, $content, $assoc_args);
 
             try {
-                $post = get_post($post_id);
-
-                if (!$post) {
-                    WP_CLI::error('Post not found.');
-                }
-
-                $new_content = $content;
-
-                if ($append) {
-                    $new_content = self::prepare_content($post->post_content) . $content;
-                } elseif ($prepend) {
-                    $new_content = $content . self::prepare_content($post->post_content);
-                }
-
-                set_transient('maxi_blocks_update_' . $post_id, true, 10 * MINUTE_IN_SECONDS);
-
-                $result = wp_update_post([
-                    'ID' => $post_id,
-                    'post_content' => $new_content,
-                ]);
-
-                if (is_wp_error($result)) {
-                    WP_CLI::error('Error updating post: ' . $result->get_error_message());
-                }
-
-                WP_CLI::success('Post content updated successfully.');
+                $transient_data = new MaxiBlocksTransientData(['new_blocks' => true]);
+                MaxiBlocksTransient::set_transient($post_id, $transient_data, 10 * MINUTE_IN_SECONDS);
             } catch (Exception $e) {
-                WP_CLI::error('Error replacing post content: ' . $e->getMessage());
+                WP_CLI::error('Error setting transient: ' . $e->getMessage());
             }
+
+            $result = wp_update_post([
+                'ID' => $post_id,
+                'post_content' => $new_content,
+            ]);
+
+            if (is_wp_error($result)) {
+                WP_CLI::error('Error updating post: ' . $result->get_error_message());
+            }
+
+            WP_CLI::success('Post content updated successfully.');
+        }
+
+        private static function prepare_new_content($existing_content, $new_content, $assoc_args)
+        {
+            if (isset($assoc_args['append'])) {
+                return self::prepare_content($existing_content) . $new_content;
+            } elseif (isset($assoc_args['prepend'])) {
+                return $new_content . self::prepare_content($existing_content);
+            }
+            return $new_content;
         }
 
         /**
@@ -426,13 +481,54 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             if (!$content_source) {
                 $content_source = self::prompt_for_attachment();
             }
-
             $content = self::get_content($content_source);
-
             $post_type = isset($assoc_args['post_type']) ? $assoc_args['post_type'] : 'post';
 
-            WP_CLI::log('Creating post...');
+            $post_id = self::insert_post($title, $post_type);
+            self::update_post_content($post_id, $content, []);
 
+            WP_CLI::success('Post created successfully (' . get_permalink($post_id) . ')');
+        }
+
+        /**
+         * Updates the block styles for a post.
+         *
+         * ## OPTIONS
+         *
+         * <post_id>
+         * : The ID of the post to update the block styles.
+         *
+         * ## EXAMPLES
+         *
+         *    wp maxiblocks update_post_styles 123
+         */
+        public static function update_post_styles($args)
+        {
+            $post_id = $args[0];
+
+            $post = get_post($post_id);
+
+            if (!$post) {
+                WP_CLI::error('Post not found.');
+                return;
+            }
+
+            try {
+                $transient_data = new MaxiBlocksTransientData(['new_blocks' => false]);
+                MaxiBlocksTransient::set_transient($post_id, $transient_data);
+            } catch (Exception $e) {
+                WP_CLI::error('Error setting transient: ' . $e->getMessage());
+            }
+
+            wp_update_post([
+                'ID' => $post_id,
+            ]);
+
+            WP_CLI::success('Block styles updated successfully.');
+        }
+
+        private static function insert_post($title, $post_type)
+        {
             $post_id = wp_insert_post([
                 'post_title' => $title,
                 'post_type' => $post_type,
@@ -443,18 +539,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 WP_CLI::error('Error creating post: ' . $post_id->get_error_message());
             }
 
-            set_transient('maxi_blocks_update_' . $post_id, true, 10 * MINUTE_IN_SECONDS);
-
-            $result = wp_update_post([
-                'ID' => $post_id,
-                'post_content' => $content,
-            ]);
-
-            if (is_wp_error($result)) {
-                WP_CLI::error('Error updating post: ' . $result->get_error_message());
-            }
-
-            WP_CLI::success('Post created successfully (' . get_permalink($post_id) . ')');
+            return $post_id;
         }
 
         private static function get_content($source)

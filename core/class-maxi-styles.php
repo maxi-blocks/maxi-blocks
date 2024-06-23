@@ -122,9 +122,10 @@ class MaxiBlocks_Styles
      */
     public function process_post_content($post_id, $post, $update)
     {
-        if(get_transient('maxi_blocks_update_' . $post_id)) {
+        $transient = MaxiBlocksTransient::get_transient($post_id);
+        if($transient) {
             delete_transient('maxi_blocks_update_' . $post_id);
-            $this->get_styles_meta_fonts_from_blocks($post, true);
+            $this->get_styles_meta_fonts_from_blocks($post, $transient->new_blocks);
         }
     }
 
@@ -1859,7 +1860,7 @@ class MaxiBlocks_Styles
     /**
      * Get styles meta fonts from blocks
      */
-    public function get_styles_meta_fonts_from_blocks($post, $process_without_check = false)
+    public function get_styles_meta_fonts_from_blocks($post, $new_blocks = false)
     {
         if(!$post) {
             return $post;
@@ -1882,8 +1883,8 @@ class MaxiBlocks_Styles
             return $post;
         }
 
-        $this->update_unique_ids($blocks, function ($block) use ($process_without_check) {
-            return $process_without_check || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u');
+        $this->update_unique_ids($blocks, function ($block) use ($new_blocks) {
+            return $new_blocks || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u');
         });
 
         // Save the post with the updated blocks
@@ -2431,35 +2432,37 @@ class MaxiBlocks_Styles
                     continue;
                 }
 
-                $new_unique_id = self::unique_id_generator($block_name);
-                $id_mapping[$previous_unique_id] = $new_unique_id;
+                if($should_update_unique_id == null || $should_update_unique_id($block)) {
+                    $new_unique_id = self::unique_id_generator($block_name);
+                    $id_mapping[$previous_unique_id] = $new_unique_id;
 
-                $block['attrs']['uniqueID'] = $new_unique_id;
+                    $block['attrs']['uniqueID'] = $new_unique_id;
 
-                if (isset($block['attrs']['background-layers'])) {
-                    foreach ($block['attrs']['background-layers'] as $key => &$value) {
-                        if (isset($value['background-svg-SVGData'])) {
-                            $svg_data = &$value['background-svg-SVGData'];
-                            foreach ($svg_data as $svg_data_key => $svg_data_value) {
-                                if (strpos($svg_data_key, $previous_unique_id) !== false) {
-                                    $svg_data[$new_unique_id] = $svg_data_value;
-                                    unset($svg_data[$svg_data_key]);
+                    if (isset($block['attrs']['background-layers'])) {
+                        foreach ($block['attrs']['background-layers'] as $key => &$value) {
+                            if (isset($value['background-svg-SVGData'])) {
+                                $svg_data = &$value['background-svg-SVGData'];
+                                foreach ($svg_data as $svg_data_key => $svg_data_value) {
+                                    if (strpos($svg_data_key, $previous_unique_id) !== false) {
+                                        $svg_data[$new_unique_id] = $svg_data_value;
+                                        unset($svg_data[$svg_data_key]);
+                                    }
                                 }
+                                unset($svg_data);
                             }
-                            unset($svg_data);
-                        }
 
-                        if (isset($value['background-svg-SVGElement'])) {
-                            $value['background-svg-SVGElement'] = str_replace($previous_unique_id, $new_unique_id, $value['background-svg-SVGElement']);
+                            if (isset($value['background-svg-SVGElement'])) {
+                                $value['background-svg-SVGElement'] = str_replace($previous_unique_id, $new_unique_id, $value['background-svg-SVGElement']);
+                            }
+                            unset($value);
                         }
-                        unset($value);
                     }
-                }
 
-                $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
-                $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
-                    return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
-                }, $block['innerContent']);
+                    $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
+                    $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
+                        return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
+                    }, $block['innerContent']);
+                }
 
                 if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
                     $blocks_with_relations[] = &$block;

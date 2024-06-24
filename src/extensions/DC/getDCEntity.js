@@ -127,15 +127,15 @@ const getDCEntity = async (dataRequest, clientId) => {
 			getKind(type),
 			nameDictionary[type] ?? type,
 			{
-				per_page: accumulator + 1,
-				hide_empty: false,
+				per_page: 1,
 				order,
 				orderby: getDCOrder(relation, orderBy),
+				offset: accumulator,
 				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
 
-		return entities?.at(-1);
+		return entities?.slice(-1)[0];
 	}
 
 	if (type === 'settings') {
@@ -305,7 +305,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 			}
 		);
 
-		return termsEntity[0];
+		return termsEntity?.[0];
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(

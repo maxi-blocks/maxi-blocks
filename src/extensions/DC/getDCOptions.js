@@ -98,18 +98,6 @@ export const getIdOptions = async (
 	return data;
 };
 
-// TODO: looks like it's not necessary
-// const disabledType = (valueType, contentType) => {
-// 	const hide = options =>
-// 		Object.keys(options).forEach(key => {
-// 			if (options[key].value === valueType) {
-// 				options[key].disabled = true;
-// 			}
-// 		});
-
-// 	hide(typeOptions[contentType]);
-// };
-
 const getDCOptions = async (
 	dataRequest,
 	postIdOptions,

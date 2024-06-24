@@ -169,10 +169,8 @@ const ContextLoop = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	const fetchDcData = useCallback(async () => {
-		// TODO: check if this code is necessary
-		// On init, get post author options and set current user as default
-		if (!postAuthorOptions) {
+	useEffect(() => {
+		const fetchPostAuthorOptions = async () => {
 			const authors = await resolveSelect('core').getUsers({
 				who: 'authors',
 			});
@@ -188,10 +186,17 @@ const ContextLoop = props => {
 
 				changeProps({ 'cl-author': id });
 			}
-		}
+		};
 
-		// Sets new content
+		if (!postAuthorOptions) {
+			fetchPostAuthorOptions();
+		}
+	}, []);
+
+	const fetchDcData = useCallback(async () => {
+		console.time('fetchDcData');
 		if (status && isTypeHasRelations) {
+			console.time('dataRequest');
 			const dataRequest = {
 				type,
 				id,
@@ -200,27 +205,49 @@ const ContextLoop = props => {
 				relation,
 				author,
 			};
+			console.timeEnd('dataRequest');
 
+			console.time('getDCOptions');
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
 				contentType,
 				true
 			);
+			console.timeEnd('getDCOptions');
 
 			if (postIDSettings) {
+				console.time('postIDSettings');
 				const { newValues, newPostIdOptions } = postIDSettings;
 
+				console.time('changeProps');
 				changeProps(newValues);
+				console.timeEnd('changeProps');
 
+				console.time('setPostIdOptions');
 				if (
 					!isNil(newPostIdOptions) &&
 					!isEqual(postIdOptions, newPostIdOptions)
-				)
+				) {
 					setPostIdOptions(newPostIdOptions);
+				}
+				console.timeEnd('setPostIdOptions');
+
+				console.timeEnd('postIDSettings');
 			}
 		}
-	});
+		console.timeEnd('fetchDcData');
+	}, [
+		status,
+		isTypeHasRelations,
+		type,
+		id,
+		field,
+		postIdOptions,
+		relation,
+		author,
+		contentType,
+	]);
 
 	const selectedBlockClientId = useSelect(
 		select => select('core/block-editor').getSelectedBlockClientId(),
@@ -389,11 +416,11 @@ const ContextLoop = props => {
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
-									onChange={value =>
+									onChange={value => {
 										changeProps({
 											'cl-relation': value,
-										})
-									}
+										});
+									}}
 									onReset={() =>
 										changeProps({
 											'cl-relation':

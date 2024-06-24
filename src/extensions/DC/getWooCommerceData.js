@@ -4,61 +4,45 @@ import memoize from 'memize';
 const API_ENDPOINT = 'wc/store/v1';
 let indexedProducts = null;
 
-const indexProducts = products => {
-	return products.reduce((acc, product) => {
-		acc[product.id] = product;
-		return acc;
-	}, {});
-};
+// Use object destructuring in the function parameter
+const indexProducts = (products = []) =>
+  products.reduce((acc, { id, ...product }) => ({ ...acc, [id]: product }), {});
 
 const getProducts = memoize(async () => {
-	const products = await apiFetch({
-		path: `${API_ENDPOINT}/products`,
-		method: 'GET',
-	});
+  const products = await apiFetch({
+    path: `${API_ENDPOINT}/products`,
+    method: 'GET',
+  });
 
-	indexedProducts = indexProducts(products);
+  indexedProducts = indexProducts(products);
 
-	return products;
+  return products;
 });
 
 const getProductData = async productID => {
-	if (!productID) return null;
+  if (!productID) return null;
 
-	if (!indexedProducts?.[productID]) {
-		try {
-			const product = await apiFetch({
-				path: `${API_ENDPOINT}/products/${productID}`,
-				method: 'GET',
-			});
+  if (!indexedProducts?.[productID]) {
+    try {
+      const product = await apiFetch({
+        path: `${API_ENDPOINT}/products/${productID}`,
+        method: 'GET',
+      });
 
-			indexedProducts = {
-				...indexedProducts,
-				[productID]: product,
-			};
-		} catch (error) {
-			console.error(
-				`Failed to fetch product with ID ${productID}:`,
-				error
-			);
-			return null;
-		}
-	}
+      // Use object spread to simplify the assignment
+      indexedProducts = { ...indexedProducts, [productID]: product };
+    } catch (error) {
+      console.error(`Failed to fetch product with ID ${productID}:`, error);
+      return null;
+    }
+  }
 
-	return indexedProducts[productID];
+  return indexedProducts[productID];
 };
 
-const getCartData = memoize(async () =>
-	apiFetch({
-		path: `${API_ENDPOINT}/cart`,
-		method: 'GET',
-	})
-);
+// Use object shorthand for the path and method properties
+const getCartData = memoize(() => apiFetch({ path: `${API_ENDPOINT}/cart`, method: 'GET' }));
 
-const getCartUrl = memoize(async () =>
-	apiFetch({
-		path: '/maxi-blocks/v1.0/wc/get-cart-url',
-	})
-);
+const getCartUrl = memoize(() => apiFetch({ path: '/maxi-blocks/v1.0/wc/get-cart-url' }));
 
 export { getProducts, getProductData, getCartData, getCartUrl };

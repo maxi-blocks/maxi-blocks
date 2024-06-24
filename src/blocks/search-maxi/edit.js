@@ -23,6 +23,7 @@ import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Search block
@@ -196,4 +197,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

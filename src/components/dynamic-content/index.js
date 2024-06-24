@@ -79,6 +79,7 @@ const DynamicContent = props => {
 		mediaID,
 		mediaURL,
 		onChange,
+		disableHideOnFrontend = false,
 		...dynamicContent
 	} = props;
 
@@ -180,7 +181,14 @@ const DynamicContent = props => {
 			}
 		);
 
-		if (hasChangesToSave) onChange(params);
+		if (hasChangesToSave) {
+			const filteredObj = Object.fromEntries(
+				Object.entries(params).filter(
+					([key, value]) => value !== undefined
+				)
+			);
+			onChange(filteredObj);
+		}
 	};
 
 	const fetchDcData = useCallback(async () => {
@@ -302,18 +310,20 @@ const DynamicContent = props => {
 			/>
 			{status && (
 				<>
-					{!ignoreEmptyFields.includes(field) && !isCL && (
-						<ToggleSwitch
-							label={__(
-								'Hide if no content found on frontend',
-								'maxi-blocks'
-							)}
-							selected={hide}
-							onChange={value =>
-								changeProps({ 'dc-hide': value })
-							}
-						/>
-					)}
+					{!disableHideOnFrontend &&
+						!ignoreEmptyFields.includes(field) &&
+						!isCL && (
+							<ToggleSwitch
+								label={__(
+									'Hide if no content found on frontend',
+									'maxi-blocks'
+								)}
+								selected={hide}
+								onChange={value =>
+									changeProps({ 'dc-hide': value })
+								}
+							/>
+						)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
 							label={__('Source', 'maxi-blocks')}
@@ -343,7 +353,7 @@ const DynamicContent = props => {
 					)}
 					{source === 'acf' && (
 						<ACFSettingsControl
-							onChange={onChange}
+							onChange={changeProps}
 							contentType={contentType}
 							group={acfGroup}
 							field={field}

@@ -1,3 +1,15 @@
+_Updates 21 Jun 2024_
+MaxiBlocks v1.9.0
+* Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
+
+_Updates 20 Jun 2024_
+MaxiBlocks v1.8.9
+* Update: Added Dynamic Content and Context Loop support for Background Image.
+* Update: Optimized PHP code for faster execution and improved overall plugin performance.
+* Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
+* Fix: Corrected default Style Card style generation on the first plugin installation.
+* Fix: Resolved backend and frontend issues related to Dynamic Content when displaying posts filtered by author.
+
 _Updates 11 Jun 2024_
 MaxiBlocks v1.8.8
 * Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.

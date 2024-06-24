@@ -31,6 +31,7 @@ import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
 } from '../../extensions/DC';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * General
@@ -196,5 +197,5 @@ class edit extends MaxiBlockComponent {
 }
 
 export default withMaxiContextLoop(
-	withMaxiContextLoopContext(withMaxiProps(edit))
+	withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)))
 );

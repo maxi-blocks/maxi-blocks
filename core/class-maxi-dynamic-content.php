@@ -254,6 +254,7 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
@@ -333,13 +334,13 @@ class MaxiBlocks_DynamicContent
 
         // Build the current URL without query parameters
         $current_url_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
-        $current_url = $current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $current_url = esc_url($current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 
         // Initialize an array to hold query parameters
         $current_query_params = [];
 
         // Extract the query string from the current URL and parse it if not null
-        $query_string = parse_url($current_url, PHP_URL_QUERY) ?? '';
+        $query_string = wp_parse_url($current_url, PHP_URL_QUERY) ?? '';
         parse_str($query_string, $current_query_params);
 
 
@@ -553,9 +554,9 @@ class MaxiBlocks_DynamicContent
     public function render_dc($attributes, $content, $block)
     {
 
-
-        if (!array_key_exists('dc-status', $attributes)) {
-
+        if (!array_key_exists('dc-status', $attributes) &&
+        !array_key_exists('background-layers', $attributes) &&
+        !array_key_exists('background-layers-hover', $attributes)) {
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
                 $content = $this->check_inner_blocks($block, $attributes, $content);
             }
@@ -564,11 +565,6 @@ class MaxiBlocks_DynamicContent
                 $content = self::render_dc_classes($attributes, $content);
                 return $this->render_pagination($attributes, $content);
             }
-            return $content;
-        }
-
-        if (!$attributes['dc-status']) {
-            $content = $this->check_inner_blocks($block, $attributes, $content);
             return $content;
         }
 
@@ -616,6 +612,14 @@ class MaxiBlocks_DynamicContent
 
             }
         }
+
+        $content = self::render_dc_background($attributes, $content, $context_loop);
+
+        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
+            $content = $this->check_inner_blocks($block, $attributes, $content);
+            return $content;
+        }
+
         $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
@@ -640,6 +644,31 @@ class MaxiBlocks_DynamicContent
 
         $content = self::render_dc_classes($attributes, $content);
         $content = str_replace('$link-to-replace', '', $content);
+
+        return $content;
+    }
+
+    public function render_dc_background($attributes, $content, $context_loop)
+    {
+        @list(
+            'background-layers' => $background_layers,
+            'background-layers-hover' => $background_layers_hover,
+        ) = $attributes;
+
+        foreach ([$background_layers, $background_layers_hover] as $layers) {
+            if (!is_array($layers)) {
+                continue;
+            }
+
+            foreach ($layers as $layer) {
+                if (array_key_exists('dc-status', $layer) && $layer['dc-status'] &&
+                    array_key_exists('type', $layer) && $layer['type'] === 'image') {
+                    $layer = array_merge($layer, $this->get_dc_values($layer, $context_loop));
+
+                    $content = self::render_dc_image($layer, $content, true);
+                }
+            }
+        }
 
         return $content;
     }
@@ -820,7 +849,7 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-    public function render_dc_image($attributes, $content)
+    public function render_dc_image($attributes, $content, $is_background = false)
     {
 
         @list(
@@ -905,11 +934,16 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        $mediaIdToReplace = ($is_background) ? '$bg-media-id-to-replace' : '$media-id-to-replace';
+        $mediaUrlToReplace = ($is_background) ? '$bg-media-url-to-replace' : '$media-url-to-replace';
+        $mediaAltToReplace = ($is_background) ? '$bg-media-alt-to-replace' : '$media-alt-to-replace';
+        $mediaCaptionToReplace = ($is_background) ? '$bg-media-caption-to-replace' : '$media-caption-to-replace';
+
         if (!empty($media_src)) {
-            $content = str_replace('$media-id-to-replace', $media_id, $content);
-            $content = str_replace('$media-url-to-replace', $media_src, $content);
-            $content = str_replace('$media-alt-to-replace', $media_alt, $content);
-            $content = str_replace('$media-caption-to-replace', $media_caption, $content);
+            $content = str_replace($mediaIdToReplace, $media_id, $content);
+            $content = str_replace($mediaUrlToReplace, $media_src, $content);
+            $content = str_replace($mediaAltToReplace, $media_alt, $content);
+            $content = str_replace($mediaCaptionToReplace, $media_caption, $content);
         } else {
             $this->is_empty = true;
 
@@ -918,11 +952,10 @@ class MaxiBlocks_DynamicContent
                 return '';
             }
 
-            $content = str_replace('$media-id-to-replace', '', $content);
-            $content = str_replace('$media-url-to-replace', '', $content);
-            $content = str_replace('$media-alt-to-replace', '', $content);
-            $content = str_replace('$media-caption-to-replace', '', $content);
-
+            $content = str_replace($mediaIdToReplace, '', $content);
+            $content = str_replace($mediaUrlToReplace, '', $content);
+            $content = str_replace($mediaAltToReplace, '', $content);
+            $content = str_replace($mediaCaptionToReplace, '', $content);
         }
 
         return $content;
@@ -1121,7 +1154,7 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts) && !$is_current_archive) {
+            if (empty($query->posts) && !$is_current_archive && $dc_relation !== 'by-author') {
                 $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
                 if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
                     return $this->get_post(array_replace($attributes, $validated_attributes));
@@ -1590,9 +1623,9 @@ class MaxiBlocks_DynamicContent
 
                 // Format the date based on the available date components
                 if ($day) {
-                    $formatted_date = date($format, mktime(0, 0, 0, $month, $day, $year));
+                    $formatted_date = gmdate($format, gmmktime(0, 0, 0, $month, $day, $year));
                 } elseif ($month) {
-                    $formatted_date = date('F Y', mktime(0, 0, 0, $month, 1, $year));
+                    $formatted_date = gmdate('F Y', gmmktime(0, 0, 0, $month, 1, $year));
                 } elseif ($year) {
                     $formatted_date = $year;
                 } else {
@@ -1677,17 +1710,17 @@ class MaxiBlocks_DynamicContent
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
-                    return strip_tags(wc_price($price));
+                    return wp_strip_all_tags(wc_price($price));
                 case 'sale_price':
                     $price = $product->get_sale_price();
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
                     if ($product->is_on_sale()) {
-                        return strip_tags(wc_price($price));
+                        return wp_strip_all_tags(wc_price($price));
                     }
 
-                    return strip_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'price_range':
                     if ($product->is_type('variable')) {
 
@@ -1699,7 +1732,7 @@ class MaxiBlocks_DynamicContent
                         }
                     }
 
-                    return strip_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'description':
                     return self::get_limited_string($product->get_description(), $dc_limit);
                 case 'short_description':
@@ -1758,7 +1791,7 @@ class MaxiBlocks_DynamicContent
                 if (empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])) {
                     $this->is_empty = true;
                 }
-                return strip_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
+                return wp_strip_all_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
             default:
                 return null;
         }
@@ -1868,7 +1901,7 @@ class MaxiBlocks_DynamicContent
         // Validate the $date variable
         if (empty($date) || strtotime($date) === false) {
             // Set to current date/time or another default value if invalid
-            $date = date('Y-m-d H:i:s');
+            $date = gmdate('Y-m-d H:i:s');
         }
 
         try {
@@ -2120,6 +2153,7 @@ class MaxiBlocks_DynamicContent
             }
         } elseif($relation === 'by-author') {
             $args['author'] = $id;
+
         } elseif($relation === 'by-tag') {
             if ($type === 'products') {
                 $args['tag'] = [$this->get_term_slug($id)];

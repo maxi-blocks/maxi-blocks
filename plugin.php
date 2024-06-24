@@ -6,7 +6,7 @@
  * Description: A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with MaxiBlocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade.
  * Author: MaxiBlocks
  * Author URI: https://maxiblocks.com/go/plugin-author
- * Version: 1.8.8
+ * Version: 1.9.0
  * Requires at least: 6.2.2
  * Requires PHP: 8.0
  * License: GPL v2 or later
@@ -106,12 +106,17 @@ function maxi_show_database_version_notice()
     $isMariaDB = strpos(strtolower($wpdb->db_server_info()), 'maria') !== false;
     $requiredVersion = $isMariaDB ? REQUIRED_MARIADB_VERSION : REQUIRED_MYSQL_VERSION;
     $databaseType = $isMariaDB ? 'MariaDB' : 'MySQL';
-    $message = __('Highly recommend to update to', 'maxi-blocks') . ' ' . $databaseType . ' ' . $requiredVersion . '+ ' . __('for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks') . ' <a href="https://maxiblocks.com/go/database-version-requirements" target="_blank">' . __('Learn more', 'maxi-blocks') . '</a>';
+    $message = sprintf(
+        /* translators: %1$s: database type, %2$s: required version, %3$s: link URL */
+        esc_html__('Highly recommend to update to %1$s %2$s+ for enhanced security, better performance, and full feature compatibility.', 'maxi-blocks'),
+        esc_html($databaseType),
+        esc_html($requiredVersion)
+    ) . ' <a href="' . esc_url('https://maxiblocks.com/go/database-version-requirements') . '" target="_blank">' . esc_html__('Learn more', 'maxi-blocks') . '</a>';
 
     echo '<tr class="plugin-update-tr active maxi-blocks-db-notice" data-slug="maxi-blocks" data-plugin="maxi-blocks/plugin.php">';
     echo '<td colspan="4" class="plugin-update colspanchange">';
     echo '<div class="update-message notice inline notice-warning notice-alt is-dismissible"><p>';
-    echo $message;
+    echo wp_kses_post($message);
     echo '</p></div></td></tr>';
 }
 
@@ -213,21 +218,6 @@ function maxi_blocks_dismiss_plugin_update_notice()
 
 require_once(MAXI_PLUGIN_DIR_PATH . 'core/admin/maxi-allowed-html-tags.php');
 
-// Temporally removing patterns download
-add_filter('should_load_remote_block_patterns', '__return_false');
-
-/* Enabled option */
-
-if (!get_option('maxi_enable')) {
-    add_option('maxi_enable', 'enabled');
-}
-
-function maxi_get_option()
-{
-    echo esc_attr(get_option('maxi_enable'));
-    die();
-}
-
 function maxi_insert_block()
 {
     if (isset($_POST['maxi_title']) && isset($_POST['maxi_content'])) {//phpcs:ignore
@@ -235,14 +225,7 @@ function maxi_insert_block()
         $this_content = sanitize_text_field($_POST['maxi_content']);//phpcs:ignore
 
         if ($this_content && $this_title) {
-            // 	$has_reusable_block = get_posts( array(
-            // 	'name'           => $_POST['maxi_title'],
-            // 	'post_type'      => 'wp_block',
-            // 	'posts_per_page' => 1
-            // ) );
 
-            // if ( ! $has_reusable_block ) {
-            // No reusable block like ours detected.
             wp_insert_post([
             'post_content' =>  $this_content,
             'post_title' => $this_title,
@@ -257,8 +240,6 @@ function maxi_insert_block()
             ),
         ]);
             echo 'success';
-            //} //if ( ! $has_reusable_block )
-            //else {echo 'You already have Block with the same name';}
         } else {
             echo 'JSON Error';
         }

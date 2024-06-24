@@ -6,6 +6,11 @@ import { getAttributeKey } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**
+ * External dependencies
+ */
+import { cloneDeep, findIndex, isEqual, isNil, omitBy } from 'lodash';
+
+/**
  * Utils
  */
 export const setBreakpointToLayer = ({
@@ -79,4 +84,28 @@ export const getDefaultLayerWithBreakpoint = (
 		breakpoint,
 		isHover,
 	});
+};
+
+export const onChangeLayer = (
+	rawLayer,
+	onChange,
+	layersHover,
+	layers,
+	target = false
+) => {
+	const layer = omitBy(rawLayer, isNil);
+	const isHoverLayer = layer.isHover;
+	const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
+
+	const index = findIndex(newLayers, { order: layer.order });
+
+	newLayers[index] = layer;
+
+	if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
+		onChange(
+			{
+				[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			},
+			target
+		);
 };

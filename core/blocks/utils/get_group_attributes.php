@@ -1,20 +1,34 @@
 <?php
-
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)
 {
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/'.$item . ($is_hover ? 'Hover' : '').'.json';
-    if ($is_hover && file_exists($file_path)) {
-        return json_decode(file_get_contents($file_path), true);
-    } else {
-        $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/'.$item.'.json';
-        if (file_exists($file_path)) {
-            return json_decode(file_get_contents($file_path), true);
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . ($is_hover ? 'Hover' : '') . '.json';
+
+    global $wp_filesystem;
+    if (empty($wp_filesystem)) {
+        require_once ABSPATH . '/wp-admin/includes/file.php';
+        WP_Filesystem();
+    }
+
+    if (file_exists($file_path)) {
+        $file_contents = $wp_filesystem->get_contents($file_path);
+        if ($file_contents) {
+            return json_decode($file_contents, true);
         }
     }
+
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . '.json';
+    if (file_exists($file_path)) {
+        $file_contents = $wp_filesystem->get_contents($file_path);
+        if ($file_contents) {
+            return json_decode($file_contents, true);
+        }
+    }
+
     return null;
 }
+
 
 function get_group_attributes(
     $attributes,
@@ -60,9 +74,7 @@ function get_group_attributes(
             $default_attributes = json_file_to_array($el, $is_hover);
 
             if (isset($default_attributes) && is_array($default_attributes)) {
-
                 foreach (array_keys($default_attributes) as $key) {
-
                     if (isset($attributes[$prefix . $key]) && get_is_valid($attributes[$prefix . $key], $cleaned)) {
                         $response[$prefix . $key] = $attributes[$prefix . $key];
                     } elseif (isset($default_attributes[$prefix . $key]['default']) && get_is_valid($default_attributes[$prefix . $key]['default'])) {

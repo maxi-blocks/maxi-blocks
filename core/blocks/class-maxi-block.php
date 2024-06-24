@@ -230,6 +230,13 @@ if (!class_exists('MaxiBlocks_Block')):
             'linkSettings' => [
                 'type' => 'object',
             ],
+			// Required to render backcground DC
+			'background-layers' => [
+				'type' => 'array',
+			],
+			'background-layers-hover' => [
+				'type' => 'array',
+			],
         ];
 
         /**
@@ -243,22 +250,50 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function register_block()
         {
+            global $wp_filesystem;
+
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
             $basic_config = [
                 'api_version' => 2,
                 'editor_script' => 'maxi-blocks-block-editor',
                 'render_callback' => [$this, 'render_block'],
             ];
+
             // Add dynamic content attributes to dynamic blocks
             $config = in_array($this->block_name, $this->dynamic_blocks) ? array_merge($basic_config, [
                 'attributes' => self::$dynamic_content_attributes,
             ]) : $basic_config;
 
+            // Construct the file path
+            $file_path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
+
+            // Check if the file exists
+            if (!$wp_filesystem->exists($file_path)) {
+                return false; // Handle the error appropriately
+            }
+
+            // Read the file contents
+            $file_contents = $wp_filesystem->get_contents($file_path);
+
+            if ($file_contents === false) {
+                return false; // Handle the error appropriately
+            }
+
+            // Decode the JSON file
+            $block_json = json_decode($file_contents, true);
+
+            if ($block_json === null) {
+                return false; // Handle the JSON decoding error
+            }
+
+            // Register the block type
             $this->block = register_block_type(
                 "maxi-blocks/{$this->block_name}",
-                array_merge(
-                    json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'), true),
-                    $config,
-                )
+                array_merge($block_json, $config)
             );
         }
 
@@ -289,21 +324,41 @@ if (!class_exists('MaxiBlocks_Block')):
         }
 
         /**
-        * Get block metadata.
-        *
-        * Reads the block.json file to retrieve the block metadata.
-        *
-        * @return array The block metadata.
-        */
+ * Get block metadata.
+ *
+ * Reads the block.json file to retrieve the block metadata.
+ *
+ * @return array The block metadata.
+ */
         public function get_block_metadata()
         {
             // If the block metadata is not yet retrieved, read it from the block.json file.
-            return $this->block_metadata = (!empty($this->block_metadata) ? $this->block_metadata : json_decode(
-                file_get_contents(MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json'),
-                true
-            ));
+            if (!empty($this->block_metadata)) {
+                return $this->block_metadata;
+            }
 
+            $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
+
+            if (!file_exists($path)) {
+                return null;
+            }
+
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
+            $file_contents = $wp_filesystem->get_contents($path);
+            if (!$file_contents) {
+                return null;
+            }
+
+            $this->block_metadata = json_decode($file_contents, true);
+            return $this->block_metadata;
         }
+
+
 
         public function get_block_attributes($props)
         {

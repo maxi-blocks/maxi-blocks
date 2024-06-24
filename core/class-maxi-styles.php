@@ -1208,7 +1208,6 @@ class MaxiBlocks_Styles
 
         if ($script === 'relations') {
             $strategy = 'async';
-            $version = time();
         }
 
         wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], $version, array(

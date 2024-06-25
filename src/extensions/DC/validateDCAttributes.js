@@ -8,7 +8,6 @@ const getValidatedDCAttributes = async (
 	contextLoop,
 	isCL = false
 ) => {
-	console.log('getDCOptions in getValidatedDCAttributes');
 	const dcOptions = await getDCOptions(
 		attributes,
 		attributes.id,

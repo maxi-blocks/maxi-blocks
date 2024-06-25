@@ -173,13 +173,14 @@ const DynamicContent = props => {
 	);
 
 	const changeProps = params => {
-		const hasChangesToSave = Object.entries(dynamicContent).some(
-			([key, val]) => {
-				if (!(key in params)) return false;
+		let hasChangesToSave = false;
 
-				return params[key] !== val;
+		for (const [key, val] of Object.entries(dynamicContent)) {
+			if (key in params && params[key] !== val) {
+				hasChangesToSave = true;
+				break;
 			}
-		);
+		}
 
 		if (hasChangesToSave) {
 			const filteredObj = Object.fromEntries(
@@ -192,61 +193,77 @@ const DynamicContent = props => {
 	};
 
 	const fetchDcData = useCallback(async () => {
-		// TODO: check if this code is necessary
-		// On init, get post author options and set current user as default
-		if (!postAuthorOptions) {
-			const authors = await resolveSelect('core').getUsers({
-				who: 'authors',
-			});
+		try {
+			// On init, get post author options and set current user as default
+			if (!postAuthorOptions) {
+				const authors = await resolveSelect('core').getUsers({
+					who: 'authors',
+				});
 
-			if (authors) {
-				setPostAuthorOptions(
-					authors.map(({ id, name }) => ({
+				if (authors) {
+					const authorOptions = authors.map(({ id, name }) => ({
 						label: `${id} - ${name}`,
 						value: id,
-					}))
-				);
+					}));
+					setPostAuthorOptions(authorOptions);
 
-				if (!author) {
-					const { id } = await resolveSelect('core').getCurrentUser();
-
-					changeProps({ 'dc-author': id });
+					if (!author) {
+						const { id } = await resolveSelect(
+							'core'
+						).getCurrentUser();
+						changeProps({ 'dc-author': id });
+					}
 				}
 			}
-		}
 
-		// Sets new content
-		if (status && relationTypes.includes(type)) {
-			const dataRequest = {
-				type,
-				id,
-				field,
-				postIdOptions,
-				relation,
-				author,
-			};
+			// Sets new content if the status and type match the relation types
+			if (status && relationTypes.includes(type)) {
+				const dataRequest = {
+					type,
+					id,
+					field,
+					postIdOptions,
+					relation,
+					author,
+				};
 
-			const postIDSettings = await getDCOptions(
-				dataRequest,
-				postIdOptions,
-				contentType,
-				false,
-				contextLoop
-			);
+				const postIDSettings = await getDCOptions(
+					dataRequest,
+					postIdOptions,
+					contentType,
+					false,
+					contextLoop
+				);
 
-			if (postIDSettings) {
-				const { newValues, newPostIdOptions } = postIDSettings;
+				if (postIDSettings) {
+					const { newValues, newPostIdOptions } = postIDSettings;
 
-				changeProps(newValues);
+					changeProps(newValues);
 
-				if (
-					!isNil(newPostIdOptions) &&
-					!isEqual(postIdOptions, newPostIdOptions)
-				)
-					setPostIdOptions(newPostIdOptions);
+					if (
+						!isNil(newPostIdOptions) &&
+						!isEqual(postIdOptions, newPostIdOptions)
+					) {
+						setPostIdOptions(newPostIdOptions);
+					}
+				}
 			}
+		} catch (error) {
+			console.error('Error fetching DC data:', error);
 		}
-	});
+	}, [
+		author,
+		contentType,
+		contextLoop,
+		field,
+		id,
+		postAuthorOptions,
+		postIdOptions,
+		relation,
+		relationTypes,
+		status,
+		type,
+	]);
 
 	const currentTemplateType = getCurrentTemplateSlug();
 

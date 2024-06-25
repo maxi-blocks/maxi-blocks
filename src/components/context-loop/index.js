@@ -156,15 +156,17 @@ const ContextLoop = props => {
 		orderTypes.includes(type) && orderRelations.includes(relation);
 
 	const changeProps = (params, alwaysSaveCLStatus = false) => {
-		const hasChangesToSave = Object.entries(contextLoop).some(
-			([key, val]) => {
-				if (alwaysSaveCLStatus && key === 'cl-status') return true;
+		let hasChangesToSave = false;
 
-				if (!(key in params)) return false;
-
-				return params[key] !== val;
+		for (const [key, val] of Object.entries(contextLoop)) {
+			if (
+				(alwaysSaveCLStatus && key === 'cl-status') ||
+				(key in params && params[key] !== val)
+			) {
+				hasChangesToSave = true;
+				break;
 			}
-		);
+		}
 
 		if (hasChangesToSave) onChange(params);
 	};

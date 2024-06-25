@@ -1203,10 +1203,21 @@ class MaxiBlocks_Styles
                 ));
         }
 
-        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
-            'strategy'  => 'defer', 'in_footer' => true
+        $strategy = 'defer';
+        $version = MAXI_PLUGIN_VERSION;
+
+        if ($script === 'relations') {
+            $strategy = 'async';
+        }
+
+        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], $version, array(
+            'strategy'  => $strategy, 'in_footer' => true
             ));
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+
+        // Add prefetch link for the script
+        $prefetch_url = plugins_url($js_script_path, dirname(__FILE__));
+        echo "<link rel='prefetch' href='$prefetch_url' as='script'>";
     }
 
 

@@ -28,9 +28,10 @@ class Relation {
 		}
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		this.hasMultipleTargetsArray = this.css.map(item =>
-			Object.keys(item).some(key => !this.breakpoints.includes(key))
-		);
+		this.breakpointsSet = new Set(this.breakpoints);
+		const hasMultipleTargets = item =>
+			Object.keys(item).some(key => !this.breakpointsSet.has(key));
+		this.hasMultipleTargetsArray = this.css.map(hasMultipleTargets);
 
 		this.action = item.action;
 		this.sids = item.sid || item.settings;
@@ -190,10 +191,13 @@ class Relation {
 	}
 
 	getLastUsableBreakpoint(currentBreakpoint, callback) {
-		return [...this.breakpoints]
-			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
-			.reverse()
-			.find(breakpoint => callback(breakpoint));
+		const index = this.breakpoints.indexOf(currentBreakpoint);
+		for (let i = index; i > -1; i -= 1) {
+			if (callback(this.breakpoints[i])) {
+				return this.breakpoints[i];
+			}
+		}
+		return null;
 	}
 
 	getTransitionTimeout() {
@@ -578,13 +582,26 @@ class Relation {
 								const selectorRegExp = new RegExp(
 									`(${this.escapeRegExp(selector)})`
 								);
-								if (!this.stylesString.match(selectorRegExp))
+								if (!this.stylesString.match(selectorRegExp)) {
 									this.stylesString += `${selector}}${postLine}`;
+								}
 
-								this.stylesString = this.stylesString.replace(
-									selectorRegExp,
-									`$1 ${key}: ${value};`
-								);
+								// Generate the property-value pair string
+								const propertyValuePair = `${key}: ${value};`;
+
+								// Check if the property-value pair already exists in the stylesString
+								if (
+									!this.stylesString.includes(
+										propertyValuePair
+									)
+								) {
+									// If it doesn't exist, perform the replace operation
+									this.stylesString =
+										this.stylesString.replace(
+											selectorRegExp,
+											`$1 ${propertyValuePair}`
+										);
+								}
 							}
 						);
 
@@ -772,6 +789,13 @@ class Relation {
 								transitionTarget,
 								fullTransitionStringRaw
 							) => {
+								if (
+									fullTransitionStringRaw.includes(
+										transitionString
+									)
+								)
+									return fullTransitionStringRaw;
+
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
@@ -1134,7 +1158,7 @@ class Relation {
 	}
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+function initializeRelations() {
 	let relations;
 
 	if (typeof maxiRelations?.[0] === 'string') {
@@ -1163,30 +1187,32 @@ window.addEventListener('DOMContentLoaded', () => {
 				relation.uniqueID === uniqueID &&
 				relation.target === target;
 
-			const isUnique = !uniqueArray.find(uniqueRelation =>
-				getIsUnique(uniqueRelation)
-			);
+			const isUniqueRelation = uniqueRelation =>
+				getIsUnique(uniqueRelation);
+			const isUnique = !uniqueArray.find(isUniqueRelation);
 			if (isUnique) {
-				const sameRelations = relations.filter(sameRelation =>
-					getIsUnique(sameRelation)
-				);
+				const isSameRelation = sameRelation =>
+					getIsUnique(sameRelation);
+				const sameRelations = relations.filter(isSameRelation);
+				const mergeRelations = (obj, relation) => {
+					Object.keys(relation).forEach(key => {
+						if (
+							key !== 'action' &&
+							key !== 'trigger' &&
+							key !== 'uniqueID' &&
+							key !== 'target'
+						) {
+							if (!obj[key]) obj[key] = [];
+							obj[key].push(relation[key]);
+						} else {
+							obj[key] = relation[key];
+						}
+					});
+					return obj;
+				};
+
 				const mergedSameRelations = sameRelations.reduce(
-					(obj, relation) => {
-						Object.keys(relation).forEach(key => {
-							if (
-								key !== 'action' &&
-								key !== 'trigger' &&
-								key !== 'uniqueID' &&
-								key !== 'target'
-							) {
-								if (!obj[key]) obj[key] = [];
-								obj[key].push(relation[key]);
-							} else {
-								obj[key] = relation[key];
-							}
-						});
-						return obj;
-					},
+					mergeRelations,
 					{}
 				);
 				uniqueArray.push(mergedSameRelations);
@@ -1197,5 +1223,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		[]
 	);
 
-	uniqueRelations.forEach(relation => new Relation(relation));
-});
+	const createRelation = relation => new Relation(relation);
+	uniqueRelations.forEach(createRelation);
+}
+
+initializeRelations();

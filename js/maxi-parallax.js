@@ -4,6 +4,10 @@ class Parallax {
 		this.wrapperEl = el;
 		this.imgEl = el.querySelector('img');
 
+		if (!this.imgEl) {
+			return;
+		}
+
 		this.getIsMobile();
 		this.getWinValues();
 		this.getOptions(speed);
@@ -48,6 +52,7 @@ class Parallax {
 
 	// eslint-disable-next-line class-methods-use-this
 	getBoundingClientRect(element) {
+		if (!element?.getBoundingClientRect()) return null;
 		const { top, right, bottom, left, width, height, x, y } =
 			element.getBoundingClientRect();
 

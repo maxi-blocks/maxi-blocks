@@ -196,9 +196,9 @@ const ContextLoop = props => {
 	}, []);
 
 	const fetchDcData = useCallback(async () => {
-		console.time('fetchDcData');
+		// console.time('fetchDcData');
 		if (status && isTypeHasRelations) {
-			console.time('dataRequest');
+			// console.time('dataRequest');
 			const dataRequest = {
 				type,
 				id,
@@ -207,38 +207,38 @@ const ContextLoop = props => {
 				relation,
 				author,
 			};
-			console.timeEnd('dataRequest');
+			// console.timeEnd('dataRequest');
 
-			console.time('getDCOptions');
+			// console.time('getDCOptions');
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
 				contentType,
 				true
 			);
-			console.timeEnd('getDCOptions');
+			// console.timeEnd('getDCOptions');
 
 			if (postIDSettings) {
-				console.time('postIDSettings');
+				// console.time('postIDSettings');
 				const { newValues, newPostIdOptions } = postIDSettings;
 
-				console.time('changeProps');
+				// console.time('changeProps');
 				changeProps(newValues);
-				console.timeEnd('changeProps');
+				// console.timeEnd('changeProps');
 
-				console.time('setPostIdOptions');
+				// console.time('setPostIdOptions');
 				if (
 					!isNil(newPostIdOptions) &&
 					!isEqual(postIdOptions, newPostIdOptions)
 				) {
 					setPostIdOptions(newPostIdOptions);
 				}
-				console.timeEnd('setPostIdOptions');
+				// console.timeEnd('setPostIdOptions');
 
-				console.timeEnd('postIDSettings');
+				// console.timeEnd('postIDSettings');
 			}
 		}
-		console.timeEnd('fetchDcData');
+		// console.timeEnd('fetchDcData');
 	}, [
 		status,
 		isTypeHasRelations,

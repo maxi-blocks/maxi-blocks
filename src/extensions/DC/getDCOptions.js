@@ -105,10 +105,12 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
+	console.time('customPostTypes, customTaxonomies');
 	const [customPostTypes, customTaxonomies] = await Promise.all([
 		select('maxiBlocks/dynamic-content').getCustomPostTypes(),
 		select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
 	]);
+	console.timeEnd('customPostTypes, customTaxonomies');
 
 	const isCustomPostType = customPostTypes.includes(type);
 	const isCustomTaxonomy = customTaxonomies.includes(type);

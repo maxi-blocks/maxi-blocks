@@ -30,7 +30,6 @@ const fetchAndUpdateDCData = async (
 	clientId
 ) => {
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
-
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
 	const { status, content, type, field, id, linkTarget, containsHTML } =

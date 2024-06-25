@@ -193,7 +193,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						'cl-'
 					);
 
-					console.log('getDCOptions in withMaxiContextLoop');
 					const { newValues } =
 						(await getDCOptions(
 							dataRequest,

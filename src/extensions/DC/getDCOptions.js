@@ -48,21 +48,17 @@ export const getIdOptions = async (
 		products: 'product',
 	};
 
-	const args = {
-		per_page: -1,
-	};
+	const args = { per_page: -1 };
 
 	const currentTemplateType = getCurrentTemplateSlug();
 
-	if (type === 'users' || relation === 'by-author') {
+	const fetchUsers = async () => {
 		const users = await getUsers();
+		return users ? users.map(({ id, name }) => ({ id, name })) : null;
+	};
 
-		if (users) {
-			data = users.map(({ id, name }) => ({
-				id,
-				name,
-			}));
-		}
+	if (type === 'users' || relation === 'by-author') {
+		data = await fetchUsers();
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
 		relation === 'by-category'
@@ -85,14 +81,7 @@ export const getIdOptions = async (
 		data = await getEntityRecords('postType', type, args);
 	} else if (relation === 'current-archive') {
 		if (currentTemplateType === 'author') {
-			const users = await getUsers();
-
-			if (users) {
-				data = users.map(({ id, name }) => ({
-					id,
-					name,
-				}));
-			}
+			data = await fetchUsers();
 		} else if (['category', 'tag'].includes(currentTemplateType)) {
 			data = await getEntityRecords(
 				'taxonomy',
@@ -102,7 +91,7 @@ export const getIdOptions = async (
 		} else {
 			data = await getEntityRecords('taxonomy', 'category', args);
 		}
-	} else if (['archive'].includes(currentTemplateType)) {
+	} else if (currentTemplateType === 'archive') {
 		data = await getEntityRecords('taxonomy', 'category', args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
@@ -118,9 +107,7 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	console.time('getDCOptions');
 	if (!customPostTypesCache || !customTaxonomiesCache) {
-		console.time('getting customPostTypes, customTaxonomies');
 		const [customPostTypes, customTaxonomies] = await Promise.all([
 			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
 			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
@@ -128,13 +115,11 @@ const getDCOptions = async (
 
 		customPostTypesCache = customPostTypes;
 		customTaxonomiesCache = customTaxonomies;
-		console.timeEnd('getting customPostTypes, customTaxonomies');
 	}
 
 	const isCustomPostType = customPostTypesCache.includes(type);
 	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
 
-	console.time('await getIdOptions');
 	const data = await getIdOptions(
 		type,
 		relation,
@@ -142,11 +127,8 @@ const getDCOptions = async (
 		isCustomPostType,
 		isCustomTaxonomy
 	);
-	console.timeEnd('await getIdOptions');
 
 	if (!data) {
-		console.log('getDCOptions: no data');
-		console.timeEnd('getDCOptions');
 		return null;
 	}
 
@@ -223,8 +205,6 @@ const getDCOptions = async (
 					newValues[`${prefix}error`] = type;
 				}
 
-				console.log('getDCOptions: !isCL');
-				console.timeEnd('getDCOptions');
 				return { newValues, newPostIdOptions: [] };
 			}
 
@@ -240,7 +220,6 @@ const getDCOptions = async (
 			}
 		}
 
-		console.timeEnd('getDCOptions');
 		return { newValues, newPostIdOptions };
 	}
 

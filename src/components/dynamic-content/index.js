@@ -227,6 +227,7 @@ const DynamicContent = props => {
 					author,
 				};
 
+				console.log('getDCOptions in DC');
 				const postIDSettings = await getDCOptions(
 					dataRequest,
 					postIdOptions,

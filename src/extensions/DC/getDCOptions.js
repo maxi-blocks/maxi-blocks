@@ -15,6 +15,19 @@ import { idOptionByField, idTypes, orderByRelations } from './constants';
  */
 import { find, isEmpty, isEqual } from 'lodash';
 
+let customPostTypesCache = null;
+let customTaxonomiesCache = null;
+
+const clearCustomCache = () => {
+	customPostTypesCache = null;
+	customTaxonomiesCache = null;
+};
+
+// Hook into the editor initialization
+wp.domReady(() => {
+	clearCustomCache();
+});
+
 export const getIdOptions = async (
 	type,
 	relation,
@@ -105,16 +118,25 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	console.time('customPostTypes, customTaxonomies');
-	const [customPostTypes, customTaxonomies] = await Promise.all([
-		select('maxiBlocks/dynamic-content').getCustomPostTypes(),
-		select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
-	]);
-	console.timeEnd('customPostTypes, customTaxonomies');
+	console.log('customPostTypesCache', customPostTypesCache);
+	console.log('customTaxonomiesCache', customTaxonomiesCache);
+	console.time('getDCOptions');
+	if (!customPostTypesCache || !customTaxonomiesCache) {
+		console.time('getting customPostTypes, customTaxonomies');
+		const [customPostTypes, customTaxonomies] = await Promise.all([
+			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
+			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
+		]);
 
-	const isCustomPostType = customPostTypes.includes(type);
-	const isCustomTaxonomy = customTaxonomies.includes(type);
+		customPostTypesCache = customPostTypes;
+		customTaxonomiesCache = customTaxonomies;
+		console.timeEnd('getting customPostTypes, customTaxonomies');
+	}
 
+	const isCustomPostType = customPostTypesCache.includes(type);
+	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
+
+	console.time('await getIdOptions');
 	const data = await getIdOptions(
 		type,
 		relation,
@@ -122,8 +144,13 @@ const getDCOptions = async (
 		isCustomPostType,
 		isCustomTaxonomy
 	);
+	console.timeEnd('await getIdOptions');
 
-	if (!data) return null;
+	if (!data) {
+		console.log('getDCOptions: no data');
+		console.timeEnd('getDCOptions');
+		return null;
+	}
 
 	const prefix = isCL ? 'cl-' : 'dc-';
 
@@ -171,6 +198,7 @@ const getDCOptions = async (
 	const newValues = {};
 
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
+		console.time('isEmpty(find(newPostIdOptions, { value: id })');
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
 			if (!clStatus) {
 				if (
@@ -187,7 +215,9 @@ const getDCOptions = async (
 				newValues[`${prefix}id`] = undefined;
 			}
 		}
+		console.timeEnd('isEmpty(find(newPostIdOptions, { value: id })');
 
+		console.time('!isCL');
 		if (!isCL) {
 			if (isEmpty(newPostIdOptions)) {
 				if (relation === 'by-author') {
@@ -198,6 +228,9 @@ const getDCOptions = async (
 					newValues[`${prefix}error`] = type;
 				}
 
+				console.log('getDCOptions: !isCL');
+				console.timeEnd('!isCL');
+				console.timeEnd('getDCOptions');
 				return { newValues, newPostIdOptions: [] };
 			}
 
@@ -212,7 +245,10 @@ const getDCOptions = async (
 				)[0].value;
 			}
 		}
+		console.timeEnd('!isCL');
 
+		console.log('getDCOptions: newValues');
+		console.timeEnd('getDCOptions');
 		return { newValues, newPostIdOptions };
 	}
 

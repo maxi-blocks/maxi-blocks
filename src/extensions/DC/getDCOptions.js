@@ -99,23 +99,19 @@ export const getIdOptions = async (
 };
 
 const getDCOptions = async (
-	dataRequest,
+	{ type, id, field, relation, author },
 	postIdOptions,
 	contentType,
 	isCL = false,
-	contextLoop
+	{ 'cl-status': clStatus } = {}
 ) => {
-	const { type, id, field, relation, author } = dataRequest;
-
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
+	const [customPostTypes, customTaxonomies] = await Promise.all([
+		select('maxiBlocks/dynamic-content').getCustomPostTypes(),
+		select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
+	]);
 
 	const isCustomPostType = customPostTypes.includes(type);
-
-	const isCustomTaxonomy = select('maxiBlocks/dynamic-content')
-		.getCustomTaxonomies()
-		.includes(type);
+	const isCustomTaxonomy = customTaxonomies.includes(type);
 
 	const data = await getIdOptions(
 		type,
@@ -128,8 +124,6 @@ const getDCOptions = async (
 	if (!data) return null;
 
 	const prefix = isCL ? 'cl-' : 'dc-';
-
-	const newValues = {};
 
 	const newPostIdOptions = data.map(item => {
 		if (
@@ -172,10 +166,11 @@ const getDCOptions = async (
 		};
 	});
 
+	const newValues = {};
+
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
-		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			if (!contextLoop?.['cl-status']) {
+			if (!clStatus) {
 				if (
 					orderByRelations.includes(relation) &&
 					!newPostIdOptions.length
@@ -193,25 +188,27 @@ const getDCOptions = async (
 
 		if (!isCL) {
 			if (isEmpty(newPostIdOptions)) {
-				if (relation === 'by-author')
+				if (relation === 'by-author') {
 					newValues[`${prefix}error`] = relation;
+				}
 
 				if (['tags', 'media'].includes(type)) {
 					newValues[`${prefix}error`] = type;
-					// TODO: this does not work without the second parameter, so it never works ^_^
-					// disabledType(type);
 				}
 
 				return { newValues, newPostIdOptions: [] };
 			}
-			if (relation === 'by-author') newValues[`${prefix}error`] = '';
 
-			// Ensures first field is selected
-			if (!field)
+			if (relation === 'by-author') {
+				newValues[`${prefix}error`] = '';
+			}
+
+			if (!field) {
 				newValues[`${prefix}field`] = getFields(
 					contentType,
 					type
 				)[0].value;
+			}
 		}
 
 		return { newValues, newPostIdOptions };

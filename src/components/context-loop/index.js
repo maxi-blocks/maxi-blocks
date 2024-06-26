@@ -405,11 +405,9 @@ const ContextLoop = props => {
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
-									onChange={value => {
-										changeProps({
-											'cl-relation': value,
-										});
-									}}
+									onChange={value =>
+										changeProps({ 'cl-relation': value })
+									}
 									onReset={() =>
 										changeProps({
 											'cl-relation':

@@ -40,13 +40,9 @@ const actions = {
 			...ignoredTaxonomies,
 		]);
 
-		const customTaxonomies = [];
-
-		allTaxonomies.forEach(taxonomy => {
-			if (!excludedTaxonomies.has(taxonomy.slug)) {
-				customTaxonomies.push(taxonomy.slug);
-			}
-		});
+		const customTaxonomies = allTaxonomies
+			.filter(taxonomy => !excludedTaxonomies.has(taxonomy.slug))
+			.map(taxonomy => taxonomy.slug);
 
 		return {
 			type: 'LOAD_CUSTOM_TAXONOMIES',

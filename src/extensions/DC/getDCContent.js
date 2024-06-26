@@ -28,19 +28,14 @@ import { getCartContent, getProductsContent } from './getWCContent';
 import { isNil, isEmpty, capitalize } from 'lodash';
 
 const handleParentField = async (contentValue, type) => {
-	if (!contentValue || contentValue === 0) {
+	if (!contentValue || contentValue === 0)
 		return __('No parent', 'maxi-blocks');
-	}
-	const { getEntityRecords } = resolveSelect('core');
-	const parent = await getEntityRecords(
+	const parent = await resolveSelect('core').getEntityRecords(
 		'taxonomy',
 		nameDictionary[type] ?? type,
-		{
-			per_page: 1,
-			include: contentValue,
-		}
+		{ per_page: 1, include: contentValue }
 	);
-	return parent[0].name;
+	return parent?.[0]?.name || __('No parent', 'maxi-blocks');
 };
 
 const getDCContent = async (dataRequest, clientId) => {

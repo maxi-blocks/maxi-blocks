@@ -1150,9 +1150,9 @@ class MaxiBlocks_DynamicContent
                     return null;
                 }
 
+                $args['limit'] = 1;
                 $products = wc_get_products($args);
-
-                return end($products);
+                return !empty($products) ? $products[0] : null;
             }
 
             $query = new WP_Query($args);

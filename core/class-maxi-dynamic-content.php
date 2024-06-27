@@ -729,8 +729,8 @@ class MaxiBlocks_DynamicContent
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
 
-            if (empty($post)) {
-                return $content;
+            if (empty($post) || $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
                 $link = $post->add_to_cart_url();
@@ -738,6 +738,9 @@ class MaxiBlocks_DynamicContent
                 $link = get_permalink($post->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
+            }
             $link = wc_get_cart_url();
         } else {
             if (empty($post)) {

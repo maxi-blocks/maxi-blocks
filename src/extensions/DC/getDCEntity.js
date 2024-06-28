@@ -235,14 +235,24 @@ const getDCEntity = async (dataRequest, clientId) => {
 					description: 'Description: example description.',
 					count: 100,
 				};
-				const entity = await resolveSelect('core').getEntityRecord(
-					getKind(type),
-					nameDictionary[type] ?? type,
-					id,
-					{
-						per_page: 1,
-					}
-				);
+				console.log('getKind(type)', getKind(type));
+				console.log('nameDictionary[type]', nameDictionary[type]);
+				console.log('type', type);
+				console.log('post id', id);
+
+				let entity = null;
+				try {
+					entity = await resolveSelect('core').getEntityRecord(
+						getKind(type),
+						nameDictionary[type] ?? type,
+						id,
+						{
+							per_page: 1,
+						}
+					);
+				} catch (error) {
+					// Handle the error silently
+				}
 
 				if (entity) {
 					if (!entity.categories || entity.categories.length === 0) {
@@ -282,6 +292,16 @@ const getDCEntity = async (dataRequest, clientId) => {
 				if (taxonomy) return taxonomy;
 			}
 		}
+		console.log('type', type);
+		console.log('nameDictionary[type]', nameDictionary[type]);
+		console.log('getKind(type)', getKind(type));
+		console.log(
+			resolveSelect('core').getEditedEntityRecord(
+				getKind(type),
+				nameDictionary[type] ?? type,
+				select('core/editor').getCurrentPostId()
+			)
+		);
 		return (
 			resolveSelect('core').getEditedEntityRecord(
 				getKind(type),

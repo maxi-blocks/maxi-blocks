@@ -292,23 +292,15 @@ const getDCEntity = async (dataRequest, clientId) => {
 				if (taxonomy) return taxonomy;
 			}
 		}
-		console.log('type', type);
-		console.log('nameDictionary[type]', nameDictionary[type]);
-		console.log('getKind(type)', getKind(type));
-		console.log(
+
+		if(!isFSE) return (
 			resolveSelect('core').getEditedEntityRecord(
 				getKind(type),
 				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
 			)
 		);
-		return (
-			resolveSelect('core').getEditedEntityRecord(
-				getKind(type),
-				nameDictionary[type] ?? type,
-				select('core/editor').getCurrentPostId()
-			) ?? {}
-		);
+
 	}
 	if (
 		['tags', 'categories', 'product_categories', 'product_tags'].includes(

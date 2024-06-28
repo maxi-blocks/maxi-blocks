@@ -189,6 +189,8 @@ const getCustomPostTypeFields = (contentType, type) => {
 
 	const postType = select('core').getPostType(type);
 
+	console.log('postType', postType);
+
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {
 			addField('Featured image', 'featured_media');
@@ -214,12 +216,17 @@ const getCustomPostTypeFields = (contentType, type) => {
 	if (postType.supports.author) {
 		addField('Author', 'author');
 	}
-	if (postType.taxonomies.includes('category')) {
-		addField('Categories', 'categories');
-	}
-	if (postType.taxonomies.includes('post_tag')) {
-		addField('Tags', 'tags');
-	}
+	postType.taxonomies.forEach(taxonomy => {
+		if (taxonomy === 'category') {
+			addField('Categories', 'categories');
+		} else if (taxonomy === 'post_tag') {
+			addField('Tags', 'tags');
+		} else {
+			// Capitalize the first letter of the taxonomy
+			const label = taxonomy.charAt(0).toUpperCase() + taxonomy.slice(1);
+			addField(label, taxonomy);
+		}
+	});
 	if (postType.supports.comments) {
 		addField('Comments', 'comments');
 	}

@@ -189,6 +189,29 @@ const getDCEntity = async (dataRequest, clientId) => {
 				);
 
 				const tagsIds = tags ? tags.map(tag => tag.id) : [];
+
+				const postType = select('core').getPostType(type);
+				const taxonomies = postType.taxonomies;
+
+				const customTaxonomies = taxonomies.filter(
+				  taxonomy => !['category', 'post_tag'].includes(taxonomy)
+				);
+
+				const taxonomyData = {};
+
+				for (const taxonomy of customTaxonomies) {
+				  const terms = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					taxonomy,
+					{ per_page: 2 }
+				  );
+
+				  const termIds = terms ? terms.map(term => term.id) : [];
+				  taxonomyData[taxonomy] = termIds;
+				}
+
+				console.log('taxonomyData', taxonomyData);
+
 				const templateEntity = {
 					id: 10000,
 					date: '2024-04-02T12:20:15',
@@ -234,11 +257,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 					},
 					description: 'Description: example description.',
 					count: 100,
+					...taxonomyData,
 				};
-				console.log('getKind(type)', getKind(type));
-				console.log('nameDictionary[type]', nameDictionary[type]);
-				console.log('type', type);
-				console.log('post id', id);
 
 				let entity = null;
 				try {
@@ -255,6 +275,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}
 
 				if (entity) {
+					console.log('entity', entity);
 					if (!entity.categories || entity.categories.length === 0) {
 						entity.categories = categoriesIds;
 					}

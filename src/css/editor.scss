@@ -441,14 +441,21 @@ svg path#styleCardBoat_b,
 * FSE previews
 *******************************/
 
-body .maxi-blocks-pattern-preview {
-	transform: none !important;
-	aspect-ratio: inherit !important;
-}
-body .maxi-blocks-pattern-preview-grid {
-	aspect-ratio: inherit !important;
-	&__card {
-		height: auto !important;
+body {
+	.maxi-blocks-pattern-preview {
+		transform: none !important;
+		aspect-ratio: inherit !important;
+	}
+	.maxi-blocks-pattern-preview-grid {
+		aspect-ratio: inherit !important;
+		&__card {
+			height: auto !important;
+		}
+	}
+
+	.block-editor-block-preview__content:has(.maxi-blocks-pattern-preview) {
+		transform: none !important;
+		aspect-ratio: inherit !important;
 	}
 }
 

@@ -252,6 +252,7 @@ function maxi_links_control($rel, $link)
 {
     return false;
 }
+
 add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
 add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
 add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
@@ -284,10 +285,27 @@ if (class_exists('MaxiBlocks_Blocks')) {
 //======================================================================
 // MaxiBlocks Styles
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/styles/class-maxi-styles.php';
 if (class_exists('MaxiBlocks_Styles')) {
     MaxiBlocks_Styles::register();
 }
+
+//======================================================================
+// MaxiBlocks Styles Legacy
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/styles/class-maxi-styles-legacy.php';
+if (class_exists('MaxiBlocks_Styles_Legacy')) {
+    MaxiBlocks_Styles_Legacy::register();
+}
+
+//======================================================================
+// MaxiBlocks PostUpdateHandler
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-post.php';
+if (class_exists('MaxiBlocks_PostUpdateHandler')) {
+    MaxiBlocks_PostUpdateHandler::register();
+}
+
 
 //======================================================================
 // MaxiBlocks Style Cards

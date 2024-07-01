@@ -17,67 +17,6 @@ use Typesense\Client;
 $dotenv = Dotenv\Dotenv::createImmutable(MAXI_PLUGIN_DIR_PATH);
 $dotenv->load();
 
-class MaxiBlocksTransientData
-{
-    public $new_blocks;
-
-    public function __construct(array $data)
-    {
-        if (!isset($data['new_blocks'])) {
-            throw new InvalidArgumentException('The key "new_blocks" is required.');
-        }
-
-        if (!is_bool($data['new_blocks'])) {
-            throw new InvalidArgumentException('The value of "new_blocks" must be a boolean.');
-        }
-
-        $this->new_blocks = $data['new_blocks'];
-    }
-
-    public function toArray()
-    {
-        return ['new_blocks' => $this->new_blocks];
-    }
-}
-
-class MaxiBlocksTransient
-{
-    const TRANSIENT_PREFIX = 'maxi_blocks_update_';
-
-    public static function set_transient($post_id, MaxiBlocksTransientData $data, $expiration = 600)
-    {
-        if (!is_numeric($post_id) || $post_id <= 0) {
-            throw new InvalidArgumentException('Invalid post ID.');
-        }
-
-        set_transient(self::TRANSIENT_PREFIX . $post_id, $data->toArray(), $expiration);
-    }
-
-    public static function get_transient($post_id)
-    {
-        if (!is_int($post_id) || $post_id <= 0) {
-            throw new InvalidArgumentException('Invalid post ID.');
-        }
-
-        $data = get_transient(self::TRANSIENT_PREFIX . $post_id);
-
-        if ($data === false) {
-            return null;
-        }
-
-        return new MaxiBlocksTransientData($data);
-    }
-
-    public static function delete_transient($post_id)
-    {
-        if (!is_int($post_id) || $post_id <= 0) {
-            throw new InvalidArgumentException('Invalid post ID.');
-        }
-
-        delete_transient(self::TRANSIENT_PREFIX . $post_id);
-    }
-}
-
 if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
     class MaxiBlocks_CLI
     {
@@ -314,24 +253,16 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * Import a page set.
          *
          * ## OPTIONS
-         * [<page_set_path>]
+         * <page_set_path>
          * : Path to valid WXR files for importing or attachment ID. If not provided, you will be prompted to select an attachment.
          *
          * ## EXAMPLES
          *   wp maxiblocks import_page_set /path/to/page-set.xml
-         *   wp maxiblocks import_page_set 456  # where 456 is an attachment ID
-         *   wp maxiblocks import_page_set
          */
         public static function import_page_set($args, $assoc_args)
         {
-            $page_set_path = isset($args[0]) ? $args[0] : null;
-
-            if (!$page_set_path) {
-                $page_set_path = self::prompt_for_attachment('application/xml');
-            }
-
+            $page_set_path = $args[0];
             $page_set_path = self::get_file_path($page_set_path);
-
             self::run_import_command($page_set_path);
         }
 
@@ -350,13 +281,13 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         private static function run_import_command($file_path)
         {
             $import_command = 'wp import ' . $file_path . ' --authors=skip';
-            $descriptorspec = array(
+            $descriptor_spec = array(
                 0 => array("pipe", "r"),
                 1 => array("pipe", "w"),
                 2 => array("pipe", "w")
             );
 
-            $process = proc_open($import_command, $descriptorspec, $pipes, null, null);
+            $process = proc_open($import_command, $descriptor_spec, $pipes, null, null);
 
             if (is_resource($process)) {
                 self::process_import_output($pipes);
@@ -404,7 +335,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          */
         public static function replace_post_content($args, $assoc_args)
         {
+            $start_time = microtime(true);
             $post_id = $args[0];
+
             $content_source = isset($args[1]) ? $args[1] : null;
 
             if (!$content_source) {
@@ -414,6 +347,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             $content = self::get_content($content_source);
 
             self::update_post_content($post_id, $content, $assoc_args);
+            $end_time = microtime(true);
+            $execution_time = $end_time - $start_time;
+            WP_CLI::success('Execution time: ' . $execution_time . ' seconds.');
         }
 
         private static function update_post_content($post_id, $content, $assoc_args)
@@ -426,21 +362,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
             $new_content = self::prepare_new_content($post->post_content, $content, $assoc_args);
 
-            try {
-                $transient_data = new MaxiBlocksTransientData(['new_blocks' => true]);
-                MaxiBlocksTransient::set_transient($post_id, $transient_data, 10 * MINUTE_IN_SECONDS);
-            } catch (Exception $e) {
-                WP_CLI::error('Error setting transient: ' . $e->getMessage());
-            }
-
-            $result = wp_update_post([
-                'ID' => $post_id,
-                'post_content' => $new_content,
-            ]);
-
-            if (is_wp_error($result)) {
-                WP_CLI::error('Error updating post: ' . $result->get_error_message());
-            }
+            do_action('maxiblocks_update_post_content', $post_id, $new_content, true);
 
             WP_CLI::success('Post content updated successfully.');
         }
@@ -448,9 +370,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         private static function prepare_new_content($existing_content, $new_content, $assoc_args)
         {
             if (isset($assoc_args['append'])) {
-                return self::prepare_content($existing_content) . $new_content;
+                return $existing_content . $new_content;
             } elseif (isset($assoc_args['prepend'])) {
-                return $new_content . self::prepare_content($existing_content);
+                return $new_content . $existing_content;
             }
             return $new_content;
         }
@@ -513,16 +435,8 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 return;
             }
 
-            try {
-                $transient_data = new MaxiBlocksTransientData(['new_blocks' => false]);
-                MaxiBlocksTransient::set_transient($post_id, $transient_data);
-            } catch (Exception $e) {
-                WP_CLI::error('Error setting transient: ' . $e->getMessage());
-            }
-
-            wp_update_post([
-                'ID' => $post_id,
-            ]);
+            $post_content = $post->post_content;
+            do_action('maxiblocks_update_post_styles', $post_id, $post_content, false);
 
             WP_CLI::success('Block styles updated successfully.');
         }
@@ -555,31 +469,6 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 $content = file_get_contents($source);
                 if ($content === false) {
                     WP_CLI::error('Unable to read content file.');
-                }
-            }
-
-            return self::prepare_content($content);
-        }
-
-        /**
-         * Transforms all string attributes in the content to JSON format
-         * to get correct array of blocks from `parse_blocks` function later on.
-         */
-        private static function prepare_content($content)
-        {
-            $pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
-            if (preg_match_all($pattern, $content, $blockMatches)) {
-                foreach ($blockMatches[1] as $blockContent) {
-                    $attributePattern = '/"([^"]+)":\s*"([^"]+)"/';
-                    if (preg_match_all($attributePattern, $blockContent, $matches)) {
-                        foreach ($matches[2] as $match) {
-                            $decoded = json_encode($match);
-                            $decoded = substr($decoded, 1, -1);
-                            if ($decoded) {
-                                $content = str_replace($match, $decoded, $content);
-                            }
-                        }
-                    }
                 }
             }
 

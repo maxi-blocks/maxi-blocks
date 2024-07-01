@@ -1,5 +1,4 @@
 <?php
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
 
 /**
  * Server side part of MaxiBlocks_DynamicContent Gutenberg component

@@ -336,8 +336,8 @@ const Popover = (
 			return;
 		}
 
-		reference(resultingReferenceRef);
-	}, [anchor, reference]);
+		refs.reference.current = resultingReferenceRef;
+	}, [anchor, refs.reference]);
 
 	// This is only needed for a smooth transition when moving blocks.
 	useLayoutEffect(() => {

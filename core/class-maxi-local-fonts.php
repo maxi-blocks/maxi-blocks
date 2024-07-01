@@ -262,7 +262,9 @@ class MaxiBlocks_Local_Fonts
 
             $font_name_sanitized = str_replace(' ', '+', $font_name);
 
-            $font_url = "https://fonts.googleapis.com/css2?family=$font_name_sanitized:";
+            $use_bunny_fonts = (bool) get_option('bunny_fonts');
+            $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+            $font_url = $font_api_url . "/css2?family=$font_name_sanitized:";
 
             $response[$font_name] = $this->generateFontURL(
                 $font_url,

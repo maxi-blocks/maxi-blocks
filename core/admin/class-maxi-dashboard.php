@@ -485,9 +485,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= $this->generate_item_header(__('Fonts and files', 'maxi-blocks'), false);
 
+
+            $description = '<h4>'.__('Use bunny.net fonts', 'maxi-blocks').'</h4>';
+            $description .= '<p>'.__('Use bunny.net CDN to serve fonts. GDPR compliant analogue to Google fonts', 'maxi-blocks').'</p>';
+            $content .= $this->generate_setting($description, 'bunny_fonts');
+
             $description =
                 '<h4>' .
-                __('Serve Google fonts locally', 'maxi-blocks') .
+                __('Serve Google/Bunny fonts locally', 'maxi-blocks') .
                 '</h4>';
             $description .=
                 '<p>' .
@@ -1118,6 +1123,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // List of settings and corresponding arguments
             $settings = array(
                 'accessibility_option' => $args,
+                'bunny_fonts' => $args,
                 'local_fonts' => $args,
                 'local_fonts_uploaded' => $args,
                 'remove_local_fonts' => $args,

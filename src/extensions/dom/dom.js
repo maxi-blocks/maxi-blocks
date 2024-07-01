@@ -48,6 +48,7 @@ wp.domReady(() => {
 
 	const changeSiteEditorWidth = (width = '') => {
 		document.querySelector('.edit-site-visual-editor').style.width = width;
+		document.querySelector('.editor-visual-editor ').style.width = width;
 	};
 
 	const templatePartResizeObserver = new ResizeObserver(entries => {
@@ -227,6 +228,8 @@ wp.domReady(() => {
 			if (getIsTemplatePart()) {
 				const resizableBox = document.querySelector(
 					'.edit-site-visual-editor .components-resizable-box__container'
+				) || document.querySelector(
+					'.editor-visual-editor .components-resizable-box__container'
 				);
 				const isTemplatesListOpened = getIsTemplatesListOpened();
 

@@ -33,11 +33,11 @@ const breakpointResizer = ({
 			if (getIsTemplatePart()) {
 				return document.querySelector(
 					'.edit-site-visual-editor .components-resizable-box__container'
-				);
+				) || document.querySelector('.editor-visual-editor .components-resizable-box__container');
 			}
-			return document.querySelector('.edit-site-visual-editor');
+			return document.querySelector('.edit-site-visual-editor') || document.querySelector('.editor-visual-editor');
 		}
-		return document.querySelector('.edit-post-visual-editor');
+		return document.querySelector('.edit-post-visual-editor') || document.querySelector('.editor-visual-editor');
 	};
 	const editorWrapper = getEditorWrapper();
 

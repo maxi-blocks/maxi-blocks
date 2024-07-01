@@ -11,13 +11,12 @@ import getAttributeKey from './getAttributeKey';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getIsValid = (val, cleaned = false) =>
-	(cleaned &&
-		(val ||
-			isNumber(val) ||
-			isBoolean(val) ||
-			(isEmpty(val) && !isNil(val)))) ||
-	!cleaned;
+export const getIsValid = (val, cleaned = false) => {
+	if (!cleaned) return true;
+	return (
+		val || isNumber(val) || isBoolean(val) || (isEmpty(val) && !isNil(val))
+	);
+};
 
 export const validateOriginValue = val => {
 	const isNumeric = val => {

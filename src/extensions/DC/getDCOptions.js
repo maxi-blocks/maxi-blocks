@@ -15,6 +15,19 @@ import { idOptionByField, idTypes, orderByRelations } from './constants';
  */
 import { find, isEmpty, isEqual } from 'lodash';
 
+let customPostTypesCache = null;
+let customTaxonomiesCache = null;
+
+const clearCustomCache = () => {
+	customPostTypesCache = null;
+	customTaxonomiesCache = null;
+};
+
+// Hook into the editor initialization
+wp.domReady(() => {
+	clearCustomCache();
+});
+
 export const getIdOptions = async (
 	type,
 	relation,
@@ -35,21 +48,17 @@ export const getIdOptions = async (
 		products: 'product',
 	};
 
-	const args = {
-		per_page: -1,
-	};
+	const args = { per_page: -1 };
 
 	const currentTemplateType = getCurrentTemplateSlug();
 
-	if (type === 'users' || relation === 'by-author') {
+	const fetchUsers = async () => {
 		const users = await getUsers();
+		return users ? users.map(({ id, name }) => ({ id, name })) : null;
+	};
 
-		if (users) {
-			data = users.map(({ id, name }) => ({
-				id,
-				name,
-			}));
-		}
+	if (type === 'users' || relation === 'by-author') {
+		data = await fetchUsers();
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
 		relation === 'by-category'
@@ -72,14 +81,7 @@ export const getIdOptions = async (
 		data = await getEntityRecords('postType', type, args);
 	} else if (relation === 'current-archive') {
 		if (currentTemplateType === 'author') {
-			const users = await getUsers();
-
-			if (users) {
-				data = users.map(({ id, name }) => ({
-					id,
-					name,
-				}));
-			}
+			data = await fetchUsers();
 		} else if (['category', 'tag'].includes(currentTemplateType)) {
 			data = await getEntityRecords(
 				'taxonomy',
@@ -89,7 +91,7 @@ export const getIdOptions = async (
 		} else {
 			data = await getEntityRecords('taxonomy', 'category', args);
 		}
-	} else if (['archive'].includes(currentTemplateType)) {
+	} else if (currentTemplateType === 'archive') {
 		data = await getEntityRecords('taxonomy', 'category', args);
 	} else {
 		data = await getEntityRecords('postType', dictionary[type], args);
@@ -98,36 +100,25 @@ export const getIdOptions = async (
 	return data;
 };
 
-// TODO: looks like it's not necessary
-// const disabledType = (valueType, contentType) => {
-// 	const hide = options =>
-// 		Object.keys(options).forEach(key => {
-// 			if (options[key].value === valueType) {
-// 				options[key].disabled = true;
-// 			}
-// 		});
-
-// 	hide(typeOptions[contentType]);
-// };
-
 const getDCOptions = async (
-	dataRequest,
+	{ type, id, field, relation, author },
 	postIdOptions,
 	contentType,
 	isCL = false,
-	contextLoop
+	{ 'cl-status': clStatus } = {}
 ) => {
-	const { type, id, field, relation, author } = dataRequest;
+	if (!customPostTypesCache || !customTaxonomiesCache) {
+		const [customPostTypes, customTaxonomies] = await Promise.all([
+			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
+			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
+		]);
 
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
+		customPostTypesCache = customPostTypes;
+		customTaxonomiesCache = customTaxonomies;
+	}
 
-	const isCustomPostType = customPostTypes.includes(type);
-
-	const isCustomTaxonomy = select('maxiBlocks/dynamic-content')
-		.getCustomTaxonomies()
-		.includes(type);
+	const isCustomPostType = customPostTypesCache.includes(type);
+	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
 
 	const data = await getIdOptions(
 		type,
@@ -137,11 +128,11 @@ const getDCOptions = async (
 		isCustomTaxonomy
 	);
 
-	if (!data) return null;
+	if (!data) {
+		return null;
+	}
 
 	const prefix = isCL ? 'cl-' : 'dc-';
-
-	const newValues = {};
 
 	const newPostIdOptions = data.map(item => {
 		if (
@@ -184,10 +175,11 @@ const getDCOptions = async (
 		};
 	});
 
+	const newValues = {};
+
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
-		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			if (!contextLoop?.['cl-status']) {
+			if (!clStatus) {
 				if (
 					orderByRelations.includes(relation) &&
 					!newPostIdOptions.length
@@ -205,25 +197,27 @@ const getDCOptions = async (
 
 		if (!isCL) {
 			if (isEmpty(newPostIdOptions)) {
-				if (relation === 'by-author')
+				if (relation === 'by-author') {
 					newValues[`${prefix}error`] = relation;
+				}
 
 				if (['tags', 'media'].includes(type)) {
 					newValues[`${prefix}error`] = type;
-					// TODO: this does not work without the second parameter, so it never works ^_^
-					// disabledType(type);
 				}
 
 				return { newValues, newPostIdOptions: [] };
 			}
-			if (relation === 'by-author') newValues[`${prefix}error`] = '';
 
-			// Ensures first field is selected
-			if (!field)
+			if (relation === 'by-author') {
+				newValues[`${prefix}error`] = '';
+			}
+
+			if (!field) {
 				newValues[`${prefix}field`] = getFields(
 					contentType,
 					type
 				)[0].value;
+			}
 		}
 
 		return { newValues, newPostIdOptions };

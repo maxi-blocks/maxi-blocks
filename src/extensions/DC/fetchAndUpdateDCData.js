@@ -30,7 +30,6 @@ const fetchAndUpdateDCData = async (
 	clientId
 ) => {
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
-
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
 	const { status, content, type, field, id, linkTarget, containsHTML } =
@@ -40,7 +39,7 @@ const fetchAndUpdateDCData = async (
 		status &&
 		!isNil(type) &&
 		!isNil(field) &&
-		(!isNil(id) || ['settings', 'cart'].includes(type)) // id is not necessary for site settings
+		(!isNil(id) || ['settings', 'cart'].includes(type))
 	) {
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
@@ -55,45 +54,40 @@ const fetchAndUpdateDCData = async (
 		let isSynchronizedAttributesUpdated = false;
 
 		const lastDynamicContentProps = getDCValues(
-			{
-				...dynamicContent,
-				...synchronizedAttributes,
-			},
+			{ ...dynamicContent, ...synchronizedAttributes },
 			contextLoop
 		);
-
 		const newLinkSettings = await getDCNewLinkSettings(
 			attributes,
 			lastDynamicContentProps,
 			clientId
 		);
 
+		const updateAttributes = newAttributes => {
+			isSynchronizedAttributesUpdated = true;
+			markNextChangeAsNotPersistent();
+			onChange(newAttributes);
+		};
+
 		if (contentType !== 'image') {
 			let newContent = await getDCContent(
 				lastDynamicContentProps,
 				clientId
 			);
-			// Parses symbols like &#038; to their respective characters (in this case, &)
 			newContent = decodeEntities(newContent);
 
 			const newContainsHTML =
 				linkTarget === field &&
 				inlineLinkFields.includes(field) &&
 				!isNil(newContent);
-
 			if (!newContainsHTML) {
 				newContent = sanitizeDCContent(newContent);
 			}
 
 			if (newContent !== content) {
-				isSynchronizedAttributesUpdated = true;
-
-				markNextChangeAsNotPersistent();
-				onChange({
+				updateAttributes({
 					'dc-content': newContent,
-					...(newLinkSettings && {
-						linkSettings: newLinkSettings,
-					}),
+					...(newLinkSettings && { linkSettings: newLinkSettings }),
 					...synchronizedAttributes,
 					...(newContainsHTML !== containsHTML && {
 						'dc-contains-html': newContainsHTML,
@@ -103,10 +97,7 @@ const fetchAndUpdateDCData = async (
 				newLinkSettings &&
 				!isEqual(attributes.linkSettings, newLinkSettings)
 			) {
-				isSynchronizedAttributesUpdated = true;
-
-				markNextChangeAsNotPersistent();
-				onChange({
+				updateAttributes({
 					linkSettings: newLinkSettings,
 					...synchronizedAttributes,
 				});
@@ -116,27 +107,17 @@ const fetchAndUpdateDCData = async (
 				lastDynamicContentProps,
 				clientId
 			);
-
 			if (isNil(mediaContent)) {
-				isSynchronizedAttributesUpdated = true;
-
-				markNextChangeAsNotPersistent();
-				onChange({
+				updateAttributes({
 					'dc-media-id': null,
 					'dc-media-url': null,
-					...(newLinkSettings && {
-						linkSettings: newLinkSettings,
-					}),
+					...(newLinkSettings && { linkSettings: newLinkSettings }),
 					...synchronizedAttributes,
 				});
 			} else {
 				const { id, url, caption } = mediaContent;
-
 				if (!isNil(id) || !isNil(url)) {
-					isSynchronizedAttributesUpdated = true;
-
-					markNextChangeAsNotPersistent();
-					onChange({
+					updateAttributes({
 						'dc-media-id': id,
 						'dc-media-url': url,
 						...getUpdatedImgSVG(

@@ -109,13 +109,9 @@ export const getSimpleText = str => {
 };
 
 export const limitString = (value, limit) => {
-	if (limit === 0) return value;
-
+	if (limit <= 0) return value;
 	const str = cutTags(value).trim();
-
-	if (str.length > limit && limit !== 0) return `${str.substr(0, limit)}…`;
-
-	return str;
+	return str.length > limit ? `${str.substr(0, limit)}…` : str;
 };
 
 /**
@@ -256,22 +252,19 @@ const getCustomTaxonomyFields = type => {
 };
 
 export const getCurrentTemplateSlug = () => {
-	const isFSE = select('core/edit-site') !== undefined;
-
-	if (!isFSE) return null;
+	const editSite = select('core/edit-site');
+	if (!editSite) return null;
 
 	const currentTemplateTypeRaw =
-		select('core/edit-site')?.getEditedPostContext()?.templateSlug ||
-		select('core/edit-site')?.getEditedPostId(); // fix for WordPress 6.5
+		editSite?.getEditedPostContext()?.templateSlug ||
+		editSite?.getEditedPostId(); // fix for WordPress 6.5
 
-	let currentTemplateType = currentTemplateTypeRaw;
+	if (!currentTemplateTypeRaw) return null;
 
-	// Use array destructuring to extract the part after '//' if it exists
-	if (currentTemplateType && currentTemplateType.includes('//')) {
-		[, currentTemplateType] = currentTemplateType.split('//');
-	}
+	// Extract the part after '//' if it exists
+	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
 
-	return currentTemplateType;
+	return currentTemplateType || currentTemplateTypeRaw;
 };
 
 // Utility function to add an item to the options array if it doesn't already exist
@@ -287,19 +280,21 @@ const addUniqueOption = (options, newItem) => {
 };
 
 export const getFields = (contentType, type) => {
-	if (
-		select('maxiBlocks/dynamic-content').getCustomPostTypes().includes(type)
-	)
+	const { getCustomPostTypes, getCustomTaxonomies } = select(
+		'maxiBlocks/dynamic-content'
+	);
+
+	const customPostTypes = getCustomPostTypes();
+	if (customPostTypes.includes(type)) {
 		return getCustomPostTypeFields(contentType, type);
-	if (
-		select('maxiBlocks/dynamic-content')
-			.getCustomTaxonomies()
-			.includes(type)
-	)
+	}
+
+	const customTaxonomies = getCustomTaxonomies();
+	if (customTaxonomies.includes(type)) {
 		return getCustomTaxonomyFields(type);
+	}
 
 	const isFSE = select('core/edit-site') !== undefined;
-
 	if (isFSE) {
 		if (showCurrent(type, getCurrentTemplateSlug())) {
 			const newItem = {

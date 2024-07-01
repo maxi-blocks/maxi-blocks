@@ -728,8 +728,8 @@ class MaxiBlocks_DynamicContent
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
 
-            if (empty($post)) {
-                return $content;
+            if (empty($post) || $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
                 $link = $post->add_to_cart_url();
@@ -737,6 +737,9 @@ class MaxiBlocks_DynamicContent
                 $link = get_permalink($post->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
+            }
             $link = wc_get_cart_url();
         } else {
             if (empty($post)) {
@@ -1146,9 +1149,9 @@ class MaxiBlocks_DynamicContent
                     return null;
                 }
 
+                $args['limit'] = 1;
                 $products = wc_get_products($args);
-
-                return end($products);
+                return !empty($products) ? $products[0] : null;
             }
 
             $query = new WP_Query($args);
@@ -2345,7 +2348,7 @@ class MaxiBlocks_DynamicContent
                     $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
 
                     $allowed_tags = '<svg><img><iframe><hr>';
-                    $text_content = wp_strip_all_tags($content_sanitized, $allowed_tags);
+                    $text_content = strip_tags($content_sanitized, $allowed_tags);
 
                     // Trim the text content to remove leading and trailing whitespace
                     $trimmed_text_content = trim($text_content);

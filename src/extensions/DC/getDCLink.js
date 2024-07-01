@@ -16,44 +16,40 @@ const getProductsLink = async (dataRequest, data) => {
 	if (dataRequest?.linkTarget === 'add_to_cart') {
 		const siteUrl = select('core').getSite()?.url;
 		const addToCartUrl = productData?.add_to_cart?.url;
-		if (!siteUrl || !addToCartUrl) {
-			return null;
-		}
-
-		return `${siteUrl}${addToCartUrl}`;
+		return siteUrl && addToCartUrl ? `${siteUrl}${addToCartUrl}` : null;
 	}
 
 	return productData?.permalink;
 };
 
-const getDCContent = async (dataRequest, clientId) => {
-	if (dataRequest?.type === 'cart') {
+const getAuthorLink = async authorId => {
+	const { getUsers } = resolveSelect('core');
+	const user = await getUsers({ include: authorId });
+	return user?.[0]?.link;
+};
+
+const getDCLink = async (dataRequest, clientId) => {
+	const { type, linkTarget, author } = dataRequest;
+
+	if (type === 'cart') {
 		return getCartUrl();
+	}
+
+	if (inlineLinkFields.includes(linkTarget)) {
+		return 'Multiple Links';
 	}
 
 	const data = await getDCEntity(dataRequest, clientId);
 
-	if (inlineLinkFields.includes(dataRequest?.linkTarget)) {
-		return 'Multiple Links';
-	}
-
-	if (dataRequest?.type === 'products') {
+	if (type === 'products') {
 		return getProductsLink(dataRequest, data);
 	}
 
-	if (dataRequest?.linkTarget === 'author') {
-		const { getUsers } = resolveSelect('core');
-
-		const user = await getUsers({ include: dataRequest?.author });
-
-		return user?.[0]?.link;
+	if (linkTarget === 'author') {
+		return getAuthorLink(author);
 	}
 
-	const contentValue = data?.link;
-
-	if (contentValue) return contentValue;
-
-	return null;
+	return data?.link || null;
 };
 
-export default getDCContent;
+export default getDCLink;

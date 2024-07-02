@@ -16,7 +16,6 @@
 .interface-interface-skeleton {
 	&__sidebar {
 		overflow-x: hidden;
-		scrollbar-gutter: stable;
 	}
 
 	&__content {
@@ -64,7 +63,7 @@ h2.gx_error {
 ******************/
 .edit-post-visual-editor,
 .edit-site-visual-editor,
-.editor-visual-editor  {
+.editor-visual-editor {
 	i {
 		font-style: normal;
 	}

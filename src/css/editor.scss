@@ -16,6 +16,13 @@
 .interface-interface-skeleton {
 	&__sidebar {
 		overflow-x: hidden;
+		.interface-complementary-area__fill {
+			position: relative !important;
+			width: auto !important;
+			.editor-sidebar {
+				min-width: 295px;
+			}
+		}
 	}
 
 	&__content {

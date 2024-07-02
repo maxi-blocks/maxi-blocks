@@ -6,34 +6,38 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-custom-data.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles-utils.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-custom-data.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-style-utils.php';
 
 class MaxiBlocks_Styles_Legacy
 {
-    private static ?MaxiBlocks_Styles_Legacy $instance = null;
+    private static ?self $instance = null;
     private static ?MaxiBlocks_Styles $styles = null;
     private static ?MaxiBlocks_Custom_Data_Processor $custom_data = null;
-    private static ?MaxiBlocks_Styles_Utils $styles_utils = null;
+    private static ?MaxiBlocks_Style_Utils $style_utils = null;
 
     /**
      * Registers the plugin.
      */
-    public static function register(): MaxiBlocks_Styles_Legacy
+    public static function register()
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Styles_Legacy();
+            self::$instance = new self();
         }
         if(null === self::$styles) {
-            self::$styles = MaxiBlocks_Styles::register();
+            self::$styles = MaxiBlocks_Styles::get_instance();
         }
         if(null === self::$custom_data) {
-            self::$custom_data = MaxiBlocks_Custom_Data_Processor::register();
+            self::$custom_data = MaxiBlocks_Custom_Data_Processor::get_instance();
         }
-        if(null === self::$styles_utils) {
-            self::$styles_utils = MaxiBlocks_Styles_Utils::register();
+        if(null === self::$style_utils) {
+            self::$style_utils = MaxiBlocks_Style_Utils::get_instance();
         }
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 
@@ -51,11 +55,11 @@ class MaxiBlocks_Styles_Legacy
     }
     public function enqueue_styles()
     {
-        $post_id = self::$styles_utils->get_id();
+        $post_id = self::$style_utils->get_id();
         $post_content = self::$styles->get_content(false, $post_id);
         self::$styles->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
-        $template_id = self::$styles_utils->get_id(true);
+        $template_id = self::$style_utils->get_id(true);
         $template_content = self::$styles->get_content(true, $template_id);
         self::$styles->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
 

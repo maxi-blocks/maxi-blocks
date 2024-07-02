@@ -27,6 +27,7 @@ class MaxiBlocks_Block_Info_Updater
     public function __construct()
     {
         $this->max_execution_time = ini_get('max_execution_time');
+
     }
 
     public function update_blocks_info(array $block, array $context = null): void

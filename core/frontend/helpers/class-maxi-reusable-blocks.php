@@ -7,14 +7,18 @@ if (!defined('ABSPATH')) {
 
 class MaxiBlocks_Reusable_Blocks_Processor
 {
-    private static ?MaxiBlocks_Reusable_Blocks_Processor $instance = null;
+    private static ?self $instance = null;
 
-    public static function register(): MaxiBlocks_Reusable_Blocks_Processor
+    public static function register()
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Reusable_Blocks_Processor();
+            self::$instance = new self();
         }
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 

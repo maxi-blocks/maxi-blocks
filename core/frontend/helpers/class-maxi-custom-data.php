@@ -4,23 +4,27 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles-utils.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-style-utils.php';
 
 
 class MaxiBlocks_Custom_Data_Processor
 {
-    private static ?MaxiBlocks_Custom_Data_Processor $instance = null;
-    private static ?MaxiBlocks_Styles_Utils $styles_utils = null;
+    private static ?self $instance = null;
+    private static ?MaxiBlocks_Style_Utils $style_utils = null;
 
-    public static function register(): MaxiBlocks_Custom_Data_Processor
+    public static function register(): void
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Custom_Data_Processor();
+            self::$instance = new self();
         }
-        if (null === self::$styles_utils) {
-            self::$styles_utils = MaxiBlocks_Styles_Utils::register();
+        if (null === self::$style_utils) {
+            self::$style_utils = MaxiBlocks_Style_Utils::get_instance();
         }
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 
@@ -136,12 +140,12 @@ class MaxiBlocks_Custom_Data_Processor
         array $meta
     ): void {
         if ($script === 'number-counter') {
-            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
+            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', MAXI_PLUGIN_DIR_FILE), [], MAXI_PLUGIN_VERSION, array(
                 'strategy'  => 'defer', 'in_footer' => true
                 ));
         }
 
-        $prefetch_url = plugins_url($js_script_path, dirname(dirname(__FILE__)));
+        $prefetch_url = plugins_url($js_script_path, MAXI_PLUGIN_DIR_FILE);
 
         $strategy = 'defer';
         $version = MAXI_PLUGIN_VERSION;
@@ -196,7 +200,7 @@ class MaxiBlocks_Custom_Data_Processor
         }
 
         if (!$id) {
-            $id = self::$styles_utils->get_id($is_template);
+            $id = self::$style_utils->get_id($is_template);
         }
 
         $custom_data = $this->get_meta($id, $is_template);

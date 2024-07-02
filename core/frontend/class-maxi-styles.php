@@ -12,37 +12,41 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-fonts.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-templates.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-reusable-blocks.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-custom-data.php';
-require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles-utils.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-fonts.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-templates.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-reusable-blocks.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-custom-data.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/helpers/class-maxi-style-utils.php';
 
 
 class MaxiBlocks_Styles
 {
-    private static ?MaxiBlocks_Styles $instance = null;
+    private static ?self $instance = null;
     private static ?MaxiBlocks_Fonts_Processor $fonts_processor = null;
     private static ?MaxiBlocks_Templates_Processor $templates_processor = null;
     private static ?MaxiBlocks_Reusable_Blocks_Processor $reusable_blocks_processor = null;
     private static ?MaxiBlocks_Custom_Data_Processor $custom_data_processor = null;
-    private static ?MaxiBlocks_Styles_Utils $styles_utils = null;
+    private static ?MaxiBlocks_Style_Utils $style_utils = null;
     private static ?string $active_theme = null;
 
     /**
      * Registers the plugin.
      */
-    public static function register(): MaxiBlocks_Styles
+    public static function register(): void
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Styles();
+            self::$instance = new self();
         }
         if (null === self::$active_theme) {
             self::$active_theme = self::get_active_theme();
         }
 
         self::register_processors();
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 
@@ -53,12 +57,12 @@ class MaxiBlocks_Styles
             'templates_processor' => MaxiBlocks_Templates_Processor::class,
             'reusable_blocks_processor' => MaxiBlocks_Reusable_Blocks_Processor::class,
             'custom_data_processor' => MaxiBlocks_Custom_Data_Processor::class,
-            'styles_utils' => MaxiBlocks_Styles_Utils::class,
+            'style_utils' => MaxiBlocks_Style_Utils::class,
         ];
 
         foreach ($processors as $property => $class) {
             if (null === self::$$property) {
-                self::$$property = $class::register();
+                self::$$property = $class::get_instance();
             }
         }
     }
@@ -98,7 +102,7 @@ class MaxiBlocks_Styles
          * so it doesn't have template parts. In this case, we need to get default
          * template parts (header and footer).
          */
-        $theme_name = self::$styles_utils->get_template_name();
+        $theme_name = self::$style_utils->get_template_name();
         return [
             $theme_name . '//header',
             $theme_name . '//footer',
@@ -125,7 +129,7 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 self::$fonts_processor->enqueue_fonts($fonts, $name);
             }
-        } elseif (self::$styles_utils->get_template_name() === 'maxi-theme' && $is_template_part) {
+        } elseif (self::$style_utils->get_template_name() === 'maxi-theme' && $is_template_part) {
             do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
 
@@ -339,7 +343,7 @@ class MaxiBlocks_Styles
 
     public function process_content_frontend(): void
     {
-        $post_id = self::$styles_utils->get_id();
+        $post_id = self::$style_utils->get_id();
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
         if ($content_meta_fonts['meta'] !== null) {
@@ -531,7 +535,7 @@ class MaxiBlocks_Styles
         $post = $id ? get_post($id) : get_post();
 
         // Fetch blocks from template parts.
-        $template_id = self::$styles_utils->get_id(true);
+        $template_id = self::$style_utils->get_id(true);
         $blocks = self::$templates_processor->fetch_blocks_by_template_id($template_id);
 
         $specific_archives = ['tag', 'category', 'author', 'date'];

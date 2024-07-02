@@ -7,14 +7,18 @@ if (!defined('ABSPATH')) {
 
 class MaxiBlocks_Styles_Utils
 {
-    private static ?MaxiBlocks_Styles_Utils $instance = null;
+    private static ?self $instance = null;
 
-    public static function register(): MaxiBlocks_Styles_Utils
+    public static function register(): void
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Styles_Utils();
+            self::$instance = new self();
         }
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 

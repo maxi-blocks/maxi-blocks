@@ -7,14 +7,18 @@ if (!defined('ABSPATH')) {
 
 class MaxiBlocks_Fonts_Processor
 {
-    private static ?MaxiBlocks_Fonts_Processor $instance = null;
+    private static ?self $instance = null;
 
-    public static function register(): MaxiBlocks_Fonts_Processor
+    public static function register(): void
     {
         if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_Fonts_Processor();
+            self::$instance = new self();
         }
+    }
 
+    public static function get_instance(): self
+    {
+        self::register();
         return self::$instance;
     }
 

@@ -436,7 +436,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             $post_content = $post->post_content;
-            do_action('maxiblocks_update_post_styles', $post_id, $post_content, false);
+            do_action('maxiblocks_update_post_content', $post_id, $post_content, false);
 
             WP_CLI::success('Block styles updated successfully.');
         }

@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 class MaxiBlocks_Block_Info_Updater
 {
     private static ?self $instance = null;
+    private static ?MaxiBlocks_BlockFactory $block_factory = null;
 
     private int $max_execution_time;
 
@@ -16,6 +17,8 @@ class MaxiBlocks_Block_Info_Updater
         if (null === self::$instance) {
             self::$instance = new self();
         }
+
+        self::$block_factory = MaxiBlocks_BlockFactory::get_instance();
     }
 
     public static function get_instance(): self
@@ -34,13 +37,14 @@ class MaxiBlocks_Block_Info_Updater
         $block_name = $block['blockName'];
         $inner_blocks = $block['innerBlocks'];
 
-        if(strpos($block_name, 'maxi-blocks') !== false) {
-            $props = $block['attrs'];
+        if($block_name && strpos($block_name, 'maxi-blocks') !== false) {
+            $block_instance = self::$block_factory->create_block($block_name);
+            $props = $block_instance->get_block_attributes($block['attrs']);
             $unique_id = $props['uniqueID'];
 
             $context = array_merge($this->create_context($block_name, $props, $inner_blocks), $context);
 
-            $styles = $this->get_block_styles($block, $context);
+            $styles = $this->get_block_styles($block_instance, $block, $context);
             $fonts = json_encode($this->get_block_fonts($block_name, $props));
             $frontend_styles = frontend_style_generator($styles, $unique_id);
             $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
@@ -286,7 +290,7 @@ class MaxiBlocks_Block_Info_Updater
         return $context;
     }
 
-    public function get_block_styles(array $block, array $context = null): array
+    public function get_block_styles(MaxiBlocks_Block $block_instance, array $block, array $context = []): array
     {
         $styles = [];
 
@@ -294,23 +298,13 @@ class MaxiBlocks_Block_Info_Updater
             return $styles;
         }
 
-        $block_name = $block['blockName'];
-
-        if ($block_name === null || strpos($block_name, 'maxi-blocks') === false) {
-            return $styles;
-        }
-
-        $props = $block['attrs'];
-        $block_style = $props['blockStyle'] ?? 'light';
-
-        $block_instance = MaxiBlocks_BlockFactory::get_instance()->create_block($block_name);
-
         if($block_instance === null) {
             return $styles;
         }
 
-        $props = $block_instance->get_block_attributes($props);
+        $props = $block_instance->get_block_attributes($block['attrs']);
         $data = $block_instance->get_block_data();
+        $block_style = $props['blockStyle'] ?? 'light';
         $sc_props = $block_instance->get_block_sc_vars($block_style);
         $styles = $block_instance->get_styles($props, $data, $sc_props, $context);
 

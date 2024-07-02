@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
+
 /**
  * Generate CSS selectors for background layers.
  *
@@ -366,7 +368,7 @@ function style_processor($obj, $data, $props)
 {
     $selectors = $data['customCss']['selectors'] ?? null;
     $transition_selectors = array_merge(
-        $data['transition'] ?? [],
+        !empty($data['transition']) ? $data['transition'] : (new StylesDefaults())->transitionDefault,
         ['transform' => get_transform_transition_data($selectors, $props)],
     );
 

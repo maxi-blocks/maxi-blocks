@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "438319ebc0481f7b921aa9407fa01809",
+    "content-hash": "96e77613c6b1caffcb97eb3c21eab5fd",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1952,53 +1952,6 @@
             "time": "2023-03-08T13:26:56+00:00"
         },
         {
-            "name": "paulthewalton/acf-stubs",
-            "version": "5.8.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paulthewalton/acf-stubs.git",
-                "reference": "722096c127186c41ac98395b418195d1db9cf576"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paulthewalton/acf-stubs/zipball/722096c127186c41ac98395b418195d1db9cf576",
-                "reference": "722096c127186c41ac98395b418195d1db9cf576",
-                "shasum": ""
-            },
-            "require-dev": {
-                "ext-gettext": "*",
-                "giacocorsiglia/stubs-generator": "^0.5.0",
-                "giacocorsiglia/wordpress-stubs": "*",
-                "php": "^7.1",
-                "wpackagist-plugin/advanced-custom-fields": "5.8.7"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Walton",
-                    "email": "pwalton@live.ca",
-                    "role": "copycat"
-                }
-            ],
-            "description": "Based on giacocorsiglia/wordpress-stubs. Advanced Custom Fields function, class, and global variable declaration stubs for easier static analysis.",
-            "keywords": [
-                "acf",
-                "advanced custom fields",
-                "static analysis",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/paulthewalton/acf-stubs/issues",
-                "source": "https://github.com/paulthewalton/acf-stubs/tree/5.8.7"
-            },
-            "abandoned": "php-stubs/acf-pro-stubs",
-            "time": "2019-12-04T19:26:53+00:00"
-        },
-        {
             "name": "phar-io/manifest",
             "version": "2.0.4",
             "source": {
@@ -2115,6 +2068,51 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "php-stubs/acf-pro-stubs",
+            "version": "v6.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-stubs/acf-pro-stubs.git",
+                "reference": "ec36332a1211f8c0231ae8221994f38033232fa0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-stubs/acf-pro-stubs/zipball/ec36332a1211f8c0231ae8221994f38033232fa0",
+                "reference": "ec36332a1211f8c0231ae8221994f38033232fa0",
+                "shasum": ""
+            },
+            "require": {
+                "php-stubs/wordpress-stubs": "^4.7 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "php": "~7.1 || ^8.0",
+                "php-stubs/generator": "^0.8",
+                "phpdocumentor/reflection-docblock": "^5.3"
+            },
+            "suggest": {
+                "symfony/polyfill-php73": "Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions",
+                "szepeviktor/phpstan-wordpress": "WordPress extensions for PHPStan"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Advanced Custom Fields PRO stubs for static analysis.",
+            "homepage": "https://github.com/php-stubs/acf-pro-stubs",
+            "keywords": [
+                "PHPStan",
+                "acf",
+                "static analysis",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/php-stubs/acf-pro-stubs/issues",
+                "source": "https://github.com/php-stubs/acf-pro-stubs/tree/v6.2.7"
+            },
+            "time": "2024-03-11T09:22:20+00:00"
         },
         {
             "name": "php-stubs/wordpress-stubs",

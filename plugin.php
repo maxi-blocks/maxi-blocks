@@ -299,11 +299,11 @@ if (class_exists('MaxiBlocks_Styles_Legacy')) {
 }
 
 //======================================================================
-// MaxiBlocks PostUpdateHandler
+// MaxiBlocks Post Update Manager
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-post.php';
-if (class_exists('MaxiBlocks_PostUpdateHandler')) {
-    MaxiBlocks_PostUpdateHandler::register();
+require_once MAXI_PLUGIN_DIR_PATH . 'core/post-management/class-maxi-post-update-manager.php';
+if (class_exists('MaxiBlocks_Post_Update_Manager')) {
+    MaxiBlocks_Post_Update_Manager::register();
 }
 
 

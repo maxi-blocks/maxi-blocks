@@ -33,9 +33,7 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public static function get_instance()
         {
-            if (null === self::$instance) {
-                self::$instance = new MaxiBlocks_API();
-            }
+            self::register();
             return self::$instance;
         }
 
@@ -339,6 +337,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             // In case Gutenberg plugin has been installed
             if (defined('GUTENBERG_VERSION')) {
+                /** @disregard P1011 Undefined constant */
                 $version = GUTENBERG_VERSION;
                 $is_core = false;
             } else {
@@ -548,7 +547,7 @@ if (!class_exists('MaxiBlocks_API')):
         /**
          * Get the posts array with the info
          *
-         * @return $posts JSON feed of returned objects
+         * @return array JSON feed of returned objects
          */
         public function get_maxi_blocks_sc_string()
         {
@@ -753,7 +752,7 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
 
-			$request_result = $is_wp_request ? $request->get_json_params() : $request;
+            $request_result = $is_wp_request ? $request->get_json_params() : $request;
 
             $response = $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',

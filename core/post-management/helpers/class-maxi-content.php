@@ -51,7 +51,6 @@ class MaxiBlocks_Content_Processor
                 return $new_blocks || (isset($block['attrs']['uniqueID']) && substr($block['attrs']['uniqueID'], -2) != '-u');
             });
 
-            // Save the post with the updated blocks
             $updated_post_content = serialize_blocks($blocks);
         }
 

@@ -29,7 +29,7 @@ class MaxiBlocks_Block_Info_Updater
         $this->max_execution_time = ini_get('max_execution_time');
     }
 
-    public function update_blocks_info(array $block, array $context = null): void
+    public function update_blocks_info(array $block, array $context = []): void
     {
         $block_name = $block['blockName'];
         $inner_blocks = $block['innerBlocks'];
@@ -38,7 +38,7 @@ class MaxiBlocks_Block_Info_Updater
             $props = $block['attrs'];
             $unique_id = $props['uniqueID'];
 
-            $context = $this->create_context($block_name, $props, $inner_blocks);
+            $context = array_merge($this->create_context($block_name, $props, $inner_blocks), $context);
 
             $styles = $this->get_block_styles($block, $context);
             $fonts = json_encode($this->get_block_fonts($block_name, $props));
@@ -246,9 +246,9 @@ class MaxiBlocks_Block_Info_Updater
     /**
      * Context creator
      */
-    public function create_context(string $block_name, array $props, array $inner_blocks)
+    public function create_context(string $block_name, array $props, array $inner_blocks): array
     {
-        $context = null;
+        $context = [];
         if ($block_name === 'maxi-blocks/row-maxi') {
             $column_size = [];
 

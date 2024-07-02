@@ -285,7 +285,7 @@ if (class_exists('MaxiBlocks_Blocks')) {
 //======================================================================
 // MaxiBlocks Styles
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/styles/class-maxi-styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles.php';
 if (class_exists('MaxiBlocks_Styles')) {
     MaxiBlocks_Styles::register();
 }
@@ -293,7 +293,7 @@ if (class_exists('MaxiBlocks_Styles')) {
 //======================================================================
 // MaxiBlocks Styles Legacy
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/styles/class-maxi-styles-legacy.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles-legacy.php';
 if (class_exists('MaxiBlocks_Styles_Legacy')) {
     MaxiBlocks_Styles_Legacy::register();
 }

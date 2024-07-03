@@ -216,6 +216,11 @@ const DynamicContent = props => {
 				}
 			}
 
+			console.log('fetchDcData');
+			console.log('status', status);
+			console.log('relationTypes', relationTypes);
+			console.log('type', type);
+
 			// Sets new content if the status and type match the relation types
 			if (status && relationTypes.includes(type)) {
 				const dataRequest = {
@@ -226,6 +231,7 @@ const DynamicContent = props => {
 					relation,
 					author,
 				};
+				console.log('dataRequest', dataRequest);
 
 				const postIDSettings = await getDCOptions(
 					dataRequest,
@@ -234,6 +240,7 @@ const DynamicContent = props => {
 					false,
 					contextLoop
 				);
+				console.log('postIDSettings', postIDSettings);
 
 				if (postIDSettings) {
 					const { newValues, newPostIdOptions } = postIDSettings;

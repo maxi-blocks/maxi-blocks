@@ -107,18 +107,27 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	if (!customPostTypesCache || !customTaxonomiesCache) {
+	console.log('getDCOptions', type, id, field, relation, author);
+	if (!customPostTypesCache || !customTaxonomiesCache || customPostTypesCache.length === 0 || customTaxonomiesCache.length === 0) {
 		const [customPostTypes, customTaxonomies] = await Promise.all([
 			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
 			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
 		]);
 
+		console.log('customPostTypes', customPostTypes);
+		console.log('customTaxonomies', customTaxonomies);
+
 		customPostTypesCache = customPostTypes;
 		customTaxonomiesCache = customTaxonomies;
 	}
+	console.log('customPostTypesCache', customPostTypesCache);
+	console.log('customTaxonomiesCache', customTaxonomiesCache);
 
 	const isCustomPostType = customPostTypesCache.includes(type);
 	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
+
+	console.log('isCustomPostType', isCustomPostType);
+	console.log('isCustomTaxonomy', isCustomTaxonomy);
 
 	const data = await getIdOptions(
 		type,
@@ -127,6 +136,8 @@ const getDCOptions = async (
 		isCustomPostType,
 		isCustomTaxonomy
 	);
+
+	console.log('data', data);
 
 	if (!data) {
 		return null;

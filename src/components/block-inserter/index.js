@@ -139,6 +139,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
 				useAnimationFrame
+				observeBlockPosition={clientId}
+				dataclientid={clientId}
 				placement='bottom'
 			>
 				{Object.keys(blockHierarchy).length > 1 && (

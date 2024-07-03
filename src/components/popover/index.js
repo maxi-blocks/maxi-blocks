@@ -80,7 +80,7 @@ const ArrowTriangle = props => (
 
 const slotNameContext = createContext();
 
-const positionToPlacement = position => {
+const positionToPlacement = (position) => {
 	const [x, y, z] = position.split(' ');
 
 	if (['top', 'bottom'].includes(x)) {
@@ -152,6 +152,7 @@ const Popover = (
 		resize = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
+		key = '',
 		...contentProps
 	},
 	forwardedRef

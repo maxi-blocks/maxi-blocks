@@ -739,11 +739,13 @@ const IconControl = props => {
 									'search'
 								);
 							} else {
-								icon = setSVGAriaLabel(
-									ariaLabels.icon,
-									() => icon,
-									'search'
-								);
+								if (icon && ariaLabels?.icon) {
+									icon = setSVGAriaLabel(
+										ariaLabels.icon,
+										() => icon,
+										'search'
+									);
+								}
 							}
 						}
 

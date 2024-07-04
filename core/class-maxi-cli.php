@@ -39,17 +39,17 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             $commands = [
-                'set_style_card',
-                'list_style_cards',
-                'get_current_style_card',
-                'import_page_set',
-                'replace_post_content',
-                'create_post',
-                'update_post_styles',
+                'set-style-card' => 'set_style_card',
+                'list-style-cards' => 'list_style_cards',
+                'get-current-style-card' => 'get_current_style_card',
+                'import-page-set' => 'import_page_set',
+                'replace-post-content' => 'replace_post_content',
+                'create-post' => 'create_post',
+                'update-post-styles' => 'update_post_styles',
             ];
 
-            foreach ($commands as $command) {
-                WP_CLI::add_command("maxiblocks $command", [self::$instance, $command]);
+            foreach ($commands as $command => $method) {
+                WP_CLI::add_command("maxiblocks $command", [self::$instance, $method]);
             }
         }
 
@@ -79,11 +79,11 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * ## OPTIONS
          *
          * <name>
-         * : The name of the style card to set.
+         * : The name of the style card to set. View all style cards names with `wp maxiblocks list-style-cards`.
          *
          * ## EXAMPLES
          *
-         *     wp maxiblocks set_style_card "Style Card Name"
+         *     wp maxiblocks set-style-card "Style Card Name"
          */
         public static function set_style_card($args)
         {
@@ -138,7 +138,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             $var_sc_string = create_sc_style_string($var_sc);
             $sc_styles = get_sc_styles($var_sc, $sc_code['gutenberg_blocks_status']);
 
-            $style_cards = self::get_and_update_style_cards($sc_code);
+            $style_cards = self::get_updated_style_cards($sc_code);
 
             self::$maxi_api->set_maxi_blocks_current_style_cards(['styleCards' => json_encode($style_cards)], false);
             self::$maxi_api->post_maxi_blocks_sc_string([
@@ -148,7 +148,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             ]);
         }
 
-        private static function get_and_update_style_cards($sc_code)
+        private static function get_updated_style_cards($sc_code)
         {
             $style_cards = json_decode(self::$maxi_api->get_maxi_blocks_current_style_cards(), true);
 
@@ -169,50 +169,93 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * ## OPTIONS
          *
          * [--count=<count>]
-         * : The number of style cards to display. Default is 10.
+         * : The number of style cards to display per page. Default is 10.
          * Use "all" to display all style cards.
          *
          * ## EXAMPLES
          *
-         *     wp maxiblocks list_style_cards
-         *     wp maxiblocks list_style_cards --count=20
-         *     wp maxiblocks list_style_cards --count=all
+         *     wp maxiblocks list-style-cards
+         *     wp maxiblocks list-style-cards --count=20
+         *     wp maxiblocks list-style-cards --count=all
          */
         public static function list_style_cards($args, $assoc_args)
         {
             try {
                 $count = isset($assoc_args['count']) ? $assoc_args['count'] : 10;
-                $style_cards = self::search_style_cards($count);
-
-                self::display_style_cards($style_cards, $count);
+                self::display_style_cards($count);
             } catch (Exception $e) {
                 WP_CLI::error('Error listing style cards: ' . $e->getMessage());
             }
         }
 
-        private static function search_style_cards($count)
+        private static function search_style_cards(string|int $count, int $page): array
         {
-            $searchParameters = [
+            $search_parameters = [
                 'q' => '*',
                 'query_by' => 'post_title',
                 'sort_by' => 'post_date_int:desc',
                 'per_page' => $count === 'all' ? 100 : intval($count),
-                'page' => 1,
+                'page' => $page,
             ];
 
-            return self::$typesense_client->collections['style_card']->documents->search($searchParameters);
+            return self::$typesense_client->collections['style_card']->documents->search($search_parameters);
         }
 
-        private static function display_style_cards($style_cards, $count)
+        private static function display_style_cards(string $count): void
         {
+            $page = 1;
+            $style_cards = self::search_style_cards($count, 1);
             WP_CLI::line(sprintf('Found %d style card(s).', $style_cards['found']));
 
-            foreach ($style_cards['hits'] as $style_card) {
-                WP_CLI::line('- ' . $style_card['document']['post_title']);
-            }
+            while (true) {
+                $per_page = $count === 'all' ? $style_cards['found'] : intval($count);
+                $total_pages = ceil($style_cards['found'] / $per_page);
 
-            if ($count !== 'all' && $style_cards['found'] > $count) {
-                WP_CLI::line(sprintf('Displaying the first %d style card(s). Use --count=all to see all style cards.', $count));
+                for ($i = 0; $i < $per_page; $i++) {
+                    WP_CLI::line('- ' . $style_cards['hits'][$i]['document']['post_title']);
+                }
+
+                if($page !== 1) {
+                    WP_CLI::line(sprintf('Page %d of %d', $page, $total_pages));
+                }
+
+                if($count !== 'all') {
+                    WP_CLI::line(sprintf('Displaying %d style card(s) per page. Use --count=all in command call or enter "a" to see all style cards at once.', $per_page));
+                }
+
+                $options = ['q' => 'quit'];
+                if ($page < $total_pages) {
+                    $options['n'] = 'next page';
+                }
+                if ($page > 1) {
+                    $options['p'] = 'previous page';
+                }
+                if ($count !== 'all') {
+                    $options['a'] = 'all style cards';
+                }
+
+                $prompt = 'Enter ' . implode(', ', array_map(function ($key, $value) {
+                    return "\"$key\" for $value";
+                }, array_keys($options), $options)) . ':';
+
+                WP_CLI::line($prompt);
+
+                $input = readline();
+
+                if($input == 'q') {
+                    break;
+                }
+
+                if ($input === 'n') {
+                    $page = min($page + 1, $total_pages);
+                } elseif ($input === 'p') {
+                    $page = max(1, $page - 1);
+                } elseif ($input === 'a') {
+                    $page = 1;
+                    $count = 'all';
+                }
+
+                $style_cards = self::search_style_cards($count, $page);
             }
         }
 
@@ -221,7 +264,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          * ## EXAMPLES
          *
-         *     wp maxiblocks get_current_style_card
+         *     wp maxiblocks get-current-style-card
          */
         public static function get_current_style_card()
         {
@@ -246,6 +289,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                     return $style_card;
                 }
             }
+            if(is_array($style_cards) && count($style_cards) === 1) {
+                return $style_cards[0];
+            }
             return null;
         }
 
@@ -257,7 +303,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * : Path to valid WXR files for importing or attachment ID. If not provided, you will be prompted to select an attachment.
          *
          * ## EXAMPLES
-         *   wp maxiblocks import_page_set /path/to/page-set.xml
+         *   wp maxiblocks import-page-set /path/to/page-set.xml
          */
         public static function import_page_set($args, $assoc_args)
         {
@@ -266,7 +312,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             self::run_import_command($page_set_path);
         }
 
-        private static function get_file_path($source)
+        private static function get_file_path(string $source): string
         {
             if (is_numeric($source)) {
                 $file_path = get_attached_file($source);
@@ -278,7 +324,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return $source;
         }
 
-        private static function run_import_command($file_path)
+        private static function run_import_command(string $file_path): void
         {
             $import_command = 'wp import ' . $file_path . ' --authors=skip';
             $descriptor_spec = array(
@@ -295,7 +341,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
         }
 
-        private static function process_import_output($pipes)
+        private static function process_import_output(array $pipes): void
         {
             while ($s = fgets($pipes[1])) {
                 if (strpos($s, 'Success') !== false) {
@@ -328,10 +374,10 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * : Prepend the new content to the existing content.
          *
          * ## EXAMPLES
-         *    wp maxiblocks replace_post_content 123 /path/to/content.txt
-         *    wp maxiblocks replace_post_content 123 456  # where 456 is an attachment ID
-         *    wp maxiblocks replace_post_content 123 /path/to/content.txt --append
-         *    wp maxiblocks replace_post_content 123 /path/to/content.txt --prepend
+         *    wp maxiblocks replace-post-content 123 /path/to/content.txt
+         *    wp maxiblocks replace-post-content 123 456  # where 456 is an attachment ID
+         *    wp maxiblocks replace-post-content 123 /path/to/content.txt --append
+         *    wp maxiblocks replace-post-content 123 /path/to/content.txt --prepend
          */
         public static function replace_post_content($args, $assoc_args)
         {
@@ -352,7 +398,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             WP_CLI::success('Execution time: ' . $execution_time . ' seconds.');
         }
 
-        private static function update_post_content($post_id, $content, $assoc_args)
+        private static function update_post_content(int $post_id, string $content, array $assoc_args): void
         {
             $post = get_post($post_id);
 
@@ -367,7 +413,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             WP_CLI::success('Post content updated successfully.');
         }
 
-        private static function prepare_new_content($existing_content, $new_content, $assoc_args)
+        private static function prepare_new_content(string $existing_content, string $new_content, array $assoc_args): string
         {
             if (isset($assoc_args['append'])) {
                 return $existing_content . $new_content;
@@ -391,9 +437,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * : The post type of the post. Default is 'post'.
          *
          * ## EXAMPLES
-         * wp maxiblocks create_post "Post Title" /path/to/content.txt
-         * wp maxiblocks create_post "Post Title" 456  # where 456 is an attachment ID
-         * wp maxiblocks create_post "Post Title" --post_type=page
+         * wp maxiblocks create-post "Post Title" /path/to/content.txt
+         * wp maxiblocks create-post "Post Title" 456  # where 456 is an attachment ID
+         * wp maxiblocks create-post "Post Title" --post_type=page
          */
         public static function create_post($args, $assoc_args)
         {
@@ -422,7 +468,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          * ## EXAMPLES
          *
-         *    wp maxiblocks update_post_styles 123
+         *    wp maxiblocks update-post-styles 123
          */
         public static function update_post_styles($args)
         {
@@ -441,7 +487,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             WP_CLI::success('Block styles updated successfully.');
         }
 
-        private static function insert_post($title, $post_type)
+        private static function insert_post(string $title, string $post_type): int
         {
             $post_id = wp_insert_post([
                 'post_title' => $title,
@@ -456,7 +502,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return $post_id;
         }
 
-        private static function get_content($source)
+        private static function get_content(string $source): string
         {
             if (is_numeric($source)) {
                 $content = self::get_attachment_content($source);
@@ -475,7 +521,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return $content;
         }
 
-        private static function get_attachment_content($attachment_id)
+        private static function get_attachment_content(int $attachment_id): string|bool
         {
             $attachment = get_post($attachment_id);
             if (!$attachment || $attachment->post_type !== 'attachment') {
@@ -490,7 +536,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return file_get_contents($file_path);
         }
 
-        private static function prompt_for_attachment($mime_type = 'text/plain')
+        private static function prompt_for_attachment(string $mime_type = 'text/plain'): int
         {
             $attachments = get_posts([
                 'post_type' => 'attachment',
